@@ -17,9 +17,6 @@ Dynamic crypto-engine library loading support.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
-
-
 <!-- ##### FUNCTION xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms ##### -->
 <para>
 
@@ -34,7 +31,6 @@ Dynamic crypto-engine library loading support.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -43,7 +39,6 @@ Dynamic crypto-engine library loading support.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -88,7 +83,6 @@ Dynamic crypto-engine library loading support.
 
 </para>
 
-@void: 
 @Returns: 
 
 

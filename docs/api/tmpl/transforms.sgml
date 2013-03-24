@@ -17,9 +17,6 @@ Transform object definition.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
-
-
 <!-- ##### MACRO XMLSEC_TRANSFORM_BINARY_CHUNK ##### -->
 <para>
 
@@ -32,7 +29,6 @@ Transform object definition.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -41,7 +37,6 @@ Transform object definition.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -50,7 +45,6 @@ Transform object definition.
 
 </para>
 
-@void: 
 
 
 <!-- ##### FUNCTION xmlSecTransformIdsRegisterDefault ##### -->
@@ -58,7 +52,6 @@ Transform object definition.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -285,7 +278,6 @@ Transform object definition.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -981,7 +973,6 @@ Transform object definition.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -1054,7 +1045,6 @@ Transform object definition.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -1079,7 +1069,6 @@ Transform object definition.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -1095,7 +1084,6 @@ Transform object definition.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -1111,7 +1099,6 @@ Transform object definition.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -1127,7 +1114,6 @@ Transform object definition.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -1143,7 +1129,6 @@ Transform object definition.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -1159,7 +1144,6 @@ Transform object definition.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -1175,7 +1159,6 @@ Transform object definition.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -1191,7 +1174,6 @@ Transform object definition.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -1207,7 +1189,6 @@ Transform object definition.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -1223,7 +1204,6 @@ Transform object definition.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -1251,7 +1231,6 @@ Transform object definition.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -1275,7 +1254,6 @@ Transform object definition.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -1291,7 +1269,6 @@ Transform object definition.
 
 </para>
 
-@void: 
 @Returns: 
 
 

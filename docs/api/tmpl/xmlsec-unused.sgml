@@ -1,51 +1,3 @@
-<!-- ##### SECTION ./tmpl/crypto.sgml:Long_Description ##### -->
-<para>
-Crypto engine selection.
-</para>
-
-
-<!-- ##### SECTION ./tmpl/crypto.sgml:See_Also ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### SECTION ./tmpl/crypto.sgml:Short_Description ##### -->
-Crypto engine selection.
-
-
-<!-- ##### SECTION ./tmpl/crypto.sgml:Stability_Level ##### -->
-
-
-
-<!-- ##### SECTION ./tmpl/crypto.sgml:Title ##### -->
-crypto
-
-
-<!-- ##### SECTION ./tmpl/strings.sgml:Long_Description ##### -->
-<para>
-String constants.
-</para>
-
-
-<!-- ##### SECTION ./tmpl/strings.sgml:See_Also ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### SECTION ./tmpl/strings.sgml:Short_Description ##### -->
-String constants.
-
-
-<!-- ##### SECTION ./tmpl/strings.sgml:Stability_Level ##### -->
-
-
-
-<!-- ##### SECTION ./tmpl/strings.sgml:Title ##### -->
-strings
-
-
 <!-- ##### SECTION ./tmpl/xkms.sgml:Long_Description ##### -->
 <para>
 
@@ -64,6 +16,10 @@ strings
 
 <!-- ##### SECTION ./tmpl/xkms.sgml:Title ##### -->
 xkms
+
+
+<!-- ##### SECTION Image ##### -->
+
 
 
 <!-- ##### MACRO XMLSEC_XKMS_KEY_BINDING_REASON_MASK_ISSUER_TRAST ##### -->

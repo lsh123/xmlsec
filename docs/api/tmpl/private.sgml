@@ -17,15 +17,11 @@ Private header for building xmlsec-crypto-engine libraries.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
-
-
 <!-- ##### USER_FUNCTION xmlSecCryptoInitMethod ##### -->
 <para>
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -34,7 +30,6 @@ Private header for building xmlsec-crypto-engine libraries.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -52,7 +47,6 @@ Private header for building xmlsec-crypto-engine libraries.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -61,7 +55,6 @@ Private header for building xmlsec-crypto-engine libraries.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -70,7 +63,6 @@ Private header for building xmlsec-crypto-engine libraries.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -88,7 +80,6 @@ Private header for building xmlsec-crypto-engine libraries.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -203,6 +194,7 @@ Private header for building xmlsec-crypto-engine libraries.
 @keyDataAesGetKlass: 
 @keyDataDesGetKlass: 
 @keyDataDsaGetKlass: 
+@keyDataEcdsaGetKlass: 
 @keyDataGost2001GetKlass: 
 @keyDataHmacGetKlass: 
 @keyDataRsaGetKlass: 
@@ -218,6 +210,12 @@ Private header for building xmlsec-crypto-engine libraries.
 @transformDes3CbcGetKlass: 
 @transformKWDes3GetKlass: 
 @transformDsaSha1GetKlass: 
+@transformDsaSha256GetKlass: 
+@transformEcdsaSha1GetKlass: 
+@transformEcdsaSha224GetKlass: 
+@transformEcdsaSha256GetKlass: 
+@transformEcdsaSha384GetKlass: 
+@transformEcdsaSha512GetKlass: 
 @transformGost2001GostR3411_94GetKlass: 
 @transformHmacMd5GetKlass: 
 @transformHmacRipemd160GetKlass: 

@@ -17,9 +17,6 @@ X509 certificates support implementation for NSS.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
-
-
 <!-- ##### MACRO xmlSecNssKeyDataX509Id ##### -->
 <para>
 
@@ -32,7 +29,6 @@ X509 certificates support implementation for NSS.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -134,7 +130,6 @@ X509 certificates support implementation for NSS.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -150,7 +145,6 @@ X509 certificates support implementation for NSS.
 
 </para>
 
-@void: 
 @Returns: 
 
 

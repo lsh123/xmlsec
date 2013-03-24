@@ -17,9 +17,6 @@ Keys store implementation for NSS.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
-
-
 <!-- ##### MACRO xmlSecNssKeysStoreId ##### -->
 <para>
 
@@ -32,7 +29,6 @@ Keys store implementation for NSS.
 
 </para>
 
-@void: 
 @Returns: 
 
 

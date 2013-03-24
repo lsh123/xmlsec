@@ -1,183 +1,206 @@
 <refentry id="xmlsec-templates">
 <refmeta>
-<refentrytitle role="top_of_page" id="xmlsec-templates.top_of_page">templates</refentrytitle>
+<refentrytitle role="top_of_page">templates</refentrytitle>
 <manvolnum>3</manvolnum>
-<refmiscinfo>
-  XMLSEC Library
-</refmiscinfo>
+<refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
+
 <refnamediv>
 <refname>templates</refname>
 <refpurpose>Dynamic templates creation functions.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="xmlsec-templates.synopsis" role="synopsis">
+<refsynopsisdiv role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
-<synopsis><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplSignatureCreate">xmlSecTmplSignatureCreate</link>           (<parameter><link linkend="xmlDoc"><type>xmlDocPtr</type></link> doc</parameter>,
-                                                         <parameter><link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link> c14nMethodId</parameter>,
-                                                         <parameter><link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link> signMethodId</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *id</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplSignatureCreateNsPref">xmlSecTmplSignatureCreateNsPref</link>     (<parameter><link linkend="xmlDoc"><type>xmlDocPtr</type></link> doc</parameter>,
-                                                         <parameter><link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link> c14nMethodId</parameter>,
-                                                         <parameter><link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link> signMethodId</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *id</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *nsPrefix</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplSignatureEnsureKeyInfo">xmlSecTmplSignatureEnsureKeyInfo</link>    (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> signNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *id</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplSignatureAddReference">xmlSecTmplSignatureAddReference</link>     (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> signNode</parameter>,
-                                                         <parameter><link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link> digestMethodId</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *id</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *uri</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *type</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplSignatureAddObject">xmlSecTmplSignatureAddObject</link>        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> signNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *id</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *mimeType</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *encoding</parameter>);
-<link linkend="xmlNode"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplSignatureGetSignMethodNode">xmlSecTmplSignatureGetSignMethodNode</link>
-                                                        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> signNode</parameter>);
-<link linkend="xmlNode"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplSignatureGetC14NMethodNode">xmlSecTmplSignatureGetC14NMethodNode</link>
-                                                        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> signNode</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplReferenceAddTransform">xmlSecTmplReferenceAddTransform</link>     (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> referenceNode</parameter>,
-                                                         <parameter><link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link> transformId</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplObjectAddSignProperties">xmlSecTmplObjectAddSignProperties</link>   (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> objectNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *id</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *target</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplObjectAddManifest">xmlSecTmplObjectAddManifest</link>         (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> objectNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *id</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplManifestAddReference">xmlSecTmplManifestAddReference</link>      (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> manifestNode</parameter>,
-                                                         <parameter><link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link> digestMethodId</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *id</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *uri</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *type</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplEncDataCreate">xmlSecTmplEncDataCreate</link>             (<parameter><link linkend="xmlDoc"><type>xmlDocPtr</type></link> doc</parameter>,
-                                                         <parameter><link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link> encMethodId</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *id</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *type</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *mimeType</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *encoding</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplEncDataEnsureKeyInfo">xmlSecTmplEncDataEnsureKeyInfo</link>      (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> encNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *id</parameter>);
-<link linkend="xmlNode"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplEncDataEnsureEncProperties">xmlSecTmplEncDataEnsureEncProperties</link>
-                                                        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> encNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *id</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplEncDataAddEncProperty">xmlSecTmplEncDataAddEncProperty</link>     (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> encNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *id</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *target</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplEncDataEnsureCipherValue">xmlSecTmplEncDataEnsureCipherValue</link>  (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> encNode</parameter>);
-<link linkend="xmlNode"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplEncDataEnsureCipherReference">xmlSecTmplEncDataEnsureCipherReference</link>
-                                                        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> encNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *uri</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplEncDataGetEncMethodNode">xmlSecTmplEncDataGetEncMethodNode</link>   (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> encNode</parameter>);
-<link linkend="xmlNode"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplCipherReferenceAddTransform">xmlSecTmplCipherReferenceAddTransform</link>
-                                                        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> cipherReferenceNode</parameter>,
-                                                         <parameter><link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link> transformId</parameter>);
-<link linkend="xmlNode"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplReferenceListAddDataReference">xmlSecTmplReferenceListAddDataReference</link>
-                                                        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> encNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *uri</parameter>);
-<link linkend="xmlNode"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplReferenceListAddKeyReference">xmlSecTmplReferenceListAddKeyReference</link>
-                                                        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> encNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *uri</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplKeyInfoAddKeyName">xmlSecTmplKeyInfoAddKeyName</link>         (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> keyInfoNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplKeyInfoAddKeyValue">xmlSecTmplKeyInfoAddKeyValue</link>        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> keyInfoNode</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplKeyInfoAddX509Data">xmlSecTmplKeyInfoAddX509Data</link>        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> keyInfoNode</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplKeyInfoAddRetrievalMethod">xmlSecTmplKeyInfoAddRetrievalMethod</link> (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> keyInfoNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *uri</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *type</parameter>);
-<link linkend="xmlNode"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplRetrievalMethodAddTransform">xmlSecTmplRetrievalMethodAddTransform</link>
-                                                        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> retrMethodNode</parameter>,
-                                                         <parameter><link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link> transformId</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplKeyInfoAddEncryptedKey">xmlSecTmplKeyInfoAddEncryptedKey</link>    (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> keyInfoNode</parameter>,
-                                                         <parameter><link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link> encMethodId</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *id</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *type</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *recipient</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplX509DataAddIssuerSerial">xmlSecTmplX509DataAddIssuerSerial</link>   (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> x509DataNode</parameter>);
-<link linkend="xmlNode"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplX509IssuerSerialAddIssuerName">xmlSecTmplX509IssuerSerialAddIssuerName</link>
-                                                        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> x509IssuerSerialNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *issuerName</parameter>);
-<link linkend="xmlNode"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplX509IssuerSerialAddSerialNumber">xmlSecTmplX509IssuerSerialAddSerialNumber</link>
-                                                        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> x509IssuerSerialNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *serial</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplX509DataAddSubjectName">xmlSecTmplX509DataAddSubjectName</link>    (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> x509DataNode</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplX509DataAddSKI">xmlSecTmplX509DataAddSKI</link>            (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> x509DataNode</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplX509DataAddCertificate">xmlSecTmplX509DataAddCertificate</link>    (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> x509DataNode</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecTmplX509DataAddCRL">xmlSecTmplX509DataAddCRL</link>            (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> x509DataNode</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecTmplTransformAddHmacOutputLength">xmlSecTmplTransformAddHmacOutputLength</link>
-                                                        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> transformNode</parameter>,
-                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> bitsLen</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecTmplTransformAddRsaOaepParam">xmlSecTmplTransformAddRsaOaepParam</link>  (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> transformNode</parameter>,
-                                                         <parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *buf</parameter>,
-                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> size</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecTmplTransformAddXsltStylesheet">xmlSecTmplTransformAddXsltStylesheet</link>
-                                                        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> transformNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *xslt</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecTmplTransformAddC14NInclNamespaces">xmlSecTmplTransformAddC14NInclNamespaces</link>
-                                                        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> transformNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *prefixList</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecTmplTransformAddXPath">xmlSecTmplTransformAddXPath</link>         (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> transformNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *expression</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> **nsList</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecTmplTransformAddXPath2">xmlSecTmplTransformAddXPath2</link>        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> transformNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *type</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *expression</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> **nsList</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecTmplTransformAddXPointer">xmlSecTmplTransformAddXPointer</link>      (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> transformNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *expression</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> **nsList</parameter>);
+<synopsis>
+
+
+
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecTmplSignatureCreate">xmlSecTmplSignatureCreate</link>       (<link linkend="xmlDoc">xmlDocPtr</link> doc,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> c14nMethodId,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> signMethodId,
+                                             const <link linkend="xmlChar">xmlChar</link> *id);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecTmplSignatureCreateNsPref">xmlSecTmplSignatureCreateNsPref</link> (<link linkend="xmlDoc">xmlDocPtr</link> doc,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> c14nMethodId,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> signMethodId,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *nsPrefix);
+<link linkend="xmlNode">xmlNodePtr</link>  <link linkend="xmlSecTmplSignatureEnsureKeyInfo">xmlSecTmplSignatureEnsureKeyInfo</link>
+                                            (<link linkend="xmlNode">xmlNodePtr</link> signNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecTmplSignatureAddReference">xmlSecTmplSignatureAddReference</link> (<link linkend="xmlNode">xmlNodePtr</link> signNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> digestMethodId,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri,
+                                             const <link linkend="xmlChar">xmlChar</link> *type);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecTmplSignatureAddObject">xmlSecTmplSignatureAddObject</link>    (<link linkend="xmlNode">xmlNodePtr</link> signNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *mimeType,
+                                             const <link linkend="xmlChar">xmlChar</link> *encoding);
+<link linkend="xmlNode">xmlNodePtr</link>  <link linkend="xmlSecTmplSignatureGetSignMethodNode">xmlSecTmplSignatureGetSignMethodNode</link>
+                                            (<link linkend="xmlNode">xmlNodePtr</link> signNode);
+<link linkend="xmlNode">xmlNodePtr</link>  <link linkend="xmlSecTmplSignatureGetC14NMethodNode">xmlSecTmplSignatureGetC14NMethodNode</link>
+                                            (<link linkend="xmlNode">xmlNodePtr</link> signNode);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecTmplReferenceAddTransform">xmlSecTmplReferenceAddTransform</link> (<link linkend="xmlNode">xmlNodePtr</link> referenceNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> transformId);
+<link linkend="xmlNode">xmlNodePtr</link>  <link linkend="xmlSecTmplObjectAddSignProperties">xmlSecTmplObjectAddSignProperties</link>
+                                            (<link linkend="xmlNode">xmlNodePtr</link> objectNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *target);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecTmplObjectAddManifest">xmlSecTmplObjectAddManifest</link>     (<link linkend="xmlNode">xmlNodePtr</link> objectNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecTmplManifestAddReference">xmlSecTmplManifestAddReference</link>  (<link linkend="xmlNode">xmlNodePtr</link> manifestNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> digestMethodId,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri,
+                                             const <link linkend="xmlChar">xmlChar</link> *type);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecTmplEncDataCreate">xmlSecTmplEncDataCreate</link>         (<link linkend="xmlDoc">xmlDocPtr</link> doc,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> encMethodId,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *type,
+                                             const <link linkend="xmlChar">xmlChar</link> *mimeType,
+                                             const <link linkend="xmlChar">xmlChar</link> *encoding);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecTmplEncDataEnsureKeyInfo">xmlSecTmplEncDataEnsureKeyInfo</link>  (<link linkend="xmlNode">xmlNodePtr</link> encNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id);
+<link linkend="xmlNode">xmlNodePtr</link>  <link linkend="xmlSecTmplEncDataEnsureEncProperties">xmlSecTmplEncDataEnsureEncProperties</link>
+                                            (<link linkend="xmlNode">xmlNodePtr</link> encNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecTmplEncDataAddEncProperty">xmlSecTmplEncDataAddEncProperty</link> (<link linkend="xmlNode">xmlNodePtr</link> encNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *target);
+<link linkend="xmlNode">xmlNodePtr</link>  <link linkend="xmlSecTmplEncDataEnsureCipherValue">xmlSecTmplEncDataEnsureCipherValue</link>
+                                            (<link linkend="xmlNode">xmlNodePtr</link> encNode);
+<link linkend="xmlNode">xmlNodePtr</link>  <link linkend="xmlSecTmplEncDataEnsureCipherReference">xmlSecTmplEncDataEnsureCipherReference</link>
+                                            (<link linkend="xmlNode">xmlNodePtr</link> encNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri);
+<link linkend="xmlNode">xmlNodePtr</link>  <link linkend="xmlSecTmplEncDataGetEncMethodNode">xmlSecTmplEncDataGetEncMethodNode</link>
+                                            (<link linkend="xmlNode">xmlNodePtr</link> encNode);
+<link linkend="xmlNode">xmlNodePtr</link>  <link linkend="xmlSecTmplCipherReferenceAddTransform">xmlSecTmplCipherReferenceAddTransform</link>
+                                            (<link linkend="xmlNode">xmlNodePtr</link> cipherReferenceNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> transformId);
+<link linkend="xmlNode">xmlNodePtr</link>  <link linkend="xmlSecTmplReferenceListAddDataReference">xmlSecTmplReferenceListAddDataReference</link>
+                                            (<link linkend="xmlNode">xmlNodePtr</link> encNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri);
+<link linkend="xmlNode">xmlNodePtr</link>  <link linkend="xmlSecTmplReferenceListAddKeyReference">xmlSecTmplReferenceListAddKeyReference</link>
+                                            (<link linkend="xmlNode">xmlNodePtr</link> encNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecTmplKeyInfoAddKeyName">xmlSecTmplKeyInfoAddKeyName</link>     (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *name);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecTmplKeyInfoAddKeyValue">xmlSecTmplKeyInfoAddKeyValue</link>    (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecTmplKeyInfoAddX509Data">xmlSecTmplKeyInfoAddX509Data</link>    (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode);
+<link linkend="xmlNode">xmlNodePtr</link>  <link linkend="xmlSecTmplKeyInfoAddRetrievalMethod">xmlSecTmplKeyInfoAddRetrievalMethod</link>
+                                            (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri,
+                                             const <link linkend="xmlChar">xmlChar</link> *type);
+<link linkend="xmlNode">xmlNodePtr</link>  <link linkend="xmlSecTmplRetrievalMethodAddTransform">xmlSecTmplRetrievalMethodAddTransform</link>
+                                            (<link linkend="xmlNode">xmlNodePtr</link> retrMethodNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> transformId);
+<link linkend="xmlNode">xmlNodePtr</link>  <link linkend="xmlSecTmplKeyInfoAddEncryptedKey">xmlSecTmplKeyInfoAddEncryptedKey</link>
+                                            (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> encMethodId,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *type,
+                                             const <link linkend="xmlChar">xmlChar</link> *recipient);
+<link linkend="xmlNode">xmlNodePtr</link>  <link linkend="xmlSecTmplX509DataAddIssuerSerial">xmlSecTmplX509DataAddIssuerSerial</link>
+                                            (<link linkend="xmlNode">xmlNodePtr</link> x509DataNode);
+<link linkend="xmlNode">xmlNodePtr</link>  <link linkend="xmlSecTmplX509IssuerSerialAddIssuerName">xmlSecTmplX509IssuerSerialAddIssuerName</link>
+                                            (<link linkend="xmlNode">xmlNodePtr</link> x509IssuerSerialNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *issuerName);
+<link linkend="xmlNode">xmlNodePtr</link>  <link linkend="xmlSecTmplX509IssuerSerialAddSerialNumber">xmlSecTmplX509IssuerSerialAddSerialNumber</link>
+                                            (<link linkend="xmlNode">xmlNodePtr</link> x509IssuerSerialNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *serial);
+<link linkend="xmlNode">xmlNodePtr</link>  <link linkend="xmlSecTmplX509DataAddSubjectName">xmlSecTmplX509DataAddSubjectName</link>
+                                            (<link linkend="xmlNode">xmlNodePtr</link> x509DataNode);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecTmplX509DataAddSKI">xmlSecTmplX509DataAddSKI</link>        (<link linkend="xmlNode">xmlNodePtr</link> x509DataNode);
+<link linkend="xmlNode">xmlNodePtr</link>  <link linkend="xmlSecTmplX509DataAddCertificate">xmlSecTmplX509DataAddCertificate</link>
+                                            (<link linkend="xmlNode">xmlNodePtr</link> x509DataNode);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecTmplX509DataAddCRL">xmlSecTmplX509DataAddCRL</link>        (<link linkend="xmlNode">xmlNodePtr</link> x509DataNode);
+<link linkend="int">int</link>         <link linkend="xmlSecTmplTransformAddHmacOutputLength">xmlSecTmplTransformAddHmacOutputLength</link>
+                                            (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> bitsLen);
+<link linkend="int">int</link>         <link linkend="xmlSecTmplTransformAddRsaOaepParam">xmlSecTmplTransformAddRsaOaepParam</link>
+                                            (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> size);
+<link linkend="int">int</link>         <link linkend="xmlSecTmplTransformAddXsltStylesheet">xmlSecTmplTransformAddXsltStylesheet</link>
+                                            (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *xslt);
+<link linkend="int">int</link>         <link linkend="xmlSecTmplTransformAddC14NInclNamespaces">xmlSecTmplTransformAddC14NInclNamespaces</link>
+                                            (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *prefixList);
+<link linkend="int">int</link>         <link linkend="xmlSecTmplTransformAddXPath">xmlSecTmplTransformAddXPath</link>     (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *expression,
+                                             const <link linkend="xmlChar">xmlChar</link> **nsList);
+<link linkend="int">int</link>         <link linkend="xmlSecTmplTransformAddXPath2">xmlSecTmplTransformAddXPath2</link>    (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *type,
+                                             const <link linkend="xmlChar">xmlChar</link> *expression,
+                                             const <link linkend="xmlChar">xmlChar</link> **nsList);
+<link linkend="int">int</link>         <link linkend="xmlSecTmplTransformAddXPointer">xmlSecTmplTransformAddXPointer</link>  (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *expression,
+                                             const <link linkend="xmlChar">xmlChar</link> **nsList);
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 id="xmlsec-templates.description" role="desc">
+
+
+
+
+
+
+
+
+<refsect1 role="desc">
 <title role="desc.title">Description</title>
 <para>
 Dynamic templates creation functions.
 </para>
 </refsect1>
-<refsect1 id="xmlsec-templates.details" role="details">
+
+<refsect1 role="details">
 <title role="details.title">Details</title>
-<refsect2 id="xmlSecTmplSignatureCreate" role="function">
-<title>xmlSecTmplSignatureCreate ()</title>
-<indexterm zone="xmlSecTmplSignatureCreate"><primary>xmlSecTmplSignatureCreate</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplSignatureCreate           (<parameter><link linkend="xmlDoc"><type>xmlDocPtr</type></link> doc</parameter>,
-                                                         <parameter><link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link> c14nMethodId</parameter>,
-                                                         <parameter><link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link> signMethodId</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *id</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplSignatureCreate" role="function">xmlSecTmplSignatureCreate ()</title>
+<indexterm><primary>xmlSecTmplSignatureCreate</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplSignatureCreate       (<link linkend="xmlDoc">xmlDocPtr</link> doc,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> c14nMethodId,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> signMethodId,
+                                             const <link linkend="xmlChar">xmlChar</link> *id);</programlisting>
 <para>
 Creates new <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node with the mandatory <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink>,
 <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-CanonicalizationMethod">&lt;dsig:CanonicalizationMethod/&gt;</ulink>, <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureMethod">&lt;dsig:SignatureMethod/&gt;</ulink> and
 <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureValue">&lt;dsig:SignatureValue/&gt;</ulink> children and sub-children.
 The application is responsible for inserting the returned node
-in the XML document.
+in the XML document.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>doc</parameter>&#160;:</term>
-<listitem><simpara>the pointer to signature document or NULL; in the
+<varlistentry><term><parameter>doc</parameter>&nbsp;:</term>
+<listitem><simpara>                the pointer to signature document or NULL; in the
                      second case, application must later call <parameter>xmlSetTreeDoc</parameter>
                      to ensure that all the children nodes have correct
                      pointer to XML document.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>c14nMethodId</parameter>&#160;:</term>
-<listitem><simpara>the signature canonicalization method.
+<varlistentry><term><parameter>c14nMethodId</parameter>&nbsp;:</term>
+<listitem><simpara>       the signature canonicalization method.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>signMethodId</parameter>&#160;:</term>
-<listitem><simpara>the signature  method.
+<varlistentry><term><parameter>signMethodId</parameter>&nbsp;:</term>
+<listitem><simpara>       the signature  method.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara>the node id (may be NULL).
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara>                 the node id (may be NULL).
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node or NULL if an
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node or NULL if an
 error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplSignatureCreateNsPref" role="function">
-<title>xmlSecTmplSignatureCreateNsPref ()</title>
-<indexterm zone="xmlSecTmplSignatureCreateNsPref"><primary>xmlSecTmplSignatureCreateNsPref</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplSignatureCreateNsPref     (<parameter><link linkend="xmlDoc"><type>xmlDocPtr</type></link> doc</parameter>,
-                                                         <parameter><link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link> c14nMethodId</parameter>,
-                                                         <parameter><link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link> signMethodId</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *id</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *nsPrefix</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplSignatureCreateNsPref" role="function">xmlSecTmplSignatureCreateNsPref ()</title>
+<indexterm><primary>xmlSecTmplSignatureCreateNsPref</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplSignatureCreateNsPref (<link linkend="xmlDoc">xmlDocPtr</link> doc,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> c14nMethodId,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> signMethodId,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *nsPrefix);</programlisting>
 <para>
 Creates new <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node with the mandatory
 <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink>, <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-CanonicalizationMethod">&lt;dsig:CanonicalizationMethod/&gt;</ulink>,
@@ -186,808 +209,862 @@ sub-children. This method differs from xmlSecTmplSignatureCreate in
 that it will define the http://www.w3.org/2000/09/xmldsig#
 namespace with the given prefix that will be used for all of the
 appropriate child nodes.  The application is responsible for
-inserting the returned node in the XML document.
+inserting the returned node in the XML document.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>doc</parameter>&#160;:</term>
-<listitem><simpara>the pointer to signature document or NULL; in the
+<varlistentry><term><parameter>doc</parameter>&nbsp;:</term>
+<listitem><simpara>                the pointer to signature document or NULL; in the
                      second case, application must later call <parameter>xmlSetTreeDoc</parameter>
                      to ensure that all the children nodes have correct
                      pointer to XML document.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>c14nMethodId</parameter>&#160;:</term>
-<listitem><simpara>the signature canonicalization method.
+<varlistentry><term><parameter>c14nMethodId</parameter>&nbsp;:</term>
+<listitem><simpara>       the signature canonicalization method.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>signMethodId</parameter>&#160;:</term>
-<listitem><simpara>the signature  method.
+<varlistentry><term><parameter>signMethodId</parameter>&nbsp;:</term>
+<listitem><simpara>       the signature  method.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara>the node id (may be NULL).
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara>                 the node id (may be NULL).
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>nsPrefix</parameter>&#160;:</term>
-<listitem><simpara>the namespace prefix for the signature element (e.g. "dsig"), or NULL
+<varlistentry><term><parameter>nsPrefix</parameter>&nbsp;:</term>
+<listitem><simpara>   the namespace prefix for the signature element (e.g. "dsig"), or NULL
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node or NULL if an
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node or NULL if an
 error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplSignatureEnsureKeyInfo" role="function">
-<title>xmlSecTmplSignatureEnsureKeyInfo ()</title>
-<indexterm zone="xmlSecTmplSignatureEnsureKeyInfo"><primary>xmlSecTmplSignatureEnsureKeyInfo</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplSignatureEnsureKeyInfo    (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> signNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *id</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplSignatureEnsureKeyInfo" role="function">xmlSecTmplSignatureEnsureKeyInfo ()</title>
+<indexterm><primary>xmlSecTmplSignatureEnsureKeyInfo</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplSignatureEnsureKeyInfo
+                                            (<link linkend="xmlNode">xmlNodePtr</link> signNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id);</programlisting>
 <para>
 Adds (if necessary) <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink>
-node <parameter>signNode</parameter>.
+node <parameter>signNode</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>signNode</parameter>&#160;:</term>
-<listitem><simpara>the  pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node.
+<varlistentry><term><parameter>signNode</parameter>&nbsp;:</term>
+<listitem><simpara>           the  pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara>the node id (may be NULL).
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara>                 the node id (may be NULL).
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node or NULL if an
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node or NULL if an
 error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplSignatureAddReference" role="function">
-<title>xmlSecTmplSignatureAddReference ()</title>
-<indexterm zone="xmlSecTmplSignatureAddReference"><primary>xmlSecTmplSignatureAddReference</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplSignatureAddReference     (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> signNode</parameter>,
-                                                         <parameter><link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link> digestMethodId</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *id</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *uri</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *type</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplSignatureAddReference" role="function">xmlSecTmplSignatureAddReference ()</title>
+<indexterm><primary>xmlSecTmplSignatureAddReference</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplSignatureAddReference (<link linkend="xmlNode">xmlNodePtr</link> signNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> digestMethodId,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri,
+                                             const <link linkend="xmlChar">xmlChar</link> *type);</programlisting>
 <para>
 Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node with given URI (<parameter>uri</parameter>), Id (<parameter>id</parameter>) and
 Type (<parameter>type</parameter>) attributes and the required children <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-DigestMethod">&lt;dsig:DigestMethod/&gt;</ulink> and
-<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-DigestValue">&lt;dsig:DigestValue/&gt;</ulink> to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> child of <parameter>signNode</parameter>.
+<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-DigestValue">&lt;dsig:DigestValue/&gt;</ulink> to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> child of <parameter>signNode</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>signNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node.
+<varlistentry><term><parameter>signNode</parameter>&nbsp;:</term>
+<listitem><simpara>           the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>digestMethodId</parameter>&#160;:</term>
-<listitem><simpara>the reference digest method.
+<varlistentry><term><parameter>digestMethodId</parameter>&nbsp;:</term>
+<listitem><simpara>     the reference digest method.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara>the node id (may be NULL).
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara>                 the node id (may be NULL).
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>uri</parameter>&#160;:</term>
-<listitem><simpara>the reference node uri (may be NULL).
+<varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
+<listitem><simpara>                the reference node uri (may be NULL).
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara>the reference node type (may be NULL).
+<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<listitem><simpara>               the reference node type (may be NULL).
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node or NULL
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node or NULL
 if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplSignatureAddObject" role="function">
-<title>xmlSecTmplSignatureAddObject ()</title>
-<indexterm zone="xmlSecTmplSignatureAddObject"><primary>xmlSecTmplSignatureAddObject</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplSignatureAddObject        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> signNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *id</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *mimeType</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *encoding</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplSignatureAddObject" role="function">xmlSecTmplSignatureAddObject ()</title>
+<indexterm><primary>xmlSecTmplSignatureAddObject</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplSignatureAddObject    (<link linkend="xmlNode">xmlNodePtr</link> signNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *mimeType,
+                                             const <link linkend="xmlChar">xmlChar</link> *encoding);</programlisting>
 <para>
-Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Object">&lt;dsig:Object/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node <parameter>signNode</parameter>.
+Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Object">&lt;dsig:Object/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node <parameter>signNode</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>signNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node.
+<varlistentry><term><parameter>signNode</parameter>&nbsp;:</term>
+<listitem><simpara>           the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara>the node id (may be NULL).
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara>                 the node id (may be NULL).
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>mimeType</parameter>&#160;:</term>
-<listitem><simpara>the object mime type (may be NULL).
+<varlistentry><term><parameter>mimeType</parameter>&nbsp;:</term>
+<listitem><simpara>           the object mime type (may be NULL).
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>encoding</parameter>&#160;:</term>
-<listitem><simpara>the object encoding (may be NULL).
+<varlistentry><term><parameter>encoding</parameter>&nbsp;:</term>
+<listitem><simpara>           the object encoding (may be NULL).
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Object">&lt;dsig:Object/&gt;</ulink> node or NULL
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Object">&lt;dsig:Object/&gt;</ulink> node or NULL
 if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplSignatureGetSignMethodNode" role="function">
-<title>xmlSecTmplSignatureGetSignMethodNode ()</title>
-<indexterm zone="xmlSecTmplSignatureGetSignMethodNode"><primary>xmlSecTmplSignatureGetSignMethodNode</primary></indexterm>
-<programlisting><link linkend="xmlNode"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplSignatureGetSignMethodNode
-                                                        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> signNode</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplSignatureGetSignMethodNode" role="function">xmlSecTmplSignatureGetSignMethodNode ()</title>
+<indexterm><primary>xmlSecTmplSignatureGetSignMethodNode</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplSignatureGetSignMethodNode
+                                            (<link linkend="xmlNode">xmlNodePtr</link> signNode);</programlisting>
 <para>
-Gets pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureMethod">&lt;dsig:SignatureMethod/&gt;</ulink> child of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
+Gets pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureMethod">&lt;dsig:SignatureMethod/&gt;</ulink> child of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>signNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature ">&lt;dsig:Signature /&gt;</ulink> node.
+<varlistentry><term><parameter>signNode</parameter>&nbsp;:</term>
+<listitem><simpara>           the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature ">&lt;dsig:Signature /&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureMethod ">&lt;dsig:SignatureMethod /&gt;</ulink> node or NULL if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureMethod ">&lt;dsig:SignatureMethod /&gt;</ulink> node or NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplSignatureGetC14NMethodNode" role="function">
-<title>xmlSecTmplSignatureGetC14NMethodNode ()</title>
-<indexterm zone="xmlSecTmplSignatureGetC14NMethodNode"><primary>xmlSecTmplSignatureGetC14NMethodNode</primary></indexterm>
-<programlisting><link linkend="xmlNode"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplSignatureGetC14NMethodNode
-                                                        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> signNode</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplSignatureGetC14NMethodNode" role="function">xmlSecTmplSignatureGetC14NMethodNode ()</title>
+<indexterm><primary>xmlSecTmplSignatureGetC14NMethodNode</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplSignatureGetC14NMethodNode
+                                            (<link linkend="xmlNode">xmlNodePtr</link> signNode);</programlisting>
 <para>
-Gets pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-CanonicalizationMethod">&lt;dsig:CanonicalizationMethod/&gt;</ulink> child of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
+Gets pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-CanonicalizationMethod">&lt;dsig:CanonicalizationMethod/&gt;</ulink> child of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>signNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature ">&lt;dsig:Signature /&gt;</ulink> node.
+<varlistentry><term><parameter>signNode</parameter>&nbsp;:</term>
+<listitem><simpara>           the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature ">&lt;dsig:Signature /&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-CanonicalizationMethod ">&lt;dsig:CanonicalizationMethod /&gt;</ulink> node or NULL if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-CanonicalizationMethod ">&lt;dsig:CanonicalizationMethod /&gt;</ulink> node or NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplReferenceAddTransform" role="function">
-<title>xmlSecTmplReferenceAddTransform ()</title>
-<indexterm zone="xmlSecTmplReferenceAddTransform"><primary>xmlSecTmplReferenceAddTransform</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplReferenceAddTransform     (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> referenceNode</parameter>,
-                                                         <parameter><link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link> transformId</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplReferenceAddTransform" role="function">xmlSecTmplReferenceAddTransform ()</title>
+<indexterm><primary>xmlSecTmplReferenceAddTransform</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplReferenceAddTransform (<link linkend="xmlNode">xmlNodePtr</link> referenceNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> transformId);</programlisting>
 <para>
-Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node <parameter>referenceNode</parameter>.
+Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node <parameter>referenceNode</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>referenceNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node.
+<varlistentry><term><parameter>referenceNode</parameter>&nbsp;:</term>
+<listitem><simpara>              the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>transformId</parameter>&#160;:</term>
-<listitem><simpara>the transform method id.
+<varlistentry><term><parameter>transformId</parameter>&nbsp;:</term>
+<listitem><simpara>                the transform method id.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node or NULL if an
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node or NULL if an
 error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplObjectAddSignProperties" role="function">
-<title>xmlSecTmplObjectAddSignProperties ()</title>
-<indexterm zone="xmlSecTmplObjectAddSignProperties"><primary>xmlSecTmplObjectAddSignProperties</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplObjectAddSignProperties   (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> objectNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *id</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *target</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplObjectAddSignProperties" role="function">xmlSecTmplObjectAddSignProperties ()</title>
+<indexterm><primary>xmlSecTmplObjectAddSignProperties</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplObjectAddSignProperties
+                                            (<link linkend="xmlNode">xmlNodePtr</link> objectNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *target);</programlisting>
 <para>
-Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureProperties">&lt;dsig:SignatureProperties/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Object">&lt;dsig:Object/&gt;</ulink> node <parameter>objectNode</parameter>.
+Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureProperties">&lt;dsig:SignatureProperties/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Object">&lt;dsig:Object/&gt;</ulink> node <parameter>objectNode</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>objectNode</parameter>&#160;:</term>
-<listitem><simpara>the  pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Object">&lt;dsig:Object/&gt;</ulink> node.
+<varlistentry><term><parameter>objectNode</parameter>&nbsp;:</term>
+<listitem><simpara>         the  pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Object">&lt;dsig:Object/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara>the node id (may be NULL).
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara>                 the node id (may be NULL).
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>target</parameter>&#160;:</term>
-<listitem><simpara>the Target  (may be NULL).
+<varlistentry><term><parameter>target</parameter>&nbsp;:</term>
+<listitem><simpara>             the Target  (may be NULL).
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureProperties">&lt;dsig:SignatureProperties/&gt;</ulink> node or NULL
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureProperties">&lt;dsig:SignatureProperties/&gt;</ulink> node or NULL
 if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplObjectAddManifest" role="function">
-<title>xmlSecTmplObjectAddManifest ()</title>
-<indexterm zone="xmlSecTmplObjectAddManifest"><primary>xmlSecTmplObjectAddManifest</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplObjectAddManifest         (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> objectNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *id</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplObjectAddManifest" role="function">xmlSecTmplObjectAddManifest ()</title>
+<indexterm><primary>xmlSecTmplObjectAddManifest</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplObjectAddManifest     (<link linkend="xmlNode">xmlNodePtr</link> objectNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id);</programlisting>
 <para>
-Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Object">&lt;dsig:Object/&gt;</ulink> node <parameter>objectNode</parameter>.
+Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Object">&lt;dsig:Object/&gt;</ulink> node <parameter>objectNode</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>objectNode</parameter>&#160;:</term>
-<listitem><simpara>the  pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Object">&lt;dsig:Object/&gt;</ulink> node.
+<varlistentry><term><parameter>objectNode</parameter>&nbsp;:</term>
+<listitem><simpara>         the  pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Object">&lt;dsig:Object/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara>the node id (may be NULL).
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara>                 the node id (may be NULL).
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> node or NULL
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> node or NULL
 if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplManifestAddReference" role="function">
-<title>xmlSecTmplManifestAddReference ()</title>
-<indexterm zone="xmlSecTmplManifestAddReference"><primary>xmlSecTmplManifestAddReference</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplManifestAddReference      (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> manifestNode</parameter>,
-                                                         <parameter><link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link> digestMethodId</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *id</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *uri</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *type</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplManifestAddReference" role="function">xmlSecTmplManifestAddReference ()</title>
+<indexterm><primary>xmlSecTmplManifestAddReference</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplManifestAddReference  (<link linkend="xmlNode">xmlNodePtr</link> manifestNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> digestMethodId,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri,
+                                             const <link linkend="xmlChar">xmlChar</link> *type);</programlisting>
 <para>
 Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node with specified URI (<parameter>uri</parameter>), Id (<parameter>id</parameter>) and
 Type (<parameter>type</parameter>) attributes and the required children <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-DigestMethod">&lt;dsig:DigestMethod/&gt;</ulink> and
-<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-DigestValue">&lt;dsig:DigestValue/&gt;</ulink> to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> node <parameter>manifestNode</parameter>.
+<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-DigestValue">&lt;dsig:DigestValue/&gt;</ulink> to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> node <parameter>manifestNode</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>manifestNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> node.
+<varlistentry><term><parameter>manifestNode</parameter>&nbsp;:</term>
+<listitem><simpara>       the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>digestMethodId</parameter>&#160;:</term>
-<listitem><simpara>the reference digest method.
+<varlistentry><term><parameter>digestMethodId</parameter>&nbsp;:</term>
+<listitem><simpara>     the reference digest method.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara>the node id (may be NULL).
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara>                 the node id (may be NULL).
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>uri</parameter>&#160;:</term>
-<listitem><simpara>the reference node uri (may be NULL).
+<varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
+<listitem><simpara>                the reference node uri (may be NULL).
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara>the reference node type (may be NULL).
+<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<listitem><simpara>               the reference node type (may be NULL).
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node or NULL
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node or NULL
 if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplEncDataCreate" role="function">
-<title>xmlSecTmplEncDataCreate ()</title>
-<indexterm zone="xmlSecTmplEncDataCreate"><primary>xmlSecTmplEncDataCreate</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplEncDataCreate             (<parameter><link linkend="xmlDoc"><type>xmlDocPtr</type></link> doc</parameter>,
-                                                         <parameter><link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link> encMethodId</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *id</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *type</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *mimeType</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *encoding</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplEncDataCreate" role="function">xmlSecTmplEncDataCreate ()</title>
+<indexterm><primary>xmlSecTmplEncDataCreate</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplEncDataCreate         (<link linkend="xmlDoc">xmlDocPtr</link> doc,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> encMethodId,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *type,
+                                             const <link linkend="xmlChar">xmlChar</link> *mimeType,
+                                             const <link linkend="xmlChar">xmlChar</link> *encoding);</programlisting>
 <para>
-Creates new <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData ">&lt;enc:EncryptedData /&gt;</ulink> node for encryption template.
+Creates new <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData ">&lt;enc:EncryptedData /&gt;</ulink> node for encryption template.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>doc</parameter>&#160;:</term>
-<listitem><simpara>the pointer to signature document or NULL; in the later
+<varlistentry><term><parameter>doc</parameter>&nbsp;:</term>
+<listitem><simpara>                the pointer to signature document or NULL; in the later
                      case, application must later call <parameter>xmlSetTreeDoc</parameter> to ensure
                      that all the children nodes have correct pointer to XML document.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>encMethodId</parameter>&#160;:</term>
-<listitem><simpara>the encryption method (may be NULL).
+<varlistentry><term><parameter>encMethodId</parameter>&nbsp;:</term>
+<listitem><simpara>        the encryption method (may be NULL).
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara>the Id attribute (optional).
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara>                 the Id attribute (optional).
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara>the Type attribute (optional)
+<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<listitem><simpara>               the Type attribute (optional)
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>mimeType</parameter>&#160;:</term>
-<listitem><simpara>the MimeType attribute (optional)
+<varlistentry><term><parameter>mimeType</parameter>&nbsp;:</term>
+<listitem><simpara>           the MimeType attribute (optional)
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>encoding</parameter>&#160;:</term>
-<listitem><simpara>the Encoding attribute (optional)
+<varlistentry><term><parameter>encoding</parameter>&nbsp;:</term>
+<listitem><simpara>           the Encoding attribute (optional)
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer newly created  <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node or NULL
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer newly created  <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node or NULL
 if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplEncDataEnsureKeyInfo" role="function">
-<title>xmlSecTmplEncDataEnsureKeyInfo ()</title>
-<indexterm zone="xmlSecTmplEncDataEnsureKeyInfo"><primary>xmlSecTmplEncDataEnsureKeyInfo</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplEncDataEnsureKeyInfo      (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> encNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *id</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplEncDataEnsureKeyInfo" role="function">xmlSecTmplEncDataEnsureKeyInfo ()</title>
+<indexterm><primary>xmlSecTmplEncDataEnsureKeyInfo</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplEncDataEnsureKeyInfo  (<link linkend="xmlNode">xmlNodePtr</link> encNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id);</programlisting>
 <para>
-Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> to the  <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node <parameter>encNode</parameter>.
+Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> to the  <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node <parameter>encNode</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>encNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
+<varlistentry><term><parameter>encNode</parameter>&nbsp;:</term>
+<listitem><simpara>            the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara>the Id attrbibute (optional).
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara>                 the Id attrbibute (optional).
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node or
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node or
 NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplEncDataEnsureEncProperties" role="function">
-<title>xmlSecTmplEncDataEnsureEncProperties ()</title>
-<indexterm zone="xmlSecTmplEncDataEnsureEncProperties"><primary>xmlSecTmplEncDataEnsureEncProperties</primary></indexterm>
-<programlisting><link linkend="xmlNode"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplEncDataEnsureEncProperties
-                                                        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> encNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *id</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplEncDataEnsureEncProperties" role="function">xmlSecTmplEncDataEnsureEncProperties ()</title>
+<indexterm><primary>xmlSecTmplEncDataEnsureEncProperties</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplEncDataEnsureEncProperties
+                                            (<link linkend="xmlNode">xmlNodePtr</link> encNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id);</programlisting>
 <para>
 Adds <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionProperties">&lt;enc:EncryptionProperties/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
-node <parameter>encNode</parameter>.
+node <parameter>encNode</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>encNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
+<varlistentry><term><parameter>encNode</parameter>&nbsp;:</term>
+<listitem><simpara>            the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara>the Id attribute (optional).
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara>                 the Id attribute (optional).
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionProperties">&lt;enc:EncryptionProperties/&gt;</ulink> node or
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionProperties">&lt;enc:EncryptionProperties/&gt;</ulink> node or
 NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplEncDataAddEncProperty" role="function">
-<title>xmlSecTmplEncDataAddEncProperty ()</title>
-<indexterm zone="xmlSecTmplEncDataAddEncProperty"><primary>xmlSecTmplEncDataAddEncProperty</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplEncDataAddEncProperty     (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> encNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *id</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *target</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplEncDataAddEncProperty" role="function">xmlSecTmplEncDataAddEncProperty ()</title>
+<indexterm><primary>xmlSecTmplEncDataAddEncProperty</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplEncDataAddEncProperty (<link linkend="xmlNode">xmlNodePtr</link> encNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *target);</programlisting>
 <para>
 Adds <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionProperty">&lt;enc:EncryptionProperty/&gt;</ulink> node (and the parent
 <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionProperties">&lt;enc:EncryptionProperties/&gt;</ulink> node if required) to the
-<ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node <parameter>encNode</parameter>.
-</para><variablelist role="params">
-<varlistentry><term><parameter>encNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara>the Id attribute (optional).
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>target</parameter>&#160;:</term>
-<listitem><simpara>the Target attribute (optional).
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionProperty">&lt;enc:EncryptionProperty/&gt;</ulink> node or
-NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecTmplEncDataEnsureCipherValue" role="function">
-<title>xmlSecTmplEncDataEnsureCipherValue ()</title>
-<indexterm zone="xmlSecTmplEncDataEnsureCipherValue"><primary>xmlSecTmplEncDataEnsureCipherValue</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplEncDataEnsureCipherValue  (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> encNode</parameter>);</programlisting>
+<ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node <parameter>encNode</parameter>.</para>
 <para>
-Adds <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue">&lt;enc:CipherValue/&gt;</ulink> to the <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node <parameter>encNode</parameter>.
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>encNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
+<varlistentry><term><parameter>encNode</parameter>&nbsp;:</term>
+<listitem><simpara>            the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue">&lt;enc:CipherValue/&gt;</ulink> node or
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara>                 the Id attribute (optional).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>target</parameter>&nbsp;:</term>
+<listitem><simpara>             the Target attribute (optional).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionProperty">&lt;enc:EncryptionProperty/&gt;</ulink> node or
 NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplEncDataEnsureCipherReference" role="function">
-<title>xmlSecTmplEncDataEnsureCipherReference ()</title>
-<indexterm zone="xmlSecTmplEncDataEnsureCipherReference"><primary>xmlSecTmplEncDataEnsureCipherReference</primary></indexterm>
-<programlisting><link linkend="xmlNode"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplEncDataEnsureCipherReference
-                                                        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> encNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *uri</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplEncDataEnsureCipherValue" role="function">xmlSecTmplEncDataEnsureCipherValue ()</title>
+<indexterm><primary>xmlSecTmplEncDataEnsureCipherValue</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplEncDataEnsureCipherValue
+                                            (<link linkend="xmlNode">xmlNodePtr</link> encNode);</programlisting>
+<para>
+Adds <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue">&lt;enc:CipherValue/&gt;</ulink> to the <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node <parameter>encNode</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>encNode</parameter>&nbsp;:</term>
+<listitem><simpara>            the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue">&lt;enc:CipherValue/&gt;</ulink> node or
+NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTmplEncDataEnsureCipherReference" role="function">xmlSecTmplEncDataEnsureCipherReference ()</title>
+<indexterm><primary>xmlSecTmplEncDataEnsureCipherReference</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplEncDataEnsureCipherReference
+                                            (<link linkend="xmlNode">xmlNodePtr</link> encNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri);</programlisting>
 <para>
 Adds <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherReference">&lt;enc:CipherReference/&gt;</ulink> node with specified URI attribute <parameter>uri</parameter>
-to the <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node <parameter>encNode</parameter>.
+to the <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node <parameter>encNode</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>encNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
+<varlistentry><term><parameter>encNode</parameter>&nbsp;:</term>
+<listitem><simpara>            the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>uri</parameter>&#160;:</term>
-<listitem><simpara>the URI attribute (may be NULL).
+<varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
+<listitem><simpara>                the URI attribute (may be NULL).
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherReference">&lt;enc:CipherReference/&gt;</ulink> node or
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherReference">&lt;enc:CipherReference/&gt;</ulink> node or
 NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplEncDataGetEncMethodNode" role="function">
-<title>xmlSecTmplEncDataGetEncMethodNode ()</title>
-<indexterm zone="xmlSecTmplEncDataGetEncMethodNode"><primary>xmlSecTmplEncDataGetEncMethodNode</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplEncDataGetEncMethodNode   (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> encNode</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplEncDataGetEncMethodNode" role="function">xmlSecTmplEncDataGetEncMethodNode ()</title>
+<indexterm><primary>xmlSecTmplEncDataGetEncMethodNode</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplEncDataGetEncMethodNode
+                                            (<link linkend="xmlNode">xmlNodePtr</link> encNode);</programlisting>
 <para>
-Gets pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncrytpionMethod">&lt;enc:EncrytpionMethod/&gt;</ulink> node.
+Gets pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncrytpionMethod">&lt;enc:EncrytpionMethod/&gt;</ulink> node.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>encNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EcnryptedData ">&lt;enc:EcnryptedData /&gt;</ulink> node.
+<varlistentry><term><parameter>encNode</parameter>&nbsp;:</term>
+<listitem><simpara>            the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EcnryptedData ">&lt;enc:EcnryptedData /&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionMethod ">&lt;enc:EncryptionMethod /&gt;</ulink> node or NULL if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionMethod ">&lt;enc:EncryptionMethod /&gt;</ulink> node or NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplCipherReferenceAddTransform" role="function">
-<title>xmlSecTmplCipherReferenceAddTransform ()</title>
-<indexterm zone="xmlSecTmplCipherReferenceAddTransform"><primary>xmlSecTmplCipherReferenceAddTransform</primary></indexterm>
-<programlisting><link linkend="xmlNode"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplCipherReferenceAddTransform
-                                                        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> cipherReferenceNode</parameter>,
-                                                         <parameter><link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link> transformId</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplCipherReferenceAddTransform" role="function">xmlSecTmplCipherReferenceAddTransform ()</title>
+<indexterm><primary>xmlSecTmplCipherReferenceAddTransform</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplCipherReferenceAddTransform
+                                            (<link linkend="xmlNode">xmlNodePtr</link> cipherReferenceNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> transformId);</programlisting>
 <para>
 Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node (and the parent <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transforms">&lt;dsig:Transforms/&gt;</ulink> node)
 with specified transform methods <parameter>transform</parameter> to the <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherReference">&lt;enc:CipherReference/&gt;</ulink>
-child node of the <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node <parameter>encNode</parameter>.
-</para><variablelist role="params">
-<varlistentry><term><parameter>cipherReferenceNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherReference">&lt;enc:CipherReference/&gt;</ulink> node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>transformId</parameter>&#160;:</term>
-<listitem><simpara>the transform id.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node or
-NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecTmplReferenceListAddDataReference" role="function">
-<title>xmlSecTmplReferenceListAddDataReference ()</title>
-<indexterm zone="xmlSecTmplReferenceListAddDataReference"><primary>xmlSecTmplReferenceListAddDataReference</primary></indexterm>
-<programlisting><link linkend="xmlNode"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplReferenceListAddDataReference
-                                                        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> encNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *uri</parameter>);</programlisting>
+child node of the <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node <parameter>encNode</parameter>.</para>
 <para>
-Adds <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-DataReference">&lt;enc:DataReference/&gt;</ulink> and the parent <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-ReferenceList">&lt;enc:ReferenceList/&gt;</ulink> node (if needed).
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>encNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node.
+<varlistentry><term><parameter>cipherReferenceNode</parameter>&nbsp;:</term>
+<listitem><simpara>        the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherReference">&lt;enc:CipherReference/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>uri</parameter>&#160;:</term>
-<listitem><simpara>uri to reference (optional)
+<varlistentry><term><parameter>transformId</parameter>&nbsp;:</term>
+<listitem><simpara>                the transform id.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-DataReference">&lt;enc:DataReference/&gt;</ulink> node or
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node or
 NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplReferenceListAddKeyReference" role="function">
-<title>xmlSecTmplReferenceListAddKeyReference ()</title>
-<indexterm zone="xmlSecTmplReferenceListAddKeyReference"><primary>xmlSecTmplReferenceListAddKeyReference</primary></indexterm>
-<programlisting><link linkend="xmlNode"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplReferenceListAddKeyReference
-                                                        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> encNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *uri</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplReferenceListAddDataReference" role="function">xmlSecTmplReferenceListAddDataReference ()</title>
+<indexterm><primary>xmlSecTmplReferenceListAddDataReference</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplReferenceListAddDataReference
+                                            (<link linkend="xmlNode">xmlNodePtr</link> encNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri);</programlisting>
 <para>
-Adds <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-KeyReference">&lt;enc:KeyReference/&gt;</ulink> and the parent <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-ReferenceList">&lt;enc:ReferenceList/&gt;</ulink> node (if needed).
-</para><variablelist role="params">
-<varlistentry><term><parameter>encNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>uri</parameter>&#160;:</term>
-<listitem><simpara>uri to reference (optional)
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-KeyReference">&lt;enc:KeyReference/&gt;</ulink> node or
-NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecTmplKeyInfoAddKeyName" role="function">
-<title>xmlSecTmplKeyInfoAddKeyName ()</title>
-<indexterm zone="xmlSecTmplKeyInfoAddKeyName"><primary>xmlSecTmplKeyInfoAddKeyName</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplKeyInfoAddKeyName         (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> keyInfoNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>);</programlisting>
+Adds <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-DataReference">&lt;enc:DataReference/&gt;</ulink> and the parent <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-ReferenceList">&lt;enc:ReferenceList/&gt;</ulink> node (if needed).</para>
 <para>
-Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName">&lt;dsig:KeyName/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node <parameter>keyInfoNode</parameter>.
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>keyInfoNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
+<varlistentry><term><parameter>encNode</parameter>&nbsp;:</term>
+<listitem><simpara>                    the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara>the key name (optional).
+<varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
+<listitem><simpara>                        uri to reference (optional)
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName">&lt;dsig:KeyName/&gt;</ulink> node or
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-DataReference">&lt;enc:DataReference/&gt;</ulink> node or
 NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplKeyInfoAddKeyValue" role="function">
-<title>xmlSecTmplKeyInfoAddKeyValue ()</title>
-<indexterm zone="xmlSecTmplKeyInfoAddKeyValue"><primary>xmlSecTmplKeyInfoAddKeyValue</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplKeyInfoAddKeyValue        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> keyInfoNode</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplReferenceListAddKeyReference" role="function">xmlSecTmplReferenceListAddKeyReference ()</title>
+<indexterm><primary>xmlSecTmplReferenceListAddKeyReference</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplReferenceListAddKeyReference
+                                            (<link linkend="xmlNode">xmlNodePtr</link> encNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri);</programlisting>
 <para>
-Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue">&lt;dsig:KeyValue/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node <parameter>keyInfoNode</parameter>.
-</para><variablelist role="params">
-<varlistentry><term><parameter>keyInfoNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue">&lt;dsig:KeyValue/&gt;</ulink> node or
-NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecTmplKeyInfoAddX509Data" role="function">
-<title>xmlSecTmplKeyInfoAddX509Data ()</title>
-<indexterm zone="xmlSecTmplKeyInfoAddX509Data"><primary>xmlSecTmplKeyInfoAddX509Data</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplKeyInfoAddX509Data        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> keyInfoNode</parameter>);</programlisting>
+Adds <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-KeyReference">&lt;enc:KeyReference/&gt;</ulink> and the parent <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-ReferenceList">&lt;enc:ReferenceList/&gt;</ulink> node (if needed).</para>
 <para>
-Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node <parameter>keyInfoNode</parameter>.
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>keyInfoNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
+<varlistentry><term><parameter>encNode</parameter>&nbsp;:</term>
+<listitem><simpara>                    the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node or
+<varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
+<listitem><simpara>                        uri to reference (optional)
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to newly created <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-KeyReference">&lt;enc:KeyReference/&gt;</ulink> node or
 NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplKeyInfoAddRetrievalMethod" role="function">
-<title>xmlSecTmplKeyInfoAddRetrievalMethod ()</title>
-<indexterm zone="xmlSecTmplKeyInfoAddRetrievalMethod"><primary>xmlSecTmplKeyInfoAddRetrievalMethod</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplKeyInfoAddRetrievalMethod (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> keyInfoNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *uri</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *type</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplKeyInfoAddKeyName" role="function">xmlSecTmplKeyInfoAddKeyName ()</title>
+<indexterm><primary>xmlSecTmplKeyInfoAddKeyName</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplKeyInfoAddKeyName     (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *name);</programlisting>
 <para>
-Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node <parameter>keyInfoNode</parameter>.
+Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName">&lt;dsig:KeyName/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node <parameter>keyInfoNode</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>keyInfoNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
+<varlistentry><term><parameter>keyInfoNode</parameter>&nbsp;:</term>
+<listitem><simpara>        the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>uri</parameter>&#160;:</term>
-<listitem><simpara>the URI attribute (optional).
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>               the key name (optional).
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara>the Type attribute(optional).
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> node or
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName">&lt;dsig:KeyName/&gt;</ulink> node or
 NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplRetrievalMethodAddTransform" role="function">
-<title>xmlSecTmplRetrievalMethodAddTransform ()</title>
-<indexterm zone="xmlSecTmplRetrievalMethodAddTransform"><primary>xmlSecTmplRetrievalMethodAddTransform</primary></indexterm>
-<programlisting><link linkend="xmlNode"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplRetrievalMethodAddTransform
-                                                        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> retrMethodNode</parameter>,
-                                                         <parameter><link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link> transformId</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplKeyInfoAddKeyValue" role="function">xmlSecTmplKeyInfoAddKeyValue ()</title>
+<indexterm><primary>xmlSecTmplKeyInfoAddKeyValue</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplKeyInfoAddKeyValue    (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode);</programlisting>
+<para>
+Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue">&lt;dsig:KeyValue/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node <parameter>keyInfoNode</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>keyInfoNode</parameter>&nbsp;:</term>
+<listitem><simpara>        the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue">&lt;dsig:KeyValue/&gt;</ulink> node or
+NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTmplKeyInfoAddX509Data" role="function">xmlSecTmplKeyInfoAddX509Data ()</title>
+<indexterm><primary>xmlSecTmplKeyInfoAddX509Data</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplKeyInfoAddX509Data    (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode);</programlisting>
+<para>
+Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node <parameter>keyInfoNode</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>keyInfoNode</parameter>&nbsp;:</term>
+<listitem><simpara>        the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node or
+NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTmplKeyInfoAddRetrievalMethod" role="function">xmlSecTmplKeyInfoAddRetrievalMethod ()</title>
+<indexterm><primary>xmlSecTmplKeyInfoAddRetrievalMethod</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplKeyInfoAddRetrievalMethod
+                                            (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri,
+                                             const <link linkend="xmlChar">xmlChar</link> *type);</programlisting>
+<para>
+Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node <parameter>keyInfoNode</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>keyInfoNode</parameter>&nbsp;:</term>
+<listitem><simpara>        the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
+<listitem><simpara>                the URI attribute (optional).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<listitem><simpara>               the Type attribute(optional).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> node or
+NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTmplRetrievalMethodAddTransform" role="function">xmlSecTmplRetrievalMethodAddTransform ()</title>
+<indexterm><primary>xmlSecTmplRetrievalMethodAddTransform</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplRetrievalMethodAddTransform
+                                            (<link linkend="xmlNode">xmlNodePtr</link> retrMethodNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> transformId);</programlisting>
 <para>
 Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node (and the parent <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transforms">&lt;dsig:Transforms/&gt;</ulink> node
-if required) to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> node <parameter>retrMethod</parameter>.
+if required) to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> node <parameter>retrMethod</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>retrMethodNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> node.
+<varlistentry><term><parameter>retrMethodNode</parameter>&nbsp;:</term>
+<listitem><simpara>     the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>transformId</parameter>&#160;:</term>
-<listitem><simpara>the transform id.
+<varlistentry><term><parameter>transformId</parameter>&nbsp;:</term>
+<listitem><simpara>        the transform id.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transforms">&lt;dsig:Transforms/&gt;</ulink> node or
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transforms">&lt;dsig:Transforms/&gt;</ulink> node or
 NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplKeyInfoAddEncryptedKey" role="function">
-<title>xmlSecTmplKeyInfoAddEncryptedKey ()</title>
-<indexterm zone="xmlSecTmplKeyInfoAddEncryptedKey"><primary>xmlSecTmplKeyInfoAddEncryptedKey</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplKeyInfoAddEncryptedKey    (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> keyInfoNode</parameter>,
-                                                         <parameter><link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link> encMethodId</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *id</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *type</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *recipient</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplKeyInfoAddEncryptedKey" role="function">xmlSecTmplKeyInfoAddEncryptedKey ()</title>
+<indexterm><primary>xmlSecTmplKeyInfoAddEncryptedKey</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplKeyInfoAddEncryptedKey
+                                            (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> encMethodId,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *type,
+                                             const <link linkend="xmlChar">xmlChar</link> *recipient);</programlisting>
 <para>
 Adds <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node with given attributes to
-the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node <parameter>keyInfoNode</parameter>.
-</para><variablelist role="params">
-<varlistentry><term><parameter>keyInfoNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>encMethodId</parameter>&#160;:</term>
-<listitem><simpara>the encryption method (optional).
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara>the Id attribute (optional).
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara>the Type attribute (optional).
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>recipient</parameter>&#160;:</term>
-<listitem><simpara>the Recipient attribute (optional).
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node or
-NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecTmplX509DataAddIssuerSerial" role="function">
-<title>xmlSecTmplX509DataAddIssuerSerial ()</title>
-<indexterm zone="xmlSecTmplX509DataAddIssuerSerial"><primary>xmlSecTmplX509DataAddIssuerSerial</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplX509DataAddIssuerSerial   (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> x509DataNode</parameter>);</programlisting>
+the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node <parameter>keyInfoNode</parameter>.</para>
 <para>
-Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial">&lt;dsig:X509IssuerSerial/&gt;</ulink> node to the given <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node.
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>x509DataNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node.
+<varlistentry><term><parameter>keyInfoNode</parameter>&nbsp;:</term>
+<listitem><simpara>        the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial">&lt;dsig:X509IssuerSerial/&gt;</ulink> node or
+<varlistentry><term><parameter>encMethodId</parameter>&nbsp;:</term>
+<listitem><simpara>        the encryption method (optional).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara>                 the Id attribute (optional).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<listitem><simpara>               the Type attribute (optional).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>recipient</parameter>&nbsp;:</term>
+<listitem><simpara>          the Recipient attribute (optional).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node or
 NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplX509IssuerSerialAddIssuerName" role="function">
-<title>xmlSecTmplX509IssuerSerialAddIssuerName ()</title>
-<indexterm zone="xmlSecTmplX509IssuerSerialAddIssuerName"><primary>xmlSecTmplX509IssuerSerialAddIssuerName</primary></indexterm>
-<programlisting><link linkend="xmlNode"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplX509IssuerSerialAddIssuerName
-                                                        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> x509IssuerSerialNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *issuerName</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplX509DataAddIssuerSerial" role="function">xmlSecTmplX509DataAddIssuerSerial ()</title>
+<indexterm><primary>xmlSecTmplX509DataAddIssuerSerial</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplX509DataAddIssuerSerial
+                                            (<link linkend="xmlNode">xmlNodePtr</link> x509DataNode);</programlisting>
 <para>
-Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerName">&lt;dsig:X509IssuerName/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial">&lt;dsig:X509IssuerSerial/&gt;</ulink> node <parameter>x509IssuerSerialNode</parameter>.
-</para><variablelist role="params">
-<varlistentry><term><parameter>x509IssuerSerialNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial">&lt;dsig:X509IssuerSerial/&gt;</ulink> node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>issuerName</parameter>&#160;:</term>
-<listitem><simpara>the issuer name (optional).
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerName">&lt;dsig:X509IssuerName/&gt;</ulink> node or
-NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecTmplX509IssuerSerialAddSerialNumber" role="function">
-<title>xmlSecTmplX509IssuerSerialAddSerialNumber ()</title>
-<indexterm zone="xmlSecTmplX509IssuerSerialAddSerialNumber"><primary>xmlSecTmplX509IssuerSerialAddSerialNumber</primary></indexterm>
-<programlisting><link linkend="xmlNode"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplX509IssuerSerialAddSerialNumber
-                                                        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> x509IssuerSerialNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *serial</parameter>);</programlisting>
+Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial">&lt;dsig:X509IssuerSerial/&gt;</ulink> node to the given <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node.</para>
 <para>
-Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SerialNumber">&lt;dsig:X509SerialNumber/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial">&lt;dsig:X509IssuerSerial/&gt;</ulink> node <parameter>x509IssuerSerialNode</parameter>.
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>x509IssuerSerialNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial">&lt;dsig:X509IssuerSerial/&gt;</ulink> node.
+<varlistentry><term><parameter>x509DataNode</parameter>&nbsp;:</term>
+<listitem><simpara>       the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>serial</parameter>&#160;:</term>
-<listitem><simpara>the serial number (optional).
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SerialNumber">&lt;dsig:X509SerialNumber/&gt;</ulink> node or
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial">&lt;dsig:X509IssuerSerial/&gt;</ulink> node or
 NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplX509DataAddSubjectName" role="function">
-<title>xmlSecTmplX509DataAddSubjectName ()</title>
-<indexterm zone="xmlSecTmplX509DataAddSubjectName"><primary>xmlSecTmplX509DataAddSubjectName</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplX509DataAddSubjectName    (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> x509DataNode</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplX509IssuerSerialAddIssuerName" role="function">xmlSecTmplX509IssuerSerialAddIssuerName ()</title>
+<indexterm><primary>xmlSecTmplX509IssuerSerialAddIssuerName</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplX509IssuerSerialAddIssuerName
+                                            (<link linkend="xmlNode">xmlNodePtr</link> x509IssuerSerialNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *issuerName);</programlisting>
 <para>
-Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SubjectName">&lt;dsig:X509SubjectName/&gt;</ulink> node to the given <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node.
-</para><variablelist role="params">
-<varlistentry><term><parameter>x509DataNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SubjectName">&lt;dsig:X509SubjectName/&gt;</ulink> node or
-NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecTmplX509DataAddSKI" role="function">
-<title>xmlSecTmplX509DataAddSKI ()</title>
-<indexterm zone="xmlSecTmplX509DataAddSKI"><primary>xmlSecTmplX509DataAddSKI</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplX509DataAddSKI            (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> x509DataNode</parameter>);</programlisting>
+Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerName">&lt;dsig:X509IssuerName/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial">&lt;dsig:X509IssuerSerial/&gt;</ulink> node <parameter>x509IssuerSerialNode</parameter>.</para>
 <para>
-Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SKI">&lt;dsig:X509SKI/&gt;</ulink> node to the given <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node.
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>x509DataNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node.
+<varlistentry><term><parameter>x509IssuerSerialNode</parameter>&nbsp;:</term>
+<listitem><simpara>       the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial">&lt;dsig:X509IssuerSerial/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SKI">&lt;dsig:X509SKI/&gt;</ulink> node or
+<varlistentry><term><parameter>issuerName</parameter>&nbsp;:</term>
+<listitem><simpara>         the issuer name (optional).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerName">&lt;dsig:X509IssuerName/&gt;</ulink> node or
 NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplX509DataAddCertificate" role="function">
-<title>xmlSecTmplX509DataAddCertificate ()</title>
-<indexterm zone="xmlSecTmplX509DataAddCertificate"><primary>xmlSecTmplX509DataAddCertificate</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplX509DataAddCertificate    (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> x509DataNode</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplX509IssuerSerialAddSerialNumber" role="function">xmlSecTmplX509IssuerSerialAddSerialNumber ()</title>
+<indexterm><primary>xmlSecTmplX509IssuerSerialAddSerialNumber</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplX509IssuerSerialAddSerialNumber
+                                            (<link linkend="xmlNode">xmlNodePtr</link> x509IssuerSerialNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *serial);</programlisting>
 <para>
-Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate">&lt;dsig:X509Certificate/&gt;</ulink> node to the given <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node.
-</para><variablelist role="params">
-<varlistentry><term><parameter>x509DataNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate">&lt;dsig:X509Certificate/&gt;</ulink> node or
-NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecTmplX509DataAddCRL" role="function">
-<title>xmlSecTmplX509DataAddCRL ()</title>
-<indexterm zone="xmlSecTmplX509DataAddCRL"><primary>xmlSecTmplX509DataAddCRL</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecTmplX509DataAddCRL            (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> x509DataNode</parameter>);</programlisting>
+Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SerialNumber">&lt;dsig:X509SerialNumber/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial">&lt;dsig:X509IssuerSerial/&gt;</ulink> node <parameter>x509IssuerSerialNode</parameter>.</para>
 <para>
-Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509CRL">&lt;dsig:X509CRL/&gt;</ulink> node to the given <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node.
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>x509DataNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node.
+<varlistentry><term><parameter>x509IssuerSerialNode</parameter>&nbsp;:</term>
+<listitem><simpara>       the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial">&lt;dsig:X509IssuerSerial/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509CRL">&lt;dsig:X509CRL/&gt;</ulink> node or
+<varlistentry><term><parameter>serial</parameter>&nbsp;:</term>
+<listitem><simpara>             the serial number (optional).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SerialNumber">&lt;dsig:X509SerialNumber/&gt;</ulink> node or
 NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplTransformAddHmacOutputLength" role="function">
-<title>xmlSecTmplTransformAddHmacOutputLength ()</title>
-<indexterm zone="xmlSecTmplTransformAddHmacOutputLength"><primary>xmlSecTmplTransformAddHmacOutputLength</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecTmplTransformAddHmacOutputLength
-                                                        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> transformNode</parameter>,
-                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> bitsLen</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplX509DataAddSubjectName" role="function">xmlSecTmplX509DataAddSubjectName ()</title>
+<indexterm><primary>xmlSecTmplX509DataAddSubjectName</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplX509DataAddSubjectName
+                                            (<link linkend="xmlNode">xmlNodePtr</link> x509DataNode);</programlisting>
+<para>
+Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SubjectName">&lt;dsig:X509SubjectName/&gt;</ulink> node to the given <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>x509DataNode</parameter>&nbsp;:</term>
+<listitem><simpara>       the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SubjectName">&lt;dsig:X509SubjectName/&gt;</ulink> node or
+NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTmplX509DataAddSKI" role="function">xmlSecTmplX509DataAddSKI ()</title>
+<indexterm><primary>xmlSecTmplX509DataAddSKI</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplX509DataAddSKI        (<link linkend="xmlNode">xmlNodePtr</link> x509DataNode);</programlisting>
+<para>
+Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SKI">&lt;dsig:X509SKI/&gt;</ulink> node to the given <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>x509DataNode</parameter>&nbsp;:</term>
+<listitem><simpara>       the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SKI">&lt;dsig:X509SKI/&gt;</ulink> node or
+NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTmplX509DataAddCertificate" role="function">xmlSecTmplX509DataAddCertificate ()</title>
+<indexterm><primary>xmlSecTmplX509DataAddCertificate</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplX509DataAddCertificate
+                                            (<link linkend="xmlNode">xmlNodePtr</link> x509DataNode);</programlisting>
+<para>
+Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate">&lt;dsig:X509Certificate/&gt;</ulink> node to the given <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>x509DataNode</parameter>&nbsp;:</term>
+<listitem><simpara>       the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate">&lt;dsig:X509Certificate/&gt;</ulink> node or
+NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTmplX509DataAddCRL" role="function">xmlSecTmplX509DataAddCRL ()</title>
+<indexterm><primary>xmlSecTmplX509DataAddCRL</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplX509DataAddCRL        (<link linkend="xmlNode">xmlNodePtr</link> x509DataNode);</programlisting>
+<para>
+Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509CRL">&lt;dsig:X509CRL/&gt;</ulink> node to the given <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>x509DataNode</parameter>&nbsp;:</term>
+<listitem><simpara>       the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509CRL">&lt;dsig:X509CRL/&gt;</ulink> node or
+NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTmplTransformAddHmacOutputLength" role="function">xmlSecTmplTransformAddHmacOutputLength ()</title>
+<indexterm><primary>xmlSecTmplTransformAddHmacOutputLength</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTmplTransformAddHmacOutputLength
+                                            (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> bitsLen);</programlisting>
 <para>
 Creates <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-HMACOutputLength">&lt;dsig:HMACOutputLength/&gt;</ulink> child for the HMAC transform
-node <parameter>node</parameter>.
+node <parameter>node</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>transformNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node
+<varlistentry><term><parameter>transformNode</parameter>&nbsp;:</term>
+<listitem><simpara>      the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>bitsLen</parameter>&#160;:</term>
-<listitem><simpara>the required length in bits
+<varlistentry><term><parameter>bitsLen</parameter>&nbsp;:</term>
+<listitem><simpara>            the required length in bits
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success and a negatie value otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success and a negatie value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplTransformAddRsaOaepParam" role="function">
-<title>xmlSecTmplTransformAddRsaOaepParam ()</title>
-<indexterm zone="xmlSecTmplTransformAddRsaOaepParam"><primary>xmlSecTmplTransformAddRsaOaepParam</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecTmplTransformAddRsaOaepParam  (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> transformNode</parameter>,
-                                                         <parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *buf</parameter>,
-                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> size</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplTransformAddRsaOaepParam" role="function">xmlSecTmplTransformAddRsaOaepParam ()</title>
+<indexterm><primary>xmlSecTmplTransformAddRsaOaepParam</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTmplTransformAddRsaOaepParam
+                                            (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> size);</programlisting>
 <para>
-Creates <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-OAEPParam">&lt;enc:OAEPParam/&gt;</ulink> child node in the <parameter>node</parameter>.
+Creates <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-OAEPParam">&lt;enc:OAEPParam/&gt;</ulink> child node in the <parameter>node</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>transformNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
+<varlistentry><term><parameter>transformNode</parameter>&nbsp;:</term>
+<listitem><simpara>      the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>the OAEP param buffer.
+<varlistentry><term><parameter>buf</parameter>&nbsp;:</term>
+<listitem><simpara>                the OAEP param buffer.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara>the OAEP param buffer size.
+<varlistentry><term><parameter>size</parameter>&nbsp;:</term>
+<listitem><simpara>               the OAEP param buffer size.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplTransformAddXsltStylesheet" role="function">
-<title>xmlSecTmplTransformAddXsltStylesheet ()</title>
-<indexterm zone="xmlSecTmplTransformAddXsltStylesheet"><primary>xmlSecTmplTransformAddXsltStylesheet</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecTmplTransformAddXsltStylesheet
-                                                        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> transformNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *xslt</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplTransformAddXsltStylesheet" role="function">xmlSecTmplTransformAddXsltStylesheet ()</title>
+<indexterm><primary>xmlSecTmplTransformAddXsltStylesheet</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTmplTransformAddXsltStylesheet
+                                            (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *xslt);</programlisting>
 <para>
-Writes the XSLT transform expression to the <parameter>node</parameter>.
+Writes the XSLT transform expression to the <parameter>node</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>transformNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
+<varlistentry><term><parameter>transformNode</parameter>&nbsp;:</term>
+<listitem><simpara>      the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>xslt</parameter>&#160;:</term>
-<listitem><simpara>the XSLT transform exspression.
+<varlistentry><term><parameter>xslt</parameter>&nbsp;:</term>
+<listitem><simpara>               the XSLT transform exspression.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplTransformAddC14NInclNamespaces" role="function">
-<title>xmlSecTmplTransformAddC14NInclNamespaces ()</title>
-<indexterm zone="xmlSecTmplTransformAddC14NInclNamespaces"><primary>xmlSecTmplTransformAddC14NInclNamespaces</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecTmplTransformAddC14NInclNamespaces
-                                                        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> transformNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *prefixList</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplTransformAddC14NInclNamespaces" role="function">xmlSecTmplTransformAddC14NInclNamespaces ()</title>
+<indexterm><primary>xmlSecTmplTransformAddC14NInclNamespaces</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTmplTransformAddC14NInclNamespaces
+                                            (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *prefixList);</programlisting>
 <para>
-Adds "inclusive" namespaces to the ExcC14N transform node <parameter>node</parameter>.
+Adds "inclusive" namespaces to the ExcC14N transform node <parameter>node</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>transformNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
+<varlistentry><term><parameter>transformNode</parameter>&nbsp;:</term>
+<listitem><simpara>      the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>prefixList</parameter>&#160;:</term>
-<listitem><simpara>the white space delimited  list of namespace prefixes,
+<varlistentry><term><parameter>prefixList</parameter>&nbsp;:</term>
+<listitem><simpara>         the white space delimited  list of namespace prefixes,
                      where "<link linkend="default"><type>default</type></link>" indicates the default namespace
                      (optional).
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 if success or a negative value otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 if success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplTransformAddXPath" role="function">
-<title>xmlSecTmplTransformAddXPath ()</title>
-<indexterm zone="xmlSecTmplTransformAddXPath"><primary>xmlSecTmplTransformAddXPath</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecTmplTransformAddXPath         (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> transformNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *expression</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> **nsList</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplTransformAddXPath" role="function">xmlSecTmplTransformAddXPath ()</title>
+<indexterm><primary>xmlSecTmplTransformAddXPath</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTmplTransformAddXPath     (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *expression,
+                                             const <link linkend="xmlChar">xmlChar</link> **nsList);</programlisting>
 <para>
 Writes XPath transform infromation to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node
-<parameter>node</parameter>.
+<parameter>node</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>transformNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
+<varlistentry><term><parameter>transformNode</parameter>&nbsp;:</term>
+<listitem><simpara>      the pointer to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>expression</parameter>&#160;:</term>
-<listitem><simpara>the XPath expression.
+<varlistentry><term><parameter>expression</parameter>&nbsp;:</term>
+<listitem><simpara>         the XPath expression.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>nsList</parameter>&#160;:</term>
-<listitem><simpara>the NULL terminated list of namespace prefix/href pairs
+<varlistentry><term><parameter>nsList</parameter>&nbsp;:</term>
+<listitem><simpara>             the NULL terminated list of namespace prefix/href pairs
                      (optional).
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 for success or a negative value otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 for success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplTransformAddXPath2" role="function">
-<title>xmlSecTmplTransformAddXPath2 ()</title>
-<indexterm zone="xmlSecTmplTransformAddXPath2"><primary>xmlSecTmplTransformAddXPath2</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecTmplTransformAddXPath2        (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> transformNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *type</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *expression</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> **nsList</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplTransformAddXPath2" role="function">xmlSecTmplTransformAddXPath2 ()</title>
+<indexterm><primary>xmlSecTmplTransformAddXPath2</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTmplTransformAddXPath2    (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *type,
+                                             const <link linkend="xmlChar">xmlChar</link> *expression,
+                                             const <link linkend="xmlChar">xmlChar</link> **nsList);</programlisting>
 <para>
 Writes XPath2 transform infromation to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node
-<parameter>node</parameter>.
+<parameter>node</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>transformNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
+<varlistentry><term><parameter>transformNode</parameter>&nbsp;:</term>
+<listitem><simpara>      the pointer to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara>the XPath2 transform type ("union", "intersect" or "subtract").
+<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<listitem><simpara>               the XPath2 transform type ("union", "intersect" or "subtract").
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>expression</parameter>&#160;:</term>
-<listitem><simpara>the XPath expression.
+<varlistentry><term><parameter>expression</parameter>&nbsp;:</term>
+<listitem><simpara>         the XPath expression.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>nsList</parameter>&#160;:</term>
-<listitem><simpara>the NULL terminated list of namespace prefix/href pairs.
+<varlistentry><term><parameter>nsList</parameter>&nbsp;:</term>
+<listitem><simpara>             the NULL terminated list of namespace prefix/href pairs.
                      (optional).
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 for success or a negative value otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 for success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecTmplTransformAddXPointer" role="function">
-<title>xmlSecTmplTransformAddXPointer ()</title>
-<indexterm zone="xmlSecTmplTransformAddXPointer"><primary>xmlSecTmplTransformAddXPointer</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecTmplTransformAddXPointer      (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> transformNode</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *expression</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> **nsList</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecTmplTransformAddXPointer" role="function">xmlSecTmplTransformAddXPointer ()</title>
+<indexterm><primary>xmlSecTmplTransformAddXPointer</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTmplTransformAddXPointer  (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *expression,
+                                             const <link linkend="xmlChar">xmlChar</link> **nsList);</programlisting>
 <para>
 Writes XPoniter transform infromation to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node
-<parameter>node</parameter>.
+<parameter>node</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>transformNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
+<varlistentry><term><parameter>transformNode</parameter>&nbsp;:</term>
+<listitem><simpara>      the pointer to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>expression</parameter>&#160;:</term>
-<listitem><simpara>the XPath expression.
+<varlistentry><term><parameter>expression</parameter>&nbsp;:</term>
+<listitem><simpara>         the XPath expression.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>nsList</parameter>&#160;:</term>
-<listitem><simpara>the NULL terminated list of namespace prefix/href pairs.
+<varlistentry><term><parameter>nsList</parameter>&nbsp;:</term>
+<listitem><simpara>             the NULL terminated list of namespace prefix/href pairs.
                      (optional).
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 for success or a negative value otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 for success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 
 </refsect1>
+
+
+
 
 </refentry>

@@ -17,15 +17,11 @@ Crypto transforms implementation for GCrypt.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
-
-
 <!-- ##### FUNCTION xmlSecCryptoGetFunctions_gcrypt ##### -->
 <para>
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -34,7 +30,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -43,7 +38,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -78,7 +72,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -105,7 +98,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -121,7 +113,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -137,7 +128,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -153,7 +143,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -169,7 +158,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -185,7 +173,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -201,7 +188,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -228,7 +214,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -244,7 +229,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -260,7 +244,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -315,7 +298,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -324,7 +306,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -348,7 +329,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -375,7 +355,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -391,7 +370,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -407,7 +385,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -423,7 +400,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -439,7 +415,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -455,7 +430,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -471,7 +445,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -526,7 +499,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -542,7 +514,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -558,7 +529,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -574,7 +544,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -590,7 +559,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -606,7 +574,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -622,7 +589,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -638,7 +604,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -654,7 +619,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -670,7 +634,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -686,7 +649,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -702,7 +664,6 @@ Crypto transforms implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 

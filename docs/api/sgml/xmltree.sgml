@@ -1,1210 +1,1289 @@
 <refentry id="xmlsec-xmltree">
 <refmeta>
-<refentrytitle role="top_of_page" id="xmlsec-xmltree.top_of_page">xmltree</refentrytitle>
+<refentrytitle role="top_of_page">xmltree</refentrytitle>
 <manvolnum>3</manvolnum>
-<refmiscinfo>
-  XMLSEC Library
-</refmiscinfo>
+<refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
+
 <refnamediv>
 <refname>xmltree</refname>
 <refpurpose>XML tree operations.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="xmlsec-xmltree.synopsis" role="synopsis">
+<refsynopsisdiv role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
-<synopsis>#define             <link linkend="xmlSecNodeGetName">xmlSecNodeGetName</link>                   (node)
-const <link linkend="xmlChar"><returnvalue>xmlChar</returnvalue></link>*      <link linkend="xmlSecGetNodeNsHref">xmlSecGetNodeNsHref</link>                 (<parameter>const <link linkend="xmlNode"><type>xmlNodePtr</type></link> cur</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecCheckNodeName">xmlSecCheckNodeName</link>                 (<parameter>const <link linkend="xmlNode"><type>xmlNodePtr</type></link> cur</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *ns</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecGetNextElementNode">xmlSecGetNextElementNode</link>            (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> cur</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecFindChild">xmlSecFindChild</link>                     (<parameter>const <link linkend="xmlNode"><type>xmlNodePtr</type></link> parent</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *ns</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecFindParent">xmlSecFindParent</link>                    (<parameter>const <link linkend="xmlNode"><type>xmlNodePtr</type></link> cur</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *ns</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecFindNode">xmlSecFindNode</link>                      (<parameter>const <link linkend="xmlNode"><type>xmlNodePtr</type></link> parent</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *ns</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecAddChild">xmlSecAddChild</link>                      (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> parent</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *ns</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecAddChildNode">xmlSecAddChildNode</link>                  (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> parent</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> child</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecAddNextSibling">xmlSecAddNextSibling</link>                (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *ns</parameter>);
-<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecAddPrevSibling">xmlSecAddPrevSibling</link>                (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *ns</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecReplaceNode">xmlSecReplaceNode</link>                   (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> newNode</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecReplaceNodeAndReturn">xmlSecReplaceNodeAndReturn</link>          (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> newNode</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> *replaced</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecReplaceContent">xmlSecReplaceContent</link>                (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> newNode</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecReplaceContentAndReturn">xmlSecReplaceContentAndReturn</link>       (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> newNode</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> *replaced</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecReplaceNodeBuffer">xmlSecReplaceNodeBuffer</link>             (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *buffer</parameter>,
-                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> size</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecReplaceNodeBufferAndReturn">xmlSecReplaceNodeBufferAndReturn</link>    (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *buffer</parameter>,
-                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> size</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> *replaced</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecNodeEncodeAndSetContent">xmlSecNodeEncodeAndSetContent</link>       (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *buffer</parameter>);
-<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecAddIDs">xmlSecAddIDs</link>                        (<parameter><link linkend="xmlDoc"><type>xmlDocPtr</type></link> doc</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> cur</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> **ids</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecGenerateAndAddID">xmlSecGenerateAndAddID</link>              (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *attrName</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *prefix</parameter>,
-                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> len</parameter>);
-<link linkend="xmlChar"><returnvalue>xmlChar</returnvalue></link>*            <link linkend="xmlSecGenerateID">xmlSecGenerateID</link>                    (<parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *prefix</parameter>,
-                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> len</parameter>);
-<link linkend="xmlDoc"><returnvalue>xmlDocPtr</returnvalue></link>           <link linkend="xmlSecCreateTree">xmlSecCreateTree</link>                    (<parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *rootNodeName</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *rootNodeNs</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecIsEmptyNode">xmlSecIsEmptyNode</link>                   (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecIsEmptyString">xmlSecIsEmptyString</link>                 (<parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *str</parameter>);
-<link linkend="xmlChar"><returnvalue>xmlChar</returnvalue></link>*            <link linkend="xmlSecGetQName">xmlSecGetQName</link>                      (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *href</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *local</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecPrintXmlString">xmlSecPrintXmlString</link>                (<parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *fd</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *str</parameter>);
-#define             <link linkend="xmlSecIsHex">xmlSecIsHex</link>                         (c)
-#define             <link linkend="xmlSecGetHex">xmlSecGetHex</link>                        (c)
-struct              <link linkend="xmlSecQName2IntegerInfo">xmlSecQName2IntegerInfo</link>;
-typedef             <link linkend="xmlSecQName2IntegerInfoConst">xmlSecQName2IntegerInfoConstPtr</link>;
-<link linkend="xmlSecQName2IntegerInfoConst"><returnvalue>xmlSecQName2IntegerInfoConstPtr</returnvalue></link>  <link linkend="xmlSecQName2IntegerGetInfo">xmlSecQName2IntegerGetInfo</link>
-                                                        (<parameter><link linkend="xmlSecQName2IntegerInfoConst"><type>xmlSecQName2IntegerInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> intValue</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecQName2IntegerGetInteger">xmlSecQName2IntegerGetInteger</link>       (<parameter><link linkend="xmlSecQName2IntegerInfoConst"><type>xmlSecQName2IntegerInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *qnameHref</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *qnameLocalPart</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> *intValue</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecQName2IntegerGetIntegerFromString">xmlSecQName2IntegerGetIntegerFromString</link>
-                                                        (<parameter><link linkend="xmlSecQName2IntegerInfoConst"><type>xmlSecQName2IntegerInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *qname</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> *intValue</parameter>);
-<link linkend="xmlChar"><returnvalue>xmlChar</returnvalue></link> *           <link linkend="xmlSecQName2IntegerGetStringFromInteger">xmlSecQName2IntegerGetStringFromInteger</link>
-                                                        (<parameter><link linkend="xmlSecQName2IntegerInfoConst"><type>xmlSecQName2IntegerInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> intValue</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecQName2IntegerNodeRead">xmlSecQName2IntegerNodeRead</link>         (<parameter><link linkend="xmlSecQName2IntegerInfoConst"><type>xmlSecQName2IntegerInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> *intValue</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecQName2IntegerNodeWrite">xmlSecQName2IntegerNodeWrite</link>        (<parameter><link linkend="xmlSecQName2IntegerInfoConst"><type>xmlSecQName2IntegerInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *nodeName</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *nodeNs</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> intValue</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecQName2IntegerAttributeRead">xmlSecQName2IntegerAttributeRead</link>    (<parameter><link linkend="xmlSecQName2IntegerInfoConst"><type>xmlSecQName2IntegerInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *attrName</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> *intValue</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecQName2IntegerAttributeWrite">xmlSecQName2IntegerAttributeWrite</link>   (<parameter><link linkend="xmlSecQName2IntegerInfoConst"><type>xmlSecQName2IntegerInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *attrName</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> intValue</parameter>);
-<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecQName2IntegerDebugDump">xmlSecQName2IntegerDebugDump</link>        (<parameter><link linkend="xmlSecQName2IntegerInfoConst"><type>xmlSecQName2IntegerInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> intValue</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
-                                                         <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);
-<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecQName2IntegerDebugXmlDump">xmlSecQName2IntegerDebugXmlDump</link>     (<parameter><link linkend="xmlSecQName2IntegerInfoConst"><type>xmlSecQName2IntegerInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> intValue</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
-                                                         <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);
-typedef             <link linkend="xmlSecBitMask">xmlSecBitMask</link>;
-struct              <link linkend="xmlSecQName2BitMaskInfo">xmlSecQName2BitMaskInfo</link>;
-typedef             <link linkend="xmlSecQName2BitMaskInfoConst">xmlSecQName2BitMaskInfoConstPtr</link>;
-<link linkend="xmlSecQName2BitMaskInfoConst"><returnvalue>xmlSecQName2BitMaskInfoConstPtr</returnvalue></link>  <link linkend="xmlSecQName2BitMaskGetInfo">xmlSecQName2BitMaskGetInfo</link>
-                                                        (<parameter><link linkend="xmlSecQName2BitMaskInfoConst"><type>xmlSecQName2BitMaskInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="xmlSecBitMask"><type>xmlSecBitMask</type></link> mask</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecQName2BitMaskGetBitMask">xmlSecQName2BitMaskGetBitMask</link>       (<parameter><link linkend="xmlSecQName2BitMaskInfoConst"><type>xmlSecQName2BitMaskInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *qnameLocalPart</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *qnameHref</parameter>,
-                                                         <parameter><link linkend="xmlSecBitMask"><type>xmlSecBitMask</type></link> *mask</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecQName2BitMaskNodesRead">xmlSecQName2BitMaskNodesRead</link>        (<parameter><link linkend="xmlSecQName2BitMaskInfoConst"><type>xmlSecQName2BitMaskInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> *node</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *nodeName</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *nodeNs</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> stopOnUnknown</parameter>,
-                                                         <parameter><link linkend="xmlSecBitMask"><type>xmlSecBitMask</type></link> *mask</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecQName2BitMaskGetBitMaskFromString">xmlSecQName2BitMaskGetBitMaskFromString</link>
-                                                        (<parameter><link linkend="xmlSecQName2BitMaskInfoConst"><type>xmlSecQName2BitMaskInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *qname</parameter>,
-                                                         <parameter><link linkend="xmlSecBitMask"><type>xmlSecBitMask</type></link> *mask</parameter>);
-<link linkend="xmlChar"><returnvalue>xmlChar</returnvalue></link> *           <link linkend="xmlSecQName2BitMaskGetStringFromBitMask">xmlSecQName2BitMaskGetStringFromBitMask</link>
-                                                        (<parameter><link linkend="xmlSecQName2BitMaskInfoConst"><type>xmlSecQName2BitMaskInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter><link linkend="xmlSecBitMask"><type>xmlSecBitMask</type></link> mask</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecQName2BitMaskNodesWrite">xmlSecQName2BitMaskNodesWrite</link>       (<parameter><link linkend="xmlSecQName2BitMaskInfoConst"><type>xmlSecQName2BitMaskInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *nodeName</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *nodeNs</parameter>,
-                                                         <parameter><link linkend="xmlSecBitMask"><type>xmlSecBitMask</type></link> mask</parameter>);
-<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecQName2BitMaskDebugDump">xmlSecQName2BitMaskDebugDump</link>        (<parameter><link linkend="xmlSecQName2BitMaskInfoConst"><type>xmlSecQName2BitMaskInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="xmlSecBitMask"><type>xmlSecBitMask</type></link> mask</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
-                                                         <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);
-<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecQName2BitMaskDebugXmlDump">xmlSecQName2BitMaskDebugXmlDump</link>     (<parameter><link linkend="xmlSecQName2BitMaskInfoConst"><type>xmlSecQName2BitMaskInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="xmlSecBitMask"><type>xmlSecBitMask</type></link> mask</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
-                                                         <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);
+<synopsis>
+
+
+
+#define     <link linkend="xmlSecNodeGetName">xmlSecNodeGetName</link>               (node)
+const <link linkend="xmlChar">xmlChar</link>* <link linkend="xmlSecGetNodeNsHref">xmlSecGetNodeNsHref</link>          (const <link linkend="xmlNode">xmlNodePtr</link> cur);
+<link linkend="int">int</link>         <link linkend="xmlSecCheckNodeName">xmlSecCheckNodeName</link>             (const <link linkend="xmlNode">xmlNodePtr</link> cur,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             const <link linkend="xmlChar">xmlChar</link> *ns);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecGetNextElementNode">xmlSecGetNextElementNode</link>        (<link linkend="xmlNode">xmlNodePtr</link> cur);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecFindChild">xmlSecFindChild</link>                 (const <link linkend="xmlNode">xmlNodePtr</link> parent,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             const <link linkend="xmlChar">xmlChar</link> *ns);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecFindParent">xmlSecFindParent</link>                (const <link linkend="xmlNode">xmlNodePtr</link> cur,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             const <link linkend="xmlChar">xmlChar</link> *ns);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecFindNode">xmlSecFindNode</link>                  (const <link linkend="xmlNode">xmlNodePtr</link> parent,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             const <link linkend="xmlChar">xmlChar</link> *ns);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecAddChild">xmlSecAddChild</link>                  (<link linkend="xmlNode">xmlNodePtr</link> parent,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             const <link linkend="xmlChar">xmlChar</link> *ns);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecAddChildNode">xmlSecAddChildNode</link>              (<link linkend="xmlNode">xmlNodePtr</link> parent,
+                                             <link linkend="xmlNode">xmlNodePtr</link> child);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecAddNextSibling">xmlSecAddNextSibling</link>            (<link linkend="xmlNode">xmlNodePtr</link> node,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             const <link linkend="xmlChar">xmlChar</link> *ns);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecAddPrevSibling">xmlSecAddPrevSibling</link>            (<link linkend="xmlNode">xmlNodePtr</link> node,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             const <link linkend="xmlChar">xmlChar</link> *ns);
+<link linkend="int">int</link>         <link linkend="xmlSecReplaceNode">xmlSecReplaceNode</link>               (<link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlNode">xmlNodePtr</link> newNode);
+<link linkend="int">int</link>         <link linkend="xmlSecReplaceNodeAndReturn">xmlSecReplaceNodeAndReturn</link>      (<link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlNode">xmlNodePtr</link> newNode,
+                                             <link linkend="xmlNode">xmlNodePtr</link> *replaced);
+<link linkend="int">int</link>         <link linkend="xmlSecReplaceContent">xmlSecReplaceContent</link>            (<link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlNode">xmlNodePtr</link> newNode);
+<link linkend="int">int</link>         <link linkend="xmlSecReplaceContentAndReturn">xmlSecReplaceContentAndReturn</link>   (<link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlNode">xmlNodePtr</link> newNode,
+                                             <link linkend="xmlNode">xmlNodePtr</link> *replaced);
+<link linkend="int">int</link>         <link linkend="xmlSecReplaceNodeBuffer">xmlSecReplaceNodeBuffer</link>         (<link linkend="xmlNode">xmlNodePtr</link> node,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buffer,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> size);
+<link linkend="int">int</link>         <link linkend="xmlSecReplaceNodeBufferAndReturn">xmlSecReplaceNodeBufferAndReturn</link>
+                                            (<link linkend="xmlNode">xmlNodePtr</link> node,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buffer,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> size,
+                                             <link linkend="xmlNode">xmlNodePtr</link> *replaced);
+<link linkend="int">int</link>         <link linkend="xmlSecNodeEncodeAndSetContent">xmlSecNodeEncodeAndSetContent</link>   (<link linkend="xmlNode">xmlNodePtr</link> node,
+                                             const <link linkend="xmlChar">xmlChar</link> *buffer);
+<link linkend="void">void</link>        <link linkend="xmlSecAddIDs">xmlSecAddIDs</link>                    (<link linkend="xmlDoc">xmlDocPtr</link> doc,
+                                             <link linkend="xmlNode">xmlNodePtr</link> cur,
+                                             const <link linkend="xmlChar">xmlChar</link> **ids);
+<link linkend="int">int</link>         <link linkend="xmlSecGenerateAndAddID">xmlSecGenerateAndAddID</link>          (<link linkend="xmlNode">xmlNodePtr</link> node,
+                                             const <link linkend="xmlChar">xmlChar</link> *attrName,
+                                             const <link linkend="xmlChar">xmlChar</link> *prefix,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> len);
+<link linkend="xmlChar">xmlChar</link>*    <link linkend="xmlSecGenerateID">xmlSecGenerateID</link>                (const <link linkend="xmlChar">xmlChar</link> *prefix,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> len);
+<link linkend="xmlDoc">xmlDocPtr</link>   <link linkend="xmlSecCreateTree">xmlSecCreateTree</link>                (const <link linkend="xmlChar">xmlChar</link> *rootNodeName,
+                                             const <link linkend="xmlChar">xmlChar</link> *rootNodeNs);
+<link linkend="int">int</link>         <link linkend="xmlSecIsEmptyNode">xmlSecIsEmptyNode</link>               (<link linkend="xmlNode">xmlNodePtr</link> node);
+<link linkend="int">int</link>         <link linkend="xmlSecIsEmptyString">xmlSecIsEmptyString</link>             (const <link linkend="xmlChar">xmlChar</link> *str);
+<link linkend="xmlChar">xmlChar</link>*    <link linkend="xmlSecGetQName">xmlSecGetQName</link>                  (<link linkend="xmlNode">xmlNodePtr</link> node,
+                                             const <link linkend="xmlChar">xmlChar</link> *href,
+                                             const <link linkend="xmlChar">xmlChar</link> *local);
+<link linkend="int">int</link>         <link linkend="xmlSecPrintXmlString">xmlSecPrintXmlString</link>            (<link linkend="FILE:CAPS">FILE</link> *fd,
+                                             const <link linkend="xmlChar">xmlChar</link> *str);
+#define     <link linkend="xmlSecIsHex">xmlSecIsHex</link>                     (c)
+#define     <link linkend="xmlSecGetHex">xmlSecGetHex</link>                    (c)
+struct      <link linkend="xmlSecQName2IntegerInfo">xmlSecQName2IntegerInfo</link>;
+typedef     <link linkend="xmlSecQName2IntegerInfoConst">xmlSecQName2IntegerInfoConstPtr</link>;
+<link linkend="xmlSecQName2IntegerInfoConst">xmlSecQName2IntegerInfoConstPtr</link> <link linkend="xmlSecQName2IntegerGetInfo">xmlSecQName2IntegerGetInfo</link>
+                                            (<link linkend="xmlSecQName2IntegerInfoConst">xmlSecQName2IntegerInfoConstPtr</link> info,
+                                             <link linkend="int">int</link> intValue);
+<link linkend="int">int</link>         <link linkend="xmlSecQName2IntegerGetInteger">xmlSecQName2IntegerGetInteger</link>   (<link linkend="xmlSecQName2IntegerInfoConst">xmlSecQName2IntegerInfoConstPtr</link> info,
+                                             const <link linkend="xmlChar">xmlChar</link> *qnameHref,
+                                             const <link linkend="xmlChar">xmlChar</link> *qnameLocalPart,
+                                             <link linkend="int">int</link> *intValue);
+<link linkend="int">int</link>         <link linkend="xmlSecQName2IntegerGetIntegerFromString">xmlSecQName2IntegerGetIntegerFromString</link>
+                                            (<link linkend="xmlSecQName2IntegerInfoConst">xmlSecQName2IntegerInfoConstPtr</link> info,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             const <link linkend="xmlChar">xmlChar</link> *qname,
+                                             <link linkend="int">int</link> *intValue);
+<link linkend="xmlChar">xmlChar</link>*    <link linkend="xmlSecQName2IntegerGetStringFromInteger">xmlSecQName2IntegerGetStringFromInteger</link>
+                                            (<link linkend="xmlSecQName2IntegerInfoConst">xmlSecQName2IntegerInfoConstPtr</link> info,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="int">int</link> intValue);
+<link linkend="int">int</link>         <link linkend="xmlSecQName2IntegerNodeRead">xmlSecQName2IntegerNodeRead</link>     (<link linkend="xmlSecQName2IntegerInfoConst">xmlSecQName2IntegerInfoConstPtr</link> info,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="int">int</link> *intValue);
+<link linkend="int">int</link>         <link linkend="xmlSecQName2IntegerNodeWrite">xmlSecQName2IntegerNodeWrite</link>    (<link linkend="xmlSecQName2IntegerInfoConst">xmlSecQName2IntegerInfoConstPtr</link> info,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             const <link linkend="xmlChar">xmlChar</link> *nodeName,
+                                             const <link linkend="xmlChar">xmlChar</link> *nodeNs,
+                                             <link linkend="int">int</link> intValue);
+<link linkend="int">int</link>         <link linkend="xmlSecQName2IntegerAttributeRead">xmlSecQName2IntegerAttributeRead</link>
+                                            (<link linkend="xmlSecQName2IntegerInfoConst">xmlSecQName2IntegerInfoConstPtr</link> info,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             const <link linkend="xmlChar">xmlChar</link> *attrName,
+                                             <link linkend="int">int</link> *intValue);
+<link linkend="int">int</link>         <link linkend="xmlSecQName2IntegerAttributeWrite">xmlSecQName2IntegerAttributeWrite</link>
+                                            (<link linkend="xmlSecQName2IntegerInfoConst">xmlSecQName2IntegerInfoConstPtr</link> info,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             const <link linkend="xmlChar">xmlChar</link> *attrName,
+                                             <link linkend="int">int</link> intValue);
+<link linkend="void">void</link>        <link linkend="xmlSecQName2IntegerDebugDump">xmlSecQName2IntegerDebugDump</link>    (<link linkend="xmlSecQName2IntegerInfoConst">xmlSecQName2IntegerInfoConstPtr</link> info,
+                                             <link linkend="int">int</link> intValue,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="FILE:CAPS">FILE</link> *output);
+<link linkend="void">void</link>        <link linkend="xmlSecQName2IntegerDebugXmlDump">xmlSecQName2IntegerDebugXmlDump</link> (<link linkend="xmlSecQName2IntegerInfoConst">xmlSecQName2IntegerInfoConstPtr</link> info,
+                                             <link linkend="int">int</link> intValue,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="FILE:CAPS">FILE</link> *output);
+typedef     <link linkend="xmlSecBitMask">xmlSecBitMask</link>;
+struct      <link linkend="xmlSecQName2BitMaskInfo">xmlSecQName2BitMaskInfo</link>;
+typedef     <link linkend="xmlSecQName2BitMaskInfoConst">xmlSecQName2BitMaskInfoConstPtr</link>;
+<link linkend="xmlSecQName2BitMaskInfoConst">xmlSecQName2BitMaskInfoConstPtr</link> <link linkend="xmlSecQName2BitMaskGetInfo">xmlSecQName2BitMaskGetInfo</link>
+                                            (<link linkend="xmlSecQName2BitMaskInfoConst">xmlSecQName2BitMaskInfoConstPtr</link> info,
+                                             <link linkend="xmlSecBitMask">xmlSecBitMask</link> mask);
+<link linkend="int">int</link>         <link linkend="xmlSecQName2BitMaskGetBitMask">xmlSecQName2BitMaskGetBitMask</link>   (<link linkend="xmlSecQName2BitMaskInfoConst">xmlSecQName2BitMaskInfoConstPtr</link> info,
+                                             const <link linkend="xmlChar">xmlChar</link> *qnameLocalPart,
+                                             const <link linkend="xmlChar">xmlChar</link> *qnameHref,
+                                             <link linkend="xmlSecBitMask">xmlSecBitMask</link> *mask);
+<link linkend="int">int</link>         <link linkend="xmlSecQName2BitMaskNodesRead">xmlSecQName2BitMaskNodesRead</link>    (<link linkend="xmlSecQName2BitMaskInfoConst">xmlSecQName2BitMaskInfoConstPtr</link> info,
+                                             <link linkend="xmlNode">xmlNodePtr</link> *node,
+                                             const <link linkend="xmlChar">xmlChar</link> *nodeName,
+                                             const <link linkend="xmlChar">xmlChar</link> *nodeNs,
+                                             <link linkend="int">int</link> stopOnUnknown,
+                                             <link linkend="xmlSecBitMask">xmlSecBitMask</link> *mask);
+<link linkend="int">int</link>         <link linkend="xmlSecQName2BitMaskGetBitMaskFromString">xmlSecQName2BitMaskGetBitMaskFromString</link>
+                                            (<link linkend="xmlSecQName2BitMaskInfoConst">xmlSecQName2BitMaskInfoConstPtr</link> info,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             const <link linkend="xmlChar">xmlChar</link> *qname,
+                                             <link linkend="xmlSecBitMask">xmlSecBitMask</link> *mask);
+<link linkend="xmlChar">xmlChar</link>*    <link linkend="xmlSecQName2BitMaskGetStringFromBitMask">xmlSecQName2BitMaskGetStringFromBitMask</link>
+                                            (<link linkend="xmlSecQName2BitMaskInfoConst">xmlSecQName2BitMaskInfoConstPtr</link> info,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlSecBitMask">xmlSecBitMask</link> mask);
+<link linkend="int">int</link>         <link linkend="xmlSecQName2BitMaskNodesWrite">xmlSecQName2BitMaskNodesWrite</link>   (<link linkend="xmlSecQName2BitMaskInfoConst">xmlSecQName2BitMaskInfoConstPtr</link> info,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             const <link linkend="xmlChar">xmlChar</link> *nodeName,
+                                             const <link linkend="xmlChar">xmlChar</link> *nodeNs,
+                                             <link linkend="xmlSecBitMask">xmlSecBitMask</link> mask);
+<link linkend="void">void</link>        <link linkend="xmlSecQName2BitMaskDebugDump">xmlSecQName2BitMaskDebugDump</link>    (<link linkend="xmlSecQName2BitMaskInfoConst">xmlSecQName2BitMaskInfoConstPtr</link> info,
+                                             <link linkend="xmlSecBitMask">xmlSecBitMask</link> mask,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="FILE:CAPS">FILE</link> *output);
+<link linkend="void">void</link>        <link linkend="xmlSecQName2BitMaskDebugXmlDump">xmlSecQName2BitMaskDebugXmlDump</link> (<link linkend="xmlSecQName2BitMaskInfoConst">xmlSecQName2BitMaskInfoConstPtr</link> info,
+                                             <link linkend="xmlSecBitMask">xmlSecBitMask</link> mask,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="FILE:CAPS">FILE</link> *output);
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 id="xmlsec-xmltree.description" role="desc">
+
+
+
+
+
+
+
+
+<refsect1 role="desc">
 <title role="desc.title">Description</title>
 <para>
 XML tree operations.
 </para>
 </refsect1>
-<refsect1 id="xmlsec-xmltree.details" role="details">
+
+<refsect1 role="details">
 <title role="details.title">Details</title>
-<refsect2 id="xmlSecNodeGetName" role="macro">
-<title>xmlSecNodeGetName()</title>
-<indexterm zone="xmlSecNodeGetName"><primary>xmlSecNodeGetName</primary></indexterm>
-<programlisting>#define             xmlSecNodeGetName(node)</programlisting>
+<refsect2>
+<title><anchor id="xmlSecNodeGetName" role="macro">xmlSecNodeGetName()</title>
+<indexterm><primary>xmlSecNodeGetName</primary></indexterm><programlisting>#define     xmlSecNodeGetName(node)</programlisting>
 <para>
-Macro. Returns node's name.
+Macro. Returns node's name.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>the pointer to node.
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>               the pointer to node.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecGetNodeNsHref" role="function">
-<title>xmlSecGetNodeNsHref ()</title>
-<indexterm zone="xmlSecGetNodeNsHref"><primary>xmlSecGetNodeNsHref</primary></indexterm>
-<programlisting>const <link linkend="xmlChar"><returnvalue>xmlChar</returnvalue></link>*      xmlSecGetNodeNsHref                 (<parameter>const <link linkend="xmlNode"><type>xmlNodePtr</type></link> cur</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecGetNodeNsHref" role="function">xmlSecGetNodeNsHref ()</title>
+<indexterm><primary>xmlSecGetNodeNsHref</primary></indexterm><programlisting>const <link linkend="xmlChar">xmlChar</link>* xmlSecGetNodeNsHref          (const <link linkend="xmlNode">xmlNodePtr</link> cur);</programlisting>
 <para>
-Get's node's namespace href.
+Get's node's namespace href.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>cur</parameter>&#160;:</term>
-<listitem><simpara>the pointer to node.
+<varlistentry><term><parameter>cur</parameter>&nbsp;:</term>
+<listitem><simpara>                the pointer to node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> node's namespace href.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> node's namespace href.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecCheckNodeName" role="function">
-<title>xmlSecCheckNodeName ()</title>
-<indexterm zone="xmlSecCheckNodeName"><primary>xmlSecCheckNodeName</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecCheckNodeName                 (<parameter>const <link linkend="xmlNode"><type>xmlNodePtr</type></link> cur</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *ns</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecCheckNodeName" role="function">xmlSecCheckNodeName ()</title>
+<indexterm><primary>xmlSecCheckNodeName</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecCheckNodeName             (const <link linkend="xmlNode">xmlNodePtr</link> cur,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
 <para>
-Checks that the node has a given name and a given namespace href.
+Checks that the node has a given name and a given namespace href.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>cur</parameter>&#160;:</term>
-<listitem><simpara>the pointer to an XML node.
+<varlistentry><term><parameter>cur</parameter>&nbsp;:</term>
+<listitem><simpara>                the pointer to an XML node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara>the name,
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>               the name,
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>ns</parameter>&#160;:</term>
-<listitem><simpara>the namespace href.
+<varlistentry><term><parameter>ns</parameter>&nbsp;:</term>
+<listitem><simpara>                 the namespace href.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 1 if the node matches or 0 otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 1 if the node matches or 0 otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecGetNextElementNode" role="function">
-<title>xmlSecGetNextElementNode ()</title>
-<indexterm zone="xmlSecGetNextElementNode"><primary>xmlSecGetNextElementNode</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecGetNextElementNode            (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> cur</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecGetNextElementNode" role="function">xmlSecGetNextElementNode ()</title>
+<indexterm><primary>xmlSecGetNextElementNode</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecGetNextElementNode        (<link linkend="xmlNode">xmlNodePtr</link> cur);</programlisting>
 <para>
-Seraches for the next element node.
+Seraches for the next element node.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>cur</parameter>&#160;:</term>
-<listitem><simpara>the pointer to an XML node.
+<varlistentry><term><parameter>cur</parameter>&nbsp;:</term>
+<listitem><simpara>                the pointer to an XML node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to next element node or NULL if it is not found.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to next element node or NULL if it is not found.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecFindChild" role="function">
-<title>xmlSecFindChild ()</title>
-<indexterm zone="xmlSecFindChild"><primary>xmlSecFindChild</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecFindChild                     (<parameter>const <link linkend="xmlNode"><type>xmlNodePtr</type></link> parent</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *ns</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecFindChild" role="function">xmlSecFindChild ()</title>
+<indexterm><primary>xmlSecFindChild</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecFindChild                 (const <link linkend="xmlNode">xmlNodePtr</link> parent,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
 <para>
 Searches a direct child of the <parameter>parent</parameter> node having given name and
-namespace href.
+namespace href.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>parent</parameter>&#160;:</term>
-<listitem><simpara>the pointer to XML node.
+<varlistentry><term><parameter>parent</parameter>&nbsp;:</term>
+<listitem><simpara>             the pointer to XML node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara>the name.
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>               the name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>ns</parameter>&#160;:</term>
-<listitem><simpara>the namespace href (may be NULL).
+<varlistentry><term><parameter>ns</parameter>&nbsp;:</term>
+<listitem><simpara>                 the namespace href (may be NULL).
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to the found node or NULL if an error occurs or
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to the found node or NULL if an error occurs or
 node is not found.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecFindParent" role="function">
-<title>xmlSecFindParent ()</title>
-<indexterm zone="xmlSecFindParent"><primary>xmlSecFindParent</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecFindParent                    (<parameter>const <link linkend="xmlNode"><type>xmlNodePtr</type></link> cur</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *ns</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecFindParent" role="function">xmlSecFindParent ()</title>
+<indexterm><primary>xmlSecFindParent</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecFindParent                (const <link linkend="xmlNode">xmlNodePtr</link> cur,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
 <para>
 Searches the ancestors axis of the <parameter>cur</parameter> node for a node having given name
-and namespace href.
+and namespace href.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>cur</parameter>&#160;:</term>
-<listitem><simpara>the pointer to an XML node.
+<varlistentry><term><parameter>cur</parameter>&nbsp;:</term>
+<listitem><simpara>                the pointer to an XML node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara>the name.
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>               the name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>ns</parameter>&#160;:</term>
-<listitem><simpara>the namespace href (may be NULL).
+<varlistentry><term><parameter>ns</parameter>&nbsp;:</term>
+<listitem><simpara>                 the namespace href (may be NULL).
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to the found node or NULL if an error occurs or
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to the found node or NULL if an error occurs or
 node is not found.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecFindNode" role="function">
-<title>xmlSecFindNode ()</title>
-<indexterm zone="xmlSecFindNode"><primary>xmlSecFindNode</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecFindNode                      (<parameter>const <link linkend="xmlNode"><type>xmlNodePtr</type></link> parent</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *ns</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecFindNode" role="function">xmlSecFindNode ()</title>
+<indexterm><primary>xmlSecFindNode</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecFindNode                  (const <link linkend="xmlNode">xmlNodePtr</link> parent,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
 <para>
 Searches all children of the <parameter>parent</parameter> node having given name and
-namespace href.
+namespace href.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>parent</parameter>&#160;:</term>
-<listitem><simpara>the pointer to XML node.
+<varlistentry><term><parameter>parent</parameter>&nbsp;:</term>
+<listitem><simpara>             the pointer to XML node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara>the name.
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>               the name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>ns</parameter>&#160;:</term>
-<listitem><simpara>the namespace href (may be NULL).
+<varlistentry><term><parameter>ns</parameter>&nbsp;:</term>
+<listitem><simpara>                 the namespace href (may be NULL).
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to the found node or NULL if an error occurs or
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to the found node or NULL if an error occurs or
 node is not found.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecAddChild" role="function">
-<title>xmlSecAddChild ()</title>
-<indexterm zone="xmlSecAddChild"><primary>xmlSecAddChild</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecAddChild                      (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> parent</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *ns</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecAddChild" role="function">xmlSecAddChild ()</title>
+<indexterm><primary>xmlSecAddChild</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecAddChild                  (<link linkend="xmlNode">xmlNodePtr</link> parent,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
 <para>
-Adds a child to the node <parameter>parent</parameter> with given <parameter>name</parameter> and namespace <parameter>ns</parameter>.
+Adds a child to the node <parameter>parent</parameter> with given <parameter>name</parameter> and namespace <parameter>ns</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>parent</parameter>&#160;:</term>
-<listitem><simpara>the pointer to an XML node.
+<varlistentry><term><parameter>parent</parameter>&nbsp;:</term>
+<listitem><simpara>             the pointer to an XML node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara>the new node name.
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>               the new node name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>ns</parameter>&#160;:</term>
-<listitem><simpara>the new node namespace.
+<varlistentry><term><parameter>ns</parameter>&nbsp;:</term>
+<listitem><simpara>                 the new node namespace.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the new node or NULL if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to the new node or NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecAddChildNode" role="function">
-<title>xmlSecAddChildNode ()</title>
-<indexterm zone="xmlSecAddChildNode"><primary>xmlSecAddChildNode</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecAddChildNode                  (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> parent</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> child</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecAddChildNode" role="function">xmlSecAddChildNode ()</title>
+<indexterm><primary>xmlSecAddChildNode</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecAddChildNode              (<link linkend="xmlNode">xmlNodePtr</link> parent,
+                                             <link linkend="xmlNode">xmlNodePtr</link> child);</programlisting>
 <para>
-Adds <parameter>child</parameter> node to the <parameter>parent</parameter> node.
+Adds <parameter>child</parameter> node to the <parameter>parent</parameter> node.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>parent</parameter>&#160;:</term>
-<listitem><simpara>the pointer to an XML node.
+<varlistentry><term><parameter>parent</parameter>&nbsp;:</term>
+<listitem><simpara>             the pointer to an XML node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>child</parameter>&#160;:</term>
-<listitem><simpara>the new node.
+<varlistentry><term><parameter>child</parameter>&nbsp;:</term>
+<listitem><simpara>              the new node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the new node or NULL if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to the new node or NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecAddNextSibling" role="function">
-<title>xmlSecAddNextSibling ()</title>
-<indexterm zone="xmlSecAddNextSibling"><primary>xmlSecAddNextSibling</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecAddNextSibling                (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *ns</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecAddNextSibling" role="function">xmlSecAddNextSibling ()</title>
+<indexterm><primary>xmlSecAddNextSibling</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecAddNextSibling            (<link linkend="xmlNode">xmlNodePtr</link> node,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
 <para>
-Adds next sibling to the node <parameter>node</parameter> with given <parameter>name</parameter> and namespace <parameter>ns</parameter>.
+Adds next sibling to the node <parameter>node</parameter> with given <parameter>name</parameter> and namespace <parameter>ns</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>the pointer to an XML node.
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>               the pointer to an XML node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara>the new node name.
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>               the new node name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>ns</parameter>&#160;:</term>
-<listitem><simpara>the new node namespace.
+<varlistentry><term><parameter>ns</parameter>&nbsp;:</term>
+<listitem><simpara>                 the new node namespace.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the new node or NULL if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to the new node or NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecAddPrevSibling" role="function">
-<title>xmlSecAddPrevSibling ()</title>
-<indexterm zone="xmlSecAddPrevSibling"><primary>xmlSecAddPrevSibling</primary></indexterm>
-<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecAddPrevSibling                (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *ns</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecAddPrevSibling" role="function">xmlSecAddPrevSibling ()</title>
+<indexterm><primary>xmlSecAddPrevSibling</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecAddPrevSibling            (<link linkend="xmlNode">xmlNodePtr</link> node,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
 <para>
-Adds prev sibling to the node <parameter>node</parameter> with given <parameter>name</parameter> and namespace <parameter>ns</parameter>.
+Adds prev sibling to the node <parameter>node</parameter> with given <parameter>name</parameter> and namespace <parameter>ns</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>the pointer to an XML node.
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>               the pointer to an XML node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara>the new node name.
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>               the new node name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>ns</parameter>&#160;:</term>
-<listitem><simpara>the new node namespace.
+<varlistentry><term><parameter>ns</parameter>&nbsp;:</term>
+<listitem><simpara>                 the new node namespace.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the new node or NULL if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to the new node or NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecReplaceNode" role="function">
-<title>xmlSecReplaceNode ()</title>
-<indexterm zone="xmlSecReplaceNode"><primary>xmlSecReplaceNode</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecReplaceNode                   (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> newNode</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecReplaceNode" role="function">xmlSecReplaceNode ()</title>
+<indexterm><primary>xmlSecReplaceNode</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecReplaceNode               (<link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlNode">xmlNodePtr</link> newNode);</programlisting>
 <para>
-Swaps the <parameter>node</parameter> and <parameter>newNode</parameter> in the XML tree.
+Swaps the <parameter>node</parameter> and <parameter>newNode</parameter> in the XML tree.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>the current node.
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>               the current node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>newNode</parameter>&#160;:</term>
-<listitem><simpara>the new node.
+<varlistentry><term><parameter>newNode</parameter>&nbsp;:</term>
+<listitem><simpara>            the new node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecReplaceNodeAndReturn" role="function">
-<title>xmlSecReplaceNodeAndReturn ()</title>
-<indexterm zone="xmlSecReplaceNodeAndReturn"><primary>xmlSecReplaceNodeAndReturn</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecReplaceNodeAndReturn          (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> newNode</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> *replaced</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecReplaceNodeAndReturn" role="function">xmlSecReplaceNodeAndReturn ()</title>
+<indexterm><primary>xmlSecReplaceNodeAndReturn</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecReplaceNodeAndReturn      (<link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlNode">xmlNodePtr</link> newNode,
+                                             <link linkend="xmlNode">xmlNodePtr</link> *replaced);</programlisting>
 <para>
-Swaps the <parameter>node</parameter> and <parameter>newNode</parameter> in the XML tree.
+Swaps the <parameter>node</parameter> and <parameter>newNode</parameter> in the XML tree.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>the current node.
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>               the current node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>newNode</parameter>&#160;:</term>
-<listitem><simpara>the new node.
+<varlistentry><term><parameter>newNode</parameter>&nbsp;:</term>
+<listitem><simpara>            the new node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>replaced</parameter>&#160;:</term>
-<listitem><simpara>the replaced node, or release it if NULL is given
+<varlistentry><term><parameter>replaced</parameter>&nbsp;:</term>
+<listitem><simpara>           the replaced node, or release it if NULL is given
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecReplaceContent" role="function">
-<title>xmlSecReplaceContent ()</title>
-<indexterm zone="xmlSecReplaceContent"><primary>xmlSecReplaceContent</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecReplaceContent                (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> newNode</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecReplaceContent" role="function">xmlSecReplaceContent ()</title>
+<indexterm><primary>xmlSecReplaceContent</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecReplaceContent            (<link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlNode">xmlNodePtr</link> newNode);</programlisting>
 <para>
-Swaps the content of <parameter>node</parameter> and <parameter>newNode</parameter>.
+Swaps the content of <parameter>node</parameter> and <parameter>newNode</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>the current node.
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>               the current node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>newNode</parameter>&#160;:</term>
-<listitem><simpara>the new node.
+<varlistentry><term><parameter>newNode</parameter>&nbsp;:</term>
+<listitem><simpara>            the new node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecReplaceContentAndReturn" role="function">
-<title>xmlSecReplaceContentAndReturn ()</title>
-<indexterm zone="xmlSecReplaceContentAndReturn"><primary>xmlSecReplaceContentAndReturn</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecReplaceContentAndReturn       (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> newNode</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> *replaced</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecReplaceContentAndReturn" role="function">xmlSecReplaceContentAndReturn ()</title>
+<indexterm><primary>xmlSecReplaceContentAndReturn</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecReplaceContentAndReturn   (<link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlNode">xmlNodePtr</link> newNode,
+                                             <link linkend="xmlNode">xmlNodePtr</link> *replaced);</programlisting>
 <para>
-Swaps the content of <parameter>node</parameter> and <parameter>newNode</parameter>.
+Swaps the content of <parameter>node</parameter> and <parameter>newNode</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>the current node.
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>               the current node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>newNode</parameter>&#160;:</term>
-<listitem><simpara>the new node.
+<varlistentry><term><parameter>newNode</parameter>&nbsp;:</term>
+<listitem><simpara>            the new node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>replaced</parameter>&#160;:</term>
-<listitem><simpara>the replaced nodes, or release them if NULL is given
+<varlistentry><term><parameter>replaced</parameter>&nbsp;:</term>
+<listitem><simpara>           the replaced nodes, or release them if NULL is given
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecReplaceNodeBuffer" role="function">
-<title>xmlSecReplaceNodeBuffer ()</title>
-<indexterm zone="xmlSecReplaceNodeBuffer"><primary>xmlSecReplaceNodeBuffer</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecReplaceNodeBuffer             (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *buffer</parameter>,
-                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> size</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecReplaceNodeBuffer" role="function">xmlSecReplaceNodeBuffer ()</title>
+<indexterm><primary>xmlSecReplaceNodeBuffer</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecReplaceNodeBuffer         (<link linkend="xmlNode">xmlNodePtr</link> node,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buffer,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> size);</programlisting>
 <para>
-Swaps the <parameter>node</parameter> and the parsed XML data from the <parameter>buffer</parameter> in the XML tree.
+Swaps the <parameter>node</parameter> and the parsed XML data from the <parameter>buffer</parameter> in the XML tree.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>the current node.
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>               the current node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>buffer</parameter>&#160;:</term>
-<listitem><simpara>the XML data.
+<varlistentry><term><parameter>buffer</parameter>&nbsp;:</term>
+<listitem><simpara>             the XML data.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara>the XML data size.
+<varlistentry><term><parameter>size</parameter>&nbsp;:</term>
+<listitem><simpara>               the XML data size.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecReplaceNodeBufferAndReturn" role="function">
-<title>xmlSecReplaceNodeBufferAndReturn ()</title>
-<indexterm zone="xmlSecReplaceNodeBufferAndReturn"><primary>xmlSecReplaceNodeBufferAndReturn</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecReplaceNodeBufferAndReturn    (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *buffer</parameter>,
-                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> size</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> *replaced</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecReplaceNodeBufferAndReturn" role="function">xmlSecReplaceNodeBufferAndReturn ()</title>
+<indexterm><primary>xmlSecReplaceNodeBufferAndReturn</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecReplaceNodeBufferAndReturn
+                                            (<link linkend="xmlNode">xmlNodePtr</link> node,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buffer,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> size,
+                                             <link linkend="xmlNode">xmlNodePtr</link> *replaced);</programlisting>
 <para>
-Swaps the <parameter>node</parameter> and the parsed XML data from the <parameter>buffer</parameter> in the XML tree.
+Swaps the <parameter>node</parameter> and the parsed XML data from the <parameter>buffer</parameter> in the XML tree.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>the current node.
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>               the current node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>buffer</parameter>&#160;:</term>
-<listitem><simpara>the XML data.
+<varlistentry><term><parameter>buffer</parameter>&nbsp;:</term>
+<listitem><simpara>             the XML data.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara>the XML data size.
+<varlistentry><term><parameter>size</parameter>&nbsp;:</term>
+<listitem><simpara>               the XML data size.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>replaced</parameter>&#160;:</term>
-<listitem><simpara>the replaced nodes, or release them if NULL is given
+<varlistentry><term><parameter>replaced</parameter>&nbsp;:</term>
+<listitem><simpara>           the replaced nodes, or release them if NULL is given
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecNodeEncodeAndSetContent" role="function">
-<title>xmlSecNodeEncodeAndSetContent ()</title>
-<indexterm zone="xmlSecNodeEncodeAndSetContent"><primary>xmlSecNodeEncodeAndSetContent</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecNodeEncodeAndSetContent       (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *buffer</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecNodeEncodeAndSetContent" role="function">xmlSecNodeEncodeAndSetContent ()</title>
+<indexterm><primary>xmlSecNodeEncodeAndSetContent</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecNodeEncodeAndSetContent   (<link linkend="xmlNode">xmlNodePtr</link> node,
+                                             const <link linkend="xmlChar">xmlChar</link> *buffer);</programlisting>
 <para>
 Encodes "special" characters in the <parameter>buffer</parameter> and sets the result
-as the node content.
+as the node content.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>the pointer to an XML node.
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>                   the pointer to an XML node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>buffer</parameter>&#160;:</term>
-<listitem><simpara>the pointer to the node content.
+<varlistentry><term><parameter>buffer</parameter>&nbsp;:</term>
+<listitem><simpara>             the pointer to the node content.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecAddIDs" role="function">
-<title>xmlSecAddIDs ()</title>
-<indexterm zone="xmlSecAddIDs"><primary>xmlSecAddIDs</primary></indexterm>
-<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecAddIDs                        (<parameter><link linkend="xmlDoc"><type>xmlDocPtr</type></link> doc</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> cur</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> **ids</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecAddIDs" role="function">xmlSecAddIDs ()</title>
+<indexterm><primary>xmlSecAddIDs</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecAddIDs                    (<link linkend="xmlDoc">xmlDocPtr</link> doc,
+                                             <link linkend="xmlNode">xmlNodePtr</link> cur,
+                                             const <link linkend="xmlChar">xmlChar</link> **ids);</programlisting>
 <para>
 Walks thru all children of the <parameter>cur</parameter> node and adds all attributes
-from the <parameter>ids</parameter> list to the <parameter>doc</parameter> document IDs attributes hash.
+from the <parameter>ids</parameter> list to the <parameter>doc</parameter> document IDs attributes hash.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>doc</parameter>&#160;:</term>
-<listitem><simpara>the pointer to an XML document.
+<varlistentry><term><parameter>doc</parameter>&nbsp;:</term>
+<listitem><simpara>                the pointer to an XML document.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>cur</parameter>&#160;:</term>
-<listitem><simpara>the pointer to an XML node.
+<varlistentry><term><parameter>cur</parameter>&nbsp;:</term>
+<listitem><simpara>                the pointer to an XML node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>ids</parameter>&#160;:</term>
-<listitem><simpara>the pointer to a NULL terminated list of ID attributes.
+<varlistentry><term><parameter>ids</parameter>&nbsp;:</term>
+<listitem><simpara>                the pointer to a NULL terminated list of ID attributes.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecGenerateAndAddID" role="function">
-<title>xmlSecGenerateAndAddID ()</title>
-<indexterm zone="xmlSecGenerateAndAddID"><primary>xmlSecGenerateAndAddID</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecGenerateAndAddID              (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *attrName</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *prefix</parameter>,
-                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> len</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecGenerateAndAddID" role="function">xmlSecGenerateAndAddID ()</title>
+<indexterm><primary>xmlSecGenerateAndAddID</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecGenerateAndAddID          (<link linkend="xmlNode">xmlNodePtr</link> node,
+                                             const <link linkend="xmlChar">xmlChar</link> *attrName,
+                                             const <link linkend="xmlChar">xmlChar</link> *prefix,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> len);</programlisting>
 <para>
 Generates a unique ID in the format &lt;<parameter>prefix</parameter>&gt;base64-encoded(<parameter>len</parameter> random bytes)
-and puts it in the attribute <parameter>attrName</parameter>.
+and puts it in the attribute <parameter>attrName</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>the node to ID attr to.
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>                       the node to ID attr to.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>attrName</parameter>&#160;:</term>
-<listitem><simpara>the ID attr name.
+<varlistentry><term><parameter>attrName</parameter>&nbsp;:</term>
+<listitem><simpara>                   the ID attr name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>prefix</parameter>&#160;:</term>
-<listitem><simpara>the prefix to add to the generated ID (can be NULL).
+<varlistentry><term><parameter>prefix</parameter>&nbsp;:</term>
+<listitem><simpara>                     the prefix to add to the generated ID (can be NULL).
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>len</parameter>&#160;:</term>
-<listitem><simpara>the length of ID.
+<varlistentry><term><parameter>len</parameter>&nbsp;:</term>
+<listitem><simpara>                        the length of ID.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecGenerateID" role="function">
-<title>xmlSecGenerateID ()</title>
-<indexterm zone="xmlSecGenerateID"><primary>xmlSecGenerateID</primary></indexterm>
-<programlisting><link linkend="xmlChar"><returnvalue>xmlChar</returnvalue></link>*            xmlSecGenerateID                    (<parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *prefix</parameter>,
-                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> len</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecGenerateID" role="function">xmlSecGenerateID ()</title>
+<indexterm><primary>xmlSecGenerateID</primary></indexterm><programlisting><link linkend="xmlChar">xmlChar</link>*    xmlSecGenerateID                (const <link linkend="xmlChar">xmlChar</link> *prefix,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> len);</programlisting>
 <para>
 Generates a unique ID in the format &lt;<parameter>prefix</parameter>&gt;base64-encoded(<parameter>len</parameter> random bytes).
-The caller is responsible for freeing returned string using <parameter>xmlFree</parameter> function.
-</para><variablelist role="params">
-<varlistentry><term><parameter>prefix</parameter>&#160;:</term>
-<listitem><simpara>the prefix to add to the generated ID (can be NULL).
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>len</parameter>&#160;:</term>
-<listitem><simpara>the length of ID.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to generated ID string or NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecCreateTree" role="function">
-<title>xmlSecCreateTree ()</title>
-<indexterm zone="xmlSecCreateTree"><primary>xmlSecCreateTree</primary></indexterm>
-<programlisting><link linkend="xmlDoc"><returnvalue>xmlDocPtr</returnvalue></link>           xmlSecCreateTree                    (<parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *rootNodeName</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *rootNodeNs</parameter>);</programlisting>
+The caller is responsible for freeing returned string using <parameter>xmlFree</parameter> function.</para>
 <para>
-Creates a new XML tree with one root node <parameter>rootNodeName</parameter>.
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>rootNodeName</parameter>&#160;:</term>
-<listitem><simpara>the root node name.
+<varlistentry><term><parameter>prefix</parameter>&nbsp;:</term>
+<listitem><simpara>                     the prefix to add to the generated ID (can be NULL).
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>rootNodeNs</parameter>&#160;:</term>
-<listitem><simpara>the root node namespace (otpional).
+<varlistentry><term><parameter>len</parameter>&nbsp;:</term>
+<listitem><simpara>                        the length of ID.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the newly created tree or NULL if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to generated ID string or NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecIsEmptyNode" role="function">
-<title>xmlSecIsEmptyNode ()</title>
-<indexterm zone="xmlSecIsEmptyNode"><primary>xmlSecIsEmptyNode</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecIsEmptyNode                   (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecCreateTree" role="function">xmlSecCreateTree ()</title>
+<indexterm><primary>xmlSecCreateTree</primary></indexterm><programlisting><link linkend="xmlDoc">xmlDocPtr</link>   xmlSecCreateTree                (const <link linkend="xmlChar">xmlChar</link> *rootNodeName,
+                                             const <link linkend="xmlChar">xmlChar</link> *rootNodeNs);</programlisting>
 <para>
-Checks whethere the <parameter>node</parameter> is empty (i.e. has only whitespaces children).
-</para><variablelist role="params">
-<varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>the node to check
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 1 if <parameter>node</parameter> is empty, 0 otherwise or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecIsEmptyString" role="function">
-<title>xmlSecIsEmptyString ()</title>
-<indexterm zone="xmlSecIsEmptyString"><primary>xmlSecIsEmptyString</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecIsEmptyString                 (<parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *str</parameter>);</programlisting>
+Creates a new XML tree with one root node <parameter>rootNodeName</parameter>.</para>
 <para>
-Checks whethere the <parameter>str</parameter> is empty (i.e. has only whitespaces children).
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>str</parameter>&#160;:</term>
-<listitem><simpara>the string to check
+<varlistentry><term><parameter>rootNodeName</parameter>&nbsp;:</term>
+<listitem><simpara>       the root node name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 1 if <parameter>str</parameter> is empty, 0 otherwise or a negative value if an error occurs.
+<varlistentry><term><parameter>rootNodeNs</parameter>&nbsp;:</term>
+<listitem><simpara>         the root node namespace (otpional).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to the newly created tree or NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecGetQName" role="function">
-<title>xmlSecGetQName ()</title>
-<indexterm zone="xmlSecGetQName"><primary>xmlSecGetQName</primary></indexterm>
-<programlisting><link linkend="xmlChar"><returnvalue>xmlChar</returnvalue></link>*            xmlSecGetQName                      (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *href</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *local</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecIsEmptyNode" role="function">xmlSecIsEmptyNode ()</title>
+<indexterm><primary>xmlSecIsEmptyNode</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecIsEmptyNode               (<link linkend="xmlNode">xmlNodePtr</link> node);</programlisting>
+<para>
+Checks whethere the <parameter>node</parameter> is empty (i.e. has only whitespaces children).</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>               the node to check
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 1 if <parameter>node</parameter> is empty, 0 otherwise or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecIsEmptyString" role="function">xmlSecIsEmptyString ()</title>
+<indexterm><primary>xmlSecIsEmptyString</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecIsEmptyString             (const <link linkend="xmlChar">xmlChar</link> *str);</programlisting>
+<para>
+Checks whethere the <parameter>str</parameter> is empty (i.e. has only whitespaces children).</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>str</parameter>&nbsp;:</term>
+<listitem><simpara>                the string to check
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 1 if <parameter>str</parameter> is empty, 0 otherwise or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecGetQName" role="function">xmlSecGetQName ()</title>
+<indexterm><primary>xmlSecGetQName</primary></indexterm><programlisting><link linkend="xmlChar">xmlChar</link>*    xmlSecGetQName                  (<link linkend="xmlNode">xmlNodePtr</link> node,
+                                             const <link linkend="xmlChar">xmlChar</link> *href,
+                                             const <link linkend="xmlChar">xmlChar</link> *local);</programlisting>
 <para>
 Creates QName (prefix:local) from <parameter>href</parameter> and <parameter>local</parameter> in the context of the <parameter>node</parameter>.
-Caller is responsible for freeing returned string with xmlFree.
-</para><variablelist role="params">
-<varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>the context node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>href</parameter>&#160;:</term>
-<listitem><simpara>the QName href (can be NULL).
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>local</parameter>&#160;:</term>
-<listitem><simpara>the QName local part.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> qname or NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecPrintXmlString" role="function">
-<title>xmlSecPrintXmlString ()</title>
-<indexterm zone="xmlSecPrintXmlString"><primary>xmlSecPrintXmlString</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecPrintXmlString                (<parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *fd</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *str</parameter>);</programlisting>
+Caller is responsible for freeing returned string with xmlFree.</para>
 <para>
-Encodes the <parameter>str</parameter> (e.g. replaces '&amp;' with '&amp;amp;') and writes it to <parameter>fd</parameter>.
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>fd</parameter>&#160;:</term>
-<listitem><simpara>the file descriptor to write the XML string to
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>               the context node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>str</parameter>&#160;:</term>
-<listitem><simpara>the string
+<varlistentry><term><parameter>href</parameter>&nbsp;:</term>
+<listitem><simpara>               the QName href (can be NULL).
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> he number of bytes transmitted or a negative value if an error occurs.
+<varlistentry><term><parameter>local</parameter>&nbsp;:</term>
+<listitem><simpara>              the QName local part.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> qname or NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecIsHex" role="macro">
-<title>xmlSecIsHex()</title>
-<indexterm zone="xmlSecIsHex"><primary>xmlSecIsHex</primary></indexterm>
-<programlisting>#define             xmlSecIsHex(c)</programlisting>
+<refsect2>
+<title><anchor id="xmlSecPrintXmlString" role="function">xmlSecPrintXmlString ()</title>
+<indexterm><primary>xmlSecPrintXmlString</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecPrintXmlString            (<link linkend="FILE:CAPS">FILE</link> *fd,
+                                             const <link linkend="xmlChar">xmlChar</link> *str);</programlisting>
 <para>
-Macro. Returns 1 if <parameter>c</parameter> is a hex digit or 0 other wise.
-</para><variablelist role="params">
-<varlistentry><term><parameter>c</parameter>&#160;:</term>
-<listitem><simpara>the character.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecGetHex" role="macro">
-<title>xmlSecGetHex()</title>
-<indexterm zone="xmlSecGetHex"><primary>xmlSecGetHex</primary></indexterm>
-<programlisting>#define             xmlSecGetHex(c)</programlisting>
+Encodes the <parameter>str</parameter> (e.g. replaces '&amp;' with '&amp;amp;') and writes it to <parameter>fd</parameter>.</para>
 <para>
-Macro. Returns the hex value of the <parameter>c</parameter>.
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>c</parameter>&#160;:</term>
-<listitem><simpara>the character,
+<varlistentry><term><parameter>fd</parameter>&nbsp;:</term>
+<listitem><simpara>                the file descriptor to write the XML string to
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>str</parameter>&nbsp;:</term>
+<listitem><simpara>               the string
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> he number of bytes transmitted or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecQName2IntegerInfo" role="struct">
-<title>struct xmlSecQName2IntegerInfo</title>
-<indexterm zone="xmlSecQName2IntegerInfo"><primary>xmlSecQName2IntegerInfo</primary></indexterm>
-<programlisting>struct xmlSecQName2IntegerInfo {
+<refsect2>
+<title><anchor id="xmlSecIsHex" role="macro">xmlSecIsHex()</title>
+<indexterm><primary>xmlSecIsHex</primary></indexterm><programlisting>#define     xmlSecIsHex(c)</programlisting>
+<para>
+Macro. Returns 1 if <parameter>c</parameter> is a hex digit or 0 other wise.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>c</parameter>&nbsp;:</term>
+<listitem><simpara>                  the character.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecGetHex" role="macro">xmlSecGetHex()</title>
+<indexterm><primary>xmlSecGetHex</primary></indexterm><programlisting>#define     xmlSecGetHex(c)</programlisting>
+<para>
+Macro. Returns the hex value of the <parameter>c</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>c</parameter>&nbsp;:</term>
+<listitem><simpara>                  the character,
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecQName2IntegerInfo" role="struct">struct xmlSecQName2IntegerInfo</title>
+<indexterm><primary>xmlSecQName2IntegerInfo</primary></indexterm><programlisting>struct xmlSecQName2IntegerInfo {
     const xmlChar*      qnameHref;
     const xmlChar*      qnameLocalPart;
     int                 intValue;
 };
 </programlisting>
 <para>
-QName &lt;-&gt; Integer conversion definition.
+QName &lt;-&gt; Integer conversion definition.</para>
+<para>
+
 </para><variablelist role="struct">
-<varlistentry><term>const&#160;<link linkend="xmlChar"><type>xmlChar</type></link>&#160;*<structfield id="xmlSecQName2IntegerInfo.qnameHref">qnameHref</structfield>;</term>
-<listitem><simpara>the QName href
+<varlistentry>
+<term>const&nbsp;<link linkend="xmlChar">xmlChar</link>&nbsp;*<structfield>qnameHref</structfield>;</term>
+<listitem><simpara>          the QName href
 </simpara></listitem>
 </varlistentry>
-<varlistentry><term>const&#160;<link linkend="xmlChar"><type>xmlChar</type></link>&#160;*<structfield id="xmlSecQName2IntegerInfo.qnameLocalPart">qnameLocalPart</structfield>;</term>
-<listitem><simpara>the QName local
+<varlistentry>
+<term>const&nbsp;<link linkend="xmlChar">xmlChar</link>&nbsp;*<structfield>qnameLocalPart</structfield>;</term>
+<listitem><simpara>     the QName local
 </simpara></listitem>
 </varlistentry>
-<varlistentry><term><link linkend="int"><type>int</type></link>&#160;<structfield id="xmlSecQName2IntegerInfo.intValue">intValue</structfield>;</term>
-<listitem><simpara>the integer value
+<varlistentry>
+<term><link linkend="int">int</link>&nbsp;<structfield>intValue</structfield>;</term>
+<listitem><simpara>           the integer value
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecQName2IntegerInfoConstPtr" role="typedef">
-<title>xmlSecQName2IntegerInfoConstPtr</title>
-<indexterm zone="xmlSecQName2IntegerInfoConstPtr"><primary>xmlSecQName2IntegerInfoConstPtr</primary></indexterm>
-<programlisting>typedef const xmlSecQName2IntegerInfo *         xmlSecQName2IntegerInfoConstPtr;
+<refsect2>
+<title><anchor id="xmlSecQName2IntegerInfoConstPtr" role="typedef">xmlSecQName2IntegerInfoConstPtr</title>
+<indexterm><primary>xmlSecQName2IntegerInfoConstPtr</primary></indexterm><programlisting>typedef const xmlSecQName2IntegerInfo *         xmlSecQName2IntegerInfoConstPtr;
 </programlisting>
 <para>
-Pointer to constant QName &lt;-&gt; Integer conversion definition.
-</para></refsect2>
-<refsect2 id="xmlSecQName2IntegerGetInfo" role="function">
-<title>xmlSecQName2IntegerGetInfo ()</title>
-<indexterm zone="xmlSecQName2IntegerGetInfo"><primary>xmlSecQName2IntegerGetInfo</primary></indexterm>
-<programlisting><link linkend="xmlSecQName2IntegerInfoConst"><returnvalue>xmlSecQName2IntegerInfoConstPtr</returnvalue></link>  xmlSecQName2IntegerGetInfo
-                                                        (<parameter><link linkend="xmlSecQName2IntegerInfoConst"><type>xmlSecQName2IntegerInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> intValue</parameter>);</programlisting>
+Pointer to constant QName &lt;-&gt; Integer conversion definition.</para>
 <para>
-Maps integer <parameter>intValue</parameter> to a QName prefix.
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecQName2IntegerGetInfo" role="function">xmlSecQName2IntegerGetInfo ()</title>
+<indexterm><primary>xmlSecQName2IntegerGetInfo</primary></indexterm><programlisting><link linkend="xmlSecQName2IntegerInfoConst">xmlSecQName2IntegerInfoConstPtr</link> xmlSecQName2IntegerGetInfo
+                                            (<link linkend="xmlSecQName2IntegerInfoConst">xmlSecQName2IntegerInfoConstPtr</link> info,
+                                             <link linkend="int">int</link> intValue);</programlisting>
+<para>
+Maps integer <parameter>intValue</parameter> to a QName prefix.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>info</parameter>&#160;:</term>
-<listitem><simpara>the qname&lt;-&gt;integer mapping information.
+<varlistentry><term><parameter>info</parameter>&nbsp;:</term>
+<listitem><simpara>               the qname&lt;-&gt;integer mapping information.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>intValue</parameter>&#160;:</term>
-<listitem><simpara>the integer value.
+<varlistentry><term><parameter>intValue</parameter>&nbsp;:</term>
+<listitem><simpara>           the integer value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the QName info that is mapped to <parameter>intValue</parameter> or NULL if such value
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the QName info that is mapped to <parameter>intValue</parameter> or NULL if such value
 is not found.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecQName2IntegerGetInteger" role="function">
-<title>xmlSecQName2IntegerGetInteger ()</title>
-<indexterm zone="xmlSecQName2IntegerGetInteger"><primary>xmlSecQName2IntegerGetInteger</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecQName2IntegerGetInteger       (<parameter><link linkend="xmlSecQName2IntegerInfoConst"><type>xmlSecQName2IntegerInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *qnameHref</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *qnameLocalPart</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> *intValue</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecQName2IntegerGetInteger" role="function">xmlSecQName2IntegerGetInteger ()</title>
+<indexterm><primary>xmlSecQName2IntegerGetInteger</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecQName2IntegerGetInteger   (<link linkend="xmlSecQName2IntegerInfoConst">xmlSecQName2IntegerInfoConstPtr</link> info,
+                                             const <link linkend="xmlChar">xmlChar</link> *qnameHref,
+                                             const <link linkend="xmlChar">xmlChar</link> *qnameLocalPart,
+                                             <link linkend="int">int</link> *intValue);</programlisting>
 <para>
-Maps qname qname to an integer and returns it in <parameter>intValue</parameter>.
+Maps qname qname to an integer and returns it in <parameter>intValue</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>info</parameter>&#160;:</term>
-<listitem><simpara>the qname&lt;-&gt;integer mapping information.
+<varlistentry><term><parameter>info</parameter>&nbsp;:</term>
+<listitem><simpara>               the qname&lt;-&gt;integer mapping information.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>qnameHref</parameter>&#160;:</term>
-<listitem><simpara>the qname href value.
+<varlistentry><term><parameter>qnameHref</parameter>&nbsp;:</term>
+<listitem><simpara>          the qname href value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>qnameLocalPart</parameter>&#160;:</term>
-<listitem><simpara>the qname local part value.
+<varlistentry><term><parameter>qnameLocalPart</parameter>&nbsp;:</term>
+<listitem><simpara>     the qname local part value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>intValue</parameter>&#160;:</term>
-<listitem><simpara>the pointer to result integer value.
+<varlistentry><term><parameter>intValue</parameter>&nbsp;:</term>
+<listitem><simpara>           the pointer to result integer value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs,
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs,
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecQName2IntegerGetIntegerFromString" role="function">
-<title>xmlSecQName2IntegerGetIntegerFromString ()</title>
-<indexterm zone="xmlSecQName2IntegerGetIntegerFromString"><primary>xmlSecQName2IntegerGetIntegerFromString</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecQName2IntegerGetIntegerFromString
-                                                        (<parameter><link linkend="xmlSecQName2IntegerInfoConst"><type>xmlSecQName2IntegerInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *qname</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> *intValue</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecQName2IntegerGetIntegerFromString" role="function">xmlSecQName2IntegerGetIntegerFromString ()</title>
+<indexterm><primary>xmlSecQName2IntegerGetIntegerFromString</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecQName2IntegerGetIntegerFromString
+                                            (<link linkend="xmlSecQName2IntegerInfoConst">xmlSecQName2IntegerInfoConstPtr</link> info,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             const <link linkend="xmlChar">xmlChar</link> *qname,
+                                             <link linkend="int">int</link> *intValue);</programlisting>
 <para>
-Converts <parameter>qname</parameter> into integer in context of <parameter>node</parameter>.
+Converts <parameter>qname</parameter> into integer in context of <parameter>node</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>info</parameter>&#160;:</term>
-<listitem><simpara>the qname&lt;-&gt;integer mapping information.
+<varlistentry><term><parameter>info</parameter>&nbsp;:</term>
+<listitem><simpara>               the qname&lt;-&gt;integer mapping information.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>the pointer to node.
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>               the pointer to node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>qname</parameter>&#160;:</term>
-<listitem><simpara>the qname string.
+<varlistentry><term><parameter>qname</parameter>&nbsp;:</term>
+<listitem><simpara>              the qname string.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>intValue</parameter>&#160;:</term>
-<listitem><simpara>the pointer to result integer value.
+<varlistentry><term><parameter>intValue</parameter>&nbsp;:</term>
+<listitem><simpara>           the pointer to result integer value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs,
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs,
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecQName2IntegerGetStringFromInteger" role="function">
-<title>xmlSecQName2IntegerGetStringFromInteger ()</title>
-<indexterm zone="xmlSecQName2IntegerGetStringFromInteger"><primary>xmlSecQName2IntegerGetStringFromInteger</primary></indexterm>
-<programlisting><link linkend="xmlChar"><returnvalue>xmlChar</returnvalue></link> *           xmlSecQName2IntegerGetStringFromInteger
-                                                        (<parameter><link linkend="xmlSecQName2IntegerInfoConst"><type>xmlSecQName2IntegerInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> intValue</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecQName2IntegerGetStringFromInteger" role="function">xmlSecQName2IntegerGetStringFromInteger ()</title>
+<indexterm><primary>xmlSecQName2IntegerGetStringFromInteger</primary></indexterm><programlisting><link linkend="xmlChar">xmlChar</link>*    xmlSecQName2IntegerGetStringFromInteger
+                                            (<link linkend="xmlSecQName2IntegerInfoConst">xmlSecQName2IntegerInfoConstPtr</link> info,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="int">int</link> intValue);</programlisting>
 <para>
 Creates qname string for <parameter>intValue</parameter> in context of given <parameter>node</parameter>. Caller
-is responsible for freeing returned string with <parameter>xmlFree</parameter>.
+is responsible for freeing returned string with <parameter>xmlFree</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>info</parameter>&#160;:</term>
-<listitem><simpara>the qname&lt;-&gt;integer mapping information.
+<varlistentry><term><parameter>info</parameter>&nbsp;:</term>
+<listitem><simpara>               the qname&lt;-&gt;integer mapping information.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>the pointer to node.
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>               the pointer to node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>intValue</parameter>&#160;:</term>
-<listitem><simpara>the integer value.
+<varlistentry><term><parameter>intValue</parameter>&nbsp;:</term>
+<listitem><simpara>           the integer value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly allocated string on success or NULL if an error occurs,
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to newly allocated string on success or NULL if an error occurs,
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecQName2IntegerNodeRead" role="function">
-<title>xmlSecQName2IntegerNodeRead ()</title>
-<indexterm zone="xmlSecQName2IntegerNodeRead"><primary>xmlSecQName2IntegerNodeRead</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecQName2IntegerNodeRead         (<parameter><link linkend="xmlSecQName2IntegerInfoConst"><type>xmlSecQName2IntegerInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> *intValue</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecQName2IntegerNodeRead" role="function">xmlSecQName2IntegerNodeRead ()</title>
+<indexterm><primary>xmlSecQName2IntegerNodeRead</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecQName2IntegerNodeRead     (<link linkend="xmlSecQName2IntegerInfoConst">xmlSecQName2IntegerInfoConstPtr</link> info,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="int">int</link> *intValue);</programlisting>
 <para>
 Reads the content of <parameter>node</parameter> and converts it to an integer using mapping
-from <parameter>info</parameter>.
-</para><variablelist role="params">
-<varlistentry><term><parameter>info</parameter>&#160;:</term>
-<listitem><simpara>the qname&lt;-&gt;integer mapping information.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>the pointer to node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>intValue</parameter>&#160;:</term>
-<listitem><simpara>the pointer to result integer value.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs,
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecQName2IntegerNodeWrite" role="function">
-<title>xmlSecQName2IntegerNodeWrite ()</title>
-<indexterm zone="xmlSecQName2IntegerNodeWrite"><primary>xmlSecQName2IntegerNodeWrite</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecQName2IntegerNodeWrite        (<parameter><link linkend="xmlSecQName2IntegerInfoConst"><type>xmlSecQName2IntegerInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *nodeName</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *nodeNs</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> intValue</parameter>);</programlisting>
+from <parameter>info</parameter>.</para>
 <para>
-Creates new child node in <parameter>node</parameter> and sets its value to <parameter>intValue</parameter>.
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>info</parameter>&#160;:</term>
-<listitem><simpara>the qname&lt;-&gt;integer mapping information.
+<varlistentry><term><parameter>info</parameter>&nbsp;:</term>
+<listitem><simpara>               the qname&lt;-&gt;integer mapping information.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>the parent node.
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>               the pointer to node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>nodeName</parameter>&#160;:</term>
-<listitem><simpara>the child node name.
+<varlistentry><term><parameter>intValue</parameter>&nbsp;:</term>
+<listitem><simpara>           the pointer to result integer value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>nodeNs</parameter>&#160;:</term>
-<listitem><simpara>the child node namespace.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>intValue</parameter>&#160;:</term>
-<listitem><simpara>the integer value.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs,
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs,
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecQName2IntegerAttributeRead" role="function">
-<title>xmlSecQName2IntegerAttributeRead ()</title>
-<indexterm zone="xmlSecQName2IntegerAttributeRead"><primary>xmlSecQName2IntegerAttributeRead</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecQName2IntegerAttributeRead    (<parameter><link linkend="xmlSecQName2IntegerInfoConst"><type>xmlSecQName2IntegerInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *attrName</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> *intValue</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecQName2IntegerNodeWrite" role="function">xmlSecQName2IntegerNodeWrite ()</title>
+<indexterm><primary>xmlSecQName2IntegerNodeWrite</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecQName2IntegerNodeWrite    (<link linkend="xmlSecQName2IntegerInfoConst">xmlSecQName2IntegerInfoConstPtr</link> info,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             const <link linkend="xmlChar">xmlChar</link> *nodeName,
+                                             const <link linkend="xmlChar">xmlChar</link> *nodeNs,
+                                             <link linkend="int">int</link> intValue);</programlisting>
+<para>
+Creates new child node in <parameter>node</parameter> and sets its value to <parameter>intValue</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>info</parameter>&nbsp;:</term>
+<listitem><simpara>               the qname&lt;-&gt;integer mapping information.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>               the parent node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>nodeName</parameter>&nbsp;:</term>
+<listitem><simpara>           the child node name.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>nodeNs</parameter>&nbsp;:</term>
+<listitem><simpara>             the child node namespace.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>intValue</parameter>&nbsp;:</term>
+<listitem><simpara>           the integer value.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs,
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecQName2IntegerAttributeRead" role="function">xmlSecQName2IntegerAttributeRead ()</title>
+<indexterm><primary>xmlSecQName2IntegerAttributeRead</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecQName2IntegerAttributeRead
+                                            (<link linkend="xmlSecQName2IntegerInfoConst">xmlSecQName2IntegerInfoConstPtr</link> info,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             const <link linkend="xmlChar">xmlChar</link> *attrName,
+                                             <link linkend="int">int</link> *intValue);</programlisting>
 <para>
 Gets the value of <parameter>attrName</parameter> atrtibute from <parameter>node</parameter> and converts it to integer
-according to <parameter>info</parameter>.
+according to <parameter>info</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>info</parameter>&#160;:</term>
-<listitem><simpara>the qname&lt;-&gt;integer mapping information.
+<varlistentry><term><parameter>info</parameter>&nbsp;:</term>
+<listitem><simpara>               the qname&lt;-&gt;integer mapping information.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>the element node.
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>               the element node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>attrName</parameter>&#160;:</term>
-<listitem><simpara>the attribute name.
+<varlistentry><term><parameter>attrName</parameter>&nbsp;:</term>
+<listitem><simpara>           the attribute name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>intValue</parameter>&#160;:</term>
-<listitem><simpara>the pointer to result integer value.
+<varlistentry><term><parameter>intValue</parameter>&nbsp;:</term>
+<listitem><simpara>           the pointer to result integer value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs,
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs,
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecQName2IntegerAttributeWrite" role="function">
-<title>xmlSecQName2IntegerAttributeWrite ()</title>
-<indexterm zone="xmlSecQName2IntegerAttributeWrite"><primary>xmlSecQName2IntegerAttributeWrite</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecQName2IntegerAttributeWrite   (<parameter><link linkend="xmlSecQName2IntegerInfoConst"><type>xmlSecQName2IntegerInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *attrName</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> intValue</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecQName2IntegerAttributeWrite" role="function">xmlSecQName2IntegerAttributeWrite ()</title>
+<indexterm><primary>xmlSecQName2IntegerAttributeWrite</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecQName2IntegerAttributeWrite
+                                            (<link linkend="xmlSecQName2IntegerInfoConst">xmlSecQName2IntegerInfoConstPtr</link> info,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             const <link linkend="xmlChar">xmlChar</link> *attrName,
+                                             <link linkend="int">int</link> intValue);</programlisting>
 <para>
 Converts <parameter>intValue</parameter> to a qname and sets it to the value of
-attribute <parameter>attrName</parameter> in <parameter>node</parameter>.
-</para><variablelist role="params">
-<varlistentry><term><parameter>info</parameter>&#160;:</term>
-<listitem><simpara>the qname&lt;-&gt;integer mapping information.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>the parent node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>attrName</parameter>&#160;:</term>
-<listitem><simpara>the name of attribute.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>intValue</parameter>&#160;:</term>
-<listitem><simpara>the integer value.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs,
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecQName2IntegerDebugDump" role="function">
-<title>xmlSecQName2IntegerDebugDump ()</title>
-<indexterm zone="xmlSecQName2IntegerDebugDump"><primary>xmlSecQName2IntegerDebugDump</primary></indexterm>
-<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecQName2IntegerDebugDump        (<parameter><link linkend="xmlSecQName2IntegerInfoConst"><type>xmlSecQName2IntegerInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> intValue</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
-                                                         <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);</programlisting>
+attribute <parameter>attrName</parameter> in <parameter>node</parameter>.</para>
 <para>
-Prints <parameter>intValue</parameter> into <parameter>output</parameter>.
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>info</parameter>&#160;:</term>
-<listitem><simpara>the qname&lt;-&gt;integer mapping information.
+<varlistentry><term><parameter>info</parameter>&nbsp;:</term>
+<listitem><simpara>               the qname&lt;-&gt;integer mapping information.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>intValue</parameter>&#160;:</term>
-<listitem><simpara>the integer value.
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>               the parent node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara>the value name to print.
+<varlistentry><term><parameter>attrName</parameter>&nbsp;:</term>
+<listitem><simpara>           the name of attribute.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>the pointer to output FILE.
+<varlistentry><term><parameter>intValue</parameter>&nbsp;:</term>
+<listitem><simpara>           the integer value.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs,
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecQName2IntegerDebugXmlDump" role="function">
-<title>xmlSecQName2IntegerDebugXmlDump ()</title>
-<indexterm zone="xmlSecQName2IntegerDebugXmlDump"><primary>xmlSecQName2IntegerDebugXmlDump</primary></indexterm>
-<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecQName2IntegerDebugXmlDump     (<parameter><link linkend="xmlSecQName2IntegerInfoConst"><type>xmlSecQName2IntegerInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> intValue</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
-                                                         <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecQName2IntegerDebugDump" role="function">xmlSecQName2IntegerDebugDump ()</title>
+<indexterm><primary>xmlSecQName2IntegerDebugDump</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecQName2IntegerDebugDump    (<link linkend="xmlSecQName2IntegerInfoConst">xmlSecQName2IntegerInfoConstPtr</link> info,
+                                             <link linkend="int">int</link> intValue,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="FILE:CAPS">FILE</link> *output);</programlisting>
 <para>
-Prints <parameter>intValue</parameter> into <parameter>output</parameter> in XML format.
+Prints <parameter>intValue</parameter> into <parameter>output</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>info</parameter>&#160;:</term>
-<listitem><simpara>the qname&lt;-&gt;integer mapping information.
+<varlistentry><term><parameter>info</parameter>&nbsp;:</term>
+<listitem><simpara>               the qname&lt;-&gt;integer mapping information.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>intValue</parameter>&#160;:</term>
-<listitem><simpara>the integer value.
+<varlistentry><term><parameter>intValue</parameter>&nbsp;:</term>
+<listitem><simpara>           the integer value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara>the value name to print.
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>               the value name to print.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>the pointer to output FILE.
+<varlistentry><term><parameter>output</parameter>&nbsp;:</term>
+<listitem><simpara>             the pointer to output FILE.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecBitMask" role="typedef">
-<title>xmlSecBitMask</title>
-<indexterm zone="xmlSecBitMask"><primary>xmlSecBitMask</primary></indexterm>
-<programlisting>typedef unsigned int                                    xmlSecBitMask;
+<refsect2>
+<title><anchor id="xmlSecQName2IntegerDebugXmlDump" role="function">xmlSecQName2IntegerDebugXmlDump ()</title>
+<indexterm><primary>xmlSecQName2IntegerDebugXmlDump</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecQName2IntegerDebugXmlDump (<link linkend="xmlSecQName2IntegerInfoConst">xmlSecQName2IntegerInfoConstPtr</link> info,
+                                             <link linkend="int">int</link> intValue,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="FILE:CAPS">FILE</link> *output);</programlisting>
+<para>
+Prints <parameter>intValue</parameter> into <parameter>output</parameter> in XML format.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>info</parameter>&nbsp;:</term>
+<listitem><simpara>               the qname&lt;-&gt;integer mapping information.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>intValue</parameter>&nbsp;:</term>
+<listitem><simpara>           the integer value.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>               the value name to print.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>output</parameter>&nbsp;:</term>
+<listitem><simpara>             the pointer to output FILE.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecBitMask" role="typedef">xmlSecBitMask</title>
+<indexterm><primary>xmlSecBitMask</primary></indexterm><programlisting>typedef unsigned int                                    xmlSecBitMask;
 </programlisting>
 <para>
-Bitmask datatype.
+Bitmask datatype.</para>
+<para>
+
 </para></refsect2>
-<refsect2 id="xmlSecQName2BitMaskInfo" role="struct">
-<title>struct xmlSecQName2BitMaskInfo</title>
-<indexterm zone="xmlSecQName2BitMaskInfo"><primary>xmlSecQName2BitMaskInfo</primary></indexterm>
-<programlisting>struct xmlSecQName2BitMaskInfo {
+<refsect2>
+<title><anchor id="xmlSecQName2BitMaskInfo" role="struct">struct xmlSecQName2BitMaskInfo</title>
+<indexterm><primary>xmlSecQName2BitMaskInfo</primary></indexterm><programlisting>struct xmlSecQName2BitMaskInfo {
     const xmlChar*      qnameHref;
     const xmlChar*      qnameLocalPart;
     xmlSecBitMask       mask;
 };
 </programlisting>
 <para>
-QName &lt;-&gt; Bitmask conversion definition.
+QName &lt;-&gt; Bitmask conversion definition.</para>
+<para>
+
 </para><variablelist role="struct">
-<varlistentry><term>const&#160;<link linkend="xmlChar"><type>xmlChar</type></link>&#160;*<structfield id="xmlSecQName2BitMaskInfo.qnameHref">qnameHref</structfield>;</term>
-<listitem><simpara>the QName href
+<varlistentry>
+<term>const&nbsp;<link linkend="xmlChar">xmlChar</link>&nbsp;*<structfield>qnameHref</structfield>;</term>
+<listitem><simpara>          the QName href
 </simpara></listitem>
 </varlistentry>
-<varlistentry><term>const&#160;<link linkend="xmlChar"><type>xmlChar</type></link>&#160;*<structfield id="xmlSecQName2BitMaskInfo.qnameLocalPart">qnameLocalPart</structfield>;</term>
-<listitem><simpara>the QName local
+<varlistentry>
+<term>const&nbsp;<link linkend="xmlChar">xmlChar</link>&nbsp;*<structfield>qnameLocalPart</structfield>;</term>
+<listitem><simpara>     the QName local
 </simpara></listitem>
 </varlistentry>
-<varlistentry><term><link linkend="xmlSecBitMask"><type>xmlSecBitMask</type></link>&#160;<structfield id="xmlSecQName2BitMaskInfo.mask">mask</structfield>;</term>
-<listitem><simpara>the bitmask value
+<varlistentry>
+<term><link linkend="xmlSecBitMask">xmlSecBitMask</link>&nbsp;<structfield>mask</structfield>;</term>
+<listitem><simpara>               the bitmask value
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecQName2BitMaskInfoConstPtr" role="typedef">
-<title>xmlSecQName2BitMaskInfoConstPtr</title>
-<indexterm zone="xmlSecQName2BitMaskInfoConstPtr"><primary>xmlSecQName2BitMaskInfoConstPtr</primary></indexterm>
-<programlisting>typedef const xmlSecQName2BitMaskInfo*          xmlSecQName2BitMaskInfoConstPtr;
+<refsect2>
+<title><anchor id="xmlSecQName2BitMaskInfoConstPtr" role="typedef">xmlSecQName2BitMaskInfoConstPtr</title>
+<indexterm><primary>xmlSecQName2BitMaskInfoConstPtr</primary></indexterm><programlisting>typedef const xmlSecQName2BitMaskInfo*          xmlSecQName2BitMaskInfoConstPtr;
 </programlisting>
 <para>
-Pointer to constant QName &lt;-&gt; Bitmask conversion definition.
+Pointer to constant QName &lt;-&gt; Bitmask conversion definition.</para>
+<para>
+
 </para></refsect2>
-<refsect2 id="xmlSecQName2BitMaskGetInfo" role="function">
-<title>xmlSecQName2BitMaskGetInfo ()</title>
-<indexterm zone="xmlSecQName2BitMaskGetInfo"><primary>xmlSecQName2BitMaskGetInfo</primary></indexterm>
-<programlisting><link linkend="xmlSecQName2BitMaskInfoConst"><returnvalue>xmlSecQName2BitMaskInfoConstPtr</returnvalue></link>  xmlSecQName2BitMaskGetInfo
-                                                        (<parameter><link linkend="xmlSecQName2BitMaskInfoConst"><type>xmlSecQName2BitMaskInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="xmlSecBitMask"><type>xmlSecBitMask</type></link> mask</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecQName2BitMaskGetInfo" role="function">xmlSecQName2BitMaskGetInfo ()</title>
+<indexterm><primary>xmlSecQName2BitMaskGetInfo</primary></indexterm><programlisting><link linkend="xmlSecQName2BitMaskInfoConst">xmlSecQName2BitMaskInfoConstPtr</link> xmlSecQName2BitMaskGetInfo
+                                            (<link linkend="xmlSecQName2BitMaskInfoConst">xmlSecQName2BitMaskInfoConstPtr</link> info,
+                                             <link linkend="xmlSecBitMask">xmlSecBitMask</link> mask);</programlisting>
 <para>
-Converts <parameter>mask</parameter> to qname.
+Converts <parameter>mask</parameter> to qname.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>info</parameter>&#160;:</term>
-<listitem><simpara>the qname&lt;-&gt;bit mask mapping information.
+<varlistentry><term><parameter>info</parameter>&nbsp;:</term>
+<listitem><simpara>               the qname&lt;-&gt;bit mask mapping information.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>mask</parameter>&#160;:</term>
-<listitem><simpara>the bit mask.
+<varlistentry><term><parameter>mask</parameter>&nbsp;:</term>
+<listitem><simpara>               the bit mask.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the qname info for <parameter>mask</parameter> or NULL if mask is unknown.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to the qname info for <parameter>mask</parameter> or NULL if mask is unknown.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecQName2BitMaskGetBitMask" role="function">
-<title>xmlSecQName2BitMaskGetBitMask ()</title>
-<indexterm zone="xmlSecQName2BitMaskGetBitMask"><primary>xmlSecQName2BitMaskGetBitMask</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecQName2BitMaskGetBitMask       (<parameter><link linkend="xmlSecQName2BitMaskInfoConst"><type>xmlSecQName2BitMaskInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *qnameLocalPart</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *qnameHref</parameter>,
-                                                         <parameter><link linkend="xmlSecBitMask"><type>xmlSecBitMask</type></link> *mask</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecQName2BitMaskGetBitMask" role="function">xmlSecQName2BitMaskGetBitMask ()</title>
+<indexterm><primary>xmlSecQName2BitMaskGetBitMask</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecQName2BitMaskGetBitMask   (<link linkend="xmlSecQName2BitMaskInfoConst">xmlSecQName2BitMaskInfoConstPtr</link> info,
+                                             const <link linkend="xmlChar">xmlChar</link> *qnameLocalPart,
+                                             const <link linkend="xmlChar">xmlChar</link> *qnameHref,
+                                             <link linkend="xmlSecBitMask">xmlSecBitMask</link> *mask);</programlisting>
 <para>
-Converts <parameter>qnameLocalPart</parameter> to <parameter>mask</parameter>.
+Converts <parameter>qnameLocalPart</parameter> to <parameter>mask</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>info</parameter>&#160;:</term>
-<listitem><simpara>the qname&lt;-&gt;bit mask mapping information.
+<varlistentry><term><parameter>info</parameter>&nbsp;:</term>
+<listitem><simpara>               the qname&lt;-&gt;bit mask mapping information.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>qnameLocalPart</parameter>&#160;:</term>
-<listitem><simpara>the qname LocalPart value.
+<varlistentry><term><parameter>qnameLocalPart</parameter>&nbsp;:</term>
+<listitem><simpara>     the qname LocalPart value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>qnameHref</parameter>&#160;:</term>
-<listitem><simpara>the qname Href value.
+<varlistentry><term><parameter>qnameHref</parameter>&nbsp;:</term>
+<listitem><simpara>          the qname Href value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>mask</parameter>&#160;:</term>
-<listitem><simpara>the pointer to result mask.
+<varlistentry><term><parameter>mask</parameter>&nbsp;:</term>
+<listitem><simpara>               the pointer to result mask.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs,
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs,
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecQName2BitMaskNodesRead" role="function">
-<title>xmlSecQName2BitMaskNodesRead ()</title>
-<indexterm zone="xmlSecQName2BitMaskNodesRead"><primary>xmlSecQName2BitMaskNodesRead</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecQName2BitMaskNodesRead        (<parameter><link linkend="xmlSecQName2BitMaskInfoConst"><type>xmlSecQName2BitMaskInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> *node</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *nodeName</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *nodeNs</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> stopOnUnknown</parameter>,
-                                                         <parameter><link linkend="xmlSecBitMask"><type>xmlSecBitMask</type></link> *mask</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecQName2BitMaskNodesRead" role="function">xmlSecQName2BitMaskNodesRead ()</title>
+<indexterm><primary>xmlSecQName2BitMaskNodesRead</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecQName2BitMaskNodesRead    (<link linkend="xmlSecQName2BitMaskInfoConst">xmlSecQName2BitMaskInfoConstPtr</link> info,
+                                             <link linkend="xmlNode">xmlNodePtr</link> *node,
+                                             const <link linkend="xmlChar">xmlChar</link> *nodeName,
+                                             const <link linkend="xmlChar">xmlChar</link> *nodeNs,
+                                             <link linkend="int">int</link> stopOnUnknown,
+                                             <link linkend="xmlSecBitMask">xmlSecBitMask</link> *mask);</programlisting>
 <para>
 Reads &lt;<parameter>nodeNs</parameter>:<parameter>nodeName</parameter>&gt; elements and puts the result bit mask
 into <parameter>mask</parameter>. When function exits, <parameter>node</parameter> points to the first element node
-after all the &lt;<parameter>nodeNs</parameter>:<parameter>nodeName</parameter>&gt; elements.
+after all the &lt;<parameter>nodeNs</parameter>:<parameter>nodeName</parameter>&gt; elements.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>info</parameter>&#160;:</term>
-<listitem><simpara>the qname&lt;-&gt;bit mask mapping information.
+<varlistentry><term><parameter>info</parameter>&nbsp;:</term>
+<listitem><simpara>               the qname&lt;-&gt;bit mask mapping information.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>the start.
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>               the start.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>nodeName</parameter>&#160;:</term>
-<listitem><simpara>the mask nodes name.
+<varlistentry><term><parameter>nodeName</parameter>&nbsp;:</term>
+<listitem><simpara>           the mask nodes name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>nodeNs</parameter>&#160;:</term>
-<listitem><simpara>the mask nodes namespace.
+<varlistentry><term><parameter>nodeNs</parameter>&nbsp;:</term>
+<listitem><simpara>             the mask nodes namespace.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>stopOnUnknown</parameter>&#160;:</term>
-<listitem><simpara>if this flag is set then function exits if unknown
+<varlistentry><term><parameter>stopOnUnknown</parameter>&nbsp;:</term>
+<listitem><simpara>      if this flag is set then function exits if unknown
                      value was found.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>mask</parameter>&#160;:</term>
-<listitem><simpara>the pointer to result mask.
+<varlistentry><term><parameter>mask</parameter>&nbsp;:</term>
+<listitem><simpara>               the pointer to result mask.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs,
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs,
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecQName2BitMaskGetBitMaskFromString" role="function">
-<title>xmlSecQName2BitMaskGetBitMaskFromString ()</title>
-<indexterm zone="xmlSecQName2BitMaskGetBitMaskFromString"><primary>xmlSecQName2BitMaskGetBitMaskFromString</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecQName2BitMaskGetBitMaskFromString
-                                                        (<parameter><link linkend="xmlSecQName2BitMaskInfoConst"><type>xmlSecQName2BitMaskInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *qname</parameter>,
-                                                         <parameter><link linkend="xmlSecBitMask"><type>xmlSecBitMask</type></link> *mask</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecQName2BitMaskGetBitMaskFromString" role="function">xmlSecQName2BitMaskGetBitMaskFromString ()</title>
+<indexterm><primary>xmlSecQName2BitMaskGetBitMaskFromString</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecQName2BitMaskGetBitMaskFromString
+                                            (<link linkend="xmlSecQName2BitMaskInfoConst">xmlSecQName2BitMaskInfoConstPtr</link> info,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             const <link linkend="xmlChar">xmlChar</link> *qname,
+                                             <link linkend="xmlSecBitMask">xmlSecBitMask</link> *mask);</programlisting>
 <para>
-Converts <parameter>qname</parameter> into integer in context of <parameter>node</parameter>.
+Converts <parameter>qname</parameter> into integer in context of <parameter>node</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>info</parameter>&#160;:</term>
-<listitem><simpara>the qname&lt;-&gt;integer mapping information.
+<varlistentry><term><parameter>info</parameter>&nbsp;:</term>
+<listitem><simpara>               the qname&lt;-&gt;integer mapping information.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>the pointer to node.
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>               the pointer to node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>qname</parameter>&#160;:</term>
-<listitem><simpara>the qname string.
+<varlistentry><term><parameter>qname</parameter>&nbsp;:</term>
+<listitem><simpara>              the qname string.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>mask</parameter>&#160;:</term>
-<listitem><simpara>the pointer to result msk value.
+<varlistentry><term><parameter>mask</parameter>&nbsp;:</term>
+<listitem><simpara>               the pointer to result msk value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs,
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs,
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecQName2BitMaskGetStringFromBitMask" role="function">
-<title>xmlSecQName2BitMaskGetStringFromBitMask ()</title>
-<indexterm zone="xmlSecQName2BitMaskGetStringFromBitMask"><primary>xmlSecQName2BitMaskGetStringFromBitMask</primary></indexterm>
-<programlisting><link linkend="xmlChar"><returnvalue>xmlChar</returnvalue></link> *           xmlSecQName2BitMaskGetStringFromBitMask
-                                                        (<parameter><link linkend="xmlSecQName2BitMaskInfoConst"><type>xmlSecQName2BitMaskInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter><link linkend="xmlSecBitMask"><type>xmlSecBitMask</type></link> mask</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecQName2BitMaskGetStringFromBitMask" role="function">xmlSecQName2BitMaskGetStringFromBitMask ()</title>
+<indexterm><primary>xmlSecQName2BitMaskGetStringFromBitMask</primary></indexterm><programlisting><link linkend="xmlChar">xmlChar</link>*    xmlSecQName2BitMaskGetStringFromBitMask
+                                            (<link linkend="xmlSecQName2BitMaskInfoConst">xmlSecQName2BitMaskInfoConstPtr</link> info,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlSecBitMask">xmlSecBitMask</link> mask);</programlisting>
 <para>
 Creates qname string for <parameter>mask</parameter> in context of given <parameter>node</parameter>. Caller
-is responsible for freeing returned string with <parameter>xmlFree</parameter>.
+is responsible for freeing returned string with <parameter>xmlFree</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>info</parameter>&#160;:</term>
-<listitem><simpara>the qname&lt;-&gt;integer mapping information.
+<varlistentry><term><parameter>info</parameter>&nbsp;:</term>
+<listitem><simpara>               the qname&lt;-&gt;integer mapping information.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>the pointer to node.
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>               the pointer to node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>mask</parameter>&#160;:</term>
-<listitem><simpara>the mask.
+<varlistentry><term><parameter>mask</parameter>&nbsp;:</term>
+<listitem><simpara>               the mask.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly allocated string on success or NULL if an error occurs,
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to newly allocated string on success or NULL if an error occurs,
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecQName2BitMaskNodesWrite" role="function">
-<title>xmlSecQName2BitMaskNodesWrite ()</title>
-<indexterm zone="xmlSecQName2BitMaskNodesWrite"><primary>xmlSecQName2BitMaskNodesWrite</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecQName2BitMaskNodesWrite       (<parameter><link linkend="xmlSecQName2BitMaskInfoConst"><type>xmlSecQName2BitMaskInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *nodeName</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *nodeNs</parameter>,
-                                                         <parameter><link linkend="xmlSecBitMask"><type>xmlSecBitMask</type></link> mask</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecQName2BitMaskNodesWrite" role="function">xmlSecQName2BitMaskNodesWrite ()</title>
+<indexterm><primary>xmlSecQName2BitMaskNodesWrite</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecQName2BitMaskNodesWrite   (<link linkend="xmlSecQName2BitMaskInfoConst">xmlSecQName2BitMaskInfoConstPtr</link> info,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             const <link linkend="xmlChar">xmlChar</link> *nodeName,
+                                             const <link linkend="xmlChar">xmlChar</link> *nodeNs,
+                                             <link linkend="xmlSecBitMask">xmlSecBitMask</link> mask);</programlisting>
 <para>
-Writes &lt;<parameter>nodeNs</parameter>:<parameter>nodeName</parameter>&gt; elemnts with values from <parameter>mask</parameter> to <parameter>node</parameter>.
+Writes &lt;<parameter>nodeNs</parameter>:<parameter>nodeName</parameter>&gt; elemnts with values from <parameter>mask</parameter> to <parameter>node</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>info</parameter>&#160;:</term>
-<listitem><simpara>the qname&lt;-&gt;bit mask mapping information.
+<varlistentry><term><parameter>info</parameter>&nbsp;:</term>
+<listitem><simpara>               the qname&lt;-&gt;bit mask mapping information.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>the parent element for mask nodes.
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>               the parent element for mask nodes.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>nodeName</parameter>&#160;:</term>
-<listitem><simpara>the mask nodes name.
+<varlistentry><term><parameter>nodeName</parameter>&nbsp;:</term>
+<listitem><simpara>           the mask nodes name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>nodeNs</parameter>&#160;:</term>
-<listitem><simpara>the mask nodes namespace.
+<varlistentry><term><parameter>nodeNs</parameter>&nbsp;:</term>
+<listitem><simpara>             the mask nodes namespace.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>mask</parameter>&#160;:</term>
-<listitem><simpara>the bit mask.
+<varlistentry><term><parameter>mask</parameter>&nbsp;:</term>
+<listitem><simpara>               the bit mask.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs,
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs,
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecQName2BitMaskDebugDump" role="function">
-<title>xmlSecQName2BitMaskDebugDump ()</title>
-<indexterm zone="xmlSecQName2BitMaskDebugDump"><primary>xmlSecQName2BitMaskDebugDump</primary></indexterm>
-<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecQName2BitMaskDebugDump        (<parameter><link linkend="xmlSecQName2BitMaskInfoConst"><type>xmlSecQName2BitMaskInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="xmlSecBitMask"><type>xmlSecBitMask</type></link> mask</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
-                                                         <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecQName2BitMaskDebugDump" role="function">xmlSecQName2BitMaskDebugDump ()</title>
+<indexterm><primary>xmlSecQName2BitMaskDebugDump</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecQName2BitMaskDebugDump    (<link linkend="xmlSecQName2BitMaskInfoConst">xmlSecQName2BitMaskInfoConstPtr</link> info,
+                                             <link linkend="xmlSecBitMask">xmlSecBitMask</link> mask,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="FILE:CAPS">FILE</link> *output);</programlisting>
 <para>
-Prints debug information about <parameter>mask</parameter> to <parameter>output</parameter>.
+Prints debug information about <parameter>mask</parameter> to <parameter>output</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>info</parameter>&#160;:</term>
-<listitem><simpara>the qname&lt;-&gt;bit mask mapping information.
+<varlistentry><term><parameter>info</parameter>&nbsp;:</term>
+<listitem><simpara>               the qname&lt;-&gt;bit mask mapping information.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>mask</parameter>&#160;:</term>
-<listitem><simpara>the bit mask.
+<varlistentry><term><parameter>mask</parameter>&nbsp;:</term>
+<listitem><simpara>               the bit mask.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara>the value name to print.
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>               the value name to print.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>the pointer to output FILE.
+<varlistentry><term><parameter>output</parameter>&nbsp;:</term>
+<listitem><simpara>             the pointer to output FILE.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecQName2BitMaskDebugXmlDump" role="function">
-<title>xmlSecQName2BitMaskDebugXmlDump ()</title>
-<indexterm zone="xmlSecQName2BitMaskDebugXmlDump"><primary>xmlSecQName2BitMaskDebugXmlDump</primary></indexterm>
-<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecQName2BitMaskDebugXmlDump     (<parameter><link linkend="xmlSecQName2BitMaskInfoConst"><type>xmlSecQName2BitMaskInfoConstPtr</type></link> info</parameter>,
-                                                         <parameter><link linkend="xmlSecBitMask"><type>xmlSecBitMask</type></link> mask</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
-                                                         <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecQName2BitMaskDebugXmlDump" role="function">xmlSecQName2BitMaskDebugXmlDump ()</title>
+<indexterm><primary>xmlSecQName2BitMaskDebugXmlDump</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecQName2BitMaskDebugXmlDump (<link linkend="xmlSecQName2BitMaskInfoConst">xmlSecQName2BitMaskInfoConstPtr</link> info,
+                                             <link linkend="xmlSecBitMask">xmlSecBitMask</link> mask,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="FILE:CAPS">FILE</link> *output);</programlisting>
 <para>
-Prints debug information about <parameter>mask</parameter> to <parameter>output</parameter> in XML format.
+Prints debug information about <parameter>mask</parameter> to <parameter>output</parameter> in XML format.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>info</parameter>&#160;:</term>
-<listitem><simpara>the qname&lt;-&gt;bit mask mapping information.
+<varlistentry><term><parameter>info</parameter>&nbsp;:</term>
+<listitem><simpara>               the qname&lt;-&gt;bit mask mapping information.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>mask</parameter>&#160;:</term>
-<listitem><simpara>the bit mask.
+<varlistentry><term><parameter>mask</parameter>&nbsp;:</term>
+<listitem><simpara>               the bit mask.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara>the value name to print.
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>               the value name to print.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>the pointer to output FILE.
+<varlistentry><term><parameter>output</parameter>&nbsp;:</term>
+<listitem><simpara>             the pointer to output FILE.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 
 </refsect1>
+
+
+
 
 </refentry>

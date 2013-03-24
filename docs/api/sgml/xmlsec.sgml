@@ -1,221 +1,249 @@
 <refentry id="xmlsec-xmlsec">
 <refmeta>
-<refentrytitle role="top_of_page" id="xmlsec-xmlsec.top_of_page">xmlsec</refentrytitle>
+<refentrytitle role="top_of_page">xmlsec</refentrytitle>
 <manvolnum>3</manvolnum>
-<refmiscinfo>
-  XMLSEC Library
-</refmiscinfo>
+<refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
+
 <refnamediv>
 <refname>xmlsec</refname>
 <refpurpose>Utility functions.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="xmlsec-xmlsec.synopsis" role="synopsis">
+<refsynopsisdiv role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
-<synopsis>typedef             <link linkend="xmlSec">xmlSecPtr</link>;
-#define             <link linkend="xmlSecSize">xmlSecSize</link>
-#define             <link linkend="XMLSEC-SIZE-BAD-CAST:CAPS">XMLSEC_SIZE_BAD_CAST</link>                (val)
-#define             <link linkend="xmlSecByte">xmlSecByte</link>
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecInit">xmlSecInit</link>                          (<parameter><type>void</type></parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecShutdown">xmlSecShutdown</link>                      (<parameter><type>void</type></parameter>);
-#define             <link linkend="xmlSecCheckVersionExact">xmlSecCheckVersionExact</link>
-#define             <link linkend="xmlSecCheckVersion">xmlSecCheckVersion</link>
-enum                <link linkend="xmlSecCheckVersionMode">xmlSecCheckVersionMode</link>;
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecCheckVersionExt">xmlSecCheckVersionExt</link>               (<parameter><link linkend="int"><type>int</type></link> major</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> minor</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> subminor</parameter>,
-                                                         <parameter><link linkend="xmlSecCheckVersionMode"><type>xmlSecCheckVersionMode</type></link> mode</parameter>);
-#define             <link linkend="ATTRIBUTE-UNUSED:CAPS">ATTRIBUTE_UNUSED</link>
-#define             <link linkend="XMLSEC-PTR-TO-FUNC-IMPL:CAPS">XMLSEC_PTR_TO_FUNC_IMPL</link>             (func_type)
-#define             <link linkend="XMLSEC-PTR-TO-FUNC:CAPS">XMLSEC_PTR_TO_FUNC</link>                  (func_type,
-                                                         ptr)
-#define             <link linkend="XMLSEC-FUNC-TO-PTR:CAPS">XMLSEC_FUNC_TO_PTR</link>                  (func_type,
-                                                         func)
+<synopsis>
+
+
+
+typedef     <link linkend="xmlSec">xmlSecPtr</link>;
+#define     <link linkend="xmlSecSize">xmlSecSize</link>
+#define     <link linkend="XMLSEC-SIZE-BAD-CAST:CAPS">XMLSEC_SIZE_BAD_CAST</link>            (val)
+#define     <link linkend="xmlSecByte">xmlSecByte</link>
+<link linkend="int">int</link>         <link linkend="xmlSecInit">xmlSecInit</link>                      (void);
+<link linkend="int">int</link>         <link linkend="xmlSecShutdown">xmlSecShutdown</link>                  (void);
+#define     <link linkend="xmlSecCheckVersionExact">xmlSecCheckVersionExact</link>         ()
+#define     <link linkend="xmlSecCheckVersion">xmlSecCheckVersion</link>              ()
+enum        <link linkend="xmlSecCheckVersionMode">xmlSecCheckVersionMode</link>;
+<link linkend="int">int</link>         <link linkend="xmlSecCheckVersionExt">xmlSecCheckVersionExt</link>           (<link linkend="int">int</link> major,
+                                             <link linkend="int">int</link> minor,
+                                             <link linkend="int">int</link> subminor,
+                                             <link linkend="xmlSecCheckVersionMode">xmlSecCheckVersionMode</link> mode);
+#define     <link linkend="ATTRIBUTE-UNUSED:CAPS">ATTRIBUTE_UNUSED</link>
+#define     <link linkend="XMLSEC-PTR-TO-FUNC-IMPL:CAPS">XMLSEC_PTR_TO_FUNC_IMPL</link>         (func_type)
+#define     <link linkend="XMLSEC-PTR-TO-FUNC:CAPS">XMLSEC_PTR_TO_FUNC</link>              (func_type, ptr)
+#define     <link linkend="XMLSEC-FUNC-TO-PTR:CAPS">XMLSEC_FUNC_TO_PTR</link>              (func_type, func)
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 id="xmlsec-xmlsec.description" role="desc">
+
+
+
+
+
+
+
+
+<refsect1 role="desc">
 <title role="desc.title">Description</title>
 <para>
 Utility functions.
 </para>
 </refsect1>
-<refsect1 id="xmlsec-xmlsec.details" role="details">
+
+<refsect1 role="details">
 <title role="details.title">Details</title>
-<refsect2 id="xmlSecPtr" role="typedef">
-<title>xmlSecPtr</title>
-<indexterm zone="xmlSecPtr"><primary>xmlSecPtr</primary></indexterm>
-<programlisting>typedef void*                                   xmlSecPtr;
+<refsect2>
+<title><anchor id="xmlSecPtr" role="typedef">xmlSecPtr</title>
+<indexterm><primary>xmlSecPtr</primary></indexterm><programlisting>typedef void*                                   xmlSecPtr;
 </programlisting>
 <para>
-Void pointer.
+Void pointer.</para>
+<para>
+
 </para></refsect2>
-<refsect2 id="xmlSecSize" role="macro">
-<title>xmlSecSize</title>
-<indexterm zone="xmlSecSize"><primary>xmlSecSize</primary></indexterm>
-<programlisting>#define             xmlSecSize</programlisting>
+<refsect2>
+<title><anchor id="xmlSecSize" role="macro">xmlSecSize</title>
+<indexterm><primary>xmlSecSize</primary></indexterm><programlisting>#define     xmlSecSize</programlisting>
 <para>
 Size of something. Should be typedef instead of define
-but it will break ABI (todo).
+but it will break ABI (todo).</para>
+<para>
+
 </para></refsect2>
-<refsect2 id="XMLSEC-SIZE-BAD-CAST:CAPS" role="macro">
-<title>XMLSEC_SIZE_BAD_CAST()</title>
-<indexterm zone="XMLSEC-SIZE-BAD-CAST:CAPS"><primary>XMLSEC_SIZE_BAD_CAST</primary></indexterm>
-<programlisting>#define XMLSEC_SIZE_BAD_CAST(val)               ((xmlSecSize)(val))
+<refsect2>
+<title><anchor id="XMLSEC-SIZE-BAD-CAST:CAPS" role="macro">XMLSEC_SIZE_BAD_CAST()</title>
+<indexterm><primary>XMLSEC_SIZE_BAD_CAST</primary></indexterm><programlisting>#define XMLSEC_SIZE_BAD_CAST(val)               ((xmlSecSize)(val))
 </programlisting>
 <para>
-Bad cast to xmlSecSize
+Bad cast to xmlSecSize</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>val</parameter>&#160;:</term>
-<listitem><simpara>the value to cast
+<varlistentry><term><parameter>val</parameter>&nbsp;:</term>
+<listitem><simpara>        the value to cast
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecByte" role="macro">
-<title>xmlSecByte</title>
-<indexterm zone="xmlSecByte"><primary>xmlSecByte</primary></indexterm>
-<programlisting>#define xmlSecByte                              unsigned char
+<refsect2>
+<title><anchor id="xmlSecByte" role="macro">xmlSecByte</title>
+<indexterm><primary>xmlSecByte</primary></indexterm><programlisting>#define xmlSecByte                              unsigned char
 </programlisting>
 <para>
 One byte. Should be typedef instead of define
-but it will break ABI (todo).
+but it will break ABI (todo).</para>
+<para>
+
 </para></refsect2>
-<refsect2 id="xmlSecInit" role="function">
-<title>xmlSecInit ()</title>
-<indexterm zone="xmlSecInit"><primary>xmlSecInit</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecInit                          (<parameter><type>void</type></parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecInit" role="function">xmlSecInit ()</title>
+<indexterm><primary>xmlSecInit</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecInit                      (void);</programlisting>
 <para>
 Initializes XML Security Library. The depended libraries
-(LibXML and LibXSLT) must be initialized before.
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecShutdown" role="function">
-<title>xmlSecShutdown ()</title>
-<indexterm zone="xmlSecShutdown"><primary>xmlSecShutdown</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecShutdown                      (<parameter><type>void</type></parameter>);</programlisting>
+(LibXML and LibXSLT) must be initialized before.</para>
 <para>
-Clean ups the XML Security Library.
+
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecCheckVersionExact" role="macro">
-<title>xmlSecCheckVersionExact</title>
-<indexterm zone="xmlSecCheckVersionExact"><primary>xmlSecCheckVersionExact</primary></indexterm>
-<programlisting>#define             xmlSecCheckVersionExact()</programlisting>
+<refsect2>
+<title><anchor id="xmlSecShutdown" role="function">xmlSecShutdown ()</title>
+<indexterm><primary>xmlSecShutdown</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecShutdown                  (void);</programlisting>
+<para>
+Clean ups the XML Security Library.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecCheckVersionExact" role="macro">xmlSecCheckVersionExact()</title>
+<indexterm><primary>xmlSecCheckVersionExact</primary></indexterm><programlisting>#define     xmlSecCheckVersionExact()</programlisting>
 <para>
 Macro. Returns 1 if the loaded xmlsec library version exactly matches
 the one used to compile the caller, 0 if it does not or a negative
-value if an error occurs.
+value if an error occurs.</para>
+<para>
+
 </para></refsect2>
-<refsect2 id="xmlSecCheckVersion" role="macro">
-<title>xmlSecCheckVersion</title>
-<indexterm zone="xmlSecCheckVersion"><primary>xmlSecCheckVersion</primary></indexterm>
-<programlisting>#define             xmlSecCheckVersion()</programlisting>
+<refsect2>
+<title><anchor id="xmlSecCheckVersion" role="macro">xmlSecCheckVersion()</title>
+<indexterm><primary>xmlSecCheckVersion</primary></indexterm><programlisting>#define     xmlSecCheckVersion()</programlisting>
 <para>
 Macro. Returns 1 if the loaded xmlsec library version ABI compatible with
 the one used to compile the caller, 0 if it does not or a negative
-value if an error occurs.
+value if an error occurs.</para>
+<para>
+
 </para></refsect2>
-<refsect2 id="xmlSecCheckVersionMode" role="enum">
-<title>enum xmlSecCheckVersionMode</title>
-<indexterm zone="xmlSecCheckVersionMode"><primary>xmlSecCheckVersionMode</primary></indexterm>
-<programlisting>typedef enum {
+<refsect2>
+<title><anchor id="xmlSecCheckVersionMode" role="enum">enum xmlSecCheckVersionMode</title>
+<indexterm><primary>xmlSecCheckVersionMode</primary></indexterm><programlisting>typedef enum {
     xmlSecCheckVersionExactMatch = 0,
     xmlSecCheckVersionABICompatible
 } xmlSecCheckVersionMode;
 </programlisting>
 <para>
-The xmlsec library version mode.
+The xmlsec library version mode.</para>
+<para>
+
 </para><variablelist role="enum">
-<varlistentry id="xmlSecCheckVersionExactMatch" role="constant">
-<term><literal>xmlSecCheckVersionExactMatch</literal></term>
-<listitem><simpara>the version should match exactly.
+<varlistentry>
+<term><anchor id="xmlSecCheckVersionExactMatch" role="constant"><literal>xmlSecCheckVersionExactMatch</literal></term>
+<listitem><simpara>       the version should match exactly.
 </simpara></listitem>
 </varlistentry>
-<varlistentry id="xmlSecCheckVersionABICompatible" role="constant">
-<term><literal>xmlSecCheckVersionABICompatible</literal></term>
-<listitem><simpara>the version should be ABI compatible.
+<varlistentry>
+<term><anchor id="xmlSecCheckVersionABICompatible" role="constant"><literal>xmlSecCheckVersionABICompatible</literal></term>
+<listitem><simpara>    the version should be ABI compatible.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecCheckVersionExt" role="function">
-<title>xmlSecCheckVersionExt ()</title>
-<indexterm zone="xmlSecCheckVersionExt"><primary>xmlSecCheckVersionExt</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecCheckVersionExt               (<parameter><link linkend="int"><type>int</type></link> major</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> minor</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> subminor</parameter>,
-                                                         <parameter><link linkend="xmlSecCheckVersionMode"><type>xmlSecCheckVersionMode</type></link> mode</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecCheckVersionExt" role="function">xmlSecCheckVersionExt ()</title>
+<indexterm><primary>xmlSecCheckVersionExt</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecCheckVersionExt           (<link linkend="int">int</link> major,
+                                             <link linkend="int">int</link> minor,
+                                             <link linkend="int">int</link> subminor,
+                                             <link linkend="xmlSecCheckVersionMode">xmlSecCheckVersionMode</link> mode);</programlisting>
 <para>
-Checks if the loaded version of xmlsec library could be used.
+Checks if the loaded version of xmlsec library could be used.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>major</parameter>&#160;:</term>
-<listitem><simpara>the major version number.
+<varlistentry><term><parameter>major</parameter>&nbsp;:</term>
+<listitem><simpara>              the major version number.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>minor</parameter>&#160;:</term>
-<listitem><simpara>the minor version number.
+<varlistentry><term><parameter>minor</parameter>&nbsp;:</term>
+<listitem><simpara>              the minor version number.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>subminor</parameter>&#160;:</term>
-<listitem><simpara>the subminor version number.
+<varlistentry><term><parameter>subminor</parameter>&nbsp;:</term>
+<listitem><simpara>           the subminor version number.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>mode</parameter>&#160;:</term>
-<listitem><simpara>the version check mode.
+<varlistentry><term><parameter>mode</parameter>&nbsp;:</term>
+<listitem><simpara>               the version check mode.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 1 if the loaded xmlsec library version is OK to use
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 1 if the loaded xmlsec library version is OK to use
 0 if it is not or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="ATTRIBUTE-UNUSED:CAPS" role="macro">
-<title>ATTRIBUTE_UNUSED</title>
-<indexterm zone="ATTRIBUTE-UNUSED:CAPS"><primary>ATTRIBUTE_UNUSED</primary></indexterm>
-<programlisting>#define             ATTRIBUTE_UNUSED</programlisting>
+<refsect2>
+<title><anchor id="ATTRIBUTE-UNUSED:CAPS" role="macro">ATTRIBUTE_UNUSED</title>
+<indexterm><primary>ATTRIBUTE_UNUSED</primary></indexterm><programlisting>#define     ATTRIBUTE_UNUSED</programlisting>
 <para>
-Macro used to signal to GCC unused function parameters
+Macro used to signal to GCC unused function parameters</para>
+<para>
+
 </para></refsect2>
-<refsect2 id="XMLSEC-PTR-TO-FUNC-IMPL:CAPS" role="macro">
-<title>XMLSEC_PTR_TO_FUNC_IMPL()</title>
-<indexterm zone="XMLSEC-PTR-TO-FUNC-IMPL:CAPS"><primary>XMLSEC_PTR_TO_FUNC_IMPL</primary></indexterm>
-<programlisting>#define             XMLSEC_PTR_TO_FUNC_IMPL(func_type)</programlisting>
+<refsect2>
+<title><anchor id="XMLSEC-PTR-TO-FUNC-IMPL:CAPS" role="macro">XMLSEC_PTR_TO_FUNC_IMPL()</title>
+<indexterm><primary>XMLSEC_PTR_TO_FUNC_IMPL</primary></indexterm><programlisting>#define     XMLSEC_PTR_TO_FUNC_IMPL(func_type)</programlisting>
 <para>
 Macro declares helper functions to convert between "void *" pointer and
-function pointer.
+function pointer.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>func_type</parameter>&#160;:</term>
-<listitem><simpara>the function type.
+<varlistentry><term><parameter>func_type</parameter>&nbsp;:</term>
+<listitem><simpara>          the function type.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="XMLSEC-PTR-TO-FUNC:CAPS" role="macro">
-<title>XMLSEC_PTR_TO_FUNC()</title>
-<indexterm zone="XMLSEC-PTR-TO-FUNC:CAPS"><primary>XMLSEC_PTR_TO_FUNC</primary></indexterm>
-<programlisting>#define             XMLSEC_PTR_TO_FUNC(func_type, ptr)</programlisting>
+<refsect2>
+<title><anchor id="XMLSEC-PTR-TO-FUNC:CAPS" role="macro">XMLSEC_PTR_TO_FUNC()</title>
+<indexterm><primary>XMLSEC_PTR_TO_FUNC</primary></indexterm><programlisting>#define     XMLSEC_PTR_TO_FUNC(func_type, ptr)</programlisting>
 <para>
-Macro converts from "void*" pointer to "func_type" function pointer.
+Macro converts from "void*" pointer to "func_type" function pointer.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>func_type</parameter>&#160;:</term>
-<listitem><simpara>the function type.
+<varlistentry><term><parameter>func_type</parameter>&nbsp;:</term>
+<listitem><simpara>          the function type.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
-<listitem><simpara>the "void*" pointer to be converted.
+<varlistentry><term><parameter>ptr</parameter>&nbsp;:</term>
+<listitem><simpara>                the "void*" pointer to be converted.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="XMLSEC-FUNC-TO-PTR:CAPS" role="macro">
-<title>XMLSEC_FUNC_TO_PTR()</title>
-<indexterm zone="XMLSEC-FUNC-TO-PTR:CAPS"><primary>XMLSEC_FUNC_TO_PTR</primary></indexterm>
-<programlisting>#define             XMLSEC_FUNC_TO_PTR(func_type, func)</programlisting>
+<refsect2>
+<title><anchor id="XMLSEC-FUNC-TO-PTR:CAPS" role="macro">XMLSEC_FUNC_TO_PTR()</title>
+<indexterm><primary>XMLSEC_FUNC_TO_PTR</primary></indexterm><programlisting>#define     XMLSEC_FUNC_TO_PTR(func_type, func)</programlisting>
 <para>
-Macro converts from "func_type" function pointer to "void*" pointer.
+Macro converts from "func_type" function pointer to "void*" pointer.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>func_type</parameter>&#160;:</term>
-<listitem><simpara>the function type.
+<varlistentry><term><parameter>func_type</parameter>&nbsp;:</term>
+<listitem><simpara>          the function type.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>func</parameter>&#160;:</term>
-<listitem><simpara>the "func_type" function pointer to be converted.
+<varlistentry><term><parameter>func</parameter>&nbsp;:</term>
+<listitem><simpara>               the "func_type" function pointer to be converted.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 
 </refsect1>
+
+
+
 
 </refentry>

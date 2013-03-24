@@ -17,9 +17,6 @@ XML Digital Signature support.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
-
-
 <!-- ##### ENUM xmlSecDSigStatus ##### -->
 <para>
 
@@ -310,7 +307,6 @@ XML Digital Signature support.
 
 </para>
 
-@void: 
 @Returns: 
 
 

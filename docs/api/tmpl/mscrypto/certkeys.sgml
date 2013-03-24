@@ -17,9 +17,6 @@ MS Crypto certificates helper functions.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
-
-
 <!-- ##### FUNCTION xmlSecMSCryptoKeyDataGetCert ##### -->
 <para>
 

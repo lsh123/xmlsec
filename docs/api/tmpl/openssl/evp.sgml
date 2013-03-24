@@ -17,9 +17,6 @@ EVP keys data implementation.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
-
-
 <!-- ##### FUNCTION xmlSecOpenSSLEvpKeyDataAdoptEvp ##### -->
 <para>
 

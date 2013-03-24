@@ -1,254 +1,284 @@
 <refentry id="xmlsec-keysmngr">
 <refmeta>
-<refentrytitle role="top_of_page" id="xmlsec-keysmngr.top_of_page">keysmngr</refentrytitle>
+<refentrytitle role="top_of_page">keysmngr</refentrytitle>
 <manvolnum>3</manvolnum>
-<refmiscinfo>
-  XMLSEC Library
-</refmiscinfo>
+<refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
+
 <refnamediv>
 <refname>keysmngr</refname>
 <refpurpose>Keys manager object support.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="xmlsec-keysmngr.synopsis" role="synopsis">
+<refsynopsisdiv role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
-<synopsis><link linkend="xmlSecKeysMngr"><returnvalue>xmlSecKeysMngrPtr</returnvalue></link>   <link linkend="xmlSecKeysMngrCreate">xmlSecKeysMngrCreate</link>                (<parameter><type>void</type></parameter>);
-<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecKeysMngrDestroy">xmlSecKeysMngrDestroy</link>               (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> mngr</parameter>);
-<link linkend="xmlSecKeyPtr"><returnvalue>xmlSecKeyPtr</returnvalue></link>        <link linkend="xmlSecKeysMngrFindKey">xmlSecKeysMngrFindKey</link>               (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> mngr</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
-                                                         <parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> keyInfoCtx</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecKeysMngrAdoptKeysStore">xmlSecKeysMngrAdoptKeysStore</link>        (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> mngr</parameter>,
-                                                         <parameter><link linkend="xmlSecKeyStore"><type>xmlSecKeyStorePtr</type></link> store</parameter>);
-<link linkend="xmlSecKeyStorePtr"><returnvalue>xmlSecKeyStorePtr</returnvalue></link>   <link linkend="xmlSecKeysMngrGetKeysStore">xmlSecKeysMngrGetKeysStore</link>          (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> mngr</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecKeysMngrAdoptDataStore">xmlSecKeysMngrAdoptDataStore</link>        (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> mngr</parameter>,
-                                                         <parameter><link linkend="xmlSecKeyDataStore"><type>xmlSecKeyDataStorePtr</type></link> store</parameter>);
-<link linkend="xmlSecKeyDataStorePtr"><returnvalue>xmlSecKeyDataStorePtr</returnvalue></link>  <link linkend="xmlSecKeysMngrGetDataStore">xmlSecKeysMngrGetDataStore</link>       (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> mngr</parameter>,
-                                                         <parameter><link linkend="xmlSecKeyDataStoreId"><type>xmlSecKeyDataStoreId</type></link> id</parameter>);
-<link linkend="xmlSecKeyPtr"><returnvalue>xmlSecKeyPtr</returnvalue></link>        (<link linkend="xmlSecGetKeyCallback">*xmlSecGetKeyCallback</link>)             (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> keyInfoNode</parameter>,
-                                                         <parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> keyInfoCtx</parameter>);
-struct              <link linkend="xmlSecKeysMngr">xmlSecKeysMngr</link>;
-<link linkend="xmlSecKeyPtr"><returnvalue>xmlSecKeyPtr</returnvalue></link>        <link linkend="xmlSecKeysMngrGetKey">xmlSecKeysMngrGetKey</link>                (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> keyInfoNode</parameter>,
-                                                         <parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> keyInfoCtx</parameter>);
-struct              <link linkend="xmlSecKeyStore">xmlSecKeyStore</link>;
-<link linkend="xmlSecKeyStore"><returnvalue>xmlSecKeyStorePtr</returnvalue></link>   <link linkend="xmlSecKeyStoreCreate">xmlSecKeyStoreCreate</link>                (<parameter><link linkend="xmlSecKeyStoreId"><type>xmlSecKeyStoreId</type></link> id</parameter>);
-<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecKeyStoreDestroy">xmlSecKeyStoreDestroy</link>               (<parameter><link linkend="xmlSecKeyStore"><type>xmlSecKeyStorePtr</type></link> store</parameter>);
-<link linkend="xmlSecKeyPtr"><returnvalue>xmlSecKeyPtr</returnvalue></link>        <link linkend="xmlSecKeyStoreFindKey">xmlSecKeyStoreFindKey</link>               (<parameter><link linkend="xmlSecKeyStore"><type>xmlSecKeyStorePtr</type></link> store</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
-                                                         <parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> keyInfoCtx</parameter>);
-#define             <link linkend="xmlSecKeyStoreGetName">xmlSecKeyStoreGetName</link>               (store)
-#define             <link linkend="xmlSecKeyStoreIsValid">xmlSecKeyStoreIsValid</link>               (store)
-#define             <link linkend="xmlSecKeyStoreCheckId">xmlSecKeyStoreCheckId</link>               (store,
-                                                         storeId)
-#define             <link linkend="xmlSecKeyStoreCheckSize">xmlSecKeyStoreCheckSize</link>             (store,
-                                                         size)
-#define             <link linkend="xmlSecKeyStoreIdUnknown">xmlSecKeyStoreIdUnknown</link>
-<link linkend="int"><returnvalue>int</returnvalue></link>                 (<link linkend="xmlSecKeyStoreInitializeMethod">*xmlSecKeyStoreInitializeMethod</link>)   (<parameter><link linkend="xmlSecKeyStore"><type>xmlSecKeyStorePtr</type></link> store</parameter>);
-<link linkend="void"><returnvalue>void</returnvalue></link>                (<link linkend="xmlSecKeyStoreFinalizeMethod">*xmlSecKeyStoreFinalizeMethod</link>)     (<parameter><link linkend="xmlSecKeyStore"><type>xmlSecKeyStorePtr</type></link> store</parameter>);
-<link linkend="xmlSecKeyPtr"><returnvalue>xmlSecKeyPtr</returnvalue></link>        (<link linkend="xmlSecKeyStoreFindKeyMethod">*xmlSecKeyStoreFindKeyMethod</link>)      (<parameter><link linkend="xmlSecKeyStore"><type>xmlSecKeyStorePtr</type></link> store</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
-                                                         <parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> keyInfoCtx</parameter>);
-struct              <link linkend="xmlSecKeyStoreKlass">xmlSecKeyStoreKlass</link>;
-#define             <link linkend="xmlSecKeyStoreKlassGetName">xmlSecKeyStoreKlassGetName</link>          (klass)
-#define             <link linkend="xmlSecSimpleKeysStoreId">xmlSecSimpleKeysStoreId</link>
-<link linkend="xmlSecKeyStoreId"><returnvalue>xmlSecKeyStoreId</returnvalue></link>    <link linkend="xmlSecSimpleKeysStoreGetKlass">xmlSecSimpleKeysStoreGetKlass</link>       (<parameter><type>void</type></parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecSimpleKeysStoreAdoptKey">xmlSecSimpleKeysStoreAdoptKey</link>       (<parameter><link linkend="xmlSecKeyStore"><type>xmlSecKeyStorePtr</type></link> store</parameter>,
-                                                         <parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecSimpleKeysStoreLoad">xmlSecSimpleKeysStoreLoad</link>           (<parameter><link linkend="xmlSecKeyStore"><type>xmlSecKeyStorePtr</type></link> store</parameter>,
-                                                         <parameter>const <link linkend="char"><type>char</type></link> *uri</parameter>,
-                                                         <parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> keysMngr</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecSimpleKeysStoreSave">xmlSecSimpleKeysStoreSave</link>           (<parameter><link linkend="xmlSecKeyStore"><type>xmlSecKeyStorePtr</type></link> store</parameter>,
-                                                         <parameter>const <link linkend="char"><type>char</type></link> *filename</parameter>,
-                                                         <parameter><link linkend="xmlSecKeyDataType"><type>xmlSecKeyDataType</type></link> type</parameter>);
-<link linkend="xmlSecPtrListPtr"><returnvalue>xmlSecPtrListPtr</returnvalue></link>    <link linkend="xmlSecSimpleKeysStoreGetKeys">xmlSecSimpleKeysStoreGetKeys</link>        (<parameter><link linkend="xmlSecKeyStore"><type>xmlSecKeyStorePtr</type></link> store</parameter>);
+<synopsis>
+
+
+
+<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> <link linkend="xmlSecKeysMngrCreate">xmlSecKeysMngrCreate</link>      (void);
+<link linkend="void">void</link>        <link linkend="xmlSecKeysMngrDestroy">xmlSecKeysMngrDestroy</link>           (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeysMngrFindKey">xmlSecKeysMngrFindKey</link>          (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+<link linkend="int">int</link>         <link linkend="xmlSecKeysMngrAdoptKeysStore">xmlSecKeysMngrAdoptKeysStore</link>    (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store);
+<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> <link linkend="xmlSecKeysMngrGetKeysStore">xmlSecKeysMngrGetKeysStore</link>
+                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);
+<link linkend="int">int</link>         <link linkend="xmlSecKeysMngrAdoptDataStore">xmlSecKeysMngrAdoptDataStore</link>    (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store);
+<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> <link linkend="xmlSecKeysMngrGetDataStore">xmlSecKeysMngrGetDataStore</link>
+                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> id);
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (<link linkend="xmlSecGetKeyCallback">*xmlSecGetKeyCallback</link>)        (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+struct      <link linkend="xmlSecKeysMngr">xmlSecKeysMngr</link>;
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeysMngrGetKey">xmlSecKeysMngrGetKey</link>           (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+struct      <link linkend="xmlSecKeyStore">xmlSecKeyStore</link>;
+<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> <link linkend="xmlSecKeyStoreCreate">xmlSecKeyStoreCreate</link>      (<link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link> id);
+<link linkend="void">void</link>        <link linkend="xmlSecKeyStoreDestroy">xmlSecKeyStoreDestroy</link>           (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store);
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeyStoreFindKey">xmlSecKeyStoreFindKey</link>          (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+#define     <link linkend="xmlSecKeyStoreGetName">xmlSecKeyStoreGetName</link>           (store)
+#define     <link linkend="xmlSecKeyStoreIsValid">xmlSecKeyStoreIsValid</link>           (store)
+#define     <link linkend="xmlSecKeyStoreCheckId">xmlSecKeyStoreCheckId</link>           (store, storeId)
+#define     <link linkend="xmlSecKeyStoreCheckSize">xmlSecKeyStoreCheckSize</link>         (store, size)
+#define     <link linkend="xmlSecKeyStoreIdUnknown">xmlSecKeyStoreIdUnknown</link>
+<link linkend="int">int</link>         (<link linkend="xmlSecKeyStoreInitializeMethod">*xmlSecKeyStoreInitializeMethod</link>)
+                                            (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store);
+<link linkend="void">void</link>        (<link linkend="xmlSecKeyStoreFinalizeMethod">*xmlSecKeyStoreFinalizeMethod</link>) (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store);
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (<link linkend="xmlSecKeyStoreFindKeyMethod">*xmlSecKeyStoreFindKeyMethod</link>) (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+struct      <link linkend="xmlSecKeyStoreKlass">xmlSecKeyStoreKlass</link>;
+#define     <link linkend="xmlSecKeyStoreKlassGetName">xmlSecKeyStoreKlassGetName</link>      (klass)
+#define     <link linkend="xmlSecSimpleKeysStoreId">xmlSecSimpleKeysStoreId</link>
+<link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link> <link linkend="xmlSecSimpleKeysStoreGetKlass">xmlSecSimpleKeysStoreGetKlass</link>
+                                            (void);
+<link linkend="int">int</link>         <link linkend="xmlSecSimpleKeysStoreAdoptKey">xmlSecSimpleKeysStoreAdoptKey</link>   (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
+<link linkend="int">int</link>         <link linkend="xmlSecSimpleKeysStoreLoad">xmlSecSimpleKeysStoreLoad</link>       (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+                                             const <link linkend="char">char</link> *uri,
+                                             <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);
+<link linkend="int">int</link>         <link linkend="xmlSecSimpleKeysStoreSave">xmlSecSimpleKeysStoreSave</link>       (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+                                             const <link linkend="char">char</link> *filename,
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
+<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> <link linkend="xmlSecSimpleKeysStoreGetKeys">xmlSecSimpleKeysStoreGetKeys</link>
+                                            (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store);
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 id="xmlsec-keysmngr.description" role="desc">
+
+
+
+
+
+
+
+
+<refsect1 role="desc">
 <title role="desc.title">Description</title>
 <para>
 Keys manager object support.
 </para>
 </refsect1>
-<refsect1 id="xmlsec-keysmngr.details" role="details">
+
+<refsect1 role="details">
 <title role="details.title">Details</title>
-<refsect2 id="xmlSecKeysMngrCreate" role="function">
-<title>xmlSecKeysMngrCreate ()</title>
-<indexterm zone="xmlSecKeysMngrCreate"><primary>xmlSecKeysMngrCreate</primary></indexterm>
-<programlisting><link linkend="xmlSecKeysMngr"><returnvalue>xmlSecKeysMngrPtr</returnvalue></link>   xmlSecKeysMngrCreate                (<parameter><type>void</type></parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecKeysMngrCreate" role="function">xmlSecKeysMngrCreate ()</title>
+<indexterm><primary>xmlSecKeysMngrCreate</primary></indexterm><programlisting><link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> xmlSecKeysMngrCreate      (void);</programlisting>
 <para>
 Creates new keys manager. Caller is responsible for freeing it with
-<link linkend="xmlSecKeysMngrDestroy"><type>xmlSecKeysMngrDestroy</type></link> function.
+<link linkend="xmlSecKeysMngrDestroy"><type>xmlSecKeysMngrDestroy</type></link> function.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to newly allocated keys manager or NULL if
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to newly allocated keys manager or NULL if
 an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecKeysMngrDestroy" role="function">
-<title>xmlSecKeysMngrDestroy ()</title>
-<indexterm zone="xmlSecKeysMngrDestroy"><primary>xmlSecKeysMngrDestroy</primary></indexterm>
-<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecKeysMngrDestroy               (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> mngr</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecKeysMngrDestroy" role="function">xmlSecKeysMngrDestroy ()</title>
+<indexterm><primary>xmlSecKeysMngrDestroy</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecKeysMngrDestroy           (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
 <para>
-Destroys keys manager created with <link linkend="xmlSecKeysMngrCreate"><type>xmlSecKeysMngrCreate</type></link> function.
+Destroys keys manager created with <link linkend="xmlSecKeysMngrCreate"><type>xmlSecKeysMngrCreate</type></link> function.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara>the pointer to keys manager.
+<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
+<listitem><simpara>               the pointer to keys manager.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecKeysMngrFindKey" role="function">
-<title>xmlSecKeysMngrFindKey ()</title>
-<indexterm zone="xmlSecKeysMngrFindKey"><primary>xmlSecKeysMngrFindKey</primary></indexterm>
-<programlisting><link linkend="xmlSecKeyPtr"><returnvalue>xmlSecKeyPtr</returnvalue></link>        xmlSecKeysMngrFindKey               (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> mngr</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
-                                                         <parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> keyInfoCtx</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecKeysMngrFindKey" role="function">xmlSecKeysMngrFindKey ()</title>
+<indexterm><primary>xmlSecKeysMngrFindKey</primary></indexterm><programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeysMngrFindKey          (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
 Lookups key in the keys manager keys store. The caller is responsible
-for destroying the returned key using <link linkend="xmlSecKeyDestroy"><type>xmlSecKeyDestroy</type></link> method.
+for destroying the returned key using <link linkend="xmlSecKeyDestroy"><type>xmlSecKeyDestroy</type></link> method.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara>the pointer to keys manager.
+<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
+<listitem><simpara>               the pointer to keys manager.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara>the desired key name.
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>               the desired key name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
+<varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
+<listitem><simpara>         the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to a key or NULL if key is not found or an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to a key or NULL if key is not found or an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecKeysMngrAdoptKeysStore" role="function">
-<title>xmlSecKeysMngrAdoptKeysStore ()</title>
-<indexterm zone="xmlSecKeysMngrAdoptKeysStore"><primary>xmlSecKeysMngrAdoptKeysStore</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecKeysMngrAdoptKeysStore        (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> mngr</parameter>,
-                                                         <parameter><link linkend="xmlSecKeyStore"><type>xmlSecKeyStorePtr</type></link> store</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecKeysMngrAdoptKeysStore" role="function">xmlSecKeysMngrAdoptKeysStore ()</title>
+<indexterm><primary>xmlSecKeysMngrAdoptKeysStore</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecKeysMngrAdoptKeysStore    (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store);</programlisting>
 <para>
-Adopts keys store in the keys manager <parameter>mngr</parameter>.
+Adopts keys store in the keys manager <parameter>mngr</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara>the pointer to keys manager.
+<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
+<listitem><simpara>               the pointer to keys manager.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>the pointer to keys store.
+<varlistentry><term><parameter>store</parameter>&nbsp;:</term>
+<listitem><simpara>              the pointer to keys store.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecKeysMngrGetKeysStore" role="function">
-<title>xmlSecKeysMngrGetKeysStore ()</title>
-<indexterm zone="xmlSecKeysMngrGetKeysStore"><primary>xmlSecKeysMngrGetKeysStore</primary></indexterm>
-<programlisting><link linkend="xmlSecKeyStorePtr"><returnvalue>xmlSecKeyStorePtr</returnvalue></link>   xmlSecKeysMngrGetKeysStore          (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> mngr</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecKeysMngrGetKeysStore" role="function">xmlSecKeysMngrGetKeysStore ()</title>
+<indexterm><primary>xmlSecKeysMngrGetKeysStore</primary></indexterm><programlisting><link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> xmlSecKeysMngrGetKeysStore
+                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
 <para>
-Gets the keys store.
+Gets the keys store.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara>the pointer to keys manager.
+<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
+<listitem><simpara>               the pointer to keys manager.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the keys store in the keys manager <parameter>mngr</parameter> or NULL if
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the keys store in the keys manager <parameter>mngr</parameter> or NULL if
 there is no store or an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecKeysMngrAdoptDataStore" role="function">
-<title>xmlSecKeysMngrAdoptDataStore ()</title>
-<indexterm zone="xmlSecKeysMngrAdoptDataStore"><primary>xmlSecKeysMngrAdoptDataStore</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecKeysMngrAdoptDataStore        (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> mngr</parameter>,
-                                                         <parameter><link linkend="xmlSecKeyDataStore"><type>xmlSecKeyDataStorePtr</type></link> store</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecKeysMngrAdoptDataStore" role="function">xmlSecKeysMngrAdoptDataStore ()</title>
+<indexterm><primary>xmlSecKeysMngrAdoptDataStore</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecKeysMngrAdoptDataStore    (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store);</programlisting>
 <para>
-Adopts data store in the keys manager.
+Adopts data store in the keys manager.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara>the pointer to keys manager.
+<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
+<listitem><simpara>               the pointer to keys manager.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>the pointer to data store.
+<varlistentry><term><parameter>store</parameter>&nbsp;:</term>
+<listitem><simpara>              the pointer to data store.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecKeysMngrGetDataStore" role="function">
-<title>xmlSecKeysMngrGetDataStore ()</title>
-<indexterm zone="xmlSecKeysMngrGetDataStore"><primary>xmlSecKeysMngrGetDataStore</primary></indexterm>
-<programlisting><link linkend="xmlSecKeyDataStorePtr"><returnvalue>xmlSecKeyDataStorePtr</returnvalue></link>  xmlSecKeysMngrGetDataStore       (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> mngr</parameter>,
-                                                         <parameter><link linkend="xmlSecKeyDataStoreId"><type>xmlSecKeyDataStoreId</type></link> id</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecKeysMngrGetDataStore" role="function">xmlSecKeysMngrGetDataStore ()</title>
+<indexterm><primary>xmlSecKeysMngrGetDataStore</primary></indexterm><programlisting><link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> xmlSecKeysMngrGetDataStore
+                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> id);</programlisting>
 <para>
-Lookups the data store of given klass <parameter>id</parameter> in the keys manager.
+Lookups the data store of given klass <parameter>id</parameter> in the keys manager.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara>the pointer to keys manager.
+<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
+<listitem><simpara>               the pointer to keys manager.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara>the desired data store klass.
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara>                 the desired data store klass.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to data store or NULL if it is not found or an error
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to data store or NULL if it is not found or an error
 occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecGetKeyCallback" role="function">
-<title>xmlSecGetKeyCallback ()</title>
-<indexterm zone="xmlSecGetKeyCallback"><primary>xmlSecGetKeyCallback</primary></indexterm>
-<programlisting><link linkend="xmlSecKeyPtr"><returnvalue>xmlSecKeyPtr</returnvalue></link>        (*xmlSecGetKeyCallback)             (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> keyInfoNode</parameter>,
-                                                         <parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> keyInfoCtx</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecGetKeyCallback" role="function">xmlSecGetKeyCallback ()</title>
+<indexterm><primary>xmlSecGetKeyCallback</primary></indexterm><programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (*xmlSecGetKeyCallback)        (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
-Reads the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node <parameter>keyInfoNode</parameter> and extracts the key.
+Reads the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node <parameter>keyInfoNode</parameter> and extracts the key.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>keyInfoNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
+<varlistentry><term><parameter>keyInfoNode</parameter>&nbsp;:</term>
+<listitem><simpara>                the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
+<varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
+<listitem><simpara>                 the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to key or NULL if the key is not found or
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to key or NULL if the key is not found or
 an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecKeysMngr" role="struct">
-<title>struct xmlSecKeysMngr</title>
-<indexterm zone="xmlSecKeysMngr"><primary>xmlSecKeysMngr</primary></indexterm>
-<programlisting>struct xmlSecKeysMngr {
+<refsect2>
+<title><anchor id="xmlSecKeysMngr" role="struct">struct xmlSecKeysMngr</title>
+<indexterm><primary>xmlSecKeysMngr</primary></indexterm><programlisting>struct xmlSecKeysMngr {
     xmlSecKeyStorePtr           keysStore;
     xmlSecPtrList               storesList;
     xmlSecGetKeyCallback        getKey;
 };
 </programlisting>
 <para>
-The keys manager structure.
+The keys manager structure.</para>
+<para>
+
 </para><variablelist role="struct">
-<varlistentry><term><link linkend="xmlSecKeyStore"><type>xmlSecKeyStorePtr</type></link>&#160;<structfield id="xmlSecKeysMngr.keysStore">keysStore</structfield>;</term>
-<listitem><simpara>the key store (list of keys known to keys manager).
+<varlistentry>
+<term><link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link>&nbsp;<structfield>keysStore</structfield>;</term>
+<listitem><simpara>                  the key store (list of keys known to keys manager).
 </simpara></listitem>
 </varlistentry>
-<varlistentry><term><link linkend="xmlSecPtrList"><type>xmlSecPtrList</type></link>&#160;<structfield id="xmlSecKeysMngr.storesList">storesList</structfield>;</term>
-<listitem><simpara>the list of key data stores known to keys manager.
+<varlistentry>
+<term><link linkend="xmlSecPtrList">xmlSecPtrList</link>&nbsp;<structfield>storesList</structfield>;</term>
+<listitem><simpara>                 the list of key data stores known to keys manager.
 </simpara></listitem>
 </varlistentry>
-<varlistentry><term><link linkend="xmlSecGetKeyCallback"><type>xmlSecGetKeyCallback</type></link>&#160;<structfield id="xmlSecKeysMngr.getKey">getKey</structfield>;</term>
-<listitem><simpara>the callback used to read <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
+<varlistentry>
+<term><link linkend="xmlSecGetKeyCallback">xmlSecGetKeyCallback</link>&nbsp;<structfield>getKey</structfield>;</term>
+<listitem><simpara>                     the callback used to read <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecKeysMngrGetKey" role="function">
-<title>xmlSecKeysMngrGetKey ()</title>
-<indexterm zone="xmlSecKeysMngrGetKey"><primary>xmlSecKeysMngrGetKey</primary></indexterm>
-<programlisting><link linkend="xmlSecKeyPtr"><returnvalue>xmlSecKeyPtr</returnvalue></link>        xmlSecKeysMngrGetKey                (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> keyInfoNode</parameter>,
-                                                         <parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> keyInfoCtx</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecKeysMngrGetKey" role="function">xmlSecKeysMngrGetKey ()</title>
+<indexterm><primary>xmlSecKeysMngrGetKey</primary></indexterm><programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeysMngrGetKey           (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
-Reads the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node <parameter>keyInfoNode</parameter> and extracts the key.
+Reads the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node <parameter>keyInfoNode</parameter> and extracts the key.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>keyInfoNode</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
+<varlistentry><term><parameter>keyInfoNode</parameter>&nbsp;:</term>
+<listitem><simpara>        the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
+<varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
+<listitem><simpara>         the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to key or NULL if the key is not found or
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to key or NULL if the key is not found or
 an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecKeyStore" role="struct">
-<title>struct xmlSecKeyStore</title>
-<indexterm zone="xmlSecKeyStore"><primary>xmlSecKeyStore</primary></indexterm>
-<programlisting>struct xmlSecKeyStore {
+<refsect2>
+<title><anchor id="xmlSecKeyStore" role="struct">struct xmlSecKeyStore</title>
+<indexterm><primary>xmlSecKeyStore</primary></indexterm><programlisting>struct xmlSecKeyStore {
     xmlSecKeyStoreId                    id;
 
     /* for the future */
@@ -257,177 +287,193 @@ an error occurs.
 };
 </programlisting>
 <para>
-The keys store.
+The keys store.</para>
+<para>
+
 </para><variablelist role="struct">
-<varlistentry><term><link linkend="xmlSecKeyStoreId"><type>xmlSecKeyStoreId</type></link>&#160;<structfield id="xmlSecKeyStore.id">id</structfield>;</term>
-<listitem><simpara>the store id (<link linkend="xmlSecKeyStoreId"><type>xmlSecKeyStoreId</type></link>).
+<varlistentry>
+<term><link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link>&nbsp;<structfield>id</structfield>;</term>
+<listitem><simpara>                 the store id (<link linkend="xmlSecKeyStoreId"><type>xmlSecKeyStoreId</type></link>).
 </simpara></listitem>
 </varlistentry>
-<varlistentry><term><link linkend="void"><type>void</type></link>&#160;*<structfield id="xmlSecKeyStore.reserved0">reserved0</structfield>;</term>
-<listitem><simpara>reserved for the future.
+<varlistentry>
+<term><link linkend="void">void</link>&nbsp;*<structfield>reserved0</structfield>;</term>
+<listitem><simpara>          reserved for the future.
 </simpara></listitem>
 </varlistentry>
-<varlistentry><term><link linkend="void"><type>void</type></link>&#160;*<structfield id="xmlSecKeyStore.reserved1">reserved1</structfield>;</term>
-<listitem><simpara>reserved for the future.
+<varlistentry>
+<term><link linkend="void">void</link>&nbsp;*<structfield>reserved1</structfield>;</term>
+<listitem><simpara>          reserved for the future.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecKeyStoreCreate" role="function">
-<title>xmlSecKeyStoreCreate ()</title>
-<indexterm zone="xmlSecKeyStoreCreate"><primary>xmlSecKeyStoreCreate</primary></indexterm>
-<programlisting><link linkend="xmlSecKeyStore"><returnvalue>xmlSecKeyStorePtr</returnvalue></link>   xmlSecKeyStoreCreate                (<parameter><link linkend="xmlSecKeyStoreId"><type>xmlSecKeyStoreId</type></link> id</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecKeyStoreCreate" role="function">xmlSecKeyStoreCreate ()</title>
+<indexterm><primary>xmlSecKeyStoreCreate</primary></indexterm><programlisting><link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> xmlSecKeyStoreCreate      (<link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link> id);</programlisting>
 <para>
 Creates new store of the specified klass <parameter>klass</parameter>. Caller is responsible
-for freeing the returned store by calling <link linkend="xmlSecKeyStoreDestroy"><type>xmlSecKeyStoreDestroy</type></link> function.
-</para><variablelist role="params">
-<varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara>the key store klass.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to newly allocated keys store or NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyStoreDestroy" role="function">
-<title>xmlSecKeyStoreDestroy ()</title>
-<indexterm zone="xmlSecKeyStoreDestroy"><primary>xmlSecKeyStoreDestroy</primary></indexterm>
-<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecKeyStoreDestroy               (<parameter><link linkend="xmlSecKeyStore"><type>xmlSecKeyStorePtr</type></link> store</parameter>);</programlisting>
+for freeing the returned store by calling <link linkend="xmlSecKeyStoreDestroy"><type>xmlSecKeyStoreDestroy</type></link> function.</para>
 <para>
-Destroys the store created with <link linkend="xmlSecKeyStoreCreate"><type>xmlSecKeyStoreCreate</type></link> function.
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>the pointer to keys store.
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara>                 the key store klass.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to newly allocated keys store or NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecKeyStoreFindKey" role="function">
-<title>xmlSecKeyStoreFindKey ()</title>
-<indexterm zone="xmlSecKeyStoreFindKey"><primary>xmlSecKeyStoreFindKey</primary></indexterm>
-<programlisting><link linkend="xmlSecKeyPtr"><returnvalue>xmlSecKeyPtr</returnvalue></link>        xmlSecKeyStoreFindKey               (<parameter><link linkend="xmlSecKeyStore"><type>xmlSecKeyStorePtr</type></link> store</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
-                                                         <parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> keyInfoCtx</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecKeyStoreDestroy" role="function">xmlSecKeyStoreDestroy ()</title>
+<indexterm><primary>xmlSecKeyStoreDestroy</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecKeyStoreDestroy           (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store);</programlisting>
+<para>
+Destroys the store created with <link linkend="xmlSecKeyStoreCreate"><type>xmlSecKeyStoreCreate</type></link> function.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>store</parameter>&nbsp;:</term>
+<listitem><simpara>              the pointer to keys store.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyStoreFindKey" role="function">xmlSecKeyStoreFindKey ()</title>
+<indexterm><primary>xmlSecKeyStoreFindKey</primary></indexterm><programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeyStoreFindKey          (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
 Lookups key in the store. The caller is responsible for destroying
-the returned key using <link linkend="xmlSecKeyDestroy"><type>xmlSecKeyDestroy</type></link> method.
-</para><variablelist role="params">
-<varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>the pointer to keys store.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara>the desired key name.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to a key or NULL if key is not found or an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyStoreGetName" role="macro">
-<title>xmlSecKeyStoreGetName()</title>
-<indexterm zone="xmlSecKeyStoreGetName"><primary>xmlSecKeyStoreGetName</primary></indexterm>
-<programlisting>#define             xmlSecKeyStoreGetName(store)</programlisting>
+the returned key using <link linkend="xmlSecKeyDestroy"><type>xmlSecKeyDestroy</type></link> method.</para>
 <para>
-Macro. Returns key store name.
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>the pointer to store.
+<varlistentry><term><parameter>store</parameter>&nbsp;:</term>
+<listitem><simpara>              the pointer to keys store.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>               the desired key name.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
+<listitem><simpara>         the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to a key or NULL if key is not found or an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecKeyStoreIsValid" role="macro">
-<title>xmlSecKeyStoreIsValid()</title>
-<indexterm zone="xmlSecKeyStoreIsValid"><primary>xmlSecKeyStoreIsValid</primary></indexterm>
-<programlisting>#define             xmlSecKeyStoreIsValid(store)</programlisting>
+<refsect2>
+<title><anchor id="xmlSecKeyStoreGetName" role="macro">xmlSecKeyStoreGetName()</title>
+<indexterm><primary>xmlSecKeyStoreGetName</primary></indexterm><programlisting>#define     xmlSecKeyStoreGetName(store)</programlisting>
+<para>
+Macro. Returns key store name.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>store</parameter>&nbsp;:</term>
+<listitem><simpara>              the pointer to store.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyStoreIsValid" role="macro">xmlSecKeyStoreIsValid()</title>
+<indexterm><primary>xmlSecKeyStoreIsValid</primary></indexterm><programlisting>#define     xmlSecKeyStoreIsValid(store)</programlisting>
 <para>
 Macro. Returns 1 if <parameter>store</parameter> is not NULL and <parameter>store</parameter>-&gt;id is not NULL
-or 0 otherwise.
-</para><variablelist role="params">
-<varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>the pointer to store.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyStoreCheckId" role="macro">
-<title>xmlSecKeyStoreCheckId()</title>
-<indexterm zone="xmlSecKeyStoreCheckId"><primary>xmlSecKeyStoreCheckId</primary></indexterm>
-<programlisting>#define             xmlSecKeyStoreCheckId(store, storeId)</programlisting>
+or 0 otherwise.</para>
 <para>
-Macro. Returns 1 if <parameter>store</parameter> is valid and <parameter>store</parameter>'s id is equal to <parameter>storeId</parameter>.
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>the pointer to store.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>storeId</parameter>&#160;:</term>
-<listitem><simpara>the store Id.
+<varlistentry><term><parameter>store</parameter>&nbsp;:</term>
+<listitem><simpara>              the pointer to store.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecKeyStoreCheckSize" role="macro">
-<title>xmlSecKeyStoreCheckSize()</title>
-<indexterm zone="xmlSecKeyStoreCheckSize"><primary>xmlSecKeyStoreCheckSize</primary></indexterm>
-<programlisting>#define             xmlSecKeyStoreCheckSize(store, size)</programlisting>
+<refsect2>
+<title><anchor id="xmlSecKeyStoreCheckId" role="macro">xmlSecKeyStoreCheckId()</title>
+<indexterm><primary>xmlSecKeyStoreCheckId</primary></indexterm><programlisting>#define     xmlSecKeyStoreCheckId(store, storeId)</programlisting>
 <para>
-Macro. Returns 1 if <parameter>store</parameter> is valid and <parameter>stores</parameter>'s object has at least <parameter>size</parameter> bytes.
+Macro. Returns 1 if <parameter>store</parameter> is valid and <parameter>store</parameter>'s id is equal to <parameter>storeId</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>the pointer to store.
+<varlistentry><term><parameter>store</parameter>&nbsp;:</term>
+<listitem><simpara>              the pointer to store.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara>the expected size.
+<varlistentry><term><parameter>storeId</parameter>&nbsp;:</term>
+<listitem><simpara>            the store Id.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecKeyStoreIdUnknown" role="macro">
-<title>xmlSecKeyStoreIdUnknown</title>
-<indexterm zone="xmlSecKeyStoreIdUnknown"><primary>xmlSecKeyStoreIdUnknown</primary></indexterm>
-<programlisting>#define xmlSecKeyStoreIdUnknown                         ((xmlSecKeyDataStoreId)NULL)
+<refsect2>
+<title><anchor id="xmlSecKeyStoreCheckSize" role="macro">xmlSecKeyStoreCheckSize()</title>
+<indexterm><primary>xmlSecKeyStoreCheckSize</primary></indexterm><programlisting>#define     xmlSecKeyStoreCheckSize(store, size)</programlisting>
+<para>
+Macro. Returns 1 if <parameter>store</parameter> is valid and <parameter>stores</parameter>'s object has at least <parameter>size</parameter> bytes.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>store</parameter>&nbsp;:</term>
+<listitem><simpara>              the pointer to store.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>size</parameter>&nbsp;:</term>
+<listitem><simpara>               the expected size.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyStoreIdUnknown" role="macro">xmlSecKeyStoreIdUnknown</title>
+<indexterm><primary>xmlSecKeyStoreIdUnknown</primary></indexterm><programlisting>#define xmlSecKeyStoreIdUnknown                         ((xmlSecKeyDataStoreId)NULL)
 </programlisting>
 <para>
-The "unknown" id.
+The "unknown" id.</para>
+<para>
+
 </para></refsect2>
-<refsect2 id="xmlSecKeyStoreInitializeMethod" role="function">
-<title>xmlSecKeyStoreInitializeMethod ()</title>
-<indexterm zone="xmlSecKeyStoreInitializeMethod"><primary>xmlSecKeyStoreInitializeMethod</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 (*xmlSecKeyStoreInitializeMethod)   (<parameter><link linkend="xmlSecKeyStore"><type>xmlSecKeyStorePtr</type></link> store</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecKeyStoreInitializeMethod" role="function">xmlSecKeyStoreInitializeMethod ()</title>
+<indexterm><primary>xmlSecKeyStoreInitializeMethod</primary></indexterm><programlisting><link linkend="int">int</link>         (*xmlSecKeyStoreInitializeMethod)
+                                            (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store);</programlisting>
 <para>
-Keys store specific initialization method.
+Keys store specific initialization method.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>the store.
+<varlistentry><term><parameter>store</parameter>&nbsp;:</term>
+<listitem><simpara>              the store.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecKeyStoreFinalizeMethod" role="function">
-<title>xmlSecKeyStoreFinalizeMethod ()</title>
-<indexterm zone="xmlSecKeyStoreFinalizeMethod"><primary>xmlSecKeyStoreFinalizeMethod</primary></indexterm>
-<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                (*xmlSecKeyStoreFinalizeMethod)     (<parameter><link linkend="xmlSecKeyStore"><type>xmlSecKeyStorePtr</type></link> store</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecKeyStoreFinalizeMethod" role="function">xmlSecKeyStoreFinalizeMethod ()</title>
+<indexterm><primary>xmlSecKeyStoreFinalizeMethod</primary></indexterm><programlisting><link linkend="void">void</link>        (*xmlSecKeyStoreFinalizeMethod) (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store);</programlisting>
 <para>
-Keys store specific finalization (destroy) method.
+Keys store specific finalization (destroy) method.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>the store.
+<varlistentry><term><parameter>store</parameter>&nbsp;:</term>
+<listitem><simpara>              the store.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecKeyStoreFindKeyMethod" role="function">
-<title>xmlSecKeyStoreFindKeyMethod ()</title>
-<indexterm zone="xmlSecKeyStoreFindKeyMethod"><primary>xmlSecKeyStoreFindKeyMethod</primary></indexterm>
-<programlisting><link linkend="xmlSecKeyPtr"><returnvalue>xmlSecKeyPtr</returnvalue></link>        (*xmlSecKeyStoreFindKeyMethod)      (<parameter><link linkend="xmlSecKeyStore"><type>xmlSecKeyStorePtr</type></link> store</parameter>,
-                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
-                                                         <parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> keyInfoCtx</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecKeyStoreFindKeyMethod" role="function">xmlSecKeyStoreFindKeyMethod ()</title>
+<indexterm><primary>xmlSecKeyStoreFindKeyMethod</primary></indexterm><programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (*xmlSecKeyStoreFindKeyMethod) (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
 Keys store specific find method. The caller is responsible for destroying
-the returned key using <link linkend="xmlSecKeyDestroy"><type>xmlSecKeyDestroy</type></link> method.
+the returned key using <link linkend="xmlSecKeyDestroy"><type>xmlSecKeyDestroy</type></link> method.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>the store.
+<varlistentry><term><parameter>store</parameter>&nbsp;:</term>
+<listitem><simpara>              the store.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara>the desired key name.
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>               the desired key name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
-<listitem><simpara>the pointer to key info context.
+<varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
+<listitem><simpara>         the pointer to key info context.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to a key or NULL if key is not found or an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to a key or NULL if key is not found or an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecKeyStoreKlass" role="struct">
-<title>struct xmlSecKeyStoreKlass</title>
-<indexterm zone="xmlSecKeyStoreKlass"><primary>xmlSecKeyStoreKlass</primary></indexterm>
-<programlisting>struct xmlSecKeyStoreKlass {
+<refsect2>
+<title><anchor id="xmlSecKeyStoreKlass" role="struct">struct xmlSecKeyStoreKlass</title>
+<indexterm><primary>xmlSecKeyStoreKlass</primary></indexterm><programlisting>struct xmlSecKeyStoreKlass {
     xmlSecSize                          klassSize;
     xmlSecSize                          objSize;
 
@@ -445,144 +491,166 @@ the returned key using <link linkend="xmlSecKeyDestroy"><type>xmlSecKeyDestroy</
 };
 </programlisting>
 <para>
-The keys store id (klass).
+The keys store id (klass).</para>
+<para>
+
 </para><variablelist role="struct">
-<varlistentry><term><link linkend="xmlSecSize"><type>xmlSecSize</type></link>&#160;<structfield id="xmlSecKeyStoreKlass.klassSize">klassSize</structfield>;</term>
-<listitem><simpara>the store klass size.
+<varlistentry>
+<term><link linkend="xmlSecSize">xmlSecSize</link>&nbsp;<structfield>klassSize</structfield>;</term>
+<listitem><simpara>          the store klass size.
 </simpara></listitem>
 </varlistentry>
-<varlistentry><term><link linkend="xmlSecSize"><type>xmlSecSize</type></link>&#160;<structfield id="xmlSecKeyStoreKlass.objSize">objSize</structfield>;</term>
-<listitem><simpara>the store obj size.
+<varlistentry>
+<term><link linkend="xmlSecSize">xmlSecSize</link>&nbsp;<structfield>objSize</structfield>;</term>
+<listitem><simpara>            the store obj size.
 </simpara></listitem>
 </varlistentry>
-<varlistentry><term>const&#160;<link linkend="xmlChar"><type>xmlChar</type></link>&#160;*<structfield id="xmlSecKeyStoreKlass.name">name</structfield>;</term>
-<listitem><simpara>the store's name.
+<varlistentry>
+<term>const&nbsp;<link linkend="xmlChar">xmlChar</link>&nbsp;*<structfield>name</structfield>;</term>
+<listitem><simpara>               the store's name.
 </simpara></listitem>
 </varlistentry>
-<varlistentry><term><link linkend="xmlSecKeyStoreInitializeMethod"><type>xmlSecKeyStoreInitializeMethod</type></link>&#160;<structfield id="xmlSecKeyStoreKlass.initialize">initialize</structfield>;</term>
-<listitem><simpara>the store's initialization method.
+<varlistentry>
+<term><link linkend="xmlSecKeyStoreInitializeMethod">xmlSecKeyStoreInitializeMethod</link>&nbsp;<structfield>initialize</structfield>;</term>
+<listitem><simpara>         the store's initialization method.
 </simpara></listitem>
 </varlistentry>
-<varlistentry><term><link linkend="xmlSecKeyStoreFinalizeMethod"><type>xmlSecKeyStoreFinalizeMethod</type></link>&#160;<structfield id="xmlSecKeyStoreKlass.finalize">finalize</structfield>;</term>
-<listitem><simpara>the store's finalization (destroy) method.
+<varlistentry>
+<term><link linkend="xmlSecKeyStoreFinalizeMethod">xmlSecKeyStoreFinalizeMethod</link>&nbsp;<structfield>finalize</structfield>;</term>
+<listitem><simpara>           the store's finalization (destroy) method.
 </simpara></listitem>
 </varlistentry>
-<varlistentry><term><link linkend="xmlSecKeyStoreFindKeyMethod"><type>xmlSecKeyStoreFindKeyMethod</type></link>&#160;<structfield id="xmlSecKeyStoreKlass.findKey">findKey</structfield>;</term>
-<listitem><simpara>the store's find method.
+<varlistentry>
+<term><link linkend="xmlSecKeyStoreFindKeyMethod">xmlSecKeyStoreFindKeyMethod</link>&nbsp;<structfield>findKey</structfield>;</term>
+<listitem><simpara>            the store's find method.
 </simpara></listitem>
 </varlistentry>
-<varlistentry><term><link linkend="void"><type>void</type></link>&#160;*<structfield id="xmlSecKeyStoreKlass.reserved0">reserved0</structfield>;</term>
-<listitem><simpara>reserved for the future.
+<varlistentry>
+<term><link linkend="void">void</link>&nbsp;*<structfield>reserved0</structfield>;</term>
+<listitem><simpara>          reserved for the future.
 </simpara></listitem>
 </varlistentry>
-<varlistentry><term><link linkend="void"><type>void</type></link>&#160;*<structfield id="xmlSecKeyStoreKlass.reserved1">reserved1</structfield>;</term>
-<listitem><simpara>reserved for the future.
+<varlistentry>
+<term><link linkend="void">void</link>&nbsp;*<structfield>reserved1</structfield>;</term>
+<listitem><simpara>          reserved for the future.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecKeyStoreKlassGetName" role="macro">
-<title>xmlSecKeyStoreKlassGetName()</title>
-<indexterm zone="xmlSecKeyStoreKlassGetName"><primary>xmlSecKeyStoreKlassGetName</primary></indexterm>
-<programlisting>#define             xmlSecKeyStoreKlassGetName(klass)</programlisting>
+<refsect2>
+<title><anchor id="xmlSecKeyStoreKlassGetName" role="macro">xmlSecKeyStoreKlassGetName()</title>
+<indexterm><primary>xmlSecKeyStoreKlassGetName</primary></indexterm><programlisting>#define     xmlSecKeyStoreKlassGetName(klass)</programlisting>
 <para>
-Macro. Returns store klass name.
+Macro. Returns store klass name.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>klass</parameter>&#160;:</term>
-<listitem><simpara>the pointer to store klass.
+<varlistentry><term><parameter>klass</parameter>&nbsp;:</term>
+<listitem><simpara>              the pointer to store klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecSimpleKeysStoreId" role="macro">
-<title>xmlSecSimpleKeysStoreId</title>
-<indexterm zone="xmlSecSimpleKeysStoreId"><primary>xmlSecSimpleKeysStoreId</primary></indexterm>
-<programlisting>#define xmlSecSimpleKeysStoreId         xmlSecSimpleKeysStoreGetKlass()
+<refsect2>
+<title><anchor id="xmlSecSimpleKeysStoreId" role="macro">xmlSecSimpleKeysStoreId</title>
+<indexterm><primary>xmlSecSimpleKeysStoreId</primary></indexterm><programlisting>#define xmlSecSimpleKeysStoreId         xmlSecSimpleKeysStoreGetKlass()
 </programlisting>
 <para>
-A simple keys store klass id.
+A simple keys store klass id.</para>
+<para>
+
 </para></refsect2>
-<refsect2 id="xmlSecSimpleKeysStoreGetKlass" role="function">
-<title>xmlSecSimpleKeysStoreGetKlass ()</title>
-<indexterm zone="xmlSecSimpleKeysStoreGetKlass"><primary>xmlSecSimpleKeysStoreGetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecKeyStoreId"><returnvalue>xmlSecKeyStoreId</returnvalue></link>    xmlSecSimpleKeysStoreGetKlass       (<parameter><type>void</type></parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecSimpleKeysStoreGetKlass" role="function">xmlSecSimpleKeysStoreGetKlass ()</title>
+<indexterm><primary>xmlSecSimpleKeysStoreGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link> xmlSecSimpleKeysStoreGetKlass
+                                            (void);</programlisting>
 <para>
-The simple list based keys store klass.
+The simple list based keys store klass.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> simple list based keys store klass.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> simple list based keys store klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecSimpleKeysStoreAdoptKey" role="function">
-<title>xmlSecSimpleKeysStoreAdoptKey ()</title>
-<indexterm zone="xmlSecSimpleKeysStoreAdoptKey"><primary>xmlSecSimpleKeysStoreAdoptKey</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecSimpleKeysStoreAdoptKey       (<parameter><link linkend="xmlSecKeyStore"><type>xmlSecKeyStorePtr</type></link> store</parameter>,
-                                                         <parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecSimpleKeysStoreAdoptKey" role="function">xmlSecSimpleKeysStoreAdoptKey ()</title>
+<indexterm><primary>xmlSecSimpleKeysStoreAdoptKey</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecSimpleKeysStoreAdoptKey   (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
 <para>
-Adds <parameter>key</parameter> to the <parameter>store</parameter>.
+Adds <parameter>key</parameter> to the <parameter>store</parameter>.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>the pointer to simple keys store.
+<varlistentry><term><parameter>store</parameter>&nbsp;:</term>
+<listitem><simpara>              the pointer to simple keys store.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>the pointer to key.
+<varlistentry><term><parameter>key</parameter>&nbsp;:</term>
+<listitem><simpara>                the pointer to key.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecSimpleKeysStoreLoad" role="function">
-<title>xmlSecSimpleKeysStoreLoad ()</title>
-<indexterm zone="xmlSecSimpleKeysStoreLoad"><primary>xmlSecSimpleKeysStoreLoad</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecSimpleKeysStoreLoad           (<parameter><link linkend="xmlSecKeyStore"><type>xmlSecKeyStorePtr</type></link> store</parameter>,
-                                                         <parameter>const <link linkend="char"><type>char</type></link> *uri</parameter>,
-                                                         <parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> keysMngr</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecSimpleKeysStoreLoad" role="function">xmlSecSimpleKeysStoreLoad ()</title>
+<indexterm><primary>xmlSecSimpleKeysStoreLoad</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecSimpleKeysStoreLoad       (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+                                             const <link linkend="char">char</link> *uri,
+                                             <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
 <para>
-Reads keys from an XML file.
+Reads keys from an XML file.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>the pointer to simple keys store.
+<varlistentry><term><parameter>store</parameter>&nbsp;:</term>
+<listitem><simpara>              the pointer to simple keys store.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>uri</parameter>&#160;:</term>
-<listitem><simpara>the filename.
+<varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
+<listitem><simpara>                the filename.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>keysMngr</parameter>&#160;:</term>
-<listitem><simpara>the pointer to associated keys manager.
+<varlistentry><term><parameter>keysMngr</parameter>&nbsp;:</term>
+<listitem><simpara>           the pointer to associated keys manager.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecSimpleKeysStoreSave" role="function">
-<title>xmlSecSimpleKeysStoreSave ()</title>
-<indexterm zone="xmlSecSimpleKeysStoreSave"><primary>xmlSecSimpleKeysStoreSave</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecSimpleKeysStoreSave           (<parameter><link linkend="xmlSecKeyStore"><type>xmlSecKeyStorePtr</type></link> store</parameter>,
-                                                         <parameter>const <link linkend="char"><type>char</type></link> *filename</parameter>,
-                                                         <parameter><link linkend="xmlSecKeyDataType"><type>xmlSecKeyDataType</type></link> type</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecSimpleKeysStoreSave" role="function">xmlSecSimpleKeysStoreSave ()</title>
+<indexterm><primary>xmlSecSimpleKeysStoreSave</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecSimpleKeysStoreSave       (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+                                             const <link linkend="char">char</link> *filename,
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 <para>
-Writes keys from <parameter>store</parameter> to an XML file.
+Writes keys from <parameter>store</parameter> to an XML file.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>the pointer to simple keys store.
+<varlistentry><term><parameter>store</parameter>&nbsp;:</term>
+<listitem><simpara>              the pointer to simple keys store.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>filename</parameter>&#160;:</term>
-<listitem><simpara>the filename.
+<varlistentry><term><parameter>filename</parameter>&nbsp;:</term>
+<listitem><simpara>           the filename.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara>the saved keys type (public, private, ...).
+<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<listitem><simpara>               the saved keys type (public, private, ...).
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecSimpleKeysStoreGetKeys" role="function">
-<title>xmlSecSimpleKeysStoreGetKeys ()</title>
-<indexterm zone="xmlSecSimpleKeysStoreGetKeys"><primary>xmlSecSimpleKeysStoreGetKeys</primary></indexterm>
-<programlisting><link linkend="xmlSecPtrListPtr"><returnvalue>xmlSecPtrListPtr</returnvalue></link>    xmlSecSimpleKeysStoreGetKeys        (<parameter><link linkend="xmlSecKeyStore"><type>xmlSecKeyStorePtr</type></link> store</parameter>);</programlisting>
+<refsect2>
+<title><anchor id="xmlSecSimpleKeysStoreGetKeys" role="function">xmlSecSimpleKeysStoreGetKeys ()</title>
+<indexterm><primary>xmlSecSimpleKeysStoreGetKeys</primary></indexterm><programlisting><link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> xmlSecSimpleKeysStoreGetKeys
+                                            (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store);</programlisting>
 <para>
-Gets list of keys from simple keys store.
+Gets list of keys from simple keys store.</para>
+<para>
+
 </para><variablelist role="params">
-<varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>the pointer to simple keys store.
+<varlistentry><term><parameter>store</parameter>&nbsp;:</term>
+<listitem><simpara>              the pointer to simple keys store.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the list of keys stored in the keys store or NULL
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to the list of keys stored in the keys store or NULL
 if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 
 </refsect1>
+
+
+
 
 </refentry>

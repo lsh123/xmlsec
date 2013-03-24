@@ -17,9 +17,6 @@ Base64 encoding/decoding functions.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
-
-
 <!-- ##### MACRO XMLSEC_BASE64_LINESIZE ##### -->
 <para>
 
@@ -32,7 +29,6 @@ Base64 encoding/decoding functions.
 
 </para>
 
-@void: 
 @Returns: 
 
 

@@ -17,9 +17,6 @@ Experimental soap support.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
-
-
 <!-- ##### FUNCTION xmlSecSoap11CreateEnvelope ##### -->
 <para>
 

@@ -17,9 +17,6 @@ Dynamic templates creation functions.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
-
-
 <!-- ##### FUNCTION xmlSecTmplSignatureCreate ##### -->
 <para>
 

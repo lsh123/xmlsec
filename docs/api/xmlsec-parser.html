@@ -7,6 +7,7 @@
 <link rel="UP" title="XML Security Core Library API Reference." href="xmlsec-ref.html">
 <link rel="PREVIOUS" title="nodeset" href="xmlsec-nodeset.html">
 <link rel="NEXT" title="templates" href="xmlsec-templates.html">
+<meta name="GENERATOR" content="GTK-Doc V1.7 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -87,129 +88,143 @@
 <h1>
 <a name="XMLSEC-PARSER"></a>parser</h1>
 <div class="REFNAMEDIV">
-<a name="AEN14575"></a><h2>Name</h2>parser -- Parser transform implementation.</div>
+<a name="AEN12830"></a><h2>Name</h2>parser -- Parser transform implementation.</div>
 <div class="REFSYNOPSISDIV">
-<a name="XMLSEC-PARSER.SYNOPSIS"></a><h2>Synopsis</h2>
-<pre class="SYNOPSIS"><gtkdoclink href="XMLDOC"><span class="RETURNVALUE">xmlDocPtr</span></gtkdoclink><a href="xmlsec-parser.html#XMLSECPARSEFILE">xmlSecParseFile</a>                     (<code class="PARAMETER">const <gtkdoclink href="CHAR"><span class="TYPE">char</span></gtkdoclink> *filename</code>);
-<gtkdoclink href="XMLDOC"><span class="RETURNVALUE">xmlDocPtr</span></gtkdoclink><a href="xmlsec-parser.html#XMLSECPARSEMEMORY">xmlSecParseMemory</a>                   (<code class="PARAMETER">const <a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *buffer</code>,
-                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> size</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="INT"><span class="TYPE">int</span></gtkdoclink> recovery</code>);
-<gtkdoclink href="XMLDOC"><span class="RETURNVALUE">xmlDocPtr</span></gtkdoclink><a href="xmlsec-parser.html#XMLSECPARSEMEMORYEXT">xmlSecParseMemoryExt</a>                (<code class="PARAMETER">const <a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *prefix</code>,
-                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> prefixSize</code>,
-                                                         <code class="PARAMETER">const <a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *buffer</code>,
-                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> bufferSize</code>,
-                                                         <code class="PARAMETER">const <a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *postfix</code>,
-                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> postfixSize</code>);
-#define             <a href="xmlsec-parser.html#XMLSECTRANSFORMXMLPARSERID">xmlSecTransformXmlParserId</a>
-<gtkdoclink href="XMLSECTRANSFORMID"><span class="RETURNVALUE">xmlSecTransformId</span></gtkdoclink><a href="xmlsec-parser.html#XMLSECTRANSFORMXMLPARSERGETKLASS">xmlSecTransformXmlParserGetKlass</a>    (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<a name="AEN12833"></a><h2>Synopsis</h2>
+<pre class="SYNOPSIS">
+
+<font>xmlDocPtr</font>   <a href="xmlsec-parser.html#XMLSECPARSEFILE">xmlSecParseFile</a>                 (const <font>char</font> *filename);
+<font>xmlDocPtr</font>   <a href="xmlsec-parser.html#XMLSECPARSEMEMORY">xmlSecParseMemory</a>               (const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *buffer,
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> size,
+                                             <font>int</font> recovery);
+<font>xmlDocPtr</font>   <a href="xmlsec-parser.html#XMLSECPARSEMEMORYEXT">xmlSecParseMemoryExt</a>            (const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *prefix,
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> prefixSize,
+                                             const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *buffer,
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> bufferSize,
+                                             const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *postfix,
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> postfixSize);
+#define     <a href="xmlsec-parser.html#XMLSECTRANSFORMXMLPARSERID">xmlSecTransformXmlParserId</a>
+<font>xmlSecTransformId</font> <a href="xmlsec-parser.html#XMLSECTRANSFORMXMLPARSERGETKLASS">xmlSecTransformXmlParserGetKlass</a>
+                                            (void);</pre>
 </div>
 <div class="REFSECT1">
-<a name="XMLSEC-PARSER.DESCRIPTION"></a><h2>Description</h2>
+<a name="AEN12855"></a><h2>Description</h2>
 <p>Parser transform implementation.</p>
 </div>
 <div class="REFSECT1">
-<a name="XMLSEC-PARSER.DETAILS"></a><h2>Details</h2>
+<a name="AEN12858"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="XMLSECPARSEFILE"></a><h3>xmlSecParseFile ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="XMLDOC"><span class="RETURNVALUE">xmlDocPtr</span></gtkdoclink>           xmlSecParseFile                     (<code class="PARAMETER">const <gtkdoclink href="CHAR"><span class="TYPE">char</span></gtkdoclink> *filename</code>);</pre>
+<a name="AEN12860"></a><h3>
+<a name="XMLSECPARSEFILE"></a>xmlSecParseFile ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlDocPtr</font>   xmlSecParseFile                 (const <font>char</font> *filename);</pre>
 <p>Loads XML Doc from file <code class="PARAMETER">filename</code>. We need a special version because of
-c14n issue. The code is copied from <gtkdoclink href="XMLSAXPARSEFILEWITHDATA"><code class="FUNCTION">xmlSAXParseFileWithData()</code></gtkdoclink> function.</p>
+c14n issue. The code is copied from <font><code class="FUNCTION">xmlSAXParseFileWithData()</code></font> function.</p>
+<p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN14646"><span style="white-space: nowrap"><code class="PARAMETER">filename</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the filename.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12874"><span style="white-space: nowrap"><code class="PARAMETER">filename</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>           the filename.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN14651"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN12879"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to the loaded XML document or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECPARSEMEMORY"></a><h3>xmlSecParseMemory ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="XMLDOC"><span class="RETURNVALUE">xmlDocPtr</span></gtkdoclink>           xmlSecParseMemory                   (<code class="PARAMETER">const <a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *buffer</code>,
-                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> size</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="INT"><span class="TYPE">int</span></gtkdoclink> recovery</code>);</pre>
+<a name="AEN12884"></a><h3>
+<a name="XMLSECPARSEMEMORY"></a>xmlSecParseMemory ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlDocPtr</font>   xmlSecParseMemory               (const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *buffer,
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> size,
+                                             <font>int</font> recovery);</pre>
 <p>Loads XML Doc from memory. We need a special version because of
-c14n issue. The code is copied from <gtkdoclink href="XMLSAXPARSEMEMORY"><code class="FUNCTION">xmlSAXParseMemory()</code></gtkdoclink> function.</p>
+c14n issue. The code is copied from <font><code class="FUNCTION">xmlSAXParseMemory()</code></font> function.</p>
+<p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN14676"><span style="white-space: nowrap"><code class="PARAMETER">buffer</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the input buffer.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12899"><span style="white-space: nowrap"><code class="PARAMETER">buffer</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>             the input buffer.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN14681"><span style="white-space: nowrap"><code class="PARAMETER">size</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the input buffer size.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12904"><span style="white-space: nowrap"><code class="PARAMETER">size</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>               the input buffer size.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN14686"><span style="white-space: nowrap"><code class="PARAMETER">recovery</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the flag.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12909"><span style="white-space: nowrap"><code class="PARAMETER">recovery</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>           the flag.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN14691"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN12914"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to the loaded XML document or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECPARSEMEMORYEXT"></a><h3>xmlSecParseMemoryExt ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="XMLDOC"><span class="RETURNVALUE">xmlDocPtr</span></gtkdoclink>           xmlSecParseMemoryExt                (<code class="PARAMETER">const <a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *prefix</code>,
-                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> prefixSize</code>,
-                                                         <code class="PARAMETER">const <a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *buffer</code>,
-                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> bufferSize</code>,
-                                                         <code class="PARAMETER">const <a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *postfix</code>,
-                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> postfixSize</code>);</pre>
+<a name="AEN12919"></a><h3>
+<a name="XMLSECPARSEMEMORYEXT"></a>xmlSecParseMemoryExt ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlDocPtr</font>   xmlSecParseMemoryExt            (const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *prefix,
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> prefixSize,
+                                             const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *buffer,
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> bufferSize,
+                                             const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *postfix,
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> postfixSize);</pre>
 <p>Loads XML Doc from 3 chunks of memory: <code class="PARAMETER">prefix</code>, <code class="PARAMETER">buffer</code> and <code class="PARAMETER">postfix</code>.</p>
 <p></p>
+<p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN14726"><span style="white-space: nowrap"><code class="PARAMETER">prefix</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the first part of the input.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12938"><span style="white-space: nowrap"><code class="PARAMETER">prefix</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>             the first part of the input.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN14731"><span style="white-space: nowrap"><code class="PARAMETER">prefixSize</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the size of the first part of the input.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12943"><span style="white-space: nowrap"><code class="PARAMETER">prefixSize</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>         the size of the first part of the input.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN14736"><span style="white-space: nowrap"><code class="PARAMETER">buffer</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the second part of the input.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12948"><span style="white-space: nowrap"><code class="PARAMETER">buffer</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>             the second part of the input.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN14741"><span style="white-space: nowrap"><code class="PARAMETER">bufferSize</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the size of the second part of the input.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12953"><span style="white-space: nowrap"><code class="PARAMETER">bufferSize</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>         the size of the second part of the input.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN14746"><span style="white-space: nowrap"><code class="PARAMETER">postfix</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the third part of the input.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12958"><span style="white-space: nowrap"><code class="PARAMETER">postfix</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>            the third part of the input.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN14751"><span style="white-space: nowrap"><code class="PARAMETER">postfixSize</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the size of the third part of the input.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12963"><span style="white-space: nowrap"><code class="PARAMETER">postfixSize</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>        the size of the third part of the input.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN14756"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN12968"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to the loaded XML document or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECTRANSFORMXMLPARSERID"></a><h3>xmlSecTransformXmlParserId</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecTransformXmlParserId</pre>
+<a name="AEN12973"></a><h3>
+<a name="XMLSECTRANSFORMXMLPARSERID"></a>xmlSecTransformXmlParserId</h3>
+<pre class="PROGRAMLISTING">#define     xmlSecTransformXmlParserId</pre>
 <p>The XML Parser transform klass.</p>
+<p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECTRANSFORMXMLPARSERGETKLASS"></a><h3>xmlSecTransformXmlParserGetKlass ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="XMLSECTRANSFORMID"><span class="RETURNVALUE">xmlSecTransformId</span></gtkdoclink>   xmlSecTransformXmlParserGetKlass    (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<a name="AEN12981"></a><h3>
+<a name="XMLSECTRANSFORMXMLPARSERGETKLASS"></a>xmlSecTransformXmlParserGetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecTransformXmlParserGetKlass
+                                            (void);</pre>
 <p>The XML parser transform.</p>
 <p></p>
+<p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN14778"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN12991"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> XML parser transform klass.</p></td>
 </tr></tbody></table>
 </div>

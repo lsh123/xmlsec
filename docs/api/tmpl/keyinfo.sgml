@@ -17,9 +17,6 @@ keyinfo
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
-
-
 <!-- ##### FUNCTION xmlSecKeyInfoNodeRead ##### -->
 <para>
 
@@ -258,7 +255,6 @@ keyinfo
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -274,7 +270,6 @@ keyinfo
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -290,7 +285,6 @@ keyinfo
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -306,7 +300,6 @@ keyinfo
 
 </para>
 
-@void: 
 @Returns: 
 
 

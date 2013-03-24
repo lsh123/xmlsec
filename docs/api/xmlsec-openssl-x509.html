@@ -7,6 +7,7 @@
 <link rel="UP" title="XML Security Library for OpenSLL API Reference." href="xmlsec-openssl-ref.html">
 <link rel="PREVIOUS" title="evp" href="xmlsec-openssl-evp.html">
 <link rel="NEXT" title="XML Security Library for GnuTLS API Reference." href="xmlsec-gnutls-ref.html">
+<meta name="GENERATOR" content="GTK-Doc V1.7 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -87,101 +88,124 @@
 <h1>
 <a name="XMLSEC-OPENSSL-X509"></a>x509</h1>
 <div class="REFNAMEDIV">
-<a name="AEN29124"></a><h2>Name</h2>x509 -- X509 certificates support implementation for OpenSSL.</div>
+<a name="AEN25295"></a><h2>Name</h2>x509 -- X509 certificates support implementation for OpenSSL.</div>
 <div class="REFSYNOPSISDIV">
-<a name="XMLSEC-OPENSSL-X509.SYNOPSIS"></a><h2>Synopsis</h2>
-<pre class="SYNOPSIS">#define             <a href="xmlsec-openssl-x509.html#XMLSEC-STACK-OF-X509:CAPS">XMLSEC_STACK_OF_X509</a>
-#define             <a href="xmlsec-openssl-x509.html#XMLSEC-STACK-OF-X509-CRL:CAPS">XMLSEC_STACK_OF_X509_CRL</a>
-#define             <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509ID">xmlSecOpenSSLKeyDataX509Id</a>
-<gtkdoclink href="XMLSECKEYDATAID"><span class="RETURNVALUE">xmlSecKeyDataId</span></gtkdoclink><a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509GETKLASS">xmlSecOpenSSLKeyDataX509GetKlass</a>    (<code class="PARAMETER"><span class="TYPE">void</span></code>);
-<gtkdoclink href="X509:CAPS"><span class="RETURNVALUE">X509</span></gtkdoclink>*               <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509GETKEYCERT">xmlSecOpenSSLKeyDataX509GetKeyCert</a>  (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>);
-<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509ADOPTKEYCERT">xmlSecOpenSSLKeyDataX509AdoptKeyCert</a>
-                                                        (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="X509:CAPS"><span class="TYPE">X509</span></gtkdoclink> *cert</code>);
-<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509ADOPTCERT">xmlSecOpenSSLKeyDataX509AdoptCert</a>   (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="X509:CAPS"><span class="TYPE">X509</span></gtkdoclink> *cert</code>);
-<gtkdoclink href="X509:CAPS"><span class="RETURNVALUE">X509</span></gtkdoclink>*               <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509GETCERT">xmlSecOpenSSLKeyDataX509GetCert</a>     (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
-                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> pos</code>);
-<a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="RETURNVALUE">xmlSecSize</span></a>          <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509GETCERTSSIZE">xmlSecOpenSSLKeyDataX509GetCertsSize</a>
-                                                        (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>);
-<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509ADOPTCRL">xmlSecOpenSSLKeyDataX509AdoptCrl</a>    (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="X509-CRL:CAPS"><span class="TYPE">X509_CRL</span></gtkdoclink> *crl</code>);
-<gtkdoclink href="X509-CRL:CAPS"><span class="RETURNVALUE">X509_CRL</span></gtkdoclink>*           <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509GETCRL">xmlSecOpenSSLKeyDataX509GetCrl</a>      (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
-                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> pos</code>);
-<a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="RETURNVALUE">xmlSecSize</span></a>          <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509GETCRLSSIZE">xmlSecOpenSSLKeyDataX509GetCrlsSize</a> (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>);
-<a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="RETURNVALUE">xmlSecKeyDataPtr</span></a>    <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLX509CERTGETKEY">xmlSecOpenSSLX509CertGetKey</a>         (<code class="PARAMETER"><gtkdoclink href="X509:CAPS"><span class="TYPE">X509</span></gtkdoclink> *cert</code>);
-#define             <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATARAWX509CERTID">xmlSecOpenSSLKeyDataRawX509CertId</a>
-<gtkdoclink href="XMLSECKEYDATAID"><span class="RETURNVALUE">xmlSecKeyDataId</span></gtkdoclink><a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATARAWX509CERTGETKLASS">xmlSecOpenSSLKeyDataRawX509CertGetKlass</a>
-                                                        (<code class="PARAMETER"><span class="TYPE">void</span></code>);
-#define             <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREID">xmlSecOpenSSLX509StoreId</a>
-<gtkdoclink href="XMLSECKEYDATASTOREID"><span class="RETURNVALUE">xmlSecKeyDataStoreId</span></gtkdoclink><a href="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREGETKLASS">xmlSecOpenSSLX509StoreGetKlass</a>    (<code class="PARAMETER"><span class="TYPE">void</span></code>);
-<gtkdoclink href="X509:CAPS"><span class="RETURNVALUE">X509</span></gtkdoclink>*               <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREFINDCERT">xmlSecOpenSSLX509StoreFindCert</a>      (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE"><span class="TYPE">xmlSecKeyDataStorePtr</span></a> store</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="XMLCHAR"><span class="TYPE">xmlChar</span></gtkdoclink> *subjectName</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="XMLCHAR"><span class="TYPE">xmlChar</span></gtkdoclink> *issuerName</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="XMLCHAR"><span class="TYPE">xmlChar</span></gtkdoclink> *issuerSerial</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="XMLCHAR"><span class="TYPE">xmlChar</span></gtkdoclink> *ski</code>,
-                                                         <code class="PARAMETER"><a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"><span class="TYPE">xmlSecKeyInfoCtx</span></a> *keyInfoCtx</code>);
-<gtkdoclink href="X509:CAPS"><span class="RETURNVALUE">X509</span></gtkdoclink>*               <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREVERIFY">xmlSecOpenSSLX509StoreVerify</a>        (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE"><span class="TYPE">xmlSecKeyDataStorePtr</span></a> store</code>,
-                                                         <code class="PARAMETER"><a href="xmlsec-openssl-x509.html#XMLSEC-STACK-OF-X509:CAPS"><span class="TYPE">XMLSEC_STACK_OF_X509</span></a> *certs</code>,
-                                                         <code class="PARAMETER"><a href="xmlsec-openssl-x509.html#XMLSEC-STACK-OF-X509-CRL:CAPS"><span class="TYPE">XMLSEC_STACK_OF_X509_CRL</span></a> *crls</code>,
-                                                         <code class="PARAMETER"><a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"><span class="TYPE">xmlSecKeyInfoCtx</span></a> *keyInfoCtx</code>);
-<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREADOPTCERT">xmlSecOpenSSLX509StoreAdoptCert</a>     (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE"><span class="TYPE">xmlSecKeyDataStorePtr</span></a> store</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="X509:CAPS"><span class="TYPE">X509</span></gtkdoclink> *cert</code>,
-                                                         <code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE"><span class="TYPE">xmlSecKeyDataType</span></a> type</code>);
-<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREADOPTCRL">xmlSecOpenSSLX509StoreAdoptCrl</a>      (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE"><span class="TYPE">xmlSecKeyDataStorePtr</span></a> store</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="X509-CRL:CAPS"><span class="TYPE">X509_CRL</span></gtkdoclink> *crl</code>);
-<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREADDCERTSPATH">xmlSecOpenSSLX509StoreAddCertsPath</a>  (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE"><span class="TYPE">xmlSecKeyDataStorePtr</span></a> store</code>,
-                                                         <code class="PARAMETER">const <gtkdoclink href="CHAR"><span class="TYPE">char</span></gtkdoclink> *path</code>);
-<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREADDCERTSFILE">xmlSecOpenSSLX509StoreAddCertsFile</a>  (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE"><span class="TYPE">xmlSecKeyDataStorePtr</span></a> store</code>,
-                                                         <code class="PARAMETER">const <gtkdoclink href="CHAR"><span class="TYPE">char</span></gtkdoclink> *file</code>);</pre>
+<a name="AEN25298"></a><h2>Synopsis</h2>
+<pre class="SYNOPSIS">
+
+#define     <a href="xmlsec-openssl-x509.html#XMLSEC-STACK-OF-X509:CAPS">XMLSEC_STACK_OF_X509</a>
+#define     <a href="xmlsec-openssl-x509.html#XMLSEC-STACK-OF-X509-CRL:CAPS">XMLSEC_STACK_OF_X509_CRL</a>
+#define     <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509ID">xmlSecOpenSSLKeyDataX509Id</a>
+<font>xmlSecKeyDataId</font> <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509GETKLASS">xmlSecOpenSSLKeyDataX509GetKlass</a>
+                                            (void);
+<font>X509</font>*       <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509GETKEYCERT">xmlSecOpenSSLKeyDataX509GetKeyCert</a>
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);
+<font>int</font>         <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509ADOPTKEYCERT">xmlSecOpenSSLKeyDataX509AdoptKeyCert</a>
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
+                                             <font>X509</font> *cert);
+<font>int</font>         <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509ADOPTCERT">xmlSecOpenSSLKeyDataX509AdoptCert</a>
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
+                                             <font>X509</font> *cert);
+<font>X509</font>*       <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509GETCERT">xmlSecOpenSSLKeyDataX509GetCert</a> (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> pos);
+<a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a>  <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509GETCERTSSIZE">xmlSecOpenSSLKeyDataX509GetCertsSize</a>
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);
+<font>int</font>         <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509ADOPTCRL">xmlSecOpenSSLKeyDataX509AdoptCrl</a>
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
+                                             <font>X509_CRL</font> *crl);
+<font>X509_CRL</font>*   <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509GETCRL">xmlSecOpenSSLKeyDataX509GetCrl</a>  (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> pos);
+<a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a>  <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509GETCRLSSIZE">xmlSecOpenSSLKeyDataX509GetCrlsSize</a>
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);
+<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLX509CERTGETKEY">xmlSecOpenSSLX509CertGetKey</a>
+                                            (<font>X509</font> *cert);
+#define     <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATARAWX509CERTID">xmlSecOpenSSLKeyDataRawX509CertId</a>
+<font>xmlSecKeyDataId</font> <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATARAWX509CERTGETKLASS">xmlSecOpenSSLKeyDataRawX509CertGetKlass</a>
+                                            (void);
+#define     <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREID">xmlSecOpenSSLX509StoreId</a>
+<font>xmlSecKeyDataStoreId</font> <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREGETKLASS">xmlSecOpenSSLX509StoreGetKlass</a>
+                                            (void);
+<font>X509</font>*       <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREFINDCERT">xmlSecOpenSSLX509StoreFindCert</a>  (<a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> store,
+                                             <font>xmlChar</font> *subjectName,
+                                             <font>xmlChar</font> *issuerName,
+                                             <font>xmlChar</font> *issuerSerial,
+                                             <font>xmlChar</font> *ski,
+                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtx</a> *keyInfoCtx);
+<font>X509</font>*       <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREVERIFY">xmlSecOpenSSLX509StoreVerify</a>    (<a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> store,
+                                             <a href="xmlsec-openssl-x509.html#XMLSEC-STACK-OF-X509:CAPS">XMLSEC_STACK_OF_X509</a> *certs,
+                                             <a href="xmlsec-openssl-x509.html#XMLSEC-STACK-OF-X509-CRL:CAPS">XMLSEC_STACK_OF_X509_CRL</a> *crls,
+                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtx</a> *keyInfoCtx);
+<font>int</font>         <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREADOPTCERT">xmlSecOpenSSLX509StoreAdoptCert</a> (<a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> store,
+                                             <font>X509</font> *cert,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);
+<font>int</font>         <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREADOPTCRL">xmlSecOpenSSLX509StoreAdoptCrl</a>  (<a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> store,
+                                             <font>X509_CRL</font> *crl);
+<font>int</font>         <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREADDCERTSPATH">xmlSecOpenSSLX509StoreAddCertsPath</a>
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> store,
+                                             const <font>char</font> *path);
+<font>int</font>         <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREADDCERTSFILE">xmlSecOpenSSLX509StoreAddCertsFile</a>
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> store,
+                                             const <font>char</font> *file);</pre>
 </div>
 <div class="REFSECT1">
-<a name="XMLSEC-OPENSSL-X509.DESCRIPTION"></a><h2>Description</h2>
+<a name="AEN25375"></a><h2>Description</h2>
 <p>X509 certificates support implementation for OpenSSL.</p>
 </div>
 <div class="REFSECT1">
-<a name="XMLSEC-OPENSSL-X509.DETAILS"></a><h2>Details</h2>
+<a name="AEN25378"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="XMLSEC-STACK-OF-X509:CAPS"></a><h3>XMLSEC_STACK_OF_X509</h3>
+<a name="AEN25380"></a><h3>
+<a name="XMLSEC-STACK-OF-X509:CAPS"></a>XMLSEC_STACK_OF_X509</h3>
 <pre class="PROGRAMLISTING">#define XMLSEC_STACK_OF_X509            STACK_OF(X509)</pre>
 <p>Macro. To make docbook happy.</p>
+<p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSEC-STACK-OF-X509-CRL:CAPS"></a><h3>XMLSEC_STACK_OF_X509_CRL</h3>
+<a name="AEN25388"></a><h3>
+<a name="XMLSEC-STACK-OF-X509-CRL:CAPS"></a>XMLSEC_STACK_OF_X509_CRL</h3>
 <pre class="PROGRAMLISTING">#define XMLSEC_STACK_OF_X509_CRL        STACK_OF(X509_CRL)</pre>
 <p>Macro. To make docbook happy.</p>
+<p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECOPENSSLKEYDATAX509ID"></a><h3>xmlSecOpenSSLKeyDataX509Id</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecOpenSSLKeyDataX509Id</pre>
+<a name="AEN25396"></a><h3>
+<a name="XMLSECOPENSSLKEYDATAX509ID"></a>xmlSecOpenSSLKeyDataX509Id</h3>
+<pre class="PROGRAMLISTING">#define     xmlSecOpenSSLKeyDataX509Id</pre>
 <p>The OpenSSL X509 data klass.</p>
+<p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECOPENSSLKEYDATAX509GETKLASS"></a><h3>xmlSecOpenSSLKeyDataX509GetKlass ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="XMLSECKEYDATAID"><span class="RETURNVALUE">xmlSecKeyDataId</span></gtkdoclink>     xmlSecOpenSSLKeyDataX509GetKlass    (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>The OpenSSL X509 key data klass (http://www.w3.org/TR/xmldsig-core/<gtkdoclink href="SEC-X509DATA"><span class="TYPE">sec-X509Data</span></gtkdoclink>).</p>
+<a name="AEN25404"></a><h3>
+<a name="XMLSECOPENSSLKEYDATAX509GETKLASS"></a>xmlSecOpenSSLKeyDataX509GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecOpenSSLKeyDataX509GetKlass
+                                            (void);</pre>
+<p>The OpenSSL X509 key data klass (http://www.w3.org/TR/xmldsig-core/<font><span class="TYPE">sec-X509Data</span></font>).</p>
+<p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN29330"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25416"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> the X509 data klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECOPENSSLKEYDATAX509GETKEYCERT"></a><h3>xmlSecOpenSSLKeyDataX509GetKeyCert ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="X509:CAPS"><span class="RETURNVALUE">X509</span></gtkdoclink>*               xmlSecOpenSSLKeyDataX509GetKeyCert  (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>);</pre>
+<a name="AEN25421"></a><h3>
+<a name="XMLSECOPENSSLKEYDATAX509GETKEYCERT"></a>xmlSecOpenSSLKeyDataX509GetKeyCert ()</h3>
+<pre class="PROGRAMLISTING"><font>X509</font>*       xmlSecOpenSSLKeyDataX509GetKeyCert
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre>
 <p>Gets the certificate from which the key was extracted.</p>
+<p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29347"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the pointer to X509 key data.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25432"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to X509 key data.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29352"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25437"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> the key's certificate or NULL if key data was not used for key
 extraction or an error occurs.</p></td>
 </tr>
@@ -189,67 +213,74 @@ extraction or an error occurs.</p></td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECOPENSSLKEYDATAX509ADOPTKEYCERT"></a><h3>xmlSecOpenSSLKeyDataX509AdoptKeyCert ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecOpenSSLKeyDataX509AdoptKeyCert
-                                                        (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="X509:CAPS"><span class="TYPE">X509</span></gtkdoclink> *cert</code>);</pre>
+<a name="AEN25442"></a><h3>
+<a name="XMLSECOPENSSLKEYDATAX509ADOPTKEYCERT"></a>xmlSecOpenSSLKeyDataX509AdoptKeyCert ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>         xmlSecOpenSSLKeyDataX509AdoptKeyCert
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
+                                             <font>X509</font> *cert);</pre>
 <p>Sets the key's certificate in <code class="PARAMETER">data</code>.</p>
 <p></p>
+<p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29373"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the pointer to X509 key data.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25455"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to X509 key data.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29378"><span style="white-space: nowrap"><code class="PARAMETER">cert</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the pointer to OpenSSL X509 certificate.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25460"><span style="white-space: nowrap"><code class="PARAMETER">cert</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to OpenSSL X509 certificate.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29383"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25465"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECOPENSSLKEYDATAX509ADOPTCERT"></a><h3>xmlSecOpenSSLKeyDataX509AdoptCert ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecOpenSSLKeyDataX509AdoptCert   (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="X509:CAPS"><span class="TYPE">X509</span></gtkdoclink> *cert</code>);</pre>
+<a name="AEN25470"></a><h3>
+<a name="XMLSECOPENSSLKEYDATAX509ADOPTCERT"></a>xmlSecOpenSSLKeyDataX509AdoptCert ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>         xmlSecOpenSSLKeyDataX509AdoptCert
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
+                                             <font>X509</font> *cert);</pre>
 <p>Adds certificate to the X509 key data.</p>
 <p></p>
+<p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29403"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the pointer to X509 key data.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25482"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to X509 key data.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29408"><span style="white-space: nowrap"><code class="PARAMETER">cert</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the pointer to OpenSSL X509 certificate.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25487"><span style="white-space: nowrap"><code class="PARAMETER">cert</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to OpenSSL X509 certificate.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29413"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25492"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECOPENSSLKEYDATAX509GETCERT"></a><h3>xmlSecOpenSSLKeyDataX509GetCert ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="X509:CAPS"><span class="RETURNVALUE">X509</span></gtkdoclink>*               xmlSecOpenSSLKeyDataX509GetCert     (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
-                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> pos</code>);</pre>
+<a name="AEN25497"></a><h3>
+<a name="XMLSECOPENSSLKEYDATAX509GETCERT"></a>xmlSecOpenSSLKeyDataX509GetCert ()</h3>
+<pre class="PROGRAMLISTING"><font>X509</font>*       xmlSecOpenSSLKeyDataX509GetCert (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> pos);</pre>
 <p>Gets a certificate from X509 key data.</p>
+<p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29433"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the pointer to X509 key data.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25509"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to X509 key data.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29438"><span style="white-space: nowrap"><code class="PARAMETER">pos</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the desired certificate position.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25514"><span style="white-space: nowrap"><code class="PARAMETER">pos</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>                the desired certificate position.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29443"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25519"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> the pointer to certificate or NULL if <code class="PARAMETER">pos</code> is larger than the
 number of certificates in <code class="PARAMETER">data</code> or an error occurs.</p></td>
 </tr>
@@ -257,62 +288,69 @@ number of certificates in <code class="PARAMETER">data</code> or an error occurs
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECOPENSSLKEYDATAX509GETCERTSSIZE"></a><h3>xmlSecOpenSSLKeyDataX509GetCertsSize ()</h3>
-<pre class="PROGRAMLISTING"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="RETURNVALUE">xmlSecSize</span></a>          xmlSecOpenSSLKeyDataX509GetCertsSize
-                                                        (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>);</pre>
+<a name="AEN25526"></a><h3>
+<a name="XMLSECOPENSSLKEYDATAX509GETCERTSSIZE"></a>xmlSecOpenSSLKeyDataX509GetCertsSize ()</h3>
+<pre class="PROGRAMLISTING"><a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a>  xmlSecOpenSSLKeyDataX509GetCertsSize
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre>
 <p>Gets the number of certificates in <code class="PARAMETER">data</code>.</p>
+<p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29463"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the pointer to X509 key data.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25538"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to X509 key data.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29468"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25543"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> te number of certificates in <code class="PARAMETER">data</code>.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECOPENSSLKEYDATAX509ADOPTCRL"></a><h3>xmlSecOpenSSLKeyDataX509AdoptCrl ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecOpenSSLKeyDataX509AdoptCrl    (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="X509-CRL:CAPS"><span class="TYPE">X509_CRL</span></gtkdoclink> *crl</code>);</pre>
+<a name="AEN25549"></a><h3>
+<a name="XMLSECOPENSSLKEYDATAX509ADOPTCRL"></a>xmlSecOpenSSLKeyDataX509AdoptCrl ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>         xmlSecOpenSSLKeyDataX509AdoptCrl
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
+                                             <font>X509_CRL</font> *crl);</pre>
 <p>Adds CRL to the X509 key data.</p>
+<p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29489"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the pointer to X509 key data.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25561"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to X509 key data.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29494"><span style="white-space: nowrap"><code class="PARAMETER">crl</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the pointer to OpenSSL X509 CRL.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25566"><span style="white-space: nowrap"><code class="PARAMETER">crl</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to OpenSSL X509 CRL.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29499"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25571"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECOPENSSLKEYDATAX509GETCRL"></a><h3>xmlSecOpenSSLKeyDataX509GetCrl ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="X509-CRL:CAPS"><span class="RETURNVALUE">X509_CRL</span></gtkdoclink>*           xmlSecOpenSSLKeyDataX509GetCrl      (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
-                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> pos</code>);</pre>
+<a name="AEN25576"></a><h3>
+<a name="XMLSECOPENSSLKEYDATAX509GETCRL"></a>xmlSecOpenSSLKeyDataX509GetCrl ()</h3>
+<pre class="PROGRAMLISTING"><font>X509_CRL</font>*   xmlSecOpenSSLKeyDataX509GetCrl  (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> pos);</pre>
 <p>Gets a CRL from X509 key data.</p>
+<p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29519"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the pointer to X509 key data.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25588"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to X509 key data.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29524"><span style="white-space: nowrap"><code class="PARAMETER">pos</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the desired CRL position.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25593"><span style="white-space: nowrap"><code class="PARAMETER">pos</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>                the desired CRL position.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29529"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25598"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> the pointer to CRL or NULL if <code class="PARAMETER">pos</code> is larger than the
 number of CRLs in <code class="PARAMETER">data</code> or an error occurs.</p></td>
 </tr>
@@ -320,111 +358,128 @@ number of CRLs in <code class="PARAMETER">data</code> or an error occurs.</p></t
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECOPENSSLKEYDATAX509GETCRLSSIZE"></a><h3>xmlSecOpenSSLKeyDataX509GetCrlsSize ()</h3>
-<pre class="PROGRAMLISTING"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="RETURNVALUE">xmlSecSize</span></a>          xmlSecOpenSSLKeyDataX509GetCrlsSize (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>);</pre>
+<a name="AEN25605"></a><h3>
+<a name="XMLSECOPENSSLKEYDATAX509GETCRLSSIZE"></a>xmlSecOpenSSLKeyDataX509GetCrlsSize ()</h3>
+<pre class="PROGRAMLISTING"><a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a>  xmlSecOpenSSLKeyDataX509GetCrlsSize
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre>
 <p>Gets the number of CRLs in <code class="PARAMETER">data</code>.</p>
+<p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29549"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the pointer to X509 key data.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25617"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to X509 key data.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29554"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25622"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> te number of CRLs in <code class="PARAMETER">data</code>.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECOPENSSLX509CERTGETKEY"></a><h3>xmlSecOpenSSLX509CertGetKey ()</h3>
-<pre class="PROGRAMLISTING"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="RETURNVALUE">xmlSecKeyDataPtr</span></a>    xmlSecOpenSSLX509CertGetKey         (<code class="PARAMETER"><gtkdoclink href="X509:CAPS"><span class="TYPE">X509</span></gtkdoclink> *cert</code>);</pre>
+<a name="AEN25628"></a><h3>
+<a name="XMLSECOPENSSLX509CERTGETKEY"></a>xmlSecOpenSSLX509CertGetKey ()</h3>
+<pre class="PROGRAMLISTING"><a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> xmlSecOpenSSLX509CertGetKey
+                                            (<font>X509</font> *cert);</pre>
 <p>Extracts public key from the <code class="PARAMETER">cert</code>.</p>
+<p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29573"><span style="white-space: nowrap"><code class="PARAMETER">cert</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the certificate.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25640"><span style="white-space: nowrap"><code class="PARAMETER">cert</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>               the certificate.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29578"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25645"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> public key value or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECOPENSSLKEYDATARAWX509CERTID"></a><h3>xmlSecOpenSSLKeyDataRawX509CertId</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecOpenSSLKeyDataRawX509CertId</pre>
+<a name="AEN25650"></a><h3>
+<a name="XMLSECOPENSSLKEYDATARAWX509CERTID"></a>xmlSecOpenSSLKeyDataRawX509CertId</h3>
+<pre class="PROGRAMLISTING">#define     xmlSecOpenSSLKeyDataRawX509CertId</pre>
 <p>The OpenSSL raw X509 certificate klass.</p>
+<p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECOPENSSLKEYDATARAWX509CERTGETKLASS"></a><h3>xmlSecOpenSSLKeyDataRawX509CertGetKlass ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="XMLSECKEYDATAID"><span class="RETURNVALUE">xmlSecKeyDataId</span></gtkdoclink>     xmlSecOpenSSLKeyDataRawX509CertGetKlass
-                                                        (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<a name="AEN25658"></a><h3>
+<a name="XMLSECOPENSSLKEYDATARAWX509CERTGETKLASS"></a>xmlSecOpenSSLKeyDataRawX509CertGetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecOpenSSLKeyDataRawX509CertGetKlass
+                                            (void);</pre>
 <p>The raw X509 certificates key data klass.</p>
 <p></p>
+<p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN29600"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25668"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> raw X509 certificates key data klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECOPENSSLX509STOREID"></a><h3>xmlSecOpenSSLX509StoreId</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecOpenSSLX509StoreId</pre>
+<a name="AEN25673"></a><h3>
+<a name="XMLSECOPENSSLX509STOREID"></a>xmlSecOpenSSLX509StoreId</h3>
+<pre class="PROGRAMLISTING">#define     xmlSecOpenSSLX509StoreId</pre>
 <p>The OpenSSL X509 store klass.</p>
+<p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECOPENSSLX509STOREGETKLASS"></a><h3>xmlSecOpenSSLX509StoreGetKlass ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="XMLSECKEYDATASTOREID"><span class="RETURNVALUE">xmlSecKeyDataStoreId</span></gtkdoclink>  xmlSecOpenSSLX509StoreGetKlass    (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<a name="AEN25681"></a><h3>
+<a name="XMLSECOPENSSLX509STOREGETKLASS"></a>xmlSecOpenSSLX509StoreGetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecKeyDataStoreId</font> xmlSecOpenSSLX509StoreGetKlass
+                                            (void);</pre>
 <p>The OpenSSL X509 certificates key data store klass.</p>
 <p></p>
+<p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN29622"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25691"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to OpenSSL X509 certificates key data store klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECOPENSSLX509STOREFINDCERT"></a><h3>xmlSecOpenSSLX509StoreFindCert ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="X509:CAPS"><span class="RETURNVALUE">X509</span></gtkdoclink>*               xmlSecOpenSSLX509StoreFindCert      (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE"><span class="TYPE">xmlSecKeyDataStorePtr</span></a> store</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="XMLCHAR"><span class="TYPE">xmlChar</span></gtkdoclink> *subjectName</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="XMLCHAR"><span class="TYPE">xmlChar</span></gtkdoclink> *issuerName</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="XMLCHAR"><span class="TYPE">xmlChar</span></gtkdoclink> *issuerSerial</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="XMLCHAR"><span class="TYPE">xmlChar</span></gtkdoclink> *ski</code>,
-                                                         <code class="PARAMETER"><a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"><span class="TYPE">xmlSecKeyInfoCtx</span></a> *keyInfoCtx</code>);</pre>
+<a name="AEN25696"></a><h3>
+<a name="XMLSECOPENSSLX509STOREFINDCERT"></a>xmlSecOpenSSLX509StoreFindCert ()</h3>
+<pre class="PROGRAMLISTING"><font>X509</font>*       xmlSecOpenSSLX509StoreFindCert  (<a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> store,
+                                             <font>xmlChar</font> *subjectName,
+                                             <font>xmlChar</font> *issuerName,
+                                             <font>xmlChar</font> *issuerSerial,
+                                             <font>xmlChar</font> *ski,
+                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtx</a> *keyInfoCtx);</pre>
 <p>Searches <code class="PARAMETER">store</code> for a certificate that matches given criteria.</p>
+<p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29655"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the pointer to X509 key data store klass.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25713"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>              the pointer to X509 key data store klass.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29660"><span style="white-space: nowrap"><code class="PARAMETER">subjectName</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the desired certificate name.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25718"><span style="white-space: nowrap"><code class="PARAMETER">subjectName</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>        the desired certificate name.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29665"><span style="white-space: nowrap"><code class="PARAMETER">issuerName</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the desired certificate issuer name.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25723"><span style="white-space: nowrap"><code class="PARAMETER">issuerName</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>         the desired certificate issuer name.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29670"><span style="white-space: nowrap"><code class="PARAMETER">issuerSerial</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the desired certificate issuer serial number.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25728"><span style="white-space: nowrap"><code class="PARAMETER">issuerSerial</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>       the desired certificate issuer serial number.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29675"><span style="white-space: nowrap"><code class="PARAMETER">ski</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the desired certificate SKI.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25733"><span style="white-space: nowrap"><code class="PARAMETER">ski</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>                the desired certificate SKI.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29680"><span style="white-space: nowrap"><code class="PARAMETER">keyInfoCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> element processing context.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25738"><span style="white-space: nowrap"><code class="PARAMETER">keyInfoCtx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>         the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> element processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29686"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25744"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to found certificate or NULL if certificate is not found
 or an error occurs.</p></td>
 </tr>
@@ -432,127 +487,139 @@ or an error occurs.</p></td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECOPENSSLX509STOREVERIFY"></a><h3>xmlSecOpenSSLX509StoreVerify ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="X509:CAPS"><span class="RETURNVALUE">X509</span></gtkdoclink>*               xmlSecOpenSSLX509StoreVerify        (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE"><span class="TYPE">xmlSecKeyDataStorePtr</span></a> store</code>,
-                                                         <code class="PARAMETER"><a href="xmlsec-openssl-x509.html#XMLSEC-STACK-OF-X509:CAPS"><span class="TYPE">XMLSEC_STACK_OF_X509</span></a> *certs</code>,
-                                                         <code class="PARAMETER"><a href="xmlsec-openssl-x509.html#XMLSEC-STACK-OF-X509-CRL:CAPS"><span class="TYPE">XMLSEC_STACK_OF_X509_CRL</span></a> *crls</code>,
-                                                         <code class="PARAMETER"><a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"><span class="TYPE">xmlSecKeyInfoCtx</span></a> *keyInfoCtx</code>);</pre>
+<a name="AEN25749"></a><h3>
+<a name="XMLSECOPENSSLX509STOREVERIFY"></a>xmlSecOpenSSLX509StoreVerify ()</h3>
+<pre class="PROGRAMLISTING"><font>X509</font>*       xmlSecOpenSSLX509StoreVerify    (<a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> store,
+                                             <a href="xmlsec-openssl-x509.html#XMLSEC-STACK-OF-X509:CAPS">XMLSEC_STACK_OF_X509</a> *certs,
+                                             <a href="xmlsec-openssl-x509.html#XMLSEC-STACK-OF-X509-CRL:CAPS">XMLSEC_STACK_OF_X509_CRL</a> *crls,
+                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtx</a> *keyInfoCtx);</pre>
 <p>Verifies <code class="PARAMETER">certs</code> list.</p>
+<p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29713"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the pointer to X509 key data store klass.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25764"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>              the pointer to X509 key data store klass.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29718"><span style="white-space: nowrap"><code class="PARAMETER">certs</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the untrusted certificates stack.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25769"><span style="white-space: nowrap"><code class="PARAMETER">certs</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>              the untrusted certificates stack.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29723"><span style="white-space: nowrap"><code class="PARAMETER">crls</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the crls stack.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25774"><span style="white-space: nowrap"><code class="PARAMETER">crls</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>               the crls stack.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29728"><span style="white-space: nowrap"><code class="PARAMETER">keyInfoCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> element processing context.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25779"><span style="white-space: nowrap"><code class="PARAMETER">keyInfoCtx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>         the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> element processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29734"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25785"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to the first verified certificate from <code class="PARAMETER">certs</code>.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECOPENSSLX509STOREADOPTCERT"></a><h3>xmlSecOpenSSLX509StoreAdoptCert ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecOpenSSLX509StoreAdoptCert     (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE"><span class="TYPE">xmlSecKeyDataStorePtr</span></a> store</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="X509:CAPS"><span class="TYPE">X509</span></gtkdoclink> *cert</code>,
-                                                         <code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE"><span class="TYPE">xmlSecKeyDataType</span></a> type</code>);</pre>
+<a name="AEN25791"></a><h3>
+<a name="XMLSECOPENSSLX509STOREADOPTCERT"></a>xmlSecOpenSSLX509StoreAdoptCert ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>         xmlSecOpenSSLX509StoreAdoptCert (<a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> store,
+                                             <font>X509</font> *cert,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre>
 <p>Adds trusted (root) or untrusted certificate to the store.</p>
 <p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN29758"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the pointer to X509 key data store klass.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN29763"><span style="white-space: nowrap"><code class="PARAMETER">cert</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the pointer to OpenSSL X509 certificate.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN29768"><span style="white-space: nowrap"><code class="PARAMETER">type</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the certificate type (trusted/untrusted).</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN29773"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
-</tr>
-</tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECOPENSSLX509STOREADOPTCRL"></a><h3>xmlSecOpenSSLX509StoreAdoptCrl ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecOpenSSLX509StoreAdoptCrl      (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE"><span class="TYPE">xmlSecKeyDataStorePtr</span></a> store</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="X509-CRL:CAPS"><span class="TYPE">X509_CRL</span></gtkdoclink> *crl</code>);</pre>
-<p>Adds X509 CRL to the store.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29793"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the pointer to X509 key data store klass.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25804"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>              the pointer to X509 key data store klass.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29798"><span style="white-space: nowrap"><code class="PARAMETER">crl</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the pointer to OpenSSL X509_CRL.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25809"><span style="white-space: nowrap"><code class="PARAMETER">cert</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to OpenSSL X509 certificate.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29803"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25814"><span style="white-space: nowrap"><code class="PARAMETER">type</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>               the certificate type (trusted/untrusted).</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN25819"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECOPENSSLX509STOREADDCERTSPATH"></a><h3>xmlSecOpenSSLX509StoreAddCertsPath ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecOpenSSLX509StoreAddCertsPath  (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE"><span class="TYPE">xmlSecKeyDataStorePtr</span></a> store</code>,
-                                                         <code class="PARAMETER">const <gtkdoclink href="CHAR"><span class="TYPE">char</span></gtkdoclink> *path</code>);</pre>
+<a name="AEN25824"></a><h3>
+<a name="XMLSECOPENSSLX509STOREADOPTCRL"></a>xmlSecOpenSSLX509StoreAdoptCrl ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>         xmlSecOpenSSLX509StoreAdoptCrl  (<a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> store,
+                                             <font>X509_CRL</font> *crl);</pre>
+<p>Adds X509 CRL to the store.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN25836"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>              the pointer to X509 key data store klass.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN25841"><span style="white-space: nowrap"><code class="PARAMETER">crl</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to OpenSSL X509_CRL.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN25846"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN25851"></a><h3>
+<a name="XMLSECOPENSSLX509STOREADDCERTSPATH"></a>xmlSecOpenSSLX509StoreAddCertsPath ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>         xmlSecOpenSSLX509StoreAddCertsPath
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> store,
+                                             const <font>char</font> *path);</pre>
 <p>Adds all certs in the <code class="PARAMETER">path</code> to the list of trusted certs
 in <code class="PARAMETER">store</code>.</p>
 <p></p>
+<p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29825"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the pointer to OpenSSL x509 store.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25865"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> the pointer to OpenSSL x509 store.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29830"><span style="white-space: nowrap"><code class="PARAMETER">path</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the path to the certs dir.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25870"><span style="white-space: nowrap"><code class="PARAMETER">path</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> the path to the certs dir.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29835"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25875"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECOPENSSLX509STOREADDCERTSFILE"></a><h3>xmlSecOpenSSLX509StoreAddCertsFile ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecOpenSSLX509StoreAddCertsFile  (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE"><span class="TYPE">xmlSecKeyDataStorePtr</span></a> store</code>,
-                                                         <code class="PARAMETER">const <gtkdoclink href="CHAR"><span class="TYPE">char</span></gtkdoclink> *file</code>);</pre>
+<a name="AEN25880"></a><h3>
+<a name="XMLSECOPENSSLX509STOREADDCERTSFILE"></a>xmlSecOpenSSLX509StoreAddCertsFile ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>         xmlSecOpenSSLX509StoreAddCertsFile
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> store,
+                                             const <font>char</font> *file);</pre>
 <p>Adds all certs in <code class="PARAMETER">file</code> to the list of trusted certs
 in <code class="PARAMETER">store</code>. It is possible for <code class="PARAMETER">file</code> to contain multiple certs.</p>
 <p></p>
+<p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29858"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the pointer to OpenSSL x509 store.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25895"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> the pointer to OpenSSL x509 store.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29863"><span style="white-space: nowrap"><code class="PARAMETER">file</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the certs file.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN25900"><span style="white-space: nowrap"><code class="PARAMETER">file</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> the certs file.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29868"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25905"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>

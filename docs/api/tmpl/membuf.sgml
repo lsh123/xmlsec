@@ -17,9 +17,6 @@ Memory buffer transform implementation.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
-
-
 <!-- ##### MACRO xmlSecTransformMemBufId ##### -->
 <para>
 
@@ -32,7 +29,6 @@ Memory buffer transform implementation.
 
 </para>
 
-@void: 
 @Returns: 
 
 

@@ -17,9 +17,6 @@ Application functions implementation for GCrypt.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
-
-
 <!-- ##### FUNCTION xmlSecGCryptAppInit ##### -->
 <para>
 
@@ -34,7 +31,6 @@ Application functions implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -183,7 +179,6 @@ Application functions implementation for GCrypt.
 
 </para>
 
-@void: 
 @Returns: 
 
 

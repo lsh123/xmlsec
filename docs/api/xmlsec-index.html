@@ -6,6 +6,7 @@
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="XML Security Library API Reference." href="xmlsec-reference.html">
 <link rel="PREVIOUS" title="x509" href="xmlsec-mscrypto-x509.html">
+<meta name="GENERATOR" content="GTK-Doc V1.7 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -578,6 +579,8 @@
 <li><p><a href="xmlsec-app.html#XMLSECKEYDATADSAID">xmlSecKeyDataDsaId</a></p></li>
 <li><p><a href="xmlsec-keysdata.html#XMLSECKEYDATADUPLICATEMETHOD">xmlSecKeyDataDuplicateMethod</a></p></li>
 <li><p><a href="xmlsec-keysdata.html#XMLSECKEYDATADUPLICATE">xmlSecKeyDataDuplicate</a></p></li>
+<li><p><a href="xmlsec-app.html#XMLSECKEYDATAECDSAGETKLASS">xmlSecKeyDataEcdsaGetKlass</a></p></li>
+<li><p><a href="xmlsec-app.html#XMLSECKEYDATAECDSAID">xmlSecKeyDataEcdsaId</a></p></li>
 <li><p><a href="xmlsec-keyinfo.html#XMLSECKEYDATAENCRYPTEDKEYGETKLASS">xmlSecKeyDataEncryptedKeyGetKlass</a></p></li>
 <li><p><a href="xmlsec-keyinfo.html#XMLSECKEYDATAENCRYPTEDKEYID">xmlSecKeyDataEncryptedKeyId</a></p></li>
 <li><p><a href="xmlsec-keysdata.html#XMLSECKEYDATAFINALIZEMETHOD">xmlSecKeyDataFinalizeMethod</a></p></li>
@@ -1092,6 +1095,14 @@
 <li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLKEYDATADSAGETEVP">xmlSecOpenSSLKeyDataDsaGetEvp</a></p></li>
 <li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLKEYDATADSAGETKLASS">xmlSecOpenSSLKeyDataDsaGetKlass</a></p></li>
 <li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLKEYDATADSAID">xmlSecOpenSSLKeyDataDsaId</a></p></li>
+<li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLKEYDATAECDSAADOPTECDSA">xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa</a></p></li>
+<li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLKEYDATAECDSAADOPTEVP">xmlSecOpenSSLKeyDataEcdsaAdoptEvp</a></p></li>
+<li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLKEYDATAECDSAGETECDSA">xmlSecOpenSSLKeyDataEcdsaGetEcdsa</a></p></li>
+<li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLKEYDATAECDSAGETEVP">xmlSecOpenSSLKeyDataEcdsaGetEvp</a></p></li>
+<li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLKEYDATAECDSAGETKLASS">xmlSecOpenSSLKeyDataEcdsaGetKlass</a></p></li>
+<li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLKEYDATAECDSAID">xmlSecOpenSSLKeyDataEcdsaId</a></p></li>
+<li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLKEYDATAGOST2001GETKLASS">xmlSecOpenSSLKeyDataGost2001GetKlass</a></p></li>
+<li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLKEYDATAGOST2001ID">xmlSecOpenSSLKeyDataGost2001Id</a></p></li>
 <li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLKEYDATAHMACGETKLASS">xmlSecOpenSSLKeyDataHmacGetKlass</a></p></li>
 <li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLKEYDATAHMACID">xmlSecOpenSSLKeyDataHmacId</a></p></li>
 <li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLKEYDATAHMACSET">xmlSecOpenSSLKeyDataHmacSet</a></p></li>
@@ -1128,6 +1139,22 @@
 <li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLTRANSFORMDES3CBCID">xmlSecOpenSSLTransformDes3CbcId</a></p></li>
 <li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLTRANSFORMDSASHA1GETKLASS">xmlSecOpenSSLTransformDsaSha1GetKlass</a></p></li>
 <li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLTRANSFORMDSASHA1ID">xmlSecOpenSSLTransformDsaSha1Id</a></p></li>
+<li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLTRANSFORMDSASHA256GETKLASS">xmlSecOpenSSLTransformDsaSha256GetKlass</a></p></li>
+<li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLTRANSFORMDSASHA256ID">xmlSecOpenSSLTransformDsaSha256Id</a></p></li>
+<li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLTRANSFORMECDSASHA1GETKLASS">xmlSecOpenSSLTransformEcdsaSha1GetKlass</a></p></li>
+<li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLTRANSFORMECDSASHA1ID">xmlSecOpenSSLTransformEcdsaSha1Id</a></p></li>
+<li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLTRANSFORMECDSASHA224GETKLASS">xmlSecOpenSSLTransformEcdsaSha224GetKlass</a></p></li>
+<li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLTRANSFORMECDSASHA224ID">xmlSecOpenSSLTransformEcdsaSha224Id</a></p></li>
+<li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLTRANSFORMECDSASHA256GETKLASS">xmlSecOpenSSLTransformEcdsaSha256GetKlass</a></p></li>
+<li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLTRANSFORMECDSASHA256ID">xmlSecOpenSSLTransformEcdsaSha256Id</a></p></li>
+<li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLTRANSFORMECDSASHA384GETKLASS">xmlSecOpenSSLTransformEcdsaSha384GetKlass</a></p></li>
+<li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLTRANSFORMECDSASHA384ID">xmlSecOpenSSLTransformEcdsaSha384Id</a></p></li>
+<li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLTRANSFORMECDSASHA512GETKLASS">xmlSecOpenSSLTransformEcdsaSha512GetKlass</a></p></li>
+<li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLTRANSFORMECDSASHA512ID">xmlSecOpenSSLTransformEcdsaSha512Id</a></p></li>
+<li><p><font>xmlSecOpenSSLTransformGost2001GostR3411-94GetKlass</font></p></li>
+<li><p><font>xmlSecOpenSSLTransformGost2001GostR3411-94Id</font></p></li>
+<li><p><font>xmlSecOpenSSLTransformGostR3411-94GetKlass</font></p></li>
+<li><p><font>xmlSecOpenSSLTransformGostR3411-94Id</font></p></li>
 <li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLTRANSFORMHMACMD5GETKLASS">xmlSecOpenSSLTransformHmacMd5GetKlass</a></p></li>
 <li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLTRANSFORMHMACMD5ID">xmlSecOpenSSLTransformHmacMd5Id</a></p></li>
 <li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLTRANSFORMHMACRIPEMD160GETKLASS">xmlSecOpenSSLTransformHmacRipemd160GetKlass</a></p></li>
@@ -1387,6 +1414,18 @@
 <li><p><a href="xmlsec-transforms.html#XMLSECTRANSFORMDESTROY">xmlSecTransformDestroy</a></p></li>
 <li><p><a href="xmlsec-app.html#XMLSECTRANSFORMDSASHA1GETKLASS">xmlSecTransformDsaSha1GetKlass</a></p></li>
 <li><p><a href="xmlsec-app.html#XMLSECTRANSFORMDSASHA1ID">xmlSecTransformDsaSha1Id</a></p></li>
+<li><p><a href="xmlsec-app.html#XMLSECTRANSFORMDSASHA256GETKLASS">xmlSecTransformDsaSha256GetKlass</a></p></li>
+<li><p><a href="xmlsec-app.html#XMLSECTRANSFORMDSASHA256ID">xmlSecTransformDsaSha256Id</a></p></li>
+<li><p><a href="xmlsec-app.html#XMLSECTRANSFORMECDSASHA1GETKLASS">xmlSecTransformEcdsaSha1GetKlass</a></p></li>
+<li><p><a href="xmlsec-app.html#XMLSECTRANSFORMECDSASHA1ID">xmlSecTransformEcdsaSha1Id</a></p></li>
+<li><p><a href="xmlsec-app.html#XMLSECTRANSFORMECDSASHA224GETKLASS">xmlSecTransformEcdsaSha224GetKlass</a></p></li>
+<li><p><a href="xmlsec-app.html#XMLSECTRANSFORMECDSASHA224ID">xmlSecTransformEcdsaSha224Id</a></p></li>
+<li><p><a href="xmlsec-app.html#XMLSECTRANSFORMECDSASHA256GETKLASS">xmlSecTransformEcdsaSha256GetKlass</a></p></li>
+<li><p><a href="xmlsec-app.html#XMLSECTRANSFORMECDSASHA256ID">xmlSecTransformEcdsaSha256Id</a></p></li>
+<li><p><a href="xmlsec-app.html#XMLSECTRANSFORMECDSASHA384GETKLASS">xmlSecTransformEcdsaSha384GetKlass</a></p></li>
+<li><p><a href="xmlsec-app.html#XMLSECTRANSFORMECDSASHA384ID">xmlSecTransformEcdsaSha384Id</a></p></li>
+<li><p><a href="xmlsec-app.html#XMLSECTRANSFORMECDSASHA512GETKLASS">xmlSecTransformEcdsaSha512GetKlass</a></p></li>
+<li><p><a href="xmlsec-app.html#XMLSECTRANSFORMECDSASHA512ID">xmlSecTransformEcdsaSha512Id</a></p></li>
 <li><p><a href="xmlsec-transforms.html#XMLSECTRANSFORMENVELOPEDGETKLASS">xmlSecTransformEnvelopedGetKlass</a></p></li>
 <li><p><a href="xmlsec-transforms.html#XMLSECTRANSFORMENVELOPEDID">xmlSecTransformEnvelopedId</a></p></li>
 <li><p><a href="xmlsec-transforms.html#XMLSECTRANSFORMEXCLC14NGETKLASS">xmlSecTransformExclC14NGetKlass</a></p></li>
@@ -1560,7 +1599,7 @@
 <li><p><a href="xmlsec-app.html#XMLSECX509STOREGETKLASS">xmlSecX509StoreGetKlass</a></p></li>
 <li><p><a href="xmlsec-app.html#XMLSECX509STOREID">xmlSecX509StoreId</a></p></li>
 </ul>
-</div>
+    </div>
 <table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
 <td align="left"><a accesskey="p" href="xmlsec-mscrypto-x509.html"><b>&lt;&lt;&lt; x509</b></a></td>
 <td align="right"></td>

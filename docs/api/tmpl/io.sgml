@@ -17,15 +17,11 @@ Input/output support.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
-
-
 <!-- ##### FUNCTION xmlSecIOInit ##### -->
 <para>
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -34,7 +30,6 @@ Input/output support.
 
 </para>
 
-@void: 
 
 
 <!-- ##### FUNCTION xmlSecIOCleanupCallbacks ##### -->
@@ -42,7 +37,6 @@ Input/output support.
 
 </para>
 
-@void: 
 
 
 <!-- ##### FUNCTION xmlSecIORegisterDefaultCallbacks ##### -->
@@ -50,7 +44,6 @@ Input/output support.
 
 </para>
 
-@void: 
 @Returns: 
 
 
@@ -78,7 +71,6 @@ Input/output support.
 
 </para>
 
-@void: 
 @Returns: 
 
 

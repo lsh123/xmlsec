@@ -1028,17 +1028,6 @@ static int              xmlSecOpenSSLKeyDataEcdsaInitialize(xmlSecKeyDataPtr dat
 static int              xmlSecOpenSSLKeyDataEcdsaDuplicate(xmlSecKeyDataPtr dst,
                                                            xmlSecKeyDataPtr src);
 static void             xmlSecOpenSSLKeyDataEcdsaFinalize(xmlSecKeyDataPtr data);
-static int              xmlSecOpenSSLKeyDataEcdsaXmlRead(xmlSecKeyDataId id,
-                                                         xmlSecKeyPtr key,
-                                                         xmlNodePtr node,
-                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
-static int              xmlSecOpenSSLKeyDataEcdsaXmlWrite(xmlSecKeyDataId id,
-                                                          xmlSecKeyPtr key,
-                                                          xmlNodePtr node,
-                                                          xmlSecKeyInfoCtxPtr keyInfoCtx);
-static int              xmlSecOpenSSLKeyDataEcdsaGenerate(xmlSecKeyDataPtr data,
-                                                          xmlSecSize sizeBits,
-                                                          xmlSecKeyDataType type);
 
 static xmlSecKeyDataType xmlSecOpenSSLKeyDataEcdsaGetType(xmlSecKeyDataPtr data);
 static xmlSecSize        xmlSecOpenSSLKeyDataEcdsaGetSize(xmlSecKeyDataPtr data);
@@ -1869,17 +1858,6 @@ static int              xmlSecOpenSSLKeyDataGost2001Initialize(xmlSecKeyDataPtr 
 static int              xmlSecOpenSSLKeyDataGost2001Duplicate(xmlSecKeyDataPtr dst,
                                                          xmlSecKeyDataPtr src);
 static void             xmlSecOpenSSLKeyDataGost2001Finalize(xmlSecKeyDataPtr data);
-static int              xmlSecOpenSSLKeyDataGost2001XmlRead    (xmlSecKeyDataId id,
-                                                         xmlSecKeyPtr key,
-                                                         xmlNodePtr node,
-                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
-static int              xmlSecOpenSSLKeyDataGost2001XmlWrite(xmlSecKeyDataId id,
-                                                         xmlSecKeyPtr key,
-                                                         xmlNodePtr node,
-                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
-static int              xmlSecOpenSSLKeyDataGost2001Generate(xmlSecKeyDataPtr data,
-                                                         xmlSecSize sizeBits,
-                                                         xmlSecKeyDataType type);
 
 static xmlSecKeyDataType xmlSecOpenSSLKeyDataGost2001GetType(xmlSecKeyDataPtr data);
 static xmlSecSize        xmlSecOpenSSLKeyDataGost2001GetSize(xmlSecKeyDataPtr data);

@@ -755,7 +755,7 @@ xmlSecOpenSSLDsaEvpVerify(int type ATTRIBUTE_UNUSED,
                     XMLSEC_ERRORS_R_INVALID_SIZE,
                     "invalid length %d (%d expected)",
                     siglen, XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE);
-        goto err;
+        goto done;
     }
 
     s->r = BN_bin2bn(sigbuf, XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE / 2, NULL);
@@ -767,12 +767,12 @@ xmlSecOpenSSLDsaEvpVerify(int type ATTRIBUTE_UNUSED,
                     "BN_bin2bn",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        goto err;
+        goto done;
     }
 
     ret = DSA_do_verify(dgst, dgst_len, s, dsa);
 
-err:
+done:
     DSA_SIG_free(s);
     return(ret);
 }
@@ -998,13 +998,14 @@ xmlSecOpenSSLEcdsaEvpSign(int type ATTRIBUTE_UNUSED,
                         unsigned char *sig, unsigned int *siglen, void *ecdsa) {
     int rSize, sSize, xLen;
     const EC_GROUP *group;
-    BIGNUM order;
+    BIGNUM *order = NULL;
     ECDSA_SIG *s;
+    int ret = 0;
 
     s = ECDSA_do_sign(dgst, dlen, ecdsa);
     if(s == NULL) {
-        *siglen=0;
-        return(0);
+        *siglen = 0;
+        return(ret);
     }
 
     group = EC_KEY_get0_group(ecdsa);
@@ -1014,21 +1015,29 @@ xmlSecOpenSSLEcdsaEvpSign(int type ATTRIBUTE_UNUSED,
                     "EC_KEY_get0_group",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        ECDSA_SIG_free(s);
-        return(0);
+        goto done;
     }
 
-    if(EC_GROUP_get_order(group, &order, NULL) != 1) {
+    order = BN_new();
+    if(order == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "BN_new",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+
+    if(EC_GROUP_get_order(group, order, NULL) != 1) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "EC_GROUP_get_order",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        ECDSA_SIG_free(s);
-        return(0);
+        goto done;
     }
 
-    xLen = BN_num_bytes(&order);
+    xLen = BN_num_bytes(order);
     if(xLen > (XMLSEC_OPENSSL_ECDSA_SIGNATURE_SIZE / 2)) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
@@ -1036,8 +1045,7 @@ xmlSecOpenSSLEcdsaEvpSign(int type ATTRIBUTE_UNUSED,
                     XMLSEC_ERRORS_R_INVALID_SIZE,
                     "xLen=%d > %d",
                     xLen, XMLSEC_OPENSSL_ECDSA_SIGNATURE_SIZE / 2);
-        ECDSA_SIG_free(s);
-        return(0);
+        goto done;
     }
 
     rSize = BN_num_bytes(s->r);
@@ -1049,8 +1057,7 @@ xmlSecOpenSSLEcdsaEvpSign(int type ATTRIBUTE_UNUSED,
                     XMLSEC_ERRORS_R_INVALID_SIZE,
                     "size(r)=%d or size(s)=%d > %d",
                     rSize, sSize, xLen);
-        ECDSA_SIG_free(s);
-        return(0);
+        goto done;
     }
 
     memset(sig, 0, xLen * 2);
@@ -1058,8 +1065,14 @@ xmlSecOpenSSLEcdsaEvpSign(int type ATTRIBUTE_UNUSED,
     BN_bn2bin(s->s, sig + (xLen * 2) - sSize);
     *siglen = xLen * 2;
 
+    ret = 1;
+
+done:
+    if(order != NULL) {
+        BN_clear_free(order);
+    }
     ECDSA_SIG_free(s);
-    return(1);
+    return(ret);
 }
 
 static int
@@ -1069,7 +1082,7 @@ xmlSecOpenSSLEcdsaEvpVerify(int type ATTRIBUTE_UNUSED,
                         void *ecdsa) {
     const EC_GROUP *group;
     unsigned int xLen;
-    BIGNUM order;
+    BIGNUM *order = NULL;
     ECDSA_SIG *s;
     int ret = -1;
 
@@ -1085,19 +1098,29 @@ xmlSecOpenSSLEcdsaEvpVerify(int type ATTRIBUTE_UNUSED,
                     "EC_KEY_get0_group",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        goto err;
+        goto done;
     }
 
-    if(EC_GROUP_get_order(group, &order, NULL) != 1) {
+    order = BN_new();
+    if(order == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "BN_new",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+
+    if(EC_GROUP_get_order(group, order, NULL) != 1) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "EC_GROUP_get_order",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        goto err;
+        goto done;
     }
 
-    xLen = BN_num_bytes(&order);
+    xLen = BN_num_bytes(order);
     if(xLen > (XMLSEC_OPENSSL_ECDSA_SIGNATURE_SIZE / 2)) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
@@ -1105,7 +1128,7 @@ xmlSecOpenSSLEcdsaEvpVerify(int type ATTRIBUTE_UNUSED,
                     XMLSEC_ERRORS_R_INVALID_SIZE,
                     "xLen=%d > %d",
                     xLen, XMLSEC_OPENSSL_ECDSA_SIGNATURE_SIZE / 2);
-        goto err;
+        goto done;
     }
 
     if(siglen != xLen * 2) {
@@ -1115,7 +1138,7 @@ xmlSecOpenSSLEcdsaEvpVerify(int type ATTRIBUTE_UNUSED,
                     XMLSEC_ERRORS_R_INVALID_SIZE,
                     "invalid length %d (%d expected)",
                     siglen, xLen * 2);
-        goto err;
+        goto done;
     }
 
     s->r = BN_bin2bn(sigbuf, xLen, NULL);
@@ -1126,12 +1149,15 @@ xmlSecOpenSSLEcdsaEvpVerify(int type ATTRIBUTE_UNUSED,
                     "BN_bin2bn",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        goto err;
+        goto done;
     }
 
     ret = ECDSA_do_verify(dgst, dgst_len, s, ecdsa);
 
-err:
+done:
+    if(order != NULL) {
+        BN_clear_free(order);
+    }
     ECDSA_SIG_free(s);
     return(ret);
 }

@@ -372,6 +372,12 @@ elif test "z$with_openssl" != "z" ; then
     OPENSSL_FOUND="yes"
 elif test "z$PKGCONFIG_FOUND" = "zyes" ; then
     if test "z$OPENSSL_VERSION" = "z" ; then
+        PKG_CHECK_MODULES(OPENSSL, openssl >= 1.0.0,
+            [OPENSSL_VERSION="1.0.0"],
+            [OPENSSL_VERSION=""])
+    fi
+
+    if test "z$OPENSSL_VERSION" = "z" ; then
         PKG_CHECK_MODULES(OPENSSL, openssl >= 0.9.8,
     	    [OPENSSL_VERSION="0.9.8"],
 	    [OPENSSL_VERSION=""])

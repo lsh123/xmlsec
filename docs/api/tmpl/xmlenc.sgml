@@ -17,13 +17,8 @@ XML Encryption support.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### ENUM xmlEncCtxMode ##### -->
-<para>
+<!-- ##### SECTION Image ##### -->
 
-</para>
-
-@xmlEncCtxModeEncryptedData: 
-@xmlEncCtxModeEncryptedKey: 
 
 <!-- ##### MACRO XMLSEC_ENC_RETURN_REPLACED_NODE ##### -->
 <para>
@@ -31,6 +26,14 @@ XML Encryption support.
 </para>
 
 
+
+<!-- ##### ENUM xmlEncCtxMode ##### -->
+<para>
+
+</para>
+
+@xmlEncCtxModeEncryptedData: 
+@xmlEncCtxModeEncryptedKey: 
 
 <!-- ##### STRUCT xmlSecEncCtx ##### -->
 <para>
@@ -64,59 +67,6 @@ XML Encryption support.
 @replacedNodeList: 
 @reserved1: 
 
-<!-- ##### FUNCTION xmlSecEncCtxCreate ##### -->
-<para>
-
-</para>
-
-@keysMngr: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecEncCtxDestroy ##### -->
-<para>
-
-</para>
-
-@encCtx: 
-
-
-<!-- ##### FUNCTION xmlSecEncCtxInitialize ##### -->
-<para>
-
-</para>
-
-@encCtx: 
-@keysMngr: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecEncCtxFinalize ##### -->
-<para>
-
-</para>
-
-@encCtx: 
-
-
-<!-- ##### FUNCTION xmlSecEncCtxCopyUserPref ##### -->
-<para>
-
-</para>
-
-@dst: 
-@src: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecEncCtxReset ##### -->
-<para>
-
-</para>
-
-@encCtx: 
-
-
 <!-- ##### FUNCTION xmlSecEncCtxBinaryEncrypt ##### -->
 <para>
 
@@ -129,26 +79,41 @@ XML Encryption support.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecEncCtxXmlEncrypt ##### -->
+<!-- ##### FUNCTION xmlSecEncCtxCopyUserPref ##### -->
+<para>
+
+</para>
+
+@dst: 
+@src: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecEncCtxCreate ##### -->
+<para>
+
+</para>
+
+@keysMngr: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecEncCtxDebugDump ##### -->
 <para>
 
 </para>
 
 @encCtx: 
-@tmpl: 
-@node: 
-@Returns: 
+@output: 
 
 
-<!-- ##### FUNCTION xmlSecEncCtxUriEncrypt ##### -->
+<!-- ##### FUNCTION xmlSecEncCtxDebugXmlDump ##### -->
 <para>
 
 </para>
 
 @encCtx: 
-@tmpl: 
-@uri: 
-@Returns: 
+@output: 
 
 
 <!-- ##### FUNCTION xmlSecEncCtxDecrypt ##### -->
@@ -171,21 +136,59 @@ XML Encryption support.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecEncCtxDebugDump ##### -->
+<!-- ##### FUNCTION xmlSecEncCtxDestroy ##### -->
 <para>
 
 </para>
 
 @encCtx: 
-@output: 
 
 
-<!-- ##### FUNCTION xmlSecEncCtxDebugXmlDump ##### -->
+<!-- ##### FUNCTION xmlSecEncCtxFinalize ##### -->
 <para>
 
 </para>
 
 @encCtx: 
-@output: 
+
+
+<!-- ##### FUNCTION xmlSecEncCtxInitialize ##### -->
+<para>
+
+</para>
+
+@encCtx: 
+@keysMngr: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecEncCtxReset ##### -->
+<para>
+
+</para>
+
+@encCtx: 
+
+
+<!-- ##### FUNCTION xmlSecEncCtxUriEncrypt ##### -->
+<para>
+
+</para>
+
+@encCtx: 
+@tmpl: 
+@uri: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecEncCtxXmlEncrypt ##### -->
+<para>
+
+</para>
+
+@encCtx: 
+@tmpl: 
+@node: 
+@Returns: 
 
 

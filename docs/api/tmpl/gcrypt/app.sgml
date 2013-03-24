@@ -17,30 +17,7 @@ Application functions implementation for GCrypt.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### FUNCTION xmlSecGCryptAppInit ##### -->
-<para>
-
-</para>
-
-@config: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecGCryptAppShutdown ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecGCryptAppDefaultKeysMngrInit ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@Returns: 
+<!-- ##### SECTION Image ##### -->
 
 
 <!-- ##### FUNCTION xmlSecGCryptAppDefaultKeysMngrAdoptKey ##### -->
@@ -50,6 +27,15 @@ Application functions implementation for GCrypt.
 
 @mngr: 
 @key: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGCryptAppDefaultKeysMngrInit ##### -->
+<para>
+
+</para>
+
+@mngr: 
 @Returns: 
 
 
@@ -74,28 +60,44 @@ Application functions implementation for GCrypt.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGCryptAppKeysMngrCertLoad ##### -->
+<!-- ##### FUNCTION xmlSecGCryptAppGetDefaultPwdCallback ##### -->
 <para>
 
 </para>
 
-@mngr: 
-@filename: 
-@format: 
-@type: 
+@void: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGCryptAppKeysMngrCertLoadMemory ##### -->
+<!-- ##### FUNCTION xmlSecGCryptAppInit ##### -->
 <para>
 
 </para>
 
-@mngr: 
+@config: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGCryptAppKeyCertLoad ##### -->
+<para>
+
+</para>
+
+@key: 
+@filename: 
+@format: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGCryptAppKeyCertLoadMemory ##### -->
+<para>
+
+</para>
+
+@key: 
 @data: 
 @dataSize: 
 @format: 
-@type: 
 @Returns: 
 
 
@@ -126,6 +128,31 @@ Application functions implementation for GCrypt.
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecGCryptAppKeysMngrCertLoad ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@filename: 
+@format: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGCryptAppKeysMngrCertLoadMemory ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@data: 
+@dataSize: 
+@format: 
+@type: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecGCryptAppPkcs12Load ##### -->
 <para>
 
@@ -151,34 +178,12 @@ Application functions implementation for GCrypt.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGCryptAppKeyCertLoad ##### -->
+<!-- ##### FUNCTION xmlSecGCryptAppShutdown ##### -->
 <para>
 
 </para>
 
-@key: 
-@filename: 
-@format: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecGCryptAppKeyCertLoadMemory ##### -->
-<para>
-
-</para>
-
-@key: 
-@data: 
-@dataSize: 
-@format: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecGCryptAppGetDefaultPwdCallback ##### -->
-<para>
-
-</para>
-
+@void: 
 @Returns: 
 
 

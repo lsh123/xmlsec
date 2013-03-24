@@ -7,7 +7,6 @@
 <link rel="UP" title="XML Security Core Library API Reference." href="xmlsec-ref.html">
 <link rel="PREVIOUS" title="list" href="xmlsec-list.html">
 <link rel="NEXT" title="nodeset" href="xmlsec-nodeset.html">
-<meta name="GENERATOR" content="GTK-Doc V1.7 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -88,63 +87,51 @@
 <h1>
 <a name="XMLSEC-MEMBUF"></a>membuf</h1>
 <div class="REFNAMEDIV">
-<a name="AEN12189"></a><h2>Name</h2>membuf -- Memory buffer transform implementation.</div>
+<a name="AEN14016"></a><h2>Name</h2>membuf -- Memory buffer transform implementation.</div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN12192"></a><h2>Synopsis</h2>
-<pre class="SYNOPSIS">
-
-#define     <a href="xmlsec-membuf.html#XMLSECTRANSFORMMEMBUFID">xmlSecTransformMemBufId</a>
-<font>xmlSecTransformId</font> <a href="xmlsec-membuf.html#XMLSECTRANSFORMMEMBUFGETKLASS">xmlSecTransformMemBufGetKlass</a>
-                                            (void);
-<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> <a href="xmlsec-membuf.html#XMLSECTRANSFORMMEMBUFGETBUFFER">xmlSecTransformMemBufGetBuffer</a>
-                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform);</pre>
+<a name="XMLSEC-MEMBUF.SYNOPSIS"></a><h2>Synopsis</h2>
+<pre class="SYNOPSIS"><gtkdoclink href="XMLSECBUFFERPTR"><span class="RETURNVALUE">xmlSecBufferPtr</span></gtkdoclink><a href="xmlsec-membuf.html#XMLSECTRANSFORMMEMBUFGETBUFFER">xmlSecTransformMemBufGetBuffer</a>      (<code class="PARAMETER"><a href="xmlsec-transforms.html#XMLSECTRANSFORM"><span class="TYPE">xmlSecTransformPtr</span></a> transform</code>);
+<gtkdoclink href="XMLSECTRANSFORMID"><span class="RETURNVALUE">xmlSecTransformId</span></gtkdoclink><a href="xmlsec-membuf.html#XMLSECTRANSFORMMEMBUFGETKLASS">xmlSecTransformMemBufGetKlass</a>       (<code class="PARAMETER"><span class="TYPE">void</span></code>);
+#define             <a href="xmlsec-membuf.html#XMLSECTRANSFORMMEMBUFID">xmlSecTransformMemBufId</a></pre>
 </div>
 <div class="REFSECT1">
-<a name="AEN12201"></a><h2>Description</h2>
+<a name="XMLSEC-MEMBUF.DESCRIPTION"></a><h2>Description</h2>
 <p>Memory buffer transform implementation.</p>
 </div>
 <div class="REFSECT1">
-<a name="AEN12204"></a><h2>Details</h2>
+<a name="XMLSEC-MEMBUF.DETAILS"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN12206"></a><h3>
-<a name="XMLSECTRANSFORMMEMBUFID"></a>xmlSecTransformMemBufId</h3>
-<pre class="PROGRAMLISTING">#define     xmlSecTransformMemBufId</pre>
-<p>The Memory Buffer transform klass.</p>
+<a name="XMLSECTRANSFORMMEMBUFGETBUFFER"></a><h3>xmlSecTransformMemBufGetBuffer ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="XMLSECBUFFERPTR"><span class="RETURNVALUE">xmlSecBufferPtr</span></gtkdoclink>     xmlSecTransformMemBufGetBuffer      (<code class="PARAMETER"><a href="xmlsec-transforms.html#XMLSECTRANSFORM"><span class="TYPE">xmlSecTransformPtr</span></a> transform</code>);</pre>
+<p>Gets the pointer to memory buffer transform buffer.</p>
 <p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN14051"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to memory buffer transform.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN14056"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>pointer to the transform's <a href="xmlsec-buffer.html#XMLSECBUFFER"><span class="TYPE">xmlSecBuffer</span></a>.</p></td>
+</tr>
+</tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN12214"></a><h3>
-<a name="XMLSECTRANSFORMMEMBUFGETKLASS"></a>xmlSecTransformMemBufGetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecTransformMemBufGetKlass
-                                            (void);</pre>
+<a name="XMLSECTRANSFORMMEMBUFGETKLASS"></a><h3>xmlSecTransformMemBufGetKlass ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="XMLSECTRANSFORMID"><span class="RETURNVALUE">xmlSecTransformId</span></gtkdoclink>   xmlSecTransformMemBufGetKlass       (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The memory buffer transorm (used to store the data that go through it).</p>
 <p></p>
-<p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN12224"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> memory buffer transform klass.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN14074"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>memory buffer transform klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN12229"></a><h3>
-<a name="XMLSECTRANSFORMMEMBUFGETBUFFER"></a>xmlSecTransformMemBufGetBuffer ()</h3>
-<pre class="PROGRAMLISTING"><a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> xmlSecTransformMemBufGetBuffer
-                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform);</pre>
-<p>Gets the pointer to memory buffer transform buffer.</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN12240"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>          the pointer to memory buffer transform.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN12245"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> pointer to the transform's <a href="xmlsec-buffer.html#XMLSECBUFFER"><span class="TYPE">xmlSecBuffer</span></a>.</p></td>
-</tr>
-</tbody></table>
+<a name="XMLSECTRANSFORMMEMBUFID"></a><h3>xmlSecTransformMemBufId</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecTransformMemBufId</pre>
+<p>The Memory Buffer transform klass.</p>
 </div>
 </div>
 <table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">

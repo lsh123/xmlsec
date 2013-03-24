@@ -17,165 +17,7 @@ Big numbers support functions.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### ENUM xmlSecBnFormat ##### -->
-<para>
-
-</para>
-
-@xmlSecBnBase64: 
-@xmlSecBnHex: 
-@xmlSecBnDec: 
-
-<!-- ##### FUNCTION xmlSecBnCreate ##### -->
-<para>
-
-</para>
-
-@size: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecBnDestroy ##### -->
-<para>
-
-</para>
-
-@bn: 
-
-
-<!-- ##### FUNCTION xmlSecBnInitialize ##### -->
-<para>
-
-</para>
-
-@bn: 
-@size: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecBnFinalize ##### -->
-<para>
-
-</para>
-
-@bn: 
-
-
-<!-- ##### FUNCTION xmlSecBnGetData ##### -->
-<para>
-
-</para>
-
-@bn: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecBnSetData ##### -->
-<para>
-
-</para>
-
-@bn: 
-@data: 
-@size: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecBnGetSize ##### -->
-<para>
-
-</para>
-
-@bn: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecBnZero ##### -->
-<para>
-
-</para>
-
-@bn: 
-
-
-<!-- ##### FUNCTION xmlSecBnFromString ##### -->
-<para>
-
-</para>
-
-@bn: 
-@str: 
-@base: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecBnToString ##### -->
-<para>
-
-</para>
-
-@bn: 
-@base: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecBnFromHexString ##### -->
-<para>
-
-</para>
-
-@bn: 
-@str: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecBnToHexString ##### -->
-<para>
-
-</para>
-
-@bn: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecBnFromDecString ##### -->
-<para>
-
-</para>
-
-@bn: 
-@str: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecBnToDecString ##### -->
-<para>
-
-</para>
-
-@bn: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecBnMul ##### -->
-<para>
-
-</para>
-
-@bn: 
-@multiplier: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecBnDiv ##### -->
-<para>
-
-</para>
-
-@bn: 
-@divider: 
-@mod: 
-@Returns: 
+<!-- ##### SECTION Image ##### -->
 
 
 <!-- ##### FUNCTION xmlSecBnAdd ##### -->
@@ -188,12 +30,17 @@ Big numbers support functions.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecBnReverse ##### -->
+<!-- ##### FUNCTION xmlSecBnBlobSetNodeValue ##### -->
 <para>
 
 </para>
 
-@bn: 
+@data: 
+@dataSize: 
+@cur: 
+@format: 
+@reverse: 
+@addLineBreaks: 
 @Returns: 
 
 
@@ -219,6 +66,91 @@ Big numbers support functions.
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecBnCreate ##### -->
+<para>
+
+</para>
+
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBnDestroy ##### -->
+<para>
+
+</para>
+
+@bn: 
+
+
+<!-- ##### FUNCTION xmlSecBnDiv ##### -->
+<para>
+
+</para>
+
+@bn: 
+@divider: 
+@mod: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBnFinalize ##### -->
+<para>
+
+</para>
+
+@bn: 
+
+
+<!-- ##### ENUM xmlSecBnFormat ##### -->
+<para>
+
+</para>
+
+@xmlSecBnBase64: 
+@xmlSecBnHex: 
+@xmlSecBnDec: 
+
+<!-- ##### FUNCTION xmlSecBnFromDecString ##### -->
+<para>
+
+</para>
+
+@bn: 
+@str: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBnFromHexString ##### -->
+<para>
+
+</para>
+
+@bn: 
+@str: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBnFromString ##### -->
+<para>
+
+</para>
+
+@bn: 
+@str: 
+@base: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBnGetData ##### -->
+<para>
+
+</para>
+
+@bn: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecBnGetNodeValue ##### -->
 <para>
 
@@ -228,6 +160,55 @@ Big numbers support functions.
 @cur: 
 @format: 
 @reverse: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBnGetSize ##### -->
+<para>
+
+</para>
+
+@bn: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBnInitialize ##### -->
+<para>
+
+</para>
+
+@bn: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBnMul ##### -->
+<para>
+
+</para>
+
+@bn: 
+@multiplier: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBnReverse ##### -->
+<para>
+
+</para>
+
+@bn: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBnSetData ##### -->
+<para>
+
+</para>
+
+@bn: 
+@data: 
+@size: 
 @Returns: 
 
 
@@ -244,17 +225,39 @@ Big numbers support functions.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecBnBlobSetNodeValue ##### -->
+<!-- ##### FUNCTION xmlSecBnToDecString ##### -->
 <para>
 
 </para>
 
-@data: 
-@dataSize: 
-@cur: 
-@format: 
-@reverse: 
-@addLineBreaks: 
+@bn: 
 @Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBnToHexString ##### -->
+<para>
+
+</para>
+
+@bn: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBnToString ##### -->
+<para>
+
+</para>
+
+@bn: 
+@base: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBnZero ##### -->
+<para>
+
+</para>
+
+@bn: 
 
 

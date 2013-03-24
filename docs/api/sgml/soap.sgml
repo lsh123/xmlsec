@@ -1,171 +1,94 @@
 <refentry id="xmlsec-soap">
 <refmeta>
-<refentrytitle role="top_of_page">soap</refentrytitle>
+<refentrytitle role="top_of_page" id="xmlsec-soap.top_of_page">soap</refentrytitle>
 <manvolnum>3</manvolnum>
-<refmiscinfo>XMLSEC Library</refmiscinfo>
+<refmiscinfo>
+  XMLSEC Library
+</refmiscinfo>
 </refmeta>
-
 <refnamediv>
 <refname>soap</refname>
 <refpurpose>Experimental soap support.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="xmlsec-soap.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
-<synopsis>
-
-
-
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSoap11CreateEnvelope">xmlSecSoap11CreateEnvelope</link>      (<link linkend="xmlDoc">xmlDocPtr</link> doc);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSoap11EnsureHeader">xmlSecSoap11EnsureHeader</link>        (<link linkend="xmlNode">xmlNodePtr</link> envNode);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSoap11AddBodyEntry">xmlSecSoap11AddBodyEntry</link>        (<link linkend="xmlNode">xmlNodePtr</link> envNode,
-                                             <link linkend="xmlNode">xmlNodePtr</link> entryNode);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSoap11AddFaultEntry">xmlSecSoap11AddFaultEntry</link>       (<link linkend="xmlNode">xmlNodePtr</link> envNode,
-                                             const <link linkend="xmlChar">xmlChar</link> *faultCodeHref,
-                                             const <link linkend="xmlChar">xmlChar</link> *faultCodeLocalPart,
-                                             const <link linkend="xmlChar">xmlChar</link> *faultString,
-                                             const <link linkend="xmlChar">xmlChar</link> *faultActor);
-<link linkend="int">int</link>         <link linkend="xmlSecSoap11CheckEnvelope">xmlSecSoap11CheckEnvelope</link>       (<link linkend="xmlNode">xmlNodePtr</link> envNode);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSoap11GetHeader">xmlSecSoap11GetHeader</link>           (<link linkend="xmlNode">xmlNodePtr</link> envNode);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSoap11GetBody">xmlSecSoap11GetBody</link>             (<link linkend="xmlNode">xmlNodePtr</link> envNode);
-<link linkend="xmlSecSize">xmlSecSize</link>  <link linkend="xmlSecSoap11GetBodyEntriesNumber">xmlSecSoap11GetBodyEntriesNumber</link>
-                                            (<link linkend="xmlNode">xmlNodePtr</link> envNode);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSoap11GetBodyEntry">xmlSecSoap11GetBodyEntry</link>        (<link linkend="xmlNode">xmlNodePtr</link> envNode,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> pos);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSoap11GetFaultEntry">xmlSecSoap11GetFaultEntry</link>       (<link linkend="xmlNode">xmlNodePtr</link> envNode);
-enum        <link linkend="xmlSecSoap12FaultCode">xmlSecSoap12FaultCode</link>;
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSoap12CreateEnvelope">xmlSecSoap12CreateEnvelope</link>      (<link linkend="xmlDoc">xmlDocPtr</link> doc);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSoap12EnsureHeader">xmlSecSoap12EnsureHeader</link>        (<link linkend="xmlNode">xmlNodePtr</link> envNode);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSoap12AddBodyEntry">xmlSecSoap12AddBodyEntry</link>        (<link linkend="xmlNode">xmlNodePtr</link> envNode,
-                                             <link linkend="xmlNode">xmlNodePtr</link> entryNode);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSoap12AddFaultEntry">xmlSecSoap12AddFaultEntry</link>       (<link linkend="xmlNode">xmlNodePtr</link> envNode,
-                                             <link linkend="xmlSecSoap12FaultCode">xmlSecSoap12FaultCode</link> faultCode,
-                                             const <link linkend="xmlChar">xmlChar</link> *faultReasonText,
-                                             const <link linkend="xmlChar">xmlChar</link> *faultReasonLang,
-                                             const <link linkend="xmlChar">xmlChar</link> *faultNodeURI,
-                                             const <link linkend="xmlChar">xmlChar</link> *faultRole);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSoap12AddFaultSubcode">xmlSecSoap12AddFaultSubcode</link>     (<link linkend="xmlNode">xmlNodePtr</link> faultNode,
-                                             const <link linkend="xmlChar">xmlChar</link> *subCodeHref,
-                                             const <link linkend="xmlChar">xmlChar</link> *subCodeName);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSoap12AddFaultReasonText">xmlSecSoap12AddFaultReasonText</link>  (<link linkend="xmlNode">xmlNodePtr</link> faultNode,
-                                             const <link linkend="xmlChar">xmlChar</link> *faultReasonText,
-                                             const <link linkend="xmlChar">xmlChar</link> *faultReasonLang);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSoap12AddFaultDetailEntry">xmlSecSoap12AddFaultDetailEntry</link> (<link linkend="xmlNode">xmlNodePtr</link> faultNode,
-                                             <link linkend="xmlNode">xmlNodePtr</link> detailEntryNode);
-<link linkend="int">int</link>         <link linkend="xmlSecSoap12CheckEnvelope">xmlSecSoap12CheckEnvelope</link>       (<link linkend="xmlNode">xmlNodePtr</link> envNode);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSoap12GetHeader">xmlSecSoap12GetHeader</link>           (<link linkend="xmlNode">xmlNodePtr</link> envNode);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSoap12GetBody">xmlSecSoap12GetBody</link>             (<link linkend="xmlNode">xmlNodePtr</link> envNode);
-<link linkend="xmlSecSize">xmlSecSize</link>  <link linkend="xmlSecSoap12GetBodyEntriesNumber">xmlSecSoap12GetBodyEntriesNumber</link>
-                                            (<link linkend="xmlNode">xmlNodePtr</link> envNode);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSoap12GetBodyEntry">xmlSecSoap12GetBodyEntry</link>        (<link linkend="xmlNode">xmlNodePtr</link> envNode,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> pos);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSoap12GetFaultEntry">xmlSecSoap12GetFaultEntry</link>       (<link linkend="xmlNode">xmlNodePtr</link> envNode);
+<synopsis><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecSoap11AddBodyEntry">xmlSecSoap11AddBodyEntry</link>            (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>,
+                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> entryNode</parameter>);
+<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecSoap11AddFaultEntry">xmlSecSoap11AddFaultEntry</link>           (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *faultCodeHref</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *faultCodeLocalPart</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *faultString</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *faultActor</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecSoap11CheckEnvelope">xmlSecSoap11CheckEnvelope</link>           (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>);
+<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecSoap11CreateEnvelope">xmlSecSoap11CreateEnvelope</link>          (<parameter><link linkend="xmlDoc"><type>xmlDocPtr</type></link> doc</parameter>);
+<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecSoap11EnsureHeader">xmlSecSoap11EnsureHeader</link>            (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>);
+<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecSoap11GetBody">xmlSecSoap11GetBody</link>                 (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>);
+<link linkend="xmlSecSize"><returnvalue>xmlSecSize</returnvalue></link>          <link linkend="xmlSecSoap11GetBodyEntriesNumber">xmlSecSoap11GetBodyEntriesNumber</link>    (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>);
+<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecSoap11GetBodyEntry">xmlSecSoap11GetBodyEntry</link>            (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> pos</parameter>);
+<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecSoap11GetFaultEntry">xmlSecSoap11GetFaultEntry</link>           (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>);
+<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecSoap11GetHeader">xmlSecSoap11GetHeader</link>               (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>);
+<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecSoap12AddBodyEntry">xmlSecSoap12AddBodyEntry</link>            (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>,
+                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> entryNode</parameter>);
+<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecSoap12AddFaultDetailEntry">xmlSecSoap12AddFaultDetailEntry</link>     (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> faultNode</parameter>,
+                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> detailEntryNode</parameter>);
+<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecSoap12AddFaultEntry">xmlSecSoap12AddFaultEntry</link>           (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>,
+                                                         <parameter><link linkend="xmlSecSoap12FaultCode"><type>xmlSecSoap12FaultCode</type></link> faultCode</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *faultReasonText</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *faultReasonLang</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *faultNodeURI</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *faultRole</parameter>);
+<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecSoap12AddFaultReasonText">xmlSecSoap12AddFaultReasonText</link>      (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> faultNode</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *faultReasonText</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *faultReasonLang</parameter>);
+<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecSoap12AddFaultSubcode">xmlSecSoap12AddFaultSubcode</link>         (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> faultNode</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *subCodeHref</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *subCodeName</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecSoap12CheckEnvelope">xmlSecSoap12CheckEnvelope</link>           (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>);
+<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecSoap12CreateEnvelope">xmlSecSoap12CreateEnvelope</link>          (<parameter><link linkend="xmlDoc"><type>xmlDocPtr</type></link> doc</parameter>);
+<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecSoap12EnsureHeader">xmlSecSoap12EnsureHeader</link>            (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>);
+enum                <link linkend="xmlSecSoap12FaultCode">xmlSecSoap12FaultCode</link>;
+<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecSoap12GetBody">xmlSecSoap12GetBody</link>                 (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>);
+<link linkend="xmlSecSize"><returnvalue>xmlSecSize</returnvalue></link>          <link linkend="xmlSecSoap12GetBodyEntriesNumber">xmlSecSoap12GetBodyEntriesNumber</link>    (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>);
+<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecSoap12GetBodyEntry">xmlSecSoap12GetBodyEntry</link>            (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> pos</parameter>);
+<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecSoap12GetFaultEntry">xmlSecSoap12GetFaultEntry</link>           (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>);
+<link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          <link linkend="xmlSecSoap12GetHeader">xmlSecSoap12GetHeader</link>               (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>);
 </synopsis>
 </refsynopsisdiv>
 
-
-
-
-
-
-
-
-
-<refsect1 role="desc">
+<refsect1 id="xmlsec-soap.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 Experimental soap support.
 </para>
 </refsect1>
-
-<refsect1 role="details">
+<refsect1 id="xmlsec-soap.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="xmlSecSoap11CreateEnvelope" role="function">xmlSecSoap11CreateEnvelope ()</title>
-<indexterm><primary>xmlSecSoap11CreateEnvelope</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSoap11CreateEnvelope      (<link linkend="xmlDoc">xmlDocPtr</link> doc);</programlisting>
+<refsect2 id="xmlSecSoap11AddBodyEntry" role="function">
+<title>xmlSecSoap11AddBodyEntry ()</title>
+<indexterm zone="xmlSecSoap11AddBodyEntry"><primary>xmlSecSoap11AddBodyEntry</primary></indexterm>
+<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecSoap11AddBodyEntry            (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>,
+                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> entryNode</parameter>);</programlisting>
 <para>
-Creates a new SOAP Envelope node. Caller is responsible for
-adding the returned node to the XML document.
-</para>
-<para>
-XML Schema (http://schemas.xmlsoap.org/soap/envelope/):
-</para>
-<para>
-    &lt;xs:element name="Envelope" type="tns:Envelope"/&gt;
-    &lt;xs:complexType name="Envelope"&gt;
-        &lt;xs:sequence&gt;
-            &lt;xs:element ref="tns:Header" minOccurs="0"/&gt;
-            &lt;xs:element ref="tns:Body" minOccurs="1"/&gt;
-            &lt;xs:any namespace="#<link linkend="other"><type>other</type></link>" minOccurs="0"
-                maxOccurs="unbounded" processContents="lax"/&gt;
-        &lt;/xs:sequence&gt;
-        &lt;xs:anyAttribute namespace="#<link linkend="other"><type>other</type></link>" processContents="lax"/&gt;
-    &lt;/xs:complexType&gt;</para>
-<para>
-
+Adds a new entry to &lt;soap:Body&gt; node.
 </para><variablelist role="params">
-<varlistentry><term><parameter>doc</parameter>&nbsp;:</term>
-<listitem><simpara>        the parent doc (might be NULL).
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to newly created &lt;soap:Envelope&gt; node or NULL
-if an error occurs.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>envNode</parameter>&#160;:</term>
+<listitem><simpara>the pointer to &lt;soap:Envelope&gt; node.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>entryNode</parameter>&#160;:</term>
+<listitem><simpara>the pointer to body entry node.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to the added entry (<parameter>contentNode</parameter>) or NULL if an error occurs.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSoap11EnsureHeader" role="function">xmlSecSoap11EnsureHeader ()</title>
-<indexterm><primary>xmlSecSoap11EnsureHeader</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSoap11EnsureHeader        (<link linkend="xmlNode">xmlNodePtr</link> envNode);</programlisting>
-<para>
-Gets the pointer to &lt;soap:Header&gt; node (if necessary, the node
-is created).
-</para>
-<para>
-XML Schema (http://schemas.xmlsoap.org/soap/envelope/):
-</para>
-<para>
-    &lt;xs:element name="Header" type="tns:Header"/&gt;
-    &lt;xs:complexType name="Header"&gt;
-        &lt;xs:sequence&gt;
-            &lt;xs:any namespace="#<link linkend="other"><type>other</type></link>" minOccurs="0"
-                maxOccurs="unbounded" processContents="lax"/&gt;
-        &lt;/xs:sequence&gt;
-        &lt;xs:anyAttribute namespace="#<link linkend="other"><type>other</type></link>" processContents="lax"/&gt;
-    &lt;/xs:complexType&gt;</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>envNode</parameter>&nbsp;:</term>
-<listitem><simpara>    the pointer to &lt;soap:Envelope&gt; node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to &lt;soap:Header&gt; node or NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSoap11AddBodyEntry" role="function">xmlSecSoap11AddBodyEntry ()</title>
-<indexterm><primary>xmlSecSoap11AddBodyEntry</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSoap11AddBodyEntry        (<link linkend="xmlNode">xmlNodePtr</link> envNode,
-                                             <link linkend="xmlNode">xmlNodePtr</link> entryNode);</programlisting>
-<para>
-Adds a new entry to &lt;soap:Body&gt; node.</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>envNode</parameter>&nbsp;:</term>
-<listitem><simpara>            the pointer to &lt;soap:Envelope&gt; node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>entryNode</parameter>&nbsp;:</term>
-<listitem><simpara>          the pointer to body entry node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to the added entry (<parameter>contentNode</parameter>) or NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSoap11AddFaultEntry" role="function">xmlSecSoap11AddFaultEntry ()</title>
-<indexterm><primary>xmlSecSoap11AddFaultEntry</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSoap11AddFaultEntry       (<link linkend="xmlNode">xmlNodePtr</link> envNode,
-                                             const <link linkend="xmlChar">xmlChar</link> *faultCodeHref,
-                                             const <link linkend="xmlChar">xmlChar</link> *faultCodeLocalPart,
-                                             const <link linkend="xmlChar">xmlChar</link> *faultString,
-                                             const <link linkend="xmlChar">xmlChar</link> *faultActor);</programlisting>
+<refsect2 id="xmlSecSoap11AddFaultEntry" role="function">
+<title>xmlSecSoap11AddFaultEntry ()</title>
+<indexterm zone="xmlSecSoap11AddFaultEntry"><primary>xmlSecSoap11AddFaultEntry</primary></indexterm>
+<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecSoap11AddFaultEntry           (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *faultCodeHref</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *faultCodeLocalPart</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *faultString</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *faultActor</parameter>);</programlisting>
 <para>
 Adds &lt;soap:Fault&gt; entry to the <parameter>envNode</parameter>. Note that only one &lt;soap:Fault&gt;
 entry is allowed.
@@ -189,198 +112,43 @@ XML Schema (http://schemas.xmlsoap.org/soap/envelope/):
                 processContents="lax"/&gt;
         &lt;/xs:sequence&gt;
         &lt;xs:anyAttribute namespace="#<link linkend="any"><type>any</type></link>" processContents="lax"/&gt;
-    &lt;/xs:complexType&gt;</para>
-<para>
-
+    &lt;/xs:complexType&gt;
 </para><variablelist role="params">
-<varlistentry><term><parameter>envNode</parameter>&nbsp;:</term>
-<listitem><simpara>            the pointer to &lt;soap:Envelope&gt; node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>faultCodeHref</parameter>&nbsp;:</term>
-<listitem><simpara>      the fault code QName href (must be known in th context of
-                     &lt;soap:Body&gt; node).
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>faultCodeLocalPart</parameter>&nbsp;:</term>
-<listitem><simpara> the fault code QName LocalPart.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>faultString</parameter>&nbsp;:</term>
-<listitem><simpara>        the human readable explanation of the fault.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>faultActor</parameter>&nbsp;:</term>
-<listitem><simpara>         the information about who caused the fault (might be NULL).
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to the added entry or NULL if an error occurs.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>envNode</parameter>&#160;:</term>
+<listitem><simpara>the pointer to &lt;soap:Envelope&gt; node.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>faultCodeHref</parameter>&#160;:</term>
+<listitem><simpara>the fault code QName href (must be known in th context of
+&lt;soap:Body&gt; node).</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>faultCodeLocalPart</parameter>&#160;:</term>
+<listitem><simpara>the fault code QName LocalPart.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>faultString</parameter>&#160;:</term>
+<listitem><simpara>the human readable explanation of the fault.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>faultActor</parameter>&#160;:</term>
+<listitem><simpara>the information about who caused the fault (might be NULL).</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to the added entry or NULL if an error occurs.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSoap11CheckEnvelope" role="function">xmlSecSoap11CheckEnvelope ()</title>
-<indexterm><primary>xmlSecSoap11CheckEnvelope</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecSoap11CheckEnvelope       (<link linkend="xmlNode">xmlNodePtr</link> envNode);</programlisting>
+<refsect2 id="xmlSecSoap11CheckEnvelope" role="function">
+<title>xmlSecSoap11CheckEnvelope ()</title>
+<indexterm zone="xmlSecSoap11CheckEnvelope"><primary>xmlSecSoap11CheckEnvelope</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecSoap11CheckEnvelope           (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>);</programlisting>
 <para>
-Validates &lt;soap:Envelope&gt; node structure.</para>
-<para>
-
+Validates &lt;soap:Envelope&gt; node structure.
 </para><variablelist role="params">
-<varlistentry><term><parameter>envNode</parameter>&nbsp;:</term>
-<listitem><simpara>    the pointer to &lt;soap:Envelope&gt; node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 1 if <parameter>envNode</parameter> has a valid &lt;soap:Envelope&gt; element, 0 if it is
-not valid or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>envNode</parameter>&#160;:</term>
+<listitem><simpara>the pointer to &lt;soap:Envelope&gt; node.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>1 if <parameter>envNode</parameter> has a valid &lt;soap:Envelope&gt; element, 0 if it is
+not valid or a negative value if an error occurs.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSoap11GetHeader" role="function">xmlSecSoap11GetHeader ()</title>
-<indexterm><primary>xmlSecSoap11GetHeader</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSoap11GetHeader           (<link linkend="xmlNode">xmlNodePtr</link> envNode);</programlisting>
+<refsect2 id="xmlSecSoap11CreateEnvelope" role="function">
+<title>xmlSecSoap11CreateEnvelope ()</title>
+<indexterm zone="xmlSecSoap11CreateEnvelope"><primary>xmlSecSoap11CreateEnvelope</primary></indexterm>
+<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecSoap11CreateEnvelope          (<parameter><link linkend="xmlDoc"><type>xmlDocPtr</type></link> doc</parameter>);</programlisting>
 <para>
-Gets pointer to the &lt;soap:Header&gt; node.</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>envNode</parameter>&nbsp;:</term>
-<listitem><simpara>    the pointer to &lt;soap:Envelope&gt; node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to &lt;soap:Header&gt; node or NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSoap11GetBody" role="function">xmlSecSoap11GetBody ()</title>
-<indexterm><primary>xmlSecSoap11GetBody</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSoap11GetBody             (<link linkend="xmlNode">xmlNodePtr</link> envNode);</programlisting>
-<para>
-Gets pointer to the &lt;soap:Body&gt; node.</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>envNode</parameter>&nbsp;:</term>
-<listitem><simpara>    the pointer to &lt;soap:Envelope&gt; node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to &lt;soap:Body&gt; node or NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSoap11GetBodyEntriesNumber" role="function">xmlSecSoap11GetBodyEntriesNumber ()</title>
-<indexterm><primary>xmlSecSoap11GetBodyEntriesNumber</primary></indexterm><programlisting><link linkend="xmlSecSize">xmlSecSize</link>  xmlSecSoap11GetBodyEntriesNumber
-                                            (<link linkend="xmlNode">xmlNodePtr</link> envNode);</programlisting>
-<para>
-Gets the number of body entries.</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>envNode</parameter>&nbsp;:</term>
-<listitem><simpara>    the pointer to &lt;soap:Envelope&gt; node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the number of body entries.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSoap11GetBodyEntry" role="function">xmlSecSoap11GetBodyEntry ()</title>
-<indexterm><primary>xmlSecSoap11GetBodyEntry</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSoap11GetBodyEntry        (<link linkend="xmlNode">xmlNodePtr</link> envNode,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> pos);</programlisting>
-<para>
-Gets the body entry number <parameter>pos</parameter>.</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>envNode</parameter>&nbsp;:</term>
-<listitem><simpara>    the pointer to &lt;soap:Envelope&gt; node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pos</parameter>&nbsp;:</term>
-<listitem><simpara>        the body entry number.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to body entry node or NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSoap11GetFaultEntry" role="function">xmlSecSoap11GetFaultEntry ()</title>
-<indexterm><primary>xmlSecSoap11GetFaultEntry</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSoap11GetFaultEntry       (<link linkend="xmlNode">xmlNodePtr</link> envNode);</programlisting>
-<para>
-Gets the Fault entry (if any).</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>envNode</parameter>&nbsp;:</term>
-<listitem><simpara>    the pointer to &lt;soap:Envelope&gt; node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to Fault entry or NULL if it does not exist.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSoap12FaultCode" role="enum">enum xmlSecSoap12FaultCode</title>
-<indexterm><primary>xmlSecSoap12FaultCode</primary></indexterm><programlisting>typedef enum {
-    xmlSecSoap12FaultCodeUnknown = 0,
-    xmlSecSoap12FaultCodeVersionMismatch,
-    xmlSecSoap12FaultCodeMustUnderstand,
-    xmlSecSoap12FaultCodeDataEncodingUnknown,
-    xmlSecSoap12FaultCodeSender,
-    xmlSecSoap12FaultCodeReceiver
-} xmlSecSoap12FaultCode;
-</programlisting>
-<para>
-The values of the &lt;Value&gt; child element information item of the
-&lt;Code&gt; element information item (http://www.w3.org/TR/2003/REC-soap12-part1-20030624/<link linkend="faultcodes"><type>faultcodes</type></link>).</para>
-<para>
-
-</para><variablelist role="enum">
-<varlistentry>
-<term><anchor id="xmlSecSoap12FaultCodeUnknown" role="constant"><literal>xmlSecSoap12FaultCodeUnknown</literal></term>
-<listitem><simpara>               The fault code is not available.
-</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><anchor id="xmlSecSoap12FaultCodeVersionMismatch" role="constant"><literal>xmlSecSoap12FaultCodeVersionMismatch</literal></term>
-<listitem><simpara>       The faulting node found an
-                                             invalid element information
-                                             item instead of the expected
-                                             Envelope element information item.
-</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><anchor id="xmlSecSoap12FaultCodeMustUnderstand" role="constant"><literal>xmlSecSoap12FaultCodeMustUnderstand</literal></term>
-<listitem><simpara>        An immediate child element
-                                             information item of the SOAP
-                                             Header element information item
-                                             targeted at the faulting node
-                                             that was not understood by the
-                                             faulting node contained a SOAP
-                                             mustUnderstand attribute
-                                             information item with a value of "true"
-</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><anchor id="xmlSecSoap12FaultCodeDataEncodingUnknown" role="constant"><literal>xmlSecSoap12FaultCodeDataEncodingUnknown</literal></term>
-<listitem><simpara>   A SOAP header block or SOAP
-                                             body child element information
-                                             item targeted at the faulting
-                                             SOAP node is scoped with a data
-                                             encoding that the faulting node
-                                             does not support.
-</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><anchor id="xmlSecSoap12FaultCodeSender" role="constant"><literal>xmlSecSoap12FaultCodeSender</literal></term>
-<listitem><simpara>                The message was incorrectly
-                                             formed or did not contain the
-                                             appropriate information in order
-                                             to succeed.
-</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><anchor id="xmlSecSoap12FaultCodeReceiver" role="constant"><literal>xmlSecSoap12FaultCodeReceiver</literal></term>
-<listitem><simpara>              The message could not be processed
-                                             for reasons attributable to the
-                                             processing of the message rather
-                                             than to the contents of the
-                                             message itself.
-</simpara></listitem>
-</varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSoap12CreateEnvelope" role="function">xmlSecSoap12CreateEnvelope ()</title>
-<indexterm><primary>xmlSecSoap12CreateEnvelope</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSoap12CreateEnvelope      (<link linkend="xmlDoc">xmlDocPtr</link> doc);</programlisting>
-<para>
-Creates a new SOAP 1.2 Envelope node. Caller is responsible for
+Creates a new SOAP Envelope node. Caller is responsible for
 adding the returned node to the XML document.
 </para>
 <para>
-XML Schema (http://www.w3.org/2003/05/soap-envelope):
+XML Schema (http://schemas.xmlsoap.org/soap/envelope/):
 </para>
 <para>
     &lt;xs:element name="Envelope" type="tns:Envelope"/&gt;
@@ -388,51 +156,105 @@ XML Schema (http://www.w3.org/2003/05/soap-envelope):
         &lt;xs:sequence&gt;
             &lt;xs:element ref="tns:Header" minOccurs="0"/&gt;
             &lt;xs:element ref="tns:Body" minOccurs="1"/&gt;
+            &lt;xs:any namespace="#<link linkend="other"><type>other</type></link>" minOccurs="0"
+                maxOccurs="unbounded" processContents="lax"/&gt;
         &lt;/xs:sequence&gt;
         &lt;xs:anyAttribute namespace="#<link linkend="other"><type>other</type></link>" processContents="lax"/&gt;
-    &lt;/xs:complexType&gt;</para>
-<para>
-
+    &lt;/xs:complexType&gt;
 </para><variablelist role="params">
-<varlistentry><term><parameter>doc</parameter>&nbsp;:</term>
-<listitem><simpara>        the parent doc (might be NULL).
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to newly created &lt;soap:Envelope&gt; node or NULL
-if an error occurs.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>doc</parameter>&#160;:</term>
+<listitem><simpara>the parent doc (might be NULL).</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to newly created &lt;soap:Envelope&gt; node or NULL
+if an error occurs.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSoap12EnsureHeader" role="function">xmlSecSoap12EnsureHeader ()</title>
-<indexterm><primary>xmlSecSoap12EnsureHeader</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSoap12EnsureHeader        (<link linkend="xmlNode">xmlNodePtr</link> envNode);</programlisting>
+<refsect2 id="xmlSecSoap11EnsureHeader" role="function">
+<title>xmlSecSoap11EnsureHeader ()</title>
+<indexterm zone="xmlSecSoap11EnsureHeader"><primary>xmlSecSoap11EnsureHeader</primary></indexterm>
+<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecSoap11EnsureHeader            (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>);</programlisting>
 <para>
 Gets the pointer to &lt;soap:Header&gt; node (if necessary, the node
 is created).
 </para>
 <para>
-XML Schema (http://www.w3.org/2003/05/soap-envelope):
+XML Schema (http://schemas.xmlsoap.org/soap/envelope/):
 </para>
 <para>
     &lt;xs:element name="Header" type="tns:Header"/&gt;
     &lt;xs:complexType name="Header"&gt;
         &lt;xs:sequence&gt;
-            &lt;xs:any namespace="#<link linkend="any"><type>any</type></link>" processContents="lax"
-                    minOccurs="0" maxOccurs="unbounded"/&gt;
+            &lt;xs:any namespace="#<link linkend="other"><type>other</type></link>" minOccurs="0"
+                maxOccurs="unbounded" processContents="lax"/&gt;
         &lt;/xs:sequence&gt;
         &lt;xs:anyAttribute namespace="#<link linkend="other"><type>other</type></link>" processContents="lax"/&gt;
-    &lt;/xs:complexType&gt;</para>
-<para>
-
+    &lt;/xs:complexType&gt;
 </para><variablelist role="params">
-<varlistentry><term><parameter>envNode</parameter>&nbsp;:</term>
-<listitem><simpara>    the pointer to &lt;soap:Envelope&gt; node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to &lt;soap:Header&gt; node or NULL if an error occurs.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>envNode</parameter>&#160;:</term>
+<listitem><simpara>the pointer to &lt;soap:Envelope&gt; node.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to &lt;soap:Header&gt; node or NULL if an error occurs.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSoap12AddBodyEntry" role="function">xmlSecSoap12AddBodyEntry ()</title>
-<indexterm><primary>xmlSecSoap12AddBodyEntry</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSoap12AddBodyEntry        (<link linkend="xmlNode">xmlNodePtr</link> envNode,
-                                             <link linkend="xmlNode">xmlNodePtr</link> entryNode);</programlisting>
+<refsect2 id="xmlSecSoap11GetBody" role="function">
+<title>xmlSecSoap11GetBody ()</title>
+<indexterm zone="xmlSecSoap11GetBody"><primary>xmlSecSoap11GetBody</primary></indexterm>
+<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecSoap11GetBody                 (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>);</programlisting>
+<para>
+Gets pointer to the &lt;soap:Body&gt; node.
+</para><variablelist role="params">
+<varlistentry><term><parameter>envNode</parameter>&#160;:</term>
+<listitem><simpara>the pointer to &lt;soap:Envelope&gt; node.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to &lt;soap:Body&gt; node or NULL if an error occurs.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecSoap11GetBodyEntriesNumber" role="function">
+<title>xmlSecSoap11GetBodyEntriesNumber ()</title>
+<indexterm zone="xmlSecSoap11GetBodyEntriesNumber"><primary>xmlSecSoap11GetBodyEntriesNumber</primary></indexterm>
+<programlisting><link linkend="xmlSecSize"><returnvalue>xmlSecSize</returnvalue></link>          xmlSecSoap11GetBodyEntriesNumber    (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>);</programlisting>
+<para>
+Gets the number of body entries.
+</para><variablelist role="params">
+<varlistentry><term><parameter>envNode</parameter>&#160;:</term>
+<listitem><simpara>the pointer to &lt;soap:Envelope&gt; node.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>the number of body entries.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecSoap11GetBodyEntry" role="function">
+<title>xmlSecSoap11GetBodyEntry ()</title>
+<indexterm zone="xmlSecSoap11GetBodyEntry"><primary>xmlSecSoap11GetBodyEntry</primary></indexterm>
+<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecSoap11GetBodyEntry            (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> pos</parameter>);</programlisting>
+<para>
+Gets the body entry number <parameter>pos</parameter>.
+</para><variablelist role="params">
+<varlistentry><term><parameter>envNode</parameter>&#160;:</term>
+<listitem><simpara>the pointer to &lt;soap:Envelope&gt; node.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pos</parameter>&#160;:</term>
+<listitem><simpara>the body entry number.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to body entry node or NULL if an error occurs.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecSoap11GetFaultEntry" role="function">
+<title>xmlSecSoap11GetFaultEntry ()</title>
+<indexterm zone="xmlSecSoap11GetFaultEntry"><primary>xmlSecSoap11GetFaultEntry</primary></indexterm>
+<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecSoap11GetFaultEntry           (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>);</programlisting>
+<para>
+Gets the Fault entry (if any).
+</para><variablelist role="params">
+<varlistentry><term><parameter>envNode</parameter>&#160;:</term>
+<listitem><simpara>the pointer to &lt;soap:Envelope&gt; node.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to Fault entry or NULL if it does not exist.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecSoap11GetHeader" role="function">
+<title>xmlSecSoap11GetHeader ()</title>
+<indexterm zone="xmlSecSoap11GetHeader"><primary>xmlSecSoap11GetHeader</primary></indexterm>
+<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecSoap11GetHeader               (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>);</programlisting>
+<para>
+Gets pointer to the &lt;soap:Header&gt; node.
+</para><variablelist role="params">
+<varlistentry><term><parameter>envNode</parameter>&#160;:</term>
+<listitem><simpara>the pointer to &lt;soap:Envelope&gt; node.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to &lt;soap:Header&gt; node or NULL if an error occurs.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecSoap12AddBodyEntry" role="function">
+<title>xmlSecSoap12AddBodyEntry ()</title>
+<indexterm zone="xmlSecSoap12AddBodyEntry"><primary>xmlSecSoap12AddBodyEntry</primary></indexterm>
+<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecSoap12AddBodyEntry            (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>,
+                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> entryNode</parameter>);</programlisting>
 <para>
 Adds a new entry to &lt;soap:Body&gt; node.
 </para>
@@ -447,27 +269,38 @@ XML Schema (http://www.w3.org/2003/05/soap-envelope):
                     minOccurs="0" maxOccurs="unbounded"/&gt;
         &lt;/xs:sequence&gt;
         &lt;xs:anyAttribute namespace="#<link linkend="other"><type>other</type></link>" processContents="lax"/&gt;
-    &lt;/xs:complexType&gt;</para>
-<para>
-
+    &lt;/xs:complexType&gt;
 </para><variablelist role="params">
-<varlistentry><term><parameter>envNode</parameter>&nbsp;:</term>
-<listitem><simpara>            the pointer to &lt;soap:Envelope&gt; node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>entryNode</parameter>&nbsp;:</term>
-<listitem><simpara>          the pointer to body entry node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to the added entry (<parameter>contentNode</parameter>) or NULL if an error occurs.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>envNode</parameter>&#160;:</term>
+<listitem><simpara>the pointer to &lt;soap:Envelope&gt; node.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>entryNode</parameter>&#160;:</term>
+<listitem><simpara>the pointer to body entry node.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to the added entry (<parameter>contentNode</parameter>) or NULL if an error occurs.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSoap12AddFaultEntry" role="function">xmlSecSoap12AddFaultEntry ()</title>
-<indexterm><primary>xmlSecSoap12AddFaultEntry</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSoap12AddFaultEntry       (<link linkend="xmlNode">xmlNodePtr</link> envNode,
-                                             <link linkend="xmlSecSoap12FaultCode">xmlSecSoap12FaultCode</link> faultCode,
-                                             const <link linkend="xmlChar">xmlChar</link> *faultReasonText,
-                                             const <link linkend="xmlChar">xmlChar</link> *faultReasonLang,
-                                             const <link linkend="xmlChar">xmlChar</link> *faultNodeURI,
-                                             const <link linkend="xmlChar">xmlChar</link> *faultRole);</programlisting>
+<refsect2 id="xmlSecSoap12AddFaultDetailEntry" role="function">
+<title>xmlSecSoap12AddFaultDetailEntry ()</title>
+<indexterm zone="xmlSecSoap12AddFaultDetailEntry"><primary>xmlSecSoap12AddFaultDetailEntry</primary></indexterm>
+<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecSoap12AddFaultDetailEntry     (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> faultNode</parameter>,
+                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> detailEntryNode</parameter>);</programlisting>
+<para>
+Adds a new child to the Detail child element of <parameter>faultNode</parameter>.
+</para><variablelist role="params">
+<varlistentry><term><parameter>faultNode</parameter>&#160;:</term>
+<listitem><simpara>the pointer to &lt;Fault&gt; node.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>detailEntryNode</parameter>&#160;:</term>
+<listitem><simpara>the pointer to detail entry node.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to the added child (<parameter>detailEntryNode</parameter>) or NULL if an error
+occurs.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecSoap12AddFaultEntry" role="function">
+<title>xmlSecSoap12AddFaultEntry ()</title>
+<indexterm zone="xmlSecSoap12AddFaultEntry"><primary>xmlSecSoap12AddFaultEntry</primary></indexterm>
+<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecSoap12AddFaultEntry           (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>,
+                                                         <parameter><link linkend="xmlSecSoap12FaultCode"><type>xmlSecSoap12FaultCode</type></link> faultCode</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *faultReasonText</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *faultReasonLang</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *faultNodeURI</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *faultRole</parameter>);</programlisting>
 <para>
 Adds &lt;soap:Fault&gt; entry to the <parameter>envNode</parameter>. Note that only one &lt;soap:Fault&gt;
 entry is allowed.
@@ -538,192 +371,251 @@ XML Schema (http://www.w3.org/2003/05/soap-envelope):
                 minOccurs="0" maxOccurs="unbounded"/&gt;
         &lt;/xs:sequence&gt;
         &lt;xs:anyAttribute namespace="#<link linkend="other"><type>other</type></link>" processContents="lax"/&gt;
-    &lt;/xs:complexType&gt;</para>
-<para>
-
+    &lt;/xs:complexType&gt;
 </para><variablelist role="params">
-<varlistentry><term><parameter>envNode</parameter>&nbsp;:</term>
-<listitem><simpara>            the pointer to &lt;soap:Envelope&gt; node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>faultCode</parameter>&nbsp;:</term>
-<listitem><simpara>          the fault code.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>faultReasonText</parameter>&nbsp;:</term>
-<listitem><simpara>    the human readable explanation of the fault.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>faultReasonLang</parameter>&nbsp;:</term>
-<listitem><simpara>    the language (xml:lang) for <parameter>faultReason</parameter> string.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>faultNodeURI</parameter>&nbsp;:</term>
-<listitem><simpara>       the more preciese information about fault source
-                     (might be NULL).
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>faultRole</parameter>&nbsp;:</term>
-<listitem><simpara>          the role the node was operating in at the point
-                     the fault occurred (might be NULL).
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to the added entry or NULL if an error occurs.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>envNode</parameter>&#160;:</term>
+<listitem><simpara>the pointer to &lt;soap:Envelope&gt; node.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>faultCode</parameter>&#160;:</term>
+<listitem><simpara>the fault code.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>faultReasonText</parameter>&#160;:</term>
+<listitem><simpara>the human readable explanation of the fault.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>faultReasonLang</parameter>&#160;:</term>
+<listitem><simpara>the language (xml:lang) for <parameter>faultReason</parameter> string.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>faultNodeURI</parameter>&#160;:</term>
+<listitem><simpara>the more preciese information about fault source
+(might be NULL).</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>faultRole</parameter>&#160;:</term>
+<listitem><simpara>the role the node was operating in at the point
+the fault occurred (might be NULL).</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to the added entry or NULL if an error occurs.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSoap12AddFaultSubcode" role="function">xmlSecSoap12AddFaultSubcode ()</title>
-<indexterm><primary>xmlSecSoap12AddFaultSubcode</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSoap12AddFaultSubcode     (<link linkend="xmlNode">xmlNodePtr</link> faultNode,
-                                             const <link linkend="xmlChar">xmlChar</link> *subCodeHref,
-                                             const <link linkend="xmlChar">xmlChar</link> *subCodeName);</programlisting>
+<refsect2 id="xmlSecSoap12AddFaultReasonText" role="function">
+<title>xmlSecSoap12AddFaultReasonText ()</title>
+<indexterm zone="xmlSecSoap12AddFaultReasonText"><primary>xmlSecSoap12AddFaultReasonText</primary></indexterm>
+<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecSoap12AddFaultReasonText      (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> faultNode</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *faultReasonText</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *faultReasonLang</parameter>);</programlisting>
 <para>
-Adds a new &lt;Subcode&gt; node to the &lt;Code&gt; node or the last &lt;Subcode&gt; node.</para>
-<para>
-
+Adds a new Text node to the Fault/Reason node.
 </para><variablelist role="params">
-<varlistentry><term><parameter>faultNode</parameter>&nbsp;:</term>
-<listitem><simpara>          the pointer to &lt;Fault&gt; node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>subCodeHref</parameter>&nbsp;:</term>
-<listitem><simpara>        the subcode href.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>subCodeName</parameter>&nbsp;:</term>
-<listitem><simpara>        the subcode name.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a pointer to the newly created &lt;Subcode&gt; node or NULL if an error
-occurs.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>faultNode</parameter>&#160;:</term>
+<listitem><simpara>the pointer to &lt;Fault&gt; node.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>faultReasonText</parameter>&#160;:</term>
+<listitem><simpara>the new reason text.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>faultReasonLang</parameter>&#160;:</term>
+<listitem><simpara>the new reason xml:lang attribute.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>a pointer to the newly created &lt;Text&gt; node or NULL if an error
+occurs.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSoap12AddFaultReasonText" role="function">xmlSecSoap12AddFaultReasonText ()</title>
-<indexterm><primary>xmlSecSoap12AddFaultReasonText</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSoap12AddFaultReasonText  (<link linkend="xmlNode">xmlNodePtr</link> faultNode,
-                                             const <link linkend="xmlChar">xmlChar</link> *faultReasonText,
-                                             const <link linkend="xmlChar">xmlChar</link> *faultReasonLang);</programlisting>
+<refsect2 id="xmlSecSoap12AddFaultSubcode" role="function">
+<title>xmlSecSoap12AddFaultSubcode ()</title>
+<indexterm zone="xmlSecSoap12AddFaultSubcode"><primary>xmlSecSoap12AddFaultSubcode</primary></indexterm>
+<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecSoap12AddFaultSubcode         (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> faultNode</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *subCodeHref</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *subCodeName</parameter>);</programlisting>
 <para>
-Adds a new Text node to the Fault/Reason node.</para>
-<para>
-
+Adds a new &lt;Subcode&gt; node to the &lt;Code&gt; node or the last &lt;Subcode&gt; node.
 </para><variablelist role="params">
-<varlistentry><term><parameter>faultNode</parameter>&nbsp;:</term>
-<listitem><simpara>          the pointer to &lt;Fault&gt; node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>faultReasonText</parameter>&nbsp;:</term>
-<listitem><simpara>    the new reason text.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>faultReasonLang</parameter>&nbsp;:</term>
-<listitem><simpara>    the new reason xml:lang attribute.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a pointer to the newly created &lt;Text&gt; node or NULL if an error
-occurs.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>faultNode</parameter>&#160;:</term>
+<listitem><simpara>the pointer to &lt;Fault&gt; node.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>subCodeHref</parameter>&#160;:</term>
+<listitem><simpara>the subcode href.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>subCodeName</parameter>&#160;:</term>
+<listitem><simpara>the subcode name.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>a pointer to the newly created &lt;Subcode&gt; node or NULL if an error
+occurs.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSoap12AddFaultDetailEntry" role="function">xmlSecSoap12AddFaultDetailEntry ()</title>
-<indexterm><primary>xmlSecSoap12AddFaultDetailEntry</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSoap12AddFaultDetailEntry (<link linkend="xmlNode">xmlNodePtr</link> faultNode,
-                                             <link linkend="xmlNode">xmlNodePtr</link> detailEntryNode);</programlisting>
+<refsect2 id="xmlSecSoap12CheckEnvelope" role="function">
+<title>xmlSecSoap12CheckEnvelope ()</title>
+<indexterm zone="xmlSecSoap12CheckEnvelope"><primary>xmlSecSoap12CheckEnvelope</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecSoap12CheckEnvelope           (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>);</programlisting>
 <para>
-Adds a new child to the Detail child element of <parameter>faultNode</parameter>.</para>
-<para>
-
+Validates &lt;soap:Envelope&gt; node structure.
 </para><variablelist role="params">
-<varlistentry><term><parameter>faultNode</parameter>&nbsp;:</term>
-<listitem><simpara>          the pointer to &lt;Fault&gt; node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>detailEntryNode</parameter>&nbsp;:</term>
-<listitem><simpara>    the pointer to detail entry node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to the added child (<parameter>detailEntryNode</parameter>) or NULL if an error
-occurs.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>envNode</parameter>&#160;:</term>
+<listitem><simpara>the pointer to &lt;soap:Envelope&gt; node.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>1 if <parameter>envNode</parameter> has a valid &lt;soap:Envelope&gt; element, 0 if it is
+not valid or a negative value if an error occurs.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSoap12CheckEnvelope" role="function">xmlSecSoap12CheckEnvelope ()</title>
-<indexterm><primary>xmlSecSoap12CheckEnvelope</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecSoap12CheckEnvelope       (<link linkend="xmlNode">xmlNodePtr</link> envNode);</programlisting>
+<refsect2 id="xmlSecSoap12CreateEnvelope" role="function">
+<title>xmlSecSoap12CreateEnvelope ()</title>
+<indexterm zone="xmlSecSoap12CreateEnvelope"><primary>xmlSecSoap12CreateEnvelope</primary></indexterm>
+<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecSoap12CreateEnvelope          (<parameter><link linkend="xmlDoc"><type>xmlDocPtr</type></link> doc</parameter>);</programlisting>
 <para>
-Validates &lt;soap:Envelope&gt; node structure.</para>
+Creates a new SOAP 1.2 Envelope node. Caller is responsible for
+adding the returned node to the XML document.
+</para>
 <para>
-
+XML Schema (http://www.w3.org/2003/05/soap-envelope):
+</para>
+<para>
+    &lt;xs:element name="Envelope" type="tns:Envelope"/&gt;
+    &lt;xs:complexType name="Envelope"&gt;
+        &lt;xs:sequence&gt;
+            &lt;xs:element ref="tns:Header" minOccurs="0"/&gt;
+            &lt;xs:element ref="tns:Body" minOccurs="1"/&gt;
+        &lt;/xs:sequence&gt;
+        &lt;xs:anyAttribute namespace="#<link linkend="other"><type>other</type></link>" processContents="lax"/&gt;
+    &lt;/xs:complexType&gt;
 </para><variablelist role="params">
-<varlistentry><term><parameter>envNode</parameter>&nbsp;:</term>
-<listitem><simpara>    the pointer to &lt;soap:Envelope&gt; node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 1 if <parameter>envNode</parameter> has a valid &lt;soap:Envelope&gt; element, 0 if it is
-not valid or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>doc</parameter>&#160;:</term>
+<listitem><simpara>the parent doc (might be NULL).</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to newly created &lt;soap:Envelope&gt; node or NULL
+if an error occurs.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSoap12GetHeader" role="function">xmlSecSoap12GetHeader ()</title>
-<indexterm><primary>xmlSecSoap12GetHeader</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSoap12GetHeader           (<link linkend="xmlNode">xmlNodePtr</link> envNode);</programlisting>
+<refsect2 id="xmlSecSoap12EnsureHeader" role="function">
+<title>xmlSecSoap12EnsureHeader ()</title>
+<indexterm zone="xmlSecSoap12EnsureHeader"><primary>xmlSecSoap12EnsureHeader</primary></indexterm>
+<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecSoap12EnsureHeader            (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>);</programlisting>
 <para>
-Gets pointer to the &lt;soap:Header&gt; node.</para>
+Gets the pointer to &lt;soap:Header&gt; node (if necessary, the node
+is created).
+</para>
 <para>
-
+XML Schema (http://www.w3.org/2003/05/soap-envelope):
+</para>
+<para>
+    &lt;xs:element name="Header" type="tns:Header"/&gt;
+    &lt;xs:complexType name="Header"&gt;
+        &lt;xs:sequence&gt;
+            &lt;xs:any namespace="#<link linkend="any"><type>any</type></link>" processContents="lax"
+                    minOccurs="0" maxOccurs="unbounded"/&gt;
+        &lt;/xs:sequence&gt;
+        &lt;xs:anyAttribute namespace="#<link linkend="other"><type>other</type></link>" processContents="lax"/&gt;
+    &lt;/xs:complexType&gt;
 </para><variablelist role="params">
-<varlistentry><term><parameter>envNode</parameter>&nbsp;:</term>
-<listitem><simpara>    the pointer to &lt;soap:Envelope&gt; node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to &lt;soap:Header&gt; node or NULL if an error occurs.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>envNode</parameter>&#160;:</term>
+<listitem><simpara>the pointer to &lt;soap:Envelope&gt; node.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to &lt;soap:Header&gt; node or NULL if an error occurs.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSoap12GetBody" role="function">xmlSecSoap12GetBody ()</title>
-<indexterm><primary>xmlSecSoap12GetBody</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSoap12GetBody             (<link linkend="xmlNode">xmlNodePtr</link> envNode);</programlisting>
+<refsect2 id="xmlSecSoap12FaultCode" role="enum">
+<title>enum xmlSecSoap12FaultCode</title>
+<indexterm zone="xmlSecSoap12FaultCode"><primary>xmlSecSoap12FaultCode</primary></indexterm>
+<programlisting>typedef enum {
+    xmlSecSoap12FaultCodeUnknown = 0,
+    xmlSecSoap12FaultCodeVersionMismatch,
+    xmlSecSoap12FaultCodeMustUnderstand,
+    xmlSecSoap12FaultCodeDataEncodingUnknown,
+    xmlSecSoap12FaultCodeSender,
+    xmlSecSoap12FaultCodeReceiver
+} xmlSecSoap12FaultCode;
+</programlisting>
 <para>
-Gets pointer to the &lt;soap:Body&gt; node.</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>envNode</parameter>&nbsp;:</term>
-<listitem><simpara>    the pointer to &lt;soap:Envelope&gt; node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to &lt;soap:Body&gt; node or NULL if an error occurs.
-</simpara></listitem></varlistentry>
+The values of the &lt;Value&gt; child element information item of the
+&lt;Code&gt; element information item (http://www.w3.org/TR/2003/REC-soap12-part1-20030624/<link linkend="faultcodes"><type>faultcodes</type></link>).
+</para><variablelist role="enum">
+<varlistentry id="xmlSecSoap12FaultCodeUnknown" role="constant">
+<term><literal>xmlSecSoap12FaultCodeUnknown</literal></term>
+<listitem><simpara>The fault code is not available.
+</simpara></listitem>
+</varlistentry>
+<varlistentry id="xmlSecSoap12FaultCodeVersionMismatch" role="constant">
+<term><literal>xmlSecSoap12FaultCodeVersionMismatch</literal></term>
+<listitem><simpara>The faulting node found an
+                                             invalid element information
+                                             item instead of the expected
+                                             Envelope element information item.
+</simpara></listitem>
+</varlistentry>
+<varlistentry id="xmlSecSoap12FaultCodeMustUnderstand" role="constant">
+<term><literal>xmlSecSoap12FaultCodeMustUnderstand</literal></term>
+<listitem><simpara>An immediate child element
+                                             information item of the SOAP
+                                             Header element information item
+                                             targeted at the faulting node
+                                             that was not understood by the
+                                             faulting node contained a SOAP
+                                             mustUnderstand attribute
+                                             information item with a value of "true"
+</simpara></listitem>
+</varlistentry>
+<varlistentry id="xmlSecSoap12FaultCodeDataEncodingUnknown" role="constant">
+<term><literal>xmlSecSoap12FaultCodeDataEncodingUnknown</literal></term>
+<listitem><simpara>A SOAP header block or SOAP
+                                             body child element information
+                                             item targeted at the faulting
+                                             SOAP node is scoped with a data
+                                             encoding that the faulting node
+                                             does not support.
+</simpara></listitem>
+</varlistentry>
+<varlistentry id="xmlSecSoap12FaultCodeSender" role="constant">
+<term><literal>xmlSecSoap12FaultCodeSender</literal></term>
+<listitem><simpara>The message was incorrectly
+                                             formed or did not contain the
+                                             appropriate information in order
+                                             to succeed.
+</simpara></listitem>
+</varlistentry>
+<varlistentry id="xmlSecSoap12FaultCodeReceiver" role="constant">
+<term><literal>xmlSecSoap12FaultCodeReceiver</literal></term>
+<listitem><simpara>The message could not be processed
+                                             for reasons attributable to the
+                                             processing of the message rather
+                                             than to the contents of the
+                                             message itself.
+</simpara></listitem>
+</varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSoap12GetBodyEntriesNumber" role="function">xmlSecSoap12GetBodyEntriesNumber ()</title>
-<indexterm><primary>xmlSecSoap12GetBodyEntriesNumber</primary></indexterm><programlisting><link linkend="xmlSecSize">xmlSecSize</link>  xmlSecSoap12GetBodyEntriesNumber
-                                            (<link linkend="xmlNode">xmlNodePtr</link> envNode);</programlisting>
+<refsect2 id="xmlSecSoap12GetBody" role="function">
+<title>xmlSecSoap12GetBody ()</title>
+<indexterm zone="xmlSecSoap12GetBody"><primary>xmlSecSoap12GetBody</primary></indexterm>
+<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecSoap12GetBody                 (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>);</programlisting>
 <para>
-Gets the number of body entries.</para>
-<para>
-
+Gets pointer to the &lt;soap:Body&gt; node.
 </para><variablelist role="params">
-<varlistentry><term><parameter>envNode</parameter>&nbsp;:</term>
-<listitem><simpara>    the pointer to &lt;soap:Envelope&gt; node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the number of body entries.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>envNode</parameter>&#160;:</term>
+<listitem><simpara>the pointer to &lt;soap:Envelope&gt; node.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to &lt;soap:Body&gt; node or NULL if an error occurs.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSoap12GetBodyEntry" role="function">xmlSecSoap12GetBodyEntry ()</title>
-<indexterm><primary>xmlSecSoap12GetBodyEntry</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSoap12GetBodyEntry        (<link linkend="xmlNode">xmlNodePtr</link> envNode,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> pos);</programlisting>
+<refsect2 id="xmlSecSoap12GetBodyEntriesNumber" role="function">
+<title>xmlSecSoap12GetBodyEntriesNumber ()</title>
+<indexterm zone="xmlSecSoap12GetBodyEntriesNumber"><primary>xmlSecSoap12GetBodyEntriesNumber</primary></indexterm>
+<programlisting><link linkend="xmlSecSize"><returnvalue>xmlSecSize</returnvalue></link>          xmlSecSoap12GetBodyEntriesNumber    (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>);</programlisting>
 <para>
-Gets the body entry number <parameter>pos</parameter>.</para>
-<para>
-
+Gets the number of body entries.
 </para><variablelist role="params">
-<varlistentry><term><parameter>envNode</parameter>&nbsp;:</term>
-<listitem><simpara>    the pointer to &lt;soap:Envelope&gt; node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pos</parameter>&nbsp;:</term>
-<listitem><simpara>        the body entry number.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to body entry node or NULL if an error occurs.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>envNode</parameter>&#160;:</term>
+<listitem><simpara>the pointer to &lt;soap:Envelope&gt; node.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>the number of body entries.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSoap12GetFaultEntry" role="function">xmlSecSoap12GetFaultEntry ()</title>
-<indexterm><primary>xmlSecSoap12GetFaultEntry</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSoap12GetFaultEntry       (<link linkend="xmlNode">xmlNodePtr</link> envNode);</programlisting>
+<refsect2 id="xmlSecSoap12GetBodyEntry" role="function">
+<title>xmlSecSoap12GetBodyEntry ()</title>
+<indexterm zone="xmlSecSoap12GetBodyEntry"><primary>xmlSecSoap12GetBodyEntry</primary></indexterm>
+<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecSoap12GetBodyEntry            (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> pos</parameter>);</programlisting>
 <para>
-Gets the Fault entry (if any).</para>
-<para>
-
+Gets the body entry number <parameter>pos</parameter>.
 </para><variablelist role="params">
-<varlistentry><term><parameter>envNode</parameter>&nbsp;:</term>
-<listitem><simpara>    the pointer to &lt;soap:Envelope&gt; node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to Fault entry or NULL if it does not exist.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>envNode</parameter>&#160;:</term>
+<listitem><simpara>the pointer to &lt;soap:Envelope&gt; node.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pos</parameter>&#160;:</term>
+<listitem><simpara>the body entry number.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to body entry node or NULL if an error occurs.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecSoap12GetFaultEntry" role="function">
+<title>xmlSecSoap12GetFaultEntry ()</title>
+<indexterm zone="xmlSecSoap12GetFaultEntry"><primary>xmlSecSoap12GetFaultEntry</primary></indexterm>
+<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecSoap12GetFaultEntry           (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>);</programlisting>
+<para>
+Gets the Fault entry (if any).
+</para><variablelist role="params">
+<varlistentry><term><parameter>envNode</parameter>&#160;:</term>
+<listitem><simpara>the pointer to &lt;soap:Envelope&gt; node.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to Fault entry or NULL if it does not exist.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecSoap12GetHeader" role="function">
+<title>xmlSecSoap12GetHeader ()</title>
+<indexterm zone="xmlSecSoap12GetHeader"><primary>xmlSecSoap12GetHeader</primary></indexterm>
+<programlisting><link linkend="xmlNodePtr"><returnvalue>xmlNodePtr</returnvalue></link>          xmlSecSoap12GetHeader               (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> envNode</parameter>);</programlisting>
+<para>
+Gets pointer to the &lt;soap:Header&gt; node.
+</para><variablelist role="params">
+<varlistentry><term><parameter>envNode</parameter>&#160;:</term>
+<listitem><simpara>the pointer to &lt;soap:Envelope&gt; node.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to &lt;soap:Header&gt; node or NULL if an error occurs.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 
 </refsect1>
-
-
-
 
 </refentry>

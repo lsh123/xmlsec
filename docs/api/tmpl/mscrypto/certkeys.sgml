@@ -17,7 +17,38 @@ MS Crypto certificates helper functions.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoCertAdopt ##### -->
+<para>
+
+</para>
+
+@pCert: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoCertDup ##### -->
+<para>
+
+</para>
+
+@pCert: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecMSCryptoKeyDataGetCert ##### -->
+<para>
+
+</para>
+
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoKeyDataGetDecryptKey ##### -->
 <para>
 
 </para>
@@ -36,44 +67,16 @@ MS Crypto certificates helper functions.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecMSCryptoKeyDataGetDecryptKey ##### -->
+<!-- ##### FUNCTION xmlSecMSCryptoKeyDataGetMSCryptoKeySpec ##### -->
 <para>
 
 </para>
 
 @data: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoCertDup ##### -->
-<para>
-
-</para>
-
-@pCert: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoCertAdopt ##### -->
-<para>
-
-</para>
-
-@pCert: 
-@type: 
 @Returns: 
 
 
 <!-- ##### FUNCTION xmlSecMSCryptoKeyDataGetMSCryptoProvider ##### -->
-<para>
-
-</para>
-
-@data: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoKeyDataGetMSCryptoKeySpec ##### -->
 <para>
 
 </para>

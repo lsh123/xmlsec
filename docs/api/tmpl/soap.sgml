@@ -17,22 +17,7 @@ Experimental soap support.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### FUNCTION xmlSecSoap11CreateEnvelope ##### -->
-<para>
-
-</para>
-
-@doc: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecSoap11EnsureHeader ##### -->
-<para>
-
-</para>
-
-@envNode: 
-@Returns: 
+<!-- ##### SECTION Image ##### -->
 
 
 <!-- ##### FUNCTION xmlSecSoap11AddBodyEntry ##### -->
@@ -67,7 +52,16 @@ Experimental soap support.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecSoap11GetHeader ##### -->
+<!-- ##### FUNCTION xmlSecSoap11CreateEnvelope ##### -->
+<para>
+
+</para>
+
+@doc: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSoap11EnsureHeader ##### -->
 <para>
 
 </para>
@@ -113,17 +107,79 @@ Experimental soap support.
 @Returns: 
 
 
-<!-- ##### ENUM xmlSecSoap12FaultCode ##### -->
+<!-- ##### FUNCTION xmlSecSoap11GetHeader ##### -->
 <para>
 
 </para>
 
-@xmlSecSoap12FaultCodeUnknown: 
-@xmlSecSoap12FaultCodeVersionMismatch: 
-@xmlSecSoap12FaultCodeMustUnderstand: 
-@xmlSecSoap12FaultCodeDataEncodingUnknown: 
-@xmlSecSoap12FaultCodeSender: 
-@xmlSecSoap12FaultCodeReceiver: 
+@envNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSoap12AddBodyEntry ##### -->
+<para>
+
+</para>
+
+@envNode: 
+@entryNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSoap12AddFaultDetailEntry ##### -->
+<para>
+
+</para>
+
+@faultNode: 
+@detailEntryNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSoap12AddFaultEntry ##### -->
+<para>
+
+</para>
+
+@envNode: 
+@faultCode: 
+@faultReasonText: 
+@faultReasonLang: 
+@faultNodeURI: 
+@faultRole: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSoap12AddFaultReasonText ##### -->
+<para>
+
+</para>
+
+@faultNode: 
+@faultReasonText: 
+@faultReasonLang: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSoap12AddFaultSubcode ##### -->
+<para>
+
+</para>
+
+@faultNode: 
+@subCodeHref: 
+@subCodeName: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSoap12CheckEnvelope ##### -->
+<para>
+
+</para>
+
+@envNode: 
+@Returns: 
+
 
 <!-- ##### FUNCTION xmlSecSoap12CreateEnvelope ##### -->
 <para>
@@ -143,79 +199,17 @@ Experimental soap support.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecSoap12AddBodyEntry ##### -->
+<!-- ##### ENUM xmlSecSoap12FaultCode ##### -->
 <para>
 
 </para>
 
-@envNode: 
-@entryNode: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecSoap12AddFaultEntry ##### -->
-<para>
-
-</para>
-
-@envNode: 
-@faultCode: 
-@faultReasonText: 
-@faultReasonLang: 
-@faultNodeURI: 
-@faultRole: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecSoap12AddFaultSubcode ##### -->
-<para>
-
-</para>
-
-@faultNode: 
-@subCodeHref: 
-@subCodeName: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecSoap12AddFaultReasonText ##### -->
-<para>
-
-</para>
-
-@faultNode: 
-@faultReasonText: 
-@faultReasonLang: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecSoap12AddFaultDetailEntry ##### -->
-<para>
-
-</para>
-
-@faultNode: 
-@detailEntryNode: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecSoap12CheckEnvelope ##### -->
-<para>
-
-</para>
-
-@envNode: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecSoap12GetHeader ##### -->
-<para>
-
-</para>
-
-@envNode: 
-@Returns: 
-
+@xmlSecSoap12FaultCodeUnknown: 
+@xmlSecSoap12FaultCodeVersionMismatch: 
+@xmlSecSoap12FaultCodeMustUnderstand: 
+@xmlSecSoap12FaultCodeDataEncodingUnknown: 
+@xmlSecSoap12FaultCodeSender: 
+@xmlSecSoap12FaultCodeReceiver: 
 
 <!-- ##### FUNCTION xmlSecSoap12GetBody ##### -->
 <para>
@@ -246,6 +240,15 @@ Experimental soap support.
 
 
 <!-- ##### FUNCTION xmlSecSoap12GetFaultEntry ##### -->
+<para>
+
+</para>
+
+@envNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSoap12GetHeader ##### -->
 <para>
 
 </para>

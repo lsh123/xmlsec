@@ -7,7 +7,6 @@
 <link rel="UP" title="XML Security Core Library API Reference." href="xmlsec-ref.html">
 <link rel="PREVIOUS" title="keys" href="xmlsec-keys.html">
 <link rel="NEXT" title="list" href="xmlsec-list.html">
-<meta name="GENERATOR" content="GTK-Doc V1.7 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -88,302 +87,89 @@
 <h1>
 <a name="XMLSEC-KEYSMNGR"></a>keysmngr</h1>
 <div class="REFNAMEDIV">
-<a name="AEN10617"></a><h2>Name</h2>keysmngr -- Keys manager object support.</div>
+<a name="AEN12184"></a><h2>Name</h2>keysmngr -- Keys manager object support.</div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN10620"></a><h2>Synopsis</h2>
-<pre class="SYNOPSIS">
-
-<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRCREATE">xmlSecKeysMngrCreate</a>      (void);
-<font>void</font>        <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRDESTROY">xmlSecKeysMngrDestroy</a>           (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr);
-<font>xmlSecKeyPtr</font> <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRFINDKEY">xmlSecKeysMngrFindKey</a>          (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
-                                             const <font>xmlChar</font> *name,
-                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);
-<font>int</font>         <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRADOPTKEYSSTORE">xmlSecKeysMngrAdoptKeysStore</a>    (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
-                                             <a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store);
-<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRGETKEYSSTORE">xmlSecKeysMngrGetKeysStore</a>
-                                            (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr);
-<font>int</font>         <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRADOPTDATASTORE">xmlSecKeysMngrAdoptDataStore</a>    (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
-                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> store);
-<a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRGETDATASTORE">xmlSecKeysMngrGetDataStore</a>
-                                            (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
-                                             <font>xmlSecKeyDataStoreId</font> id);
-<font>xmlSecKeyPtr</font> (<a href="xmlsec-keysmngr.html#XMLSECGETKEYCALLBACK">*xmlSecGetKeyCallback</a>)        (<font>xmlNodePtr</font> keyInfoNode,
-                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);
-struct      <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngr</a>;
-<font>xmlSecKeyPtr</font> <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRGETKEY">xmlSecKeysMngrGetKey</a>           (<font>xmlNodePtr</font> keyInfoNode,
-                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);
-struct      <a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStore</a>;
-<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> <a href="xmlsec-keysmngr.html#XMLSECKEYSTORECREATE">xmlSecKeyStoreCreate</a>      (<font>xmlSecKeyStoreId</font> id);
-<font>void</font>        <a href="xmlsec-keysmngr.html#XMLSECKEYSTOREDESTROY">xmlSecKeyStoreDestroy</a>           (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store);
-<font>xmlSecKeyPtr</font> <a href="xmlsec-keysmngr.html#XMLSECKEYSTOREFINDKEY">xmlSecKeyStoreFindKey</a>          (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store,
-                                             const <font>xmlChar</font> *name,
-                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);
-#define     <a href="xmlsec-keysmngr.html#XMLSECKEYSTOREGETNAME">xmlSecKeyStoreGetName</a>           (store)
-#define     <a href="xmlsec-keysmngr.html#XMLSECKEYSTOREISVALID">xmlSecKeyStoreIsValid</a>           (store)
-#define     <a href="xmlsec-keysmngr.html#XMLSECKEYSTORECHECKID">xmlSecKeyStoreCheckId</a>           (store, storeId)
-#define     <a href="xmlsec-keysmngr.html#XMLSECKEYSTORECHECKSIZE">xmlSecKeyStoreCheckSize</a>         (store, size)
-#define     <a href="xmlsec-keysmngr.html#XMLSECKEYSTOREIDUNKNOWN">xmlSecKeyStoreIdUnknown</a>
-<font>int</font>         (<a href="xmlsec-keysmngr.html#XMLSECKEYSTOREINITIALIZEMETHOD">*xmlSecKeyStoreInitializeMethod</a>)
-                                            (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store);
-<font>void</font>        (<a href="xmlsec-keysmngr.html#XMLSECKEYSTOREFINALIZEMETHOD">*xmlSecKeyStoreFinalizeMethod</a>) (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store);
-<font>xmlSecKeyPtr</font> (<a href="xmlsec-keysmngr.html#XMLSECKEYSTOREFINDKEYMETHOD">*xmlSecKeyStoreFindKeyMethod</a>) (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store,
-                                             const <font>xmlChar</font> *name,
-                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);
-struct      <a href="xmlsec-keysmngr.html#XMLSECKEYSTOREKLASS">xmlSecKeyStoreKlass</a>;
-#define     <a href="xmlsec-keysmngr.html#XMLSECKEYSTOREKLASSGETNAME">xmlSecKeyStoreKlassGetName</a>      (klass)
-#define     <a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTOREID">xmlSecSimpleKeysStoreId</a>
-<font>xmlSecKeyStoreId</font> <a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTOREGETKLASS">xmlSecSimpleKeysStoreGetKlass</a>
-                                            (void);
-<font>int</font>         <a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTOREADOPTKEY">xmlSecSimpleKeysStoreAdoptKey</a>   (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store,
-                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);
-<font>int</font>         <a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTORELOAD">xmlSecSimpleKeysStoreLoad</a>       (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store,
-                                             const <font>char</font> *uri,
-                                             <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> keysMngr);
-<font>int</font>         <a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTORESAVE">xmlSecSimpleKeysStoreSave</a>       (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store,
-                                             const <font>char</font> *filename,
-                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);
-<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> <a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTOREGETKEYS">xmlSecSimpleKeysStoreGetKeys</a>
-                                            (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store);</pre>
+<a name="XMLSEC-KEYSMNGR.SYNOPSIS"></a><h2>Synopsis</h2>
+<pre class="SYNOPSIS"><gtkdoclink href="XMLSECKEYPTR"><span class="RETURNVALUE">xmlSecKeyPtr</span></gtkdoclink>        (<a href="xmlsec-keysmngr.html#XMLSECGETKEYCALLBACK">*xmlSecGetKeyCallback</a>)             (<code class="PARAMETER"><gtkdoclink href="XMLNODE"><span class="TYPE">xmlNodePtr</span></gtkdoclink> keyInfoNode</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"><span class="TYPE">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code>);
+struct              <a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStore</a>;
+#define             <a href="xmlsec-keysmngr.html#XMLSECKEYSTORECHECKID">xmlSecKeyStoreCheckId</a>               (store,
+                                                         storeId)
+#define             <a href="xmlsec-keysmngr.html#XMLSECKEYSTORECHECKSIZE">xmlSecKeyStoreCheckSize</a>             (store,
+                                                         size)
+<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="RETURNVALUE">xmlSecKeyStorePtr</span></a>   <a href="xmlsec-keysmngr.html#XMLSECKEYSTORECREATE">xmlSecKeyStoreCreate</a>                (<code class="PARAMETER"><gtkdoclink href="XMLSECKEYSTOREID"><span class="TYPE">xmlSecKeyStoreId</span></gtkdoclink> id</code>);
+<gtkdoclink href="VOID"><span class="RETURNVALUE">void</span></gtkdoclink><a href="xmlsec-keysmngr.html#XMLSECKEYSTOREDESTROY">xmlSecKeyStoreDestroy</a>               (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>);
+<gtkdoclink href="VOID"><span class="RETURNVALUE">void</span></gtkdoclink>                (<a href="xmlsec-keysmngr.html#XMLSECKEYSTOREFINALIZEMETHOD">*xmlSecKeyStoreFinalizeMethod</a>)     (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>);
+<gtkdoclink href="XMLSECKEYPTR"><span class="RETURNVALUE">xmlSecKeyPtr</span></gtkdoclink><a href="xmlsec-keysmngr.html#XMLSECKEYSTOREFINDKEY">xmlSecKeyStoreFindKey</a>               (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>,
+                                                         <code class="PARAMETER">const <gtkdoclink href="XMLCHAR"><span class="TYPE">xmlChar</span></gtkdoclink> *name</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"><span class="TYPE">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code>);
+<gtkdoclink href="XMLSECKEYPTR"><span class="RETURNVALUE">xmlSecKeyPtr</span></gtkdoclink>        (<a href="xmlsec-keysmngr.html#XMLSECKEYSTOREFINDKEYMETHOD">*xmlSecKeyStoreFindKeyMethod</a>)      (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>,
+                                                         <code class="PARAMETER">const <gtkdoclink href="XMLCHAR"><span class="TYPE">xmlChar</span></gtkdoclink> *name</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"><span class="TYPE">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code>);
+#define             <a href="xmlsec-keysmngr.html#XMLSECKEYSTOREGETNAME">xmlSecKeyStoreGetName</a>               (store)
+#define             <a href="xmlsec-keysmngr.html#XMLSECKEYSTOREIDUNKNOWN">xmlSecKeyStoreIdUnknown</a>
+<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 (<a href="xmlsec-keysmngr.html#XMLSECKEYSTOREINITIALIZEMETHOD">*xmlSecKeyStoreInitializeMethod</a>)   (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>);
+#define             <a href="xmlsec-keysmngr.html#XMLSECKEYSTOREISVALID">xmlSecKeyStoreIsValid</a>               (store)
+struct              <a href="xmlsec-keysmngr.html#XMLSECKEYSTOREKLASS">xmlSecKeyStoreKlass</a>;
+#define             <a href="xmlsec-keysmngr.html#XMLSECKEYSTOREKLASSGETNAME">xmlSecKeyStoreKlassGetName</a>          (klass)
+struct              <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngr</a>;
+<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRADOPTDATASTORE">xmlSecKeysMngrAdoptDataStore</a>        (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="TYPE">xmlSecKeysMngrPtr</span></a> mngr</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE"><span class="TYPE">xmlSecKeyDataStorePtr</span></a> store</code>);
+<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRADOPTKEYSSTORE">xmlSecKeysMngrAdoptKeysStore</a>        (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="TYPE">xmlSecKeysMngrPtr</span></a> mngr</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>);
+<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="RETURNVALUE">xmlSecKeysMngrPtr</span></a>   <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRCREATE">xmlSecKeysMngrCreate</a>                (<code class="PARAMETER"><span class="TYPE">void</span></code>);
+<gtkdoclink href="VOID"><span class="RETURNVALUE">void</span></gtkdoclink><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRDESTROY">xmlSecKeysMngrDestroy</a>               (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="TYPE">xmlSecKeysMngrPtr</span></a> mngr</code>);
+<gtkdoclink href="XMLSECKEYPTR"><span class="RETURNVALUE">xmlSecKeyPtr</span></gtkdoclink><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRFINDKEY">xmlSecKeysMngrFindKey</a>               (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="TYPE">xmlSecKeysMngrPtr</span></a> mngr</code>,
+                                                         <code class="PARAMETER">const <gtkdoclink href="XMLCHAR"><span class="TYPE">xmlChar</span></gtkdoclink> *name</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"><span class="TYPE">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code>);
+<gtkdoclink href="XMLSECKEYDATASTOREPTR"><span class="RETURNVALUE">xmlSecKeyDataStorePtr</span></gtkdoclink><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRGETDATASTORE">xmlSecKeysMngrGetDataStore</a>        (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="TYPE">xmlSecKeysMngrPtr</span></a> mngr</code>,
+                                                         <code class="PARAMETER"><gtkdoclink href="XMLSECKEYDATASTOREID"><span class="TYPE">xmlSecKeyDataStoreId</span></gtkdoclink> id</code>);
+<gtkdoclink href="XMLSECKEYPTR"><span class="RETURNVALUE">xmlSecKeyPtr</span></gtkdoclink><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRGETKEY">xmlSecKeysMngrGetKey</a>                (<code class="PARAMETER"><gtkdoclink href="XMLNODE"><span class="TYPE">xmlNodePtr</span></gtkdoclink> keyInfoNode</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"><span class="TYPE">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code>);
+<gtkdoclink href="XMLSECKEYSTOREPTR"><span class="RETURNVALUE">xmlSecKeyStorePtr</span></gtkdoclink><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRGETKEYSSTORE">xmlSecKeysMngrGetKeysStore</a>          (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="TYPE">xmlSecKeysMngrPtr</span></a> mngr</code>);
+<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTOREADOPTKEY">xmlSecSimpleKeysStoreAdoptKey</a>       (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keys.html#XMLSECKEY"><span class="TYPE">xmlSecKeyPtr</span></a> key</code>);
+<gtkdoclink href="XMLSECPTRLISTPTR"><span class="RETURNVALUE">xmlSecPtrListPtr</span></gtkdoclink><a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTOREGETKEYS">xmlSecSimpleKeysStoreGetKeys</a>        (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>);
+<gtkdoclink href="XMLSECKEYSTOREID"><span class="RETURNVALUE">xmlSecKeyStoreId</span></gtkdoclink><a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTOREGETKLASS">xmlSecSimpleKeysStoreGetKlass</a>       (<code class="PARAMETER"><span class="TYPE">void</span></code>);
+#define             <a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTOREID">xmlSecSimpleKeysStoreId</a>
+<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTORELOAD">xmlSecSimpleKeysStoreLoad</a>           (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>,
+                                                         <code class="PARAMETER">const <gtkdoclink href="CHAR"><span class="TYPE">char</span></gtkdoclink> *uri</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="TYPE">xmlSecKeysMngrPtr</span></a> keysMngr</code>);
+<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTORESAVE">xmlSecSimpleKeysStoreSave</a>           (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>,
+                                                         <code class="PARAMETER">const <gtkdoclink href="CHAR"><span class="TYPE">char</span></gtkdoclink> *filename</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE"><span class="TYPE">xmlSecKeyDataType</span></a> type</code>);</pre>
 </div>
 <div class="REFSECT1">
-<a name="AEN10707"></a><h2>Description</h2>
+<a name="XMLSEC-KEYSMNGR.DESCRIPTION"></a><h2>Description</h2>
 <p>Keys manager object support.</p>
 </div>
 <div class="REFSECT1">
-<a name="AEN10710"></a><h2>Details</h2>
+<a name="XMLSEC-KEYSMNGR.DETAILS"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN10712"></a><h3>
-<a name="XMLSECKEYSMNGRCREATE"></a>xmlSecKeysMngrCreate ()</h3>
-<pre class="PROGRAMLISTING"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> xmlSecKeysMngrCreate      (void);</pre>
-<p>Creates new keys manager. Caller is responsible for freeing it with
-<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRDESTROY"><span class="TYPE">xmlSecKeysMngrDestroy</span></a> function.</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN10724"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> the pointer to newly allocated keys manager or NULL if
-an error occurs.</p></td>
-</tr></tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN10729"></a><h3>
-<a name="XMLSECKEYSMNGRDESTROY"></a>xmlSecKeysMngrDestroy ()</h3>
-<pre class="PROGRAMLISTING"><font>void</font>        xmlSecKeysMngrDestroy           (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr);</pre>
-<p>Destroys keys manager created with <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRCREATE"><span class="TYPE">xmlSecKeysMngrCreate</span></a> function.</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN10742"><span style="white-space: nowrap"><code class="PARAMETER">mngr</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>               the pointer to keys manager.</p></td>
-</tr></tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN10747"></a><h3>
-<a name="XMLSECKEYSMNGRFINDKEY"></a>xmlSecKeysMngrFindKey ()</h3>
-<pre class="PROGRAMLISTING"><font>xmlSecKeyPtr</font> xmlSecKeysMngrFindKey          (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
-                                             const <font>xmlChar</font> *name,
-                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);</pre>
-<p>Lookups key in the keys manager keys store. The caller is responsible
-for destroying the returned key using <a href="xmlsec-keys.html#XMLSECKEYDESTROY"><span class="TYPE">xmlSecKeyDestroy</span></a> method.</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN10762"><span style="white-space: nowrap"><code class="PARAMETER">mngr</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>               the pointer to keys manager.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN10767"><span style="white-space: nowrap"><code class="PARAMETER">name</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>               the desired key name.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN10772"><span style="white-space: nowrap"><code class="PARAMETER">keyInfoCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>         the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node processing context.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN10778"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> the pointer to a key or NULL if key is not found or an error occurs.</p></td>
-</tr>
-</tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN10783"></a><h3>
-<a name="XMLSECKEYSMNGRADOPTKEYSSTORE"></a>xmlSecKeysMngrAdoptKeysStore ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecKeysMngrAdoptKeysStore    (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
-                                             <a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store);</pre>
-<p>Adopts keys store in the keys manager <code class="PARAMETER">mngr</code>.</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN10796"><span style="white-space: nowrap"><code class="PARAMETER">mngr</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>               the pointer to keys manager.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN10801"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>              the pointer to keys store.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN10806"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
-</tr>
-</tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN10811"></a><h3>
-<a name="XMLSECKEYSMNGRGETKEYSSTORE"></a>xmlSecKeysMngrGetKeysStore ()</h3>
-<pre class="PROGRAMLISTING"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> xmlSecKeysMngrGetKeysStore
-                                            (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr);</pre>
-<p>Gets the keys store.</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN10822"><span style="white-space: nowrap"><code class="PARAMETER">mngr</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>               the pointer to keys manager.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN10827"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> the keys store in the keys manager <code class="PARAMETER">mngr</code> or NULL if
-there is no store or an error occurs.</p></td>
-</tr>
-</tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN10833"></a><h3>
-<a name="XMLSECKEYSMNGRADOPTDATASTORE"></a>xmlSecKeysMngrAdoptDataStore ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecKeysMngrAdoptDataStore    (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
-                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> store);</pre>
-<p>Adopts data store in the keys manager.</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN10845"><span style="white-space: nowrap"><code class="PARAMETER">mngr</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>               the pointer to keys manager.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN10850"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>              the pointer to data store.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN10855"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
-</tr>
-</tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN10860"></a><h3>
-<a name="XMLSECKEYSMNGRGETDATASTORE"></a>xmlSecKeysMngrGetDataStore ()</h3>
-<pre class="PROGRAMLISTING"><a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> xmlSecKeysMngrGetDataStore
-                                            (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
-                                             <font>xmlSecKeyDataStoreId</font> id);</pre>
-<p>Lookups the data store of given klass <code class="PARAMETER">id</code> in the keys manager.</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN10873"><span style="white-space: nowrap"><code class="PARAMETER">mngr</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>               the pointer to keys manager.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN10878"><span style="white-space: nowrap"><code class="PARAMETER">id</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>                 the desired data store klass.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN10883"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> pointer to data store or NULL if it is not found or an error
-occurs.</p></td>
-</tr>
-</tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN10888"></a><h3>
-<a name="XMLSECGETKEYCALLBACK"></a>xmlSecGetKeyCallback ()</h3>
-<pre class="PROGRAMLISTING"><font>xmlSecKeyPtr</font> (*xmlSecGetKeyCallback)        (<font>xmlNodePtr</font> keyInfoNode,
-                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);</pre>
+<a name="XMLSECGETKEYCALLBACK"></a><h3>xmlSecGetKeyCallback ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="XMLSECKEYPTR"><span class="RETURNVALUE">xmlSecKeyPtr</span></gtkdoclink>        (*xmlSecGetKeyCallback)             (<code class="PARAMETER"><gtkdoclink href="XMLNODE"><span class="TYPE">xmlNodePtr</span></gtkdoclink> keyInfoNode</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"><span class="TYPE">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code>);</pre>
 <p>Reads the <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node <code class="PARAMETER">keyInfoNode</code> and extracts the key.</p>
 <p></p>
-<p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10902"><span style="white-space: nowrap"><code class="PARAMETER">keyInfoNode</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>                the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12388"><span style="white-space: nowrap"><code class="PARAMETER">keyInfoNode</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10908"><span style="white-space: nowrap"><code class="PARAMETER">keyInfoCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>                 the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node processing context.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12394"><span style="white-space: nowrap"><code class="PARAMETER">keyInfoCtx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10914"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> the pointer to key or NULL if the key is not found or
+<td align="LEFT" valign="TOP"><a name="AEN12400"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to key or NULL if the key is not found or
 an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN10919"></a><h3>
-<a name="XMLSECKEYSMNGR"></a>struct xmlSecKeysMngr</h3>
-<pre class="PROGRAMLISTING">struct xmlSecKeysMngr {
-    xmlSecKeyStorePtr           keysStore;
-    xmlSecPtrList               storesList;
-    xmlSecGetKeyCallback        getKey;
-};</pre>
-<p>The keys manager structure.</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN10928"><span style="white-space: nowrap"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> <code class="STRUCTFIELD">keysStore</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>                  the key store (list of keys known to keys manager).</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN10934"><span style="white-space: nowrap"><a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrList</a> <code class="STRUCTFIELD">storesList</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>                 the list of key data stores known to keys manager.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN10940"><span style="white-space: nowrap"><a href="xmlsec-keysmngr.html#XMLSECGETKEYCALLBACK">xmlSecGetKeyCallback</a> <code class="STRUCTFIELD">getKey</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>                     the callback used to read <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node.</p></td>
-</tr>
-</tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN10947"></a><h3>
-<a name="XMLSECKEYSMNGRGETKEY"></a>xmlSecKeysMngrGetKey ()</h3>
-<pre class="PROGRAMLISTING"><font>xmlSecKeyPtr</font> xmlSecKeysMngrGetKey           (<font>xmlNodePtr</font> keyInfoNode,
-                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);</pre>
-<p>Reads the <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node <code class="PARAMETER">keyInfoNode</code> and extracts the key.</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN10961"><span style="white-space: nowrap"><code class="PARAMETER">keyInfoNode</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>        the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN10967"><span style="white-space: nowrap"><code class="PARAMETER">keyInfoCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>         the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node processing context.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN10973"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> the pointer to key or NULL if the key is not found or
-an error occurs.</p></td>
-</tr>
-</tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN10978"></a><h3>
-<a name="XMLSECKEYSTORE"></a>struct xmlSecKeyStore</h3>
+<a name="XMLSECKEYSTORE"></a><h3>struct xmlSecKeyStore</h3>
 <pre class="PROGRAMLISTING">struct xmlSecKeyStore {
     xmlSecKeyStoreId                    id;
 
@@ -393,225 +179,200 @@ an error occurs.</p></td>
 };</pre>
 <p>The keys store.</p>
 <p></p>
-<p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10987"><span style="white-space: nowrap"><font>xmlSecKeyStoreId</font> <code class="STRUCTFIELD">id</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>                 the store id (<font><span class="TYPE">xmlSecKeyStoreId</span></font>).</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12412"><span style="white-space: nowrap"><gtkdoclink href="XMLSECKEYSTOREID"><span class="TYPE">xmlSecKeyStoreId</span></gtkdoclink> <code class="STRUCTFIELD">id</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><p>the store id (<gtkdoclink href="XMLSECKEYSTOREID"><span class="TYPE">xmlSecKeyStoreId</span></gtkdoclink>).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10995"><span style="white-space: nowrap"><font>void</font> *<code class="STRUCTFIELD">reserved0</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>          reserved for the future.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12421"><span style="white-space: nowrap"><gtkdoclink href="VOID"><span class="TYPE">void</span></gtkdoclink> *<code class="STRUCTFIELD">reserved0</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><p>reserved for the future.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11001"><span style="white-space: nowrap"><font>void</font> *<code class="STRUCTFIELD">reserved1</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>          reserved for the future.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12428"><span style="white-space: nowrap"><gtkdoclink href="VOID"><span class="TYPE">void</span></gtkdoclink> *<code class="STRUCTFIELD">reserved1</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><p>reserved for the future.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11007"></a><h3>
-<a name="XMLSECKEYSTORECREATE"></a>xmlSecKeyStoreCreate ()</h3>
-<pre class="PROGRAMLISTING"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> xmlSecKeyStoreCreate      (<font>xmlSecKeyStoreId</font> id);</pre>
+<a name="XMLSECKEYSTORECHECKID"></a><h3>xmlSecKeyStoreCheckId()</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecKeyStoreCheckId(store, storeId)</pre>
+<p>Macro. Returns 1 if <code class="PARAMETER">store</code> is valid and <code class="PARAMETER">store</code>'s id is equal to <code class="PARAMETER">storeId</code>.</p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN12445"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to store.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN12450"><span style="white-space: nowrap"><code class="PARAMETER">storeId</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the store Id.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECKEYSTORECHECKSIZE"></a><h3>xmlSecKeyStoreCheckSize()</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecKeyStoreCheckSize(store, size)</pre>
+<p>Macro. Returns 1 if <code class="PARAMETER">store</code> is valid and <code class="PARAMETER">stores</code>'s object has at least <code class="PARAMETER">size</code> bytes.</p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN12465"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to store.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN12470"><span style="white-space: nowrap"><code class="PARAMETER">size</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the expected size.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECKEYSTORECREATE"></a><h3>xmlSecKeyStoreCreate ()</h3>
+<pre class="PROGRAMLISTING"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="RETURNVALUE">xmlSecKeyStorePtr</span></a>   xmlSecKeyStoreCreate                (<code class="PARAMETER"><gtkdoclink href="XMLSECKEYSTOREID"><span class="TYPE">xmlSecKeyStoreId</span></gtkdoclink> id</code>);</pre>
 <p>Creates new store of the specified klass <code class="PARAMETER">klass</code>. Caller is responsible
 for freeing the returned store by calling <a href="xmlsec-keysmngr.html#XMLSECKEYSTOREDESTROY"><span class="TYPE">xmlSecKeyStoreDestroy</span></a> function.</p>
 <p></p>
-<p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11021"><span style="white-space: nowrap"><code class="PARAMETER">id</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>                 the key store klass.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12490"><span style="white-space: nowrap"><code class="PARAMETER">id</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the key store klass.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11026"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> the pointer to newly allocated keys store or NULL if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12495"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to newly allocated keys store or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11031"></a><h3>
-<a name="XMLSECKEYSTOREDESTROY"></a>xmlSecKeyStoreDestroy ()</h3>
-<pre class="PROGRAMLISTING"><font>void</font>        xmlSecKeyStoreDestroy           (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store);</pre>
+<a name="XMLSECKEYSTOREDESTROY"></a><h3>xmlSecKeyStoreDestroy ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="VOID"><span class="RETURNVALUE">void</span></gtkdoclink>                xmlSecKeyStoreDestroy               (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>);</pre>
 <p>Destroys the store created with <a href="xmlsec-keysmngr.html#XMLSECKEYSTORECREATE"><span class="TYPE">xmlSecKeyStoreCreate</span></a> function.</p>
 <p></p>
-<p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN11044"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>              the pointer to keys store.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12514"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to keys store.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11049"></a><h3>
-<a name="XMLSECKEYSTOREFINDKEY"></a>xmlSecKeyStoreFindKey ()</h3>
-<pre class="PROGRAMLISTING"><font>xmlSecKeyPtr</font> xmlSecKeyStoreFindKey          (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store,
-                                             const <font>xmlChar</font> *name,
-                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);</pre>
+<a name="XMLSECKEYSTOREFINALIZEMETHOD"></a><h3>xmlSecKeyStoreFinalizeMethod ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="VOID"><span class="RETURNVALUE">void</span></gtkdoclink>                (*xmlSecKeyStoreFinalizeMethod)     (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>);</pre>
+<p>Keys store specific finalization (destroy) method.</p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN12531"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the store.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECKEYSTOREFINDKEY"></a><h3>xmlSecKeyStoreFindKey ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="XMLSECKEYPTR"><span class="RETURNVALUE">xmlSecKeyPtr</span></gtkdoclink>        xmlSecKeyStoreFindKey               (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>,
+                                                         <code class="PARAMETER">const <gtkdoclink href="XMLCHAR"><span class="TYPE">xmlChar</span></gtkdoclink> *name</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"><span class="TYPE">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code>);</pre>
 <p>Lookups key in the store. The caller is responsible for destroying
 the returned key using <a href="xmlsec-keys.html#XMLSECKEYDESTROY"><span class="TYPE">xmlSecKeyDestroy</span></a> method.</p>
 <p></p>
-<p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11064"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>              the pointer to keys store.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12556"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to keys store.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11069"><span style="white-space: nowrap"><code class="PARAMETER">name</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>               the desired key name.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12561"><span style="white-space: nowrap"><code class="PARAMETER">name</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the desired key name.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11074"><span style="white-space: nowrap"><code class="PARAMETER">keyInfoCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>         the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node processing context.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12566"><span style="white-space: nowrap"><code class="PARAMETER">keyInfoCtx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11080"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> the pointer to a key or NULL if key is not found or an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12572"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to a key or NULL if key is not found or an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11085"></a><h3>
-<a name="XMLSECKEYSTOREGETNAME"></a>xmlSecKeyStoreGetName()</h3>
-<pre class="PROGRAMLISTING">#define     xmlSecKeyStoreGetName(store)</pre>
-<p>Macro. Returns key store name.</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN11094"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>              the pointer to store.</p></td>
-</tr></tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN11099"></a><h3>
-<a name="XMLSECKEYSTOREISVALID"></a>xmlSecKeyStoreIsValid()</h3>
-<pre class="PROGRAMLISTING">#define     xmlSecKeyStoreIsValid(store)</pre>
-<p>Macro. Returns 1 if <code class="PARAMETER">store</code> is not NULL and <code class="PARAMETER">store</code>-&gt;id is not NULL
-or 0 otherwise.</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN11110"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>              the pointer to store.</p></td>
-</tr></tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN11115"></a><h3>
-<a name="XMLSECKEYSTORECHECKID"></a>xmlSecKeyStoreCheckId()</h3>
-<pre class="PROGRAMLISTING">#define     xmlSecKeyStoreCheckId(store, storeId)</pre>
-<p>Macro. Returns 1 if <code class="PARAMETER">store</code> is valid and <code class="PARAMETER">store</code>'s id is equal to <code class="PARAMETER">storeId</code>.</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN11127"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>              the pointer to store.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN11132"><span style="white-space: nowrap"><code class="PARAMETER">storeId</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>            the store Id.</p></td>
-</tr>
-</tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN11137"></a><h3>
-<a name="XMLSECKEYSTORECHECKSIZE"></a>xmlSecKeyStoreCheckSize()</h3>
-<pre class="PROGRAMLISTING">#define     xmlSecKeyStoreCheckSize(store, size)</pre>
-<p>Macro. Returns 1 if <code class="PARAMETER">store</code> is valid and <code class="PARAMETER">stores</code>'s object has at least <code class="PARAMETER">size</code> bytes.</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN11149"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>              the pointer to store.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN11154"><span style="white-space: nowrap"><code class="PARAMETER">size</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>               the expected size.</p></td>
-</tr>
-</tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN11159"></a><h3>
-<a name="XMLSECKEYSTOREIDUNKNOWN"></a>xmlSecKeyStoreIdUnknown</h3>
-<pre class="PROGRAMLISTING">#define xmlSecKeyStoreIdUnknown                         ((xmlSecKeyDataStoreId)NULL)</pre>
-<p>The "unknown" id.</p>
-<p></p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN11167"></a><h3>
-<a name="XMLSECKEYSTOREINITIALIZEMETHOD"></a>xmlSecKeyStoreInitializeMethod ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         (*xmlSecKeyStoreInitializeMethod)
-                                            (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store);</pre>
-<p>Keys store specific initialization method.</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN11178"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>              the store.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN11183"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
-</tr>
-</tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN11188"></a><h3>
-<a name="XMLSECKEYSTOREFINALIZEMETHOD"></a>xmlSecKeyStoreFinalizeMethod ()</h3>
-<pre class="PROGRAMLISTING"><font>void</font>        (*xmlSecKeyStoreFinalizeMethod) (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store);</pre>
-<p>Keys store specific finalization (destroy) method.</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN11199"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>              the store.</p></td>
-</tr></tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN11204"></a><h3>
-<a name="XMLSECKEYSTOREFINDKEYMETHOD"></a>xmlSecKeyStoreFindKeyMethod ()</h3>
-<pre class="PROGRAMLISTING"><font>xmlSecKeyPtr</font> (*xmlSecKeyStoreFindKeyMethod) (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store,
-                                             const <font>xmlChar</font> *name,
-                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);</pre>
+<a name="XMLSECKEYSTOREFINDKEYMETHOD"></a><h3>xmlSecKeyStoreFindKeyMethod ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="XMLSECKEYPTR"><span class="RETURNVALUE">xmlSecKeyPtr</span></gtkdoclink>        (*xmlSecKeyStoreFindKeyMethod)      (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>,
+                                                         <code class="PARAMETER">const <gtkdoclink href="XMLCHAR"><span class="TYPE">xmlChar</span></gtkdoclink> *name</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"><span class="TYPE">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code>);</pre>
 <p>Keys store specific find method. The caller is responsible for destroying
 the returned key using <a href="xmlsec-keys.html#XMLSECKEYDESTROY"><span class="TYPE">xmlSecKeyDestroy</span></a> method.</p>
 <p></p>
-<p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11219"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>              the store.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12597"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the store.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11224"><span style="white-space: nowrap"><code class="PARAMETER">name</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>               the desired key name.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12602"><span style="white-space: nowrap"><code class="PARAMETER">name</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the desired key name.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11229"><span style="white-space: nowrap"><code class="PARAMETER">keyInfoCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>         the pointer to key info context.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12607"><span style="white-space: nowrap"><code class="PARAMETER">keyInfoCtx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to key info context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11234"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> the pointer to a key or NULL if key is not found or an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12612"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to a key or NULL if key is not found or an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11239"></a><h3>
-<a name="XMLSECKEYSTOREKLASS"></a>struct xmlSecKeyStoreKlass</h3>
+<a name="XMLSECKEYSTOREGETNAME"></a><h3>xmlSecKeyStoreGetName()</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecKeyStoreGetName(store)</pre>
+<p>Macro. Returns key store name.</p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN12624"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to store.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECKEYSTOREIDUNKNOWN"></a><h3>xmlSecKeyStoreIdUnknown</h3>
+<pre class="PROGRAMLISTING">#define xmlSecKeyStoreIdUnknown                         ((xmlSecKeyDataStoreId)NULL)</pre>
+<p>The "unknown" id.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECKEYSTOREINITIALIZEMETHOD"></a><h3>xmlSecKeyStoreInitializeMethod ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 (*xmlSecKeyStoreInitializeMethod)   (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>);</pre>
+<p>Keys store specific initialization method.</p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN12647"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the store.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN12652"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECKEYSTOREISVALID"></a><h3>xmlSecKeyStoreIsValid()</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecKeyStoreIsValid(store)</pre>
+<p>Macro. Returns 1 if <code class="PARAMETER">store</code> is not NULL and <code class="PARAMETER">store</code>-&gt;id is not NULL
+or 0 otherwise.</p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN12666"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to store.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECKEYSTOREKLASS"></a><h3>struct xmlSecKeyStoreKlass</h3>
 <pre class="PROGRAMLISTING">struct xmlSecKeyStoreKlass {
     xmlSecSize                          klassSize;
     xmlSecSize                          objSize;
@@ -630,177 +391,345 @@ the returned key using <a href="xmlsec-keys.html#XMLSECKEYDESTROY"><span class="
 };</pre>
 <p>The keys store id (klass).</p>
 <p></p>
-<p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11248"><span style="white-space: nowrap"><a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> <code class="STRUCTFIELD">klassSize</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>          the store klass size.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12678"><span style="white-space: nowrap"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> <code class="STRUCTFIELD">klassSize</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><p>the store klass size.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11254"><span style="white-space: nowrap"><a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> <code class="STRUCTFIELD">objSize</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>            the store obj size.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12685"><span style="white-space: nowrap"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> <code class="STRUCTFIELD">objSize</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><p>the store obj size.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11260"><span style="white-space: nowrap">const <font>xmlChar</font> *<code class="STRUCTFIELD">name</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>               the store's name.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12692"><span style="white-space: nowrap">const <gtkdoclink href="XMLCHAR"><span class="TYPE">xmlChar</span></gtkdoclink> *<code class="STRUCTFIELD">name</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><p>the store's name.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11266"><span style="white-space: nowrap"><a href="xmlsec-keysmngr.html#XMLSECKEYSTOREINITIALIZEMETHOD">xmlSecKeyStoreInitializeMethod</a> <code class="STRUCTFIELD">initialize</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>         the store's initialization method.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12699"><span style="white-space: nowrap"><a href="xmlsec-keysmngr.html#XMLSECKEYSTOREINITIALIZEMETHOD"><span class="TYPE">xmlSecKeyStoreInitializeMethod</span></a> <code class="STRUCTFIELD">initialize</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><p>the store's initialization method.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11272"><span style="white-space: nowrap"><a href="xmlsec-keysmngr.html#XMLSECKEYSTOREFINALIZEMETHOD">xmlSecKeyStoreFinalizeMethod</a> <code class="STRUCTFIELD">finalize</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>           the store's finalization (destroy) method.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12706"><span style="white-space: nowrap"><a href="xmlsec-keysmngr.html#XMLSECKEYSTOREFINALIZEMETHOD"><span class="TYPE">xmlSecKeyStoreFinalizeMethod</span></a> <code class="STRUCTFIELD">finalize</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><p>the store's finalization (destroy) method.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11278"><span style="white-space: nowrap"><a href="xmlsec-keysmngr.html#XMLSECKEYSTOREFINDKEYMETHOD">xmlSecKeyStoreFindKeyMethod</a> <code class="STRUCTFIELD">findKey</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>            the store's find method.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12713"><span style="white-space: nowrap"><a href="xmlsec-keysmngr.html#XMLSECKEYSTOREFINDKEYMETHOD"><span class="TYPE">xmlSecKeyStoreFindKeyMethod</span></a> <code class="STRUCTFIELD">findKey</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><p>the store's find method.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11284"><span style="white-space: nowrap"><font>void</font> *<code class="STRUCTFIELD">reserved0</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>          reserved for the future.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12720"><span style="white-space: nowrap"><gtkdoclink href="VOID"><span class="TYPE">void</span></gtkdoclink> *<code class="STRUCTFIELD">reserved0</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><p>reserved for the future.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11290"><span style="white-space: nowrap"><font>void</font> *<code class="STRUCTFIELD">reserved1</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>          reserved for the future.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12727"><span style="white-space: nowrap"><gtkdoclink href="VOID"><span class="TYPE">void</span></gtkdoclink> *<code class="STRUCTFIELD">reserved1</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><p>reserved for the future.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11296"></a><h3>
-<a name="XMLSECKEYSTOREKLASSGETNAME"></a>xmlSecKeyStoreKlassGetName()</h3>
-<pre class="PROGRAMLISTING">#define     xmlSecKeyStoreKlassGetName(klass)</pre>
+<a name="XMLSECKEYSTOREKLASSGETNAME"></a><h3>xmlSecKeyStoreKlassGetName()</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecKeyStoreKlassGetName(klass)</pre>
 <p>Macro. Returns store klass name.</p>
 <p></p>
-<p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN11305"><span style="white-space: nowrap"><code class="PARAMETER">klass</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>              the pointer to store klass.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12741"><span style="white-space: nowrap"><code class="PARAMETER">klass</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to store klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11310"></a><h3>
-<a name="XMLSECSIMPLEKEYSSTOREID"></a>xmlSecSimpleKeysStoreId</h3>
-<pre class="PROGRAMLISTING">#define xmlSecSimpleKeysStoreId         xmlSecSimpleKeysStoreGetKlass()</pre>
-<p>A simple keys store klass id.</p>
+<a name="XMLSECKEYSMNGR"></a><h3>struct xmlSecKeysMngr</h3>
+<pre class="PROGRAMLISTING">struct xmlSecKeysMngr {
+    xmlSecKeyStorePtr           keysStore;
+    xmlSecPtrList               storesList;
+    xmlSecGetKeyCallback        getKey;
+};</pre>
+<p>The keys manager structure.</p>
 <p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN12753"><span style="white-space: nowrap"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> <code class="STRUCTFIELD">keysStore</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><p>the key store (list of keys known to keys manager).</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN12760"><span style="white-space: nowrap"><a href="xmlsec-list.html#XMLSECPTRLIST"><span class="TYPE">xmlSecPtrList</span></a> <code class="STRUCTFIELD">storesList</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><p>the list of key data stores known to keys manager.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN12767"><span style="white-space: nowrap"><a href="xmlsec-keysmngr.html#XMLSECGETKEYCALLBACK"><span class="TYPE">xmlSecGetKeyCallback</span></a> <code class="STRUCTFIELD">getKey</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><p>the callback used to read <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node.</p></td>
+</tr>
+</tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11318"></a><h3>
-<a name="XMLSECSIMPLEKEYSSTOREGETKLASS"></a>xmlSecSimpleKeysStoreGetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font>xmlSecKeyStoreId</font> xmlSecSimpleKeysStoreGetKlass
-                                            (void);</pre>
-<p>The simple list based keys store klass.</p>
+<a name="XMLSECKEYSMNGRADOPTDATASTORE"></a><h3>xmlSecKeysMngrAdoptDataStore ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecKeysMngrAdoptDataStore        (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="TYPE">xmlSecKeysMngrPtr</span></a> mngr</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE"><span class="TYPE">xmlSecKeyDataStorePtr</span></a> store</code>);</pre>
+<p>Adopts data store in the keys manager.</p>
 <p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN12790"><span style="white-space: nowrap"><code class="PARAMETER">mngr</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to keys manager.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN12795"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to data store.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN12800"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECKEYSMNGRADOPTKEYSSTORE"></a><h3>xmlSecKeysMngrAdoptKeysStore ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecKeysMngrAdoptKeysStore        (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="TYPE">xmlSecKeysMngrPtr</span></a> mngr</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>);</pre>
+<p>Adopts keys store in the keys manager <code class="PARAMETER">mngr</code>.</p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN12821"><span style="white-space: nowrap"><code class="PARAMETER">mngr</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to keys manager.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN12826"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to keys store.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN12831"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECKEYSMNGRCREATE"></a><h3>xmlSecKeysMngrCreate ()</h3>
+<pre class="PROGRAMLISTING"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="RETURNVALUE">xmlSecKeysMngrPtr</span></a>   xmlSecKeysMngrCreate                (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>Creates new keys manager. Caller is responsible for freeing it with
+<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRDESTROY"><span class="TYPE">xmlSecKeysMngrDestroy</span></a> function.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN11328"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> simple list based keys store klass.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN12849"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to newly allocated keys manager or NULL if
+an error occurs.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11333"></a><h3>
-<a name="XMLSECSIMPLEKEYSSTOREADOPTKEY"></a>xmlSecSimpleKeysStoreAdoptKey ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecSimpleKeysStoreAdoptKey   (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store,
-                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre>
+<a name="XMLSECKEYSMNGRDESTROY"></a><h3>xmlSecKeysMngrDestroy ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="VOID"><span class="RETURNVALUE">void</span></gtkdoclink>                xmlSecKeysMngrDestroy               (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="TYPE">xmlSecKeysMngrPtr</span></a> mngr</code>);</pre>
+<p>Destroys keys manager created with <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRCREATE"><span class="TYPE">xmlSecKeysMngrCreate</span></a> function.</p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN12868"><span style="white-space: nowrap"><code class="PARAMETER">mngr</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to keys manager.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECKEYSMNGRFINDKEY"></a><h3>xmlSecKeysMngrFindKey ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="XMLSECKEYPTR"><span class="RETURNVALUE">xmlSecKeyPtr</span></gtkdoclink>        xmlSecKeysMngrFindKey               (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="TYPE">xmlSecKeysMngrPtr</span></a> mngr</code>,
+                                                         <code class="PARAMETER">const <gtkdoclink href="XMLCHAR"><span class="TYPE">xmlChar</span></gtkdoclink> *name</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"><span class="TYPE">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code>);</pre>
+<p>Lookups key in the keys manager keys store. The caller is responsible
+for destroying the returned key using <a href="xmlsec-keys.html#XMLSECKEYDESTROY"><span class="TYPE">xmlSecKeyDestroy</span></a> method.</p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN12893"><span style="white-space: nowrap"><code class="PARAMETER">mngr</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to keys manager.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN12898"><span style="white-space: nowrap"><code class="PARAMETER">name</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the desired key name.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN12903"><span style="white-space: nowrap"><code class="PARAMETER">keyInfoCtx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node processing context.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN12909"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to a key or NULL if key is not found or an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECKEYSMNGRGETDATASTORE"></a><h3>xmlSecKeysMngrGetDataStore ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="XMLSECKEYDATASTOREPTR"><span class="RETURNVALUE">xmlSecKeyDataStorePtr</span></gtkdoclink> xmlSecKeysMngrGetDataStore        (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="TYPE">xmlSecKeysMngrPtr</span></a> mngr</code>,
+                                                         <code class="PARAMETER"><gtkdoclink href="XMLSECKEYDATASTOREID"><span class="TYPE">xmlSecKeyDataStoreId</span></gtkdoclink> id</code>);</pre>
+<p>Lookups the data store of given klass <code class="PARAMETER">id</code> in the keys manager.</p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN12930"><span style="white-space: nowrap"><code class="PARAMETER">mngr</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to keys manager.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN12935"><span style="white-space: nowrap"><code class="PARAMETER">id</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the desired data store klass.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN12940"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>pointer to data store or NULL if it is not found or an error
+occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECKEYSMNGRGETKEY"></a><h3>xmlSecKeysMngrGetKey ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="XMLSECKEYPTR"><span class="RETURNVALUE">xmlSecKeyPtr</span></gtkdoclink>        xmlSecKeysMngrGetKey                (<code class="PARAMETER"><gtkdoclink href="XMLNODE"><span class="TYPE">xmlNodePtr</span></gtkdoclink> keyInfoNode</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"><span class="TYPE">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code>);</pre>
+<p>Reads the <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node <code class="PARAMETER">keyInfoNode</code> and extracts the key.</p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN12962"><span style="white-space: nowrap"><code class="PARAMETER">keyInfoNode</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN12968"><span style="white-space: nowrap"><code class="PARAMETER">keyInfoCtx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node processing context.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN12974"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to key or NULL if the key is not found or
+an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECKEYSMNGRGETKEYSSTORE"></a><h3>xmlSecKeysMngrGetKeysStore ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="XMLSECKEYSTOREPTR"><span class="RETURNVALUE">xmlSecKeyStorePtr</span></gtkdoclink>   xmlSecKeysMngrGetKeysStore          (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="TYPE">xmlSecKeysMngrPtr</span></a> mngr</code>);</pre>
+<p>Gets the keys store.</p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN12991"><span style="white-space: nowrap"><code class="PARAMETER">mngr</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to keys manager.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN12996"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the keys store in the keys manager <code class="PARAMETER">mngr</code> or NULL if
+there is no store or an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECSIMPLEKEYSSTOREADOPTKEY"></a><h3>xmlSecSimpleKeysStoreAdoptKey ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecSimpleKeysStoreAdoptKey       (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keys.html#XMLSECKEY"><span class="TYPE">xmlSecKeyPtr</span></a> key</code>);</pre>
 <p>Adds <code class="PARAMETER">key</code> to the <code class="PARAMETER">store</code>.</p>
 <p></p>
-<p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11347"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>              the pointer to simple keys store.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN13019"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to simple keys store.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11352"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>                the pointer to key.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN13024"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to key.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11357"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN13029"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11362"></a><h3>
-<a name="XMLSECSIMPLEKEYSSTORELOAD"></a>xmlSecSimpleKeysStoreLoad ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecSimpleKeysStoreLoad       (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store,
-                                             const <font>char</font> *uri,
-                                             <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> keysMngr);</pre>
-<p>Reads keys from an XML file.</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN11375"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>              the pointer to simple keys store.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN11380"><span style="white-space: nowrap"><code class="PARAMETER">uri</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>                the filename.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN11385"><span style="white-space: nowrap"><code class="PARAMETER">keysMngr</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>           the pointer to associated keys manager.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN11390"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
-</tr>
-</tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN11395"></a><h3>
-<a name="XMLSECSIMPLEKEYSSTORESAVE"></a>xmlSecSimpleKeysStoreSave ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecSimpleKeysStoreSave       (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store,
-                                             const <font>char</font> *filename,
-                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre>
-<p>Writes keys from <code class="PARAMETER">store</code> to an XML file.</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN11409"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>              the pointer to simple keys store.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN11414"><span style="white-space: nowrap"><code class="PARAMETER">filename</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>           the filename.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN11419"><span style="white-space: nowrap"><code class="PARAMETER">type</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>               the saved keys type (public, private, ...).</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN11424"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
-</tr>
-</tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN11429"></a><h3>
-<a name="XMLSECSIMPLEKEYSSTOREGETKEYS"></a>xmlSecSimpleKeysStoreGetKeys ()</h3>
-<pre class="PROGRAMLISTING"><a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> xmlSecSimpleKeysStoreGetKeys
-                                            (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store);</pre>
+<a name="XMLSECSIMPLEKEYSSTOREGETKEYS"></a><h3>xmlSecSimpleKeysStoreGetKeys ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="XMLSECPTRLISTPTR"><span class="RETURNVALUE">xmlSecPtrListPtr</span></gtkdoclink>    xmlSecSimpleKeysStoreGetKeys        (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>);</pre>
 <p>Gets list of keys from simple keys store.</p>
 <p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN13046"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to simple keys store.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN13051"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>pointer to the list of keys stored in the keys store or NULL
+if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECSIMPLEKEYSSTOREGETKLASS"></a><h3>xmlSecSimpleKeysStoreGetKlass ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="XMLSECKEYSTOREID"><span class="RETURNVALUE">xmlSecKeyStoreId</span></gtkdoclink>    xmlSecSimpleKeysStoreGetKlass       (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>The simple list based keys store klass.</p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN13067"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>simple list based keys store klass.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECSIMPLEKEYSSTOREID"></a><h3>xmlSecSimpleKeysStoreId</h3>
+<pre class="PROGRAMLISTING">#define xmlSecSimpleKeysStoreId         xmlSecSimpleKeysStoreGetKlass()</pre>
+<p>A simple keys store klass id.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECSIMPLEKEYSSTORELOAD"></a><h3>xmlSecSimpleKeysStoreLoad ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecSimpleKeysStoreLoad           (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>,
+                                                         <code class="PARAMETER">const <gtkdoclink href="CHAR"><span class="TYPE">char</span></gtkdoclink> *uri</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="TYPE">xmlSecKeysMngrPtr</span></a> keysMngr</code>);</pre>
+<p>Reads keys from an XML file.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11440"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>              the pointer to simple keys store.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN13096"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to simple keys store.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11445"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> pointer to the list of keys stored in the keys store or NULL
-if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN13101"><span style="white-space: nowrap"><code class="PARAMETER">uri</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the filename.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN13106"><span style="white-space: nowrap"><code class="PARAMETER">keysMngr</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to associated keys manager.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN13111"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECSIMPLEKEYSSTORESAVE"></a><h3>xmlSecSimpleKeysStoreSave ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecSimpleKeysStoreSave           (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>,
+                                                         <code class="PARAMETER">const <gtkdoclink href="CHAR"><span class="TYPE">char</span></gtkdoclink> *filename</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE"><span class="TYPE">xmlSecKeyDataType</span></a> type</code>);</pre>
+<p>Writes keys from <code class="PARAMETER">store</code> to an XML file.</p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN13135"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to simple keys store.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN13140"><span style="white-space: nowrap"><code class="PARAMETER">filename</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the filename.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN13145"><span style="white-space: nowrap"><code class="PARAMETER">type</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the saved keys type (public, private, ...).</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN13150"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>

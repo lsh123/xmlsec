@@ -17,31 +17,26 @@ X509 certificates support implementation for NSS.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### MACRO xmlSecNssKeyDataX509Id ##### -->
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### FUNCTION xmlSecNssKeyDataRawX509CertGetKlass ##### -->
 <para>
 
 </para>
 
-
-
-<!-- ##### FUNCTION xmlSecNssKeyDataX509GetKlass ##### -->
-<para>
-
-</para>
-
+@void: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecNssKeyDataX509GetKeyCert ##### -->
+<!-- ##### MACRO xmlSecNssKeyDataRawX509CertId ##### -->
 <para>
 
 </para>
 
-@data: 
-@Returns: 
 
 
-<!-- ##### FUNCTION xmlSecNssKeyDataX509AdoptKeyCert ##### -->
+<!-- ##### FUNCTION xmlSecNssKeyDataX509AdoptCert ##### -->
 <para>
 
 </para>
@@ -51,7 +46,17 @@ X509 certificates support implementation for NSS.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecNssKeyDataX509AdoptCert ##### -->
+<!-- ##### FUNCTION xmlSecNssKeyDataX509AdoptCrl ##### -->
+<para>
+
+</para>
+
+@data: 
+@crl: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNssKeyDataX509AdoptKeyCert ##### -->
 <para>
 
 </para>
@@ -80,16 +85,6 @@ X509 certificates support implementation for NSS.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecNssKeyDataX509AdoptCrl ##### -->
-<para>
-
-</para>
-
-@data: 
-@crl: 
-@Returns: 
-
-
 <!-- ##### FUNCTION xmlSecNssKeyDataX509GetCrl ##### -->
 <para>
 
@@ -109,6 +104,31 @@ X509 certificates support implementation for NSS.
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecNssKeyDataX509GetKeyCert ##### -->
+<para>
+
+</para>
+
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNssKeyDataX509GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecNssKeyDataX509Id ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### FUNCTION xmlSecNssX509CertGetKey ##### -->
 <para>
 
@@ -118,33 +138,14 @@ X509 certificates support implementation for NSS.
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecNssKeyDataRawX509CertId ##### -->
+<!-- ##### FUNCTION xmlSecNssX509StoreAdoptCert ##### -->
 <para>
 
 </para>
 
-
-
-<!-- ##### FUNCTION xmlSecNssKeyDataRawX509CertGetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecNssX509StoreId ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecNssX509StoreGetKlass ##### -->
-<para>
-
-</para>
-
+@store: 
+@cert: 
+@type: 
 @Returns: 
 
 
@@ -162,6 +163,22 @@ X509 certificates support implementation for NSS.
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecNssX509StoreGetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecNssX509StoreId ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### FUNCTION xmlSecNssX509StoreVerify ##### -->
 <para>
 
@@ -170,17 +187,6 @@ X509 certificates support implementation for NSS.
 @store: 
 @certs: 
 @keyInfoCtx: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecNssX509StoreAdoptCert ##### -->
-<para>
-
-</para>
-
-@store: 
-@cert: 
-@type: 
 @Returns: 
 
 

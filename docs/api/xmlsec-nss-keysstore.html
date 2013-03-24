@@ -7,7 +7,6 @@
 <link rel="UP" title="XML Security Library for NSS API Reference." href="xmlsec-nss-ref.html">
 <link rel="PREVIOUS" title="crypto" href="xmlsec-nss-crypto.html">
 <link rel="NEXT" title="pkikeys" href="xmlsec-nss-pkikeys.html">
-<meta name="GENERATOR" content="GTK-Doc V1.7 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -88,127 +87,115 @@
 <h1>
 <a name="XMLSEC-NSS-KEYSSTORE"></a>keysstore</h1>
 <div class="REFNAMEDIV">
-<a name="AEN31837"></a><h2>Name</h2>keysstore -- Keys store implementation for NSS.</div>
+<a name="AEN37614"></a><h2>Name</h2>keysstore -- Keys store implementation for NSS.</div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN31840"></a><h2>Synopsis</h2>
-<pre class="SYNOPSIS">
-
-#define     <a href="xmlsec-nss-keysstore.html#XMLSECNSSKEYSSTOREID">xmlSecNssKeysStoreId</a>
-<font>xmlSecKeyStoreId</font> <a href="xmlsec-nss-keysstore.html#XMLSECNSSKEYSSTOREGETKLASS">xmlSecNssKeysStoreGetKlass</a> (void);
-<font>int</font>         <a href="xmlsec-nss-keysstore.html#XMLSECNSSKEYSSTOREADOPTKEY">xmlSecNssKeysStoreAdoptKey</a>      (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store,
-                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);
-<font>int</font>         <a href="xmlsec-nss-keysstore.html#XMLSECNSSKEYSSTORELOAD">xmlSecNssKeysStoreLoad</a>          (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store,
-                                             const <font>char</font> *uri,
-                                             <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> keysMngr);
-<font>int</font>         <a href="xmlsec-nss-keysstore.html#XMLSECNSSKEYSSTORESAVE">xmlSecNssKeysStoreSave</a>          (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store,
-                                             const <font>char</font> *filename,
-                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre>
+<a name="XMLSEC-NSS-KEYSSTORE.SYNOPSIS"></a><h2>Synopsis</h2>
+<pre class="SYNOPSIS"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-nss-keysstore.html#XMLSECNSSKEYSSTOREADOPTKEY">xmlSecNssKeysStoreAdoptKey</a>          (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keys.html#XMLSECKEY"><span class="TYPE">xmlSecKeyPtr</span></a> key</code>);
+<gtkdoclink href="XMLSECKEYSTOREID"><span class="RETURNVALUE">xmlSecKeyStoreId</span></gtkdoclink><a href="xmlsec-nss-keysstore.html#XMLSECNSSKEYSSTOREGETKLASS">xmlSecNssKeysStoreGetKlass</a>          (<code class="PARAMETER"><span class="TYPE">void</span></code>);
+#define             <a href="xmlsec-nss-keysstore.html#XMLSECNSSKEYSSTOREID">xmlSecNssKeysStoreId</a>
+<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-nss-keysstore.html#XMLSECNSSKEYSSTORELOAD">xmlSecNssKeysStoreLoad</a>              (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>,
+                                                         <code class="PARAMETER">const <gtkdoclink href="CHAR"><span class="TYPE">char</span></gtkdoclink> *uri</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="TYPE">xmlSecKeysMngrPtr</span></a> keysMngr</code>);
+<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-nss-keysstore.html#XMLSECNSSKEYSSTORESAVE">xmlSecNssKeysStoreSave</a>              (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>,
+                                                         <code class="PARAMETER">const <gtkdoclink href="CHAR"><span class="TYPE">char</span></gtkdoclink> *filename</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE"><span class="TYPE">xmlSecKeyDataType</span></a> type</code>);</pre>
 </div>
 <div class="REFSECT1">
-<a name="AEN31860"></a><h2>Description</h2>
+<a name="XMLSEC-NSS-KEYSSTORE.DESCRIPTION"></a><h2>Description</h2>
 <p>Keys store implementation for NSS.</p>
 </div>
 <div class="REFSECT1">
-<a name="AEN31863"></a><h2>Details</h2>
+<a name="XMLSEC-NSS-KEYSSTORE.DETAILS"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN31865"></a><h3>
-<a name="XMLSECNSSKEYSSTOREID"></a>xmlSecNssKeysStoreId</h3>
-<pre class="PROGRAMLISTING">#define xmlSecNssKeysStoreId            xmlSecNssKeysStoreGetKlass()</pre>
-<p>A Nss keys store klass id.</p>
+<a name="XMLSECNSSKEYSSTOREADOPTKEY"></a><h3>xmlSecNssKeysStoreAdoptKey ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecNssKeysStoreAdoptKey          (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keys.html#XMLSECKEY"><span class="TYPE">xmlSecKeyPtr</span></a> key</code>);</pre>
+<p>Adds <code class="PARAMETER">key</code> to the <code class="PARAMETER">store</code>.</p>
 <p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN37681"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to Nss keys store.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN37686"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to key.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN37691"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
+</tr>
+</tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN31873"></a><h3>
-<a name="XMLSECNSSKEYSSTOREGETKLASS"></a>xmlSecNssKeysStoreGetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font>xmlSecKeyStoreId</font> xmlSecNssKeysStoreGetKlass (void);</pre>
+<a name="XMLSECNSSKEYSSTOREGETKLASS"></a><h3>xmlSecNssKeysStoreGetKlass ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="XMLSECKEYSTOREID"><span class="RETURNVALUE">xmlSecKeyStoreId</span></gtkdoclink>    xmlSecNssKeysStoreGetKlass          (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The Nss list based keys store klass.</p>
 <p></p>
-<p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN31883"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> Nss list based keys store klass.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN37707"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>Nss list based keys store klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN31888"></a><h3>
-<a name="XMLSECNSSKEYSSTOREADOPTKEY"></a>xmlSecNssKeysStoreAdoptKey ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecNssKeysStoreAdoptKey      (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store,
-                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre>
-<p>Adds <code class="PARAMETER">key</code> to the <code class="PARAMETER">store</code>.</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN31902"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>              the pointer to Nss keys store.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN31907"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>                the pointer to key.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN31912"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
-</tr>
-</tbody></table>
+<a name="XMLSECNSSKEYSSTOREID"></a><h3>xmlSecNssKeysStoreId</h3>
+<pre class="PROGRAMLISTING">#define xmlSecNssKeysStoreId            xmlSecNssKeysStoreGetKlass()</pre>
+<p>A Nss keys store klass id.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN31917"></a><h3>
-<a name="XMLSECNSSKEYSSTORELOAD"></a>xmlSecNssKeysStoreLoad ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecNssKeysStoreLoad          (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store,
-                                             const <font>char</font> *uri,
-                                             <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> keysMngr);</pre>
+<a name="XMLSECNSSKEYSSTORELOAD"></a><h3>xmlSecNssKeysStoreLoad ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecNssKeysStoreLoad              (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>,
+                                                         <code class="PARAMETER">const <gtkdoclink href="CHAR"><span class="TYPE">char</span></gtkdoclink> *uri</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="TYPE">xmlSecKeysMngrPtr</span></a> keysMngr</code>);</pre>
 <p>Reads keys from an XML file.</p>
 <p></p>
-<p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN31930"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>              the pointer to Nss keys store.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN37736"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to Nss keys store.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN31935"><span style="white-space: nowrap"><code class="PARAMETER">uri</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>                the filename.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN37741"><span style="white-space: nowrap"><code class="PARAMETER">uri</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the filename.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN31940"><span style="white-space: nowrap"><code class="PARAMETER">keysMngr</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>           the pointer to associated keys manager.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN37746"><span style="white-space: nowrap"><code class="PARAMETER">keysMngr</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to associated keys manager.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN31945"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN37751"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN31950"></a><h3>
-<a name="XMLSECNSSKEYSSTORESAVE"></a>xmlSecNssKeysStoreSave ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecNssKeysStoreSave          (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store,
-                                             const <font>char</font> *filename,
-                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre>
+<a name="XMLSECNSSKEYSSTORESAVE"></a><h3>xmlSecNssKeysStoreSave ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecNssKeysStoreSave              (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>,
+                                                         <code class="PARAMETER">const <gtkdoclink href="CHAR"><span class="TYPE">char</span></gtkdoclink> *filename</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE"><span class="TYPE">xmlSecKeyDataType</span></a> type</code>);</pre>
 <p>Writes keys from <code class="PARAMETER">store</code> to an XML file.</p>
-<p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN31964"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>              the pointer to Nss keys store.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN37775"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to Nss keys store.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN31969"><span style="white-space: nowrap"><code class="PARAMETER">filename</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>           the filename.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN37780"><span style="white-space: nowrap"><code class="PARAMETER">filename</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the filename.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN31974"><span style="white-space: nowrap"><code class="PARAMETER">type</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>               the saved keys type (public, private, ...).</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN37785"><span style="white-space: nowrap"><code class="PARAMETER">type</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the saved keys type (public, private, ...).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN31979"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN37790"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>

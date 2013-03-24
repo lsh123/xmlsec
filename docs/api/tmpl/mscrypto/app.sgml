@@ -17,38 +17,7 @@ Application functions implementation for MS Crypto.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### FUNCTION xmlSecMSCryptoAppInit ##### -->
-<para>
-
-</para>
-
-@config: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoAppShutdown ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoAppGetCertStoreName ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoAppDefaultKeysMngrInit ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@Returns: 
+<!-- ##### SECTION Image ##### -->
 
 
 <!-- ##### FUNCTION xmlSecMSCryptoAppDefaultKeysMngrAdoptKey ##### -->
@@ -58,57 +27,6 @@ Application functions implementation for MS Crypto.
 
 @mngr: 
 @key: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoAppDefaultKeysMngrLoad ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@uri: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoAppDefaultKeysMngrSave ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@filename: 
-@type: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoAppDefaultKeysMngrPrivateKeyLoad ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@hKey: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoAppDefaultKeysMngrPublicKeyLoad ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@hKey: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoAppDefaultKeysMngrSymKeyLoad ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@hKey: 
 @Returns: 
 
 
@@ -142,28 +60,113 @@ Application functions implementation for MS Crypto.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecMSCryptoAppKeysMngrCertLoad ##### -->
+<!-- ##### FUNCTION xmlSecMSCryptoAppDefaultKeysMngrInit ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoAppDefaultKeysMngrLoad ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@uri: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoAppDefaultKeysMngrPrivateKeyLoad ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@hKey: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoAppDefaultKeysMngrPublicKeyLoad ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@hKey: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoAppDefaultKeysMngrSave ##### -->
 <para>
 
 </para>
 
 @mngr: 
 @filename: 
-@format: 
 @type: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecMSCryptoAppKeysMngrCertLoadMemory ##### -->
+<!-- ##### FUNCTION xmlSecMSCryptoAppDefaultKeysMngrSymKeyLoad ##### -->
 <para>
 
 </para>
 
 @mngr: 
+@hKey: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoAppGetCertStoreName ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoAppGetDefaultPwdCallback ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoAppInit ##### -->
+<para>
+
+</para>
+
+@config: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoAppKeyCertLoad ##### -->
+<para>
+
+</para>
+
+@key: 
+@filename: 
+@format: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoAppKeyCertLoadMemory ##### -->
+<para>
+
+</para>
+
+@key: 
 @data: 
 @dataSize: 
 @format: 
-@type: 
 @Returns: 
 
 
@@ -194,6 +197,31 @@ Application functions implementation for MS Crypto.
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecMSCryptoAppKeysMngrCertLoad ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@filename: 
+@format: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoAppKeysMngrCertLoadMemory ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@data: 
+@dataSize: 
+@format: 
+@type: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecMSCryptoAppPkcs12Load ##### -->
 <para>
 
@@ -219,34 +247,12 @@ Application functions implementation for MS Crypto.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecMSCryptoAppKeyCertLoad ##### -->
+<!-- ##### FUNCTION xmlSecMSCryptoAppShutdown ##### -->
 <para>
 
 </para>
 
-@key: 
-@filename: 
-@format: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoAppKeyCertLoadMemory ##### -->
-<para>
-
-</para>
-
-@key: 
-@data: 
-@dataSize: 
-@format: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoAppGetDefaultPwdCallback ##### -->
-<para>
-
-</para>
-
+@void: 
 @Returns: 
 
 

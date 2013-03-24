@@ -17,27 +17,8 @@ Nodeset object implementation.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### ENUM xmlSecNodeSetType ##### -->
-<para>
+<!-- ##### SECTION Image ##### -->
 
-</para>
-
-@xmlSecNodeSetNormal: 
-@xmlSecNodeSetInvert: 
-@xmlSecNodeSetTree: 
-@xmlSecNodeSetTreeWithoutComments: 
-@xmlSecNodeSetTreeInvert: 
-@xmlSecNodeSetTreeWithoutCommentsInvert: 
-@xmlSecNodeSetList: 
-
-<!-- ##### ENUM xmlSecNodeSetOp ##### -->
-<para>
-
-</para>
-
-@xmlSecNodeSetIntersection: 
-@xmlSecNodeSetSubtraction: 
-@xmlSecNodeSetUnion: 
 
 <!-- ##### STRUCT xmlSecNodeSet ##### -->
 <para>
@@ -52,56 +33,6 @@ Nodeset object implementation.
 @next: 
 @prev: 
 @children: 
-
-<!-- ##### USER_FUNCTION xmlSecNodeSetWalkCallback ##### -->
-<para>
-
-</para>
-
-@nset: 
-@cur: 
-@parent: 
-@data: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecNodeSetCreate ##### -->
-<para>
-
-</para>
-
-@doc: 
-@nodes: 
-@type: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecNodeSetDestroy ##### -->
-<para>
-
-</para>
-
-@nset: 
-
-
-<!-- ##### FUNCTION xmlSecNodeSetDocDestroy ##### -->
-<para>
-
-</para>
-
-@nset: 
-
-
-<!-- ##### FUNCTION xmlSecNodeSetContains ##### -->
-<para>
-
-</para>
-
-@nset: 
-@node: 
-@parent: 
-@Returns: 
-
 
 <!-- ##### FUNCTION xmlSecNodeSetAdd ##### -->
 <para>
@@ -125,27 +56,51 @@ Nodeset object implementation.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecNodeSetGetChildren ##### -->
-<para>
-
-</para>
-
-@doc: 
-@parent: 
-@withComments: 
-@invert: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecNodeSetWalk ##### -->
+<!-- ##### FUNCTION xmlSecNodeSetContains ##### -->
 <para>
 
 </para>
 
 @nset: 
-@walkFunc: 
-@data: 
+@node: 
+@parent: 
 @Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNodeSetCreate ##### -->
+<para>
+
+</para>
+
+@doc: 
+@nodes: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNodeSetDebugDump ##### -->
+<para>
+
+</para>
+
+@nset: 
+@output: 
+
+
+<!-- ##### FUNCTION xmlSecNodeSetDestroy ##### -->
+<para>
+
+</para>
+
+@nset: 
+
+
+<!-- ##### FUNCTION xmlSecNodeSetDocDestroy ##### -->
+<para>
+
+</para>
+
+@nset: 
 
 
 <!-- ##### FUNCTION xmlSecNodeSetDumpTextNodes ##### -->
@@ -158,12 +113,60 @@ Nodeset object implementation.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecNodeSetDebugDump ##### -->
+<!-- ##### FUNCTION xmlSecNodeSetGetChildren ##### -->
+<para>
+
+</para>
+
+@doc: 
+@parent: 
+@withComments: 
+@invert: 
+@Returns: 
+
+
+<!-- ##### ENUM xmlSecNodeSetOp ##### -->
+<para>
+
+</para>
+
+@xmlSecNodeSetIntersection: 
+@xmlSecNodeSetSubtraction: 
+@xmlSecNodeSetUnion: 
+
+<!-- ##### ENUM xmlSecNodeSetType ##### -->
+<para>
+
+</para>
+
+@xmlSecNodeSetNormal: 
+@xmlSecNodeSetInvert: 
+@xmlSecNodeSetTree: 
+@xmlSecNodeSetTreeWithoutComments: 
+@xmlSecNodeSetTreeInvert: 
+@xmlSecNodeSetTreeWithoutCommentsInvert: 
+@xmlSecNodeSetList: 
+
+<!-- ##### FUNCTION xmlSecNodeSetWalk ##### -->
 <para>
 
 </para>
 
 @nset: 
-@output: 
+@walkFunc: 
+@data: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecNodeSetWalkCallback ##### -->
+<para>
+
+</para>
+
+@nset: 
+@cur: 
+@parent: 
+@data: 
+@Returns: 
 
 

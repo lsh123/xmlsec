@@ -1,54 +1,39 @@
 <refentry id="xmlsec-exports">
 <refmeta>
-<refentrytitle role="top_of_page">exports</refentrytitle>
+<refentrytitle role="top_of_page" id="xmlsec-exports.top_of_page">exports</refentrytitle>
 <manvolnum>3</manvolnum>
-<refmiscinfo>XMLSEC Library</refmiscinfo>
+<refmiscinfo>
+  XMLSEC Library
+</refmiscinfo>
 </refmeta>
-
 <refnamediv>
 <refname>exports</refname>
 <refpurpose>Black magic to export functions on Windows.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="xmlsec-exports.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
-<synopsis>
-
-
-
-#define     <link linkend="extern">extern</link>
+<synopsis>#define             <link linkend="extern">extern</link>
 </synopsis>
 </refsynopsisdiv>
 
-
-
-
-
-
-
-
-
-<refsect1 role="desc">
+<refsect1 id="xmlsec-exports.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 Black magic to export functions on Windows.
 </para>
 </refsect1>
-
-<refsect1 role="details">
+<refsect1 id="xmlsec-exports.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="extern" role="macro">extern</title>
-<indexterm><primary>extern</primary></indexterm><programlisting>#define     extern</programlisting>
+<refsect2 id="extern" role="macro">
+<title>extern</title>
+<indexterm zone="extern"><primary>extern</primary></indexterm>
+<programlisting>#        define  extern
+</programlisting>
 <para>
-
 </para></refsect2>
 
 </refsect1>
-
-
-
 
 </refentry>

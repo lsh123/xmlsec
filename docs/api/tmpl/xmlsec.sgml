@@ -17,17 +17,40 @@ Utility functions.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### TYPEDEF xmlSecPtr ##### -->
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### MACRO ATTRIBUTE_UNUSED ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### MACRO xmlSecSize ##### -->
+
+<!-- ##### MACRO XMLSEC_FUNC_TO_PTR ##### -->
 <para>
 
 </para>
 
+@func_type: 
+@func: 
+
+
+<!-- ##### MACRO XMLSEC_PTR_TO_FUNC ##### -->
+<para>
+
+</para>
+
+@func_type: 
+@ptr: 
+
+
+<!-- ##### MACRO XMLSEC_PTR_TO_FUNC_IMPL ##### -->
+<para>
+
+</para>
+
+@func_type: 
 
 
 <!-- ##### MACRO XMLSEC_SIZE_BAD_CAST ##### -->
@@ -45,20 +68,11 @@ Utility functions.
 
 
 
-<!-- ##### FUNCTION xmlSecInit ##### -->
+<!-- ##### MACRO xmlSecCheckVersion ##### -->
 <para>
 
 </para>
 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecShutdown ##### -->
-<para>
-
-</para>
-
-@Returns: 
 
 
 <!-- ##### MACRO xmlSecCheckVersionExact ##### -->
@@ -67,21 +81,6 @@ Utility functions.
 </para>
 
 
-
-<!-- ##### MACRO xmlSecCheckVersion ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### ENUM xmlSecCheckVersionMode ##### -->
-<para>
-
-</para>
-
-@xmlSecCheckVersionExactMatch: 
-@xmlSecCheckVersionABICompatible: 
 
 <!-- ##### FUNCTION xmlSecCheckVersionExt ##### -->
 <para>
@@ -95,36 +94,42 @@ Utility functions.
 @Returns: 
 
 
-<!-- ##### MACRO ATTRIBUTE_UNUSED ##### -->
+<!-- ##### ENUM xmlSecCheckVersionMode ##### -->
+<para>
+
+</para>
+
+@xmlSecCheckVersionExactMatch: 
+@xmlSecCheckVersionABICompatible: 
+
+<!-- ##### FUNCTION xmlSecInit ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### TYPEDEF xmlSecPtr ##### -->
 <para>
 
 </para>
 
 
-
-<!-- ##### MACRO XMLSEC_PTR_TO_FUNC_IMPL ##### -->
+<!-- ##### FUNCTION xmlSecShutdown ##### -->
 <para>
 
 </para>
 
-@func_type: 
+@void: 
+@Returns: 
 
 
-<!-- ##### MACRO XMLSEC_PTR_TO_FUNC ##### -->
+<!-- ##### MACRO xmlSecSize ##### -->
 <para>
 
 </para>
 
-@func_type: 
-@ptr: 
-
-
-<!-- ##### MACRO XMLSEC_FUNC_TO_PTR ##### -->
-<para>
-
-</para>
-
-@func_type: 
-@func: 
 
 

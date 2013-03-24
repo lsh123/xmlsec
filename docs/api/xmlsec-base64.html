@@ -7,7 +7,6 @@
 <link rel="UP" title="XML Security Core Library API Reference." href="xmlsec-ref.html">
 <link rel="PREVIOUS" title="app" href="xmlsec-app.html">
 <link rel="NEXT" title="bn" href="xmlsec-bn.html">
-<meta name="GENERATOR" content="GTK-Doc V1.7 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -88,289 +87,265 @@
 <h1>
 <a name="XMLSEC-BASE64"></a>base64</h1>
 <div class="REFNAMEDIV">
-<a name="AEN2800"></a><h2>Name</h2>base64 -- Base64 encoding/decoding functions.</div>
+<a name="AEN3100"></a><h2>Name</h2>base64 -- Base64 encoding/decoding functions.</div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN2803"></a><h2>Synopsis</h2>
-<pre class="SYNOPSIS">
-
-#define     <a href="xmlsec-base64.html#XMLSEC-BASE64-LINESIZE:CAPS">XMLSEC_BASE64_LINESIZE</a>
-<font>int</font>         <a href="xmlsec-base64.html#XMLSECBASE64GETDEFAULTLINESIZE">xmlSecBase64GetDefaultLineSize</a>  (void);
-<font>void</font>        <a href="xmlsec-base64.html#XMLSECBASE64SETDEFAULTLINESIZE">xmlSecBase64SetDefaultLineSize</a>  (<font>int</font> columns);
-<font>xmlSecBase64CtxPtr</font> <a href="xmlsec-base64.html#XMLSECBASE64CTXCREATE">xmlSecBase64CtxCreate</a>    (<font>int</font> encode,
-                                             <font>int</font> columns);
-<font>void</font>        <a href="xmlsec-base64.html#XMLSECBASE64CTXDESTROY">xmlSecBase64CtxDestroy</a>          (<font>xmlSecBase64CtxPtr</font> ctx);
-<font>int</font>         <a href="xmlsec-base64.html#XMLSECBASE64CTXINITIALIZE">xmlSecBase64CtxInitialize</a>       (<font>xmlSecBase64CtxPtr</font> ctx,
-                                             <font>int</font> encode,
-                                             <font>int</font> columns);
-<font>void</font>        <a href="xmlsec-base64.html#XMLSECBASE64CTXFINALIZE">xmlSecBase64CtxFinalize</a>         (<font>xmlSecBase64CtxPtr</font> ctx);
-<font>int</font>         <a href="xmlsec-base64.html#XMLSECBASE64CTXUPDATE">xmlSecBase64CtxUpdate</a>           (<font>xmlSecBase64CtxPtr</font> ctx,
-                                             const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *in,
-                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> inSize,
-                                             <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *out,
-                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> outSize);
-<font>int</font>         <a href="xmlsec-base64.html#XMLSECBASE64CTXFINAL">xmlSecBase64CtxFinal</a>            (<font>xmlSecBase64CtxPtr</font> ctx,
-                                             <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *out,
-                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> outSize);
-<font>xmlChar</font>*    <a href="xmlsec-base64.html#XMLSECBASE64ENCODE">xmlSecBase64Encode</a>              (const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *buf,
-                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> len,
-                                             <font>int</font> columns);
-<font>int</font>         <a href="xmlsec-base64.html#XMLSECBASE64DECODE">xmlSecBase64Decode</a>              (const <font>xmlChar</font> *str,
-                                             <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *buf,
-                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> len);</pre>
+<a name="XMLSEC-BASE64.SYNOPSIS"></a><h2>Synopsis</h2>
+<pre class="SYNOPSIS">#define             <a href="xmlsec-base64.html#XMLSEC-BASE64-LINESIZE:CAPS">XMLSEC_BASE64_LINESIZE</a>
+<gtkdoclink href="XMLSECBASE64CTX"><span class="RETURNVALUE">xmlSecBase64CtxPtr</span></gtkdoclink><a href="xmlsec-base64.html#XMLSECBASE64CTXCREATE">xmlSecBase64CtxCreate</a>               (<code class="PARAMETER"><gtkdoclink href="INT"><span class="TYPE">int</span></gtkdoclink> encode</code>,
+                                                         <code class="PARAMETER"><gtkdoclink href="INT"><span class="TYPE">int</span></gtkdoclink> columns</code>);
+<gtkdoclink href="VOID"><span class="RETURNVALUE">void</span></gtkdoclink><a href="xmlsec-base64.html#XMLSECBASE64CTXDESTROY">xmlSecBase64CtxDestroy</a>              (<code class="PARAMETER"><gtkdoclink href="XMLSECBASE64CTX"><span class="TYPE">xmlSecBase64CtxPtr</span></gtkdoclink> ctx</code>);
+<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-base64.html#XMLSECBASE64CTXFINAL">xmlSecBase64CtxFinal</a>                (<code class="PARAMETER"><gtkdoclink href="XMLSECBASE64CTX"><span class="TYPE">xmlSecBase64CtxPtr</span></gtkdoclink> ctx</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *out</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> outSize</code>);
+<gtkdoclink href="VOID"><span class="RETURNVALUE">void</span></gtkdoclink><a href="xmlsec-base64.html#XMLSECBASE64CTXFINALIZE">xmlSecBase64CtxFinalize</a>             (<code class="PARAMETER"><gtkdoclink href="XMLSECBASE64CTX"><span class="TYPE">xmlSecBase64CtxPtr</span></gtkdoclink> ctx</code>);
+<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-base64.html#XMLSECBASE64CTXINITIALIZE">xmlSecBase64CtxInitialize</a>           (<code class="PARAMETER"><gtkdoclink href="XMLSECBASE64CTX"><span class="TYPE">xmlSecBase64CtxPtr</span></gtkdoclink> ctx</code>,
+                                                         <code class="PARAMETER"><gtkdoclink href="INT"><span class="TYPE">int</span></gtkdoclink> encode</code>,
+                                                         <code class="PARAMETER"><gtkdoclink href="INT"><span class="TYPE">int</span></gtkdoclink> columns</code>);
+<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-base64.html#XMLSECBASE64CTXUPDATE">xmlSecBase64CtxUpdate</a>               (<code class="PARAMETER"><gtkdoclink href="XMLSECBASE64CTX"><span class="TYPE">xmlSecBase64CtxPtr</span></gtkdoclink> ctx</code>,
+                                                         <code class="PARAMETER">const <a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *in</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> inSize</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *out</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> outSize</code>);
+<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-base64.html#XMLSECBASE64DECODE">xmlSecBase64Decode</a>                  (<code class="PARAMETER">const <gtkdoclink href="XMLCHAR"><span class="TYPE">xmlChar</span></gtkdoclink> *str</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *buf</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> len</code>);
+<gtkdoclink href="XMLCHAR"><span class="RETURNVALUE">xmlChar</span></gtkdoclink> *           <a href="xmlsec-base64.html#XMLSECBASE64ENCODE">xmlSecBase64Encode</a>                  (<code class="PARAMETER">const <a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *buf</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> len</code>,
+                                                         <code class="PARAMETER"><gtkdoclink href="INT"><span class="TYPE">int</span></gtkdoclink> columns</code>);
+<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-base64.html#XMLSECBASE64GETDEFAULTLINESIZE">xmlSecBase64GetDefaultLineSize</a>      (<code class="PARAMETER"><span class="TYPE">void</span></code>);
+<gtkdoclink href="VOID"><span class="RETURNVALUE">void</span></gtkdoclink><a href="xmlsec-base64.html#XMLSECBASE64SETDEFAULTLINESIZE">xmlSecBase64SetDefaultLineSize</a>      (<code class="PARAMETER"><gtkdoclink href="INT"><span class="TYPE">int</span></gtkdoclink> columns</code>);</pre>
 </div>
 <div class="REFSECT1">
-<a name="AEN2849"></a><h2>Description</h2>
+<a name="XMLSEC-BASE64.DESCRIPTION"></a><h2>Description</h2>
 <p>Base64 encoding/decoding functions.</p>
 </div>
 <div class="REFSECT1">
-<a name="AEN2852"></a><h2>Details</h2>
+<a name="XMLSEC-BASE64.DETAILS"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN2854"></a><h3>
-<a name="XMLSEC-BASE64-LINESIZE:CAPS"></a>XMLSEC_BASE64_LINESIZE</h3>
+<a name="XMLSEC-BASE64-LINESIZE:CAPS"></a><h3>XMLSEC_BASE64_LINESIZE</h3>
 <pre class="PROGRAMLISTING">#define XMLSEC_BASE64_LINESIZE                          64</pre>
 <p>The default maximum base64 encoded line size.</p>
-<p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2862"></a><h3>
-<a name="XMLSECBASE64GETDEFAULTLINESIZE"></a>xmlSecBase64GetDefaultLineSize ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecBase64GetDefaultLineSize  (void);</pre>
-<p>Gets the current default line size.</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN2872"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> the current default line size.</p></td>
-</tr></tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN2877"></a><h3>
-<a name="XMLSECBASE64SETDEFAULTLINESIZE"></a>xmlSecBase64SetDefaultLineSize ()</h3>
-<pre class="PROGRAMLISTING"><font>void</font>        xmlSecBase64SetDefaultLineSize  (<font>int</font> columns);</pre>
-<p>Sets the current default line size.</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN2888"><span style="white-space: nowrap"><code class="PARAMETER">columns</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> number of columns</p></td>
-</tr></tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN2893"></a><h3>
-<a name="XMLSECBASE64CTXCREATE"></a>xmlSecBase64CtxCreate ()</h3>
-<pre class="PROGRAMLISTING"><font>xmlSecBase64CtxPtr</font> xmlSecBase64CtxCreate    (<font>int</font> encode,
-                                             <font>int</font> columns);</pre>
+<a name="XMLSECBASE64CTXCREATE"></a><h3>xmlSecBase64CtxCreate ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="XMLSECBASE64CTX"><span class="RETURNVALUE">xmlSecBase64CtxPtr</span></gtkdoclink>  xmlSecBase64CtxCreate               (<code class="PARAMETER"><gtkdoclink href="INT"><span class="TYPE">int</span></gtkdoclink> encode</code>,
+                                                         <code class="PARAMETER"><gtkdoclink href="INT"><span class="TYPE">int</span></gtkdoclink> columns</code>);</pre>
 <p>Allocates and initializes new base64 context.</p>
-<p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN2905"><span style="white-space: nowrap"><code class="PARAMETER">encode</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>             the encode/decode flag (1 - encode, 0 - decode)</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN3231"><span style="white-space: nowrap"><code class="PARAMETER">encode</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the encode/decode flag (1 - encode, 0 - decode)</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN2910"><span style="white-space: nowrap"><code class="PARAMETER">columns</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>            the max line length.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN3236"><span style="white-space: nowrap"><code class="PARAMETER">columns</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the max line length.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN2915"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> a pointer to newly created <font><span class="TYPE">xmlSecBase64Ctx</span></font> structure
+<td align="LEFT" valign="TOP"><a name="AEN3241"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>a pointer to newly created <gtkdoclink href="XMLSECBASE64CTX"><span class="TYPE">xmlSecBase64Ctx</span></gtkdoclink> structure
 or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2922"></a><h3>
-<a name="XMLSECBASE64CTXDESTROY"></a>xmlSecBase64CtxDestroy ()</h3>
-<pre class="PROGRAMLISTING"><font>void</font>        xmlSecBase64CtxDestroy          (<font>xmlSecBase64CtxPtr</font> ctx);</pre>
+<a name="XMLSECBASE64CTXDESTROY"></a><h3>xmlSecBase64CtxDestroy ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="VOID"><span class="RETURNVALUE">void</span></gtkdoclink>                xmlSecBase64CtxDestroy              (<code class="PARAMETER"><gtkdoclink href="XMLSECBASE64CTX"><span class="TYPE">xmlSecBase64CtxPtr</span></gtkdoclink> ctx</code>);</pre>
 <p>Destroys base64 context.</p>
 <p></p>
-<p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN2933"><span style="white-space: nowrap"><code class="PARAMETER">ctx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>                the pointer to <font><span class="TYPE">xmlSecBase64Ctx</span></font> structure.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN3260"><span style="white-space: nowrap"><code class="PARAMETER">ctx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to <gtkdoclink href="XMLSECBASE64CTX"><span class="TYPE">xmlSecBase64Ctx</span></gtkdoclink> structure.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2940"></a><h3>
-<a name="XMLSECBASE64CTXINITIALIZE"></a>xmlSecBase64CtxInitialize ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecBase64CtxInitialize       (<font>xmlSecBase64CtxPtr</font> ctx,
-                                             <font>int</font> encode,
-                                             <font>int</font> columns);</pre>
-<p>Initializes new base64 context.</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN2953"><span style="white-space: nowrap"><code class="PARAMETER">ctx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>                the pointer to <font><span class="TYPE">xmlSecBase64Ctx</span></font> structure,</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN2960"><span style="white-space: nowrap"><code class="PARAMETER">encode</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>             the encode/decode flag (1 - encode, 0 - decode)</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN2965"><span style="white-space: nowrap"><code class="PARAMETER">columns</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>            the max line length.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN2970"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 0 on success and a negative value otherwise.</p></td>
-</tr>
-</tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN2975"></a><h3>
-<a name="XMLSECBASE64CTXFINALIZE"></a>xmlSecBase64CtxFinalize ()</h3>
-<pre class="PROGRAMLISTING"><font>void</font>        xmlSecBase64CtxFinalize         (<font>xmlSecBase64CtxPtr</font> ctx);</pre>
-<p>Frees all the resources allocated by <code class="PARAMETER">ctx</code>.</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN2987"><span style="white-space: nowrap"><code class="PARAMETER">ctx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>                the pointer to <font><span class="TYPE">xmlSecBase64Ctx</span></font> structure,</p></td>
-</tr></tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN2994"></a><h3>
-<a name="XMLSECBASE64CTXUPDATE"></a>xmlSecBase64CtxUpdate ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecBase64CtxUpdate           (<font>xmlSecBase64CtxPtr</font> ctx,
-                                             const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *in,
-                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> inSize,
-                                             <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *out,
-                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> outSize);</pre>
-<p>Encodes or decodes the next piece of data from input buffer.</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN3009"><span style="white-space: nowrap"><code class="PARAMETER">ctx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>                the pointer to <font><span class="TYPE">xmlSecBase64Ctx</span></font> structure</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN3016"><span style="white-space: nowrap"><code class="PARAMETER">in</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>                 the input buffer</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN3021"><span style="white-space: nowrap"><code class="PARAMETER">inSize</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>             the input buffer size</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN3026"><span style="white-space: nowrap"><code class="PARAMETER">out</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>                the output buffer</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN3031"><span style="white-space: nowrap"><code class="PARAMETER">outSize</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>            the output buffer size</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN3036"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> the number of bytes written to output buffer or
--1 if an error occurs.</p></td>
-</tr>
-</tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3041"></a><h3>
-<a name="XMLSECBASE64CTXFINAL"></a>xmlSecBase64CtxFinal ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecBase64CtxFinal            (<font>xmlSecBase64CtxPtr</font> ctx,
-                                             <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *out,
-                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> outSize);</pre>
+<a name="XMLSECBASE64CTXFINAL"></a><h3>xmlSecBase64CtxFinal ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecBase64CtxFinal                (<code class="PARAMETER"><gtkdoclink href="XMLSECBASE64CTX"><span class="TYPE">xmlSecBase64CtxPtr</span></gtkdoclink> ctx</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *out</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> outSize</code>);</pre>
 <p>Encodes or decodes the last piece of data stored in the context
 and finalizes the result.</p>
 <p></p>
-<p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN3054"><span style="white-space: nowrap"><code class="PARAMETER">ctx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>                the pointer to <font><span class="TYPE">xmlSecBase64Ctx</span></font> structure</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN3285"><span style="white-space: nowrap"><code class="PARAMETER">ctx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to <gtkdoclink href="XMLSECBASE64CTX"><span class="TYPE">xmlSecBase64Ctx</span></gtkdoclink> structure</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN3061"><span style="white-space: nowrap"><code class="PARAMETER">out</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>                the output buffer</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN3292"><span style="white-space: nowrap"><code class="PARAMETER">out</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the output buffer</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN3066"><span style="white-space: nowrap"><code class="PARAMETER">outSize</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>            the output buffer size</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN3297"><span style="white-space: nowrap"><code class="PARAMETER">outSize</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the output buffer size</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN3071"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> the number of bytes written to output buffer or
+<td align="LEFT" valign="TOP"><a name="AEN3302"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the number of bytes written to output buffer or
 -1 if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3076"></a><h3>
-<a name="XMLSECBASE64ENCODE"></a>xmlSecBase64Encode ()</h3>
-<pre class="PROGRAMLISTING"><font>xmlChar</font>*    xmlSecBase64Encode              (const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *buf,
-                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> len,
-                                             <font>int</font> columns);</pre>
-<p>Encodes the data from input buffer and allocates the string for the result.
-The caller is responsible for freeing returned buffer using
-<font><code class="FUNCTION">xmlFree()</code></font> function.</p>
+<a name="XMLSECBASE64CTXFINALIZE"></a><h3>xmlSecBase64CtxFinalize ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="VOID"><span class="RETURNVALUE">void</span></gtkdoclink>                xmlSecBase64CtxFinalize             (<code class="PARAMETER"><gtkdoclink href="XMLSECBASE64CTX"><span class="TYPE">xmlSecBase64CtxPtr</span></gtkdoclink> ctx</code>);</pre>
+<p>Frees all the resources allocated by <code class="PARAMETER">ctx</code>.</p>
 <p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN3320"><span style="white-space: nowrap"><code class="PARAMETER">ctx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to <gtkdoclink href="XMLSECBASE64CTX"><span class="TYPE">xmlSecBase64Ctx</span></gtkdoclink> structure,</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECBASE64CTXINITIALIZE"></a><h3>xmlSecBase64CtxInitialize ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecBase64CtxInitialize           (<code class="PARAMETER"><gtkdoclink href="XMLSECBASE64CTX"><span class="TYPE">xmlSecBase64CtxPtr</span></gtkdoclink> ctx</code>,
+                                                         <code class="PARAMETER"><gtkdoclink href="INT"><span class="TYPE">int</span></gtkdoclink> encode</code>,
+                                                         <code class="PARAMETER"><gtkdoclink href="INT"><span class="TYPE">int</span></gtkdoclink> columns</code>);</pre>
+<p>Initializes new base64 context.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN3091"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>                the input buffer.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN3345"><span style="white-space: nowrap"><code class="PARAMETER">ctx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to <gtkdoclink href="XMLSECBASE64CTX"><span class="TYPE">xmlSecBase64Ctx</span></gtkdoclink> structure,</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN3096"><span style="white-space: nowrap"><code class="PARAMETER">len</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>                the input buffer size.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN3352"><span style="white-space: nowrap"><code class="PARAMETER">encode</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the encode/decode flag (1 - encode, 0 - decode)</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN3101"><span style="white-space: nowrap"><code class="PARAMETER">columns</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>            the output max line length (if 0 then no line breaks
-                     would be inserted)</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN3357"><span style="white-space: nowrap"><code class="PARAMETER">columns</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the max line length.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN3106"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> newly allocated string with base64 encoded data
+<td align="LEFT" valign="TOP"><a name="AEN3362"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success and a negative value otherwise.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECBASE64CTXUPDATE"></a><h3>xmlSecBase64CtxUpdate ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecBase64CtxUpdate               (<code class="PARAMETER"><gtkdoclink href="XMLSECBASE64CTX"><span class="TYPE">xmlSecBase64CtxPtr</span></gtkdoclink> ctx</code>,
+                                                         <code class="PARAMETER">const <a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *in</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> inSize</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *out</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> outSize</code>);</pre>
+<p>Encodes or decodes the next piece of data from input buffer.</p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN3391"><span style="white-space: nowrap"><code class="PARAMETER">ctx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to <gtkdoclink href="XMLSECBASE64CTX"><span class="TYPE">xmlSecBase64Ctx</span></gtkdoclink> structure</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN3398"><span style="white-space: nowrap"><code class="PARAMETER">in</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the input buffer</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN3403"><span style="white-space: nowrap"><code class="PARAMETER">inSize</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the input buffer size</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN3408"><span style="white-space: nowrap"><code class="PARAMETER">out</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the output buffer</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN3413"><span style="white-space: nowrap"><code class="PARAMETER">outSize</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the output buffer size</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN3418"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the number of bytes written to output buffer or
+-1 if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECBASE64DECODE"></a><h3>xmlSecBase64Decode ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecBase64Decode                  (<code class="PARAMETER">const <gtkdoclink href="XMLCHAR"><span class="TYPE">xmlChar</span></gtkdoclink> *str</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *buf</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> len</code>);</pre>
+<p>Decodes input base64 encoded string and puts result into
+the output buffer.</p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN3441"><span style="white-space: nowrap"><code class="PARAMETER">str</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the input buffer with base64 encoded string</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN3446"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the output buffer</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN3451"><span style="white-space: nowrap"><code class="PARAMETER">len</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the output buffer size</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN3456"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the number of bytes written to the output buffer or
+a negative value if an error occurs</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECBASE64ENCODE"></a><h3>xmlSecBase64Encode ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="XMLCHAR"><span class="RETURNVALUE">xmlChar</span></gtkdoclink> *           xmlSecBase64Encode                  (<code class="PARAMETER">const <a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *buf</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> len</code>,
+                                                         <code class="PARAMETER"><gtkdoclink href="INT"><span class="TYPE">int</span></gtkdoclink> columns</code>);</pre>
+<p>Encodes the data from input buffer and allocates the string for the result.
+The caller is responsible for freeing returned buffer using
+<gtkdoclink href="XMLFREE"><code class="FUNCTION">xmlFree()</code></gtkdoclink> function.</p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN3481"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the input buffer.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN3486"><span style="white-space: nowrap"><code class="PARAMETER">len</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the input buffer size.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN3491"><span style="white-space: nowrap"><code class="PARAMETER">columns</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the output max line length (if 0 then no line breaks
+would be inserted)</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN3496"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>newly allocated string with base64 encoded data
 or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3111"></a><h3>
-<a name="XMLSECBASE64DECODE"></a>xmlSecBase64Decode ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecBase64Decode              (const <font>xmlChar</font> *str,
-                                             <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *buf,
-                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> len);</pre>
-<p>Decodes input base64 encoded string and puts result into
-the output buffer.</p>
+<a name="XMLSECBASE64GETDEFAULTLINESIZE"></a><h3>xmlSecBase64GetDefaultLineSize ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecBase64GetDefaultLineSize      (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>Gets the current default line size.</p>
 <p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN3512"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the current default line size.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECBASE64SETDEFAULTLINESIZE"></a><h3>xmlSecBase64SetDefaultLineSize ()</h3>
+<pre class="PROGRAMLISTING"><gtkdoclink href="VOID"><span class="RETURNVALUE">void</span></gtkdoclink>                xmlSecBase64SetDefaultLineSize      (<code class="PARAMETER"><gtkdoclink href="INT"><span class="TYPE">int</span></gtkdoclink> columns</code>);</pre>
+<p>Sets the current default line size.</p>
 <p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN3124"><span style="white-space: nowrap"><code class="PARAMETER">str</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>                the input buffer with base64 encoded string</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN3129"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>                the output buffer</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN3134"><span style="white-space: nowrap"><code class="PARAMETER">len</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>                the output buffer size</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN3139"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> the number of bytes written to the output buffer or
-a negative value if an error occurs</p></td>
-</tr>
-</tbody></table>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN3529"><span style="white-space: nowrap"><code class="PARAMETER">columns</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>number of columns</p></td>
+</tr></tbody></table>
 </div>
 </div>
 <table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">

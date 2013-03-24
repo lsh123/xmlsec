@@ -17,6 +17,9 @@ PKI keys data implementation.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### FUNCTION xmlSecNssPKIAdoptKey ##### -->
 <para>
 
@@ -27,7 +30,17 @@ PKI keys data implementation.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecNssPKIKeyDataGetPubKey ##### -->
+<!-- ##### FUNCTION xmlSecNssPKIKeyDataDuplicate ##### -->
+<para>
+
+</para>
+
+@dst: 
+@src: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNssPKIKeyDataGetKeyType ##### -->
 <para>
 
 </para>
@@ -45,22 +58,12 @@ PKI keys data implementation.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecNssPKIKeyDataGetKeyType ##### -->
+<!-- ##### FUNCTION xmlSecNssPKIKeyDataGetPubKey ##### -->
 <para>
 
 </para>
 
 @data: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecNssPKIKeyDataDuplicate ##### -->
-<para>
-
-</para>
-
-@dst: 
-@src: 
 @Returns: 
 
 

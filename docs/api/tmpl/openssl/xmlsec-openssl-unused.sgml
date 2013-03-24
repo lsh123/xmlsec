@@ -1,7 +1,3 @@
-<!-- ##### SECTION Image ##### -->
-
-
-
 <!-- ##### MACRO XMLSEC_NO_AES ##### -->
 <para>
 
@@ -50,5 +46,9 @@
 
 <!-- ##### SECTION tmpl/openssl/ciphers.sgml:Title ##### -->
 app
+
+
+<!-- ##### SECTION tmpl/openssl/xmlsec-openssl-unused.sgml:Image ##### -->
+
 
 

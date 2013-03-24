@@ -17,6 +17,9 @@ Dynamic crypto-engine library loading support.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### FUNCTION xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms ##### -->
 <para>
 
@@ -26,28 +29,12 @@ Dynamic crypto-engine library loading support.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecCryptoDLInit ##### -->
+<!-- ##### FUNCTION xmlSecCryptoDLGetFunctions ##### -->
 <para>
 
 </para>
 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecCryptoDLShutdown ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecCryptoDLLoadLibrary ##### -->
-<para>
-
-</para>
-
-@crypto: 
+@void: 
 @Returns: 
 
 
@@ -60,7 +47,16 @@ Dynamic crypto-engine library loading support.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecCryptoDLUnloadLibrary ##### -->
+<!-- ##### FUNCTION xmlSecCryptoDLInit ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecCryptoDLLoadLibrary ##### -->
 <para>
 
 </para>
@@ -78,11 +74,21 @@ Dynamic crypto-engine library loading support.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecCryptoDLGetFunctions ##### -->
+<!-- ##### FUNCTION xmlSecCryptoDLShutdown ##### -->
 <para>
 
 </para>
 
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecCryptoDLUnloadLibrary ##### -->
+<para>
+
+</para>
+
+@crypto: 
 @Returns: 
 
 

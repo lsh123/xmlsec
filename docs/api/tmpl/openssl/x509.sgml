@@ -17,6 +17,9 @@ X509 certificates support implementation for OpenSSL.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### MACRO XMLSEC_STACK_OF_X509 ##### -->
 <para>
 
@@ -31,31 +34,23 @@ X509 certificates support implementation for OpenSSL.
 
 
 
-<!-- ##### MACRO xmlSecOpenSSLKeyDataX509Id ##### -->
+<!-- ##### FUNCTION xmlSecOpenSSLKeyDataRawX509CertGetKlass ##### -->
 <para>
 
 </para>
 
-
-
-<!-- ##### FUNCTION xmlSecOpenSSLKeyDataX509GetKlass ##### -->
-<para>
-
-</para>
-
+@void: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecOpenSSLKeyDataX509GetKeyCert ##### -->
+<!-- ##### MACRO xmlSecOpenSSLKeyDataRawX509CertId ##### -->
 <para>
 
 </para>
 
-@data: 
-@Returns: 
 
 
-<!-- ##### FUNCTION xmlSecOpenSSLKeyDataX509AdoptKeyCert ##### -->
+<!-- ##### FUNCTION xmlSecOpenSSLKeyDataX509AdoptCert ##### -->
 <para>
 
 </para>
@@ -65,7 +60,17 @@ X509 certificates support implementation for OpenSSL.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecOpenSSLKeyDataX509AdoptCert ##### -->
+<!-- ##### FUNCTION xmlSecOpenSSLKeyDataX509AdoptCrl ##### -->
+<para>
+
+</para>
+
+@data: 
+@crl: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLKeyDataX509AdoptKeyCert ##### -->
 <para>
 
 </para>
@@ -94,16 +99,6 @@ X509 certificates support implementation for OpenSSL.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecOpenSSLKeyDataX509AdoptCrl ##### -->
-<para>
-
-</para>
-
-@data: 
-@crl: 
-@Returns: 
-
-
 <!-- ##### FUNCTION xmlSecOpenSSLKeyDataX509GetCrl ##### -->
 <para>
 
@@ -123,6 +118,31 @@ X509 certificates support implementation for OpenSSL.
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecOpenSSLKeyDataX509GetKeyCert ##### -->
+<para>
+
+</para>
+
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLKeyDataX509GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecOpenSSLKeyDataX509Id ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### FUNCTION xmlSecOpenSSLX509CertGetKey ##### -->
 <para>
 
@@ -132,59 +152,23 @@ X509 certificates support implementation for OpenSSL.
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecOpenSSLKeyDataRawX509CertId ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecOpenSSLKeyDataRawX509CertGetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecOpenSSLX509StoreId ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecOpenSSLX509StoreGetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecOpenSSLX509StoreFindCert ##### -->
+<!-- ##### FUNCTION xmlSecOpenSSLX509StoreAddCertsFile ##### -->
 <para>
 
 </para>
 
 @store: 
-@subjectName: 
-@issuerName: 
-@issuerSerial: 
-@ski: 
-@keyInfoCtx: 
+@file: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecOpenSSLX509StoreVerify ##### -->
+<!-- ##### FUNCTION xmlSecOpenSSLX509StoreAddCertsPath ##### -->
 <para>
 
 </para>
 
 @store: 
-@certs: 
-@crls: 
-@keyInfoCtx: 
+@path: 
 @Returns: 
 
 
@@ -209,23 +193,45 @@ X509 certificates support implementation for OpenSSL.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecOpenSSLX509StoreAddCertsPath ##### -->
+<!-- ##### FUNCTION xmlSecOpenSSLX509StoreFindCert ##### -->
 <para>
 
 </para>
 
 @store: 
-@path: 
+@subjectName: 
+@issuerName: 
+@issuerSerial: 
+@ski: 
+@keyInfoCtx: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecOpenSSLX509StoreAddCertsFile ##### -->
+<!-- ##### FUNCTION xmlSecOpenSSLX509StoreGetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecOpenSSLX509StoreId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLX509StoreVerify ##### -->
 <para>
 
 </para>
 
 @store: 
-@file: 
+@certs: 
+@crls: 
+@keyInfoCtx: 
 @Returns: 
 
 

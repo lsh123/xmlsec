@@ -17,92 +17,10 @@ Keys manager object support.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### FUNCTION xmlSecKeysMngrCreate ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeysMngrDestroy ##### -->
-<para>
-
-</para>
-
-@mngr: 
-
-
-<!-- ##### FUNCTION xmlSecKeysMngrFindKey ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@name: 
-@keyInfoCtx: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeysMngrAdoptKeysStore ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@store: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeysMngrGetKeysStore ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeysMngrAdoptDataStore ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@store: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeysMngrGetDataStore ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@id: 
-@Returns: 
+<!-- ##### SECTION Image ##### -->
 
 
 <!-- ##### USER_FUNCTION xmlSecGetKeyCallback ##### -->
-<para>
-
-</para>
-
-@keyInfoNode: 
-@keyInfoCtx: 
-@Returns: 
-
-
-<!-- ##### STRUCT xmlSecKeysMngr ##### -->
-<para>
-
-</para>
-
-@keysStore: 
-@storesList: 
-@getKey: 
-
-<!-- ##### FUNCTION xmlSecKeysMngrGetKey ##### -->
 <para>
 
 </para>
@@ -120,50 +38,6 @@ Keys manager object support.
 @id: 
 @reserved0: 
 @reserved1: 
-
-<!-- ##### FUNCTION xmlSecKeyStoreCreate ##### -->
-<para>
-
-</para>
-
-@id: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeyStoreDestroy ##### -->
-<para>
-
-</para>
-
-@store: 
-
-
-<!-- ##### FUNCTION xmlSecKeyStoreFindKey ##### -->
-<para>
-
-</para>
-
-@store: 
-@name: 
-@keyInfoCtx: 
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecKeyStoreGetName ##### -->
-<para>
-
-</para>
-
-@store: 
-
-
-<!-- ##### MACRO xmlSecKeyStoreIsValid ##### -->
-<para>
-
-</para>
-
-@store: 
-
 
 <!-- ##### MACRO xmlSecKeyStoreCheckId ##### -->
 <para>
@@ -183,6 +57,61 @@ Keys manager object support.
 @size: 
 
 
+<!-- ##### FUNCTION xmlSecKeyStoreCreate ##### -->
+<para>
+
+</para>
+
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyStoreDestroy ##### -->
+<para>
+
+</para>
+
+@store: 
+
+
+<!-- ##### USER_FUNCTION xmlSecKeyStoreFinalizeMethod ##### -->
+<para>
+
+</para>
+
+@store: 
+
+
+<!-- ##### FUNCTION xmlSecKeyStoreFindKey ##### -->
+<para>
+
+</para>
+
+@store: 
+@name: 
+@keyInfoCtx: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecKeyStoreFindKeyMethod ##### -->
+<para>
+
+</para>
+
+@store: 
+@name: 
+@keyInfoCtx: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecKeyStoreGetName ##### -->
+<para>
+
+</para>
+
+@store: 
+
+
 <!-- ##### MACRO xmlSecKeyStoreIdUnknown ##### -->
 <para>
 
@@ -199,23 +128,12 @@ Keys manager object support.
 @Returns: 
 
 
-<!-- ##### USER_FUNCTION xmlSecKeyStoreFinalizeMethod ##### -->
+<!-- ##### MACRO xmlSecKeyStoreIsValid ##### -->
 <para>
 
 </para>
 
 @store: 
-
-
-<!-- ##### USER_FUNCTION xmlSecKeyStoreFindKeyMethod ##### -->
-<para>
-
-</para>
-
-@store: 
-@name: 
-@keyInfoCtx: 
-@Returns: 
 
 
 <!-- ##### STRUCT xmlSecKeyStoreKlass ##### -->
@@ -240,18 +158,89 @@ Keys manager object support.
 @klass: 
 
 
-<!-- ##### MACRO xmlSecSimpleKeysStoreId ##### -->
+<!-- ##### STRUCT xmlSecKeysMngr ##### -->
 <para>
 
 </para>
 
+@keysStore: 
+@storesList: 
+@getKey: 
 
-
-<!-- ##### FUNCTION xmlSecSimpleKeysStoreGetKlass ##### -->
+<!-- ##### FUNCTION xmlSecKeysMngrAdoptDataStore ##### -->
 <para>
 
 </para>
 
+@mngr: 
+@store: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeysMngrAdoptKeysStore ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@store: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeysMngrCreate ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeysMngrDestroy ##### -->
+<para>
+
+</para>
+
+@mngr: 
+
+
+<!-- ##### FUNCTION xmlSecKeysMngrFindKey ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@name: 
+@keyInfoCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeysMngrGetDataStore ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeysMngrGetKey ##### -->
+<para>
+
+</para>
+
+@keyInfoNode: 
+@keyInfoCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeysMngrGetKeysStore ##### -->
+<para>
+
+</para>
+
+@mngr: 
 @Returns: 
 
 
@@ -263,6 +252,31 @@ Keys manager object support.
 @store: 
 @key: 
 @Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSimpleKeysStoreGetKeys ##### -->
+<para>
+
+</para>
+
+@store: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSimpleKeysStoreGetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecSimpleKeysStoreId ##### -->
+<para>
+
+</para>
+
 
 
 <!-- ##### FUNCTION xmlSecSimpleKeysStoreLoad ##### -->
@@ -284,15 +298,6 @@ Keys manager object support.
 @store: 
 @filename: 
 @type: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecSimpleKeysStoreGetKeys ##### -->
-<para>
-
-</para>
-
-@store: 
 @Returns: 
 
 

@@ -17,7 +17,17 @@ Version macros.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### MACRO XMLSEC_VERSION ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_VERSION_INFO ##### -->
 <para>
 
 </para>
@@ -39,13 +49,6 @@ Version macros.
 
 
 <!-- ##### MACRO XMLSEC_VERSION_SUBMINOR ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_VERSION_INFO ##### -->
 <para>
 
 </para>

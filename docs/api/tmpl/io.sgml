@@ -17,19 +17,7 @@ Input/output support.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### FUNCTION xmlSecIOInit ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecIOShutdown ##### -->
-<para>
-
-</para>
-
+<!-- ##### SECTION Image ##### -->
 
 
 <!-- ##### FUNCTION xmlSecIOCleanupCallbacks ##### -->
@@ -37,13 +25,15 @@ Input/output support.
 
 </para>
 
+@void: 
 
 
-<!-- ##### FUNCTION xmlSecIORegisterDefaultCallbacks ##### -->
+<!-- ##### FUNCTION xmlSecIOInit ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -59,11 +49,21 @@ Input/output support.
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecTransformInputURIId ##### -->
+<!-- ##### FUNCTION xmlSecIORegisterDefaultCallbacks ##### -->
 <para>
 
 </para>
 
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecIOShutdown ##### -->
+<para>
+
+</para>
+
+@void: 
 
 
 <!-- ##### FUNCTION xmlSecTransformInputURIGetKlass ##### -->
@@ -71,7 +71,15 @@ Input/output support.
 
 </para>
 
+@void: 
 @Returns: 
+
+
+<!-- ##### MACRO xmlSecTransformInputURIId ##### -->
+<para>
+
+</para>
+
 
 
 <!-- ##### FUNCTION xmlSecTransformInputURIOpen ##### -->

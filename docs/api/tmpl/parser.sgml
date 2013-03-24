@@ -17,6 +17,9 @@ Parser transform implementation.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### FUNCTION xmlSecParseFile ##### -->
 <para>
 
@@ -51,18 +54,19 @@ Parser transform implementation.
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecTransformXmlParserId ##### -->
-<para>
-
-</para>
-
-
-
 <!-- ##### FUNCTION xmlSecTransformXmlParserGetKlass ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
+
+
+<!-- ##### MACRO xmlSecTransformXmlParserId ##### -->
+<para>
+
+</para>
+
 
 

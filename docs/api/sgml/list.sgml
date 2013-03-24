@@ -1,87 +1,109 @@
 <refentry id="xmlsec-list">
 <refmeta>
-<refentrytitle role="top_of_page">list</refentrytitle>
+<refentrytitle role="top_of_page" id="xmlsec-list.top_of_page">list</refentrytitle>
 <manvolnum>3</manvolnum>
-<refmiscinfo>XMLSEC Library</refmiscinfo>
+<refmiscinfo>
+  XMLSEC Library
+</refmiscinfo>
 </refmeta>
-
 <refnamediv>
 <refname>list</refname>
 <refpurpose>Generic list structure implementation.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="xmlsec-list.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
-<synopsis>
-
-
-
-struct      <link linkend="xmlSecPtrList">xmlSecPtrList</link>;
-<link linkend="void">void</link>        <link linkend="xmlSecPtrListSetDefaultAllocMode">xmlSecPtrListSetDefaultAllocMode</link>
-                                            (<link linkend="xmlSecAllocMode">xmlSecAllocMode</link> defAllocMode,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> defInitialSize);
-<link linkend="int">int</link>         <link linkend="xmlSecPtrListInitialize">xmlSecPtrListInitialize</link>         (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
-                                             <link linkend="xmlSecPtrListId">xmlSecPtrListId</link> id);
-<link linkend="void">void</link>        <link linkend="xmlSecPtrListFinalize">xmlSecPtrListFinalize</link>           (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);
-<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> <link linkend="xmlSecPtrListCreate">xmlSecPtrListCreate</link>        (<link linkend="xmlSecPtrListId">xmlSecPtrListId</link> id);
-<link linkend="void">void</link>        <link linkend="xmlSecPtrListDestroy">xmlSecPtrListDestroy</link>            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);
-<link linkend="void">void</link>        <link linkend="xmlSecPtrListEmpty">xmlSecPtrListEmpty</link>              (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);
-<link linkend="int">int</link>         <link linkend="xmlSecPtrListCopy">xmlSecPtrListCopy</link>               (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> dst,
-                                             <link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> src);
-<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> <link linkend="xmlSecPtrListDuplicate">xmlSecPtrListDuplicate</link>     (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);
-<link linkend="xmlSecSize">xmlSecSize</link>  <link linkend="xmlSecPtrListGetSize">xmlSecPtrListGetSize</link>            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);
-<link linkend="xmlSecPtr">xmlSecPtr</link>   <link linkend="xmlSecPtrListGetItem">xmlSecPtrListGetItem</link>            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> pos);
-<link linkend="int">int</link>         <link linkend="xmlSecPtrListAdd">xmlSecPtrListAdd</link>                (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
-                                             <link linkend="xmlSec">xmlSecPtr</link> item);
-<link linkend="int">int</link>         <link linkend="xmlSecPtrListSet">xmlSecPtrListSet</link>                (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
-                                             <link linkend="xmlSec">xmlSecPtr</link> item,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> pos);
-<link linkend="int">int</link>         <link linkend="xmlSecPtrListRemove">xmlSecPtrListRemove</link>             (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> pos);
-<link linkend="xmlSecPtr">xmlSecPtr</link>   <link linkend="xmlSecPtrListRemoveAndReturn">xmlSecPtrListRemoveAndReturn</link>    (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> pos);
-<link linkend="void">void</link>        <link linkend="xmlSecPtrListDebugDump">xmlSecPtrListDebugDump</link>          (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
-                                             <link linkend="FILE:CAPS">FILE</link> *output);
-<link linkend="void">void</link>        <link linkend="xmlSecPtrListDebugXmlDump">xmlSecPtrListDebugXmlDump</link>       (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
-                                             <link linkend="FILE:CAPS">FILE</link> *output);
-#define     <link linkend="xmlSecPtrListGetName">xmlSecPtrListGetName</link>            (list)
-#define     <link linkend="xmlSecPtrListIsValid">xmlSecPtrListIsValid</link>            (list)
-#define     <link linkend="xmlSecPtrListCheckId">xmlSecPtrListCheckId</link>            (list, dataId)
-#define     <link linkend="xmlSecPtrListIdUnknown">xmlSecPtrListIdUnknown</link>
-<link linkend="xmlSecPtr">xmlSecPtr</link>   (<link linkend="xmlSecPtrDuplicateItemMethod">*xmlSecPtrDuplicateItemMethod</link>) (<link linkend="xmlSec">xmlSecPtr</link> ptr);
-<link linkend="void">void</link>        (<link linkend="xmlSecPtrDestroyItemMethod">*xmlSecPtrDestroyItemMethod</link>)   (<link linkend="xmlSec">xmlSecPtr</link> ptr);
-<link linkend="void">void</link>        (<link linkend="xmlSecPtrDebugDumpItemMethod">*xmlSecPtrDebugDumpItemMethod</link>) (<link linkend="xmlSec">xmlSecPtr</link> ptr,
-                                             <link linkend="FILE:CAPS">FILE</link> *output);
-struct      <link linkend="xmlSecPtrListKlass">xmlSecPtrListKlass</link>;
-#define     <link linkend="xmlSecPtrListKlassGetName">xmlSecPtrListKlassGetName</link>       (klass)
-#define     <link linkend="xmlSecStringListId">xmlSecStringListId</link>
-<link linkend="xmlSecPtrListId">xmlSecPtrListId</link> <link linkend="xmlSecStringListGetKlass">xmlSecStringListGetKlass</link>    (void);
+<synopsis><link linkend="void"><returnvalue>void</returnvalue></link>                (<link linkend="xmlSecPtrDebugDumpItemMethod">*xmlSecPtrDebugDumpItemMethod</link>)     (<parameter><link linkend="xmlSec"><type>xmlSecPtr</type></link> ptr</parameter>,
+                                                         <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);
+<link linkend="void"><returnvalue>void</returnvalue></link>                (<link linkend="xmlSecPtrDestroyItemMethod">*xmlSecPtrDestroyItemMethod</link>)       (<parameter><link linkend="xmlSec"><type>xmlSecPtr</type></link> ptr</parameter>);
+<link linkend="xmlSecPtr"><returnvalue>xmlSecPtr</returnvalue></link>           (<link linkend="xmlSecPtrDuplicateItemMethod">*xmlSecPtrDuplicateItemMethod</link>)     (<parameter><link linkend="xmlSec"><type>xmlSecPtr</type></link> ptr</parameter>);
+struct              <link linkend="xmlSecPtrList">xmlSecPtrList</link>;
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecPtrListAdd">xmlSecPtrListAdd</link>                    (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>,
+                                                         <parameter><link linkend="xmlSec"><type>xmlSecPtr</type></link> item</parameter>);
+#define             <link linkend="xmlSecPtrListCheckId">xmlSecPtrListCheckId</link>                (list,
+                                                         dataId)
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecPtrListCopy">xmlSecPtrListCopy</link>                   (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> dst</parameter>,
+                                                         <parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> src</parameter>);
+<link linkend="xmlSecPtrList"><returnvalue>xmlSecPtrListPtr</returnvalue></link>    <link linkend="xmlSecPtrListCreate">xmlSecPtrListCreate</link>                 (<parameter><link linkend="xmlSecPtrListId"><type>xmlSecPtrListId</type></link> id</parameter>);
+<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecPtrListDebugDump">xmlSecPtrListDebugDump</link>              (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>,
+                                                         <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);
+<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecPtrListDebugXmlDump">xmlSecPtrListDebugXmlDump</link>           (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>,
+                                                         <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);
+<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecPtrListDestroy">xmlSecPtrListDestroy</link>                (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>);
+<link linkend="xmlSecPtrListPtr"><returnvalue>xmlSecPtrListPtr</returnvalue></link>    <link linkend="xmlSecPtrListDuplicate">xmlSecPtrListDuplicate</link>              (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>);
+<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecPtrListEmpty">xmlSecPtrListEmpty</link>                  (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>);
+<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecPtrListFinalize">xmlSecPtrListFinalize</link>               (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>);
+<link linkend="xmlSecPtr"><returnvalue>xmlSecPtr</returnvalue></link>           <link linkend="xmlSecPtrListGetItem">xmlSecPtrListGetItem</link>                (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> pos</parameter>);
+#define             <link linkend="xmlSecPtrListGetName">xmlSecPtrListGetName</link>                (list)
+<link linkend="xmlSecSize"><returnvalue>xmlSecSize</returnvalue></link>          <link linkend="xmlSecPtrListGetSize">xmlSecPtrListGetSize</link>                (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>);
+#define             <link linkend="xmlSecPtrListIdUnknown">xmlSecPtrListIdUnknown</link>
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecPtrListInitialize">xmlSecPtrListInitialize</link>             (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>,
+                                                         <parameter><link linkend="xmlSecPtrListId"><type>xmlSecPtrListId</type></link> id</parameter>);
+#define             <link linkend="xmlSecPtrListIsValid">xmlSecPtrListIsValid</link>                (list)
+struct              <link linkend="xmlSecPtrListKlass">xmlSecPtrListKlass</link>;
+#define             <link linkend="xmlSecPtrListKlassGetName">xmlSecPtrListKlassGetName</link>           (klass)
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecPtrListRemove">xmlSecPtrListRemove</link>                 (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> pos</parameter>);
+<link linkend="xmlSecPtr"><returnvalue>xmlSecPtr</returnvalue></link>           <link linkend="xmlSecPtrListRemoveAndReturn">xmlSecPtrListRemoveAndReturn</link>        (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> pos</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecPtrListSet">xmlSecPtrListSet</link>                    (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>,
+                                                         <parameter><link linkend="xmlSec"><type>xmlSecPtr</type></link> item</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> pos</parameter>);
+<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecPtrListSetDefaultAllocMode">xmlSecPtrListSetDefaultAllocMode</link>    (<parameter><link linkend="xmlSecAllocMode"><type>xmlSecAllocMode</type></link> defAllocMode</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> defInitialSize</parameter>);
+<link linkend="xmlSecPtrListId"><returnvalue>xmlSecPtrListId</returnvalue></link>     <link linkend="xmlSecStringListGetKlass">xmlSecStringListGetKlass</link>            (<parameter><type>void</type></parameter>);
+#define             <link linkend="xmlSecStringListId">xmlSecStringListId</link>
 </synopsis>
 </refsynopsisdiv>
 
-
-
-
-
-
-
-
-
-<refsect1 role="desc">
+<refsect1 id="xmlsec-list.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 Generic list structure implementation.
 </para>
 </refsect1>
-
-<refsect1 role="details">
+<refsect1 id="xmlsec-list.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="xmlSecPtrList" role="struct">struct xmlSecPtrList</title>
-<indexterm><primary>xmlSecPtrList</primary></indexterm><programlisting>struct xmlSecPtrList {
+<refsect2 id="xmlSecPtrDebugDumpItemMethod" role="function">
+<title>xmlSecPtrDebugDumpItemMethod ()</title>
+<indexterm zone="xmlSecPtrDebugDumpItemMethod"><primary>xmlSecPtrDebugDumpItemMethod</primary></indexterm>
+<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                (*xmlSecPtrDebugDumpItemMethod)     (<parameter><link linkend="xmlSec"><type>xmlSecPtr</type></link> ptr</parameter>,
+                                                         <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);</programlisting>
+<para>
+Prints debug information about <parameter>item</parameter> to <parameter>output</parameter>.
+</para><variablelist role="params">
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara>the poinetr to list item.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>output</parameter>&#160;:</term>
+<listitem><simpara>the output FILE.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecPtrDestroyItemMethod" role="function">
+<title>xmlSecPtrDestroyItemMethod ()</title>
+<indexterm zone="xmlSecPtrDestroyItemMethod"><primary>xmlSecPtrDestroyItemMethod</primary></indexterm>
+<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                (*xmlSecPtrDestroyItemMethod)       (<parameter><link linkend="xmlSec"><type>xmlSecPtr</type></link> ptr</parameter>);</programlisting>
+<para>
+Destroys list item <parameter>ptr</parameter>.
+</para><variablelist role="params">
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara>the poinetr to list item.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecPtrDuplicateItemMethod" role="function">
+<title>xmlSecPtrDuplicateItemMethod ()</title>
+<indexterm zone="xmlSecPtrDuplicateItemMethod"><primary>xmlSecPtrDuplicateItemMethod</primary></indexterm>
+<programlisting><link linkend="xmlSecPtr"><returnvalue>xmlSecPtr</returnvalue></link>           (*xmlSecPtrDuplicateItemMethod)     (<parameter><link linkend="xmlSec"><type>xmlSecPtr</type></link> ptr</parameter>);</programlisting>
+<para>
+Duplicates item <parameter>ptr</parameter>.
+</para><variablelist role="params">
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara>the poinetr to list item.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to new item copy or NULL if an error occurs.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecPtrList" role="struct">
+<title>struct xmlSecPtrList</title>
+<indexterm zone="xmlSecPtrList"><primary>xmlSecPtrList</primary></indexterm>
+<programlisting>struct xmlSecPtrList {
     xmlSecPtrListId             id;
 
     xmlSecPtr*                  data;
@@ -91,394 +113,220 @@ Generic list structure implementation.
 };
 </programlisting>
 <para>
-The pointers list.</para>
-<para>
-
+The pointers list.
 </para><variablelist role="struct">
-<varlistentry>
-<term><link linkend="xmlSecPtrListId">xmlSecPtrListId</link>&nbsp;<structfield>id</structfield>;</term>
-<listitem><simpara>                         the list items description.
-</simpara></listitem>
+<varlistentry><term><link linkend="xmlSecPtrListId"><type>xmlSecPtrListId</type></link>&#160;<structfield id="xmlSecPtrList.id">id</structfield>;</term>
+<listitem><simpara>the list items description.</simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSec">xmlSecPtr</link>&nbsp;*<structfield>data</structfield>;</term>
-<listitem><simpara>                       the list data.
-</simpara></listitem>
+<varlistentry><term><link linkend="xmlSec"><type>xmlSecPtr</type></link>&#160;*<structfield id="xmlSecPtrList.data">data</structfield>;</term>
+<listitem><simpara>the list data.</simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecSize">xmlSecSize</link>&nbsp;<structfield>use</structfield>;</term>
-<listitem><simpara>                        the current list size.
-</simpara></listitem>
+<varlistentry><term><link linkend="xmlSecSize"><type>xmlSecSize</type></link>&#160;<structfield id="xmlSecPtrList.use">use</structfield>;</term>
+<listitem><simpara>the current list size.</simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecSize">xmlSecSize</link>&nbsp;<structfield>max</structfield>;</term>
-<listitem><simpara>                        the max (allocated) list size.
-</simpara></listitem>
+<varlistentry><term><link linkend="xmlSecSize"><type>xmlSecSize</type></link>&#160;<structfield id="xmlSecPtrList.max">max</structfield>;</term>
+<listitem><simpara>the max (allocated) list size.</simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecAllocMode">xmlSecAllocMode</link>&nbsp;<structfield>allocMode</structfield>;</term>
-<listitem><simpara>                  the memory allocation mode.
-</simpara></listitem>
+<varlistentry><term><link linkend="xmlSecAllocMode"><type>xmlSecAllocMode</type></link>&#160;<structfield id="xmlSecPtrList.allocMode">allocMode</structfield>;</term>
+<listitem><simpara>the memory allocation mode.</simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrListSetDefaultAllocMode" role="function">xmlSecPtrListSetDefaultAllocMode ()</title>
-<indexterm><primary>xmlSecPtrListSetDefaultAllocMode</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecPtrListSetDefaultAllocMode
-                                            (<link linkend="xmlSecAllocMode">xmlSecAllocMode</link> defAllocMode,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> defInitialSize);</programlisting>
+<refsect2 id="xmlSecPtrListAdd" role="function">
+<title>xmlSecPtrListAdd ()</title>
+<indexterm zone="xmlSecPtrListAdd"><primary>xmlSecPtrListAdd</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecPtrListAdd                    (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>,
+                                                         <parameter><link linkend="xmlSec"><type>xmlSecPtr</type></link> item</parameter>);</programlisting>
 <para>
-Sets new default allocation mode and minimal initial list size.</para>
-<para>
-
+Adds <parameter>item</parameter> to the end of the <parameter>list</parameter>.
 </para><variablelist role="params">
-<varlistentry><term><parameter>defAllocMode</parameter>&nbsp;:</term>
-<listitem><simpara>       the new default memory allocation mode.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>defInitialSize</parameter>&nbsp;:</term>
-<listitem><simpara>     the new default minimal initial size.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<listitem><simpara>the pointer to list.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>item</parameter>&#160;:</term>
+<listitem><simpara>the item.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>0 on success or a negative value if an error occurs.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrListInitialize" role="function">xmlSecPtrListInitialize ()</title>
-<indexterm><primary>xmlSecPtrListInitialize</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecPtrListInitialize         (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
-                                             <link linkend="xmlSecPtrListId">xmlSecPtrListId</link> id);</programlisting>
+<refsect2 id="xmlSecPtrListCheckId" role="macro">
+<title>xmlSecPtrListCheckId()</title>
+<indexterm zone="xmlSecPtrListCheckId"><primary>xmlSecPtrListCheckId</primary></indexterm>
+<programlisting>#define             xmlSecPtrListCheckId(list, dataId)</programlisting>
 <para>
-Initializes the list of given klass. Caller is responsible
-for cleaning up by calling <link linkend="xmlSecPtrListFinalize"><type>xmlSecPtrListFinalize</type></link> function.</para>
-<para>
-
+Macro. Returns 1 if <parameter>list</parameter> is valid and <parameter>list</parameter>'s id is equal to <parameter>dataId</parameter>.
 </para><variablelist role="params">
-<varlistentry><term><parameter>list</parameter>&nbsp;:</term>
-<listitem><simpara>               the pointer to list.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
-<listitem><simpara>                 the list klass.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<listitem><simpara>the pointer to list.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dataId</parameter>&#160;:</term>
+<listitem><simpara>the list Id.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrListFinalize" role="function">xmlSecPtrListFinalize ()</title>
-<indexterm><primary>xmlSecPtrListFinalize</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecPtrListFinalize           (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);</programlisting>
-<para>
-Cleans up the list initialized with <link linkend="xmlSecPtrListInitialize"><type>xmlSecPtrListInitialize</type></link>
-function.</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>list</parameter>&nbsp;:</term>
-<listitem><simpara>               the pointer to list.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrListCreate" role="function">xmlSecPtrListCreate ()</title>
-<indexterm><primary>xmlSecPtrListCreate</primary></indexterm><programlisting><link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> xmlSecPtrListCreate        (<link linkend="xmlSecPtrListId">xmlSecPtrListId</link> id);</programlisting>
-<para>
-Creates new list object. Caller is responsible for freeing returned list
-by calling <link linkend="xmlSecPtrListDestroy"><type>xmlSecPtrListDestroy</type></link> function.</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
-<listitem><simpara>                 the list klass.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to newly allocated list or NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrListDestroy" role="function">xmlSecPtrListDestroy ()</title>
-<indexterm><primary>xmlSecPtrListDestroy</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecPtrListDestroy            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);</programlisting>
-<para>
-Destroys <parameter>list</parameter> created with <link linkend="xmlSecPtrListCreate"><type>xmlSecPtrListCreate</type></link> function.</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>list</parameter>&nbsp;:</term>
-<listitem><simpara>               the pointer to list.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrListEmpty" role="function">xmlSecPtrListEmpty ()</title>
-<indexterm><primary>xmlSecPtrListEmpty</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecPtrListEmpty              (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);</programlisting>
-<para>
-Remove all items from <parameter>list</parameter> (if any).</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>list</parameter>&nbsp;:</term>
-<listitem><simpara>               the pointer to list.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrListCopy" role="function">xmlSecPtrListCopy ()</title>
-<indexterm><primary>xmlSecPtrListCopy</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecPtrListCopy               (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> dst,
-                                             <link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> src);</programlisting>
+<refsect2 id="xmlSecPtrListCopy" role="function">
+<title>xmlSecPtrListCopy ()</title>
+<indexterm zone="xmlSecPtrListCopy"><primary>xmlSecPtrListCopy</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecPtrListCopy                   (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> dst</parameter>,
+                                                         <parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> src</parameter>);</programlisting>
 <para>
 Copies <parameter>src</parameter> list items to <parameter>dst</parameter> list using <link linkend="duplicateItem"><type>duplicateItem</type></link> method
 of the list klass. If <link linkend="duplicateItem"><type>duplicateItem</type></link> method is NULL then
-we jsut copy pointers to items.</para>
-<para>
-
+we jsut copy pointers to items.
 </para><variablelist role="params">
-<varlistentry><term><parameter>dst</parameter>&nbsp;:</term>
-<listitem><simpara>                the pointer to destination list.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>src</parameter>&nbsp;:</term>
-<listitem><simpara>                the pointer to source list.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dst</parameter>&#160;:</term>
+<listitem><simpara>the pointer to destination list.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>src</parameter>&#160;:</term>
+<listitem><simpara>the pointer to source list.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>0 on success or a negative value if an error occurs.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrListDuplicate" role="function">xmlSecPtrListDuplicate ()</title>
-<indexterm><primary>xmlSecPtrListDuplicate</primary></indexterm><programlisting><link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> xmlSecPtrListDuplicate     (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);</programlisting>
+<refsect2 id="xmlSecPtrListCreate" role="function">
+<title>xmlSecPtrListCreate ()</title>
+<indexterm zone="xmlSecPtrListCreate"><primary>xmlSecPtrListCreate</primary></indexterm>
+<programlisting><link linkend="xmlSecPtrList"><returnvalue>xmlSecPtrListPtr</returnvalue></link>    xmlSecPtrListCreate                 (<parameter><link linkend="xmlSecPtrListId"><type>xmlSecPtrListId</type></link> id</parameter>);</programlisting>
 <para>
-Creates a new copy of <parameter>list</parameter> and all its items.</para>
-<para>
-
+Creates new list object. Caller is responsible for freeing returned list
+by calling <link linkend="xmlSecPtrListDestroy"><type>xmlSecPtrListDestroy</type></link> function.
 </para><variablelist role="params">
-<varlistentry><term><parameter>list</parameter>&nbsp;:</term>
-<listitem><simpara>               the pointer to list.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to newly allocated list or NULL if an error occurs.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>id</parameter>&#160;:</term>
+<listitem><simpara>the list klass.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to newly allocated list or NULL if an error occurs.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrListGetSize" role="function">xmlSecPtrListGetSize ()</title>
-<indexterm><primary>xmlSecPtrListGetSize</primary></indexterm><programlisting><link linkend="xmlSecSize">xmlSecSize</link>  xmlSecPtrListGetSize            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);</programlisting>
+<refsect2 id="xmlSecPtrListDebugDump" role="function">
+<title>xmlSecPtrListDebugDump ()</title>
+<indexterm zone="xmlSecPtrListDebugDump"><primary>xmlSecPtrListDebugDump</primary></indexterm>
+<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecPtrListDebugDump              (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>,
+                                                         <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);</programlisting>
 <para>
-Gets list size.</para>
-<para>
-
+Prints debug information about <parameter>list</parameter> to the <parameter>output</parameter>.
 </para><variablelist role="params">
-<varlistentry><term><parameter>list</parameter>&nbsp;:</term>
-<listitem><simpara>               the pointer to list.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the number of itmes in <parameter>list</parameter>.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<listitem><simpara>the pointer to list.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>output</parameter>&#160;:</term>
+<listitem><simpara>the pointer to output FILE.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrListGetItem" role="function">xmlSecPtrListGetItem ()</title>
-<indexterm><primary>xmlSecPtrListGetItem</primary></indexterm><programlisting><link linkend="xmlSecPtr">xmlSecPtr</link>   xmlSecPtrListGetItem            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> pos);</programlisting>
+<refsect2 id="xmlSecPtrListDebugXmlDump" role="function">
+<title>xmlSecPtrListDebugXmlDump ()</title>
+<indexterm zone="xmlSecPtrListDebugXmlDump"><primary>xmlSecPtrListDebugXmlDump</primary></indexterm>
+<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecPtrListDebugXmlDump           (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>,
+                                                         <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);</programlisting>
 <para>
-Gets item from the list.</para>
-<para>
-
+Prints debug information about <parameter>list</parameter> to the <parameter>output</parameter> in XML format.
 </para><variablelist role="params">
-<varlistentry><term><parameter>list</parameter>&nbsp;:</term>
-<listitem><simpara>               the pointer to list.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pos</parameter>&nbsp;:</term>
-<listitem><simpara>                the item position.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the list item at position <parameter>pos</parameter> or NULL if <parameter>pos</parameter> is greater
-than the number of items in the list or an error occurs.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<listitem><simpara>the pointer to list.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>output</parameter>&#160;:</term>
+<listitem><simpara>the pointer to output FILE.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrListAdd" role="function">xmlSecPtrListAdd ()</title>
-<indexterm><primary>xmlSecPtrListAdd</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecPtrListAdd                (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
-                                             <link linkend="xmlSec">xmlSecPtr</link> item);</programlisting>
+<refsect2 id="xmlSecPtrListDestroy" role="function">
+<title>xmlSecPtrListDestroy ()</title>
+<indexterm zone="xmlSecPtrListDestroy"><primary>xmlSecPtrListDestroy</primary></indexterm>
+<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecPtrListDestroy                (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>);</programlisting>
 <para>
-Adds <parameter>item</parameter> to the end of the <parameter>list</parameter>.</para>
-<para>
-
+Destroys <parameter>list</parameter> created with <link linkend="xmlSecPtrListCreate"><type>xmlSecPtrListCreate</type></link> function.
 </para><variablelist role="params">
-<varlistentry><term><parameter>list</parameter>&nbsp;:</term>
-<listitem><simpara>               the pointer to list.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>item</parameter>&nbsp;:</term>
-<listitem><simpara>               the item.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<listitem><simpara>the pointer to list.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrListSet" role="function">xmlSecPtrListSet ()</title>
-<indexterm><primary>xmlSecPtrListSet</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecPtrListSet                (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
-                                             <link linkend="xmlSec">xmlSecPtr</link> item,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> pos);</programlisting>
+<refsect2 id="xmlSecPtrListDuplicate" role="function">
+<title>xmlSecPtrListDuplicate ()</title>
+<indexterm zone="xmlSecPtrListDuplicate"><primary>xmlSecPtrListDuplicate</primary></indexterm>
+<programlisting><link linkend="xmlSecPtrListPtr"><returnvalue>xmlSecPtrListPtr</returnvalue></link>    xmlSecPtrListDuplicate              (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>);</programlisting>
 <para>
-Sets the value of list item at position <parameter>pos</parameter>. The old value
-is destroyed.</para>
-<para>
-
+Creates a new copy of <parameter>list</parameter> and all its items.
 </para><variablelist role="params">
-<varlistentry><term><parameter>list</parameter>&nbsp;:</term>
-<listitem><simpara>               the pointer to list.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>item</parameter>&nbsp;:</term>
-<listitem><simpara>               the item.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pos</parameter>&nbsp;:</term>
-<listitem><simpara>                the pos.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<listitem><simpara>the pointer to list.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to newly allocated list or NULL if an error occurs.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrListRemove" role="function">xmlSecPtrListRemove ()</title>
-<indexterm><primary>xmlSecPtrListRemove</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecPtrListRemove             (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> pos);</programlisting>
+<refsect2 id="xmlSecPtrListEmpty" role="function">
+<title>xmlSecPtrListEmpty ()</title>
+<indexterm zone="xmlSecPtrListEmpty"><primary>xmlSecPtrListEmpty</primary></indexterm>
+<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecPtrListEmpty                  (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>);</programlisting>
 <para>
-Destroys list item at the position <parameter>pos</parameter> and sets it value to NULL.</para>
-<para>
-
+Remove all items from <parameter>list</parameter> (if any).
 </para><variablelist role="params">
-<varlistentry><term><parameter>list</parameter>&nbsp;:</term>
-<listitem><simpara>               the pointer to list.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pos</parameter>&nbsp;:</term>
-<listitem><simpara>                the position.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<listitem><simpara>the pointer to list.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrListRemoveAndReturn" role="function">xmlSecPtrListRemoveAndReturn ()</title>
-<indexterm><primary>xmlSecPtrListRemoveAndReturn</primary></indexterm><programlisting><link linkend="xmlSecPtr">xmlSecPtr</link>   xmlSecPtrListRemoveAndReturn    (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> pos);</programlisting>
+<refsect2 id="xmlSecPtrListFinalize" role="function">
+<title>xmlSecPtrListFinalize ()</title>
+<indexterm zone="xmlSecPtrListFinalize"><primary>xmlSecPtrListFinalize</primary></indexterm>
+<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecPtrListFinalize               (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>);</programlisting>
 <para>
-Remove the list item at the position <parameter>pos</parameter> and return it back.</para>
-<para>
-
+Cleans up the list initialized with <link linkend="xmlSecPtrListInitialize"><type>xmlSecPtrListInitialize</type></link>
+function.
 </para><variablelist role="params">
-<varlistentry><term><parameter>list</parameter>&nbsp;:</term>
-<listitem><simpara>               the pointer to list.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pos</parameter>&nbsp;:</term>
-<listitem><simpara>                the position.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the pointer to the list item.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<listitem><simpara>the pointer to list.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrListDebugDump" role="function">xmlSecPtrListDebugDump ()</title>
-<indexterm><primary>xmlSecPtrListDebugDump</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecPtrListDebugDump          (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
-                                             <link linkend="FILE:CAPS">FILE</link> *output);</programlisting>
+<refsect2 id="xmlSecPtrListGetItem" role="function">
+<title>xmlSecPtrListGetItem ()</title>
+<indexterm zone="xmlSecPtrListGetItem"><primary>xmlSecPtrListGetItem</primary></indexterm>
+<programlisting><link linkend="xmlSecPtr"><returnvalue>xmlSecPtr</returnvalue></link>           xmlSecPtrListGetItem                (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> pos</parameter>);</programlisting>
 <para>
-Prints debug information about <parameter>list</parameter> to the <parameter>output</parameter>.</para>
-<para>
-
+Gets item from the list.
 </para><variablelist role="params">
-<varlistentry><term><parameter>list</parameter>&nbsp;:</term>
-<listitem><simpara>               the pointer to list.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>output</parameter>&nbsp;:</term>
-<listitem><simpara>             the pointer to output FILE.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<listitem><simpara>the pointer to list.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pos</parameter>&#160;:</term>
+<listitem><simpara>the item position.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>the list item at position <parameter>pos</parameter> or NULL if <parameter>pos</parameter> is greater
+than the number of items in the list or an error occurs.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrListDebugXmlDump" role="function">xmlSecPtrListDebugXmlDump ()</title>
-<indexterm><primary>xmlSecPtrListDebugXmlDump</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecPtrListDebugXmlDump       (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
-                                             <link linkend="FILE:CAPS">FILE</link> *output);</programlisting>
+<refsect2 id="xmlSecPtrListGetName" role="macro">
+<title>xmlSecPtrListGetName()</title>
+<indexterm zone="xmlSecPtrListGetName"><primary>xmlSecPtrListGetName</primary></indexterm>
+<programlisting>#define             xmlSecPtrListGetName(list)</programlisting>
 <para>
-Prints debug information about <parameter>list</parameter> to the <parameter>output</parameter> in XML format.</para>
-<para>
-
+Macro. Returns lists's name.
 </para><variablelist role="params">
-<varlistentry><term><parameter>list</parameter>&nbsp;:</term>
-<listitem><simpara>               the pointer to list.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>output</parameter>&nbsp;:</term>
-<listitem><simpara>             the pointer to output FILE.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<listitem><simpara>the ponter to list.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrListGetName" role="macro">xmlSecPtrListGetName()</title>
-<indexterm><primary>xmlSecPtrListGetName</primary></indexterm><programlisting>#define     xmlSecPtrListGetName(list)</programlisting>
+<refsect2 id="xmlSecPtrListGetSize" role="function">
+<title>xmlSecPtrListGetSize ()</title>
+<indexterm zone="xmlSecPtrListGetSize"><primary>xmlSecPtrListGetSize</primary></indexterm>
+<programlisting><link linkend="xmlSecSize"><returnvalue>xmlSecSize</returnvalue></link>          xmlSecPtrListGetSize                (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>);</programlisting>
 <para>
-Macro. Returns lists's name.</para>
-<para>
-
+Gets list size.
 </para><variablelist role="params">
-<varlistentry><term><parameter>list</parameter>&nbsp;:</term>
-<listitem><simpara>               the ponter to list.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<listitem><simpara>the pointer to list.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>the number of itmes in <parameter>list</parameter>.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrListIsValid" role="macro">xmlSecPtrListIsValid()</title>
-<indexterm><primary>xmlSecPtrListIsValid</primary></indexterm><programlisting>#define     xmlSecPtrListIsValid(list)</programlisting>
-<para>
-Macro. Returns 1 if <parameter>list</parameter> is not NULL and <parameter>list</parameter>-&gt;id is not NULL
-or 0 otherwise.</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>list</parameter>&nbsp;:</term>
-<listitem><simpara>               the pointer to list.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrListCheckId" role="macro">xmlSecPtrListCheckId()</title>
-<indexterm><primary>xmlSecPtrListCheckId</primary></indexterm><programlisting>#define     xmlSecPtrListCheckId(list, dataId)</programlisting>
-<para>
-Macro. Returns 1 if <parameter>list</parameter> is valid and <parameter>list</parameter>'s id is equal to <parameter>dataId</parameter>.</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>list</parameter>&nbsp;:</term>
-<listitem><simpara>               the pointer to list.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>dataId</parameter>&nbsp;:</term>
-<listitem><simpara>             the list Id.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrListIdUnknown" role="macro">xmlSecPtrListIdUnknown</title>
-<indexterm><primary>xmlSecPtrListIdUnknown</primary></indexterm><programlisting>#define xmlSecPtrListIdUnknown                  NULL
+<refsect2 id="xmlSecPtrListIdUnknown" role="macro">
+<title>xmlSecPtrListIdUnknown</title>
+<indexterm zone="xmlSecPtrListIdUnknown"><primary>xmlSecPtrListIdUnknown</primary></indexterm>
+<programlisting>#define xmlSecPtrListIdUnknown                  NULL
 </programlisting>
 <para>
-The "unknown" id.</para>
-<para>
-
+The "unknown" id.
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrDuplicateItemMethod" role="function">xmlSecPtrDuplicateItemMethod ()</title>
-<indexterm><primary>xmlSecPtrDuplicateItemMethod</primary></indexterm><programlisting><link linkend="xmlSecPtr">xmlSecPtr</link>   (*xmlSecPtrDuplicateItemMethod) (<link linkend="xmlSec">xmlSecPtr</link> ptr);</programlisting>
+<refsect2 id="xmlSecPtrListInitialize" role="function">
+<title>xmlSecPtrListInitialize ()</title>
+<indexterm zone="xmlSecPtrListInitialize"><primary>xmlSecPtrListInitialize</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecPtrListInitialize             (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>,
+                                                         <parameter><link linkend="xmlSecPtrListId"><type>xmlSecPtrListId</type></link> id</parameter>);</programlisting>
 <para>
-Duplicates item <parameter>ptr</parameter>.</para>
-<para>
-
+Initializes the list of given klass. Caller is responsible
+for cleaning up by calling <link linkend="xmlSecPtrListFinalize"><type>xmlSecPtrListFinalize</type></link> function.
 </para><variablelist role="params">
-<varlistentry><term><parameter>ptr</parameter>&nbsp;:</term>
-<listitem><simpara>                the poinetr to list item.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to new item copy or NULL if an error occurs.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<listitem><simpara>the pointer to list.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>id</parameter>&#160;:</term>
+<listitem><simpara>the list klass.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>0 on success or a negative value if an error occurs.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrDestroyItemMethod" role="function">xmlSecPtrDestroyItemMethod ()</title>
-<indexterm><primary>xmlSecPtrDestroyItemMethod</primary></indexterm><programlisting><link linkend="void">void</link>        (*xmlSecPtrDestroyItemMethod)   (<link linkend="xmlSec">xmlSecPtr</link> ptr);</programlisting>
+<refsect2 id="xmlSecPtrListIsValid" role="macro">
+<title>xmlSecPtrListIsValid()</title>
+<indexterm zone="xmlSecPtrListIsValid"><primary>xmlSecPtrListIsValid</primary></indexterm>
+<programlisting>#define             xmlSecPtrListIsValid(list)</programlisting>
 <para>
-Destroys list item <parameter>ptr</parameter>.</para>
-<para>
-
+Macro. Returns 1 if <parameter>list</parameter> is not NULL and <parameter>list</parameter>-&gt;id is not NULL
+or 0 otherwise.
 </para><variablelist role="params">
-<varlistentry><term><parameter>ptr</parameter>&nbsp;:</term>
-<listitem><simpara>                the poinetr to list item.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<listitem><simpara>the pointer to list.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrDebugDumpItemMethod" role="function">xmlSecPtrDebugDumpItemMethod ()</title>
-<indexterm><primary>xmlSecPtrDebugDumpItemMethod</primary></indexterm><programlisting><link linkend="void">void</link>        (*xmlSecPtrDebugDumpItemMethod) (<link linkend="xmlSec">xmlSecPtr</link> ptr,
-                                             <link linkend="FILE:CAPS">FILE</link> *output);</programlisting>
-<para>
-Prints debug information about <parameter>item</parameter> to <parameter>output</parameter>.</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>ptr</parameter>&nbsp;:</term>
-<listitem><simpara>                the poinetr to list item.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>output</parameter>&nbsp;:</term>
-<listitem><simpara>             the output FILE.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrListKlass" role="struct">struct xmlSecPtrListKlass</title>
-<indexterm><primary>xmlSecPtrListKlass</primary></indexterm><programlisting>struct xmlSecPtrListKlass {
+<refsect2 id="xmlSecPtrListKlass" role="struct">
+<title>struct xmlSecPtrListKlass</title>
+<indexterm zone="xmlSecPtrListKlass"><primary>xmlSecPtrListKlass</primary></indexterm>
+<programlisting>struct xmlSecPtrListKlass {
     const xmlChar*                      name;
     xmlSecPtrDuplicateItemMethod        duplicateItem;
     xmlSecPtrDestroyItemMethod          destroyItem;
@@ -487,72 +335,111 @@ Prints debug information about <parameter>item</parameter> to <parameter>output<
 };
 </programlisting>
 <para>
-List klass.</para>
-<para>
-
+List klass.
 </para><variablelist role="struct">
-<varlistentry>
-<term>const&nbsp;<link linkend="xmlChar">xmlChar</link>&nbsp;*<structfield>name</structfield>;</term>
-<listitem><simpara>               the list klass name.
-</simpara></listitem>
+<varlistentry><term>const&#160;<link linkend="xmlChar"><type>xmlChar</type></link>&#160;*<structfield id="xmlSecPtrListKlass.name">name</structfield>;</term>
+<listitem><simpara>the list klass name.</simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecPtrDuplicateItemMethod">xmlSecPtrDuplicateItemMethod</link>&nbsp;<structfield>duplicateItem</structfield>;</term>
-<listitem><simpara>      the duplciate item method.
-</simpara></listitem>
+<varlistentry><term><link linkend="xmlSecPtrDuplicateItemMethod"><type>xmlSecPtrDuplicateItemMethod</type></link>&#160;<structfield id="xmlSecPtrListKlass.duplicateItem">duplicateItem</structfield>;</term>
+<listitem><simpara>the duplciate item method.</simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecPtrDestroyItemMethod">xmlSecPtrDestroyItemMethod</link>&nbsp;<structfield>destroyItem</structfield>;</term>
-<listitem><simpara>        the destroy item method.
-</simpara></listitem>
+<varlistentry><term><link linkend="xmlSecPtrDestroyItemMethod"><type>xmlSecPtrDestroyItemMethod</type></link>&#160;<structfield id="xmlSecPtrListKlass.destroyItem">destroyItem</structfield>;</term>
+<listitem><simpara>the destroy item method.</simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecPtrDebugDumpItemMethod">xmlSecPtrDebugDumpItemMethod</link>&nbsp;<structfield>debugDumpItem</structfield>;</term>
-<listitem><simpara>      the debug dump item method.
-</simpara></listitem>
+<varlistentry><term><link linkend="xmlSecPtrDebugDumpItemMethod"><type>xmlSecPtrDebugDumpItemMethod</type></link>&#160;<structfield id="xmlSecPtrListKlass.debugDumpItem">debugDumpItem</structfield>;</term>
+<listitem><simpara>the debug dump item method.</simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecPtrDebugDumpItemMethod">xmlSecPtrDebugDumpItemMethod</link>&nbsp;<structfield>debugXmlDumpItem</structfield>;</term>
-<listitem><simpara>   the debug dump item in xml format method.
-</simpara></listitem>
+<varlistentry><term><link linkend="xmlSecPtrDebugDumpItemMethod"><type>xmlSecPtrDebugDumpItemMethod</type></link>&#160;<structfield id="xmlSecPtrListKlass.debugXmlDumpItem">debugXmlDumpItem</structfield>;</term>
+<listitem><simpara>the debug dump item in xml format method.</simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrListKlassGetName" role="macro">xmlSecPtrListKlassGetName()</title>
-<indexterm><primary>xmlSecPtrListKlassGetName</primary></indexterm><programlisting>#define     xmlSecPtrListKlassGetName(klass)</programlisting>
+<refsect2 id="xmlSecPtrListKlassGetName" role="macro">
+<title>xmlSecPtrListKlassGetName()</title>
+<indexterm zone="xmlSecPtrListKlassGetName"><primary>xmlSecPtrListKlassGetName</primary></indexterm>
+<programlisting>#define             xmlSecPtrListKlassGetName(klass)</programlisting>
 <para>
-Macro. Returns the list klass name.</para>
-<para>
-
+Macro. Returns the list klass name.
 </para><variablelist role="params">
-<varlistentry><term><parameter>klass</parameter>&nbsp;:</term>
-<listitem><simpara>              the list klass.
-2
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>klass</parameter>&#160;:</term>
+<listitem><simpara>the list klass.
+2</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecStringListId" role="macro">xmlSecStringListId</title>
-<indexterm><primary>xmlSecStringListId</primary></indexterm><programlisting>#define     xmlSecStringListId</programlisting>
+<refsect2 id="xmlSecPtrListRemove" role="function">
+<title>xmlSecPtrListRemove ()</title>
+<indexterm zone="xmlSecPtrListRemove"><primary>xmlSecPtrListRemove</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecPtrListRemove                 (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> pos</parameter>);</programlisting>
 <para>
-Strings list klass.</para>
+Destroys list item at the position <parameter>pos</parameter> and sets it value to NULL.
+</para><variablelist role="params">
+<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<listitem><simpara>the pointer to list.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pos</parameter>&#160;:</term>
+<listitem><simpara>the position.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>0 on success or a negative value if an error occurs.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecPtrListRemoveAndReturn" role="function">
+<title>xmlSecPtrListRemoveAndReturn ()</title>
+<indexterm zone="xmlSecPtrListRemoveAndReturn"><primary>xmlSecPtrListRemoveAndReturn</primary></indexterm>
+<programlisting><link linkend="xmlSecPtr"><returnvalue>xmlSecPtr</returnvalue></link>           xmlSecPtrListRemoveAndReturn        (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> pos</parameter>);</programlisting>
 <para>
-
+Remove the list item at the position <parameter>pos</parameter> and return it back.
+</para><variablelist role="params">
+<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<listitem><simpara>the pointer to list.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pos</parameter>&#160;:</term>
+<listitem><simpara>the position.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>the pointer to the list item.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecPtrListSet" role="function">
+<title>xmlSecPtrListSet ()</title>
+<indexterm zone="xmlSecPtrListSet"><primary>xmlSecPtrListSet</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecPtrListSet                    (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>,
+                                                         <parameter><link linkend="xmlSec"><type>xmlSecPtr</type></link> item</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> pos</parameter>);</programlisting>
+<para>
+Sets the value of list item at position <parameter>pos</parameter>. The old value
+is destroyed.
+</para><variablelist role="params">
+<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<listitem><simpara>the pointer to list.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>item</parameter>&#160;:</term>
+<listitem><simpara>the item.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pos</parameter>&#160;:</term>
+<listitem><simpara>the pos.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>0 on success or a negative value if an error occurs.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecPtrListSetDefaultAllocMode" role="function">
+<title>xmlSecPtrListSetDefaultAllocMode ()</title>
+<indexterm zone="xmlSecPtrListSetDefaultAllocMode"><primary>xmlSecPtrListSetDefaultAllocMode</primary></indexterm>
+<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecPtrListSetDefaultAllocMode    (<parameter><link linkend="xmlSecAllocMode"><type>xmlSecAllocMode</type></link> defAllocMode</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> defInitialSize</parameter>);</programlisting>
+<para>
+Sets new default allocation mode and minimal initial list size.
+</para><variablelist role="params">
+<varlistentry><term><parameter>defAllocMode</parameter>&#160;:</term>
+<listitem><simpara>the new default memory allocation mode.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>defInitialSize</parameter>&#160;:</term>
+<listitem><simpara>the new default minimal initial size.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecStringListGetKlass" role="function">
+<title>xmlSecStringListGetKlass ()</title>
+<indexterm zone="xmlSecStringListGetKlass"><primary>xmlSecStringListGetKlass</primary></indexterm>
+<programlisting><link linkend="xmlSecPtrListId"><returnvalue>xmlSecPtrListId</returnvalue></link>     xmlSecStringListGetKlass            (<parameter><type>void</type></parameter>);</programlisting>
+<para>
+The strins list class.
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>strings list klass.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecStringListId" role="macro">
+<title>xmlSecStringListId</title>
+<indexterm zone="xmlSecStringListId"><primary>xmlSecStringListId</primary></indexterm>
+<programlisting>#define             xmlSecStringListId</programlisting>
+<para>
+Strings list klass.
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecStringListGetKlass" role="function">xmlSecStringListGetKlass ()</title>
-<indexterm><primary>xmlSecStringListGetKlass</primary></indexterm><programlisting><link linkend="xmlSecPtrListId">xmlSecPtrListId</link> xmlSecStringListGetKlass    (void);</programlisting>
-<para>
-The strins list class.</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> strings list klass.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
 
 </refsect1>
-
-
-
 
 </refentry>

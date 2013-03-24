@@ -17,82 +17,19 @@ Crypto transforms implementation for MS Crypto.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### FUNCTION xmlSecCryptoGetFunctions_mscrypto ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoInit ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoShutdown ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoKeysMngrInit ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoGenerateRandom ##### -->
-<para>
-
-</para>
-
-@buffer: 
-@size: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoErrorsDefaultCallback ##### -->
-<para>
-
-</para>
-
-@file: 
-@line: 
-@func: 
-@errorObject: 
-@errorSubject: 
-@reason: 
-@msg: 
 
 
 <!-- ##### FUNCTION xmlSecMSCryptoConvertLocaleToUnicode ##### -->
-<para>
-
-</para>
-
-@str: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoConvertUtf8ToUnicode ##### -->
-<para>
-
-</para>
-
-@str: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoConvertUnicodeToUtf8 ##### -->
 <para>
 
 </para>
@@ -110,7 +47,7 @@ Crypto transforms implementation for MS Crypto.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecMSCryptoConvertUtf8ToLocale ##### -->
+<!-- ##### FUNCTION xmlSecMSCryptoConvertTstrToUtf8 ##### -->
 <para>
 
 </para>
@@ -119,7 +56,16 @@ Crypto transforms implementation for MS Crypto.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecMSCryptoConvertTstrToUtf8 ##### -->
+<!-- ##### FUNCTION xmlSecMSCryptoConvertUnicodeToUtf8 ##### -->
+<para>
+
+</para>
+
+@str: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoConvertUtf8ToLocale ##### -->
 <para>
 
 </para>
@@ -137,273 +83,71 @@ Crypto transforms implementation for MS Crypto.
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecMSCryptoKeyDataDsaId ##### -->
+<!-- ##### FUNCTION xmlSecMSCryptoConvertUtf8ToUnicode ##### -->
 <para>
 
 </para>
 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoKeyDataDsaGetKlass ##### -->
-<para>
-
-</para>
-
+@str: 
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecMSCryptoTransformDsaSha1Id ##### -->
+<!-- ##### FUNCTION xmlSecMSCryptoErrorsDefaultCallback ##### -->
 <para>
 
 </para>
 
+@file: 
+@line: 
+@func: 
+@errorObject: 
+@errorSubject: 
+@reason: 
+@msg: 
 
 
-<!-- ##### FUNCTION xmlSecMSCryptoTransformDsaSha1GetKlass ##### -->
+<!-- ##### FUNCTION xmlSecMSCryptoGenerateRandom ##### -->
 <para>
 
 </para>
 
+@buffer: 
+@size: 
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecMSCryptoKeyDataGost2001Id ##### -->
+<!-- ##### FUNCTION xmlSecMSCryptoHmacGetMinOutputLength ##### -->
 <para>
 
 </para>
 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoKeyDataGost2001GetKlass ##### -->
-<para>
-
-</para>
-
+@void: 
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecMSCryptoTransformGost2001GostR3411_94Id ##### -->
+<!-- ##### FUNCTION xmlSecMSCryptoHmacSetMinOutputLength ##### -->
 <para>
 
 </para>
 
+@min_length: 
 
 
-<!-- ##### FUNCTION xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass ##### -->
+<!-- ##### FUNCTION xmlSecMSCryptoInit ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecMSCryptoKeyDataRsaId ##### -->
+<!-- ##### FUNCTION xmlSecMSCryptoKeyDataAesGetKlass ##### -->
 <para>
 
 </para>
 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoKeyDataRsaGetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecMSCryptoTransformRsaMd5Id ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoTransformRsaMd5GetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecMSCryptoTransformRsaSha1Id ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoTransformRsaSha1GetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecMSCryptoTransformRsaSha256Id ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoTransformRsaSha256GetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecMSCryptoTransformRsaSha384Id ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoTransformRsaSha384GetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecMSCryptoTransformRsaSha512Id ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoTransformRsaSha512GetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecMSCryptoTransformRsaPkcs1Id ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoTransformRsaPkcs1GetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecMSCryptoTransformRsaOaepId ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoTransformRsaOaepGetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecMSCryptoTransformMd5Id ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoTransformMd5GetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecMSCryptoTransformSha1Id ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoTransformSha1GetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecMSCryptoTransformSha256Id ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoTransformSha256GetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecMSCryptoTransformSha384Id ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoTransformSha384GetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecMSCryptoTransformSha512Id ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoTransformSha512GetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecMSCryptoTransformGostR3411_94Id ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoTransformGostR3411_94GetKlass ##### -->
-<para>
-
-</para>
-
+@void: 
 @Returns: 
 
 
@@ -412,14 +156,6 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoKeyDataAesGetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
 
 
 <!-- ##### FUNCTION xmlSecMSCryptoKeyDataAesSet ##### -->
@@ -433,93 +169,12 @@ Crypto transforms implementation for MS Crypto.
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecMSCryptoTransformAes128CbcId ##### -->
+<!-- ##### FUNCTION xmlSecMSCryptoKeyDataDesGetKlass ##### -->
 <para>
 
 </para>
 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoTransformAes128CbcGetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecMSCryptoTransformAes192CbcId ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoTransformAes192CbcGetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecMSCryptoTransformAes256CbcId ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoTransformAes256CbcGetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecMSCryptoTransformKWAes128Id ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoTransformKWAes128GetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecMSCryptoTransformKWAes192Id ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoTransformKWAes192GetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecMSCryptoTransformKWAes256Id ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoTransformKWAes256GetKlass ##### -->
-<para>
-
-</para>
-
+@void: 
 @Returns: 
 
 
@@ -530,61 +185,32 @@ Crypto transforms implementation for MS Crypto.
 
 
 
-<!-- ##### FUNCTION xmlSecMSCryptoKeyDataDesGetKlass ##### -->
+<!-- ##### FUNCTION xmlSecMSCryptoKeyDataDsaGetKlass ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecMSCryptoTransformDes3CbcId ##### -->
+<!-- ##### MACRO xmlSecMSCryptoKeyDataDsaId ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### FUNCTION xmlSecMSCryptoTransformDes3CbcGetKlass ##### -->
+<!-- ##### FUNCTION xmlSecMSCryptoKeyDataGost2001GetKlass ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecMSCryptoTransformKWDes3Id ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoTransformKWDes3GetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoHmacGetMinOutputLength ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoHmacSetMinOutputLength ##### -->
-<para>
-
-</para>
-
-@min_length: 
-
-
-<!-- ##### MACRO xmlSecMSCryptoKeyDataHmacId ##### -->
+<!-- ##### MACRO xmlSecMSCryptoKeyDataGost2001Id ##### -->
 <para>
 
 </para>
@@ -596,7 +222,15 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
+
+
+<!-- ##### MACRO xmlSecMSCryptoKeyDataHmacId ##### -->
+<para>
+
+</para>
+
 
 
 <!-- ##### FUNCTION xmlSecMSCryptoKeyDataHmacSet ##### -->
@@ -610,7 +244,146 @@ Crypto transforms implementation for MS Crypto.
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecMSCryptoTransformHmacMd5Id ##### -->
+<!-- ##### FUNCTION xmlSecMSCryptoKeyDataRsaGetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecMSCryptoKeyDataRsaId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoKeysMngrInit ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoShutdown ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoTransformAes128CbcGetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecMSCryptoTransformAes128CbcId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoTransformAes192CbcGetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecMSCryptoTransformAes192CbcId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoTransformAes256CbcGetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecMSCryptoTransformAes256CbcId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoTransformDes3CbcGetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecMSCryptoTransformDes3CbcId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoTransformDsaSha1GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecMSCryptoTransformDsaSha1Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecMSCryptoTransformGost2001GostR3411_94Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoTransformGostR3411_94GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecMSCryptoTransformGostR3411_94Id ##### -->
 <para>
 
 </para>
@@ -622,10 +395,11 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecMSCryptoTransformHmacSha1Id ##### -->
+<!-- ##### MACRO xmlSecMSCryptoTransformHmacMd5Id ##### -->
 <para>
 
 </para>
@@ -637,10 +411,11 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecMSCryptoTransformHmacSha256Id ##### -->
+<!-- ##### MACRO xmlSecMSCryptoTransformHmacSha1Id ##### -->
 <para>
 
 </para>
@@ -652,10 +427,11 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecMSCryptoTransformHmacSha384Id ##### -->
+<!-- ##### MACRO xmlSecMSCryptoTransformHmacSha256Id ##### -->
 <para>
 
 </para>
@@ -667,10 +443,11 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecMSCryptoTransformHmacSha512Id ##### -->
+<!-- ##### MACRO xmlSecMSCryptoTransformHmacSha384Id ##### -->
 <para>
 
 </para>
@@ -682,6 +459,270 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
+
+
+<!-- ##### MACRO xmlSecMSCryptoTransformHmacSha512Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoTransformKWAes128GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecMSCryptoTransformKWAes128Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoTransformKWAes192GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecMSCryptoTransformKWAes192Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoTransformKWAes256GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecMSCryptoTransformKWAes256Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoTransformKWDes3GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecMSCryptoTransformKWDes3Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoTransformMd5GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecMSCryptoTransformMd5Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoTransformRsaMd5GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecMSCryptoTransformRsaMd5Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoTransformRsaOaepGetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecMSCryptoTransformRsaOaepId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoTransformRsaPkcs1GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecMSCryptoTransformRsaPkcs1Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoTransformRsaSha1GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecMSCryptoTransformRsaSha1Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoTransformRsaSha256GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecMSCryptoTransformRsaSha256Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoTransformRsaSha384GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecMSCryptoTransformRsaSha384Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoTransformRsaSha512GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecMSCryptoTransformRsaSha512Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoTransformSha1GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecMSCryptoTransformSha1Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoTransformSha256GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecMSCryptoTransformSha256Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoTransformSha384GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecMSCryptoTransformSha384Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoTransformSha512GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecMSCryptoTransformSha512Id ##### -->
+<para>
+
+</para>
+
 
 

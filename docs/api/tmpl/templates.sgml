@@ -17,6 +17,243 @@ Dynamic templates creation functions.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### FUNCTION xmlSecTmplCipherReferenceAddTransform ##### -->
+<para>
+
+</para>
+
+@cipherReferenceNode: 
+@transformId: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplEncDataAddEncProperty ##### -->
+<para>
+
+</para>
+
+@encNode: 
+@id: 
+@target: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplEncDataCreate ##### -->
+<para>
+
+</para>
+
+@doc: 
+@encMethodId: 
+@id: 
+@type: 
+@mimeType: 
+@encoding: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplEncDataEnsureCipherReference ##### -->
+<para>
+
+</para>
+
+@encNode: 
+@uri: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplEncDataEnsureCipherValue ##### -->
+<para>
+
+</para>
+
+@encNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplEncDataEnsureEncProperties ##### -->
+<para>
+
+</para>
+
+@encNode: 
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplEncDataEnsureKeyInfo ##### -->
+<para>
+
+</para>
+
+@encNode: 
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplEncDataGetEncMethodNode ##### -->
+<para>
+
+</para>
+
+@encNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplKeyInfoAddEncryptedKey ##### -->
+<para>
+
+</para>
+
+@keyInfoNode: 
+@encMethodId: 
+@id: 
+@type: 
+@recipient: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplKeyInfoAddKeyName ##### -->
+<para>
+
+</para>
+
+@keyInfoNode: 
+@name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplKeyInfoAddKeyValue ##### -->
+<para>
+
+</para>
+
+@keyInfoNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplKeyInfoAddRetrievalMethod ##### -->
+<para>
+
+</para>
+
+@keyInfoNode: 
+@uri: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplKeyInfoAddX509Data ##### -->
+<para>
+
+</para>
+
+@keyInfoNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplManifestAddReference ##### -->
+<para>
+
+</para>
+
+@manifestNode: 
+@digestMethodId: 
+@id: 
+@uri: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplObjectAddManifest ##### -->
+<para>
+
+</para>
+
+@objectNode: 
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplObjectAddSignProperties ##### -->
+<para>
+
+</para>
+
+@objectNode: 
+@id: 
+@target: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplReferenceAddTransform ##### -->
+<para>
+
+</para>
+
+@referenceNode: 
+@transformId: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplReferenceListAddDataReference ##### -->
+<para>
+
+</para>
+
+@encNode: 
+@uri: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplReferenceListAddKeyReference ##### -->
+<para>
+
+</para>
+
+@encNode: 
+@uri: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplRetrievalMethodAddTransform ##### -->
+<para>
+
+</para>
+
+@retrMethodNode: 
+@transformId: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplSignatureAddObject ##### -->
+<para>
+
+</para>
+
+@signNode: 
+@id: 
+@mimeType: 
+@encoding: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplSignatureAddReference ##### -->
+<para>
+
+</para>
+
+@signNode: 
+@digestMethodId: 
+@id: 
+@uri: 
+@type: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecTmplSignatureCreate ##### -->
 <para>
 
@@ -52,28 +289,12 @@ Dynamic templates creation functions.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecTmplSignatureAddReference ##### -->
+<!-- ##### FUNCTION xmlSecTmplSignatureGetC14NMethodNode ##### -->
 <para>
 
 </para>
 
 @signNode: 
-@digestMethodId: 
-@id: 
-@uri: 
-@type: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplSignatureAddObject ##### -->
-<para>
-
-</para>
-
-@signNode: 
-@id: 
-@mimeType: 
-@encoding: 
 @Returns: 
 
 
@@ -86,286 +307,13 @@ Dynamic templates creation functions.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecTmplSignatureGetC14NMethodNode ##### -->
+<!-- ##### FUNCTION xmlSecTmplTransformAddC14NInclNamespaces ##### -->
 <para>
 
 </para>
 
-@signNode: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplReferenceAddTransform ##### -->
-<para>
-
-</para>
-
-@referenceNode: 
-@transformId: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplObjectAddSignProperties ##### -->
-<para>
-
-</para>
-
-@objectNode: 
-@id: 
-@target: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplObjectAddManifest ##### -->
-<para>
-
-</para>
-
-@objectNode: 
-@id: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplManifestAddReference ##### -->
-<para>
-
-</para>
-
-@manifestNode: 
-@digestMethodId: 
-@id: 
-@uri: 
-@type: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplEncDataCreate ##### -->
-<para>
-
-</para>
-
-@doc: 
-@encMethodId: 
-@id: 
-@type: 
-@mimeType: 
-@encoding: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplEncDataEnsureKeyInfo ##### -->
-<para>
-
-</para>
-
-@encNode: 
-@id: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplEncDataEnsureEncProperties ##### -->
-<para>
-
-</para>
-
-@encNode: 
-@id: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplEncDataAddEncProperty ##### -->
-<para>
-
-</para>
-
-@encNode: 
-@id: 
-@target: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplEncDataEnsureCipherValue ##### -->
-<para>
-
-</para>
-
-@encNode: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplEncDataEnsureCipherReference ##### -->
-<para>
-
-</para>
-
-@encNode: 
-@uri: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplEncDataGetEncMethodNode ##### -->
-<para>
-
-</para>
-
-@encNode: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplCipherReferenceAddTransform ##### -->
-<para>
-
-</para>
-
-@cipherReferenceNode: 
-@transformId: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplReferenceListAddDataReference ##### -->
-<para>
-
-</para>
-
-@encNode: 
-@uri: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplReferenceListAddKeyReference ##### -->
-<para>
-
-</para>
-
-@encNode: 
-@uri: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplKeyInfoAddKeyName ##### -->
-<para>
-
-</para>
-
-@keyInfoNode: 
-@name: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplKeyInfoAddKeyValue ##### -->
-<para>
-
-</para>
-
-@keyInfoNode: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplKeyInfoAddX509Data ##### -->
-<para>
-
-</para>
-
-@keyInfoNode: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplKeyInfoAddRetrievalMethod ##### -->
-<para>
-
-</para>
-
-@keyInfoNode: 
-@uri: 
-@type: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplRetrievalMethodAddTransform ##### -->
-<para>
-
-</para>
-
-@retrMethodNode: 
-@transformId: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplKeyInfoAddEncryptedKey ##### -->
-<para>
-
-</para>
-
-@keyInfoNode: 
-@encMethodId: 
-@id: 
-@type: 
-@recipient: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplX509DataAddIssuerSerial ##### -->
-<para>
-
-</para>
-
-@x509DataNode: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplX509IssuerSerialAddIssuerName ##### -->
-<para>
-
-</para>
-
-@x509IssuerSerialNode: 
-@issuerName: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplX509IssuerSerialAddSerialNumber ##### -->
-<para>
-
-</para>
-
-@x509IssuerSerialNode: 
-@serial: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplX509DataAddSubjectName ##### -->
-<para>
-
-</para>
-
-@x509DataNode: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplX509DataAddSKI ##### -->
-<para>
-
-</para>
-
-@x509DataNode: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplX509DataAddCertificate ##### -->
-<para>
-
-</para>
-
-@x509DataNode: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplX509DataAddCRL ##### -->
-<para>
-
-</para>
-
-@x509DataNode: 
+@transformNode: 
+@prefixList: 
 @Returns: 
 
 
@@ -387,26 +335,6 @@ Dynamic templates creation functions.
 @transformNode: 
 @buf: 
 @size: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplTransformAddXsltStylesheet ##### -->
-<para>
-
-</para>
-
-@transformNode: 
-@xslt: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTmplTransformAddC14NInclNamespaces ##### -->
-<para>
-
-</para>
-
-@transformNode: 
-@prefixList: 
 @Returns: 
 
 
@@ -441,6 +369,81 @@ Dynamic templates creation functions.
 @transformNode: 
 @expression: 
 @nsList: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplTransformAddXsltStylesheet ##### -->
+<para>
+
+</para>
+
+@transformNode: 
+@xslt: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplX509DataAddCRL ##### -->
+<para>
+
+</para>
+
+@x509DataNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplX509DataAddCertificate ##### -->
+<para>
+
+</para>
+
+@x509DataNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplX509DataAddIssuerSerial ##### -->
+<para>
+
+</para>
+
+@x509DataNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplX509DataAddSKI ##### -->
+<para>
+
+</para>
+
+@x509DataNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplX509DataAddSubjectName ##### -->
+<para>
+
+</para>
+
+@x509DataNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplX509IssuerSerialAddIssuerName ##### -->
+<para>
+
+</para>
+
+@x509IssuerSerialNode: 
+@issuerName: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplX509IssuerSerialAddSerialNumber ##### -->
+<para>
+
+</para>
+
+@x509IssuerSerialNode: 
+@serial: 
 @Returns: 
 
 

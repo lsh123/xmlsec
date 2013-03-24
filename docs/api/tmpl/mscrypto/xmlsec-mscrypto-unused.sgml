@@ -1,7 +1,3 @@
-<!-- ##### SECTION Image ##### -->
-
-
-
 <!-- ##### MACRO XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV ##### -->
 <para>
 
@@ -36,6 +32,10 @@
 <para>
 
 </para>
+
+
+<!-- ##### SECTION tmpl/mscrypto/xmlsec-mscrypto-unused.sgml:Image ##### -->
+
 
 
 <!-- ##### FUNCTION xmlSecMSCryptoCertStrToName ##### -->

@@ -1,288 +1,300 @@
 <refentry id="xmlsec-keyinfo">
 <refmeta>
-<refentrytitle role="top_of_page">keyinfo</refentrytitle>
+<refentrytitle role="top_of_page" id="xmlsec-keyinfo.top_of_page">keyinfo</refentrytitle>
 <manvolnum>3</manvolnum>
-<refmiscinfo>XMLSEC Library</refmiscinfo>
+<refmiscinfo>
+  XMLSEC Library
+</refmiscinfo>
 </refmeta>
-
 <refnamediv>
 <refname>keyinfo</refname>
 <refpurpose><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node parser.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="xmlsec-keyinfo.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
-<synopsis>
-
-
-
-<link linkend="int">int</link>         <link linkend="xmlSecKeyInfoNodeRead">xmlSecKeyInfoNodeRead</link>           (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
-                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
-<link linkend="int">int</link>         <link linkend="xmlSecKeyInfoNodeWrite">xmlSecKeyInfoNodeWrite</link>          (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
-                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
-enum        <link linkend="xmlSecKeyInfoMode">xmlSecKeyInfoMode</link>;
-#define     <link linkend="XMLSEC-KEYINFO-FLAGS-DONT-STOP-ON-KEY-FOUND:CAPS">XMLSEC_KEYINFO_FLAGS_DONT_STOP_ON_KEY_FOUND</link>
-#define     <link linkend="XMLSEC-KEYINFO-FLAGS-STOP-ON-UNKNOWN-CHILD:CAPS">XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD</link>
-#define     <link linkend="XMLSEC-KEYINFO-FLAGS-KEYNAME-STOP-ON-UNKNOWN:CAPS">XMLSEC_KEYINFO_FLAGS_KEYNAME_STOP_ON_UNKNOWN</link>
-#define     <link linkend="XMLSEC-KEYINFO-FLAGS-KEYVALUE-STOP-ON-UNKNOWN-CHILD:CAPS">XMLSEC_KEYINFO_FLAGS_KEYVALUE_STOP_ON_UNKNOWN_CHILD</link>
-#define     <link linkend="XMLSEC-KEYINFO-FLAGS-RETRMETHOD-STOP-ON-UNKNOWN-HREF:CAPS">XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_UNKNOWN_HREF</link>
-#define     <link linkend="XMLSEC-KEYINFO-FLAGS-RETRMETHOD-STOP-ON-MISMATCH-HREF:CAPS">XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_MISMATCH_HREF</link>
-#define     <link linkend="XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-UNKNOWN-CHILD:CAPS">XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CHILD</link>
-#define     <link linkend="XMLSEC-KEYINFO-FLAGS-X509DATA-DONT-VERIFY-CERTS:CAPS">XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS</link>
-#define     <link linkend="XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-UNKNOWN-CERT:CAPS">XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT</link>
-#define     <link linkend="XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-INVALID-CERT:CAPS">XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT</link>
-#define     <link linkend="XMLSEC-KEYINFO-FLAGS-ENCKEY-DONT-STOP-ON-FAILED-DECRYPTION:CAPS">XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION</link>
-#define     <link linkend="XMLSEC-KEYINFO-FLAGS-STOP-ON-EMPTY-NODE:CAPS">XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE</link>
-#define     <link linkend="XMLSEC-KEYINFO-FLAGS-X509DATA-SKIP-STRICT-CHECKS:CAPS">XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS</link>
-struct      <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link>;
-<link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> <link linkend="xmlSecKeyInfoCtxCreate">xmlSecKeyInfoCtxCreate</link>  (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);
-<link linkend="void">void</link>        <link linkend="xmlSecKeyInfoCtxDestroy">xmlSecKeyInfoCtxDestroy</link>         (<link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
-<link linkend="int">int</link>         <link linkend="xmlSecKeyInfoCtxInitialize">xmlSecKeyInfoCtxInitialize</link>      (<link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx,
-                                             <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);
-<link linkend="void">void</link>        <link linkend="xmlSecKeyInfoCtxFinalize">xmlSecKeyInfoCtxFinalize</link>        (<link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
-<link linkend="void">void</link>        <link linkend="xmlSecKeyInfoCtxReset">xmlSecKeyInfoCtxReset</link>           (<link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
-<link linkend="int">int</link>         <link linkend="xmlSecKeyInfoCtxCopyUserPref">xmlSecKeyInfoCtxCopyUserPref</link>    (<link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> dst,
-                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> src);
-<link linkend="int">int</link>         <link linkend="xmlSecKeyInfoCtxCreateEncCtx">xmlSecKeyInfoCtxCreateEncCtx</link>    (<link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
-<link linkend="void">void</link>        <link linkend="xmlSecKeyInfoCtxDebugDump">xmlSecKeyInfoCtxDebugDump</link>       (<link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx,
-                                             <link linkend="FILE:CAPS">FILE</link> *output);
-<link linkend="void">void</link>        <link linkend="xmlSecKeyInfoCtxDebugXmlDump">xmlSecKeyInfoCtxDebugXmlDump</link>    (<link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx,
-                                             <link linkend="FILE:CAPS">FILE</link> *output);
-#define     <link linkend="xmlSecKeyDataNameId">xmlSecKeyDataNameId</link>
-<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataNameGetKlass">xmlSecKeyDataNameGetKlass</link>   (void);
-#define     <link linkend="xmlSecKeyDataValueId">xmlSecKeyDataValueId</link>
-<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataValueGetKlass">xmlSecKeyDataValueGetKlass</link>  (void);
-#define     <link linkend="xmlSecKeyDataRetrievalMethodId">xmlSecKeyDataRetrievalMethodId</link>
-<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataRetrievalMethodGetKlass">xmlSecKeyDataRetrievalMethodGetKlass</link>
-                                            (void);
-#define     <link linkend="xmlSecKeyDataEncryptedKeyId">xmlSecKeyDataEncryptedKeyId</link>
-<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataEncryptedKeyGetKlass">xmlSecKeyDataEncryptedKeyGetKlass</link>
-                                            (void);
+<synopsis>#define             <link linkend="XMLSEC-KEYINFO-FLAGS-DONT-STOP-ON-KEY-FOUND:CAPS">XMLSEC_KEYINFO_FLAGS_DONT_STOP_ON_KEY_FOUND</link>
+#define             <link linkend="XMLSEC-KEYINFO-FLAGS-ENCKEY-DONT-STOP-ON-FAILED-DECRYPTION:CAPS">XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION</link>
+#define             <link linkend="XMLSEC-KEYINFO-FLAGS-KEYNAME-STOP-ON-UNKNOWN:CAPS">XMLSEC_KEYINFO_FLAGS_KEYNAME_STOP_ON_UNKNOWN</link>
+#define             <link linkend="XMLSEC-KEYINFO-FLAGS-KEYVALUE-STOP-ON-UNKNOWN-CHILD:CAPS">XMLSEC_KEYINFO_FLAGS_KEYVALUE_STOP_ON_UNKNOWN_CHILD</link>
+#define             <link linkend="XMLSEC-KEYINFO-FLAGS-RETRMETHOD-STOP-ON-MISMATCH-HREF:CAPS">XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_MISMATCH_HREF</link>
+#define             <link linkend="XMLSEC-KEYINFO-FLAGS-RETRMETHOD-STOP-ON-UNKNOWN-HREF:CAPS">XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_UNKNOWN_HREF</link>
+#define             <link linkend="XMLSEC-KEYINFO-FLAGS-STOP-ON-EMPTY-NODE:CAPS">XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE</link>
+#define             <link linkend="XMLSEC-KEYINFO-FLAGS-STOP-ON-UNKNOWN-CHILD:CAPS">XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD</link>
+#define             <link linkend="XMLSEC-KEYINFO-FLAGS-X509DATA-DONT-VERIFY-CERTS:CAPS">XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS</link>
+#define             <link linkend="XMLSEC-KEYINFO-FLAGS-X509DATA-SKIP-STRICT-CHECKS:CAPS">XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS</link>
+#define             <link linkend="XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-INVALID-CERT:CAPS">XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT</link>
+#define             <link linkend="XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-UNKNOWN-CERT:CAPS">XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT</link>
+#define             <link linkend="XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-UNKNOWN-CHILD:CAPS">XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CHILD</link>
+<link linkend="xmlSecKeyDataId"><returnvalue>xmlSecKeyDataId</returnvalue></link>     <link linkend="xmlSecKeyDataEncryptedKeyGetKlass">xmlSecKeyDataEncryptedKeyGetKlass</link>   (<parameter><type>void</type></parameter>);
+#define             <link linkend="xmlSecKeyDataEncryptedKeyId">xmlSecKeyDataEncryptedKeyId</link>
+<link linkend="xmlSecKeyDataId"><returnvalue>xmlSecKeyDataId</returnvalue></link>     <link linkend="xmlSecKeyDataNameGetKlass">xmlSecKeyDataNameGetKlass</link>           (<parameter><type>void</type></parameter>);
+#define             <link linkend="xmlSecKeyDataNameId">xmlSecKeyDataNameId</link>
+<link linkend="xmlSecKeyDataId"><returnvalue>xmlSecKeyDataId</returnvalue></link>     <link linkend="xmlSecKeyDataRetrievalMethodGetKlass">xmlSecKeyDataRetrievalMethodGetKlass</link>
+                                                        (<parameter><type>void</type></parameter>);
+#define             <link linkend="xmlSecKeyDataRetrievalMethodId">xmlSecKeyDataRetrievalMethodId</link>
+<link linkend="xmlSecKeyDataId"><returnvalue>xmlSecKeyDataId</returnvalue></link>     <link linkend="xmlSecKeyDataValueGetKlass">xmlSecKeyDataValueGetKlass</link>          (<parameter><type>void</type></parameter>);
+#define             <link linkend="xmlSecKeyDataValueId">xmlSecKeyDataValueId</link>
+struct              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link>;
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecKeyInfoCtxCopyUserPref">xmlSecKeyInfoCtxCopyUserPref</link>        (<parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> dst</parameter>,
+                                                         <parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> src</parameter>);
+<link linkend="xmlSecKeyInfoCtxPtr"><returnvalue>xmlSecKeyInfoCtxPtr</returnvalue></link> <link linkend="xmlSecKeyInfoCtxCreate">xmlSecKeyInfoCtxCreate</link>              (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> keysMngr</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecKeyInfoCtxCreateEncCtx">xmlSecKeyInfoCtxCreateEncCtx</link>        (<parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> keyInfoCtx</parameter>);
+<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecKeyInfoCtxDebugDump">xmlSecKeyInfoCtxDebugDump</link>           (<parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> keyInfoCtx</parameter>,
+                                                         <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);
+<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecKeyInfoCtxDebugXmlDump">xmlSecKeyInfoCtxDebugXmlDump</link>        (<parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> keyInfoCtx</parameter>,
+                                                         <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);
+<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecKeyInfoCtxDestroy">xmlSecKeyInfoCtxDestroy</link>             (<parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> keyInfoCtx</parameter>);
+<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecKeyInfoCtxFinalize">xmlSecKeyInfoCtxFinalize</link>            (<parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> keyInfoCtx</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecKeyInfoCtxInitialize">xmlSecKeyInfoCtxInitialize</link>          (<parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> keyInfoCtx</parameter>,
+                                                         <parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> keysMngr</parameter>);
+<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecKeyInfoCtxReset">xmlSecKeyInfoCtxReset</link>               (<parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> keyInfoCtx</parameter>);
+enum                <link linkend="xmlSecKeyInfoMode">xmlSecKeyInfoMode</link>;
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecKeyInfoNodeRead">xmlSecKeyInfoNodeRead</link>               (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> keyInfoNode</parameter>,
+                                                         <parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>,
+                                                         <parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> keyInfoCtx</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecKeyInfoNodeWrite">xmlSecKeyInfoNodeWrite</link>              (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> keyInfoNode</parameter>,
+                                                         <parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>,
+                                                         <parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> keyInfoCtx</parameter>);
 </synopsis>
 </refsynopsisdiv>
 
-
-
-
-
-
-
-
-
-<refsect1 role="desc">
+<refsect1 id="xmlsec-keyinfo.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node parser.
 </para>
 </refsect1>
-
-<refsect1 role="details">
+<refsect1 id="xmlsec-keyinfo.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="xmlSecKeyInfoNodeRead" role="function">xmlSecKeyInfoNodeRead ()</title>
-<indexterm><primary>xmlSecKeyInfoNodeRead</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecKeyInfoNodeRead           (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
-                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
-<para>
-Parses the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element <parameter>keyInfoNode</parameter>, extracts the key data
-and stores into <parameter>key</parameter>.</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>keyInfoNode</parameter>&nbsp;:</term>
-<listitem><simpara>        the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>key</parameter>&nbsp;:</term>
-<listitem><simpara>                the pointer to result key object.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
-<listitem><simpara>         the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or -1 if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyInfoNodeWrite" role="function">xmlSecKeyInfoNodeWrite ()</title>
-<indexterm><primary>xmlSecKeyInfoNodeWrite</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecKeyInfoNodeWrite          (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
-                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
-<para>
-Writes the <parameter>key</parameter> into the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element template <parameter>keyInfoNode</parameter>.</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>keyInfoNode</parameter>&nbsp;:</term>
-<listitem><simpara>        the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>key</parameter>&nbsp;:</term>
-<listitem><simpara>                the pointer to key object.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
-<listitem><simpara>         the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success or -1 if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyInfoMode" role="enum">enum xmlSecKeyInfoMode</title>
-<indexterm><primary>xmlSecKeyInfoMode</primary></indexterm><programlisting>typedef enum {
-    xmlSecKeyInfoModeRead = 0,
-    xmlSecKeyInfoModeWrite
-} xmlSecKeyInfoMode;
-</programlisting>
-<para>
-The <parameter>xmlSecKeyInfoCtx</parameter> operation mode (read or write).</para>
-<para>
-
-</para><variablelist role="enum">
-<varlistentry>
-<term><anchor id="xmlSecKeyInfoModeRead" role="constant"><literal>xmlSecKeyInfoModeRead</literal></term>
-<listitem><simpara> read <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> element.
-</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><anchor id="xmlSecKeyInfoModeWrite" role="constant"><literal>xmlSecKeyInfoModeWrite</literal></term>
-<listitem><simpara> write <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> element.
-</simpara></listitem>
-</varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-KEYINFO-FLAGS-DONT-STOP-ON-KEY-FOUND:CAPS" role="macro">XMLSEC_KEYINFO_FLAGS_DONT_STOP_ON_KEY_FOUND</title>
-<indexterm><primary>XMLSEC_KEYINFO_FLAGS_DONT_STOP_ON_KEY_FOUND</primary></indexterm><programlisting>#define XMLSEC_KEYINFO_FLAGS_DONT_STOP_ON_KEY_FOUND             0x00000001
+<refsect2 id="XMLSEC-KEYINFO-FLAGS-DONT-STOP-ON-KEY-FOUND:CAPS" role="macro">
+<title>XMLSEC_KEYINFO_FLAGS_DONT_STOP_ON_KEY_FOUND</title>
+<indexterm zone="XMLSEC-KEYINFO-FLAGS-DONT-STOP-ON-KEY-FOUND:CAPS"><primary>XMLSEC_KEYINFO_FLAGS_DONT_STOP_ON_KEY_FOUND</primary></indexterm>
+<programlisting>#define XMLSEC_KEYINFO_FLAGS_DONT_STOP_ON_KEY_FOUND             0x00000001
 </programlisting>
 <para>
 If flag is set then we will continue reading <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink>
-element even when key is already found.</para>
-<para>
-
+element even when key is already found.
 </para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-KEYINFO-FLAGS-STOP-ON-UNKNOWN-CHILD:CAPS" role="macro">XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD</title>
-<indexterm><primary>XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD</primary></indexterm><programlisting>#define XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD              0x00000002
+<refsect2 id="XMLSEC-KEYINFO-FLAGS-ENCKEY-DONT-STOP-ON-FAILED-DECRYPTION:CAPS" role="macro">
+<title>XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION</title>
+<indexterm zone="XMLSEC-KEYINFO-FLAGS-ENCKEY-DONT-STOP-ON-FAILED-DECRYPTION:CAPS"><primary>XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION</primary></indexterm>
+<programlisting>#define XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION 0x00001000
 </programlisting>
 <para>
-If flag is set then we abort if an unknown <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink>
-child is found.</para>
-<para>
-
+If the flag is set then we'll stop when <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey ">&lt;enc:EncryptedKey /&gt;</ulink> element
+processing fails.
 </para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-KEYINFO-FLAGS-KEYNAME-STOP-ON-UNKNOWN:CAPS" role="macro">XMLSEC_KEYINFO_FLAGS_KEYNAME_STOP_ON_UNKNOWN</title>
-<indexterm><primary>XMLSEC_KEYINFO_FLAGS_KEYNAME_STOP_ON_UNKNOWN</primary></indexterm><programlisting>#define XMLSEC_KEYINFO_FLAGS_KEYNAME_STOP_ON_UNKNOWN            0x00000004
+<refsect2 id="XMLSEC-KEYINFO-FLAGS-KEYNAME-STOP-ON-UNKNOWN:CAPS" role="macro">
+<title>XMLSEC_KEYINFO_FLAGS_KEYNAME_STOP_ON_UNKNOWN</title>
+<indexterm zone="XMLSEC-KEYINFO-FLAGS-KEYNAME-STOP-ON-UNKNOWN:CAPS"><primary>XMLSEC_KEYINFO_FLAGS_KEYNAME_STOP_ON_UNKNOWN</primary></indexterm>
+<programlisting>#define XMLSEC_KEYINFO_FLAGS_KEYNAME_STOP_ON_UNKNOWN            0x00000004
 </programlisting>
 <para>
 If flags is set then we abort if an unknown key name
-(content of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName ">&lt;dsig:KeyName /&gt;</ulink> element) is found.</para>
-<para>
-
+(content of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName ">&lt;dsig:KeyName /&gt;</ulink> element) is found.
 </para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-KEYINFO-FLAGS-KEYVALUE-STOP-ON-UNKNOWN-CHILD:CAPS" role="macro">XMLSEC_KEYINFO_FLAGS_KEYVALUE_STOP_ON_UNKNOWN_CHILD</title>
-<indexterm><primary>XMLSEC_KEYINFO_FLAGS_KEYVALUE_STOP_ON_UNKNOWN_CHILD</primary></indexterm><programlisting>#define XMLSEC_KEYINFO_FLAGS_KEYVALUE_STOP_ON_UNKNOWN_CHILD     0x00000008
+<refsect2 id="XMLSEC-KEYINFO-FLAGS-KEYVALUE-STOP-ON-UNKNOWN-CHILD:CAPS" role="macro">
+<title>XMLSEC_KEYINFO_FLAGS_KEYVALUE_STOP_ON_UNKNOWN_CHILD</title>
+<indexterm zone="XMLSEC-KEYINFO-FLAGS-KEYVALUE-STOP-ON-UNKNOWN-CHILD:CAPS"><primary>XMLSEC_KEYINFO_FLAGS_KEYVALUE_STOP_ON_UNKNOWN_CHILD</primary></indexterm>
+<programlisting>#define XMLSEC_KEYINFO_FLAGS_KEYVALUE_STOP_ON_UNKNOWN_CHILD     0x00000008
 </programlisting>
 <para>
 If flags is set then we abort if an unknown <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue ">&lt;dsig:KeyValue /&gt;</ulink>
-child is found.</para>
-<para>
-
+child is found.
 </para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-KEYINFO-FLAGS-RETRMETHOD-STOP-ON-UNKNOWN-HREF:CAPS" role="macro">XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_UNKNOWN_HREF</title>
-<indexterm><primary>XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_UNKNOWN_HREF</primary></indexterm><programlisting>#define XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_UNKNOWN_HREF    0x00000010
-</programlisting>
-<para>
-If flag is set then we abort if an unknown href attribute
-of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink> element is found.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-KEYINFO-FLAGS-RETRMETHOD-STOP-ON-MISMATCH-HREF:CAPS" role="macro">XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_MISMATCH_HREF</title>
-<indexterm><primary>XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_MISMATCH_HREF</primary></indexterm><programlisting>#define XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_MISMATCH_HREF   0x00000020
+<refsect2 id="XMLSEC-KEYINFO-FLAGS-RETRMETHOD-STOP-ON-MISMATCH-HREF:CAPS" role="macro">
+<title>XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_MISMATCH_HREF</title>
+<indexterm zone="XMLSEC-KEYINFO-FLAGS-RETRMETHOD-STOP-ON-MISMATCH-HREF:CAPS"><primary>XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_MISMATCH_HREF</primary></indexterm>
+<programlisting>#define XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_MISMATCH_HREF   0x00000020
 </programlisting>
 <para>
 If flag is set then we abort if an href attribute <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink>
-element does not match the real key data type.</para>
-<para>
-
+element does not match the real key data type.
 </para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-UNKNOWN-CHILD:CAPS" role="macro">XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CHILD</title>
-<indexterm><primary>XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CHILD</primary></indexterm><programlisting>#define XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CHILD     0x00000100
+<refsect2 id="XMLSEC-KEYINFO-FLAGS-RETRMETHOD-STOP-ON-UNKNOWN-HREF:CAPS" role="macro">
+<title>XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_UNKNOWN_HREF</title>
+<indexterm zone="XMLSEC-KEYINFO-FLAGS-RETRMETHOD-STOP-ON-UNKNOWN-HREF:CAPS"><primary>XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_UNKNOWN_HREF</primary></indexterm>
+<programlisting>#define XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_UNKNOWN_HREF    0x00000010
 </programlisting>
 <para>
-If flags is set then we abort if an unknown <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data ">&lt;dsig:X509Data /&gt;</ulink>
-child is found.</para>
-<para>
-
+If flag is set then we abort if an unknown href attribute
+of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink> element is found.
 </para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-KEYINFO-FLAGS-X509DATA-DONT-VERIFY-CERTS:CAPS" role="macro">XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS</title>
-<indexterm><primary>XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS</primary></indexterm><programlisting>#define XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS         0x00000200
+<refsect2 id="XMLSEC-KEYINFO-FLAGS-STOP-ON-EMPTY-NODE:CAPS" role="macro">
+<title>XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE</title>
+<indexterm zone="XMLSEC-KEYINFO-FLAGS-STOP-ON-EMPTY-NODE:CAPS"><primary>XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE</primary></indexterm>
+<programlisting>#define XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE                 0x00002000
+</programlisting>
+<para>
+If the flag is set then we'll stop when we found an empty node.
+Otherwise we just ignore it.
+</para></refsect2>
+<refsect2 id="XMLSEC-KEYINFO-FLAGS-STOP-ON-UNKNOWN-CHILD:CAPS" role="macro">
+<title>XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD</title>
+<indexterm zone="XMLSEC-KEYINFO-FLAGS-STOP-ON-UNKNOWN-CHILD:CAPS"><primary>XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD</primary></indexterm>
+<programlisting>#define XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD              0x00000002
+</programlisting>
+<para>
+If flag is set then we abort if an unknown <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink>
+child is found.
+</para></refsect2>
+<refsect2 id="XMLSEC-KEYINFO-FLAGS-X509DATA-DONT-VERIFY-CERTS:CAPS" role="macro">
+<title>XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS</title>
+<indexterm zone="XMLSEC-KEYINFO-FLAGS-X509DATA-DONT-VERIFY-CERTS:CAPS"><primary>XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS</primary></indexterm>
+<programlisting>#define XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS         0x00000200
 </programlisting>
 <para>
 If flag is set then we'll load certificates from <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data ">&lt;dsig:X509Data /&gt;</ulink>
-element without verification.</para>
-<para>
-
+element without verification.
 </para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-UNKNOWN-CERT:CAPS" role="macro">XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT</title>
-<indexterm><primary>XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT</primary></indexterm><programlisting>#define XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT      0x00000400
+<refsect2 id="XMLSEC-KEYINFO-FLAGS-X509DATA-SKIP-STRICT-CHECKS:CAPS" role="macro">
+<title>XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS</title>
+<indexterm zone="XMLSEC-KEYINFO-FLAGS-X509DATA-SKIP-STRICT-CHECKS:CAPS"><primary>XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS</primary></indexterm>
+<programlisting>#define XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS        0x00004000
+</programlisting>
+<para>
+If the flag is set then we'll skip strict checking of certs and CRLs
+</para></refsect2>
+<refsect2 id="XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-INVALID-CERT:CAPS" role="macro">
+<title>XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT</title>
+<indexterm zone="XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-INVALID-CERT:CAPS"><primary>XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT</primary></indexterm>
+<programlisting>#define XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT      0x00000800
+</programlisting>
+<para>
+If the flag is set then we'll stop when <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data ">&lt;dsig:X509Data /&gt;</ulink> element
+processing does not return a verified certificate.
+</para></refsect2>
+<refsect2 id="XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-UNKNOWN-CERT:CAPS" role="macro">
+<title>XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT</title>
+<indexterm zone="XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-UNKNOWN-CERT:CAPS"><primary>XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT</primary></indexterm>
+<programlisting>#define XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT      0x00000400
 </programlisting>
 <para>
 If flag is set then we'll stop when we could not resolve reference
 to certificate from <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial ">&lt;dsig:X509IssuerSerial /&gt;</ulink>, <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SKI ">&lt;dsig:X509SKI /&gt;</ulink> or
-<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SubjectName ">&lt;dsig:X509SubjectName /&gt;</ulink> elements.</para>
-<para>
-
+<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SubjectName ">&lt;dsig:X509SubjectName /&gt;</ulink> elements.
 </para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-INVALID-CERT:CAPS" role="macro">XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT</title>
-<indexterm><primary>XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT</primary></indexterm><programlisting>#define XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT      0x00000800
+<refsect2 id="XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-UNKNOWN-CHILD:CAPS" role="macro">
+<title>XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CHILD</title>
+<indexterm zone="XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-UNKNOWN-CHILD:CAPS"><primary>XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CHILD</primary></indexterm>
+<programlisting>#define XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CHILD     0x00000100
 </programlisting>
 <para>
-If the flag is set then we'll stop when <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data ">&lt;dsig:X509Data /&gt;</ulink> element
-processing does not return a verified certificate.</para>
-<para>
-
+If flags is set then we abort if an unknown <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data ">&lt;dsig:X509Data /&gt;</ulink>
+child is found.
 </para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-KEYINFO-FLAGS-ENCKEY-DONT-STOP-ON-FAILED-DECRYPTION:CAPS" role="macro">XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION</title>
-<indexterm><primary>XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION</primary></indexterm><programlisting>#define XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION 0x00001000
+<refsect2 id="xmlSecKeyDataEncryptedKeyGetKlass" role="function">
+<title>xmlSecKeyDataEncryptedKeyGetKlass ()</title>
+<indexterm zone="xmlSecKeyDataEncryptedKeyGetKlass"><primary>xmlSecKeyDataEncryptedKeyGetKlass</primary></indexterm>
+<programlisting><link linkend="xmlSecKeyDataId"><returnvalue>xmlSecKeyDataId</returnvalue></link>     xmlSecKeyDataEncryptedKeyGetKlass   (<parameter><type>void</type></parameter>);</programlisting>
+<para>
+The <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> element key data klass
+(http://www.w3.org/TR/xmlenc-core/<link linkend="sec-EncryptedKey"><type>sec-EncryptedKey</type></link>):
+</para>
+<para>
+The EncryptedKey element is used to transport encryption keys from
+the originator to a known recipient(s). It may be used as a stand-alone
+XML document, be placed within an application document, or appear inside
+an EncryptedData element as a child of a ds:KeyInfo element. The key value
+is always encrypted to the recipient(s). When EncryptedKey is decrypted the
+resulting octets are made available to the EncryptionMethod algorithm
+without any additional processing.
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>the <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> element processing key data klass.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecKeyDataEncryptedKeyId" role="macro">
+<title>xmlSecKeyDataEncryptedKeyId</title>
+<indexterm zone="xmlSecKeyDataEncryptedKeyId"><primary>xmlSecKeyDataEncryptedKeyId</primary></indexterm>
+<programlisting>#define xmlSecKeyDataEncryptedKeyId     xmlSecKeyDataEncryptedKeyGetKlass()
 </programlisting>
 <para>
-If the flag is set then we'll stop when <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey ">&lt;enc:EncryptedKey /&gt;</ulink> element
-processing fails.</para>
-<para>
-
+The &lt;enc:EncryptedKey&gt; processing class.
 </para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-KEYINFO-FLAGS-STOP-ON-EMPTY-NODE:CAPS" role="macro">XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE</title>
-<indexterm><primary>XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE</primary></indexterm><programlisting>#define XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE                 0x00002000
+<refsect2 id="xmlSecKeyDataNameGetKlass" role="function">
+<title>xmlSecKeyDataNameGetKlass ()</title>
+<indexterm zone="xmlSecKeyDataNameGetKlass"><primary>xmlSecKeyDataNameGetKlass</primary></indexterm>
+<programlisting><link linkend="xmlSecKeyDataId"><returnvalue>xmlSecKeyDataId</returnvalue></link>     xmlSecKeyDataNameGetKlass           (<parameter><type>void</type></parameter>);</programlisting>
+<para>
+The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName">&lt;dsig:KeyName/&gt;</ulink> element key data klass
+(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-KeyName"><type>sec-KeyName</type></link>):
+</para>
+<para>
+The KeyName element contains a string value (in which white space is
+significant) which may be used by the signer to communicate a key
+identifier to the recipient. Typically, KeyName contains an identifier
+related to the key pair used to sign the message, but it may contain
+other protocol-related information that indirectly identifies a key pair.
+(Common uses of KeyName include simple string names for keys, a key index,
+a distinguished name (DN), an email address, etc.)
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName">&lt;dsig:KeyName/&gt;</ulink> element processing key data klass.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecKeyDataNameId" role="macro">
+<title>xmlSecKeyDataNameId</title>
+<indexterm zone="xmlSecKeyDataNameId"><primary>xmlSecKeyDataNameId</primary></indexterm>
+<programlisting>#define xmlSecKeyDataNameId             xmlSecKeyDataNameGetKlass()
 </programlisting>
 <para>
-If the flag is set then we'll stop when we found an empty node.
-Otherwise we just ignore it.</para>
-<para>
-
+The &lt;dsig:KeyName&gt; processing class.
 </para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-KEYINFO-FLAGS-X509DATA-SKIP-STRICT-CHECKS:CAPS" role="macro">XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS</title>
-<indexterm><primary>XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS</primary></indexterm><programlisting>#define XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS        0x00004000
+<refsect2 id="xmlSecKeyDataRetrievalMethodGetKlass" role="function">
+<title>xmlSecKeyDataRetrievalMethodGetKlass ()</title>
+<indexterm zone="xmlSecKeyDataRetrievalMethodGetKlass"><primary>xmlSecKeyDataRetrievalMethodGetKlass</primary></indexterm>
+<programlisting><link linkend="xmlSecKeyDataId"><returnvalue>xmlSecKeyDataId</returnvalue></link>     xmlSecKeyDataRetrievalMethodGetKlass
+                                                        (<parameter><type>void</type></parameter>);</programlisting>
+<para>
+The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> element key data klass
+(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-RetrievalMethod"><type>sec-RetrievalMethod</type></link>):
+A RetrievalMethod element within KeyInfo is used to convey a reference to
+KeyInfo information that is stored at another location. For example,
+several signatures in a document might use a key verified by an X.509v3
+certificate chain appearing once in the document or remotely outside the
+document; each signature's KeyInfo can reference this chain using a single
+RetrievalMethod element instead of including the entire chain with a
+sequence of X509Certificate elements.
+</para>
+<para>
+RetrievalMethod uses the same syntax and dereferencing behavior as
+Reference's URI and The Reference Processing Model.
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> element processing key data klass.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecKeyDataRetrievalMethodId" role="macro">
+<title>xmlSecKeyDataRetrievalMethodId</title>
+<indexterm zone="xmlSecKeyDataRetrievalMethodId"><primary>xmlSecKeyDataRetrievalMethodId</primary></indexterm>
+<programlisting>#define xmlSecKeyDataRetrievalMethodId  xmlSecKeyDataRetrievalMethodGetKlass()
 </programlisting>
 <para>
-If the flag is set then we'll skip strict checking of certs and CRLs</para>
-<para>
-
+The &lt;dsig:RetrievalMethod&gt; processing class.
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyInfoCtx" role="struct">struct xmlSecKeyInfoCtx</title>
-<indexterm><primary>xmlSecKeyInfoCtx</primary></indexterm><programlisting>struct xmlSecKeyInfoCtx {
+<refsect2 id="xmlSecKeyDataValueGetKlass" role="function">
+<title>xmlSecKeyDataValueGetKlass ()</title>
+<indexterm zone="xmlSecKeyDataValueGetKlass"><primary>xmlSecKeyDataValueGetKlass</primary></indexterm>
+<programlisting><link linkend="xmlSecKeyDataId"><returnvalue>xmlSecKeyDataId</returnvalue></link>     xmlSecKeyDataValueGetKlass          (<parameter><type>void</type></parameter>);</programlisting>
+<para>
+The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue">&lt;dsig:KeyValue/&gt;</ulink> element key data klass
+(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-KeyValue"><type>sec-KeyValue</type></link>):
+</para>
+<para>
+The KeyValue element contains a single public key that may be useful in
+validating the signature.
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue">&lt;dsig:KeyValue/&gt;</ulink> element processing key data klass.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecKeyDataValueId" role="macro">
+<title>xmlSecKeyDataValueId</title>
+<indexterm zone="xmlSecKeyDataValueId"><primary>xmlSecKeyDataValueId</primary></indexterm>
+<programlisting>#define xmlSecKeyDataValueId            xmlSecKeyDataValueGetKlass()
+</programlisting>
+<para>
+The &lt;dsig:KeyValue&gt; processing class.
+</para></refsect2>
+<refsect2 id="xmlSecKeyInfoCtx" role="struct">
+<title>struct xmlSecKeyInfoCtx</title>
+<indexterm zone="xmlSecKeyInfoCtx"><primary>xmlSecKeyInfoCtx</primary></indexterm>
+<programlisting>struct xmlSecKeyInfoCtx {
     void*                               userData;
     unsigned int                        flags;
     unsigned int                        flags2;
@@ -321,380 +333,249 @@ If the flag is set then we'll skip strict checking of certs and CRLs</para>
 };
 </programlisting>
 <para>
-The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> reading or writing context.</para>
-<para>
-
+The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> reading or writing context.
 </para><variablelist role="struct">
-<varlistentry>
-<term><link linkend="void">void</link>&nbsp;*<structfield>userData</structfield>;</term>
-<listitem><simpara>           the pointer to user data (xmlsec and xmlsec-crypto
-                     never touch this).
-</simpara></listitem>
+<varlistentry><term><link linkend="void"><type>void</type></link>&#160;*<structfield id="xmlSecKeyInfoCtx.userData">userData</structfield>;</term>
+<listitem><simpara>the pointer to user data (xmlsec and xmlsec-crypto
+never touch this).</simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term>unsigned&nbsp;<link linkend="int">int</link>&nbsp;<structfield>flags</structfield>;</term>
-<listitem><simpara>              the bit mask for flags that control processin.
-</simpara></listitem>
+<varlistentry><term>unsigned&#160;<link linkend="int"><type>int</type></link>&#160;<structfield id="xmlSecKeyInfoCtx.flags">flags</structfield>;</term>
+<listitem><simpara>the bit mask for flags that control processin.</simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term>unsigned&nbsp;<link linkend="int">int</link>&nbsp;<structfield>flags2</structfield>;</term>
-<listitem><simpara>             reserved for future.
-</simpara></listitem>
+<varlistentry><term>unsigned&#160;<link linkend="int"><type>int</type></link>&#160;<structfield id="xmlSecKeyInfoCtx.flags2">flags2</structfield>;</term>
+<listitem><simpara>reserved for future.</simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link>&nbsp;<structfield>keysMngr</structfield>;</term>
-<listitem><simpara>           the pointer to current keys manager.
-</simpara></listitem>
+<varlistentry><term><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link>&#160;<structfield id="xmlSecKeyInfoCtx.keysMngr">keysMngr</structfield>;</term>
+<listitem><simpara>the pointer to current keys manager.</simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecKeyInfoMode">xmlSecKeyInfoMode</link>&nbsp;<structfield>mode</structfield>;</term>
-<listitem><simpara>               do we read or write <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> element.
-</simpara></listitem>
+<varlistentry><term><link linkend="xmlSecKeyInfoMode"><type>xmlSecKeyInfoMode</type></link>&#160;<structfield id="xmlSecKeyInfoCtx.mode">mode</structfield>;</term>
+<listitem><simpara>do we read or write <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> element.</simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecPtrList">xmlSecPtrList</link>&nbsp;<structfield>enabledKeyData</structfield>;</term>
-<listitem><simpara>     the list of enabled <parameter>xmlSecKeyDataId</parameter> (if list is
-                     empty then all data ids are enabled).
-</simpara></listitem>
+<varlistentry><term><link linkend="xmlSecPtrList"><type>xmlSecPtrList</type></link>&#160;<structfield id="xmlSecKeyInfoCtx.enabledKeyData">enabledKeyData</structfield>;</term>
+<listitem><simpara>the list of enabled <parameter>xmlSecKeyDataId</parameter> (if list is
+empty then all data ids are enabled).</simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="int">int</link>&nbsp;<structfield>base64LineSize</structfield>;</term>
-<listitem><simpara>     the max columns size for base64 encoding.
-</simpara></listitem>
+<varlistentry><term><link linkend="int"><type>int</type></link>&#160;<structfield id="xmlSecKeyInfoCtx.base64LineSize">base64LineSize</structfield>;</term>
+<listitem><simpara>the max columns size for base64 encoding.</simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecTransformCtx">xmlSecTransformCtx</link>&nbsp;<structfield>retrievalMethodCtx</structfield>;</term>
-<listitem><simpara> the transforms context for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink>
-                     element processing.
-</simpara></listitem>
+<varlistentry><term><link linkend="xmlSecTransformCtx"><type>xmlSecTransformCtx</type></link>&#160;<structfield id="xmlSecKeyInfoCtx.retrievalMethodCtx">retrievalMethodCtx</structfield>;</term>
+<listitem><simpara>the transforms context for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink>
+element processing.</simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="int">int</link>&nbsp;<structfield>maxRetrievalMethodLevel</structfield>;</term>
-<listitem><simpara> the max recursion level when processing
-                     <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink> element; default level is 1
-                     (see also <parameter>curRetrievalMethodLevel</parameter>).
-</simpara></listitem>
+<varlistentry><term><link linkend="int"><type>int</type></link>&#160;<structfield id="xmlSecKeyInfoCtx.maxRetrievalMethodLevel">maxRetrievalMethodLevel</structfield>;</term>
+<listitem><simpara>the max recursion level when processing
+<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink> element; default level is 1
+(see also <parameter>curRetrievalMethodLevel</parameter>).</simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link>&nbsp;<structfield>encCtx</structfield>;</term>
-<listitem><simpara>             the encryption context for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-EncryptedKey ">&lt;dsig:EncryptedKey /&gt;</ulink> element
-                     processing.
-</simpara></listitem>
+<varlistentry><term><link linkend="xmlSecEncCtx"><type>xmlSecEncCtxPtr</type></link>&#160;<structfield id="xmlSecKeyInfoCtx.encCtx">encCtx</structfield>;</term>
+<listitem><simpara>the encryption context for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-EncryptedKey ">&lt;dsig:EncryptedKey /&gt;</ulink> element
+processing.</simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="int">int</link>&nbsp;<structfield>maxEncryptedKeyLevel</structfield>;</term>
-<listitem><simpara> the max recursion level when processing
-                     <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey ">&lt;enc:EncryptedKey /&gt;</ulink> element; default level is 1
-                     (see <parameter>curEncryptedKeyLevel</parameter>).
-</simpara></listitem>
+<varlistentry><term><link linkend="int"><type>int</type></link>&#160;<structfield id="xmlSecKeyInfoCtx.maxEncryptedKeyLevel">maxEncryptedKeyLevel</structfield>;</term>
+<listitem><simpara>the max recursion level when processing
+<ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey ">&lt;enc:EncryptedKey /&gt;</ulink> element; default level is 1
+(see <parameter>curEncryptedKeyLevel</parameter>).</simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="time-t">time_t</link>&nbsp;<structfield>certsVerificationTime</structfield>;</term>
-<listitem><simpara> the time to use for X509 certificates verification
-                     ("not valid before" and "not valid after" checks);
-                     if <parameter>certsVerificationTime</parameter> is equal to 0 (default)
-                     then we verify certificates against the system's
-                     clock "now".
-</simpara></listitem>
+<varlistentry><term><link linkend="time-t"><type>time_t</type></link>&#160;<structfield id="xmlSecKeyInfoCtx.certsVerificationTime">certsVerificationTime</structfield>;</term>
+<listitem><simpara>the time to use for X509 certificates verification
+("not valid before" and "not valid after" checks);
+if <parameter>certsVerificationTime</parameter> is equal to 0 (default)
+then we verify certificates against the system's
+clock "now".</simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="int">int</link>&nbsp;<structfield>certsVerificationDepth</structfield>;</term>
-<listitem><simpara> the max certifications chain length (default is 9).
-</simpara></listitem>
+<varlistentry><term><link linkend="int"><type>int</type></link>&#160;<structfield id="xmlSecKeyInfoCtx.certsVerificationDepth">certsVerificationDepth</structfield>;</term>
+<listitem><simpara>the max certifications chain length (default is 9).</simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="void">void</link>&nbsp;*<structfield>pgpReserved</structfield>;</term>
-<listitem><simpara>        reserved for PGP.
-</simpara></listitem>
+<varlistentry><term><link linkend="void"><type>void</type></link>&#160;*<structfield id="xmlSecKeyInfoCtx.pgpReserved">pgpReserved</structfield>;</term>
+<listitem><simpara>reserved for PGP.</simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="int">int</link>&nbsp;<structfield>curRetrievalMethodLevel</structfield>;</term>
-<listitem><simpara> the current <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink> element
-                     processing level (see <parameter>maxRetrievalMethodLevel</parameter>).
-</simpara></listitem>
+<varlistentry><term><link linkend="int"><type>int</type></link>&#160;<structfield id="xmlSecKeyInfoCtx.curRetrievalMethodLevel">curRetrievalMethodLevel</structfield>;</term>
+<listitem><simpara>the current <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink> element
+processing level (see <parameter>maxRetrievalMethodLevel</parameter>).</simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="int">int</link>&nbsp;<structfield>curEncryptedKeyLevel</structfield>;</term>
-<listitem><simpara> the current <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey ">&lt;enc:EncryptedKey /&gt;</ulink> element
-                     processing level (see <parameter>maxEncryptedKeyLevel</parameter>).
-</simpara></listitem>
+<varlistentry><term><link linkend="int"><type>int</type></link>&#160;<structfield id="xmlSecKeyInfoCtx.curEncryptedKeyLevel">curEncryptedKeyLevel</structfield>;</term>
+<listitem><simpara>the current <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey ">&lt;enc:EncryptedKey /&gt;</ulink> element
+processing level (see <parameter>maxEncryptedKeyLevel</parameter>).</simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecKeyReq">xmlSecKeyReq</link>&nbsp;<structfield>keyReq</structfield>;</term>
-<listitem><simpara>             the current key requirements.
-</simpara></listitem>
+<varlistentry><term><link linkend="xmlSecKeyReq"><type>xmlSecKeyReq</type></link>&#160;<structfield id="xmlSecKeyInfoCtx.keyReq">keyReq</structfield>;</term>
+<listitem><simpara>the current key requirements.</simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="void">void</link>&nbsp;*<structfield>reserved0</structfield>;</term>
-<listitem><simpara>          reserved for the future.
-</simpara></listitem>
+<varlistentry><term><link linkend="void"><type>void</type></link>&#160;*<structfield id="xmlSecKeyInfoCtx.reserved0">reserved0</structfield>;</term>
+<listitem><simpara>reserved for the future.</simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="void">void</link>&nbsp;*<structfield>reserved1</structfield>;</term>
-<listitem><simpara>          reserved for the future.
-</simpara></listitem>
+<varlistentry><term><link linkend="void"><type>void</type></link>&#160;*<structfield id="xmlSecKeyInfoCtx.reserved1">reserved1</structfield>;</term>
+<listitem><simpara>reserved for the future.</simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyInfoCtxCreate" role="function">xmlSecKeyInfoCtxCreate ()</title>
-<indexterm><primary>xmlSecKeyInfoCtxCreate</primary></indexterm><programlisting><link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> xmlSecKeyInfoCtxCreate  (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
+<refsect2 id="xmlSecKeyInfoCtxCopyUserPref" role="function">
+<title>xmlSecKeyInfoCtxCopyUserPref ()</title>
+<indexterm zone="xmlSecKeyInfoCtxCopyUserPref"><primary>xmlSecKeyInfoCtxCopyUserPref</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecKeyInfoCtxCopyUserPref        (<parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> dst</parameter>,
+                                                         <parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> src</parameter>);</programlisting>
+<para>
+Copies user preferences from <parameter>src</parameter> context to <parameter>dst</parameter> context.
+</para><variablelist role="params">
+<varlistentry><term><parameter>dst</parameter>&#160;:</term>
+<listitem><simpara>the pointer to destination context object.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>src</parameter>&#160;:</term>
+<listitem><simpara>the pointer to source context object.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>0 on success and a negative value if an error occurs.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecKeyInfoCtxCreate" role="function">
+<title>xmlSecKeyInfoCtxCreate ()</title>
+<indexterm zone="xmlSecKeyInfoCtxCreate"><primary>xmlSecKeyInfoCtxCreate</primary></indexterm>
+<programlisting><link linkend="xmlSecKeyInfoCtxPtr"><returnvalue>xmlSecKeyInfoCtxPtr</returnvalue></link> xmlSecKeyInfoCtxCreate              (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> keysMngr</parameter>);</programlisting>
 <para>
 Allocates and initializes <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 Caller is responsible for freeing it by calling <link linkend="xmlSecKeyInfoCtxDestroy"><type>xmlSecKeyInfoCtxDestroy</type></link>
-function.</para>
-<para>
-
+function.
 </para><variablelist role="params">
-<varlistentry><term><parameter>keysMngr</parameter>&nbsp;:</term>
-<listitem><simpara>           the pointer to keys manager (may be NULL).
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to newly allocated object or NULL if an error occurs.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>keysMngr</parameter>&#160;:</term>
+<listitem><simpara>the pointer to keys manager (may be NULL).</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to newly allocated object or NULL if an error occurs.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyInfoCtxDestroy" role="function">xmlSecKeyInfoCtxDestroy ()</title>
-<indexterm><primary>xmlSecKeyInfoCtxDestroy</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecKeyInfoCtxDestroy         (<link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
-<para>
-Destroys <parameter>keyInfoCtx</parameter> object created with <link linkend="xmlSecKeyInfoCtxCreate"><type>xmlSecKeyInfoCtxCreate</type></link> function.</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
-<listitem><simpara>         the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyInfoCtxInitialize" role="function">xmlSecKeyInfoCtxInitialize ()</title>
-<indexterm><primary>xmlSecKeyInfoCtxInitialize</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecKeyInfoCtxInitialize      (<link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx,
-                                             <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
-<para>
-Initializes <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context. Caller is
-responsible for cleaning it up by <link linkend="xmlSecKeyInfoCtxFinalize"><type>xmlSecKeyInfoCtxFinalize</type></link> function.</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
-<listitem><simpara>         the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>keysMngr</parameter>&nbsp;:</term>
-<listitem><simpara>           the pointer to keys manager (may be NULL).
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success and a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyInfoCtxFinalize" role="function">xmlSecKeyInfoCtxFinalize ()</title>
-<indexterm><primary>xmlSecKeyInfoCtxFinalize</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecKeyInfoCtxFinalize        (<link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
-<para>
-Cleans up the <parameter>keyInfoCtx</parameter> initialized with <link linkend="xmlSecKeyInfoCtxInitialize"><type>xmlSecKeyInfoCtxInitialize</type></link>
-function.</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
-<listitem><simpara>         the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyInfoCtxReset" role="function">xmlSecKeyInfoCtxReset ()</title>
-<indexterm><primary>xmlSecKeyInfoCtxReset</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecKeyInfoCtxReset           (<link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
-<para>
-Resets the <parameter>keyInfoCtx</parameter> state. User settings are not changed.</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
-<listitem><simpara>         the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyInfoCtxCopyUserPref" role="function">xmlSecKeyInfoCtxCopyUserPref ()</title>
-<indexterm><primary>xmlSecKeyInfoCtxCopyUserPref</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecKeyInfoCtxCopyUserPref    (<link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> dst,
-                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> src);</programlisting>
-<para>
-Copies user preferences from <parameter>src</parameter> context to <parameter>dst</parameter> context.</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>dst</parameter>&nbsp;:</term>
-<listitem><simpara>                the pointer to destination context object.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>src</parameter>&nbsp;:</term>
-<listitem><simpara>                the pointer to source context object.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success and a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyInfoCtxCreateEncCtx" role="function">xmlSecKeyInfoCtxCreateEncCtx ()</title>
-<indexterm><primary>xmlSecKeyInfoCtxCreateEncCtx</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecKeyInfoCtxCreateEncCtx    (<link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+<refsect2 id="xmlSecKeyInfoCtxCreateEncCtx" role="function">
+<title>xmlSecKeyInfoCtxCreateEncCtx ()</title>
+<indexterm zone="xmlSecKeyInfoCtxCreateEncCtx"><primary>xmlSecKeyInfoCtxCreateEncCtx</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecKeyInfoCtxCreateEncCtx        (<parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> keyInfoCtx</parameter>);</programlisting>
 <para>
 Creates encryption context form processing <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> child
-of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element.</para>
-<para>
-
+of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element.
 </para><variablelist role="params">
-<varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
-<listitem><simpara>         the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> 0 on success and a negative value if an error occurs.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>0 on success and a negative value if an error occurs.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyInfoCtxDebugDump" role="function">xmlSecKeyInfoCtxDebugDump ()</title>
-<indexterm><primary>xmlSecKeyInfoCtxDebugDump</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecKeyInfoCtxDebugDump       (<link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx,
-                                             <link linkend="FILE:CAPS">FILE</link> *output);</programlisting>
+<refsect2 id="xmlSecKeyInfoCtxDebugDump" role="function">
+<title>xmlSecKeyInfoCtxDebugDump ()</title>
+<indexterm zone="xmlSecKeyInfoCtxDebugDump"><primary>xmlSecKeyInfoCtxDebugDump</primary></indexterm>
+<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecKeyInfoCtxDebugDump           (<parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> keyInfoCtx</parameter>,
+                                                         <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);</programlisting>
 <para>
-Prints user settings and current context state to <parameter>output</parameter>.</para>
-<para>
-
+Prints user settings and current context state to <parameter>output</parameter>.
 </para><variablelist role="params">
-<varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
-<listitem><simpara>         the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>output</parameter>&nbsp;:</term>
-<listitem><simpara>             the output file pointer.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>output</parameter>&#160;:</term>
+<listitem><simpara>the output file pointer.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyInfoCtxDebugXmlDump" role="function">xmlSecKeyInfoCtxDebugXmlDump ()</title>
-<indexterm><primary>xmlSecKeyInfoCtxDebugXmlDump</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecKeyInfoCtxDebugXmlDump    (<link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx,
-                                             <link linkend="FILE:CAPS">FILE</link> *output);</programlisting>
+<refsect2 id="xmlSecKeyInfoCtxDebugXmlDump" role="function">
+<title>xmlSecKeyInfoCtxDebugXmlDump ()</title>
+<indexterm zone="xmlSecKeyInfoCtxDebugXmlDump"><primary>xmlSecKeyInfoCtxDebugXmlDump</primary></indexterm>
+<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecKeyInfoCtxDebugXmlDump        (<parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> keyInfoCtx</parameter>,
+                                                         <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);</programlisting>
 <para>
-Prints user settings and current context state in XML format to <parameter>output</parameter>.</para>
-<para>
-
+Prints user settings and current context state in XML format to <parameter>output</parameter>.
 </para><variablelist role="params">
-<varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
-<listitem><simpara>         the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>output</parameter>&nbsp;:</term>
-<listitem><simpara>             the output file pointer.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>output</parameter>&#160;:</term>
+<listitem><simpara>the output file pointer.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyDataNameId" role="macro">xmlSecKeyDataNameId</title>
-<indexterm><primary>xmlSecKeyDataNameId</primary></indexterm><programlisting>#define xmlSecKeyDataNameId             xmlSecKeyDataNameGetKlass()
+<refsect2 id="xmlSecKeyInfoCtxDestroy" role="function">
+<title>xmlSecKeyInfoCtxDestroy ()</title>
+<indexterm zone="xmlSecKeyInfoCtxDestroy"><primary>xmlSecKeyInfoCtxDestroy</primary></indexterm>
+<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecKeyInfoCtxDestroy             (<parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> keyInfoCtx</parameter>);</programlisting>
+<para>
+Destroys <parameter>keyInfoCtx</parameter> object created with <link linkend="xmlSecKeyInfoCtxCreate"><type>xmlSecKeyInfoCtxCreate</type></link> function.
+</para><variablelist role="params">
+<varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecKeyInfoCtxFinalize" role="function">
+<title>xmlSecKeyInfoCtxFinalize ()</title>
+<indexterm zone="xmlSecKeyInfoCtxFinalize"><primary>xmlSecKeyInfoCtxFinalize</primary></indexterm>
+<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecKeyInfoCtxFinalize            (<parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> keyInfoCtx</parameter>);</programlisting>
+<para>
+Cleans up the <parameter>keyInfoCtx</parameter> initialized with <link linkend="xmlSecKeyInfoCtxInitialize"><type>xmlSecKeyInfoCtxInitialize</type></link>
+function.
+</para><variablelist role="params">
+<varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecKeyInfoCtxInitialize" role="function">
+<title>xmlSecKeyInfoCtxInitialize ()</title>
+<indexterm zone="xmlSecKeyInfoCtxInitialize"><primary>xmlSecKeyInfoCtxInitialize</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecKeyInfoCtxInitialize          (<parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> keyInfoCtx</parameter>,
+                                                         <parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> keysMngr</parameter>);</programlisting>
+<para>
+Initializes <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context. Caller is
+responsible for cleaning it up by <link linkend="xmlSecKeyInfoCtxFinalize"><type>xmlSecKeyInfoCtxFinalize</type></link> function.
+</para><variablelist role="params">
+<varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>keysMngr</parameter>&#160;:</term>
+<listitem><simpara>the pointer to keys manager (may be NULL).</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>0 on success and a negative value if an error occurs.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecKeyInfoCtxReset" role="function">
+<title>xmlSecKeyInfoCtxReset ()</title>
+<indexterm zone="xmlSecKeyInfoCtxReset"><primary>xmlSecKeyInfoCtxReset</primary></indexterm>
+<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecKeyInfoCtxReset               (<parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> keyInfoCtx</parameter>);</programlisting>
+<para>
+Resets the <parameter>keyInfoCtx</parameter> state. User settings are not changed.
+</para><variablelist role="params">
+<varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecKeyInfoMode" role="enum">
+<title>enum xmlSecKeyInfoMode</title>
+<indexterm zone="xmlSecKeyInfoMode"><primary>xmlSecKeyInfoMode</primary></indexterm>
+<programlisting>typedef enum {
+    xmlSecKeyInfoModeRead = 0,
+    xmlSecKeyInfoModeWrite
+} xmlSecKeyInfoMode;
 </programlisting>
 <para>
-The &lt;dsig:KeyName&gt; processing class.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyDataNameGetKlass" role="function">xmlSecKeyDataNameGetKlass ()</title>
-<indexterm><primary>xmlSecKeyDataNameGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataNameGetKlass   (void);</programlisting>
-<para>
-The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName">&lt;dsig:KeyName/&gt;</ulink> element key data klass
-(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-KeyName"><type>sec-KeyName</type></link>):
-</para>
-<para>
-The KeyName element contains a string value (in which white space is
-significant) which may be used by the signer to communicate a key
-identifier to the recipient. Typically, KeyName contains an identifier
-related to the key pair used to sign the message, but it may contain
-other protocol-related information that indirectly identifies a key pair.
-(Common uses of KeyName include simple string names for keys, a key index,
-a distinguished name (DN), an email address, etc.)</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName">&lt;dsig:KeyName/&gt;</ulink> element processing key data klass.
-</simpara></listitem></varlistentry>
+The <parameter>xmlSecKeyInfoCtx</parameter> operation mode (read or write).
+</para><variablelist role="enum">
+<varlistentry id="xmlSecKeyInfoModeRead" role="constant">
+<term><literal>xmlSecKeyInfoModeRead</literal></term>
+<listitem><simpara>read <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> element.
+</simpara></listitem>
+</varlistentry>
+<varlistentry id="xmlSecKeyInfoModeWrite" role="constant">
+<term><literal>xmlSecKeyInfoModeWrite</literal></term>
+<listitem><simpara>write <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> element.
+</simpara></listitem>
+</varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyDataValueId" role="macro">xmlSecKeyDataValueId</title>
-<indexterm><primary>xmlSecKeyDataValueId</primary></indexterm><programlisting>#define xmlSecKeyDataValueId            xmlSecKeyDataValueGetKlass()
-</programlisting>
+<refsect2 id="xmlSecKeyInfoNodeRead" role="function">
+<title>xmlSecKeyInfoNodeRead ()</title>
+<indexterm zone="xmlSecKeyInfoNodeRead"><primary>xmlSecKeyInfoNodeRead</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecKeyInfoNodeRead               (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> keyInfoNode</parameter>,
+                                                         <parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>,
+                                                         <parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> keyInfoCtx</parameter>);</programlisting>
 <para>
-The &lt;dsig:KeyValue&gt; processing class.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyDataValueGetKlass" role="function">xmlSecKeyDataValueGetKlass ()</title>
-<indexterm><primary>xmlSecKeyDataValueGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataValueGetKlass  (void);</programlisting>
-<para>
-The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue">&lt;dsig:KeyValue/&gt;</ulink> element key data klass
-(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-KeyValue"><type>sec-KeyValue</type></link>):
-</para>
-<para>
-The KeyValue element contains a single public key that may be useful in
-validating the signature.</para>
-<para>
-
+Parses the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element <parameter>keyInfoNode</parameter>, extracts the key data
+and stores into <parameter>key</parameter>.
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue">&lt;dsig:KeyValue/&gt;</ulink> element processing key data klass.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>keyInfoNode</parameter>&#160;:</term>
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key</parameter>&#160;:</term>
+<listitem><simpara>the pointer to result key object.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>0 on success or -1 if an error occurs.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyDataRetrievalMethodId" role="macro">xmlSecKeyDataRetrievalMethodId</title>
-<indexterm><primary>xmlSecKeyDataRetrievalMethodId</primary></indexterm><programlisting>#define xmlSecKeyDataRetrievalMethodId  xmlSecKeyDataRetrievalMethodGetKlass()
-</programlisting>
+<refsect2 id="xmlSecKeyInfoNodeWrite" role="function">
+<title>xmlSecKeyInfoNodeWrite ()</title>
+<indexterm zone="xmlSecKeyInfoNodeWrite"><primary>xmlSecKeyInfoNodeWrite</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecKeyInfoNodeWrite              (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> keyInfoNode</parameter>,
+                                                         <parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>,
+                                                         <parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> keyInfoCtx</parameter>);</programlisting>
 <para>
-The &lt;dsig:RetrievalMethod&gt; processing class.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyDataRetrievalMethodGetKlass" role="function">xmlSecKeyDataRetrievalMethodGetKlass ()</title>
-<indexterm><primary>xmlSecKeyDataRetrievalMethodGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataRetrievalMethodGetKlass
-                                            (void);</programlisting>
-<para>
-The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> element key data klass
-(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-RetrievalMethod"><type>sec-RetrievalMethod</type></link>):
-A RetrievalMethod element within KeyInfo is used to convey a reference to
-KeyInfo information that is stored at another location. For example,
-several signatures in a document might use a key verified by an X.509v3
-certificate chain appearing once in the document or remotely outside the
-document; each signature's KeyInfo can reference this chain using a single
-RetrievalMethod element instead of including the entire chain with a
-sequence of X509Certificate elements.
-</para>
-<para>
-RetrievalMethod uses the same syntax and dereferencing behavior as
-Reference's URI and The Reference Processing Model.</para>
-<para>
-
+Writes the <parameter>key</parameter> into the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element template <parameter>keyInfoNode</parameter>.
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> element processing key data klass.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyDataEncryptedKeyId" role="macro">xmlSecKeyDataEncryptedKeyId</title>
-<indexterm><primary>xmlSecKeyDataEncryptedKeyId</primary></indexterm><programlisting>#define xmlSecKeyDataEncryptedKeyId     xmlSecKeyDataEncryptedKeyGetKlass()
-</programlisting>
-<para>
-The &lt;enc:EncryptedKey&gt; processing class.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyDataEncryptedKeyGetKlass" role="function">xmlSecKeyDataEncryptedKeyGetKlass ()</title>
-<indexterm><primary>xmlSecKeyDataEncryptedKeyGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataEncryptedKeyGetKlass
-                                            (void);</programlisting>
-<para>
-The <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> element key data klass
-(http://www.w3.org/TR/xmlenc-core/<link linkend="sec-EncryptedKey"><type>sec-EncryptedKey</type></link>):
-</para>
-<para>
-The EncryptedKey element is used to transport encryption keys from
-the originator to a known recipient(s). It may be used as a stand-alone
-XML document, be placed within an application document, or appear inside
-an EncryptedData element as a child of a ds:KeyInfo element. The key value
-is always encrypted to the recipient(s). When EncryptedKey is decrypted the
-resulting octets are made available to the EncryptionMethod algorithm
-without any additional processing.</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> element processing key data klass.
-</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>keyInfoNode</parameter>&#160;:</term>
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key</parameter>&#160;:</term>
+<listitem><simpara>the pointer to key object.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>0 on success or -1 if an error occurs.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 
 </refsect1>
-
-
-
 
 </refentry>

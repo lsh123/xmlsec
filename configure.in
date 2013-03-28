@@ -504,6 +504,22 @@ if test "z$OPENSSL_FOUND" = "zyes" -a "z$OPENSSL_VERSION" = "z" ; then
 fi    
 
 if test "z$OPENSSL_FOUND" = "zyes" ; then
+    dnl Check availability of ECDSA
+    OLD_CPPFLAGS=$CPPFLAGS
+    CPPFLAGS="$OPENSSL_CFLAGS"
+
+    AC_EGREP_CPP(yes,[
+	#include <openssl/opensslconf.h>
+	#ifdef OPENSSL_NO_ECDSA
+	    yes
+	#endif
+    ],[
+	OPENSSL_CFLAGS="$OPENSSL_CFLAGS -DXMLSEC_NO_ECDSA=1"
+    ]) 
+    CPPFLAGS=$OLD_CPPFLAGS
+fi
+
+if test "z$OPENSSL_FOUND" = "zyes" ; then
     XMLSEC_NO_OPENSSL="0"
     if test "z$OPENSSL_VERSION" = "z0.9.6" ; then
 	OPENSSL_CFLAGS="$OPENSSL_CFLAGS -DXMLSEC_OPENSSL_096=1 -DXMLSEC_NO_ECDSA=1"

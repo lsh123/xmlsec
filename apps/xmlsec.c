@@ -1050,7 +1050,7 @@ int main(int argc, const char **argv) {
         case xmlSecAppCommandDecrypt:
         case xmlSecAppCommandXkmsServerRequest:
             if(pos >= argc) {
-                fprintf(stderr, "Error: <file> parameter is requried for this command\n");
+                fprintf(stderr, "Error: <file> parameter is required for this command\n");
                 xmlSecAppPrintUsage();
                 goto fail;
             }

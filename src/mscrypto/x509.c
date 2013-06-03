@@ -1928,6 +1928,7 @@ xmlSecMSCryptoX509NameWrite(PCERT_NAME_BLOB nm) {
         return(NULL);
     }
 
+    xmlFree(resT);
     return(res);
 }
 

@@ -304,9 +304,11 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         case 3:
             /* Public RSA */
             type = xmlSecGCryptDerKeyTypePublicRsa;
+	    break;
         case 5:
             /* Public DSA */
             type = xmlSecGCryptDerKeyTypePublicDsa;
+	    break;
         case 6:
             /* Private DSA */
             type = xmlSecGCryptDerKeyTypePrivateDsa;

@@ -456,7 +456,6 @@ xmlSecKeyReqMatchKey(xmlSecKeyReqPtr keyReq, xmlSecKeyPtr key) {
  */
 int
 xmlSecKeyReqMatchKeyValue(xmlSecKeyReqPtr keyReq, xmlSecKeyDataPtr value) {
-	xmlSecKeyDataType type;
     xmlSecAssert2(keyReq != NULL, -1);
     xmlSecAssert2(value != NULL, -1);
 
@@ -471,32 +470,6 @@ xmlSecKeyReqMatchKeyValue(xmlSecKeyReqPtr keyReq, xmlSecKeyDataPtr value) {
 
         return(0);
     }
-
-    /* Check Key Type against intended usage */
-    type = xmlSecKeyDataGetType(value);
-    if(type != xmlSecKeyDataTypeUnknown) {
-		if((keyReq->keyUsage & xmlSecKeyUsageSign) != 0) {
-			if((type & (xmlSecKeyDataTypePrivate | xmlSecKeyDataTypeSymmetric)) == 0) {
-				return (0);
-			}
-		}
-		if((keyReq->keyUsage & xmlSecKeyUsageVerify) != 0) {
-			if((type & (xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate | xmlSecKeyDataTypeSymmetric)) == 0) {
-				return (0);
-			}
-		}
-		if((keyReq->keyUsage & xmlSecKeyUsageEncrypt) != 0) {
-			if((type & (xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate | xmlSecKeyDataTypeSymmetric)) == 0) {
-				return (0);
-			}
-		}
-		if((keyReq->keyUsage & xmlSecKeyUsageDecrypt) != 0) {
-			if((type & (xmlSecKeyDataTypePrivate | xmlSecKeyDataTypeSymmetric)) == 0) {
-				return (0);
-			}
-		}
-    }
-
     return(1);
 }
 

@@ -1,8 +1,40 @@
+2014-05-23  Aleksey Sanin  <aleksey@aleksey.com>
+        * fix build on MacOSX (bug #680307)
+        * update certs for examples (bug #674572)
+        * update test certs to be valid till 2114
+        * don't create files on xmlsec-mscrypto when loading the key (bug #633924)
+        * clarify min OpenSSL requirements
+
+2014-05-23  Aleksey Sanin  <aleksey@aleksey.com>
+        * better detect private keys on ext RSA engines (bug #728213)
+        * fixed CRL check
+
+2014-02-17  Aleksey Sanin  <aleksey@aleksey.com>
+        * fixes for RH 6x
+
+2013-07-19  Aleksey Sanin  <aleksey@aleksey.com>
+        * fixed switch - added missed break keywords (bug #704574)
+
+2013-06-03  Aleksey Sanin  <aleksey@aleksey.com>
+        * fix memory leak in converting cert subject
+
+2013-05-09  Aleksey Sanin  <aleksey@aleksey.com>
+        * disable network access during internal xml transform parser
+
+2013-04-12  Aleksey Sanin  <aleksey@aleksey.com>
+        * fix typo (fixed bug 695605)
+
+2013-03-28  Aleksey Sanin  <aleksey@aleksey.com>
+        * disable ECDSA if needed (Daniel)
+
+2013-03-24  Aleksey Sanin  <aleksey@aleksey.com>
+        * docs rebuild
+
 2013-03-24 Aleksey Sanin  <aleksey@aleksey.com>
-	* 1.2.19 release
+        * 1.2.19 release
 
 2013-01-18 Aleksey Sanin  <aleksey@aleksey.com>
-	* Added support for DSA-SHA256, ECDSA-SHA1, ECDSA-SHA224, ECDSA-SHA256, ECDSA-SHA384, ECDSA-SHA512 (Mak Kolybabi)
+        * Added support for DSA-SHA256, ECDSA-SHA1, ECDSA-SHA224, ECDSA-SHA256, ECDSA-SHA384, ECDSA-SHA512 (Mak Kolybabi)
 
 2011-09-06  Aleksey Sanin  <aleksey@aleksey.com>
         * GOST support for xmlsec-openssl (patch from Dmitry Belyavsky)

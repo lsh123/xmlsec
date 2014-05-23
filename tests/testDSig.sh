@@ -110,7 +110,7 @@ execDSigTest $res_success \
     "sha1 dsa-sha1" \
     "dsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -119,7 +119,7 @@ execDSigTest $res_success \
     "sha1 rsa-sha1" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret" \
+    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -263,7 +263,7 @@ execDSigTest $res_success \
     "md5 rsa-md5" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret" \
+    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -272,7 +272,7 @@ execDSigTest $res_success \
     "ripemd160 rsa-ripemd160" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret" \
+    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -281,7 +281,7 @@ execDSigTest $res_success \
     "sha1 rsa-sha1" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret" \
+    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -290,7 +290,7 @@ execDSigTest $res_success \
     "sha224 rsa-sha224" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/rsakey$priv_key_suffix.$priv_key_format --pwd secret" \
+    "$priv_key_option $topfolder/keys/rsakey$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -299,7 +299,7 @@ execDSigTest $res_success \
     "sha256 rsa-sha256" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/rsakey$priv_key_suffix.$priv_key_format --pwd secret" \
+    "$priv_key_option $topfolder/keys/rsakey$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -308,7 +308,7 @@ execDSigTest $res_success \
     "sha384 rsa-sha384" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret" \
+    "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -317,19 +317,19 @@ execDSigTest $res_success \
     "sha512 rsa-sha512" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret" \
+    "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 #
 # To generate expired cert run the following command
-# > xmlsec1 sign --pkcs12 tests/keys/expiredkey.p12 --pwd secret --output out.xml ./tests/aleksey-xmldsig-01/enveloping-expired-cert.tmpl
+# > xmlsec1 sign --pkcs12 tests/keys/expiredkey.p12 --pwd secret123 --output out.xml ./tests/aleksey-xmldsig-01/enveloping-expired-cert.tmpl
 #
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloping-expired-cert" \
     "sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --verification-time 2005-07-10+10:00:00" 
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --verification-time 2014-05-24+00:00:00" 
 
 
 execDSigTest $res_success \
@@ -347,7 +347,7 @@ execDSigTest $res_success \
     "xpath2 sha1 rsa-sha1" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format" \
-    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret" \
+    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
 
 execDSigTest $res_success \
@@ -356,7 +356,7 @@ execDSigTest $res_success \
     "xpath2 sha1 rsa-sha1" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --untrusted-$cert_format $topfolder/keys/rsacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret" \
+    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --untrusted-$cert_format $topfolder/keys/rsacert.$cert_format --enabled-key-data x509"
 
 ##########################################################################
@@ -370,7 +370,7 @@ execDSigTest $res_success \
     "enveloped-signature sha1 dsa-sha1" \
     "dsa" \
     " " \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
     " "
 
 execDSigTest $res_success \
@@ -379,7 +379,7 @@ execDSigTest $res_success \
     "sha1 dsa-sha1" \
     "dsa" \
     " " \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
     " "
 
 execDSigTest $res_success \
@@ -388,7 +388,7 @@ execDSigTest $res_success \
     "base64 sha1 dsa-sha1" \
     "dsa" \
     " " \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
     " "
 
 execDSigTest $res_success \
@@ -415,7 +415,7 @@ execDSigTest $res_success \
     "sha1 rsa-sha1" \
     "rsa" \
     " " \
-    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret" \
+    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
     " "
 
 execDSigTest $res_success \
@@ -424,7 +424,7 @@ execDSigTest $res_success \
     "base64 sha1 dsa-sha1" \
     "dsa" \
     " " \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
     " "
 
 execDSigTest $res_success \
@@ -433,7 +433,7 @@ execDSigTest $res_success \
     "sha1 dsa-sha1" \
     "dsa" \
     "" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
     " "
 
 execDSigTest $res_success \
@@ -442,8 +442,8 @@ execDSigTest $res_success \
     "sha1 dsa-sha1" \
     "dsa x509" \
     "" \
-    "$priv_key_option:test-dsa $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
-    "$priv_key_option:test-dsa $topfolder/keys/dsakey.$priv_key_format --pwd secret"
+    "$priv_key_option:test-dsa $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:test-dsa $topfolder/keys/dsakey.$priv_key_format --pwd secret123"
 
 execDSigTest $res_success \
     "" \
@@ -451,7 +451,7 @@ execDSigTest $res_success \
     "sha1 dsa-sha1" \
     "dsa x509" \
     "" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret"\
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123"\
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
 
 execDSigTest $res_success \
@@ -460,7 +460,7 @@ execDSigTest $res_success \
     "sha1 dsa-sha1" \
     "dsa x509" \
     "" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret"\
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123"\
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
 
 execDSigTest $res_success \
@@ -469,7 +469,7 @@ execDSigTest $res_success \
     "sha1 dsa-sha1" \
     "dsa x509" \
     "" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret"\
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123"\
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
 
 execDSigTest $res_success \
@@ -478,7 +478,7 @@ execDSigTest $res_success \
     "sha1 dsa-sha1" \
     "dsa x509" \
     "" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret"\
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123"\
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
 
 execDSigTest $res_success \
@@ -487,7 +487,7 @@ execDSigTest $res_success \
     "sha1 dsa-sha1" \
     "dsa x509" \
     "" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret"\
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123"\
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --trusted-$cert_format $topfolder/keys/ca2cert.$cert_format"
 
 execDSigTest $res_success \
@@ -496,7 +496,7 @@ execDSigTest $res_success \
     "base64 xpath enveloped-signature c14n-with-comments sha1 dsa-sha1" \
     "dsa x509" \
     "" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format"
 
 
@@ -566,7 +566,7 @@ execDSigTest $res_success \
     "exc-c14n sha1 dsa-sha1" \
     "dsa" \
     " " \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
     " "
 
 execDSigTest $res_success \
@@ -829,7 +829,7 @@ execDSigTest $res_fail \
     "aleksey-xmldsig-01/enveloping-expired-cert" \
     "sha1 dsa-sha1" \
     "dsa x509" \
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" 
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --verification-time 2014-05-25+00:00:00" 
 
 execDSigTest $res_fail \
     "" \

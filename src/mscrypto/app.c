@@ -622,7 +622,7 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
         goto done;
     }
 
-    hCertStore = PFXImportCertStore(&pfx, wcPwd, CRYPT_EXPORTABLE);
+    hCertStore = PFXImportCertStore(&pfx, wcPwd, CRYPT_EXPORTABLE | PKCS12_NO_PERSIST_KEY);
     if (NULL == hCertStore) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,

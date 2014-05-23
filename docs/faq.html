@@ -46,8 +46,7 @@
 <div align="center">
             <h1>Frequently Asked Questions</h1>
             </div>
-<h3>0. Where can I read more about XML Signature and XML
-Encryption?</h3>
+<h3>0. Where can I read more about XML Signature and XML Encryption?</h3>
 <p>First of all, read the original specifications: <a href="http://www.w3.org/Signature/">XML Digital Signature</a> and <a href="http://www.w3.org/Encryption/">XML Encrytpion</a>. Also there <a href="related.html#books">several books</a> available that can
 help you get started.<br></p>
 <h3>1. License(s).</h3>
@@ -210,9 +209,7 @@ xmlsec?</h4>
 (optional)</li>
             </ul>
 <ul>
-<li> <a href="http://www.openssl.org/">OpenSSL</a>
-version
-0.9.7 (prefered or later) or version 0.9.6. </li>
+<li> <a href="http://www.openssl.org/">OpenSSL</a> version 0.9.8 (or later). The OpenSSL 0.9.7 and 0.9.6 are also supported but XMLSec library will have limited functionality.</li>
 <li>
 <a href="http://www.gnu.org/software/gnutls/">GnuTLS</a>
 </li>
@@ -231,9 +228,8 @@ for some tests?</h4>
 <p> First of all, some tests <b>must</b> fail! Please read
 the messages printed before the tests.<br>
 If you have other failed tests then the next possible reason is that
-you use OpenSSL 0.9.6 and some xmlsec features are disabled in this
-case. Please try to upgrade to OpenSSL 0.9.7 and
-re-configure/re-compile xmlsec.<br>
+you are using OpenSSL 0.9.6 or 0.9.7 thus some xmlsec features are disabled in this
+case. Please try to upgrade to OpenSSL 0.9.8 (or later) and re-configure/re-compile xmlsec.<br>
 if this does not help then probably there is a bug in the xmlsec or in
 the xmlsec tests. Please submit the <a href="http://www.aleksey.com/xmlsec/bugs.html">bug report</a> and I'll
 try to fix it. </p>

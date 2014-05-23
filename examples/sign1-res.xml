@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-XML Security Library example: Signed file (sign1 example). 
+XML Security Library example: Simple signature template file for sign1 example. 
 -->
 <Envelope xmlns="urn:envelope">
   <Data>
@@ -18,12 +18,8 @@ XML Security Library example: Signed file (sign1 example).
         <DigestValue>9H/rQr2Axe9hYTV2n/tCp+3UIQQ=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>Mx4psIy9/UY+u8QBJRDrwQWKRaCGz0WOVftyDzAe6WHAFSjMNr7qb2ojq9kdipT8
-Oub5q2OQ7mzdSLiiejkrO1VeqM/90yEIGI4En6KEB6ArEzw+iq4N1wm6EptcyxXx
-M9StAOOa9ilWYqR9Tfx3SW1urUIuKYgUitxsONiUHBVaW6HeX51bsXoTF++4ZI+D
-jiPBjN4HHmr0cbJ6BXk91S27ffZIfp1Qj5nL9onFLUGbR6EFgu2luiRzQbPuM2tP
-XxyI7GZ8AfHnRJK28ARvBC9oi+O1ej20S79CIV7gdBxbLbFprozBHAwOEC57YgJc
-x+YEjSjcO7SBIR1FiUA7pw==</SignatureValue>
+    <SignatureValue>fDKK0so/zFcmmq2X+BaVFmS0t8KB7tyW53YN6n221OArzGCs4OyWsAjj/BUR+wNF
+elOnt4fo2gPK1a3IVEhMGg==</SignatureValue>
     <KeyInfo>
 	<KeyName>rsakey.pem</KeyName>
     </KeyInfo>

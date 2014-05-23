@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-XML Security Library example: Signed XML doc file (sign2 example). 
+XML Security Library example: Original XML doc file for sign2 example. 
 -->
 <Envelope xmlns="urn:envelope">
   <Data>
@@ -18,12 +18,8 @@ XML Security Library example: Signed XML doc file (sign2 example).
 <DigestValue>HjY8ilZAIEM2tBbPn5mYO1ieIX4=</DigestValue>
 </Reference>
 </SignedInfo>
-<SignatureValue>SIaj/6KY3C1SmDXU2++Gm31U1xTadFp04WhBgfsJFbxrL+q7GKSKN9kfQ+UpN9+i
-D5fWmuavXEHe4Gw6RMaMEkq2URQo7F68+d5J/ajq8/l4n+xE6/reGScVwT6L4dEP
-XXVJcAi2ZnQ3O7GTNvNGCPibL9mUcyCWBFZ92Uemtc/vJFCQ7ZyKMdMfACgxOwyN
-T/9971oog241/2doudhonc0I/3mgPYWkZdX6yvr62mEjnG+oUZkhWYJ4ewZJ4hM4
-JjbFqZO+OEzDRSbw3DkmuBA/mtlx+3t13SESfEub5hqoMdVmtth/eTb64dsPdl9r
-3k1ACVX9f8aHfQQdJOmLFQ==</SignatureValue>
+<SignatureValue>GnYgZdzPeXd/gPTJmQ506qmxWkd3VK1Y23kh5Qpq8y4LMNY+LJJeCWK5wpo/vufR
+nIH/KUqvIvtk9nb2IjF5Uw==</SignatureValue>
 <KeyInfo>
 <KeyName>rsakey.pem</KeyName>
 </KeyInfo>

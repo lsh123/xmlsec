@@ -17,35 +17,6 @@ Generic list structure implementation.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
-
-
-<!-- ##### USER_FUNCTION xmlSecPtrDebugDumpItemMethod ##### -->
-<para>
-
-</para>
-
-@ptr: 
-@output: 
-
-
-<!-- ##### USER_FUNCTION xmlSecPtrDestroyItemMethod ##### -->
-<para>
-
-</para>
-
-@ptr: 
-
-
-<!-- ##### USER_FUNCTION xmlSecPtrDuplicateItemMethod ##### -->
-<para>
-
-</para>
-
-@ptr: 
-@Returns: 
-
-
 <!-- ##### STRUCT xmlSecPtrList ##### -->
 <para>
 
@@ -57,127 +28,13 @@ Generic list structure implementation.
 @max: 
 @allocMode: 
 
-<!-- ##### FUNCTION xmlSecPtrListAdd ##### -->
+<!-- ##### FUNCTION xmlSecPtrListSetDefaultAllocMode ##### -->
 <para>
 
 </para>
 
-@list: 
-@item: 
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecPtrListCheckId ##### -->
-<para>
-
-</para>
-
-@list: 
-@dataId: 
-
-
-<!-- ##### FUNCTION xmlSecPtrListCopy ##### -->
-<para>
-
-</para>
-
-@dst: 
-@src: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecPtrListCreate ##### -->
-<para>
-
-</para>
-
-@id: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecPtrListDebugDump ##### -->
-<para>
-
-</para>
-
-@list: 
-@output: 
-
-
-<!-- ##### FUNCTION xmlSecPtrListDebugXmlDump ##### -->
-<para>
-
-</para>
-
-@list: 
-@output: 
-
-
-<!-- ##### FUNCTION xmlSecPtrListDestroy ##### -->
-<para>
-
-</para>
-
-@list: 
-
-
-<!-- ##### FUNCTION xmlSecPtrListDuplicate ##### -->
-<para>
-
-</para>
-
-@list: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecPtrListEmpty ##### -->
-<para>
-
-</para>
-
-@list: 
-
-
-<!-- ##### FUNCTION xmlSecPtrListFinalize ##### -->
-<para>
-
-</para>
-
-@list: 
-
-
-<!-- ##### FUNCTION xmlSecPtrListGetItem ##### -->
-<para>
-
-</para>
-
-@list: 
-@pos: 
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecPtrListGetName ##### -->
-<para>
-
-</para>
-
-@list: 
-
-
-<!-- ##### FUNCTION xmlSecPtrListGetSize ##### -->
-<para>
-
-</para>
-
-@list: 
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecPtrListIdUnknown ##### -->
-<para>
-
-</para>
-
+@defAllocMode: 
+@defInitialSize: 
 
 
 <!-- ##### FUNCTION xmlSecPtrListInitialize ##### -->
@@ -190,7 +47,7 @@ Generic list structure implementation.
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecPtrListIsValid ##### -->
+<!-- ##### FUNCTION xmlSecPtrListFinalize ##### -->
 <para>
 
 </para>
@@ -198,23 +55,88 @@ Generic list structure implementation.
 @list: 
 
 
-<!-- ##### STRUCT xmlSecPtrListKlass ##### -->
+<!-- ##### FUNCTION xmlSecPtrListCreate ##### -->
 <para>
 
 </para>
 
-@name: 
-@duplicateItem: 
-@destroyItem: 
-@debugDumpItem: 
-@debugXmlDumpItem: 
+@id: 
+@Returns: 
 
-<!-- ##### MACRO xmlSecPtrListKlassGetName ##### -->
+
+<!-- ##### FUNCTION xmlSecPtrListDestroy ##### -->
 <para>
 
 </para>
 
-@klass: 
+@list: 
+
+
+<!-- ##### FUNCTION xmlSecPtrListEmpty ##### -->
+<para>
+
+</para>
+
+@list: 
+
+
+<!-- ##### FUNCTION xmlSecPtrListCopy ##### -->
+<para>
+
+</para>
+
+@dst: 
+@src: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecPtrListDuplicate ##### -->
+<para>
+
+</para>
+
+@list: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecPtrListGetSize ##### -->
+<para>
+
+</para>
+
+@list: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecPtrListGetItem ##### -->
+<para>
+
+</para>
+
+@list: 
+@pos: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecPtrListAdd ##### -->
+<para>
+
+</para>
+
+@list: 
+@item: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecPtrListSet ##### -->
+<para>
+
+</para>
+
+@list: 
+@item: 
+@pos: 
+@Returns: 
 
 
 <!-- ##### FUNCTION xmlSecPtrListRemove ##### -->
@@ -237,33 +159,99 @@ Generic list structure implementation.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecPtrListSet ##### -->
+<!-- ##### FUNCTION xmlSecPtrListDebugDump ##### -->
 <para>
 
 </para>
 
 @list: 
-@item: 
-@pos: 
-@Returns: 
+@output: 
 
 
-<!-- ##### FUNCTION xmlSecPtrListSetDefaultAllocMode ##### -->
+<!-- ##### FUNCTION xmlSecPtrListDebugXmlDump ##### -->
 <para>
 
 </para>
 
-@defAllocMode: 
-@defInitialSize: 
+@list: 
+@output: 
 
 
-<!-- ##### FUNCTION xmlSecStringListGetKlass ##### -->
+<!-- ##### MACRO xmlSecPtrListGetName ##### -->
 <para>
 
 </para>
 
-@void: 
+@list: 
+
+
+<!-- ##### MACRO xmlSecPtrListIsValid ##### -->
+<para>
+
+</para>
+
+@list: 
+
+
+<!-- ##### MACRO xmlSecPtrListCheckId ##### -->
+<para>
+
+</para>
+
+@list: 
+@dataId: 
+
+
+<!-- ##### MACRO xmlSecPtrListIdUnknown ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### USER_FUNCTION xmlSecPtrDuplicateItemMethod ##### -->
+<para>
+
+</para>
+
+@ptr: 
 @Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecPtrDestroyItemMethod ##### -->
+<para>
+
+</para>
+
+@ptr: 
+
+
+<!-- ##### USER_FUNCTION xmlSecPtrDebugDumpItemMethod ##### -->
+<para>
+
+</para>
+
+@ptr: 
+@output: 
+
+
+<!-- ##### STRUCT xmlSecPtrListKlass ##### -->
+<para>
+
+</para>
+
+@name: 
+@duplicateItem: 
+@destroyItem: 
+@debugDumpItem: 
+@debugXmlDumpItem: 
+
+<!-- ##### MACRO xmlSecPtrListKlassGetName ##### -->
+<para>
+
+</para>
+
+@klass: 
 
 
 <!-- ##### MACRO xmlSecStringListId ##### -->
@@ -271,5 +259,13 @@ Generic list structure implementation.
 
 </para>
 
+
+
+<!-- ##### FUNCTION xmlSecStringListGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
 
 

@@ -2,10 +2,9 @@
 <refmeta>
 <refentrytitle role="top_of_page" id="xmlsec-nodeset.top_of_page">nodeset</refentrytitle>
 <manvolnum>3</manvolnum>
-<refmiscinfo>
-  XMLSEC Library
-</refmiscinfo>
+<refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
+
 <refnamediv>
 <refname>nodeset</refname>
 <refpurpose>Nodeset object implementation.</refpurpose>
@@ -14,40 +13,49 @@
 <refsynopsisdiv id="xmlsec-nodeset.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
-<synopsis>struct              <link linkend="xmlSecNodeSet">xmlSecNodeSet</link>;
-<link linkend="xmlSecNodeSetPtr"><returnvalue>xmlSecNodeSetPtr</returnvalue></link>    <link linkend="xmlSecNodeSetAdd">xmlSecNodeSetAdd</link>                    (<parameter><link linkend="xmlSecNodeSet"><type>xmlSecNodeSetPtr</type></link> nset</parameter>,
-                                                         <parameter><link linkend="xmlSecNodeSet"><type>xmlSecNodeSetPtr</type></link> newNSet</parameter>,
-                                                         <parameter><link linkend="xmlSecNodeSetOp"><type>xmlSecNodeSetOp</type></link> op</parameter>);
-<link linkend="xmlSecNodeSetPtr"><returnvalue>xmlSecNodeSetPtr</returnvalue></link>    <link linkend="xmlSecNodeSetAddList">xmlSecNodeSetAddList</link>                (<parameter><link linkend="xmlSecNodeSet"><type>xmlSecNodeSetPtr</type></link> nset</parameter>,
-                                                         <parameter><link linkend="xmlSecNodeSet"><type>xmlSecNodeSetPtr</type></link> newNSet</parameter>,
-                                                         <parameter><link linkend="xmlSecNodeSetOp"><type>xmlSecNodeSetOp</type></link> op</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecNodeSetContains">xmlSecNodeSetContains</link>               (<parameter><link linkend="xmlSecNodeSet"><type>xmlSecNodeSetPtr</type></link> nset</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> parent</parameter>);
-<link linkend="xmlSecNodeSetPtr"><returnvalue>xmlSecNodeSetPtr</returnvalue></link>    <link linkend="xmlSecNodeSetCreate">xmlSecNodeSetCreate</link>                 (<parameter><link linkend="xmlDoc"><type>xmlDocPtr</type></link> doc</parameter>,
-                                                         <parameter><link linkend="xmlNodeSet"><type>xmlNodeSetPtr</type></link> nodes</parameter>,
-                                                         <parameter><link linkend="xmlSecNodeSetType"><type>xmlSecNodeSetType</type></link> type</parameter>);
-<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecNodeSetDebugDump">xmlSecNodeSetDebugDump</link>              (<parameter><link linkend="xmlSecNodeSet"><type>xmlSecNodeSetPtr</type></link> nset</parameter>,
-                                                         <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);
-<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecNodeSetDestroy">xmlSecNodeSetDestroy</link>                (<parameter><link linkend="xmlSecNodeSet"><type>xmlSecNodeSetPtr</type></link> nset</parameter>);
-<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecNodeSetDocDestroy">xmlSecNodeSetDocDestroy</link>             (<parameter><link linkend="xmlSecNodeSet"><type>xmlSecNodeSetPtr</type></link> nset</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecNodeSetDumpTextNodes">xmlSecNodeSetDumpTextNodes</link>          (<parameter><link linkend="xmlSecNodeSet"><type>xmlSecNodeSetPtr</type></link> nset</parameter>,
-                                                         <parameter><link linkend="xmlOutputBuffer"><type>xmlOutputBufferPtr</type></link> out</parameter>);
-<link linkend="xmlSecNodeSetPtr"><returnvalue>xmlSecNodeSetPtr</returnvalue></link>    <link linkend="xmlSecNodeSetGetChildren">xmlSecNodeSetGetChildren</link>            (<parameter><link linkend="xmlDoc"><type>xmlDocPtr</type></link> doc</parameter>,
-                                                         <parameter>const <link linkend="xmlNode"><type>xmlNodePtr</type></link> parent</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> withComments</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> invert</parameter>);
-enum                <link linkend="xmlSecNodeSetOp">xmlSecNodeSetOp</link>;
+<synopsis>
 enum                <link linkend="xmlSecNodeSetType">xmlSecNodeSetType</link>;
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecNodeSetWalk">xmlSecNodeSetWalk</link>                   (<parameter><link linkend="xmlSecNodeSet"><type>xmlSecNodeSetPtr</type></link> nset</parameter>,
-                                                         <parameter><link linkend="xmlSecNodeSetWalkCallback"><type>xmlSecNodeSetWalkCallback</type></link> walkFunc</parameter>,
-                                                         <parameter><link linkend="void"><type>void</type></link> *data</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 (<link linkend="xmlSecNodeSetWalkCallback">*xmlSecNodeSetWalkCallback</link>)        (<parameter><link linkend="xmlSecNodeSet"><type>xmlSecNodeSetPtr</type></link> nset</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> cur</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> parent</parameter>,
-                                                         <parameter><link linkend="void"><type>void</type></link> *data</parameter>);
+enum                <link linkend="xmlSecNodeSetOp">xmlSecNodeSetOp</link>;
+struct              <link linkend="xmlSecNodeSet">xmlSecNodeSet</link>;
+<link linkend="int">int</link>                 (<link linkend="xmlSecNodeSetWalkCallback">*xmlSecNodeSetWalkCallback</link>)        (<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nset,
+                                                         <link linkend="xmlNode">xmlNodePtr</link> cur,
+                                                         <link linkend="xmlNode">xmlNodePtr</link> parent,
+                                                         <link linkend="void">void</link> *data);
+<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link>    <link linkend="xmlSecNodeSetCreate">xmlSecNodeSetCreate</link>                 (<link linkend="xmlDoc">xmlDocPtr</link> doc,
+                                                         <link linkend="xmlNodeSet">xmlNodeSetPtr</link> nodes,
+                                                         <link linkend="xmlSecNodeSetType">xmlSecNodeSetType</link> type);
+<link linkend="void">void</link>                <link linkend="xmlSecNodeSetDestroy">xmlSecNodeSetDestroy</link>                (<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nset);
+<link linkend="void">void</link>                <link linkend="xmlSecNodeSetDocDestroy">xmlSecNodeSetDocDestroy</link>             (<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nset);
+<link linkend="int">int</link>                 <link linkend="xmlSecNodeSetContains">xmlSecNodeSetContains</link>               (<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nset,
+                                                         <link linkend="xmlNode">xmlNodePtr</link> node,
+                                                         <link linkend="xmlNode">xmlNodePtr</link> parent);
+<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link>    <link linkend="xmlSecNodeSetAdd">xmlSecNodeSetAdd</link>                    (<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nset,
+                                                         <link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> newNSet,
+                                                         <link linkend="xmlSecNodeSetOp">xmlSecNodeSetOp</link> op);
+<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link>    <link linkend="xmlSecNodeSetAddList">xmlSecNodeSetAddList</link>                (<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nset,
+                                                         <link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> newNSet,
+                                                         <link linkend="xmlSecNodeSetOp">xmlSecNodeSetOp</link> op);
+<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link>    <link linkend="xmlSecNodeSetGetChildren">xmlSecNodeSetGetChildren</link>            (<link linkend="xmlDoc">xmlDocPtr</link> doc,
+                                                         const <link linkend="xmlNode">xmlNodePtr</link> parent,
+                                                         <link linkend="int">int</link> withComments,
+                                                         <link linkend="int">int</link> invert);
+<link linkend="int">int</link>                 <link linkend="xmlSecNodeSetWalk">xmlSecNodeSetWalk</link>                   (<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nset,
+                                                         <link linkend="xmlSecNodeSetWalkCallback">xmlSecNodeSetWalkCallback</link> walkFunc,
+                                                         <link linkend="void">void</link> *data);
+<link linkend="int">int</link>                 <link linkend="xmlSecNodeSetDumpTextNodes">xmlSecNodeSetDumpTextNodes</link>          (<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nset,
+                                                         <link linkend="xmlOutputBuffer">xmlOutputBufferPtr</link> out);
+<link linkend="void">void</link>                <link linkend="xmlSecNodeSetDebugDump">xmlSecNodeSetDebugDump</link>              (<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nset,
+                                                         <link linkend="FILE--CAPS">FILE</link> *output);
 </synopsis>
 </refsynopsisdiv>
+
+
+
+
+
+
+
+
 
 <refsect1 id="xmlsec-nodeset.description" role="desc">
 <title role="desc.title">Description</title>
@@ -55,12 +63,96 @@ enum                <link linkend="xmlSecNodeSetType">xmlSecNodeSetType</link>;
 Nodeset object implementation.
 </para>
 </refsect1>
+
 <refsect1 id="xmlsec-nodeset.details" role="details">
 <title role="details.title">Details</title>
+<refsect2 id="xmlSecNodeSetType" role="enum">
+<title>enum xmlSecNodeSetType</title>
+<indexterm zone="xmlSecNodeSetType"><primary sortas="xmlSecNodeSetType">xmlSecNodeSetType</primary></indexterm><programlisting>typedef enum {
+    xmlSecNodeSetNormal = 0,
+    xmlSecNodeSetInvert,
+    xmlSecNodeSetTree,
+    xmlSecNodeSetTreeWithoutComments,
+    xmlSecNodeSetTreeInvert,
+    xmlSecNodeSetTreeWithoutCommentsInvert,
+    xmlSecNodeSetList
+} xmlSecNodeSetType;
+</programlisting>
+<para>
+The basic nodes sets types.</para>
+<para>
+</para><variablelist role="enum">
+<varlistentry id="xmlSecNodeSetNormal" role="constant">
+<term><literal>xmlSecNodeSetNormal</literal></term>
+<listitem><simpara>        nodes set = nodes in the list.
+</simpara></listitem>
+</varlistentry>
+<varlistentry id="xmlSecNodeSetInvert" role="constant">
+<term><literal>xmlSecNodeSetInvert</literal></term>
+<listitem><simpara>        nodes set = all document nodes minus nodes in the list.
+</simpara></listitem>
+</varlistentry>
+<varlistentry id="xmlSecNodeSetTree" role="constant">
+<term><literal>xmlSecNodeSetTree</literal></term>
+<listitem><simpara>          nodes set = nodes in the list and all their subtress.
+</simpara></listitem>
+</varlistentry>
+<varlistentry id="xmlSecNodeSetTreeWithoutComments" role="constant">
+<term><literal>xmlSecNodeSetTreeWithoutComments</literal></term>
+<listitem><simpara>           nodes set = nodes in the list and
+                             all their subtress but no comment nodes.
+</simpara></listitem>
+</varlistentry>
+<varlistentry id="xmlSecNodeSetTreeInvert" role="constant">
+<term><literal>xmlSecNodeSetTreeInvert</literal></term>
+<listitem><simpara>    nodes set = all document nodes minus nodes in the
+                             list and all their subtress.
+</simpara></listitem>
+</varlistentry>
+<varlistentry id="xmlSecNodeSetTreeWithoutCommentsInvert" role="constant">
+<term><literal>xmlSecNodeSetTreeWithoutCommentsInvert</literal></term>
+<listitem><simpara>     nodes set = all document nodes
+                             minus (nodes in the list and all their subtress
+                             plus all comment nodes).
+</simpara></listitem>
+</varlistentry>
+<varlistentry id="xmlSecNodeSetList" role="constant">
+<term><literal>xmlSecNodeSetList</literal></term>
+<listitem><simpara>          nodes set = all nodes in the chidren list of nodes sets.
+</simpara></listitem>
+</varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecNodeSetOp" role="enum">
+<title>enum xmlSecNodeSetOp</title>
+<indexterm zone="xmlSecNodeSetOp"><primary sortas="xmlSecNodeSetOp">xmlSecNodeSetOp</primary></indexterm><programlisting>typedef enum {
+    xmlSecNodeSetIntersection = 0,
+    xmlSecNodeSetSubtraction,
+    xmlSecNodeSetUnion
+} xmlSecNodeSetOp;
+</programlisting>
+<para>
+The simple nodes sets operations.</para>
+<para>
+</para><variablelist role="enum">
+<varlistentry id="xmlSecNodeSetIntersection" role="constant">
+<term><literal>xmlSecNodeSetIntersection</literal></term>
+<listitem><simpara>  intersection.
+</simpara></listitem>
+</varlistentry>
+<varlistentry id="xmlSecNodeSetSubtraction" role="constant">
+<term><literal>xmlSecNodeSetSubtraction</literal></term>
+<listitem><simpara>   subtraction.
+</simpara></listitem>
+</varlistentry>
+<varlistentry id="xmlSecNodeSetUnion" role="constant">
+<term><literal>xmlSecNodeSetUnion</literal></term>
+<listitem><simpara>         union.
+</simpara></listitem>
+</varlistentry>
+</variablelist></refsect2>
 <refsect2 id="xmlSecNodeSet" role="struct">
 <title>struct xmlSecNodeSet</title>
-<indexterm zone="xmlSecNodeSet"><primary>xmlSecNodeSet</primary></indexterm>
-<programlisting>struct xmlSecNodeSet {
+<indexterm zone="xmlSecNodeSet"><primary sortas="xmlSecNodeSet">xmlSecNodeSet</primary></indexterm><programlisting>struct xmlSecNodeSet {
     xmlNodeSetPtr       nodes;
     xmlDocPtr           doc;
     int                 destroyDoc;
@@ -72,161 +164,194 @@ Nodeset object implementation.
 };
 </programlisting>
 <para>
-The enchanced nodes set.
+The enchanced nodes set.</para>
+<para>
 </para><variablelist role="struct">
-<varlistentry><term><link linkend="xmlNodeSet"><type>xmlNodeSetPtr</type></link>&#160;<structfield id="xmlSecNodeSet.nodes">nodes</structfield>;</term>
-<listitem><simpara>the nodes list.</simpara></listitem>
+<varlistentry>
+<term><link linkend="xmlNodeSet">xmlNodeSetPtr</link>&#160;<structfield>nodes</structfield>;</term>
+<listitem><simpara>                      the nodes list.
+</simpara></listitem>
 </varlistentry>
-<varlistentry><term><link linkend="xmlDoc"><type>xmlDocPtr</type></link>&#160;<structfield id="xmlSecNodeSet.doc">doc</structfield>;</term>
-<listitem><simpara>the parent XML document.</simpara></listitem>
+<varlistentry>
+<term><link linkend="xmlDoc">xmlDocPtr</link>&#160;<structfield>doc</structfield>;</term>
+<listitem><simpara>                        the parent XML document.
+</simpara></listitem>
 </varlistentry>
-<varlistentry><term><link linkend="int"><type>int</type></link>&#160;<structfield id="xmlSecNodeSet.destroyDoc">destroyDoc</structfield>;</term>
-<listitem><simpara>the flag: if set to 1 then <parameter>doc</parameter> will
-be destroyed when node set is destroyed.</simpara></listitem>
+<varlistentry>
+<term><link linkend="int">int</link>&#160;<structfield>destroyDoc</structfield>;</term>
+<listitem><simpara>                 the flag: if set to 1 then <parameter>doc</parameter> will
+                             be destroyed when node set is destroyed.
+</simpara></listitem>
 </varlistentry>
-<varlistentry><term><link linkend="xmlSecNodeSetType"><type>xmlSecNodeSetType</type></link>&#160;<structfield id="xmlSecNodeSet.type">type</structfield>;</term>
-<listitem><simpara>the nodes set type.</simpara></listitem>
+<varlistentry>
+<term><link linkend="xmlSecNodeSetType">xmlSecNodeSetType</link>&#160;<structfield>type</structfield>;</term>
+<listitem><simpara>                       the nodes set type.
+</simpara></listitem>
 </varlistentry>
-<varlistentry><term><link linkend="xmlSecNodeSetOp"><type>xmlSecNodeSetOp</type></link>&#160;<structfield id="xmlSecNodeSet.op">op</structfield>;</term>
-<listitem><simpara>the operation type.</simpara></listitem>
+<varlistentry>
+<term><link linkend="xmlSecNodeSetOp">xmlSecNodeSetOp</link>&#160;<structfield>op</structfield>;</term>
+<listitem><simpara>                         the operation type.
+</simpara></listitem>
 </varlistentry>
-<varlistentry><term><link linkend="xmlSecNodeSet"><type>xmlSecNodeSetPtr</type></link>&#160;<structfield id="xmlSecNodeSet.next">next</structfield>;</term>
-<listitem><simpara>the next nodes set.</simpara></listitem>
+<varlistentry>
+<term><link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link>&#160;<structfield>next</structfield>;</term>
+<listitem><simpara>                       the next nodes set.
+</simpara></listitem>
 </varlistentry>
-<varlistentry><term><link linkend="xmlSecNodeSet"><type>xmlSecNodeSetPtr</type></link>&#160;<structfield id="xmlSecNodeSet.prev">prev</structfield>;</term>
-<listitem><simpara>the previous nodes set.</simpara></listitem>
+<varlistentry>
+<term><link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link>&#160;<structfield>prev</structfield>;</term>
+<listitem><simpara>                       the previous nodes set.
+</simpara></listitem>
 </varlistentry>
-<varlistentry><term><link linkend="xmlSecNodeSet"><type>xmlSecNodeSetPtr</type></link>&#160;<structfield id="xmlSecNodeSet.children">children</structfield>;</term>
-<listitem><simpara>the children list (valid only if type
-equal to <link linkend="xmlSecNodeSetList"><type>xmlSecNodeSetList</type></link>).</simpara></listitem>
+<varlistentry>
+<term><link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link>&#160;<structfield>children</structfield>;</term>
+<listitem><simpara>                   the children list (valid only if type
+                             equal to <link linkend="xmlSecNodeSetList"><type>xmlSecNodeSetList</type></link>).
+</simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecNodeSetAdd" role="function">
-<title>xmlSecNodeSetAdd ()</title>
-<indexterm zone="xmlSecNodeSetAdd"><primary>xmlSecNodeSetAdd</primary></indexterm>
-<programlisting><link linkend="xmlSecNodeSetPtr"><returnvalue>xmlSecNodeSetPtr</returnvalue></link>    xmlSecNodeSetAdd                    (<parameter><link linkend="xmlSecNodeSet"><type>xmlSecNodeSetPtr</type></link> nset</parameter>,
-                                                         <parameter><link linkend="xmlSecNodeSet"><type>xmlSecNodeSetPtr</type></link> newNSet</parameter>,
-                                                         <parameter><link linkend="xmlSecNodeSetOp"><type>xmlSecNodeSetOp</type></link> op</parameter>);</programlisting>
+<refsect2 id="xmlSecNodeSetWalkCallback" role="function">
+<title>xmlSecNodeSetWalkCallback ()</title>
+<indexterm zone="xmlSecNodeSetWalkCallback"><primary sortas="xmlSecNodeSetWalkCallback">xmlSecNodeSetWalkCallback</primary></indexterm><programlisting><link linkend="int">int</link>                 (*xmlSecNodeSetWalkCallback)        (<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nset,
+                                                         <link linkend="xmlNode">xmlNodePtr</link> cur,
+                                                         <link linkend="xmlNode">xmlNodePtr</link> parent,
+                                                         <link linkend="void">void</link> *data);</programlisting>
 <para>
-Adds <parameter>newNSet</parameter> to the <parameter>nset</parameter> using operation <parameter>op</parameter>.
+The callback function called once per each node in the nodes set.</para>
+<para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>nset</parameter>&#160;:</term>
-<listitem><simpara>the pointer to currrent nodes set (or NULL).</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>newNSet</parameter>&#160;:</term>
-<listitem><simpara>the pointer to new nodes set.</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>op</parameter>&#160;:</term>
-<listitem><simpara>the operation type.</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>the pointer to combined nodes set or NULL if an error
-occurs.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecNodeSetAddList" role="function">
-<title>xmlSecNodeSetAddList ()</title>
-<indexterm zone="xmlSecNodeSetAddList"><primary>xmlSecNodeSetAddList</primary></indexterm>
-<programlisting><link linkend="xmlSecNodeSetPtr"><returnvalue>xmlSecNodeSetPtr</returnvalue></link>    xmlSecNodeSetAddList                (<parameter><link linkend="xmlSecNodeSet"><type>xmlSecNodeSetPtr</type></link> nset</parameter>,
-                                                         <parameter><link linkend="xmlSecNodeSet"><type>xmlSecNodeSetPtr</type></link> newNSet</parameter>,
-                                                         <parameter><link linkend="xmlSecNodeSetOp"><type>xmlSecNodeSetOp</type></link> op</parameter>);</programlisting>
-<para>
-Adds <parameter>newNSet</parameter> to the <parameter>nset</parameter> as child using operation <parameter>op</parameter>.
-</para><variablelist role="params">
-<varlistentry><term><parameter>nset</parameter>&#160;:</term>
-<listitem><simpara>the pointer to currrent nodes set (or NULL).</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>newNSet</parameter>&#160;:</term>
-<listitem><simpara>the pointer to new nodes set.</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>op</parameter>&#160;:</term>
-<listitem><simpara>the operation type.</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>the pointer to combined nodes set or NULL if an error
-occurs.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecNodeSetContains" role="function">
-<title>xmlSecNodeSetContains ()</title>
-<indexterm zone="xmlSecNodeSetContains"><primary>xmlSecNodeSetContains</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecNodeSetContains               (<parameter><link linkend="xmlSecNodeSet"><type>xmlSecNodeSetPtr</type></link> nset</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> parent</parameter>);</programlisting>
-<para>
-Checks whether the <parameter>node</parameter> is in the nodes set or not.
-</para><variablelist role="params">
-<varlistentry><term><parameter>nset</parameter>&#160;:</term>
-<listitem><simpara>the pointer to node set.</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>the pointer to XML node to check.</simpara></listitem></varlistentry>
+<listitem><simpara>                       the pointer to <link linkend="xmlSecNodeSet"><type>xmlSecNodeSet</type></link> structure.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>cur</parameter>&#160;:</term>
+<listitem><simpara>                        the pointer current XML node.
+</simpara></listitem></varlistentry>
 <varlistentry><term><parameter>parent</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <parameter>node</parameter> parent node.</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>1 if the <parameter>node</parameter> is in the nodes set <parameter>nset</parameter>, 0 if it is not
-and a negative value if an error occurs.</simpara></listitem></varlistentry>
+<listitem><simpara>                     the pointer to the <parameter>cur</parameter> parent node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>                       the pointer to application specific data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs
+an walk procedure should be interrupted.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecNodeSetCreate" role="function">
 <title>xmlSecNodeSetCreate ()</title>
-<indexterm zone="xmlSecNodeSetCreate"><primary>xmlSecNodeSetCreate</primary></indexterm>
-<programlisting><link linkend="xmlSecNodeSetPtr"><returnvalue>xmlSecNodeSetPtr</returnvalue></link>    xmlSecNodeSetCreate                 (<parameter><link linkend="xmlDoc"><type>xmlDocPtr</type></link> doc</parameter>,
-                                                         <parameter><link linkend="xmlNodeSet"><type>xmlNodeSetPtr</type></link> nodes</parameter>,
-                                                         <parameter><link linkend="xmlSecNodeSetType"><type>xmlSecNodeSetType</type></link> type</parameter>);</programlisting>
+<indexterm zone="xmlSecNodeSetCreate"><primary sortas="xmlSecNodeSetCreate">xmlSecNodeSetCreate</primary></indexterm><programlisting><link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link>    xmlSecNodeSetCreate                 (<link linkend="xmlDoc">xmlDocPtr</link> doc,
+                                                         <link linkend="xmlNodeSet">xmlNodeSetPtr</link> nodes,
+                                                         <link linkend="xmlSecNodeSetType">xmlSecNodeSetType</link> type);</programlisting>
 <para>
 Creates new nodes set. Caller is responsible for freeing returned object
-by calling <link linkend="xmlSecNodeSetDestroy"><type>xmlSecNodeSetDestroy</type></link> function.
+by calling <link linkend="xmlSecNodeSetDestroy"><type>xmlSecNodeSetDestroy</type></link> function.</para>
+<para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>doc</parameter>&#160;:</term>
-<listitem><simpara>the pointer to parent XML document.</simpara></listitem></varlistentry>
+<listitem><simpara>                the pointer to parent XML document.
+</simpara></listitem></varlistentry>
 <varlistentry><term><parameter>nodes</parameter>&#160;:</term>
-<listitem><simpara>the list of nodes.</simpara></listitem></varlistentry>
+<listitem><simpara>              the list of nodes.
+</simpara></listitem></varlistentry>
 <varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara>the nodes set type.</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to newly allocated node set or NULL if an error occurs.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecNodeSetDebugDump" role="function">
-<title>xmlSecNodeSetDebugDump ()</title>
-<indexterm zone="xmlSecNodeSetDebugDump"><primary>xmlSecNodeSetDebugDump</primary></indexterm>
-<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecNodeSetDebugDump              (<parameter><link linkend="xmlSecNodeSet"><type>xmlSecNodeSetPtr</type></link> nset</parameter>,
-                                                         <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);</programlisting>
-<para>
-Prints information about <parameter>nset</parameter> to the <parameter>output</parameter>.
-</para><variablelist role="params">
-<varlistentry><term><parameter>nset</parameter>&#160;:</term>
-<listitem><simpara>the pointer to node set.</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>the pointer to output FILE.</simpara></listitem></varlistentry>
+<listitem><simpara>               the nodes set type.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly allocated node set or NULL if an error occurs.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecNodeSetDestroy" role="function">
 <title>xmlSecNodeSetDestroy ()</title>
-<indexterm zone="xmlSecNodeSetDestroy"><primary>xmlSecNodeSetDestroy</primary></indexterm>
-<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecNodeSetDestroy                (<parameter><link linkend="xmlSecNodeSet"><type>xmlSecNodeSetPtr</type></link> nset</parameter>);</programlisting>
+<indexterm zone="xmlSecNodeSetDestroy"><primary sortas="xmlSecNodeSetDestroy">xmlSecNodeSetDestroy</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecNodeSetDestroy                (<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nset);</programlisting>
 <para>
-Destroys the nodes set created with <link linkend="xmlSecNodeSetCreate"><type>xmlSecNodeSetCreate</type></link> function.
+Destroys the nodes set created with <link linkend="xmlSecNodeSetCreate"><type>xmlSecNodeSetCreate</type></link> function.</para>
+<para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>nset</parameter>&#160;:</term>
-<listitem><simpara>the pointer to node set.</simpara></listitem></varlistentry>
+<listitem><simpara>               the pointer to node set.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecNodeSetDocDestroy" role="function">
 <title>xmlSecNodeSetDocDestroy ()</title>
-<indexterm zone="xmlSecNodeSetDocDestroy"><primary>xmlSecNodeSetDocDestroy</primary></indexterm>
-<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecNodeSetDocDestroy             (<parameter><link linkend="xmlSecNodeSet"><type>xmlSecNodeSetPtr</type></link> nset</parameter>);</programlisting>
+<indexterm zone="xmlSecNodeSetDocDestroy"><primary sortas="xmlSecNodeSetDocDestroy">xmlSecNodeSetDocDestroy</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecNodeSetDocDestroy             (<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nset);</programlisting>
 <para>
-Instructs node set to destroy nodes parent doc when node set is destroyed.
+Instructs node set to destroy nodes parent doc when node set is destroyed.</para>
+<para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>nset</parameter>&#160;:</term>
-<listitem><simpara>the pointer to node set.</simpara></listitem></varlistentry>
+<listitem><simpara>               the pointer to node set.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecNodeSetDumpTextNodes" role="function">
-<title>xmlSecNodeSetDumpTextNodes ()</title>
-<indexterm zone="xmlSecNodeSetDumpTextNodes"><primary>xmlSecNodeSetDumpTextNodes</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecNodeSetDumpTextNodes          (<parameter><link linkend="xmlSecNodeSet"><type>xmlSecNodeSetPtr</type></link> nset</parameter>,
-                                                         <parameter><link linkend="xmlOutputBuffer"><type>xmlOutputBufferPtr</type></link> out</parameter>);</programlisting>
+<refsect2 id="xmlSecNodeSetContains" role="function">
+<title>xmlSecNodeSetContains ()</title>
+<indexterm zone="xmlSecNodeSetContains"><primary sortas="xmlSecNodeSetContains">xmlSecNodeSetContains</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecNodeSetContains               (<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nset,
+                                                         <link linkend="xmlNode">xmlNodePtr</link> node,
+                                                         <link linkend="xmlNode">xmlNodePtr</link> parent);</programlisting>
 <para>
-Dumps content of all the text nodes from <parameter>nset</parameter> to <parameter>out</parameter>.
+Checks whether the <parameter>node</parameter> is in the nodes set or not.</para>
+<para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>nset</parameter>&#160;:</term>
-<listitem><simpara>the pointer to node set.</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>out</parameter>&#160;:</term>
-<listitem><simpara>the output buffer.</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>0 on success or a negative value otherwise.</simpara></listitem></varlistentry>
+<listitem><simpara>               the pointer to node set.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>node</parameter>&#160;:</term>
+<listitem><simpara>               the pointer to XML node to check.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>parent</parameter>&#160;:</term>
+<listitem><simpara>             the pointer to <parameter>node</parameter> parent node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 1 if the <parameter>node</parameter> is in the nodes set <parameter>nset</parameter>, 0 if it is not
+and a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecNodeSetAdd" role="function">
+<title>xmlSecNodeSetAdd ()</title>
+<indexterm zone="xmlSecNodeSetAdd"><primary sortas="xmlSecNodeSetAdd">xmlSecNodeSetAdd</primary></indexterm><programlisting><link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link>    xmlSecNodeSetAdd                    (<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nset,
+                                                         <link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> newNSet,
+                                                         <link linkend="xmlSecNodeSetOp">xmlSecNodeSetOp</link> op);</programlisting>
+<para>
+Adds <parameter>newNSet</parameter> to the <parameter>nset</parameter> using operation <parameter>op</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>nset</parameter>&#160;:</term>
+<listitem><simpara>               the pointer to currrent nodes set (or NULL).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>newNSet</parameter>&#160;:</term>
+<listitem><simpara>            the pointer to new nodes set.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>op</parameter>&#160;:</term>
+<listitem><simpara>                 the operation type.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to combined nodes set or NULL if an error
+occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecNodeSetAddList" role="function">
+<title>xmlSecNodeSetAddList ()</title>
+<indexterm zone="xmlSecNodeSetAddList"><primary sortas="xmlSecNodeSetAddList">xmlSecNodeSetAddList</primary></indexterm><programlisting><link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link>    xmlSecNodeSetAddList                (<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nset,
+                                                         <link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> newNSet,
+                                                         <link linkend="xmlSecNodeSetOp">xmlSecNodeSetOp</link> op);</programlisting>
+<para>
+Adds <parameter>newNSet</parameter> to the <parameter>nset</parameter> as child using operation <parameter>op</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>nset</parameter>&#160;:</term>
+<listitem><simpara>               the pointer to currrent nodes set (or NULL).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>newNSet</parameter>&#160;:</term>
+<listitem><simpara>            the pointer to new nodes set.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>op</parameter>&#160;:</term>
+<listitem><simpara>                 the operation type.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to combined nodes set or NULL if an error
+occurs.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecNodeSetGetChildren" role="function">
 <title>xmlSecNodeSetGetChildren ()</title>
-<indexterm zone="xmlSecNodeSetGetChildren"><primary>xmlSecNodeSetGetChildren</primary></indexterm>
-<programlisting><link linkend="xmlSecNodeSetPtr"><returnvalue>xmlSecNodeSetPtr</returnvalue></link>    xmlSecNodeSetGetChildren            (<parameter><link linkend="xmlDoc"><type>xmlDocPtr</type></link> doc</parameter>,
-                                                         <parameter>const <link linkend="xmlNode"><type>xmlNodePtr</type></link> parent</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> withComments</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> invert</parameter>);</programlisting>
+<indexterm zone="xmlSecNodeSetGetChildren"><primary sortas="xmlSecNodeSetGetChildren">xmlSecNodeSetGetChildren</primary></indexterm><programlisting><link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link>    xmlSecNodeSetGetChildren            (<link linkend="xmlDoc">xmlDocPtr</link> doc,
+                                                         const <link linkend="xmlNode">xmlNodePtr</link> parent,
+                                                         <link linkend="int">int</link> withComments,
+                                                         <link linkend="int">int</link> invert);</programlisting>
 <para>
 Creates a new nodes set that contains:
  - if <parameter>withComments</parameter> is not 0 and <parameter>invert</parameter> is 0:
@@ -237,144 +362,84 @@ Creates a new nodes set that contains:
    all nodes in the <parameter>doc</parameter> except nodes in the <parameter>parent</parameter> subtree;
  - if <parameter>withComments</parameter> is 0 and <parameter>invert</parameter> is 0:
    all nodes in the <parameter>doc</parameter> except nodes in the <parameter>parent</parameter> subtree
-   and comment nodes.
+   and comment nodes.</para>
+<para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>doc</parameter>&#160;:</term>
-<listitem><simpara>the pointer to an XML document.</simpara></listitem></varlistentry>
+<listitem><simpara>                the pointer to an XML document.
+</simpara></listitem></varlistentry>
 <varlistentry><term><parameter>parent</parameter>&#160;:</term>
-<listitem><simpara>the pointer to parent XML node or NULL if we want to include all document nodes.</simpara></listitem></varlistentry>
+<listitem><simpara>             the pointer to parent XML node or NULL if we want to include all document nodes.
+</simpara></listitem></varlistentry>
 <varlistentry><term><parameter>withComments</parameter>&#160;:</term>
-<listitem><simpara>the flag include  comments or not.</simpara></listitem></varlistentry>
+<listitem><simpara>       the flag include  comments or not.
+</simpara></listitem></varlistentry>
 <varlistentry><term><parameter>invert</parameter>&#160;:</term>
-<listitem><simpara>the "invert" flag.</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to the newly created <link linkend="xmlSecNodeSet"><type>xmlSecNodeSet</type></link> structure
-or NULL if an error occurs.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecNodeSetOp" role="enum">
-<title>enum xmlSecNodeSetOp</title>
-<indexterm zone="xmlSecNodeSetOp"><primary>xmlSecNodeSetOp</primary></indexterm>
-<programlisting>typedef enum {
-    xmlSecNodeSetIntersection = 0,
-    xmlSecNodeSetSubtraction,
-    xmlSecNodeSetUnion
-} xmlSecNodeSetOp;
-</programlisting>
-<para>
-The simple nodes sets operations.
-</para><variablelist role="enum">
-<varlistentry id="xmlSecNodeSetIntersection" role="constant">
-<term><literal>xmlSecNodeSetIntersection</literal></term>
-<listitem><simpara>intersection.
-</simpara></listitem>
-</varlistentry>
-<varlistentry id="xmlSecNodeSetSubtraction" role="constant">
-<term><literal>xmlSecNodeSetSubtraction</literal></term>
-<listitem><simpara>subtraction.
-</simpara></listitem>
-</varlistentry>
-<varlistentry id="xmlSecNodeSetUnion" role="constant">
-<term><literal>xmlSecNodeSetUnion</literal></term>
-<listitem><simpara>union.
-</simpara></listitem>
-</varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecNodeSetType" role="enum">
-<title>enum xmlSecNodeSetType</title>
-<indexterm zone="xmlSecNodeSetType"><primary>xmlSecNodeSetType</primary></indexterm>
-<programlisting>typedef enum {
-    xmlSecNodeSetNormal = 0,
-    xmlSecNodeSetInvert,
-    xmlSecNodeSetTree,
-    xmlSecNodeSetTreeWithoutComments,
-    xmlSecNodeSetTreeInvert,
-    xmlSecNodeSetTreeWithoutCommentsInvert,
-    xmlSecNodeSetList
-} xmlSecNodeSetType;
-</programlisting>
-<para>
-The basic nodes sets types.
-</para><variablelist role="enum">
-<varlistentry id="xmlSecNodeSetNormal" role="constant">
-<term><literal>xmlSecNodeSetNormal</literal></term>
-<listitem><simpara>nodes set = nodes in the list.
-</simpara></listitem>
-</varlistentry>
-<varlistentry id="xmlSecNodeSetInvert" role="constant">
-<term><literal>xmlSecNodeSetInvert</literal></term>
-<listitem><simpara>nodes set = all document nodes minus nodes in the list.
-</simpara></listitem>
-</varlistentry>
-<varlistentry id="xmlSecNodeSetTree" role="constant">
-<term><literal>xmlSecNodeSetTree</literal></term>
-<listitem><simpara>nodes set = nodes in the list and all their subtress.
-</simpara></listitem>
-</varlistentry>
-<varlistentry id="xmlSecNodeSetTreeWithoutComments" role="constant">
-<term><literal>xmlSecNodeSetTreeWithoutComments</literal></term>
-<listitem><simpara>nodes set = nodes in the list and
-                             all their subtress but no comment nodes.
-</simpara></listitem>
-</varlistentry>
-<varlistentry id="xmlSecNodeSetTreeInvert" role="constant">
-<term><literal>xmlSecNodeSetTreeInvert</literal></term>
-<listitem><simpara>nodes set = all document nodes minus nodes in the
-                             list and all their subtress.
-</simpara></listitem>
-</varlistentry>
-<varlistentry id="xmlSecNodeSetTreeWithoutCommentsInvert" role="constant">
-<term><literal>xmlSecNodeSetTreeWithoutCommentsInvert</literal></term>
-<listitem><simpara>nodes set = all document nodes
-                             minus (nodes in the list and all their subtress
-                             plus all comment nodes).
-</simpara></listitem>
-</varlistentry>
-<varlistentry id="xmlSecNodeSetList" role="constant">
-<term><literal>xmlSecNodeSetList</literal></term>
-<listitem><simpara>nodes set = all nodes in the chidren list of nodes sets.
-</simpara></listitem>
-</varlistentry>
+<listitem><simpara>             the "invert" flag.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the newly created <link linkend="xmlSecNodeSet"><type>xmlSecNodeSet</type></link> structure
+or NULL if an error occurs.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecNodeSetWalk" role="function">
 <title>xmlSecNodeSetWalk ()</title>
-<indexterm zone="xmlSecNodeSetWalk"><primary>xmlSecNodeSetWalk</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecNodeSetWalk                   (<parameter><link linkend="xmlSecNodeSet"><type>xmlSecNodeSetPtr</type></link> nset</parameter>,
-                                                         <parameter><link linkend="xmlSecNodeSetWalkCallback"><type>xmlSecNodeSetWalkCallback</type></link> walkFunc</parameter>,
-                                                         <parameter><link linkend="void"><type>void</type></link> *data</parameter>);</programlisting>
+<indexterm zone="xmlSecNodeSetWalk"><primary sortas="xmlSecNodeSetWalk">xmlSecNodeSetWalk</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecNodeSetWalk                   (<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nset,
+                                                         <link linkend="xmlSecNodeSetWalkCallback">xmlSecNodeSetWalkCallback</link> walkFunc,
+                                                         <link linkend="void">void</link> *data);</programlisting>
 <para>
 Calls the function <parameter>walkFunc</parameter> once per each node in the nodes set <parameter>nset</parameter>.
 If the <parameter>walkFunc</parameter> returns a negative value, then the walk procedure
-is interrupted.
-</para><variablelist role="params">
-<varlistentry><term><parameter>nset</parameter>&#160;:</term>
-<listitem><simpara>the pointer to node set.</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>walkFunc</parameter>&#160;:</term>
-<listitem><simpara>the callback functions.</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>the application specific data passed to the <parameter>walkFunc</parameter>.</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>0 on success or a negative value if an error occurs.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecNodeSetWalkCallback" role="function">
-<title>xmlSecNodeSetWalkCallback ()</title>
-<indexterm zone="xmlSecNodeSetWalkCallback"><primary>xmlSecNodeSetWalkCallback</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 (*xmlSecNodeSetWalkCallback)        (<parameter><link linkend="xmlSecNodeSet"><type>xmlSecNodeSetPtr</type></link> nset</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> cur</parameter>,
-                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> parent</parameter>,
-                                                         <parameter><link linkend="void"><type>void</type></link> *data</parameter>);</programlisting>
+is interrupted.</para>
 <para>
-The callback function called once per each node in the nodes set.
 </para><variablelist role="params">
 <varlistentry><term><parameter>nset</parameter>&#160;:</term>
-<listitem><simpara>the pointer to <link linkend="xmlSecNodeSet"><type>xmlSecNodeSet</type></link> structure.</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>cur</parameter>&#160;:</term>
-<listitem><simpara>the pointer current XML node.</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>parent</parameter>&#160;:</term>
-<listitem><simpara>the pointer to the <parameter>cur</parameter> parent node.</simpara></listitem></varlistentry>
+<listitem><simpara>               the pointer to node set.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>walkFunc</parameter>&#160;:</term>
+<listitem><simpara>           the callback functions.
+</simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>the pointer to application specific data.</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>0 on success or a negative value if an error occurs
-an walk procedure should be interrupted.</simpara></listitem></varlistentry>
+<listitem><simpara>               the application specific data passed to the <parameter>walkFunc</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecNodeSetDumpTextNodes" role="function">
+<title>xmlSecNodeSetDumpTextNodes ()</title>
+<indexterm zone="xmlSecNodeSetDumpTextNodes"><primary sortas="xmlSecNodeSetDumpTextNodes">xmlSecNodeSetDumpTextNodes</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecNodeSetDumpTextNodes          (<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nset,
+                                                         <link linkend="xmlOutputBuffer">xmlOutputBufferPtr</link> out);</programlisting>
+<para>
+Dumps content of all the text nodes from <parameter>nset</parameter> to <parameter>out</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>nset</parameter>&#160;:</term>
+<listitem><simpara>               the pointer to node set.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>out</parameter>&#160;:</term>
+<listitem><simpara>                the output buffer.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecNodeSetDebugDump" role="function">
+<title>xmlSecNodeSetDebugDump ()</title>
+<indexterm zone="xmlSecNodeSetDebugDump"><primary sortas="xmlSecNodeSetDebugDump">xmlSecNodeSetDebugDump</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecNodeSetDebugDump              (<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nset,
+                                                         <link linkend="FILE--CAPS">FILE</link> *output);</programlisting>
+<para>
+Prints information about <parameter>nset</parameter> to the <parameter>output</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>nset</parameter>&#160;:</term>
+<listitem><simpara>               the pointer to node set.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>output</parameter>&#160;:</term>
+<listitem><simpara>             the pointer to output FILE.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 
 </refsect1>
+
+
+
 
 </refentry>

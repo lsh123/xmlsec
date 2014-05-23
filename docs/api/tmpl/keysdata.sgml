@@ -17,7 +17,211 @@ Crypto key data object definition.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
+<!-- ##### TYPEDEF xmlSecKeyDataUsage ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO xmlSecKeyDataUsageUnknown ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyDataUsageKeyInfoNodeRead ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyDataUsageKeyInfoNodeWrite ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyDataUsageKeyValueNodeRead ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyDataUsageKeyValueNodeWrite ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyDataUsageRetrievalMethodNodeXml ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyDataUsageRetrievalMethodNodeBin ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyDataUsageAny ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyDataUsageKeyInfoNode ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyDataUsageKeyValueNode ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyDataUsageRetrievalMethodNode ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### TYPEDEF xmlSecKeyDataType ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO xmlSecKeyDataTypeUnknown ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyDataTypeNone ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyDataTypePublic ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyDataTypePrivate ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyDataTypeSymmetric ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyDataTypeSession ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyDataTypePermanent ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyDataTypeTrusted ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyDataTypeAny ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### ENUM xmlSecKeyDataFormat ##### -->
+<para>
+
+</para>
+
+@xmlSecKeyDataFormatUnknown: 
+@xmlSecKeyDataFormatBinary: 
+@xmlSecKeyDataFormatPem: 
+@xmlSecKeyDataFormatDer: 
+@xmlSecKeyDataFormatPkcs8Pem: 
+@xmlSecKeyDataFormatPkcs8Der: 
+@xmlSecKeyDataFormatPkcs12: 
+@xmlSecKeyDataFormatCertPem: 
+@xmlSecKeyDataFormatCertDer: 
+
+<!-- ##### FUNCTION xmlSecKeyDataIdsGet ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataIdsInit ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataIdsShutdown ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecKeyDataIdsRegisterDefault ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataIdsRegister ##### -->
+<para>
+
+</para>
+
+@id: 
+@Returns: 
 
 
 <!-- ##### STRUCT xmlSecKeyData ##### -->
@@ -29,20 +233,113 @@ Crypto key data object definition.
 @reserved0: 
 @reserved1: 
 
-<!-- ##### FUNCTION xmlSecKeyDataBinRead ##### -->
+<!-- ##### FUNCTION xmlSecKeyDataCreate ##### -->
+<para>
+
+</para>
+
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataDuplicate ##### -->
+<para>
+
+</para>
+
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataDestroy ##### -->
+<para>
+
+</para>
+
+@data: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataGenerate ##### -->
+<para>
+
+</para>
+
+@data: 
+@sizeBits: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataGetType ##### -->
+<para>
+
+</para>
+
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataGetSize ##### -->
+<para>
+
+</para>
+
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataGetIdentifier ##### -->
+<para>
+
+</para>
+
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataDebugDump ##### -->
+<para>
+
+</para>
+
+@data: 
+@output: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataDebugXmlDump ##### -->
+<para>
+
+</para>
+
+@data: 
+@output: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataXmlRead ##### -->
 <para>
 
 </para>
 
 @id: 
 @key: 
-@buf: 
-@bufSize: 
+@node: 
 @keyInfoCtx: 
 @Returns: 
 
 
-<!-- ##### USER_FUNCTION xmlSecKeyDataBinReadMethod ##### -->
+<!-- ##### FUNCTION xmlSecKeyDataXmlWrite ##### -->
+<para>
+
+</para>
+
+@id: 
+@key: 
+@node: 
+@keyInfoCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataBinRead ##### -->
 <para>
 
 </para>
@@ -68,6 +365,120 @@ Crypto key data object definition.
 @Returns: 
 
 
+<!-- ##### MACRO xmlSecKeyDataGetName ##### -->
+<para>
+
+</para>
+
+@data: 
+
+
+<!-- ##### MACRO xmlSecKeyDataIsValid ##### -->
+<para>
+
+</para>
+
+@data: 
+
+
+<!-- ##### MACRO xmlSecKeyDataCheckId ##### -->
+<para>
+
+</para>
+
+@data: 
+@dataId: 
+
+
+<!-- ##### MACRO xmlSecKeyDataCheckUsage ##### -->
+<para>
+
+</para>
+
+@data: 
+@usg: 
+
+
+<!-- ##### MACRO xmlSecKeyDataCheckSize ##### -->
+<para>
+
+</para>
+
+@data: 
+@size: 
+
+
+<!-- ##### MACRO xmlSecKeyDataIdUnknown ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### USER_FUNCTION xmlSecKeyDataInitMethod ##### -->
+<para>
+
+</para>
+
+@data: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecKeyDataDuplicateMethod ##### -->
+<para>
+
+</para>
+
+@dst: 
+@src: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecKeyDataFinalizeMethod ##### -->
+<para>
+
+</para>
+
+@data: 
+
+
+<!-- ##### USER_FUNCTION xmlSecKeyDataXmlReadMethod ##### -->
+<para>
+
+</para>
+
+@id: 
+@key: 
+@node: 
+@keyInfoCtx: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecKeyDataXmlWriteMethod ##### -->
+<para>
+
+</para>
+
+@id: 
+@key: 
+@node: 
+@keyInfoCtx: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecKeyDataBinReadMethod ##### -->
+<para>
+
+</para>
+
+@id: 
+@key: 
+@buf: 
+@bufSize: 
+@keyInfoCtx: 
+@Returns: 
+
+
 <!-- ##### USER_FUNCTION xmlSecKeyDataBinWriteMethod ##### -->
 <para>
 
@@ -81,11 +492,237 @@ Crypto key data object definition.
 @Returns: 
 
 
+<!-- ##### USER_FUNCTION xmlSecKeyDataGenerateMethod ##### -->
+<para>
+
+</para>
+
+@data: 
+@sizeBits: 
+@type: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecKeyDataGetTypeMethod ##### -->
+<para>
+
+</para>
+
+@data: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecKeyDataGetSizeMethod ##### -->
+<para>
+
+</para>
+
+@data: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecKeyDataGetIdentifierMethod ##### -->
+<para>
+
+</para>
+
+@data: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecKeyDataDebugDumpMethod ##### -->
+<para>
+
+</para>
+
+@data: 
+@output: 
+
+
+<!-- ##### STRUCT xmlSecKeyDataKlass ##### -->
+<para>
+
+</para>
+
+@klassSize: 
+@objSize: 
+@name: 
+@usage: 
+@href: 
+@dataNodeName: 
+@dataNodeNs: 
+@initialize: 
+@duplicate: 
+@finalize: 
+@generate: 
+@getType: 
+@getSize: 
+@getIdentifier: 
+@xmlRead: 
+@xmlWrite: 
+@binRead: 
+@binWrite: 
+@debugDump: 
+@debugXmlDump: 
+@reserved0: 
+@reserved1: 
+
+<!-- ##### MACRO xmlSecKeyDataKlassGetName ##### -->
+<para>
+
+</para>
+
+@klass: 
+
+
+<!-- ##### MACRO xmlSecKeyDataListId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecKeyDataListGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecKeyDataIdListId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecKeyDataIdListGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataIdListFind ##### -->
+<para>
+
+</para>
+
+@list: 
+@dataId: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataIdListFindByNode ##### -->
+<para>
+
+</para>
+
+@list: 
+@nodeName: 
+@nodeNs: 
+@usage: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataIdListFindByHref ##### -->
+<para>
+
+</para>
+
+@list: 
+@href: 
+@usage: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataIdListFindByName ##### -->
+<para>
+
+</para>
+
+@list: 
+@name: 
+@usage: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataIdListDebugDump ##### -->
+<para>
+
+</para>
+
+@list: 
+@output: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataIdListDebugXmlDump ##### -->
+<para>
+
+</para>
+
+@list: 
+@output: 
+
+
 <!-- ##### MACRO xmlSecKeyDataBinarySize ##### -->
 <para>
 
 </para>
 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataBinaryValueInitialize ##### -->
+<para>
+
+</para>
+
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataBinaryValueDuplicate ##### -->
+<para>
+
+</para>
+
+@dst: 
+@src: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataBinaryValueFinalize ##### -->
+<para>
+
+</para>
+
+@data: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataBinaryValueXmlRead ##### -->
+<para>
+
+</para>
+
+@id: 
+@key: 
+@node: 
+@keyInfoCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataBinaryValueXmlWrite ##### -->
+<para>
+
+</para>
+
+@id: 
+@key: 
+@node: 
+@keyInfoCtx: 
+@Returns: 
 
 
 <!-- ##### FUNCTION xmlSecKeyDataBinaryValueBinRead ##### -->
@@ -132,33 +769,6 @@ Crypto key data object definition.
 @output: 
 
 
-<!-- ##### FUNCTION xmlSecKeyDataBinaryValueDuplicate ##### -->
-<para>
-
-</para>
-
-@dst: 
-@src: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeyDataBinaryValueFinalize ##### -->
-<para>
-
-</para>
-
-@data: 
-
-
-<!-- ##### FUNCTION xmlSecKeyDataBinaryValueGetBuffer ##### -->
-<para>
-
-</para>
-
-@data: 
-@Returns: 
-
-
 <!-- ##### FUNCTION xmlSecKeyDataBinaryValueGetSize ##### -->
 <para>
 
@@ -168,7 +778,7 @@ Crypto key data object definition.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecKeyDataBinaryValueInitialize ##### -->
+<!-- ##### FUNCTION xmlSecKeyDataBinaryValueGetBuffer ##### -->
 <para>
 
 </para>
@@ -188,425 +798,6 @@ Crypto key data object definition.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecKeyDataBinaryValueXmlRead ##### -->
-<para>
-
-</para>
-
-@id: 
-@key: 
-@node: 
-@keyInfoCtx: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeyDataBinaryValueXmlWrite ##### -->
-<para>
-
-</para>
-
-@id: 
-@key: 
-@node: 
-@keyInfoCtx: 
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecKeyDataCheckId ##### -->
-<para>
-
-</para>
-
-@data: 
-@dataId: 
-
-
-<!-- ##### MACRO xmlSecKeyDataCheckSize ##### -->
-<para>
-
-</para>
-
-@data: 
-@size: 
-
-
-<!-- ##### MACRO xmlSecKeyDataCheckUsage ##### -->
-<para>
-
-</para>
-
-@data: 
-@usg: 
-
-
-<!-- ##### FUNCTION xmlSecKeyDataCreate ##### -->
-<para>
-
-</para>
-
-@id: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeyDataDebugDump ##### -->
-<para>
-
-</para>
-
-@data: 
-@output: 
-
-
-<!-- ##### USER_FUNCTION xmlSecKeyDataDebugDumpMethod ##### -->
-<para>
-
-</para>
-
-@data: 
-@output: 
-
-
-<!-- ##### FUNCTION xmlSecKeyDataDebugXmlDump ##### -->
-<para>
-
-</para>
-
-@data: 
-@output: 
-
-
-<!-- ##### FUNCTION xmlSecKeyDataDestroy ##### -->
-<para>
-
-</para>
-
-@data: 
-
-
-<!-- ##### FUNCTION xmlSecKeyDataDuplicate ##### -->
-<para>
-
-</para>
-
-@data: 
-@Returns: 
-
-
-<!-- ##### USER_FUNCTION xmlSecKeyDataDuplicateMethod ##### -->
-<para>
-
-</para>
-
-@dst: 
-@src: 
-@Returns: 
-
-
-<!-- ##### USER_FUNCTION xmlSecKeyDataFinalizeMethod ##### -->
-<para>
-
-</para>
-
-@data: 
-
-
-<!-- ##### ENUM xmlSecKeyDataFormat ##### -->
-<para>
-
-</para>
-
-@xmlSecKeyDataFormatUnknown: 
-@xmlSecKeyDataFormatBinary: 
-@xmlSecKeyDataFormatPem: 
-@xmlSecKeyDataFormatDer: 
-@xmlSecKeyDataFormatPkcs8Pem: 
-@xmlSecKeyDataFormatPkcs8Der: 
-@xmlSecKeyDataFormatPkcs12: 
-@xmlSecKeyDataFormatCertPem: 
-@xmlSecKeyDataFormatCertDer: 
-
-<!-- ##### FUNCTION xmlSecKeyDataGenerate ##### -->
-<para>
-
-</para>
-
-@data: 
-@sizeBits: 
-@type: 
-@Returns: 
-
-
-<!-- ##### USER_FUNCTION xmlSecKeyDataGenerateMethod ##### -->
-<para>
-
-</para>
-
-@data: 
-@sizeBits: 
-@type: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeyDataGetIdentifier ##### -->
-<para>
-
-</para>
-
-@data: 
-@Returns: 
-
-
-<!-- ##### USER_FUNCTION xmlSecKeyDataGetIdentifierMethod ##### -->
-<para>
-
-</para>
-
-@data: 
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecKeyDataGetName ##### -->
-<para>
-
-</para>
-
-@data: 
-
-
-<!-- ##### FUNCTION xmlSecKeyDataGetSize ##### -->
-<para>
-
-</para>
-
-@data: 
-@Returns: 
-
-
-<!-- ##### USER_FUNCTION xmlSecKeyDataGetSizeMethod ##### -->
-<para>
-
-</para>
-
-@data: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeyDataGetType ##### -->
-<para>
-
-</para>
-
-@data: 
-@Returns: 
-
-
-<!-- ##### USER_FUNCTION xmlSecKeyDataGetTypeMethod ##### -->
-<para>
-
-</para>
-
-@data: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeyDataIdListDebugDump ##### -->
-<para>
-
-</para>
-
-@list: 
-@output: 
-
-
-<!-- ##### FUNCTION xmlSecKeyDataIdListDebugXmlDump ##### -->
-<para>
-
-</para>
-
-@list: 
-@output: 
-
-
-<!-- ##### FUNCTION xmlSecKeyDataIdListFind ##### -->
-<para>
-
-</para>
-
-@list: 
-@dataId: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeyDataIdListFindByHref ##### -->
-<para>
-
-</para>
-
-@list: 
-@href: 
-@usage: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeyDataIdListFindByName ##### -->
-<para>
-
-</para>
-
-@list: 
-@name: 
-@usage: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeyDataIdListFindByNode ##### -->
-<para>
-
-</para>
-
-@list: 
-@nodeName: 
-@nodeNs: 
-@usage: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeyDataIdListGetKlass ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecKeyDataIdListId ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecKeyDataIdUnknown ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecKeyDataIdsGet ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeyDataIdsInit ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeyDataIdsRegister ##### -->
-<para>
-
-</para>
-
-@id: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeyDataIdsRegisterDefault ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeyDataIdsShutdown ##### -->
-<para>
-
-</para>
-
-@void: 
-
-
-<!-- ##### USER_FUNCTION xmlSecKeyDataInitMethod ##### -->
-<para>
-
-</para>
-
-@data: 
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecKeyDataIsValid ##### -->
-<para>
-
-</para>
-
-@data: 
-
-
-<!-- ##### STRUCT xmlSecKeyDataKlass ##### -->
-<para>
-
-</para>
-
-@klassSize: 
-@objSize: 
-@name: 
-@usage: 
-@href: 
-@dataNodeName: 
-@dataNodeNs: 
-@initialize: 
-@duplicate: 
-@finalize: 
-@generate: 
-@getType: 
-@getSize: 
-@getIdentifier: 
-@xmlRead: 
-@xmlWrite: 
-@binRead: 
-@binWrite: 
-@debugDump: 
-@debugXmlDump: 
-@reserved0: 
-@reserved1: 
-
-<!-- ##### MACRO xmlSecKeyDataKlassGetName ##### -->
-<para>
-
-</para>
-
-@klass: 
-
-
-<!-- ##### FUNCTION xmlSecKeyDataListGetKlass ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecKeyDataListId ##### -->
-<para>
-
-</para>
-
-
-
 <!-- ##### STRUCT xmlSecKeyDataStore ##### -->
 <para>
 
@@ -615,6 +806,39 @@ Crypto key data object definition.
 @id: 
 @reserved0: 
 @reserved1: 
+
+<!-- ##### FUNCTION xmlSecKeyDataStoreCreate ##### -->
+<para>
+
+</para>
+
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataStoreDestroy ##### -->
+<para>
+
+</para>
+
+@store: 
+
+
+<!-- ##### MACRO xmlSecKeyDataStoreGetName ##### -->
+<para>
+
+</para>
+
+@store: 
+
+
+<!-- ##### MACRO xmlSecKeyDataStoreIsValid ##### -->
+<para>
+
+</para>
+
+@store: 
+
 
 <!-- ##### MACRO xmlSecKeyDataStoreCheckId ##### -->
 <para>
@@ -634,39 +858,6 @@ Crypto key data object definition.
 @size: 
 
 
-<!-- ##### FUNCTION xmlSecKeyDataStoreCreate ##### -->
-<para>
-
-</para>
-
-@id: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeyDataStoreDestroy ##### -->
-<para>
-
-</para>
-
-@store: 
-
-
-<!-- ##### USER_FUNCTION xmlSecKeyDataStoreFinalizeMethod ##### -->
-<para>
-
-</para>
-
-@store: 
-
-
-<!-- ##### MACRO xmlSecKeyDataStoreGetName ##### -->
-<para>
-
-</para>
-
-@store: 
-
-
 <!-- ##### MACRO xmlSecKeyDataStoreIdUnknown ##### -->
 <para>
 
@@ -683,7 +874,7 @@ Crypto key data object definition.
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecKeyDataStoreIsValid ##### -->
+<!-- ##### USER_FUNCTION xmlSecKeyDataStoreFinalizeMethod ##### -->
 <para>
 
 </para>
@@ -712,15 +903,6 @@ Crypto key data object definition.
 @klass: 
 
 
-<!-- ##### FUNCTION xmlSecKeyDataStorePtrListGetKlass ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
 <!-- ##### MACRO xmlSecKeyDataStorePtrListId ##### -->
 <para>
 
@@ -728,203 +910,11 @@ Crypto key data object definition.
 
 
 
-<!-- ##### TYPEDEF xmlSecKeyDataType ##### -->
+<!-- ##### FUNCTION xmlSecKeyDataStorePtrListGetKlass ##### -->
 <para>
 
 </para>
 
-
-<!-- ##### MACRO xmlSecKeyDataTypeAny ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecKeyDataTypeNone ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecKeyDataTypePermanent ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecKeyDataTypePrivate ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecKeyDataTypePublic ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecKeyDataTypeSession ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecKeyDataTypeSymmetric ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecKeyDataTypeTrusted ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecKeyDataTypeUnknown ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### TYPEDEF xmlSecKeyDataUsage ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### MACRO xmlSecKeyDataUsageAny ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecKeyDataUsageKeyInfoNode ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecKeyDataUsageKeyInfoNodeRead ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecKeyDataUsageKeyInfoNodeWrite ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecKeyDataUsageKeyValueNode ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecKeyDataUsageKeyValueNodeRead ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecKeyDataUsageKeyValueNodeWrite ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecKeyDataUsageRetrievalMethodNode ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecKeyDataUsageRetrievalMethodNodeBin ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecKeyDataUsageRetrievalMethodNodeXml ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecKeyDataUsageUnknown ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecKeyDataXmlRead ##### -->
-<para>
-
-</para>
-
-@id: 
-@key: 
-@node: 
-@keyInfoCtx: 
-@Returns: 
-
-
-<!-- ##### USER_FUNCTION xmlSecKeyDataXmlReadMethod ##### -->
-<para>
-
-</para>
-
-@id: 
-@key: 
-@node: 
-@keyInfoCtx: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeyDataXmlWrite ##### -->
-<para>
-
-</para>
-
-@id: 
-@key: 
-@node: 
-@keyInfoCtx: 
-@Returns: 
-
-
-<!-- ##### USER_FUNCTION xmlSecKeyDataXmlWriteMethod ##### -->
-<para>
-
-</para>
-
-@id: 
-@key: 
-@node: 
-@keyInfoCtx: 
 @Returns: 
 
 

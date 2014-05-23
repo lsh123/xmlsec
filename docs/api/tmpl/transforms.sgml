@@ -17,7 +17,233 @@ Transform object definition.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
+<!-- ##### MACRO XMLSEC_TRANSFORM_BINARY_CHUNK ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformIdsGet ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformIdsInit ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformIdsShutdown ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformIdsRegisterDefault ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformIdsRegister ##### -->
+<para>
+
+</para>
+
+@id: 
+@Returns: 
+
+
+<!-- ##### ENUM xmlSecTransformStatus ##### -->
+<para>
+
+</para>
+
+@xmlSecTransformStatusNone: 
+@xmlSecTransformStatusWorking: 
+@xmlSecTransformStatusFinished: 
+@xmlSecTransformStatusOk: 
+@xmlSecTransformStatusFail: 
+
+<!-- ##### ENUM xmlSecTransformMode ##### -->
+<para>
+
+</para>
+
+@xmlSecTransformModeNone: 
+@xmlSecTransformModePush: 
+@xmlSecTransformModePop: 
+
+<!-- ##### ENUM xmlSecTransformOperation ##### -->
+<para>
+
+</para>
+
+@xmlSecTransformOperationNone: 
+@xmlSecTransformOperationEncode: 
+@xmlSecTransformOperationDecode: 
+@xmlSecTransformOperationSign: 
+@xmlSecTransformOperationVerify: 
+@xmlSecTransformOperationEncrypt: 
+@xmlSecTransformOperationDecrypt: 
+
+<!-- ##### TYPEDEF xmlSecTransformUriType ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO xmlSecTransformUriTypeNone ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecTransformUriTypeEmpty ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecTransformUriTypeSameDocument ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecTransformUriTypeLocal ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecTransformUriTypeRemote ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecTransformUriTypeAny ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformUriTypeCheck ##### -->
+<para>
+
+</para>
+
+@type: 
+@uri: 
+@Returns: 
+
+
+<!-- ##### TYPEDEF xmlSecTransformDataType ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO xmlSecTransformDataTypeUnknown ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecTransformDataTypeBin ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecTransformDataTypeXml ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### TYPEDEF xmlSecTransformUsage ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO xmlSecTransformUsageUnknown ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecTransformUsageDSigTransform ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecTransformUsageC14NMethod ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecTransformUsageDigestMethod ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecTransformUsageSignatureMethod ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecTransformUsageEncryptionMethod ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecTransformUsageAny ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### USER_FUNCTION xmlSecTransformCtxPreExecuteCallback ##### -->
+<para>
+
+</para>
+
+@transformCtx: 
+@Returns: 
 
 
 <!-- ##### MACRO XMLSEC_TRANSFORMCTX_FLAGS_USE_VISA3D_HACK ##### -->
@@ -27,11 +253,217 @@ Transform object definition.
 
 
 
-<!-- ##### MACRO XMLSEC_TRANSFORM_BINARY_CHUNK ##### -->
+<!-- ##### STRUCT xmlSecTransformCtx ##### -->
 <para>
 
 </para>
 
+@userData: 
+@flags: 
+@flags2: 
+@enabledUris: 
+@enabledTransforms: 
+@preExecCallback: 
+@result: 
+@status: 
+@uri: 
+@xptrExpr: 
+@first: 
+@last: 
+@reserved0: 
+@reserved1: 
+
+<!-- ##### FUNCTION xmlSecTransformCtxCreate ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformCtxDestroy ##### -->
+<para>
+
+</para>
+
+@ctx: 
+
+
+<!-- ##### FUNCTION xmlSecTransformCtxInitialize ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformCtxFinalize ##### -->
+<para>
+
+</para>
+
+@ctx: 
+
+
+<!-- ##### FUNCTION xmlSecTransformCtxReset ##### -->
+<para>
+
+</para>
+
+@ctx: 
+
+
+<!-- ##### FUNCTION xmlSecTransformCtxCopyUserPref ##### -->
+<para>
+
+</para>
+
+@dst: 
+@src: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformCtxSetUri ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@uri: 
+@hereNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformCtxAppend ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@transform: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformCtxPrepend ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@transform: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformCtxCreateAndAppend ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformCtxCreateAndPrepend ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformCtxNodeRead ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@node: 
+@usage: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformCtxNodesListRead ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@node: 
+@usage: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformCtxPrepare ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@inputDataType: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformCtxBinaryExecute ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@data: 
+@dataSize: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformCtxUriExecute ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@uri: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformCtxXmlExecute ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@nodes: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformCtxExecute ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@doc: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformCtxDebugDump ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@output: 
+
+
+<!-- ##### FUNCTION xmlSecTransformCtxDebugXmlDump ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@output: 
 
 
 <!-- ##### STRUCT xmlSecTransform ##### -->
@@ -52,29 +484,190 @@ Transform object definition.
 @reserved0: 
 @reserved1: 
 
-<!-- ##### FUNCTION xmlSecTransformBase64GetKlass ##### -->
+<!-- ##### FUNCTION xmlSecTransformCreate ##### -->
 <para>
 
 </para>
 
-@void: 
+@id: 
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecTransformBase64Id ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecTransformBase64SetLineSize ##### -->
+<!-- ##### FUNCTION xmlSecTransformDestroy ##### -->
 <para>
 
 </para>
 
 @transform: 
-@lineSize: 
+
+
+<!-- ##### FUNCTION xmlSecTransformNodeRead ##### -->
+<para>
+
+</para>
+
+@node: 
+@usage: 
+@transformCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformPump ##### -->
+<para>
+
+</para>
+
+@left: 
+@right: 
+@transformCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformSetKey ##### -->
+<para>
+
+</para>
+
+@transform: 
+@key: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformSetKeyReq ##### -->
+<para>
+
+</para>
+
+@transform: 
+@keyReq: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformVerify ##### -->
+<para>
+
+</para>
+
+@transform: 
+@data: 
+@dataSize: 
+@transformCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformVerifyNodeContent ##### -->
+<para>
+
+</para>
+
+@transform: 
+@node: 
+@transformCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformGetDataType ##### -->
+<para>
+
+</para>
+
+@transform: 
+@mode: 
+@transformCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformPushBin ##### -->
+<para>
+
+</para>
+
+@transform: 
+@data: 
+@dataSize: 
+@final: 
+@transformCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformPopBin ##### -->
+<para>
+
+</para>
+
+@transform: 
+@data: 
+@maxDataSize: 
+@dataSize: 
+@transformCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformPushXml ##### -->
+<para>
+
+</para>
+
+@transform: 
+@nodes: 
+@transformCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformPopXml ##### -->
+<para>
+
+</para>
+
+@transform: 
+@nodes: 
+@transformCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformExecute ##### -->
+<para>
+
+</para>
+
+@transform: 
+@last: 
+@transformCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformDebugDump ##### -->
+<para>
+
+</para>
+
+@transform: 
+@output: 
+
+
+<!-- ##### FUNCTION xmlSecTransformDebugXmlDump ##### -->
+<para>
+
+</para>
+
+@transform: 
+@output: 
+
+
+<!-- ##### MACRO xmlSecTransformGetName ##### -->
+<para>
+
+</para>
+
+@transform: 
+
+
+<!-- ##### MACRO xmlSecTransformIsValid ##### -->
+<para>
+
+</para>
+
+@transform: 
 
 
 <!-- ##### MACRO xmlSecTransformCheckId ##### -->
@@ -106,301 +699,12 @@ Transform object definition.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecTransformCreate ##### -->
-<para>
-
-</para>
-
-@id: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformCreateInputBuffer ##### -->
+<!-- ##### FUNCTION xmlSecTransformRemove ##### -->
 <para>
 
 </para>
 
 @transform: 
-@transformCtx: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformCreateOutputBuffer ##### -->
-<para>
-
-</para>
-
-@transform: 
-@transformCtx: 
-@Returns: 
-
-
-<!-- ##### STRUCT xmlSecTransformCtx ##### -->
-<para>
-
-</para>
-
-@userData: 
-@flags: 
-@flags2: 
-@enabledUris: 
-@enabledTransforms: 
-@preExecCallback: 
-@result: 
-@status: 
-@uri: 
-@xptrExpr: 
-@first: 
-@last: 
-@reserved0: 
-@reserved1: 
-
-<!-- ##### FUNCTION xmlSecTransformCtxAppend ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@transform: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformCtxBinaryExecute ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@data: 
-@dataSize: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformCtxCopyUserPref ##### -->
-<para>
-
-</para>
-
-@dst: 
-@src: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformCtxCreate ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformCtxCreateAndAppend ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@id: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformCtxCreateAndPrepend ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@id: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformCtxDebugDump ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@output: 
-
-
-<!-- ##### FUNCTION xmlSecTransformCtxDebugXmlDump ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@output: 
-
-
-<!-- ##### FUNCTION xmlSecTransformCtxDestroy ##### -->
-<para>
-
-</para>
-
-@ctx: 
-
-
-<!-- ##### FUNCTION xmlSecTransformCtxExecute ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@doc: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformCtxFinalize ##### -->
-<para>
-
-</para>
-
-@ctx: 
-
-
-<!-- ##### FUNCTION xmlSecTransformCtxInitialize ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformCtxNodeRead ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@node: 
-@usage: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformCtxNodesListRead ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@node: 
-@usage: 
-@Returns: 
-
-
-<!-- ##### USER_FUNCTION xmlSecTransformCtxPreExecuteCallback ##### -->
-<para>
-
-</para>
-
-@transformCtx: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformCtxPrepare ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@inputDataType: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformCtxPrepend ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@transform: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformCtxReset ##### -->
-<para>
-
-</para>
-
-@ctx: 
-
-
-<!-- ##### FUNCTION xmlSecTransformCtxSetUri ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@uri: 
-@hereNode: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformCtxUriExecute ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@uri: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformCtxXmlExecute ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@nodes: 
-@Returns: 
-
-
-<!-- ##### TYPEDEF xmlSecTransformDataType ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### MACRO xmlSecTransformDataTypeBin ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecTransformDataTypeUnknown ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecTransformDataTypeXml ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecTransformDebugDump ##### -->
-<para>
-
-</para>
-
-@transform: 
-@output: 
-
-
-<!-- ##### FUNCTION xmlSecTransformDebugXmlDump ##### -->
-<para>
-
-</para>
-
-@transform: 
-@output: 
 
 
 <!-- ##### FUNCTION xmlSecTransformDefaultGetDataType ##### -->
@@ -410,30 +714,6 @@ Transform object definition.
 
 @transform: 
 @mode: 
-@transformCtx: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformDefaultPopBin ##### -->
-<para>
-
-</para>
-
-@transform: 
-@data: 
-@maxDataSize: 
-@dataSize: 
-@transformCtx: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformDefaultPopXml ##### -->
-<para>
-
-</para>
-
-@transform: 
-@nodes: 
 @transformCtx: 
 @Returns: 
 
@@ -451,6 +731,19 @@ Transform object definition.
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecTransformDefaultPopBin ##### -->
+<para>
+
+</para>
+
+@transform: 
+@data: 
+@maxDataSize: 
+@dataSize: 
+@transformCtx: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecTransformDefaultPushXml ##### -->
 <para>
 
@@ -462,81 +755,43 @@ Transform object definition.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecTransformDestroy ##### -->
+<!-- ##### FUNCTION xmlSecTransformDefaultPopXml ##### -->
 <para>
 
 </para>
 
 @transform: 
-
-
-<!-- ##### FUNCTION xmlSecTransformEnvelopedGetKlass ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecTransformEnvelopedId ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecTransformExclC14NGetKlass ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecTransformExclC14NId ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecTransformExclC14NWithCommentsGetKlass ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecTransformExclC14NWithCommentsId ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecTransformExecute ##### -->
-<para>
-
-</para>
-
-@transform: 
-@last: 
+@nodes: 
 @transformCtx: 
 @Returns: 
 
 
-<!-- ##### USER_FUNCTION xmlSecTransformExecuteMethod ##### -->
+<!-- ##### FUNCTION xmlSecTransformCreateOutputBuffer ##### -->
 <para>
 
 </para>
 
 @transform: 
-@last: 
 @transformCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformCreateInputBuffer ##### -->
+<para>
+
+</para>
+
+@transform: 
+@transformCtx: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecTransformInitializeMethod ##### -->
+<para>
+
+</para>
+
+@transform: 
 @Returns: 
 
 
@@ -546,17 +801,6 @@ Transform object definition.
 </para>
 
 @transform: 
-
-
-<!-- ##### FUNCTION xmlSecTransformGetDataType ##### -->
-<para>
-
-</para>
-
-@transform: 
-@mode: 
-@transformCtx: 
-@Returns: 
 
 
 <!-- ##### USER_FUNCTION xmlSecTransformGetDataTypeMethod ##### -->
@@ -570,210 +814,117 @@ Transform object definition.
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecTransformGetName ##### -->
+<!-- ##### USER_FUNCTION xmlSecTransformNodeReadMethod ##### -->
 <para>
 
 </para>
 
 @transform: 
-
-
-<!-- ##### FUNCTION xmlSecTransformIdListDebugDump ##### -->
-<para>
-
-</para>
-
-@list: 
-@output: 
-
-
-<!-- ##### FUNCTION xmlSecTransformIdListDebugXmlDump ##### -->
-<para>
-
-</para>
-
-@list: 
-@output: 
-
-
-<!-- ##### FUNCTION xmlSecTransformIdListFind ##### -->
-<para>
-
-</para>
-
-@list: 
-@transformId: 
+@node: 
+@transformCtx: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecTransformIdListFindByHref ##### -->
-<para>
-
-</para>
-
-@list: 
-@href: 
-@usage: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformIdListFindByName ##### -->
-<para>
-
-</para>
-
-@list: 
-@name: 
-@usage: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformIdListGetKlass ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecTransformIdListId ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecTransformIdUnknown ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecTransformIdsGet ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformIdsInit ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformIdsRegister ##### -->
-<para>
-
-</para>
-
-@id: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformIdsRegisterDefault ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformIdsShutdown ##### -->
-<para>
-
-</para>
-
-@void: 
-
-
-<!-- ##### FUNCTION xmlSecTransformInclC14N11GetKlass ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecTransformInclC14N11Id ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecTransformInclC14N11WithCommentsGetKlass ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecTransformInclC14N11WithCommentsId ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecTransformInclC14NGetKlass ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecTransformInclC14NId ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecTransformInclC14NWithCommentsGetKlass ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecTransformInclC14NWithCommentsId ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### USER_FUNCTION xmlSecTransformInitializeMethod ##### -->
+<!-- ##### USER_FUNCTION xmlSecTransformNodeWriteMethod ##### -->
 <para>
 
 </para>
 
 @transform: 
+@node: 
+@transformCtx: 
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecTransformIsValid ##### -->
+<!-- ##### USER_FUNCTION xmlSecTransformSetKeyRequirementsMethod ##### -->
 <para>
 
 </para>
 
 @transform: 
+@keyReq: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecTransformSetKeyMethod ##### -->
+<para>
+
+</para>
+
+@transform: 
+@key: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecTransformVerifyMethod ##### -->
+<para>
+
+</para>
+
+@transform: 
+@data: 
+@dataSize: 
+@transformCtx: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecTransformPushBinMethod ##### -->
+<para>
+
+</para>
+
+@transform: 
+@data: 
+@dataSize: 
+@final: 
+@transformCtx: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecTransformPopBinMethod ##### -->
+<para>
+
+</para>
+
+@transform: 
+@data: 
+@maxDataSize: 
+@dataSize: 
+@transformCtx: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecTransformPushXmlMethod ##### -->
+<para>
+
+</para>
+
+@transform: 
+@nodes: 
+@transformCtx: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecTransformPopXmlMethod ##### -->
+<para>
+
+</para>
+
+@transform: 
+@nodes: 
+@transformCtx: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecTransformExecuteMethod ##### -->
+<para>
+
+</para>
+
+@transform: 
+@last: 
+@transformCtx: 
+@Returns: 
 
 
 <!-- ##### STRUCT xmlSecTransformKlass ##### -->
@@ -810,427 +961,208 @@ Transform object definition.
 @klass: 
 
 
-<!-- ##### ENUM xmlSecTransformMode ##### -->
+<!-- ##### MACRO xmlSecTransformIdListId ##### -->
 <para>
 
 </para>
 
-@xmlSecTransformModeNone: 
-@xmlSecTransformModePush: 
-@xmlSecTransformModePop: 
 
-<!-- ##### FUNCTION xmlSecTransformNodeRead ##### -->
+
+<!-- ##### FUNCTION xmlSecTransformIdListGetKlass ##### -->
 <para>
 
 </para>
 
-@node: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformIdListFind ##### -->
+<para>
+
+</para>
+
+@list: 
+@transformId: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformIdListFindByHref ##### -->
+<para>
+
+</para>
+
+@list: 
+@href: 
 @usage: 
-@transformCtx: 
 @Returns: 
 
 
-<!-- ##### USER_FUNCTION xmlSecTransformNodeReadMethod ##### -->
+<!-- ##### FUNCTION xmlSecTransformIdListFindByName ##### -->
+<para>
+
+</para>
+
+@list: 
+@name: 
+@usage: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformIdListDebugDump ##### -->
+<para>
+
+</para>
+
+@list: 
+@output: 
+
+
+<!-- ##### FUNCTION xmlSecTransformIdListDebugXmlDump ##### -->
+<para>
+
+</para>
+
+@list: 
+@output: 
+
+
+<!-- ##### MACRO xmlSecTransformIdUnknown ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecTransformBase64Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformBase64GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformBase64SetLineSize ##### -->
 <para>
 
 </para>
 
 @transform: 
-@node: 
-@transformCtx: 
+@lineSize: 
+
+
+<!-- ##### MACRO xmlSecTransformInclC14NId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformInclC14NGetKlass ##### -->
+<para>
+
+</para>
+
 @Returns: 
 
 
-<!-- ##### USER_FUNCTION xmlSecTransformNodeWriteMethod ##### -->
+<!-- ##### MACRO xmlSecTransformInclC14NWithCommentsId ##### -->
 <para>
 
 </para>
 
-@transform: 
-@node: 
-@transformCtx: 
+
+
+<!-- ##### FUNCTION xmlSecTransformInclC14NWithCommentsGetKlass ##### -->
+<para>
+
+</para>
+
 @Returns: 
 
 
-<!-- ##### ENUM xmlSecTransformOperation ##### -->
+<!-- ##### MACRO xmlSecTransformInclC14N11Id ##### -->
 <para>
 
 </para>
 
-@xmlSecTransformOperationNone: 
-@xmlSecTransformOperationEncode: 
-@xmlSecTransformOperationDecode: 
-@xmlSecTransformOperationSign: 
-@xmlSecTransformOperationVerify: 
-@xmlSecTransformOperationEncrypt: 
-@xmlSecTransformOperationDecrypt: 
 
-<!-- ##### FUNCTION xmlSecTransformPopBin ##### -->
+
+<!-- ##### FUNCTION xmlSecTransformInclC14N11GetKlass ##### -->
 <para>
 
 </para>
 
-@transform: 
-@data: 
-@maxDataSize: 
-@dataSize: 
-@transformCtx: 
 @Returns: 
 
 
-<!-- ##### USER_FUNCTION xmlSecTransformPopBinMethod ##### -->
+<!-- ##### MACRO xmlSecTransformInclC14N11WithCommentsId ##### -->
 <para>
 
 </para>
 
-@transform: 
-@data: 
-@maxDataSize: 
-@dataSize: 
-@transformCtx: 
+
+
+<!-- ##### FUNCTION xmlSecTransformInclC14N11WithCommentsGetKlass ##### -->
+<para>
+
+</para>
+
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecTransformPopXml ##### -->
+<!-- ##### MACRO xmlSecTransformExclC14NId ##### -->
 <para>
 
 </para>
 
-@transform: 
-@nodes: 
-@transformCtx: 
+
+
+<!-- ##### FUNCTION xmlSecTransformExclC14NGetKlass ##### -->
+<para>
+
+</para>
+
 @Returns: 
 
 
-<!-- ##### USER_FUNCTION xmlSecTransformPopXmlMethod ##### -->
+<!-- ##### MACRO xmlSecTransformExclC14NWithCommentsId ##### -->
 <para>
 
 </para>
 
-@transform: 
-@nodes: 
-@transformCtx: 
+
+
+<!-- ##### FUNCTION xmlSecTransformExclC14NWithCommentsGetKlass ##### -->
+<para>
+
+</para>
+
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecTransformPump ##### -->
+<!-- ##### MACRO xmlSecTransformEnvelopedId ##### -->
 <para>
 
 </para>
 
-@left: 
-@right: 
-@transformCtx: 
+
+
+<!-- ##### FUNCTION xmlSecTransformEnvelopedGetKlass ##### -->
+<para>
+
+</para>
+
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecTransformPushBin ##### -->
-<para>
-
-</para>
-
-@transform: 
-@data: 
-@dataSize: 
-@final: 
-@transformCtx: 
-@Returns: 
-
-
-<!-- ##### USER_FUNCTION xmlSecTransformPushBinMethod ##### -->
-<para>
-
-</para>
-
-@transform: 
-@data: 
-@dataSize: 
-@final: 
-@transformCtx: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformPushXml ##### -->
-<para>
-
-</para>
-
-@transform: 
-@nodes: 
-@transformCtx: 
-@Returns: 
-
-
-<!-- ##### USER_FUNCTION xmlSecTransformPushXmlMethod ##### -->
-<para>
-
-</para>
-
-@transform: 
-@nodes: 
-@transformCtx: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformRemove ##### -->
-<para>
-
-</para>
-
-@transform: 
-
-
-<!-- ##### FUNCTION xmlSecTransformRemoveXmlTagsC14NGetKlass ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecTransformRemoveXmlTagsC14NId ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecTransformSetKey ##### -->
-<para>
-
-</para>
-
-@transform: 
-@key: 
-@Returns: 
-
-
-<!-- ##### USER_FUNCTION xmlSecTransformSetKeyMethod ##### -->
-<para>
-
-</para>
-
-@transform: 
-@key: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformSetKeyReq ##### -->
-<para>
-
-</para>
-
-@transform: 
-@keyReq: 
-@Returns: 
-
-
-<!-- ##### USER_FUNCTION xmlSecTransformSetKeyRequirementsMethod ##### -->
-<para>
-
-</para>
-
-@transform: 
-@keyReq: 
-@Returns: 
-
-
-<!-- ##### ENUM xmlSecTransformStatus ##### -->
-<para>
-
-</para>
-
-@xmlSecTransformStatusNone: 
-@xmlSecTransformStatusWorking: 
-@xmlSecTransformStatusFinished: 
-@xmlSecTransformStatusOk: 
-@xmlSecTransformStatusFail: 
-
-<!-- ##### TYPEDEF xmlSecTransformUriType ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### MACRO xmlSecTransformUriTypeAny ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecTransformUriTypeCheck ##### -->
-<para>
-
-</para>
-
-@type: 
-@uri: 
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecTransformUriTypeEmpty ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecTransformUriTypeLocal ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecTransformUriTypeNone ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecTransformUriTypeRemote ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecTransformUriTypeSameDocument ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### TYPEDEF xmlSecTransformUsage ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### MACRO xmlSecTransformUsageAny ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecTransformUsageC14NMethod ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecTransformUsageDSigTransform ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecTransformUsageDigestMethod ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecTransformUsageEncryptionMethod ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecTransformUsageSignatureMethod ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecTransformUsageUnknown ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecTransformVerify ##### -->
-<para>
-
-</para>
-
-@transform: 
-@data: 
-@dataSize: 
-@transformCtx: 
-@Returns: 
-
-
-<!-- ##### USER_FUNCTION xmlSecTransformVerifyMethod ##### -->
-<para>
-
-</para>
-
-@transform: 
-@data: 
-@dataSize: 
-@transformCtx: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformVerifyNodeContent ##### -->
-<para>
-
-</para>
-
-@transform: 
-@node: 
-@transformCtx: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformVisa3DHackGetKlass ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecTransformVisa3DHackId ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecTransformVisa3DHackSetID ##### -->
-<para>
-
-</para>
-
-@transform: 
-@id: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformXPath2GetKlass ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecTransformXPath2Id ##### -->
+<!-- ##### MACRO xmlSecTransformXPathId ##### -->
 <para>
 
 </para>
@@ -1242,11 +1174,25 @@ Transform object definition.
 
 </para>
 
-@void: 
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecTransformXPathId ##### -->
+<!-- ##### MACRO xmlSecTransformXPath2Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformXPath2GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecTransformXPointerId ##### -->
 <para>
 
 </para>
@@ -1258,15 +1204,7 @@ Transform object definition.
 
 </para>
 
-@void: 
 @Returns: 
-
-
-<!-- ##### MACRO xmlSecTransformXPointerId ##### -->
-<para>
-
-</para>
-
 
 
 <!-- ##### FUNCTION xmlSecTransformXPointerSetExpr ##### -->
@@ -1281,20 +1219,19 @@ Transform object definition.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecTransformXsltGetKlass ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
 <!-- ##### MACRO xmlSecTransformXsltId ##### -->
 <para>
 
 </para>
 
+
+
+<!-- ##### FUNCTION xmlSecTransformXsltGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
 
 
 <!-- ##### FUNCTION xmlSecTransformXsltSetDefaultSecurityPrefs ##### -->
@@ -1303,5 +1240,45 @@ Transform object definition.
 </para>
 
 @sec: 
+
+
+<!-- ##### MACRO xmlSecTransformRemoveXmlTagsC14NId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformRemoveXmlTagsC14NGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecTransformVisa3DHackId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformVisa3DHackGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformVisa3DHackSetID ##### -->
+<para>
+
+</para>
+
+@transform: 
+@id: 
+@Returns: 
 
 

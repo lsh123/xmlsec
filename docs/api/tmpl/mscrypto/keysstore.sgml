@@ -17,7 +17,19 @@ Keys store implementation for MS Crypto.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
+<!-- ##### MACRO xmlSecMSCryptoKeysStoreId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoKeysStoreGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
 
 
 <!-- ##### FUNCTION xmlSecMSCryptoKeysStoreAdoptKey ##### -->
@@ -28,22 +40,6 @@ Keys store implementation for MS Crypto.
 @store: 
 @key: 
 @Returns: 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoKeysStoreGetKlass ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecMSCryptoKeysStoreId ##### -->
-<para>
-
-</para>
-
 
 
 <!-- ##### FUNCTION xmlSecMSCryptoKeysStoreLoad ##### -->

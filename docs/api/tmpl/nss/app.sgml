@@ -17,16 +17,20 @@ Application functions implementation for NSS.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
-
-
-<!-- ##### FUNCTION xmlSecNssAppDefaultKeysMngrAdoptKey ##### -->
+<!-- ##### FUNCTION xmlSecNssAppInit ##### -->
 <para>
 
 </para>
 
-@mngr: 
-@key: 
+@config: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNssAppShutdown ##### -->
+<para>
+
+</para>
+
 @Returns: 
 
 
@@ -36,6 +40,16 @@ Application functions implementation for NSS.
 </para>
 
 @mngr: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNssAppDefaultKeysMngrAdoptKey ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@key: 
 @Returns: 
 
 
@@ -60,21 +74,117 @@ Application functions implementation for NSS.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecNssAppGetDefaultPwdCallback ##### -->
+<!-- ##### FUNCTION xmlSecNssAppKeysMngrCertLoad ##### -->
 <para>
 
 </para>
 
-@void: 
+@mngr: 
+@filename: 
+@format: 
+@type: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecNssAppInit ##### -->
+<!-- ##### FUNCTION xmlSecNssAppKeysMngrCertLoadMemory ##### -->
 <para>
 
 </para>
 
-@config: 
+@mngr: 
+@data: 
+@dataSize: 
+@format: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNssAppKeysMngrCertLoadSECItem ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@secItem: 
+@format: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNssAppKeyLoad ##### -->
+<para>
+
+</para>
+
+@filename: 
+@format: 
+@pwd: 
+@pwdCallback: 
+@pwdCallbackCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNssAppKeyLoadMemory ##### -->
+<para>
+
+</para>
+
+@data: 
+@dataSize: 
+@format: 
+@pwd: 
+@pwdCallback: 
+@pwdCallbackCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNssAppKeyLoadSECItem ##### -->
+<para>
+
+</para>
+
+@secItem: 
+@format: 
+@pwd: 
+@pwdCallback: 
+@pwdCallbackCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNssAppPkcs12Load ##### -->
+<para>
+
+</para>
+
+@filename: 
+@pwd: 
+@pwdCallback: 
+@pwdCallbackCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNssAppPkcs12LoadMemory ##### -->
+<para>
+
+</para>
+
+@data: 
+@dataSize: 
+@pwd: 
+@pwdCallback: 
+@pwdCallbackCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNssAppPkcs12LoadSECItem ##### -->
+<para>
+
+</para>
+
+@secItem: 
+@pwd: 
+@pwdCallback: 
+@pwdCallbackCtx: 
 @Returns: 
 
 
@@ -122,126 +232,11 @@ Application functions implementation for NSS.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecNssAppKeyLoad ##### -->
+<!-- ##### FUNCTION xmlSecNssAppGetDefaultPwdCallback ##### -->
 <para>
 
 </para>
 
-@filename: 
-@format: 
-@pwd: 
-@pwdCallback: 
-@pwdCallbackCtx: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecNssAppKeyLoadMemory ##### -->
-<para>
-
-</para>
-
-@data: 
-@dataSize: 
-@format: 
-@pwd: 
-@pwdCallback: 
-@pwdCallbackCtx: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecNssAppKeyLoadSECItem ##### -->
-<para>
-
-</para>
-
-@secItem: 
-@format: 
-@pwd: 
-@pwdCallback: 
-@pwdCallbackCtx: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecNssAppKeysMngrCertLoad ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@filename: 
-@format: 
-@type: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecNssAppKeysMngrCertLoadMemory ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@data: 
-@dataSize: 
-@format: 
-@type: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecNssAppKeysMngrCertLoadSECItem ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@secItem: 
-@format: 
-@type: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecNssAppPkcs12Load ##### -->
-<para>
-
-</para>
-
-@filename: 
-@pwd: 
-@pwdCallback: 
-@pwdCallbackCtx: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecNssAppPkcs12LoadMemory ##### -->
-<para>
-
-</para>
-
-@data: 
-@dataSize: 
-@pwd: 
-@pwdCallback: 
-@pwdCallbackCtx: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecNssAppPkcs12LoadSECItem ##### -->
-<para>
-
-</para>
-
-@secItem: 
-@pwd: 
-@pwdCallback: 
-@pwdCallbackCtx: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecNssAppShutdown ##### -->
-<para>
-
-</para>
-
-@void: 
 @Returns: 
 
 

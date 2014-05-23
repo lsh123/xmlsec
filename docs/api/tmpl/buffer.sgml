@@ -17,9 +17,6 @@ Binary buffer implementation.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
-
-
 <!-- ##### ENUM xmlSecAllocMode ##### -->
 <para>
 
@@ -38,6 +35,116 @@ Binary buffer implementation.
 @maxSize: 
 @allocMode: 
 
+<!-- ##### FUNCTION xmlSecBufferSetDefaultAllocMode ##### -->
+<para>
+
+</para>
+
+@defAllocMode: 
+@defInitialSize: 
+
+
+<!-- ##### FUNCTION xmlSecBufferCreate ##### -->
+<para>
+
+</para>
+
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferDestroy ##### -->
+<para>
+
+</para>
+
+@buf: 
+
+
+<!-- ##### FUNCTION xmlSecBufferInitialize ##### -->
+<para>
+
+</para>
+
+@buf: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferFinalize ##### -->
+<para>
+
+</para>
+
+@buf: 
+
+
+<!-- ##### FUNCTION xmlSecBufferGetData ##### -->
+<para>
+
+</para>
+
+@buf: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferSetData ##### -->
+<para>
+
+</para>
+
+@buf: 
+@data: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferGetSize ##### -->
+<para>
+
+</para>
+
+@buf: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferSetSize ##### -->
+<para>
+
+</para>
+
+@buf: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferGetMaxSize ##### -->
+<para>
+
+</para>
+
+@buf: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferSetMaxSize ##### -->
+<para>
+
+</para>
+
+@buf: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferEmpty ##### -->
+<para>
+
+</para>
+
+@buf: 
+
+
 <!-- ##### FUNCTION xmlSecBufferAppend ##### -->
 <para>
 
@@ -46,6 +153,47 @@ Binary buffer implementation.
 @buf: 
 @data: 
 @size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferPrepend ##### -->
+<para>
+
+</para>
+
+@buf: 
+@data: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferRemoveHead ##### -->
+<para>
+
+</para>
+
+@buf: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferRemoveTail ##### -->
+<para>
+
+</para>
+
+@buf: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferReadFile ##### -->
+<para>
+
+</para>
+
+@buf: 
+@filename: 
 @Returns: 
 
 
@@ -70,163 +218,12 @@ Binary buffer implementation.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecBufferCreate ##### -->
-<para>
-
-</para>
-
-@size: 
-@Returns: 
-
-
 <!-- ##### FUNCTION xmlSecBufferCreateOutputBuffer ##### -->
 <para>
 
 </para>
 
 @buf: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecBufferDestroy ##### -->
-<para>
-
-</para>
-
-@buf: 
-
-
-<!-- ##### FUNCTION xmlSecBufferEmpty ##### -->
-<para>
-
-</para>
-
-@buf: 
-
-
-<!-- ##### FUNCTION xmlSecBufferFinalize ##### -->
-<para>
-
-</para>
-
-@buf: 
-
-
-<!-- ##### FUNCTION xmlSecBufferGetData ##### -->
-<para>
-
-</para>
-
-@buf: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecBufferGetMaxSize ##### -->
-<para>
-
-</para>
-
-@buf: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecBufferGetSize ##### -->
-<para>
-
-</para>
-
-@buf: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecBufferInitialize ##### -->
-<para>
-
-</para>
-
-@buf: 
-@size: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecBufferPrepend ##### -->
-<para>
-
-</para>
-
-@buf: 
-@data: 
-@size: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecBufferReadFile ##### -->
-<para>
-
-</para>
-
-@buf: 
-@filename: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecBufferRemoveHead ##### -->
-<para>
-
-</para>
-
-@buf: 
-@size: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecBufferRemoveTail ##### -->
-<para>
-
-</para>
-
-@buf: 
-@size: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecBufferSetData ##### -->
-<para>
-
-</para>
-
-@buf: 
-@data: 
-@size: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecBufferSetDefaultAllocMode ##### -->
-<para>
-
-</para>
-
-@defAllocMode: 
-@defInitialSize: 
-
-
-<!-- ##### FUNCTION xmlSecBufferSetMaxSize ##### -->
-<para>
-
-</para>
-
-@buf: 
-@size: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecBufferSetSize ##### -->
-<para>
-
-</para>
-
-@buf: 
-@size: 
 @Returns: 
 
 

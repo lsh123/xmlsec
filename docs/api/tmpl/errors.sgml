@@ -17,248 +17,7 @@ Error/log messages support.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_HERE ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_MAX_NUMBER ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_NO_MESSAGE ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_ASSERTION ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_CERT_HAS_EXPIRED ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_CERT_ISSUER_FAILED ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_CERT_NOT_FOUND ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_CERT_NOT_YET_VALID ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_CERT_REVOKED ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_CERT_VERIFY_FAILED ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_CRYPTO_FAILED ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_DATA_NOT_MATCH ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_DISABLED ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_DSIG_NO_REFERENCES ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_DATA ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_FORMAT ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_KEY_DATA ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_NODE ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_NODE_CONTENT ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_OPERATION ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_RESULT ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_SIZE ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_STATUS ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_TRANSFORM ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_TRANSFORM_KEY ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_TYPE ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_URI_TYPE ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_IO_FAILED ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_KEYDATA_DISABLED ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_KEY_NOT_FOUND ##### -->
+<!-- ##### MACRO XMLSEC_ERRORS_R_XMLSEC_FAILED ##### -->
 <para>
 
 </para>
@@ -272,55 +31,6 @@ Error/log messages support.
 
 
 
-<!-- ##### MACRO XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_MISSING_NODE_ATTRIBUTE ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_NODE_NOT_FOUND ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_NOT_IMPLEMENTED ##### -->
-<para>
-
-</para>
-
-
-
 <!-- ##### MACRO XMLSEC_ERRORS_R_STRDUP_FAILED ##### -->
 <para>
 
@@ -328,28 +38,7 @@ Error/log messages support.
 
 
 
-<!-- ##### MACRO XMLSEC_ERRORS_R_TRANSFORM_DISABLED ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_TRANSFORM_SAME_DOCUMENT_REQUIRED ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_UNEXPECTED_NODE ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_R_XMLSEC_FAILED ##### -->
+<!-- ##### MACRO XMLSEC_ERRORS_R_CRYPTO_FAILED ##### -->
 <para>
 
 </para>
@@ -370,36 +59,298 @@ Error/log messages support.
 
 
 
-<!-- ##### MACRO xmlSecAssert ##### -->
+<!-- ##### MACRO XMLSEC_ERRORS_R_IO_FAILED ##### -->
 <para>
 
 </para>
 
-@p: 
 
 
-<!-- ##### MACRO xmlSecAssert2 ##### -->
+<!-- ##### MACRO XMLSEC_ERRORS_R_DISABLED ##### -->
 <para>
 
 </para>
 
-@p: 
-@ret: 
 
 
-<!-- ##### FUNCTION xmlSecError ##### -->
+<!-- ##### MACRO XMLSEC_ERRORS_R_NOT_IMPLEMENTED ##### -->
 <para>
 
 </para>
 
-@file: 
-@line: 
-@func: 
-@errorObject: 
-@errorSubject: 
-@reason: 
-@msg: 
-@...: 
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_SIZE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_DATA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_RESULT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_TYPE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_OPERATION ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_STATUS ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_FORMAT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_DATA_NOT_MATCH ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_NODE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_NODE_CONTENT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_MISSING_NODE_ATTRIBUTE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_UNEXPECTED_NODE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_NODE_NOT_FOUND ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_TRANSFORM ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_TRANSFORM_KEY ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_URI_TYPE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_TRANSFORM_SAME_DOCUMENT_REQUIRED ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_TRANSFORM_DISABLED ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_KEY_DATA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_KEY_NOT_FOUND ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_KEYDATA_DISABLED ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_CERT_VERIFY_FAILED ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_CERT_NOT_FOUND ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_CERT_REVOKED ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_CERT_ISSUER_FAILED ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_CERT_NOT_YET_VALID ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_CERT_HAS_EXPIRED ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_DSIG_NO_REFERENCES ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_ASSERTION ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_MAX_NUMBER ##### -->
+<para>
+
+</para>
+
 
 
 <!-- ##### USER_FUNCTION xmlSecErrorsCallback ##### -->
@@ -414,6 +365,28 @@ Error/log messages support.
 @errorSubject: 
 @reason: 
 @msg: 
+
+
+<!-- ##### FUNCTION xmlSecErrorsInit ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecErrorsShutdown ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecErrorsSetCallback ##### -->
+<para>
+
+</para>
+
+@callback: 
 
 
 <!-- ##### FUNCTION xmlSecErrorsDefaultCallback ##### -->
@@ -456,12 +429,11 @@ Error/log messages support.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecErrorsInit ##### -->
+<!-- ##### MACRO XMLSEC_ERRORS_HERE ##### -->
 <para>
 
 </para>
 
-@void: 
 
 
 <!-- ##### MACRO xmlSecErrorsSafeString ##### -->
@@ -472,19 +444,42 @@ Error/log messages support.
 @str: 
 
 
-<!-- ##### FUNCTION xmlSecErrorsSetCallback ##### -->
+<!-- ##### MACRO XMLSEC_ERRORS_NO_MESSAGE ##### -->
 <para>
 
 </para>
 
-@callback: 
 
 
-<!-- ##### FUNCTION xmlSecErrorsShutdown ##### -->
+<!-- ##### FUNCTION xmlSecError ##### -->
 <para>
 
 </para>
 
-@void: 
+@file: 
+@line: 
+@func: 
+@errorObject: 
+@errorSubject: 
+@reason: 
+@msg: 
+@Varargs: 
+
+
+<!-- ##### MACRO xmlSecAssert ##### -->
+<para>
+
+</para>
+
+@p: 
+
+
+<!-- ##### MACRO xmlSecAssert2 ##### -->
+<para>
+
+</para>
+
+@p: 
+@ret: 
 
 

@@ -17,16 +17,20 @@ Application functions implementation for GnuTLS.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
-
-
-<!-- ##### FUNCTION xmlSecGnuTLSAppDefaultKeysMngrAdoptKey ##### -->
+<!-- ##### FUNCTION xmlSecGnuTLSAppInit ##### -->
 <para>
 
 </para>
 
-@mngr: 
-@key: 
+@config: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSAppShutdown ##### -->
+<para>
+
+</para>
+
 @Returns: 
 
 
@@ -36,6 +40,16 @@ Application functions implementation for GnuTLS.
 </para>
 
 @mngr: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSAppDefaultKeysMngrAdoptKey ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@key: 
 @Returns: 
 
 
@@ -60,44 +74,28 @@ Application functions implementation for GnuTLS.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSAppGetDefaultPwdCallback ##### -->
+<!-- ##### FUNCTION xmlSecGnuTLSAppKeysMngrCertLoad ##### -->
 <para>
 
 </para>
 
-@void: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecGnuTLSAppInit ##### -->
-<para>
-
-</para>
-
-@config: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecGnuTLSAppKeyCertLoad ##### -->
-<para>
-
-</para>
-
-@key: 
+@mngr: 
 @filename: 
 @format: 
+@type: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSAppKeyCertLoadMemory ##### -->
+<!-- ##### FUNCTION xmlSecGnuTLSAppKeysMngrCertLoadMemory ##### -->
 <para>
 
 </para>
 
-@key: 
+@mngr: 
 @data: 
 @dataSize: 
 @format: 
+@type: 
 @Returns: 
 
 
@@ -128,31 +126,6 @@ Application functions implementation for GnuTLS.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSAppKeysMngrCertLoad ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@filename: 
-@format: 
-@type: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecGnuTLSAppKeysMngrCertLoadMemory ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@data: 
-@dataSize: 
-@format: 
-@type: 
-@Returns: 
-
-
 <!-- ##### FUNCTION xmlSecGnuTLSAppPkcs12Load ##### -->
 <para>
 
@@ -178,12 +151,34 @@ Application functions implementation for GnuTLS.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSAppShutdown ##### -->
+<!-- ##### FUNCTION xmlSecGnuTLSAppKeyCertLoad ##### -->
 <para>
 
 </para>
 
-@void: 
+@key: 
+@filename: 
+@format: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSAppKeyCertLoadMemory ##### -->
+<para>
+
+</para>
+
+@key: 
+@data: 
+@dataSize: 
+@format: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSAppGetDefaultPwdCallback ##### -->
+<para>
+
+</para>
+
 @Returns: 
 
 

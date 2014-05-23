@@ -17,18 +17,6 @@ EVP keys data implementation.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
-
-
-<!-- ##### FUNCTION xmlSecOpenSSLEvpKeyAdopt ##### -->
-<para>
-
-</para>
-
-@pKey: 
-@Returns: 
-
-
 <!-- ##### FUNCTION xmlSecOpenSSLEvpKeyDataAdoptEvp ##### -->
 <para>
 
@@ -49,6 +37,15 @@ EVP keys data implementation.
 
 
 <!-- ##### FUNCTION xmlSecOpenSSLEvpKeyDup ##### -->
+<para>
+
+</para>
+
+@pKey: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLEvpKeyAdopt ##### -->
 <para>
 
 </para>

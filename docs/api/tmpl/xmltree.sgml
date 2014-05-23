@@ -17,7 +17,74 @@ XML tree operations.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
+<!-- ##### MACRO xmlSecNodeGetName ##### -->
+<para>
+
+</para>
+
+@node: 
+
+
+<!-- ##### FUNCTION xmlSecGetNodeNsHref ##### -->
+<para>
+
+</para>
+
+@cur: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecCheckNodeName ##### -->
+<para>
+
+</para>
+
+@cur: 
+@name: 
+@ns: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGetNextElementNode ##### -->
+<para>
+
+</para>
+
+@cur: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecFindChild ##### -->
+<para>
+
+</para>
+
+@parent: 
+@name: 
+@ns: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecFindParent ##### -->
+<para>
+
+</para>
+
+@cur: 
+@name: 
+@ns: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecFindNode ##### -->
+<para>
+
+</para>
+
+@parent: 
+@name: 
+@ns: 
+@Returns: 
 
 
 <!-- ##### FUNCTION xmlSecAddChild ##### -->
@@ -39,16 +106,6 @@ XML tree operations.
 @parent: 
 @child: 
 @Returns: 
-
-
-<!-- ##### FUNCTION xmlSecAddIDs ##### -->
-<para>
-
-</para>
-
-@doc: 
-@cur: 
-@ids: 
 
 
 <!-- ##### FUNCTION xmlSecAddNextSibling ##### -->
@@ -73,64 +130,89 @@ XML tree operations.
 @Returns: 
 
 
-<!-- ##### TYPEDEF xmlSecBitMask ##### -->
+<!-- ##### FUNCTION xmlSecReplaceNode ##### -->
 <para>
 
 </para>
 
+@node: 
+@newNode: 
+@Returns: 
 
-<!-- ##### FUNCTION xmlSecCheckNodeName ##### -->
+
+<!-- ##### FUNCTION xmlSecReplaceNodeAndReturn ##### -->
 <para>
 
 </para>
 
+@node: 
+@newNode: 
+@replaced: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecReplaceContent ##### -->
+<para>
+
+</para>
+
+@node: 
+@newNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecReplaceContentAndReturn ##### -->
+<para>
+
+</para>
+
+@node: 
+@newNode: 
+@replaced: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecReplaceNodeBuffer ##### -->
+<para>
+
+</para>
+
+@node: 
+@buffer: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecReplaceNodeBufferAndReturn ##### -->
+<para>
+
+</para>
+
+@node: 
+@buffer: 
+@size: 
+@replaced: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNodeEncodeAndSetContent ##### -->
+<para>
+
+</para>
+
+@node: 
+@buffer: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecAddIDs ##### -->
+<para>
+
+</para>
+
+@doc: 
 @cur: 
-@name: 
-@ns: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecCreateTree ##### -->
-<para>
-
-</para>
-
-@rootNodeName: 
-@rootNodeNs: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecFindChild ##### -->
-<para>
-
-</para>
-
-@parent: 
-@name: 
-@ns: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecFindNode ##### -->
-<para>
-
-</para>
-
-@parent: 
-@name: 
-@ns: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecFindParent ##### -->
-<para>
-
-</para>
-
-@cur: 
-@name: 
-@ns: 
-@Returns: 
+@ids: 
 
 
 <!-- ##### FUNCTION xmlSecGenerateAndAddID ##### -->
@@ -155,40 +237,13 @@ XML tree operations.
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecGetHex ##### -->
+<!-- ##### FUNCTION xmlSecCreateTree ##### -->
 <para>
 
 </para>
 
-@c: 
-
-
-<!-- ##### FUNCTION xmlSecGetNextElementNode ##### -->
-<para>
-
-</para>
-
-@cur: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecGetNodeNsHref ##### -->
-<para>
-
-</para>
-
-@cur: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecGetQName ##### -->
-<para>
-
-</para>
-
-@node: 
-@href: 
-@local: 
+@rootNodeName: 
+@rootNodeNs: 
 @Returns: 
 
 
@@ -210,30 +265,15 @@ XML tree operations.
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecIsHex ##### -->
-<para>
-
-</para>
-
-@c: 
-
-
-<!-- ##### FUNCTION xmlSecNodeEncodeAndSetContent ##### -->
+<!-- ##### FUNCTION xmlSecGetQName ##### -->
 <para>
 
 </para>
 
 @node: 
-@buffer: 
+@href: 
+@local: 
 @Returns: 
-
-
-<!-- ##### MACRO xmlSecNodeGetName ##### -->
-<para>
-
-</para>
-
-@node: 
 
 
 <!-- ##### FUNCTION xmlSecPrintXmlString ##### -->
@@ -246,41 +286,60 @@ XML tree operations.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecQName2BitMaskDebugDump ##### -->
+<!-- ##### MACRO xmlSecIsHex ##### -->
 <para>
 
 </para>
 
-@info: 
-@mask: 
-@name: 
-@output: 
+@c: 
 
 
-<!-- ##### FUNCTION xmlSecQName2BitMaskDebugXmlDump ##### -->
+<!-- ##### MACRO xmlSecGetHex ##### -->
 <para>
 
 </para>
 
-@info: 
-@mask: 
-@name: 
-@output: 
+@c: 
 
 
-<!-- ##### FUNCTION xmlSecQName2BitMaskGetBitMask ##### -->
+<!-- ##### STRUCT xmlSecQName2IntegerInfo ##### -->
 <para>
 
 </para>
 
-@info: 
-@qnameLocalPart: 
 @qnameHref: 
-@mask: 
+@qnameLocalPart: 
+@intValue: 
+
+<!-- ##### TYPEDEF xmlSecQName2IntegerInfoConstPtr ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION xmlSecQName2IntegerGetInfo ##### -->
+<para>
+
+</para>
+
+@info: 
+@intValue: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecQName2BitMaskGetBitMaskFromString ##### -->
+<!-- ##### FUNCTION xmlSecQName2IntegerGetInteger ##### -->
+<para>
+
+</para>
+
+@info: 
+@qnameHref: 
+@qnameLocalPart: 
+@intValue: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecQName2IntegerGetIntegerFromString ##### -->
 <para>
 
 </para>
@@ -288,47 +347,33 @@ XML tree operations.
 @info: 
 @node: 
 @qname: 
-@mask: 
+@intValue: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecQName2BitMaskGetInfo ##### -->
-<para>
-
-</para>
-
-@info: 
-@mask: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecQName2BitMaskGetStringFromBitMask ##### -->
+<!-- ##### FUNCTION xmlSecQName2IntegerGetStringFromInteger ##### -->
 <para>
 
 </para>
 
 @info: 
 @node: 
-@mask: 
+@intValue: 
 @Returns: 
 
 
-<!-- ##### STRUCT xmlSecQName2BitMaskInfo ##### -->
+<!-- ##### FUNCTION xmlSecQName2IntegerNodeRead ##### -->
 <para>
 
 </para>
 
-@qnameHref: 
-@qnameLocalPart: 
-@mask: 
-
-<!-- ##### TYPEDEF xmlSecQName2BitMaskInfoConstPtr ##### -->
-<para>
-
-</para>
+@info: 
+@node: 
+@intValue: 
+@Returns: 
 
 
-<!-- ##### FUNCTION xmlSecQName2BitMaskNodesRead ##### -->
+<!-- ##### FUNCTION xmlSecQName2IntegerNodeWrite ##### -->
 <para>
 
 </para>
@@ -337,21 +382,7 @@ XML tree operations.
 @node: 
 @nodeName: 
 @nodeNs: 
-@stopOnUnknown: 
-@mask: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecQName2BitMaskNodesWrite ##### -->
-<para>
-
-</para>
-
-@info: 
-@node: 
-@nodeName: 
-@nodeNs: 
-@mask: 
+@intValue: 
 @Returns: 
 
 
@@ -401,78 +432,50 @@ XML tree operations.
 @output: 
 
 
-<!-- ##### FUNCTION xmlSecQName2IntegerGetInfo ##### -->
+<!-- ##### TYPEDEF xmlSecBitMask ##### -->
 <para>
 
 </para>
 
-@info: 
-@intValue: 
-@Returns: 
 
-
-<!-- ##### FUNCTION xmlSecQName2IntegerGetInteger ##### -->
-<para>
-
-</para>
-
-@info: 
-@qnameHref: 
-@qnameLocalPart: 
-@intValue: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecQName2IntegerGetIntegerFromString ##### -->
-<para>
-
-</para>
-
-@info: 
-@node: 
-@qname: 
-@intValue: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecQName2IntegerGetStringFromInteger ##### -->
-<para>
-
-</para>
-
-@info: 
-@node: 
-@intValue: 
-@Returns: 
-
-
-<!-- ##### STRUCT xmlSecQName2IntegerInfo ##### -->
+<!-- ##### STRUCT xmlSecQName2BitMaskInfo ##### -->
 <para>
 
 </para>
 
 @qnameHref: 
 @qnameLocalPart: 
-@intValue: 
+@mask: 
 
-<!-- ##### TYPEDEF xmlSecQName2IntegerInfoConstPtr ##### -->
+<!-- ##### TYPEDEF xmlSecQName2BitMaskInfoConstPtr ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### FUNCTION xmlSecQName2IntegerNodeRead ##### -->
+<!-- ##### FUNCTION xmlSecQName2BitMaskGetInfo ##### -->
 <para>
 
 </para>
 
 @info: 
-@node: 
-@intValue: 
+@mask: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecQName2IntegerNodeWrite ##### -->
+<!-- ##### FUNCTION xmlSecQName2BitMaskGetBitMask ##### -->
+<para>
+
+</para>
+
+@info: 
+@qnameLocalPart: 
+@qnameHref: 
+@mask: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecQName2BitMaskNodesRead ##### -->
 <para>
 
 </para>
@@ -481,72 +484,66 @@ XML tree operations.
 @node: 
 @nodeName: 
 @nodeNs: 
-@intValue: 
+@stopOnUnknown: 
+@mask: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecReplaceContent ##### -->
+<!-- ##### FUNCTION xmlSecQName2BitMaskGetBitMaskFromString ##### -->
 <para>
 
 </para>
 
+@info: 
 @node: 
-@newNode: 
+@qname: 
+@mask: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecReplaceContentAndReturn ##### -->
+<!-- ##### FUNCTION xmlSecQName2BitMaskGetStringFromBitMask ##### -->
 <para>
 
 </para>
 
+@info: 
 @node: 
-@newNode: 
-@replaced: 
+@mask: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecReplaceNode ##### -->
+<!-- ##### FUNCTION xmlSecQName2BitMaskNodesWrite ##### -->
 <para>
 
 </para>
 
+@info: 
 @node: 
-@newNode: 
+@nodeName: 
+@nodeNs: 
+@mask: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecReplaceNodeAndReturn ##### -->
+<!-- ##### FUNCTION xmlSecQName2BitMaskDebugDump ##### -->
 <para>
 
 </para>
 
-@node: 
-@newNode: 
-@replaced: 
-@Returns: 
+@info: 
+@mask: 
+@name: 
+@output: 
 
 
-<!-- ##### FUNCTION xmlSecReplaceNodeBuffer ##### -->
+<!-- ##### FUNCTION xmlSecQName2BitMaskDebugXmlDump ##### -->
 <para>
 
 </para>
 
-@node: 
-@buffer: 
-@size: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecReplaceNodeBufferAndReturn ##### -->
-<para>
-
-</para>
-
-@node: 
-@buffer: 
-@size: 
-@replaced: 
-@Returns: 
+@info: 
+@mask: 
+@name: 
+@output: 
 
 

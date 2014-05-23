@@ -17,16 +17,20 @@ Application functions implementation for GCrypt.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
-
-
-<!-- ##### FUNCTION xmlSecGCryptAppDefaultKeysMngrAdoptKey ##### -->
+<!-- ##### FUNCTION xmlSecGCryptAppInit ##### -->
 <para>
 
 </para>
 
-@mngr: 
-@key: 
+@config: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGCryptAppShutdown ##### -->
+<para>
+
+</para>
+
 @Returns: 
 
 
@@ -36,6 +40,16 @@ Application functions implementation for GCrypt.
 </para>
 
 @mngr: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGCryptAppDefaultKeysMngrAdoptKey ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@key: 
 @Returns: 
 
 
@@ -60,44 +74,28 @@ Application functions implementation for GCrypt.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGCryptAppGetDefaultPwdCallback ##### -->
+<!-- ##### FUNCTION xmlSecGCryptAppKeysMngrCertLoad ##### -->
 <para>
 
 </para>
 
-@void: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecGCryptAppInit ##### -->
-<para>
-
-</para>
-
-@config: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecGCryptAppKeyCertLoad ##### -->
-<para>
-
-</para>
-
-@key: 
+@mngr: 
 @filename: 
 @format: 
+@type: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGCryptAppKeyCertLoadMemory ##### -->
+<!-- ##### FUNCTION xmlSecGCryptAppKeysMngrCertLoadMemory ##### -->
 <para>
 
 </para>
 
-@key: 
+@mngr: 
 @data: 
 @dataSize: 
 @format: 
+@type: 
 @Returns: 
 
 
@@ -128,31 +126,6 @@ Application functions implementation for GCrypt.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGCryptAppKeysMngrCertLoad ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@filename: 
-@format: 
-@type: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecGCryptAppKeysMngrCertLoadMemory ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@data: 
-@dataSize: 
-@format: 
-@type: 
-@Returns: 
-
-
 <!-- ##### FUNCTION xmlSecGCryptAppPkcs12Load ##### -->
 <para>
 
@@ -178,12 +151,34 @@ Application functions implementation for GCrypt.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGCryptAppShutdown ##### -->
+<!-- ##### FUNCTION xmlSecGCryptAppKeyCertLoad ##### -->
 <para>
 
 </para>
 
-@void: 
+@key: 
+@filename: 
+@format: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGCryptAppKeyCertLoadMemory ##### -->
+<para>
+
+</para>
+
+@key: 
+@data: 
+@dataSize: 
+@format: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGCryptAppGetDefaultPwdCallback ##### -->
+<para>
+
+</para>
+
 @Returns: 
 
 

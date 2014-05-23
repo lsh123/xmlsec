@@ -17,16 +17,20 @@ Application functions implementation for OpenSSL.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
-
-
-<!-- ##### FUNCTION xmlSecOpenSSLAppDefaultKeysMngrAdoptKey ##### -->
+<!-- ##### FUNCTION xmlSecOpenSSLAppInit ##### -->
 <para>
 
 </para>
 
-@mngr: 
-@key: 
+@config: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLAppShutdown ##### -->
+<para>
+
+</para>
+
 @Returns: 
 
 
@@ -36,6 +40,16 @@ Application functions implementation for OpenSSL.
 </para>
 
 @mngr: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLAppDefaultKeysMngrAdoptKey ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@key: 
 @Returns: 
 
 
@@ -60,65 +74,60 @@ Application functions implementation for OpenSSL.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecOpenSSLAppGetDefaultPwdCallback ##### -->
+<!-- ##### FUNCTION xmlSecOpenSSLAppKeysMngrCertLoad ##### -->
 <para>
 
 </para>
 
-@void: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecOpenSSLAppInit ##### -->
-<para>
-
-</para>
-
-@config: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecOpenSSLAppKeyCertLoad ##### -->
-<para>
-
-</para>
-
-@key: 
+@mngr: 
 @filename: 
 @format: 
+@type: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecOpenSSLAppKeyCertLoadBIO ##### -->
+<!-- ##### FUNCTION xmlSecOpenSSLAppKeysMngrCertLoadMemory ##### -->
 <para>
 
 </para>
 
-@key: 
-@bio: 
-@format: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecOpenSSLAppKeyCertLoadMemory ##### -->
-<para>
-
-</para>
-
-@key: 
+@mngr: 
 @data: 
 @dataSize: 
 @format: 
+@type: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecOpenSSLAppKeyFromCertLoadBIO ##### -->
+<!-- ##### FUNCTION xmlSecOpenSSLAppKeysMngrCertLoadBIO ##### -->
 <para>
 
 </para>
 
+@mngr: 
 @bio: 
 @format: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLAppKeysMngrAddCertsPath ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@path: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLAppKeysMngrAddCertsFile ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@file: 
 @Returns: 
 
 
@@ -128,19 +137,6 @@ Application functions implementation for OpenSSL.
 </para>
 
 @filename: 
-@format: 
-@pwd: 
-@pwdCallback: 
-@pwdCallbackCtx: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecOpenSSLAppKeyLoadBIO ##### -->
-<para>
-
-</para>
-
-@bio: 
 @format: 
 @pwd: 
 @pwdCallback: 
@@ -162,60 +158,16 @@ Application functions implementation for OpenSSL.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecOpenSSLAppKeysMngrAddCertsFile ##### -->
+<!-- ##### FUNCTION xmlSecOpenSSLAppKeyLoadBIO ##### -->
 <para>
 
 </para>
 
-@mngr: 
-@file: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecOpenSSLAppKeysMngrAddCertsPath ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@path: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecOpenSSLAppKeysMngrCertLoad ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@filename: 
-@format: 
-@type: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecOpenSSLAppKeysMngrCertLoadBIO ##### -->
-<para>
-
-</para>
-
-@mngr: 
 @bio: 
 @format: 
-@type: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecOpenSSLAppKeysMngrCertLoadMemory ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@data: 
-@dataSize: 
-@format: 
-@type: 
+@pwd: 
+@pwdCallback: 
+@pwdCallbackCtx: 
 @Returns: 
 
 
@@ -225,18 +177,6 @@ Application functions implementation for OpenSSL.
 </para>
 
 @filename: 
-@pwd: 
-@pwdCallback: 
-@pwdCallbackCtx: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecOpenSSLAppPkcs12LoadBIO ##### -->
-<para>
-
-</para>
-
-@bio: 
 @pwd: 
 @pwdCallback: 
 @pwdCallbackCtx: 
@@ -256,12 +196,67 @@ Application functions implementation for OpenSSL.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecOpenSSLAppShutdown ##### -->
+<!-- ##### FUNCTION xmlSecOpenSSLAppPkcs12LoadBIO ##### -->
 <para>
 
 </para>
 
-@void: 
+@bio: 
+@pwd: 
+@pwdCallback: 
+@pwdCallbackCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLAppKeyCertLoad ##### -->
+<para>
+
+</para>
+
+@key: 
+@filename: 
+@format: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLAppKeyCertLoadMemory ##### -->
+<para>
+
+</para>
+
+@key: 
+@data: 
+@dataSize: 
+@format: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLAppKeyCertLoadBIO ##### -->
+<para>
+
+</para>
+
+@key: 
+@bio: 
+@format: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLAppKeyFromCertLoadBIO ##### -->
+<para>
+
+</para>
+
+@bio: 
+@format: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLAppGetDefaultPwdCallback ##### -->
+<para>
+
+</para>
+
 @Returns: 
 
 

@@ -2,10 +2,9 @@
 <refmeta>
 <refentrytitle role="top_of_page" id="xmlsec-errors.top_of_page">errors</refentrytitle>
 <manvolnum>3</manvolnum>
-<refmiscinfo>
-  XMLSEC Library
-</refmiscinfo>
+<refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
+
 <refnamediv>
 <refname>errors</refname>
 <refpurpose>Error/log messages support.</refpurpose>
@@ -14,91 +13,99 @@
 <refsynopsisdiv id="xmlsec-errors.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
-<synopsis>#define             <link linkend="XMLSEC-ERRORS-HERE:CAPS">XMLSEC_ERRORS_HERE</link>
-#define             <link linkend="XMLSEC-ERRORS-MAX-NUMBER:CAPS">XMLSEC_ERRORS_MAX_NUMBER</link>
-#define             <link linkend="XMLSEC-ERRORS-NO-MESSAGE:CAPS">XMLSEC_ERRORS_NO_MESSAGE</link>
-#define             <link linkend="XMLSEC-ERRORS-R-ASSERTION:CAPS">XMLSEC_ERRORS_R_ASSERTION</link>
-#define             <link linkend="XMLSEC-ERRORS-R-CERT-HAS-EXPIRED:CAPS">XMLSEC_ERRORS_R_CERT_HAS_EXPIRED</link>
-#define             <link linkend="XMLSEC-ERRORS-R-CERT-ISSUER-FAILED:CAPS">XMLSEC_ERRORS_R_CERT_ISSUER_FAILED</link>
-#define             <link linkend="XMLSEC-ERRORS-R-CERT-NOT-FOUND:CAPS">XMLSEC_ERRORS_R_CERT_NOT_FOUND</link>
-#define             <link linkend="XMLSEC-ERRORS-R-CERT-NOT-YET-VALID:CAPS">XMLSEC_ERRORS_R_CERT_NOT_YET_VALID</link>
-#define             <link linkend="XMLSEC-ERRORS-R-CERT-REVOKED:CAPS">XMLSEC_ERRORS_R_CERT_REVOKED</link>
-#define             <link linkend="XMLSEC-ERRORS-R-CERT-VERIFY-FAILED:CAPS">XMLSEC_ERRORS_R_CERT_VERIFY_FAILED</link>
-#define             <link linkend="XMLSEC-ERRORS-R-CRYPTO-FAILED:CAPS">XMLSEC_ERRORS_R_CRYPTO_FAILED</link>
-#define             <link linkend="XMLSEC-ERRORS-R-DATA-NOT-MATCH:CAPS">XMLSEC_ERRORS_R_DATA_NOT_MATCH</link>
-#define             <link linkend="XMLSEC-ERRORS-R-DISABLED:CAPS">XMLSEC_ERRORS_R_DISABLED</link>
-#define             <link linkend="XMLSEC-ERRORS-R-DSIG-INVALID-REFERENCE:CAPS">XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE</link>
-#define             <link linkend="XMLSEC-ERRORS-R-DSIG-NO-REFERENCES:CAPS">XMLSEC_ERRORS_R_DSIG_NO_REFERENCES</link>
-#define             <link linkend="XMLSEC-ERRORS-R-INVALID-DATA:CAPS">XMLSEC_ERRORS_R_INVALID_DATA</link>
-#define             <link linkend="XMLSEC-ERRORS-R-INVALID-FORMAT:CAPS">XMLSEC_ERRORS_R_INVALID_FORMAT</link>
-#define             <link linkend="XMLSEC-ERRORS-R-INVALID-KEY-DATA:CAPS">XMLSEC_ERRORS_R_INVALID_KEY_DATA</link>
-#define             <link linkend="XMLSEC-ERRORS-R-INVALID-KEY-DATA-SIZE:CAPS">XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE</link>
-#define             <link linkend="XMLSEC-ERRORS-R-INVALID-NODE:CAPS">XMLSEC_ERRORS_R_INVALID_NODE</link>
-#define             <link linkend="XMLSEC-ERRORS-R-INVALID-NODE-ATTRIBUTE:CAPS">XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE</link>
-#define             <link linkend="XMLSEC-ERRORS-R-INVALID-NODE-CONTENT:CAPS">XMLSEC_ERRORS_R_INVALID_NODE_CONTENT</link>
-#define             <link linkend="XMLSEC-ERRORS-R-INVALID-OPERATION:CAPS">XMLSEC_ERRORS_R_INVALID_OPERATION</link>
-#define             <link linkend="XMLSEC-ERRORS-R-INVALID-RESULT:CAPS">XMLSEC_ERRORS_R_INVALID_RESULT</link>
-#define             <link linkend="XMLSEC-ERRORS-R-INVALID-SIZE:CAPS">XMLSEC_ERRORS_R_INVALID_SIZE</link>
-#define             <link linkend="XMLSEC-ERRORS-R-INVALID-STATUS:CAPS">XMLSEC_ERRORS_R_INVALID_STATUS</link>
-#define             <link linkend="XMLSEC-ERRORS-R-INVALID-TRANSFORM:CAPS">XMLSEC_ERRORS_R_INVALID_TRANSFORM</link>
-#define             <link linkend="XMLSEC-ERRORS-R-INVALID-TRANSFORM-KEY:CAPS">XMLSEC_ERRORS_R_INVALID_TRANSFORM_KEY</link>
-#define             <link linkend="XMLSEC-ERRORS-R-INVALID-TYPE:CAPS">XMLSEC_ERRORS_R_INVALID_TYPE</link>
-#define             <link linkend="XMLSEC-ERRORS-R-INVALID-URI-TYPE:CAPS">XMLSEC_ERRORS_R_INVALID_URI_TYPE</link>
-#define             <link linkend="XMLSEC-ERRORS-R-IO-FAILED:CAPS">XMLSEC_ERRORS_R_IO_FAILED</link>
-#define             <link linkend="XMLSEC-ERRORS-R-KEYDATA-DISABLED:CAPS">XMLSEC_ERRORS_R_KEYDATA_DISABLED</link>
-#define             <link linkend="XMLSEC-ERRORS-R-KEY-DATA-ALREADY-EXIST:CAPS">XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST</link>
-#define             <link linkend="XMLSEC-ERRORS-R-KEY-DATA-NOT-FOUND:CAPS">XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND</link>
-#define             <link linkend="XMLSEC-ERRORS-R-KEY-NOT-FOUND:CAPS">XMLSEC_ERRORS_R_KEY_NOT_FOUND</link>
-#define             <link linkend="XMLSEC-ERRORS-R-MALLOC-FAILED:CAPS">XMLSEC_ERRORS_R_MALLOC_FAILED</link>
-#define             <link linkend="XMLSEC-ERRORS-R-MAX-ENCKEY-LEVEL:CAPS">XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL</link>
-#define             <link linkend="XMLSEC-ERRORS-R-MAX-RETRIEVALS-LEVEL:CAPS">XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL</link>
-#define             <link linkend="XMLSEC-ERRORS-R-MAX-RETRIEVAL-TYPE-MISMATCH:CAPS">XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH</link>
-#define             <link linkend="XMLSEC-ERRORS-R-MISSING-NODE-ATTRIBUTE:CAPS">XMLSEC_ERRORS_R_MISSING_NODE_ATTRIBUTE</link>
-#define             <link linkend="XMLSEC-ERRORS-R-NODE-ALREADY-PRESENT:CAPS">XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT</link>
-#define             <link linkend="XMLSEC-ERRORS-R-NODE-NOT-FOUND:CAPS">XMLSEC_ERRORS_R_NODE_NOT_FOUND</link>
-#define             <link linkend="XMLSEC-ERRORS-R-NOT-IMPLEMENTED:CAPS">XMLSEC_ERRORS_R_NOT_IMPLEMENTED</link>
-#define             <link linkend="XMLSEC-ERRORS-R-STRDUP-FAILED:CAPS">XMLSEC_ERRORS_R_STRDUP_FAILED</link>
-#define             <link linkend="XMLSEC-ERRORS-R-TRANSFORM-DISABLED:CAPS">XMLSEC_ERRORS_R_TRANSFORM_DISABLED</link>
-#define             <link linkend="XMLSEC-ERRORS-R-TRANSFORM-SAME-DOCUMENT-REQUIRED:CAPS">XMLSEC_ERRORS_R_TRANSFORM_SAME_DOCUMENT_REQUIRED</link>
-#define             <link linkend="XMLSEC-ERRORS-R-UNEXPECTED-NODE:CAPS">XMLSEC_ERRORS_R_UNEXPECTED_NODE</link>
-#define             <link linkend="XMLSEC-ERRORS-R-XMLSEC-FAILED:CAPS">XMLSEC_ERRORS_R_XMLSEC_FAILED</link>
-#define             <link linkend="XMLSEC-ERRORS-R-XML-FAILED:CAPS">XMLSEC_ERRORS_R_XML_FAILED</link>
-#define             <link linkend="XMLSEC-ERRORS-R-XSLT-FAILED:CAPS">XMLSEC_ERRORS_R_XSLT_FAILED</link>
-#define             <link linkend="xmlSecAssert">xmlSecAssert</link>                        (p)
-#define             <link linkend="xmlSecAssert2">xmlSecAssert2</link>                       (p,
-                                                         ret)
-<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecError">xmlSecError</link>                         (<parameter>const <link linkend="char"><type>char</type></link> *file</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> line</parameter>,
-                                                         <parameter>const <link linkend="char"><type>char</type></link> *func</parameter>,
-                                                         <parameter>const <link linkend="char"><type>char</type></link> *errorObject</parameter>,
-                                                         <parameter>const <link linkend="char"><type>char</type></link> *errorSubject</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> reason</parameter>,
-                                                         <parameter>const <link linkend="char"><type>char</type></link> *msg</parameter>,
-                                                         <parameter>...</parameter>);
-<link linkend="void"><returnvalue>void</returnvalue></link>                (<link linkend="xmlSecErrorsCallback">*xmlSecErrorsCallback</link>)             (<parameter>const <link linkend="char"><type>char</type></link> *file</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> line</parameter>,
-                                                         <parameter>const <link linkend="char"><type>char</type></link> *func</parameter>,
-                                                         <parameter>const <link linkend="char"><type>char</type></link> *errorObject</parameter>,
-                                                         <parameter>const <link linkend="char"><type>char</type></link> *errorSubject</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> reason</parameter>,
-                                                         <parameter>const <link linkend="char"><type>char</type></link> *msg</parameter>);
-<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecErrorsDefaultCallback">xmlSecErrorsDefaultCallback</link>         (<parameter>const <link linkend="char"><type>char</type></link> *file</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> line</parameter>,
-                                                         <parameter>const <link linkend="char"><type>char</type></link> *func</parameter>,
-                                                         <parameter>const <link linkend="char"><type>char</type></link> *errorObject</parameter>,
-                                                         <parameter>const <link linkend="char"><type>char</type></link> *errorSubject</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> reason</parameter>,
-                                                         <parameter>const <link linkend="char"><type>char</type></link> *msg</parameter>);
-<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecErrorsDefaultCallbackEnableOutput">xmlSecErrorsDefaultCallbackEnableOutput</link>
-                                                        (<parameter><link linkend="int"><type>int</type></link> enabled</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecErrorsGetCode">xmlSecErrorsGetCode</link>                 (<parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> pos</parameter>);
-const <link linkend="char"><returnvalue>char</returnvalue></link> *        <link linkend="xmlSecErrorsGetMsg">xmlSecErrorsGetMsg</link>                  (<parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> pos</parameter>);
-<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecErrorsInit">xmlSecErrorsInit</link>                    (<parameter><type>void</type></parameter>);
+<synopsis>
+#define             <link linkend="XMLSEC-ERRORS-R-XMLSEC-FAILED--CAPS">XMLSEC_ERRORS_R_XMLSEC_FAILED</link>
+#define             <link linkend="XMLSEC-ERRORS-R-MALLOC-FAILED--CAPS">XMLSEC_ERRORS_R_MALLOC_FAILED</link>
+#define             <link linkend="XMLSEC-ERRORS-R-STRDUP-FAILED--CAPS">XMLSEC_ERRORS_R_STRDUP_FAILED</link>
+#define             <link linkend="XMLSEC-ERRORS-R-CRYPTO-FAILED--CAPS">XMLSEC_ERRORS_R_CRYPTO_FAILED</link>
+#define             <link linkend="XMLSEC-ERRORS-R-XML-FAILED--CAPS">XMLSEC_ERRORS_R_XML_FAILED</link>
+#define             <link linkend="XMLSEC-ERRORS-R-XSLT-FAILED--CAPS">XMLSEC_ERRORS_R_XSLT_FAILED</link>
+#define             <link linkend="XMLSEC-ERRORS-R-IO-FAILED--CAPS">XMLSEC_ERRORS_R_IO_FAILED</link>
+#define             <link linkend="XMLSEC-ERRORS-R-DISABLED--CAPS">XMLSEC_ERRORS_R_DISABLED</link>
+#define             <link linkend="XMLSEC-ERRORS-R-NOT-IMPLEMENTED--CAPS">XMLSEC_ERRORS_R_NOT_IMPLEMENTED</link>
+#define             <link linkend="XMLSEC-ERRORS-R-INVALID-SIZE--CAPS">XMLSEC_ERRORS_R_INVALID_SIZE</link>
+#define             <link linkend="XMLSEC-ERRORS-R-INVALID-DATA--CAPS">XMLSEC_ERRORS_R_INVALID_DATA</link>
+#define             <link linkend="XMLSEC-ERRORS-R-INVALID-RESULT--CAPS">XMLSEC_ERRORS_R_INVALID_RESULT</link>
+#define             <link linkend="XMLSEC-ERRORS-R-INVALID-TYPE--CAPS">XMLSEC_ERRORS_R_INVALID_TYPE</link>
+#define             <link linkend="XMLSEC-ERRORS-R-INVALID-OPERATION--CAPS">XMLSEC_ERRORS_R_INVALID_OPERATION</link>
+#define             <link linkend="XMLSEC-ERRORS-R-INVALID-STATUS--CAPS">XMLSEC_ERRORS_R_INVALID_STATUS</link>
+#define             <link linkend="XMLSEC-ERRORS-R-INVALID-FORMAT--CAPS">XMLSEC_ERRORS_R_INVALID_FORMAT</link>
+#define             <link linkend="XMLSEC-ERRORS-R-DATA-NOT-MATCH--CAPS">XMLSEC_ERRORS_R_DATA_NOT_MATCH</link>
+#define             <link linkend="XMLSEC-ERRORS-R-INVALID-NODE--CAPS">XMLSEC_ERRORS_R_INVALID_NODE</link>
+#define             <link linkend="XMLSEC-ERRORS-R-INVALID-NODE-CONTENT--CAPS">XMLSEC_ERRORS_R_INVALID_NODE_CONTENT</link>
+#define             <link linkend="XMLSEC-ERRORS-R-INVALID-NODE-ATTRIBUTE--CAPS">XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE</link>
+#define             <link linkend="XMLSEC-ERRORS-R-MISSING-NODE-ATTRIBUTE--CAPS">XMLSEC_ERRORS_R_MISSING_NODE_ATTRIBUTE</link>
+#define             <link linkend="XMLSEC-ERRORS-R-NODE-ALREADY-PRESENT--CAPS">XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT</link>
+#define             <link linkend="XMLSEC-ERRORS-R-UNEXPECTED-NODE--CAPS">XMLSEC_ERRORS_R_UNEXPECTED_NODE</link>
+#define             <link linkend="XMLSEC-ERRORS-R-NODE-NOT-FOUND--CAPS">XMLSEC_ERRORS_R_NODE_NOT_FOUND</link>
+#define             <link linkend="XMLSEC-ERRORS-R-INVALID-TRANSFORM--CAPS">XMLSEC_ERRORS_R_INVALID_TRANSFORM</link>
+#define             <link linkend="XMLSEC-ERRORS-R-INVALID-TRANSFORM-KEY--CAPS">XMLSEC_ERRORS_R_INVALID_TRANSFORM_KEY</link>
+#define             <link linkend="XMLSEC-ERRORS-R-INVALID-URI-TYPE--CAPS">XMLSEC_ERRORS_R_INVALID_URI_TYPE</link>
+#define             <link linkend="XMLSEC-ERRORS-R-TRANSFORM-SAME-DOCUMENT-REQUIRED--CAPS">XMLSEC_ERRORS_R_TRANSFORM_SAME_DOCUMENT_REQUIRED</link>
+#define             <link linkend="XMLSEC-ERRORS-R-TRANSFORM-DISABLED--CAPS">XMLSEC_ERRORS_R_TRANSFORM_DISABLED</link>
+#define             <link linkend="XMLSEC-ERRORS-R-INVALID-KEY-DATA--CAPS">XMLSEC_ERRORS_R_INVALID_KEY_DATA</link>
+#define             <link linkend="XMLSEC-ERRORS-R-KEY-DATA-NOT-FOUND--CAPS">XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND</link>
+#define             <link linkend="XMLSEC-ERRORS-R-KEY-DATA-ALREADY-EXIST--CAPS">XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST</link>
+#define             <link linkend="XMLSEC-ERRORS-R-INVALID-KEY-DATA-SIZE--CAPS">XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE</link>
+#define             <link linkend="XMLSEC-ERRORS-R-KEY-NOT-FOUND--CAPS">XMLSEC_ERRORS_R_KEY_NOT_FOUND</link>
+#define             <link linkend="XMLSEC-ERRORS-R-KEYDATA-DISABLED--CAPS">XMLSEC_ERRORS_R_KEYDATA_DISABLED</link>
+#define             <link linkend="XMLSEC-ERRORS-R-MAX-RETRIEVALS-LEVEL--CAPS">XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL</link>
+#define             <link linkend="XMLSEC-ERRORS-R-MAX-RETRIEVAL-TYPE-MISMATCH--CAPS">XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH</link>
+#define             <link linkend="XMLSEC-ERRORS-R-MAX-ENCKEY-LEVEL--CAPS">XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL</link>
+#define             <link linkend="XMLSEC-ERRORS-R-CERT-VERIFY-FAILED--CAPS">XMLSEC_ERRORS_R_CERT_VERIFY_FAILED</link>
+#define             <link linkend="XMLSEC-ERRORS-R-CERT-NOT-FOUND--CAPS">XMLSEC_ERRORS_R_CERT_NOT_FOUND</link>
+#define             <link linkend="XMLSEC-ERRORS-R-CERT-REVOKED--CAPS">XMLSEC_ERRORS_R_CERT_REVOKED</link>
+#define             <link linkend="XMLSEC-ERRORS-R-CERT-ISSUER-FAILED--CAPS">XMLSEC_ERRORS_R_CERT_ISSUER_FAILED</link>
+#define             <link linkend="XMLSEC-ERRORS-R-CERT-NOT-YET-VALID--CAPS">XMLSEC_ERRORS_R_CERT_NOT_YET_VALID</link>
+#define             <link linkend="XMLSEC-ERRORS-R-CERT-HAS-EXPIRED--CAPS">XMLSEC_ERRORS_R_CERT_HAS_EXPIRED</link>
+#define             <link linkend="XMLSEC-ERRORS-R-DSIG-NO-REFERENCES--CAPS">XMLSEC_ERRORS_R_DSIG_NO_REFERENCES</link>
+#define             <link linkend="XMLSEC-ERRORS-R-DSIG-INVALID-REFERENCE--CAPS">XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE</link>
+#define             <link linkend="XMLSEC-ERRORS-R-ASSERTION--CAPS">XMLSEC_ERRORS_R_ASSERTION</link>
+#define             <link linkend="XMLSEC-ERRORS-MAX-NUMBER--CAPS">XMLSEC_ERRORS_MAX_NUMBER</link>
+<link linkend="void">void</link>                (<link linkend="xmlSecErrorsCallback">*xmlSecErrorsCallback</link>)             (const <link linkend="char">char</link> *file,
+                                                         <link linkend="int">int</link> line,
+                                                         const <link linkend="char">char</link> *func,
+                                                         const <link linkend="char">char</link> *errorObject,
+                                                         const <link linkend="char">char</link> *errorSubject,
+                                                         <link linkend="int">int</link> reason,
+                                                         const <link linkend="char">char</link> *msg);
+<link linkend="void">void</link>                <link linkend="xmlSecErrorsInit">xmlSecErrorsInit</link>                    (void);
+<link linkend="void">void</link>                <link linkend="xmlSecErrorsShutdown">xmlSecErrorsShutdown</link>                (void);
+<link linkend="void">void</link>                <link linkend="xmlSecErrorsSetCallback">xmlSecErrorsSetCallback</link>             (<link linkend="xmlSecErrorsCallback">xmlSecErrorsCallback</link> callback);
+<link linkend="void">void</link>                <link linkend="xmlSecErrorsDefaultCallback">xmlSecErrorsDefaultCallback</link>         (const <link linkend="char">char</link> *file,
+                                                         <link linkend="int">int</link> line,
+                                                         const <link linkend="char">char</link> *func,
+                                                         const <link linkend="char">char</link> *errorObject,
+                                                         const <link linkend="char">char</link> *errorSubject,
+                                                         <link linkend="int">int</link> reason,
+                                                         const <link linkend="char">char</link> *msg);
+<link linkend="void">void</link>                <link linkend="xmlSecErrorsDefaultCallbackEnableOutput">xmlSecErrorsDefaultCallbackEnableOutput</link>
+                                                        (<link linkend="int">int</link> enabled);
+<link linkend="int">int</link>                 <link linkend="xmlSecErrorsGetCode">xmlSecErrorsGetCode</link>                 (<link linkend="xmlSecSize">xmlSecSize</link> pos);
+const <link linkend="char">char</link>*         <link linkend="xmlSecErrorsGetMsg">xmlSecErrorsGetMsg</link>                  (<link linkend="xmlSecSize">xmlSecSize</link> pos);
+#define             <link linkend="XMLSEC-ERRORS-HERE--CAPS">XMLSEC_ERRORS_HERE</link>
 #define             <link linkend="xmlSecErrorsSafeString">xmlSecErrorsSafeString</link>              (str)
-<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecErrorsSetCallback">xmlSecErrorsSetCallback</link>             (<parameter><link linkend="xmlSecErrorsCallback"><type>xmlSecErrorsCallback</type></link> callback</parameter>);
-<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecErrorsShutdown">xmlSecErrorsShutdown</link>                (<parameter><type>void</type></parameter>);
+#define             <link linkend="XMLSEC-ERRORS-NO-MESSAGE--CAPS">XMLSEC_ERRORS_NO_MESSAGE</link>
+<link linkend="void">void</link>                <link linkend="xmlSecError">xmlSecError</link>                         (const <link linkend="char">char</link> *file,
+                                                         <link linkend="int">int</link> line,
+                                                         const <link linkend="char">char</link> *func,
+                                                         const <link linkend="char">char</link> *errorObject,
+                                                         const <link linkend="char">char</link> *errorSubject,
+                                                         <link linkend="int">int</link> reason,
+                                                         const <link linkend="char">char</link> *msg,
+                                                         ...);
+#define             <link linkend="xmlSecAssert">xmlSecAssert</link>                        ( p )
+#define             <link linkend="xmlSecAssert2">xmlSecAssert2</link>                       ( p, ret )
 </synopsis>
 </refsynopsisdiv>
+
+
+
+
+
+
+
+
 
 <refsect1 id="xmlsec-errors.description" role="desc">
 <title role="desc.title">Description</title>
@@ -106,598 +113,634 @@ const <link linkend="char"><returnvalue>char</returnvalue></link> *        <link
 Error/log messages support.
 </para>
 </refsect1>
+
 <refsect1 id="xmlsec-errors.details" role="details">
 <title role="details.title">Details</title>
-<refsect2 id="XMLSEC-ERRORS-HERE:CAPS" role="macro">
-<title>XMLSEC_ERRORS_HERE</title>
-<indexterm zone="XMLSEC-ERRORS-HERE:CAPS"><primary>XMLSEC_ERRORS_HERE</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_HERE                      __FILE__,__LINE__,__XMLSEC_FUNCTION__
+<refsect2 id="XMLSEC-ERRORS-R-XMLSEC-FAILED--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_XMLSEC_FAILED</title>
+<indexterm zone="XMLSEC-ERRORS-R-XMLSEC-FAILED--CAPS"><primary sortas="XMLSEC_ERRORS_R_XMLSEC_FAILED">XMLSEC_ERRORS_R_XMLSEC_FAILED</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_XMLSEC_FAILED                   1
 </programlisting>
 <para>
-The macro that specifies the location (file, line and function)
-for the <link linkend="xmlSecError"><function>xmlSecError()</function></link> function.
+An XMLSec function failed (error subject is the failed function).</para>
+<para>
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-MAX-NUMBER:CAPS" role="macro">
-<title>XMLSEC_ERRORS_MAX_NUMBER</title>
-<indexterm zone="XMLSEC-ERRORS-MAX-NUMBER:CAPS"><primary>XMLSEC_ERRORS_MAX_NUMBER</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_MAX_NUMBER                        256
+<refsect2 id="XMLSEC-ERRORS-R-MALLOC-FAILED--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_MALLOC_FAILED</title>
+<indexterm zone="XMLSEC-ERRORS-R-MALLOC-FAILED--CAPS"><primary sortas="XMLSEC_ERRORS_R_MALLOC_FAILED">XMLSEC_ERRORS_R_MALLOC_FAILED</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_MALLOC_FAILED                   2
 </programlisting>
 <para>
-The maximum xmlsec errors number.
+Failed to allocate memory error.</para>
+<para>
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-NO-MESSAGE:CAPS" role="macro">
-<title>XMLSEC_ERRORS_NO_MESSAGE</title>
-<indexterm zone="XMLSEC-ERRORS-NO-MESSAGE:CAPS"><primary>XMLSEC_ERRORS_NO_MESSAGE</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_NO_MESSAGE                " "
+<refsect2 id="XMLSEC-ERRORS-R-STRDUP-FAILED--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_STRDUP_FAILED</title>
+<indexterm zone="XMLSEC-ERRORS-R-STRDUP-FAILED--CAPS"><primary sortas="XMLSEC_ERRORS_R_STRDUP_FAILED">XMLSEC_ERRORS_R_STRDUP_FAILED</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_STRDUP_FAILED                   3
 </programlisting>
 <para>
-Empty error message " ".
-</para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-ASSERTION:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_ASSERTION</title>
-<indexterm zone="XMLSEC-ERRORS-R-ASSERTION:CAPS"><primary>XMLSEC_ERRORS_R_ASSERTION</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_ASSERTION                       100
-</programlisting>
+Failed to duplicate string error.</para>
 <para>
-Invalid assertion.
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-CERT-HAS-EXPIRED:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_CERT_HAS_EXPIRED</title>
-<indexterm zone="XMLSEC-ERRORS-R-CERT-HAS-EXPIRED:CAPS"><primary>XMLSEC_ERRORS_R_CERT_HAS_EXPIRED</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_CERT_HAS_EXPIRED                76
-</programlisting>
-<para>
-"Not valid after" verification failed.
-</para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-CERT-ISSUER-FAILED:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_CERT_ISSUER_FAILED</title>
-<indexterm zone="XMLSEC-ERRORS-R-CERT-ISSUER-FAILED:CAPS"><primary>XMLSEC_ERRORS_R_CERT_ISSUER_FAILED</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_CERT_ISSUER_FAILED              74
-</programlisting>
-<para>
-Failed to get certificate issuer.
-</para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-CERT-NOT-FOUND:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_CERT_NOT_FOUND</title>
-<indexterm zone="XMLSEC-ERRORS-R-CERT-NOT-FOUND:CAPS"><primary>XMLSEC_ERRORS_R_CERT_NOT_FOUND</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_CERT_NOT_FOUND                  72
-</programlisting>
-<para>
-Requested certificate is not found.
-</para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-CERT-NOT-YET-VALID:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_CERT_NOT_YET_VALID</title>
-<indexterm zone="XMLSEC-ERRORS-R-CERT-NOT-YET-VALID:CAPS"><primary>XMLSEC_ERRORS_R_CERT_NOT_YET_VALID</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_CERT_NOT_YET_VALID              75
-</programlisting>
-<para>
-"Not valid before" verification failed.
-</para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-CERT-REVOKED:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_CERT_REVOKED</title>
-<indexterm zone="XMLSEC-ERRORS-R-CERT-REVOKED:CAPS"><primary>XMLSEC_ERRORS_R_CERT_REVOKED</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_CERT_REVOKED                    73
-</programlisting>
-<para>
-The certificate is revoked.
-</para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-CERT-VERIFY-FAILED:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_CERT_VERIFY_FAILED</title>
-<indexterm zone="XMLSEC-ERRORS-R-CERT-VERIFY-FAILED:CAPS"><primary>XMLSEC_ERRORS_R_CERT_VERIFY_FAILED</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_CERT_VERIFY_FAILED              71
-</programlisting>
-<para>
-Certificate verification failed.
-</para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-CRYPTO-FAILED:CAPS" role="macro">
+<refsect2 id="XMLSEC-ERRORS-R-CRYPTO-FAILED--CAPS" role="macro">
 <title>XMLSEC_ERRORS_R_CRYPTO_FAILED</title>
-<indexterm zone="XMLSEC-ERRORS-R-CRYPTO-FAILED:CAPS"><primary>XMLSEC_ERRORS_R_CRYPTO_FAILED</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_CRYPTO_FAILED                   4
+<indexterm zone="XMLSEC-ERRORS-R-CRYPTO-FAILED--CAPS"><primary sortas="XMLSEC_ERRORS_R_CRYPTO_FAILED">XMLSEC_ERRORS_R_CRYPTO_FAILED</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_CRYPTO_FAILED                   4
 </programlisting>
 <para>
-Crypto (OpenSSL) function failed (error subject is the failed function).
+Crypto (OpenSSL) function failed (error subject is the failed function).</para>
+<para>
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-DATA-NOT-MATCH:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_DATA_NOT_MATCH</title>
-<indexterm zone="XMLSEC-ERRORS-R-DATA-NOT-MATCH:CAPS"><primary>XMLSEC_ERRORS_R_DATA_NOT_MATCH</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_DATA_NOT_MATCH                  18
+<refsect2 id="XMLSEC-ERRORS-R-XML-FAILED--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_XML_FAILED</title>
+<indexterm zone="XMLSEC-ERRORS-R-XML-FAILED--CAPS"><primary sortas="XMLSEC_ERRORS_R_XML_FAILED">XMLSEC_ERRORS_R_XML_FAILED</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_XML_FAILED                      5
 </programlisting>
 <para>
-The data do not match our expectation.
+LibXML function failed (error subject is the failed function).</para>
+<para>
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-DISABLED:CAPS" role="macro">
+<refsect2 id="XMLSEC-ERRORS-R-XSLT-FAILED--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_XSLT_FAILED</title>
+<indexterm zone="XMLSEC-ERRORS-R-XSLT-FAILED--CAPS"><primary sortas="XMLSEC_ERRORS_R_XSLT_FAILED">XMLSEC_ERRORS_R_XSLT_FAILED</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_XSLT_FAILED                     6
+</programlisting>
+<para>
+LibXSLT function failed (error subject is the failed function).</para>
+<para>
+</para></refsect2>
+<refsect2 id="XMLSEC-ERRORS-R-IO-FAILED--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_IO_FAILED</title>
+<indexterm zone="XMLSEC-ERRORS-R-IO-FAILED--CAPS"><primary sortas="XMLSEC_ERRORS_R_IO_FAILED">XMLSEC_ERRORS_R_IO_FAILED</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_IO_FAILED                       7
+</programlisting>
+<para>
+IO operation failed.</para>
+<para>
+</para></refsect2>
+<refsect2 id="XMLSEC-ERRORS-R-DISABLED--CAPS" role="macro">
 <title>XMLSEC_ERRORS_R_DISABLED</title>
-<indexterm zone="XMLSEC-ERRORS-R-DISABLED:CAPS"><primary>XMLSEC_ERRORS_R_DISABLED</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_DISABLED                        8
+<indexterm zone="XMLSEC-ERRORS-R-DISABLED--CAPS"><primary sortas="XMLSEC_ERRORS_R_DISABLED">XMLSEC_ERRORS_R_DISABLED</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_DISABLED                        8
 </programlisting>
 <para>
 The feature is disabled during compilation.
 Check './configure --help' for details on how to
-enable it.
+enable it.</para>
+<para>
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-DSIG-INVALID-REFERENCE:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE</title>
-<indexterm zone="XMLSEC-ERRORS-R-DSIG-INVALID-REFERENCE:CAPS"><primary>XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE          82
+<refsect2 id="XMLSEC-ERRORS-R-NOT-IMPLEMENTED--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_NOT_IMPLEMENTED</title>
+<indexterm zone="XMLSEC-ERRORS-R-NOT-IMPLEMENTED--CAPS"><primary sortas="XMLSEC_ERRORS_R_NOT_IMPLEMENTED">XMLSEC_ERRORS_R_NOT_IMPLEMENTED</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_NOT_IMPLEMENTED                 9
 </programlisting>
 <para>
-The &lt;dsig:Reference&gt; validation failed.
-</para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-DSIG-NO-REFERENCES:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_DSIG_NO_REFERENCES</title>
-<indexterm zone="XMLSEC-ERRORS-R-DSIG-NO-REFERENCES:CAPS"><primary>XMLSEC_ERRORS_R_DSIG_NO_REFERENCES</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_DSIG_NO_REFERENCES              81
-</programlisting>
+Feature is not implemented.</para>
 <para>
-The &lt;dsig:Reference&gt; nodes not found.
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-INVALID-DATA:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_INVALID_DATA</title>
-<indexterm zone="XMLSEC-ERRORS-R-INVALID-DATA:CAPS"><primary>XMLSEC_ERRORS_R_INVALID_DATA</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_DATA                    12
-</programlisting>
-<para>
-Invalid data.
-</para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-INVALID-FORMAT:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_INVALID_FORMAT</title>
-<indexterm zone="XMLSEC-ERRORS-R-INVALID-FORMAT:CAPS"><primary>XMLSEC_ERRORS_R_INVALID_FORMAT</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_FORMAT                  17
-</programlisting>
-<para>
-Invalid format.
-</para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-INVALID-KEY-DATA:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_INVALID_KEY_DATA</title>
-<indexterm zone="XMLSEC-ERRORS-R-INVALID-KEY-DATA:CAPS"><primary>XMLSEC_ERRORS_R_INVALID_KEY_DATA</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_KEY_DATA                41
-</programlisting>
-<para>
-Key data is invalid.
-</para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-INVALID-KEY-DATA-SIZE:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE</title>
-<indexterm zone="XMLSEC-ERRORS-R-INVALID-KEY-DATA-SIZE:CAPS"><primary>XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE           44
-</programlisting>
-<para>
-Invalid key size.
-</para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-INVALID-NODE:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_INVALID_NODE</title>
-<indexterm zone="XMLSEC-ERRORS-R-INVALID-NODE:CAPS"><primary>XMLSEC_ERRORS_R_INVALID_NODE</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_NODE                    21
-</programlisting>
-<para>
-Invalid node (error subject is the node name).
-</para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-INVALID-NODE-ATTRIBUTE:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE</title>
-<indexterm zone="XMLSEC-ERRORS-R-INVALID-NODE-ATTRIBUTE:CAPS"><primary>XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE          23
-</programlisting>
-<para>
-Invalid node attribute (error subject is the node name).
-</para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-INVALID-NODE-CONTENT:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_INVALID_NODE_CONTENT</title>
-<indexterm zone="XMLSEC-ERRORS-R-INVALID-NODE-CONTENT:CAPS"><primary>XMLSEC_ERRORS_R_INVALID_NODE_CONTENT</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_NODE_CONTENT            22
-</programlisting>
-<para>
-Invalid node content (error subject is the node name).
-</para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-INVALID-OPERATION:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_INVALID_OPERATION</title>
-<indexterm zone="XMLSEC-ERRORS-R-INVALID-OPERATION:CAPS"><primary>XMLSEC_ERRORS_R_INVALID_OPERATION</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_OPERATION               15
-</programlisting>
-<para>
-Invalid operation.
-</para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-INVALID-RESULT:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_INVALID_RESULT</title>
-<indexterm zone="XMLSEC-ERRORS-R-INVALID-RESULT:CAPS"><primary>XMLSEC_ERRORS_R_INVALID_RESULT</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_RESULT                  13
-</programlisting>
-<para>
-Invalid result.
-</para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-INVALID-SIZE:CAPS" role="macro">
+<refsect2 id="XMLSEC-ERRORS-R-INVALID-SIZE--CAPS" role="macro">
 <title>XMLSEC_ERRORS_R_INVALID_SIZE</title>
-<indexterm zone="XMLSEC-ERRORS-R-INVALID-SIZE:CAPS"><primary>XMLSEC_ERRORS_R_INVALID_SIZE</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_SIZE                    11
+<indexterm zone="XMLSEC-ERRORS-R-INVALID-SIZE--CAPS"><primary sortas="XMLSEC_ERRORS_R_INVALID_SIZE">XMLSEC_ERRORS_R_INVALID_SIZE</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_INVALID_SIZE                    11
 </programlisting>
 <para>
-Invalid size.
+Invalid size.</para>
+<para>
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-INVALID-STATUS:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_INVALID_STATUS</title>
-<indexterm zone="XMLSEC-ERRORS-R-INVALID-STATUS:CAPS"><primary>XMLSEC_ERRORS_R_INVALID_STATUS</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_STATUS                  16
+<refsect2 id="XMLSEC-ERRORS-R-INVALID-DATA--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_INVALID_DATA</title>
+<indexterm zone="XMLSEC-ERRORS-R-INVALID-DATA--CAPS"><primary sortas="XMLSEC_ERRORS_R_INVALID_DATA">XMLSEC_ERRORS_R_INVALID_DATA</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_INVALID_DATA                    12
 </programlisting>
 <para>
-Invalid status.
+Invalid data.</para>
+<para>
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-INVALID-TRANSFORM:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_INVALID_TRANSFORM</title>
-<indexterm zone="XMLSEC-ERRORS-R-INVALID-TRANSFORM:CAPS"><primary>XMLSEC_ERRORS_R_INVALID_TRANSFORM</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_TRANSFORM               31
+<refsect2 id="XMLSEC-ERRORS-R-INVALID-RESULT--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_INVALID_RESULT</title>
+<indexterm zone="XMLSEC-ERRORS-R-INVALID-RESULT--CAPS"><primary sortas="XMLSEC_ERRORS_R_INVALID_RESULT">XMLSEC_ERRORS_R_INVALID_RESULT</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_INVALID_RESULT                  13
 </programlisting>
 <para>
-This transform is invlaid here.
-</para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-INVALID-TRANSFORM-KEY:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_INVALID_TRANSFORM_KEY</title>
-<indexterm zone="XMLSEC-ERRORS-R-INVALID-TRANSFORM-KEY:CAPS"><primary>XMLSEC_ERRORS_R_INVALID_TRANSFORM_KEY</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_TRANSFORM_KEY           32
-</programlisting>
+Invalid result.</para>
 <para>
-Key is invalid for this transform.
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-INVALID-TYPE:CAPS" role="macro">
+<refsect2 id="XMLSEC-ERRORS-R-INVALID-TYPE--CAPS" role="macro">
 <title>XMLSEC_ERRORS_R_INVALID_TYPE</title>
-<indexterm zone="XMLSEC-ERRORS-R-INVALID-TYPE:CAPS"><primary>XMLSEC_ERRORS_R_INVALID_TYPE</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_TYPE                    14
+<indexterm zone="XMLSEC-ERRORS-R-INVALID-TYPE--CAPS"><primary sortas="XMLSEC_ERRORS_R_INVALID_TYPE">XMLSEC_ERRORS_R_INVALID_TYPE</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_INVALID_TYPE                    14
 </programlisting>
 <para>
-Invalid type.
+Invalid type.</para>
+<para>
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-INVALID-URI-TYPE:CAPS" role="macro">
+<refsect2 id="XMLSEC-ERRORS-R-INVALID-OPERATION--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_INVALID_OPERATION</title>
+<indexterm zone="XMLSEC-ERRORS-R-INVALID-OPERATION--CAPS"><primary sortas="XMLSEC_ERRORS_R_INVALID_OPERATION">XMLSEC_ERRORS_R_INVALID_OPERATION</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_INVALID_OPERATION               15
+</programlisting>
+<para>
+Invalid operation.</para>
+<para>
+</para></refsect2>
+<refsect2 id="XMLSEC-ERRORS-R-INVALID-STATUS--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_INVALID_STATUS</title>
+<indexterm zone="XMLSEC-ERRORS-R-INVALID-STATUS--CAPS"><primary sortas="XMLSEC_ERRORS_R_INVALID_STATUS">XMLSEC_ERRORS_R_INVALID_STATUS</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_INVALID_STATUS                  16
+</programlisting>
+<para>
+Invalid status.</para>
+<para>
+</para></refsect2>
+<refsect2 id="XMLSEC-ERRORS-R-INVALID-FORMAT--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_INVALID_FORMAT</title>
+<indexterm zone="XMLSEC-ERRORS-R-INVALID-FORMAT--CAPS"><primary sortas="XMLSEC_ERRORS_R_INVALID_FORMAT">XMLSEC_ERRORS_R_INVALID_FORMAT</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_INVALID_FORMAT                  17
+</programlisting>
+<para>
+Invalid format.</para>
+<para>
+</para></refsect2>
+<refsect2 id="XMLSEC-ERRORS-R-DATA-NOT-MATCH--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_DATA_NOT_MATCH</title>
+<indexterm zone="XMLSEC-ERRORS-R-DATA-NOT-MATCH--CAPS"><primary sortas="XMLSEC_ERRORS_R_DATA_NOT_MATCH">XMLSEC_ERRORS_R_DATA_NOT_MATCH</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_DATA_NOT_MATCH                  18
+</programlisting>
+<para>
+The data do not match our expectation.</para>
+<para>
+</para></refsect2>
+<refsect2 id="XMLSEC-ERRORS-R-INVALID-NODE--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_INVALID_NODE</title>
+<indexterm zone="XMLSEC-ERRORS-R-INVALID-NODE--CAPS"><primary sortas="XMLSEC_ERRORS_R_INVALID_NODE">XMLSEC_ERRORS_R_INVALID_NODE</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_INVALID_NODE                    21
+</programlisting>
+<para>
+Invalid node (error subject is the node name).</para>
+<para>
+</para></refsect2>
+<refsect2 id="XMLSEC-ERRORS-R-INVALID-NODE-CONTENT--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_INVALID_NODE_CONTENT</title>
+<indexterm zone="XMLSEC-ERRORS-R-INVALID-NODE-CONTENT--CAPS"><primary sortas="XMLSEC_ERRORS_R_INVALID_NODE_CONTENT">XMLSEC_ERRORS_R_INVALID_NODE_CONTENT</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_INVALID_NODE_CONTENT            22
+</programlisting>
+<para>
+Invalid node content (error subject is the node name).</para>
+<para>
+</para></refsect2>
+<refsect2 id="XMLSEC-ERRORS-R-INVALID-NODE-ATTRIBUTE--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE</title>
+<indexterm zone="XMLSEC-ERRORS-R-INVALID-NODE-ATTRIBUTE--CAPS"><primary sortas="XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE">XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE          23
+</programlisting>
+<para>
+Invalid node attribute (error subject is the node name).</para>
+<para>
+</para></refsect2>
+<refsect2 id="XMLSEC-ERRORS-R-MISSING-NODE-ATTRIBUTE--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_MISSING_NODE_ATTRIBUTE</title>
+<indexterm zone="XMLSEC-ERRORS-R-MISSING-NODE-ATTRIBUTE--CAPS"><primary sortas="XMLSEC_ERRORS_R_MISSING_NODE_ATTRIBUTE">XMLSEC_ERRORS_R_MISSING_NODE_ATTRIBUTE</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_MISSING_NODE_ATTRIBUTE          25
+</programlisting>
+<para>
+Missing node attribute (error subject is the node name).</para>
+<para>
+</para></refsect2>
+<refsect2 id="XMLSEC-ERRORS-R-NODE-ALREADY-PRESENT--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT</title>
+<indexterm zone="XMLSEC-ERRORS-R-NODE-ALREADY-PRESENT--CAPS"><primary sortas="XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT">XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT            26
+</programlisting>
+<para>
+Node already present,</para>
+<para>
+</para></refsect2>
+<refsect2 id="XMLSEC-ERRORS-R-UNEXPECTED-NODE--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_UNEXPECTED_NODE</title>
+<indexterm zone="XMLSEC-ERRORS-R-UNEXPECTED-NODE--CAPS"><primary sortas="XMLSEC_ERRORS_R_UNEXPECTED_NODE">XMLSEC_ERRORS_R_UNEXPECTED_NODE</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_UNEXPECTED_NODE                 27
+</programlisting>
+<para>
+Unexpected node (error subject is the node name).</para>
+<para>
+</para></refsect2>
+<refsect2 id="XMLSEC-ERRORS-R-NODE-NOT-FOUND--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_NODE_NOT_FOUND</title>
+<indexterm zone="XMLSEC-ERRORS-R-NODE-NOT-FOUND--CAPS"><primary sortas="XMLSEC_ERRORS_R_NODE_NOT_FOUND">XMLSEC_ERRORS_R_NODE_NOT_FOUND</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_NODE_NOT_FOUND                  28
+</programlisting>
+<para>
+Node not found (error subject is the required node name).</para>
+<para>
+</para></refsect2>
+<refsect2 id="XMLSEC-ERRORS-R-INVALID-TRANSFORM--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_INVALID_TRANSFORM</title>
+<indexterm zone="XMLSEC-ERRORS-R-INVALID-TRANSFORM--CAPS"><primary sortas="XMLSEC_ERRORS_R_INVALID_TRANSFORM">XMLSEC_ERRORS_R_INVALID_TRANSFORM</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_INVALID_TRANSFORM               31
+</programlisting>
+<para>
+This transform is invlaid here.</para>
+<para>
+</para></refsect2>
+<refsect2 id="XMLSEC-ERRORS-R-INVALID-TRANSFORM-KEY--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_INVALID_TRANSFORM_KEY</title>
+<indexterm zone="XMLSEC-ERRORS-R-INVALID-TRANSFORM-KEY--CAPS"><primary sortas="XMLSEC_ERRORS_R_INVALID_TRANSFORM_KEY">XMLSEC_ERRORS_R_INVALID_TRANSFORM_KEY</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_INVALID_TRANSFORM_KEY           32
+</programlisting>
+<para>
+Key is invalid for this transform.</para>
+<para>
+</para></refsect2>
+<refsect2 id="XMLSEC-ERRORS-R-INVALID-URI-TYPE--CAPS" role="macro">
 <title>XMLSEC_ERRORS_R_INVALID_URI_TYPE</title>
-<indexterm zone="XMLSEC-ERRORS-R-INVALID-URI-TYPE:CAPS"><primary>XMLSEC_ERRORS_R_INVALID_URI_TYPE</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_URI_TYPE                33
+<indexterm zone="XMLSEC-ERRORS-R-INVALID-URI-TYPE--CAPS"><primary sortas="XMLSEC_ERRORS_R_INVALID_URI_TYPE">XMLSEC_ERRORS_R_INVALID_URI_TYPE</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_INVALID_URI_TYPE                33
 </programlisting>
 <para>
-Invalid URI type.
+Invalid URI type.</para>
+<para>
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-IO-FAILED:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_IO_FAILED</title>
-<indexterm zone="XMLSEC-ERRORS-R-IO-FAILED:CAPS"><primary>XMLSEC_ERRORS_R_IO_FAILED</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_IO_FAILED                       7
+<refsect2 id="XMLSEC-ERRORS-R-TRANSFORM-SAME-DOCUMENT-REQUIRED--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_TRANSFORM_SAME_DOCUMENT_REQUIRED</title>
+<indexterm zone="XMLSEC-ERRORS-R-TRANSFORM-SAME-DOCUMENT-REQUIRED--CAPS"><primary sortas="XMLSEC_ERRORS_R_TRANSFORM_SAME_DOCUMENT_REQUIRED">XMLSEC_ERRORS_R_TRANSFORM_SAME_DOCUMENT_REQUIRED</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_TRANSFORM_SAME_DOCUMENT_REQUIRED        34
 </programlisting>
 <para>
-IO operation failed.
+The transform requires the input document to be the same as context.</para>
+<para>
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-KEYDATA-DISABLED:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_KEYDATA_DISABLED</title>
-<indexterm zone="XMLSEC-ERRORS-R-KEYDATA-DISABLED:CAPS"><primary>XMLSEC_ERRORS_R_KEYDATA_DISABLED</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_KEYDATA_DISABLED                46
+<refsect2 id="XMLSEC-ERRORS-R-TRANSFORM-DISABLED--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_TRANSFORM_DISABLED</title>
+<indexterm zone="XMLSEC-ERRORS-R-TRANSFORM-DISABLED--CAPS"><primary sortas="XMLSEC_ERRORS_R_TRANSFORM_DISABLED">XMLSEC_ERRORS_R_TRANSFORM_DISABLED</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_TRANSFORM_DISABLED              35
 </programlisting>
 <para>
-The key data type disabled.
+The transform is disabled.</para>
+<para>
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-KEY-DATA-ALREADY-EXIST:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST</title>
-<indexterm zone="XMLSEC-ERRORS-R-KEY-DATA-ALREADY-EXIST:CAPS"><primary>XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST          43
+<refsect2 id="XMLSEC-ERRORS-R-INVALID-KEY-DATA--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_INVALID_KEY_DATA</title>
+<indexterm zone="XMLSEC-ERRORS-R-INVALID-KEY-DATA--CAPS"><primary sortas="XMLSEC_ERRORS_R_INVALID_KEY_DATA">XMLSEC_ERRORS_R_INVALID_KEY_DATA</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_INVALID_KEY_DATA                41
 </programlisting>
 <para>
-The key data is already exist.
+Key data is invalid.</para>
+<para>
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-KEY-DATA-NOT-FOUND:CAPS" role="macro">
+<refsect2 id="XMLSEC-ERRORS-R-KEY-DATA-NOT-FOUND--CAPS" role="macro">
 <title>XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND</title>
-<indexterm zone="XMLSEC-ERRORS-R-KEY-DATA-NOT-FOUND:CAPS"><primary>XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND              42
+<indexterm zone="XMLSEC-ERRORS-R-KEY-DATA-NOT-FOUND--CAPS"><primary sortas="XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND">XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND              42
 </programlisting>
 <para>
-Data is not found (error subject is the data name).
+Data is not found (error subject is the data name).</para>
+<para>
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-KEY-NOT-FOUND:CAPS" role="macro">
+<refsect2 id="XMLSEC-ERRORS-R-KEY-DATA-ALREADY-EXIST--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST</title>
+<indexterm zone="XMLSEC-ERRORS-R-KEY-DATA-ALREADY-EXIST--CAPS"><primary sortas="XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST">XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST          43
+</programlisting>
+<para>
+The key data is already exist.</para>
+<para>
+</para></refsect2>
+<refsect2 id="XMLSEC-ERRORS-R-INVALID-KEY-DATA-SIZE--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE</title>
+<indexterm zone="XMLSEC-ERRORS-R-INVALID-KEY-DATA-SIZE--CAPS"><primary sortas="XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE">XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE           44
+</programlisting>
+<para>
+Invalid key size.</para>
+<para>
+</para></refsect2>
+<refsect2 id="XMLSEC-ERRORS-R-KEY-NOT-FOUND--CAPS" role="macro">
 <title>XMLSEC_ERRORS_R_KEY_NOT_FOUND</title>
-<indexterm zone="XMLSEC-ERRORS-R-KEY-NOT-FOUND:CAPS"><primary>XMLSEC_ERRORS_R_KEY_NOT_FOUND</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_KEY_NOT_FOUND                   45
+<indexterm zone="XMLSEC-ERRORS-R-KEY-NOT-FOUND--CAPS"><primary sortas="XMLSEC_ERRORS_R_KEY_NOT_FOUND">XMLSEC_ERRORS_R_KEY_NOT_FOUND</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_KEY_NOT_FOUND                   45
 </programlisting>
 <para>
-Key not found.
+Key not found.</para>
+<para>
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-MALLOC-FAILED:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_MALLOC_FAILED</title>
-<indexterm zone="XMLSEC-ERRORS-R-MALLOC-FAILED:CAPS"><primary>XMLSEC_ERRORS_R_MALLOC_FAILED</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_MALLOC_FAILED                   2
+<refsect2 id="XMLSEC-ERRORS-R-KEYDATA-DISABLED--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_KEYDATA_DISABLED</title>
+<indexterm zone="XMLSEC-ERRORS-R-KEYDATA-DISABLED--CAPS"><primary sortas="XMLSEC_ERRORS_R_KEYDATA_DISABLED">XMLSEC_ERRORS_R_KEYDATA_DISABLED</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_KEYDATA_DISABLED                46
 </programlisting>
 <para>
-Failed to allocate memory error.
-</para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-MAX-ENCKEY-LEVEL:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL</title>
-<indexterm zone="XMLSEC-ERRORS-R-MAX-ENCKEY-LEVEL:CAPS"><primary>XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL                61
-</programlisting>
+The key data type disabled.</para>
 <para>
-Max EncryptedKey level reached.
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-MAX-RETRIEVALS-LEVEL:CAPS" role="macro">
+<refsect2 id="XMLSEC-ERRORS-R-MAX-RETRIEVALS-LEVEL--CAPS" role="macro">
 <title>XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL</title>
-<indexterm zone="XMLSEC-ERRORS-R-MAX-RETRIEVALS-LEVEL:CAPS"><primary>XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL            51
+<indexterm zone="XMLSEC-ERRORS-R-MAX-RETRIEVALS-LEVEL--CAPS"><primary sortas="XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL">XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL            51
 </programlisting>
 <para>
-Max allowed retrievals level reached.
+Max allowed retrievals level reached.</para>
+<para>
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-MAX-RETRIEVAL-TYPE-MISMATCH:CAPS" role="macro">
+<refsect2 id="XMLSEC-ERRORS-R-MAX-RETRIEVAL-TYPE-MISMATCH--CAPS" role="macro">
 <title>XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH</title>
-<indexterm zone="XMLSEC-ERRORS-R-MAX-RETRIEVAL-TYPE-MISMATCH:CAPS"><primary>XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH     52
+<indexterm zone="XMLSEC-ERRORS-R-MAX-RETRIEVAL-TYPE-MISMATCH--CAPS"><primary sortas="XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH">XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH     52
 </programlisting>
 <para>
 The retrieved key data type does not match the one specified
-in the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> node.
+in the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> node.</para>
+<para>
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-MISSING-NODE-ATTRIBUTE:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_MISSING_NODE_ATTRIBUTE</title>
-<indexterm zone="XMLSEC-ERRORS-R-MISSING-NODE-ATTRIBUTE:CAPS"><primary>XMLSEC_ERRORS_R_MISSING_NODE_ATTRIBUTE</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_MISSING_NODE_ATTRIBUTE          25
+<refsect2 id="XMLSEC-ERRORS-R-MAX-ENCKEY-LEVEL--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL</title>
+<indexterm zone="XMLSEC-ERRORS-R-MAX-ENCKEY-LEVEL--CAPS"><primary sortas="XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL">XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL                61
 </programlisting>
 <para>
-Missing node attribute (error subject is the node name).
+Max EncryptedKey level reached.</para>
+<para>
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-NODE-ALREADY-PRESENT:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT</title>
-<indexterm zone="XMLSEC-ERRORS-R-NODE-ALREADY-PRESENT:CAPS"><primary>XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT            26
+<refsect2 id="XMLSEC-ERRORS-R-CERT-VERIFY-FAILED--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_CERT_VERIFY_FAILED</title>
+<indexterm zone="XMLSEC-ERRORS-R-CERT-VERIFY-FAILED--CAPS"><primary sortas="XMLSEC_ERRORS_R_CERT_VERIFY_FAILED">XMLSEC_ERRORS_R_CERT_VERIFY_FAILED</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_CERT_VERIFY_FAILED              71
 </programlisting>
 <para>
-Node already present,
+Certificate verification failed.</para>
+<para>
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-NODE-NOT-FOUND:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_NODE_NOT_FOUND</title>
-<indexterm zone="XMLSEC-ERRORS-R-NODE-NOT-FOUND:CAPS"><primary>XMLSEC_ERRORS_R_NODE_NOT_FOUND</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_NODE_NOT_FOUND                  28
+<refsect2 id="XMLSEC-ERRORS-R-CERT-NOT-FOUND--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_CERT_NOT_FOUND</title>
+<indexterm zone="XMLSEC-ERRORS-R-CERT-NOT-FOUND--CAPS"><primary sortas="XMLSEC_ERRORS_R_CERT_NOT_FOUND">XMLSEC_ERRORS_R_CERT_NOT_FOUND</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_CERT_NOT_FOUND                  72
 </programlisting>
 <para>
-Node not found (error subject is the required node name).
+Requested certificate is not found.</para>
+<para>
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-NOT-IMPLEMENTED:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_NOT_IMPLEMENTED</title>
-<indexterm zone="XMLSEC-ERRORS-R-NOT-IMPLEMENTED:CAPS"><primary>XMLSEC_ERRORS_R_NOT_IMPLEMENTED</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_NOT_IMPLEMENTED                 9
+<refsect2 id="XMLSEC-ERRORS-R-CERT-REVOKED--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_CERT_REVOKED</title>
+<indexterm zone="XMLSEC-ERRORS-R-CERT-REVOKED--CAPS"><primary sortas="XMLSEC_ERRORS_R_CERT_REVOKED">XMLSEC_ERRORS_R_CERT_REVOKED</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_CERT_REVOKED                    73
 </programlisting>
 <para>
-Feature is not implemented.
+The certificate is revoked.</para>
+<para>
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-STRDUP-FAILED:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_STRDUP_FAILED</title>
-<indexterm zone="XMLSEC-ERRORS-R-STRDUP-FAILED:CAPS"><primary>XMLSEC_ERRORS_R_STRDUP_FAILED</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_STRDUP_FAILED                   3
+<refsect2 id="XMLSEC-ERRORS-R-CERT-ISSUER-FAILED--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_CERT_ISSUER_FAILED</title>
+<indexterm zone="XMLSEC-ERRORS-R-CERT-ISSUER-FAILED--CAPS"><primary sortas="XMLSEC_ERRORS_R_CERT_ISSUER_FAILED">XMLSEC_ERRORS_R_CERT_ISSUER_FAILED</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_CERT_ISSUER_FAILED              74
 </programlisting>
 <para>
-Failed to duplicate string error.
+Failed to get certificate issuer.</para>
+<para>
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-TRANSFORM-DISABLED:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_TRANSFORM_DISABLED</title>
-<indexterm zone="XMLSEC-ERRORS-R-TRANSFORM-DISABLED:CAPS"><primary>XMLSEC_ERRORS_R_TRANSFORM_DISABLED</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_TRANSFORM_DISABLED              35
+<refsect2 id="XMLSEC-ERRORS-R-CERT-NOT-YET-VALID--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_CERT_NOT_YET_VALID</title>
+<indexterm zone="XMLSEC-ERRORS-R-CERT-NOT-YET-VALID--CAPS"><primary sortas="XMLSEC_ERRORS_R_CERT_NOT_YET_VALID">XMLSEC_ERRORS_R_CERT_NOT_YET_VALID</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_CERT_NOT_YET_VALID              75
 </programlisting>
 <para>
-The transform is disabled.
+"Not valid before" verification failed.</para>
+<para>
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-TRANSFORM-SAME-DOCUMENT-REQUIRED:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_TRANSFORM_SAME_DOCUMENT_REQUIRED</title>
-<indexterm zone="XMLSEC-ERRORS-R-TRANSFORM-SAME-DOCUMENT-REQUIRED:CAPS"><primary>XMLSEC_ERRORS_R_TRANSFORM_SAME_DOCUMENT_REQUIRED</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_TRANSFORM_SAME_DOCUMENT_REQUIRED        34
+<refsect2 id="XMLSEC-ERRORS-R-CERT-HAS-EXPIRED--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_CERT_HAS_EXPIRED</title>
+<indexterm zone="XMLSEC-ERRORS-R-CERT-HAS-EXPIRED--CAPS"><primary sortas="XMLSEC_ERRORS_R_CERT_HAS_EXPIRED">XMLSEC_ERRORS_R_CERT_HAS_EXPIRED</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_CERT_HAS_EXPIRED                76
 </programlisting>
 <para>
-The transform requires the input document to be the same as context.
+"Not valid after" verification failed.</para>
+<para>
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-UNEXPECTED-NODE:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_UNEXPECTED_NODE</title>
-<indexterm zone="XMLSEC-ERRORS-R-UNEXPECTED-NODE:CAPS"><primary>XMLSEC_ERRORS_R_UNEXPECTED_NODE</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_UNEXPECTED_NODE                 27
+<refsect2 id="XMLSEC-ERRORS-R-DSIG-NO-REFERENCES--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_DSIG_NO_REFERENCES</title>
+<indexterm zone="XMLSEC-ERRORS-R-DSIG-NO-REFERENCES--CAPS"><primary sortas="XMLSEC_ERRORS_R_DSIG_NO_REFERENCES">XMLSEC_ERRORS_R_DSIG_NO_REFERENCES</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_DSIG_NO_REFERENCES              81
 </programlisting>
 <para>
-Unexpected node (error subject is the node name).
+The &lt;dsig:Reference&gt; nodes not found.</para>
+<para>
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-XMLSEC-FAILED:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_XMLSEC_FAILED</title>
-<indexterm zone="XMLSEC-ERRORS-R-XMLSEC-FAILED:CAPS"><primary>XMLSEC_ERRORS_R_XMLSEC_FAILED</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_XMLSEC_FAILED                   1
+<refsect2 id="XMLSEC-ERRORS-R-DSIG-INVALID-REFERENCE--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE</title>
+<indexterm zone="XMLSEC-ERRORS-R-DSIG-INVALID-REFERENCE--CAPS"><primary sortas="XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE">XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE          82
 </programlisting>
 <para>
-An XMLSec function failed (error subject is the failed function).
+The &lt;dsig:Reference&gt; validation failed.</para>
+<para>
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-XML-FAILED:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_XML_FAILED</title>
-<indexterm zone="XMLSEC-ERRORS-R-XML-FAILED:CAPS"><primary>XMLSEC_ERRORS_R_XML_FAILED</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_XML_FAILED                      5
+<refsect2 id="XMLSEC-ERRORS-R-ASSERTION--CAPS" role="macro">
+<title>XMLSEC_ERRORS_R_ASSERTION</title>
+<indexterm zone="XMLSEC-ERRORS-R-ASSERTION--CAPS"><primary sortas="XMLSEC_ERRORS_R_ASSERTION">XMLSEC_ERRORS_R_ASSERTION</primary></indexterm><programlisting>#define XMLSEC_ERRORS_R_ASSERTION                       100
 </programlisting>
 <para>
-LibXML function failed (error subject is the failed function).
+Invalid assertion.</para>
+<para>
 </para></refsect2>
-<refsect2 id="XMLSEC-ERRORS-R-XSLT-FAILED:CAPS" role="macro">
-<title>XMLSEC_ERRORS_R_XSLT_FAILED</title>
-<indexterm zone="XMLSEC-ERRORS-R-XSLT-FAILED:CAPS"><primary>XMLSEC_ERRORS_R_XSLT_FAILED</primary></indexterm>
-<programlisting>#define XMLSEC_ERRORS_R_XSLT_FAILED                     6
+<refsect2 id="XMLSEC-ERRORS-MAX-NUMBER--CAPS" role="macro">
+<title>XMLSEC_ERRORS_MAX_NUMBER</title>
+<indexterm zone="XMLSEC-ERRORS-MAX-NUMBER--CAPS"><primary sortas="XMLSEC_ERRORS_MAX_NUMBER">XMLSEC_ERRORS_MAX_NUMBER</primary></indexterm><programlisting>#define XMLSEC_ERRORS_MAX_NUMBER                        256
 </programlisting>
 <para>
-LibXSLT function failed (error subject is the failed function).
+The maximum xmlsec errors number.</para>
+<para>
 </para></refsect2>
-<refsect2 id="xmlSecAssert" role="macro">
-<title>xmlSecAssert()</title>
-<indexterm zone="xmlSecAssert"><primary>xmlSecAssert</primary></indexterm>
-<programlisting>#define             xmlSecAssert( p )</programlisting>
-<para>
-Macro. Verifies that <parameter>p</parameter> is true and calls <link linkend="return"><function>return()</function></link> otherwise.
-</para><variablelist role="params">
-<varlistentry><term><parameter>p</parameter>&#160;:</term>
-<listitem><simpara>the expression.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecAssert2" role="macro">
-<title>xmlSecAssert2()</title>
-<indexterm zone="xmlSecAssert2"><primary>xmlSecAssert2</primary></indexterm>
-<programlisting>#define             xmlSecAssert2( p, ret )</programlisting>
-<para>
-Macro. Verifies that <parameter>p</parameter> is true and calls return(<parameter>ret</parameter>) otherwise.
-</para><variablelist role="params">
-<varlistentry><term><parameter>p</parameter>&#160;:</term>
-<listitem><simpara>the expression.</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>ret</parameter>&#160;:</term>
-<listitem><simpara>the return value.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecError" role="function">
-<title>xmlSecError ()</title>
-<indexterm zone="xmlSecError"><primary>xmlSecError</primary></indexterm>
-<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecError                         (<parameter>const <link linkend="char"><type>char</type></link> *file</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> line</parameter>,
-                                                         <parameter>const <link linkend="char"><type>char</type></link> *func</parameter>,
-                                                         <parameter>const <link linkend="char"><type>char</type></link> *errorObject</parameter>,
-                                                         <parameter>const <link linkend="char"><type>char</type></link> *errorSubject</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> reason</parameter>,
-                                                         <parameter>const <link linkend="char"><type>char</type></link> *msg</parameter>,
-                                                         <parameter>...</parameter>);</programlisting>
-<para>
-Reports an error to the default (<link linkend="xmlSecErrorsDefaultCallback"><type>xmlSecErrorsDefaultCallback</type></link>) or
-application specific callback installed using <link linkend="xmlSecErrorsSetCallback"><type>xmlSecErrorsSetCallback</type></link>
-function.
-</para><variablelist role="params">
-<varlistentry><term><parameter>file</parameter>&#160;:</term>
-<listitem><simpara>the error location filename (__FILE__).</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>line</parameter>&#160;:</term>
-<listitem><simpara>the error location line number (__LINE__).</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>func</parameter>&#160;:</term>
-<listitem><simpara>the error location function (__FUNCTIION__).</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>errorObject</parameter>&#160;:</term>
-<listitem><simpara>the error specific error object</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>errorSubject</parameter>&#160;:</term>
-<listitem><simpara>the error specific error subject.</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>reason</parameter>&#160;:</term>
-<listitem><simpara>the error code.</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>msg</parameter>&#160;:</term>
-<listitem><simpara>the error message in printf format.</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>...</parameter>&#160;:</term>
-<listitem><simpara>the parameters for the <parameter>msg</parameter>.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
 <refsect2 id="xmlSecErrorsCallback" role="function">
 <title>xmlSecErrorsCallback ()</title>
-<indexterm zone="xmlSecErrorsCallback"><primary>xmlSecErrorsCallback</primary></indexterm>
-<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                (*xmlSecErrorsCallback)             (<parameter>const <link linkend="char"><type>char</type></link> *file</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> line</parameter>,
-                                                         <parameter>const <link linkend="char"><type>char</type></link> *func</parameter>,
-                                                         <parameter>const <link linkend="char"><type>char</type></link> *errorObject</parameter>,
-                                                         <parameter>const <link linkend="char"><type>char</type></link> *errorSubject</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> reason</parameter>,
-                                                         <parameter>const <link linkend="char"><type>char</type></link> *msg</parameter>);</programlisting>
+<indexterm zone="xmlSecErrorsCallback"><primary sortas="xmlSecErrorsCallback">xmlSecErrorsCallback</primary></indexterm><programlisting><link linkend="void">void</link>                (*xmlSecErrorsCallback)             (const <link linkend="char">char</link> *file,
+                                                         <link linkend="int">int</link> line,
+                                                         const <link linkend="char">char</link> *func,
+                                                         const <link linkend="char">char</link> *errorObject,
+                                                         const <link linkend="char">char</link> *errorSubject,
+                                                         <link linkend="int">int</link> reason,
+                                                         const <link linkend="char">char</link> *msg);</programlisting>
 <para>
-The errors reporting callback function.
+The errors reporting callback function.</para>
+<para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>file</parameter>&#160;:</term>
-<listitem><simpara>the error location file name (__FILE__ macro).</simpara></listitem></varlistentry>
+<listitem><simpara>               the error location file name (__FILE__ macro).
+</simpara></listitem></varlistentry>
 <varlistentry><term><parameter>line</parameter>&#160;:</term>
-<listitem><simpara>the error location line number (__LINE__ macro).</simpara></listitem></varlistentry>
+<listitem><simpara>               the error location line number (__LINE__ macro).
+</simpara></listitem></varlistentry>
 <varlistentry><term><parameter>func</parameter>&#160;:</term>
-<listitem><simpara>the error location function name (__FUNCTION__ macro).</simpara></listitem></varlistentry>
+<listitem><simpara>               the error location function name (__FUNCTION__ macro).
+</simpara></listitem></varlistentry>
 <varlistentry><term><parameter>errorObject</parameter>&#160;:</term>
-<listitem><simpara>the error specific error object</simpara></listitem></varlistentry>
+<listitem><simpara>        the error specific error object
+</simpara></listitem></varlistentry>
 <varlistentry><term><parameter>errorSubject</parameter>&#160;:</term>
-<listitem><simpara>the error specific error subject.</simpara></listitem></varlistentry>
+<listitem><simpara>       the error specific error subject.
+</simpara></listitem></varlistentry>
 <varlistentry><term><parameter>reason</parameter>&#160;:</term>
-<listitem><simpara>the error code.</simpara></listitem></varlistentry>
+<listitem><simpara>             the error code.
+</simpara></listitem></varlistentry>
 <varlistentry><term><parameter>msg</parameter>&#160;:</term>
-<listitem><simpara>the additional error message.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecErrorsDefaultCallback" role="function">
-<title>xmlSecErrorsDefaultCallback ()</title>
-<indexterm zone="xmlSecErrorsDefaultCallback"><primary>xmlSecErrorsDefaultCallback</primary></indexterm>
-<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecErrorsDefaultCallback         (<parameter>const <link linkend="char"><type>char</type></link> *file</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> line</parameter>,
-                                                         <parameter>const <link linkend="char"><type>char</type></link> *func</parameter>,
-                                                         <parameter>const <link linkend="char"><type>char</type></link> *errorObject</parameter>,
-                                                         <parameter>const <link linkend="char"><type>char</type></link> *errorSubject</parameter>,
-                                                         <parameter><link linkend="int"><type>int</type></link> reason</parameter>,
-                                                         <parameter>const <link linkend="char"><type>char</type></link> *msg</parameter>);</programlisting>
-<para>
-The default error reporting callback that utilizes LibXML
-error reporting <link linkend="xmlGenericError"><type>xmlGenericError</type></link> function.
-</para><variablelist role="params">
-<varlistentry><term><parameter>file</parameter>&#160;:</term>
-<listitem><simpara>the error location file name (__FILE__ macro).</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>line</parameter>&#160;:</term>
-<listitem><simpara>the error location line number (__LINE__ macro).</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>func</parameter>&#160;:</term>
-<listitem><simpara>the error location function name (__FUNCTION__ macro).</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>errorObject</parameter>&#160;:</term>
-<listitem><simpara>the error specific error object</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>errorSubject</parameter>&#160;:</term>
-<listitem><simpara>the error specific error subject.</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>reason</parameter>&#160;:</term>
-<listitem><simpara>the error code.</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>msg</parameter>&#160;:</term>
-<listitem><simpara>the additional error message.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecErrorsDefaultCallbackEnableOutput" role="function">
-<title>xmlSecErrorsDefaultCallbackEnableOutput ()</title>
-<indexterm zone="xmlSecErrorsDefaultCallbackEnableOutput"><primary>xmlSecErrorsDefaultCallbackEnableOutput</primary></indexterm>
-<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecErrorsDefaultCallbackEnableOutput
-                                                        (<parameter><link linkend="int"><type>int</type></link> enabled</parameter>);</programlisting>
-<para>
-Enables or disables calling LibXML2 callback from the default
-errors callback.
-</para><variablelist role="params">
-<varlistentry><term><parameter>enabled</parameter>&#160;:</term>
-<listitem><simpara>the flag.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecErrorsGetCode" role="function">
-<title>xmlSecErrorsGetCode ()</title>
-<indexterm zone="xmlSecErrorsGetCode"><primary>xmlSecErrorsGetCode</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecErrorsGetCode                 (<parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> pos</parameter>);</programlisting>
-<para>
-Gets the known error code at position <parameter>pos</parameter>.
-</para><variablelist role="params">
-<varlistentry><term><parameter>pos</parameter>&#160;:</term>
-<listitem><simpara>the error position.</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>the known error code or 0 if <parameter>pos</parameter> is greater than
-total number of known error codes.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecErrorsGetMsg" role="function">
-<title>xmlSecErrorsGetMsg ()</title>
-<indexterm zone="xmlSecErrorsGetMsg"><primary>xmlSecErrorsGetMsg</primary></indexterm>
-<programlisting>const <link linkend="char"><returnvalue>char</returnvalue></link> *        xmlSecErrorsGetMsg                  (<parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> pos</parameter>);</programlisting>
-<para>
-Gets the known error message at position <parameter>pos</parameter>.
-</para><variablelist role="params">
-<varlistentry><term><parameter>pos</parameter>&#160;:</term>
-<listitem><simpara>the error position.</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>the known error message or NULL if <parameter>pos</parameter> is greater than
-total number of known error codes.</simpara></listitem></varlistentry>
+<listitem><simpara>                the additional error message.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecErrorsInit" role="function">
 <title>xmlSecErrorsInit ()</title>
-<indexterm zone="xmlSecErrorsInit"><primary>xmlSecErrorsInit</primary></indexterm>
-<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecErrorsInit                    (<parameter><type>void</type></parameter>);</programlisting>
+<indexterm zone="xmlSecErrorsInit"><primary sortas="xmlSecErrorsInit">xmlSecErrorsInit</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecErrorsInit                    (void);</programlisting>
 <para>
 Initializes the errors reporting. It is called from <link linkend="xmlSecInit"><type>xmlSecInit</type></link> function.
-and applications must not call this function directly.
+and applications must not call this function directly.</para>
+<para>
+</para></refsect2>
+<refsect2 id="xmlSecErrorsShutdown" role="function">
+<title>xmlSecErrorsShutdown ()</title>
+<indexterm zone="xmlSecErrorsShutdown"><primary sortas="xmlSecErrorsShutdown">xmlSecErrorsShutdown</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecErrorsShutdown                (void);</programlisting>
+<para>
+Cleanups the errors reporting. It is called from <link linkend="xmlSecShutdown"><type>xmlSecShutdown</type></link> function.
+and applications must not call this function directly.</para>
+<para>
+</para></refsect2>
+<refsect2 id="xmlSecErrorsSetCallback" role="function">
+<title>xmlSecErrorsSetCallback ()</title>
+<indexterm zone="xmlSecErrorsSetCallback"><primary sortas="xmlSecErrorsSetCallback">xmlSecErrorsSetCallback</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecErrorsSetCallback             (<link linkend="xmlSecErrorsCallback">xmlSecErrorsCallback</link> callback);</programlisting>
+<para>
+Sets the errors callback function to <parameter>callback</parameter> that will be called
+every time an error occurs.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>callback</parameter>&#160;:</term>
+<listitem><simpara>           the new errors callback function.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecErrorsDefaultCallback" role="function">
+<title>xmlSecErrorsDefaultCallback ()</title>
+<indexterm zone="xmlSecErrorsDefaultCallback"><primary sortas="xmlSecErrorsDefaultCallback">xmlSecErrorsDefaultCallback</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecErrorsDefaultCallback         (const <link linkend="char">char</link> *file,
+                                                         <link linkend="int">int</link> line,
+                                                         const <link linkend="char">char</link> *func,
+                                                         const <link linkend="char">char</link> *errorObject,
+                                                         const <link linkend="char">char</link> *errorSubject,
+                                                         <link linkend="int">int</link> reason,
+                                                         const <link linkend="char">char</link> *msg);</programlisting>
+<para>
+The default error reporting callback that utilizes LibXML
+error reporting <link linkend="xmlGenericError"><type>xmlGenericError</type></link> function.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>file</parameter>&#160;:</term>
+<listitem><simpara>               the error location file name (__FILE__ macro).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>line</parameter>&#160;:</term>
+<listitem><simpara>               the error location line number (__LINE__ macro).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>func</parameter>&#160;:</term>
+<listitem><simpara>               the error location function name (__FUNCTION__ macro).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>errorObject</parameter>&#160;:</term>
+<listitem><simpara>        the error specific error object
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>errorSubject</parameter>&#160;:</term>
+<listitem><simpara>       the error specific error subject.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>reason</parameter>&#160;:</term>
+<listitem><simpara>             the error code.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara>                the additional error message.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecErrorsDefaultCallbackEnableOutput" role="function">
+<title>xmlSecErrorsDefaultCallbackEnableOutput ()</title>
+<indexterm zone="xmlSecErrorsDefaultCallbackEnableOutput"><primary sortas="xmlSecErrorsDefaultCallbackEnableOutput">xmlSecErrorsDefaultCallbackEnableOutput</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecErrorsDefaultCallbackEnableOutput
+                                                        (<link linkend="int">int</link> enabled);</programlisting>
+<para>
+Enables or disables calling LibXML2 callback from the default
+errors callback.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>enabled</parameter>&#160;:</term>
+<listitem><simpara>            the flag.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecErrorsGetCode" role="function">
+<title>xmlSecErrorsGetCode ()</title>
+<indexterm zone="xmlSecErrorsGetCode"><primary sortas="xmlSecErrorsGetCode">xmlSecErrorsGetCode</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecErrorsGetCode                 (<link linkend="xmlSecSize">xmlSecSize</link> pos);</programlisting>
+<para>
+Gets the known error code at position <parameter>pos</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pos</parameter>&#160;:</term>
+<listitem><simpara>                the error position.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the known error code or 0 if <parameter>pos</parameter> is greater than
+total number of known error codes.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecErrorsGetMsg" role="function">
+<title>xmlSecErrorsGetMsg ()</title>
+<indexterm zone="xmlSecErrorsGetMsg"><primary sortas="xmlSecErrorsGetMsg">xmlSecErrorsGetMsg</primary></indexterm><programlisting>const <link linkend="char">char</link>*         xmlSecErrorsGetMsg                  (<link linkend="xmlSecSize">xmlSecSize</link> pos);</programlisting>
+<para>
+Gets the known error message at position <parameter>pos</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pos</parameter>&#160;:</term>
+<listitem><simpara>                the error position.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the known error message or NULL if <parameter>pos</parameter> is greater than
+total number of known error codes.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="XMLSEC-ERRORS-HERE--CAPS" role="macro">
+<title>XMLSEC_ERRORS_HERE</title>
+<indexterm zone="XMLSEC-ERRORS-HERE--CAPS"><primary sortas="XMLSEC_ERRORS_HERE">XMLSEC_ERRORS_HERE</primary></indexterm><programlisting>#define XMLSEC_ERRORS_HERE                      __FILE__,__LINE__,__XMLSEC_FUNCTION__
+</programlisting>
+<para>
+The macro that specifies the location (file, line and function)
+for the <link linkend="xmlSecError"><function>xmlSecError()</function></link> function.</para>
+<para>
 </para></refsect2>
 <refsect2 id="xmlSecErrorsSafeString" role="macro">
 <title>xmlSecErrorsSafeString()</title>
-<indexterm zone="xmlSecErrorsSafeString"><primary>xmlSecErrorsSafeString</primary></indexterm>
-<programlisting>#define             xmlSecErrorsSafeString(str)</programlisting>
+<indexterm zone="xmlSecErrorsSafeString"><primary sortas="xmlSecErrorsSafeString">xmlSecErrorsSafeString</primary></indexterm><programlisting>#define             xmlSecErrorsSafeString(str)</programlisting>
 <para>
-Macro. Returns <parameter>str</parameter> if it is not NULL or pointer to "NULL" otherwise.
+Macro. Returns <parameter>str</parameter> if it is not NULL or pointer to "NULL" otherwise.</para>
+<para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>str</parameter>&#160;:</term>
-<listitem><simpara>the string.</simpara></listitem></varlistentry>
+<listitem><simpara>                the string.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecErrorsSetCallback" role="function">
-<title>xmlSecErrorsSetCallback ()</title>
-<indexterm zone="xmlSecErrorsSetCallback"><primary>xmlSecErrorsSetCallback</primary></indexterm>
-<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecErrorsSetCallback             (<parameter><link linkend="xmlSecErrorsCallback"><type>xmlSecErrorsCallback</type></link> callback</parameter>);</programlisting>
+<refsect2 id="XMLSEC-ERRORS-NO-MESSAGE--CAPS" role="macro">
+<title>XMLSEC_ERRORS_NO_MESSAGE</title>
+<indexterm zone="XMLSEC-ERRORS-NO-MESSAGE--CAPS"><primary sortas="XMLSEC_ERRORS_NO_MESSAGE">XMLSEC_ERRORS_NO_MESSAGE</primary></indexterm><programlisting>#define XMLSEC_ERRORS_NO_MESSAGE                " "
+</programlisting>
 <para>
-Sets the errors callback function to <parameter>callback</parameter> that will be called
-every time an error occurs.
-</para><variablelist role="params">
-<varlistentry><term><parameter>callback</parameter>&#160;:</term>
-<listitem><simpara>the new errors callback function.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecErrorsShutdown" role="function">
-<title>xmlSecErrorsShutdown ()</title>
-<indexterm zone="xmlSecErrorsShutdown"><primary>xmlSecErrorsShutdown</primary></indexterm>
-<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecErrorsShutdown                (<parameter><type>void</type></parameter>);</programlisting>
+Empty error message " ".</para>
 <para>
-Cleanups the errors reporting. It is called from <link linkend="xmlSecShutdown"><type>xmlSecShutdown</type></link> function.
-and applications must not call this function directly.
 </para></refsect2>
+<refsect2 id="xmlSecError" role="function">
+<title>xmlSecError ()</title>
+<indexterm zone="xmlSecError"><primary sortas="xmlSecError">xmlSecError</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecError                         (const <link linkend="char">char</link> *file,
+                                                         <link linkend="int">int</link> line,
+                                                         const <link linkend="char">char</link> *func,
+                                                         const <link linkend="char">char</link> *errorObject,
+                                                         const <link linkend="char">char</link> *errorSubject,
+                                                         <link linkend="int">int</link> reason,
+                                                         const <link linkend="char">char</link> *msg,
+                                                         ...);</programlisting>
+<para>
+Reports an error to the default (<link linkend="xmlSecErrorsDefaultCallback"><type>xmlSecErrorsDefaultCallback</type></link>) or
+application specific callback installed using <link linkend="xmlSecErrorsSetCallback"><type>xmlSecErrorsSetCallback</type></link>
+function.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>file</parameter>&#160;:</term>
+<listitem><simpara>               the error location filename (__FILE__).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>line</parameter>&#160;:</term>
+<listitem><simpara>               the error location line number (__LINE__).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>func</parameter>&#160;:</term>
+<listitem><simpara>               the error location function (__FUNCTIION__).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>errorObject</parameter>&#160;:</term>
+<listitem><simpara>        the error specific error object
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>errorSubject</parameter>&#160;:</term>
+<listitem><simpara>       the error specific error subject.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>reason</parameter>&#160;:</term>
+<listitem><simpara>             the error code.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara>                the error message in printf format.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>...</parameter>&#160;:</term>
+<listitem><simpara>                the parameters for the <parameter>msg</parameter>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecAssert" role="macro">
+<title>xmlSecAssert()</title>
+<indexterm zone="xmlSecAssert"><primary sortas="xmlSecAssert">xmlSecAssert</primary></indexterm><programlisting>#define             xmlSecAssert( p )</programlisting>
+<para>
+Macro. Verifies that <parameter>p</parameter> is true and calls <link linkend="return"><function>return()</function></link> otherwise.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>p</parameter>&#160;:</term>
+<listitem><simpara> the expression.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecAssert2" role="macro">
+<title>xmlSecAssert2()</title>
+<indexterm zone="xmlSecAssert2"><primary sortas="xmlSecAssert2">xmlSecAssert2</primary></indexterm><programlisting>#define             xmlSecAssert2( p, ret )</programlisting>
+<para>
+Macro. Verifies that <parameter>p</parameter> is true and calls return(<parameter>ret</parameter>) otherwise.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>p</parameter>&#160;:</term>
+<listitem><simpara> the expression.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ret</parameter>&#160;:</term>
+<listitem><simpara> the return value.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 
 </refsect1>
+
+
+
 
 </refentry>

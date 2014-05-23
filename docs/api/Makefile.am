@@ -43,41 +43,41 @@ html: sgml xmlsec.sgml xmlsec-index
 # targets to make more references
 #
 sgml: templates
-	-@gtkdoc-mkdb --module=xmlsec \
+	gtkdoc-mkdb --module=xmlsec \
 		    --main-sgml-file=xmlsec.sgml \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/base \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/base
-	-@gtkdoc-mkdb --module=xmlsec-openssl \
+	gtkdoc-mkdb --module=xmlsec-openssl \
 		    --main-sgml-file=xmlsec-openssl.sgml \
 		    --tmpl-dir=tmpl/openssl \
 		    --output-dir=sgml/openssl \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/openssl \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/openssl
-	-@gtkdoc-mkdb --module=xmlsec-gnutls \
+	gtkdoc-mkdb --module=xmlsec-gnutls \
 		    --main-sgml-file=xmlsec-gnutls.sgml \
 		    --tmpl-dir=tmpl/gnutls \
 		    --output-dir=sgml/gnutls \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/gnutls \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/gnutls
-	-@gtkdoc-mkdb --module=xmlsec-gcrypt \
+	gtkdoc-mkdb --module=xmlsec-gcrypt \
 		    --main-sgml-file=xmlsec-gcrypt.sgml \
 		    --tmpl-dir=tmpl/gcrypt \
 		    --output-dir=sgml/gcrypt \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/gcrypt \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/gcrypt
-	-@gtkdoc-mkdb --module=xmlsec-nss \
+	gtkdoc-mkdb --module=xmlsec-nss \
 		    --main-sgml-file=xmlsec-nss.sgml \
 		    --tmpl-dir=tmpl/nss \
 		    --output-dir=sgml/nss \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/nss \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/nss
-	-@gtkdoc-mkdb --module=xmlsec-mscrypto \
+	gtkdoc-mkdb --module=xmlsec-mscrypto \
 		    --main-sgml-file=xmlsec-mscrypto.sgml \
 		    --tmpl-dir=tmpl/mscrypto \
 		    --output-dir=sgml/mscrypto \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/mscrypto \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/mscrypto
-	-@(for i in `find sgml -name "*.sgml" -print` ; do \
+	(for i in `find sgml -name "*.sgml" -print` ; do \
 	    cat $$i | \
 		sed 's!\(&lt;dsig:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmldsig-core/#sec-\2\">\1\2\3</ulink>!g' | \
 		sed 's!\(&lt;enc:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmlenc-core/#sec-\2\">\1\2\3</ulink>!g' | \
@@ -87,40 +87,40 @@ sgml: templates
 	done);
 
 templates: scan
-	-@gtkdoc-mktmpl --module=xmlsec
-	-@gtkdoc-mktmpl --module=xmlsec-openssl \
+	gtkdoc-mktmpl --module=xmlsec
+	gtkdoc-mktmpl --module=xmlsec-openssl \
 		    --output-dir=tmpl/openssl
-	-@gtkdoc-mktmpl --module=xmlsec-gnutls \
+	gtkdoc-mktmpl --module=xmlsec-gnutls \
 		    --output-dir=tmpl/gnutls
-	-@gtkdoc-mktmpl --module=xmlsec-gcrypt \
+	gtkdoc-mktmpl --module=xmlsec-gcrypt \
 		    --output-dir=tmpl/gcrypt
-	-@gtkdoc-mktmpl --module=xmlsec-nss \
+	gtkdoc-mktmpl --module=xmlsec-nss \
 		    --output-dir=tmpl/nss
-	-@gtkdoc-mktmpl --module=xmlsec-mscrypto \
+	gtkdoc-mktmpl --module=xmlsec-mscrypto \
 		    --output-dir=tmpl/mscrypto
 
 scan: doc_sources example_sources
-	-@gtkdoc-scan --module=xmlsec \
+	gtkdoc-scan --module=xmlsec \
 		    --rebuild-sections \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/base \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/base
-	-@gtkdoc-scan --module=xmlsec-openssl \
+	gtkdoc-scan --module=xmlsec-openssl \
 		    --rebuild-sections \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/openssl \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/openssl
-	-@gtkdoc-scan --module=xmlsec-gnutls \
+	gtkdoc-scan --module=xmlsec-gnutls \
 		    --rebuild-sections \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/gnutls \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/gnutls
-	-@gtkdoc-scan --module=xmlsec-gcrypt \
+	gtkdoc-scan --module=xmlsec-gcrypt \
 		    --rebuild-sections \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/gcrypt \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/gcrypt
-	-@gtkdoc-scan --module=xmlsec-nss \
+	gtkdoc-scan --module=xmlsec-nss \
 		    --rebuild-sections \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/nss \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/nss
-	-@gtkdoc-scan --module=xmlsec-mscrypto \
+	gtkdoc-scan --module=xmlsec-mscrypto \
 		    --rebuild-sections \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/mscrypto \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/mscrypto

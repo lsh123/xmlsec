@@ -17,7 +17,19 @@ Keys store implementation for NSS.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
+<!-- ##### MACRO xmlSecNssKeysStoreId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecNssKeysStoreGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
 
 
 <!-- ##### FUNCTION xmlSecNssKeysStoreAdoptKey ##### -->
@@ -28,22 +40,6 @@ Keys store implementation for NSS.
 @store: 
 @key: 
 @Returns: 
-
-
-<!-- ##### FUNCTION xmlSecNssKeysStoreGetKlass ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecNssKeysStoreId ##### -->
-<para>
-
-</para>
-
 
 
 <!-- ##### FUNCTION xmlSecNssKeysStoreLoad ##### -->

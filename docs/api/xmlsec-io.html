@@ -7,6 +7,7 @@
 <link rel="UP" title="XML Security Core Library API Reference." href="xmlsec-ref.html">
 <link rel="PREVIOUS" title="errors" href="xmlsec-errors.html">
 <link rel="NEXT" title="keyinfo" href="xmlsec-keyinfo.html">
+<meta name="GENERATOR" content="GTK-Doc V1.11 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -87,21 +88,21 @@
 <h1>
 <a name="XMLSEC-IO"></a>io</h1>
 <div class="REFNAMEDIV">
-<a name="AEN6453"></a><h2>Name</h2>io -- Input/output support.</div>
+<a name="AEN5436"></a><h2>Name</h2>io -- Input/output support.</div>
 <div class="REFSYNOPSISDIV">
 <a name="XMLSEC-IO.SYNOPSIS"></a><h2>Synopsis</h2>
-<pre class="SYNOPSIS"><gtkdoclink href="VOID"><span class="RETURNVALUE">void</span></gtkdoclink><a href="xmlsec-io.html#XMLSECIOCLEANUPCALLBACKS">xmlSecIOCleanupCallbacks</a>            (<code class="PARAMETER"><span class="TYPE">void</span></code>);
-<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-io.html#XMLSECIOINIT">xmlSecIOInit</a>                        (<code class="PARAMETER"><span class="TYPE">void</span></code>);
-<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-io.html#XMLSECIOREGISTERCALLBACKS">xmlSecIORegisterCallbacks</a>           (<code class="PARAMETER"><gtkdoclink href="XMLINPUTMATCHCALLBACK"><span class="TYPE">xmlInputMatchCallback</span></gtkdoclink> matchFunc</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="XMLINPUTOPENCALLBACK"><span class="TYPE">xmlInputOpenCallback</span></gtkdoclink> openFunc</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="XMLINPUTREADCALLBACK"><span class="TYPE">xmlInputReadCallback</span></gtkdoclink> readFunc</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="XMLINPUTCLOSECALLBACK"><span class="TYPE">xmlInputCloseCallback</span></gtkdoclink> closeFunc</code>);
-<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-io.html#XMLSECIOREGISTERDEFAULTCALLBACKS">xmlSecIORegisterDefaultCallbacks</a>    (<code class="PARAMETER"><span class="TYPE">void</span></code>);
-<gtkdoclink href="VOID"><span class="RETURNVALUE">void</span></gtkdoclink><a href="xmlsec-io.html#XMLSECIOSHUTDOWN">xmlSecIOShutdown</a>                    (<code class="PARAMETER"><span class="TYPE">void</span></code>);
-<gtkdoclink href="XMLSECTRANSFORMID"><span class="RETURNVALUE">xmlSecTransformId</span></gtkdoclink><a href="xmlsec-io.html#XMLSECTRANSFORMINPUTURIGETKLASS">xmlSecTransformInputURIGetKlass</a>     (<code class="PARAMETER"><span class="TYPE">void</span></code>);
+<pre class="SYNOPSIS"><font>int</font>                 <a href="xmlsec-io.html#XMLSECIOINIT">xmlSecIOInit</a>                        (void);
+<font>void</font>                <a href="xmlsec-io.html#XMLSECIOSHUTDOWN">xmlSecIOShutdown</a>                    (void);
+<font>void</font>                <a href="xmlsec-io.html#XMLSECIOCLEANUPCALLBACKS">xmlSecIOCleanupCallbacks</a>            (void);
+<font>int</font>                 <a href="xmlsec-io.html#XMLSECIOREGISTERDEFAULTCALLBACKS">xmlSecIORegisterDefaultCallbacks</a>    (void);
+<font>int</font>                 <a href="xmlsec-io.html#XMLSECIOREGISTERCALLBACKS">xmlSecIORegisterCallbacks</a>           (<font>xmlInputMatchCallback</font> matchFunc,
+                                                         <font>xmlInputOpenCallback</font> openFunc,
+                                                         <font>xmlInputReadCallback</font> readFunc,
+                                                         <font>xmlInputCloseCallback</font> closeFunc);
 #define             <a href="xmlsec-io.html#XMLSECTRANSFORMINPUTURIID">xmlSecTransformInputURIId</a>
-<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-io.html#XMLSECTRANSFORMINPUTURIOPEN">xmlSecTransformInputURIOpen</a>         (<code class="PARAMETER"><a href="xmlsec-transforms.html#XMLSECTRANSFORM"><span class="TYPE">xmlSecTransformPtr</span></a> transform</code>,
-                                                         <code class="PARAMETER">const <gtkdoclink href="XMLCHAR"><span class="TYPE">xmlChar</span></gtkdoclink> *uri</code>);</pre>
+<font>xmlSecTransformId</font>   <a href="xmlsec-io.html#XMLSECTRANSFORMINPUTURIGETKLASS">xmlSecTransformInputURIGetKlass</a>     (void);
+<font>int</font>                 <a href="xmlsec-io.html#XMLSECTRANSFORMINPUTURIOPEN">xmlSecTransformInputURIOpen</a>         (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
+                                                         const <font>xmlChar</font> *uri);</pre>
 </div>
 <div class="REFSECT1">
 <a name="XMLSEC-IO.DESCRIPTION"></a><h2>Description</h2>
@@ -110,109 +111,117 @@
 <div class="REFSECT1">
 <a name="XMLSEC-IO.DETAILS"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="XMLSECIOCLEANUPCALLBACKS"></a><h3>xmlSecIOCleanupCallbacks ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="VOID"><span class="RETURNVALUE">void</span></gtkdoclink>                xmlSecIOCleanupCallbacks            (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>Clears the entire input callback table. this includes the
-compiled-in I/O.</p>
-</div>
-<hr>
-<div class="REFSECT2">
 <a name="XMLSECIOINIT"></a><h3>xmlSecIOInit ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecIOInit                        (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecIOInit                        (void);</pre>
 <p>The IO initialization (called from <a href="xmlsec-xmlsec.html#XMLSECINIT"><span class="TYPE">xmlSecInit</span></a> function).
 Applications should not call this function directly.</p>
 <p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN6537"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>0 on success or a negative value otherwise.</p></td>
-</tr></tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECIOREGISTERCALLBACKS"></a><h3>xmlSecIORegisterCallbacks ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecIORegisterCallbacks           (<code class="PARAMETER"><gtkdoclink href="XMLINPUTMATCHCALLBACK"><span class="TYPE">xmlInputMatchCallback</span></gtkdoclink> matchFunc</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="XMLINPUTOPENCALLBACK"><span class="TYPE">xmlInputOpenCallback</span></gtkdoclink> openFunc</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="XMLINPUTREADCALLBACK"><span class="TYPE">xmlInputReadCallback</span></gtkdoclink> readFunc</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="XMLINPUTCLOSECALLBACK"><span class="TYPE">xmlInputCloseCallback</span></gtkdoclink> closeFunc</code>);</pre>
-<p>Register a new set of I/O callback for handling parser input.</p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN6563"><span style="white-space: nowrap"><code class="PARAMETER">matchFunc</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the protocol match callback.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN6568"><span style="white-space: nowrap"><code class="PARAMETER">openFunc</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the open stream callback.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN6573"><span style="white-space: nowrap"><code class="PARAMETER">readFunc</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the read from stream callback.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN6578"><span style="white-space: nowrap"><code class="PARAMETER">closeFunc</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the close stream callback.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN6583"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the 0 on success or a negative value if an error occurs.</p></td>
-</tr>
-</tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECIOREGISTERDEFAULTCALLBACKS"></a><h3>xmlSecIORegisterDefaultCallbacks ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecIORegisterDefaultCallbacks    (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>Registers the default compiled-in I/O handlers.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN6599"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>0 on success or a negative value otherwise.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN5479"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value otherwise.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECIOSHUTDOWN"></a><h3>xmlSecIOShutdown ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="VOID"><span class="RETURNVALUE">void</span></gtkdoclink>                xmlSecIOShutdown                    (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<pre class="PROGRAMLISTING"><font>void</font>                xmlSecIOShutdown                    (void);</pre>
 <p>The IO clenaup (called from <a href="xmlsec-xmlsec.html#XMLSECSHUTDOWN"><span class="TYPE">xmlSecShutdown</span></a> function).
 Applications should not call this function directly.</p>
+<p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECTRANSFORMINPUTURIGETKLASS"></a><h3>xmlSecTransformInputURIGetKlass ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="XMLSECTRANSFORMID"><span class="RETURNVALUE">xmlSecTransformId</span></gtkdoclink>   xmlSecTransformInputURIGetKlass     (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>The input uri transform klass. Reads binary data from an uri.</p>
+<a name="XMLSECIOCLEANUPCALLBACKS"></a><h3>xmlSecIOCleanupCallbacks ()</h3>
+<pre class="PROGRAMLISTING"><font>void</font>                xmlSecIOCleanupCallbacks            (void);</pre>
+<p>Clears the entire input callback table. this includes the
+compiled-in I/O.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECIOREGISTERDEFAULTCALLBACKS"></a><h3>xmlSecIORegisterDefaultCallbacks ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecIORegisterDefaultCallbacks    (void);</pre>
+<p>Registers the default compiled-in I/O handlers.</p>
+<p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN6627"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>input URI transform id.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN5511"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value otherwise.</p></td>
 </tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECIOREGISTERCALLBACKS"></a><h3>xmlSecIORegisterCallbacks ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecIORegisterCallbacks           (<font>xmlInputMatchCallback</font> matchFunc,
+                                                         <font>xmlInputOpenCallback</font> openFunc,
+                                                         <font>xmlInputReadCallback</font> readFunc,
+                                                         <font>xmlInputCloseCallback</font> closeFunc);</pre>
+<p>Register a new set of I/O callback for handling parser input.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN5529"><span style="white-space: nowrap"><code class="PARAMETER">matchFunc</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>          the protocol match callback.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN5534"><span style="white-space: nowrap"><code class="PARAMETER">openFunc</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>           the open stream callback.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN5539"><span style="white-space: nowrap"><code class="PARAMETER">readFunc</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>           the read from stream callback.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN5544"><span style="white-space: nowrap"><code class="PARAMETER">closeFunc</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>          the close stream callback.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN5549"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> the 0 on success or a negative value if an error occurs.</p></td>
+</tr>
+</tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMINPUTURIID"></a><h3>xmlSecTransformInputURIId</h3>
 <pre class="PROGRAMLISTING">#define             xmlSecTransformInputURIId</pre>
 <p>The Input URI transform id.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECTRANSFORMINPUTURIGETKLASS"></a><h3>xmlSecTransformInputURIGetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecTransformInputURIGetKlass     (void);</pre>
+<p>The input uri transform klass. Reads binary data from an uri.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN5570"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> input URI transform id.</p></td>
+</tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMINPUTURIOPEN"></a><h3>xmlSecTransformInputURIOpen ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecTransformInputURIOpen         (<code class="PARAMETER"><a href="xmlsec-transforms.html#XMLSECTRANSFORM"><span class="TYPE">xmlSecTransformPtr</span></a> transform</code>,
-                                                         <code class="PARAMETER">const <gtkdoclink href="XMLCHAR"><span class="TYPE">xmlChar</span></gtkdoclink> *uri</code>);</pre>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecTransformInputURIOpen         (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
+                                                         const <font>xmlChar</font> *uri);</pre>
 <p>Opens the given <code class="PARAMETER">uri</code> for reading.</p>
+<p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN6654"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the pointer to IO transform.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN5587"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to IO transform.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN6659"><span style="white-space: nowrap"><code class="PARAMETER">uri</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the URL to open.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN5592"><span style="white-space: nowrap"><code class="PARAMETER">uri</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>                the URL to open.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN6664"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>0 on success or a negative value otherwise.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN5597"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>

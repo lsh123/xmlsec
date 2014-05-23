@@ -17,10 +17,23 @@ XML Digital Signature support.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
+<!-- ##### ENUM xmlSecDSigStatus ##### -->
+<para>
 
+</para>
+
+@xmlSecDSigStatusUnknown: 
+@xmlSecDSigStatusSucceeded: 
+@xmlSecDSigStatusInvalid: 
 
 <!-- ##### MACRO XMLSEC_DSIG_FLAGS_IGNORE_MANIFESTS ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES ##### -->
 <para>
 
 </para>
@@ -35,13 +48,6 @@ XML Digital Signature support.
 
 
 <!-- ##### MACRO XMLSEC_DSIG_FLAGS_STORE_SIGNATURE ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES ##### -->
 <para>
 
 </para>
@@ -95,30 +101,50 @@ XML Digital Signature support.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecDSigCtxDebugDump ##### -->
-<para>
-
-</para>
-
-@dsigCtx: 
-@output: 
-
-
-<!-- ##### FUNCTION xmlSecDSigCtxDebugXmlDump ##### -->
-<para>
-
-</para>
-
-@dsigCtx: 
-@output: 
-
-
 <!-- ##### FUNCTION xmlSecDSigCtxDestroy ##### -->
 <para>
 
 </para>
 
 @dsigCtx: 
+
+
+<!-- ##### FUNCTION xmlSecDSigCtxInitialize ##### -->
+<para>
+
+</para>
+
+@dsigCtx: 
+@keysMngr: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDSigCtxFinalize ##### -->
+<para>
+
+</para>
+
+@dsigCtx: 
+
+
+<!-- ##### FUNCTION xmlSecDSigCtxSign ##### -->
+<para>
+
+</para>
+
+@dsigCtx: 
+@tmpl: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDSigCtxVerify ##### -->
+<para>
+
+</para>
+
+@dsigCtx: 
+@node: 
+@Returns: 
 
 
 <!-- ##### FUNCTION xmlSecDSigCtxEnableReferenceTransform ##### -->
@@ -141,14 +167,6 @@ XML Digital Signature support.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecDSigCtxFinalize ##### -->
-<para>
-
-</para>
-
-@dsigCtx: 
-
-
 <!-- ##### FUNCTION xmlSecDSigCtxGetPreSignBuffer ##### -->
 <para>
 
@@ -158,35 +176,31 @@ XML Digital Signature support.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecDSigCtxInitialize ##### -->
+<!-- ##### FUNCTION xmlSecDSigCtxDebugDump ##### -->
 <para>
 
 </para>
 
 @dsigCtx: 
-@keysMngr: 
-@Returns: 
+@output: 
 
 
-<!-- ##### FUNCTION xmlSecDSigCtxSign ##### -->
+<!-- ##### FUNCTION xmlSecDSigCtxDebugXmlDump ##### -->
 <para>
 
 </para>
 
 @dsigCtx: 
-@tmpl: 
-@Returns: 
+@output: 
 
 
-<!-- ##### FUNCTION xmlSecDSigCtxVerify ##### -->
+<!-- ##### ENUM xmlSecDSigReferenceOrigin ##### -->
 <para>
 
 </para>
 
-@dsigCtx: 
-@node: 
-@Returns: 
-
+@xmlSecDSigReferenceOriginSignedInfo: 
+@xmlSecDSigReferenceOriginManifest: 
 
 <!-- ##### STRUCT xmlSecDSigReferenceCtx ##### -->
 <para>
@@ -217,6 +231,52 @@ XML Digital Signature support.
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecDSigReferenceCtxDestroy ##### -->
+<para>
+
+</para>
+
+@dsigRefCtx: 
+
+
+<!-- ##### FUNCTION xmlSecDSigReferenceCtxInitialize ##### -->
+<para>
+
+</para>
+
+@dsigRefCtx: 
+@dsigCtx: 
+@origin: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDSigReferenceCtxFinalize ##### -->
+<para>
+
+</para>
+
+@dsigRefCtx: 
+
+
+<!-- ##### FUNCTION xmlSecDSigReferenceCtxProcessNode ##### -->
+<para>
+
+</para>
+
+@dsigRefCtx: 
+@node: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDSigReferenceCtxGetPreDigestBuffer ##### -->
+<para>
+
+</para>
+
+@dsigRefCtx: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecDSigReferenceCtxDebugDump ##### -->
 <para>
 
@@ -235,51 +295,6 @@ XML Digital Signature support.
 @output: 
 
 
-<!-- ##### FUNCTION xmlSecDSigReferenceCtxDestroy ##### -->
-<para>
-
-</para>
-
-@dsigRefCtx: 
-
-
-<!-- ##### FUNCTION xmlSecDSigReferenceCtxFinalize ##### -->
-<para>
-
-</para>
-
-@dsigRefCtx: 
-
-
-<!-- ##### FUNCTION xmlSecDSigReferenceCtxGetPreDigestBuffer ##### -->
-<para>
-
-</para>
-
-@dsigRefCtx: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecDSigReferenceCtxInitialize ##### -->
-<para>
-
-</para>
-
-@dsigRefCtx: 
-@dsigCtx: 
-@origin: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecDSigReferenceCtxListGetKlass ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
 <!-- ##### MACRO xmlSecDSigReferenceCtxListId ##### -->
 <para>
 
@@ -287,30 +302,11 @@ XML Digital Signature support.
 
 
 
-<!-- ##### FUNCTION xmlSecDSigReferenceCtxProcessNode ##### -->
+<!-- ##### FUNCTION xmlSecDSigReferenceCtxListGetKlass ##### -->
 <para>
 
 </para>
 
-@dsigRefCtx: 
-@node: 
 @Returns: 
 
-
-<!-- ##### ENUM xmlSecDSigReferenceOrigin ##### -->
-<para>
-
-</para>
-
-@xmlSecDSigReferenceOriginSignedInfo: 
-@xmlSecDSigReferenceOriginManifest: 
-
-<!-- ##### ENUM xmlSecDSigStatus ##### -->
-<para>
-
-</para>
-
-@xmlSecDSigStatusUnknown: 
-@xmlSecDSigStatusSucceeded: 
-@xmlSecDSigStatusInvalid: 
 

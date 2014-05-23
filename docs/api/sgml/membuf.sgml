@@ -2,10 +2,9 @@
 <refmeta>
 <refentrytitle role="top_of_page" id="xmlsec-membuf.top_of_page">membuf</refentrytitle>
 <manvolnum>3</manvolnum>
-<refmiscinfo>
-  XMLSEC Library
-</refmiscinfo>
+<refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
+
 <refnamediv>
 <refname>membuf</refname>
 <refpurpose>Memory buffer transform implementation.</refpurpose>
@@ -14,11 +13,20 @@
 <refsynopsisdiv id="xmlsec-membuf.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
-<synopsis><link linkend="xmlSecBufferPtr"><returnvalue>xmlSecBufferPtr</returnvalue></link>     <link linkend="xmlSecTransformMemBufGetBuffer">xmlSecTransformMemBufGetBuffer</link>      (<parameter><link linkend="xmlSecTransform"><type>xmlSecTransformPtr</type></link> transform</parameter>);
-<link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecTransformMemBufGetKlass">xmlSecTransformMemBufGetKlass</link>       (<parameter><type>void</type></parameter>);
+<synopsis>
 #define             <link linkend="xmlSecTransformMemBufId">xmlSecTransformMemBufId</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecTransformMemBufGetKlass">xmlSecTransformMemBufGetKlass</link>       (void);
+<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link>     <link linkend="xmlSecTransformMemBufGetBuffer">xmlSecTransformMemBufGetBuffer</link>      (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform);
 </synopsis>
 </refsynopsisdiv>
+
+
+
+
+
+
+
+
 
 <refsect1 id="xmlsec-membuf.description" role="desc">
 <title role="desc.title">Description</title>
@@ -26,36 +34,43 @@
 Memory buffer transform implementation.
 </para>
 </refsect1>
+
 <refsect1 id="xmlsec-membuf.details" role="details">
 <title role="details.title">Details</title>
-<refsect2 id="xmlSecTransformMemBufGetBuffer" role="function">
-<title>xmlSecTransformMemBufGetBuffer ()</title>
-<indexterm zone="xmlSecTransformMemBufGetBuffer"><primary>xmlSecTransformMemBufGetBuffer</primary></indexterm>
-<programlisting><link linkend="xmlSecBufferPtr"><returnvalue>xmlSecBufferPtr</returnvalue></link>     xmlSecTransformMemBufGetBuffer      (<parameter><link linkend="xmlSecTransform"><type>xmlSecTransformPtr</type></link> transform</parameter>);</programlisting>
-<para>
-Gets the pointer to memory buffer transform buffer.
-</para><variablelist role="params">
-<varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>the pointer to memory buffer transform.</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to the transform's <link linkend="xmlSecBuffer"><type>xmlSecBuffer</type></link>.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecTransformMemBufGetKlass" role="function">
-<title>xmlSecTransformMemBufGetKlass ()</title>
-<indexterm zone="xmlSecTransformMemBufGetKlass"><primary>xmlSecTransformMemBufGetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   xmlSecTransformMemBufGetKlass       (<parameter><type>void</type></parameter>);</programlisting>
-<para>
-The memory buffer transorm (used to store the data that go through it).
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>memory buffer transform klass.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
 <refsect2 id="xmlSecTransformMemBufId" role="macro">
 <title>xmlSecTransformMemBufId</title>
-<indexterm zone="xmlSecTransformMemBufId"><primary>xmlSecTransformMemBufId</primary></indexterm>
-<programlisting>#define             xmlSecTransformMemBufId</programlisting>
+<indexterm zone="xmlSecTransformMemBufId"><primary sortas="xmlSecTransformMemBufId">xmlSecTransformMemBufId</primary></indexterm><programlisting>#define             xmlSecTransformMemBufId</programlisting>
 <para>
-The Memory Buffer transform klass.
+The Memory Buffer transform klass.</para>
+<para>
 </para></refsect2>
+<refsect2 id="xmlSecTransformMemBufGetKlass" role="function">
+<title>xmlSecTransformMemBufGetKlass ()</title>
+<indexterm zone="xmlSecTransformMemBufGetKlass"><primary sortas="xmlSecTransformMemBufGetKlass">xmlSecTransformMemBufGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecTransformMemBufGetKlass       (void);</programlisting>
+<para>
+The memory buffer transorm (used to store the data that go through it).</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> memory buffer transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecTransformMemBufGetBuffer" role="function">
+<title>xmlSecTransformMemBufGetBuffer ()</title>
+<indexterm zone="xmlSecTransformMemBufGetBuffer"><primary sortas="xmlSecTransformMemBufGetBuffer">xmlSecTransformMemBufGetBuffer</primary></indexterm><programlisting><link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link>     xmlSecTransformMemBufGetBuffer      (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform);</programlisting>
+<para>
+Gets the pointer to memory buffer transform buffer.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&#160;:</term>
+<listitem><simpara>          the pointer to memory buffer transform.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the transform's <link linkend="xmlSecBuffer"><type>xmlSecBuffer</type></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 
 </refsect1>
+
+
+
 
 </refentry>

@@ -2,10 +2,9 @@
 <refmeta>
 <refentrytitle role="top_of_page" id="xmlsec-nss-pkikeys.top_of_page">pkikeys</refentrytitle>
 <manvolnum>3</manvolnum>
-<refmiscinfo>
-  XMLSEC-NSS Library
-</refmiscinfo>
+<refmiscinfo>XMLSEC-NSS Library</refmiscinfo>
 </refmeta>
+
 <refnamediv>
 <refname>pkikeys</refname>
 <refpurpose>PKI keys data implementation.</refpurpose>
@@ -14,15 +13,24 @@
 <refsynopsisdiv id="xmlsec-nss-pkikeys.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
-<synopsis><link linkend="xmlSecKeyData"><returnvalue>xmlSecKeyDataPtr</returnvalue></link>    <link linkend="xmlSecNssPKIAdoptKey">xmlSecNssPKIAdoptKey</link>                (<parameter><link linkend="SECKEYPrivateKey"><type>SECKEYPrivateKey</type></link> *privkey</parameter>,
-                                                         <parameter><link linkend="SECKEYPublicKey"><type>SECKEYPublicKey</type></link> *pubkey</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecNssPKIKeyDataDuplicate">xmlSecNssPKIKeyDataDuplicate</link>        (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> dst</parameter>,
-                                                         <parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> src</parameter>);
-<link linkend="KeyType"><returnvalue>KeyType</returnvalue></link>             <link linkend="xmlSecNssPKIKeyDataGetKeyType">xmlSecNssPKIKeyDataGetKeyType</link>       (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);
-<link linkend="SECKEYPrivateKey"><returnvalue>SECKEYPrivateKey</returnvalue></link> *  <link linkend="xmlSecNssPKIKeyDataGetPrivKey">xmlSecNssPKIKeyDataGetPrivKey</link>       (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);
-<link linkend="SECKEYPublicKey"><returnvalue>SECKEYPublicKey</returnvalue></link> *   <link linkend="xmlSecNssPKIKeyDataGetPubKey">xmlSecNssPKIKeyDataGetPubKey</link>        (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);
+<synopsis>
+<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link>    <link linkend="xmlSecNssPKIAdoptKey">xmlSecNssPKIAdoptKey</link>                (<link linkend="SECKEYPrivateKey">SECKEYPrivateKey</link> *privkey,
+                                                         <link linkend="SECKEYPublicKey">SECKEYPublicKey</link> *pubkey);
+<link linkend="SECKEYPublicKey">SECKEYPublicKey</link>*    <link linkend="xmlSecNssPKIKeyDataGetPubKey">xmlSecNssPKIKeyDataGetPubKey</link>        (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
+<link linkend="SECKEYPrivateKey">SECKEYPrivateKey</link>*   <link linkend="xmlSecNssPKIKeyDataGetPrivKey">xmlSecNssPKIKeyDataGetPrivKey</link>       (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
+<link linkend="KeyType">KeyType</link>             <link linkend="xmlSecNssPKIKeyDataGetKeyType">xmlSecNssPKIKeyDataGetKeyType</link>       (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
+<link linkend="int">int</link>                 <link linkend="xmlSecNssPKIKeyDataDuplicate">xmlSecNssPKIKeyDataDuplicate</link>        (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> dst,
+                                                         <link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> src);
 </synopsis>
 </refsynopsisdiv>
+
+
+
+
+
+
+
+
 
 <refsect1 id="xmlsec-nss-pkikeys.description" role="desc">
 <title role="desc.title">Description</title>
@@ -30,73 +38,89 @@
 PKI keys data implementation.
 </para>
 </refsect1>
+
 <refsect1 id="xmlsec-nss-pkikeys.details" role="details">
 <title role="details.title">Details</title>
 <refsect2 id="xmlSecNssPKIAdoptKey" role="function">
 <title>xmlSecNssPKIAdoptKey ()</title>
-<indexterm zone="xmlSecNssPKIAdoptKey"><primary>xmlSecNssPKIAdoptKey</primary></indexterm>
-<programlisting><link linkend="xmlSecKeyData"><returnvalue>xmlSecKeyDataPtr</returnvalue></link>    xmlSecNssPKIAdoptKey                (<parameter><link linkend="SECKEYPrivateKey"><type>SECKEYPrivateKey</type></link> *privkey</parameter>,
-                                                         <parameter><link linkend="SECKEYPublicKey"><type>SECKEYPublicKey</type></link> *pubkey</parameter>);</programlisting>
+<indexterm zone="xmlSecNssPKIAdoptKey"><primary sortas="xmlSecNssPKIAdoptKey">xmlSecNssPKIAdoptKey</primary></indexterm><programlisting><link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link>    xmlSecNssPKIAdoptKey                (<link linkend="SECKEYPrivateKey">SECKEYPrivateKey</link> *privkey,
+                                                         <link linkend="SECKEYPublicKey">SECKEYPublicKey</link> *pubkey);</programlisting>
 <para>
 Build a KeyData object from the given Private Key and Public
-Key handles.
+Key handles.</para>
+<para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>privkey</parameter>&#160;:</term>
-<listitem><simpara>the NSS Private Key handle</simpara></listitem></varlistentry>
+<listitem><simpara>        the NSS Private Key handle
+</simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pubkey</parameter>&#160;:</term>
-<listitem><simpara>the NSS Public Key handle</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to KeyData object or NULL if an error occurs.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecNssPKIKeyDataDuplicate" role="function">
-<title>xmlSecNssPKIKeyDataDuplicate ()</title>
-<indexterm zone="xmlSecNssPKIKeyDataDuplicate"><primary>xmlSecNssPKIKeyDataDuplicate</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecNssPKIKeyDataDuplicate        (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> dst</parameter>,
-                                                         <parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> src</parameter>);</programlisting>
-<para>
-Duplicates the keydata from src to dst
-</para><variablelist role="params">
-<varlistentry><term><parameter>dst</parameter>&#160;:</term>
-<listitem><simpara>the pointer to NSS Key data to copy to.</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>src</parameter>&#160;:</term>
-<listitem><simpara>the pointer to NSS Key data to copy from.</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>-1 on error, 0 on success</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecNssPKIKeyDataGetKeyType" role="function">
-<title>xmlSecNssPKIKeyDataGetKeyType ()</title>
-<indexterm zone="xmlSecNssPKIKeyDataGetKeyType"><primary>xmlSecNssPKIKeyDataGetKeyType</primary></indexterm>
-<programlisting><link linkend="KeyType"><returnvalue>KeyType</returnvalue></link>             xmlSecNssPKIKeyDataGetKeyType       (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);</programlisting>
-<para>
-Gets the Key Type from the key data.
-</para><variablelist role="params">
-<varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>the pointer to NSS Key data.</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>Key Type</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecNssPKIKeyDataGetPrivKey" role="function">
-<title>xmlSecNssPKIKeyDataGetPrivKey ()</title>
-<indexterm zone="xmlSecNssPKIKeyDataGetPrivKey"><primary>xmlSecNssPKIKeyDataGetPrivKey</primary></indexterm>
-<programlisting><link linkend="SECKEYPrivateKey"><returnvalue>SECKEYPrivateKey</returnvalue></link> *  xmlSecNssPKIKeyDataGetPrivKey       (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);</programlisting>
-<para>
-Gets the Private Key from the key data.
-</para><variablelist role="params">
-<varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>the pointer to NSS Key data.</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to SECKEYPrivateKey or NULL if an error occurs.
-Caller is responsible for freeing the key when done</simpara></listitem></varlistentry>
+<listitem><simpara>         the NSS Public Key handle
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to KeyData object or NULL if an error occurs.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecNssPKIKeyDataGetPubKey" role="function">
 <title>xmlSecNssPKIKeyDataGetPubKey ()</title>
-<indexterm zone="xmlSecNssPKIKeyDataGetPubKey"><primary>xmlSecNssPKIKeyDataGetPubKey</primary></indexterm>
-<programlisting><link linkend="SECKEYPublicKey"><returnvalue>SECKEYPublicKey</returnvalue></link> *   xmlSecNssPKIKeyDataGetPubKey        (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);</programlisting>
+<indexterm zone="xmlSecNssPKIKeyDataGetPubKey"><primary sortas="xmlSecNssPKIKeyDataGetPubKey">xmlSecNssPKIKeyDataGetPubKey</primary></indexterm><programlisting><link linkend="SECKEYPublicKey">SECKEYPublicKey</link>*    xmlSecNssPKIKeyDataGetPubKey        (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
-Gets the Public Key from the key data.
+Gets the Public Key from the key data.</para>
+<para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>the pointer to NSS Key data.</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to SECKEYPublicKey or NULL if an error occurs.
-Caller is responsible for freeing the key when done</simpara></listitem></varlistentry>
+<listitem><simpara>               the pointer to NSS Key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to SECKEYPublicKey or NULL if an error occurs.
+Caller is responsible for freeing the key when done
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecNssPKIKeyDataGetPrivKey" role="function">
+<title>xmlSecNssPKIKeyDataGetPrivKey ()</title>
+<indexterm zone="xmlSecNssPKIKeyDataGetPrivKey"><primary sortas="xmlSecNssPKIKeyDataGetPrivKey">xmlSecNssPKIKeyDataGetPrivKey</primary></indexterm><programlisting><link linkend="SECKEYPrivateKey">SECKEYPrivateKey</link>*   xmlSecNssPKIKeyDataGetPrivKey       (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
+<para>
+Gets the Private Key from the key data.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>               the pointer to NSS Key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to SECKEYPrivateKey or NULL if an error occurs.
+Caller is responsible for freeing the key when done
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecNssPKIKeyDataGetKeyType" role="function">
+<title>xmlSecNssPKIKeyDataGetKeyType ()</title>
+<indexterm zone="xmlSecNssPKIKeyDataGetKeyType"><primary sortas="xmlSecNssPKIKeyDataGetKeyType">xmlSecNssPKIKeyDataGetKeyType</primary></indexterm><programlisting><link linkend="KeyType">KeyType</link>             xmlSecNssPKIKeyDataGetKeyType       (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
+<para>
+Gets the Key Type from the key data.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>               the pointer to NSS Key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> Key Type
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecNssPKIKeyDataDuplicate" role="function">
+<title>xmlSecNssPKIKeyDataDuplicate ()</title>
+<indexterm zone="xmlSecNssPKIKeyDataDuplicate"><primary sortas="xmlSecNssPKIKeyDataDuplicate">xmlSecNssPKIKeyDataDuplicate</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecNssPKIKeyDataDuplicate        (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> dst,
+                                                         <link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> src);</programlisting>
+<para>
+Duplicates the keydata from src to dst</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>dst</parameter>&#160;:</term>
+<listitem><simpara>               the pointer to NSS Key data to copy to.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>src</parameter>&#160;:</term>
+<listitem><simpara>               the pointer to NSS Key data to copy from.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> -1 on error, 0 on success
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 
 </refsect1>
+
+
+
 
 </refentry>

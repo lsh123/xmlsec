@@ -2,10 +2,9 @@
 <refmeta>
 <refentrytitle role="top_of_page" id="xmlsec-gcrypt-crypto.top_of_page">crypto</refentrytitle>
 <manvolnum>3</manvolnum>
-<refmiscinfo>
-  XMLSEC-GCRYPT Library
-</refmiscinfo>
+<refmiscinfo>XMLSEC-GCRYPT Library</refmiscinfo>
 </refmeta>
+
 <refnamediv>
 <refname>crypto</refname>
 <refpurpose>Crypto transforms implementation for GCrypt.</refpurpose>
@@ -14,124 +13,133 @@
 <refsynopsisdiv id="xmlsec-gcrypt-crypto.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
-<synopsis><link linkend="xmlSecCryptoDLFunctions"><returnvalue>xmlSecCryptoDLFunctionsPtr</returnvalue></link> <link linkend="xmlSecCryptoGetFunctions-gcrypt">xmlSecCryptoGetFunctions_gcrypt</link>
-                                                        (<parameter><type>void</type></parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecGCryptGenerateRandom">xmlSecGCryptGenerateRandom</link>          (<parameter><link linkend="xmlSecBuffer"><type>xmlSecBufferPtr</type></link> buffer</parameter>,
-                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> size</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecGCryptHmacGetMinOutputLength">xmlSecGCryptHmacGetMinOutputLength</link>  (<parameter><type>void</type></parameter>);
-<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecGCryptHmacSetMinOutputLength">xmlSecGCryptHmacSetMinOutputLength</link>  (<parameter><link linkend="int"><type>int</type></link> min_length</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecGCryptInit">xmlSecGCryptInit</link>                    (<parameter><type>void</type></parameter>);
-<link linkend="xmlSecKeyDataId"><returnvalue>xmlSecKeyDataId</returnvalue></link>     <link linkend="xmlSecGCryptKeyDataAesGetKlass">xmlSecGCryptKeyDataAesGetKlass</link>      (<parameter><type>void</type></parameter>);
+<synopsis>
+<link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link>  <link linkend="xmlSecCryptoGetFunctions-gcrypt">xmlSecCryptoGetFunctions_gcrypt</link>
+                                                        (void);
+<link linkend="int">int</link>                 <link linkend="xmlSecGCryptInit">xmlSecGCryptInit</link>                    (void);
+<link linkend="int">int</link>                 <link linkend="xmlSecGCryptShutdown">xmlSecGCryptShutdown</link>                (void);
+<link linkend="int">int</link>                 <link linkend="xmlSecGCryptKeysMngrInit">xmlSecGCryptKeysMngrInit</link>            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);
+<link linkend="int">int</link>                 <link linkend="xmlSecGCryptGenerateRandom">xmlSecGCryptGenerateRandom</link>          (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buffer,
+                                                         <link linkend="xmlSecSize">xmlSecSize</link> size);
 #define             <link linkend="xmlSecGCryptKeyDataAesId">xmlSecGCryptKeyDataAesId</link>
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecGCryptKeyDataAesSet">xmlSecGCryptKeyDataAesSet</link>           (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
-                                                         <parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *buf</parameter>,
-                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> bufSize</parameter>);
-<link linkend="xmlSecKeyDataId"><returnvalue>xmlSecKeyDataId</returnvalue></link>     <link linkend="xmlSecGCryptKeyDataDesGetKlass">xmlSecGCryptKeyDataDesGetKlass</link>      (<parameter><type>void</type></parameter>);
-#define             <link linkend="xmlSecGCryptKeyDataDesId">xmlSecGCryptKeyDataDesId</link>
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecGCryptKeyDataDesSet">xmlSecGCryptKeyDataDesSet</link>           (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
-                                                         <parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *buf</parameter>,
-                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> bufSize</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecGCryptKeyDataDsaAdoptKey">xmlSecGCryptKeyDataDsaAdoptKey</link>      (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
-                                                         <parameter><link linkend="gcry-sexp-t"><type>gcry_sexp_t</type></link> dsa_key</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecGCryptKeyDataDsaAdoptKeyPair">xmlSecGCryptKeyDataDsaAdoptKeyPair</link>  (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
-                                                         <parameter><link linkend="gcry-sexp-t"><type>gcry_sexp_t</type></link> pub_key</parameter>,
-                                                         <parameter><link linkend="gcry-sexp-t"><type>gcry_sexp_t</type></link> priv_key</parameter>);
-<link linkend="xmlSecKeyDataId"><returnvalue>xmlSecKeyDataId</returnvalue></link>     <link linkend="xmlSecGCryptKeyDataDsaGetKlass">xmlSecGCryptKeyDataDsaGetKlass</link>      (<parameter><type>void</type></parameter>);
-<link linkend="gcry-sexp-t"><returnvalue>gcry_sexp_t</returnvalue></link>         <link linkend="xmlSecGCryptKeyDataDsaGetPrivateKey">xmlSecGCryptKeyDataDsaGetPrivateKey</link> (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);
-<link linkend="gcry-sexp-t"><returnvalue>gcry_sexp_t</returnvalue></link>         <link linkend="xmlSecGCryptKeyDataDsaGetPublicKey">xmlSecGCryptKeyDataDsaGetPublicKey</link>  (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);
-#define             <link linkend="xmlSecGCryptKeyDataDsaId">xmlSecGCryptKeyDataDsaId</link>
-<link linkend="xmlSecKeyDataId"><returnvalue>xmlSecKeyDataId</returnvalue></link>     <link linkend="xmlSecGCryptKeyDataHmacGetKlass">xmlSecGCryptKeyDataHmacGetKlass</link>     (<parameter><type>void</type></parameter>);
-#define             <link linkend="xmlSecGCryptKeyDataHmacId">xmlSecGCryptKeyDataHmacId</link>
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecGCryptKeyDataHmacSet">xmlSecGCryptKeyDataHmacSet</link>          (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
-                                                         <parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *buf</parameter>,
-                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> bufSize</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecGCryptKeyDataRsaAdoptKey">xmlSecGCryptKeyDataRsaAdoptKey</link>      (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
-                                                         <parameter><link linkend="gcry-sexp-t"><type>gcry_sexp_t</type></link> rsa_key</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecGCryptKeyDataRsaAdoptKeyPair">xmlSecGCryptKeyDataRsaAdoptKeyPair</link>  (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
-                                                         <parameter><link linkend="gcry-sexp-t"><type>gcry_sexp_t</type></link> pub_key</parameter>,
-                                                         <parameter><link linkend="gcry-sexp-t"><type>gcry_sexp_t</type></link> priv_key</parameter>);
-<link linkend="xmlSecKeyDataId"><returnvalue>xmlSecKeyDataId</returnvalue></link>     <link linkend="xmlSecGCryptKeyDataRsaGetKlass">xmlSecGCryptKeyDataRsaGetKlass</link>      (<parameter><type>void</type></parameter>);
-<link linkend="gcry-sexp-t"><returnvalue>gcry_sexp_t</returnvalue></link>         <link linkend="xmlSecGCryptKeyDataRsaGetPrivateKey">xmlSecGCryptKeyDataRsaGetPrivateKey</link> (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);
-<link linkend="gcry-sexp-t"><returnvalue>gcry_sexp_t</returnvalue></link>         <link linkend="xmlSecGCryptKeyDataRsaGetPublicKey">xmlSecGCryptKeyDataRsaGetPublicKey</link>  (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);
-#define             <link linkend="xmlSecGCryptKeyDataRsaId">xmlSecGCryptKeyDataRsaId</link>
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecGCryptKeysMngrInit">xmlSecGCryptKeysMngrInit</link>            (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> mngr</parameter>);
-<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecGCryptShutdown">xmlSecGCryptShutdown</link>                (<parameter><type>void</type></parameter>);
-<link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecGCryptTransformAes128CbcGetKlass">xmlSecGCryptTransformAes128CbcGetKlass</link>
-                                                        (<parameter><type>void</type></parameter>);
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     <link linkend="xmlSecGCryptKeyDataAesGetKlass">xmlSecGCryptKeyDataAesGetKlass</link>      (void);
+<link linkend="int">int</link>                 <link linkend="xmlSecGCryptKeyDataAesSet">xmlSecGCryptKeyDataAesSet</link>           (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
+                                                         <link linkend="xmlSecSize">xmlSecSize</link> bufSize);
 #define             <link linkend="xmlSecGCryptTransformAes128CbcId">xmlSecGCryptTransformAes128CbcId</link>
-<link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecGCryptTransformAes192CbcGetKlass">xmlSecGCryptTransformAes192CbcGetKlass</link>
-                                                        (<parameter><type>void</type></parameter>);
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGCryptTransformAes128CbcGetKlass">xmlSecGCryptTransformAes128CbcGetKlass</link>
+                                                        (void);
 #define             <link linkend="xmlSecGCryptTransformAes192CbcId">xmlSecGCryptTransformAes192CbcId</link>
-<link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecGCryptTransformAes256CbcGetKlass">xmlSecGCryptTransformAes256CbcGetKlass</link>
-                                                        (<parameter><type>void</type></parameter>);
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGCryptTransformAes192CbcGetKlass">xmlSecGCryptTransformAes192CbcGetKlass</link>
+                                                        (void);
 #define             <link linkend="xmlSecGCryptTransformAes256CbcId">xmlSecGCryptTransformAes256CbcId</link>
-<link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecGCryptTransformDes3CbcGetKlass">xmlSecGCryptTransformDes3CbcGetKlass</link>
-                                                        (<parameter><type>void</type></parameter>);
-#define             <link linkend="xmlSecGCryptTransformDes3CbcId">xmlSecGCryptTransformDes3CbcId</link>
-<link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecGCryptTransformDsaSha1GetKlass">xmlSecGCryptTransformDsaSha1GetKlass</link>
-                                                        (<parameter><type>void</type></parameter>);
-#define             <link linkend="xmlSecGCryptTransformDsaSha1Id">xmlSecGCryptTransformDsaSha1Id</link>
-<link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecGCryptTransformHmacMd5GetKlass">xmlSecGCryptTransformHmacMd5GetKlass</link>
-                                                        (<parameter><type>void</type></parameter>);
-#define             <link linkend="xmlSecGCryptTransformHmacMd5Id">xmlSecGCryptTransformHmacMd5Id</link>
-<link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecGCryptTransformHmacRipemd160GetKlass">xmlSecGCryptTransformHmacRipemd160GetKlass</link>
-                                                        (<parameter><type>void</type></parameter>);
-#define             <link linkend="xmlSecGCryptTransformHmacRipemd160Id">xmlSecGCryptTransformHmacRipemd160Id</link>
-<link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecGCryptTransformHmacSha1GetKlass">xmlSecGCryptTransformHmacSha1GetKlass</link>
-                                                        (<parameter><type>void</type></parameter>);
-#define             <link linkend="xmlSecGCryptTransformHmacSha1Id">xmlSecGCryptTransformHmacSha1Id</link>
-<link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecGCryptTransformHmacSha256GetKlass">xmlSecGCryptTransformHmacSha256GetKlass</link>
-                                                        (<parameter><type>void</type></parameter>);
-#define             <link linkend="xmlSecGCryptTransformHmacSha256Id">xmlSecGCryptTransformHmacSha256Id</link>
-<link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecGCryptTransformHmacSha384GetKlass">xmlSecGCryptTransformHmacSha384GetKlass</link>
-                                                        (<parameter><type>void</type></parameter>);
-#define             <link linkend="xmlSecGCryptTransformHmacSha384Id">xmlSecGCryptTransformHmacSha384Id</link>
-<link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecGCryptTransformHmacSha512GetKlass">xmlSecGCryptTransformHmacSha512GetKlass</link>
-                                                        (<parameter><type>void</type></parameter>);
-#define             <link linkend="xmlSecGCryptTransformHmacSha512Id">xmlSecGCryptTransformHmacSha512Id</link>
-<link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecGCryptTransformKWAes128GetKlass">xmlSecGCryptTransformKWAes128GetKlass</link>
-                                                        (<parameter><type>void</type></parameter>);
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGCryptTransformAes256CbcGetKlass">xmlSecGCryptTransformAes256CbcGetKlass</link>
+                                                        (void);
 #define             <link linkend="xmlSecGCryptTransformKWAes128Id">xmlSecGCryptTransformKWAes128Id</link>
-<link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecGCryptTransformKWAes192GetKlass">xmlSecGCryptTransformKWAes192GetKlass</link>
-                                                        (<parameter><type>void</type></parameter>);
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGCryptTransformKWAes128GetKlass">xmlSecGCryptTransformKWAes128GetKlass</link>
+                                                        (void);
 #define             <link linkend="xmlSecGCryptTransformKWAes192Id">xmlSecGCryptTransformKWAes192Id</link>
-<link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecGCryptTransformKWAes256GetKlass">xmlSecGCryptTransformKWAes256GetKlass</link>
-                                                        (<parameter><type>void</type></parameter>);
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGCryptTransformKWAes192GetKlass">xmlSecGCryptTransformKWAes192GetKlass</link>
+                                                        (void);
 #define             <link linkend="xmlSecGCryptTransformKWAes256Id">xmlSecGCryptTransformKWAes256Id</link>
-<link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecGCryptTransformKWDes3GetKlass">xmlSecGCryptTransformKWDes3GetKlass</link> (<parameter><type>void</type></parameter>);
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGCryptTransformKWAes256GetKlass">xmlSecGCryptTransformKWAes256GetKlass</link>
+                                                        (void);
+#define             <link linkend="xmlSecGCryptKeyDataDesId">xmlSecGCryptKeyDataDesId</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     <link linkend="xmlSecGCryptKeyDataDesGetKlass">xmlSecGCryptKeyDataDesGetKlass</link>      (void);
+<link linkend="int">int</link>                 <link linkend="xmlSecGCryptKeyDataDesSet">xmlSecGCryptKeyDataDesSet</link>           (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
+                                                         <link linkend="xmlSecSize">xmlSecSize</link> bufSize);
+#define             <link linkend="xmlSecGCryptTransformDes3CbcId">xmlSecGCryptTransformDes3CbcId</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGCryptTransformDes3CbcGetKlass">xmlSecGCryptTransformDes3CbcGetKlass</link>
+                                                        (void);
 #define             <link linkend="xmlSecGCryptTransformKWDes3Id">xmlSecGCryptTransformKWDes3Id</link>
-<link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecGCryptTransformMd5GetKlass">xmlSecGCryptTransformMd5GetKlass</link>    (<parameter><type>void</type></parameter>);
-#define             <link linkend="xmlSecGCryptTransformMd5Id">xmlSecGCryptTransformMd5Id</link>
-<link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecGCryptTransformRipemd160GetKlass">xmlSecGCryptTransformRipemd160GetKlass</link>
-                                                        (<parameter><type>void</type></parameter>);
-#define             <link linkend="xmlSecGCryptTransformRipemd160Id">xmlSecGCryptTransformRipemd160Id</link>
-<link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecGCryptTransformRsaMd5GetKlass">xmlSecGCryptTransformRsaMd5GetKlass</link> (<parameter><type>void</type></parameter>);
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGCryptTransformKWDes3GetKlass">xmlSecGCryptTransformKWDes3GetKlass</link> (void);
+#define             <link linkend="xmlSecGCryptKeyDataDsaId">xmlSecGCryptKeyDataDsaId</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     <link linkend="xmlSecGCryptKeyDataDsaGetKlass">xmlSecGCryptKeyDataDsaGetKlass</link>      (void);
+<link linkend="int">int</link>                 <link linkend="xmlSecGCryptKeyDataDsaAdoptKey">xmlSecGCryptKeyDataDsaAdoptKey</link>      (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+                                                         <link linkend="gcry-sexp-t">gcry_sexp_t</link> dsa_key);
+<link linkend="int">int</link>                 <link linkend="xmlSecGCryptKeyDataDsaAdoptKeyPair">xmlSecGCryptKeyDataDsaAdoptKeyPair</link>  (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+                                                         <link linkend="gcry-sexp-t">gcry_sexp_t</link> pub_key,
+                                                         <link linkend="gcry-sexp-t">gcry_sexp_t</link> priv_key);
+<link linkend="gcry-sexp-t">gcry_sexp_t</link>         <link linkend="xmlSecGCryptKeyDataDsaGetPublicKey">xmlSecGCryptKeyDataDsaGetPublicKey</link>  (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
+<link linkend="gcry-sexp-t">gcry_sexp_t</link>         <link linkend="xmlSecGCryptKeyDataDsaGetPrivateKey">xmlSecGCryptKeyDataDsaGetPrivateKey</link> (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
+#define             <link linkend="xmlSecGCryptTransformDsaSha1Id">xmlSecGCryptTransformDsaSha1Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGCryptTransformDsaSha1GetKlass">xmlSecGCryptTransformDsaSha1GetKlass</link>
+                                                        (void);
+<link linkend="int">int</link>                 <link linkend="xmlSecGCryptHmacGetMinOutputLength">xmlSecGCryptHmacGetMinOutputLength</link>  (void);
+<link linkend="void">void</link>                <link linkend="xmlSecGCryptHmacSetMinOutputLength">xmlSecGCryptHmacSetMinOutputLength</link>  (<link linkend="int">int</link> min_length);
+#define             <link linkend="xmlSecGCryptKeyDataHmacId">xmlSecGCryptKeyDataHmacId</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     <link linkend="xmlSecGCryptKeyDataHmacGetKlass">xmlSecGCryptKeyDataHmacGetKlass</link>     (void);
+<link linkend="int">int</link>                 <link linkend="xmlSecGCryptKeyDataHmacSet">xmlSecGCryptKeyDataHmacSet</link>          (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
+                                                         <link linkend="xmlSecSize">xmlSecSize</link> bufSize);
+#define             <link linkend="xmlSecGCryptTransformHmacMd5Id">xmlSecGCryptTransformHmacMd5Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGCryptTransformHmacMd5GetKlass">xmlSecGCryptTransformHmacMd5GetKlass</link>
+                                                        (void);
+#define             <link linkend="xmlSecGCryptTransformHmacRipemd160Id">xmlSecGCryptTransformHmacRipemd160Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGCryptTransformHmacRipemd160GetKlass">xmlSecGCryptTransformHmacRipemd160GetKlass</link>
+                                                        (void);
+#define             <link linkend="xmlSecGCryptTransformHmacSha1Id">xmlSecGCryptTransformHmacSha1Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGCryptTransformHmacSha1GetKlass">xmlSecGCryptTransformHmacSha1GetKlass</link>
+                                                        (void);
+#define             <link linkend="xmlSecGCryptTransformHmacSha256Id">xmlSecGCryptTransformHmacSha256Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGCryptTransformHmacSha256GetKlass">xmlSecGCryptTransformHmacSha256GetKlass</link>
+                                                        (void);
+#define             <link linkend="xmlSecGCryptTransformHmacSha384Id">xmlSecGCryptTransformHmacSha384Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGCryptTransformHmacSha384GetKlass">xmlSecGCryptTransformHmacSha384GetKlass</link>
+                                                        (void);
+#define             <link linkend="xmlSecGCryptTransformHmacSha512Id">xmlSecGCryptTransformHmacSha512Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGCryptTransformHmacSha512GetKlass">xmlSecGCryptTransformHmacSha512GetKlass</link>
+                                                        (void);
+#define             <link linkend="xmlSecGCryptKeyDataRsaId">xmlSecGCryptKeyDataRsaId</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     <link linkend="xmlSecGCryptKeyDataRsaGetKlass">xmlSecGCryptKeyDataRsaGetKlass</link>      (void);
+<link linkend="int">int</link>                 <link linkend="xmlSecGCryptKeyDataRsaAdoptKey">xmlSecGCryptKeyDataRsaAdoptKey</link>      (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+                                                         <link linkend="gcry-sexp-t">gcry_sexp_t</link> rsa_key);
+<link linkend="int">int</link>                 <link linkend="xmlSecGCryptKeyDataRsaAdoptKeyPair">xmlSecGCryptKeyDataRsaAdoptKeyPair</link>  (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+                                                         <link linkend="gcry-sexp-t">gcry_sexp_t</link> pub_key,
+                                                         <link linkend="gcry-sexp-t">gcry_sexp_t</link> priv_key);
+<link linkend="gcry-sexp-t">gcry_sexp_t</link>         <link linkend="xmlSecGCryptKeyDataRsaGetPublicKey">xmlSecGCryptKeyDataRsaGetPublicKey</link>  (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
+<link linkend="gcry-sexp-t">gcry_sexp_t</link>         <link linkend="xmlSecGCryptKeyDataRsaGetPrivateKey">xmlSecGCryptKeyDataRsaGetPrivateKey</link> (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
 #define             <link linkend="xmlSecGCryptTransformRsaMd5Id">xmlSecGCryptTransformRsaMd5Id</link>
-<link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecGCryptTransformRsaRipemd160GetKlass">xmlSecGCryptTransformRsaRipemd160GetKlass</link>
-                                                        (<parameter><type>void</type></parameter>);
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGCryptTransformRsaMd5GetKlass">xmlSecGCryptTransformRsaMd5GetKlass</link> (void);
 #define             <link linkend="xmlSecGCryptTransformRsaRipemd160Id">xmlSecGCryptTransformRsaRipemd160Id</link>
-<link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecGCryptTransformRsaSha1GetKlass">xmlSecGCryptTransformRsaSha1GetKlass</link>
-                                                        (<parameter><type>void</type></parameter>);
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGCryptTransformRsaRipemd160GetKlass">xmlSecGCryptTransformRsaRipemd160GetKlass</link>
+                                                        (void);
 #define             <link linkend="xmlSecGCryptTransformRsaSha1Id">xmlSecGCryptTransformRsaSha1Id</link>
-<link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecGCryptTransformRsaSha256GetKlass">xmlSecGCryptTransformRsaSha256GetKlass</link>
-                                                        (<parameter><type>void</type></parameter>);
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGCryptTransformRsaSha1GetKlass">xmlSecGCryptTransformRsaSha1GetKlass</link>
+                                                        (void);
 #define             <link linkend="xmlSecGCryptTransformRsaSha256Id">xmlSecGCryptTransformRsaSha256Id</link>
-<link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecGCryptTransformRsaSha384GetKlass">xmlSecGCryptTransformRsaSha384GetKlass</link>
-                                                        (<parameter><type>void</type></parameter>);
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGCryptTransformRsaSha256GetKlass">xmlSecGCryptTransformRsaSha256GetKlass</link>
+                                                        (void);
 #define             <link linkend="xmlSecGCryptTransformRsaSha384Id">xmlSecGCryptTransformRsaSha384Id</link>
-<link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecGCryptTransformRsaSha512GetKlass">xmlSecGCryptTransformRsaSha512GetKlass</link>
-                                                        (<parameter><type>void</type></parameter>);
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGCryptTransformRsaSha384GetKlass">xmlSecGCryptTransformRsaSha384GetKlass</link>
+                                                        (void);
 #define             <link linkend="xmlSecGCryptTransformRsaSha512Id">xmlSecGCryptTransformRsaSha512Id</link>
-<link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecGCryptTransformSha1GetKlass">xmlSecGCryptTransformSha1GetKlass</link>   (<parameter><type>void</type></parameter>);
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGCryptTransformRsaSha512GetKlass">xmlSecGCryptTransformRsaSha512GetKlass</link>
+                                                        (void);
 #define             <link linkend="xmlSecGCryptTransformSha1Id">xmlSecGCryptTransformSha1Id</link>
-<link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecGCryptTransformSha256GetKlass">xmlSecGCryptTransformSha256GetKlass</link> (<parameter><type>void</type></parameter>);
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGCryptTransformSha1GetKlass">xmlSecGCryptTransformSha1GetKlass</link>   (void);
 #define             <link linkend="xmlSecGCryptTransformSha256Id">xmlSecGCryptTransformSha256Id</link>
-<link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecGCryptTransformSha384GetKlass">xmlSecGCryptTransformSha384GetKlass</link> (<parameter><type>void</type></parameter>);
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGCryptTransformSha256GetKlass">xmlSecGCryptTransformSha256GetKlass</link> (void);
 #define             <link linkend="xmlSecGCryptTransformSha384Id">xmlSecGCryptTransformSha384Id</link>
-<link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecGCryptTransformSha512GetKlass">xmlSecGCryptTransformSha512GetKlass</link> (<parameter><type>void</type></parameter>);
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGCryptTransformSha384GetKlass">xmlSecGCryptTransformSha384GetKlass</link> (void);
 #define             <link linkend="xmlSecGCryptTransformSha512Id">xmlSecGCryptTransformSha512Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGCryptTransformSha512GetKlass">xmlSecGCryptTransformSha512GetKlass</link> (void);
+#define             <link linkend="xmlSecGCryptTransformMd5Id">xmlSecGCryptTransformMd5Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGCryptTransformMd5GetKlass">xmlSecGCryptTransformMd5GetKlass</link>    (void);
+#define             <link linkend="xmlSecGCryptTransformRipemd160Id">xmlSecGCryptTransformRipemd160Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGCryptTransformRipemd160GetKlass">xmlSecGCryptTransformRipemd160GetKlass</link>
+                                                        (void);
 </synopsis>
 </refsynopsisdiv>
+
+
+
+
+
+
+
+
 
 <refsect1 id="xmlsec-gcrypt-crypto.description" role="desc">
 <title role="desc.title">Description</title>
@@ -139,770 +147,850 @@
 Crypto transforms implementation for GCrypt.
 </para>
 </refsect1>
+
 <refsect1 id="xmlsec-gcrypt-crypto.details" role="details">
 <title role="details.title">Details</title>
 <refsect2 id="xmlSecCryptoGetFunctions-gcrypt" role="function">
 <title>xmlSecCryptoGetFunctions_gcrypt ()</title>
-<indexterm zone="xmlSecCryptoGetFunctions-gcrypt"><primary>xmlSecCryptoGetFunctions_gcrypt</primary></indexterm>
-<programlisting><link linkend="xmlSecCryptoDLFunctions"><returnvalue>xmlSecCryptoDLFunctionsPtr</returnvalue></link> xmlSecCryptoGetFunctions_gcrypt
-                                                        (<parameter><type>void</type></parameter>);</programlisting>
+<indexterm zone="xmlSecCryptoGetFunctions-gcrypt"><primary sortas="xmlSecCryptoGetFunctions_gcrypt">xmlSecCryptoGetFunctions_gcrypt</primary></indexterm><programlisting><link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link>  xmlSecCryptoGetFunctions_gcrypt
+                                                        (void);</programlisting>
 <para>
-Gets the pointer to xmlsec-gcrypt functions table.
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>the xmlsec-gcrypt functions table or NULL if an error occurs.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecGCryptGenerateRandom" role="function">
-<title>xmlSecGCryptGenerateRandom ()</title>
-<indexterm zone="xmlSecGCryptGenerateRandom"><primary>xmlSecGCryptGenerateRandom</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecGCryptGenerateRandom          (<parameter><link linkend="xmlSecBuffer"><type>xmlSecBufferPtr</type></link> buffer</parameter>,
-                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> size</parameter>);</programlisting>
+Gets the pointer to xmlsec-gcrypt functions table.</para>
 <para>
-Generates <parameter>size</parameter> random bytes and puts result in <parameter>buffer</parameter>.
 </para><variablelist role="params">
-<varlistentry><term><parameter>buffer</parameter>&#160;:</term>
-<listitem><simpara>the destination buffer.</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara>the numer of bytes to generate.</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>0 on success or a negative value otherwise.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecGCryptHmacGetMinOutputLength" role="function">
-<title>xmlSecGCryptHmacGetMinOutputLength ()</title>
-<indexterm zone="xmlSecGCryptHmacGetMinOutputLength"><primary>xmlSecGCryptHmacGetMinOutputLength</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecGCryptHmacGetMinOutputLength  (<parameter><type>void</type></parameter>);</programlisting>
-<para>
-Gets the value of min HMAC length.
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>the min HMAC output length</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecGCryptHmacSetMinOutputLength" role="function">
-<title>xmlSecGCryptHmacSetMinOutputLength ()</title>
-<indexterm zone="xmlSecGCryptHmacSetMinOutputLength"><primary>xmlSecGCryptHmacSetMinOutputLength</primary></indexterm>
-<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecGCryptHmacSetMinOutputLength  (<parameter><link linkend="int"><type>int</type></link> min_length</parameter>);</programlisting>
-<para>
-Sets the min HMAC output length
-</para><variablelist role="params">
-<varlistentry><term><parameter>min_length</parameter>&#160;:</term>
-<listitem><simpara>the new min length</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the xmlsec-gcrypt functions table or NULL if an error occurs.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecGCryptInit" role="function">
 <title>xmlSecGCryptInit ()</title>
-<indexterm zone="xmlSecGCryptInit"><primary>xmlSecGCryptInit</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecGCryptInit                    (<parameter><type>void</type></parameter>);</programlisting>
+<indexterm zone="xmlSecGCryptInit"><primary sortas="xmlSecGCryptInit">xmlSecGCryptInit</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGCryptInit                    (void);</programlisting>
 <para>
-XMLSec library specific crypto engine initialization.
+XMLSec library specific crypto engine initialization.</para>
+<para>
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>0 on success or a negative value otherwise.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecGCryptKeyDataAesGetKlass" role="function">
-<title>xmlSecGCryptKeyDataAesGetKlass ()</title>
-<indexterm zone="xmlSecGCryptKeyDataAesGetKlass"><primary>xmlSecGCryptKeyDataAesGetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecKeyDataId"><returnvalue>xmlSecKeyDataId</returnvalue></link>     xmlSecGCryptKeyDataAesGetKlass      (<parameter><type>void</type></parameter>);</programlisting>
-<para>
-The AES key data klass.
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>AES key data klass.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecGCryptKeyDataAesId" role="macro">
-<title>xmlSecGCryptKeyDataAesId</title>
-<indexterm zone="xmlSecGCryptKeyDataAesId"><primary>xmlSecGCryptKeyDataAesId</primary></indexterm>
-<programlisting>#define             xmlSecGCryptKeyDataAesId</programlisting>
-<para>
-The AES key data klass.
-</para></refsect2>
-<refsect2 id="xmlSecGCryptKeyDataAesSet" role="function">
-<title>xmlSecGCryptKeyDataAesSet ()</title>
-<indexterm zone="xmlSecGCryptKeyDataAesSet"><primary>xmlSecGCryptKeyDataAesSet</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecGCryptKeyDataAesSet           (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
-                                                         <parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *buf</parameter>,
-                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> bufSize</parameter>);</programlisting>
-<para>
-Sets the value of AES key data.
-</para><variablelist role="params">
-<varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>the pointer to AES key data.</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>the pointer to key value.</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>bufSize</parameter>&#160;:</term>
-<listitem><simpara>the key value size (in bytes).</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>0 on success or a negative value if an error occurs.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecGCryptKeyDataDesGetKlass" role="function">
-<title>xmlSecGCryptKeyDataDesGetKlass ()</title>
-<indexterm zone="xmlSecGCryptKeyDataDesGetKlass"><primary>xmlSecGCryptKeyDataDesGetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecKeyDataId"><returnvalue>xmlSecKeyDataId</returnvalue></link>     xmlSecGCryptKeyDataDesGetKlass      (<parameter><type>void</type></parameter>);</programlisting>
-<para>
-The DES key data klass.
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>DES key data klass.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecGCryptKeyDataDesId" role="macro">
-<title>xmlSecGCryptKeyDataDesId</title>
-<indexterm zone="xmlSecGCryptKeyDataDesId"><primary>xmlSecGCryptKeyDataDesId</primary></indexterm>
-<programlisting>#define             xmlSecGCryptKeyDataDesId</programlisting>
-<para>
-The DES key data klass.
-</para></refsect2>
-<refsect2 id="xmlSecGCryptKeyDataDesSet" role="function">
-<title>xmlSecGCryptKeyDataDesSet ()</title>
-<indexterm zone="xmlSecGCryptKeyDataDesSet"><primary>xmlSecGCryptKeyDataDesSet</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecGCryptKeyDataDesSet           (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
-                                                         <parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *buf</parameter>,
-                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> bufSize</parameter>);</programlisting>
-<para>
-Sets the value of DES key data.
-</para><variablelist role="params">
-<varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>the pointer to DES key data.</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>the pointer to key value.</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>bufSize</parameter>&#160;:</term>
-<listitem><simpara>the key value size (in bytes).</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>0 on success or a negative value if an error occurs.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecGCryptKeyDataDsaAdoptKey" role="function">
-<title>xmlSecGCryptKeyDataDsaAdoptKey ()</title>
-<indexterm zone="xmlSecGCryptKeyDataDsaAdoptKey"><primary>xmlSecGCryptKeyDataDsaAdoptKey</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecGCryptKeyDataDsaAdoptKey      (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
-                                                         <parameter><link linkend="gcry-sexp-t"><type>gcry_sexp_t</type></link> dsa_key</parameter>);</programlisting>
-<para>
-Sets the value of DSA key data.
-</para><variablelist role="params">
-<varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>the pointer to DSA key data.</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>dsa_key</parameter>&#160;:</term>
-<listitem><simpara>the pointer to GCrypt DSA key.</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>0 on success or a negative value otherwise.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecGCryptKeyDataDsaAdoptKeyPair" role="function">
-<title>xmlSecGCryptKeyDataDsaAdoptKeyPair ()</title>
-<indexterm zone="xmlSecGCryptKeyDataDsaAdoptKeyPair"><primary>xmlSecGCryptKeyDataDsaAdoptKeyPair</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecGCryptKeyDataDsaAdoptKeyPair  (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
-                                                         <parameter><link linkend="gcry-sexp-t"><type>gcry_sexp_t</type></link> pub_key</parameter>,
-                                                         <parameter><link linkend="gcry-sexp-t"><type>gcry_sexp_t</type></link> priv_key</parameter>);</programlisting>
-<para>
-Sets the value of DSA key data.
-</para><variablelist role="params">
-<varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>the pointer to DSA key data.</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pub_key</parameter>&#160;:</term>
-<listitem><simpara>the pointer to GCrypt DSA pub key.</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>priv_key</parameter>&#160;:</term>
-<listitem><simpara>the pointer to GCrypt DSA priv key.</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>0 on success or a negative value otherwise.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecGCryptKeyDataDsaGetKlass" role="function">
-<title>xmlSecGCryptKeyDataDsaGetKlass ()</title>
-<indexterm zone="xmlSecGCryptKeyDataDsaGetKlass"><primary>xmlSecGCryptKeyDataDsaGetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecKeyDataId"><returnvalue>xmlSecKeyDataId</returnvalue></link>     xmlSecGCryptKeyDataDsaGetKlass      (<parameter><type>void</type></parameter>);</programlisting>
-<para>
-The DSA key data klass.
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to DSA key data klass.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecGCryptKeyDataDsaGetPrivateKey" role="function">
-<title>xmlSecGCryptKeyDataDsaGetPrivateKey ()</title>
-<indexterm zone="xmlSecGCryptKeyDataDsaGetPrivateKey"><primary>xmlSecGCryptKeyDataDsaGetPrivateKey</primary></indexterm>
-<programlisting><link linkend="gcry-sexp-t"><returnvalue>gcry_sexp_t</returnvalue></link>         xmlSecGCryptKeyDataDsaGetPrivateKey (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);</programlisting>
-<para>
-Gets the GCrypt DSA private key from DSA key data.
-</para><variablelist role="params">
-<varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>the pointer to DSA key data.</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to GCrypt private DSA key or NULL if an error occurs.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecGCryptKeyDataDsaGetPublicKey" role="function">
-<title>xmlSecGCryptKeyDataDsaGetPublicKey ()</title>
-<indexterm zone="xmlSecGCryptKeyDataDsaGetPublicKey"><primary>xmlSecGCryptKeyDataDsaGetPublicKey</primary></indexterm>
-<programlisting><link linkend="gcry-sexp-t"><returnvalue>gcry_sexp_t</returnvalue></link>         xmlSecGCryptKeyDataDsaGetPublicKey  (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);</programlisting>
-<para>
-Gets the GCrypt DSA public key from DSA key data.
-</para><variablelist role="params">
-<varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>the pointer to DSA key data.</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to GCrypt public DSA key or NULL if an error occurs.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecGCryptKeyDataDsaId" role="macro">
-<title>xmlSecGCryptKeyDataDsaId</title>
-<indexterm zone="xmlSecGCryptKeyDataDsaId"><primary>xmlSecGCryptKeyDataDsaId</primary></indexterm>
-<programlisting>#define             xmlSecGCryptKeyDataDsaId</programlisting>
-<para>
-The DSA key klass.
-</para></refsect2>
-<refsect2 id="xmlSecGCryptKeyDataHmacGetKlass" role="function">
-<title>xmlSecGCryptKeyDataHmacGetKlass ()</title>
-<indexterm zone="xmlSecGCryptKeyDataHmacGetKlass"><primary>xmlSecGCryptKeyDataHmacGetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecKeyDataId"><returnvalue>xmlSecKeyDataId</returnvalue></link>     xmlSecGCryptKeyDataHmacGetKlass     (<parameter><type>void</type></parameter>);</programlisting>
-<para>
-The HMAC key data klass.
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>HMAC key data klass.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecGCryptKeyDataHmacId" role="macro">
-<title>xmlSecGCryptKeyDataHmacId</title>
-<indexterm zone="xmlSecGCryptKeyDataHmacId"><primary>xmlSecGCryptKeyDataHmacId</primary></indexterm>
-<programlisting>#define             xmlSecGCryptKeyDataHmacId</programlisting>
-<para>
-The HMAC key klass.
-</para></refsect2>
-<refsect2 id="xmlSecGCryptKeyDataHmacSet" role="function">
-<title>xmlSecGCryptKeyDataHmacSet ()</title>
-<indexterm zone="xmlSecGCryptKeyDataHmacSet"><primary>xmlSecGCryptKeyDataHmacSet</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecGCryptKeyDataHmacSet          (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
-                                                         <parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *buf</parameter>,
-                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> bufSize</parameter>);</programlisting>
-<para>
-Sets the value of HMAC key data.
-</para><variablelist role="params">
-<varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>the pointer to HMAC key data.</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>the pointer to key value.</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>bufSize</parameter>&#160;:</term>
-<listitem><simpara>the key value size (in bytes).</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>0 on success or a negative value if an error occurs.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecGCryptKeyDataRsaAdoptKey" role="function">
-<title>xmlSecGCryptKeyDataRsaAdoptKey ()</title>
-<indexterm zone="xmlSecGCryptKeyDataRsaAdoptKey"><primary>xmlSecGCryptKeyDataRsaAdoptKey</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecGCryptKeyDataRsaAdoptKey      (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
-                                                         <parameter><link linkend="gcry-sexp-t"><type>gcry_sexp_t</type></link> rsa_key</parameter>);</programlisting>
-<para>
-Sets the value of RSA key data.
-</para><variablelist role="params">
-<varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>the pointer to RSA key data.</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>rsa_key</parameter>&#160;:</term>
-<listitem><simpara>the pointer to GCrypt RSA key.</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>0 on success or a negative value otherwise.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecGCryptKeyDataRsaAdoptKeyPair" role="function">
-<title>xmlSecGCryptKeyDataRsaAdoptKeyPair ()</title>
-<indexterm zone="xmlSecGCryptKeyDataRsaAdoptKeyPair"><primary>xmlSecGCryptKeyDataRsaAdoptKeyPair</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecGCryptKeyDataRsaAdoptKeyPair  (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
-                                                         <parameter><link linkend="gcry-sexp-t"><type>gcry_sexp_t</type></link> pub_key</parameter>,
-                                                         <parameter><link linkend="gcry-sexp-t"><type>gcry_sexp_t</type></link> priv_key</parameter>);</programlisting>
-<para>
-Sets the value of RSA key data.
-</para><variablelist role="params">
-<varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>the pointer to RSA key data.</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pub_key</parameter>&#160;:</term>
-<listitem><simpara>the pointer to GCrypt RSA pub key.</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>priv_key</parameter>&#160;:</term>
-<listitem><simpara>the pointer to GCrypt RSA priv key.</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>0 on success or a negative value otherwise.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecGCryptKeyDataRsaGetKlass" role="function">
-<title>xmlSecGCryptKeyDataRsaGetKlass ()</title>
-<indexterm zone="xmlSecGCryptKeyDataRsaGetKlass"><primary>xmlSecGCryptKeyDataRsaGetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecKeyDataId"><returnvalue>xmlSecKeyDataId</returnvalue></link>     xmlSecGCryptKeyDataRsaGetKlass      (<parameter><type>void</type></parameter>);</programlisting>
-<para>
-The GCrypt RSA key data klass.
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to GCrypt RSA key data klass.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecGCryptKeyDataRsaGetPrivateKey" role="function">
-<title>xmlSecGCryptKeyDataRsaGetPrivateKey ()</title>
-<indexterm zone="xmlSecGCryptKeyDataRsaGetPrivateKey"><primary>xmlSecGCryptKeyDataRsaGetPrivateKey</primary></indexterm>
-<programlisting><link linkend="gcry-sexp-t"><returnvalue>gcry_sexp_t</returnvalue></link>         xmlSecGCryptKeyDataRsaGetPrivateKey (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);</programlisting>
-<para>
-Gets the GCrypt RSA private key from RSA key data.
-</para><variablelist role="params">
-<varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>the pointer to RSA key data.</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to GCrypt private RSA key or NULL if an error occurs.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecGCryptKeyDataRsaGetPublicKey" role="function">
-<title>xmlSecGCryptKeyDataRsaGetPublicKey ()</title>
-<indexterm zone="xmlSecGCryptKeyDataRsaGetPublicKey"><primary>xmlSecGCryptKeyDataRsaGetPublicKey</primary></indexterm>
-<programlisting><link linkend="gcry-sexp-t"><returnvalue>gcry_sexp_t</returnvalue></link>         xmlSecGCryptKeyDataRsaGetPublicKey  (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);</programlisting>
-<para>
-Gets the GCrypt RSA public key from RSA key data.
-</para><variablelist role="params">
-<varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>the pointer to RSA key data.</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to GCrypt public RSA key or NULL if an error occurs.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecGCryptKeyDataRsaId" role="macro">
-<title>xmlSecGCryptKeyDataRsaId</title>
-<indexterm zone="xmlSecGCryptKeyDataRsaId"><primary>xmlSecGCryptKeyDataRsaId</primary></indexterm>
-<programlisting>#define             xmlSecGCryptKeyDataRsaId</programlisting>
-<para>
-The RSA key klass.
-</para></refsect2>
-<refsect2 id="xmlSecGCryptKeysMngrInit" role="function">
-<title>xmlSecGCryptKeysMngrInit ()</title>
-<indexterm zone="xmlSecGCryptKeysMngrInit"><primary>xmlSecGCryptKeysMngrInit</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecGCryptKeysMngrInit            (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> mngr</parameter>);</programlisting>
-<para>
-Adds GCrypt specific key data stores in keys manager.
-</para><variablelist role="params">
-<varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara>the pointer to keys manager.</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>0 on success or a negative value otherwise.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecGCryptShutdown" role="function">
 <title>xmlSecGCryptShutdown ()</title>
-<indexterm zone="xmlSecGCryptShutdown"><primary>xmlSecGCryptShutdown</primary></indexterm>
-<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecGCryptShutdown                (<parameter><type>void</type></parameter>);</programlisting>
+<indexterm zone="xmlSecGCryptShutdown"><primary sortas="xmlSecGCryptShutdown">xmlSecGCryptShutdown</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGCryptShutdown                (void);</programlisting>
 <para>
-XMLSec library specific crypto engine shutdown.
+XMLSec library specific crypto engine shutdown.</para>
+<para>
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>0 on success or a negative value otherwise.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecGCryptTransformAes128CbcGetKlass" role="function">
-<title>xmlSecGCryptTransformAes128CbcGetKlass ()</title>
-<indexterm zone="xmlSecGCryptTransformAes128CbcGetKlass"><primary>xmlSecGCryptTransformAes128CbcGetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   xmlSecGCryptTransformAes128CbcGetKlass
-                                                        (<parameter><type>void</type></parameter>);</programlisting>
+<refsect2 id="xmlSecGCryptKeysMngrInit" role="function">
+<title>xmlSecGCryptKeysMngrInit ()</title>
+<indexterm zone="xmlSecGCryptKeysMngrInit"><primary sortas="xmlSecGCryptKeysMngrInit">xmlSecGCryptKeysMngrInit</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGCryptKeysMngrInit            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
 <para>
-AES 128 CBC encryption transform klass.
+Adds GCrypt specific key data stores in keys manager.</para>
+<para>
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to AES 128 CBC encryption transform.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>mngr</parameter>&#160;:</term>
+<listitem><simpara>               the pointer to keys manager.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGCryptGenerateRandom" role="function">
+<title>xmlSecGCryptGenerateRandom ()</title>
+<indexterm zone="xmlSecGCryptGenerateRandom"><primary sortas="xmlSecGCryptGenerateRandom">xmlSecGCryptGenerateRandom</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGCryptGenerateRandom          (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buffer,
+                                                         <link linkend="xmlSecSize">xmlSecSize</link> size);</programlisting>
+<para>
+Generates <parameter>size</parameter> random bytes and puts result in <parameter>buffer</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>buffer</parameter>&#160;:</term>
+<listitem><simpara>             the destination buffer.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>size</parameter>&#160;:</term>
+<listitem><simpara>               the numer of bytes to generate.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGCryptKeyDataAesId" role="macro">
+<title>xmlSecGCryptKeyDataAesId</title>
+<indexterm zone="xmlSecGCryptKeyDataAesId"><primary sortas="xmlSecGCryptKeyDataAesId">xmlSecGCryptKeyDataAesId</primary></indexterm><programlisting>#define             xmlSecGCryptKeyDataAesId</programlisting>
+<para>
+The AES key data klass.</para>
+<para>
+</para></refsect2>
+<refsect2 id="xmlSecGCryptKeyDataAesGetKlass" role="function">
+<title>xmlSecGCryptKeyDataAesGetKlass ()</title>
+<indexterm zone="xmlSecGCryptKeyDataAesGetKlass"><primary sortas="xmlSecGCryptKeyDataAesGetKlass">xmlSecGCryptKeyDataAesGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     xmlSecGCryptKeyDataAesGetKlass      (void);</programlisting>
+<para>
+The AES key data klass.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> AES key data klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGCryptKeyDataAesSet" role="function">
+<title>xmlSecGCryptKeyDataAesSet ()</title>
+<indexterm zone="xmlSecGCryptKeyDataAesSet"><primary sortas="xmlSecGCryptKeyDataAesSet">xmlSecGCryptKeyDataAesSet</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGCryptKeyDataAesSet           (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
+                                                         <link linkend="xmlSecSize">xmlSecSize</link> bufSize);</programlisting>
+<para>
+Sets the value of AES key data.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>               the pointer to AES key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
+<listitem><simpara>                the pointer to key value.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>bufSize</parameter>&#160;:</term>
+<listitem><simpara>            the key value size (in bytes).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecGCryptTransformAes128CbcId" role="macro">
 <title>xmlSecGCryptTransformAes128CbcId</title>
-<indexterm zone="xmlSecGCryptTransformAes128CbcId"><primary>xmlSecGCryptTransformAes128CbcId</primary></indexterm>
-<programlisting>#define             xmlSecGCryptTransformAes128CbcId</programlisting>
+<indexterm zone="xmlSecGCryptTransformAes128CbcId"><primary sortas="xmlSecGCryptTransformAes128CbcId">xmlSecGCryptTransformAes128CbcId</primary></indexterm><programlisting>#define             xmlSecGCryptTransformAes128CbcId</programlisting>
 <para>
-The AES128 CBC cipher transform klass.
+The AES128 CBC cipher transform klass.</para>
+<para>
 </para></refsect2>
-<refsect2 id="xmlSecGCryptTransformAes192CbcGetKlass" role="function">
-<title>xmlSecGCryptTransformAes192CbcGetKlass ()</title>
-<indexterm zone="xmlSecGCryptTransformAes192CbcGetKlass"><primary>xmlSecGCryptTransformAes192CbcGetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   xmlSecGCryptTransformAes192CbcGetKlass
-                                                        (<parameter><type>void</type></parameter>);</programlisting>
+<refsect2 id="xmlSecGCryptTransformAes128CbcGetKlass" role="function">
+<title>xmlSecGCryptTransformAes128CbcGetKlass ()</title>
+<indexterm zone="xmlSecGCryptTransformAes128CbcGetKlass"><primary sortas="xmlSecGCryptTransformAes128CbcGetKlass">xmlSecGCryptTransformAes128CbcGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGCryptTransformAes128CbcGetKlass
+                                                        (void);</programlisting>
 <para>
-AES 192 CBC encryption transform klass.
+AES 128 CBC encryption transform klass.</para>
+<para>
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to AES 192 CBC encryption transform.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to AES 128 CBC encryption transform.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecGCryptTransformAes192CbcId" role="macro">
 <title>xmlSecGCryptTransformAes192CbcId</title>
-<indexterm zone="xmlSecGCryptTransformAes192CbcId"><primary>xmlSecGCryptTransformAes192CbcId</primary></indexterm>
-<programlisting>#define             xmlSecGCryptTransformAes192CbcId</programlisting>
+<indexterm zone="xmlSecGCryptTransformAes192CbcId"><primary sortas="xmlSecGCryptTransformAes192CbcId">xmlSecGCryptTransformAes192CbcId</primary></indexterm><programlisting>#define             xmlSecGCryptTransformAes192CbcId</programlisting>
 <para>
-The AES192 CBC cipher transform klass.
+The AES192 CBC cipher transform klass.</para>
+<para>
 </para></refsect2>
-<refsect2 id="xmlSecGCryptTransformAes256CbcGetKlass" role="function">
-<title>xmlSecGCryptTransformAes256CbcGetKlass ()</title>
-<indexterm zone="xmlSecGCryptTransformAes256CbcGetKlass"><primary>xmlSecGCryptTransformAes256CbcGetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   xmlSecGCryptTransformAes256CbcGetKlass
-                                                        (<parameter><type>void</type></parameter>);</programlisting>
+<refsect2 id="xmlSecGCryptTransformAes192CbcGetKlass" role="function">
+<title>xmlSecGCryptTransformAes192CbcGetKlass ()</title>
+<indexterm zone="xmlSecGCryptTransformAes192CbcGetKlass"><primary sortas="xmlSecGCryptTransformAes192CbcGetKlass">xmlSecGCryptTransformAes192CbcGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGCryptTransformAes192CbcGetKlass
+                                                        (void);</programlisting>
 <para>
-AES 256 CBC encryption transform klass.
+AES 192 CBC encryption transform klass.</para>
+<para>
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to AES 256 CBC encryption transform.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to AES 192 CBC encryption transform.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecGCryptTransformAes256CbcId" role="macro">
 <title>xmlSecGCryptTransformAes256CbcId</title>
-<indexterm zone="xmlSecGCryptTransformAes256CbcId"><primary>xmlSecGCryptTransformAes256CbcId</primary></indexterm>
-<programlisting>#define             xmlSecGCryptTransformAes256CbcId</programlisting>
+<indexterm zone="xmlSecGCryptTransformAes256CbcId"><primary sortas="xmlSecGCryptTransformAes256CbcId">xmlSecGCryptTransformAes256CbcId</primary></indexterm><programlisting>#define             xmlSecGCryptTransformAes256CbcId</programlisting>
 <para>
-The AES256 CBC cipher transform klass.
+The AES256 CBC cipher transform klass.</para>
+<para>
 </para></refsect2>
-<refsect2 id="xmlSecGCryptTransformDes3CbcGetKlass" role="function">
-<title>xmlSecGCryptTransformDes3CbcGetKlass ()</title>
-<indexterm zone="xmlSecGCryptTransformDes3CbcGetKlass"><primary>xmlSecGCryptTransformDes3CbcGetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   xmlSecGCryptTransformDes3CbcGetKlass
-                                                        (<parameter><type>void</type></parameter>);</programlisting>
+<refsect2 id="xmlSecGCryptTransformAes256CbcGetKlass" role="function">
+<title>xmlSecGCryptTransformAes256CbcGetKlass ()</title>
+<indexterm zone="xmlSecGCryptTransformAes256CbcGetKlass"><primary sortas="xmlSecGCryptTransformAes256CbcGetKlass">xmlSecGCryptTransformAes256CbcGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGCryptTransformAes256CbcGetKlass
+                                                        (void);</programlisting>
 <para>
-Triple DES CBC encryption transform klass.
+AES 256 CBC encryption transform klass.</para>
+<para>
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to Triple DES encryption transform.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecGCryptTransformDes3CbcId" role="macro">
-<title>xmlSecGCryptTransformDes3CbcId</title>
-<indexterm zone="xmlSecGCryptTransformDes3CbcId"><primary>xmlSecGCryptTransformDes3CbcId</primary></indexterm>
-<programlisting>#define             xmlSecGCryptTransformDes3CbcId</programlisting>
-<para>
-The DES3 CBC cipher transform klass.
-</para></refsect2>
-<refsect2 id="xmlSecGCryptTransformDsaSha1GetKlass" role="function">
-<title>xmlSecGCryptTransformDsaSha1GetKlass ()</title>
-<indexterm zone="xmlSecGCryptTransformDsaSha1GetKlass"><primary>xmlSecGCryptTransformDsaSha1GetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   xmlSecGCryptTransformDsaSha1GetKlass
-                                                        (<parameter><type>void</type></parameter>);</programlisting>
-<para>
-The DSA-SHA1 signature transform klass.
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>DSA-SHA1 signature transform klass.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecGCryptTransformDsaSha1Id" role="macro">
-<title>xmlSecGCryptTransformDsaSha1Id</title>
-<indexterm zone="xmlSecGCryptTransformDsaSha1Id"><primary>xmlSecGCryptTransformDsaSha1Id</primary></indexterm>
-<programlisting>#define             xmlSecGCryptTransformDsaSha1Id</programlisting>
-<para>
-The DSA SHA1 signature transform klass.
-</para></refsect2>
-<refsect2 id="xmlSecGCryptTransformHmacMd5GetKlass" role="function">
-<title>xmlSecGCryptTransformHmacMd5GetKlass ()</title>
-<indexterm zone="xmlSecGCryptTransformHmacMd5GetKlass"><primary>xmlSecGCryptTransformHmacMd5GetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   xmlSecGCryptTransformHmacMd5GetKlass
-                                                        (<parameter><type>void</type></parameter>);</programlisting>
-<para>
-The HMAC-MD5 transform klass.
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>the HMAC-MD5 transform klass.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecGCryptTransformHmacMd5Id" role="macro">
-<title>xmlSecGCryptTransformHmacMd5Id</title>
-<indexterm zone="xmlSecGCryptTransformHmacMd5Id"><primary>xmlSecGCryptTransformHmacMd5Id</primary></indexterm>
-<programlisting>#define             xmlSecGCryptTransformHmacMd5Id</programlisting>
-<para>
-The HMAC with MD5 signature transform klass.
-</para></refsect2>
-<refsect2 id="xmlSecGCryptTransformHmacRipemd160GetKlass" role="function">
-<title>xmlSecGCryptTransformHmacRipemd160GetKlass ()</title>
-<indexterm zone="xmlSecGCryptTransformHmacRipemd160GetKlass"><primary>xmlSecGCryptTransformHmacRipemd160GetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   xmlSecGCryptTransformHmacRipemd160GetKlass
-                                                        (<parameter><type>void</type></parameter>);</programlisting>
-<para>
-The HMAC-RIPEMD160 transform klass.
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>the HMAC-RIPEMD160 transform klass.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecGCryptTransformHmacRipemd160Id" role="macro">
-<title>xmlSecGCryptTransformHmacRipemd160Id</title>
-<indexterm zone="xmlSecGCryptTransformHmacRipemd160Id"><primary>xmlSecGCryptTransformHmacRipemd160Id</primary></indexterm>
-<programlisting>#define             xmlSecGCryptTransformHmacRipemd160Id</programlisting>
-<para>
-The HMAC with RipeMD160 signature transform klass.
-</para></refsect2>
-<refsect2 id="xmlSecGCryptTransformHmacSha1GetKlass" role="function">
-<title>xmlSecGCryptTransformHmacSha1GetKlass ()</title>
-<indexterm zone="xmlSecGCryptTransformHmacSha1GetKlass"><primary>xmlSecGCryptTransformHmacSha1GetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   xmlSecGCryptTransformHmacSha1GetKlass
-                                                        (<parameter><type>void</type></parameter>);</programlisting>
-<para>
-The HMAC-SHA1 transform klass.
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>the HMAC-SHA1 transform klass.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecGCryptTransformHmacSha1Id" role="macro">
-<title>xmlSecGCryptTransformHmacSha1Id</title>
-<indexterm zone="xmlSecGCryptTransformHmacSha1Id"><primary>xmlSecGCryptTransformHmacSha1Id</primary></indexterm>
-<programlisting>#define             xmlSecGCryptTransformHmacSha1Id</programlisting>
-<para>
-The HMAC with SHA1 signature transform klass.
-</para></refsect2>
-<refsect2 id="xmlSecGCryptTransformHmacSha256GetKlass" role="function">
-<title>xmlSecGCryptTransformHmacSha256GetKlass ()</title>
-<indexterm zone="xmlSecGCryptTransformHmacSha256GetKlass"><primary>xmlSecGCryptTransformHmacSha256GetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   xmlSecGCryptTransformHmacSha256GetKlass
-                                                        (<parameter><type>void</type></parameter>);</programlisting>
-<para>
-The HMAC-SHA256 transform klass.
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>the HMAC-SHA256 transform klass.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecGCryptTransformHmacSha256Id" role="macro">
-<title>xmlSecGCryptTransformHmacSha256Id</title>
-<indexterm zone="xmlSecGCryptTransformHmacSha256Id"><primary>xmlSecGCryptTransformHmacSha256Id</primary></indexterm>
-<programlisting>#define             xmlSecGCryptTransformHmacSha256Id</programlisting>
-<para>
-The HMAC with SHA256 signature transform klass.
-</para></refsect2>
-<refsect2 id="xmlSecGCryptTransformHmacSha384GetKlass" role="function">
-<title>xmlSecGCryptTransformHmacSha384GetKlass ()</title>
-<indexterm zone="xmlSecGCryptTransformHmacSha384GetKlass"><primary>xmlSecGCryptTransformHmacSha384GetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   xmlSecGCryptTransformHmacSha384GetKlass
-                                                        (<parameter><type>void</type></parameter>);</programlisting>
-<para>
-The HMAC-SHA384 transform klass.
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>the HMAC-SHA384 transform klass.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecGCryptTransformHmacSha384Id" role="macro">
-<title>xmlSecGCryptTransformHmacSha384Id</title>
-<indexterm zone="xmlSecGCryptTransformHmacSha384Id"><primary>xmlSecGCryptTransformHmacSha384Id</primary></indexterm>
-<programlisting>#define             xmlSecGCryptTransformHmacSha384Id</programlisting>
-<para>
-The HMAC with SHA384 signature transform klass.
-</para></refsect2>
-<refsect2 id="xmlSecGCryptTransformHmacSha512GetKlass" role="function">
-<title>xmlSecGCryptTransformHmacSha512GetKlass ()</title>
-<indexterm zone="xmlSecGCryptTransformHmacSha512GetKlass"><primary>xmlSecGCryptTransformHmacSha512GetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   xmlSecGCryptTransformHmacSha512GetKlass
-                                                        (<parameter><type>void</type></parameter>);</programlisting>
-<para>
-The HMAC-SHA512 transform klass.
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>the HMAC-SHA512 transform klass.</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecGCryptTransformHmacSha512Id" role="macro">
-<title>xmlSecGCryptTransformHmacSha512Id</title>
-<indexterm zone="xmlSecGCryptTransformHmacSha512Id"><primary>xmlSecGCryptTransformHmacSha512Id</primary></indexterm>
-<programlisting>#define             xmlSecGCryptTransformHmacSha512Id</programlisting>
-<para>
-The HMAC with SHA512 signature transform klass.
-</para></refsect2>
-<refsect2 id="xmlSecGCryptTransformKWAes128GetKlass" role="function">
-<title>xmlSecGCryptTransformKWAes128GetKlass ()</title>
-<indexterm zone="xmlSecGCryptTransformKWAes128GetKlass"><primary>xmlSecGCryptTransformKWAes128GetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   xmlSecGCryptTransformKWAes128GetKlass
-                                                        (<parameter><type>void</type></parameter>);</programlisting>
-<para>
-The AES-128 kew wrapper transform klass.
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>AES-128 kew wrapper transform klass.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to AES 256 CBC encryption transform.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecGCryptTransformKWAes128Id" role="macro">
 <title>xmlSecGCryptTransformKWAes128Id</title>
-<indexterm zone="xmlSecGCryptTransformKWAes128Id"><primary>xmlSecGCryptTransformKWAes128Id</primary></indexterm>
-<programlisting>#define             xmlSecGCryptTransformKWAes128Id</programlisting>
+<indexterm zone="xmlSecGCryptTransformKWAes128Id"><primary sortas="xmlSecGCryptTransformKWAes128Id">xmlSecGCryptTransformKWAes128Id</primary></indexterm><programlisting>#define             xmlSecGCryptTransformKWAes128Id</programlisting>
 <para>
-The AES 128 key wrap transform klass.
+The AES 128 key wrap transform klass.</para>
+<para>
 </para></refsect2>
-<refsect2 id="xmlSecGCryptTransformKWAes192GetKlass" role="function">
-<title>xmlSecGCryptTransformKWAes192GetKlass ()</title>
-<indexterm zone="xmlSecGCryptTransformKWAes192GetKlass"><primary>xmlSecGCryptTransformKWAes192GetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   xmlSecGCryptTransformKWAes192GetKlass
-                                                        (<parameter><type>void</type></parameter>);</programlisting>
+<refsect2 id="xmlSecGCryptTransformKWAes128GetKlass" role="function">
+<title>xmlSecGCryptTransformKWAes128GetKlass ()</title>
+<indexterm zone="xmlSecGCryptTransformKWAes128GetKlass"><primary sortas="xmlSecGCryptTransformKWAes128GetKlass">xmlSecGCryptTransformKWAes128GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGCryptTransformKWAes128GetKlass
+                                                        (void);</programlisting>
 <para>
-The AES-192 kew wrapper transform klass.
+The AES-128 kew wrapper transform klass.</para>
+<para>
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>AES-192 kew wrapper transform klass.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> AES-128 kew wrapper transform klass.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecGCryptTransformKWAes192Id" role="macro">
 <title>xmlSecGCryptTransformKWAes192Id</title>
-<indexterm zone="xmlSecGCryptTransformKWAes192Id"><primary>xmlSecGCryptTransformKWAes192Id</primary></indexterm>
-<programlisting>#define             xmlSecGCryptTransformKWAes192Id</programlisting>
+<indexterm zone="xmlSecGCryptTransformKWAes192Id"><primary sortas="xmlSecGCryptTransformKWAes192Id">xmlSecGCryptTransformKWAes192Id</primary></indexterm><programlisting>#define             xmlSecGCryptTransformKWAes192Id</programlisting>
 <para>
-The AES 192 key wrap transform klass.
+The AES 192 key wrap transform klass.</para>
+<para>
 </para></refsect2>
-<refsect2 id="xmlSecGCryptTransformKWAes256GetKlass" role="function">
-<title>xmlSecGCryptTransformKWAes256GetKlass ()</title>
-<indexterm zone="xmlSecGCryptTransformKWAes256GetKlass"><primary>xmlSecGCryptTransformKWAes256GetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   xmlSecGCryptTransformKWAes256GetKlass
-                                                        (<parameter><type>void</type></parameter>);</programlisting>
+<refsect2 id="xmlSecGCryptTransformKWAes192GetKlass" role="function">
+<title>xmlSecGCryptTransformKWAes192GetKlass ()</title>
+<indexterm zone="xmlSecGCryptTransformKWAes192GetKlass"><primary sortas="xmlSecGCryptTransformKWAes192GetKlass">xmlSecGCryptTransformKWAes192GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGCryptTransformKWAes192GetKlass
+                                                        (void);</programlisting>
 <para>
-The AES-256 kew wrapper transform klass.
+The AES-192 kew wrapper transform klass.</para>
+<para>
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>AES-256 kew wrapper transform klass.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> AES-192 kew wrapper transform klass.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecGCryptTransformKWAes256Id" role="macro">
 <title>xmlSecGCryptTransformKWAes256Id</title>
-<indexterm zone="xmlSecGCryptTransformKWAes256Id"><primary>xmlSecGCryptTransformKWAes256Id</primary></indexterm>
-<programlisting>#define             xmlSecGCryptTransformKWAes256Id</programlisting>
+<indexterm zone="xmlSecGCryptTransformKWAes256Id"><primary sortas="xmlSecGCryptTransformKWAes256Id">xmlSecGCryptTransformKWAes256Id</primary></indexterm><programlisting>#define             xmlSecGCryptTransformKWAes256Id</programlisting>
 <para>
-The AES 256 key wrap transform klass.
+The AES 256 key wrap transform klass.</para>
+<para>
 </para></refsect2>
-<refsect2 id="xmlSecGCryptTransformKWDes3GetKlass" role="function">
-<title>xmlSecGCryptTransformKWDes3GetKlass ()</title>
-<indexterm zone="xmlSecGCryptTransformKWDes3GetKlass"><primary>xmlSecGCryptTransformKWDes3GetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   xmlSecGCryptTransformKWDes3GetKlass (<parameter><type>void</type></parameter>);</programlisting>
+<refsect2 id="xmlSecGCryptTransformKWAes256GetKlass" role="function">
+<title>xmlSecGCryptTransformKWAes256GetKlass ()</title>
+<indexterm zone="xmlSecGCryptTransformKWAes256GetKlass"><primary sortas="xmlSecGCryptTransformKWAes256GetKlass">xmlSecGCryptTransformKWAes256GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGCryptTransformKWAes256GetKlass
+                                                        (void);</programlisting>
 <para>
-The Triple DES key wrapper transform klass.
+The AES-256 kew wrapper transform klass.</para>
+<para>
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>Triple DES key wrapper transform klass.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> AES-256 kew wrapper transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGCryptKeyDataDesId" role="macro">
+<title>xmlSecGCryptKeyDataDesId</title>
+<indexterm zone="xmlSecGCryptKeyDataDesId"><primary sortas="xmlSecGCryptKeyDataDesId">xmlSecGCryptKeyDataDesId</primary></indexterm><programlisting>#define             xmlSecGCryptKeyDataDesId</programlisting>
+<para>
+The DES key data klass.</para>
+<para>
+</para></refsect2>
+<refsect2 id="xmlSecGCryptKeyDataDesGetKlass" role="function">
+<title>xmlSecGCryptKeyDataDesGetKlass ()</title>
+<indexterm zone="xmlSecGCryptKeyDataDesGetKlass"><primary sortas="xmlSecGCryptKeyDataDesGetKlass">xmlSecGCryptKeyDataDesGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     xmlSecGCryptKeyDataDesGetKlass      (void);</programlisting>
+<para>
+The DES key data klass.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> DES key data klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGCryptKeyDataDesSet" role="function">
+<title>xmlSecGCryptKeyDataDesSet ()</title>
+<indexterm zone="xmlSecGCryptKeyDataDesSet"><primary sortas="xmlSecGCryptKeyDataDesSet">xmlSecGCryptKeyDataDesSet</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGCryptKeyDataDesSet           (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
+                                                         <link linkend="xmlSecSize">xmlSecSize</link> bufSize);</programlisting>
+<para>
+Sets the value of DES key data.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>               the pointer to DES key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
+<listitem><simpara>                the pointer to key value.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>bufSize</parameter>&#160;:</term>
+<listitem><simpara>            the key value size (in bytes).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGCryptTransformDes3CbcId" role="macro">
+<title>xmlSecGCryptTransformDes3CbcId</title>
+<indexterm zone="xmlSecGCryptTransformDes3CbcId"><primary sortas="xmlSecGCryptTransformDes3CbcId">xmlSecGCryptTransformDes3CbcId</primary></indexterm><programlisting>#define             xmlSecGCryptTransformDes3CbcId</programlisting>
+<para>
+The DES3 CBC cipher transform klass.</para>
+<para>
+</para></refsect2>
+<refsect2 id="xmlSecGCryptTransformDes3CbcGetKlass" role="function">
+<title>xmlSecGCryptTransformDes3CbcGetKlass ()</title>
+<indexterm zone="xmlSecGCryptTransformDes3CbcGetKlass"><primary sortas="xmlSecGCryptTransformDes3CbcGetKlass">xmlSecGCryptTransformDes3CbcGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGCryptTransformDes3CbcGetKlass
+                                                        (void);</programlisting>
+<para>
+Triple DES CBC encryption transform klass.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to Triple DES encryption transform.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecGCryptTransformKWDes3Id" role="macro">
 <title>xmlSecGCryptTransformKWDes3Id</title>
-<indexterm zone="xmlSecGCryptTransformKWDes3Id"><primary>xmlSecGCryptTransformKWDes3Id</primary></indexterm>
-<programlisting>#define             xmlSecGCryptTransformKWDes3Id</programlisting>
+<indexterm zone="xmlSecGCryptTransformKWDes3Id"><primary sortas="xmlSecGCryptTransformKWDes3Id">xmlSecGCryptTransformKWDes3Id</primary></indexterm><programlisting>#define             xmlSecGCryptTransformKWDes3Id</programlisting>
 <para>
-The DES3 KW transform klass.
+The DES3 KW transform klass.</para>
+<para>
 </para></refsect2>
-<refsect2 id="xmlSecGCryptTransformMd5GetKlass" role="function">
-<title>xmlSecGCryptTransformMd5GetKlass ()</title>
-<indexterm zone="xmlSecGCryptTransformMd5GetKlass"><primary>xmlSecGCryptTransformMd5GetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   xmlSecGCryptTransformMd5GetKlass    (<parameter><type>void</type></parameter>);</programlisting>
+<refsect2 id="xmlSecGCryptTransformKWDes3GetKlass" role="function">
+<title>xmlSecGCryptTransformKWDes3GetKlass ()</title>
+<indexterm zone="xmlSecGCryptTransformKWDes3GetKlass"><primary sortas="xmlSecGCryptTransformKWDes3GetKlass">xmlSecGCryptTransformKWDes3GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGCryptTransformKWDes3GetKlass (void);</programlisting>
 <para>
-MD5 digest transform klass.
+The Triple DES key wrapper transform klass.</para>
+<para>
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to MD5 digest transform klass.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> Triple DES key wrapper transform klass.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecGCryptTransformMd5Id" role="macro">
-<title>xmlSecGCryptTransformMd5Id</title>
-<indexterm zone="xmlSecGCryptTransformMd5Id"><primary>xmlSecGCryptTransformMd5Id</primary></indexterm>
-<programlisting>#define             xmlSecGCryptTransformMd5Id</programlisting>
+<refsect2 id="xmlSecGCryptKeyDataDsaId" role="macro">
+<title>xmlSecGCryptKeyDataDsaId</title>
+<indexterm zone="xmlSecGCryptKeyDataDsaId"><primary sortas="xmlSecGCryptKeyDataDsaId">xmlSecGCryptKeyDataDsaId</primary></indexterm><programlisting>#define             xmlSecGCryptKeyDataDsaId</programlisting>
 <para>
-The MD5 digest transform klass.
+The DSA key klass.</para>
+<para>
 </para></refsect2>
-<refsect2 id="xmlSecGCryptTransformRipemd160GetKlass" role="function">
-<title>xmlSecGCryptTransformRipemd160GetKlass ()</title>
-<indexterm zone="xmlSecGCryptTransformRipemd160GetKlass"><primary>xmlSecGCryptTransformRipemd160GetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   xmlSecGCryptTransformRipemd160GetKlass
-                                                        (<parameter><type>void</type></parameter>);</programlisting>
+<refsect2 id="xmlSecGCryptKeyDataDsaGetKlass" role="function">
+<title>xmlSecGCryptKeyDataDsaGetKlass ()</title>
+<indexterm zone="xmlSecGCryptKeyDataDsaGetKlass"><primary sortas="xmlSecGCryptKeyDataDsaGetKlass">xmlSecGCryptKeyDataDsaGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     xmlSecGCryptKeyDataDsaGetKlass      (void);</programlisting>
 <para>
-RIPEMD160 digest transform klass.
+The DSA key data klass.</para>
+<para>
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to RIPEMD160 digest transform klass.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to DSA key data klass.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="xmlSecGCryptTransformRipemd160Id" role="macro">
-<title>xmlSecGCryptTransformRipemd160Id</title>
-<indexterm zone="xmlSecGCryptTransformRipemd160Id"><primary>xmlSecGCryptTransformRipemd160Id</primary></indexterm>
-<programlisting>#define             xmlSecGCryptTransformRipemd160Id</programlisting>
+<refsect2 id="xmlSecGCryptKeyDataDsaAdoptKey" role="function">
+<title>xmlSecGCryptKeyDataDsaAdoptKey ()</title>
+<indexterm zone="xmlSecGCryptKeyDataDsaAdoptKey"><primary sortas="xmlSecGCryptKeyDataDsaAdoptKey">xmlSecGCryptKeyDataDsaAdoptKey</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGCryptKeyDataDsaAdoptKey      (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+                                                         <link linkend="gcry-sexp-t">gcry_sexp_t</link> dsa_key);</programlisting>
 <para>
-The RIPEMD160 digest transform klass.
-</para></refsect2>
-<refsect2 id="xmlSecGCryptTransformRsaMd5GetKlass" role="function">
-<title>xmlSecGCryptTransformRsaMd5GetKlass ()</title>
-<indexterm zone="xmlSecGCryptTransformRsaMd5GetKlass"><primary>xmlSecGCryptTransformRsaMd5GetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   xmlSecGCryptTransformRsaMd5GetKlass (<parameter><type>void</type></parameter>);</programlisting>
+Sets the value of DSA key data.</para>
 <para>
-The RSA-MD5 signature transform klass.
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>RSA-MD5 signature transform klass.</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>               the pointer to DSA key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dsa_key</parameter>&#160;:</term>
+<listitem><simpara>            the pointer to GCrypt DSA key.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGCryptKeyDataDsaAdoptKeyPair" role="function">
+<title>xmlSecGCryptKeyDataDsaAdoptKeyPair ()</title>
+<indexterm zone="xmlSecGCryptKeyDataDsaAdoptKeyPair"><primary sortas="xmlSecGCryptKeyDataDsaAdoptKeyPair">xmlSecGCryptKeyDataDsaAdoptKeyPair</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGCryptKeyDataDsaAdoptKeyPair  (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+                                                         <link linkend="gcry-sexp-t">gcry_sexp_t</link> pub_key,
+                                                         <link linkend="gcry-sexp-t">gcry_sexp_t</link> priv_key);</programlisting>
+<para>
+Sets the value of DSA key data.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>               the pointer to DSA key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pub_key</parameter>&#160;:</term>
+<listitem><simpara>            the pointer to GCrypt DSA pub key.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>priv_key</parameter>&#160;:</term>
+<listitem><simpara>           the pointer to GCrypt DSA priv key.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGCryptKeyDataDsaGetPublicKey" role="function">
+<title>xmlSecGCryptKeyDataDsaGetPublicKey ()</title>
+<indexterm zone="xmlSecGCryptKeyDataDsaGetPublicKey"><primary sortas="xmlSecGCryptKeyDataDsaGetPublicKey">xmlSecGCryptKeyDataDsaGetPublicKey</primary></indexterm><programlisting><link linkend="gcry-sexp-t">gcry_sexp_t</link>         xmlSecGCryptKeyDataDsaGetPublicKey  (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
+<para>
+Gets the GCrypt DSA public key from DSA key data.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>               the pointer to DSA key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to GCrypt public DSA key or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGCryptKeyDataDsaGetPrivateKey" role="function">
+<title>xmlSecGCryptKeyDataDsaGetPrivateKey ()</title>
+<indexterm zone="xmlSecGCryptKeyDataDsaGetPrivateKey"><primary sortas="xmlSecGCryptKeyDataDsaGetPrivateKey">xmlSecGCryptKeyDataDsaGetPrivateKey</primary></indexterm><programlisting><link linkend="gcry-sexp-t">gcry_sexp_t</link>         xmlSecGCryptKeyDataDsaGetPrivateKey (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
+<para>
+Gets the GCrypt DSA private key from DSA key data.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>               the pointer to DSA key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to GCrypt private DSA key or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGCryptTransformDsaSha1Id" role="macro">
+<title>xmlSecGCryptTransformDsaSha1Id</title>
+<indexterm zone="xmlSecGCryptTransformDsaSha1Id"><primary sortas="xmlSecGCryptTransformDsaSha1Id">xmlSecGCryptTransformDsaSha1Id</primary></indexterm><programlisting>#define             xmlSecGCryptTransformDsaSha1Id</programlisting>
+<para>
+The DSA SHA1 signature transform klass.</para>
+<para>
+</para></refsect2>
+<refsect2 id="xmlSecGCryptTransformDsaSha1GetKlass" role="function">
+<title>xmlSecGCryptTransformDsaSha1GetKlass ()</title>
+<indexterm zone="xmlSecGCryptTransformDsaSha1GetKlass"><primary sortas="xmlSecGCryptTransformDsaSha1GetKlass">xmlSecGCryptTransformDsaSha1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGCryptTransformDsaSha1GetKlass
+                                                        (void);</programlisting>
+<para>
+The DSA-SHA1 signature transform klass.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> DSA-SHA1 signature transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGCryptHmacGetMinOutputLength" role="function">
+<title>xmlSecGCryptHmacGetMinOutputLength ()</title>
+<indexterm zone="xmlSecGCryptHmacGetMinOutputLength"><primary sortas="xmlSecGCryptHmacGetMinOutputLength">xmlSecGCryptHmacGetMinOutputLength</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGCryptHmacGetMinOutputLength  (void);</programlisting>
+<para>
+Gets the value of min HMAC length.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the min HMAC output length
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGCryptHmacSetMinOutputLength" role="function">
+<title>xmlSecGCryptHmacSetMinOutputLength ()</title>
+<indexterm zone="xmlSecGCryptHmacSetMinOutputLength"><primary sortas="xmlSecGCryptHmacSetMinOutputLength">xmlSecGCryptHmacSetMinOutputLength</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecGCryptHmacSetMinOutputLength  (<link linkend="int">int</link> min_length);</programlisting>
+<para>
+Sets the min HMAC output length</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>min_length</parameter>&#160;:</term>
+<listitem><simpara> the new min length
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGCryptKeyDataHmacId" role="macro">
+<title>xmlSecGCryptKeyDataHmacId</title>
+<indexterm zone="xmlSecGCryptKeyDataHmacId"><primary sortas="xmlSecGCryptKeyDataHmacId">xmlSecGCryptKeyDataHmacId</primary></indexterm><programlisting>#define             xmlSecGCryptKeyDataHmacId</programlisting>
+<para>
+The HMAC key klass.</para>
+<para>
+</para></refsect2>
+<refsect2 id="xmlSecGCryptKeyDataHmacGetKlass" role="function">
+<title>xmlSecGCryptKeyDataHmacGetKlass ()</title>
+<indexterm zone="xmlSecGCryptKeyDataHmacGetKlass"><primary sortas="xmlSecGCryptKeyDataHmacGetKlass">xmlSecGCryptKeyDataHmacGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     xmlSecGCryptKeyDataHmacGetKlass     (void);</programlisting>
+<para>
+The HMAC key data klass.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> HMAC key data klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGCryptKeyDataHmacSet" role="function">
+<title>xmlSecGCryptKeyDataHmacSet ()</title>
+<indexterm zone="xmlSecGCryptKeyDataHmacSet"><primary sortas="xmlSecGCryptKeyDataHmacSet">xmlSecGCryptKeyDataHmacSet</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGCryptKeyDataHmacSet          (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
+                                                         <link linkend="xmlSecSize">xmlSecSize</link> bufSize);</programlisting>
+<para>
+Sets the value of HMAC key data.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>               the pointer to HMAC key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
+<listitem><simpara>                the pointer to key value.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>bufSize</parameter>&#160;:</term>
+<listitem><simpara>            the key value size (in bytes).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGCryptTransformHmacMd5Id" role="macro">
+<title>xmlSecGCryptTransformHmacMd5Id</title>
+<indexterm zone="xmlSecGCryptTransformHmacMd5Id"><primary sortas="xmlSecGCryptTransformHmacMd5Id">xmlSecGCryptTransformHmacMd5Id</primary></indexterm><programlisting>#define             xmlSecGCryptTransformHmacMd5Id</programlisting>
+<para>
+The HMAC with MD5 signature transform klass.</para>
+<para>
+</para></refsect2>
+<refsect2 id="xmlSecGCryptTransformHmacMd5GetKlass" role="function">
+<title>xmlSecGCryptTransformHmacMd5GetKlass ()</title>
+<indexterm zone="xmlSecGCryptTransformHmacMd5GetKlass"><primary sortas="xmlSecGCryptTransformHmacMd5GetKlass">xmlSecGCryptTransformHmacMd5GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGCryptTransformHmacMd5GetKlass
+                                                        (void);</programlisting>
+<para>
+The HMAC-MD5 transform klass.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the HMAC-MD5 transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGCryptTransformHmacRipemd160Id" role="macro">
+<title>xmlSecGCryptTransformHmacRipemd160Id</title>
+<indexterm zone="xmlSecGCryptTransformHmacRipemd160Id"><primary sortas="xmlSecGCryptTransformHmacRipemd160Id">xmlSecGCryptTransformHmacRipemd160Id</primary></indexterm><programlisting>#define             xmlSecGCryptTransformHmacRipemd160Id</programlisting>
+<para>
+The HMAC with RipeMD160 signature transform klass.</para>
+<para>
+</para></refsect2>
+<refsect2 id="xmlSecGCryptTransformHmacRipemd160GetKlass" role="function">
+<title>xmlSecGCryptTransformHmacRipemd160GetKlass ()</title>
+<indexterm zone="xmlSecGCryptTransformHmacRipemd160GetKlass"><primary sortas="xmlSecGCryptTransformHmacRipemd160GetKlass">xmlSecGCryptTransformHmacRipemd160GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGCryptTransformHmacRipemd160GetKlass
+                                                        (void);</programlisting>
+<para>
+The HMAC-RIPEMD160 transform klass.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the HMAC-RIPEMD160 transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGCryptTransformHmacSha1Id" role="macro">
+<title>xmlSecGCryptTransformHmacSha1Id</title>
+<indexterm zone="xmlSecGCryptTransformHmacSha1Id"><primary sortas="xmlSecGCryptTransformHmacSha1Id">xmlSecGCryptTransformHmacSha1Id</primary></indexterm><programlisting>#define             xmlSecGCryptTransformHmacSha1Id</programlisting>
+<para>
+The HMAC with SHA1 signature transform klass.</para>
+<para>
+</para></refsect2>
+<refsect2 id="xmlSecGCryptTransformHmacSha1GetKlass" role="function">
+<title>xmlSecGCryptTransformHmacSha1GetKlass ()</title>
+<indexterm zone="xmlSecGCryptTransformHmacSha1GetKlass"><primary sortas="xmlSecGCryptTransformHmacSha1GetKlass">xmlSecGCryptTransformHmacSha1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGCryptTransformHmacSha1GetKlass
+                                                        (void);</programlisting>
+<para>
+The HMAC-SHA1 transform klass.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the HMAC-SHA1 transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGCryptTransformHmacSha256Id" role="macro">
+<title>xmlSecGCryptTransformHmacSha256Id</title>
+<indexterm zone="xmlSecGCryptTransformHmacSha256Id"><primary sortas="xmlSecGCryptTransformHmacSha256Id">xmlSecGCryptTransformHmacSha256Id</primary></indexterm><programlisting>#define             xmlSecGCryptTransformHmacSha256Id</programlisting>
+<para>
+The HMAC with SHA256 signature transform klass.</para>
+<para>
+</para></refsect2>
+<refsect2 id="xmlSecGCryptTransformHmacSha256GetKlass" role="function">
+<title>xmlSecGCryptTransformHmacSha256GetKlass ()</title>
+<indexterm zone="xmlSecGCryptTransformHmacSha256GetKlass"><primary sortas="xmlSecGCryptTransformHmacSha256GetKlass">xmlSecGCryptTransformHmacSha256GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGCryptTransformHmacSha256GetKlass
+                                                        (void);</programlisting>
+<para>
+The HMAC-SHA256 transform klass.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the HMAC-SHA256 transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGCryptTransformHmacSha384Id" role="macro">
+<title>xmlSecGCryptTransformHmacSha384Id</title>
+<indexterm zone="xmlSecGCryptTransformHmacSha384Id"><primary sortas="xmlSecGCryptTransformHmacSha384Id">xmlSecGCryptTransformHmacSha384Id</primary></indexterm><programlisting>#define             xmlSecGCryptTransformHmacSha384Id</programlisting>
+<para>
+The HMAC with SHA384 signature transform klass.</para>
+<para>
+</para></refsect2>
+<refsect2 id="xmlSecGCryptTransformHmacSha384GetKlass" role="function">
+<title>xmlSecGCryptTransformHmacSha384GetKlass ()</title>
+<indexterm zone="xmlSecGCryptTransformHmacSha384GetKlass"><primary sortas="xmlSecGCryptTransformHmacSha384GetKlass">xmlSecGCryptTransformHmacSha384GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGCryptTransformHmacSha384GetKlass
+                                                        (void);</programlisting>
+<para>
+The HMAC-SHA384 transform klass.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the HMAC-SHA384 transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGCryptTransformHmacSha512Id" role="macro">
+<title>xmlSecGCryptTransformHmacSha512Id</title>
+<indexterm zone="xmlSecGCryptTransformHmacSha512Id"><primary sortas="xmlSecGCryptTransformHmacSha512Id">xmlSecGCryptTransformHmacSha512Id</primary></indexterm><programlisting>#define             xmlSecGCryptTransformHmacSha512Id</programlisting>
+<para>
+The HMAC with SHA512 signature transform klass.</para>
+<para>
+</para></refsect2>
+<refsect2 id="xmlSecGCryptTransformHmacSha512GetKlass" role="function">
+<title>xmlSecGCryptTransformHmacSha512GetKlass ()</title>
+<indexterm zone="xmlSecGCryptTransformHmacSha512GetKlass"><primary sortas="xmlSecGCryptTransformHmacSha512GetKlass">xmlSecGCryptTransformHmacSha512GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGCryptTransformHmacSha512GetKlass
+                                                        (void);</programlisting>
+<para>
+The HMAC-SHA512 transform klass.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the HMAC-SHA512 transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGCryptKeyDataRsaId" role="macro">
+<title>xmlSecGCryptKeyDataRsaId</title>
+<indexterm zone="xmlSecGCryptKeyDataRsaId"><primary sortas="xmlSecGCryptKeyDataRsaId">xmlSecGCryptKeyDataRsaId</primary></indexterm><programlisting>#define             xmlSecGCryptKeyDataRsaId</programlisting>
+<para>
+The RSA key klass.</para>
+<para>
+</para></refsect2>
+<refsect2 id="xmlSecGCryptKeyDataRsaGetKlass" role="function">
+<title>xmlSecGCryptKeyDataRsaGetKlass ()</title>
+<indexterm zone="xmlSecGCryptKeyDataRsaGetKlass"><primary sortas="xmlSecGCryptKeyDataRsaGetKlass">xmlSecGCryptKeyDataRsaGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     xmlSecGCryptKeyDataRsaGetKlass      (void);</programlisting>
+<para>
+The GCrypt RSA key data klass.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to GCrypt RSA key data klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGCryptKeyDataRsaAdoptKey" role="function">
+<title>xmlSecGCryptKeyDataRsaAdoptKey ()</title>
+<indexterm zone="xmlSecGCryptKeyDataRsaAdoptKey"><primary sortas="xmlSecGCryptKeyDataRsaAdoptKey">xmlSecGCryptKeyDataRsaAdoptKey</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGCryptKeyDataRsaAdoptKey      (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+                                                         <link linkend="gcry-sexp-t">gcry_sexp_t</link> rsa_key);</programlisting>
+<para>
+Sets the value of RSA key data.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>               the pointer to RSA key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>rsa_key</parameter>&#160;:</term>
+<listitem><simpara>            the pointer to GCrypt RSA key.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGCryptKeyDataRsaAdoptKeyPair" role="function">
+<title>xmlSecGCryptKeyDataRsaAdoptKeyPair ()</title>
+<indexterm zone="xmlSecGCryptKeyDataRsaAdoptKeyPair"><primary sortas="xmlSecGCryptKeyDataRsaAdoptKeyPair">xmlSecGCryptKeyDataRsaAdoptKeyPair</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGCryptKeyDataRsaAdoptKeyPair  (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+                                                         <link linkend="gcry-sexp-t">gcry_sexp_t</link> pub_key,
+                                                         <link linkend="gcry-sexp-t">gcry_sexp_t</link> priv_key);</programlisting>
+<para>
+Sets the value of RSA key data.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>               the pointer to RSA key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pub_key</parameter>&#160;:</term>
+<listitem><simpara>            the pointer to GCrypt RSA pub key.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>priv_key</parameter>&#160;:</term>
+<listitem><simpara>           the pointer to GCrypt RSA priv key.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGCryptKeyDataRsaGetPublicKey" role="function">
+<title>xmlSecGCryptKeyDataRsaGetPublicKey ()</title>
+<indexterm zone="xmlSecGCryptKeyDataRsaGetPublicKey"><primary sortas="xmlSecGCryptKeyDataRsaGetPublicKey">xmlSecGCryptKeyDataRsaGetPublicKey</primary></indexterm><programlisting><link linkend="gcry-sexp-t">gcry_sexp_t</link>         xmlSecGCryptKeyDataRsaGetPublicKey  (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
+<para>
+Gets the GCrypt RSA public key from RSA key data.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>               the pointer to RSA key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to GCrypt public RSA key or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGCryptKeyDataRsaGetPrivateKey" role="function">
+<title>xmlSecGCryptKeyDataRsaGetPrivateKey ()</title>
+<indexterm zone="xmlSecGCryptKeyDataRsaGetPrivateKey"><primary sortas="xmlSecGCryptKeyDataRsaGetPrivateKey">xmlSecGCryptKeyDataRsaGetPrivateKey</primary></indexterm><programlisting><link linkend="gcry-sexp-t">gcry_sexp_t</link>         xmlSecGCryptKeyDataRsaGetPrivateKey (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
+<para>
+Gets the GCrypt RSA private key from RSA key data.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>               the pointer to RSA key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to GCrypt private RSA key or NULL if an error occurs.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecGCryptTransformRsaMd5Id" role="macro">
 <title>xmlSecGCryptTransformRsaMd5Id</title>
-<indexterm zone="xmlSecGCryptTransformRsaMd5Id"><primary>xmlSecGCryptTransformRsaMd5Id</primary></indexterm>
-<programlisting>#define             xmlSecGCryptTransformRsaMd5Id</programlisting>
+<indexterm zone="xmlSecGCryptTransformRsaMd5Id"><primary sortas="xmlSecGCryptTransformRsaMd5Id">xmlSecGCryptTransformRsaMd5Id</primary></indexterm><programlisting>#define             xmlSecGCryptTransformRsaMd5Id</programlisting>
 <para>
-The RSA-MD5 signature transform klass.
+The RSA-MD5 signature transform klass.</para>
+<para>
 </para></refsect2>
-<refsect2 id="xmlSecGCryptTransformRsaRipemd160GetKlass" role="function">
-<title>xmlSecGCryptTransformRsaRipemd160GetKlass ()</title>
-<indexterm zone="xmlSecGCryptTransformRsaRipemd160GetKlass"><primary>xmlSecGCryptTransformRsaRipemd160GetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   xmlSecGCryptTransformRsaRipemd160GetKlass
-                                                        (<parameter><type>void</type></parameter>);</programlisting>
+<refsect2 id="xmlSecGCryptTransformRsaMd5GetKlass" role="function">
+<title>xmlSecGCryptTransformRsaMd5GetKlass ()</title>
+<indexterm zone="xmlSecGCryptTransformRsaMd5GetKlass"><primary sortas="xmlSecGCryptTransformRsaMd5GetKlass">xmlSecGCryptTransformRsaMd5GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGCryptTransformRsaMd5GetKlass (void);</programlisting>
 <para>
-The RSA-RIPEMD160 signature transform klass.
+The RSA-MD5 signature transform klass.</para>
+<para>
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>RSA-RIPEMD160 signature transform klass.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> RSA-MD5 signature transform klass.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecGCryptTransformRsaRipemd160Id" role="macro">
 <title>xmlSecGCryptTransformRsaRipemd160Id</title>
-<indexterm zone="xmlSecGCryptTransformRsaRipemd160Id"><primary>xmlSecGCryptTransformRsaRipemd160Id</primary></indexterm>
-<programlisting>#define             xmlSecGCryptTransformRsaRipemd160Id</programlisting>
+<indexterm zone="xmlSecGCryptTransformRsaRipemd160Id"><primary sortas="xmlSecGCryptTransformRsaRipemd160Id">xmlSecGCryptTransformRsaRipemd160Id</primary></indexterm><programlisting>#define             xmlSecGCryptTransformRsaRipemd160Id</programlisting>
 <para>
-The RSA-RIPEMD160 signature transform klass.
+The RSA-RIPEMD160 signature transform klass.</para>
+<para>
 </para></refsect2>
-<refsect2 id="xmlSecGCryptTransformRsaSha1GetKlass" role="function">
-<title>xmlSecGCryptTransformRsaSha1GetKlass ()</title>
-<indexterm zone="xmlSecGCryptTransformRsaSha1GetKlass"><primary>xmlSecGCryptTransformRsaSha1GetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   xmlSecGCryptTransformRsaSha1GetKlass
-                                                        (<parameter><type>void</type></parameter>);</programlisting>
+<refsect2 id="xmlSecGCryptTransformRsaRipemd160GetKlass" role="function">
+<title>xmlSecGCryptTransformRsaRipemd160GetKlass ()</title>
+<indexterm zone="xmlSecGCryptTransformRsaRipemd160GetKlass"><primary sortas="xmlSecGCryptTransformRsaRipemd160GetKlass">xmlSecGCryptTransformRsaRipemd160GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGCryptTransformRsaRipemd160GetKlass
+                                                        (void);</programlisting>
 <para>
-The RSA-SHA1 signature transform klass.
+The RSA-RIPEMD160 signature transform klass.</para>
+<para>
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>RSA-SHA1 signature transform klass.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> RSA-RIPEMD160 signature transform klass.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecGCryptTransformRsaSha1Id" role="macro">
 <title>xmlSecGCryptTransformRsaSha1Id</title>
-<indexterm zone="xmlSecGCryptTransformRsaSha1Id"><primary>xmlSecGCryptTransformRsaSha1Id</primary></indexterm>
-<programlisting>#define             xmlSecGCryptTransformRsaSha1Id</programlisting>
+<indexterm zone="xmlSecGCryptTransformRsaSha1Id"><primary sortas="xmlSecGCryptTransformRsaSha1Id">xmlSecGCryptTransformRsaSha1Id</primary></indexterm><programlisting>#define             xmlSecGCryptTransformRsaSha1Id</programlisting>
 <para>
-The RSA-SHA1 signature transform klass.
+The RSA-SHA1 signature transform klass.</para>
+<para>
 </para></refsect2>
-<refsect2 id="xmlSecGCryptTransformRsaSha256GetKlass" role="function">
-<title>xmlSecGCryptTransformRsaSha256GetKlass ()</title>
-<indexterm zone="xmlSecGCryptTransformRsaSha256GetKlass"><primary>xmlSecGCryptTransformRsaSha256GetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   xmlSecGCryptTransformRsaSha256GetKlass
-                                                        (<parameter><type>void</type></parameter>);</programlisting>
+<refsect2 id="xmlSecGCryptTransformRsaSha1GetKlass" role="function">
+<title>xmlSecGCryptTransformRsaSha1GetKlass ()</title>
+<indexterm zone="xmlSecGCryptTransformRsaSha1GetKlass"><primary sortas="xmlSecGCryptTransformRsaSha1GetKlass">xmlSecGCryptTransformRsaSha1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGCryptTransformRsaSha1GetKlass
+                                                        (void);</programlisting>
 <para>
-The RSA-SHA256 signature transform klass.
+The RSA-SHA1 signature transform klass.</para>
+<para>
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>RSA-SHA256 signature transform klass.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> RSA-SHA1 signature transform klass.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecGCryptTransformRsaSha256Id" role="macro">
 <title>xmlSecGCryptTransformRsaSha256Id</title>
-<indexterm zone="xmlSecGCryptTransformRsaSha256Id"><primary>xmlSecGCryptTransformRsaSha256Id</primary></indexterm>
-<programlisting>#define             xmlSecGCryptTransformRsaSha256Id</programlisting>
+<indexterm zone="xmlSecGCryptTransformRsaSha256Id"><primary sortas="xmlSecGCryptTransformRsaSha256Id">xmlSecGCryptTransformRsaSha256Id</primary></indexterm><programlisting>#define             xmlSecGCryptTransformRsaSha256Id</programlisting>
 <para>
-The RSA-SHA256 signature transform klass.
+The RSA-SHA256 signature transform klass.</para>
+<para>
 </para></refsect2>
-<refsect2 id="xmlSecGCryptTransformRsaSha384GetKlass" role="function">
-<title>xmlSecGCryptTransformRsaSha384GetKlass ()</title>
-<indexterm zone="xmlSecGCryptTransformRsaSha384GetKlass"><primary>xmlSecGCryptTransformRsaSha384GetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   xmlSecGCryptTransformRsaSha384GetKlass
-                                                        (<parameter><type>void</type></parameter>);</programlisting>
+<refsect2 id="xmlSecGCryptTransformRsaSha256GetKlass" role="function">
+<title>xmlSecGCryptTransformRsaSha256GetKlass ()</title>
+<indexterm zone="xmlSecGCryptTransformRsaSha256GetKlass"><primary sortas="xmlSecGCryptTransformRsaSha256GetKlass">xmlSecGCryptTransformRsaSha256GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGCryptTransformRsaSha256GetKlass
+                                                        (void);</programlisting>
 <para>
-The RSA-SHA384 signature transform klass.
+The RSA-SHA256 signature transform klass.</para>
+<para>
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>RSA-SHA384 signature transform klass.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> RSA-SHA256 signature transform klass.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecGCryptTransformRsaSha384Id" role="macro">
 <title>xmlSecGCryptTransformRsaSha384Id</title>
-<indexterm zone="xmlSecGCryptTransformRsaSha384Id"><primary>xmlSecGCryptTransformRsaSha384Id</primary></indexterm>
-<programlisting>#define             xmlSecGCryptTransformRsaSha384Id</programlisting>
+<indexterm zone="xmlSecGCryptTransformRsaSha384Id"><primary sortas="xmlSecGCryptTransformRsaSha384Id">xmlSecGCryptTransformRsaSha384Id</primary></indexterm><programlisting>#define             xmlSecGCryptTransformRsaSha384Id</programlisting>
 <para>
-The RSA-SHA384 signature transform klass.
+The RSA-SHA384 signature transform klass.</para>
+<para>
 </para></refsect2>
-<refsect2 id="xmlSecGCryptTransformRsaSha512GetKlass" role="function">
-<title>xmlSecGCryptTransformRsaSha512GetKlass ()</title>
-<indexterm zone="xmlSecGCryptTransformRsaSha512GetKlass"><primary>xmlSecGCryptTransformRsaSha512GetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   xmlSecGCryptTransformRsaSha512GetKlass
-                                                        (<parameter><type>void</type></parameter>);</programlisting>
+<refsect2 id="xmlSecGCryptTransformRsaSha384GetKlass" role="function">
+<title>xmlSecGCryptTransformRsaSha384GetKlass ()</title>
+<indexterm zone="xmlSecGCryptTransformRsaSha384GetKlass"><primary sortas="xmlSecGCryptTransformRsaSha384GetKlass">xmlSecGCryptTransformRsaSha384GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGCryptTransformRsaSha384GetKlass
+                                                        (void);</programlisting>
 <para>
-The RSA-SHA512 signature transform klass.
+The RSA-SHA384 signature transform klass.</para>
+<para>
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>RSA-SHA512 signature transform klass.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> RSA-SHA384 signature transform klass.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecGCryptTransformRsaSha512Id" role="macro">
 <title>xmlSecGCryptTransformRsaSha512Id</title>
-<indexterm zone="xmlSecGCryptTransformRsaSha512Id"><primary>xmlSecGCryptTransformRsaSha512Id</primary></indexterm>
-<programlisting>#define             xmlSecGCryptTransformRsaSha512Id</programlisting>
+<indexterm zone="xmlSecGCryptTransformRsaSha512Id"><primary sortas="xmlSecGCryptTransformRsaSha512Id">xmlSecGCryptTransformRsaSha512Id</primary></indexterm><programlisting>#define             xmlSecGCryptTransformRsaSha512Id</programlisting>
 <para>
-The RSA-SHA512 signature transform klass.
+The RSA-SHA512 signature transform klass.</para>
+<para>
 </para></refsect2>
-<refsect2 id="xmlSecGCryptTransformSha1GetKlass" role="function">
-<title>xmlSecGCryptTransformSha1GetKlass ()</title>
-<indexterm zone="xmlSecGCryptTransformSha1GetKlass"><primary>xmlSecGCryptTransformSha1GetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   xmlSecGCryptTransformSha1GetKlass   (<parameter><type>void</type></parameter>);</programlisting>
+<refsect2 id="xmlSecGCryptTransformRsaSha512GetKlass" role="function">
+<title>xmlSecGCryptTransformRsaSha512GetKlass ()</title>
+<indexterm zone="xmlSecGCryptTransformRsaSha512GetKlass"><primary sortas="xmlSecGCryptTransformRsaSha512GetKlass">xmlSecGCryptTransformRsaSha512GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGCryptTransformRsaSha512GetKlass
+                                                        (void);</programlisting>
 <para>
-SHA-1 digest transform klass.
+The RSA-SHA512 signature transform klass.</para>
+<para>
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to SHA-1 digest transform klass.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> RSA-SHA512 signature transform klass.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecGCryptTransformSha1Id" role="macro">
 <title>xmlSecGCryptTransformSha1Id</title>
-<indexterm zone="xmlSecGCryptTransformSha1Id"><primary>xmlSecGCryptTransformSha1Id</primary></indexterm>
-<programlisting>#define             xmlSecGCryptTransformSha1Id</programlisting>
+<indexterm zone="xmlSecGCryptTransformSha1Id"><primary sortas="xmlSecGCryptTransformSha1Id">xmlSecGCryptTransformSha1Id</primary></indexterm><programlisting>#define             xmlSecGCryptTransformSha1Id</programlisting>
 <para>
-The HMAC with SHA1 signature transform klass.
+The HMAC with SHA1 signature transform klass.</para>
+<para>
 </para></refsect2>
-<refsect2 id="xmlSecGCryptTransformSha256GetKlass" role="function">
-<title>xmlSecGCryptTransformSha256GetKlass ()</title>
-<indexterm zone="xmlSecGCryptTransformSha256GetKlass"><primary>xmlSecGCryptTransformSha256GetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   xmlSecGCryptTransformSha256GetKlass (<parameter><type>void</type></parameter>);</programlisting>
+<refsect2 id="xmlSecGCryptTransformSha1GetKlass" role="function">
+<title>xmlSecGCryptTransformSha1GetKlass ()</title>
+<indexterm zone="xmlSecGCryptTransformSha1GetKlass"><primary sortas="xmlSecGCryptTransformSha1GetKlass">xmlSecGCryptTransformSha1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGCryptTransformSha1GetKlass   (void);</programlisting>
 <para>
-SHA256 digest transform klass.
+SHA-1 digest transform klass.</para>
+<para>
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to SHA256 digest transform klass.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to SHA-1 digest transform klass.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecGCryptTransformSha256Id" role="macro">
 <title>xmlSecGCryptTransformSha256Id</title>
-<indexterm zone="xmlSecGCryptTransformSha256Id"><primary>xmlSecGCryptTransformSha256Id</primary></indexterm>
-<programlisting>#define             xmlSecGCryptTransformSha256Id</programlisting>
+<indexterm zone="xmlSecGCryptTransformSha256Id"><primary sortas="xmlSecGCryptTransformSha256Id">xmlSecGCryptTransformSha256Id</primary></indexterm><programlisting>#define             xmlSecGCryptTransformSha256Id</programlisting>
 <para>
-The HMAC with SHA256 signature transform klass.
+The HMAC with SHA256 signature transform klass.</para>
+<para>
 </para></refsect2>
-<refsect2 id="xmlSecGCryptTransformSha384GetKlass" role="function">
-<title>xmlSecGCryptTransformSha384GetKlass ()</title>
-<indexterm zone="xmlSecGCryptTransformSha384GetKlass"><primary>xmlSecGCryptTransformSha384GetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   xmlSecGCryptTransformSha384GetKlass (<parameter><type>void</type></parameter>);</programlisting>
+<refsect2 id="xmlSecGCryptTransformSha256GetKlass" role="function">
+<title>xmlSecGCryptTransformSha256GetKlass ()</title>
+<indexterm zone="xmlSecGCryptTransformSha256GetKlass"><primary sortas="xmlSecGCryptTransformSha256GetKlass">xmlSecGCryptTransformSha256GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGCryptTransformSha256GetKlass (void);</programlisting>
 <para>
-SHA384 digest transform klass.
+SHA256 digest transform klass.</para>
+<para>
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to SHA384 digest transform klass.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to SHA256 digest transform klass.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecGCryptTransformSha384Id" role="macro">
 <title>xmlSecGCryptTransformSha384Id</title>
-<indexterm zone="xmlSecGCryptTransformSha384Id"><primary>xmlSecGCryptTransformSha384Id</primary></indexterm>
-<programlisting>#define             xmlSecGCryptTransformSha384Id</programlisting>
+<indexterm zone="xmlSecGCryptTransformSha384Id"><primary sortas="xmlSecGCryptTransformSha384Id">xmlSecGCryptTransformSha384Id</primary></indexterm><programlisting>#define             xmlSecGCryptTransformSha384Id</programlisting>
 <para>
-The HMAC with SHA384 signature transform klass.
+The HMAC with SHA384 signature transform klass.</para>
+<para>
 </para></refsect2>
-<refsect2 id="xmlSecGCryptTransformSha512GetKlass" role="function">
-<title>xmlSecGCryptTransformSha512GetKlass ()</title>
-<indexterm zone="xmlSecGCryptTransformSha512GetKlass"><primary>xmlSecGCryptTransformSha512GetKlass</primary></indexterm>
-<programlisting><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   xmlSecGCryptTransformSha512GetKlass (<parameter><type>void</type></parameter>);</programlisting>
+<refsect2 id="xmlSecGCryptTransformSha384GetKlass" role="function">
+<title>xmlSecGCryptTransformSha384GetKlass ()</title>
+<indexterm zone="xmlSecGCryptTransformSha384GetKlass"><primary sortas="xmlSecGCryptTransformSha384GetKlass">xmlSecGCryptTransformSha384GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGCryptTransformSha384GetKlass (void);</programlisting>
 <para>
-SHA512 digest transform klass.
+SHA384 digest transform klass.</para>
+<para>
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>pointer to SHA512 digest transform klass.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to SHA384 digest transform klass.
+</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecGCryptTransformSha512Id" role="macro">
 <title>xmlSecGCryptTransformSha512Id</title>
-<indexterm zone="xmlSecGCryptTransformSha512Id"><primary>xmlSecGCryptTransformSha512Id</primary></indexterm>
-<programlisting>#define             xmlSecGCryptTransformSha512Id</programlisting>
+<indexterm zone="xmlSecGCryptTransformSha512Id"><primary sortas="xmlSecGCryptTransformSha512Id">xmlSecGCryptTransformSha512Id</primary></indexterm><programlisting>#define             xmlSecGCryptTransformSha512Id</programlisting>
 <para>
-The HMAC with SHA512 signature transform klass.
+The HMAC with SHA512 signature transform klass.</para>
+<para>
 </para></refsect2>
+<refsect2 id="xmlSecGCryptTransformSha512GetKlass" role="function">
+<title>xmlSecGCryptTransformSha512GetKlass ()</title>
+<indexterm zone="xmlSecGCryptTransformSha512GetKlass"><primary sortas="xmlSecGCryptTransformSha512GetKlass">xmlSecGCryptTransformSha512GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGCryptTransformSha512GetKlass (void);</programlisting>
+<para>
+SHA512 digest transform klass.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to SHA512 digest transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGCryptTransformMd5Id" role="macro">
+<title>xmlSecGCryptTransformMd5Id</title>
+<indexterm zone="xmlSecGCryptTransformMd5Id"><primary sortas="xmlSecGCryptTransformMd5Id">xmlSecGCryptTransformMd5Id</primary></indexterm><programlisting>#define             xmlSecGCryptTransformMd5Id</programlisting>
+<para>
+The MD5 digest transform klass.</para>
+<para>
+</para></refsect2>
+<refsect2 id="xmlSecGCryptTransformMd5GetKlass" role="function">
+<title>xmlSecGCryptTransformMd5GetKlass ()</title>
+<indexterm zone="xmlSecGCryptTransformMd5GetKlass"><primary sortas="xmlSecGCryptTransformMd5GetKlass">xmlSecGCryptTransformMd5GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGCryptTransformMd5GetKlass    (void);</programlisting>
+<para>
+MD5 digest transform klass.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to MD5 digest transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGCryptTransformRipemd160Id" role="macro">
+<title>xmlSecGCryptTransformRipemd160Id</title>
+<indexterm zone="xmlSecGCryptTransformRipemd160Id"><primary sortas="xmlSecGCryptTransformRipemd160Id">xmlSecGCryptTransformRipemd160Id</primary></indexterm><programlisting>#define             xmlSecGCryptTransformRipemd160Id</programlisting>
+<para>
+The RIPEMD160 digest transform klass.</para>
+<para>
+</para></refsect2>
+<refsect2 id="xmlSecGCryptTransformRipemd160GetKlass" role="function">
+<title>xmlSecGCryptTransformRipemd160GetKlass ()</title>
+<indexterm zone="xmlSecGCryptTransformRipemd160GetKlass"><primary sortas="xmlSecGCryptTransformRipemd160GetKlass">xmlSecGCryptTransformRipemd160GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGCryptTransformRipemd160GetKlass
+                                                        (void);</programlisting>
+<para>
+RIPEMD160 digest transform klass.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to RIPEMD160 digest transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 
 </refsect1>
+
+
+
 
 </refentry>

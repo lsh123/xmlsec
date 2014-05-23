@@ -7,6 +7,7 @@
 <link rel="UP" title="XML Security Core Library API Reference." href="xmlsec-ref.html">
 <link rel="PREVIOUS" title="xmltree" href="xmlsec-xmltree.html">
 <link rel="NEXT" title="XML Security Library for OpenSLL API Reference." href="xmlsec-openssl-ref.html">
+<meta name="GENERATOR" content="GTK-Doc V1.11 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -87,18 +88,18 @@
 <h1>
 <a name="XMLSEC-X509"></a>x509</h1>
 <div class="REFNAMEDIV">
-<a name="AEN26004"></a><h2>Name</h2>x509 -- <a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate" target="_top">&lt;dsig:X509Certificate/&gt;</a> node parser.</div>
+<a name="AEN21270"></a><h2>Name</h2>x509 -- <a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate" target="_top">&lt;dsig:X509Certificate/&gt;</a> node parser.</div>
 <div class="REFSYNOPSISDIV">
 <a name="XMLSEC-X509.SYNOPSIS"></a><h2>Synopsis</h2>
-<pre class="SYNOPSIS">#define             <a href="xmlsec-x509.html#XMLSEC-X509DATA-CERTIFICATE-NODE:CAPS">XMLSEC_X509DATA_CERTIFICATE_NODE</a>
-#define             <a href="xmlsec-x509.html#XMLSEC-X509DATA-CRL-NODE:CAPS">XMLSEC_X509DATA_CRL_NODE</a>
-#define             <a href="xmlsec-x509.html#XMLSEC-X509DATA-DEFAULT:CAPS">XMLSEC_X509DATA_DEFAULT</a>
-#define             <a href="xmlsec-x509.html#XMLSEC-X509DATA-ISSUERSERIAL-NODE:CAPS">XMLSEC_X509DATA_ISSUERSERIAL_NODE</a>
-#define             <a href="xmlsec-x509.html#XMLSEC-X509DATA-SKI-NODE:CAPS">XMLSEC_X509DATA_SKI_NODE</a>
-#define             <a href="xmlsec-x509.html#XMLSEC-X509DATA-SUBJECTNAME-NODE:CAPS">XMLSEC_X509DATA_SUBJECTNAME_NODE</a>
-<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-x509.html#XMLSECX509DATAGETNODECONTENT">xmlSecX509DataGetNodeContent</a>        (<code class="PARAMETER"><gtkdoclink href="XMLNODE"><span class="TYPE">xmlNodePtr</span></gtkdoclink> node</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="INT"><span class="TYPE">int</span></gtkdoclink> deleteChildren</code>,
-                                                         <code class="PARAMETER"><a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"><span class="TYPE">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code>);</pre>
+<pre class="SYNOPSIS">#define             <a href="xmlsec-x509.html#XMLSEC-X509DATA-CERTIFICATE-NODE--CAPS">XMLSEC_X509DATA_CERTIFICATE_NODE</a>
+#define             <a href="xmlsec-x509.html#XMLSEC-X509DATA-SUBJECTNAME-NODE--CAPS">XMLSEC_X509DATA_SUBJECTNAME_NODE</a>
+#define             <a href="xmlsec-x509.html#XMLSEC-X509DATA-ISSUERSERIAL-NODE--CAPS">XMLSEC_X509DATA_ISSUERSERIAL_NODE</a>
+#define             <a href="xmlsec-x509.html#XMLSEC-X509DATA-SKI-NODE--CAPS">XMLSEC_X509DATA_SKI_NODE</a>
+#define             <a href="xmlsec-x509.html#XMLSEC-X509DATA-CRL-NODE--CAPS">XMLSEC_X509DATA_CRL_NODE</a>
+#define             <a href="xmlsec-x509.html#XMLSEC-X509DATA-DEFAULT--CAPS">XMLSEC_X509DATA_DEFAULT</a>
+<font>int</font>                 <a href="xmlsec-x509.html#XMLSECX509DATAGETNODECONTENT">xmlSecX509DataGetNodeContent</a>        (<font>xmlNodePtr</font> node,
+                                                         <font>int</font> deleteChildren,
+                                                         <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);</pre>
 </div>
 <div class="REFSECT1">
 <a name="XMLSEC-X509.DESCRIPTION"></a><h2>Description</h2>
@@ -107,66 +108,73 @@
 <div class="REFSECT1">
 <a name="XMLSEC-X509.DETAILS"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="XMLSEC-X509DATA-CERTIFICATE-NODE:CAPS"></a><h3>XMLSEC_X509DATA_CERTIFICATE_NODE</h3>
+<a name="XMLSEC-X509DATA-CERTIFICATE-NODE--CAPS"></a><h3>XMLSEC_X509DATA_CERTIFICATE_NODE</h3>
 <pre class="PROGRAMLISTING">#define XMLSEC_X509DATA_CERTIFICATE_NODE                        0x00000001</pre>
 <p><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate" target="_top">&lt;dsig:X509Certificate/&gt;</a> node found or would be written back.</p>
+<p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSEC-X509DATA-CRL-NODE:CAPS"></a><h3>XMLSEC_X509DATA_CRL_NODE</h3>
+<a name="XMLSEC-X509DATA-SUBJECTNAME-NODE--CAPS"></a><h3>XMLSEC_X509DATA_SUBJECTNAME_NODE</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_X509DATA_SUBJECTNAME_NODE                        0x00000002</pre>
+<p><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509SubjectName" target="_top">&lt;dsig:X509SubjectName/&gt;</a> node found or would be written back.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-X509DATA-ISSUERSERIAL-NODE--CAPS"></a><h3>XMLSEC_X509DATA_ISSUERSERIAL_NODE</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_X509DATA_ISSUERSERIAL_NODE                       0x00000004</pre>
+<p><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial" target="_top">&lt;dsig:X509IssuerSerial/&gt;</a> node found or would be written back.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-X509DATA-SKI-NODE--CAPS"></a><h3>XMLSEC_X509DATA_SKI_NODE</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_X509DATA_SKI_NODE                                0x00000008</pre>
+<p>&lt;dsig:/X509SKI&gt; node found or would be written back.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-X509DATA-CRL-NODE--CAPS"></a><h3>XMLSEC_X509DATA_CRL_NODE</h3>
 <pre class="PROGRAMLISTING">#define XMLSEC_X509DATA_CRL_NODE                                0x00000010</pre>
 <p><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509CRL" target="_top">&lt;dsig:X509CRL/&gt;</a> node found or would be written back.</p>
+<p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSEC-X509DATA-DEFAULT:CAPS"></a><h3>XMLSEC_X509DATA_DEFAULT</h3>
+<a name="XMLSEC-X509DATA-DEFAULT--CAPS"></a><h3>XMLSEC_X509DATA_DEFAULT</h3>
 <pre class="PROGRAMLISTING">#define             XMLSEC_X509DATA_DEFAULT</pre>
 <p>Default set of nodes to write in case of empty
 <a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Data" target="_top">&lt;dsig:X509Data/&gt;</a> node template.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSEC-X509DATA-ISSUERSERIAL-NODE:CAPS"></a><h3>XMLSEC_X509DATA_ISSUERSERIAL_NODE</h3>
-<pre class="PROGRAMLISTING">#define XMLSEC_X509DATA_ISSUERSERIAL_NODE                       0x00000004</pre>
-<p><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial" target="_top">&lt;dsig:X509IssuerSerial/&gt;</a> node found or would be written back.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSEC-X509DATA-SKI-NODE:CAPS"></a><h3>XMLSEC_X509DATA_SKI_NODE</h3>
-<pre class="PROGRAMLISTING">#define XMLSEC_X509DATA_SKI_NODE                                0x00000008</pre>
-<p>&lt;dsig:/X509SKI&gt; node found or would be written back.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSEC-X509DATA-SUBJECTNAME-NODE:CAPS"></a><h3>XMLSEC_X509DATA_SUBJECTNAME_NODE</h3>
-<pre class="PROGRAMLISTING">#define XMLSEC_X509DATA_SUBJECTNAME_NODE                        0x00000002</pre>
-<p><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509SubjectName" target="_top">&lt;dsig:X509SubjectName/&gt;</a> node found or would be written back.</p>
+<p></p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECX509DATAGETNODECONTENT"></a><h3>xmlSecX509DataGetNodeContent ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecX509DataGetNodeContent        (<code class="PARAMETER"><gtkdoclink href="XMLNODE"><span class="TYPE">xmlNodePtr</span></gtkdoclink> node</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="INT"><span class="TYPE">int</span></gtkdoclink> deleteChildren</code>,
-                                                         <code class="PARAMETER"><a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"><span class="TYPE">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code>);</pre>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecX509DataGetNodeContent        (<font>xmlNodePtr</font> node,
+                                                         <font>int</font> deleteChildren,
+                                                         <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);</pre>
 <p>Reads the contents of <a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Data" target="_top">&lt;dsig:X509Data/&gt;</a> node and returns it as
 a bits mask.</p>
 <p></p>
+<p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN26095"><span style="white-space: nowrap"><code class="PARAMETER">node</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Data" target="_top">&lt;dsig:X509Data/&gt;</a> node.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN21354"><span style="white-space: nowrap"><code class="PARAMETER">node</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Data" target="_top">&lt;dsig:X509Data/&gt;</a> node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN26101"><span style="white-space: nowrap"><code class="PARAMETER">deleteChildren</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the flag that indicates whether to remove node children after reading.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN21360"><span style="white-space: nowrap"><code class="PARAMETER">deleteChildren</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>     the flag that indicates whether to remove node children after reading.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN26106"><span style="white-space: nowrap"><code class="PARAMETER">keyInfoCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node processing context.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN21365"><span style="white-space: nowrap"><code class="PARAMETER">keyInfoCtx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>         the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN26112"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the bit mask representing the <a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Data" target="_top">&lt;dsig:X509Data/&gt;</a> node content
+<td align="LEFT" valign="TOP"><a name="AEN21371"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> the bit mask representing the <a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Data" target="_top">&lt;dsig:X509Data/&gt;</a> node content
 or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>

@@ -7,6 +7,7 @@
 <link rel="UP" title="XML Security Core Library API Reference." href="xmlsec-ref.html">
 <link rel="PREVIOUS" title="xmlenc" href="xmlsec-xmlenc.html">
 <link rel="NEXT" title="xmltree" href="xmlsec-xmltree.html">
+<meta name="GENERATOR" content="GTK-Doc V1.11 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -87,28 +88,26 @@
 <h1>
 <a name="XMLSEC-XMLSEC"></a>xmlsec</h1>
 <div class="REFNAMEDIV">
-<a name="AEN23389"></a><h2>Name</h2>xmlsec -- Utility functions.</div>
+<a name="AEN19236"></a><h2>Name</h2>xmlsec -- Utility functions.</div>
 <div class="REFSYNOPSISDIV">
 <a name="XMLSEC-XMLSEC.SYNOPSIS"></a><h2>Synopsis</h2>
-<pre class="SYNOPSIS">#define             <a href="xmlsec-xmlsec.html#ATTRIBUTE-UNUSED:CAPS">ATTRIBUTE_UNUSED</a>
-#define             <a href="xmlsec-xmlsec.html#XMLSEC-FUNC-TO-PTR:CAPS">XMLSEC_FUNC_TO_PTR</a>                  (func_type,
-                                                         func)
-#define             <a href="xmlsec-xmlsec.html#XMLSEC-PTR-TO-FUNC:CAPS">XMLSEC_PTR_TO_FUNC</a>                  (func_type,
-                                                         ptr)
-#define             <a href="xmlsec-xmlsec.html#XMLSEC-PTR-TO-FUNC-IMPL:CAPS">XMLSEC_PTR_TO_FUNC_IMPL</a>             (func_type)
-#define             <a href="xmlsec-xmlsec.html#XMLSEC-SIZE-BAD-CAST:CAPS">XMLSEC_SIZE_BAD_CAST</a>                (val)
+<pre class="SYNOPSIS">typedef             <font>xmlSecPtr</font>;
+#define             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a>
+#define             <a href="xmlsec-xmlsec.html#XMLSEC-SIZE-BAD-CAST--CAPS">XMLSEC_SIZE_BAD_CAST</a>                (val)
 #define             <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a>
-#define             <a href="xmlsec-xmlsec.html#XMLSECCHECKVERSION">xmlSecCheckVersion</a>
-#define             <a href="xmlsec-xmlsec.html#XMLSECCHECKVERSIONEXACT">xmlSecCheckVersionExact</a>
-<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-xmlsec.html#XMLSECCHECKVERSIONEXT">xmlSecCheckVersionExt</a>               (<code class="PARAMETER"><gtkdoclink href="INT"><span class="TYPE">int</span></gtkdoclink> major</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="INT"><span class="TYPE">int</span></gtkdoclink> minor</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="INT"><span class="TYPE">int</span></gtkdoclink> subminor</code>,
-                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECCHECKVERSIONMODE"><span class="TYPE">xmlSecCheckVersionMode</span></a> mode</code>);
+<font>int</font>                 <a href="xmlsec-xmlsec.html#XMLSECINIT">xmlSecInit</a>                          (void);
+<font>int</font>                 <a href="xmlsec-xmlsec.html#XMLSECSHUTDOWN">xmlSecShutdown</a>                      (void);
+#define             <a href="xmlsec-xmlsec.html#XMLSECCHECKVERSIONEXACT">xmlSecCheckVersionExact</a>             ()
+#define             <a href="xmlsec-xmlsec.html#XMLSECCHECKVERSION">xmlSecCheckVersion</a>                  ()
 enum                <a href="xmlsec-xmlsec.html#XMLSECCHECKVERSIONMODE">xmlSecCheckVersionMode</a>;
-<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-xmlsec.html#XMLSECINIT">xmlSecInit</a>                          (<code class="PARAMETER"><span class="TYPE">void</span></code>);
-typedef             <font>xmlSecPtr</font>;
-<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-xmlsec.html#XMLSECSHUTDOWN">xmlSecShutdown</a>                      (<code class="PARAMETER"><span class="TYPE">void</span></code>);
-#define             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a></pre>
+<font>int</font>                 <a href="xmlsec-xmlsec.html#XMLSECCHECKVERSIONEXT">xmlSecCheckVersionExt</a>               (<font>int</font> major,
+                                                         <font>int</font> minor,
+                                                         <font>int</font> subminor,
+                                                         <a href="xmlsec-xmlsec.html#XMLSECCHECKVERSIONMODE">xmlSecCheckVersionMode</a> mode);
+#define             <a href="xmlsec-xmlsec.html#ATTRIBUTE-UNUSED--CAPS">ATTRIBUTE_UNUSED</a>
+#define             <a href="xmlsec-xmlsec.html#XMLSEC-PTR-TO-FUNC-IMPL--CAPS">XMLSEC_PTR_TO_FUNC_IMPL</a>             (func_type)
+#define             <a href="xmlsec-xmlsec.html#XMLSEC-PTR-TO-FUNC--CAPS">XMLSEC_PTR_TO_FUNC</a>                  (func_type, ptr)
+#define             <a href="xmlsec-xmlsec.html#XMLSEC-FUNC-TO-PTR--CAPS">XMLSEC_FUNC_TO_PTR</a>                  (func_type, func)</pre>
 </div>
 <div class="REFSECT1">
 <a name="XMLSEC-XMLSEC.DESCRIPTION"></a><h2>Description</h2>
@@ -117,65 +116,29 @@ typedef             <font>xmlSecPtr</font>;
 <div class="REFSECT1">
 <a name="XMLSEC-XMLSEC.DETAILS"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="ATTRIBUTE-UNUSED:CAPS"></a><h3>ATTRIBUTE_UNUSED</h3>
-<pre class="PROGRAMLISTING">#define ATTRIBUTE_UNUSED</pre>
-<p>Macro used to signal to GCC unused function parameters</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSEC-FUNC-TO-PTR:CAPS"></a><h3>XMLSEC_FUNC_TO_PTR()</h3>
-<pre class="PROGRAMLISTING">#define             XMLSEC_FUNC_TO_PTR(func_type, func)</pre>
-<p>Macro converts from "func_type" function pointer to "void*" pointer.</p>
+<a name="XMLSECPTR"></a><h3>xmlSecPtr</h3>
+<pre class="PROGRAMLISTING">typedef void*                                   xmlSecPtr;</pre>
+<p>Void pointer.</p>
 <p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN23449"><span style="white-space: nowrap"><code class="PARAMETER">func_type</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the function type.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN23454"><span style="white-space: nowrap"><code class="PARAMETER">func</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the "func_type" function pointer to be converted.</p></td>
-</tr>
-</tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSEC-PTR-TO-FUNC:CAPS"></a><h3>XMLSEC_PTR_TO_FUNC()</h3>
-<pre class="PROGRAMLISTING">#define             XMLSEC_PTR_TO_FUNC(func_type, ptr)</pre>
-<p>Macro converts from "void*" pointer to "func_type" function pointer.</p>
+<a name="XMLSECSIZE"></a><h3>xmlSecSize</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecSize</pre>
+<p>Size of something. Should be typedef instead of define
+but it will break ABI (todo).</p>
 <p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN23466"><span style="white-space: nowrap"><code class="PARAMETER">func_type</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the function type.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN23471"><span style="white-space: nowrap"><code class="PARAMETER">ptr</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the "void*" pointer to be converted.</p></td>
-</tr>
-</tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSEC-PTR-TO-FUNC-IMPL:CAPS"></a><h3>XMLSEC_PTR_TO_FUNC_IMPL()</h3>
-<pre class="PROGRAMLISTING">#define             XMLSEC_PTR_TO_FUNC_IMPL(func_type)</pre>
-<p>Macro declares helper functions to convert between "void *" pointer and
-function pointer.</p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN23483"><span style="white-space: nowrap"><code class="PARAMETER">func_type</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the function type.</p></td>
-</tr></tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSEC-SIZE-BAD-CAST:CAPS"></a><h3>XMLSEC_SIZE_BAD_CAST()</h3>
+<a name="XMLSEC-SIZE-BAD-CAST--CAPS"></a><h3>XMLSEC_SIZE_BAD_CAST()</h3>
 <pre class="PROGRAMLISTING">#define XMLSEC_SIZE_BAD_CAST(val)               ((xmlSecSize)(val))</pre>
 <p>Bad cast to xmlSecSize</p>
 <p></p>
+<p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN23495"><span style="white-space: nowrap"><code class="PARAMETER">val</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the value to cast</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN19290"><span style="white-space: nowrap"><code class="PARAMETER">val</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>        the value to cast</p></td>
 </tr></tbody></table>
 </div>
 <hr>
@@ -184,55 +147,50 @@ function pointer.</p>
 <pre class="PROGRAMLISTING">#define xmlSecByte                              unsigned char</pre>
 <p>One byte. Should be typedef instead of define
 but it will break ABI (todo).</p>
+<p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECCHECKVERSION"></a><h3>xmlSecCheckVersion</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecCheckVersion()</pre>
-<p>Macro. Returns 1 if the loaded xmlsec library version ABI compatible with
-the one used to compile the caller, 0 if it does not or a negative
-value if an error occurs.</p>
+<a name="XMLSECINIT"></a><h3>xmlSecInit ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecInit                          (void);</pre>
+<p>Initializes XML Security Library. The depended libraries
+(LibXML and LibXSLT) must be initialized before.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN19311"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value otherwise.</p></td>
+</tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECCHECKVERSIONEXACT"></a><h3>xmlSecCheckVersionExact</h3>
+<a name="XMLSECSHUTDOWN"></a><h3>xmlSecShutdown ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecShutdown                      (void);</pre>
+<p>Clean ups the XML Security Library.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN19325"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value otherwise.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECCHECKVERSIONEXACT"></a><h3>xmlSecCheckVersionExact()</h3>
 <pre class="PROGRAMLISTING">#define             xmlSecCheckVersionExact()</pre>
 <p>Macro. Returns 1 if the loaded xmlsec library version exactly matches
 the one used to compile the caller, 0 if it does not or a negative
 value if an error occurs.</p>
+<p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECCHECKVERSIONEXT"></a><h3>xmlSecCheckVersionExt ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecCheckVersionExt               (<code class="PARAMETER"><gtkdoclink href="INT"><span class="TYPE">int</span></gtkdoclink> major</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="INT"><span class="TYPE">int</span></gtkdoclink> minor</code>,
-                                                         <code class="PARAMETER"><gtkdoclink href="INT"><span class="TYPE">int</span></gtkdoclink> subminor</code>,
-                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECCHECKVERSIONMODE"><span class="TYPE">xmlSecCheckVersionMode</span></a> mode</code>);</pre>
-<p>Checks if the loaded version of xmlsec library could be used.</p>
+<a name="XMLSECCHECKVERSION"></a><h3>xmlSecCheckVersion()</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecCheckVersion()</pre>
+<p>Macro. Returns 1 if the loaded xmlsec library version ABI compatible with
+the one used to compile the caller, 0 if it does not or a negative
+value if an error occurs.</p>
 <p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN23539"><span style="white-space: nowrap"><code class="PARAMETER">major</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the major version number.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN23544"><span style="white-space: nowrap"><code class="PARAMETER">minor</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the minor version number.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN23549"><span style="white-space: nowrap"><code class="PARAMETER">subminor</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the subminor version number.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN23554"><span style="white-space: nowrap"><code class="PARAMETER">mode</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the version check mode.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN23559"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>1 if the loaded xmlsec library version is OK to use
-0 if it is not or a negative value if an error occurs.</p></td>
-</tr>
-</tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
@@ -243,52 +201,107 @@ value if an error occurs.</p>
 } xmlSecCheckVersionMode;</pre>
 <p>The xmlsec library version mode.</p>
 <p></p>
+<p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="XMLSECCHECKVERSIONEXACTMATCH"><span style="white-space: nowrap"><tt class="LITERAL">xmlSecCheckVersionExactMatch</tt></span></a></td>
-<td align="LEFT" valign="TOP"><p>the version should match exactly.</p></td>
+<td align="LEFT" valign="TOP"><p>       the version should match exactly.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="XMLSECCHECKVERSIONABICOMPATIBLE"><span style="white-space: nowrap"><tt class="LITERAL">xmlSecCheckVersionABICompatible</tt></span></a></td>
-<td align="LEFT" valign="TOP"><p>the version should be ABI compatible.</p></td>
+<td align="LEFT" valign="TOP"><p>    the version should be ABI compatible.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECINIT"></a><h3>xmlSecInit ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecInit                          (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>Initializes XML Security Library. The depended libraries
-(LibXML and LibXSLT) must be initialized before.</p>
+<a name="XMLSECCHECKVERSIONEXT"></a><h3>xmlSecCheckVersionExt ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecCheckVersionExt               (<font>int</font> major,
+                                                         <font>int</font> minor,
+                                                         <font>int</font> subminor,
+                                                         <a href="xmlsec-xmlsec.html#XMLSECCHECKVERSIONMODE">xmlSecCheckVersionMode</a> mode);</pre>
+<p>Checks if the loaded version of xmlsec library could be used.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN19375"><span style="white-space: nowrap"><code class="PARAMETER">major</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>              the major version number.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN19380"><span style="white-space: nowrap"><code class="PARAMETER">minor</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>              the minor version number.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN19385"><span style="white-space: nowrap"><code class="PARAMETER">subminor</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>           the subminor version number.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN19390"><span style="white-space: nowrap"><code class="PARAMETER">mode</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>               the version check mode.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN19395"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 1 if the loaded xmlsec library version is OK to use
+0 if it is not or a negative value if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="ATTRIBUTE-UNUSED--CAPS"></a><h3>ATTRIBUTE_UNUSED</h3>
+<pre class="PROGRAMLISTING">#define             ATTRIBUTE_UNUSED</pre>
+<p>Macro used to signal to GCC unused function parameters</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-PTR-TO-FUNC-IMPL--CAPS"></a><h3>XMLSEC_PTR_TO_FUNC_IMPL()</h3>
+<pre class="PROGRAMLISTING">#define             XMLSEC_PTR_TO_FUNC_IMPL(func_type)</pre>
+<p>Macro declares helper functions to convert between "void *" pointer and
+function pointer.</p>
+<p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN23592"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>0 on success or a negative value otherwise.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN19415"><span style="white-space: nowrap"><code class="PARAMETER">func_type</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>          the function type.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECPTR"></a><h3>xmlSecPtr</h3>
-<pre class="PROGRAMLISTING">typedef void*                                   xmlSecPtr;</pre>
-<p>Void pointer.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECSHUTDOWN"></a><h3>xmlSecShutdown ()</h3>
-<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecShutdown                      (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>Clean ups the XML Security Library.</p>
+<a name="XMLSEC-PTR-TO-FUNC--CAPS"></a><h3>XMLSEC_PTR_TO_FUNC()</h3>
+<pre class="PROGRAMLISTING">#define             XMLSEC_PTR_TO_FUNC(func_type, ptr)</pre>
+<p>Macro converts from "void*" pointer to "func_type" function pointer.</p>
 <p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN23614"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>0 on success or a negative value otherwise.</p></td>
-</tr></tbody></table>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN19428"><span style="white-space: nowrap"><code class="PARAMETER">func_type</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>          the function type.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN19433"><span style="white-space: nowrap"><code class="PARAMETER">ptr</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>                the "void*" pointer to be converted.</p></td>
+</tr>
+</tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSECSIZE"></a><h3>xmlSecSize</h3>
-<pre class="PROGRAMLISTING">#define xmlSecSize                              unsigned int</pre>
-<p>Size of something. Should be typedef instead of define
-but it will break ABI (todo).</p>
+<a name="XMLSEC-FUNC-TO-PTR--CAPS"></a><h3>XMLSEC_FUNC_TO_PTR()</h3>
+<pre class="PROGRAMLISTING">#define             XMLSEC_FUNC_TO_PTR(func_type, func)</pre>
+<p>Macro converts from "func_type" function pointer to "void*" pointer.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN19446"><span style="white-space: nowrap"><code class="PARAMETER">func_type</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>          the function type.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN19451"><span style="white-space: nowrap"><code class="PARAMETER">func</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>               the "func_type" function pointer to be converted.</p></td>
+</tr>
+</tbody></table>
 </div>
 </div>
 <table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">

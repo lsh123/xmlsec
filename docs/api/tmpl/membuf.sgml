@@ -17,7 +17,19 @@ Memory buffer transform implementation.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
+<!-- ##### MACRO xmlSecTransformMemBufId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformMemBufGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
 
 
 <!-- ##### FUNCTION xmlSecTransformMemBufGetBuffer ##### -->
@@ -27,21 +39,5 @@ Memory buffer transform implementation.
 
 @transform: 
 @Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformMemBufGetKlass ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecTransformMemBufId ##### -->
-<para>
-
-</para>
-
 
 

@@ -17,14 +17,27 @@ Base64 encoding/decoding functions.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
-
-
 <!-- ##### MACRO XMLSEC_BASE64_LINESIZE ##### -->
 <para>
 
 </para>
 
+
+
+<!-- ##### FUNCTION xmlSecBase64GetDefaultLineSize ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBase64SetDefaultLineSize ##### -->
+<para>
+
+</para>
+
+@columns: 
 
 
 <!-- ##### FUNCTION xmlSecBase64CtxCreate ##### -->
@@ -45,25 +58,6 @@ Base64 encoding/decoding functions.
 @ctx: 
 
 
-<!-- ##### FUNCTION xmlSecBase64CtxFinal ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@out: 
-@outSize: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecBase64CtxFinalize ##### -->
-<para>
-
-</para>
-
-@ctx: 
-
-
 <!-- ##### FUNCTION xmlSecBase64CtxInitialize ##### -->
 <para>
 
@@ -73,6 +67,14 @@ Base64 encoding/decoding functions.
 @encode: 
 @columns: 
 @Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBase64CtxFinalize ##### -->
+<para>
+
+</para>
+
+@ctx: 
 
 
 <!-- ##### FUNCTION xmlSecBase64CtxUpdate ##### -->
@@ -88,14 +90,14 @@ Base64 encoding/decoding functions.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecBase64Decode ##### -->
+<!-- ##### FUNCTION xmlSecBase64CtxFinal ##### -->
 <para>
 
 </para>
 
-@str: 
-@buf: 
-@len: 
+@ctx: 
+@out: 
+@outSize: 
 @Returns: 
 
 
@@ -110,20 +112,14 @@ Base64 encoding/decoding functions.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecBase64GetDefaultLineSize ##### -->
+<!-- ##### FUNCTION xmlSecBase64Decode ##### -->
 <para>
 
 </para>
 
-@void: 
+@str: 
+@buf: 
+@len: 
 @Returns: 
-
-
-<!-- ##### FUNCTION xmlSecBase64SetDefaultLineSize ##### -->
-<para>
-
-</para>
-
-@columns: 
 
 

@@ -17,26 +17,31 @@ X509 certificates support implementation for GnuTLS.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
-
-
-<!-- ##### FUNCTION xmlSecGnuTLSKeyDataRawX509CertGetKlass ##### -->
+<!-- ##### MACRO xmlSecGnuTLSKeyDataX509Id ##### -->
 <para>
 
 </para>
 
-@void: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSKeyDataX509GetKlass ##### -->
+<para>
+
+</para>
+
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecGnuTLSKeyDataRawX509CertId ##### -->
+<!-- ##### FUNCTION xmlSecGnuTLSKeyDataX509GetKeyCert ##### -->
 <para>
 
 </para>
 
+@data: 
+@Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSKeyDataX509AdoptCert ##### -->
+<!-- ##### FUNCTION xmlSecGnuTLSKeyDataX509AdoptKeyCert ##### -->
 <para>
 
 </para>
@@ -46,17 +51,7 @@ X509 certificates support implementation for GnuTLS.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSKeyDataX509AdoptCrl ##### -->
-<para>
-
-</para>
-
-@data: 
-@crl: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecGnuTLSKeyDataX509AdoptKeyCert ##### -->
+<!-- ##### FUNCTION xmlSecGnuTLSKeyDataX509AdoptCert ##### -->
 <para>
 
 </para>
@@ -85,6 +80,16 @@ X509 certificates support implementation for GnuTLS.
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecGnuTLSKeyDataX509AdoptCrl ##### -->
+<para>
+
+</para>
+
+@data: 
+@crl: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecGnuTLSKeyDataX509GetCrl ##### -->
 <para>
 
@@ -104,31 +109,6 @@ X509 certificates support implementation for GnuTLS.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSKeyDataX509GetKeyCert ##### -->
-<para>
-
-</para>
-
-@data: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecGnuTLSKeyDataX509GetKlass ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecGnuTLSKeyDataX509Id ##### -->
-<para>
-
-</para>
-
-
-
 <!-- ##### FUNCTION xmlSecGnuTLSX509CertGetKey ##### -->
 <para>
 
@@ -138,14 +118,33 @@ X509 certificates support implementation for GnuTLS.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSX509StoreAdoptCert ##### -->
+<!-- ##### MACRO xmlSecGnuTLSKeyDataRawX509CertId ##### -->
 <para>
 
 </para>
 
-@store: 
-@cert: 
-@type: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSKeyDataRawX509CertGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSX509StoreId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSX509StoreGetKlass ##### -->
+<para>
+
+</para>
+
 @Returns: 
 
 
@@ -163,22 +162,6 @@ X509 certificates support implementation for GnuTLS.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSX509StoreGetKlass ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecGnuTLSX509StoreId ##### -->
-<para>
-
-</para>
-
-
-
 <!-- ##### FUNCTION xmlSecGnuTLSX509StoreVerify ##### -->
 <para>
 
@@ -188,6 +171,17 @@ X509 certificates support implementation for GnuTLS.
 @certs: 
 @crls: 
 @keyInfoCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSX509StoreAdoptCert ##### -->
+<para>
+
+</para>
+
+@store: 
+@cert: 
+@type: 
 @Returns: 
 
 

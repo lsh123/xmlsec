@@ -78,8 +78,8 @@ folder with any other input files:
 	./verify1  sign2-res.xml     rsapub.pem
 	./verify2  sign1-res.xml     rsapub.pem
 	./verify2  sign2-res.xml     rsapub.pem
-	./verify3  sign3-res.xml     rootcert.pem
-	./verify4  verify4-res.xml   rootcert.pem
+	./verify3  sign3-res.xml     ca2cert.pem cacert.pem 
+	./verify4  verify4-res.xml   ca2cert.pem cacert.pem 
 
 	./encrypt1 encrypt1-tmpl.xml deskey.bin
 	./encrypt2 encrypt2-doc.xml  deskey.bin 
@@ -100,11 +100,11 @@ For Windows, use "xmlsec" instead of "xmlsec1".
 	xmlsec1 verify --pubkey rsapub.pem sign1.xml
 	xmlsec1 verify --pubkey rsapub.pem sign1-res.xml
 	xmlsec1 verify --pubkey rsapub.pem sign2-res.xml
-	xmlsec1 verify --trusted rootcert.pem sign3-res.xml
-	xmlsec1 verify --trusted rootcert.pem verify4-res.xml
+	xmlsec1 verify --trusted ca2cert.pem --trusted cacert.pem sign3-res.xml
+	xmlsec1 verify --trusted ca2cert.pem --trusted cacert.pem verify4-res.xml
 	 
 	xmlsec1 encrypt --deskey deskey.bin  --binary-data binary.dat --output encrypt1.xml encrypt1-tmpl.xml
-    	xmlsec1 decrypt --deskey deskey.bin encrypt1.xml
+    xmlsec1 decrypt --deskey deskey.bin encrypt1.xml
 	xmlsec1 decrypt --deskey deskey.bin encrypt1-res.xml
 	xmlsec1 decrypt --deskey deskey.bin encrypt2-res.xml
 	xmlsec1 decrypt --privkey rsakey.pem encrypt3-res.xml

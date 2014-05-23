@@ -102,7 +102,7 @@ else
   XMLSEC_SHLIBSFX="$shrext_cmds"
 fi
 case "${host}" in
-    *aix* )
+ *aix* )
 	CFLAGS="${CFLAGS} -D_ALL_SOURCE"
 	;;
  *-*-mingw*)
@@ -118,6 +118,9 @@ case "${host}" in
 	XMLSEC_EXTRA_LDFLAGS="-no-undefined"
 	XMLSEC_CRYPTO_EXTRA_LDFLAGS="-no-undefined"
 	;;
+ *-*-darwin*)
+        XMLSEC_SHLIBSFX=".dylib"
+        ;;
 esac
 
 # To avoid problem with loading of a shared library (dlopen or equivalent)

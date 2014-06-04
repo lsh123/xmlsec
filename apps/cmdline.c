@@ -152,7 +152,7 @@ xmlSecAppCmdLineValueCreate(xmlSecAppCmdLineParamPtr param, int pos) {
     assert(param != NULL);
     value = (xmlSecAppCmdLineValuePtr) malloc(sizeof(xmlSecAppCmdLineValue));
     if(value == NULL) {
-        fprintf(stderr, "Error: malloc failed (%d bytes).\n", sizeof(xmlSecAppCmdLineValue));
+        fprintf(stderr, "Error: malloc failed (%d bytes).\n", (int)sizeof(xmlSecAppCmdLineValue));
         return(NULL);
     }
     memset(value, 0, sizeof(xmlSecAppCmdLineValue));
@@ -284,7 +284,7 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
             value->strValue = argv[++pos];
             buf = (char*)malloc(strlen(value->strValue) + 2);
             if(buf == NULL) {
-                fprintf(stderr, "Error: failed to allocate memory (%d bytes).\n", strlen(value->strValue) + 2);
+                fprintf(stderr, "Error: failed to allocate memory (%d bytes).\n", (int)strlen(value->strValue) + 2);
                 return(-1);
             }
             memset(buf, 0, strlen(value->strValue) + 2);

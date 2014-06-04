@@ -66,7 +66,7 @@ xmlSecIOCallbackCreate(xmlInputMatchCallback matchFunc, xmlInputOpenCallback ope
                     NULL,
                     XMLSEC_ERRORS_R_MALLOC_FAILED,
                     "sizeof(xmlSecIOCallback)=%d",
-                    sizeof(xmlSecIOCallback));
+                    (int)sizeof(xmlSecIOCallback));
         return(NULL);
     }
     memset(callbacks, 0, sizeof(xmlSecIOCallback));

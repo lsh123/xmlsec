@@ -67,7 +67,7 @@ xmlSecBufferCreate(xmlSecSize size) {
                     NULL,
                     NULL,
                     XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "sizeof(xmlSecBuffer)=%d", sizeof(xmlSecBuffer));
+                    "sizeof(xmlSecBuffer)=%d", (int)sizeof(xmlSecBuffer));
         return(NULL);
     }
 

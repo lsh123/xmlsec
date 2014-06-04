@@ -73,7 +73,7 @@ xmlSecDSigCtxCreate(xmlSecKeysMngrPtr keysMngr) {
                     NULL,
                     XMLSEC_ERRORS_R_MALLOC_FAILED,
                     "sizeof(xmlSecDSigCtx)=%d",
-                    sizeof(xmlSecDSigCtx));
+                    (int)sizeof(xmlSecDSigCtx));
         return(NULL);
     }
 
@@ -1278,7 +1278,7 @@ xmlSecDSigReferenceCtxCreate(xmlSecDSigCtxPtr dsigCtx, xmlSecDSigReferenceOrigin
                     NULL,
                     XMLSEC_ERRORS_R_MALLOC_FAILED,
                     "sizeof(xmlSecDSigReferenceCtx)=%d",
-                    sizeof(xmlSecDSigReferenceCtx));
+                    (int)sizeof(xmlSecDSigReferenceCtx));
         return(NULL);
     }
 

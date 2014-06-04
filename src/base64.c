@@ -161,7 +161,7 @@ xmlSecBase64CtxCreate(int encode, int columns) {
                     NULL,
                     XMLSEC_ERRORS_R_MALLOC_FAILED,
                     "sizeof(xmlSecBase64Ctx)=%d",
-                    sizeof(xmlSecBase64Ctx));
+                    (int)sizeof(xmlSecBase64Ctx));
         return(NULL);
     }
 

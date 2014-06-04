@@ -91,7 +91,7 @@ xmlSecXPathDataCreate(xmlSecXPathDataType type) {
                     NULL,
                     XMLSEC_ERRORS_R_MALLOC_FAILED,
                     "sizeof(xmlSecXPathData)=%d",
-                    sizeof(xmlSecXPathData));
+                    (int)sizeof(xmlSecXPathData));
         return(NULL);
     }
     memset(data, 0, sizeof(xmlSecXPathData));
@@ -613,7 +613,7 @@ xmlSecTransformXPathNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
                     NULL,
                     XMLSEC_ERRORS_R_MALLOC_FAILED,
                     "size=%d",
-                    xmlStrlen(data->expr) + strlen(xpathPattern) + 1);
+                    (int)(xmlStrlen(data->expr) + strlen(xpathPattern) + 1));
         return(-1);
     }
     sprintf((char*)tmp, xpathPattern, (char*)data->expr);

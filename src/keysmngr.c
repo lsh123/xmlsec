@@ -53,7 +53,7 @@ xmlSecKeysMngrCreate(void) {
                     NULL,
                     XMLSEC_ERRORS_R_MALLOC_FAILED,
                     "sizeof(xmlSecKeysMngr)=%d",
-                    sizeof(xmlSecKeysMngr));
+                    (int)sizeof(xmlSecKeysMngr));
         return(NULL);
     }
     memset(mngr, 0, sizeof(xmlSecKeysMngr));

@@ -227,7 +227,7 @@ xmlSecKeyInfoCtxCreate(xmlSecKeysMngrPtr keysMngr) {
                     NULL,
                     NULL,
                     XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", sizeof(xmlSecKeyInfoCtx));
+                    "size=%d", (int)sizeof(xmlSecKeyInfoCtx));
         return(NULL);
     }
 

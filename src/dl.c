@@ -102,7 +102,7 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
                     NULL,
                     NULL,
                     XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", sizeof(lib));
+                    "size=%d", (int)sizeof(lib));
         return(NULL);
     }
     memset(lib, 0, sizeof(xmlSecCryptoDLLibrary));

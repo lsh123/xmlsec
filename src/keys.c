@@ -112,7 +112,7 @@ xmlSecKeyUseWithCreate(const xmlChar* application, const xmlChar* identifier) {
                     NULL,
                     XMLSEC_ERRORS_R_MALLOC_FAILED,
                     "sizeof(xmlSecKeyUseWith)=%d",
-                    sizeof(xmlSecKeyUseWith));
+                    (int)sizeof(xmlSecKeyUseWith));
         return(NULL);
     }
     memset(keyUseWith, 0, sizeof(xmlSecKeyUseWith));
@@ -548,7 +548,7 @@ xmlSecKeyCreate(void)  {
                     NULL,
                     XMLSEC_ERRORS_R_MALLOC_FAILED,
                     "sizeof(xmlSecKey)=%d",
-                    sizeof(xmlSecKey));
+                    (int)sizeof(xmlSecKey));
         return(NULL);
     }
     memset(key, 0, sizeof(xmlSecKey));

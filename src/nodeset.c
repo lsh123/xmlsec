@@ -57,7 +57,7 @@ xmlSecNodeSetCreate(xmlDocPtr doc, xmlNodeSetPtr nodes, xmlSecNodeSetType type) 
                     NULL,
                     XMLSEC_ERRORS_R_MALLOC_FAILED,
                     "sizeof(xmlSecNodeSet)=%d",
-                    sizeof(xmlSecNodeSet));
+                    (int)sizeof(xmlSecNodeSet));
         return(NULL);
     }
     memset(nset, 0,  sizeof(xmlSecNodeSet));

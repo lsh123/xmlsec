@@ -355,7 +355,7 @@ xmlSecTransformCtxCreate(void) {
                     NULL,
                     NULL,
                     XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", sizeof(xmlSecTransformCtx));
+                    "size=%d", (int)sizeof(xmlSecTransformCtx));
         return(NULL);
     }
 
@@ -876,7 +876,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
                     NULL,
                     NULL,
                     XMLSEC_ERRORS_R_STRDUP_FAILED,
-                    "size=%d", xptr - uri);
+                    "size=%d", (int)(xptr - uri));
         return(-1);
     }
 
@@ -2816,7 +2816,7 @@ xmlSecTransformIOBufferCreate(xmlSecTransformIOBufferMode mode, xmlSecTransformP
                     NULL,
                     NULL,
                     XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", sizeof(xmlSecTransformIOBuffer));
+                    "size=%d", (int)sizeof(xmlSecTransformIOBuffer));
         return(NULL);
     }
     memset(buffer, 0, sizeof(xmlSecTransformIOBuffer));

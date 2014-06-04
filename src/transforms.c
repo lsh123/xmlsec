@@ -932,6 +932,9 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "transform=%s",
                         xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformXPointerId)));
+            if(buf != NULL) {
+                xmlFree(buf);
+            }
             return(-1);
         }
 
@@ -965,6 +968,9 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "transform=%s",
                         xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformVisa3DHackId)));
+            if(buf != NULL) {
+                xmlFree(buf);
+            }
             return(-1);
         }
 

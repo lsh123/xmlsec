@@ -160,10 +160,26 @@ xmlSecDSigCtxInitialize(xmlSecDSigCtxPtr dsigCtx, xmlSecKeysMngrPtr keysMngr) {
     }
 
     /* references lists from SignedInfo and Manifest elements */
-    xmlSecPtrListInitialize(&(dsigCtx->signedInfoReferences),
-                            xmlSecDSigReferenceCtxListId);
-    xmlSecPtrListInitialize(&(dsigCtx->manifestReferences),
-                            xmlSecDSigReferenceCtxListId);
+    ret = xmlSecPtrListInitialize(&(dsigCtx->signedInfoReferences),
+                                  xmlSecDSigReferenceCtxListId);
+    if(ret != 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecPtrListInitialize",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(ret);
+    }
+    ret = xmlSecPtrListInitialize(&(dsigCtx->manifestReferences),
+                                  xmlSecDSigReferenceCtxListId);
+    if(ret != 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecPtrListInitialize",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(ret);
+    }
 
     dsigCtx->enabledReferenceUris = xmlSecTransformUriTypeAny;
     return(0);

@@ -761,7 +761,16 @@ xmlSecKeyDataNameXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, 
 
     /* finally set key name if it is not there */
     if(xmlSecKeyGetName(key) == NULL) {
-        xmlSecKeySetName(key, newName);
+        ret = xmlSecKeySetName(key, newName);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                        "xmlSecKeySetName",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlFree(newName);
+            return(-1);
+        }
     }
     xmlFree(newName);
     return(0);

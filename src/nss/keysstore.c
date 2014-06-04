@@ -271,7 +271,7 @@ xmlSecNssKeysStoreInitialize(xmlSecKeyStorePtr store) {
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecNssKeysStoreId), -1);
 
     ss = xmlSecNssKeysStoreGetSS(store);
-    xmlSecAssert2((*ss == NULL), -1);
+    xmlSecAssert2(((ss == NULL) || (*ss == NULL)), -1);
 
     *ss = xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId);
     if(*ss == NULL) {

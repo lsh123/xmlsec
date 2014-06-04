@@ -603,7 +603,7 @@ xmlSecNssX509NameRead(xmlSecByte *str, int len) {
     xmlSecByte value[256];
     xmlSecByte *retval = NULL;
     xmlSecByte *p = NULL;
-    int nameLen, valueLen;
+    int nameLen, valueLen = 0;
 
     xmlSecAssert2(str != NULL, NULL);
 

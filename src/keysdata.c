@@ -255,7 +255,7 @@ xmlSecKeyDataDuplicate(xmlSecKeyDataPtr data) {
     }
 
     ret = (data->id->duplicate)(newData, data);
-    if(newData == NULL) {
+    if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
                     "id->duplicate",

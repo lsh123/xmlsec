@@ -752,6 +752,15 @@ xmlSecNssKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     }
 
     handle = PK11_ImportPublicKey(slot, pubkey, PR_FALSE);
+    if(handle == CK_INVALID_HANDLE) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                    "PK11_ImportPublicKey",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        ret = -1;
+        goto done;
+    }
 
     data = xmlSecKeyDataCreate(id);
     if(data == NULL ) {

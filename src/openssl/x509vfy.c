@@ -178,7 +178,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
     X509 * cert;
     X509 * err_cert = NULL;
     char buf[256];
-    int err = 0, depth;
+    int err = 0;
     int i;
     int ret;
 
@@ -287,49 +287,43 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
         if(xmlSecOpenSSLX509FindNextChainCert(certs2, cert) == NULL) {
             X509_STORE_CTX xsc;
 
-#if !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097)
-            X509_VERIFY_PARAM * vpm = NULL;
-            unsigned long vpm_flags = 0;
-
-            vpm = X509_VERIFY_PARAM_new();
-            if(vpm == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                            "X509_VERIFY_PARAM_new",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
-                goto done;
-            }
-            vpm_flags = vpm->flags;
-/*
-            vpm_flags &= (~X509_V_FLAG_X509_STRICT);
-*/
-            vpm_flags &= (~X509_V_FLAG_CRL_CHECK);
-
-            X509_VERIFY_PARAM_set_depth(vpm, 9);
-            X509_VERIFY_PARAM_set_flags(vpm, vpm_flags);
-#endif /* !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097) */
-
-
             X509_STORE_CTX_init (&xsc, ctx->xst, cert, certs2);
-
             if(keyInfoCtx->certsVerificationTime > 0) {
-#if !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097)
-                vpm_flags |= X509_V_FLAG_USE_CHECK_TIME;
-                X509_VERIFY_PARAM_set_time(vpm, keyInfoCtx->certsVerificationTime);
-#endif /* !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097) */
                 X509_STORE_CTX_set_time(&xsc, 0, keyInfoCtx->certsVerificationTime);
             }
 
 #if !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097)
-            X509_STORE_CTX_set0_param(&xsc, vpm);
+            {
+				X509_VERIFY_PARAM * vpm = NULL;
+				unsigned long vpm_flags = 0;
+
+				vpm = X509_VERIFY_PARAM_new();
+				if(vpm == NULL) {
+					xmlSecError(XMLSEC_ERRORS_HERE,
+								xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+								"X509_VERIFY_PARAM_new",
+								XMLSEC_ERRORS_R_CRYPTO_FAILED,
+								XMLSEC_ERRORS_NO_MESSAGE);
+					goto done;
+				}
+				vpm_flags = vpm->flags;
+				vpm_flags &= (~X509_V_FLAG_CRL_CHECK);
+
+				if(keyInfoCtx->certsVerificationTime > 0) {
+					vpm_flags |= X509_V_FLAG_USE_CHECK_TIME;
+					X509_VERIFY_PARAM_set_time(vpm, keyInfoCtx->certsVerificationTime);
+				}
+
+				X509_VERIFY_PARAM_set_depth(vpm, 9);
+				X509_VERIFY_PARAM_set_flags(vpm, vpm_flags);
+				X509_STORE_CTX_set0_param(&xsc, vpm);
+            }
 #endif /* !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097) */
 
 
             ret         = X509_verify_cert(&xsc);
             err_cert    = X509_STORE_CTX_get_current_cert(&xsc);
             err         = X509_STORE_CTX_get_error(&xsc);
-            depth       = X509_STORE_CTX_get_error_depth(&xsc);
 
             X509_STORE_CTX_cleanup (&xsc);
 

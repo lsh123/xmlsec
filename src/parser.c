@@ -159,7 +159,7 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         /* required for c14n! */
         ctx->parserCtx->loadsubset      = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
         ctx->parserCtx->replaceEntities = 1;
-	ctx->parserCtx->options         = XML_PARSE_NONET;
+        ctx->parserCtx->options         = XML_PARSE_NONET;
 
         transform->status = xmlSecTransformStatusWorking;
     } else if(transform->status == xmlSecTransformStatusFinished) {

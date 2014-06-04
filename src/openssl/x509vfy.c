@@ -294,29 +294,29 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
 
 #if !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097)
             {
-				X509_VERIFY_PARAM * vpm = NULL;
-				unsigned long vpm_flags = 0;
+                X509_VERIFY_PARAM * vpm = NULL;
+                unsigned long vpm_flags = 0;
 
-				vpm = X509_VERIFY_PARAM_new();
-				if(vpm == NULL) {
-					xmlSecError(XMLSEC_ERRORS_HERE,
-								xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-								"X509_VERIFY_PARAM_new",
-								XMLSEC_ERRORS_R_CRYPTO_FAILED,
-								XMLSEC_ERRORS_NO_MESSAGE);
-					goto done;
-				}
-				vpm_flags = vpm->flags;
-				vpm_flags &= (~X509_V_FLAG_CRL_CHECK);
+                vpm = X509_VERIFY_PARAM_new();
+                if(vpm == NULL) {
+                    xmlSecError(XMLSEC_ERRORS_HERE,
+                                xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+                                "X509_VERIFY_PARAM_new",
+                                XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                                XMLSEC_ERRORS_NO_MESSAGE);
+                    goto done;
+                }
+                vpm_flags = vpm->flags;
+                vpm_flags &= (~X509_V_FLAG_CRL_CHECK);
 
-				if(keyInfoCtx->certsVerificationTime > 0) {
-					vpm_flags |= X509_V_FLAG_USE_CHECK_TIME;
-					X509_VERIFY_PARAM_set_time(vpm, keyInfoCtx->certsVerificationTime);
-				}
+                if(keyInfoCtx->certsVerificationTime > 0) {
+                    vpm_flags |= X509_V_FLAG_USE_CHECK_TIME;
+                    X509_VERIFY_PARAM_set_time(vpm, keyInfoCtx->certsVerificationTime);
+                }
 
-				X509_VERIFY_PARAM_set_depth(vpm, 9);
-				X509_VERIFY_PARAM_set_flags(vpm, vpm_flags);
-				X509_STORE_CTX_set0_param(&xsc, vpm);
+                X509_VERIFY_PARAM_set_depth(vpm, 9);
+                X509_VERIFY_PARAM_set_flags(vpm, vpm_flags);
+                X509_STORE_CTX_set0_param(&xsc, vpm);
             }
 #endif /* !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097) */
 

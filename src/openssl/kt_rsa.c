@@ -845,13 +845,13 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
         }
         outSize = ret;
     } else {
-    	xmlSecError(XMLSEC_ERRORS_HERE,
-					xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-					"",
-					XMLSEC_ERRORS_R_XMLSEC_FAILED,
-					"Unexpected trasnform operation: %d; paramsSize: %d",
-					(int)transform->operation, (int)paramsSize);
-		return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "Unexpected trasnform operation: %d; paramsSize: %d",
+                    (int)transform->operation, (int)paramsSize);
+        return(-1);
     }
 
     ret = xmlSecBufferSetSize(out, outSize);

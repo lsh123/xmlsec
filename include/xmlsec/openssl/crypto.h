@@ -308,7 +308,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGost2001GostR3411_9
  * The GOSTR3411_94 signature transform klass.
  */
 #define xmlSecOpenSSLTransformGostR3411_94Id \
-	xmlSecOpenSSLTransformGostR3411_94GetKlass()
+		xmlSecOpenSSLTransformGostR3411_94GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGostR3411_94GetKlass(void);
 
 #endif /* XMLSEC_NO_GOST */

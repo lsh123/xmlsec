@@ -584,7 +584,7 @@ xmlSecXsApplyStylesheet(xmlSecXsltCtxPtr ctx, xmlDocPtr doc) {
                     XMLSEC_ERRORS_R_XSLT_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         goto done;
-    }	    
+    }
 
     /* set security prefs  */
     ret = xsltSetCtxtSecurityPrefs(g_xslt_default_security_prefs, xsltCtx);

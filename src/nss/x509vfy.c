@@ -243,8 +243,8 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs,
                         XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
                         "cert with subject name %s has expired",
                         (cert != NULL) ? cert->subjectName : "(NULL)"
-			);
-			break;
+            );
+            break;
         case SEC_ERROR_REVOKED_CERTIFICATE:
             xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
@@ -252,8 +252,8 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs,
                         XMLSEC_ERRORS_R_CERT_REVOKED,
                         "cert with subject name %s has been revoked",
                         (cert != NULL) ? cert->subjectName : "(NULL)"
-			);
-			break;
+            );
+            break;
         default:
             xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),

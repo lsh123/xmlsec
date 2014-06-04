@@ -345,15 +345,14 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGost2001GostR3411_94Id)) {
         ctx->keyId          = xmlSecOpenSSLKeyDataGost2001Id;
         ctx->digest = EVP_get_digestbyname("md_gost94");
-				if (!ctx->digest)
-				{
-        xmlSecError(XMLSEC_ERRORS_HERE,
+        if (!ctx->digest) {
+        	xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_TRANSFORM,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        return(-1);
-				}
+        	return(-1);
+        }
     } else
 #endif /* XMLSEC_NO_GOST*/
 

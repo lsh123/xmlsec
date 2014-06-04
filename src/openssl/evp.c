@@ -1060,8 +1060,8 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataEcdsaKlass = {
     NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
-    NULL,           				/* xmlSecKeyDataXmlReadMethod xmlRead; */
-    NULL,           				/* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    NULL,                                       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
     NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
     NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
 
@@ -1887,17 +1887,17 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataGost2001Klass = {
     /* get info */
     xmlSecOpenSSLKeyDataGost2001GetType,       /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecOpenSSLKeyDataGost2001GetSize,       /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                               /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                      /* xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
-    NULL,       /* xmlSecKeyDataXmlReadMethod xmlRead; */
-    NULL,       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
-    NULL,                               /* xmlSecKeyDataBinReadMethod binRead; */
-    NULL,                               /* xmlSecKeyDataBinWriteMethod binWrite; */
+    NULL,                                      /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    NULL,                                      /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,                                      /* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,                                      /* xmlSecKeyDataBinWriteMethod binWrite; */
 
     /* debug */
     xmlSecOpenSSLKeyDataGost2001DebugDump,     /* xmlSecKeyDataDebugDumpMethod debugDump; */
-    xmlSecOpenSSLKeyDataGost2001DebugXmlDump,/* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+    xmlSecOpenSSLKeyDataGost2001DebugXmlDump,  /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
 
     /* reserved for the future */
     NULL,                               /* void* reserved0; */
@@ -1941,9 +1941,9 @@ xmlSecOpenSSLKeyDataGost2001Finalize(xmlSecKeyDataPtr data) {
 
 static xmlSecKeyDataType
 xmlSecOpenSSLKeyDataGost2001GetType(xmlSecKeyDataPtr data) {
-	/* Now I don't know how to find whether we have both private and public key 
-	or the public only*/
-	return(xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate);
+    /* Now I don't know how to find whether we have both private and public key 
+    or the public only*/
+    return(xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate);
 }
 
 static xmlSecSize

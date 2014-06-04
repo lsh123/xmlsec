@@ -1941,7 +1941,7 @@ xmlSecOpenSSLX509CertBase64DerWrite(X509* cert, int base64LineWrap) {
 
     /* todo: add error checks */
     i2d_X509_bio(mem, cert);
-    BIO_flush(mem);
+    (void)BIO_flush(mem);
 
     size = BIO_get_mem_data(mem, &p);
     if((size <= 0) || (p == NULL)){
@@ -2055,7 +2055,7 @@ xmlSecOpenSSLX509CrlBase64DerWrite(X509_CRL* crl, int base64LineWrap) {
 
     /* todo: add error checks */
     i2d_X509_CRL_bio(mem, crl);
-    BIO_flush(mem);
+    (void)BIO_flush(mem);
 
     size = BIO_get_mem_data(mem, &p);
     if((size <= 0) || (p == NULL)){
@@ -2111,7 +2111,7 @@ xmlSecOpenSSLX509NameWrite(X509_NAME* nm) {
         return(NULL);
     }
 
-    BIO_flush(mem); /* should call flush ? */
+    (void)BIO_flush(mem); /* should call flush ? */
 
     size = BIO_pending(mem);
     res = xmlMalloc(size + 1);

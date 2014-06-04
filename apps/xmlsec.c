@@ -2986,7 +2986,7 @@ xmlSecAppWriteResult(xmlDocPtr doc, xmlSecBufferPtr buffer) {
     if(doc != NULL) {
         xmlDocDump(f, doc);    
     } else if((buffer != NULL) && (xmlSecBufferGetData(buffer) != NULL)) {
-        fwrite(xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer), 1, f); 
+        (void)fwrite(xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer), 1, f); 
     } else {
         fprintf(stderr, "Error: both result doc and result buffer are null\n"); 
         xmlSecAppCloseFile(f);

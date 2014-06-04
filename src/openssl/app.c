@@ -255,7 +255,7 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
         }
         if(pKey == NULL) {
             /* go to start of the file and try to read public key */
-            BIO_reset(bio);
+            (void)BIO_reset(bio);
             pKey = PEM_read_bio_PUBKEY(bio, NULL,
                             XMLSEC_PTR_TO_FUNC(pem_password_cb, pwdCallback),
                             pwdCallbackCtx);
@@ -274,7 +274,7 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
         pKey = d2i_PrivateKey_bio(bio, NULL);
         if(pKey == NULL) {
             /* go to start of the file and try to read public key */
-            BIO_reset(bio);
+            (void)BIO_reset(bio);
             pKey = d2i_PUBKEY_bio(bio, NULL);
             if(pKey == NULL) {
                 xmlSecError(XMLSEC_ERRORS_HERE,

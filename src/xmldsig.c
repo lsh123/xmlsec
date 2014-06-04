@@ -789,7 +789,9 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     dsigCtx->signMethod->operation = dsigCtx->operation;
 
     /* calculate references */
-    cur = xmlSecGetNextElementNode(cur->next);
+    if(cur != NULL) {
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
     while((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeReference, xmlSecDSigNs))) {
         /* create reference */
         dsigRefCtx = xmlSecDSigReferenceCtxCreate(dsigCtx, xmlSecDSigReferenceOriginSignedInfo);

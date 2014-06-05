@@ -606,7 +606,7 @@ xmlSecNssX509NameRead(xmlSecByte *str, int len) {
     xmlSecByte value[256];
     xmlSecByte *retval = NULL;
     xmlSecByte *p = NULL;
-    int nameLen, valueLen = 0;
+    int nameLen, valueLen;
 
     xmlSecAssert2(str != NULL, NULL);
 
@@ -693,11 +693,10 @@ xmlSecNssX509NameRead(xmlSecByte *str, int len) {
                 }
                 memcpy(p, value, valueLen);
                 p+=valueLen;
-                if (len > 0)
+                if (len > 0) {
                     *p++=',';
+                }
             }
-        } else {
-            valueLen = 0;
         }
         if(len > 0) {
             ++str; --len;

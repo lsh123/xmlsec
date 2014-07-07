@@ -26,8 +26,8 @@ check: $(PROGRAMS)
 	./verify1  sign2-res.xml     rsapub.pem
 	./verify2  sign1-res.xml     rsapub.pem
 	./verify2  sign2-res.xml     rsapub.pem
-	./verify3  sign3-res.xml     rootcert.pem
-	./verify4  verify4-res.xml   rootcert.pem
+	./verify3  sign3-res.xml     ca2cert.pem cacert.pem
+	./verify4  verify4-res.xml   ca2cert.pem cacert.pem
 	./encrypt1 encrypt1-tmpl.xml deskey.bin
 	./encrypt2 encrypt2-doc.xml  deskey.bin 
 	./encrypt3 encrypt3-doc.xml  rsakey.pem

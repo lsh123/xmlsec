@@ -13,12 +13,12 @@
  *      verify4 <signed-file> <trusted-cert-pem-file1> [<trusted-cert-pem-file2> [...]]
  *
  * Example (sucecess):
- *      ./verify4 verify4-res.xml rootcert.pem
+ *      ./verify4 verify4-res.xml ca2cert.pem cacert.pem
  *
  * Example (failure):
- *      ./verify4 verify4-bad-res.xml rootcert.pem
+ *      ./verify4 verify4-bad-res.xml ca2cert.pem cacert.pem
  * In the same time, verify3 example successfuly verifies this signature:
- *      ./verify3 verify4-bad-res.xml rootcert.pem
+ *      ./verify3 verify4-bad-res.xml ca2cert.pem cacert.pem
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.

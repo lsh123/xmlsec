@@ -10,7 +10,7 @@
  *      verify3 <signed-file> <trusted-cert-pem-file1> [<trusted-cert-pem-file2> [...]]
  *
  * Example:
- *      ./verify3 sign3-res.xml rootcert.pem
+ *      ./verify3 sign3-res.xml ca2cert.pem cacert.pem
  * 
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.

@@ -369,6 +369,26 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefGost2001GostR3411_94[];
 
 /*************************************************************************
  *
+ * GOST R 34.10-2012 strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameGostR3410_2012_256KeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeGostR3410_2012_256KeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefGostR3410_2012_256KeyValue[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameGostR3410_2012_512KeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeGostR3410_2012_512KeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefGostR3410_2012_512KeyValue[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameGostR3410_2012GostR3411_2012_256[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefGostR3410_2012GostR3411_2012_256[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameGostR3410_2012GostR3411_2012_512[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefGostR3410_2012GostR3411_2012_512[];
+
+
+/*************************************************************************
+ *
  * EncryptedKey
  *
  ************************************************************************/
@@ -511,6 +531,16 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRsaOAEPparams[];
  ************************************************************************/
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameGostR3411_94[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefGostR3411_94[];
+
+/*************************************************************************
+ *
+ * GOST R 34.11-2012 strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameGostR3411_2012_256[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefGostR3411_2012_256[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameGostR3411_2012_512[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefGostR3411_2012_512[];
 
 /*************************************************************************
  *

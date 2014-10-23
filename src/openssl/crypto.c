@@ -80,7 +80,12 @@ xmlSecCryptoGetFunctions_openssl(void) {
 
 #ifndef XMLSEC_NO_GOST
     gXmlSecOpenSSLFunctions->keyDataGost2001GetKlass           = xmlSecOpenSSLKeyDataGost2001GetKlass;
-#endif /* XMLSEC_NO_GOST*/
+#endif /* XMLSEC_NO_GOST */
+
+#ifndef XMLSEC_NO_GOST2012
+    gXmlSecOpenSSLFunctions->keyDataGostR3410_2012_256GetKlass = xmlSecOpenSSLKeyDataGostR3410_2012_256GetKlass;
+    gXmlSecOpenSSLFunctions->keyDataGostR3410_2012_512GetKlass = xmlSecOpenSSLKeyDataGostR3410_2012_512GetKlass;
+#endif /* XMLSEC_NO_GOST2012 */
 
 #ifndef XMLSEC_NO_HMAC
     gXmlSecOpenSSLFunctions->keyDataHmacGetKlass        = xmlSecOpenSSLKeyDataHmacGetKlass;
@@ -166,12 +171,16 @@ xmlSecCryptoGetFunctions_openssl(void) {
 
     /******************************* GOST ********************************/
 #ifndef XMLSEC_NO_GOST
-    gXmlSecOpenSSLFunctions->transformGost2001GostR3411_94GetKlass             = xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass;
-#endif /* XMLSEC_NO_GOST */
-
-#ifndef XMLSEC_NO_GOST
+    gXmlSecOpenSSLFunctions->transformGost2001GostR3411_94GetKlass     = xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass;
     gXmlSecOpenSSLFunctions->transformGostR3411_94GetKlass             = xmlSecOpenSSLTransformGostR3411_94GetKlass;
 #endif /* XMLSEC_NO_GOST */
+
+#ifndef XMLSEC_NO_GOST2012
+    gXmlSecOpenSSLFunctions->transformGostR3410_2012GostR3411_2012_256GetKlass = xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_256GetKlass;
+    gXmlSecOpenSSLFunctions->transformGostR3410_2012GostR3411_2012_512GetKlass = xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_512GetKlass;
+    gXmlSecOpenSSLFunctions->transformGostR3411_2012_256GetKlass       = xmlSecOpenSSLTransformGostR3411_2012_256GetKlass;
+    gXmlSecOpenSSLFunctions->transformGostR3411_2012_512GetKlass       = xmlSecOpenSSLTransformGostR3411_2012_512GetKlass;
+#endif /* XMLSEC_NO_GOST2012 */
 
     /******************************* HMAC ********************************/
 #ifndef XMLSEC_NO_HMAC

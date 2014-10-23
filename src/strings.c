@@ -304,6 +304,26 @@ const xmlChar xmlSecHrefGost2001GostR3411_94[]          = "http://www.w3.org/200
 
 /*************************************************************************
  *
+ * GOST R 34.10-2012 strings
+ *
+ ************************************************************************/
+const xmlChar xmlSecNameGostR3410_2012_256KeyValue[]              = "gostr34102012-256";
+const xmlChar xmlSecNodeGostR3410_2012_256KeyValue[]              = "gostr34102012-256";
+const xmlChar xmlSecHrefGostR3410_2012_256KeyValue[]              = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34102012-256";
+
+const xmlChar xmlSecNameGostR3410_2012_512KeyValue[]              = "gostr34102012-512";
+const xmlChar xmlSecNodeGostR3410_2012_512KeyValue[]              = "gostr34102012-512";
+const xmlChar xmlSecHrefGostR3410_2012_512KeyValue[]              = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34102012-512";
+
+/* see http://tools.ietf.org/html/draft-chudov-cryptopro-cpxmldsig-09#section-6.6 */
+const xmlChar xmlSecNameGostR3410_2012GostR3411_2012_256[]    = "gostr34102012-gostr34112012-256";
+const xmlChar xmlSecHrefGostR3410_2012GostR3411_2012_256[]    = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34102012-gostr34112012-256";
+
+const xmlChar xmlSecNameGostR3410_2012GostR3411_2012_512[]    = "gostr34102012-gostr34112012-512";
+const xmlChar xmlSecHrefGostR3410_2012GostR3411_2012_512[]    = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34102012-gostr34112012-512";
+
+/*************************************************************************
+ *
  * DSA strings
  *
  ************************************************************************/
@@ -501,6 +521,20 @@ const xmlChar xmlSecNodeRsaOAEPparams[]         = "OAEPparams";
  ************************************************************************/
 const xmlChar xmlSecNameGostR3411_94[]                  = "gostr3411";
 const xmlChar xmlSecHrefGostR3411_94[]                  = "http://www.w3.org/2001/04/xmldsig-more#gostr3411";
+
+/*************************************************************************
+ *
+ * GOST R 34.11-2012 strings
+ *
+ ************************************************************************/
+
+/* see http://tools.ietf.org/html/draft-chudov-cryptopro-cpxmldsig-09#section-6.2 */
+const xmlChar xmlSecNameGostR3411_2012_256[]                  = "gostr34112012-256";
+const xmlChar xmlSecHrefGostR3411_2012_256[]                  = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34112012-256";
+
+const xmlChar xmlSecNameGostR3411_2012_512[]                  = "gostr34112012-512";
+const xmlChar xmlSecHrefGostR3411_2012_512[]                  = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34112012-512";
+
 
 /*************************************************************************
  *

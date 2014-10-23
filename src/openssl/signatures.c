@@ -208,7 +208,16 @@ xmlSecOpenSSLEvpSignatureCheckId(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGost2001GostR3411_94Id)) {
         return(1);
     } else
-#endif /* XMLSEC_NO_GOST*/
+#endif /* XMLSEC_NO_GOST */
+
+#ifndef XMLSEC_NO_GOST2012
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_256Id)) {
+        return(1);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_512Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_GOST2012 */
 
     {
         return(0);
@@ -354,7 +363,35 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
         	return(-1);
         }
     } else
-#endif /* XMLSEC_NO_GOST*/
+#endif /* XMLSEC_NO_GOST */
+
+#ifndef XMLSEC_NO_GOST2012
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_256Id)) {
+        ctx->keyId  = xmlSecOpenSSLKeyDataGostR3410_2012_256Id;
+        ctx->digest = EVP_get_digestbyname("md_gost12_256");
+		if (!ctx->digest) {
+			xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    NULL,
+                    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+			return(-1);
+		}
+    } else
+
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_512Id)) {
+        ctx->keyId  = xmlSecOpenSSLKeyDataGostR3410_2012_512Id;
+        ctx->digest = EVP_get_digestbyname("md_gost12_512");
+		if (!ctx->digest) {
+			xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    NULL,
+                    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+			return(-1);
+		}
+    } else
+#endif /* XMLSEC_NO_GOST2012 */
 
     if(1) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1988,7 +2025,6 @@ xmlSecOpenSSLTransformRsaSha512GetKlass(void) {
 
 #endif /* XMLSEC_NO_RSA */
 
-
 #ifndef XMLSEC_NO_GOST
 /****************************************************************************
  *
@@ -2034,7 +2070,101 @@ xmlSecTransformId
 xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass(void) {
     return(&xmlSecOpenSSLGost2001GostR3411_94Klass);
 }
+#endif /* XMLSEC_NO_GOST */
 
-#endif /* XMLSEC_NO_GOST*/
+#ifndef XMLSEC_NO_GOST2012
+
+/****************************************************************************
+ *
+ * GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform
+ *
+ ***************************************************************************/
+
+static xmlSecTransformKlass xmlSecOpenSSLGostR3410_2012GostR3411_2012_256Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecOpenSSLEvpSignatureSize,                /* xmlSecSize objSize */
+
+    xmlSecNameGostR3410_2012GostR3411_2012_256, /* const xmlChar* name; */
+    xmlSecHrefGostR3410_2012GostR3411_2012_256, /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecOpenSSLEvpSignatureInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLEvpSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecOpenSSLEvpSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecOpenSSLEvpSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecOpenSSLEvpSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecOpenSSLEvpSignatureExecute,             /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecOpenSSLTransformGost3410_2012GostR3411_2012_256GetKlass:
+ *
+ * The GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform klass.
+ *
+ * Returns: GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform klass.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_256GetKlass(void) {
+    return(&xmlSecOpenSSLGostR3410_2012GostR3411_2012_256Klass);
+}
+
+
+/****************************************************************************
+ *
+ * GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform
+ *
+ ***************************************************************************/
+
+static xmlSecTransformKlass xmlSecOpenSSLGostR3410_2012GostR3411_2012_512Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecOpenSSLEvpSignatureSize,                /* xmlSecSize objSize */
+
+    xmlSecNameGostR3410_2012GostR3411_2012_512, /* const xmlChar* name; */
+    xmlSecHrefGostR3410_2012GostR3411_2012_512, /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecOpenSSLEvpSignatureInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLEvpSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecOpenSSLEvpSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecOpenSSLEvpSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecOpenSSLEvpSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecOpenSSLEvpSignatureExecute,             /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecOpenSSLTransformGost3410_2012GostR3411_2012_512GetKlass:
+ *
+ * The GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform klass.
+ *
+ * Returns: GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform klass.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_512GetKlass(void) {
+    return(&xmlSecOpenSSLGostR3410_2012GostR3411_2012_512Klass);
+}
+
+#endif /* XMLSEC_NO_GOST2012 */
 
 

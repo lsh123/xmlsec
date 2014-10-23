@@ -74,6 +74,7 @@ xmlSecCryptoGetFunctions_skeleton(void) {
 
 #ifndef XMLSEC_NO_GOST
     gXmlSecSkeletonFunctions->keyDataGost2001GetKlass   = xmlSecSkeletonKeyDataGost2001GetKlass;
+    gXmlSecSkeletonFunctions->keyDataGostR3410_2012GetKlass = xmlSecSkeletonKeyDataGostR3410_2012GetKlass;
 #endif /* XMLSEC_NO_GOST */
 
 #ifndef XMLSEC_NO_HMAC
@@ -161,10 +162,14 @@ xmlSecCryptoGetFunctions_skeleton(void) {
     /******************************* GOST ********************************/
 #ifndef XMLSEC_NO_GOST
     gXmlSecSkeletonFunctions->transformGost2001GostR3411_94GetKlass             = xmlSecSkeletonTransformGost2001GostR3411_94GetKlass;
+    gXmlSecSkeletonFunctions->transformGostR3410_2012GostR3411_2012_256GetKlass = xmlSecSkeletonTransformGostR3410_2012GostR3411_2012_256GetKlass;
+    gXmlSecSkeletonFunctions->transformGostR3410_2012GostR3411_2012_512GetKlass = xmlSecSkeletonTransformGostR3410_2012GostR3411_2012_512GetKlass;
 #endif /* XMLSEC_GOST */
 
 #ifndef XMLSEC_NO_GOST
     gXmlSecSkeletonFunctions->transformGostR3411_94GetKlass             = xmlSecSkeletonTransformGostR3411_94GetKlass;
+    gXmlSecSkeletonFunctions->transformGostR3411_2012_256GetKlass       = xmlSecSkeletonTransformGostR3411_2012_256GetKlass;
+    gXmlSecSkeletonFunctions->transformGostR3411_2012_512GetKlass       = xmlSecSkeletonTransformGostR3411_2012_512GetKlass;
 #endif /* XMLSEC_NO_GOST */
 
     /******************************* HMAC ********************************/

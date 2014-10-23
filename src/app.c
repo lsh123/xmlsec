@@ -220,6 +220,52 @@ xmlSecKeyDataGost2001GetKlass(void) {
 }
 
 /**
+ * xmlSecKeyDataGostR3410_2012_256GetKlass:
+ *
+ * The GOST R 34.10-2012 256 bit key data klass.
+ *
+ * Returns: GOST R 34.10-2012 256 bit key data klass or NULL if an error occurs
+ * (xmlsec-crypto library is not loaded or the GOST R 34.10-2012 key data
+ * klass is not implemented).
+ */
+xmlSecKeyDataId
+xmlSecKeyDataGostR3410_2012_256GetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataGostR3410_2012_256GetKlass == NULL)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "keyDataGostR3410_2012_256Id",
+                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(xmlSecKeyDataIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->keyDataGostR3410_2012_256GetKlass());
+}
+
+/**
+ * xmlSecKeyDataGostR3410_2012_512GetKlass:
+ *
+ * The GOST R 34.10-2012 512 bit key data klass.
+ *
+ * Returns: GOST R 34.10-2012 512 bit key data klass or NULL if an error occurs
+ * (xmlsec-crypto library is not loaded or the GOST R 34.10-2012 key data
+ * klass is not implemented).
+ */
+xmlSecKeyDataId
+xmlSecKeyDataGostR3410_2012_512GetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataGostR3410_2012_512GetKlass == NULL)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "keyDataGostR3410_2012_512Id",
+                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(xmlSecKeyDataIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->keyDataGostR3410_2012_512GetKlass());
+}
+
+/**
  * xmlSecKeyDataHmacGetKlass:
  *
  * The HMAC key data klass.
@@ -713,6 +759,52 @@ xmlSecTransformGost2001GostR3411_94GetKlass(void) {
 }
 
 /**
+ * xmlSecTransformGostR3410_2012GostR3411_2012_256GetKlass:
+ *
+ * The GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform klass.
+ *
+ * Returns: GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformGostR3410_2012GostR3411_2012_256GetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformGostR3410_2012GostR3411_2012_256GetKlass == NULL)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "transformGostR3410_2012GostR3411_2012_256Id",
+                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformGostR3410_2012GostR3411_2012_256GetKlass());
+}
+
+/**
+ * xmlSecTransformGostR3410_2012GostR3411_2012_512GetKlass:
+ *
+ * The GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform klass.
+ *
+ * Returns: GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformGostR3410_2012GostR3411_2012_512GetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformGostR3410_2012GostR3411_2012_512GetKlass == NULL)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "transformGostR3410_2012GostR3411_2012_512Id",
+                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformGostR3410_2012GostR3411_2012_512GetKlass());
+}
+
+/**
  * xmlSecTransformHmacMd5GetKlass:
  *
  * The HMAC-MD5 transform klass.
@@ -1149,7 +1241,52 @@ xmlSecTransformGostR3411_94GetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->transformGostR3411_94GetKlass());
 }
 
+/**
+ * xmlSecTransformGostR3411_2012_256GetKlass:
+ *
+ * GOST R 34.11-2012 256 bit digest transform klass.
+ *
+ * Returns: pointer to GOST R 34.11-2012 256 bit digest transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
 
+xmlSecTransformId
+xmlSecTransformGostR3411_2012_256GetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformGostR3411_2012_256GetKlass == NULL)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "transformGostR3411_2012_256Id",
+                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformGostR3411_2012_256GetKlass());
+}
+
+/**
+ * xmlSecTransformGostR3411_2012_512GetKlass:
+ *
+ * GOST R 34.11-2012 512 bit digest transform klass.
+ *
+ * Returns: pointer to GOST R 34.11-2012 512 bit digest transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformGostR3411_2012_512GetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformGostR3411_2012_512GetKlass == NULL)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "transformGostR3411_2012_512Id",
+                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformGostR3411_2012_512GetKlass());
+}
 /**
  * xmlSecTransformSha1GetKlass:
  *

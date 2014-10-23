@@ -108,6 +108,15 @@ xmlSecOpenSSLEvpDigestCheckId(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_GOST*/
 
+#ifndef XMLSEC_NO_GOST2012
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGostR3411_2012_256Id)) {
+        return(1);
+    } else
+
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGostR3411_2012_512Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_GOST2012 */
 
     {
         return(0);
@@ -183,7 +192,35 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
 			return(-1);
 		}
     } else
-#endif /* XMLSEC_NO_GOST*/
+#endif /* XMLSEC_NO_GOST */
+
+#ifndef XMLSEC_NO_GOST2012
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGostR3411_2012_256Id)) {
+        ctx->digest = EVP_get_digestbyname("md_gost12_256");
+				if (!ctx->digest)
+				{
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    NULL,
+                    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+				}
+    } else
+
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGostR3411_2012_512Id)) {
+        ctx->digest = EVP_get_digestbyname("md_gost12_512");
+				if (!ctx->digest)
+				{
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    NULL,
+                    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+				}
+    } else
+#endif /* XMLSEC_NO_GOST2012 */
 
     {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -743,4 +780,92 @@ xmlSecOpenSSLTransformGostR3411_94GetKlass(void) {
     return(&xmlSecOpenSSLGostR3411_94Klass);
 }
 #endif /* XMLSEC_NO_GOST*/
+
+#ifndef XMLSEC_NO_GOST2012
+
+/******************************************************************************
+ *
+ * GOST R 34.11-2012 256 bit
+ *
+ *****************************************************************************/
+static xmlSecTransformKlass xmlSecOpenSSLGostR3411_2012_256Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* size_t klassSize */
+    xmlSecOpenSSLEvpDigestSize,                   /* size_t objSize */
+
+    xmlSecNameGostR3411_2012_256,               /* const xmlChar* name; */
+    xmlSecHrefGostR3411_2012_256,               /* const xmlChar* href; */
+    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
+    xmlSecOpenSSLEvpDigestInitialize,             /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLEvpDigestFinalize,               /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecOpenSSLEvpDigestVerify,                 /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecOpenSSLEvpDigestExecute,                /* xmlSecTransformExecuteMethod execute; */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecOpenSSLTransformGostR3411_2012_256GetKlass:
+ *
+ * GOST R 34.11-2012 256 bit digest transform klass.
+ *
+ * Returns: pointer to GOST R 34.11-2012 256 bit digest transform klass.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformGostR3411_2012_256GetKlass(void) {
+    return(&xmlSecOpenSSLGostR3411_2012_256Klass);
+}
+
+/******************************************************************************
+ *
+ * GOST R 34.11-2012 512 bit
+ *
+ *****************************************************************************/
+static xmlSecTransformKlass xmlSecOpenSSLGostR3411_2012_512Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* size_t klassSize */
+    xmlSecOpenSSLEvpDigestSize,                   /* size_t objSize */
+
+    xmlSecNameGostR3411_2012_512,               /* const xmlChar* name; */
+    xmlSecHrefGostR3411_2012_512,               /* const xmlChar* href; */
+    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
+    xmlSecOpenSSLEvpDigestInitialize,             /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLEvpDigestFinalize,               /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecOpenSSLEvpDigestVerify,                 /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecOpenSSLEvpDigestExecute,                /* xmlSecTransformExecuteMethod execute; */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecOpenSSLTransformGostR3411_2012_512GetKlass:
+ *
+ * GOST R 34.11-2012 512 bit digest transform klass.
+ *
+ * Returns: pointer to GOST R 34.11-2012 512 bit digest transform klass.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformGostR3411_2012_512GetKlass(void) {
+    return(&xmlSecOpenSSLGostR3411_2012_512Klass);
+}
+
+#endif /* XMLSEC_NO_GOST2012 */
 

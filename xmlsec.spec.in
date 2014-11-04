@@ -12,7 +12,7 @@ BuildRoot: %{_tmppath}/@PACKAGE@-%{version}-root
 URL: http://www.aleksey.com/xmlsec
 Requires: libxml2 >= @LIBXML_MIN_VERSION@
 Requires: libxslt >= @LIBXSLT_MIN_VERSION@
-Requires: ltdl
+Requires: libtool-ltdl
 BuildRequires: libxml2-devel >= @LIBXML_MIN_VERSION@
 BuildRequires: libxslt-devel >= @LIBXSLT_MIN_VERSION@
 Prefix: %{_prefix}
@@ -33,7 +33,8 @@ Requires: xmlsec1 = %{version}
 Requires: libxml2-devel >= @LIBXML_MIN_VERSION@
 Requires: libxslt-devel >= @LIBXSLT_MIN_VERSION@
 Requires: openssl-devel >= @OPENSSL_MIN_VERSION@
-Requires: zlib-devel 
+Requires: zlib-devel
+Requires: libtool-ltdl-devel
 
 %description devel
 Libraries, includes, etc. you can use to develop applications with XML Digital 

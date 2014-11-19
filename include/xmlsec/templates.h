@@ -9,7 +9,7 @@
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef __XMLSEC_TEMPLATES_H__
-#define __XMLSEC_TEMPALTES_H__
+#define __XMLSEC_TEMPLATES_H__
 
 #ifdef __cplusplus
 extern "C" {

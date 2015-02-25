@@ -24,7 +24,6 @@ XMLSEC_EXAMPLES = \
 	$(XMLSEC_OBJS_DIR)\decrypt1.exe \
 	$(XMLSEC_OBJS_DIR)\decrypt2.exe \
 	$(XMLSEC_OBJS_DIR)\decrypt3.exe \
-	$(XMLSEC_OBJS_DIR)\xkms-server.exe \
 
 # 
 !IF "$(XMLSEC_CRYPTO)" == "openssl"

@@ -19,8 +19,8 @@ EXTRA_DIST = \
 #
 DOC_SOURCE_DIR=./code
 DOC_SOURCE_FILES=\
-	$(shell find $(SOURCE_DIR) -name '*.c' -a ! -name "xkms*" -print )  \
-	$(shell find $(INCLUDE_DIR) -name '*.h' -a ! -name "symbols.h" -a ! -name "xkms*" -print )
+	$(shell find $(SOURCE_DIR) -name '*.c' -print )  \
+	$(shell find $(INCLUDE_DIR) -name '*.h' -a ! -name "symbols.h" -print )
 
 EXAMPLES_SOURCE_DIR=../../examples
 EXAMPLES_SOURCE_FILES=\

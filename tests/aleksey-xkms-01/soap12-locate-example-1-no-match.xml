@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<Envelope xmlns="http://www.w3.org/2002/06/soap-envelope">
-<Body>
-<LocateResult xmlns="http://www.w3.org/2002/03/xkms#" Id="AlDwXZQSF4xaOGzRVMb6cympaV8fKmqU" Service="http://www.example.com/xkms" RequestId="I94d1048aa24259465d7271cb4433dbb4" ResultMajor="Sender" ResultMinor="NoMatch"/>
-</Body>
-</Envelope>

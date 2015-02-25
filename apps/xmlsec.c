@@ -36,7 +36,6 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/xmldsig.h>
 #include <xmlsec/xmlenc.h>
-#include <xmlsec/xkms.h>
 #include <xmlsec/parser.h>
 #include <xmlsec/templates.h>
 #include <xmlsec/errors.h>
@@ -75,9 +74,6 @@ static const char helpCommands2[] =
     "  --encrypt   "    "\tencrypt data and output XML document\n"
     "  --decrypt   "    "\tdecrypt data from XML document\n"
 #endif /* XMLSEC_NO_XMLENC */
-#ifndef XMLSEC_NO_XKMS
-    "  --xkms-server-request ""\tprocess data as XKMS server request\n"
-#endif /* XMLSEC_NO_XKMS */
     ;
 
 static const char helpVersion[] = 
@@ -113,10 +109,6 @@ static const char helpDecrypt[] =
     "Usage: xmlsec decrypt [<options>] <file>\n"
     "Decrypts XML Encryption data in the <file>\n";
 
-static const char helpXkmsServerRequest[] =  
-    "Usage: xmlsec xkms-server-request [<options>] <file>\n"
-    "Processes the <file> as XKMS server request and outputs the response\n";
-
 static const char helpListKeyData[] =     
     "Usage: xmlsec list-key-data\n"
     "Prints the list of known key data klasses\n";
@@ -140,7 +132,7 @@ static const char helpCheckTransforms[] =
 #define xmlSecAppCmdLineTopicEncCommon          0x0010
 #define xmlSecAppCmdLineTopicEncEncrypt         0x0020
 #define xmlSecAppCmdLineTopicEncDecrypt         0x0040
-#define xmlSecAppCmdLineTopicXkmsCommon         0x0080
+// #define UNUSED         0x0080
 #define xmlSecAppCmdLineTopicKeysMngr           0x1000
 #define xmlSecAppCmdLineTopicX509Certs          0x2000
 #define xmlSecAppCmdLineTopicVersion            0x4000
@@ -419,8 +411,7 @@ static xmlSecAppCmdLineParam sessionKeyParam = {
 
 static xmlSecAppCmdLineParam outputParam = { 
     xmlSecAppCmdLineTopicDSigCommon | 
-    xmlSecAppCmdLineTopicEncCommon | 
-    xmlSecAppCmdLineTopicXkmsCommon,
+    xmlSecAppCmdLineTopicEncCommon,
     "--output",
     "-o",
     "--output <filename>"
@@ -432,8 +423,7 @@ static xmlSecAppCmdLineParam outputParam = {
 
 static xmlSecAppCmdLineParam nodeIdParam = { 
     xmlSecAppCmdLineTopicDSigCommon | 
-    xmlSecAppCmdLineTopicEncCommon | 
-    xmlSecAppCmdLineTopicXkmsCommon,
+    xmlSecAppCmdLineTopicEncCommon,
     "--node-id",
     NULL,
     "--node-id <id>"
@@ -445,8 +435,7 @@ static xmlSecAppCmdLineParam nodeIdParam = {
 
 static xmlSecAppCmdLineParam nodeNameParam = { 
     xmlSecAppCmdLineTopicDSigCommon | 
-    xmlSecAppCmdLineTopicEncCommon | 
-    xmlSecAppCmdLineTopicXkmsCommon,
+    xmlSecAppCmdLineTopicEncCommon,
     "--node-name",
     NULL,   
     "--node-name [<namespace-uri>:]<name>"
@@ -459,8 +448,7 @@ static xmlSecAppCmdLineParam nodeNameParam = {
     
 static xmlSecAppCmdLineParam nodeXPathParam = { 
     xmlSecAppCmdLineTopicDSigCommon | 
-    xmlSecAppCmdLineTopicEncCommon | 
-    xmlSecAppCmdLineTopicXkmsCommon,
+    xmlSecAppCmdLineTopicEncCommon,
     "--node-xpath",
     NULL,   
     "--node-xpath <expr>"
@@ -473,8 +461,7 @@ static xmlSecAppCmdLineParam nodeXPathParam = {
 
 static xmlSecAppCmdLineParam dtdFileParam = { 
     xmlSecAppCmdLineTopicDSigCommon | 
-    xmlSecAppCmdLineTopicEncCommon | 
-    xmlSecAppCmdLineTopicXkmsCommon,
+    xmlSecAppCmdLineTopicEncCommon,
     "--dtd-file",
     NULL,   
     "--dtd-file <file>"
@@ -486,8 +473,7 @@ static xmlSecAppCmdLineParam dtdFileParam = {
 
 static xmlSecAppCmdLineParam printDebugParam = { 
     xmlSecAppCmdLineTopicDSigCommon | 
-    xmlSecAppCmdLineTopicEncCommon | 
-    xmlSecAppCmdLineTopicXkmsCommon,
+    xmlSecAppCmdLineTopicEncCommon,
     "--print-debug",
     NULL,   
     "--print-debug"
@@ -499,8 +485,7 @@ static xmlSecAppCmdLineParam printDebugParam = {
 
 static xmlSecAppCmdLineParam printXmlDebugParam = { 
     xmlSecAppCmdLineTopicDSigCommon | 
-    xmlSecAppCmdLineTopicEncCommon | 
-    xmlSecAppCmdLineTopicXkmsCommon,
+    xmlSecAppCmdLineTopicEncCommon,
     "--print-xml-debug",
     NULL,   
     "--print-xml-debug"
@@ -512,8 +497,7 @@ static xmlSecAppCmdLineParam printXmlDebugParam = {
 
 static xmlSecAppCmdLineParam idAttrParam = { 
     xmlSecAppCmdLineTopicDSigCommon | 
-    xmlSecAppCmdLineTopicEncCommon | 
-    xmlSecAppCmdLineTopicXkmsCommon,
+    xmlSecAppCmdLineTopicEncCommon,
     "--id-attr",
     NULL,   
     "--id-attr[:<attr-name>] [<node-namespace-uri>:]<node-name>"
@@ -641,72 +625,6 @@ static xmlSecAppCmdLineParam xmlDataParam = {
 };
 #endif /* XMLSEC_NO_XMLENC */
 
-/****************************************************************
- *
- * XKMS params
- *
- ***************************************************************/
-#ifndef XMLSEC_NO_XKMS
-static xmlSecAppCmdLineParam xkmsServiceParam = { 
-    xmlSecAppCmdLineTopicXkmsCommon,
-    "--xkms-service",
-    NULL,
-    "--xkms-service <uri>"
-    "\n\tsets XKMS \"Service\" <uri>",
-    xmlSecAppCmdLineParamTypeString,
-    xmlSecAppCmdLineParamFlagNone,
-    NULL
-};
-
-static xmlSecAppCmdLineParam xkmsFormatParam = { 
-    xmlSecAppCmdLineTopicXkmsCommon,
-    "--xkms-format",
-    NULL,
-    "--xkms-format <format>"
-    "\n\tsets the XKMS request/response format to one of the following values:"
-    "\n\t  \"plain\" (default), \"soap-1.1\" or \"soap-1.2\"",
-    xmlSecAppCmdLineParamTypeString,
-    xmlSecAppCmdLineParamFlagNone,
-    NULL
-};
-
-static xmlSecAppCmdLineParam xkmsStopUnknownResponseMechanismParam = { 
-    xmlSecAppCmdLineTopicXkmsCommon, /* todo: server */
-    "--xkms-stop-on-unknown-response-mechanism",
-    NULL,
-    "--xkms-stop-on-unknown-response-mechanism"
-    "\n\tstop processing XKMS server request if unknown ResponseMechanism"
-    "\n\tvalue was found",
-    xmlSecAppCmdLineParamTypeFlag,
-    xmlSecAppCmdLineParamFlagNone,
-    NULL
-};
-
-static xmlSecAppCmdLineParam xkmsStopUnknownRespondWithParam = { 
-    xmlSecAppCmdLineTopicXkmsCommon, /* todo: server */
-    "--xkms-stop-on-unknown-respond-with",
-    NULL,
-    "--xkms-stop-on-unknown-respond-with"
-    "\n\tstop processing XKMS server request if unknown RespondWith"
-    "\n\tvalue was found",
-    xmlSecAppCmdLineParamTypeFlag,
-    xmlSecAppCmdLineParamFlagNone,
-    NULL
-};
-
-static xmlSecAppCmdLineParam xkmsStopUnknownKeyUsageParam = { 
-    xmlSecAppCmdLineTopicXkmsCommon, /* todo: server */
-    "--xkms-stop-on-unknown-key-usage",
-    NULL,
-    "--xkms-stop-on-unknown-key-usage"
-    "\n\tstop processing XKMS server request if unknown KeyUsage"
-    "\n\tvalue was found",
-    xmlSecAppCmdLineParamTypeFlag,
-    xmlSecAppCmdLineParamFlagNone,
-    NULL
-};
-
-#endif /* XMLSEC_NO_XKMS */
 
 /****************************************************************
  *
@@ -842,15 +760,6 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &xmlDataParam,
     &enabledCipherRefUrisParam,
 #endif /* XMLSEC_NO_XMLENC */
-
-    /* xkms params */
-#ifndef XMLSEC_NO_XKMS
-    &xkmsServiceParam,
-    &xkmsFormatParam,
-    &xkmsStopUnknownResponseMechanismParam,
-    &xkmsStopUnknownRespondWithParam,
-    &xkmsStopUnknownKeyUsageParam,
-#endif /* XMLSEC_NO_XKMS */
              
     /* common dsig and enc parameters */
     &sessionKeyParam,    
@@ -923,8 +832,7 @@ typedef enum {
     xmlSecAppCommandSignTmpl,
     xmlSecAppCommandEncrypt,
     xmlSecAppCommandDecrypt,
-    xmlSecAppCommandEncryptTmpl,
-    xmlSecAppCommandXkmsServerRequest
+    xmlSecAppCommandEncryptTmpl
 } xmlSecAppCommand;
 
 typedef struct _xmlSecAppXmlData                                xmlSecAppXmlData,
@@ -971,12 +879,6 @@ static int                      xmlSecAppEncryptTmpl            (void);
 static int                      xmlSecAppPrepareEncCtx          (xmlSecEncCtxPtr encCtx);
 static void                     xmlSecAppPrintEncCtx            (xmlSecEncCtxPtr encCtx);
 #endif /* XMLSEC_NO_XMLENC */
-
-#ifndef XMLSEC_NO_XKMS
-static int                      xmlSecAppXkmsServerProcess      (const char* filename);
-static int                      xmlSecAppPrepareXkmsServerCtx   (xmlSecXkmsServerCtxPtr xkmsServerCtx);
-static void                     xmlSecAppPrintXkmsServerCtx     (xmlSecXkmsServerCtxPtr xkmsServerCtx);
-#endif /* XMLSEC_NO_XKMS */
 
 static void                     xmlSecAppListKeyData            (void);
 static int                      xmlSecAppCheckKeyData       (const char * name);
@@ -1048,7 +950,6 @@ int main(int argc, const char **argv) {
         case xmlSecAppCommandVerify:
         case xmlSecAppCommandEncrypt:
         case xmlSecAppCommandDecrypt:
-        case xmlSecAppCommandXkmsServerRequest:
             if(pos >= argc) {
                 fprintf(stderr, "Error: <file> parameter is required for this command\n");
                 xmlSecAppPrintUsage();
@@ -1185,16 +1086,6 @@ int main(int argc, const char **argv) {
 #endif /* XMLSEC_NO_TMPL_TEST */
 #endif /* XMLSEC_NO_XMLENC */
 
-#ifndef XMLSEC_NO_XKMS
-        case xmlSecAppCommandXkmsServerRequest:
-            for(i = pos; i < argc; ++i) {
-                if(xmlSecAppXkmsServerProcess(argv[i]) < 0) {
-                    fprintf(stderr, "Error: failed to process XKMS server request from file \"%s\"\n", argv[i]);
-                    goto fail;
-                }
-            }
-            break;
-#endif /* XMLSEC_NO_XKMS */
         default:
             fprintf(stderr, "Error: invalid command %d\n", command);
             xmlSecAppPrintUsage();
@@ -1882,142 +1773,6 @@ xmlSecAppPrintEncCtx(xmlSecEncCtxPtr encCtx) {
 }
 
 #endif /* XMLSEC_NO_XMLENC */
-
-#ifndef XMLSEC_NO_XKMS
-static int 
-xmlSecAppXkmsServerProcess(const char* filename) {
-    xmlSecAppXmlDataPtr data = NULL;
-    xmlDocPtr doc = NULL;
-    xmlNodePtr result;
-    xmlSecXkmsServerCtx xkmsServerCtx;
-    xmlSecXkmsServerFormat format = xmlSecXkmsServerFormatPlain;
-    clock_t start_time;
-    int res = -1;
-
-    if(filename == NULL) {
-        return(-1);
-    }
-
-    if(xmlSecXkmsServerCtxInitialize(&xkmsServerCtx, gKeysMngr) < 0) {
-        fprintf(stderr, "Error: XKMS server context initialization failed\n");
-        return(-1);
-    }
-    if(xmlSecAppPrepareXkmsServerCtx(&xkmsServerCtx) < 0) {
-        fprintf(stderr, "Error: XKMS server context preparation failed\n");
-        goto done;
-    }
-
-    /* get the input format */
-    if(xmlSecAppCmdLineParamGetString(&xkmsFormatParam) != NULL) {
-        format = xmlSecXkmsServerFormatFromString(BAD_CAST xmlSecAppCmdLineParamGetString(&xkmsFormatParam));
-        if(format == xmlSecXkmsServerFormatUnknown) {
-            fprintf(stderr, "Error: unknown format \"%s\"\n", 
-                    xmlSecAppCmdLineParamGetString(&xkmsFormatParam));
-            return(-1);    
-        }
-    }
-
-    /* parse template and select start node, there are multiple options
-     * for start node thus we don't provide the default start node name */
-    data = xmlSecAppXmlDataCreate(filename, NULL, NULL);
-    if(data == NULL) {
-        fprintf(stderr, "Error: failed to load request from file \"%s\"\n", filename);
-        goto done;
-    }
-
-    /* prepare result document */
-    doc = xmlNewDoc(BAD_CAST "1.0");
-    if(doc == NULL) {
-        fprintf(stderr, "Error: failed to create doc\n");
-        goto done;
-    }
-
-    start_time = clock();          
-    result = xmlSecXkmsServerCtxProcess(&xkmsServerCtx, data->startNode, format, doc);
-    if(result == NULL) {
-        fprintf(stderr, "Error: failed to process xkms server request\n");
-        goto done;
-    }
-    total_time += clock() - start_time;    
-
-        
-    /* print out result only once per execution */
-    xmlDocSetRootElement(doc, result);
-    if(repeats <= 1) {
-        if(xmlSecAppWriteResult(doc, NULL) < 0) {
-            goto done;
-        }
-    }
-
-    res = 0;    
-
-done:
-    /* print debug info if requested */
-    if(repeats <= 1) { 
-        xmlSecAppPrintXkmsServerCtx(&xkmsServerCtx);
-    }
-    xmlSecXkmsServerCtxFinalize(&xkmsServerCtx);
-
-    if(doc != NULL) {
-        xmlFreeDoc(doc);
-    }
-    if(data != NULL) {
-        xmlSecAppXmlDataDestroy(data);
-    }
-    return(res);
-}
-
-static int
-xmlSecAppPrepareXkmsServerCtx(xmlSecXkmsServerCtxPtr xkmsServerCtx) {    
-    if(xkmsServerCtx == NULL) {
-        fprintf(stderr, "Error: XKMS context is null\n");
-        return(-1);
-    }
-
-    /* set key info params */
-    if(xmlSecAppPrepareKeyInfoReadCtx(&(xkmsServerCtx->keyInfoReadCtx)) < 0) {
-        fprintf(stderr, "Error: failed to prepare key info context\n");
-        return(-1);
-    }
-
-    if(xmlSecAppCmdLineParamGetString(&xkmsServiceParam) != NULL) {
-        xkmsServerCtx->expectedService = xmlStrdup(BAD_CAST xmlSecAppCmdLineParamGetString(&xkmsServiceParam));
-        if(xkmsServerCtx->expectedService == NULL) {
-            fprintf(stderr, "Error: failed to duplicate string \"%s\"\n", 
-                    xmlSecAppCmdLineParamGetString(&xkmsServiceParam));
-            return(-1);    
-        }
-    }
-    
-    if(xmlSecAppCmdLineParamIsSet(&xkmsStopUnknownResponseMechanismParam)) {
-        xkmsServerCtx->flags |= XMLSEC_XKMS_SERVER_FLAGS_STOP_ON_UNKNOWN_RESPONSE_MECHANISM;
-    }
-    if(xmlSecAppCmdLineParamIsSet(&xkmsStopUnknownRespondWithParam)) {
-        xkmsServerCtx->flags |= XMLSEC_XKMS_SERVER_FLAGS_STOP_ON_UNKNOWN_RESPOND_WITH;
-    }
-    if(xmlSecAppCmdLineParamIsSet(&xkmsStopUnknownKeyUsageParam)) {
-        xkmsServerCtx->flags |= XMLSEC_XKMS_SERVER_FLAGS_STOP_ON_UNKNOWN_KEY_USAGE;
-    }
-    return(0);
-}
-
-static void 
-xmlSecAppPrintXkmsServerCtx(xmlSecXkmsServerCtxPtr xkmsServerCtx) {
-    if(xkmsServerCtx == NULL) {
-        return;
-    }
-    
-    /* print debug info if requested */
-    if((print_debug != 0) || xmlSecAppCmdLineParamIsSet(&printDebugParam)) {
-        xmlSecXkmsServerCtxDebugDump(xkmsServerCtx, stdout);
-    }
-    
-    if(xmlSecAppCmdLineParamIsSet(&printXmlDebugParam)) {          
-        xmlSecXkmsServerCtxDebugXmlDump(xkmsServerCtx, stdout);
-    }
-}
-
-#endif /* XMLSEC_NO_XKMS */
 
 static void 
 xmlSecAppListKeyData(void) {
@@ -2854,18 +2609,6 @@ xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics
 #endif /* XMLSEC_NO_TMPL_TEST */
 #endif /* XMLSEC_NO_XMLENC */
 
-#ifndef XMLSEC_NO_XKMS
-    if(strcmp(cmd, "--xkms-server-request") == 0) {
-        (*cmdLineTopics) = 
-                        xmlSecAppCmdLineTopicGeneral |
-                        xmlSecAppCmdLineTopicCryptoConfig |
-                        xmlSecAppCmdLineTopicXkmsCommon |
-                        xmlSecAppCmdLineTopicKeysMngr |
-                        xmlSecAppCmdLineTopicX509Certs;
-        return(xmlSecAppCommandXkmsServerRequest);
-    } else
-#endif /* XMLSEC_NO_XKMS */
-
     if(1) {
         (*cmdLineTopics) = 0;
         return(xmlSecAppCommandUnknown);
@@ -2914,9 +2657,6 @@ xmlSecAppPrintHelp(xmlSecAppCommand command, xmlSecAppCmdLineParamTopic topics) 
         break;
     case xmlSecAppCommandEncryptTmpl:
         fprintf(stdout, "%s\n", helpEncryptTmpl);
-        break;
-    case xmlSecAppCommandXkmsServerRequest:
-        fprintf(stdout, "%s\n", helpXkmsServerRequest);
         break;
     }
     if(topics != 0) {

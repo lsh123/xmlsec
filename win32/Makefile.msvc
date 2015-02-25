@@ -153,7 +153,6 @@ XMLSEC_OBJS = \
 	$(XMLSEC_INTDIR)\templates.obj \
 	$(XMLSEC_INTDIR)\transforms.obj \
 	$(XMLSEC_INTDIR)\x509.obj \
-	$(XMLSEC_INTDIR)\xkms.obj \
 	$(XMLSEC_INTDIR)\xmldsig.obj \
 	$(XMLSEC_INTDIR)\xmlenc.obj \
 	$(XMLSEC_INTDIR)\xmlsec.obj \
@@ -184,7 +183,6 @@ XMLSEC_OBJS_A = \
 	$(XMLSEC_INTDIR_A)\templates.obj \
 	$(XMLSEC_INTDIR_A)\transforms.obj \
 	$(XMLSEC_INTDIR_A)\x509.obj \
-	$(XMLSEC_INTDIR_A)\xkms.obj \
 	$(XMLSEC_INTDIR_A)\xmldsig.obj \
 	$(XMLSEC_INTDIR_A)\xmlenc.obj \
 	$(XMLSEC_INTDIR_A)\xmlsec.obj \
@@ -480,13 +478,6 @@ check-enc : $(BINDIR)\$(APP_NAME)
 	sh ./tests/testrun.sh ./tests/testEnc.sh default ./tests win32/$(BINDIR)/$(APP_NAME) der
 	cd win32
 
-check-xkms : $(BINDIR)\$(APP_NAME)
-	cd ..
-	if not exist win32\tmp mkdir win32\tmp
-	set TMPFOLDER=win32\tmp
-	sh ./tests/testrun.sh ./tests/testXKMS.sh default ./tests win32/$(BINDIR)/$(APP_NAME) der
-	cd win32
-		
 clean :
 	if exist $(XMLSEC_INTDIR) rmdir /S /Q $(XMLSEC_INTDIR)
 	if exist $(XMLSEC_INTDIR_A) rmdir /S /Q $(XMLSEC_INTDIR_A)

@@ -30,7 +30,6 @@ xmlsecinc_HEADERS = \
 	transforms.h \
 	version.h \
 	x509.h \
-	xkms.h \
 	xmldsig.h \
 	xmlenc.h \
 	xmlsec.h \

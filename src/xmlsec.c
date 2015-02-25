@@ -21,7 +21,6 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/app.h>
 #include <xmlsec/io.h>
-#include <xmlsec/xkms.h>
 #include <xmlsec/errors.h>
 
 /**
@@ -66,24 +65,7 @@ xmlSecInit(void) {
         return(-1);
     }
 
-#ifndef XMLSEC_NO_XKMS
-    if(xmlSecXkmsRespondWithIdsInit() < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecXkmsRespondWithIdsInit",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
-        return(-1);
-    }
-    if(xmlSecXkmsServerRequestIdsInit() < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecXkmsServerRequestIdsInit",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
-        return(-1);
-    }
-#endif /* XMLSEC_NO_XKMS */
+
 
     /* we use rand() function to generate id attributes */
     srand(time(NULL));
@@ -100,11 +82,6 @@ xmlSecInit(void) {
 int
 xmlSecShutdown(void) {
     int res = 0;
-
-#ifndef XMLSEC_NO_XKMS
-    xmlSecXkmsServerRequestIdsShutdown();
-    xmlSecXkmsRespondWithIdsShutdown();
-#endif /* XMLSEC_NO_XKMS */
 
     xmlSecTransformIdsShutdown();
     xmlSecKeyDataIdsShutdown();

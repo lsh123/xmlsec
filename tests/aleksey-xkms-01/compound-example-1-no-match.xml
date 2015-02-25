@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<CompoundResult xmlns="http://www.w3.org/2002/03/xkms#" Id="PTLTkLuPfZtNrXVhhcrCqa_0o_73Sqno" Service="http://www.example.com/xkms" RequestId="Ie383fac377f1e54d2b26596c072b8b7a" ResultMajor="Sender" ResultMinor="NoMatch">
-<LocateResult Id="ADj5gRxQoJ__nZ6iWKweeUVy7C4ydhs3" Service="http://www.example.com/xkms" RequestId="I97a5c09bff0fe094d27facf5e5adb206" ResultMajor="Sender" ResultMinor="NoMatch"/>
-
-<LocateResult Id="tWuDz6Ahiw2U40SQXvT_X4Dq1B5KCanL" Service="http://www.example.com/xkms" RequestId="Icf173d33d71c80c74589c6204f7aeb4f" ResultMajor="Sender" ResultMinor="NoMatch"/>
-
-</CompoundResult>

@@ -150,16 +150,6 @@ check-enc: $(TEST_APP)
 	    der \
 	)
 
-check-xkms: $(TEST_APP) 	
-	@($(PRECHECK_COMMANDS) && \
-	$(SHELL) ./tests/testrun.sh \
-	    $(ABS_SRCDIR)/tests/testXKMS.sh \
-	    $(DEFAULT_CRYPTO) \
-	    $(ABS_SRCDIR)/tests \
-	    $(ABS_BUILDDIR)/$(TEST_APP) \
-	    der \
-	)
-
 memcheck-res:
 	@grep -i 'ERROR SUMMARY' /tmp/*.log | sed 's/.*==.*== *//' | sort -u
 	@grep -i 'in use at exit' /tmp/*.log | sed 's/.*==.*== *//' | sort -u

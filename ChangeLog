@@ -1,3 +1,6 @@
+2014-02-25 Aleksey Sanin  <aleksey@aleksey.com>
+	* Removed XKMS support -- it was never completed and not worth keeping
+
 2013-05-23 Aleksey Sanin  <aleksey@aleksey.com>
         * 1.2.20 release
         

@@ -83,10 +83,6 @@ typedef struct _xmlSecDSigCtx                   xmlSecDSigCtx, *xmlSecDSigCtxPtr
 typedef struct _xmlSecEncCtx                    xmlSecEncCtx, *xmlSecEncCtxPtr;
 #endif /* XMLSEC_NO_XMLENC */
 
-#ifndef XMLSEC_NO_XKMS
-typedef struct _xmlSecXkmsServerCtx             xmlSecXkmsServerCtx, *xmlSecXkmsServerCtxPtr;
-#endif /* XMLSEC_NO_XKMS */
-
 XMLSEC_EXPORT int       xmlSecInit              (void);
 XMLSEC_EXPORT int       xmlSecShutdown          (void);
 

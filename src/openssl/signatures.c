@@ -40,7 +40,19 @@ static const EVP_MD *xmlSecOpenSSLDsaSha256Evp                  (void);
 
 #ifndef XMLSEC_NO_ECDSA
 
-#define XMLSEC_OPENSSL_ECDSA_SIGNATURE_SIZE                     ((512 / 8) * 2)
+/**
+ * http://www.w3.org/TR/xmldsig-core1/#sec-ECDSA
+ *
+ * The output of the ECDSA algorithm consists of a pair of integers usually
+ * referred by the pair (r, s). The signature value consists of the base64
+ * encoding of the concatenation of two octet-streams that respectively result
+ * from the octet-encoding of the values r and s in that order. Integer to
+ * octet-stream conversion must be done according to the I2OSP operation defined
+ * in the RFC 3447 [PKCS1] specification with the l parameter equal to the size of
+ * the base point order of the curve in bytes (e.g. 32 for the P-256 curve and 66
+ * for the P-521 curve).
+ */
+#define XMLSEC_OPENSSL_ECDSA_SIGNATURE_MAX_SIZE                 (2 * 66)
 
 #ifndef XMLSEC_NO_SHA1
 static const EVP_MD *xmlSecOpenSSLEcdsaSha1Evp                  (void);
@@ -659,8 +671,8 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
             }
 #endif /* XMLSEC_NO_DSA */
 #ifndef XMLSEC_NO_ECDSA
-            if(signSize < XMLSEC_OPENSSL_ECDSA_SIGNATURE_SIZE) {
-                signSize = XMLSEC_OPENSSL_ECDSA_SIGNATURE_SIZE;
+            if(signSize < XMLSEC_OPENSSL_ECDSA_SIGNATURE_MAX_SIZE) {
+                signSize = XMLSEC_OPENSSL_ECDSA_SIGNATURE_MAX_SIZE;
             }
 #endif /* XMLSEC_NO_ECDSA */
 
@@ -1027,7 +1039,7 @@ static const EVP_MD *xmlSecOpenSSLDsaSha256Evp(void)
  * octet-stream conversion MUST be done according to the I2OSP operation
  * defined in Section 4.1 of RFC 3447 [PKCS1] with the xLen parameter equal
  * to the size of the base point order of the curve in bytes (32 for the
- * P-256 curve).
+ * P-256 curve and 66 for the P-521 curve).
  *
  ***************************************************************************/
 static int
@@ -1076,13 +1088,13 @@ xmlSecOpenSSLEcdsaEvpSign(int type ATTRIBUTE_UNUSED,
     }
 
     xLen = BN_num_bytes(order);
-    if(xLen > (XMLSEC_OPENSSL_ECDSA_SIGNATURE_SIZE / 2)) {
+    if(xLen > (XMLSEC_OPENSSL_ECDSA_SIGNATURE_MAX_SIZE / 2)) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_SIZE,
                     "xLen=%d > %d",
-                    xLen, XMLSEC_OPENSSL_ECDSA_SIGNATURE_SIZE / 2);
+                    xLen, XMLSEC_OPENSSL_ECDSA_SIGNATURE_MAX_SIZE / 2);
         goto done;
     }
 
@@ -1159,13 +1171,13 @@ xmlSecOpenSSLEcdsaEvpVerify(int type ATTRIBUTE_UNUSED,
     }
 
     xLen = BN_num_bytes(order);
-    if(xLen > (XMLSEC_OPENSSL_ECDSA_SIGNATURE_SIZE / 2)) {
+    if(xLen > (XMLSEC_OPENSSL_ECDSA_SIGNATURE_MAX_SIZE / 2)) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_SIZE,
                     "xLen=%d > %d",
-                    xLen, XMLSEC_OPENSSL_ECDSA_SIGNATURE_SIZE / 2);
+                    xLen, XMLSEC_OPENSSL_ECDSA_SIGNATURE_MAX_SIZE / 2);
         goto done;
     }
 

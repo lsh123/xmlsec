@@ -51,6 +51,10 @@ static const EVP_MD *xmlSecOpenSSLDsaSha256Evp                  (void);
  * in the RFC 3447 [PKCS1] specification with the l parameter equal to the size of
  * the base point order of the curve in bytes (e.g. 32 for the P-256 curve and 66
  * for the P-521 curve).
+ *
+ * Also see https://bugzilla.gnome.org/show_bug.cgi?id=745269 for discussion
+ * about this constant and why it is large.
+ * 
  */
 #define XMLSEC_OPENSSL_ECDSA_SIGNATURE_MAX_SIZE                 (2 * 128)
 

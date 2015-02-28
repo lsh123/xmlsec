@@ -52,7 +52,7 @@ static const EVP_MD *xmlSecOpenSSLDsaSha256Evp                  (void);
  * the base point order of the curve in bytes (e.g. 32 for the P-256 curve and 66
  * for the P-521 curve).
  */
-#define XMLSEC_OPENSSL_ECDSA_SIGNATURE_MAX_SIZE                 (2 * 66)
+#define XMLSEC_OPENSSL_ECDSA_SIGNATURE_MAX_SIZE                 (2 * 128)
 
 #ifndef XMLSEC_NO_SHA1
 static const EVP_MD *xmlSecOpenSSLEcdsaSha1Evp                  (void);

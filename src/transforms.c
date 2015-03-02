@@ -1201,6 +1201,18 @@ xmlSecTransformCtxUriExecute(xmlSecTransformCtxPtr ctx, const xmlChar* uri) {
         return(-1);
     }
 
+    /* Close to free up file handle */
+    ret = xmlSecTransformInputURIClose(uriTransform);
+    if(ret < 0) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+					NULL,
+					"xmlSecTransformInputURIClose",
+					XMLSEC_ERRORS_R_XMLSEC_FAILED,
+					"ret=%d", ret);
+		return(-1);
+	}
+
+    /* Done */
     ctx->status = xmlSecTransformStatusFinished;
     return(0);
 }

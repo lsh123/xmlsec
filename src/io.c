@@ -433,6 +433,35 @@ xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
     return(0);
 }
 
+
+/**
+ * xmlSecTransformInputURIClose:
+ * @transform:          the pointer to IO transform.
+ *
+ * Closes the given @transform and frees up resourses.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecTransformInputURIClose(xmlSecTransformPtr transform) {
+    xmlSecInputURICtxPtr ctx;
+
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformInputURIId), -1);
+
+    ctx = xmlSecTransformInputUriGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    /* close if still open and mark as closed */
+    if((ctx->clbksCtx != NULL) && (ctx->clbks != NULL) && (ctx->clbks->closecallback != NULL)) {
+    	(ctx->clbks->closecallback)(ctx->clbksCtx);
+    	ctx->clbksCtx = NULL;
+    	ctx->clbks = NULL;
+    }
+
+    /* done */
+    return(0);
+}
+
 static int
 xmlSecTransformInputURIInitialize(xmlSecTransformPtr transform) {
     xmlSecInputURICtxPtr ctx;
@@ -448,17 +477,27 @@ xmlSecTransformInputURIInitialize(xmlSecTransformPtr transform) {
 
 static void
 xmlSecTransformInputURIFinalize(xmlSecTransformPtr transform) {
-    xmlSecInputURICtxPtr ctx;
+	xmlSecInputURICtxPtr ctx;
+	int ret;
 
     xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecTransformInputURIId));
 
     ctx = xmlSecTransformInputUriGetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
-    if((ctx->clbksCtx != NULL) && (ctx->clbks != NULL) && (ctx->clbks->closecallback != NULL)) {
-        (ctx->clbks->closecallback)(ctx->clbksCtx);
-    }
+    ret = xmlSecTransformInputURIClose(transform);
+    if(ret < 0) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+					xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+					"xmlSecTransformInputURIClose",
+					XMLSEC_ERRORS_R_XMLSEC_FAILED,
+					"ret=%d", ret);
+		/* ignore the error */
+		/* return; */
+	}
+
     memset(ctx, 0, sizeof(xmlSecInputURICtx));
+    return;
 }
 
 static int

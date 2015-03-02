@@ -759,7 +759,7 @@ if test "z$NSS_FOUND" = "zno" ; then
 
     if test "z$NSS_INCLUDES_FOUND" = "zyes" -a "z$NSS_LIBS_FOUND" = "zyes" ; then
        OLD_CPPFLAGS=$CPPFLAGS
-       CPPFLAGS="$NSS_CFLAGS"
+       CPPFLAGS="$NSPR_CFLAGS $NSS_CFLAGS"
        AC_EGREP_CPP(yes,[
           #include <nss.h>
           #if NSS_VMAJOR >= 3 && NSS_VMINOR >= 2

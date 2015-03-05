@@ -24,7 +24,10 @@
 
 #ifndef XMLSEC_NO_DSA
 
-#define XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE                       (20 * 2)
+/**
+ * See https://bugzilla.gnome.org/show_bug.cgi?id=745493 for discussion
+ */
+#define XMLSEC_OPENSSL_DSA_SIGNATURE_MAX_SIZE                       (32 * 2)
 
 #ifndef XMLSEC_NO_SHA1
 static const EVP_MD *xmlSecOpenSSLDsaSha1Evp                    (void);
@@ -670,8 +673,8 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
              * for dsa signature we use a fixed constant */
             signSize = EVP_PKEY_size(ctx->pKey);
 #ifndef XMLSEC_NO_DSA
-            if(signSize < XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE) {
-                signSize = XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE;
+            if(signSize < XMLSEC_OPENSSL_DSA_SIGNATURE_MAX_SIZE) {
+                signSize = XMLSEC_OPENSSL_DSA_SIGNATURE_MAX_SIZE;
             }
 #endif /* XMLSEC_NO_DSA */
 #ifndef XMLSEC_NO_ECDSA
@@ -760,33 +763,52 @@ xmlSecOpenSSLDsaEvpSign(int type ATTRIBUTE_UNUSED,
                         const unsigned char *dgst, unsigned int dlen,
                         unsigned char *sig, unsigned int *siglen, void *dsa) {
     DSA_SIG *s;
-    int rSize, sSize;
+    int size, rSize, sSize;
 
+    /* signature size = r + s + 8 bytes, we just need r+s */
+    size = DSA_size(dsa);
+    if(size < 8) {
+        *siglen=0;
+        return(0);
+    }
+    size = (size - 8) /  2;
+    if(2 * size > XMLSEC_OPENSSL_DSA_SIGNATURE_MAX_SIZE) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    NULL,
+                    XMLSEC_ERRORS_R_INVALID_SIZE,
+                    "size=%d > %d",
+                    size, XMLSEC_OPENSSL_DSA_SIGNATURE_MAX_SIZE);
+        return(0);
+    }
+
+    /* calculate signature */
     s = DSA_do_sign(dgst, dlen, dsa);
     if(s == NULL) {
         *siglen=0;
         return(0);
     }
 
+    /* get signature components */
     rSize = BN_num_bytes(s->r);
     sSize = BN_num_bytes(s->s);
-    if((rSize > (XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE / 2)) ||
-       (sSize > (XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE / 2))) {
+    if((rSize > size) || (sSize > size)) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_SIZE,
                     "size(r)=%d or size(s)=%d > %d",
-                    rSize, sSize, XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE / 2);
+                    rSize, sSize, size);
         DSA_SIG_free(s);
         return(0);
     }
 
-    memset(sig, 0, XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE);
-    BN_bn2bin(s->r, sig + (XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE / 2) - rSize);
-    BN_bn2bin(s->s, sig + XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE - sSize);
-    *siglen = XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE;
+    memset(sig, 0, 2 * size);
+    BN_bn2bin(s->r, sig + size - rSize);
+    BN_bn2bin(s->s, sig + 2*size - sSize);
+    *siglen = 2 * size;
 
+    /* done */
     DSA_SIG_free(s);
     return(1);
 }
@@ -797,26 +819,42 @@ xmlSecOpenSSLDsaEvpVerify(int type ATTRIBUTE_UNUSED,
                         const unsigned char *sigbuf, unsigned int siglen,
                         void *dsa) {
     DSA_SIG *s;
+    int size;
     int ret = -1;
+
+    /* signature size = r + s + 8 bytes, we just need r+s */
+    size = DSA_size(dsa);
+    if(size < 8) {
+        return(0);
+    }
+    size = (size - 8) / 2;
+    if(2 * size > XMLSEC_OPENSSL_DSA_SIGNATURE_MAX_SIZE) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    NULL,
+                    XMLSEC_ERRORS_R_INVALID_SIZE,
+                    "size=%d > %d",
+                    size, XMLSEC_OPENSSL_DSA_SIGNATURE_MAX_SIZE);
+        return(0);
+    }
 
     s = DSA_SIG_new();
     if (s == NULL) {
         return(ret);
     }
 
-    if(siglen != XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE) {
+    if(siglen != 2 * size) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_SIZE,
                     "invalid length %d (%d expected)",
-                    siglen, XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE);
+                    siglen, 2 * size);
         goto done;
     }
 
-    s->r = BN_bin2bn(sigbuf, XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE / 2, NULL);
-    s->s = BN_bin2bn(sigbuf + (XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE / 2),
-                       XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE / 2, NULL);
+    s->r = BN_bin2bn(sigbuf, size, NULL);
+    s->s = BN_bin2bn(sigbuf + size, size, NULL);
     if((s->r == NULL) || (s->s == NULL)) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,

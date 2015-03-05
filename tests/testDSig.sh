@@ -320,6 +320,24 @@ execDSigTest $res_success \
     "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloping-sha256-dsa2048-sha256" \
+    "sha256 dsa-sha256" \
+    "dsa x509" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "$priv_key_option $topfolder/keys/dsa2048key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloping-sha256-dsa3072-sha256" \
+    "sha256 dsa-sha256" \
+    "dsa x509" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "$priv_key_option $topfolder/keys/dsa3072key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
 #
 # To generate expired cert run the following command
 # > xmlsec1 sign --pkcs12 tests/keys/expiredkey.p12 --pwd secret123 --output out.xml ./tests/aleksey-xmldsig-01/enveloping-expired-cert.tmpl

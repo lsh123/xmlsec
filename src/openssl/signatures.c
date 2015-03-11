@@ -421,9 +421,8 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-#ifndef XMLSEC_OPENSSL_096
     EVP_MD_CTX_init(&(ctx->digestCtx));
-#endif /* XMLSEC_OPENSSL_096 */
+
     return(0);
 }
 
@@ -441,9 +440,8 @@ xmlSecOpenSSLEvpSignatureFinalize(xmlSecTransformPtr transform) {
         EVP_PKEY_free(ctx->pKey);
     }
 
-#ifndef XMLSEC_OPENSSL_096
     EVP_MD_CTX_cleanup(&(ctx->digestCtx));
-#endif /* XMLSEC_OPENSSL_096 */
+
     memset(ctx, 0, sizeof(xmlSecOpenSSLEvpSignatureCtx));
 }
 
@@ -588,7 +586,6 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
         xmlSecAssert2(outSize == 0, -1);
 
         if(transform->operation == xmlSecTransformOperationSign) {
-#ifndef XMLSEC_OPENSSL_096
             ret = EVP_SignInit(&(ctx->digestCtx), ctx->digest);
             if(ret != 1) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
@@ -598,11 +595,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
                             XMLSEC_ERRORS_NO_MESSAGE);
                 return(-1);
             }
-#else /* XMLSEC_OPENSSL_096 */
-            EVP_SignInit(&(ctx->digestCtx), ctx->digest);
-#endif /* XMLSEC_OPENSSL_096 */
         } else {
-#ifndef XMLSEC_OPENSSL_096
             ret = EVP_VerifyInit(&(ctx->digestCtx), ctx->digest);
             if(ret != 1) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
@@ -612,9 +605,6 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
                             XMLSEC_ERRORS_NO_MESSAGE);
                 return(-1);
             }
-#else /* XMLSEC_OPENSSL_096 */
-            EVP_VerifyInit(&(ctx->digestCtx), ctx->digest);
-#endif /* XMLSEC_OPENSSL_096 */
         }
         transform->status = xmlSecTransformStatusWorking;
     }
@@ -623,7 +613,6 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
         xmlSecAssert2(outSize == 0, -1);
 
         if(transform->operation == xmlSecTransformOperationSign) {
-#ifndef XMLSEC_OPENSSL_096
             ret = EVP_SignUpdate(&(ctx->digestCtx), xmlSecBufferGetData(in), inSize);
             if(ret != 1) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
@@ -633,11 +622,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
                             XMLSEC_ERRORS_NO_MESSAGE);
                 return(-1);
             }
-#else /* XMLSEC_OPENSSL_096 */
-            EVP_SignUpdate(&(ctx->digestCtx), xmlSecBufferGetData(in), inSize);
-#endif /* XMLSEC_OPENSSL_096 */
         } else {
-#ifndef XMLSEC_OPENSSL_096
             ret = EVP_VerifyUpdate(&(ctx->digestCtx), xmlSecBufferGetData(in), inSize);
             if(ret != 1) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
@@ -647,9 +632,6 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
                             XMLSEC_ERRORS_NO_MESSAGE);
                 return(-1);
             }
-#else /* XMLSEC_OPENSSL_096 */
-            EVP_VerifyUpdate(&(ctx->digestCtx), xmlSecBufferGetData(in), inSize);
-#endif /* XMLSEC_OPENSSL_096 */
         }
 
         ret = xmlSecBufferRemoveHead(in, inSize);
@@ -917,7 +899,6 @@ xmlSecOpenSSLTransformDsaSha1GetKlass(void) {
     return(&xmlSecOpenSSLDsaSha1Klass);
 }
 
-#ifndef XMLSEC_OPENSSL_096
 static int
 xmlSecOpenSSLDsaSha1EvpInit(EVP_MD_CTX *ctx)
 {
@@ -935,24 +916,17 @@ xmlSecOpenSSLDsaSha1EvpFinal(EVP_MD_CTX *ctx, unsigned char *md)
 {
     return SHA1_Final(md,ctx->md_data);
 }
-#endif /* XMLSEC_OPENSSL_096 */
 
 static const EVP_MD xmlSecOpenSSLDsaSha1MdEvp = {
     NID_dsaWithSHA,
     NID_dsaWithSHA,
     SHA_DIGEST_LENGTH,
-#ifndef XMLSEC_OPENSSL_096
     0,
     xmlSecOpenSSLDsaSha1EvpInit,
     xmlSecOpenSSLDsaSha1EvpUpdate,
     xmlSecOpenSSLDsaSha1EvpFinal,
     NULL,
     NULL,
-#else /* XMLSEC_OPENSSL_096 */
-    SHA1_Init,
-    SHA1_Update,
-    SHA1_Final,
-#endif /* XMLSEC_OPENSSL_096 */
     xmlSecOpenSSLDsaEvpSign,
     xmlSecOpenSSLDsaEvpVerify,
     {EVP_PKEY_DSA,EVP_PKEY_DSA2,EVP_PKEY_DSA3,EVP_PKEY_DSA4,0},
@@ -1300,7 +1274,6 @@ xmlSecOpenSSLTransformEcdsaSha1GetKlass(void) {
     return(&xmlSecOpenSSLEcdsaSha1Klass);
 }
 
-#ifndef XMLSEC_OPENSSL_096
 static int
 xmlSecOpenSSLEcdsaSha1EvpInit(EVP_MD_CTX *ctx)
 {
@@ -1318,24 +1291,17 @@ xmlSecOpenSSLEcdsaSha1EvpFinal(EVP_MD_CTX *ctx, unsigned char *md)
 {
     return SHA1_Final(md,ctx->md_data);
 }
-#endif /* XMLSEC_OPENSSL_096 */
 
 static const EVP_MD xmlSecOpenSSLEcdsaSha1MdEvp = {
     NID_ecdsa_with_SHA1,
     NID_ecdsa_with_SHA1,
     SHA_DIGEST_LENGTH,
-#ifndef XMLSEC_OPENSSL_096
     0,
     xmlSecOpenSSLEcdsaSha1EvpInit,
     xmlSecOpenSSLEcdsaSha1EvpUpdate,
     xmlSecOpenSSLEcdsaSha1EvpFinal,
     NULL,
     NULL,
-#else /* XMLSEC_OPENSSL_096 */
-    SHA1_Init,
-    SHA1_Update,
-    SHA1_Final,
-#endif /* XMLSEC_OPENSSL_096 */
     xmlSecOpenSSLEcdsaEvpSign,
     xmlSecOpenSSLEcdsaEvpVerify,
     /* XXX-MAK: This worries me, not sure that the keys are right. */
@@ -1398,7 +1364,6 @@ xmlSecOpenSSLTransformEcdsaSha224GetKlass(void) {
     return(&xmlSecOpenSSLEcdsaSha224Klass);
 }
 
-#ifndef XMLSEC_OPENSSL_096
 static int
 xmlSecOpenSSLEcdsaSha224EvpInit(EVP_MD_CTX *ctx)
 {
@@ -1416,24 +1381,17 @@ xmlSecOpenSSLEcdsaSha224EvpFinal(EVP_MD_CTX *ctx, unsigned char *md)
 {
     return SHA224_Final(md,ctx->md_data);
 }
-#endif /* XMLSEC_OPENSSL_096 */
 
 static const EVP_MD xmlSecOpenSSLEcdsaSha224MdEvp = {
     NID_ecdsa_with_SHA224,
     NID_ecdsa_with_SHA224,
     SHA224_DIGEST_LENGTH,
-#ifndef XMLSEC_OPENSSL_096
     0,
     xmlSecOpenSSLEcdsaSha224EvpInit,
     xmlSecOpenSSLEcdsaSha224EvpUpdate,
     xmlSecOpenSSLEcdsaSha224EvpFinal,
     NULL,
     NULL,
-#else /* XMLSEC_OPENSSL_096 */
-    SHA224_Init,
-    SHA224_Update,
-    SHA224_Final,
-#endif /* XMLSEC_OPENSSL_096 */
     xmlSecOpenSSLEcdsaEvpSign,
     xmlSecOpenSSLEcdsaEvpVerify,
     /* XXX-MAK: This worries me, not sure that the keys are right. */
@@ -1496,7 +1454,6 @@ xmlSecOpenSSLTransformEcdsaSha256GetKlass(void) {
     return(&xmlSecOpenSSLEcdsaSha256Klass);
 }
 
-#ifndef XMLSEC_OPENSSL_096
 static int
 xmlSecOpenSSLEcdsaSha256EvpInit(EVP_MD_CTX *ctx)
 {
@@ -1514,24 +1471,17 @@ xmlSecOpenSSLEcdsaSha256EvpFinal(EVP_MD_CTX *ctx, unsigned char *md)
 {
     return SHA256_Final(md,ctx->md_data);
 }
-#endif /* XMLSEC_OPENSSL_096 */
 
 static const EVP_MD xmlSecOpenSSLEcdsaSha256MdEvp = {
     NID_ecdsa_with_SHA256,
     NID_ecdsa_with_SHA256,
     SHA256_DIGEST_LENGTH,
-#ifndef XMLSEC_OPENSSL_096
     0,
     xmlSecOpenSSLEcdsaSha256EvpInit,
     xmlSecOpenSSLEcdsaSha256EvpUpdate,
     xmlSecOpenSSLEcdsaSha256EvpFinal,
     NULL,
     NULL,
-#else /* XMLSEC_OPENSSL_096 */
-    SHA256_Init,
-    SHA256_Update,
-    SHA256_Final,
-#endif /* XMLSEC_OPENSSL_096 */
     xmlSecOpenSSLEcdsaEvpSign,
     xmlSecOpenSSLEcdsaEvpVerify,
     /* XXX-MAK: This worries me, not sure that the keys are right. */
@@ -1594,7 +1544,6 @@ xmlSecOpenSSLTransformEcdsaSha384GetKlass(void) {
     return(&xmlSecOpenSSLEcdsaSha384Klass);
 }
 
-#ifndef XMLSEC_OPENSSL_096
 static int
 xmlSecOpenSSLEcdsaSha384EvpInit(EVP_MD_CTX *ctx)
 {
@@ -1612,24 +1561,17 @@ xmlSecOpenSSLEcdsaSha384EvpFinal(EVP_MD_CTX *ctx, unsigned char *md)
 {
     return SHA384_Final(md,ctx->md_data);
 }
-#endif /* XMLSEC_OPENSSL_096 */
 
 static const EVP_MD xmlSecOpenSSLEcdsaSha384MdEvp = {
     NID_ecdsa_with_SHA384,
     NID_ecdsa_with_SHA384,
     SHA384_DIGEST_LENGTH,
-#ifndef XMLSEC_OPENSSL_096
     0,
     xmlSecOpenSSLEcdsaSha384EvpInit,
     xmlSecOpenSSLEcdsaSha384EvpUpdate,
     xmlSecOpenSSLEcdsaSha384EvpFinal,
     NULL,
     NULL,
-#else /* XMLSEC_OPENSSL_096 */
-    SHA384_Init,
-    SHA384_Update,
-    SHA384_Final,
-#endif /* XMLSEC_OPENSSL_096 */
     xmlSecOpenSSLEcdsaEvpSign,
     xmlSecOpenSSLEcdsaEvpVerify,
     /* XXX-MAK: This worries me, not sure that the keys are right. */
@@ -1692,7 +1634,6 @@ xmlSecOpenSSLTransformEcdsaSha512GetKlass(void) {
     return(&xmlSecOpenSSLEcdsaSha512Klass);
 }
 
-#ifndef XMLSEC_OPENSSL_096
 static int
 xmlSecOpenSSLEcdsaSha512EvpInit(EVP_MD_CTX *ctx)
 {
@@ -1710,24 +1651,17 @@ xmlSecOpenSSLEcdsaSha512EvpFinal(EVP_MD_CTX *ctx, unsigned char *md)
 {
     return SHA512_Final(md,ctx->md_data);
 }
-#endif /* XMLSEC_OPENSSL_096 */
 
 static const EVP_MD xmlSecOpenSSLEcdsaSha512MdEvp = {
     NID_ecdsa_with_SHA512,
     NID_ecdsa_with_SHA512,
     SHA512_DIGEST_LENGTH,
-#ifndef XMLSEC_OPENSSL_096
     0,
     xmlSecOpenSSLEcdsaSha512EvpInit,
     xmlSecOpenSSLEcdsaSha512EvpUpdate,
     xmlSecOpenSSLEcdsaSha512EvpFinal,
     NULL,
     NULL,
-#else /* XMLSEC_OPENSSL_096 */
-    SHA512_Init,
-    SHA512_Update,
-    SHA512_Final,
-#endif /* XMLSEC_OPENSSL_096 */
     xmlSecOpenSSLEcdsaEvpSign,
     xmlSecOpenSSLEcdsaEvpVerify,
     /* XXX-MAK: This worries me, not sure that the keys are right. */

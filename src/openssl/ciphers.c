@@ -21,10 +21,6 @@
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
 
-/* this is not defined in OpenSSL 0.9.6 */
-#ifndef EVP_MAX_BLOCK_LENGTH
-#define EVP_MAX_BLOCK_LENGTH            32
-#endif /* EVP_MAX_BLOCK_LENGTH */
 
 /**************************************************************************
  *
@@ -140,13 +136,11 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 
     /*
      * The padding used in XML Enc does not follow RFC 1423
-     * and is not supported by OpenSSL. In the case of OpenSSL 0.9.7
-     * it is possible to disable padding and do it by yourself
-     * For OpenSSL 0.9.6 you have interop problems
+     * and is not supported by OpenSSL. However, it is possible
+     * to disable padding and do it by yourself
      */
-#ifndef XMLSEC_OPENSSL_096
     EVP_CIPHER_CTX_set_padding(&(ctx->cipherCtx), 0);
-#endif /* XMLSEC_OPENSSL_096 */
+
     return(0);
 }
 
@@ -195,16 +189,14 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdate(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 
     /*
      * The padding used in XML Enc does not follow RFC 1423
-     * and is not supported by OpenSSL. In the case of OpenSSL 0.9.7
-     * it is possible to disable padding and do it by yourself
-     * For OpenSSL 0.9.6 you have interop problems.
+     * and is not supported by OpenSSL. However, it is possible
+     * to disable padding and do it by yourself
      *
      * The logic below is copied from EVP_DecryptUpdate() function.
      * This is a hack but it's the only way I can provide binary
      * compatibility with previous versions of xmlsec.
      * This needs to be fixed in the next XMLSEC API refresh.
      */
-#ifndef XMLSEC_OPENSSL_096
     if(!ctx->cipherCtx.encrypt) {
         if(ctx->cipherCtx.final_used) {
             memcpy(outBuf, ctx->cipherCtx.final, blockLen);
@@ -214,7 +206,6 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdate(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
             fixLength = 0;
         }
     }
-#endif /* XMLSEC_OPENSSL_096 */
 
     /* encrypt/decrypt */
     ret = EVP_CipherUpdate(&(ctx->cipherCtx), outBuf, &outLen, xmlSecBufferGetData(in), inSize);
@@ -227,7 +218,6 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdate(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         return(-1);
     }
 
-#ifndef XMLSEC_OPENSSL_096
     if(!ctx->cipherCtx.encrypt) {
         /*
          * The logic below is copied from EVP_DecryptUpdate() function.
@@ -246,7 +236,6 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdate(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
             outLen += blockLen;
         }
     }
-#endif /* XMLSEC_OPENSSL_096 */
 
     /* set correct output buffer size */
     ret = xmlSecBufferSetSize(out, outSize + outLen);
@@ -310,16 +299,14 @@ xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 
     /*
      * The padding used in XML Enc does not follow RFC 1423
-     * and is not supported by OpenSSL. In the case of OpenSSL 0.9.7
-     * it is possible to disable padding and do it by yourself
-     * For OpenSSL 0.9.6 you have interop problems.
+     * and is not supported by OpenSSL. However, it is possible
+     * to disable padding and do it by yourself
      *
      * The logic below is copied from EVP_DecryptFinal() function.
      * This is a hack but it's the only way I can provide binary
      * compatibility with previous versions of xmlsec.
      * This needs to be fixed in the next XMLSEC API refresh.
      */
-#ifndef XMLSEC_OPENSSL_096
     if(ctx->cipherCtx.encrypt) {
         int padLen;
 
@@ -354,7 +341,6 @@ xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         }
         outBuf += outLen;
     }
-#endif /* XMLSEC_OPENSSL_096 */
 
     /* finalize transform */
     ret = EVP_CipherFinal(&(ctx->cipherCtx), outBuf, &outLen2);
@@ -369,16 +355,14 @@ xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 
     /*
      * The padding used in XML Enc does not follow RFC 1423
-     * and is not supported by OpenSSL. In the case of OpenSSL 0.9.7
-     * it is possible to disable padding and do it by yourself
-     * For OpenSSL 0.9.6 you have interop problems.
+     * and is not supported by OpenSSL. However, it is possible
+     * to disable padding and do it by yourself
      *
      * The logic below is copied from EVP_DecryptFinal() function.
      * This is a hack but it's the only way I can provide binary
      * compatibility with previous versions of xmlsec.
      * This needs to be fixed in the next XMLSEC API refresh.
      */
-#ifndef XMLSEC_OPENSSL_096
      if(!ctx->cipherCtx.encrypt) {
         /* we instructed openssl to do not use padding so there
          * should be no final block
@@ -402,7 +386,6 @@ xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
             }
         }
     }
-#endif /* XMLSEC_OPENSSL_096 */
 
     /* set correct output buffer size */
     ret = xmlSecBufferSetSize(out, outSize + outLen + outLen2);

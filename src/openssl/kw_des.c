@@ -530,9 +530,7 @@ xmlSecOpenSSLKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
         return(-1);
     }
 
-#ifndef XMLSEC_OPENSSL_096
     EVP_CIPHER_CTX_set_padding(&cipherCtx, 0);
-#endif /* XMLSEC_OPENSSL_096 */
 
     ret = EVP_CipherUpdate(&cipherCtx, out, &updateLen, in, inSize);
     if(ret != 1) {

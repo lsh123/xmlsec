@@ -103,9 +103,7 @@ xmlSecOpenSSLAppShutdown(void) {
     X509_TRUST_cleanup();
 #endif /* XMLSEC_NO_X509 */
 
-#ifndef XMLSEC_OPENSSL_096
     CRYPTO_cleanup_all_ex_data();
-#endif /* XMLSEC_OPENSSL_096 */
 
     /* finally cleanup errors */
     ERR_remove_state(0);

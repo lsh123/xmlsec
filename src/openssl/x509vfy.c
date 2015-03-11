@@ -48,10 +48,7 @@ struct _xmlSecOpenSSLX509StoreCtx {
     X509_STORE*         xst;
     STACK_OF(X509)*     untrusted;
     STACK_OF(X509_CRL)* crls;
-
-#if !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097)
     X509_VERIFY_PARAM * vpm;
-#endif /* !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097) */
 };
 
 /****************************************************************************
@@ -292,7 +289,6 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
                 X509_STORE_CTX_set_time(&xsc, 0, keyInfoCtx->certsVerificationTime);
             }
 
-#if !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097)
             {
                 X509_VERIFY_PARAM * vpm = NULL;
                 unsigned long vpm_flags = 0;
@@ -318,7 +314,6 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
                 X509_VERIFY_PARAM_set_flags(vpm, vpm_flags);
                 X509_STORE_CTX_set0_param(&xsc, vpm);
             }
-#endif /* !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097) */
 
 
             ret         = X509_verify_cert(&xsc);
@@ -678,7 +673,6 @@ xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
         return(-1);
     }
 
-#if !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097)
     ctx->vpm = X509_VERIFY_PARAM_new();
     if(ctx->vpm == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -691,9 +685,6 @@ xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
     X509_VERIFY_PARAM_set_depth(ctx->vpm, 9); /* the default cert verification path in openssl */
     X509_STORE_set1_param(ctx->xst, ctx->vpm);
 
-#else  /* !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097) */
-    ctx->xst->depth = 9; /* the default cert verification path in openssl */
-#endif /* !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097) */
 
     return(0);
 }
@@ -716,11 +707,9 @@ xmlSecOpenSSLX509StoreFinalize(xmlSecKeyDataStorePtr store) {
     if(ctx->crls != NULL) {
         sk_X509_CRL_pop_free(ctx->crls, X509_CRL_free);
     }
-#if !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097)
     if(ctx->vpm != NULL) {
         X509_VERIFY_PARAM_free(ctx->vpm);
     }
-#endif /* !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097) */
 
     memset(ctx, 0, sizeof(xmlSecOpenSSLX509StoreCtx));
 }

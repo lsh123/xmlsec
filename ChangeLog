@@ -1,5 +1,8 @@
+2014-03-10 Aleksey Sanin  <aleksey@aleksey.com>
+        * Removed support for legacy OpenSSL 0.9.6 (last release: March, 2004) and 0.9.7 (last release: February, 2007) 
+
 2014-02-25 Aleksey Sanin  <aleksey@aleksey.com>
-	* Removed XKMS support -- it was never completed and not worth keeping
+        * Removed XKMS support -- it was never completed and not worth keeping
 
 2013-05-23 Aleksey Sanin  <aleksey@aleksey.com>
         * 1.2.20 release

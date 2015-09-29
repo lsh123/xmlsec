@@ -158,5 +158,5 @@ XMLSEC_EXPORT int       xmlSecTmplTransformAddXPointer          (xmlNodePtr tran
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_KEYINFO_TEMPLATES_H__ */
+#endif /* __XMLSEC_TEMPLATES_H__ */
 

@@ -40,7 +40,7 @@ static int      xmlSecDSigCtxProcessSignatureNode       (xmlSecDSigCtxPtr dsigCt
                                                          xmlNodePtr node);
 static int      xmlSecDSigCtxProcessSignedInfoNode      (xmlSecDSigCtxPtr dsigCtx,
                                                          xmlNodePtr node,
-														 xmlNodePtr * firstReferenceNode);
+                                                         xmlNodePtr * firstReferenceNode);
 static int      xmlSecDSigCtxProcessKeyInfoNode         (xmlSecDSigCtxPtr dsigCtx,
                                                          xmlNodePtr node);
 static int      xmlSecDSigCtxProcessObjectNode          (xmlSecDSigCtxPtr dsigCtx,
@@ -49,7 +49,7 @@ static int      xmlSecDSigCtxProcessManifestNode        (xmlSecDSigCtxPtr dsigCt
                                                          xmlNodePtr node);
 
 static int      xmlSecDSigCtxProcessReferences          (xmlSecDSigCtxPtr dsigCtx,
-														 xmlNodePtr firstReferenceNode);
+                                                         xmlNodePtr firstReferenceNode);
 
 /* The ID attribute in XMLDSig is 'Id' */
 static const xmlChar*           xmlSecDSigIds[] = { xmlSecAttrId, NULL };
@@ -811,13 +811,13 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xm
         cur = xmlSecGetNextElementNode(cur->next);
     }
     while((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeReference, xmlSecDSigNs))) {
-    	/* record first reference node */
-    	if((*firstReferenceNode) == NULL) {
-    		(*firstReferenceNode) = cur;
-    	}
-    	++refNodesCount;
+        /* record first reference node */
+        if((*firstReferenceNode) == NULL) {
+            (*firstReferenceNode) = cur;
+        }
+        ++refNodesCount;
 
-    	/* go to next */
+        /* go to next */
         cur = xmlSecGetNextElementNode(cur->next);
     }
 
@@ -848,9 +848,9 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xm
 
 static int
 xmlSecDSigCtxProcessReferences(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr firstReferenceNode) {
-	xmlSecDSigReferenceCtxPtr dsigRefCtx;
+    xmlSecDSigReferenceCtxPtr dsigRefCtx;
     xmlNodePtr cur;
-	int ret;
+    int ret;
 
     xmlSecAssert2(dsigCtx != NULL, -1);
     xmlSecAssert2(dsigCtx->status == xmlSecDSigStatusUnknown, -1);
@@ -860,8 +860,8 @@ xmlSecDSigCtxProcessReferences(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr firstReferen
 
     /* process references */
     for(cur = firstReferenceNode; (cur != NULL); cur = xmlSecGetNextElementNode(cur->next)) {
-    	/* already checked but we trust none */
-    	if(!xmlSecCheckNodeName(cur, xmlSecNodeReference, xmlSecDSigNs)) {
+        /* already checked but we trust none */
+        if(!xmlSecCheckNodeName(cur, xmlSecNodeReference, xmlSecDSigNs)) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
@@ -869,9 +869,9 @@ xmlSecDSigCtxProcessReferences(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr firstReferen
                         "expected=%s",
                         xmlSecErrorsSafeString(xmlSecNodeReference));
             return(-1);
-    	}
+        }
 
-    	/* create reference */
+        /* create reference */
         dsigRefCtx = xmlSecDSigReferenceCtxCreate(dsigCtx, xmlSecDSigReferenceOriginSignedInfo);
         if(dsigRefCtx == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,

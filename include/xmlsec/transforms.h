@@ -33,7 +33,7 @@ typedef const struct _xmlSecTransformKlass              xmlSecTransformKlass,
  * The binary data chunks size. XMLSec processes binary data one chunk
  * at a time. Changing this impacts xmlsec memory usage and performance.
  */
-#define XMLSEC_TRANSFORM_BINARY_CHUNK                   64
+#define XMLSEC_TRANSFORM_BINARY_CHUNK                   1024
 
 /**********************************************************************
  *

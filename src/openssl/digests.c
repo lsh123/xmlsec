@@ -20,6 +20,16 @@
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
 
+/* new API from OpenSSL 1.1.0 (https://www.openssl.org/docs/manmaster/crypto/EVP_DigestInit.html):
+ *
+ * EVP_MD_CTX_create() and EVP_MD_CTX_destroy() were renamed to EVP_MD_CTX_new() and EVP_MD_CTX_free() in OpenSSL 1.1.
+ */
+#if !defined(XMLSEC_OPENSSL_110)
+#define EVP_MD_CTX_new()   EVP_MD_CTX_create()
+#define EVP_MD_CTX_free(x) EVP_MD_CTX_destroy((x))
+#endif /* !defined(XMLSEC_OPENSSL_110) */
+
+
 /**************************************************************************
  *
  * Internal OpenSSL Digest CTX
@@ -28,7 +38,7 @@
 typedef struct _xmlSecOpenSSLDigestCtx          xmlSecOpenSSLDigestCtx, *xmlSecOpenSSLDigestCtxPtr;
 struct _xmlSecOpenSSLDigestCtx {
     const EVP_MD*       digest;
-    EVP_MD_CTX          digestCtx;
+    EVP_MD_CTX*         digestCtx;
     xmlSecByte          dgst[EVP_MAX_MD_SIZE];
     xmlSecSize          dgstSize;       /* dgst size in bytes */
 };
@@ -231,8 +241,18 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    EVP_MD_CTX_init(&(ctx->digestCtx));
+    /* create digest CTX */
+    ctx->digestCtx = EVP_MD_CTX_new();
+    if(ctx->digestCtx == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "EVP_MD_CTX_new",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
 
+    /* done */
     return(0);
 }
 
@@ -246,7 +266,9 @@ xmlSecOpenSSLEvpDigestFinalize(xmlSecTransformPtr transform) {
     ctx = xmlSecOpenSSLEvpDigestGetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
-    EVP_MD_CTX_cleanup(&(ctx->digestCtx));
+    if(ctx->digestCtx != NULL) {
+        EVP_MD_CTX_free(ctx->digestCtx);
+    }
 
     memset(ctx, 0, sizeof(xmlSecOpenSSLDigestCtx));
 }
@@ -313,9 +335,10 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
     ctx = xmlSecOpenSSLEvpDigestGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->digest != NULL, -1);
+    xmlSecAssert2(ctx->digestCtx != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
-        ret = EVP_DigestInit(&(ctx->digestCtx), ctx->digest);
+        ret = EVP_DigestInit(ctx->digestCtx, ctx->digest);
         if(ret != 1) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -332,7 +355,7 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 
         inSize = xmlSecBufferGetSize(in);
         if(inSize > 0) {
-            ret = EVP_DigestUpdate(&(ctx->digestCtx), xmlSecBufferGetData(in), inSize);
+            ret = EVP_DigestUpdate(ctx->digestCtx, xmlSecBufferGetData(in), inSize);
             if(ret != 1) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -357,7 +380,7 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 
             xmlSecAssert2((xmlSecSize)EVP_MD_size(ctx->digest) <= sizeof(ctx->dgst), -1);
 
-            ret = EVP_DigestFinal(&(ctx->digestCtx), ctx->dgst, &dgstSize);
+            ret = EVP_DigestFinal(ctx->digestCtx, ctx->dgst, &dgstSize);
             if(ret != 1) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),

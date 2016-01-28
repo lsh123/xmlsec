@@ -22,6 +22,16 @@
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
 
+/* new API from OpenSSL 1.1.0 (https://www.openssl.org/docs/manmaster/crypto/EVP_DigestInit.html):
+ *
+ * EVP_MD_CTX_create() and EVP_MD_CTX_destroy() were renamed to EVP_MD_CTX_new() and EVP_MD_CTX_free() in OpenSSL 1.1.
+ */
+#if !defined(XMLSEC_OPENSSL_110)
+#define EVP_MD_CTX_new()       EVP_MD_CTX_create()
+#define EVP_MD_CTX_free(x)     EVP_MD_CTX_destroy((x))
+#define EVP_MD_CTX_md_data(x)  ((x)->md_data)
+#endif /* !defined(XMLSEC_OPENSSL_110) */
+
 #ifndef XMLSEC_NO_DSA
 
 /**
@@ -91,7 +101,7 @@ typedef struct _xmlSecOpenSSLEvpSignatureCtx    xmlSecOpenSSLEvpSignatureCtx,
                                                 *xmlSecOpenSSLEvpSignatureCtxPtr;
 struct _xmlSecOpenSSLEvpSignatureCtx {
     const EVP_MD*       digest;
-    EVP_MD_CTX          digestCtx;
+    EVP_MD_CTX*         digestCtx;
     xmlSecKeyDataId     keyId;
     EVP_PKEY*           pKey;
 };
@@ -417,8 +427,18 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    EVP_MD_CTX_init(&(ctx->digestCtx));
+    /* create digest CTX */
+    ctx->digestCtx = EVP_MD_CTX_new();
+    if(ctx->digestCtx == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "EVP_MD_CTX_new",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
 
+    /* done */
     return(0);
 }
 
@@ -436,7 +456,9 @@ xmlSecOpenSSLEvpSignatureFinalize(xmlSecTransformPtr transform) {
         EVP_PKEY_free(ctx->pKey);
     }
 
-    EVP_MD_CTX_cleanup(&(ctx->digestCtx));
+    if(ctx->digestCtx != NULL) {
+        EVP_MD_CTX_free(ctx->digestCtx);
+    }
 
     memset(ctx, 0, sizeof(xmlSecOpenSSLEvpSignatureCtx));
 }
@@ -529,8 +551,9 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
 
     ctx = xmlSecOpenSSLEvpSignatureGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->digestCtx != NULL, -1);
 
-    ret = EVP_VerifyFinal(&(ctx->digestCtx), (xmlSecByte*)data, dataSize, ctx->pKey);
+    ret = EVP_VerifyFinal(ctx->digestCtx, (xmlSecByte*)data, dataSize, ctx->pKey);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -576,13 +599,14 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
     ctx = xmlSecOpenSSLEvpSignatureGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->digest != NULL, -1);
+    xmlSecAssert2(ctx->digestCtx != NULL, -1);
     xmlSecAssert2(ctx->pKey != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
         xmlSecAssert2(outSize == 0, -1);
 
         if(transform->operation == xmlSecTransformOperationSign) {
-            ret = EVP_SignInit(&(ctx->digestCtx), ctx->digest);
+            ret = EVP_SignInit(ctx->digestCtx, ctx->digest);
             if(ret != 1) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -592,7 +616,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
                 return(-1);
             }
         } else {
-            ret = EVP_VerifyInit(&(ctx->digestCtx), ctx->digest);
+            ret = EVP_VerifyInit(ctx->digestCtx, ctx->digest);
             if(ret != 1) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -609,7 +633,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
         xmlSecAssert2(outSize == 0, -1);
 
         if(transform->operation == xmlSecTransformOperationSign) {
-            ret = EVP_SignUpdate(&(ctx->digestCtx), xmlSecBufferGetData(in), inSize);
+            ret = EVP_SignUpdate(ctx->digestCtx, xmlSecBufferGetData(in), inSize);
             if(ret != 1) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -619,7 +643,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
                 return(-1);
             }
         } else {
-            ret = EVP_VerifyUpdate(&(ctx->digestCtx), xmlSecBufferGetData(in), inSize);
+            ret = EVP_VerifyUpdate(ctx->digestCtx, xmlSecBufferGetData(in), inSize);
             if(ret != 1) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -671,7 +695,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
                 return(-1);
             }
 
-            ret = EVP_SignFinal(&(ctx->digestCtx), xmlSecBufferGetData(out), &signSize, ctx->pKey);
+            ret = EVP_SignFinal(ctx->digestCtx, xmlSecBufferGetData(out), &signSize, ctx->pKey);
             if(ret != 1) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -797,7 +821,7 @@ xmlSecOpenSSLDsaEvpVerify(int type ATTRIBUTE_UNUSED,
                         const unsigned char *sigbuf, unsigned int siglen,
                         void *dsa) {
     DSA_SIG *s;
-    int size;
+    unsigned int size;
     int ret = -1;
 
     /* signature size = r + s + 8 bytes, we just need r+s */
@@ -898,19 +922,19 @@ xmlSecOpenSSLTransformDsaSha1GetKlass(void) {
 static int
 xmlSecOpenSSLDsaSha1EvpInit(EVP_MD_CTX *ctx)
 {
-    return SHA1_Init(ctx->md_data);
+    return SHA1_Init(EVP_MD_CTX_md_data(ctx));
 }
 
 static int
 xmlSecOpenSSLDsaSha1EvpUpdate(EVP_MD_CTX *ctx, const void *data, size_t count)
 {
-    return SHA1_Update(ctx->md_data,data,count);
+    return SHA1_Update(EVP_MD_CTX_md_data(ctx), data, count);
 }
 
 static int
 xmlSecOpenSSLDsaSha1EvpFinal(EVP_MD_CTX *ctx, unsigned char *md)
 {
-    return SHA1_Final(md,ctx->md_data);
+    return SHA1_Final(md, EVP_MD_CTX_md_data(ctx));
 }
 
 static const EVP_MD xmlSecOpenSSLDsaSha1MdEvp = {
@@ -989,19 +1013,19 @@ xmlSecOpenSSLTransformDsaSha256GetKlass(void) {
 static int
 xmlSecOpenSSLDsaSha256EvpInit(EVP_MD_CTX *ctx)
 {
-    return SHA256_Init(ctx->md_data);
+    return SHA256_Init(EVP_MD_CTX_md_data(ctx));
 }
 
 static int
 xmlSecOpenSSLDsaSha256EvpUpdate(EVP_MD_CTX *ctx, const void *data, size_t count)
 {
-    return SHA256_Update(ctx->md_data,data,count);
+    return SHA256_Update(EVP_MD_CTX_md_data(ctx), data, count);
 }
 
 static int
 xmlSecOpenSSLDsaSha256EvpFinal(EVP_MD_CTX *ctx, unsigned char *md)
 {
-    return SHA256_Final(md,ctx->md_data);
+    return SHA256_Final(md, EVP_MD_CTX_md_data(ctx));
 }
 
 static const EVP_MD xmlSecOpenSSLDsaSha256MdEvp = {
@@ -1271,19 +1295,19 @@ xmlSecOpenSSLTransformEcdsaSha1GetKlass(void) {
 static int
 xmlSecOpenSSLEcdsaSha1EvpInit(EVP_MD_CTX *ctx)
 {
-    return SHA1_Init(ctx->md_data);
+    return SHA1_Init(EVP_MD_CTX_md_data(ctx));
 }
 
 static int
 xmlSecOpenSSLEcdsaSha1EvpUpdate(EVP_MD_CTX *ctx, const void *data, size_t count)
 {
-    return SHA1_Update(ctx->md_data,data,count);
+    return SHA1_Update(EVP_MD_CTX_md_data(ctx), data, count);
 }
 
 static int
 xmlSecOpenSSLEcdsaSha1EvpFinal(EVP_MD_CTX *ctx, unsigned char *md)
 {
-    return SHA1_Final(md,ctx->md_data);
+    return SHA1_Final(md, EVP_MD_CTX_md_data(ctx));
 }
 
 static const EVP_MD xmlSecOpenSSLEcdsaSha1MdEvp = {
@@ -1361,19 +1385,19 @@ xmlSecOpenSSLTransformEcdsaSha224GetKlass(void) {
 static int
 xmlSecOpenSSLEcdsaSha224EvpInit(EVP_MD_CTX *ctx)
 {
-    return SHA224_Init(ctx->md_data);
+    return SHA224_Init(EVP_MD_CTX_md_data(ctx));
 }
 
 static int
 xmlSecOpenSSLEcdsaSha224EvpUpdate(EVP_MD_CTX *ctx, const void *data, size_t count)
 {
-    return SHA224_Update(ctx->md_data,data,count);
+    return SHA224_Update(EVP_MD_CTX_md_data(ctx), data, count);
 }
 
 static int
 xmlSecOpenSSLEcdsaSha224EvpFinal(EVP_MD_CTX *ctx, unsigned char *md)
 {
-    return SHA224_Final(md,ctx->md_data);
+    return SHA224_Final(md, EVP_MD_CTX_md_data(ctx));
 }
 
 static const EVP_MD xmlSecOpenSSLEcdsaSha224MdEvp = {
@@ -1451,19 +1475,19 @@ xmlSecOpenSSLTransformEcdsaSha256GetKlass(void) {
 static int
 xmlSecOpenSSLEcdsaSha256EvpInit(EVP_MD_CTX *ctx)
 {
-    return SHA256_Init(ctx->md_data);
+    return SHA256_Init(EVP_MD_CTX_md_data(ctx));
 }
 
 static int
 xmlSecOpenSSLEcdsaSha256EvpUpdate(EVP_MD_CTX *ctx, const void *data, size_t count)
 {
-    return SHA256_Update(ctx->md_data,data,count);
+    return SHA256_Update(EVP_MD_CTX_md_data(ctx), data, count);
 }
 
 static int
 xmlSecOpenSSLEcdsaSha256EvpFinal(EVP_MD_CTX *ctx, unsigned char *md)
 {
-    return SHA256_Final(md,ctx->md_data);
+    return SHA256_Final(md, EVP_MD_CTX_md_data(ctx));
 }
 
 static const EVP_MD xmlSecOpenSSLEcdsaSha256MdEvp = {
@@ -1541,19 +1565,19 @@ xmlSecOpenSSLTransformEcdsaSha384GetKlass(void) {
 static int
 xmlSecOpenSSLEcdsaSha384EvpInit(EVP_MD_CTX *ctx)
 {
-    return SHA384_Init(ctx->md_data);
+    return SHA384_Init(EVP_MD_CTX_md_data(ctx));
 }
 
 static int
 xmlSecOpenSSLEcdsaSha384EvpUpdate(EVP_MD_CTX *ctx, const void *data, size_t count)
 {
-    return SHA384_Update(ctx->md_data,data,count);
+    return SHA384_Update(EVP_MD_CTX_md_data(ctx), data, count);
 }
 
 static int
 xmlSecOpenSSLEcdsaSha384EvpFinal(EVP_MD_CTX *ctx, unsigned char *md)
 {
-    return SHA384_Final(md,ctx->md_data);
+    return SHA384_Final(md, EVP_MD_CTX_md_data(ctx));
 }
 
 static const EVP_MD xmlSecOpenSSLEcdsaSha384MdEvp = {
@@ -1631,19 +1655,19 @@ xmlSecOpenSSLTransformEcdsaSha512GetKlass(void) {
 static int
 xmlSecOpenSSLEcdsaSha512EvpInit(EVP_MD_CTX *ctx)
 {
-    return SHA512_Init(ctx->md_data);
+    return SHA512_Init(EVP_MD_CTX_md_data(ctx));
 }
 
 static int
 xmlSecOpenSSLEcdsaSha512EvpUpdate(EVP_MD_CTX *ctx, const void *data, size_t count)
 {
-    return SHA512_Update(ctx->md_data,data,count);
+    return SHA512_Update(EVP_MD_CTX_md_data(ctx), data, count);
 }
 
 static int
 xmlSecOpenSSLEcdsaSha512EvpFinal(EVP_MD_CTX *ctx, unsigned char *md)
 {
-    return SHA512_Final(md,ctx->md_data);
+    return SHA512_Final(md, EVP_MD_CTX_md_data(ctx));
 }
 
 static const EVP_MD xmlSecOpenSSLEcdsaSha512MdEvp = {

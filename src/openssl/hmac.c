@@ -39,7 +39,7 @@
  */
 #if !defined(XMLSEC_OPENSSL_110)
 #define HMAC_CTX_new()   ((HMAC_CTX*)calloc(1, sizeof(HMAC_CTX)))
-#define HMAC_CTX_free(x) free((x))
+#define HMAC_CTX_free(x) { HMAC_CTX_cleanup((x)); free((x)); }
 #endif /* !defined(XMLSEC_OPENSSL_110) */
 
 

@@ -152,6 +152,8 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
      * The padding used in XML Enc does not follow RFC 1423
      * and is not supported by OpenSSL. However, it is possible
      * to disable padding and do it by yourself
+     *
+     * https://www.w3.org/TR/2002/REC-xmlenc-core-20021210/Overview.html#sec-Alg-Block
      */
     EVP_CIPHER_CTX_set_padding(ctx->cipherCtx, 0);
 
@@ -346,6 +348,8 @@ xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
      * The padding used in XML Enc does not follow RFC 1423
      * and is not supported by OpenSSL. However, it is possible
      * to disable padding and do it by yourself
+     *
+     * https://www.w3.org/TR/2002/REC-xmlenc-core-20021210/Overview.html#sec-Alg-Block
      */
     if(EVP_CIPHER_CTX_encrypting(ctx->cipherCtx)) {
         xmlSecSize padLen;

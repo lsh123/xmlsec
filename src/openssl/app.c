@@ -105,10 +105,10 @@ xmlSecOpenSSLAppShutdown(void) {
     X509_TRUST_cleanup();
 #endif /* XMLSEC_NO_X509 */
 
-    CRYPTO_cleanup_all_ex_data();
-
     ENGINE_cleanup();
     CONF_modules_unload(1);
+
+    CRYPTO_cleanup_all_ex_data();
 
     /* finally cleanup errors */
 #if defined(XMLSEC_OPENSSL_100) || defined(XMLSEC_OPENSSL_110)

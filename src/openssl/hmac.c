@@ -376,11 +376,23 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     }
 
     xmlSecAssert2(xmlSecBufferGetData(buffer) != NULL, -1);
+
+#if (defined(XMLSEC_OPENSSL_098))
+    /* no return value in 0.9.8 */
+    HMAC_Init_ex(ctx->hmacCtx,
+                    xmlSecBufferGetData(buffer),
+                    xmlSecBufferGetSize(buffer),
+                    ctx->hmacDgst,
+                    NULL);
+    ret = 1;
+#else  /* (defined(XMLSEC_OPENSSL_098)) */
     ret = HMAC_Init_ex(ctx->hmacCtx,
                 xmlSecBufferGetData(buffer),
                 xmlSecBufferGetSize(buffer),
                 ctx->hmacDgst,
                 NULL);
+#endif /* (defined(XMLSEC_OPENSSL_098)) */
+
     if(ret != 1) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),

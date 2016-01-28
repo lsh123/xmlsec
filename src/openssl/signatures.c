@@ -952,9 +952,9 @@ static const EVP_MD xmlSecOpenSSLDsaSha1MdEvp = {
     {EVP_PKEY_DSA,EVP_PKEY_DSA2,EVP_PKEY_DSA3,EVP_PKEY_DSA4,0},
     SHA_CBLOCK,
     sizeof(EVP_MD *)+sizeof(SHA_CTX)
-#if defined(XMLSEC_OPENSSL_100) || defined(XMLSEC_OPENSSL_110)
+#if defined(XMLSEC_OPENSSL_100)
    , NULL
-#endif /* defined(XMLSEC_OPENSSL_100) || defined(XMLSEC_OPENSSL_110) */
+#endif /* defined(XMLSEC_OPENSSL_100) */
 };
 
 static const EVP_MD *xmlSecOpenSSLDsaSha1Evp(void)

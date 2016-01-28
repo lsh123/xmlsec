@@ -34,9 +34,7 @@ static const EVP_MD *xmlSecOpenSSLDsaSha1Evp                    (void);
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
-#ifdef XMLSEC_OPENSSL_100
 static const EVP_MD *xmlSecOpenSSLDsaSha256Evp                  (void);
-#endif /* XMLSEC_OPENSSL_100 */
 #endif /* XMLSEC_NO_SHA256 */
 
 #endif /* XMLSEC_NO_DSA */
@@ -267,12 +265,10 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
-#ifdef XMLSEC_OPENSSL_100
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformDsaSha256Id)) {
         ctx->digest     = xmlSecOpenSSLDsaSha256Evp();
         ctx->keyId      = xmlSecOpenSSLKeyDataDsaId;
     } else
-#endif /* XMLSEC_OPENSSL_100 */
 #endif /* XMLSEC_NO_SHA256 */
 
 #endif /* XMLSEC_NO_DSA */
@@ -932,9 +928,9 @@ static const EVP_MD xmlSecOpenSSLDsaSha1MdEvp = {
     {EVP_PKEY_DSA,EVP_PKEY_DSA2,EVP_PKEY_DSA3,EVP_PKEY_DSA4,0},
     SHA_CBLOCK,
     sizeof(EVP_MD *)+sizeof(SHA_CTX)
-#ifdef XMLSEC_OPENSSL_100
+#if defined(XMLSEC_OPENSSL_100) || defined(XMLSEC_OPENSSL_110)
    , NULL
-#endif /* XMLSEC_OPENSSL_100 */
+#endif /* defined(XMLSEC_OPENSSL_100) || defined(XMLSEC_OPENSSL_110) */
 };
 
 static const EVP_MD *xmlSecOpenSSLDsaSha1Evp(void)
@@ -990,7 +986,6 @@ xmlSecOpenSSLTransformDsaSha256GetKlass(void) {
     return(&xmlSecOpenSSLDsaSha256Klass);
 }
 
-#ifdef XMLSEC_OPENSSL_100
 static int
 xmlSecOpenSSLDsaSha256EvpInit(EVP_MD_CTX *ctx)
 {
@@ -1032,7 +1027,6 @@ static const EVP_MD *xmlSecOpenSSLDsaSha256Evp(void)
 {
     return(&xmlSecOpenSSLDsaSha256MdEvp);
 }
-#endif /* XMLSEC_OPENSSL_100 */
 
 #endif /* XMLSEC_NO_SHA256 */
 

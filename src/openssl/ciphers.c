@@ -21,6 +21,11 @@
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
 
+/* new API from OpenSSL 1.1.0 */
+#if !defined(XMLSEC_OPENSSL_110)
+#define EVP_CIPHER_CTX_encrypting(x) ((x)->encrypt)
+#endif /* !defined(XMLSEC_OPENSSL_110) */
+
 
 /**************************************************************************
  *
@@ -32,25 +37,33 @@ typedef struct _xmlSecOpenSSLEvpBlockCipherCtx          xmlSecOpenSSLEvpBlockCip
 struct _xmlSecOpenSSLEvpBlockCipherCtx {
     const EVP_CIPHER*   cipher;
     xmlSecKeyDataId     keyId;
-    EVP_CIPHER_CTX      cipherCtx;
+    EVP_CIPHER_CTX*     cipherCtx;
     int                 keyInitialized;
     int                 ctxInitialized;
     xmlSecByte          key[EVP_MAX_KEY_LENGTH];
     xmlSecByte          iv[EVP_MAX_IV_LENGTH];
-    xmlSecByte          pad[EVP_MAX_BLOCK_LENGTH];
+    xmlSecByte          pad[2*EVP_MAX_BLOCK_LENGTH];
 };
+
 static int      xmlSecOpenSSLEvpBlockCipherCtxInit      (xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
                                                          xmlSecBufferPtr in,
                                                          xmlSecBufferPtr out,
                                                          int encrypt,
                                                          const xmlChar* cipherName,
                                                          xmlSecTransformCtxPtr transformCtx);
+static int      xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
+                                                         const xmlSecByte * in,
+                                                         int inSize,
+                                                         xmlSecBufferPtr out,
+                                                         const xmlChar* cipherName,
+                                                         int final);
 static int      xmlSecOpenSSLEvpBlockCipherCtxUpdate    (xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
                                                          xmlSecBufferPtr in,
                                                          xmlSecBufferPtr out,
                                                          const xmlChar* cipherName,
                                                          xmlSecTransformCtxPtr transformCtx);
 static int      xmlSecOpenSSLEvpBlockCipherCtxFinal     (xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
+                                                         xmlSecBufferPtr in,
                                                          xmlSecBufferPtr out,
                                                          const xmlChar* cipherName,
                                                          xmlSecTransformCtxPtr transformCtx);
@@ -65,6 +78,7 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->cipher != NULL, -1);
+    xmlSecAssert2(ctx->cipherCtx != NULL, -1);
     xmlSecAssert2(ctx->keyInitialized != 0, -1);
     xmlSecAssert2(ctx->ctxInitialized == 0, -1);
     xmlSecAssert2(in != NULL, -1);
@@ -122,7 +136,7 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     }
 
     /* set iv */
-    ret = EVP_CipherInit(&(ctx->cipherCtx), ctx->cipher, ctx->key, ctx->iv, encrypt);
+    ret = EVP_CipherInit(ctx->cipherCtx, ctx->cipher, ctx->key, ctx->iv, encrypt);
     if(ret != 1) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(cipherName),
@@ -139,9 +153,94 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
      * and is not supported by OpenSSL. However, it is possible
      * to disable padding and do it by yourself
      */
-    EVP_CIPHER_CTX_set_padding(&(ctx->cipherCtx), 0);
+    EVP_CIPHER_CTX_set_padding(ctx->cipherCtx, 0);
 
     return(0);
+}
+
+static int
+xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
+                                        const xmlSecByte * in,
+                                        int inSize,
+                                        xmlSecBufferPtr out,
+                                        const xmlChar* cipherName,
+                                        int final) {
+    xmlSecByte* outBuf;
+    xmlSecSize outSize;
+    int blockLen, outLen = 0;
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->cipher != NULL, -1);
+    xmlSecAssert2(ctx->cipherCtx != NULL, -1);
+    xmlSecAssert2(ctx->keyInitialized != 0, -1);
+    xmlSecAssert2(ctx->ctxInitialized != 0, -1);
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2(inSize > 0, -1);
+    xmlSecAssert2(out != NULL, -1);
+
+    /* OpenSSL docs: If the pad parameter is zero then no padding is performed, the total amount of
+     * data encrypted or decrypted must then be a multiple of the block size or an error will occur.
+     */
+    blockLen = EVP_CIPHER_block_size(ctx->cipher);
+    xmlSecAssert2(blockLen > 0, -1);
+    xmlSecAssert2((inSize % blockLen) == 0, -1);
+
+    /* prepare: ensure we have enough space (+blockLen for final) */
+    outSize = xmlSecBufferGetSize(out);
+    ret = xmlSecBufferSetMaxSize(out, outSize + inSize + blockLen);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(cipherName),
+                    "xmlSecBufferSetMaxSize",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "size=%d", (int)(outSize + inSize + blockLen));
+        return(-1);
+    }
+    outBuf  = xmlSecBufferGetData(out) + outSize;
+
+    /* encrypt/decrypt */
+    ret = EVP_CipherUpdate(ctx->cipherCtx, outBuf, &outLen, in, inSize);
+    if(ret != 1) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(cipherName),
+                    "EVP_CipherUpdate",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
+    xmlSecAssert2(outLen == inSize, -1);
+
+    /* finalize transform if needed */
+    if(final != 0) {
+        int outLen2 = 0;
+
+        ret = EVP_CipherFinal(ctx->cipherCtx, outBuf + outLen, &outLen2);
+        if(ret != 1) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(cipherName),
+                        "EVP_CipherFinal",
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            return(-1);
+        }
+
+        outLen += outLen2;
+    }
+
+    /* set correct output buffer size */
+    ret = xmlSecBufferSetSize(out, outSize + outLen);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(cipherName),
+                    "xmlSecBufferSetSize",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "size=%d", (int)(outSize + outLen));
+        return(-1);
+    }
+
+    /* done */
+    return (0);
 }
 
 static int
@@ -149,12 +248,12 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdate(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
                                   xmlSecBufferPtr in, xmlSecBufferPtr out,
                                   const xmlChar* cipherName,
                                   xmlSecTransformCtxPtr transformCtx) {
-    int blockLen, fixLength = 0, outLen = 0;
-    xmlSecSize inSize, outSize;
-    xmlSecByte* outBuf;
+    xmlSecSize inSize, blockLen, inBlocksLen;
+    xmlSecByte* inBuf;
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->cipherCtx != NULL, -1);
     xmlSecAssert2(ctx->keyInitialized != 0, -1);
     xmlSecAssert2(ctx->ctxInitialized != 0, -1);
     xmlSecAssert2(in != NULL, -1);
@@ -165,87 +264,181 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdate(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     xmlSecAssert2(blockLen > 0, -1);
 
     inSize = xmlSecBufferGetSize(in);
-    outSize = xmlSecBufferGetSize(out);
-
-    if(inSize == 0) {
-        /* wait for more data */
+    if(inSize <= blockLen) {
+        /* wait for more data: we want to make sure we keep the last chunk in tmp buffer for
+         * padding check/removal on decryption
+         */
         return(0);
     }
 
-    /* OpenSSL docs: The amount of data written depends on the block
-     * alignment of the encrypted data: as a result the amount of data
-     * written may be anything from zero bytes to (inl + cipher_block_size - 1).
+    /* OpenSSL docs: If the pad parameter is zero then no padding is performed, the total amount of
+     * data encrypted or decrypted must then be a multiple of the block size or an error will occur.
+     *
+     * We process all complete blocks from the input
      */
-    ret = xmlSecBufferSetMaxSize(out, outSize + inSize + blockLen);
+    inBlocksLen = blockLen * (inSize / blockLen);
+    if(inBlocksLen == inSize) {
+        inBlocksLen -= blockLen; /* ensure we keep the last block around for Final() call to add/check/remove padding */
+    }
+    xmlSecAssert2(inBlocksLen > 0, -1);
+
+    inBuf  = xmlSecBufferGetData(in);
+    ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, inBuf, inBlocksLen, out, cipherName, 0); /* not final */
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(cipherName),
-                    "xmlSecBufferSetMaxSize",
+                    "xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "size=%d", outSize + inSize + blockLen);
+                    NULL);
         return(-1);
     }
-    outBuf = xmlSecBufferGetData(out) + outSize;
+
+    /* remove the processed block from input */
+    ret = xmlSecBufferRemoveHead(in, inBlocksLen);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(cipherName),
+                    "xmlSecBufferRemoveHead",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "size=%d", (int)inSize);
+        return(-1);
+    }
+
+    /* just a double check */
+    inSize = xmlSecBufferGetSize(in);
+    xmlSecAssert2(inSize > 0, -1);
+    xmlSecAssert2(inSize <= blockLen, -1);
+
+    /* done */
+    return(0);
+}
+
+static int
+xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
+                                 xmlSecBufferPtr in,
+                                 xmlSecBufferPtr out,
+                                 const xmlChar* cipherName,
+                                 xmlSecTransformCtxPtr transformCtx) {
+    xmlSecSize inSize, outSize, blockLen;
+    xmlSecByte* inBuf;
+    xmlSecByte* outBuf;
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->cipher != NULL, -1);
+    xmlSecAssert2(ctx->cipherCtx != NULL, -1);
+    xmlSecAssert2(ctx->keyInitialized != 0, -1);
+    xmlSecAssert2(ctx->ctxInitialized != 0, -1);
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+
+    blockLen = EVP_CIPHER_block_size(ctx->cipher);
+    xmlSecAssert2(blockLen > 0, -1);
+    xmlSecAssert2(blockLen <= EVP_MAX_BLOCK_LENGTH, -1);
+
+    /* not more than one block left */
+    inSize = xmlSecBufferGetSize(in);
+    inBuf = xmlSecBufferGetData(in);
+    xmlSecAssert2(inSize <= blockLen, -1);
 
     /*
      * The padding used in XML Enc does not follow RFC 1423
      * and is not supported by OpenSSL. However, it is possible
      * to disable padding and do it by yourself
-     *
-     * The logic below is copied from EVP_DecryptUpdate() function.
-     * This is a hack but it's the only way I can provide binary
-     * compatibility with previous versions of xmlsec.
-     * This needs to be fixed in the next XMLSEC API refresh.
      */
-    if(!ctx->cipherCtx.encrypt) {
-        if(ctx->cipherCtx.final_used) {
-            memcpy(outBuf, ctx->cipherCtx.final, blockLen);
-            outBuf += blockLen;
-            fixLength = 1;
-        } else {
-            fixLength = 0;
-        }
-    }
+    if(EVP_CIPHER_CTX_encrypting(ctx->cipherCtx)) {
+        xmlSecSize padLen;
 
-    /* encrypt/decrypt */
-    ret = EVP_CipherUpdate(&(ctx->cipherCtx), outBuf, &outLen, xmlSecBufferGetData(in), inSize);
-    if(ret != 1) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
+        /* figure out pad length, if it is 0 (i.e. inSize == blockLen) then set it to blockLen */
+        padLen = blockLen - inSize;
+        if(padLen == 0) {
+            padLen = blockLen;
+        }
+        xmlSecAssert2(padLen > 0, -1);
+        xmlSecAssert2(inSize + padLen <= sizeof(ctx->pad), -1);
+
+        /* we can have inSize == 0 if there were no data at all, otherwise -- copy the data */
+        if(inSize > 0) {
+            memcpy(ctx->pad, inBuf, inSize);
+        }
+
+        /* generate random padding */
+        if(padLen > 1) {
+            ret = RAND_bytes(ctx->pad + inSize, padLen - 1);
+            if(ret != 1) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                            xmlSecErrorsSafeString(cipherName),
+                            "RAND_bytes",
+                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                            "size=%d", (int)(padLen - 1));
+                return(-1);
+            }
+        }
+
+        /* set the last byte to the pad length */
+        ctx->pad[inSize + padLen - 1] = padLen;
+
+        /* update the last 1 or 2 blocks with padding */
+        ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, ctx->pad, inSize + padLen, out, cipherName, 1); /* final */
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(cipherName),
+                        "xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        NULL);
+            return(-1);
+        }
+    } else {
+        xmlSecSize padLen;
+
+        /* update the last one block with padding */
+        ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, inBuf, inSize, out, cipherName, 1); /* final */
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(cipherName),
+                        "xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        NULL);
+            return(-1);
+        }
+
+        /* we expect at least one block in the output -- the one we just decrypted */
+        outBuf = xmlSecBufferGetData(out);
+        outSize = xmlSecBufferGetSize(out);
+        if(outSize < blockLen) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(cipherName),
-                    "EVP_CipherUpdate",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
-        return(-1);
-    }
-
-    if(!ctx->cipherCtx.encrypt) {
-        /*
-         * The logic below is copied from EVP_DecryptUpdate() function.
-         * This is a hack but it's the only way I can provide binary
-         * compatibility with previous versions of xmlsec.
-         * This needs to be fixed in the next XMLSEC API refresh.
-         */
-        if (blockLen > 1 && !ctx->cipherCtx.buf_len) {
-            outLen -= blockLen;
-            ctx->cipherCtx.final_used = 1;
-            memcpy(ctx->cipherCtx.final, &outBuf[outLen], blockLen);
-        } else {
-            ctx->cipherCtx.final_used = 0;
+                    NULL,
+                    XMLSEC_ERRORS_R_INVALID_DATA,
+                    "outSize=%d;blockLen=%d",
+                    (int)outSize, (int)blockLen);
+            return(-1);
         }
-        if (fixLength) {
-            outLen += blockLen;
-        }
-    }
 
-    /* set correct output buffer size */
-    ret = xmlSecBufferSetSize(out, outSize + outLen);
-    if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
+        /* get the pad length from the last byte */
+        padLen = (xmlSecSize)(outBuf[outSize - 1]);
+        if(padLen > blockLen) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(cipherName),
-                    "xmlSecBufferSetSize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "size=%d", outSize + outLen);
-        return(-1);
+                    NULL,
+                    XMLSEC_ERRORS_R_INVALID_DATA,
+                    "padLen=%d;blockLen=%d",
+                    (int)padLen, (int)blockLen);
+            return(-1);
+        }
+        xmlSecAssert2(padLen <= outSize, -1);
+
+        /* remove the padding */
+        ret = xmlSecBufferRemoveTail(out, padLen);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(cipherName),
+                        "xmlSecBufferRemoveTail",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "size=%d", (int)padLen);
+            return(-1);
+        }
     }
 
     /* remove the processed block from input */
@@ -255,149 +448,11 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdate(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
                     xmlSecErrorsSafeString(cipherName),
                     "xmlSecBufferRemoveHead",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "size=%d", inSize);
-        return(-1);
-    }
-    return(0);
-}
-
-static int
-xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
-                                 xmlSecBufferPtr out,
-                                 const xmlChar* cipherName,
-                                 xmlSecTransformCtxPtr transformCtx) {
-    int blockLen, outLen = 0, outLen2 = 0;
-    xmlSecSize outSize;
-    xmlSecByte* outBuf;
-    int ret;
-
-    xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->keyInitialized != 0, -1);
-    xmlSecAssert2(ctx->ctxInitialized != 0, -1);
-    xmlSecAssert2(out != NULL, -1);
-    xmlSecAssert2(transformCtx != NULL, -1);
-
-    blockLen = EVP_CIPHER_block_size(ctx->cipher);
-    xmlSecAssert2(blockLen > 0, -1);
-
-    outSize = xmlSecBufferGetSize(out);
-
-    /* OpenSSL docs: The encrypted final data is written to out which should
-     * have sufficient space for one cipher block. We might have to write
-     * one more block with padding
-     */
-    ret = xmlSecBufferSetMaxSize(out, outSize + 2 * blockLen);
-    if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(cipherName),
-                    "xmlSecBufferSetMaxSize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "size=%d", outSize + 2 * blockLen);
-        return(-1);
-    }
-    outBuf = xmlSecBufferGetData(out) + outSize;
-
-    /*
-     * The padding used in XML Enc does not follow RFC 1423
-     * and is not supported by OpenSSL. However, it is possible
-     * to disable padding and do it by yourself
-     *
-     * The logic below is copied from EVP_DecryptFinal() function.
-     * This is a hack but it's the only way I can provide binary
-     * compatibility with previous versions of xmlsec.
-     * This needs to be fixed in the next XMLSEC API refresh.
-     */
-    if(ctx->cipherCtx.encrypt) {
-        int padLen;
-
-        xmlSecAssert2(blockLen <= EVP_MAX_BLOCK_LENGTH, -1);
-
-        padLen = blockLen - ctx->cipherCtx.buf_len;
-        xmlSecAssert2(padLen > 0, -1);
-
-        /* generate random padding */
-        if(padLen > 1) {
-            ret = RAND_bytes(ctx->pad, padLen - 1);
-            if(ret != 1) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(cipherName),
-                            "RAND_bytes",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            "size=%d", padLen - 1);
-                return(-1);
-            }
-        }
-        ctx->pad[padLen - 1] = padLen;
-
-        /* write padding */
-        ret = EVP_CipherUpdate(&(ctx->cipherCtx), outBuf, &outLen, ctx->pad, padLen);
-        if(ret != 1) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(cipherName),
-                        "EVP_CipherUpdate",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
-            return(-1);
-        }
-        outBuf += outLen;
-    }
-
-    /* finalize transform */
-    ret = EVP_CipherFinal(&(ctx->cipherCtx), outBuf, &outLen2);
-    if(ret != 1) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(cipherName),
-                    "EVP_CipherFinal",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+                    "size=%d", (int)inSize);
         return(-1);
     }
 
-    /*
-     * The padding used in XML Enc does not follow RFC 1423
-     * and is not supported by OpenSSL. However, it is possible
-     * to disable padding and do it by yourself
-     *
-     * The logic below is copied from EVP_DecryptFinal() function.
-     * This is a hack but it's the only way I can provide binary
-     * compatibility with previous versions of xmlsec.
-     * This needs to be fixed in the next XMLSEC API refresh.
-     */
-     if(!ctx->cipherCtx.encrypt) {
-        /* we instructed openssl to do not use padding so there
-         * should be no final block
-         */
-        xmlSecAssert2(outLen2 == 0, -1);
-        xmlSecAssert2(ctx->cipherCtx.buf_len == 0, -1);
-        xmlSecAssert2(ctx->cipherCtx.final_used, -1);
-
-        if(blockLen > 1) {
-            outLen2 = blockLen - ctx->cipherCtx.final[blockLen - 1];
-            if(outLen2 > 0) {
-                memcpy(outBuf, ctx->cipherCtx.final, outLen2);
-            } else if(outLen2 < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(cipherName),
-                            NULL,
-                            XMLSEC_ERRORS_R_INVALID_DATA,
-                            "padding=%d;buffer=%d",
-                            ctx->cipherCtx.final[blockLen - 1], blockLen);
-                return(-1);
-            }
-        }
-    }
-
-    /* set correct output buffer size */
-    ret = xmlSecBufferSetSize(out, outSize + outLen + outLen2);
-    if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(cipherName),
-                    "xmlSecBufferSetSize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "size=%d", outSize + outLen + outLen2);
-        return(-1);
-    }
-
+    /* done */
     return(0);
 }
 
@@ -488,7 +543,18 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    EVP_CIPHER_CTX_init(&(ctx->cipherCtx));
+    /* create cipher ctx */
+    ctx->cipherCtx = EVP_CIPHER_CTX_new();
+    if(ctx->cipherCtx == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "EVP_CIPHER_CTX_new",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
+
+    /* done */
     return(0);
 }
 
@@ -502,7 +568,10 @@ xmlSecOpenSSLEvpBlockCipherFinalize(xmlSecTransformPtr transform) {
     ctx = xmlSecOpenSSLEvpBlockCipherGetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
-    EVP_CIPHER_CTX_cleanup(&(ctx->cipherCtx));
+    if(ctx->cipherCtx != NULL) {
+        EVP_CIPHER_CTX_free(ctx->cipherCtx);
+    }
+
     memset(ctx, 0, sizeof(xmlSecOpenSSLEvpBlockCipherCtx));
 }
 
@@ -567,7 +636,7 @@ xmlSecOpenSSLEvpBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE,
                     "keySize=%d;expected=%d",
-                    xmlSecBufferGetSize(buffer), cipherKeyLen);
+                    (int)xmlSecBufferGetSize(buffer), (int)cipherKeyLen);
         return(-1);
     }
 
@@ -637,9 +706,7 @@ xmlSecOpenSSLEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSe
         }
 
         if(last != 0) {
-            /* by now there should be no input */
-            xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
-            ret = xmlSecOpenSSLEvpBlockCipherCtxFinal(ctx, out,
+            ret = xmlSecOpenSSLEvpBlockCipherCtxFinal(ctx, in, out,
                                             xmlSecTransformGetName(transform),
                                             transformCtx);
             if(ret < 0) {
@@ -651,6 +718,9 @@ xmlSecOpenSSLEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSe
                 return(-1);
             }
             transform->status = xmlSecTransformStatusFinished;
+
+            /* by now there should be no input */
+            xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
         }
     } else if(transform->status == xmlSecTransformStatusFinished) {
         /* the only way we can get here is if there is no input */
@@ -663,7 +733,7 @@ xmlSecOpenSSLEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSe
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_STATUS,
-                    "status=%d", transform->status);
+                    "status=%d", (int)(transform->status));
         return(-1);
     }
 

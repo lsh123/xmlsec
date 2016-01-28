@@ -132,7 +132,7 @@ static const char helpCheckTransforms[] =
 #define xmlSecAppCmdLineTopicEncCommon          0x0010
 #define xmlSecAppCmdLineTopicEncEncrypt         0x0020
 #define xmlSecAppCmdLineTopicEncDecrypt         0x0040
-// #define UNUSED         0x0080
+/* #define UNUSED         0x0080 */
 #define xmlSecAppCmdLineTopicKeysMngr           0x1000
 #define xmlSecAppCmdLineTopicX509Certs          0x2000
 #define xmlSecAppCmdLineTopicVersion            0x4000

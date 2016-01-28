@@ -106,9 +106,15 @@ xmlSecOpenSSLAppShutdown(void) {
     CRYPTO_cleanup_all_ex_data();
 
     /* finally cleanup errors */
+#if defined(XMLSEC_OPENSSL_100) || defined(XMLSEC_OPENSSL_110)
+    ERR_remove_thread_state(NULL);
+#else
     ERR_remove_state(0);
+#endif /* defined(XMLSEC_OPENSSL_100) || defined(XMLSEC_OPENSSL_110) */
+
     ERR_free_strings();
 
+    /* done */
     return(0);
 }
 

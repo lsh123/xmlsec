@@ -33,6 +33,16 @@
 
 #include <xmlsec/openssl/crypto.h>
 
+/* new API from OpenSSL 1.1.0 (https://www.openssl.org/docs/manmaster/crypto/hmac.html):
+ *
+ * HMAC_CTX_new() and HMAC_CTX_free() are new in OpenSSL version 1.1.
+ */
+#if !defined(XMLSEC_OPENSSL_110)
+#define HMAC_CTX_new()   ((HMAC_CTX*)calloc(1, sizeof(HMAC_CTX)))
+#define HMAC_CTX_free(x) free((x))
+#endif /* !defined(XMLSEC_OPENSSL_110) */
+
+
 /* sizes in bits */
 #define XMLSEC_OPENSSL_MIN_HMAC_SIZE            80
 #define XMLSEC_OPENSSL_MAX_HMAC_SIZE            (EVP_MAX_MD_SIZE * 8)
@@ -75,7 +85,7 @@ void xmlSecOpenSSLHmacSetMinOutputLength(int min_length)
 typedef struct _xmlSecOpenSSLHmacCtx            xmlSecOpenSSLHmacCtx, *xmlSecOpenSSLHmacCtxPtr;
 struct _xmlSecOpenSSLHmacCtx {
     const EVP_MD*       hmacDgst;
-    HMAC_CTX            hmacCtx;
+    HMAC_CTX*           hmacCtx;
     int                 ctxInitialized;
     xmlSecByte          dgst[XMLSEC_OPENSSL_MAX_HMAC_SIZE];
     xmlSecSize          dgstSize;       /* dgst size in bits */
@@ -232,8 +242,18 @@ xmlSecOpenSSLHmacInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    HMAC_CTX_init(&(ctx->hmacCtx));
+    /* create hmac CTX */
+    ctx->hmacCtx = HMAC_CTX_new();
+    if(ctx->hmacCtx == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "HMAC_CTX_new",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
 
+    /* done */
     return(0);
 }
 
@@ -247,7 +267,9 @@ xmlSecOpenSSLHmacFinalize(xmlSecTransformPtr transform) {
     ctx = xmlSecOpenSSLHmacGetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
-    HMAC_CTX_cleanup(&(ctx->hmacCtx));
+    if(ctx->hmacCtx != NULL) {
+        HMAC_CTX_free(ctx->hmacCtx);
+    }
 
     memset(ctx, 0, sizeof(xmlSecOpenSSLHmacCtx));
 }
@@ -325,6 +347,7 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecOpenSSLHmacCtxPtr ctx;
     xmlSecKeyDataPtr value;
     xmlSecBufferPtr buffer;
+    int ret;
 
     xmlSecAssert2(xmlSecOpenSSLHmacCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationSign) || (transform->operation == xmlSecTransformOperationVerify), -1);
@@ -333,6 +356,7 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     ctx = xmlSecOpenSSLHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->hmacCtx != NULL, -1);
     xmlSecAssert2(ctx->hmacDgst != NULL, -1);
     xmlSecAssert2(ctx->ctxInitialized == 0, -1);
 
@@ -352,10 +376,20 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     }
 
     xmlSecAssert2(xmlSecBufferGetData(buffer) != NULL, -1);
-    HMAC_Init(&(ctx->hmacCtx),
+    ret = HMAC_Init_ex(ctx->hmacCtx,
                 xmlSecBufferGetData(buffer),
                 xmlSecBufferGetSize(buffer),
-                ctx->hmacDgst);
+                ctx->hmacDgst,
+                NULL);
+    if(ret != 1) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "HMAC_Init_ex",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    NULL);
+        return(-1);
+    }
+
     ctx->ctxInitialized = 1;
     return(0);
 }
@@ -446,6 +480,7 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
     ctx = xmlSecOpenSSLHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->ctxInitialized != 0, -1);
+    xmlSecAssert2(ctx->hmacCtx != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
         /* we should be already initialized when we set key */
@@ -457,7 +492,7 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
 
         inSize = xmlSecBufferGetSize(in);
         if(inSize > 0) {
-            HMAC_Update(&(ctx->hmacCtx), xmlSecBufferGetData(in), inSize);
+            HMAC_Update(ctx->hmacCtx, xmlSecBufferGetData(in), inSize);
 
             ret = xmlSecBufferRemoveHead(in, inSize);
             if(ret < 0) {
@@ -473,7 +508,7 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
         if(last) {
             unsigned int dgstSize;
 
-            HMAC_Final(&(ctx->hmacCtx), ctx->dgst, &dgstSize);
+            HMAC_Final(ctx->hmacCtx, ctx->dgst, &dgstSize);
             xmlSecAssert2(dgstSize > 0, -1);
 
             /* check/set the result digest size */

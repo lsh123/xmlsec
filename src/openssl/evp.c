@@ -942,13 +942,24 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
 
-    dsa = DSA_generate_parameters(sizeBits, NULL, 0, &counter_ret, &h_ret, NULL, NULL);
+    dsa = DSA_new();
     if(dsa == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                    "DSA_generate_parameters",
+                    "DSA_new",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     "size=%d", sizeBits);
+        return(-1);
+    }
+
+    ret = DSA_generate_parameters_ex(dsa, sizeBits, NULL, 0, &counter_ret, &h_ret, NULL);
+    if(ret != 1) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+                    "DSA_generate_parameters_ex",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    "size=%d", sizeBits);
+        DSA_free(dsa);
         return(-1);
     }
 
@@ -1253,7 +1264,8 @@ static xmlSecSize
 xmlSecOpenSSLKeyDataEcdsaGetSize(xmlSecKeyDataPtr data) {
     const EC_GROUP *group;
     const EC_KEY *ecdsa;
-    BIGNUM order;
+    BIGNUM * order;
+    xmlSecSize res;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId), 0);
 
@@ -1272,16 +1284,30 @@ xmlSecOpenSSLKeyDataEcdsaGetSize(xmlSecKeyDataPtr data) {
         return(0);
     }
 
-    if(EC_GROUP_get_order(group, &order, NULL) != 1) {
+    order = BN_new();
+    if(order == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
-                    "EC_GROUP_get_order",
+                    "BN_new",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(0);
     }
 
-    return(BN_num_bytes(&order));
+    if(EC_GROUP_get_order(group, order, NULL) != 1) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "EC_GROUP_get_order",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        BN_free(order);
+        return(0);
+    }
+
+    res = BN_num_bytes(order);
+    BN_free(order);
+
+    return(res);
 }
 
 static void
@@ -1786,19 +1812,55 @@ xmlSecOpenSSLKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
 static int
 xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+    BIGNUM* e;
     RSA* rsa;
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
 
-    rsa = RSA_generate_key(sizeBits, 3, NULL, NULL);
+    /* create exponent */
+    e = BN_new();
+    if(e == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+                    "BN_new",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    "sizeBits=%d", sizeBits);
+        return(-1);
+    }
+
+    ret = BN_set_word(e, RSA_F4);
+    if(ret != 1){
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+                    "BN_new",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    "sizeBits=%d", sizeBits);
+        BN_free(e);
+        return(-1);
+    }
+
+    rsa = RSA_new();
     if(rsa == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+                    "RSA_new",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    "sizeBits=%d", sizeBits);
+        BN_free(e);
+        return(-1);
+    }
+
+    ret = RSA_generate_key_ex(rsa, sizeBits, e, NULL);
+    if(ret != 1) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
                     "RSA_generate_key",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     "sizeBits=%d", sizeBits);
+        RSA_free(rsa);
+        BN_free(e);
         return(-1);
     }
 
@@ -1810,9 +1872,14 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         RSA_free(rsa);
+        BN_free(e);
         return(-1);
     }
 
+    /* cleanup (don't release rsa since xmlSecKeyDataPtr data owns it now */
+    BN_free(e);
+
+    /* done */
     return(0);
 }
 

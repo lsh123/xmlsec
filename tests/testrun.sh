@@ -176,7 +176,7 @@ execKeysTest() {
     if [ -f $keysfile ] ; then
         params="$params --keys-file $keysfile"
     fi
-    echo "$xmlsec_app keys $params $xmlsec_params $keysfile" >>  $logfile 
+    echo "$VALGRIND $xmlsec_app keys $params $xmlsec_params $keysfile" >>  $logfile 
     $VALGRIND $xmlsec_app keys $params $xmlsec_params $keysfile >> $logfile 2>> $logfile
     printRes $expected_res $?
 
@@ -251,21 +251,21 @@ execDSigTest() {
     # run tests
     if [ -n "$params1" ] ; then
         printf "    Verify existing signature                            "
-        echo "$xmlsec_app verify $xmlsec_params $params1 $full_file.xml" >> $logfile
+        echo "$VALGRIND $xmlsec_app verify $xmlsec_params $params1 $full_file.xml" >> $logfile
         $VALGRIND $xmlsec_app verify $xmlsec_params $params1 $full_file.xml >> $logfile 2>> $logfile
         printRes $expected_res $?
     fi
 
     if [ -n "$params2" -a -z "$PERF_TEST" ] ; then
         printf "    Create new signature                                 "
-        echo "$xmlsec_app sign $xmlsec_params $params2 --output $tmpfile $full_file.tmpl" >> $logfile
+        echo "$VALGRIND $xmlsec_app sign $xmlsec_params $params2 --output $tmpfile $full_file.tmpl" >> $logfile
         $VALGRIND $xmlsec_app sign $xmlsec_params $params2 --output $tmpfile $full_file.tmpl >> $logfile 2>> $logfile
         printRes $expected_res $?
     fi
 
     if [ -n "$params3" -a -z "$PERF_TEST" ] ; then
         printf "    Verify new signature                                 "
-        echo "$xmlsec_app verify $xmlsec_params $params3 $tmpfile" >> $logfile
+        echo "$VALGRIND $xmlsec_app verify $xmlsec_params $params3 $tmpfile" >> $logfile
         $VALGRIND $xmlsec_app verify $xmlsec_params $params3 $tmpfile >> $logfile 2>> $logfile
         printRes $expected_res $?
     fi
@@ -326,7 +326,7 @@ execEncTest() {
     if [ -n "$params1" ] ; then
         rm -f $tmpfile
         printf "    Decrypt existing document                            "
-        echo "$xmlsec_app decrypt $xmlsec_params $params1 $full_file.xml" >>  $logfile 
+        echo "$VALGRIND $xmlsec_app decrypt $xmlsec_params $params1 $full_file.xml" >>  $logfile 
         $VALGRIND $xmlsec_app decrypt $xmlsec_params $params1 $full_file.xml > $tmpfile 2>> $logfile
         res=$?
         if [ $res = 0 ]; then
@@ -340,7 +340,7 @@ execEncTest() {
     if [ -n "$params2" -a -z "$PERF_TEST" ] ; then
         rm -f $tmpfile
         printf "    Encrypt document                                     "
-        echo "$xmlsec_app encrypt $xmlsec_params $params2 --output $tmpfile $full_file.tmpl" >>  $logfile 
+        echo "$VALGRIND $xmlsec_app encrypt $xmlsec_params $params2 --output $tmpfile $full_file.tmpl" >>  $logfile 
         $VALGRIND $xmlsec_app encrypt $xmlsec_params $params2 --output $tmpfile $full_file.tmpl >> $logfile 2>> $logfile
         printRes $expected_res $?
     fi
@@ -348,7 +348,7 @@ execEncTest() {
     if [ -n "$params3" -a -z "$PERF_TEST" ] ; then 
         rm -f $tmpfile.2
         printf "    Decrypt new document                                 "
-        echo "$xmlsec_app decrypt $xmlsec_params $params3 --output $tmpfile.2 $tmpfile" >>  $logfile
+        echo "$VALGRIND $xmlsec_app decrypt $xmlsec_params $params3 --output $tmpfile.2 $tmpfile" >>  $logfile
         $VALGRIND $xmlsec_app decrypt $xmlsec_params $params3 --output $tmpfile.2 $tmpfile >> $logfile 2>> $logfile
         res=$?
         if [ $res = 0 ]; then

@@ -808,11 +808,11 @@ execDSigTest $res_success \
 ##########################################################################
 echo "Dynamic signature template"
 printf "    Create new signature                                 "
-echo "$xmlsec_app sign-tmpl $xmlsec_params --keys-file $keysfile --output $tmpfile" >> $logfile
+echo "$VALGRIND $xmlsec_app sign-tmpl $xmlsec_params --keys-file $keysfile --output $tmpfile" >> $logfile
 $VALGRIND $xmlsec_app sign-tmpl $xmlsec_params --keys-file $keysfile --output $tmpfile >> $logfile 2>> $logfile
 printRes $res_success $?
 printf "    Verify new signature                                 "
-echo "$xmlsec_app verify --keys-file $keysfile $tmpfile" >> $logfile
+echo "$VALGRIND $xmlsec_app verify --keys-file $keysfile $tmpfile" >> $logfile
 $VALGRIND $xmlsec_app verify $xmlsec_params --keys-file $keysfile $tmpfile >> $logfile 2>> $logfile
 printRes $res_success $?
 

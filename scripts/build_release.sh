@@ -4,7 +4,7 @@
 cur_pwd=`pwd`
 today=`date +%F-%T`
 
-git_uri=git://git.gnome.org/xmlsec
+git_uri=ssh://git@github.com:lsh123/xmlsec.git
 rpm_root=/usr/src/redhat
 build_root="$rpm_root/BUILD/xmlsec-build-area-$today"
 

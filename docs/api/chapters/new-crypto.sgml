@@ -460,26 +460,9 @@ struct _xmlSecTransform {
 	and will use your library. Of course, you'll get all the credits 
 	for your work.
 	</para>
-	<para>The best way to submit your enchancements is to provide a diff 
-	with the current CVS version. In order to do this, 
-	<itemizedlist>
-	<listitem><para>Checkout the sources from <ulink URL="http://developer.gnome.org/tools/cvs.html">GNOME CVS</ulink>
-	(module name is "xmlsec").
-	</para></listitem>
-	<listitem><para>Add all the new files with "cvs add" command (this will not 
-	create files in CVS but mark them as "added" localy). You'll not be able
-	to create new folders without a valid GNOME CVS account, let me know
-	what you need and I'll be happy to help.
-	</para></listitem>
-	<listitem><para>Get a diff of all existing and new files using 
-	"cvs -z3 diff -u -N" command.
-	</para></listitem>
-	<listitem><para>Send the resulting diff file to the xmlsec mailing list
-	with some information about yourself so I can update the authors 
-	and coping information.
-	</para></listitem>
-	</itemizedlist>
-	I will try to review and check in your patch as soon as possible.
+	<para>The best way to submit your enchancements is to send a pull request
+	through <ulink URL="https://github.com/lsh123/xmlsec">GitHub</ulink>.
+    I will try to review and merge your pool request as soon as possible.
 	</para>
     </sect1>
 </chapter>

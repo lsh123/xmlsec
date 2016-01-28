@@ -3,6 +3,12 @@
 COPYING
 .deps/
 .libs/
+.cproject
+.project
+compile
+depcomp
+install-sh
+missing
 *.o
 *.lo
 *.la

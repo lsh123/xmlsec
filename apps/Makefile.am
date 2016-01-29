@@ -65,8 +65,8 @@ xmlsec1_SOURCES = \
 
 
 xmlsec1_LDFLAGS = \
-	$(CRYPTO_LD_FLAGS) \
 	@XMLSEC_STATIC_BINARIES@ \
+	$(CRYPTO_LD_FLAGS) \
 	$(NULL)
 
 xmlsec1_LDADD = \

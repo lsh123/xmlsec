@@ -1,3 +1,6 @@
+2016-02-01 Aleksey Sanin  <aleksey@aleksey.com>
+        * 1.2.21 release
+
 2016-01-28 Aleksey Sanin  <aleksey@aleksey.com>
         * Added OpenSSL 1.1.0 API support (major refactoring for block ciphers and DSA/ECDSA signatures)
 

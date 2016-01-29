@@ -6,6 +6,7 @@ COPYING
 .cproject
 .project
 compile
+clean
 depcomp
 install-sh
 missing

@@ -19,6 +19,7 @@
 #include <openssl/pem.h>
 #include <openssl/pkcs12.h>
 #include <openssl/conf.h>
+#include <openssl/engine.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -96,6 +97,7 @@ xmlSecOpenSSLAppInit(const char* config) {
 int
 xmlSecOpenSSLAppShutdown(void) {
     xmlSecOpenSSLAppSaveRANDFile(NULL);
+
     RAND_cleanup();
     EVP_cleanup();
 
@@ -103,12 +105,21 @@ xmlSecOpenSSLAppShutdown(void) {
     X509_TRUST_cleanup();
 #endif /* XMLSEC_NO_X509 */
 
+    ENGINE_cleanup();
+    CONF_modules_unload(1);
+
     CRYPTO_cleanup_all_ex_data();
 
     /* finally cleanup errors */
+#if defined(XMLSEC_OPENSSL_100) || defined(XMLSEC_OPENSSL_110)
+    ERR_remove_thread_state(NULL);
+#else
     ERR_remove_state(0);
+#endif /* defined(XMLSEC_OPENSSL_100) || defined(XMLSEC_OPENSSL_110) */
+
     ERR_free_strings();
 
+    /* done */
     return(0);
 }
 

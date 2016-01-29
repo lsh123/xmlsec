@@ -505,7 +505,7 @@ xmlSecOpenSSLKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
                            const xmlSecByte *in, xmlSecSize inSize,
                            xmlSecByte *out, xmlSecSize outSize, 
                            int enc) {
-    EVP_CIPHER_CTX cipherCtx;
+    EVP_CIPHER_CTX * cipherCtx;
     int updateLen;
     int finalLen;
     int ret;
@@ -519,40 +519,55 @@ xmlSecOpenSSLKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= inSize, -1);
 
-    EVP_CIPHER_CTX_init(&cipherCtx);
-    ret = EVP_CipherInit(&cipherCtx, EVP_des_ede3_cbc(), key, iv, enc);
+    cipherCtx = EVP_CIPHER_CTX_new();
+    if(cipherCtx == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "EVP_CIPHER_CTX_new",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
+
+    ret = EVP_CipherInit(cipherCtx, EVP_des_ede3_cbc(), key, iv, enc);
     if(ret != 1) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "EVP_CipherInit",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
+        EVP_CIPHER_CTX_free(cipherCtx);
         return(-1);
     }
 
-    EVP_CIPHER_CTX_set_padding(&cipherCtx, 0);
+    EVP_CIPHER_CTX_set_padding(cipherCtx, 0);
 
-    ret = EVP_CipherUpdate(&cipherCtx, out, &updateLen, in, inSize);
+    ret = EVP_CipherUpdate(cipherCtx, out, &updateLen, in, inSize);
     if(ret != 1) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "EVP_CipherUpdate",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
+        EVP_CIPHER_CTX_free(cipherCtx);
         return(-1);
     }
 
-    ret = EVP_CipherFinal(&cipherCtx, out + updateLen, &finalLen);
+    ret = EVP_CipherFinal(cipherCtx, out + updateLen, &finalLen);
     if(ret != 1) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "EVP_CipherFinal",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
+        EVP_CIPHER_CTX_free(cipherCtx);
         return(-1);
     }
-    EVP_CIPHER_CTX_cleanup(&cipherCtx);
 
+    /* cleanup */
+    EVP_CIPHER_CTX_free(cipherCtx);
+
+    /* done */
     return(updateLen + finalLen);
 }
 

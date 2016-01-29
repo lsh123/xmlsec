@@ -370,7 +370,7 @@ extern "C" {
  * xmlSecErrorsCallback:
  * @file:               the error location file name (__FILE__ macro).
  * @line:               the error location line number (__LINE__ macro).
- * @func:               the error location function name (__FUNCTION__ macro).
+ * @func:               the error location function name (__func__ macro).
  * @errorObject:        the error specific error object
  * @errorSubject:       the error specific error subject.
  * @reason:             the error code.
@@ -407,7 +407,7 @@ XMLSEC_EXPORT const char*       xmlSecErrorsGetMsg              (xmlSecSize pos)
 
 /* __FUNCTION__ is defined for MSC compiler < MS VS .NET 2003 */
 #if defined(_MSC_VER) && (_MSC_VER >= 1300)
-#define __XMLSEC_FUNCTION__  __FUNCTION__
+#define __XMLSEC_FUNCTION__  __func__
 #endif /* _MSC_VER */
 
 /* fallback for __FUNCTION__ */

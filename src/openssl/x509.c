@@ -2216,21 +2216,21 @@ xmlSecOpenSSLX509SKIWrite(X509* cert) {
                     "X509V3_EXT_d2i",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        M_ASN1_OCTET_STRING_free(keyId);
+        ASN1_OCTET_STRING_free(keyId);
         return(NULL);
     }
 
-    res = xmlSecBase64Encode(M_ASN1_STRING_data(keyId), M_ASN1_STRING_length(keyId), 0);
+    res = xmlSecBase64Encode(ASN1_STRING_data(keyId), ASN1_STRING_length(keyId), 0);
     if(res == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "xmlSecBase64Encode",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        M_ASN1_OCTET_STRING_free(keyId);
+        ASN1_OCTET_STRING_free(keyId);
         return(NULL);
     }
-    M_ASN1_OCTET_STRING_free(keyId);
+    ASN1_OCTET_STRING_free(keyId);
 
     return(res);
 }

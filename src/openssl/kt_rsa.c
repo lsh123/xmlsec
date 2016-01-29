@@ -785,8 +785,17 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
         }
         outSize = ret;
     } else if((transform->operation == xmlSecTransformOperationDecrypt) && (paramsSize != 0)) {
-        BIGNUM bn;
+        BIGNUM * bn;
 
+        bn = BN_new();
+        if(bn == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                        "BN_new()",
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            return(-1);
+        }
         ret = RSA_private_decrypt(inSize, xmlSecBufferGetData(in),
                                 xmlSecBufferGetData(out),
                                 ctx->pKey->pkey.rsa, RSA_NO_PADDING);
@@ -796,6 +805,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
                         "RSA_private_decrypt(RSA_NO_PADDING)",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
+            BN_free(bn);
             return(-1);
         }
         outSize = ret;
@@ -806,28 +816,27 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
          * beggining so I have to do decode it back to BIGNUM and dump
          * buffer again
          */
-        BN_init(&bn);
-        if(BN_bin2bn(xmlSecBufferGetData(out), outSize, &bn) == NULL) {
+        if(BN_bin2bn(xmlSecBufferGetData(out), outSize, bn) == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                         "BN_bin2bn",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         "size=%d", outSize);
-            BN_clear_free(&bn);
+            BN_free(bn);
             return(-1);
         }
 
-        ret = BN_bn2bin(&bn, xmlSecBufferGetData(out));
+        ret = BN_bn2bin(bn, xmlSecBufferGetData(out));
         if(ret <= 0) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                         "BN_bn2bin",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
-            BN_clear_free(&bn);
+            BN_free(bn);
             return(-1);
         }
-        BN_clear_free(&bn);
+        BN_free(bn);
         outSize = ret;
 
         ret = RSA_padding_check_PKCS1_OAEP(xmlSecBufferGetData(out), outSize,

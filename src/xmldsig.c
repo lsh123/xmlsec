@@ -703,7 +703,6 @@ static int
 xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xmlNodePtr * firstReferenceNode) {
     xmlSecSize refNodesCount = 0;
     xmlNodePtr cur;
-    int ret;
 
     xmlSecAssert2(dsigCtx != NULL, -1);
     xmlSecAssert2(dsigCtx->status == xmlSecDSigStatusUnknown, -1);

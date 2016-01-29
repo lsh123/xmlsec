@@ -311,19 +311,19 @@ for (j = 0; j < crlist.length; j++) {
 	if (crlist[j] == "openssl") {
 		curcrypto="openssl";
 		withOpenSSL = 1;
-		withOpenSSLVersion = "098"; /* default */
-	} else if (crlist[j] == "openssl=096") {
-		curcrypto="openssl";
-		withOpenSSL = 1;
-		withOpenSSLVersion = "096";
-	} else if (crlist[j] == "openssl=097") {
-		curcrypto="openssl";
-		withOpenSSL = 1;
-		withOpenSSLVersion = "097";
+		withOpenSSLVersion = "100"; /* default */
 	} else if (crlist[j] == "openssl=098") {
 		curcrypto="openssl";
 		withOpenSSL = 1;
 		withOpenSSLVersion = "098";
+	} else if (crlist[j] == "openssl=100") {
+		curcrypto="openssl";
+		withOpenSSL = 1;
+		withOpenSSLVersion = "100";
+	} else if (crlist[j] == "openssl=110") {
+		curcrypto="openssl";
+		withOpenSSL = 1;
+		withOpenSSLVersion = "110";
 	} else if (crlist[j] == "nss") {
 		curcrypto="nss";
 		withNss = 1;

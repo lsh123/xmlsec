@@ -1,5 +1,17 @@
-2014-03-10 Aleksey Sanin  <aleksey@aleksey.com>
+2016-01-28 Aleksey Sanin  <aleksey@aleksey.com>
+        * Added OpenSSL 1.1.0 API support (major refactoring for block ciphers and DSA/ECDSA signatures)
+
+2016-01-28 Aleksey Sanin  <aleksey@aleksey.com>
+        * Migrated to GitHub (https://github.com/lsh123/xmlsec)
+
+2015-03-10 Aleksey Sanin  <aleksey@aleksey.com>
         * Removed support for legacy OpenSSL 0.9.6 (last release: March, 2004) and 0.9.7 (last release: February, 2007) 
+
+2014-10-2014 Aleksey Sanin  <aleksey@aleksey.com>
+        * Added experimental GOST2012 support (patch from Nikolay Shaplov)
+
+2014-06-04 Aleksey Sanin  <aleksey@aleksey.com>
+        * Fixed several compaints from Clang and Coverity (based on patches from Simo Sorce) 
 
 2014-02-25 Aleksey Sanin  <aleksey@aleksey.com>
         * Removed XKMS support -- it was never completed and not worth keeping

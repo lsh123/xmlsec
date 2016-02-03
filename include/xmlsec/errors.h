@@ -407,7 +407,7 @@ XMLSEC_EXPORT const char*       xmlSecErrorsGetMsg              (xmlSecSize pos)
 
 /* __FUNCTION__ is defined for MSC compiler < MS VS .NET 2003 */
 #if defined(_MSC_VER) && (_MSC_VER >= 1300)
-#define __XMLSEC_FUNCTION__  __func__
+#define __XMLSEC_FUNCTION__ __FUNCTION__
 #endif /* _MSC_VER */
 
 /* fallback for __FUNCTION__ */

@@ -4,7 +4,7 @@ prefix="@prefix@"
 package="@PACKAGE@"
 exec_prefix="@exec_prefix@"
 exec_prefix_set=no
-package_libdir="@libdir@"
+libdir="@libdir@"
 
 usage()
 {
@@ -13,15 +13,19 @@ Usage: $package-config [OPTION]...
 
 Known values for OPTION are:
 
-  --prefix=DIR		change XMLSEC prefix
-  --exec-prefix=DIR	change XMLSEC executable prefix
-  --libs		print library linking information
-  --cflags		print pre-processor and compiler flags
-  --crypto		print the default crypto library name
-  --help		display this help and exit
-  --version		output version information
-  --crypto=LIB		configure with XMLSEC crypto library (one of the
-			following: none default openssl nss gnutls gcrypt)
+  --cflags            print pre-processor and compiler flags
+  --libs              print library linking information
+  --prefix            print the default XMLSEC prefix folder
+  --exec-prefix       print the default XMLSEC executable prefix folder
+  --libdir            print the default XMLSEC libraries folder
+  --crypto            print the default crypto library name
+  --prefix=DIR        change XMLSEC prefix folder
+  --exec-prefix=DIR   change XMLSEC executable prefix folder
+  --libdir=DIR        change XMLSEC libraries folder
+  --crypto=LIB        configure with XMLSEC crypto library (one of the
+                      following: none default openssl nss gnutls gcrypt)
+  --help              display this help and exit
+  --version           output version information
 EOF
 
     exit $1
@@ -48,62 +52,75 @@ fi
 while [ $# -gt 0 ]
 do
     case "$1" in
-    -*=*) optarg=`echo "$1" | sed 's/[-_a-zA-Z0-9]*=//'` ;;
-    *) optarg= ;;
+    -*=*)
+        optarg=`echo "$1" | sed 's/[-_a-zA-Z0-9]*=//'`
+    ;;
+    *)
+        optarg=
+    ;;
     esac
 
     case "$1" in
     --crypto=*)
-	crypto=$optarg
-	;;
-	
+        crypto=$optarg
+    ;;
+
     --prefix=*)
-	prefix=$optarg
-	if [ $exec_prefix_set = no ]
+        prefix=$optarg
+        if [ $exec_prefix_set = no ] ;
         then
-	    exec_prefix=$optarg
-	fi
-	;;
+            exec_prefix=$optarg
+        fi
+    ;;
 
     --prefix)
-	echo $prefix
-	;;
+        echo $prefix
+    ;;
 
     --exec-prefix=*)
-	exec_prefix=$optarg
-	exec_prefix_set=yes
-	;;
+        exec_prefix=$optarg
+        exec_prefix_set=yes
+    ;;
 
     --exec-prefix)
-	echo $exec_prefix
-	;;
+        echo $exec_prefix
+    ;;
+
+    --libdir=*)
+        libdir=$optarg
+    ;;
+
+    --libdir)
+        echo $libdir
+    ;;
 
     --version)
-	echo @VERSION@
-	exit 0
-	;;
+        echo @VERSION@
+        exit 0
+    ;;
     
     --crypto)
-	echo @XMLSEC_CRYPTO@
-	exit 0
-	;;
-	
+        echo @XMLSEC_CRYPTO@
+        exit 0
+    ;;
+    
     --help)
-	usage 0
-	;;
+        usage 0
+    ;;
 
     --cflags)
-       	cflags=true
-       	;;
+           cflags=true
+    ;;
 
     --libs)
-       	libs=true
-       	;;
+           libs=true
+    ;;
     
     *)
-	usage 1
-	;;
+        usage 1
+    ;;
     esac
+
     shift
 done
 
@@ -118,7 +135,8 @@ the_xml_libs="`@LIBXML_CONFIG@ --libs`"
 #
 the_xslt_flags=""
 the_xslt_libs=""
-if test "@XMLSEC_NO_LIBXSLT@" = "0"; then 
+if test "@XMLSEC_NO_LIBXSLT@" = "0" ;
+then 
     the_xslt_flags="`@LIBXSLT_CONFIG@ --cflags`"
     the_xslt_libs="`@LIBXSLT_CONFIG@ --libs`"
 fi    
@@ -135,7 +153,7 @@ none)
     # than one crypto engine i sused by application)
     if [ "z@XMLSEC_NO_CRYPTO_DYNAMIC_LOADING@" != "z1" ] ;
     then
-	the_crypto_flags="-DXMLSEC_CRYPTO_DYNAMIC_LOADING=1 -DXMLSEC_CRYPTO=\\\"@XMLSEC_CRYPTO@\\\""
+        the_crypto_flags="-DXMLSEC_CRYPTO_DYNAMIC_LOADING=1 -DXMLSEC_CRYPTO=\\\"@XMLSEC_CRYPTO@\\\""
     fi
     ;;
 
@@ -146,46 +164,50 @@ default)
     ;;
     
 openssl)
-    if test "@XMLSEC_NO_OPENSSL@" = "0"; then
+    if test "@XMLSEC_NO_OPENSSL@" = "0" ;
+    then
         the_crypto_flags="@OPENSSL_CFLAGS@ -DXMLSEC_CRYPTO=\\\"openssl\\\""
-	the_crypto_libs="@OPENSSL_LIBS@"
+        the_crypto_libs="@OPENSSL_LIBS@"
         the_xmlsec_crypto_lib="-l@OPENSSL_CRYPTO_LIB@"
     else
         echo "Error: the \"$crypto\" cryptographic library is not supported"
-	usage 1
+        usage 1
     fi
     ;;
 
 gnutls)
-    if test "@XMLSEC_NO_GNUTLS@" = "0"; then
+    if test "@XMLSEC_NO_GNUTLS@" = "0" ;
+    then
         the_crypto_flags="@GNUTLS_CFLAGS@ -DXMLSEC_CRYPTO=\\\"gnutls\\\""
-	the_crypto_libs="@GNUTLS_LIBS@"
+        the_crypto_libs="@GNUTLS_LIBS@"
         the_xmlsec_crypto_lib="-l@GNUTLS_CRYPTO_LIB@"
     else
         echo "Error: the \"$crypto\" cryptographic library is not supported"
-	usage 1
+        usage 1
     fi
     ;;
 
 gcrypt)
-    if test "@XMLSEC_NO_GCRYPT@" = "0"; then
+    if test "@XMLSEC_NO_GCRYPT@" = "0" ;
+    then
         the_crypto_flags="@GCRYPT_CFLAGS@ -DXMLSEC_CRYPTO=\\\"gcrypt\\\""
-	the_crypto_libs="@GCRYPT_LIBS@"
+        the_crypto_libs="@GCRYPT_LIBS@"
         the_xmlsec_crypto_lib="-l@GCRYPT_CRYPTO_LIB@"
     else
         echo "Error: the \"$crypto\" cryptographic library is not supported"
-	usage 1
+        usage 1
     fi
     ;;
 
 nss)
-    if test "@XMLSEC_NO_NSS@" = "0"; then
+    if test "@XMLSEC_NO_NSS@" = "0";
+    then
         the_crypto_flags="@NSS_CFLAGS@ -DXMLSEC_CRYPTO=\\\"nss\\\""
-	the_crypto_libs="@NSS_LIBS@"
+        the_crypto_libs="@NSS_LIBS@"
         the_xmlsec_crypto_lib="-l@NSS_CRYPTO_LIB@"
     else
         echo "Error: the \"$crypto\" cryptographic library is not supported"
-	usage 1
+        usage 1
     fi
     ;;
     
@@ -200,17 +222,20 @@ esac
 # Assemble all the settings together
 #
 the_flags="$the_flags @XMLSEC_CORE_CFLAGS@ $the_xml_flags $the_xslt_flags $the_crypto_flags"
-the_libs="$the_libs -L${package_libdir} @XMLSEC_CORE_LIBS@ $the_xmlsec_crypto_lib -lxmlsec1 $the_xml_libs $the_xslt_libs $the_crypto_libs"
+the_libs="$the_libs -L${libdir} @XMLSEC_CORE_LIBS@ $the_xmlsec_crypto_lib -lxmlsec1 $the_xml_libs $the_xslt_libs $the_crypto_libs"
 
-if $cflags; then
+if $cflags ;
+then
     all_flags="$the_flags"
 fi
 
-if $libs; then
+if $libs ;
+then
     all_flags="$all_flags $services $the_libs"
 fi
 
-if test -z "$all_flags" || test "x$all_flags" = "x "; then
+if test -z "$all_flags" || test "x$all_flags" = "x " ;
+then
     exit 1
 fi
 
@@ -221,20 +246,33 @@ rev_libs=
 for i in $all_flags; do
     case "$i" in
     # a library, save it for later, in reverse order
-    -l*) rev_libs="$i $rev_libs" ;;
+    -l*)
+        rev_libs="$i $rev_libs"
+    ;;
     *)
-	case " $other_flags " in
-	*\ $i\ *) ;;				# already there
-	*) other_flags="$other_flags $i" ;;	# add it to output
-        esac ;;
+        case " $other_flags " in
+        *\ $i\ *)
+            # already there 
+        ;;
+        *)
+            # add it to output
+            other_flags="$other_flags $i"
+        ;;
+        esac 
+    ;;
     esac
 done
 
 ord_libs=
 for i in $rev_libs; do
     case " $ord_libs " in
-    *\ $i\ *) ;;			# already there
-    *) ord_libs="$i $ord_libs" ;;	# add it to output in reverse order
+    *\ $i\ *)
+        # already there
+    ;;
+    *)
+        # add it to output in reverse order
+        ord_libs="$i $ord_libs" 
+    ;;
     esac
 done
 

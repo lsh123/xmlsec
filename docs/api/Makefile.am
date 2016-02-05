@@ -33,7 +33,9 @@ docs: sgml html clean-sources
 
 # need to cleanup "bad" chars
 html: sgml $(srcdir)/xmlsec.sgml xmlsec-index
-	$(GTKDOC_MKHTML) xmlsec $(srcdir)/xmlsec.sgml
+	$(CP) -u $(srcdir)/xmlsec.sgml $(builddir)/xmlsec.sgml
+	$(CP) -ru $(srcdir)/chapters $(builddir)/
+	$(GTKDOC_MKHTML) xmlsec $(builddir)/xmlsec.sgml
 
 #
 # Prepeare sgml files from sources for each library. We are also

@@ -49,8 +49,8 @@ fi
 AC_PATH_PROG(CP, cp, /bin/cp)
 AC_PATH_PROG(MV, mv, /bin/mv)
 AC_PATH_PROG(TAR, tar, /bin/tar)
-AC_PATH_PROG(HELP2MAN, help2man)
-AC_PATH_PROG(MAN2HTML, man2html)
+AC_PATH_PROG(PERL, perl)
+
 
 dnl Checks for header files.
 AC_HEADER_DIRENT
@@ -69,7 +69,8 @@ XMLSEC_DEFINES=""
 dnl ==========================================================================
 dnl Specific setup for Aleksey's development environment: 
 dnl	- with debug
-dnl 	- with pedantic compiler flags
+dnl - with pedantic compiler flags
+dnl - with docs build
 dnl	- with static binaries
 dnl	- without dynamic xmlsec-crypto loading
 dnl ==========================================================================
@@ -79,12 +80,53 @@ if test "z$enable_development" = "zyes" ; then
     enable_debugging="yes"
     enable_pedantic="yes"
     enable_static_linking="yes"
+    enable_manpages_build="yes"
+    enable_docs_build="yes"
     enable_crypto_dl="no"
     AC_MSG_RESULT(yes)
 else
     AC_MSG_RESULT(no)
-fi    
+fi
 
+dnl ==========================================================================
+dnl Do we want to build manpages?
+dnl ==========================================================================
+AC_MSG_CHECKING(for man pages build) 
+AC_ARG_ENABLE(manpages_build,[  --enable-manpages-build man pages build (no)])
+if test "z$enable_manpages_build" = "zyes" ; then
+    AC_PATH_PROG(HELP2MAN, help2man)
+
+    AC_MSG_RESULT(yes)
+else
+    AC_MSG_RESULT(no)
+fi
+
+AM_CONDITIONAL(HAS_HELP2MAN, [test x"$HELP2MAN" != x])
+AM_CONDITIONAL(BUILD_MANPAGES, [test x"$HELP2MAN" != x])
+
+dnl ==========================================================================
+dnl Do we want to build docs?
+dnl ==========================================================================
+AC_MSG_CHECKING(for docs build) 
+AC_ARG_ENABLE(docs_build,    [  --enable-docs-build     docs build (no)])
+if test "z$enable_docs_build" = "zyes" ; then
+    AC_PATH_PROG(XSLTPROC, xsltproc)
+    AC_PATH_PROG(MAN2HTML, man2html)
+    AC_PATH_PROG(GTKDOC_MKHTML, gtkdoc-mkhtml)
+    AC_PATH_PROG(GTKDOC_MKTMPL, gtkdoc-mktmpl)
+    AC_PATH_PROG(GTKDOC_MKDB,   gtkdoc-mkdb)
+    AC_PATH_PROG(GTKDOC_SCAN,   gtkdoc-scan)
+
+    AC_MSG_RESULT(yes)
+else
+    AC_MSG_RESULT(no)
+fi
+
+AM_CONDITIONAL(HAS_MAN2HTML, [test x"$MAN2HTML" != x])
+AM_CONDITIONAL(HAS_XSLTPROC, [test x"$XSLTPROC" != x])
+
+AM_CONDITIONAL(BUILD_MAN_DOCS, [test x"$PERL" != x && test x"$XSLTPROC" != x && test x"$MAN2HTML" != x])
+AM_CONDITIONAL(BUILD_API_DOCS, [test x"$PERL" != x && test x"$XSLTPROC" != x && test x"$GTKDOC_MKHTML" != x && test x"$GTKDOC_MKTMPL" != x && test x"$GTKDOC_MKDB" != x && test x"$GTKDOC_SCAN" != x])
 
 dnl ==========================================================================
 dnl Perform host specific configuration
@@ -1635,16 +1677,13 @@ docs/Makefile
 docs/api/Makefile
 man/Makefile
 
-xmlsec1Conf.sh:xmlsecConf.sh.in
-xmlsec1-config:xmlsec-config.in
 xmlsec1-openssl.pc:xmlsec-openssl.pc.in
 xmlsec1-gnutls.pc:xmlsec-gnutls.pc.in
 xmlsec1-gcrypt.pc:xmlsec-gcrypt.pc.in
 xmlsec1-nss.pc:xmlsec-nss.pc.in
 xmlsec1.spec:xmlsec.spec.in
 ])
+AC_CONFIG_FILES([xmlsec1Conf.sh:xmlsecConf.sh.in], [chmod +x xmlsec1Conf.sh])
+AC_CONFIG_FILES([xmlsec1-config:xmlsec-config.in], [chmod +x xmlsec1-config])
 AC_OUTPUT
 
-
-dnl COPYING should be in "srcdir" not in "builddir"
-(cd $srcdir && rm -f COPYING.LIB COPYING && $LN_S Copyright COPYING)

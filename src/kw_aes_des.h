@@ -15,7 +15,7 @@
 #define __XMLSEC_KT_AES_DES_H__
 
 #ifndef XMLSEC_PRIVATE
-#error "private.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-<crypto> libraries"
+#error "private.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
 #endif /* XMLSEC_PRIVATE */
 
 #ifdef __cplusplus

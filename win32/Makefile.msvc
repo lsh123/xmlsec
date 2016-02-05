@@ -148,7 +148,6 @@ XMLSEC_OBJS = \
 	$(XMLSEC_INTDIR)\membuf.obj \
 	$(XMLSEC_INTDIR)\nodeset.obj \
 	$(XMLSEC_INTDIR)\parser.obj \
-	$(XMLSEC_INTDIR)\soap.obj \
 	$(XMLSEC_INTDIR)\strings.obj \
 	$(XMLSEC_INTDIR)\templates.obj \
 	$(XMLSEC_INTDIR)\transforms.obj \
@@ -178,7 +177,6 @@ XMLSEC_OBJS_A = \
 	$(XMLSEC_INTDIR_A)\membuf.obj \
 	$(XMLSEC_INTDIR_A)\nodeset.obj \
 	$(XMLSEC_INTDIR_A)\parser.obj \
-	$(XMLSEC_INTDIR_A)\soap.obj \
 	$(XMLSEC_INTDIR_A)\strings.obj \
 	$(XMLSEC_INTDIR_A)\templates.obj \
 	$(XMLSEC_INTDIR_A)\transforms.obj \

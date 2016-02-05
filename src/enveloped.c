@@ -73,10 +73,11 @@ static xmlSecTransformKlass xmlSecTransformEnvelopedKlass = {
  * result from replacing T with an XPath transform containing the following
  * XPath parameter element:
  *
- * <XPath xmlns:dsig="&dsig;">
- *   count(ancestor-or-self::dsig:Signature |
- *   here()/ancestor::dsig:Signature[1]) >
- *   count(ancestor-or-self::dsig:Signature)</XPath>
+ *   <XPath xmlns:dsig="...">
+ *     count(ancestor-or-self::dsig:Signature |
+ *     here()/ancestor::dsig:Signature[1]) >
+ *     count(ancestor-or-self::dsig:Signature)
+ *   </XPath>
  *
  * The input and output requirements of this transform are identical to
  * those of the XPath transform, but may only be applied to a node-set from

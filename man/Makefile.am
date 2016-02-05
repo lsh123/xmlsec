@@ -1,52 +1,75 @@
 NULL =
 
+XMLSEC1_MAN=$(builddir)/xmlsec1.1
+XMLSEC1_CONFIG_MAN=$(builddir)/xmlsec1-config.1
+
+XMLSEC1_MAN_SRC=$(srcdir)/xmlsec1.1
+XMLSEC1_CONFIG_MAN_SRC=$(srcdir)/xmlsec1-config.1
+
 man_MANS = \
-	xmlsec1.1 \
-	xmlsec1-config.1 \
+	$(XMLSEC1_MAN) \
+	$(XMLSEC1_CONFIG_MAN) \
 	$(NULL)
 
 EXTRA_DIST = \
-	xmlsec1.1 \
-	xmlsec1-config.1 \
+	$(XMLSEC1_MAN) \
+	$(XMLSEC1_CONFIG_MAN) \
 	$(NULL)
 
 XMLSEC_PROGRAM=$(top_builddir)/apps/xmlsec1
 XMLSEC_CONFIG_PROGRAM=$(top_builddir)/xmlsec1-config
-XMLSEC_HTML=$(top_builddir)/docs/xmlsec-man.html
 
-all:
+all: $(man_MANS) $(XMLSEC_HTML)
 
-docs: man-clean man $(XMLSEC_HTML)
-	
 
-man-clean:
-	@rm -rf $(man_MANS)
-
-man: $(man_MANS) 
-
-$(XMLSEC_HTML): xmlsec1.1
-	man2html xmlsec1.1 | \
-		  grep -v '^Content-type: text/html' | \
-		  tr "[:cntrl:]" " " > \
-		  $(XMLSEC_HTML)
-
-xmlsec1.1:
-	@rm -f xmlsec1.1
-	help2man --help-option=--help-all --no-info \
+if BUILD_MANPAGES
+$(XMLSEC1_MAN): $(XMLSEC_PROGRAM)
+	$(HELP2MAN) --help-option=--help-all --no-info \
 		  --name="sign, verify, encrypt and decrypt XML documents" \
 		  --version-option=--version \
-		  $(XMLSEC_PROGRAM) > xmlsec1.1
+		  --output=$(XMLSEC1_MAN) \
+		  $(XMLSEC_PROGRAM)
+else
+$(XMLSEC1_MAN):
+	@( \
+		echo "Copying xmlsec1 manpage ..."; \
+		if [ z"$(XMLSEC1_MAN_SRC)" != z"$(XMLSEC1_MAN)" ]; \
+		then \
+		   $(CP) -u $(XMLSEC1_MAN_SRC) $(XMLSEC1_MAN) ; \
+		fi \
+	)
+endif
 
-xmlsec1-config.1:
-	@chmod 766 $(XMLSEC_CONFIG_PROGRAM)
-	@rm -f xmlsec1-config.1
-	help2man --help-option=--help --no-info \
+if BUILD_MANPAGES
+$(XMLSEC1_CONFIG_MAN): $(XMLSEC_CONFIG_PROGRAM)
+	$(HELP2MAN) --help-option=--help --no-info \
 		  --name="detail installed version of xmlsec library" \
 		  --version-option=--version \
-		  $(XMLSEC_CONFIG_PROGRAM) > xmlsec1-config.1
+		  --output=$(XMLSEC1_CONFIG_MAN) \
+		  $(XMLSEC_CONFIG_PROGRAM)
+else
+$(XMLSEC1_CONFIG_MAN):
+	@( \
+		echo "Copying xmlsec1-config manpage ..."; \
+		if [ z"$(XMLSEC1_CONFIG_MAN_SRC)" != z"$(XMLSEC1_CONFIG_MAN)" ]; then \
+		    $(CP) -u $(XMLSEC1_CONFIG_MAN_SRC) $(XMLSEC1_CONFIG_MAN) ; \
+		fi \
+	)
+endif
 
 $(XMLSEC_PROGRAM): 
 	@cd ../apps;make
 
-clean:
+$(XMLSEC_CONFIG_PROGRAM):
+
 	
+clean-local:
+	( if [ z"$(XMLSEC1_MAN_SRC)" != z"$(XMLSEC1_MAN)" ]; then \
+		rm -rf $(XMLSEC1_MAN) ; \
+	fi )
+	( if [ z"$(XMLSEC1_CONFIG_MAN_SRC)" != z"$(XMLSEC1_CONFIG_MAN)" ];  then \
+		rm -rf $(XMLSEC1_CONFIG_MAN) ; \
+	fi )
+
+distclean-local: clean-local
+

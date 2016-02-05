@@ -36,7 +36,7 @@
 <xsl:copy-of select="//head/*" />
 </head>
 <body>
-<table witdh="100%" valign="top">
+<table width="100%" valign="top">
 <tr valign="top">
     <!-- top navigation menu start -->     
     <td valign="top" align="left" width="210">

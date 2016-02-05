@@ -22,7 +22,9 @@ XMLSEC_CONFIG_PROGRAM=$(top_builddir)/xmlsec1-config
 all: $(man_MANS) $(XMLSEC_HTML)
 	
 clean-local:
-	@rm -rf $(man_MANS)
+	( if [ z"$(builddir)" != z"$(srcdir)" ] ; then \
+		@rm -rf $(man_MANS) ; \
+	fi )
 
 distclean-local: clean-local
 

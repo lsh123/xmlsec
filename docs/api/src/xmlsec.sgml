@@ -16,11 +16,11 @@
 
 <!ENTITY xmlsec-app 			SYSTEM "sgml/app.sgml">
 <!ENTITY xmlsec-base64 			SYSTEM "sgml/base64.sgml">
-<!ENTITY xmlsec-bn 			SYSTEM "sgml/bn.sgml">
+<!ENTITY xmlsec-bn 			    SYSTEM "sgml/bn.sgml">
 <!ENTITY xmlsec-buffer 			SYSTEM "sgml/buffer.sgml">
-<!ENTITY xmlsec-dl 			SYSTEM "sgml/dl.sgml">
+<!ENTITY xmlsec-dl 			    SYSTEM "sgml/dl.sgml">
 <!ENTITY xmlsec-errors 			SYSTEM "sgml/errors.sgml">
-<!ENTITY xmlsec-io 			SYSTEM "sgml/io.sgml">
+<!ENTITY xmlsec-io 			    SYSTEM "sgml/io.sgml">
 <!ENTITY xmlsec-keyinfo 		SYSTEM "sgml/keyinfo.sgml">
 <!ENTITY xmlsec-keysdata 		SYSTEM "sgml/keysdata.sgml">
 <!ENTITY xmlsec-keys 			SYSTEM "sgml/keys.sgml">
@@ -39,16 +39,16 @@
 <!ENTITY xmlsec-x509 			SYSTEM "sgml/x509.sgml">
 
 <!ENTITY xmlsec-openssl-app 		SYSTEM "sgml/openssl/app.sgml">
-<!ENTITY xmlsec-openssl-bn 		SYSTEM "sgml/openssl/bn.sgml">
+<!ENTITY xmlsec-openssl-bn 		    SYSTEM "sgml/openssl/bn.sgml">
 <!ENTITY xmlsec-openssl-ciphers		SYSTEM "sgml/openssl/ciphers.sgml">
 <!ENTITY xmlsec-openssl-crypto		SYSTEM "sgml/openssl/crypto.sgml">
 <!ENTITY xmlsec-openssl-evp 		SYSTEM "sgml/openssl/evp.sgml">
 <!ENTITY xmlsec-openssl-x509 		SYSTEM "sgml/openssl/x509.sgml">
 
-<!ENTITY xmlsec-gnutls-app 		SYSTEM "sgml/gnutls/app.sgml">
+<!ENTITY xmlsec-gnutls-app 		    SYSTEM "sgml/gnutls/app.sgml">
 <!ENTITY xmlsec-gnutls-crypto 		SYSTEM "sgml/gnutls/crypto.sgml">
 
-<!ENTITY xmlsec-gcrypt-app 		SYSTEM "sgml/gcrypt/app.sgml">
+<!ENTITY xmlsec-gcrypt-app 		    SYSTEM "sgml/gcrypt/app.sgml">
 <!ENTITY xmlsec-gcrypt-crypto 		SYSTEM "sgml/gcrypt/crypto.sgml">
 
 <!ENTITY xmlsec-nss-app 		SYSTEM "sgml/nss/app.sgml">

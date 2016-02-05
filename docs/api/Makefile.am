@@ -4,10 +4,12 @@
 NULL=
 MODULE=xmlsec
 SOURCE_DIR=$(top_srcdir)/src
+SOURCE_DIR2=$(top_builddir)/src
 INCLUDE_DIR=$(top_srcdir)/include
+INCLUDE_DIR2=$(top_builddir)/include
 
 EXTRA_DIST = \
-	chapters \
+	src \
 	images \
 	$(NULL)
 
@@ -18,7 +20,9 @@ EXTRA_DIST = \
 DOC_SOURCE_DIR=$(builddir)/code
 DOC_SOURCE_FILES=\
 	$(shell find $(SOURCE_DIR) -name '*.c' -print )  \
-	$(shell find $(INCLUDE_DIR) -name '*.h' -a ! -name "symbols.h" -print )
+	$(shell find $(SOURCE_DIR2) -name '*.c' -print )  \
+	$(shell find $(INCLUDE_DIR) -name '*.h' -a ! -name "symbols.h" -print ) \
+	$(shell find $(INCLUDE_DIR2) -name '*.h' -a ! -name "symbols.h" -print )
 
 EXAMPLES_DIR=$(builddir)/examples
 EXAMPLES_SOURCE_DIR=$(top_srcdir)/examples
@@ -32,9 +36,9 @@ all:
 docs: sgml html clean-sources
 
 # need to cleanup "bad" chars
-html: sgml $(srcdir)/xmlsec.sgml xmlsec-index
-	$(CP) -u $(srcdir)/xmlsec.sgml $(builddir)/xmlsec.sgml
-	$(CP) -ru $(srcdir)/chapters $(builddir)/
+html: sgml $(srcdir)/src/xmlsec.sgml $(srcdir)/src/chapters xmlsec-index
+	$(CP) -u $(srcdir)/src/xmlsec.sgml $(builddir)/xmlsec.sgml
+	$(CP) -ru $(srcdir)/src/chapters $(builddir)/
 	$(GTKDOC_MKHTML) xmlsec $(builddir)/xmlsec.sgml
 
 #
@@ -45,6 +49,9 @@ html: sgml $(srcdir)/xmlsec.sgml xmlsec-index
 #
 sgml: templates
 	$(GTKDOC_MKDB) --module=xmlsec \
+			--main-sgml-file=xmlsec-base.sgml \
+			--output-dir=sgml/ \
+		    --tmpl-dir=tmpl/base \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/base \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/base
 	$(GTKDOC_MKDB) --module=xmlsec-openssl \
@@ -86,14 +93,17 @@ sgml: templates
 	          sed 's!\(<enc:\)\(\w*\)\(>\)!\&lt;enc:\2\/\&gt;!g' | \
 	          sed 's!\(&lt;dsig:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmldsig-core/#sec-\2\">\1\2\3</ulink>!g' | \
 	          sed 's!\(&lt;enc:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmlenc-core/#sec-\2\">\1\2\3</ulink>!g' | \
+	          sed 's!<para \/>!<para></para>!g' | \
 	          sed 's!linkend=\"\(.*\)Ptr\"!linkend=\"\1\"!g' | \
-	          sed 's!<colspec [^/]*\/>!!g' > \
+	          sed 's!<colspec [^/]*\/>!!g' | \
+	          $(PERL) -pe 's!para>\n!para>!g' > \
 	          $$i.tmp; \
 	        mv -f $$i.tmp $$i; \
 	 done);
 
 templates: scan
-	$(GTKDOC_MKTMPL) --module=xmlsec
+	$(GTKDOC_MKTMPL) --module=xmlsec \
+			--output-dir=tmpl/base
 	$(GTKDOC_MKTMPL) --module=xmlsec-openssl \
 		    --output-dir=tmpl/openssl
 	$(GTKDOC_MKTMPL) --module=xmlsec-gnutls \
@@ -139,10 +149,14 @@ doc_sources: $(DOC_SOURCE_FILES)
 	@echo "Preprocessing source files into '$(DOC_SOURCE_DIR)' ..." 
 	@( \
 	for i in $(DOC_SOURCE_FILES) ; do \
-		folder_name=`echo $$i | sed 's#$(top_srcdir)/##' | sed 's#/[^/]*$$##'`; \
-	    file_name=`echo $$i | sed 's#.*/##'`; \
+		folder_name=`echo "$$i" | \
+			sed 's#$(top_srcdir)/##' | \ 
+			sed 's#$(top_builddir)/##' | \ 
+			sed 's#/[^/]*$$##'`; \
+	    file_name=`echo "$$i" | \
+	    	sed 's#.*/##'`; \
 	    mkdir -p "$(DOC_SOURCE_DIR)/$$folder_name"; \
-	    cat $$i | \
+	    cat "$$i" | \
 		    sed 's/#if.*//' | \
 		    sed 's/#el.*//' | \
 		    sed 's/#end.*//' | \
@@ -197,7 +211,7 @@ example_sources:
 	done);
 
 dist-hook:
-	@cp -p $(srcdir)/*.html $(srcdir)/*.png $(srcdir)/*.sgml $(distdir)
+	@cp -p $(srcdir)/*.html $(srcdir)/*.png $(distdir)
 
 clean: clean-sources
 	-@rm -rf $(DOC_SOURCE_DIR)

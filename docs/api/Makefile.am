@@ -73,9 +73,33 @@ $(MAIN_SGML_FILE): $(MAIN_SGML_SRC_FILE)
 # Prepeare sgml files from sources for each library. We are also
 # doing some "magic" here by automatically adding links to XML DSig and 
 # XML Enc specification, we also remove "Ptr" from the end of the link
-# targets to make more references
+# targets to make more references.
 #
-sgml: templates $(SGML_DIR)/.sentinel
+# We also fix a bunch of stupid errors from gtkdoc 
+#
+sgml: sgml-base
+	(for i in `find $(SGML_DIR) -name "*.sgml" -print` ; do \
+			echo "Fixing up '$$i'" ; \
+	        cat $$i | \
+	          sed 's!\(<dsig:\)\([^/]*\)\(\/>\)!\&lt;dsig:\2\/\&gt;!g' | \
+	          sed 's!\(<enc:\)\([^/]*\)\(\/>\)!\&lt;enc:\2\/\&gt;!g' | \
+	          sed 's!\(<dsig:\)\(\w*\)\(>\)!\&lt;dsig:\2\/\&gt;!g' | \
+	          sed 's!\(<enc:\)\(\w*\)\(>\)!\&lt;enc:\2\/\&gt;!g' | \
+	          sed 's!\(&lt;dsig:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmldsig-core/#sec-\2\">\1\2\3</ulink>!g' | \
+	          sed 's!\(&lt;enc:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmlenc-core/#sec-\2\">\1\2\3</ulink>!g' | \
+	          sed 's!<para \/>!<para></para>!g' | \
+	          sed 's!linkend=\"\(.*\)Ptr\"!linkend=\"\1\"!g' | \
+	          sed 's!<colspec [^/]*\/>!!g' | \
+	          sed 's!<programlisting language="C"!<programlisting!g' | \ 
+	          $(PERL) -pe 's!title>\n!title>!g' | \
+	          $(PERL) -pe 's!title>\n!title>!g' | \
+	          $(PERL) -pe 's!<\/title><\/refsect1>\n!<\/title><para><\/para><\/refsect1>!g' | \
+	          $(PERL) -pe 's!para>\n!para>!g' > \
+	          $$i.tmp; \
+	        mv -f $$i.tmp $$i; \
+	 done);
+
+sgml-base: templates $(SGML_DIR)/.sentinel
 	$(GTKDOC_MKDB) --module=xmlsec \
 			--main-sgml-file=$(SGML_DIR)/xmlsec-base.sgml \
 			--output-dir=$(SGML_DIR)/ \
@@ -112,22 +136,6 @@ sgml: templates $(SGML_DIR)/.sentinel
 		    --output-dir=$(SGML_DIR)/mscrypto \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/mscrypto \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/mscrypto
-	(for i in `find $(SGML_DIR) -name "*.sgml" -print` ; do \
-			echo "Fixing up '$$i'" ; \
-	        cat $$i | \
-	          sed 's!\(<dsig:\)\([^/]*\)\(\/>\)!\&lt;dsig:\2\/\&gt;!g' | \
-	          sed 's!\(<enc:\)\([^/]*\)\(\/>\)!\&lt;enc:\2\/\&gt;!g' | \
-	          sed 's!\(<dsig:\)\(\w*\)\(>\)!\&lt;dsig:\2\/\&gt;!g' | \
-	          sed 's!\(<enc:\)\(\w*\)\(>\)!\&lt;enc:\2\/\&gt;!g' | \
-	          sed 's!\(&lt;dsig:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmldsig-core/#sec-\2\">\1\2\3</ulink>!g' | \
-	          sed 's!\(&lt;enc:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmlenc-core/#sec-\2\">\1\2\3</ulink>!g' | \
-	          sed 's!<para \/>!<para></para>!g' | \
-	          sed 's!linkend=\"\(.*\)Ptr\"!linkend=\"\1\"!g' | \
-	          sed 's!<colspec [^/]*\/>!!g' | \
-	          $(PERL) -pe 's!para>\n!para>!g' > \
-	          $$i.tmp; \
-	        mv -f $$i.tmp $$i; \
-	 done);
 
 templates: scan $(TMPL_DIR)/.sentinel
 	$(GTKDOC_MKTMPL) --module=xmlsec \

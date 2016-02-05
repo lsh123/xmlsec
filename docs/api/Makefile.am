@@ -295,6 +295,7 @@ clean-local:
 	 ( if [ z"$(builddir)" != z"$(srcdir)" ] ; then \
     	chmod -R u+w $(builddir)/src && rm -rf $(builddir)/src ; \
     	chmod -R u+w $(builddir)/images && rm -rf $(builddir)/images ; \
+    	chmod -R u+w $(builddir)/*.png && rm -rf $(builddir)/*.png ; \
 	 fi ; )
 
 distclean-local: clean-local

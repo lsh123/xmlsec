@@ -53,9 +53,9 @@ REMOVE_GTKDOCLINK=$(top_srcdir)/scripts/remove-gtkdoclink.pl
 # do nothing for all
 all:
 
-docs: sgml html
+docs: html-cleanup
 
-html-cleanup:
+html-cleanup: html
 	( echo "Cleaning up result files"; \
 	   $(PERL) $(REMOVE_GTKDOCLINK) `find . -name "*.html" -print` \
 	)

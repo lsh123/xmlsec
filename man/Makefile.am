@@ -65,10 +65,10 @@ $(XMLSEC_CONFIG_PROGRAM):
 	
 clean-local:
 	( if [ z"$(XMLSEC1_MAN_SRC)" != z"$(XMLSEC1_MAN)" ]; then \
-		@rm -rf $(XMLSEC1_MAN) ; \
+		rm -rf $(XMLSEC1_MAN) ; \
 	fi )
 	( if [ z"$(XMLSEC1_CONFIG_MAN_SRC)" != z"$(XMLSEC1_CONFIG_MAN)" ];  then \
-		@rm -rf $(XMLSEC1_CONFIG_MAN) ; \
+		rm -rf $(XMLSEC1_CONFIG_MAN) ; \
 	fi )
 
 distclean-local: clean-local

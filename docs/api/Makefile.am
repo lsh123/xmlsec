@@ -4,8 +4,8 @@
 NULL=
 TOP=../..
 MODULE=xmlsec
-SOURCE_DIR=$(TOP)/src
-INCLUDE_DIR=$(TOP)/include
+SOURCE_DIR=$(top_srcdir)/src
+INCLUDE_DIR=$(top_srcdir)/include
 SGML_CATALOG_FILES=/usr/share/sgml/docbook/sgml-dtd-3.0-1.0-8/catalog:/usr/share/sgml/openjade-1.3.1/catalog:/usr/share/sgml/docbook/dsssl-stylesheets/catalog
 
 EXTRA_DIST = \
@@ -17,12 +17,13 @@ EXTRA_DIST = \
 # We need to pre-process original source files
 # because gtkdoc does not understand some C features
 #
-DOC_SOURCE_DIR=./code
+DOC_SOURCE_DIR=$(builddir)/code
 DOC_SOURCE_FILES=\
 	$(shell find $(SOURCE_DIR) -name '*.c' -print )  \
 	$(shell find $(INCLUDE_DIR) -name '*.h' -a ! -name "symbols.h" -print )
 
-EXAMPLES_SOURCE_DIR=../../examples
+EXAMPLES_DIR=$(builddir)/examples
+EXAMPLES_SOURCE_DIR=$(top_srcdir)/examples
 EXAMPLES_SOURCE_FILES=\
 	$(shell find $(EXAMPLES_SOURCE_DIR) -name '*.c' -print) \
 	$(shell find $(EXAMPLES_SOURCE_DIR) -name '*.xml' -print) 
@@ -34,7 +35,7 @@ docs: sgml html clean-sources
 
 # need to cleanup "bad" chars
 html: sgml xmlsec.sgml xmlsec-index
-	gtkdoc-mkhtml xmlsec xmlsec.sgml
+	$(GTKDOC_MKHTML) xmlsec xmlsec.sgml
 
 #
 # Prepeare sgml files from sources for each library. We are also
@@ -43,35 +44,35 @@ html: sgml xmlsec.sgml xmlsec-index
 # targets to make more references
 #
 sgml: templates
-	gtkdoc-mkdb --module=xmlsec \
+	$(GTKDOC_MKDB) --module=xmlsec \
 		    --main-sgml-file=xmlsec.sgml \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/base \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/base
-	gtkdoc-mkdb --module=xmlsec-openssl \
+	$(GTKDOC_MKDB) --module=xmlsec-openssl \
 		    --main-sgml-file=xmlsec-openssl.sgml \
 		    --tmpl-dir=tmpl/openssl \
 		    --output-dir=sgml/openssl \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/openssl \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/openssl
-	gtkdoc-mkdb --module=xmlsec-gnutls \
+	$(GTKDOC_MKDB) --module=xmlsec-gnutls \
 		    --main-sgml-file=xmlsec-gnutls.sgml \
 		    --tmpl-dir=tmpl/gnutls \
 		    --output-dir=sgml/gnutls \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/gnutls \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/gnutls
-	gtkdoc-mkdb --module=xmlsec-gcrypt \
+	$(GTKDOC_MKDB) --module=xmlsec-gcrypt \
 		    --main-sgml-file=xmlsec-gcrypt.sgml \
 		    --tmpl-dir=tmpl/gcrypt \
 		    --output-dir=sgml/gcrypt \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/gcrypt \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/gcrypt
-	gtkdoc-mkdb --module=xmlsec-nss \
+	$(GTKDOC_MKDB) --module=xmlsec-nss \
 		    --main-sgml-file=xmlsec-nss.sgml \
 		    --tmpl-dir=tmpl/nss \
 		    --output-dir=sgml/nss \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/nss \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/nss
-	gtkdoc-mkdb --module=xmlsec-mscrypto \
+	$(GTKDOC_MKDB) --module=xmlsec-mscrypto \
 		    --main-sgml-file=xmlsec-mscrypto.sgml \
 		    --tmpl-dir=tmpl/mscrypto \
 		    --output-dir=sgml/mscrypto \
@@ -87,40 +88,40 @@ sgml: templates
 	done);
 
 templates: scan
-	gtkdoc-mktmpl --module=xmlsec
-	gtkdoc-mktmpl --module=xmlsec-openssl \
+	$(GTKDOC_MKTMPL) --module=xmlsec
+	$(GTKDOC_MKTMPL) --module=xmlsec-openssl \
 		    --output-dir=tmpl/openssl
-	gtkdoc-mktmpl --module=xmlsec-gnutls \
+	$(GTKDOC_MKTMPL) --module=xmlsec-gnutls \
 		    --output-dir=tmpl/gnutls
-	gtkdoc-mktmpl --module=xmlsec-gcrypt \
+	$(GTKDOC_MKTMPL) --module=xmlsec-gcrypt \
 		    --output-dir=tmpl/gcrypt
-	gtkdoc-mktmpl --module=xmlsec-nss \
+	$(GTKDOC_MKTMPL) --module=xmlsec-nss \
 		    --output-dir=tmpl/nss
-	gtkdoc-mktmpl --module=xmlsec-mscrypto \
+	$(GTKDOC_MKTMPL) --module=xmlsec-mscrypto \
 		    --output-dir=tmpl/mscrypto
 
 scan: doc_sources example_sources
-	gtkdoc-scan --module=xmlsec \
+	$(GTKDOC_SCAN) --module=xmlsec \
 		    --rebuild-sections \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/base \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/base
-	gtkdoc-scan --module=xmlsec-openssl \
+	$(GTKDOC_SCAN) --module=xmlsec-openssl \
 		    --rebuild-sections \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/openssl \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/openssl
-	gtkdoc-scan --module=xmlsec-gnutls \
+	$(GTKDOC_SCAN) --module=xmlsec-gnutls \
 		    --rebuild-sections \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/gnutls \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/gnutls
-	gtkdoc-scan --module=xmlsec-gcrypt \
+	$(GTKDOC_SCAN) --module=xmlsec-gcrypt \
 		    --rebuild-sections \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/gcrypt \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/gcrypt
-	gtkdoc-scan --module=xmlsec-nss \
+	$(GTKDOC_SCAN) --module=xmlsec-nss \
 		    --rebuild-sections \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/nss \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/nss
-	gtkdoc-scan --module=xmlsec-mscrypto \
+	$(GTKDOC_SCAN) --module=xmlsec-mscrypto \
 		    --rebuild-sections \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/mscrypto \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/mscrypto
@@ -130,19 +131,21 @@ scan: doc_sources example_sources
 # removing XMLSEC_EXPORT_* stuff that makes gtkdoc crazy
 #
 doc_sources: $(DOC_SOURCE_FILES)
-	@(for i in $(DOC_SOURCE_FILES) ; do \
-	    folder_name=`echo $$i | sed 's#$(TOP)/##' | sed 's#/[^/]*$$##'`; \
+	@echo "Preprocessing source files into '$(DOC_SOURCE_DIR)' ..." 
+	@( \
+	for i in $(DOC_SOURCE_FILES) ; do \
+		folder_name=`echo $$i | sed 's#$(top_srcdir)/##' | sed 's#/[^/]*$$##'`; \
 	    file_name=`echo $$i | sed 's#.*/##'`; \
-	    test -d $(DOC_SOURCE_DIR)/$$folder_name || mkdir -p $(DOC_SOURCE_DIR)/$$folder_name; \
+	    mkdir -p "$(DOC_SOURCE_DIR)/$$folder_name"; \
 	    cat $$i | \
-		sed 's/#if.*//' | \
-		sed 's/#el.*//' | \
-		sed 's/#end.*//' | \
-		sed 's/XMLSEC_CRYPTO_EXPORT//' | \
-		sed 's/XMLSEC_EXPORT_VAR//' | \
-		sed 's/XMLSEC_EXPORT//' | \
-		sed 's/XMLSEC_ERRORS_PRINTF_ATTRIBUTE//' > \
-		$(DOC_SOURCE_DIR)/$$folder_name/$$file_name; \
+		    sed 's/#if.*//' | \
+		    sed 's/#el.*//' | \
+		    sed 's/#end.*//' | \
+		    sed 's/XMLSEC_CRYPTO_EXPORT//' | \
+		    sed 's/XMLSEC_EXPORT_VAR//' | \
+		    sed 's/XMLSEC_EXPORT//' | \
+		    sed 's/XMLSEC_ERRORS_PRINTF_ATTRIBUTE//' > \
+		    $(DOC_SOURCE_DIR)/$$folder_name/$$file_name; \
 	done);
 	-@mkdir -p $(DOC_SOURCE_DIR)/src/base
 	-@mv -f $(DOC_SOURCE_DIR)/src/*.c $(DOC_SOURCE_DIR)/src/base
@@ -169,23 +172,23 @@ xmlsec-index: scan
 # characters (<, >, &) are escaped. 
 #
 example_sources:
-	@mkdir -p examples
+	@mkdir -p $(EXAMPLES_DIR)
 	@(for i in $(EXAMPLES_SOURCE_FILES) ; do \
 	    file_name=`echo $$i | sed 's#.*/##' | sed 's#\..*$$##'`; \
 	    file_ext=`echo $$i | sed 's#.*/##' | sed 's#.*\.##'`; \
 	    echo Converting $$file_name.$$file_ext to $$file_name.sgml ...; \
 	    file_title=`cat $$i | grep 'XML Security Library example: ' | sed 's#^.*: *##'`; \
 	    echo "<sect2 id=\"xmlsec-example-$$file_name\" >" > \
-		examples/$$file_name.sgml; \
+	        $(EXAMPLES_DIR)/$$file_name.sgml; \
 	    echo "<title>$$file_name.$$file_ext</title><para><informalexample><programlisting>" >> \
-		examples/$$file_name.sgml; \
+		    $(EXAMPLES_DIR)/$$file_name.sgml; \
 	    cat $$i | \
 		sed "s#&#\&amp;#g" | \
 		sed "s#<#\&lt;#g" | \
 		sed "s#>#\&gt;#g" >> \
-		examples/$$file_name.sgml; \
+		    $(EXAMPLES_DIR)/$$file_name.sgml; \
 	    echo "</programlisting></informalexample></para></sect2>" >> \
-		examples/$$file_name.sgml; \
+		    $(EXAMPLES_DIR)/$$file_name.sgml; \
 	done);
 
 dist-hook:
@@ -198,7 +201,7 @@ clean: clean-sources
 	-@rm -rf *~ *.bak *.hierarchy *.signals *-unused.txt *.stamp
 
 clean-sources:
-	-@rm -rf code examples
+	-@rm -rf $(DOC_SOURCE_DIR) $(EXAMPLES_DIR)
 
 clean-local:
 	-@rm -rf *~ *.bak *.hierarchy *.signals *-unused.txt

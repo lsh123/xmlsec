@@ -14,6 +14,7 @@ EXTRA_DIST=\
 XMLSEC1_MAN=$(top_builddir)/man/xmlsec1.1
 XMLSEC_HTML=$(builddir)/xmlsec-man.html
 
+REMOVE_GTKDOCLINK=$(top_srcdir)/scripts/remove-gtkdoclink.pl
 
 # just do nothing
 all: docs api-docs man-docs docs-format
@@ -32,7 +33,7 @@ if BUILD_API_DOCS
 api-docs: docs
 	@(cd api; $(MAKE) docs; \
 	    echo "Cleaning up result files"; \
-	    $(PERL) $(top_srcdir)/scripts/remove-gtkdoclink.pl `find . -name "*.html" -print` \
+	    $(PERL) $(REMOVE_GTKDOCLINK) `find . -name "*.html" -print` \
 	)
 else
 api-docs: docs
@@ -81,7 +82,7 @@ docs-format:
 	    mv $$i.tmp $$i; \
 	done)
 	@(echo "Cleaning html documents"; \
-	for i in `find . -name "*.html" -print`; \
+	for i in `find $(builddir) -name "*.html" -print`; \
 	do \
 	    echo Cleaning $$i ; \
 	    sed 's/\xA0/ /g' $$i > $$i.tmp ; \

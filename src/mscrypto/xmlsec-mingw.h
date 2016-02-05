@@ -11,7 +11,7 @@
 #define __XMLSEC_MSCRYPTO_XMLSEC_MINGW_H__
 
 #ifndef XMLSEC_PRIVATE
-#error "xmlsec-mingw.h file contains private xmlsec definitions for mingw build and should not be used outside xmlsec or xmlsec-<crypto> libraries"
+#error "xmlsec-mingw.h file contains private xmlsec definitions for mingw build and should not be used outside xmlsec or xmlsec-$crypto libraries"
 #endif /* XMLSEC_PRIVATE */
 
 

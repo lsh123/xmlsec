@@ -2,11 +2,9 @@
 #
 #
 NULL=
-TOP=../..
 MODULE=xmlsec
 SOURCE_DIR=$(top_srcdir)/src
 INCLUDE_DIR=$(top_srcdir)/include
-SGML_CATALOG_FILES=/usr/share/sgml/docbook/sgml-dtd-3.0-1.0-8/catalog:/usr/share/sgml/openjade-1.3.1/catalog:/usr/share/sgml/docbook/dsssl-stylesheets/catalog
 
 EXTRA_DIST = \
 	chapters \
@@ -34,8 +32,8 @@ all:
 docs: sgml html clean-sources
 
 # need to cleanup "bad" chars
-html: sgml xmlsec.sgml xmlsec-index
-	$(GTKDOC_MKHTML) xmlsec xmlsec.sgml
+html: sgml $(srcdir)/xmlsec.sgml xmlsec-index
+	$(GTKDOC_MKHTML) xmlsec $(srcdir)/xmlsec.sgml
 
 #
 # Prepeare sgml files from sources for each library. We are also
@@ -45,7 +43,6 @@ html: sgml xmlsec.sgml xmlsec-index
 #
 sgml: templates
 	$(GTKDOC_MKDB) --module=xmlsec \
-		    --main-sgml-file=xmlsec.sgml \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/base \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/base
 	$(GTKDOC_MKDB) --module=xmlsec-openssl \
@@ -78,14 +75,18 @@ sgml: templates
 		    --output-dir=sgml/mscrypto \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/mscrypto \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/mscrypto
-	(for i in `find sgml -name "*.sgml" -print` ; do \
-	    cat $$i | \
-		sed 's!\(&lt;dsig:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmldsig-core/#sec-\2\">\1\2\3</ulink>!g' | \
-		sed 's!\(&lt;enc:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmlenc-core/#sec-\2\">\1\2\3</ulink>!g' | \
-		sed 's!linkend=\"\(.*\)Ptr\"!linkend=\"\1\"!g' > \
-		$$i.tmp; \
-		mv -f $$i.tmp $$i; \
-	done);
+	(for i in `find xml -name "*.xml" -print` ; do \
+	        cat $$i | \
+	          sed 's!\(<dsig:\)\([^/]*\)\(\/>\)!\&lt;dsig:\2\/\&gt;!g' | \
+	          sed 's!\(<enc:\)\([^/]*\)\(\/>\)!\&lt;enc:\2\/\&gt;!g' | \
+	          sed 's!\(<dsig:\)\(\w*\)\(>\)!\&lt;dsig:\2\/\&gt;!g' | \
+	          sed 's!\(<enc:\)\(\w*\)\(>\)!\&lt;enc:\2\/\&gt;!g' | \
+	          sed 's!\(&lt;dsig:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmldsig-core/#sec-\2\">\1\2\3</ulink>!g' | \
+	          sed 's!\(&lt;enc:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmlenc-core/#sec-\2\">\1\2\3</ulink>!g' | \
+	          sed 's!linkend=\"\(.*\)Ptr\"!linkend=\"\1\"!g' > \
+	          $$i.tmp; \
+	        mv -f $$i.tmp $$i; \
+	 done);
 
 templates: scan
 	$(GTKDOC_MKTMPL) --module=xmlsec

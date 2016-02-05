@@ -12,7 +12,7 @@
 #define __XMLSEC_GCRYPT_ASN1_H__
 
 #ifndef XMLSEC_PRIVATE
-#error "gcrypt/asn1.h file contains private xmlsec-gcrypt definitions and should not be used outside xmlsec or xmlsec-<crypto> libraries"
+#error "gcrypt/asn1.h file contains private xmlsec-gcrypt definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
 #endif /* XMLSEC_PRIVATE */
 
 #ifdef __cplusplus

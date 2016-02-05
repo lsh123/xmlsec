@@ -4,11 +4,11 @@
 ]>
 <book id="index">
   <bookinfo>
-    <title>[Insert name here] Reference Manual</title>
+    <title>XMLSec-GnuTLS Reference Manual</title>
   </bookinfo>
 
   <chapter>
-    <title>[Insert title here]</title>
+    <title>XMLSec-GnuTLS</title>
     &xmlsec-gnutls-app;
     &xmlsec-gnutls-crypto;
   </chapter>

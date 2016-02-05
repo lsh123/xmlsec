@@ -4,36 +4,37 @@
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC-MSCRYPTO Library</refmiscinfo>
 </refmeta>
-
 <refnamediv>
 <refname>certkeys</refname>
 <refpurpose>MS Crypto certificates helper functions.</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv id="xmlsec-mscrypto-certkeys.synopsis" role="synopsis">
-<title role="synopsis.title">Synopsis</title>
+<refsect1 id="xmlsec-mscrypto-certkeys.functions" role="functions_proto">
+<title role="functions_proto.title">Functions</title>
+<informaltable pgwide="1" frame="none">
+<tgroup cols="2">
+<colspec colname="functions_return" colwidth="150px"/>
+<colspec colname="functions_name"/>
+<tbody>
+<row><entry role="function_type"><link linkend="PCCERT-CONTEXT:CAPS"><returnvalue>PCCERT_CONTEXT</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecMSCryptoKeyDataGetCert">xmlSecMSCryptoKeyDataGetCert</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="HCRYPTKEY:CAPS"><returnvalue>HCRYPTKEY</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecMSCryptoKeyDataGetKey">xmlSecMSCryptoKeyDataGetKey</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="HCRYPTKEY:CAPS"><returnvalue>HCRYPTKEY</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecMSCryptoKeyDataGetDecryptKey">xmlSecMSCryptoKeyDataGetDecryptKey</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="PCCERT-CONTEXT:CAPS"><returnvalue>PCCERT_CONTEXT</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecMSCryptoCertDup">xmlSecMSCryptoCertDup</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlSecKeyData"><returnvalue>xmlSecKeyDataPtr</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecMSCryptoCertAdopt">xmlSecMSCryptoCertAdopt</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="HCRYPTPROV:CAPS"><returnvalue>HCRYPTPROV</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecMSCryptoKeyDataGetMSCryptoProvider">xmlSecMSCryptoKeyDataGetMSCryptoProvider</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="DWORD:CAPS"><returnvalue>DWORD</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecMSCryptoKeyDataGetMSCryptoKeySpec">xmlSecMSCryptoKeyDataGetMSCryptoKeySpec</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
 
-<synopsis>
-<link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link>      <link linkend="xmlSecMSCryptoKeyDataGetCert">xmlSecMSCryptoKeyDataGetCert</link>        (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
-<link linkend="HCRYPTKEY--CAPS">HCRYPTKEY</link>           <link linkend="xmlSecMSCryptoKeyDataGetKey">xmlSecMSCryptoKeyDataGetKey</link>         (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                                         <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
-<link linkend="HCRYPTKEY--CAPS">HCRYPTKEY</link>           <link linkend="xmlSecMSCryptoKeyDataGetDecryptKey">xmlSecMSCryptoKeyDataGetDecryptKey</link>  (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
-<link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link>      <link linkend="xmlSecMSCryptoCertDup">xmlSecMSCryptoCertDup</link>               (<link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link> pCert);
-<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link>    <link linkend="xmlSecMSCryptoCertAdopt">xmlSecMSCryptoCertAdopt</link>             (<link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link> pCert,
-                                                         <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
-<link linkend="HCRYPTPROV--CAPS">HCRYPTPROV</link>          <link linkend="xmlSecMSCryptoKeyDataGetMSCryptoProvider">xmlSecMSCryptoKeyDataGetMSCryptoProvider</link>
-                                                        (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
-<link linkend="DWORD--CAPS">DWORD</link>               <link linkend="xmlSecMSCryptoKeyDataGetMSCryptoKeySpec">xmlSecMSCryptoKeyDataGetMSCryptoKeySpec</link>
-                                                        (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
-</synopsis>
-</refsynopsisdiv>
-
-
-
-
-
-
-
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
 
 
 <refsect1 id="xmlsec-mscrypto-certkeys.description" role="desc">
@@ -41,119 +42,184 @@
 <para>
 MS Crypto certificates helper functions.
 </para>
-</refsect1>
 
-<refsect1 id="xmlsec-mscrypto-certkeys.details" role="details">
-<title role="details.title">Details</title>
+</refsect1>
+<refsect1 id="xmlsec-mscrypto-certkeys.functions_details" role="details">
+<title role="details.title">Functions</title>
 <refsect2 id="xmlSecMSCryptoKeyDataGetCert" role="function">
-<title>xmlSecMSCryptoKeyDataGetCert ()</title>
-<indexterm zone="xmlSecMSCryptoKeyDataGetCert"><primary sortas="xmlSecMSCryptoKeyDataGetCert">xmlSecMSCryptoKeyDataGetCert</primary></indexterm><programlisting><link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link>      xmlSecMSCryptoKeyDataGetCert        (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
-<para>
-Native MSCrypto certificate retrieval from xmlsec keydata. The
+<title>xmlSecMSCryptoKeyDataGetCert&#160;()</title>
+<indexterm zone="xmlSecMSCryptoKeyDataGetCert"><primary>xmlSecMSCryptoKeyDataGetCert</primary></indexterm>
+<programlisting language="C"><link linkend="PCCERT-CONTEXT:CAPS"><returnvalue>PCCERT_CONTEXT</returnvalue></link>
+xmlSecMSCryptoKeyDataGetCert (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);</programlisting>
+<para>Native MSCrypto certificate retrieval from xmlsec keydata. The
 returned PCCERT_CONTEXT must not be released by the caller.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>               the key data to retrieve certificate from.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> PCCERT_CONTEXT on success or NULL otherwise.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>data</para></entry>
+<entry role="parameter_description"><para>the key data to retrieve certificate from.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> PCCERT_CONTEXT on success or NULL otherwise.</para>
+</refsect3></refsect2>
 <refsect2 id="xmlSecMSCryptoKeyDataGetKey" role="function">
-<title>xmlSecMSCryptoKeyDataGetKey ()</title>
-<indexterm zone="xmlSecMSCryptoKeyDataGetKey"><primary sortas="xmlSecMSCryptoKeyDataGetKey">xmlSecMSCryptoKeyDataGetKey</primary></indexterm><programlisting><link linkend="HCRYPTKEY--CAPS">HCRYPTKEY</link>           xmlSecMSCryptoKeyDataGetKey         (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                                         <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
-<para>
-Native MSCrypto key retrieval from xmlsec keydata. The
+<title>xmlSecMSCryptoKeyDataGetKey&#160;()</title>
+<indexterm zone="xmlSecMSCryptoKeyDataGetKey"><primary>xmlSecMSCryptoKeyDataGetKey</primary></indexterm>
+<programlisting language="C"><link linkend="HCRYPTKEY:CAPS"><returnvalue>HCRYPTKEY</returnvalue></link>
+xmlSecMSCryptoKeyDataGetKey (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
+                             <parameter><link linkend="xmlSecKeyDataType"><type>xmlSecKeyDataType</type></link> type</parameter>);</programlisting>
+<para>Native MSCrypto key retrieval from xmlsec keydata. The
 returned HKEY must not be destroyed by the caller.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>               the key data to retrieve certificate from.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara>              type of key requested (public/private)
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> HKEY on success or NULL otherwise.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>data</para></entry>
+<entry role="parameter_description"><para>the key data to retrieve certificate from.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>type</para></entry>
+<entry role="parameter_description"><para>type of key requested (public/private)</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> HKEY on success or NULL otherwise.</para>
+</refsect3></refsect2>
 <refsect2 id="xmlSecMSCryptoKeyDataGetDecryptKey" role="function">
-<title>xmlSecMSCryptoKeyDataGetDecryptKey ()</title>
-<indexterm zone="xmlSecMSCryptoKeyDataGetDecryptKey"><primary sortas="xmlSecMSCryptoKeyDataGetDecryptKey">xmlSecMSCryptoKeyDataGetDecryptKey</primary></indexterm><programlisting><link linkend="HCRYPTKEY--CAPS">HCRYPTKEY</link>           xmlSecMSCryptoKeyDataGetDecryptKey  (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
-<para>
-Native MSCrypto decrypt key retrieval from xmlsec keydata. The
+<title>xmlSecMSCryptoKeyDataGetDecryptKey&#160;()</title>
+<indexterm zone="xmlSecMSCryptoKeyDataGetDecryptKey"><primary>xmlSecMSCryptoKeyDataGetDecryptKey</primary></indexterm>
+<programlisting language="C"><link linkend="HCRYPTKEY:CAPS"><returnvalue>HCRYPTKEY</returnvalue></link>
+xmlSecMSCryptoKeyDataGetDecryptKey (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);</programlisting>
+<para>Native MSCrypto decrypt key retrieval from xmlsec keydata. The
 returned HKEY must not be destroyed by the caller.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>       the key data pointer
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> HKEY on success or NULL otherwise.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>data</para></entry>
+<entry role="parameter_description"><para>the key data pointer</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> HKEY on success or NULL otherwise.</para>
+</refsect3></refsect2>
 <refsect2 id="xmlSecMSCryptoCertDup" role="function">
-<title>xmlSecMSCryptoCertDup ()</title>
-<indexterm zone="xmlSecMSCryptoCertDup"><primary sortas="xmlSecMSCryptoCertDup">xmlSecMSCryptoCertDup</primary></indexterm><programlisting><link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link>      xmlSecMSCryptoCertDup               (<link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link> pCert);</programlisting>
-<para>
-Duplicates the <parameter>pCert</parameter>.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>pCert</parameter>&#160;:</term>
-<listitem><simpara>              the pointer to cert.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly created PCCERT_CONTEXT object or
-NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<title>xmlSecMSCryptoCertDup&#160;()</title>
+<indexterm zone="xmlSecMSCryptoCertDup"><primary>xmlSecMSCryptoCertDup</primary></indexterm>
+<programlisting language="C"><link linkend="PCCERT-CONTEXT:CAPS"><returnvalue>PCCERT_CONTEXT</returnvalue></link>
+xmlSecMSCryptoCertDup (<parameter><link linkend="PCCERT-CONTEXT:CAPS"><type>PCCERT_CONTEXT</type></link> pCert</parameter>);</programlisting>
+<para>Duplicates the <parameter>pCert</parameter>
+.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>pCert</para></entry>
+<entry role="parameter_description"><para>the pointer to cert.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> pointer to newly created PCCERT_CONTEXT object or
+NULL if an error occurs.</para>
+</refsect3></refsect2>
 <refsect2 id="xmlSecMSCryptoCertAdopt" role="function">
-<title>xmlSecMSCryptoCertAdopt ()</title>
-<indexterm zone="xmlSecMSCryptoCertAdopt"><primary sortas="xmlSecMSCryptoCertAdopt">xmlSecMSCryptoCertAdopt</primary></indexterm><programlisting><link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link>    xmlSecMSCryptoCertAdopt             (<link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link> pCert,
-                                                         <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
-<para>
-Creates key data value from the cert.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>pCert</parameter>&#160;:</term>
-<listitem><simpara>              the pointer to cert.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara>               the expected key type.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly created xmlsec key or NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<title>xmlSecMSCryptoCertAdopt&#160;()</title>
+<indexterm zone="xmlSecMSCryptoCertAdopt"><primary>xmlSecMSCryptoCertAdopt</primary></indexterm>
+<programlisting language="C"><link linkend="xmlSecKeyData"><returnvalue>xmlSecKeyDataPtr</returnvalue></link>
+xmlSecMSCryptoCertAdopt (<parameter><link linkend="PCCERT-CONTEXT:CAPS"><type>PCCERT_CONTEXT</type></link> pCert</parameter>,
+                         <parameter><link linkend="xmlSecKeyDataType"><type>xmlSecKeyDataType</type></link> type</parameter>);</programlisting>
+<para>Creates key data value from the cert.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>pCert</para></entry>
+<entry role="parameter_description"><para>the pointer to cert.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>type</para></entry>
+<entry role="parameter_description"><para>the expected key type.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> pointer to newly created xmlsec key or NULL if an error occurs.</para>
+</refsect3></refsect2>
 <refsect2 id="xmlSecMSCryptoKeyDataGetMSCryptoProvider" role="function">
-<title>xmlSecMSCryptoKeyDataGetMSCryptoProvider ()</title>
-<indexterm zone="xmlSecMSCryptoKeyDataGetMSCryptoProvider"><primary sortas="xmlSecMSCryptoKeyDataGetMSCryptoProvider">xmlSecMSCryptoKeyDataGetMSCryptoProvider</primary></indexterm><programlisting><link linkend="HCRYPTPROV--CAPS">HCRYPTPROV</link>          xmlSecMSCryptoKeyDataGetMSCryptoProvider
-                                                        (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
-<para>
-Gets crypto provider handle</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>              the key data
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the crypto provider handler or 0 if there is an error.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<title>xmlSecMSCryptoKeyDataGetMSCryptoProvider&#160;()</title>
+<indexterm zone="xmlSecMSCryptoKeyDataGetMSCryptoProvider"><primary>xmlSecMSCryptoKeyDataGetMSCryptoProvider</primary></indexterm>
+<programlisting language="C"><link linkend="HCRYPTPROV:CAPS"><returnvalue>HCRYPTPROV</returnvalue></link>
+xmlSecMSCryptoKeyDataGetMSCryptoProvider
+                               (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);</programlisting>
+<para>Gets crypto provider handle</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>data</para></entry>
+<entry role="parameter_description"><para>the key data</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> the crypto provider handler or 0 if there is an error.</para>
+</refsect3></refsect2>
 <refsect2 id="xmlSecMSCryptoKeyDataGetMSCryptoKeySpec" role="function">
-<title>xmlSecMSCryptoKeyDataGetMSCryptoKeySpec ()</title>
-<indexterm zone="xmlSecMSCryptoKeyDataGetMSCryptoKeySpec"><primary sortas="xmlSecMSCryptoKeyDataGetMSCryptoKeySpec">xmlSecMSCryptoKeyDataGetMSCryptoKeySpec</primary></indexterm><programlisting><link linkend="DWORD--CAPS">DWORD</link>               xmlSecMSCryptoKeyDataGetMSCryptoKeySpec
-                                                        (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
-<para>
-Gets key spec info.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>              the key data
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the key spec info from key data
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<title>xmlSecMSCryptoKeyDataGetMSCryptoKeySpec&#160;()</title>
+<indexterm zone="xmlSecMSCryptoKeyDataGetMSCryptoKeySpec"><primary>xmlSecMSCryptoKeyDataGetMSCryptoKeySpec</primary></indexterm>
+<programlisting language="C"><link linkend="DWORD:CAPS"><returnvalue>DWORD</returnvalue></link>
+xmlSecMSCryptoKeyDataGetMSCryptoKeySpec
+                               (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);</programlisting>
+<para>Gets key spec info.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>data</para></entry>
+<entry role="parameter_description"><para>the key data</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> the key spec info from key data</para>
+</refsect3></refsect2>
 
 </refsect1>
+<refsect1 id="xmlsec-mscrypto-certkeys.other_details" role="details">
+<title role="details.title">Types and Values</title>
 
-
-
+</refsect1>
 
 </refentry>

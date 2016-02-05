@@ -4,34 +4,43 @@
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
-
 <refnamediv>
 <refname>x509</refname>
 <refpurpose><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate">&lt;dsig:X509Certificate/&gt;</ulink> node parser.</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv id="xmlsec-x509.synopsis" role="synopsis">
-<title role="synopsis.title">Synopsis</title>
+<refsect1 id="xmlsec-x509.functions" role="functions_proto">
+<title role="functions_proto.title">Functions</title>
+<informaltable pgwide="1" frame="none">
+<tgroup cols="2">
+<colspec colname="functions_return" colwidth="150px"/>
+<colspec colname="functions_name"/>
+<tbody>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecX509DataGetNodeContent">xmlSecX509DataGetNodeContent</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
 
-<synopsis>
-#define             <link linkend="XMLSEC-X509DATA-CERTIFICATE-NODE--CAPS">XMLSEC_X509DATA_CERTIFICATE_NODE</link>
-#define             <link linkend="XMLSEC-X509DATA-SUBJECTNAME-NODE--CAPS">XMLSEC_X509DATA_SUBJECTNAME_NODE</link>
-#define             <link linkend="XMLSEC-X509DATA-ISSUERSERIAL-NODE--CAPS">XMLSEC_X509DATA_ISSUERSERIAL_NODE</link>
-#define             <link linkend="XMLSEC-X509DATA-SKI-NODE--CAPS">XMLSEC_X509DATA_SKI_NODE</link>
-#define             <link linkend="XMLSEC-X509DATA-CRL-NODE--CAPS">XMLSEC_X509DATA_CRL_NODE</link>
-#define             <link linkend="XMLSEC-X509DATA-DEFAULT--CAPS">XMLSEC_X509DATA_DEFAULT</link>
-<link linkend="int">int</link>                 <link linkend="xmlSecX509DataGetNodeContent">xmlSecX509DataGetNodeContent</link>        (<link linkend="xmlNode">xmlNodePtr</link> node,
-                                                         <link linkend="int">int</link> deleteChildren,
-                                                         <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
-</synopsis>
-</refsynopsisdiv>
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+<refsect1 id="xmlsec-x509.other" role="other_proto">
+<title role="other_proto.title">Types and Values</title>
+<informaltable role="enum_members_table" pgwide="1" frame="none">
+<tgroup cols="2">
+<colspec colname="name" colwidth="150px"/>
+<colspec colname="description"/>
+<tbody>
+<row><entry role="define_keyword">#define</entry><entry role="function_name"><link linkend="XMLSEC-X509DATA-CERTIFICATE-NODE:CAPS">XMLSEC_X509DATA_CERTIFICATE_NODE</link></entry></row>
+<row><entry role="define_keyword">#define</entry><entry role="function_name"><link linkend="XMLSEC-X509DATA-SUBJECTNAME-NODE:CAPS">XMLSEC_X509DATA_SUBJECTNAME_NODE</link></entry></row>
+<row><entry role="define_keyword">#define</entry><entry role="function_name"><link linkend="XMLSEC-X509DATA-ISSUERSERIAL-NODE:CAPS">XMLSEC_X509DATA_ISSUERSERIAL_NODE</link></entry></row>
+<row><entry role="define_keyword">#define</entry><entry role="function_name"><link linkend="XMLSEC-X509DATA-SKI-NODE:CAPS">XMLSEC_X509DATA_SKI_NODE</link></entry></row>
+<row><entry role="define_keyword">#define</entry><entry role="function_name"><link linkend="XMLSEC-X509DATA-CRL-NODE:CAPS">XMLSEC_X509DATA_CRL_NODE</link></entry></row>
+<row><entry role="define_keyword">#define</entry><entry role="function_name"><link linkend="XMLSEC-X509DATA-DEFAULT:CAPS">XMLSEC_X509DATA_DEFAULT</link></entry></row>
 
-
-
-
-
-
-
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
 
 
 <refsect1 id="xmlsec-x509.description" role="desc">
@@ -39,85 +48,89 @@
 <para>
 <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate">&lt;dsig:X509Certificate/&gt;</ulink> node parser.
 </para>
-</refsect1>
 
-<refsect1 id="xmlsec-x509.details" role="details">
-<title role="details.title">Details</title>
-<refsect2 id="XMLSEC-X509DATA-CERTIFICATE-NODE--CAPS" role="macro">
-<title>XMLSEC_X509DATA_CERTIFICATE_NODE</title>
-<indexterm zone="XMLSEC-X509DATA-CERTIFICATE-NODE--CAPS"><primary sortas="XMLSEC_X509DATA_CERTIFICATE_NODE">XMLSEC_X509DATA_CERTIFICATE_NODE</primary></indexterm><programlisting>#define XMLSEC_X509DATA_CERTIFICATE_NODE                        0x00000001
-</programlisting>
-<para>
-<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate">&lt;dsig:X509Certificate/&gt;</ulink> node found or would be written back.</para>
-<para>
-</para></refsect2>
-<refsect2 id="XMLSEC-X509DATA-SUBJECTNAME-NODE--CAPS" role="macro">
-<title>XMLSEC_X509DATA_SUBJECTNAME_NODE</title>
-<indexterm zone="XMLSEC-X509DATA-SUBJECTNAME-NODE--CAPS"><primary sortas="XMLSEC_X509DATA_SUBJECTNAME_NODE">XMLSEC_X509DATA_SUBJECTNAME_NODE</primary></indexterm><programlisting>#define XMLSEC_X509DATA_SUBJECTNAME_NODE                        0x00000002
-</programlisting>
-<para>
-<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SubjectName">&lt;dsig:X509SubjectName/&gt;</ulink> node found or would be written back.</para>
-<para>
-</para></refsect2>
-<refsect2 id="XMLSEC-X509DATA-ISSUERSERIAL-NODE--CAPS" role="macro">
-<title>XMLSEC_X509DATA_ISSUERSERIAL_NODE</title>
-<indexterm zone="XMLSEC-X509DATA-ISSUERSERIAL-NODE--CAPS"><primary sortas="XMLSEC_X509DATA_ISSUERSERIAL_NODE">XMLSEC_X509DATA_ISSUERSERIAL_NODE</primary></indexterm><programlisting>#define XMLSEC_X509DATA_ISSUERSERIAL_NODE                       0x00000004
-</programlisting>
-<para>
-<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial">&lt;dsig:X509IssuerSerial/&gt;</ulink> node found or would be written back.</para>
-<para>
-</para></refsect2>
-<refsect2 id="XMLSEC-X509DATA-SKI-NODE--CAPS" role="macro">
-<title>XMLSEC_X509DATA_SKI_NODE</title>
-<indexterm zone="XMLSEC-X509DATA-SKI-NODE--CAPS"><primary sortas="XMLSEC_X509DATA_SKI_NODE">XMLSEC_X509DATA_SKI_NODE</primary></indexterm><programlisting>#define XMLSEC_X509DATA_SKI_NODE                                0x00000008
-</programlisting>
-<para>
-&lt;dsig:/X509SKI&gt; node found or would be written back.</para>
-<para>
-</para></refsect2>
-<refsect2 id="XMLSEC-X509DATA-CRL-NODE--CAPS" role="macro">
-<title>XMLSEC_X509DATA_CRL_NODE</title>
-<indexterm zone="XMLSEC-X509DATA-CRL-NODE--CAPS"><primary sortas="XMLSEC_X509DATA_CRL_NODE">XMLSEC_X509DATA_CRL_NODE</primary></indexterm><programlisting>#define XMLSEC_X509DATA_CRL_NODE                                0x00000010
-</programlisting>
-<para>
-<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509CRL">&lt;dsig:X509CRL/&gt;</ulink> node found or would be written back.</para>
-<para>
-</para></refsect2>
-<refsect2 id="XMLSEC-X509DATA-DEFAULT--CAPS" role="macro">
-<title>XMLSEC_X509DATA_DEFAULT</title>
-<indexterm zone="XMLSEC-X509DATA-DEFAULT--CAPS"><primary sortas="XMLSEC_X509DATA_DEFAULT">XMLSEC_X509DATA_DEFAULT</primary></indexterm><programlisting>#define             XMLSEC_X509DATA_DEFAULT</programlisting>
-<para>
-Default set of nodes to write in case of empty
-<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node template.</para>
-<para>
-</para></refsect2>
+</refsect1>
+<refsect1 id="xmlsec-x509.functions_details" role="details">
+<title role="details.title">Functions</title>
 <refsect2 id="xmlSecX509DataGetNodeContent" role="function">
-<title>xmlSecX509DataGetNodeContent ()</title>
-<indexterm zone="xmlSecX509DataGetNodeContent"><primary sortas="xmlSecX509DataGetNodeContent">xmlSecX509DataGetNodeContent</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecX509DataGetNodeContent        (<link linkend="xmlNode">xmlNodePtr</link> node,
-                                                         <link linkend="int">int</link> deleteChildren,
-                                                         <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
-<para>
-Reads the contents of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node and returns it as
+<title>xmlSecX509DataGetNodeContent&#160;()</title>
+<indexterm zone="xmlSecX509DataGetNodeContent"><primary>xmlSecX509DataGetNodeContent</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecX509DataGetNodeContent (<parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
+                              <parameter><link linkend="int"><type>int</type></link> deleteChildren</parameter>,
+                              <parameter><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtxPtr</type></link> keyInfoCtx</parameter>);</programlisting>
+<para>Reads the contents of &lt;dsig:X509Data/> node and returns it as
 a bits mask.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>               the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>deleteChildren</parameter>&#160;:</term>
-<listitem><simpara>     the flag that indicates whether to remove node children after reading.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
-<listitem><simpara>         the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the bit mask representing the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node content
-or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>node</para></entry>
+<entry role="parameter_description"><para>the pointer to &lt;dsig:X509Data/> node.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>deleteChildren</para></entry>
+<entry role="parameter_description"><para>the flag that indicates whether to remove node children after reading.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>keyInfoCtx</para></entry>
+<entry role="parameter_description"><para>the pointer to &lt;dsig:KeyInfo/> node processing context.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> the bit mask representing the &lt;dsig:X509Data/> node content
+or a negative value if an error occurs.</para>
+</refsect3></refsect2>
 
 </refsect1>
+<refsect1 id="xmlsec-x509.other_details" role="details">
+<title role="details.title">Types and Values</title>
+<refsect2 id="XMLSEC-X509DATA-CERTIFICATE-NODE:CAPS" role="macro">
+<title>XMLSEC_X509DATA_CERTIFICATE_NODE</title>
+<indexterm zone="XMLSEC-X509DATA-CERTIFICATE-NODE:CAPS"><primary>XMLSEC_X509DATA_CERTIFICATE_NODE</primary></indexterm>
+<programlisting language="C">#define XMLSEC_X509DATA_CERTIFICATE_NODE                        0x00000001
+</programlisting>
+<para>&lt;dsig:X509Certificate/> node found or would be written back.</para>
+</refsect2>
+<refsect2 id="XMLSEC-X509DATA-SUBJECTNAME-NODE:CAPS" role="macro">
+<title>XMLSEC_X509DATA_SUBJECTNAME_NODE</title>
+<indexterm zone="XMLSEC-X509DATA-SUBJECTNAME-NODE:CAPS"><primary>XMLSEC_X509DATA_SUBJECTNAME_NODE</primary></indexterm>
+<programlisting language="C">#define XMLSEC_X509DATA_SUBJECTNAME_NODE                        0x00000002
+</programlisting>
+<para>&lt;dsig:X509SubjectName/> node found or would be written back.</para>
+</refsect2>
+<refsect2 id="XMLSEC-X509DATA-ISSUERSERIAL-NODE:CAPS" role="macro">
+<title>XMLSEC_X509DATA_ISSUERSERIAL_NODE</title>
+<indexterm zone="XMLSEC-X509DATA-ISSUERSERIAL-NODE:CAPS"><primary>XMLSEC_X509DATA_ISSUERSERIAL_NODE</primary></indexterm>
+<programlisting language="C">#define XMLSEC_X509DATA_ISSUERSERIAL_NODE                       0x00000004
+</programlisting>
+<para>&lt;dsig:X509IssuerSerial/> node found or would be written back.</para>
+</refsect2>
+<refsect2 id="XMLSEC-X509DATA-SKI-NODE:CAPS" role="macro">
+<title>XMLSEC_X509DATA_SKI_NODE</title>
+<indexterm zone="XMLSEC-X509DATA-SKI-NODE:CAPS"><primary>XMLSEC_X509DATA_SKI_NODE</primary></indexterm>
+<programlisting language="C">#define XMLSEC_X509DATA_SKI_NODE                                0x00000008
+</programlisting>
+<para>&lt;dsig:/X509SKI> node found or would be written back.</para>
+</refsect2>
+<refsect2 id="XMLSEC-X509DATA-CRL-NODE:CAPS" role="macro">
+<title>XMLSEC_X509DATA_CRL_NODE</title>
+<indexterm zone="XMLSEC-X509DATA-CRL-NODE:CAPS"><primary>XMLSEC_X509DATA_CRL_NODE</primary></indexterm>
+<programlisting language="C">#define XMLSEC_X509DATA_CRL_NODE                                0x00000010
+</programlisting>
+<para>&lt;dsig:X509CRL/> node found or would be written back.</para>
+</refsect2>
+<refsect2 id="XMLSEC-X509DATA-DEFAULT:CAPS" role="macro">
+<title>XMLSEC_X509DATA_DEFAULT</title>
+<indexterm zone="XMLSEC-X509DATA-DEFAULT:CAPS"><primary>XMLSEC_X509DATA_DEFAULT</primary></indexterm>
+<programlisting language="C">#define             XMLSEC_X509DATA_DEFAULT</programlisting>
+<para>Default set of nodes to write in case of empty
+&lt;dsig:X509Data/> node template.</para>
+</refsect2>
 
-
-
+</refsect1>
 
 </refentry>

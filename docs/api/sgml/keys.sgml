@@ -4,109 +4,131 @@
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
-
 <refnamediv>
 <refname>keys</refname>
 <refpurpose>Crypto key object definition.</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv id="xmlsec-keys.synopsis" role="synopsis">
-<title role="synopsis.title">Synopsis</title>
+<refsect1 id="xmlsec-keys.functions" role="functions_proto">
+<title role="functions_proto.title">Functions</title>
+<informaltable pgwide="1" frame="none">
+<tgroup cols="2">
+<colspec colname="functions_return" colwidth="150px"/>
+<colspec colname="functions_name"/>
+<tbody>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyUseWithInitialize">xmlSecKeyUseWithInitialize</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyUseWithFinalize">xmlSecKeyUseWithFinalize</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyUseWithReset">xmlSecKeyUseWithReset</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyUseWithCopy">xmlSecKeyUseWithCopy</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlSecKeyUseWith"><returnvalue>xmlSecKeyUseWithPtr</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyUseWithCreate">xmlSecKeyUseWithCreate</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlSecKeyUseWith"><returnvalue>xmlSecKeyUseWithPtr</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyUseWithDuplicate">xmlSecKeyUseWithDuplicate</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyUseWithDestroy">xmlSecKeyUseWithDestroy</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyUseWithSet">xmlSecKeyUseWithSet</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyUseWithDebugDump">xmlSecKeyUseWithDebugDump</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyUseWithDebugXmlDump">xmlSecKeyUseWithDebugXmlDump</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlSecPtrListId"><returnvalue>xmlSecPtrListId</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyUseWithPtrListGetKlass">xmlSecKeyUseWithPtrListGetKlass</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyReqInitialize">xmlSecKeyReqInitialize</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyReqFinalize">xmlSecKeyReqFinalize</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyReqReset">xmlSecKeyReqReset</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyReqCopy">xmlSecKeyReqCopy</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyReqMatchKey">xmlSecKeyReqMatchKey</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyReqMatchKeyValue">xmlSecKeyReqMatchKeyValue</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyReqDebugDump">xmlSecKeyReqDebugDump</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyReqDebugXmlDump">xmlSecKeyReqDebugXmlDump</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyCreate">xmlSecKeyCreate</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyDestroy">xmlSecKeyDestroy</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyEmpty">xmlSecKeyEmpty</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyDuplicate">xmlSecKeyDuplicate</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyCopy">xmlSecKeyCopy</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type">const <link linkend="xmlChar"><returnvalue>xmlChar</returnvalue></link>&#160;*
+</entry><entry role="function_name"><link linkend="xmlSecKeyGetName">xmlSecKeyGetName</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeySetName">xmlSecKeySetName</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlSecKeyDataType"><returnvalue>xmlSecKeyDataType</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyGetType">xmlSecKeyGetType</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlSecKeyData"><returnvalue>xmlSecKeyDataPtr</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyGetValue">xmlSecKeyGetValue</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeySetValue">xmlSecKeySetValue</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlSecKeyData"><returnvalue>xmlSecKeyDataPtr</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyGetData">xmlSecKeyGetData</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlSecKeyData"><returnvalue>xmlSecKeyDataPtr</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyEnsureData">xmlSecKeyEnsureData</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyAdoptData">xmlSecKeyAdoptData</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyDebugDump">xmlSecKeyDebugDump</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyDebugXmlDump">xmlSecKeyDebugXmlDump</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyGenerate">xmlSecKeyGenerate</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyGenerateByName">xmlSecKeyGenerateByName</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyMatch">xmlSecKeyMatch</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyReadBuffer">xmlSecKeyReadBuffer</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyReadBinaryFile">xmlSecKeyReadBinaryFile</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyReadMemory">xmlSecKeyReadMemory</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="define_keyword">#define</entry><entry role="function_name"><link linkend="xmlSecKeyIsValid">xmlSecKeyIsValid</link><phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="define_keyword">#define</entry><entry role="function_name"><link linkend="xmlSecKeyCheckId">xmlSecKeyCheckId</link><phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlSecPtrListId"><returnvalue>xmlSecPtrListId</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecKeyPtrListGetKlass">xmlSecKeyPtrListGetKlass</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
 
-<synopsis>
-typedef             <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link>;
-#define             <link linkend="xmlSecKeyUsageSign">xmlSecKeyUsageSign</link>
-#define             <link linkend="xmlSecKeyUsageVerify">xmlSecKeyUsageVerify</link>
-#define             <link linkend="xmlSecKeyUsageEncrypt">xmlSecKeyUsageEncrypt</link>
-#define             <link linkend="xmlSecKeyUsageDecrypt">xmlSecKeyUsageDecrypt</link>
-#define             <link linkend="xmlSecKeyUsageKeyExchange">xmlSecKeyUsageKeyExchange</link>
-#define             <link linkend="xmlSecKeyUsageAny">xmlSecKeyUsageAny</link>
-<link linkend="int">int</link>                 <link linkend="xmlSecKeyUseWithInitialize">xmlSecKeyUseWithInitialize</link>          (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith);
-<link linkend="void">void</link>                <link linkend="xmlSecKeyUseWithFinalize">xmlSecKeyUseWithFinalize</link>            (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith);
-<link linkend="void">void</link>                <link linkend="xmlSecKeyUseWithReset">xmlSecKeyUseWithReset</link>               (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith);
-<link linkend="int">int</link>                 <link linkend="xmlSecKeyUseWithCopy">xmlSecKeyUseWithCopy</link>                (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> dst,
-                                                         <link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> src);
-<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link>  <link linkend="xmlSecKeyUseWithCreate">xmlSecKeyUseWithCreate</link>             (const <link linkend="xmlChar">xmlChar</link> *application,
-                                                         const <link linkend="xmlChar">xmlChar</link> *identifier);
-<link linkend="xmlSecKeyUseWithPtr">xmlSecKeyUseWithPtr</link>  <link linkend="xmlSecKeyUseWithDuplicate">xmlSecKeyUseWithDuplicate</link>          (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith);
-<link linkend="void">void</link>                <link linkend="xmlSecKeyUseWithDestroy">xmlSecKeyUseWithDestroy</link>             (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith);
-<link linkend="int">int</link>                 <link linkend="xmlSecKeyUseWithSet">xmlSecKeyUseWithSet</link>                 (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith,
-                                                         const <link linkend="xmlChar">xmlChar</link> *application,
-                                                         const <link linkend="xmlChar">xmlChar</link> *identifier);
-<link linkend="void">void</link>                <link linkend="xmlSecKeyUseWithDebugDump">xmlSecKeyUseWithDebugDump</link>           (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith,
-                                                         <link linkend="FILE--CAPS">FILE</link> *output);
-<link linkend="void">void</link>                <link linkend="xmlSecKeyUseWithDebugXmlDump">xmlSecKeyUseWithDebugXmlDump</link>        (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith,
-                                                         <link linkend="FILE--CAPS">FILE</link> *output);
-struct              <link linkend="xmlSecKeyUseWith">xmlSecKeyUseWith</link>;
-#define             <link linkend="xmlSecKeyUseWithPtrListId">xmlSecKeyUseWithPtrListId</link>
-<link linkend="xmlSecPtrListId">xmlSecPtrListId</link>     <link linkend="xmlSecKeyUseWithPtrListGetKlass">xmlSecKeyUseWithPtrListGetKlass</link>     (void);
-struct              <link linkend="xmlSecKeyReq">xmlSecKeyReq</link>;
-<link linkend="int">int</link>                 <link linkend="xmlSecKeyReqInitialize">xmlSecKeyReqInitialize</link>              (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq);
-<link linkend="void">void</link>                <link linkend="xmlSecKeyReqFinalize">xmlSecKeyReqFinalize</link>                (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq);
-<link linkend="void">void</link>                <link linkend="xmlSecKeyReqReset">xmlSecKeyReqReset</link>                   (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq);
-<link linkend="int">int</link>                 <link linkend="xmlSecKeyReqCopy">xmlSecKeyReqCopy</link>                    (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> dst,
-                                                         <link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> src);
-<link linkend="int">int</link>                 <link linkend="xmlSecKeyReqMatchKey">xmlSecKeyReqMatchKey</link>                (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq,
-                                                         <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
-<link linkend="int">int</link>                 <link linkend="xmlSecKeyReqMatchKeyValue">xmlSecKeyReqMatchKeyValue</link>           (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq,
-                                                         <link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> value);
-<link linkend="void">void</link>                <link linkend="xmlSecKeyReqDebugDump">xmlSecKeyReqDebugDump</link>               (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq,
-                                                         <link linkend="FILE--CAPS">FILE</link> *output);
-<link linkend="void">void</link>                <link linkend="xmlSecKeyReqDebugXmlDump">xmlSecKeyReqDebugXmlDump</link>            (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq,
-                                                         <link linkend="FILE--CAPS">FILE</link> *output);
-struct              <link linkend="xmlSecKey">xmlSecKey</link>;
-<link linkend="xmlSecKey">xmlSecKeyPtr</link>        <link linkend="xmlSecKeyCreate">xmlSecKeyCreate</link>                     (void);
-<link linkend="void">void</link>                <link linkend="xmlSecKeyDestroy">xmlSecKeyDestroy</link>                    (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
-<link linkend="void">void</link>                <link linkend="xmlSecKeyEmpty">xmlSecKeyEmpty</link>                      (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
-<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link>        <link linkend="xmlSecKeyDuplicate">xmlSecKeyDuplicate</link>                  (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
-<link linkend="int">int</link>                 <link linkend="xmlSecKeyCopy">xmlSecKeyCopy</link>                       (<link linkend="xmlSecKey">xmlSecKeyPtr</link> keyDst,
-                                                         <link linkend="xmlSecKey">xmlSecKeyPtr</link> keySrc);
-const <link linkend="xmlChar">xmlChar</link>*      <link linkend="xmlSecKeyGetName">xmlSecKeyGetName</link>                    (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
-<link linkend="int">int</link>                 <link linkend="xmlSecKeySetName">xmlSecKeySetName</link>                    (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                                         const <link linkend="xmlChar">xmlChar</link> *name);
-<link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link>   <link linkend="xmlSecKeyGetType">xmlSecKeyGetType</link>                    (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
-<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link>    <link linkend="xmlSecKeyGetValue">xmlSecKeyGetValue</link>                   (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
-<link linkend="int">int</link>                 <link linkend="xmlSecKeySetValue">xmlSecKeySetValue</link>                   (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                                         <link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> value);
-<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link>    <link linkend="xmlSecKeyGetData">xmlSecKeyGetData</link>                    (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                                         <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId);
-<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link>    <link linkend="xmlSecKeyEnsureData">xmlSecKeyEnsureData</link>                 (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                                         <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId);
-<link linkend="int">int</link>                 <link linkend="xmlSecKeyAdoptData">xmlSecKeyAdoptData</link>                  (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                                         <link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
-<link linkend="void">void</link>                <link linkend="xmlSecKeyDebugDump">xmlSecKeyDebugDump</link>                  (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                                         <link linkend="FILE--CAPS">FILE</link> *output);
-<link linkend="void">void</link>                <link linkend="xmlSecKeyDebugXmlDump">xmlSecKeyDebugXmlDump</link>               (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                                         <link linkend="FILE--CAPS">FILE</link> *output);
-<link linkend="xmlSecKey">xmlSecKeyPtr</link>        <link linkend="xmlSecKeyGenerate">xmlSecKeyGenerate</link>                   (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> sizeBits,
-                                                         <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
-<link linkend="xmlSecKey">xmlSecKeyPtr</link>        <link linkend="xmlSecKeyGenerateByName">xmlSecKeyGenerateByName</link>             (const <link linkend="xmlChar">xmlChar</link> *name,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> sizeBits,
-                                                         <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
-<link linkend="int">int</link>                 <link linkend="xmlSecKeyMatch">xmlSecKeyMatch</link>                      (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                                         const <link linkend="xmlChar">xmlChar</link> *name,
-                                                         <link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq);
-<link linkend="xmlSecKey">xmlSecKeyPtr</link>        <link linkend="xmlSecKeyReadBuffer">xmlSecKeyReadBuffer</link>                 (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId,
-                                                         <link linkend="xmlSecBuffer">xmlSecBuffer</link> *buffer);
-<link linkend="xmlSecKey">xmlSecKeyPtr</link>        <link linkend="xmlSecKeyReadBinaryFile">xmlSecKeyReadBinaryFile</link>             (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId,
-                                                         const <link linkend="char">char</link> *filename);
-<link linkend="xmlSecKey">xmlSecKeyPtr</link>        <link linkend="xmlSecKeyReadMemory">xmlSecKeyReadMemory</link>                 (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId,
-                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *data,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> dataSize);
-#define             <link linkend="xmlSecKeyIsValid">xmlSecKeyIsValid</link>                    (key)
-#define             <link linkend="xmlSecKeyCheckId">xmlSecKeyCheckId</link>                    (key, keyId)
-#define             <link linkend="xmlSecKeyPtrListId">xmlSecKeyPtrListId</link>
-<link linkend="xmlSecPtrListId">xmlSecPtrListId</link>     <link linkend="xmlSecKeyPtrListGetKlass">xmlSecKeyPtrListGetKlass</link>            (void);
-</synopsis>
-</refsynopsisdiv>
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+<refsect1 id="xmlsec-keys.other" role="other_proto">
+<title role="other_proto.title">Types and Values</title>
+<informaltable role="enum_members_table" pgwide="1" frame="none">
+<tgroup cols="2">
+<colspec colname="name" colwidth="150px"/>
+<colspec colname="description"/>
+<tbody>
+<row><entry role="typedef_keyword">typedef</entry><entry role="function_name"><link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link></entry></row>
+<row><entry role="define_keyword">#define</entry><entry role="function_name"><link linkend="xmlSecKeyUsageSign">xmlSecKeyUsageSign</link></entry></row>
+<row><entry role="define_keyword">#define</entry><entry role="function_name"><link linkend="xmlSecKeyUsageVerify">xmlSecKeyUsageVerify</link></entry></row>
+<row><entry role="define_keyword">#define</entry><entry role="function_name"><link linkend="xmlSecKeyUsageEncrypt">xmlSecKeyUsageEncrypt</link></entry></row>
+<row><entry role="define_keyword">#define</entry><entry role="function_name"><link linkend="xmlSecKeyUsageDecrypt">xmlSecKeyUsageDecrypt</link></entry></row>
+<row><entry role="define_keyword">#define</entry><entry role="function_name"><link linkend="xmlSecKeyUsageKeyExchange">xmlSecKeyUsageKeyExchange</link></entry></row>
+<row><entry role="define_keyword">#define</entry><entry role="function_name"><link linkend="xmlSecKeyUsageAny">xmlSecKeyUsageAny</link></entry></row>
+<row><entry role="datatype_keyword">struct</entry><entry role="function_name"><link linkend="xmlSecKeyUseWith">xmlSecKeyUseWith</link></entry></row>
+<row><entry role="define_keyword">#define</entry><entry role="function_name"><link linkend="xmlSecKeyUseWithPtrListId">xmlSecKeyUseWithPtrListId</link></entry></row>
+<row><entry role="datatype_keyword">struct</entry><entry role="function_name"><link linkend="xmlSecKeyReq">xmlSecKeyReq</link></entry></row>
+<row><entry role="datatype_keyword">struct</entry><entry role="function_name"><link linkend="xmlSecKey">xmlSecKey</link></entry></row>
+<row><entry role="define_keyword">#define</entry><entry role="function_name"><link linkend="xmlSecKeyPtrListId">xmlSecKeyPtrListId</link></entry></row>
 
-
-
-
-
-
-
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
 
 
 <refsect1 id="xmlsec-keys.description" role="desc">
@@ -114,216 +136,1120 @@ const <link linkend="xmlChar">xmlChar</link>*      <link linkend="xmlSecKeyGetNa
 <para>
 Crypto key object definition.
 </para>
-</refsect1>
 
-<refsect1 id="xmlsec-keys.details" role="details">
-<title role="details.title">Details</title>
+</refsect1>
+<refsect1 id="xmlsec-keys.functions_details" role="details">
+<title role="details.title">Functions</title>
+<refsect2 id="xmlSecKeyUseWithInitialize" role="function">
+<title>xmlSecKeyUseWithInitialize&#160;()</title>
+<indexterm zone="xmlSecKeyUseWithInitialize"><primary>xmlSecKeyUseWithInitialize</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecKeyUseWithInitialize (<parameter><link linkend="xmlSecKeyUseWith"><type>xmlSecKeyUseWithPtr</type></link> keyUseWith</parameter>);</programlisting>
+<para>Initializes <parameter>keyUseWith</parameter>
+ object.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>keyUseWith</para></entry>
+<entry role="parameter_description"><para>the pointer to information about key application/user.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyUseWithFinalize" role="function">
+<title>xmlSecKeyUseWithFinalize&#160;()</title>
+<indexterm zone="xmlSecKeyUseWithFinalize"><primary>xmlSecKeyUseWithFinalize</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+xmlSecKeyUseWithFinalize (<parameter><link linkend="xmlSecKeyUseWith"><type>xmlSecKeyUseWithPtr</type></link> keyUseWith</parameter>);</programlisting>
+<para>Finalizes <parameter>keyUseWith</parameter>
+ object.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>keyUseWith</para></entry>
+<entry role="parameter_description"><para>the pointer to information about key application/user.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyUseWithReset" role="function">
+<title>xmlSecKeyUseWithReset&#160;()</title>
+<indexterm zone="xmlSecKeyUseWithReset"><primary>xmlSecKeyUseWithReset</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+xmlSecKeyUseWithReset (<parameter><link linkend="xmlSecKeyUseWith"><type>xmlSecKeyUseWithPtr</type></link> keyUseWith</parameter>);</programlisting>
+<para>Resets the <parameter>keyUseWith</parameter>
+ to its state after initialization.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>keyUseWith</para></entry>
+<entry role="parameter_description"><para>the pointer to information about key application/user.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyUseWithCopy" role="function">
+<title>xmlSecKeyUseWithCopy&#160;()</title>
+<indexterm zone="xmlSecKeyUseWithCopy"><primary>xmlSecKeyUseWithCopy</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecKeyUseWithCopy (<parameter><link linkend="xmlSecKeyUseWith"><type>xmlSecKeyUseWithPtr</type></link> dst</parameter>,
+                      <parameter><link linkend="xmlSecKeyUseWith"><type>xmlSecKeyUseWithPtr</type></link> src</parameter>);</programlisting>
+<para>Copies information from <parameter>dst</parameter>
+ to <parameter>src</parameter>
+.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>dst</para></entry>
+<entry role="parameter_description"><para>the pointer to destination object.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>src</para></entry>
+<entry role="parameter_description"><para>the pointer to source object.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyUseWithCreate" role="function">
+<title>xmlSecKeyUseWithCreate&#160;()</title>
+<indexterm zone="xmlSecKeyUseWithCreate"><primary>xmlSecKeyUseWithCreate</primary></indexterm>
+<programlisting language="C"><link linkend="xmlSecKeyUseWith"><returnvalue>xmlSecKeyUseWithPtr</returnvalue></link>
+xmlSecKeyUseWithCreate (<parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *application</parameter>,
+                        <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *identifier</parameter>);</programlisting>
+<para>Creates new xmlSecKeyUseWith object. The caller is responsible for destroying
+returned object with <parameter>xmlSecKeyUseWithDestroy</parameter>
+ function.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>application</para></entry>
+<entry role="parameter_description"><para>the application value.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>identifier</para></entry>
+<entry role="parameter_description"><para>the identifier value.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> pointer to newly created object or NULL if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyUseWithDuplicate" role="function">
+<title>xmlSecKeyUseWithDuplicate&#160;()</title>
+<indexterm zone="xmlSecKeyUseWithDuplicate"><primary>xmlSecKeyUseWithDuplicate</primary></indexterm>
+<programlisting language="C"><link linkend="xmlSecKeyUseWith"><returnvalue>xmlSecKeyUseWithPtr</returnvalue></link>
+xmlSecKeyUseWithDuplicate (<parameter><link linkend="xmlSecKeyUseWith"><type>xmlSecKeyUseWithPtr</type></link> keyUseWith</parameter>);</programlisting>
+<para>Duplicates <parameter>keyUseWith</parameter>
+ object. The caller is responsible for destroying
+returned object with <parameter>xmlSecKeyUseWithDestroy</parameter>
+ function.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>keyUseWith</para></entry>
+<entry role="parameter_description"><para>the pointer to information about key application/user.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> pointer to newly created object or NULL if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyUseWithDestroy" role="function">
+<title>xmlSecKeyUseWithDestroy&#160;()</title>
+<indexterm zone="xmlSecKeyUseWithDestroy"><primary>xmlSecKeyUseWithDestroy</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+xmlSecKeyUseWithDestroy (<parameter><link linkend="xmlSecKeyUseWith"><type>xmlSecKeyUseWithPtr</type></link> keyUseWith</parameter>);</programlisting>
+<para>Destroys <parameter>keyUseWith</parameter>
+ created with <parameter>xmlSecKeyUseWithCreate</parameter>
+ or <parameter>xmlSecKeyUseWithDuplicate</parameter>
+
+functions.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>keyUseWith</para></entry>
+<entry role="parameter_description"><para>the pointer to information about key application/user.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyUseWithSet" role="function">
+<title>xmlSecKeyUseWithSet&#160;()</title>
+<indexterm zone="xmlSecKeyUseWithSet"><primary>xmlSecKeyUseWithSet</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecKeyUseWithSet (<parameter><link linkend="xmlSecKeyUseWith"><type>xmlSecKeyUseWithPtr</type></link> keyUseWith</parameter>,
+                     <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *application</parameter>,
+                     <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *identifier</parameter>);</programlisting>
+<para>Sets <parameter>application</parameter>
+ and <parameter>identifier</parameter>
+ in the <parameter>keyUseWith</parameter>
+.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>keyUseWith</para></entry>
+<entry role="parameter_description"><para>the pointer to information about key application/user.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>application</para></entry>
+<entry role="parameter_description"><para>the new application value.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>identifier</para></entry>
+<entry role="parameter_description"><para>the new identifier value.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyUseWithDebugDump" role="function">
+<title>xmlSecKeyUseWithDebugDump&#160;()</title>
+<indexterm zone="xmlSecKeyUseWithDebugDump"><primary>xmlSecKeyUseWithDebugDump</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+xmlSecKeyUseWithDebugDump (<parameter><link linkend="xmlSecKeyUseWith"><type>xmlSecKeyUseWithPtr</type></link> keyUseWith</parameter>,
+                           <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);</programlisting>
+<para>Prints xmlSecKeyUseWith debug information to a file <parameter>output</parameter>
+.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>keyUseWith</para></entry>
+<entry role="parameter_description"><para>the pointer to information about key application/user.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>output</para></entry>
+<entry role="parameter_description"><para>the pointer to output FILE.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyUseWithDebugXmlDump" role="function">
+<title>xmlSecKeyUseWithDebugXmlDump&#160;()</title>
+<indexterm zone="xmlSecKeyUseWithDebugXmlDump"><primary>xmlSecKeyUseWithDebugXmlDump</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+xmlSecKeyUseWithDebugXmlDump (<parameter><link linkend="xmlSecKeyUseWith"><type>xmlSecKeyUseWithPtr</type></link> keyUseWith</parameter>,
+                              <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);</programlisting>
+<para>Prints xmlSecKeyUseWith debug information to a file <parameter>output</parameter>
+ in XML format.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>keyUseWith</para></entry>
+<entry role="parameter_description"><para>the pointer to information about key application/user.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>output</para></entry>
+<entry role="parameter_description"><para>the pointer to output FILE.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyUseWithPtrListGetKlass" role="function">
+<title>xmlSecKeyUseWithPtrListGetKlass&#160;()</title>
+<indexterm zone="xmlSecKeyUseWithPtrListGetKlass"><primary>xmlSecKeyUseWithPtrListGetKlass</primary></indexterm>
+<programlisting language="C"><link linkend="xmlSecPtrListId"><returnvalue>xmlSecPtrListId</returnvalue></link>
+xmlSecKeyUseWithPtrListGetKlass (<parameter><type>void</type></parameter>);</programlisting>
+<para>The key data list klass.</para>
+<refsect3 role="returns">
+<title>Returns</title>
+<para> pointer to the key data list klass.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyReqInitialize" role="function">
+<title>xmlSecKeyReqInitialize&#160;()</title>
+<indexterm zone="xmlSecKeyReqInitialize"><primary>xmlSecKeyReqInitialize</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecKeyReqInitialize (<parameter><link linkend="xmlSecKeyReq"><type>xmlSecKeyReqPtr</type></link> keyReq</parameter>);</programlisting>
+<para>Initialize key requirements object. Caller is responsible for
+cleaning it with <link linkend="xmlSecKeyReqFinalize"><type>xmlSecKeyReqFinalize</type></link> function.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>keyReq</para></entry>
+<entry role="parameter_description"><para>the pointer to key requirements object.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyReqFinalize" role="function">
+<title>xmlSecKeyReqFinalize&#160;()</title>
+<indexterm zone="xmlSecKeyReqFinalize"><primary>xmlSecKeyReqFinalize</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+xmlSecKeyReqFinalize (<parameter><link linkend="xmlSecKeyReq"><type>xmlSecKeyReqPtr</type></link> keyReq</parameter>);</programlisting>
+<para>Cleans the key requirements object initialized with <link linkend="xmlSecKeyReqInitialize"><type>xmlSecKeyReqInitialize</type></link>
+function.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>keyReq</para></entry>
+<entry role="parameter_description"><para>the pointer to key requirements object.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyReqReset" role="function">
+<title>xmlSecKeyReqReset&#160;()</title>
+<indexterm zone="xmlSecKeyReqReset"><primary>xmlSecKeyReqReset</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+xmlSecKeyReqReset (<parameter><link linkend="xmlSecKeyReq"><type>xmlSecKeyReqPtr</type></link> keyReq</parameter>);</programlisting>
+<para>Resets key requirements object for new key search.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>keyReq</para></entry>
+<entry role="parameter_description"><para>the pointer to key requirements object.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyReqCopy" role="function">
+<title>xmlSecKeyReqCopy&#160;()</title>
+<indexterm zone="xmlSecKeyReqCopy"><primary>xmlSecKeyReqCopy</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecKeyReqCopy (<parameter><link linkend="xmlSecKeyReq"><type>xmlSecKeyReqPtr</type></link> dst</parameter>,
+                  <parameter><link linkend="xmlSecKeyReq"><type>xmlSecKeyReqPtr</type></link> src</parameter>);</programlisting>
+<para>Copies key requirements from <parameter>src</parameter>
+ object to <parameter>dst</parameter>
+ object.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>dst</para></entry>
+<entry role="parameter_description"><para>the pointer to destination object.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>src</para></entry>
+<entry role="parameter_description"><para>the pointer to source object.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success and a negative value if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyReqMatchKey" role="function">
+<title>xmlSecKeyReqMatchKey&#160;()</title>
+<indexterm zone="xmlSecKeyReqMatchKey"><primary>xmlSecKeyReqMatchKey</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecKeyReqMatchKey (<parameter><link linkend="xmlSecKeyReq"><type>xmlSecKeyReqPtr</type></link> keyReq</parameter>,
+                      <parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>);</programlisting>
+<para>Checks whether <parameter>key</parameter>
+ matches key requirements <parameter>keyReq</parameter>
+.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>keyReq</para></entry>
+<entry role="parameter_description"><para>the pointer to key requirements object.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>key</para></entry>
+<entry role="parameter_description"><para>the pointer to key.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 1 if key matches requirements, 0 if not and a negative value
+if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyReqMatchKeyValue" role="function">
+<title>xmlSecKeyReqMatchKeyValue&#160;()</title>
+<indexterm zone="xmlSecKeyReqMatchKeyValue"><primary>xmlSecKeyReqMatchKeyValue</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecKeyReqMatchKeyValue (<parameter><link linkend="xmlSecKeyReq"><type>xmlSecKeyReqPtr</type></link> keyReq</parameter>,
+                           <parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> value</parameter>);</programlisting>
+<para>Checks whether <parameter>keyValue</parameter>
+ matches key requirements <parameter>keyReq</parameter>
+.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>keyReq</para></entry>
+<entry role="parameter_description"><para>the pointer to key requirements.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>value</para></entry>
+<entry role="parameter_description"><para>the pointer to key value.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 1 if key value matches requirements, 0 if not and a negative value
+if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyReqDebugDump" role="function">
+<title>xmlSecKeyReqDebugDump&#160;()</title>
+<indexterm zone="xmlSecKeyReqDebugDump"><primary>xmlSecKeyReqDebugDump</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+xmlSecKeyReqDebugDump (<parameter><link linkend="xmlSecKeyReq"><type>xmlSecKeyReqPtr</type></link> keyReq</parameter>,
+                       <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);</programlisting>
+<para>Prints debug information about <parameter>keyReq</parameter>
+ into <parameter>output</parameter>
+.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>keyReq</para></entry>
+<entry role="parameter_description"><para>the pointer to key requirements object.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>output</para></entry>
+<entry role="parameter_description"><para>the pointer to output FILE.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyReqDebugXmlDump" role="function">
+<title>xmlSecKeyReqDebugXmlDump&#160;()</title>
+<indexterm zone="xmlSecKeyReqDebugXmlDump"><primary>xmlSecKeyReqDebugXmlDump</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+xmlSecKeyReqDebugXmlDump (<parameter><link linkend="xmlSecKeyReq"><type>xmlSecKeyReqPtr</type></link> keyReq</parameter>,
+                          <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);</programlisting>
+<para>Prints debug information about <parameter>keyReq</parameter>
+ into <parameter>output</parameter>
+ in XML format.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>keyReq</para></entry>
+<entry role="parameter_description"><para>the pointer to key requirements object.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>output</para></entry>
+<entry role="parameter_description"><para>the pointer to output FILE.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyCreate" role="function">
+<title>xmlSecKeyCreate&#160;()</title>
+<indexterm zone="xmlSecKeyCreate"><primary>xmlSecKeyCreate</primary></indexterm>
+<programlisting language="C"><link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>
+xmlSecKeyCreate (<parameter><type>void</type></parameter>);</programlisting>
+<para>Allocates and initializes new key. Caller is responsible for
+freeing returned object with <link linkend="xmlSecKeyDestroy"><type>xmlSecKeyDestroy</type></link> function.</para>
+<refsect3 role="returns">
+<title>Returns</title>
+<para> the pointer to newly allocated <parameter>xmlSecKey</parameter>
+structure
+or NULL if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyDestroy" role="function">
+<title>xmlSecKeyDestroy&#160;()</title>
+<indexterm zone="xmlSecKeyDestroy"><primary>xmlSecKeyDestroy</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+xmlSecKeyDestroy (<parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>);</programlisting>
+<para>Destroys the key created using <link linkend="xmlSecKeyCreate"><type>xmlSecKeyCreate</type></link> function.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>key</para></entry>
+<entry role="parameter_description"><para>the pointer to key.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyEmpty" role="function">
+<title>xmlSecKeyEmpty&#160;()</title>
+<indexterm zone="xmlSecKeyEmpty"><primary>xmlSecKeyEmpty</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+xmlSecKeyEmpty (<parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>);</programlisting>
+<para>Clears the <parameter>key</parameter>
+ data.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>key</para></entry>
+<entry role="parameter_description"><para>the pointer to key.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyDuplicate" role="function">
+<title>xmlSecKeyDuplicate&#160;()</title>
+<indexterm zone="xmlSecKeyDuplicate"><primary>xmlSecKeyDuplicate</primary></indexterm>
+<programlisting language="C"><link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>
+xmlSecKeyDuplicate (<parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>);</programlisting>
+<para>Creates a duplicate of the given <parameter>key</parameter>
+.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>key</para></entry>
+<entry role="parameter_description"><para>the pointer to the <link linkend="xmlSecKey"><type>xmlSecKey</type></link> structure.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> the pointer to newly allocated <link linkend="xmlSecKey"><type>xmlSecKey</type></link> structure
+or NULL if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyCopy" role="function">
+<title>xmlSecKeyCopy&#160;()</title>
+<indexterm zone="xmlSecKeyCopy"><primary>xmlSecKeyCopy</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecKeyCopy (<parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> keyDst</parameter>,
+               <parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> keySrc</parameter>);</programlisting>
+<para>Copies key data from <parameter>keySrc</parameter>
+ to <parameter>keyDst</parameter>
+.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>keyDst</para></entry>
+<entry role="parameter_description"><para>the destination key.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>keySrc</para></entry>
+<entry role="parameter_description"><para>the source key.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyGetName" role="function">
+<title>xmlSecKeyGetName&#160;()</title>
+<indexterm zone="xmlSecKeyGetName"><primary>xmlSecKeyGetName</primary></indexterm>
+<programlisting language="C">const <link linkend="xmlChar"><returnvalue>xmlChar</returnvalue></link>&#160;*
+xmlSecKeyGetName (<parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>);</programlisting>
+<para>Gets key name (see also <link linkend="xmlSecKeySetName"><type>xmlSecKeySetName</type></link> function).</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>key</para></entry>
+<entry role="parameter_description"><para>the pointer to key.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> key name.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeySetName" role="function">
+<title>xmlSecKeySetName&#160;()</title>
+<indexterm zone="xmlSecKeySetName"><primary>xmlSecKeySetName</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecKeySetName (<parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>,
+                  <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>);</programlisting>
+<para>Sets key name (see also <link linkend="xmlSecKeyGetName"><type>xmlSecKeyGetName</type></link> function).</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>key</para></entry>
+<entry role="parameter_description"><para>the pointer to key.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>name</para></entry>
+<entry role="parameter_description"><para>the new key name.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyGetType" role="function">
+<title>xmlSecKeyGetType&#160;()</title>
+<indexterm zone="xmlSecKeyGetType"><primary>xmlSecKeyGetType</primary></indexterm>
+<programlisting language="C"><link linkend="xmlSecKeyDataType"><returnvalue>xmlSecKeyDataType</returnvalue></link>
+xmlSecKeyGetType (<parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>);</programlisting>
+<para>Gets <parameter>key</parameter>
+ type.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>key</para></entry>
+<entry role="parameter_description"><para>the pointer to key.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> key type.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyGetValue" role="function">
+<title>xmlSecKeyGetValue&#160;()</title>
+<indexterm zone="xmlSecKeyGetValue"><primary>xmlSecKeyGetValue</primary></indexterm>
+<programlisting language="C"><link linkend="xmlSecKeyData"><returnvalue>xmlSecKeyDataPtr</returnvalue></link>
+xmlSecKeyGetValue (<parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>);</programlisting>
+<para>Gets key value (see also <link linkend="xmlSecKeySetValue"><type>xmlSecKeySetValue</type></link> function).</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>key</para></entry>
+<entry role="parameter_description"><para>the pointer to key.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> key value (crypto material).</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeySetValue" role="function">
+<title>xmlSecKeySetValue&#160;()</title>
+<indexterm zone="xmlSecKeySetValue"><primary>xmlSecKeySetValue</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecKeySetValue (<parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>,
+                   <parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> value</parameter>);</programlisting>
+<para>Sets key value (see also <link linkend="xmlSecKeyGetValue"><type>xmlSecKeyGetValue</type></link> function).</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>key</para></entry>
+<entry role="parameter_description"><para>the pointer to key.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>value</para></entry>
+<entry role="parameter_description"><para>the new value.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyGetData" role="function">
+<title>xmlSecKeyGetData&#160;()</title>
+<indexterm zone="xmlSecKeyGetData"><primary>xmlSecKeyGetData</primary></indexterm>
+<programlisting language="C"><link linkend="xmlSecKeyData"><returnvalue>xmlSecKeyDataPtr</returnvalue></link>
+xmlSecKeyGetData (<parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>,
+                  <parameter><link linkend="xmlSecKeyDataId"><type>xmlSecKeyDataId</type></link> dataId</parameter>);</programlisting>
+<para>Gets key's data.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>key</para></entry>
+<entry role="parameter_description"><para>the pointer to key.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>dataId</para></entry>
+<entry role="parameter_description"><para>the requested data klass.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> additional data associated with the <parameter>key</parameter>
+(see also
+<link linkend="xmlSecKeyAdoptData"><type>xmlSecKeyAdoptData</type></link> function).</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyEnsureData" role="function">
+<title>xmlSecKeyEnsureData&#160;()</title>
+<indexterm zone="xmlSecKeyEnsureData"><primary>xmlSecKeyEnsureData</primary></indexterm>
+<programlisting language="C"><link linkend="xmlSecKeyData"><returnvalue>xmlSecKeyDataPtr</returnvalue></link>
+xmlSecKeyEnsureData (<parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>,
+                     <parameter><link linkend="xmlSecKeyDataId"><type>xmlSecKeyDataId</type></link> dataId</parameter>);</programlisting>
+<para>If necessary, creates key data of <parameter>dataId</parameter>
+ klass and adds to <parameter>key</parameter>
+.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>key</para></entry>
+<entry role="parameter_description"><para>the pointer to key.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>dataId</para></entry>
+<entry role="parameter_description"><para>the requested data klass.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> pointer to key data or NULL if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyAdoptData" role="function">
+<title>xmlSecKeyAdoptData&#160;()</title>
+<indexterm zone="xmlSecKeyAdoptData"><primary>xmlSecKeyAdoptData</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecKeyAdoptData (<parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>,
+                    <parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);</programlisting>
+<para>Adds <parameter>data</parameter>
+ to the <parameter>key</parameter>
+. The <parameter>data</parameter>
+ object will be destroyed
+by <parameter>key</parameter>
+.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>key</para></entry>
+<entry role="parameter_description"><para>the pointer to key.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>data</para></entry>
+<entry role="parameter_description"><para>the pointer to key data.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value otherwise.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyDebugDump" role="function">
+<title>xmlSecKeyDebugDump&#160;()</title>
+<indexterm zone="xmlSecKeyDebugDump"><primary>xmlSecKeyDebugDump</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+xmlSecKeyDebugDump (<parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>,
+                    <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);</programlisting>
+<para>Prints the information about the <parameter>key</parameter>
+ to the <parameter>output</parameter>
+.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>key</para></entry>
+<entry role="parameter_description"><para>the pointer to key.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>output</para></entry>
+<entry role="parameter_description"><para>the pointer to output FILE.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyDebugXmlDump" role="function">
+<title>xmlSecKeyDebugXmlDump&#160;()</title>
+<indexterm zone="xmlSecKeyDebugXmlDump"><primary>xmlSecKeyDebugXmlDump</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+xmlSecKeyDebugXmlDump (<parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>,
+                       <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);</programlisting>
+<para>Prints the information about the <parameter>key</parameter>
+ to the <parameter>output</parameter>
+ in XML format.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>key</para></entry>
+<entry role="parameter_description"><para>the pointer to key.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>output</para></entry>
+<entry role="parameter_description"><para>the pointer to output FILE.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyGenerate" role="function">
+<title>xmlSecKeyGenerate&#160;()</title>
+<indexterm zone="xmlSecKeyGenerate"><primary>xmlSecKeyGenerate</primary></indexterm>
+<programlisting language="C"><link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>
+xmlSecKeyGenerate (<parameter><link linkend="xmlSecKeyDataId"><type>xmlSecKeyDataId</type></link> dataId</parameter>,
+                   <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> sizeBits</parameter>,
+                   <parameter><link linkend="xmlSecKeyDataType"><type>xmlSecKeyDataType</type></link> type</parameter>);</programlisting>
+<para>Generates new key of requested klass <parameter>dataId</parameter>
+ and <parameter>type</parameter>
+.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>dataId</para></entry>
+<entry role="parameter_description"><para>the requested key klass (rsa, dsa, aes, ...).</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>sizeBits</para></entry>
+<entry role="parameter_description"><para>the new key size (in bits!).</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>type</para></entry>
+<entry role="parameter_description"><para>the new key type (session, permanent, ...).</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> pointer to newly created key or NULL if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyGenerateByName" role="function">
+<title>xmlSecKeyGenerateByName&#160;()</title>
+<indexterm zone="xmlSecKeyGenerateByName"><primary>xmlSecKeyGenerateByName</primary></indexterm>
+<programlisting language="C"><link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>
+xmlSecKeyGenerateByName (<parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
+                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> sizeBits</parameter>,
+                         <parameter><link linkend="xmlSecKeyDataType"><type>xmlSecKeyDataType</type></link> type</parameter>);</programlisting>
+<para>Generates new key of requested <parameter>klass</parameter>
+ and <parameter>type</parameter>
+.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>name</para></entry>
+<entry role="parameter_description"><para>the requested key klass name (rsa, dsa, aes, ...).</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>sizeBits</para></entry>
+<entry role="parameter_description"><para>the new key size (in bits!).</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>type</para></entry>
+<entry role="parameter_description"><para>the new key type (session, permanent, ...).</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> pointer to newly created key or NULL if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyMatch" role="function">
+<title>xmlSecKeyMatch&#160;()</title>
+<indexterm zone="xmlSecKeyMatch"><primary>xmlSecKeyMatch</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecKeyMatch (<parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>,
+                <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *name</parameter>,
+                <parameter><link linkend="xmlSecKeyReq"><type>xmlSecKeyReqPtr</type></link> keyReq</parameter>);</programlisting>
+<para>Checks whether the <parameter>key</parameter>
+ matches the given criteria.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>key</para></entry>
+<entry role="parameter_description"><para>the pointer to key.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>name</para></entry>
+<entry role="parameter_description"><para>the pointer to key name (may be NULL).</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>keyReq</para></entry>
+<entry role="parameter_description"><para>the pointer to key requirements.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 1 if the key satisfies the given criteria or 0 otherwise.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyReadBuffer" role="function">
+<title>xmlSecKeyReadBuffer&#160;()</title>
+<indexterm zone="xmlSecKeyReadBuffer"><primary>xmlSecKeyReadBuffer</primary></indexterm>
+<programlisting language="C"><link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>
+xmlSecKeyReadBuffer (<parameter><link linkend="xmlSecKeyDataId"><type>xmlSecKeyDataId</type></link> dataId</parameter>,
+                     <parameter><link linkend="xmlSecBuffer"><type>xmlSecBuffer</type></link> *buffer</parameter>);</programlisting>
+<para>Reads the key value of klass <parameter>dataId</parameter>
+ from a buffer.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>dataId</para></entry>
+<entry role="parameter_description"><para>the key value data klass.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>buffer</para></entry>
+<entry role="parameter_description"><para>the buffer that contains the binary data.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> pointer to newly created key or NULL if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyReadBinaryFile" role="function">
+<title>xmlSecKeyReadBinaryFile&#160;()</title>
+<indexterm zone="xmlSecKeyReadBinaryFile"><primary>xmlSecKeyReadBinaryFile</primary></indexterm>
+<programlisting language="C"><link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>
+xmlSecKeyReadBinaryFile (<parameter><link linkend="xmlSecKeyDataId"><type>xmlSecKeyDataId</type></link> dataId</parameter>,
+                         <parameter>const <link linkend="char"><type>char</type></link> *filename</parameter>);</programlisting>
+<para>Reads the key value of klass <parameter>dataId</parameter>
+ from a binary file <parameter>filename</parameter>
+.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>dataId</para></entry>
+<entry role="parameter_description"><para>the key value data klass.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>filename</para></entry>
+<entry role="parameter_description"><para>the key binary filename.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> pointer to newly created key or NULL if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyReadMemory" role="function">
+<title>xmlSecKeyReadMemory&#160;()</title>
+<indexterm zone="xmlSecKeyReadMemory"><primary>xmlSecKeyReadMemory</primary></indexterm>
+<programlisting language="C"><link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>
+xmlSecKeyReadMemory (<parameter><link linkend="xmlSecKeyDataId"><type>xmlSecKeyDataId</type></link> dataId</parameter>,
+                     <parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *data</parameter>,
+                     <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> dataSize</parameter>);</programlisting>
+<para>Reads the key value of klass <parameter>dataId</parameter>
+ from a memory block <parameter>data</parameter>
+.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>dataId</para></entry>
+<entry role="parameter_description"><para>the key value data klass.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>data</para></entry>
+<entry role="parameter_description"><para>the memory containing the key</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>dataSize</para></entry>
+<entry role="parameter_description"><para>the size of the memory block</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> pointer to newly created key or NULL if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyIsValid" role="macro">
+<title>xmlSecKeyIsValid()</title>
+<indexterm zone="xmlSecKeyIsValid"><primary>xmlSecKeyIsValid</primary></indexterm>
+<programlisting language="C">#define             xmlSecKeyIsValid(key)</programlisting>
+<para>Macro. Returns 1 if <parameter>key</parameter>
+ is not NULL and <parameter>key->id</parameter>
+ is not NULL
+or 0 otherwise.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>key</para></entry>
+<entry role="parameter_description"><para>the pointer to key.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyCheckId" role="macro">
+<title>xmlSecKeyCheckId()</title>
+<indexterm zone="xmlSecKeyCheckId"><primary>xmlSecKeyCheckId</primary></indexterm>
+<programlisting language="C">#define             xmlSecKeyCheckId(key, keyId)</programlisting>
+<para>Macro. Returns 1 if <parameter>key</parameter>
+ is valid and <parameter>key</parameter>
+'s id is equal to <parameter>keyId</parameter>
+.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>key</para></entry>
+<entry role="parameter_description"><para>the pointer to key.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>keyId</para></entry>
+<entry role="parameter_description"><para>the key Id.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="xmlSecKeyPtrListGetKlass" role="function">
+<title>xmlSecKeyPtrListGetKlass&#160;()</title>
+<indexterm zone="xmlSecKeyPtrListGetKlass"><primary>xmlSecKeyPtrListGetKlass</primary></indexterm>
+<programlisting language="C"><link linkend="xmlSecPtrListId"><returnvalue>xmlSecPtrListId</returnvalue></link>
+xmlSecKeyPtrListGetKlass (<parameter><type>void</type></parameter>);</programlisting>
+<para>The keys list klass.</para>
+<refsect3 role="returns">
+<title>Returns</title>
+<para> keys list id.</para>
+</refsect3></refsect2>
+
+</refsect1>
+<refsect1 id="xmlsec-keys.other_details" role="details">
+<title role="details.title">Types and Values</title>
 <refsect2 id="xmlSecKeyUsage" role="typedef">
 <title>xmlSecKeyUsage</title>
-<indexterm zone="xmlSecKeyUsage"><primary sortas="xmlSecKeyUsage">xmlSecKeyUsage</primary></indexterm><programlisting>typedef unsigned int                    xmlSecKeyUsage;
+<indexterm zone="xmlSecKeyUsage"><primary>xmlSecKeyUsage</primary></indexterm>
+<programlisting language="C">typedef unsigned int                    xmlSecKeyUsage;
 </programlisting>
-<para>
-The key usage.</para>
-<para>
-</para></refsect2>
+<para>The key usage.</para>
+</refsect2>
 <refsect2 id="xmlSecKeyUsageSign" role="macro">
 <title>xmlSecKeyUsageSign</title>
-<indexterm zone="xmlSecKeyUsageSign"><primary sortas="xmlSecKeyUsageSign">xmlSecKeyUsageSign</primary></indexterm><programlisting>#define xmlSecKeyUsageSign              0x00000001
+<indexterm zone="xmlSecKeyUsageSign"><primary>xmlSecKeyUsageSign</primary></indexterm>
+<programlisting language="C">#define xmlSecKeyUsageSign              0x00000001
 </programlisting>
-<para>
-Key can be used in any way.</para>
-<para>
-</para></refsect2>
+<para>Key can be used in any way.</para>
+</refsect2>
 <refsect2 id="xmlSecKeyUsageVerify" role="macro">
 <title>xmlSecKeyUsageVerify</title>
-<indexterm zone="xmlSecKeyUsageVerify"><primary sortas="xmlSecKeyUsageVerify">xmlSecKeyUsageVerify</primary></indexterm><programlisting>#define xmlSecKeyUsageVerify            0x00000002
+<indexterm zone="xmlSecKeyUsageVerify"><primary>xmlSecKeyUsageVerify</primary></indexterm>
+<programlisting language="C">#define xmlSecKeyUsageVerify            0x00000002
 </programlisting>
-<para>
-Key for signing.</para>
-<para>
-</para></refsect2>
+<para>Key for signing.</para>
+</refsect2>
 <refsect2 id="xmlSecKeyUsageEncrypt" role="macro">
 <title>xmlSecKeyUsageEncrypt</title>
-<indexterm zone="xmlSecKeyUsageEncrypt"><primary sortas="xmlSecKeyUsageEncrypt">xmlSecKeyUsageEncrypt</primary></indexterm><programlisting>#define xmlSecKeyUsageEncrypt           0x00000004
+<indexterm zone="xmlSecKeyUsageEncrypt"><primary>xmlSecKeyUsageEncrypt</primary></indexterm>
+<programlisting language="C">#define xmlSecKeyUsageEncrypt           0x00000004
 </programlisting>
-<para>
-Key for signature verification.</para>
-<para>
-</para></refsect2>
+<para>Key for signature verification.</para>
+</refsect2>
 <refsect2 id="xmlSecKeyUsageDecrypt" role="macro">
 <title>xmlSecKeyUsageDecrypt</title>
-<indexterm zone="xmlSecKeyUsageDecrypt"><primary sortas="xmlSecKeyUsageDecrypt">xmlSecKeyUsageDecrypt</primary></indexterm><programlisting>#define xmlSecKeyUsageDecrypt           0x00000008
+<indexterm zone="xmlSecKeyUsageDecrypt"><primary>xmlSecKeyUsageDecrypt</primary></indexterm>
+<programlisting language="C">#define xmlSecKeyUsageDecrypt           0x00000008
 </programlisting>
-<para>
-An encryption key.</para>
-<para>
-</para></refsect2>
+<para>An encryption key.</para>
+</refsect2>
 <refsect2 id="xmlSecKeyUsageKeyExchange" role="macro">
 <title>xmlSecKeyUsageKeyExchange</title>
-<indexterm zone="xmlSecKeyUsageKeyExchange"><primary sortas="xmlSecKeyUsageKeyExchange">xmlSecKeyUsageKeyExchange</primary></indexterm><programlisting>#define xmlSecKeyUsageKeyExchange       0x00000010
+<indexterm zone="xmlSecKeyUsageKeyExchange"><primary>xmlSecKeyUsageKeyExchange</primary></indexterm>
+<programlisting language="C">#define xmlSecKeyUsageKeyExchange       0x00000010
 </programlisting>
-<para>
-The key is used for key exchange.</para>
-<para>
-</para></refsect2>
+<para>The key is used for key exchange.</para>
+</refsect2>
 <refsect2 id="xmlSecKeyUsageAny" role="macro">
 <title>xmlSecKeyUsageAny</title>
-<indexterm zone="xmlSecKeyUsageAny"><primary sortas="xmlSecKeyUsageAny">xmlSecKeyUsageAny</primary></indexterm><programlisting>#define xmlSecKeyUsageAny               0xFFFFFFFF
+<indexterm zone="xmlSecKeyUsageAny"><primary>xmlSecKeyUsageAny</primary></indexterm>
+<programlisting language="C">#define xmlSecKeyUsageAny               0xFFFFFFFF
 </programlisting>
-<para>
-A decryption key.</para>
-<para>
-</para></refsect2>
-<refsect2 id="xmlSecKeyUseWithInitialize" role="function">
-<title>xmlSecKeyUseWithInitialize ()</title>
-<indexterm zone="xmlSecKeyUseWithInitialize"><primary sortas="xmlSecKeyUseWithInitialize">xmlSecKeyUseWithInitialize</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecKeyUseWithInitialize          (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith);</programlisting>
-<para>
-Initializes <parameter>keyUseWith</parameter> object.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>keyUseWith</parameter>&#160;:</term>
-<listitem><simpara>         the pointer to information about key application/user.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyUseWithFinalize" role="function">
-<title>xmlSecKeyUseWithFinalize ()</title>
-<indexterm zone="xmlSecKeyUseWithFinalize"><primary sortas="xmlSecKeyUseWithFinalize">xmlSecKeyUseWithFinalize</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecKeyUseWithFinalize            (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith);</programlisting>
-<para>
-Finalizes <parameter>keyUseWith</parameter> object.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>keyUseWith</parameter>&#160;:</term>
-<listitem><simpara>         the pointer to information about key application/user.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyUseWithReset" role="function">
-<title>xmlSecKeyUseWithReset ()</title>
-<indexterm zone="xmlSecKeyUseWithReset"><primary sortas="xmlSecKeyUseWithReset">xmlSecKeyUseWithReset</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecKeyUseWithReset               (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith);</programlisting>
-<para>
-Resets the <parameter>keyUseWith</parameter> to its state after initialization.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>keyUseWith</parameter>&#160;:</term>
-<listitem><simpara>         the pointer to information about key application/user.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyUseWithCopy" role="function">
-<title>xmlSecKeyUseWithCopy ()</title>
-<indexterm zone="xmlSecKeyUseWithCopy"><primary sortas="xmlSecKeyUseWithCopy">xmlSecKeyUseWithCopy</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecKeyUseWithCopy                (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> dst,
-                                                         <link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> src);</programlisting>
-<para>
-Copies information from <parameter>dst</parameter> to <parameter>src</parameter>.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>dst</parameter>&#160;:</term>
-<listitem><simpara>         the pointer to destination object.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>src</parameter>&#160;:</term>
-<listitem><simpara>         the pointer to source object.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyUseWithCreate" role="function">
-<title>xmlSecKeyUseWithCreate ()</title>
-<indexterm zone="xmlSecKeyUseWithCreate"><primary sortas="xmlSecKeyUseWithCreate">xmlSecKeyUseWithCreate</primary></indexterm><programlisting><link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link>  xmlSecKeyUseWithCreate             (const <link linkend="xmlChar">xmlChar</link> *application,
-                                                         const <link linkend="xmlChar">xmlChar</link> *identifier);</programlisting>
-<para>
-Creates new xmlSecKeyUseWith object. The caller is responsible for destroying
-returned object with <parameter>xmlSecKeyUseWithDestroy</parameter> function.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>application</parameter>&#160;:</term>
-<listitem><simpara>        the application value.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>identifier</parameter>&#160;:</term>
-<listitem><simpara>         the identifier value.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly created object or NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyUseWithDuplicate" role="function">
-<title>xmlSecKeyUseWithDuplicate ()</title>
-<indexterm zone="xmlSecKeyUseWithDuplicate"><primary sortas="xmlSecKeyUseWithDuplicate">xmlSecKeyUseWithDuplicate</primary></indexterm><programlisting><link linkend="xmlSecKeyUseWithPtr">xmlSecKeyUseWithPtr</link>  xmlSecKeyUseWithDuplicate          (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith);</programlisting>
-<para>
-Duplicates <parameter>keyUseWith</parameter> object. The caller is responsible for destroying
-returned object with <parameter>xmlSecKeyUseWithDestroy</parameter> function.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>keyUseWith</parameter>&#160;:</term>
-<listitem><simpara>         the pointer to information about key application/user.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly created object or NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyUseWithDestroy" role="function">
-<title>xmlSecKeyUseWithDestroy ()</title>
-<indexterm zone="xmlSecKeyUseWithDestroy"><primary sortas="xmlSecKeyUseWithDestroy">xmlSecKeyUseWithDestroy</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecKeyUseWithDestroy             (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith);</programlisting>
-<para>
-Destroys <parameter>keyUseWith</parameter> created with <parameter>xmlSecKeyUseWithCreate</parameter> or <parameter>xmlSecKeyUseWithDuplicate</parameter>
-functions.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>keyUseWith</parameter>&#160;:</term>
-<listitem><simpara>         the pointer to information about key application/user.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyUseWithSet" role="function">
-<title>xmlSecKeyUseWithSet ()</title>
-<indexterm zone="xmlSecKeyUseWithSet"><primary sortas="xmlSecKeyUseWithSet">xmlSecKeyUseWithSet</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecKeyUseWithSet                 (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith,
-                                                         const <link linkend="xmlChar">xmlChar</link> *application,
-                                                         const <link linkend="xmlChar">xmlChar</link> *identifier);</programlisting>
-<para>
-Sets <parameter>application</parameter> and <parameter>identifier</parameter> in the <parameter>keyUseWith</parameter>.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>keyUseWith</parameter>&#160;:</term>
-<listitem><simpara>         the pointer to information about key application/user.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>application</parameter>&#160;:</term>
-<listitem><simpara>        the new application value.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>identifier</parameter>&#160;:</term>
-<listitem><simpara>         the new identifier value.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyUseWithDebugDump" role="function">
-<title>xmlSecKeyUseWithDebugDump ()</title>
-<indexterm zone="xmlSecKeyUseWithDebugDump"><primary sortas="xmlSecKeyUseWithDebugDump">xmlSecKeyUseWithDebugDump</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecKeyUseWithDebugDump           (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith,
-                                                         <link linkend="FILE--CAPS">FILE</link> *output);</programlisting>
-<para>
-Prints xmlSecKeyUseWith debug information to a file <parameter>output</parameter>.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>keyUseWith</parameter>&#160;:</term>
-<listitem><simpara>         the pointer to information about key application/user.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>             the pointer to output FILE.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyUseWithDebugXmlDump" role="function">
-<title>xmlSecKeyUseWithDebugXmlDump ()</title>
-<indexterm zone="xmlSecKeyUseWithDebugXmlDump"><primary sortas="xmlSecKeyUseWithDebugXmlDump">xmlSecKeyUseWithDebugXmlDump</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecKeyUseWithDebugXmlDump        (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith,
-                                                         <link linkend="FILE--CAPS">FILE</link> *output);</programlisting>
-<para>
-Prints xmlSecKeyUseWith debug information to a file <parameter>output</parameter> in XML format.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>keyUseWith</parameter>&#160;:</term>
-<listitem><simpara>         the pointer to information about key application/user.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>             the pointer to output FILE.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<para>A decryption key.</para>
+</refsect2>
 <refsect2 id="xmlSecKeyUseWith" role="struct">
 <title>struct xmlSecKeyUseWith</title>
-<indexterm zone="xmlSecKeyUseWith"><primary sortas="xmlSecKeyUseWith">xmlSecKeyUseWith</primary></indexterm><programlisting>struct xmlSecKeyUseWith {
+<indexterm zone="xmlSecKeyUseWith"><primary>xmlSecKeyUseWith</primary></indexterm>
+<programlisting language="C">struct xmlSecKeyUseWith {
     xmlChar*                    application;
     xmlChar*                    identifier;
 
@@ -331,52 +1257,45 @@ Prints xmlSecKeyUseWith debug information to a file <parameter>output</parameter
     void*                       reserved2;
 };
 </programlisting>
-<para>
-Information about application and user of the key.</para>
-<para>
-</para><variablelist role="struct">
-<varlistentry>
-<term><link linkend="xmlChar">xmlChar</link>&#160;*<structfield>application</structfield>;</term>
-<listitem><simpara>        the application.
-</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><link linkend="xmlChar">xmlChar</link>&#160;*<structfield>identifier</structfield>;</term>
-<listitem><simpara>         the identifier.
-</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><link linkend="void">void</link>&#160;*<structfield>reserved1</structfield>;</term>
-<listitem><simpara>          reserved for future use.
-</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><link linkend="void">void</link>&#160;*<structfield>reserved2</structfield>;</term>
-<listitem><simpara>          reserved for future use.
-</simpara></listitem>
-</varlistentry>
-</variablelist></refsect2>
+<para>Information about application and user of the key.</para>
+<refsect3 role="struct_members">
+<title>Members</title>
+<informaltable role="struct_members_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="struct_members_name" colwidth="300px"/>
+<colspec colname="struct_members_description"/>
+<colspec colname="struct_members_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="struct_member_name"><para><link linkend="xmlChar"><type>xmlChar</type></link>&#160;*<structfield id="xmlSecKeyUseWith.application">application</structfield>;</para></entry>
+<entry role="struct_member_description"><para>the application.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row><entry role="struct_member_name"><para><link linkend="xmlChar"><type>xmlChar</type></link>&#160;*<structfield id="xmlSecKeyUseWith.identifier">identifier</structfield>;</para></entry>
+<entry role="struct_member_description"><para>the identifier.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row><entry role="struct_member_name"><para><link linkend="void"><type>void</type></link>&#160;*<structfield id="xmlSecKeyUseWith.reserved1">reserved1</structfield>;</para></entry>
+<entry role="struct_member_description"><para>reserved for future use.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row><entry role="struct_member_name"><para><link linkend="void"><type>void</type></link>&#160;*<structfield id="xmlSecKeyUseWith.reserved2">reserved2</structfield>;</para></entry>
+<entry role="struct_member_description"><para>reserved for future use.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+</tbody></tgroup></informaltable>
+</refsect3>
+</refsect2>
 <refsect2 id="xmlSecKeyUseWithPtrListId" role="macro">
 <title>xmlSecKeyUseWithPtrListId</title>
-<indexterm zone="xmlSecKeyUseWithPtrListId"><primary sortas="xmlSecKeyUseWithPtrListId">xmlSecKeyUseWithPtrListId</primary></indexterm><programlisting>#define xmlSecKeyUseWithPtrListId       xmlSecKeyUseWithPtrListGetKlass()
+<indexterm zone="xmlSecKeyUseWithPtrListId"><primary>xmlSecKeyUseWithPtrListId</primary></indexterm>
+<programlisting language="C">#define xmlSecKeyUseWithPtrListId       xmlSecKeyUseWithPtrListGetKlass()
 </programlisting>
-<para>
-The keys list klass.</para>
-<para>
-</para></refsect2>
-<refsect2 id="xmlSecKeyUseWithPtrListGetKlass" role="function">
-<title>xmlSecKeyUseWithPtrListGetKlass ()</title>
-<indexterm zone="xmlSecKeyUseWithPtrListGetKlass"><primary sortas="xmlSecKeyUseWithPtrListGetKlass">xmlSecKeyUseWithPtrListGetKlass</primary></indexterm><programlisting><link linkend="xmlSecPtrListId">xmlSecPtrListId</link>     xmlSecKeyUseWithPtrListGetKlass     (void);</programlisting>
-<para>
-The key data list klass.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the key data list klass.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<para>The keys list klass.</para>
+</refsect2>
 <refsect2 id="xmlSecKeyReq" role="struct">
 <title>struct xmlSecKeyReq</title>
-<indexterm zone="xmlSecKeyReq"><primary sortas="xmlSecKeyReq">xmlSecKeyReq</primary></indexterm><programlisting>struct xmlSecKeyReq {
+<indexterm zone="xmlSecKeyReq"><primary>xmlSecKeyReq</primary></indexterm>
+<programlisting language="C">struct xmlSecKeyReq {
     xmlSecKeyDataId             keyId;
     xmlSecKeyDataType           keyType;
     xmlSecKeyUsage              keyUsage;
@@ -387,169 +1306,50 @@ The key data list klass.</para>
     void*                       reserved2;
 };
 </programlisting>
-<para>
-The key requirements information.</para>
-<para>
-</para><variablelist role="struct">
-<varlistentry>
-<term><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>&#160;<structfield>keyId</structfield>;</term>
-<listitem><simpara>              the desired key value klass.
-</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link>&#160;<structfield>keyType</structfield>;</term>
-<listitem><simpara>            the desired key type.
-</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link>&#160;<structfield>keyUsage</structfield>;</term>
-<listitem><simpara>           the desired key usage.
-</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecSize">xmlSecSize</link>&#160;<structfield>keyBitsSize</structfield>;</term>
-<listitem><simpara>        the desired key size (in bits!).
-</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecPtrList">xmlSecPtrList</link>&#160;<structfield>keyUseWithList</structfield>;</term>
-<listitem><simpara>     the desired key use with application/identifier information.
-</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><link linkend="void">void</link>&#160;*<structfield>reserved1</structfield>;</term>
-<listitem><simpara>          reserved for future use.
-</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><link linkend="void">void</link>&#160;*<structfield>reserved2</structfield>;</term>
-<listitem><simpara>          reserved for future use.
-</simpara></listitem>
-</varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyReqInitialize" role="function">
-<title>xmlSecKeyReqInitialize ()</title>
-<indexterm zone="xmlSecKeyReqInitialize"><primary sortas="xmlSecKeyReqInitialize">xmlSecKeyReqInitialize</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecKeyReqInitialize              (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq);</programlisting>
-<para>
-Initialize key requirements object. Caller is responsible for
-cleaning it with <link linkend="xmlSecKeyReqFinalize"><type>xmlSecKeyReqFinalize</type></link> function.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>keyReq</parameter>&#160;:</term>
-<listitem><simpara>             the pointer to key requirements object.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyReqFinalize" role="function">
-<title>xmlSecKeyReqFinalize ()</title>
-<indexterm zone="xmlSecKeyReqFinalize"><primary sortas="xmlSecKeyReqFinalize">xmlSecKeyReqFinalize</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecKeyReqFinalize                (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq);</programlisting>
-<para>
-Cleans the key requirements object initialized with <link linkend="xmlSecKeyReqInitialize"><type>xmlSecKeyReqInitialize</type></link>
-function.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>keyReq</parameter>&#160;:</term>
-<listitem><simpara>             the pointer to key requirements object.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyReqReset" role="function">
-<title>xmlSecKeyReqReset ()</title>
-<indexterm zone="xmlSecKeyReqReset"><primary sortas="xmlSecKeyReqReset">xmlSecKeyReqReset</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecKeyReqReset                   (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq);</programlisting>
-<para>
-Resets key requirements object for new key search.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>keyReq</parameter>&#160;:</term>
-<listitem><simpara>             the pointer to key requirements object.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyReqCopy" role="function">
-<title>xmlSecKeyReqCopy ()</title>
-<indexterm zone="xmlSecKeyReqCopy"><primary sortas="xmlSecKeyReqCopy">xmlSecKeyReqCopy</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecKeyReqCopy                    (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> dst,
-                                                         <link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> src);</programlisting>
-<para>
-Copies key requirements from <parameter>src</parameter> object to <parameter>dst</parameter> object.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>dst</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to destination object.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>src</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to source object.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success and a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyReqMatchKey" role="function">
-<title>xmlSecKeyReqMatchKey ()</title>
-<indexterm zone="xmlSecKeyReqMatchKey"><primary sortas="xmlSecKeyReqMatchKey">xmlSecKeyReqMatchKey</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecKeyReqMatchKey                (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq,
-                                                         <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
-<para>
-Checks whether <parameter>key</parameter> matches key requirements <parameter>keyReq</parameter>.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>keyReq</parameter>&#160;:</term>
-<listitem><simpara>             the pointer to key requirements object.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to key.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 1 if key matches requirements, 0 if not and a negative value
-if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyReqMatchKeyValue" role="function">
-<title>xmlSecKeyReqMatchKeyValue ()</title>
-<indexterm zone="xmlSecKeyReqMatchKeyValue"><primary sortas="xmlSecKeyReqMatchKeyValue">xmlSecKeyReqMatchKeyValue</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecKeyReqMatchKeyValue           (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq,
-                                                         <link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> value);</programlisting>
-<para>
-Checks whether <parameter>keyValue</parameter> matches key requirements <parameter>keyReq</parameter>.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>keyReq</parameter>&#160;:</term>
-<listitem><simpara>             the pointer to key requirements.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&#160;:</term>
-<listitem><simpara>              the pointer to key value.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 1 if key value matches requirements, 0 if not and a negative value
-if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyReqDebugDump" role="function">
-<title>xmlSecKeyReqDebugDump ()</title>
-<indexterm zone="xmlSecKeyReqDebugDump"><primary sortas="xmlSecKeyReqDebugDump">xmlSecKeyReqDebugDump</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecKeyReqDebugDump               (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq,
-                                                         <link linkend="FILE--CAPS">FILE</link> *output);</programlisting>
-<para>
-Prints debug information about <parameter>keyReq</parameter> into <parameter>output</parameter>.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>keyReq</parameter>&#160;:</term>
-<listitem><simpara>             the pointer to key requirements object.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>             the pointer to output FILE.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyReqDebugXmlDump" role="function">
-<title>xmlSecKeyReqDebugXmlDump ()</title>
-<indexterm zone="xmlSecKeyReqDebugXmlDump"><primary sortas="xmlSecKeyReqDebugXmlDump">xmlSecKeyReqDebugXmlDump</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecKeyReqDebugXmlDump            (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq,
-                                                         <link linkend="FILE--CAPS">FILE</link> *output);</programlisting>
-<para>
-Prints debug information about <parameter>keyReq</parameter> into <parameter>output</parameter> in XML format.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>keyReq</parameter>&#160;:</term>
-<listitem><simpara>             the pointer to key requirements object.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>             the pointer to output FILE.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<para>The key requirements information.</para>
+<refsect3 role="struct_members">
+<title>Members</title>
+<informaltable role="struct_members_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="struct_members_name" colwidth="300px"/>
+<colspec colname="struct_members_description"/>
+<colspec colname="struct_members_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="struct_member_name"><para><link linkend="xmlSecKeyDataId"><type>xmlSecKeyDataId</type></link>&#160;<structfield id="xmlSecKeyReq.keyId">keyId</structfield>;</para></entry>
+<entry role="struct_member_description"><para>the desired key value klass.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row><entry role="struct_member_name"><para><link linkend="xmlSecKeyDataType"><type>xmlSecKeyDataType</type></link>&#160;<structfield id="xmlSecKeyReq.keyType">keyType</structfield>;</para></entry>
+<entry role="struct_member_description"><para>the desired key type.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row><entry role="struct_member_name"><para><link linkend="xmlSecKeyUsage"><type>xmlSecKeyUsage</type></link>&#160;<structfield id="xmlSecKeyReq.keyUsage">keyUsage</structfield>;</para></entry>
+<entry role="struct_member_description"><para>the desired key usage.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row><entry role="struct_member_name"><para><link linkend="xmlSecSize"><type>xmlSecSize</type></link>&#160;<structfield id="xmlSecKeyReq.keyBitsSize">keyBitsSize</structfield>;</para></entry>
+<entry role="struct_member_description"><para>the desired key size (in bits!).</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row><entry role="struct_member_name"><para><link linkend="xmlSecPtrList"><type>xmlSecPtrList</type></link>&#160;<structfield id="xmlSecKeyReq.keyUseWithList">keyUseWithList</structfield>;</para></entry>
+<entry role="struct_member_description"><para>the desired key use with application/identifier information.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row><entry role="struct_member_name"><para><link linkend="void"><type>void</type></link>&#160;*<structfield id="xmlSecKeyReq.reserved1">reserved1</structfield>;</para></entry>
+<entry role="struct_member_description"><para>reserved for future use.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row><entry role="struct_member_name"><para><link linkend="void"><type>void</type></link>&#160;*<structfield id="xmlSecKeyReq.reserved2">reserved2</structfield>;</para></entry>
+<entry role="struct_member_description"><para>reserved for future use.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+</tbody></tgroup></informaltable>
+</refsect3>
+</refsect2>
 <refsect2 id="xmlSecKey" role="struct">
 <title>struct xmlSecKey</title>
-<indexterm zone="xmlSecKey"><primary sortas="xmlSecKey">xmlSecKey</primary></indexterm><programlisting>struct xmlSecKey {
+<indexterm zone="xmlSecKey"><primary>xmlSecKey</primary></indexterm>
+<programlisting language="C">struct xmlSecKey {
     xmlChar*                            name;
     xmlSecKeyDataPtr                    value;
     xmlSecPtrListPtr                    dataList;
@@ -558,428 +1358,50 @@ Prints debug information about <parameter>keyReq</parameter> into <parameter>out
     time_t                              notValidAfter;
 };
 </programlisting>
-<para>
-The key.</para>
-<para>
-</para><variablelist role="struct">
-<varlistentry>
-<term><link linkend="xmlChar">xmlChar</link>&#160;*<structfield>name</structfield>;</term>
-<listitem><simpara>               the key name.
-</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link>&#160;<structfield>value</structfield>;</term>
-<listitem><simpara>              the key value.
-</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecPtrList">xmlSecPtrListPtr</link>&#160;<structfield>dataList</structfield>;</term>
-<listitem><simpara>           the key data list.
-</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link>&#160;<structfield>usage</structfield>;</term>
-<listitem><simpara>              the key usage.
-</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><link linkend="time-t">time_t</link>&#160;<structfield>notValidBefore</structfield>;</term>
-<listitem><simpara>     the start key validity interval.
-</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><link linkend="time-t">time_t</link>&#160;<structfield>notValidAfter</structfield>;</term>
-<listitem><simpara>      the end key validity interval.
-</simpara></listitem>
-</varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyCreate" role="function">
-<title>xmlSecKeyCreate ()</title>
-<indexterm zone="xmlSecKeyCreate"><primary sortas="xmlSecKeyCreate">xmlSecKeyCreate</primary></indexterm><programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link>        xmlSecKeyCreate                     (void);</programlisting>
-<para>
-Allocates and initializes new key. Caller is responsible for
-freeing returned object with <link linkend="xmlSecKeyDestroy"><type>xmlSecKeyDestroy</type></link> function.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to newly allocated <parameter>xmlSecKey</parameter> structure
-or NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyDestroy" role="function">
-<title>xmlSecKeyDestroy ()</title>
-<indexterm zone="xmlSecKeyDestroy"><primary sortas="xmlSecKeyDestroy">xmlSecKeyDestroy</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecKeyDestroy                    (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
-<para>
-Destroys the key created using <link linkend="xmlSecKeyCreate"><type>xmlSecKeyCreate</type></link> function.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to key.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyEmpty" role="function">
-<title>xmlSecKeyEmpty ()</title>
-<indexterm zone="xmlSecKeyEmpty"><primary sortas="xmlSecKeyEmpty">xmlSecKeyEmpty</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecKeyEmpty                      (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
-<para>
-Clears the <parameter>key</parameter> data.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to key.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyDuplicate" role="function">
-<title>xmlSecKeyDuplicate ()</title>
-<indexterm zone="xmlSecKeyDuplicate"><primary sortas="xmlSecKeyDuplicate">xmlSecKeyDuplicate</primary></indexterm><programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link>        xmlSecKeyDuplicate                  (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
-<para>
-Creates a duplicate of the given <parameter>key</parameter>.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to the <link linkend="xmlSecKey"><type>xmlSecKey</type></link> structure.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to newly allocated <link linkend="xmlSecKey"><type>xmlSecKey</type></link> structure
-or NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyCopy" role="function">
-<title>xmlSecKeyCopy ()</title>
-<indexterm zone="xmlSecKeyCopy"><primary sortas="xmlSecKeyCopy">xmlSecKeyCopy</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecKeyCopy                       (<link linkend="xmlSecKey">xmlSecKeyPtr</link> keyDst,
-                                                         <link linkend="xmlSecKey">xmlSecKeyPtr</link> keySrc);</programlisting>
-<para>
-Copies key data from <parameter>keySrc</parameter> to <parameter>keyDst</parameter>.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>keyDst</parameter>&#160;:</term>
-<listitem><simpara>             the destination key.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>keySrc</parameter>&#160;:</term>
-<listitem><simpara>             the source key.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyGetName" role="function">
-<title>xmlSecKeyGetName ()</title>
-<indexterm zone="xmlSecKeyGetName"><primary sortas="xmlSecKeyGetName">xmlSecKeyGetName</primary></indexterm><programlisting>const <link linkend="xmlChar">xmlChar</link>*      xmlSecKeyGetName                    (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
-<para>
-Gets key name (see also <link linkend="xmlSecKeySetName"><type>xmlSecKeySetName</type></link> function).</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to key.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> key name.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeySetName" role="function">
-<title>xmlSecKeySetName ()</title>
-<indexterm zone="xmlSecKeySetName"><primary sortas="xmlSecKeySetName">xmlSecKeySetName</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecKeySetName                    (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                                         const <link linkend="xmlChar">xmlChar</link> *name);</programlisting>
-<para>
-Sets key name (see also <link linkend="xmlSecKeyGetName"><type>xmlSecKeyGetName</type></link> function).</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to key.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara>               the new key name.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyGetType" role="function">
-<title>xmlSecKeyGetType ()</title>
-<indexterm zone="xmlSecKeyGetType"><primary sortas="xmlSecKeyGetType">xmlSecKeyGetType</primary></indexterm><programlisting><link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link>   xmlSecKeyGetType                    (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
-<para>
-Gets <parameter>key</parameter> type.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to key.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> key type.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyGetValue" role="function">
-<title>xmlSecKeyGetValue ()</title>
-<indexterm zone="xmlSecKeyGetValue"><primary sortas="xmlSecKeyGetValue">xmlSecKeyGetValue</primary></indexterm><programlisting><link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link>    xmlSecKeyGetValue                   (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
-<para>
-Gets key value (see also <link linkend="xmlSecKeySetValue"><type>xmlSecKeySetValue</type></link> function).</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to key.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> key value (crypto material).
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeySetValue" role="function">
-<title>xmlSecKeySetValue ()</title>
-<indexterm zone="xmlSecKeySetValue"><primary sortas="xmlSecKeySetValue">xmlSecKeySetValue</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecKeySetValue                   (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                                         <link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> value);</programlisting>
-<para>
-Sets key value (see also <link linkend="xmlSecKeyGetValue"><type>xmlSecKeyGetValue</type></link> function).</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to key.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&#160;:</term>
-<listitem><simpara>              the new value.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyGetData" role="function">
-<title>xmlSecKeyGetData ()</title>
-<indexterm zone="xmlSecKeyGetData"><primary sortas="xmlSecKeyGetData">xmlSecKeyGetData</primary></indexterm><programlisting><link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link>    xmlSecKeyGetData                    (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                                         <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId);</programlisting>
-<para>
-Gets key's data.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to key.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>dataId</parameter>&#160;:</term>
-<listitem><simpara>             the requested data klass.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> additional data associated with the <parameter>key</parameter> (see also
-<link linkend="xmlSecKeyAdoptData"><type>xmlSecKeyAdoptData</type></link> function).
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyEnsureData" role="function">
-<title>xmlSecKeyEnsureData ()</title>
-<indexterm zone="xmlSecKeyEnsureData"><primary sortas="xmlSecKeyEnsureData">xmlSecKeyEnsureData</primary></indexterm><programlisting><link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link>    xmlSecKeyEnsureData                 (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                                         <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId);</programlisting>
-<para>
-If necessary, creates key data of <parameter>dataId</parameter> klass and adds to <parameter>key</parameter>.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to key.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>dataId</parameter>&#160;:</term>
-<listitem><simpara>             the requested data klass.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to key data or NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyAdoptData" role="function">
-<title>xmlSecKeyAdoptData ()</title>
-<indexterm zone="xmlSecKeyAdoptData"><primary sortas="xmlSecKeyAdoptData">xmlSecKeyAdoptData</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecKeyAdoptData                  (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                                         <link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
-<para>
-Adds <parameter>data</parameter> to the <parameter>key</parameter>. The <parameter>data</parameter> object will be destroyed
-by <parameter>key</parameter>.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to key.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>               the pointer to key data.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyDebugDump" role="function">
-<title>xmlSecKeyDebugDump ()</title>
-<indexterm zone="xmlSecKeyDebugDump"><primary sortas="xmlSecKeyDebugDump">xmlSecKeyDebugDump</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecKeyDebugDump                  (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                                         <link linkend="FILE--CAPS">FILE</link> *output);</programlisting>
-<para>
-Prints the information about the <parameter>key</parameter> to the <parameter>output</parameter>.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to key.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>             the pointer to output FILE.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyDebugXmlDump" role="function">
-<title>xmlSecKeyDebugXmlDump ()</title>
-<indexterm zone="xmlSecKeyDebugXmlDump"><primary sortas="xmlSecKeyDebugXmlDump">xmlSecKeyDebugXmlDump</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecKeyDebugXmlDump               (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                                         <link linkend="FILE--CAPS">FILE</link> *output);</programlisting>
-<para>
-Prints the information about the <parameter>key</parameter> to the <parameter>output</parameter> in XML format.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to key.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>             the pointer to output FILE.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyGenerate" role="function">
-<title>xmlSecKeyGenerate ()</title>
-<indexterm zone="xmlSecKeyGenerate"><primary sortas="xmlSecKeyGenerate">xmlSecKeyGenerate</primary></indexterm><programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link>        xmlSecKeyGenerate                   (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> sizeBits,
-                                                         <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
-<para>
-Generates new key of requested klass <parameter>dataId</parameter> and <parameter>type</parameter>.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>dataId</parameter>&#160;:</term>
-<listitem><simpara>             the requested key klass (rsa, dsa, aes, ...).
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>sizeBits</parameter>&#160;:</term>
-<listitem><simpara>           the new key size (in bits!).
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara>               the new key type (session, permanent, ...).
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly created key or NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyGenerateByName" role="function">
-<title>xmlSecKeyGenerateByName ()</title>
-<indexterm zone="xmlSecKeyGenerateByName"><primary sortas="xmlSecKeyGenerateByName">xmlSecKeyGenerateByName</primary></indexterm><programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link>        xmlSecKeyGenerateByName             (const <link linkend="xmlChar">xmlChar</link> *name,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> sizeBits,
-                                                         <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
-<para>
-Generates new key of requested <parameter>klass</parameter> and <parameter>type</parameter>.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara>               the requested key klass name (rsa, dsa, aes, ...).
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>sizeBits</parameter>&#160;:</term>
-<listitem><simpara>           the new key size (in bits!).
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara>               the new key type (session, permanent, ...).
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly created key or NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyMatch" role="function">
-<title>xmlSecKeyMatch ()</title>
-<indexterm zone="xmlSecKeyMatch"><primary sortas="xmlSecKeyMatch">xmlSecKeyMatch</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecKeyMatch                      (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                                         const <link linkend="xmlChar">xmlChar</link> *name,
-                                                         <link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq);</programlisting>
-<para>
-Checks whether the <parameter>key</parameter> matches the given criteria.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to key.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara>               the pointer to key name (may be NULL).
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>keyReq</parameter>&#160;:</term>
-<listitem><simpara>             the pointer to key requirements.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 1 if the key satisfies the given criteria or 0 otherwise.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyReadBuffer" role="function">
-<title>xmlSecKeyReadBuffer ()</title>
-<indexterm zone="xmlSecKeyReadBuffer"><primary sortas="xmlSecKeyReadBuffer">xmlSecKeyReadBuffer</primary></indexterm><programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link>        xmlSecKeyReadBuffer                 (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId,
-                                                         <link linkend="xmlSecBuffer">xmlSecBuffer</link> *buffer);</programlisting>
-<para>
-Reads the key value of klass <parameter>dataId</parameter> from a buffer.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>dataId</parameter>&#160;:</term>
-<listitem><simpara>             the key value data klass.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>buffer</parameter>&#160;:</term>
-<listitem><simpara>             the buffer that contains the binary data.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly created key or NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyReadBinaryFile" role="function">
-<title>xmlSecKeyReadBinaryFile ()</title>
-<indexterm zone="xmlSecKeyReadBinaryFile"><primary sortas="xmlSecKeyReadBinaryFile">xmlSecKeyReadBinaryFile</primary></indexterm><programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link>        xmlSecKeyReadBinaryFile             (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId,
-                                                         const <link linkend="char">char</link> *filename);</programlisting>
-<para>
-Reads the key value of klass <parameter>dataId</parameter> from a binary file <parameter>filename</parameter>.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>dataId</parameter>&#160;:</term>
-<listitem><simpara>             the key value data klass.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>filename</parameter>&#160;:</term>
-<listitem><simpara>           the key binary filename.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly created key or NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyReadMemory" role="function">
-<title>xmlSecKeyReadMemory ()</title>
-<indexterm zone="xmlSecKeyReadMemory"><primary sortas="xmlSecKeyReadMemory">xmlSecKeyReadMemory</primary></indexterm><programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link>        xmlSecKeyReadMemory                 (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId,
-                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *data,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> dataSize);</programlisting>
-<para>
-Reads the key value of klass <parameter>dataId</parameter> from a memory block <parameter>data</parameter>.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>dataId</parameter>&#160;:</term>
-<listitem><simpara>             the key value data klass.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>               the memory containing the key
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>           the size of the memory block
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly created key or NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyIsValid" role="macro">
-<title>xmlSecKeyIsValid()</title>
-<indexterm zone="xmlSecKeyIsValid"><primary sortas="xmlSecKeyIsValid">xmlSecKeyIsValid</primary></indexterm><programlisting>#define             xmlSecKeyIsValid(key)</programlisting>
-<para>
-Macro. Returns 1 if <parameter>key</parameter> is not NULL and <parameter>key</parameter>-&gt;id is not NULL
-or 0 otherwise.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara> the pointer to key.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecKeyCheckId" role="macro">
-<title>xmlSecKeyCheckId()</title>
-<indexterm zone="xmlSecKeyCheckId"><primary sortas="xmlSecKeyCheckId">xmlSecKeyCheckId</primary></indexterm><programlisting>#define             xmlSecKeyCheckId(key, keyId)</programlisting>
-<para>
-Macro. Returns 1 if <parameter>key</parameter> is valid and <parameter>key</parameter>'s id is equal to <parameter>keyId</parameter>.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara> the pointer to key.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>keyId</parameter>&#160;:</term>
-<listitem><simpara> the key Id.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<para>The key.</para>
+<refsect3 role="struct_members">
+<title>Members</title>
+<informaltable role="struct_members_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="struct_members_name" colwidth="300px"/>
+<colspec colname="struct_members_description"/>
+<colspec colname="struct_members_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="struct_member_name"><para><link linkend="xmlChar"><type>xmlChar</type></link>&#160;*<structfield id="xmlSecKey.name">name</structfield>;</para></entry>
+<entry role="struct_member_description"><para>the key name.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row><entry role="struct_member_name"><para><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link>&#160;<structfield id="xmlSecKey.value">value</structfield>;</para></entry>
+<entry role="struct_member_description"><para>the key value.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row><entry role="struct_member_name"><para><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link>&#160;<structfield id="xmlSecKey.dataList">dataList</structfield>;</para></entry>
+<entry role="struct_member_description"><para>the key data list.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row><entry role="struct_member_name"><para><link linkend="xmlSecKeyUsage"><type>xmlSecKeyUsage</type></link>&#160;<structfield id="xmlSecKey.usage">usage</structfield>;</para></entry>
+<entry role="struct_member_description"><para>the key usage.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row><entry role="struct_member_name"><para><link linkend="time-t"><type>time_t</type></link>&#160;<structfield id="xmlSecKey.notValidBefore">notValidBefore</structfield>;</para></entry>
+<entry role="struct_member_description"><para>the start key validity interval.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row><entry role="struct_member_name"><para><link linkend="time-t"><type>time_t</type></link>&#160;<structfield id="xmlSecKey.notValidAfter">notValidAfter</structfield>;</para></entry>
+<entry role="struct_member_description"><para>the end key validity interval.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+</tbody></tgroup></informaltable>
+</refsect3>
+</refsect2>
 <refsect2 id="xmlSecKeyPtrListId" role="macro">
 <title>xmlSecKeyPtrListId</title>
-<indexterm zone="xmlSecKeyPtrListId"><primary sortas="xmlSecKeyPtrListId">xmlSecKeyPtrListId</primary></indexterm><programlisting>#define xmlSecKeyPtrListId      xmlSecKeyPtrListGetKlass()
+<indexterm zone="xmlSecKeyPtrListId"><primary>xmlSecKeyPtrListId</primary></indexterm>
+<programlisting language="C">#define xmlSecKeyPtrListId      xmlSecKeyPtrListGetKlass()
 </programlisting>
-<para>
-The keys list klass.</para>
-<para>
-</para></refsect2>
-<refsect2 id="xmlSecKeyPtrListGetKlass" role="function">
-<title>xmlSecKeyPtrListGetKlass ()</title>
-<indexterm zone="xmlSecKeyPtrListGetKlass"><primary sortas="xmlSecKeyPtrListGetKlass">xmlSecKeyPtrListGetKlass</primary></indexterm><programlisting><link linkend="xmlSecPtrListId">xmlSecPtrListId</link>     xmlSecKeyPtrListGetKlass            (void);</programlisting>
-<para>
-The keys list klass.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> keys list id.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<para>The keys list klass.</para>
+</refsect2>
 
 </refsect1>
-
-
-
 
 </refentry>

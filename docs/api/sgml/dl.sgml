@@ -4,35 +4,39 @@
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
-
 <refnamediv>
 <refname>dl</refname>
 <refpurpose>Dynamic crypto-engine library loading support.</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv id="xmlsec-dl.synopsis" role="synopsis">
-<title role="synopsis.title">Synopsis</title>
+<refsect1 id="xmlsec-dl.functions" role="functions_proto">
+<title role="functions_proto.title">Functions</title>
+<informaltable pgwide="1" frame="none">
+<tgroup cols="2">
+<colspec colname="functions_return" colwidth="150px"/>
+<colspec colname="functions_name"/>
+<tbody>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms">xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecCryptoDLInit">xmlSecCryptoDLInit</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecCryptoDLShutdown">xmlSecCryptoDLShutdown</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecCryptoDLLoadLibrary">xmlSecCryptoDLLoadLibrary</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlSecCryptoDLFunctions"><returnvalue>xmlSecCryptoDLFunctionsPtr</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecCryptoDLGetLibraryFunctions">xmlSecCryptoDLGetLibraryFunctions</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecCryptoDLUnloadLibrary">xmlSecCryptoDLUnloadLibrary</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecCryptoDLSetFunctions">xmlSecCryptoDLSetFunctions</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlSecCryptoDLFunctions"><returnvalue>xmlSecCryptoDLFunctionsPtr</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecCryptoDLGetFunctions">xmlSecCryptoDLGetFunctions</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
 
-<synopsis>
-<link linkend="int">int</link>                 <link linkend="xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms">xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms</link>
-                                                        (<link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link> functions);
-<link linkend="int">int</link>                 <link linkend="xmlSecCryptoDLInit">xmlSecCryptoDLInit</link>                  (void);
-<link linkend="int">int</link>                 <link linkend="xmlSecCryptoDLShutdown">xmlSecCryptoDLShutdown</link>              (void);
-<link linkend="int">int</link>                 <link linkend="xmlSecCryptoDLLoadLibrary">xmlSecCryptoDLLoadLibrary</link>           (const <link linkend="xmlChar">xmlChar</link> *crypto);
-<link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link>  <link linkend="xmlSecCryptoDLGetLibraryFunctions">xmlSecCryptoDLGetLibraryFunctions</link>
-                                                        (const <link linkend="xmlChar">xmlChar</link> *crypto);
-<link linkend="int">int</link>                 <link linkend="xmlSecCryptoDLUnloadLibrary">xmlSecCryptoDLUnloadLibrary</link>         (const <link linkend="xmlChar">xmlChar</link> *crypto);
-<link linkend="int">int</link>                 <link linkend="xmlSecCryptoDLSetFunctions">xmlSecCryptoDLSetFunctions</link>          (<link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link> functions);
-<link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link>  <link linkend="xmlSecCryptoDLGetFunctions">xmlSecCryptoDLGetFunctions</link>  (void);
-</synopsis>
-</refsynopsisdiv>
-
-
-
-
-
-
-
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
 
 
 <refsect1 id="xmlsec-dl.description" role="desc">
@@ -40,120 +44,166 @@
 <para>
 Dynamic crypto-engine library loading support.
 </para>
-</refsect1>
 
-<refsect1 id="xmlsec-dl.details" role="details">
-<title role="details.title">Details</title>
+</refsect1>
+<refsect1 id="xmlsec-dl.functions_details" role="details">
+<title role="details.title">Functions</title>
 <refsect2 id="xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms" role="function">
-<title>xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms ()</title>
-<indexterm zone="xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms"><primary sortas="xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms">xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms
-                                                        (<link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link> functions);</programlisting>
-<para>
-Registers the key data and transforms klasses from <parameter>functions</parameter> table in xmlsec.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>functions</parameter>&#160;:</term>
-<listitem><simpara>          the functions table.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<title>xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms&#160;()</title>
+<indexterm zone="xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms"><primary>xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms
+                               (<parameter><link linkend="xmlSecCryptoDLFunctions"><type>xmlSecCryptoDLFunctionsPtr</type></link> functions</parameter>);</programlisting>
+<para>Registers the key data and transforms klasses from <parameter>functions</parameter>
+ table in xmlsec.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>functions</para></entry>
+<entry role="parameter_description"><para>the functions table.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value if an error occurs.</para>
+</refsect3></refsect2>
 <refsect2 id="xmlSecCryptoDLInit" role="function">
-<title>xmlSecCryptoDLInit ()</title>
-<indexterm zone="xmlSecCryptoDLInit"><primary sortas="xmlSecCryptoDLInit">xmlSecCryptoDLInit</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecCryptoDLInit                  (void);</programlisting>
-<para>
-Initializes dynamic loading engine. This is an internal function
+<title>xmlSecCryptoDLInit&#160;()</title>
+<indexterm zone="xmlSecCryptoDLInit"><primary>xmlSecCryptoDLInit</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecCryptoDLInit (<parameter><type>void</type></parameter>);</programlisting>
+<para>Initializes dynamic loading engine. This is an internal function
 and should not be called by application directly.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value if an error occurs.</para>
+</refsect3></refsect2>
 <refsect2 id="xmlSecCryptoDLShutdown" role="function">
-<title>xmlSecCryptoDLShutdown ()</title>
-<indexterm zone="xmlSecCryptoDLShutdown"><primary sortas="xmlSecCryptoDLShutdown">xmlSecCryptoDLShutdown</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecCryptoDLShutdown              (void);</programlisting>
-<para>
-Shutdowns dynamic loading engine. This is an internal function
+<title>xmlSecCryptoDLShutdown&#160;()</title>
+<indexterm zone="xmlSecCryptoDLShutdown"><primary>xmlSecCryptoDLShutdown</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecCryptoDLShutdown (<parameter><type>void</type></parameter>);</programlisting>
+<para>Shutdowns dynamic loading engine. This is an internal function
 and should not be called by application directly.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value if an error occurs.</para>
+</refsect3></refsect2>
 <refsect2 id="xmlSecCryptoDLLoadLibrary" role="function">
-<title>xmlSecCryptoDLLoadLibrary ()</title>
-<indexterm zone="xmlSecCryptoDLLoadLibrary"><primary sortas="xmlSecCryptoDLLoadLibrary">xmlSecCryptoDLLoadLibrary</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecCryptoDLLoadLibrary           (const <link linkend="xmlChar">xmlChar</link> *crypto);</programlisting>
-<para>
-Loads the xmlsec-&lt;crypto&gt; library. This function is NOT thread safe,
+<title>xmlSecCryptoDLLoadLibrary&#160;()</title>
+<indexterm zone="xmlSecCryptoDLLoadLibrary"><primary>xmlSecCryptoDLLoadLibrary</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecCryptoDLLoadLibrary (<parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *crypto</parameter>);</programlisting>
+<para>Loads the xmlsec-&lt;crypto> library. This function is NOT thread safe,
 application MUST NOT call <link linkend="xmlSecCryptoDLLoadLibrary"><type>xmlSecCryptoDLLoadLibrary</type></link>, <link linkend="xmlSecCryptoDLGetLibraryFunctions"><type>xmlSecCryptoDLGetLibraryFunctions</type></link>,
 and <link linkend="xmlSecCryptoDLUnloadLibrary"><type>xmlSecCryptoDLUnloadLibrary</type></link> functions from multiple threads.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>crypto</parameter>&#160;:</term>
-<listitem><simpara>             the desired crypto library name ("openssl", "nss", ...).
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>crypto</para></entry>
+<entry role="parameter_description"><para>the desired crypto library name ("openssl", "nss", ...).</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value if an error occurs.</para>
+</refsect3></refsect2>
 <refsect2 id="xmlSecCryptoDLGetLibraryFunctions" role="function">
-<title>xmlSecCryptoDLGetLibraryFunctions ()</title>
-<indexterm zone="xmlSecCryptoDLGetLibraryFunctions"><primary sortas="xmlSecCryptoDLGetLibraryFunctions">xmlSecCryptoDLGetLibraryFunctions</primary></indexterm><programlisting><link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link>  xmlSecCryptoDLGetLibraryFunctions
-                                                        (const <link linkend="xmlChar">xmlChar</link> *crypto);</programlisting>
-<para>
-Loads the xmlsec-&lt;crypto&gt; library and gets global crypto functions/transforms/keys data/keys store
+<title>xmlSecCryptoDLGetLibraryFunctions&#160;()</title>
+<indexterm zone="xmlSecCryptoDLGetLibraryFunctions"><primary>xmlSecCryptoDLGetLibraryFunctions</primary></indexterm>
+<programlisting language="C"><link linkend="xmlSecCryptoDLFunctions"><returnvalue>xmlSecCryptoDLFunctionsPtr</returnvalue></link>
+xmlSecCryptoDLGetLibraryFunctions (<parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *crypto</parameter>);</programlisting>
+<para>Loads the xmlsec-&lt;crypto> library and gets global crypto functions/transforms/keys data/keys store
 table. This function is NOT thread safe, application MUST NOT call <link linkend="xmlSecCryptoDLLoadLibrary"><type>xmlSecCryptoDLLoadLibrary</type></link>,
 <link linkend="xmlSecCryptoDLGetLibraryFunctions"><type>xmlSecCryptoDLGetLibraryFunctions</type></link>, and <link linkend="xmlSecCryptoDLUnloadLibrary"><type>xmlSecCryptoDLUnloadLibrary</type></link> functions from multiple threads.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>crypto</parameter>&#160;:</term>
-<listitem><simpara>             the desired crypto library name ("openssl", "nss", ...).
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the table or NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>crypto</para></entry>
+<entry role="parameter_description"><para>the desired crypto library name ("openssl", "nss", ...).</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> the table or NULL if an error occurs.</para>
+</refsect3></refsect2>
 <refsect2 id="xmlSecCryptoDLUnloadLibrary" role="function">
-<title>xmlSecCryptoDLUnloadLibrary ()</title>
-<indexterm zone="xmlSecCryptoDLUnloadLibrary"><primary sortas="xmlSecCryptoDLUnloadLibrary">xmlSecCryptoDLUnloadLibrary</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecCryptoDLUnloadLibrary         (const <link linkend="xmlChar">xmlChar</link> *crypto);</programlisting>
-<para>
-Unloads the xmlsec-&lt;crypto&gt; library. All pointers to this library
+<title>xmlSecCryptoDLUnloadLibrary&#160;()</title>
+<indexterm zone="xmlSecCryptoDLUnloadLibrary"><primary>xmlSecCryptoDLUnloadLibrary</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecCryptoDLUnloadLibrary (<parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *crypto</parameter>);</programlisting>
+<para>Unloads the xmlsec-&lt;crypto> library. All pointers to this library
 functions tables became invalid. This function is NOT thread safe,
 application MUST NOT call <link linkend="xmlSecCryptoDLLoadLibrary"><type>xmlSecCryptoDLLoadLibrary</type></link>, <link linkend="xmlSecCryptoDLGetLibraryFunctions"><type>xmlSecCryptoDLGetLibraryFunctions</type></link>,
 and <link linkend="xmlSecCryptoDLUnloadLibrary"><type>xmlSecCryptoDLUnloadLibrary</type></link> functions from multiple threads.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>crypto</parameter>&#160;:</term>
-<listitem><simpara>             the desired crypto library name ("openssl", "nss", ...).
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>crypto</para></entry>
+<entry role="parameter_description"><para>the desired crypto library name ("openssl", "nss", ...).</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value if an error occurs.</para>
+</refsect3></refsect2>
 <refsect2 id="xmlSecCryptoDLSetFunctions" role="function">
-<title>xmlSecCryptoDLSetFunctions ()</title>
-<indexterm zone="xmlSecCryptoDLSetFunctions"><primary sortas="xmlSecCryptoDLSetFunctions">xmlSecCryptoDLSetFunctions</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecCryptoDLSetFunctions          (<link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link> functions);</programlisting>
-<para>
-Sets global crypto functions/transforms/keys data/keys store table.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>functions</parameter>&#160;:</term>
-<listitem><simpara>          the new table
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<title>xmlSecCryptoDLSetFunctions&#160;()</title>
+<indexterm zone="xmlSecCryptoDLSetFunctions"><primary>xmlSecCryptoDLSetFunctions</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecCryptoDLSetFunctions (<parameter><link linkend="xmlSecCryptoDLFunctions"><type>xmlSecCryptoDLFunctionsPtr</type></link> functions</parameter>);</programlisting>
+<para>Sets global crypto functions/transforms/keys data/keys store table.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>functions</para></entry>
+<entry role="parameter_description"><para>the new table</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value if an error occurs.</para>
+</refsect3></refsect2>
 <refsect2 id="xmlSecCryptoDLGetFunctions" role="function">
-<title>xmlSecCryptoDLGetFunctions ()</title>
-<indexterm zone="xmlSecCryptoDLGetFunctions"><primary sortas="xmlSecCryptoDLGetFunctions">xmlSecCryptoDLGetFunctions</primary></indexterm><programlisting><link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link>  xmlSecCryptoDLGetFunctions  (void);</programlisting>
-<para>
-Gets global crypto functions/transforms/keys data/keys store table.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the table.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<title>xmlSecCryptoDLGetFunctions&#160;()</title>
+<indexterm zone="xmlSecCryptoDLGetFunctions"><primary>xmlSecCryptoDLGetFunctions</primary></indexterm>
+<programlisting language="C"><link linkend="xmlSecCryptoDLFunctions"><returnvalue>xmlSecCryptoDLFunctionsPtr</returnvalue></link>
+xmlSecCryptoDLGetFunctions (<parameter><type>void</type></parameter>);</programlisting>
+<para>Gets global crypto functions/transforms/keys data/keys store table.</para>
+<refsect3 role="returns">
+<title>Returns</title>
+<para> the table.</para>
+</refsect3></refsect2>
 
 </refsect1>
+<refsect1 id="xmlsec-dl.other_details" role="details">
+<title role="details.title">Types and Values</title>
 
-
-
+</refsect1>
 
 </refentry>

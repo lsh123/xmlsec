@@ -1,3 +1,0 @@
-    &xmlsec-openssl-crypto;
-    &xmlsec-openssl-x509;
-    &xmlsec-openssl-symbols;

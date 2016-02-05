@@ -4,75 +4,53 @@
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC-GCRYPT Library</refmiscinfo>
 </refmeta>
-
 <refnamediv>
 <refname>app</refname>
 <refpurpose>Application functions implementation for GnuTLS.</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv id="xmlsec-gcrypt-app.synopsis" role="synopsis">
-<title role="synopsis.title">Synopsis</title>
+<refsect1 id="xmlsec-gcrypt-app.functions" role="functions_proto">
+<title role="functions_proto.title">Functions</title>
+<informaltable pgwide="1" frame="none">
+<tgroup cols="2">
+<colspec colname="functions_return" colwidth="150px"/>
+<colspec colname="functions_name"/>
+<tbody>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecGCryptAppInit">xmlSecGCryptAppInit</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecGCryptAppShutdown">xmlSecGCryptAppShutdown</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecGCryptAppDefaultKeysMngrInit">xmlSecGCryptAppDefaultKeysMngrInit</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecGCryptAppDefaultKeysMngrAdoptKey">xmlSecGCryptAppDefaultKeysMngrAdoptKey</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecGCryptAppDefaultKeysMngrLoad">xmlSecGCryptAppDefaultKeysMngrLoad</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecGCryptAppDefaultKeysMngrSave">xmlSecGCryptAppDefaultKeysMngrSave</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecGCryptAppKeysMngrCertLoad">xmlSecGCryptAppKeysMngrCertLoad</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecGCryptAppKeysMngrCertLoadMemory">xmlSecGCryptAppKeysMngrCertLoadMemory</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecGCryptAppKeyLoad">xmlSecGCryptAppKeyLoad</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecGCryptAppKeyLoadMemory">xmlSecGCryptAppKeyLoadMemory</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecGCryptAppPkcs12Load">xmlSecGCryptAppPkcs12Load</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecGCryptAppPkcs12LoadMemory">xmlSecGCryptAppPkcs12LoadMemory</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecGCryptAppKeyCertLoad">xmlSecGCryptAppKeyCertLoad</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecGCryptAppKeyCertLoadMemory">xmlSecGCryptAppKeyCertLoadMemory</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>&#160;*
+</entry><entry role="function_name"><link linkend="xmlSecGCryptAppGetDefaultPwdCallback">xmlSecGCryptAppGetDefaultPwdCallback</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
 
-<synopsis>
-<link linkend="int">int</link>                 <link linkend="xmlSecGCryptAppInit">xmlSecGCryptAppInit</link>                 (const <link linkend="char">char</link> *config);
-<link linkend="int">int</link>                 <link linkend="xmlSecGCryptAppShutdown">xmlSecGCryptAppShutdown</link>             (void);
-<link linkend="int">int</link>                 <link linkend="xmlSecGCryptAppDefaultKeysMngrInit">xmlSecGCryptAppDefaultKeysMngrInit</link>  (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);
-<link linkend="int">int</link>                 <link linkend="xmlSecGCryptAppDefaultKeysMngrAdoptKey">xmlSecGCryptAppDefaultKeysMngrAdoptKey</link>
-                                                        (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                                         <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
-<link linkend="int">int</link>                 <link linkend="xmlSecGCryptAppDefaultKeysMngrLoad">xmlSecGCryptAppDefaultKeysMngrLoad</link>  (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                                         const <link linkend="char">char</link> *uri);
-<link linkend="int">int</link>                 <link linkend="xmlSecGCryptAppDefaultKeysMngrSave">xmlSecGCryptAppDefaultKeysMngrSave</link>  (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                                         const <link linkend="char">char</link> *filename,
-                                                         <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
-<link linkend="int">int</link>                 <link linkend="xmlSecGCryptAppKeysMngrCertLoad">xmlSecGCryptAppKeysMngrCertLoad</link>     (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                                         const <link linkend="char">char</link> *filename,
-                                                         <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
-                                                         <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
-<link linkend="int">int</link>                 <link linkend="xmlSecGCryptAppKeysMngrCertLoadMemory">xmlSecGCryptAppKeysMngrCertLoadMemory</link>
-                                                        (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *data,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
-                                                         <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
-                                                         <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
-<link linkend="xmlSecKey">xmlSecKeyPtr</link>        <link linkend="xmlSecGCryptAppKeyLoad">xmlSecGCryptAppKeyLoad</link>              (const <link linkend="char">char</link> *filename,
-                                                         <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
-                                                         const <link linkend="char">char</link> *pwd,
-                                                         <link linkend="void">void</link> *pwdCallback,
-                                                         <link linkend="void">void</link> *pwdCallbackCtx);
-<link linkend="xmlSecKey">xmlSecKeyPtr</link>        <link linkend="xmlSecGCryptAppKeyLoadMemory">xmlSecGCryptAppKeyLoadMemory</link>        (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
-                                                         <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
-                                                         const <link linkend="char">char</link> *pwd,
-                                                         <link linkend="void">void</link> *pwdCallback,
-                                                         <link linkend="void">void</link> *pwdCallbackCtx);
-<link linkend="xmlSecKey">xmlSecKeyPtr</link>        <link linkend="xmlSecGCryptAppPkcs12Load">xmlSecGCryptAppPkcs12Load</link>           (const <link linkend="char">char</link> *filename,
-                                                         const <link linkend="char">char</link> *pwd,
-                                                         <link linkend="void">void</link> *pwdCallback,
-                                                         <link linkend="void">void</link> *pwdCallbackCtx);
-<link linkend="xmlSecKey">xmlSecKeyPtr</link>        <link linkend="xmlSecGCryptAppPkcs12LoadMemory">xmlSecGCryptAppPkcs12LoadMemory</link>     (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
-                                                         const <link linkend="char">char</link> *pwd,
-                                                         <link linkend="void">void</link> *pwdCallback,
-                                                         <link linkend="void">void</link> *pwdCallbackCtx);
-<link linkend="int">int</link>                 <link linkend="xmlSecGCryptAppKeyCertLoad">xmlSecGCryptAppKeyCertLoad</link>          (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                                         const <link linkend="char">char</link> *filename,
-                                                         <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);
-<link linkend="int">int</link>                 <link linkend="xmlSecGCryptAppKeyCertLoadMemory">xmlSecGCryptAppKeyCertLoadMemory</link>    (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *data,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
-                                                         <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);
-<link linkend="void">void</link>*               <link linkend="xmlSecGCryptAppGetDefaultPwdCallback">xmlSecGCryptAppGetDefaultPwdCallback</link>
-                                                        (void);
-</synopsis>
-</refsynopsisdiv>
-
-
-
-
-
-
-
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
 
 
 <refsect1 id="xmlsec-gcrypt-app.description" role="desc">
@@ -80,350 +58,479 @@
 <para>
 Application functions implementation for GCrypt.
 </para>
-</refsect1>
 
-<refsect1 id="xmlsec-gcrypt-app.details" role="details">
-<title role="details.title">Details</title>
+</refsect1>
+<refsect1 id="xmlsec-gcrypt-app.functions_details" role="details">
+<title role="details.title">Functions</title>
 <refsect2 id="xmlSecGCryptAppInit" role="function">
-<title>xmlSecGCryptAppInit ()</title>
-<indexterm zone="xmlSecGCryptAppInit"><primary sortas="xmlSecGCryptAppInit">xmlSecGCryptAppInit</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGCryptAppInit                 (const <link linkend="char">char</link> *config);</programlisting>
-<para>
-General crypto engine initialization. This function is used
+<title>xmlSecGCryptAppInit&#160;()</title>
+<indexterm zone="xmlSecGCryptAppInit"><primary>xmlSecGCryptAppInit</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecGCryptAppInit (<parameter>const <link linkend="char"><type>char</type></link> *config</parameter>);</programlisting>
+<para>General crypto engine initialization. This function is used
 by XMLSec command line utility and called before
-<parameter>xmlSecInit</parameter> function.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&#160;:</term>
-<listitem><simpara>             the path to GCrypt configuration (unused).
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<parameter>xmlSecInit</parameter>
+ function.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>config</para></entry>
+<entry role="parameter_description"><para>the path to GCrypt configuration (unused).</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value otherwise.</para>
+</refsect3></refsect2>
 <refsect2 id="xmlSecGCryptAppShutdown" role="function">
-<title>xmlSecGCryptAppShutdown ()</title>
-<indexterm zone="xmlSecGCryptAppShutdown"><primary sortas="xmlSecGCryptAppShutdown">xmlSecGCryptAppShutdown</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGCryptAppShutdown             (void);</programlisting>
-<para>
-General crypto engine shutdown. This function is used
+<title>xmlSecGCryptAppShutdown&#160;()</title>
+<indexterm zone="xmlSecGCryptAppShutdown"><primary>xmlSecGCryptAppShutdown</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecGCryptAppShutdown (<parameter><type>void</type></parameter>);</programlisting>
+<para>General crypto engine shutdown. This function is used
 by XMLSec command line utility and called after
-<parameter>xmlSecShutdown</parameter> function.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<parameter>xmlSecShutdown</parameter>
+ function.</para>
+<refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value otherwise.</para>
+</refsect3></refsect2>
 <refsect2 id="xmlSecGCryptAppDefaultKeysMngrInit" role="function">
-<title>xmlSecGCryptAppDefaultKeysMngrInit ()</title>
-<indexterm zone="xmlSecGCryptAppDefaultKeysMngrInit"><primary sortas="xmlSecGCryptAppDefaultKeysMngrInit">xmlSecGCryptAppDefaultKeysMngrInit</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGCryptAppDefaultKeysMngrInit  (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
-<para>
-Initializes <parameter>mngr</parameter> with simple keys store <link linkend="xmlSecSimpleKeysStoreId"><type>xmlSecSimpleKeysStoreId</type></link>
+<title>xmlSecGCryptAppDefaultKeysMngrInit&#160;()</title>
+<indexterm zone="xmlSecGCryptAppDefaultKeysMngrInit"><primary>xmlSecGCryptAppDefaultKeysMngrInit</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecGCryptAppDefaultKeysMngrInit (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> mngr</parameter>);</programlisting>
+<para>Initializes <parameter>mngr</parameter>
+ with simple keys store <link linkend="xmlSecSimpleKeysStoreId"><type>xmlSecSimpleKeysStoreId</type></link>
 and a default GCrypt crypto key data stores.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara>               the pointer to keys manager.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>mngr</para></entry>
+<entry role="parameter_description"><para>the pointer to keys manager.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value otherwise.</para>
+</refsect3></refsect2>
 <refsect2 id="xmlSecGCryptAppDefaultKeysMngrAdoptKey" role="function">
-<title>xmlSecGCryptAppDefaultKeysMngrAdoptKey ()</title>
-<indexterm zone="xmlSecGCryptAppDefaultKeysMngrAdoptKey"><primary sortas="xmlSecGCryptAppDefaultKeysMngrAdoptKey">xmlSecGCryptAppDefaultKeysMngrAdoptKey</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGCryptAppDefaultKeysMngrAdoptKey
-                                                        (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                                         <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
-<para>
-Adds <parameter>key</parameter> to the keys manager <parameter>mngr</parameter> created with <link linkend="xmlSecGCryptAppDefaultKeysMngrInit"><type>xmlSecGCryptAppDefaultKeysMngrInit</type></link>
+<title>xmlSecGCryptAppDefaultKeysMngrAdoptKey&#160;()</title>
+<indexterm zone="xmlSecGCryptAppDefaultKeysMngrAdoptKey"><primary>xmlSecGCryptAppDefaultKeysMngrAdoptKey</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecGCryptAppDefaultKeysMngrAdoptKey
+                               (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> mngr</parameter>,
+                                <parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>);</programlisting>
+<para>Adds <parameter>key</parameter>
+ to the keys manager <parameter>mngr</parameter>
+ created with <link linkend="xmlSecGCryptAppDefaultKeysMngrInit"><type>xmlSecGCryptAppDefaultKeysMngrInit</type></link>
 function.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara>               the pointer to keys manager.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to key.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>mngr</para></entry>
+<entry role="parameter_description"><para>the pointer to keys manager.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>key</para></entry>
+<entry role="parameter_description"><para>the pointer to key.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value otherwise.</para>
+</refsect3></refsect2>
 <refsect2 id="xmlSecGCryptAppDefaultKeysMngrLoad" role="function">
-<title>xmlSecGCryptAppDefaultKeysMngrLoad ()</title>
-<indexterm zone="xmlSecGCryptAppDefaultKeysMngrLoad"><primary sortas="xmlSecGCryptAppDefaultKeysMngrLoad">xmlSecGCryptAppDefaultKeysMngrLoad</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGCryptAppDefaultKeysMngrLoad  (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                                         const <link linkend="char">char</link> *uri);</programlisting>
-<para>
-Loads XML keys file from <parameter>uri</parameter> to the keys manager <parameter>mngr</parameter> created
+<title>xmlSecGCryptAppDefaultKeysMngrLoad&#160;()</title>
+<indexterm zone="xmlSecGCryptAppDefaultKeysMngrLoad"><primary>xmlSecGCryptAppDefaultKeysMngrLoad</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecGCryptAppDefaultKeysMngrLoad (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> mngr</parameter>,
+                                    <parameter>const <link linkend="char"><type>char</type></link> *uri</parameter>);</programlisting>
+<para>Loads XML keys file from <parameter>uri</parameter>
+ to the keys manager <parameter>mngr</parameter>
+ created
 with <link linkend="xmlSecGCryptAppDefaultKeysMngrInit"><type>xmlSecGCryptAppDefaultKeysMngrInit</type></link> function.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara>               the pointer to keys manager.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>uri</parameter>&#160;:</term>
-<listitem><simpara>                the uri.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>mngr</para></entry>
+<entry role="parameter_description"><para>the pointer to keys manager.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>uri</para></entry>
+<entry role="parameter_description"><para>the uri.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value otherwise.</para>
+</refsect3></refsect2>
 <refsect2 id="xmlSecGCryptAppDefaultKeysMngrSave" role="function">
-<title>xmlSecGCryptAppDefaultKeysMngrSave ()</title>
-<indexterm zone="xmlSecGCryptAppDefaultKeysMngrSave"><primary sortas="xmlSecGCryptAppDefaultKeysMngrSave">xmlSecGCryptAppDefaultKeysMngrSave</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGCryptAppDefaultKeysMngrSave  (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                                         const <link linkend="char">char</link> *filename,
-                                                         <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
-<para>
-Saves keys from <parameter>mngr</parameter> to  XML keys file.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara>               the pointer to keys manager.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>filename</parameter>&#160;:</term>
-<listitem><simpara>           the destination filename.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara>               the type of keys to save (public/private/symmetric).
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<title>xmlSecGCryptAppDefaultKeysMngrSave&#160;()</title>
+<indexterm zone="xmlSecGCryptAppDefaultKeysMngrSave"><primary>xmlSecGCryptAppDefaultKeysMngrSave</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecGCryptAppDefaultKeysMngrSave (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> mngr</parameter>,
+                                    <parameter>const <link linkend="char"><type>char</type></link> *filename</parameter>,
+                                    <parameter><link linkend="xmlSecKeyDataType"><type>xmlSecKeyDataType</type></link> type</parameter>);</programlisting>
+<para>Saves keys from <parameter>mngr</parameter>
+ to  XML keys file.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>mngr</para></entry>
+<entry role="parameter_description"><para>the pointer to keys manager.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>filename</para></entry>
+<entry role="parameter_description"><para>the destination filename.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>type</para></entry>
+<entry role="parameter_description"><para>the type of keys to save (public/private/symmetric).</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value otherwise.</para>
+</refsect3></refsect2>
 <refsect2 id="xmlSecGCryptAppKeysMngrCertLoad" role="function">
-<title>xmlSecGCryptAppKeysMngrCertLoad ()</title>
-<indexterm zone="xmlSecGCryptAppKeysMngrCertLoad"><primary sortas="xmlSecGCryptAppKeysMngrCertLoad">xmlSecGCryptAppKeysMngrCertLoad</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGCryptAppKeysMngrCertLoad     (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                                         const <link linkend="char">char</link> *filename,
-                                                         <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
-                                                         <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
-<para>
-Reads cert from <parameter>filename</parameter> and adds to the list of trusted or known
-untrusted certs in <parameter>store</parameter> (not implemented yet).</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara>               the keys manager.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>filename</parameter>&#160;:</term>
-<listitem><simpara>           the certificate file.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>             the certificate file format.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara>               the flag that indicates is the certificate in <parameter>filename</parameter>
-                     trusted or not.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<title>xmlSecGCryptAppKeysMngrCertLoad&#160;()</title>
+<indexterm zone="xmlSecGCryptAppKeysMngrCertLoad"><primary>xmlSecGCryptAppKeysMngrCertLoad</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecGCryptAppKeysMngrCertLoad (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> mngr</parameter>,
+                                 <parameter>const <link linkend="char"><type>char</type></link> *filename</parameter>,
+                                 <parameter><link linkend="xmlSecKeyDataFormat"><type>xmlSecKeyDataFormat</type></link> format</parameter>,
+                                 <parameter><link linkend="xmlSecKeyDataType"><type>xmlSecKeyDataType</type></link> type</parameter>);</programlisting>
+<para>Reads cert from <parameter>filename</parameter>
+ and adds to the list of trusted or known
+untrusted certs in <parameter>store</parameter>
+ (not implemented yet).</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>mngr</para></entry>
+<entry role="parameter_description"><para>the keys manager.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>filename</para></entry>
+<entry role="parameter_description"><para>the certificate file.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>format</para></entry>
+<entry role="parameter_description"><para>the certificate file format.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>type</para></entry>
+<entry role="parameter_description"><para>the flag that indicates is the certificate in <parameter>filename</parameter>
+trusted or not.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value otherwise.</para>
+</refsect3></refsect2>
 <refsect2 id="xmlSecGCryptAppKeysMngrCertLoadMemory" role="function">
-<title>xmlSecGCryptAppKeysMngrCertLoadMemory ()</title>
-<indexterm zone="xmlSecGCryptAppKeysMngrCertLoadMemory"><primary sortas="xmlSecGCryptAppKeysMngrCertLoadMemory">xmlSecGCryptAppKeysMngrCertLoadMemory</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGCryptAppKeysMngrCertLoadMemory
-                                                        (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *data,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
-                                                         <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
-                                                         <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
-<para>
-Reads cert from binary buffer <parameter>data</parameter> and adds to the list of trusted or known
-untrusted certs in <parameter>store</parameter> (not implemented yet).</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara>               the keys manager.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>               the certificate binary data.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>           the certificate binary data size.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>             the certificate file format.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara>               the flag that indicates is the certificate trusted or not.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<title>xmlSecGCryptAppKeysMngrCertLoadMemory&#160;()</title>
+<indexterm zone="xmlSecGCryptAppKeysMngrCertLoadMemory"><primary>xmlSecGCryptAppKeysMngrCertLoadMemory</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecGCryptAppKeysMngrCertLoadMemory (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> mngr</parameter>,
+                                       <parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *data</parameter>,
+                                       <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> dataSize</parameter>,
+                                       <parameter><link linkend="xmlSecKeyDataFormat"><type>xmlSecKeyDataFormat</type></link> format</parameter>,
+                                       <parameter><link linkend="xmlSecKeyDataType"><type>xmlSecKeyDataType</type></link> type</parameter>);</programlisting>
+<para>Reads cert from binary buffer <parameter>data</parameter>
+ and adds to the list of trusted or known
+untrusted certs in <parameter>store</parameter>
+ (not implemented yet).</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>mngr</para></entry>
+<entry role="parameter_description"><para>the keys manager.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>data</para></entry>
+<entry role="parameter_description"><para>the certificate binary data.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>dataSize</para></entry>
+<entry role="parameter_description"><para>the certificate binary data size.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>format</para></entry>
+<entry role="parameter_description"><para>the certificate file format.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>type</para></entry>
+<entry role="parameter_description"><para>the flag that indicates is the certificate trusted or not.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value otherwise.</para>
+</refsect3></refsect2>
 <refsect2 id="xmlSecGCryptAppKeyLoad" role="function">
-<title>xmlSecGCryptAppKeyLoad ()</title>
-<indexterm zone="xmlSecGCryptAppKeyLoad"><primary sortas="xmlSecGCryptAppKeyLoad">xmlSecGCryptAppKeyLoad</primary></indexterm><programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link>        xmlSecGCryptAppKeyLoad              (const <link linkend="char">char</link> *filename,
-                                                         <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
-                                                         const <link linkend="char">char</link> *pwd,
-                                                         <link linkend="void">void</link> *pwdCallback,
-                                                         <link linkend="void">void</link> *pwdCallbackCtx);</programlisting>
-<para>
-Reads key from the a file.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>filename</parameter>&#160;:</term>
-<listitem><simpara>           the key filename.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>             the key file format.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pwd</parameter>&#160;:</term>
-<listitem><simpara>                the key file password.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pwdCallback</parameter>&#160;:</term>
-<listitem><simpara>        the key password callback.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pwdCallbackCtx</parameter>&#160;:</term>
-<listitem><simpara>     the user context for password callback.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the key or NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<title>xmlSecGCryptAppKeyLoad&#160;()</title>
+<indexterm zone="xmlSecGCryptAppKeyLoad"><primary>xmlSecGCryptAppKeyLoad</primary></indexterm>
+<programlisting language="C"><link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>
+xmlSecGCryptAppKeyLoad (<parameter>const <link linkend="char"><type>char</type></link> *filename</parameter>,
+                        <parameter><link linkend="xmlSecKeyDataFormat"><type>xmlSecKeyDataFormat</type></link> format</parameter>,
+                        <parameter>const <link linkend="char"><type>char</type></link> *pwd</parameter>,
+                        <parameter><link linkend="void"><type>void</type></link> *pwdCallback</parameter>,
+                        <parameter><link linkend="void"><type>void</type></link> *pwdCallbackCtx</parameter>);</programlisting>
+<para>Reads key from the a file.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>filename</para></entry>
+<entry role="parameter_description"><para>the key filename.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>format</para></entry>
+<entry role="parameter_description"><para>the key file format.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>pwd</para></entry>
+<entry role="parameter_description"><para>the key file password.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>pwdCallback</para></entry>
+<entry role="parameter_description"><para>the key password callback.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>pwdCallbackCtx</para></entry>
+<entry role="parameter_description"><para>the user context for password callback.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> pointer to the key or NULL if an error occurs.</para>
+</refsect3></refsect2>
 <refsect2 id="xmlSecGCryptAppKeyLoadMemory" role="function">
-<title>xmlSecGCryptAppKeyLoadMemory ()</title>
-<indexterm zone="xmlSecGCryptAppKeyLoadMemory"><primary sortas="xmlSecGCryptAppKeyLoadMemory">xmlSecGCryptAppKeyLoadMemory</primary></indexterm><programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link>        xmlSecGCryptAppKeyLoadMemory        (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
-                                                         <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
-                                                         const <link linkend="char">char</link> *pwd,
-                                                         <link linkend="void">void</link> *pwdCallback,
-                                                         <link linkend="void">void</link> *pwdCallbackCtx);</programlisting>
-<para>
-Reads key from the memory buffer.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>               the binary key data.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>           the size of binary key.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>             the key file format.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pwd</parameter>&#160;:</term>
-<listitem><simpara>                the key file password.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pwdCallback</parameter>&#160;:</term>
-<listitem><simpara>        the key password callback.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pwdCallbackCtx</parameter>&#160;:</term>
-<listitem><simpara>     the user context for password callback.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the key or NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<title>xmlSecGCryptAppKeyLoadMemory&#160;()</title>
+<indexterm zone="xmlSecGCryptAppKeyLoadMemory"><primary>xmlSecGCryptAppKeyLoadMemory</primary></indexterm>
+<programlisting language="C"><link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>
+xmlSecGCryptAppKeyLoadMemory (<parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *data</parameter>,
+                              <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> dataSize</parameter>,
+                              <parameter><link linkend="xmlSecKeyDataFormat"><type>xmlSecKeyDataFormat</type></link> format</parameter>,
+                              <parameter>const <link linkend="char"><type>char</type></link> *pwd</parameter>,
+                              <parameter><link linkend="void"><type>void</type></link> *pwdCallback</parameter>,
+                              <parameter><link linkend="void"><type>void</type></link> *pwdCallbackCtx</parameter>);</programlisting>
+<para>Reads key from the memory buffer.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>data</para></entry>
+<entry role="parameter_description"><para>the binary key data.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>dataSize</para></entry>
+<entry role="parameter_description"><para>the size of binary key.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>format</para></entry>
+<entry role="parameter_description"><para>the key file format.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>pwd</para></entry>
+<entry role="parameter_description"><para>the key file password.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>pwdCallback</para></entry>
+<entry role="parameter_description"><para>the key password callback.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>pwdCallbackCtx</para></entry>
+<entry role="parameter_description"><para>the user context for password callback.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> pointer to the key or NULL if an error occurs.</para>
+</refsect3></refsect2>
 <refsect2 id="xmlSecGCryptAppPkcs12Load" role="function">
-<title>xmlSecGCryptAppPkcs12Load ()</title>
-<indexterm zone="xmlSecGCryptAppPkcs12Load"><primary sortas="xmlSecGCryptAppPkcs12Load">xmlSecGCryptAppPkcs12Load</primary></indexterm><programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link>        xmlSecGCryptAppPkcs12Load           (const <link linkend="char">char</link> *filename,
-                                                         const <link linkend="char">char</link> *pwd,
-                                                         <link linkend="void">void</link> *pwdCallback,
-                                                         <link linkend="void">void</link> *pwdCallbackCtx);</programlisting>
-<para>
-Reads key and all associated certificates from the PKCS12 file
+<title>xmlSecGCryptAppPkcs12Load&#160;()</title>
+<indexterm zone="xmlSecGCryptAppPkcs12Load"><primary>xmlSecGCryptAppPkcs12Load</primary></indexterm>
+<programlisting language="C"><link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>
+xmlSecGCryptAppPkcs12Load (<parameter>const <link linkend="char"><type>char</type></link> *filename</parameter>,
+                           <parameter>const <link linkend="char"><type>char</type></link> *pwd</parameter>,
+                           <parameter><link linkend="void"><type>void</type></link> *pwdCallback</parameter>,
+                           <parameter><link linkend="void"><type>void</type></link> *pwdCallbackCtx</parameter>);</programlisting>
+<para>Reads key and all associated certificates from the PKCS12 file
 (not implemented yet).
 For uniformity, call xmlSecGCryptAppKeyLoad instead of this function. Pass
 in format=xmlSecKeyDataFormatPkcs12.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>filename</parameter>&#160;:</term>
-<listitem><simpara>           the PKCS12 key filename.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pwd</parameter>&#160;:</term>
-<listitem><simpara>                the PKCS12 file password.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pwdCallback</parameter>&#160;:</term>
-<listitem><simpara>        the password callback.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pwdCallbackCtx</parameter>&#160;:</term>
-<listitem><simpara>     the user context for password callback.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the key or NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>filename</para></entry>
+<entry role="parameter_description"><para>the PKCS12 key filename.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>pwd</para></entry>
+<entry role="parameter_description"><para>the PKCS12 file password.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>pwdCallback</para></entry>
+<entry role="parameter_description"><para>the password callback.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>pwdCallbackCtx</para></entry>
+<entry role="parameter_description"><para>the user context for password callback.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> pointer to the key or NULL if an error occurs.</para>
+</refsect3></refsect2>
 <refsect2 id="xmlSecGCryptAppPkcs12LoadMemory" role="function">
-<title>xmlSecGCryptAppPkcs12LoadMemory ()</title>
-<indexterm zone="xmlSecGCryptAppPkcs12LoadMemory"><primary sortas="xmlSecGCryptAppPkcs12LoadMemory">xmlSecGCryptAppPkcs12LoadMemory</primary></indexterm><programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link>        xmlSecGCryptAppPkcs12LoadMemory     (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
-                                                         const <link linkend="char">char</link> *pwd,
-                                                         <link linkend="void">void</link> *pwdCallback,
-                                                         <link linkend="void">void</link> *pwdCallbackCtx);</programlisting>
-<para>
-Reads key and all associated certificates from the PKCS12 data in memory buffer.
+<title>xmlSecGCryptAppPkcs12LoadMemory&#160;()</title>
+<indexterm zone="xmlSecGCryptAppPkcs12LoadMemory"><primary>xmlSecGCryptAppPkcs12LoadMemory</primary></indexterm>
+<programlisting language="C"><link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>
+xmlSecGCryptAppPkcs12LoadMemory (<parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *data</parameter>,
+                                 <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> dataSize</parameter>,
+                                 <parameter>const <link linkend="char"><type>char</type></link> *pwd</parameter>,
+                                 <parameter><link linkend="void"><type>void</type></link> *pwdCallback</parameter>,
+                                 <parameter><link linkend="void"><type>void</type></link> *pwdCallbackCtx</parameter>);</programlisting>
+<para>Reads key and all associated certificates from the PKCS12 data in memory buffer.
 For uniformity, call xmlSecGCryptAppKeyLoadMemory instead of this function. Pass
 in format=xmlSecKeyDataFormatPkcs12 (not implemented yet).</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>               the PKCS12 binary data.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>           the PKCS12 binary data size.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pwd</parameter>&#160;:</term>
-<listitem><simpara>                the PKCS12 file password.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pwdCallback</parameter>&#160;:</term>
-<listitem><simpara>        the password callback.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pwdCallbackCtx</parameter>&#160;:</term>
-<listitem><simpara>     the user context for password callback.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the key or NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>data</para></entry>
+<entry role="parameter_description"><para>the PKCS12 binary data.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>dataSize</para></entry>
+<entry role="parameter_description"><para>the PKCS12 binary data size.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>pwd</para></entry>
+<entry role="parameter_description"><para>the PKCS12 file password.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>pwdCallback</para></entry>
+<entry role="parameter_description"><para>the password callback.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>pwdCallbackCtx</para></entry>
+<entry role="parameter_description"><para>the user context for password callback.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> pointer to the key or NULL if an error occurs.</para>
+</refsect3></refsect2>
 <refsect2 id="xmlSecGCryptAppKeyCertLoad" role="function">
-<title>xmlSecGCryptAppKeyCertLoad ()</title>
-<indexterm zone="xmlSecGCryptAppKeyCertLoad"><primary sortas="xmlSecGCryptAppKeyCertLoad">xmlSecGCryptAppKeyCertLoad</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGCryptAppKeyCertLoad          (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                                         const <link linkend="char">char</link> *filename,
-                                                         <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);</programlisting>
-<para>
-Reads the certificate from $<parameter>filename</parameter> and adds it to key
+<title>xmlSecGCryptAppKeyCertLoad&#160;()</title>
+<indexterm zone="xmlSecGCryptAppKeyCertLoad"><primary>xmlSecGCryptAppKeyCertLoad</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecGCryptAppKeyCertLoad (<parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>,
+                            <parameter>const <link linkend="char"><type>char</type></link> *filename</parameter>,
+                            <parameter><link linkend="xmlSecKeyDataFormat"><type>xmlSecKeyDataFormat</type></link> format</parameter>);</programlisting>
+<para>Reads the certificate from $<parameter>filename</parameter>
+ and adds it to key
 (not implemented yet).</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to key.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>filename</parameter>&#160;:</term>
-<listitem><simpara>           the certificate filename.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>             the certificate file format.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>key</para></entry>
+<entry role="parameter_description"><para>the pointer to key.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>filename</para></entry>
+<entry role="parameter_description"><para>the certificate filename.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>format</para></entry>
+<entry role="parameter_description"><para>the certificate file format.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value otherwise.</para>
+</refsect3></refsect2>
 <refsect2 id="xmlSecGCryptAppKeyCertLoadMemory" role="function">
-<title>xmlSecGCryptAppKeyCertLoadMemory ()</title>
-<indexterm zone="xmlSecGCryptAppKeyCertLoadMemory"><primary sortas="xmlSecGCryptAppKeyCertLoadMemory">xmlSecGCryptAppKeyCertLoadMemory</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGCryptAppKeyCertLoadMemory    (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *data,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
-                                                         <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);</programlisting>
-<para>
-Reads the certificate from memory buffer and adds it to key (not implemented yet).</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to key.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>               the certificate binary data.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>           the certificate binary data size.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>             the certificate file format.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<title>xmlSecGCryptAppKeyCertLoadMemory&#160;()</title>
+<indexterm zone="xmlSecGCryptAppKeyCertLoadMemory"><primary>xmlSecGCryptAppKeyCertLoadMemory</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecGCryptAppKeyCertLoadMemory (<parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>,
+                                  <parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *data</parameter>,
+                                  <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> dataSize</parameter>,
+                                  <parameter><link linkend="xmlSecKeyDataFormat"><type>xmlSecKeyDataFormat</type></link> format</parameter>);</programlisting>
+<para>Reads the certificate from memory buffer and adds it to key (not implemented yet).</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>key</para></entry>
+<entry role="parameter_description"><para>the pointer to key.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>data</para></entry>
+<entry role="parameter_description"><para>the certificate binary data.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>dataSize</para></entry>
+<entry role="parameter_description"><para>the certificate binary data size.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>format</para></entry>
+<entry role="parameter_description"><para>the certificate file format.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value otherwise.</para>
+</refsect3></refsect2>
 <refsect2 id="xmlSecGCryptAppGetDefaultPwdCallback" role="function">
-<title>xmlSecGCryptAppGetDefaultPwdCallback ()</title>
-<indexterm zone="xmlSecGCryptAppGetDefaultPwdCallback"><primary sortas="xmlSecGCryptAppGetDefaultPwdCallback">xmlSecGCryptAppGetDefaultPwdCallback</primary></indexterm><programlisting><link linkend="void">void</link>*               xmlSecGCryptAppGetDefaultPwdCallback
-                                                        (void);</programlisting>
-<para>
-Gets default password callback.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> default password callback.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<title>xmlSecGCryptAppGetDefaultPwdCallback&#160;()</title>
+<indexterm zone="xmlSecGCryptAppGetDefaultPwdCallback"><primary>xmlSecGCryptAppGetDefaultPwdCallback</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>&#160;*
+xmlSecGCryptAppGetDefaultPwdCallback (<parameter><type>void</type></parameter>);</programlisting>
+<para>Gets default password callback.</para>
+<refsect3 role="returns">
+<title>Returns</title>
+<para> default password callback.</para>
+</refsect3></refsect2>
 
 </refsect1>
+<refsect1 id="xmlsec-gcrypt-app.other_details" role="details">
+<title role="details.title">Types and Values</title>
 
-
-
+</refsect1>
 
 </refentry>

@@ -4,37 +4,44 @@
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
-
 <refnamediv>
 <refname>parser</refname>
 <refpurpose>Parser transform implementation.</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv id="xmlsec-parser.synopsis" role="synopsis">
-<title role="synopsis.title">Synopsis</title>
+<refsect1 id="xmlsec-parser.functions" role="functions_proto">
+<title role="functions_proto.title">Functions</title>
+<informaltable pgwide="1" frame="none">
+<tgroup cols="2">
+<colspec colname="functions_return" colwidth="150px"/>
+<colspec colname="functions_name"/>
+<tbody>
+<row><entry role="function_type"><link linkend="xmlDoc"><returnvalue>xmlDocPtr</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecParseFile">xmlSecParseFile</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlDoc"><returnvalue>xmlDocPtr</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecParseMemory">xmlSecParseMemory</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlDoc"><returnvalue>xmlDocPtr</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecParseMemoryExt">xmlSecParseMemoryExt</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecTransformXmlParserGetKlass">xmlSecTransformXmlParserGetKlass</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
 
-<synopsis>
-<link linkend="xmlDoc">xmlDocPtr</link>           <link linkend="xmlSecParseFile">xmlSecParseFile</link>                     (const <link linkend="char">char</link> *filename);
-<link linkend="xmlDoc">xmlDocPtr</link>           <link linkend="xmlSecParseMemory">xmlSecParseMemory</link>                   (const <link linkend="xmlSecByte">xmlSecByte</link> *buffer,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> size,
-                                                         <link linkend="int">int</link> recovery);
-<link linkend="xmlDoc">xmlDocPtr</link>           <link linkend="xmlSecParseMemoryExt">xmlSecParseMemoryExt</link>                (const <link linkend="xmlSecByte">xmlSecByte</link> *prefix,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> prefixSize,
-                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *buffer,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> bufferSize,
-                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *postfix,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> postfixSize);
-#define             <link linkend="xmlSecTransformXmlParserId">xmlSecTransformXmlParserId</link>
-<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecTransformXmlParserGetKlass">xmlSecTransformXmlParserGetKlass</link>    (void);
-</synopsis>
-</refsynopsisdiv>
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+<refsect1 id="xmlsec-parser.other" role="other_proto">
+<title role="other_proto.title">Types and Values</title>
+<informaltable role="enum_members_table" pgwide="1" frame="none">
+<tgroup cols="2">
+<colspec colname="name" colwidth="150px"/>
+<colspec colname="description"/>
+<tbody>
+<row><entry role="define_keyword">#define</entry><entry role="function_name"><link linkend="xmlSecTransformXmlParserId">xmlSecTransformXmlParserId</link></entry></row>
 
-
-
-
-
-
-
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
 
 
 <refsect1 id="xmlsec-parser.description" role="desc">
@@ -42,100 +49,131 @@
 <para>
 Parser transform implementation.
 </para>
-</refsect1>
 
-<refsect1 id="xmlsec-parser.details" role="details">
-<title role="details.title">Details</title>
+</refsect1>
+<refsect1 id="xmlsec-parser.functions_details" role="details">
+<title role="details.title">Functions</title>
 <refsect2 id="xmlSecParseFile" role="function">
-<title>xmlSecParseFile ()</title>
-<indexterm zone="xmlSecParseFile"><primary sortas="xmlSecParseFile">xmlSecParseFile</primary></indexterm><programlisting><link linkend="xmlDoc">xmlDocPtr</link>           xmlSecParseFile                     (const <link linkend="char">char</link> *filename);</programlisting>
-<para>
-Loads XML Doc from file <parameter>filename</parameter>. We need a special version because of
+<title>xmlSecParseFile&#160;()</title>
+<indexterm zone="xmlSecParseFile"><primary>xmlSecParseFile</primary></indexterm>
+<programlisting language="C"><link linkend="xmlDoc"><returnvalue>xmlDocPtr</returnvalue></link>
+xmlSecParseFile (<parameter>const <link linkend="char"><type>char</type></link> *filename</parameter>);</programlisting>
+<para>Loads XML Doc from file <parameter>filename</parameter>
+. We need a special version because of
 c14n issue. The code is copied from <link linkend="xmlSAXParseFileWithData"><function>xmlSAXParseFileWithData()</function></link> function.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>filename</parameter>&#160;:</term>
-<listitem><simpara>           the filename.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the loaded XML document or NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>filename</para></entry>
+<entry role="parameter_description"><para>the filename.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> pointer to the loaded XML document or NULL if an error occurs.</para>
+</refsect3></refsect2>
 <refsect2 id="xmlSecParseMemory" role="function">
-<title>xmlSecParseMemory ()</title>
-<indexterm zone="xmlSecParseMemory"><primary sortas="xmlSecParseMemory">xmlSecParseMemory</primary></indexterm><programlisting><link linkend="xmlDoc">xmlDocPtr</link>           xmlSecParseMemory                   (const <link linkend="xmlSecByte">xmlSecByte</link> *buffer,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> size,
-                                                         <link linkend="int">int</link> recovery);</programlisting>
-<para>
-Loads XML Doc from memory. We need a special version because of
+<title>xmlSecParseMemory&#160;()</title>
+<indexterm zone="xmlSecParseMemory"><primary>xmlSecParseMemory</primary></indexterm>
+<programlisting language="C"><link linkend="xmlDoc"><returnvalue>xmlDocPtr</returnvalue></link>
+xmlSecParseMemory (<parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *buffer</parameter>,
+                   <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> size</parameter>,
+                   <parameter><link linkend="int"><type>int</type></link> recovery</parameter>);</programlisting>
+<para>Loads XML Doc from memory. We need a special version because of
 c14n issue. The code is copied from <link linkend="xmlSAXParseMemory"><function>xmlSAXParseMemory()</function></link> function.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>buffer</parameter>&#160;:</term>
-<listitem><simpara>             the input buffer.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara>               the input buffer size.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>recovery</parameter>&#160;:</term>
-<listitem><simpara>           the flag.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the loaded XML document or NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>buffer</para></entry>
+<entry role="parameter_description"><para>the input buffer.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>size</para></entry>
+<entry role="parameter_description"><para>the input buffer size.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>recovery</para></entry>
+<entry role="parameter_description"><para>the flag.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> pointer to the loaded XML document or NULL if an error occurs.</para>
+</refsect3></refsect2>
 <refsect2 id="xmlSecParseMemoryExt" role="function">
-<title>xmlSecParseMemoryExt ()</title>
-<indexterm zone="xmlSecParseMemoryExt"><primary sortas="xmlSecParseMemoryExt">xmlSecParseMemoryExt</primary></indexterm><programlisting><link linkend="xmlDoc">xmlDocPtr</link>           xmlSecParseMemoryExt                (const <link linkend="xmlSecByte">xmlSecByte</link> *prefix,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> prefixSize,
-                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *buffer,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> bufferSize,
-                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *postfix,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> postfixSize);</programlisting>
-<para>
-Loads XML Doc from 3 chunks of memory: <parameter>prefix</parameter>, <parameter>buffer</parameter> and <parameter>postfix</parameter>.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>prefix</parameter>&#160;:</term>
-<listitem><simpara>             the first part of the input.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>prefixSize</parameter>&#160;:</term>
-<listitem><simpara>         the size of the first part of the input.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>buffer</parameter>&#160;:</term>
-<listitem><simpara>             the second part of the input.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>bufferSize</parameter>&#160;:</term>
-<listitem><simpara>         the size of the second part of the input.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>postfix</parameter>&#160;:</term>
-<listitem><simpara>            the third part of the input.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>postfixSize</parameter>&#160;:</term>
-<listitem><simpara>        the size of the third part of the input.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the loaded XML document or NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<title>xmlSecParseMemoryExt&#160;()</title>
+<indexterm zone="xmlSecParseMemoryExt"><primary>xmlSecParseMemoryExt</primary></indexterm>
+<programlisting language="C"><link linkend="xmlDoc"><returnvalue>xmlDocPtr</returnvalue></link>
+xmlSecParseMemoryExt (<parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *prefix</parameter>,
+                      <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> prefixSize</parameter>,
+                      <parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *buffer</parameter>,
+                      <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> bufferSize</parameter>,
+                      <parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *postfix</parameter>,
+                      <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> postfixSize</parameter>);</programlisting>
+<para>Loads XML Doc from 3 chunks of memory: <parameter>prefix</parameter>
+, <parameter>buffer</parameter>
+ and <parameter>postfix</parameter>
+.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>prefix</para></entry>
+<entry role="parameter_description"><para>the first part of the input.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>prefixSize</para></entry>
+<entry role="parameter_description"><para>the size of the first part of the input.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>buffer</para></entry>
+<entry role="parameter_description"><para>the second part of the input.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>bufferSize</para></entry>
+<entry role="parameter_description"><para>the size of the second part of the input.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>postfix</para></entry>
+<entry role="parameter_description"><para>the third part of the input.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>postfixSize</para></entry>
+<entry role="parameter_description"><para>the size of the third part of the input.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> pointer to the loaded XML document or NULL if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecTransformXmlParserGetKlass" role="function">
+<title>xmlSecTransformXmlParserGetKlass&#160;()</title>
+<indexterm zone="xmlSecTransformXmlParserGetKlass"><primary>xmlSecTransformXmlParserGetKlass</primary></indexterm>
+<programlisting language="C"><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>
+xmlSecTransformXmlParserGetKlass (<parameter><type>void</type></parameter>);</programlisting>
+<para>The XML parser transform.</para>
+<refsect3 role="returns">
+<title>Returns</title>
+<para> XML parser transform klass.</para>
+</refsect3></refsect2>
+
+</refsect1>
+<refsect1 id="xmlsec-parser.other_details" role="details">
+<title role="details.title">Types and Values</title>
 <refsect2 id="xmlSecTransformXmlParserId" role="macro">
 <title>xmlSecTransformXmlParserId</title>
-<indexterm zone="xmlSecTransformXmlParserId"><primary sortas="xmlSecTransformXmlParserId">xmlSecTransformXmlParserId</primary></indexterm><programlisting>#define             xmlSecTransformXmlParserId</programlisting>
-<para>
-The XML Parser transform klass.</para>
-<para>
-</para></refsect2>
-<refsect2 id="xmlSecTransformXmlParserGetKlass" role="function">
-<title>xmlSecTransformXmlParserGetKlass ()</title>
-<indexterm zone="xmlSecTransformXmlParserGetKlass"><primary sortas="xmlSecTransformXmlParserGetKlass">xmlSecTransformXmlParserGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecTransformXmlParserGetKlass    (void);</programlisting>
-<para>
-The XML parser transform.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> XML parser transform klass.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<indexterm zone="xmlSecTransformXmlParserId"><primary>xmlSecTransformXmlParserId</primary></indexterm>
+<programlisting language="C">#define             xmlSecTransformXmlParserId</programlisting>
+<para>The XML Parser transform klass.</para>
+</refsect2>
 
 </refsect1>
-
-
-
 
 </refentry>

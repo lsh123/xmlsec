@@ -4,63 +4,77 @@
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
-
 <refnamediv>
 <refname>buffer</refname>
 <refpurpose>Binary buffer implementation.</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv id="xmlsec-buffer.synopsis" role="synopsis">
-<title role="synopsis.title">Synopsis</title>
+<refsect1 id="xmlsec-buffer.functions" role="functions_proto">
+<title role="functions_proto.title">Functions</title>
+<informaltable pgwide="1" frame="none">
+<tgroup cols="2">
+<colspec colname="functions_return" colwidth="150px"/>
+<colspec colname="functions_name"/>
+<tbody>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecBufferSetDefaultAllocMode">xmlSecBufferSetDefaultAllocMode</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlSecBuffer"><returnvalue>xmlSecBufferPtr</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecBufferCreate">xmlSecBufferCreate</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecBufferDestroy">xmlSecBufferDestroy</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecBufferInitialize">xmlSecBufferInitialize</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecBufferFinalize">xmlSecBufferFinalize</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlSecByte"><returnvalue>xmlSecByte</returnvalue></link>&#160;*
+</entry><entry role="function_name"><link linkend="xmlSecBufferGetData">xmlSecBufferGetData</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecBufferSetData">xmlSecBufferSetData</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlSecSize"><returnvalue>xmlSecSize</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecBufferGetSize">xmlSecBufferGetSize</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecBufferSetSize">xmlSecBufferSetSize</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlSecSize"><returnvalue>xmlSecSize</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecBufferGetMaxSize">xmlSecBufferGetMaxSize</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecBufferSetMaxSize">xmlSecBufferSetMaxSize</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecBufferEmpty">xmlSecBufferEmpty</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecBufferAppend">xmlSecBufferAppend</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecBufferPrepend">xmlSecBufferPrepend</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecBufferRemoveHead">xmlSecBufferRemoveHead</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecBufferRemoveTail">xmlSecBufferRemoveTail</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecBufferReadFile">xmlSecBufferReadFile</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecBufferBase64NodeContentRead">xmlSecBufferBase64NodeContentRead</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="int"><returnvalue>int</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecBufferBase64NodeContentWrite">xmlSecBufferBase64NodeContentWrite</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="xmlOutputBuffer"><returnvalue>xmlOutputBufferPtr</returnvalue></link>
+</entry><entry role="function_name"><link linkend="xmlSecBufferCreateOutputBuffer">xmlSecBufferCreateOutputBuffer</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
 
-<synopsis>
-enum                <link linkend="xmlSecAllocMode">xmlSecAllocMode</link>;
-struct              <link linkend="xmlSecBuffer">xmlSecBuffer</link>;
-<link linkend="void">void</link>                <link linkend="xmlSecBufferSetDefaultAllocMode">xmlSecBufferSetDefaultAllocMode</link>     (<link linkend="xmlSecAllocMode">xmlSecAllocMode</link> defAllocMode,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> defInitialSize);
-<link linkend="xmlSecBuffer">xmlSecBufferPtr</link>     <link linkend="xmlSecBufferCreate">xmlSecBufferCreate</link>                  (<link linkend="xmlSecSize">xmlSecSize</link> size);
-<link linkend="void">void</link>                <link linkend="xmlSecBufferDestroy">xmlSecBufferDestroy</link>                 (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf);
-<link linkend="int">int</link>                 <link linkend="xmlSecBufferInitialize">xmlSecBufferInitialize</link>              (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> size);
-<link linkend="void">void</link>                <link linkend="xmlSecBufferFinalize">xmlSecBufferFinalize</link>                (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf);
-<link linkend="xmlSecByte">xmlSecByte</link>*         <link linkend="xmlSecBufferGetData">xmlSecBufferGetData</link>                 (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf);
-<link linkend="int">int</link>                 <link linkend="xmlSecBufferSetData">xmlSecBufferSetData</link>                 (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf,
-                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *data,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> size);
-<link linkend="xmlSecSize">xmlSecSize</link>          <link linkend="xmlSecBufferGetSize">xmlSecBufferGetSize</link>                 (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf);
-<link linkend="int">int</link>                 <link linkend="xmlSecBufferSetSize">xmlSecBufferSetSize</link>                 (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> size);
-<link linkend="xmlSecSize">xmlSecSize</link>          <link linkend="xmlSecBufferGetMaxSize">xmlSecBufferGetMaxSize</link>              (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf);
-<link linkend="int">int</link>                 <link linkend="xmlSecBufferSetMaxSize">xmlSecBufferSetMaxSize</link>              (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> size);
-<link linkend="void">void</link>                <link linkend="xmlSecBufferEmpty">xmlSecBufferEmpty</link>                   (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf);
-<link linkend="int">int</link>                 <link linkend="xmlSecBufferAppend">xmlSecBufferAppend</link>                  (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf,
-                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *data,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> size);
-<link linkend="int">int</link>                 <link linkend="xmlSecBufferPrepend">xmlSecBufferPrepend</link>                 (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf,
-                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *data,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> size);
-<link linkend="int">int</link>                 <link linkend="xmlSecBufferRemoveHead">xmlSecBufferRemoveHead</link>              (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> size);
-<link linkend="int">int</link>                 <link linkend="xmlSecBufferRemoveTail">xmlSecBufferRemoveTail</link>              (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> size);
-<link linkend="int">int</link>                 <link linkend="xmlSecBufferReadFile">xmlSecBufferReadFile</link>                (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf,
-                                                         const <link linkend="char">char</link> *filename);
-<link linkend="int">int</link>                 <link linkend="xmlSecBufferBase64NodeContentRead">xmlSecBufferBase64NodeContentRead</link>   (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf,
-                                                         <link linkend="xmlNode">xmlNodePtr</link> node);
-<link linkend="int">int</link>                 <link linkend="xmlSecBufferBase64NodeContentWrite">xmlSecBufferBase64NodeContentWrite</link>  (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf,
-                                                         <link linkend="xmlNode">xmlNodePtr</link> node,
-                                                         <link linkend="int">int</link> columns);
-<link linkend="xmlOutputBufferPtr">xmlOutputBufferPtr</link>  <link linkend="xmlSecBufferCreateOutputBuffer">xmlSecBufferCreateOutputBuffer</link>      (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf);
-</synopsis>
-</refsynopsisdiv>
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+<refsect1 id="xmlsec-buffer.other" role="other_proto">
+<title role="other_proto.title">Types and Values</title>
+<informaltable role="enum_members_table" pgwide="1" frame="none">
+<tgroup cols="2">
+<colspec colname="name" colwidth="150px"/>
+<colspec colname="description"/>
+<tbody>
+<row><entry role="datatype_keyword">enum</entry><entry role="function_name"><link linkend="xmlSecAllocMode">xmlSecAllocMode</link></entry></row>
+<row><entry role="datatype_keyword">struct</entry><entry role="function_name"><link linkend="xmlSecBuffer">xmlSecBuffer</link></entry></row>
 
-
-
-
-
-
-
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
 
 
 <refsect1 id="xmlsec-buffer.description" role="desc">
@@ -68,397 +82,595 @@ struct              <link linkend="xmlSecBuffer">xmlSecBuffer</link>;
 <para>
 Binary buffer implementation.
 </para>
-</refsect1>
 
-<refsect1 id="xmlsec-buffer.details" role="details">
-<title role="details.title">Details</title>
+</refsect1>
+<refsect1 id="xmlsec-buffer.functions_details" role="details">
+<title role="details.title">Functions</title>
+<refsect2 id="xmlSecBufferSetDefaultAllocMode" role="function">
+<title>xmlSecBufferSetDefaultAllocMode&#160;()</title>
+<indexterm zone="xmlSecBufferSetDefaultAllocMode"><primary>xmlSecBufferSetDefaultAllocMode</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+xmlSecBufferSetDefaultAllocMode (<parameter><link linkend="xmlSecAllocMode"><type>xmlSecAllocMode</type></link> defAllocMode</parameter>,
+                                 <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> defInitialSize</parameter>);</programlisting>
+<para>Sets new global default allocation mode and minimal intial size.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>defAllocMode</para></entry>
+<entry role="parameter_description"><para>the new default buffer allocation mode.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>defInitialSize</para></entry>
+<entry role="parameter_description"><para>the new default buffer minimal intial size.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="xmlSecBufferCreate" role="function">
+<title>xmlSecBufferCreate&#160;()</title>
+<indexterm zone="xmlSecBufferCreate"><primary>xmlSecBufferCreate</primary></indexterm>
+<programlisting language="C"><link linkend="xmlSecBuffer"><returnvalue>xmlSecBufferPtr</returnvalue></link>
+xmlSecBufferCreate (<parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> size</parameter>);</programlisting>
+<para>Allocates and initalizes new memory buffer with given size.
+Caller is responsible for calling <link linkend="xmlSecBufferDestroy"><type>xmlSecBufferDestroy</type></link> function
+to free the buffer.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>size</para></entry>
+<entry role="parameter_description"><para>the intial size.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> pointer to newly allocated buffer or NULL if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecBufferDestroy" role="function">
+<title>xmlSecBufferDestroy&#160;()</title>
+<indexterm zone="xmlSecBufferDestroy"><primary>xmlSecBufferDestroy</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+xmlSecBufferDestroy (<parameter><link linkend="xmlSecBuffer"><type>xmlSecBufferPtr</type></link> buf</parameter>);</programlisting>
+<para>Desrtoys buffer object created with <link linkend="xmlSecBufferCreate"><type>xmlSecBufferCreate</type></link> function.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>buf</para></entry>
+<entry role="parameter_description"><para>the pointer to buffer object.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="xmlSecBufferInitialize" role="function">
+<title>xmlSecBufferInitialize&#160;()</title>
+<indexterm zone="xmlSecBufferInitialize"><primary>xmlSecBufferInitialize</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecBufferInitialize (<parameter><link linkend="xmlSecBuffer"><type>xmlSecBufferPtr</type></link> buf</parameter>,
+                        <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> size</parameter>);</programlisting>
+<para>Initializes buffer object <parameter>buf</parameter>
+. Caller is responsible for calling
+<link linkend="xmlSecBufferFinalize"><type>xmlSecBufferFinalize</type></link> function to free allocated resources.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>buf</para></entry>
+<entry role="parameter_description"><para>the pointer to buffer object.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>size</para></entry>
+<entry role="parameter_description"><para>the initial buffer size.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecBufferFinalize" role="function">
+<title>xmlSecBufferFinalize&#160;()</title>
+<indexterm zone="xmlSecBufferFinalize"><primary>xmlSecBufferFinalize</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+xmlSecBufferFinalize (<parameter><link linkend="xmlSecBuffer"><type>xmlSecBufferPtr</type></link> buf</parameter>);</programlisting>
+<para>Frees allocated resource for a buffer intialized with <link linkend="xmlSecBufferInitialize"><type>xmlSecBufferInitialize</type></link>
+function.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>buf</para></entry>
+<entry role="parameter_description"><para>the pointer to buffer object.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="xmlSecBufferGetData" role="function">
+<title>xmlSecBufferGetData&#160;()</title>
+<indexterm zone="xmlSecBufferGetData"><primary>xmlSecBufferGetData</primary></indexterm>
+<programlisting language="C"><link linkend="xmlSecByte"><returnvalue>xmlSecByte</returnvalue></link>&#160;*
+xmlSecBufferGetData (<parameter><link linkend="xmlSecBuffer"><type>xmlSecBufferPtr</type></link> buf</parameter>);</programlisting>
+<para>Gets pointer to buffer's data.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>buf</para></entry>
+<entry role="parameter_description"><para>the pointer to buffer object.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> pointer to buffer's data.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecBufferSetData" role="function">
+<title>xmlSecBufferSetData&#160;()</title>
+<indexterm zone="xmlSecBufferSetData"><primary>xmlSecBufferSetData</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecBufferSetData (<parameter><link linkend="xmlSecBuffer"><type>xmlSecBufferPtr</type></link> buf</parameter>,
+                     <parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *data</parameter>,
+                     <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> size</parameter>);</programlisting>
+<para>Sets the value of the buffer to <parameter>data</parameter>
+.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>buf</para></entry>
+<entry role="parameter_description"><para>the pointer to buffer object.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>data</para></entry>
+<entry role="parameter_description"><para>the data.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>size</para></entry>
+<entry role="parameter_description"><para>the data size.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecBufferGetSize" role="function">
+<title>xmlSecBufferGetSize&#160;()</title>
+<indexterm zone="xmlSecBufferGetSize"><primary>xmlSecBufferGetSize</primary></indexterm>
+<programlisting language="C"><link linkend="xmlSecSize"><returnvalue>xmlSecSize</returnvalue></link>
+xmlSecBufferGetSize (<parameter><link linkend="xmlSecBuffer"><type>xmlSecBufferPtr</type></link> buf</parameter>);</programlisting>
+<para>Gets the current buffer data size.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>buf</para></entry>
+<entry role="parameter_description"><para>the pointer to buffer object.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> the current data size.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecBufferSetSize" role="function">
+<title>xmlSecBufferSetSize&#160;()</title>
+<indexterm zone="xmlSecBufferSetSize"><primary>xmlSecBufferSetSize</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecBufferSetSize (<parameter><link linkend="xmlSecBuffer"><type>xmlSecBufferPtr</type></link> buf</parameter>,
+                     <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> size</parameter>);</programlisting>
+<para>Sets new buffer data size. If necessary, buffer grows to
+have at least <parameter>size</parameter>
+ bytes.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>buf</para></entry>
+<entry role="parameter_description"><para>the pointer to buffer object.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>size</para></entry>
+<entry role="parameter_description"><para>the new data size.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecBufferGetMaxSize" role="function">
+<title>xmlSecBufferGetMaxSize&#160;()</title>
+<indexterm zone="xmlSecBufferGetMaxSize"><primary>xmlSecBufferGetMaxSize</primary></indexterm>
+<programlisting language="C"><link linkend="xmlSecSize"><returnvalue>xmlSecSize</returnvalue></link>
+xmlSecBufferGetMaxSize (<parameter><link linkend="xmlSecBuffer"><type>xmlSecBufferPtr</type></link> buf</parameter>);</programlisting>
+<para>Gets the maximum (allocated) buffer size.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>buf</para></entry>
+<entry role="parameter_description"><para>the pointer to buffer object.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> the maximum (allocated) buffer size.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecBufferSetMaxSize" role="function">
+<title>xmlSecBufferSetMaxSize&#160;()</title>
+<indexterm zone="xmlSecBufferSetMaxSize"><primary>xmlSecBufferSetMaxSize</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecBufferSetMaxSize (<parameter><link linkend="xmlSecBuffer"><type>xmlSecBufferPtr</type></link> buf</parameter>,
+                        <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> size</parameter>);</programlisting>
+<para>Sets new buffer maximum size. If necessary, buffer grows to
+have at least <parameter>size</parameter>
+ bytes.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>buf</para></entry>
+<entry role="parameter_description"><para>the pointer to buffer object.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>size</para></entry>
+<entry role="parameter_description"><para>the new maximum size.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecBufferEmpty" role="function">
+<title>xmlSecBufferEmpty&#160;()</title>
+<indexterm zone="xmlSecBufferEmpty"><primary>xmlSecBufferEmpty</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+xmlSecBufferEmpty (<parameter><link linkend="xmlSecBuffer"><type>xmlSecBufferPtr</type></link> buf</parameter>);</programlisting>
+<para>Empties the buffer.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>buf</para></entry>
+<entry role="parameter_description"><para>the pointer to buffer object.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="xmlSecBufferAppend" role="function">
+<title>xmlSecBufferAppend&#160;()</title>
+<indexterm zone="xmlSecBufferAppend"><primary>xmlSecBufferAppend</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecBufferAppend (<parameter><link linkend="xmlSecBuffer"><type>xmlSecBufferPtr</type></link> buf</parameter>,
+                    <parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *data</parameter>,
+                    <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> size</parameter>);</programlisting>
+<para>Appends the <parameter>data</parameter>
+ after the current data stored in the buffer.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>buf</para></entry>
+<entry role="parameter_description"><para>the pointer to buffer object.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>data</para></entry>
+<entry role="parameter_description"><para>the data.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>size</para></entry>
+<entry role="parameter_description"><para>the data size.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecBufferPrepend" role="function">
+<title>xmlSecBufferPrepend&#160;()</title>
+<indexterm zone="xmlSecBufferPrepend"><primary>xmlSecBufferPrepend</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecBufferPrepend (<parameter><link linkend="xmlSecBuffer"><type>xmlSecBufferPtr</type></link> buf</parameter>,
+                     <parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *data</parameter>,
+                     <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> size</parameter>);</programlisting>
+<para>Prepends the <parameter>data</parameter>
+ before the current data stored in the buffer.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>buf</para></entry>
+<entry role="parameter_description"><para>the pointer to buffer object.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>data</para></entry>
+<entry role="parameter_description"><para>the data.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>size</para></entry>
+<entry role="parameter_description"><para>the data size.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecBufferRemoveHead" role="function">
+<title>xmlSecBufferRemoveHead&#160;()</title>
+<indexterm zone="xmlSecBufferRemoveHead"><primary>xmlSecBufferRemoveHead</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecBufferRemoveHead (<parameter><link linkend="xmlSecBuffer"><type>xmlSecBufferPtr</type></link> buf</parameter>,
+                        <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> size</parameter>);</programlisting>
+<para>Removes <parameter>size</parameter>
+ bytes from the beginning of the current buffer.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>buf</para></entry>
+<entry role="parameter_description"><para>the pointer to buffer object.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>size</para></entry>
+<entry role="parameter_description"><para>the number of bytes to be removed.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecBufferRemoveTail" role="function">
+<title>xmlSecBufferRemoveTail&#160;()</title>
+<indexterm zone="xmlSecBufferRemoveTail"><primary>xmlSecBufferRemoveTail</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecBufferRemoveTail (<parameter><link linkend="xmlSecBuffer"><type>xmlSecBufferPtr</type></link> buf</parameter>,
+                        <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> size</parameter>);</programlisting>
+<para>Removes <parameter>size</parameter>
+ bytes from the end of current buffer.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>buf</para></entry>
+<entry role="parameter_description"><para>the pointer to buffer object.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>size</para></entry>
+<entry role="parameter_description"><para>the number of bytes to be removed.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecBufferReadFile" role="function">
+<title>xmlSecBufferReadFile&#160;()</title>
+<indexterm zone="xmlSecBufferReadFile"><primary>xmlSecBufferReadFile</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecBufferReadFile (<parameter><link linkend="xmlSecBuffer"><type>xmlSecBufferPtr</type></link> buf</parameter>,
+                      <parameter>const <link linkend="char"><type>char</type></link> *filename</parameter>);</programlisting>
+<para>Reads the content of the file <parameter>filename</parameter>
+ in the buffer.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>buf</para></entry>
+<entry role="parameter_description"><para>the pointer to buffer object.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>filename</para></entry>
+<entry role="parameter_description"><para>the filename.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecBufferBase64NodeContentRead" role="function">
+<title>xmlSecBufferBase64NodeContentRead&#160;()</title>
+<indexterm zone="xmlSecBufferBase64NodeContentRead"><primary>xmlSecBufferBase64NodeContentRead</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecBufferBase64NodeContentRead (<parameter><link linkend="xmlSecBuffer"><type>xmlSecBufferPtr</type></link> buf</parameter>,
+                                   <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>);</programlisting>
+<para>Reads the content of the <parameter>node</parameter>
+, base64 decodes it and stores the
+result in the buffer.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>buf</para></entry>
+<entry role="parameter_description"><para>the pointer to buffer object.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>node</para></entry>
+<entry role="parameter_description"><para>the pointer to node.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecBufferBase64NodeContentWrite" role="function">
+<title>xmlSecBufferBase64NodeContentWrite&#160;()</title>
+<indexterm zone="xmlSecBufferBase64NodeContentWrite"><primary>xmlSecBufferBase64NodeContentWrite</primary></indexterm>
+<programlisting language="C"><link linkend="int"><returnvalue>int</returnvalue></link>
+xmlSecBufferBase64NodeContentWrite (<parameter><link linkend="xmlSecBuffer"><type>xmlSecBufferPtr</type></link> buf</parameter>,
+                                    <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>,
+                                    <parameter><link linkend="int"><type>int</type></link> columns</parameter>);</programlisting>
+<para>Sets the content of the <parameter>node</parameter>
+ to the base64 encoded buffer data.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>buf</para></entry>
+<entry role="parameter_description"><para>the pointer to buffer object.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>node</para></entry>
+<entry role="parameter_description"><para>the pointer to a node.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>columns</para></entry>
+<entry role="parameter_description"><para>the max line size fro base64 encoded data.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> 0 on success or a negative value if an error occurs.</para>
+</refsect3></refsect2>
+<refsect2 id="xmlSecBufferCreateOutputBuffer" role="function">
+<title>xmlSecBufferCreateOutputBuffer&#160;()</title>
+<indexterm zone="xmlSecBufferCreateOutputBuffer"><primary>xmlSecBufferCreateOutputBuffer</primary></indexterm>
+<programlisting language="C"><link linkend="xmlOutputBuffer"><returnvalue>xmlOutputBufferPtr</returnvalue></link>
+xmlSecBufferCreateOutputBuffer (<parameter><link linkend="xmlSecBuffer"><type>xmlSecBufferPtr</type></link> buf</parameter>);</programlisting>
+<para>Creates new LibXML output buffer to store data in the <parameter>buf</parameter>
+. Caller is
+responsible for destroying <parameter>buf</parameter>
+ when processing is done.</para>
+<refsect3 role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>buf</para></entry>
+<entry role="parameter_description"><para>the pointer to buffer.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 role="returns">
+<title>Returns</title>
+<para> pointer to newly allocated output buffer or NULL if an error
+occurs.</para>
+</refsect3></refsect2>
+
+</refsect1>
+<refsect1 id="xmlsec-buffer.other_details" role="details">
+<title role="details.title">Types and Values</title>
 <refsect2 id="xmlSecAllocMode" role="enum">
 <title>enum xmlSecAllocMode</title>
-<indexterm zone="xmlSecAllocMode"><primary sortas="xmlSecAllocMode">xmlSecAllocMode</primary></indexterm><programlisting>typedef enum {
-    xmlSecAllocModeExact = 0,
-    xmlSecAllocModeDouble
-} xmlSecAllocMode;
-</programlisting>
-<para>
-The memory allocation mode (used by <parameter>xmlSecBuffer</parameter> and <parameter>xmlSecList</parameter>).</para>
-<para>
-</para><variablelist role="enum">
-<varlistentry id="xmlSecAllocModeExact" role="constant">
-<term><literal>xmlSecAllocModeExact</literal></term>
-<listitem><simpara>       the memory allocation mode that minimizes total
-                             allocated memory size.
-</simpara></listitem>
-</varlistentry>
-<varlistentry id="xmlSecAllocModeDouble" role="constant">
-<term><literal>xmlSecAllocModeDouble</literal></term>
-<listitem><simpara>      the memory allocation mode that tries to minimize
-                             the number of malloc calls.
-</simpara></listitem>
-</varlistentry>
-</variablelist></refsect2>
+<indexterm zone="xmlSecAllocMode"><primary>xmlSecAllocMode</primary></indexterm>
+<para>The memory allocation mode (used by <parameter>xmlSecBuffer</parameter>
+ and <parameter>xmlSecList</parameter>
+).</para>
+<refsect3 role="enum_members">
+<title>Members</title>
+<informaltable role="enum_members_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="enum_members_name" colwidth="300px"/>
+<colspec colname="enum_members_description"/>
+<colspec colname="enum_members_annotations" colwidth="200px"/>
+<tbody>
+<row role="constant"><entry role="enum_member_name"><para id="xmlSecAllocModeExact">xmlSecAllocModeExact</para></entry>
+<entry role="enum_member_description"><para>the memory allocation mode that minimizes total
+                             allocated memory size.</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="xmlSecAllocModeDouble">xmlSecAllocModeDouble</para></entry>
+<entry role="enum_member_description"><para>the memory allocation mode that tries to minimize
+                             the number of malloc calls.</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
 <refsect2 id="xmlSecBuffer" role="struct">
 <title>struct xmlSecBuffer</title>
-<indexterm zone="xmlSecBuffer"><primary sortas="xmlSecBuffer">xmlSecBuffer</primary></indexterm><programlisting>struct xmlSecBuffer {
+<indexterm zone="xmlSecBuffer"><primary>xmlSecBuffer</primary></indexterm>
+<programlisting language="C">struct xmlSecBuffer {
     xmlSecByte*         data;
     xmlSecSize          size;
     xmlSecSize          maxSize;
     xmlSecAllocMode     allocMode;
 };
 </programlisting>
-<para>
-Binary data buffer.</para>
-<para>
-</para><variablelist role="struct">
-<varlistentry>
-<term><link linkend="xmlSecByte">xmlSecByte</link>&#160;*<structfield>data</structfield>;</term>
-<listitem><simpara> the pointer to buffer data.
-</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecSize">xmlSecSize</link>&#160;<structfield>size</structfield>;</term>
-<listitem><simpara> the current data size.
-</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecSize">xmlSecSize</link>&#160;<structfield>maxSize</structfield>;</term>
-<listitem><simpara> the max data size (allocated buffer size).
-</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecAllocMode">xmlSecAllocMode</link>&#160;<structfield>allocMode</structfield>;</term>
-<listitem><simpara> the buffer memory allocation mode.
-</simpara></listitem>
-</varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecBufferSetDefaultAllocMode" role="function">
-<title>xmlSecBufferSetDefaultAllocMode ()</title>
-<indexterm zone="xmlSecBufferSetDefaultAllocMode"><primary sortas="xmlSecBufferSetDefaultAllocMode">xmlSecBufferSetDefaultAllocMode</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecBufferSetDefaultAllocMode     (<link linkend="xmlSecAllocMode">xmlSecAllocMode</link> defAllocMode,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> defInitialSize);</programlisting>
-<para>
-Sets new global default allocation mode and minimal intial size.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>defAllocMode</parameter>&#160;:</term>
-<listitem><simpara>       the new default buffer allocation mode.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>defInitialSize</parameter>&#160;:</term>
-<listitem><simpara>     the new default buffer minimal intial size.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecBufferCreate" role="function">
-<title>xmlSecBufferCreate ()</title>
-<indexterm zone="xmlSecBufferCreate"><primary sortas="xmlSecBufferCreate">xmlSecBufferCreate</primary></indexterm><programlisting><link linkend="xmlSecBuffer">xmlSecBufferPtr</link>     xmlSecBufferCreate                  (<link linkend="xmlSecSize">xmlSecSize</link> size);</programlisting>
-<para>
-Allocates and initalizes new memory buffer with given size.
-Caller is responsible for calling <link linkend="xmlSecBufferDestroy"><type>xmlSecBufferDestroy</type></link> function
-to free the buffer.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara>               the intial size.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly allocated buffer or NULL if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecBufferDestroy" role="function">
-<title>xmlSecBufferDestroy ()</title>
-<indexterm zone="xmlSecBufferDestroy"><primary sortas="xmlSecBufferDestroy">xmlSecBufferDestroy</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecBufferDestroy                 (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf);</programlisting>
-<para>
-Desrtoys buffer object created with <link linkend="xmlSecBufferCreate"><type>xmlSecBufferCreate</type></link> function.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to buffer object.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecBufferInitialize" role="function">
-<title>xmlSecBufferInitialize ()</title>
-<indexterm zone="xmlSecBufferInitialize"><primary sortas="xmlSecBufferInitialize">xmlSecBufferInitialize</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecBufferInitialize              (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> size);</programlisting>
-<para>
-Initializes buffer object <parameter>buf</parameter>. Caller is responsible for calling
-<link linkend="xmlSecBufferFinalize"><type>xmlSecBufferFinalize</type></link> function to free allocated resources.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to buffer object.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara>               the initial buffer size.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecBufferFinalize" role="function">
-<title>xmlSecBufferFinalize ()</title>
-<indexterm zone="xmlSecBufferFinalize"><primary sortas="xmlSecBufferFinalize">xmlSecBufferFinalize</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecBufferFinalize                (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf);</programlisting>
-<para>
-Frees allocated resource for a buffer intialized with <link linkend="xmlSecBufferInitialize"><type>xmlSecBufferInitialize</type></link>
-function.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to buffer object.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecBufferGetData" role="function">
-<title>xmlSecBufferGetData ()</title>
-<indexterm zone="xmlSecBufferGetData"><primary sortas="xmlSecBufferGetData">xmlSecBufferGetData</primary></indexterm><programlisting><link linkend="xmlSecByte">xmlSecByte</link>*         xmlSecBufferGetData                 (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf);</programlisting>
-<para>
-Gets pointer to buffer's data.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to buffer object.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to buffer's data.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecBufferSetData" role="function">
-<title>xmlSecBufferSetData ()</title>
-<indexterm zone="xmlSecBufferSetData"><primary sortas="xmlSecBufferSetData">xmlSecBufferSetData</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecBufferSetData                 (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf,
-                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *data,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> size);</programlisting>
-<para>
-Sets the value of the buffer to <parameter>data</parameter>.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to buffer object.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>               the data.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara>               the data size.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecBufferGetSize" role="function">
-<title>xmlSecBufferGetSize ()</title>
-<indexterm zone="xmlSecBufferGetSize"><primary sortas="xmlSecBufferGetSize">xmlSecBufferGetSize</primary></indexterm><programlisting><link linkend="xmlSecSize">xmlSecSize</link>          xmlSecBufferGetSize                 (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf);</programlisting>
-<para>
-Gets the current buffer data size.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to buffer object.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the current data size.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecBufferSetSize" role="function">
-<title>xmlSecBufferSetSize ()</title>
-<indexterm zone="xmlSecBufferSetSize"><primary sortas="xmlSecBufferSetSize">xmlSecBufferSetSize</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecBufferSetSize                 (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> size);</programlisting>
-<para>
-Sets new buffer data size. If necessary, buffer grows to
-have at least <parameter>size</parameter> bytes.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to buffer object.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara>               the new data size.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecBufferGetMaxSize" role="function">
-<title>xmlSecBufferGetMaxSize ()</title>
-<indexterm zone="xmlSecBufferGetMaxSize"><primary sortas="xmlSecBufferGetMaxSize">xmlSecBufferGetMaxSize</primary></indexterm><programlisting><link linkend="xmlSecSize">xmlSecSize</link>          xmlSecBufferGetMaxSize              (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf);</programlisting>
-<para>
-Gets the maximum (allocated) buffer size.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to buffer object.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the maximum (allocated) buffer size.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecBufferSetMaxSize" role="function">
-<title>xmlSecBufferSetMaxSize ()</title>
-<indexterm zone="xmlSecBufferSetMaxSize"><primary sortas="xmlSecBufferSetMaxSize">xmlSecBufferSetMaxSize</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecBufferSetMaxSize              (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> size);</programlisting>
-<para>
-Sets new buffer maximum size. If necessary, buffer grows to
-have at least <parameter>size</parameter> bytes.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to buffer object.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara>               the new maximum size.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecBufferEmpty" role="function">
-<title>xmlSecBufferEmpty ()</title>
-<indexterm zone="xmlSecBufferEmpty"><primary sortas="xmlSecBufferEmpty">xmlSecBufferEmpty</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecBufferEmpty                   (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf);</programlisting>
-<para>
-Empties the buffer.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to buffer object.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecBufferAppend" role="function">
-<title>xmlSecBufferAppend ()</title>
-<indexterm zone="xmlSecBufferAppend"><primary sortas="xmlSecBufferAppend">xmlSecBufferAppend</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecBufferAppend                  (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf,
-                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *data,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> size);</programlisting>
-<para>
-Appends the <parameter>data</parameter> after the current data stored in the buffer.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to buffer object.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>               the data.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara>               the data size.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecBufferPrepend" role="function">
-<title>xmlSecBufferPrepend ()</title>
-<indexterm zone="xmlSecBufferPrepend"><primary sortas="xmlSecBufferPrepend">xmlSecBufferPrepend</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecBufferPrepend                 (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf,
-                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *data,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> size);</programlisting>
-<para>
-Prepends the <parameter>data</parameter> before the current data stored in the buffer.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to buffer object.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>               the data.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara>               the data size.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecBufferRemoveHead" role="function">
-<title>xmlSecBufferRemoveHead ()</title>
-<indexterm zone="xmlSecBufferRemoveHead"><primary sortas="xmlSecBufferRemoveHead">xmlSecBufferRemoveHead</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecBufferRemoveHead              (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> size);</programlisting>
-<para>
-Removes <parameter>size</parameter> bytes from the beginning of the current buffer.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to buffer object.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara>               the number of bytes to be removed.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecBufferRemoveTail" role="function">
-<title>xmlSecBufferRemoveTail ()</title>
-<indexterm zone="xmlSecBufferRemoveTail"><primary sortas="xmlSecBufferRemoveTail">xmlSecBufferRemoveTail</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecBufferRemoveTail              (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> size);</programlisting>
-<para>
-Removes <parameter>size</parameter> bytes from the end of current buffer.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to buffer object.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara>               the number of bytes to be removed.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecBufferReadFile" role="function">
-<title>xmlSecBufferReadFile ()</title>
-<indexterm zone="xmlSecBufferReadFile"><primary sortas="xmlSecBufferReadFile">xmlSecBufferReadFile</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecBufferReadFile                (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf,
-                                                         const <link linkend="char">char</link> *filename);</programlisting>
-<para>
-Reads the content of the file <parameter>filename</parameter> in the buffer.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to buffer object.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>filename</parameter>&#160;:</term>
-<listitem><simpara>           the filename.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecBufferBase64NodeContentRead" role="function">
-<title>xmlSecBufferBase64NodeContentRead ()</title>
-<indexterm zone="xmlSecBufferBase64NodeContentRead"><primary sortas="xmlSecBufferBase64NodeContentRead">xmlSecBufferBase64NodeContentRead</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecBufferBase64NodeContentRead   (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf,
-                                                         <link linkend="xmlNode">xmlNodePtr</link> node);</programlisting>
-<para>
-Reads the content of the <parameter>node</parameter>, base64 decodes it and stores the
-result in the buffer.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to buffer object.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>               the pointer to node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecBufferBase64NodeContentWrite" role="function">
-<title>xmlSecBufferBase64NodeContentWrite ()</title>
-<indexterm zone="xmlSecBufferBase64NodeContentWrite"><primary sortas="xmlSecBufferBase64NodeContentWrite">xmlSecBufferBase64NodeContentWrite</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecBufferBase64NodeContentWrite  (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf,
-                                                         <link linkend="xmlNode">xmlNodePtr</link> node,
-                                                         <link linkend="int">int</link> columns);</programlisting>
-<para>
-Sets the content of the <parameter>node</parameter> to the base64 encoded buffer data.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to buffer object.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>               the pointer to a node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>columns</parameter>&#160;:</term>
-<listitem><simpara>            the max line size fro base64 encoded data.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecBufferCreateOutputBuffer" role="function">
-<title>xmlSecBufferCreateOutputBuffer ()</title>
-<indexterm zone="xmlSecBufferCreateOutputBuffer"><primary sortas="xmlSecBufferCreateOutputBuffer">xmlSecBufferCreateOutputBuffer</primary></indexterm><programlisting><link linkend="xmlOutputBufferPtr">xmlOutputBufferPtr</link>  xmlSecBufferCreateOutputBuffer      (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf);</programlisting>
-<para>
-Creates new LibXML output buffer to store data in the <parameter>buf</parameter>. Caller is
-responsible for destroying <parameter>buf</parameter> when processing is done.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to buffer.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly allocated output buffer or NULL if an error
-occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<para>Binary data buffer.</para>
+<refsect3 role="struct_members">
+<title>Members</title>
+<informaltable role="struct_members_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="struct_members_name" colwidth="300px"/>
+<colspec colname="struct_members_description"/>
+<colspec colname="struct_members_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="struct_member_name"><para><link linkend="xmlSecByte"><type>xmlSecByte</type></link>&#160;*<structfield id="xmlSecBuffer.data">data</structfield>;</para></entry>
+<entry role="struct_member_description"><para>the pointer to buffer data.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row><entry role="struct_member_name"><para><link linkend="xmlSecSize"><type>xmlSecSize</type></link>&#160;<structfield id="xmlSecBuffer.size">size</structfield>;</para></entry>
+<entry role="struct_member_description"><para>the current data size.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row><entry role="struct_member_name"><para><link linkend="xmlSecSize"><type>xmlSecSize</type></link>&#160;<structfield id="xmlSecBuffer.maxSize">maxSize</structfield>;</para></entry>
+<entry role="struct_member_description"><para>the max data size (allocated buffer size).</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row><entry role="struct_member_name"><para><link linkend="xmlSecAllocMode"><type>xmlSecAllocMode</type></link>&#160;<structfield id="xmlSecBuffer.allocMode">allocMode</structfield>;</para></entry>
+<entry role="struct_member_description"><para>the buffer memory allocation mode.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+</tbody></tgroup></informaltable>
+</refsect3>
+</refsect2>
 
 </refsect1>
-
-
-
 
 </refentry>

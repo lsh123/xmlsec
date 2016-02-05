@@ -21,6 +21,15 @@ XML_DIR=$(builddir)/xml.tmp
 EXAMPLES_DIR=$(SGML_DIR)/examples
 DOC_SOURCE_DIR=$(builddir)/code
 
+
+# We need to copy some files to make gkdoc happy that
+# everything is in one folder
+MAIN_SGML_FILE=$(SGML_DIR)/xmlsec-main.sgml
+MAIN_SGML_SRC_FILE=$(srcdir)/src/xmlsec.sgml
+
+SGML_CHAPTERS_DIR=$(SGML_DIR)/chapters
+SGML_CHAPTERS_SRC_DIR=$(srcdir)/src/chapters
+
 #
 # We need to pre-process original source files
 # because gtkdoc does not understand some C features
@@ -36,22 +45,30 @@ EXAMPLES_SOURCE_FILES=\
 	$(shell find $(EXAMPLES_SOURCE_DIR) -name '*.c' -print) \
 	$(shell find $(EXAMPLES_SOURCE_DIR) -name '*.xml' -print) 
 
+#
+# This script removes gtkdoc crap from final html
+#
 REMOVE_GTKDOCLINK=$(top_srcdir)/scripts/remove-gtkdoclink.pl
 
 # do nothing for all
 all:
 
-docs: sgml html clean-sources
-	@(  echo "Cleaning up result files"; \
-	    $(PERL) $(REMOVE_GTKDOCLINK) `find . -name "*.html" -print` \
+docs: sgml html
+
+html-cleanup:
+	( echo "Cleaning up result files"; \
+	   $(PERL) $(REMOVE_GTKDOCLINK) `find . -name "*.html" -print` \
 	)
 
 # need to cleanup "bad" chars
-html: sgml $(srcdir)/src/xmlsec.sgml $(srcdir)/src/chapters xmlsec-index
-	$(CP) -u $(srcdir)/src/xmlsec.sgml $(SGML_DIR)/xmlsec-main.sgml
-	$(CP) -ru $(srcdir)/src/chapters $(SGML_DIR)/
-	-$(GTKDOC_MKHTML) xmlsec $(SGML_DIR)/xmlsec-main.sgml
+html: sgml $(MAIN_SGML_FILE) $(SGML_CHAPTERS_DIR) xmlsec-index
+	-$(GTKDOC_MKHTML) xmlsec $(MAIN_SGML_FILE)
 
+$(SGML_CHAPTERS_DIR): $(SGML_CHAPTERS_SRC_DIR) $(SGML_CHAPTERS_DIR)/.sentinel
+	$(CP) -ru $(SGML_CHAPTERS_SRC_DIR)/* $(SGML_CHAPTERS_DIR)
+
+$(MAIN_SGML_FILE): $(MAIN_SGML_SRC_FILE)
+	$(CP) -u $(MAIN_SGML_SRC_FILE) $(MAIN_SGML_FILE)
 #
 # Prepeare sgml files from sources for each library. We are also
 # doing some "magic" here by automatically adding links to XML DSig and 
@@ -162,8 +179,9 @@ scan: doc_sources example_sources
 # Prepare source files by coping them to "code" folder and 
 # removing XMLSEC_EXPORT_* stuff that makes gtkdoc crazy
 #
-doc_sources: $(DOC_SOURCE_FILES) $(DOC_SOURCE_DIR)/.sentinel $(DOC_SOURCE_DIR)/src/base/.sentinel $(DOC_SOURCE_DIR)/include/xmlsec/base/.sentinel
+doc_sources: $(DOC_SOURCE_FILES) $(DOC_SOURCE_DIR)/.sentinel doc_sources_cleanup
 	@echo "Preprocessing source files into '$(DOC_SOURCE_DIR)' ..." 
+	@mkdir -p $(DOC_SOURCE_DIR)/src/base $(DOC_SOURCE_DIR)/include/xmlsec/base
 	@( \
 	for i in $(DOC_SOURCE_FILES) ; do \
 		folder_name=`echo "$$i" | \
@@ -187,6 +205,9 @@ doc_sources: $(DOC_SOURCE_FILES) $(DOC_SOURCE_DIR)/.sentinel $(DOC_SOURCE_DIR)/s
 	-@mv -f $(DOC_SOURCE_DIR)/include/xmlsec/*.h $(DOC_SOURCE_DIR)/include/xmlsec/base
 	-@rm -f $(DOC_SOURCE_DIR)/include/xmlsec/*/symbols.h
 
+doc_sources_cleanup: $(DOC_SOURCE_DIR)/.sentinel
+	@rm -rf $(DOC_SOURCE_DIR)/*
+
 #
 # Create index for all functions. For macros and defines need to add -CAPS suffix
 #
@@ -206,6 +227,8 @@ xmlsec-index: scan $(SGML_DIR)/.sentinel
 # characters (<, >, &) are escaped. 
 #
 example_sources: $(EXAMPLES_DIR)/.sentinel
+	@echo "Preprocessing example source files into '$(EXAMPLES_DIR)' ..." 
+	@rm -rf $(EXAMPLES_DIR)/*
 	@(for i in $(EXAMPLES_SOURCE_FILES) ; do \
 	    file_name=`echo $$i | sed 's#.*/##' | sed 's#\..*$$##'`; \
 	    file_ext=`echo $$i | sed 's#.*/##' | sed 's#.*\.##'`; \
@@ -234,13 +257,10 @@ example_sources: $(EXAMPLES_DIR)/.sentinel
 dist-hook:
 	@cp -p $(srcdir)/*.html $(srcdir)/*.png $(distdir)
 
-clean: clean-sources
-	-@rm -rf $(DOC_SOURCE_DIR) $(SCAN_DIR)/*.txt $(TMPL_DIR) $(SGML_DIR) $(XML_DIR)
-	-@rm -f *.stamp *.types index.sgml 
-
-clean-sources:
-	-@rm -rf $(DOC_SOURCE_DIR) $(EXAMPLES_DIR)
+clean:
+	-rm -rf $(DOC_SOURCE_DIR) $(EXAMPLES_DIR) $(SCAN_DIR)/*.txt $(TMPL_DIR) $(SGML_DIR) $(XML_DIR)
+	-rm -f *.stamp *.types index.sgml 
 
 maintainer-clean-local: clean
-	-@rm -f *.html
+	-rm -f *.html
 

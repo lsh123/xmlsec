@@ -13,7 +13,7 @@
 #define __XMLSEC_GNUTLS_X509UTILS_H__
 
 #ifndef XMLSEC_PRIVATE
-#error "gnutls/x509utils.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-<crypto> libraries"
+#error "gnutls/x509utils.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
 #endif /* XMLSEC_PRIVATE */
 
 #ifdef __cplusplus

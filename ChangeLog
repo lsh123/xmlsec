@@ -1171,7 +1171,7 @@ Mon 07 Jul 2003 08:05:18 AM PDT Aleksey Sanin  <aleksey@aleksey.com>
 
 Mon 07 Jul 2003 07:02:46 AM PDT Aleksey Sanin  <aleksey@aleksey.com>
     
-	* Makefile.am: fixed test suite problem when builddir != sourcedir
+	* Makefile.am: fixed test suite problem when builddir != srcdir
 	(reported by Roumen)
 
 Thu Jul  3 07:57:25 2003  Aleksey Sanin  <aleksey@aleksey.com>

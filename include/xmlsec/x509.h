@@ -48,7 +48,7 @@ extern "C" {
 /**
  * XMLSEC_X509DATA_SKI_NODE:
  *
- * <dsig:/X509SKI> node found or would be written back.
+ * <dsig:X509SKI/> node found or would be written back.
  */
 #define XMLSEC_X509DATA_SKI_NODE                                0x00000008
 /**

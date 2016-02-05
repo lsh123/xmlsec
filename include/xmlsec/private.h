@@ -2,7 +2,7 @@
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * These are internal private declarations. You don't want to use this file
- * unless you are building xmlsec or xmlsec-<crypto> library.
+ * unless you are building xmlsec or xmlsec-$crypto library.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -13,7 +13,7 @@
 #define __XMLSEC_PRIVATE_H__
 
 #ifndef XMLSEC_PRIVATE
-#error "xmlsec/private.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-<crypto> libraries"
+#error "xmlsec/private.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
 #endif /* XMLSEC_PRIVATE */
 
 #ifdef __cplusplus

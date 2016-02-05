@@ -431,7 +431,7 @@ xmlSecCryptoDLShutdown(void) {
  * xmlSecCryptoDLLoadLibrary:
  * @crypto:             the desired crypto library name ("openssl", "nss", ...).
  *
- * Loads the xmlsec-<crypto> library. This function is NOT thread safe,
+ * Loads the xmlsec-$crypto library. This function is NOT thread safe,
  * application MUST NOT call #xmlSecCryptoDLLoadLibrary, #xmlSecCryptoDLGetLibraryFunctions,
  * and #xmlSecCryptoDLUnloadLibrary functions from multiple threads.
  *
@@ -470,7 +470,7 @@ xmlSecCryptoDLLoadLibrary(const xmlChar* crypto) {
  * xmlSecCryptoDLGetLibraryFunctions:
  * @crypto:             the desired crypto library name ("openssl", "nss", ...).
  *
- * Loads the xmlsec-<crypto> library and gets global crypto functions/transforms/keys data/keys store
+ * Loads the xmlsec-$crypto library and gets global crypto functions/transforms/keys data/keys store
  * table. This function is NOT thread safe, application MUST NOT call #xmlSecCryptoDLLoadLibrary,
  * #xmlSecCryptoDLGetLibraryFunctions, and #xmlSecCryptoDLUnloadLibrary functions from multiple threads.
  *
@@ -523,7 +523,7 @@ xmlSecCryptoDLGetLibraryFunctions(const xmlChar* crypto) {
  * xmlSecCryptoDLUnloadLibrary:
  * @crypto:             the desired crypto library name ("openssl", "nss", ...).
  *
- * Unloads the xmlsec-<crypto> library. All pointers to this library
+ * Unloads the xmlsec-$crypto library. All pointers to this library
  * functions tables became invalid. This function is NOT thread safe,
  * application MUST NOT call #xmlSecCryptoDLLoadLibrary, #xmlSecCryptoDLGetLibraryFunctions,
  * and #xmlSecCryptoDLUnloadLibrary functions from multiple threads.

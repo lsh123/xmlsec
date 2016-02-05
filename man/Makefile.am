@@ -20,16 +20,7 @@ XMLSEC_PROGRAM=$(top_builddir)/apps/xmlsec1
 XMLSEC_CONFIG_PROGRAM=$(top_builddir)/xmlsec1-config
 
 all: $(man_MANS) $(XMLSEC_HTML)
-	
-clean-local:
-	( if [ z"$(XMLSEC1_MAN_SRC)" != z"$(XMLSEC1_MAN)" ]; \
-		@rm -rf $(XMLSEC1_MAN) ; \
-	fi )
-	( if [ z"$(XMLSEC1_CONFIG_MAN_SRC)" != z"$(XMLSEC1_CONFIG_MAN)" ]; \
-		@rm -rf $(XMLSEC1_CONFIG_MAN) ; \
-	fi )
 
-distclean-local: clean-local
 
 if BUILD_MANPAGES
 $(XMLSEC1_MAN): $(XMLSEC_PROGRAM)
@@ -60,8 +51,7 @@ else
 $(XMLSEC1_CONFIG_MAN):
 	@( \
 		echo "Copying xmlsec1-config manpage ..."; \
-		if [ z"$(XMLSEC1_CONFIG_MAN_SRC)" != z"$(XMLSEC1_CONFIG_MAN)" ]; \
-		then \
+		if [ z"$(XMLSEC1_CONFIG_MAN_SRC)" != z"$(XMLSEC1_CONFIG_MAN)" ]; then \
 		    $(CP) -u $(XMLSEC1_CONFIG_MAN_SRC) $(XMLSEC1_CONFIG_MAN) ; \
 		fi \
 	)
@@ -71,4 +61,15 @@ $(XMLSEC_PROGRAM):
 	@cd ../apps;make
 
 $(XMLSEC_CONFIG_PROGRAM):
+
+	
+clean-local:
+	( if [ z"$(XMLSEC1_MAN_SRC)" != z"$(XMLSEC1_MAN)" ]; then \
+		@rm -rf $(XMLSEC1_MAN) ; \
+	fi )
+	( if [ z"$(XMLSEC1_CONFIG_MAN_SRC)" != z"$(XMLSEC1_CONFIG_MAN)" ];  then \
+		@rm -rf $(XMLSEC1_CONFIG_MAN) ; \
+	fi )
+
+distclean-local: clean-local
 

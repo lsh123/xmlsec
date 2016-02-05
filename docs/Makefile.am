@@ -17,7 +17,7 @@ XMLSEC_HTML=$(builddir)/xmlsec-man.html
 all: docs
 
 # docs is legacy
-docs: docs-copy api-docs man-docs docs-format
+docs: docs-copy man-docs api-docs docs-format
 
 docs-copy:
 	@( \
@@ -30,10 +30,10 @@ docs-copy:
 
 # if build API docs, then we also have xsltproc
 if BUILD_API_DOCS
-api-docs: docs
+api-docs: docs-copy
 	@(cd api; $(MAKE) docs; )
 else
-api-docs: docs
+api-docs: docs-copy
 	@( \
 		echo "Copying api-docs..."; \
 		if [ z"$(srcdir)" != z"$(builddir)" ]; \
@@ -45,9 +45,11 @@ endif
 
 # if we build docs then we also have xsltproc
 if BUILD_MAN_DOCS
-man-docs: $(XMLSEC_HTML)
+man-docs: $(XMLSEC_HTML) docs-copy
 
-$(XMLSEC_HTML): api-docs $(XMLSEC1_MAN)
+$(XMLSEC_HTML): docs-copy $(XMLSEC1_MAN)
+	pwd
+	echo $(XMLSEC_HTML)
 	$(MAN2HTML) $(XMLSEC1_MAN) | \
 		  grep -v '^Content-type: text/html' | \
 		  tr "[:cntrl:]" " " > \
@@ -91,9 +93,21 @@ docs-format:
 
 endif
 
-dist-hook:
-	@$(CP) -p $(builddir)/*.html $(distdir)/
-	@$(CP) -p $(builddir)/*.ico  $(distdir)/
+clean-local:
+	( if [ z"$(srcdir)" != z"$(builddir)" ] ; then \
+		chmod -R u+w $(builddir)/images && rm -rf $(builddir)/images ; \
+		chmod -R u+w $(builddir)/src && rm -rf $(builddir)/src ; \
+		(for i in `find $(builddir) -name "*.html" -print` ; do \
+			echo "Removing files '$$i' ... " ; \
+			chmod -R u+w $$i && rm -f $$i ; \
+		done ) ; \
+		(for i in `find $(builddir) -name "*.ico" -print` ; do \
+			echo "Removing files '$$i' ... " ; \
+			chmod -R u+w $$i && rm -f $$i ; \
+		done ) ; \
+	 fi ; )
+
+distclean-local: clean-local
 
 install-data-local: 
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)

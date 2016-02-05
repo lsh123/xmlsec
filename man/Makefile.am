@@ -21,8 +21,10 @@ XMLSEC_CONFIG_PROGRAM=$(top_builddir)/xmlsec1-config
 
 all: $(man_MANS) $(XMLSEC_HTML)
 	
-clean:
+clean-local:
 	@rm -rf $(man_MANS)
+
+distclean-local: clean-local
 
 if BUILD_MANPAGES
 $(XMLSEC1_MAN): $(XMLSEC_PROGRAM)

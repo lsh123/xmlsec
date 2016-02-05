@@ -154,15 +154,14 @@ templates: scan templates-copy
 		    --output-dir=$(TMPL_DIR)/nss
 	$(GTKDOC_MKTMPL) --module=xmlsec-mscrypto \
 		    --output-dir=$(TMPL_DIR)/mscrypto
-	(for i in `find $(TMPL_DIR) -name "*.sgml.bak" -print` ; do \
-		rm "$$i" ; \
-	done ; )
 
+# make sure to run chmod since we will update templates
 templates-copy: $(TMPL_SRC_DIR) $(TMPL_DIR)/.sentinel
 	@echo "Copying original template files into '$(TMPL_DIR)' ..."
 	( if [ z"$(TMPL_DIR)" != z"$(TMPL_SRC_DIR)" ] ; then \
 		$(CP) -ru $(TMPL_SRC_DIR)/* $(TMPL_DIR)/ ; \
 	  fi ; )
+	chmod -R u+w $(TMPL_DIR)
 
 scan: SOURCE_CODEs example_sources
 	$(GTKDOC_SCAN) --module=xmlsec \
@@ -272,16 +271,34 @@ example_sources: $(EXAMPLES_DIR)/.sentinel
 # otherwise make (annoyingly) deletes it
 .PRECIOUS: %/.sentinel
 %/.sentinel:
+	@echo "Creating folder '${@D}' ..."
 	mkdir -p ${@D}
 	touch $@
 
 dist-hook:
 	@cp -p $(srcdir)/*.html $(srcdir)/*.png $(distdir)
-
-clean:
+	(for i in `find $(distdir) -name ".sentinel" -print` ; do \
+		echo "Removing some files '$$i' before dist ... " ; \
+		rm $$i ; \
+	done )
+	(for i in `find $(distdir) -name "*.sgml.bak" -print` ; do \
+		echo "Removing some files '$$i' before dist ... " ; \
+		rm "$$i" ; \
+	done ; )
+	
+clean-local:
 	-rm -rf $(SOURCE_CODE_DIR) $(EXAMPLES_DIR) $(SCAN_DIR)/*.txt $(SGML_DIR) $(XML_DIR)
-	-rm -f *.stamp *.types index.sgml 
+	-rm -f *.stamp *.types index.sgml
+	( if [ z"$(TMPL_SRC_DIR)" != z"$(TMPL_DIR)" ] ; then \
+		chmod -R u+w $(TMPL_DIR) && rm -rf $(TMPL_DIR) ; \
+	 fi ; )
+	 ( if [ z"$(builddir)" != z"$(srcdir)" ] ; then \
+    	chmod -R u+w $(builddir)/src && rm -rf $(builddir)/src ; \
+    	chmod -R u+w $(builddir)/images && rm -rf $(builddir)/images ; \
+	 fi ; )
 
-maintainer-clean-local: clean
+distclean-local: clean-local
+
+maintainer-clean-local: clean-local
 	-rm -f *.html
 

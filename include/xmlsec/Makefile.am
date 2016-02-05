@@ -24,7 +24,6 @@ xmlsecinc_HEADERS = \
 	nodeset.h \
 	parser.h \
 	private.h \
-	soap.h \
 	strings.h \
 	templates.h \
 	transforms.h \

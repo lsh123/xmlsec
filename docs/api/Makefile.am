@@ -34,6 +34,13 @@ EXTRA_DIST = \
 	$(srcdir)/images \
 	$(NULL)
 
+SOURCE_FILES_TO_COPY = \
+	$(srcdir)/src \
+	$(srcdir)/images \
+	$(srcdir)/*.html \
+	$(srcdir)/*.png \
+	$(NULL)	
+
 #
 # We need to pre-process original source files
 # because gtkdoc does not understand some C features
@@ -54,10 +61,24 @@ EXAMPLES_SOURCE_FILES=\
 #
 REMOVE_GTKDOCLINK=$(top_srcdir)/scripts/remove-gtkdoclink.pl
 
-# do nothing for all
-all:
+# docs is legacy
+all: docs
 
+
+# if build API docs, then we also have xsltproc
+if BUILD_API_DOCS
 docs: html-cleanup
+
+else
+docs:
+	@( \
+		echo "Copying api-docs..."; \
+		if [ z"$(srcdir)" != z"$(builddir)" ]; \
+		then \
+		    $(CP) -ru $(SOURCE_FILES_TO_COPY) $(builddir)/ ; \
+		fi \
+	)
+endif
 
 html-cleanup: html
 	( echo "Cleaning up result files"; \
@@ -276,7 +297,7 @@ example_sources: $(EXAMPLES_DIR)/.sentinel
 	touch $@
 
 dist-hook:
-	@cp -p $(srcdir)/*.html $(srcdir)/*.png $(distdir)
+	@cp -p $(srcdir)/*.html $(srcdir)/*.png $(distdir)/
 	(for i in `find $(distdir) -name ".sentinel" -print` ; do \
 		echo "Removing some files '$$i' before dist ... " ; \
 		rm $$i ; \
@@ -289,7 +310,7 @@ dist-hook:
 clean-local:
 	-rm -rf $(SOURCE_CODE_DIR) $(EXAMPLES_DIR) $(SCAN_DIR)/*.txt $(SGML_DIR) $(XML_DIR)
 	-rm -f *.stamp *.types index.sgml
-	( if [ z"$(TMPL_SRC_DIR)" != z"$(TMPL_DIR)" ] ; then \
+	( if [ z"$(TMPL_SRC_DIR)" != z"$(TMPL_DIR)" ] && [ -d "$(TMPL_DIR)" ] ; then \
 		chmod -R u+w $(TMPL_DIR) && rm -rf $(TMPL_DIR) ; \
 	 fi ; )
 	 ( if [ z"$(builddir)" != z"$(srcdir)" ] ; then \

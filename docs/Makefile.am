@@ -17,7 +17,7 @@ XMLSEC_HTML=$(builddir)/xmlsec-man.html
 all: docs
 
 # docs is legacy
-docs: docs-copy man-docs api-docs docs-format
+docs: docs-copy man-docs docs-format
 
 docs-copy:
 	@( \
@@ -27,21 +27,6 @@ docs-copy:
 		    $(CP) -ru $(srcdir)/*.html $(srcdir)/*.ico $(srcdir)/images $(builddir)/  ; \
 		fi \
 	)
-
-# if build API docs, then we also have xsltproc
-if BUILD_API_DOCS
-api-docs: docs-copy
-	@(cd api; $(MAKE) docs; )
-else
-api-docs: docs-copy
-	@( \
-		echo "Copying api-docs..."; \
-		if [ z"$(srcdir)" != z"$(builddir)" ]; \
-		then \
-		    $(CP) -ru $(srcdir)/api $(builddir)/ ; \
-		fi \
-	)
-endif
 
 # if we build docs then we also have xsltproc
 if BUILD_MAN_DOCS
@@ -59,9 +44,6 @@ else
 man-docs:
 
 endif
-
-api-docs-clean:
-	@(cd api; $(MAKE) clean)
 
 if HAS_XSLTPROC
 docs-format:

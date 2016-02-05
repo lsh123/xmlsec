@@ -13,7 +13,7 @@ SCAN_DIR=$(builddir)
 SGML_DIR=$(builddir)/sgml.tmp
 XML_DIR=$(builddir)/xml.tmp
 EXAMPLES_DIR=$(SGML_DIR)/examples
-DOC_SOURCE_DIR=$(builddir)/code
+SOURCE_CODE_DIR=$(builddir)/code
 
 
 # We need to copy some files to make gkdoc happy that
@@ -38,7 +38,7 @@ EXTRA_DIST = \
 # We need to pre-process original source files
 # because gtkdoc does not understand some C features
 #
-DOC_SOURCE_FILES=\
+SOURCE_CODE_FILES=\
 	$(shell find $(SOURCE_DIR) -name '*.c' -print )  \
 	$(shell find $(SOURCE_DIR2) -name '*.c' -print )  \
 	$(shell find $(INCLUDE_DIR) -name '*.h' -a ! -name "symbols.h" -print ) \
@@ -108,38 +108,38 @@ sgml-base: templates $(SGML_DIR)/.sentinel
 			--main-sgml-file=$(SGML_DIR)/xmlsec-base.sgml \
 			--output-dir=$(SGML_DIR)/ \
 		    --tmpl-dir=$(TMPL_DIR)/base \
-		    --source-dir=$(DOC_SOURCE_DIR)/src/base \
-		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/base
+		    --source-dir=$(SOURCE_CODE_DIR)/src/base \
+		    --source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/base
 	$(GTKDOC_MKDB) --module=xmlsec-openssl \
 		    --main-sgml-file=$(SGML_DIR)/xmlsec-openssl.sgml \
 		    --tmpl-dir=$(TMPL_DIR)/openssl \
 		    --output-dir=$(SGML_DIR)/openssl \
-		    --source-dir=$(DOC_SOURCE_DIR)/src/openssl \
-		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/openssl
+		    --source-dir=$(SOURCE_CODE_DIR)/src/openssl \
+		    --source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/openssl
 	$(GTKDOC_MKDB) --module=xmlsec-gnutls \
 		    --main-sgml-file=$(SGML_DIR)/xmlsec-gnutls.sgml \
 		    --tmpl-dir=$(TMPL_DIR)/gnutls \
 		    --output-dir=$(SGML_DIR)/gnutls \
-		    --source-dir=$(DOC_SOURCE_DIR)/src/gnutls \
-		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/gnutls
+		    --source-dir=$(SOURCE_CODE_DIR)/src/gnutls \
+		    --source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/gnutls
 	$(GTKDOC_MKDB) --module=xmlsec-gcrypt \
 		    --main-sgml-file=$(SGML_DIR)/xmlsec-gcrypt.sgml \
 		    --tmpl-dir=$(TMPL_DIR)/gcrypt \
 		    --output-dir=$(SGML_DIR)/gcrypt \
-		    --source-dir=$(DOC_SOURCE_DIR)/src/gcrypt \
-		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/gcrypt
+		    --source-dir=$(SOURCE_CODE_DIR)/src/gcrypt \
+		    --source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/gcrypt
 	$(GTKDOC_MKDB) --module=xmlsec-nss \
 		    --main-sgml-file=$(SGML_DIR)/xmlsec-nss.sgml \
 		    --tmpl-dir=$(TMPL_DIR)/nss \
 		    --output-dir=$(SGML_DIR)/nss \
-		    --source-dir=$(DOC_SOURCE_DIR)/src/nss \
-		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/nss
+		    --source-dir=$(SOURCE_CODE_DIR)/src/nss \
+		    --source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/nss
 	$(GTKDOC_MKDB) --module=xmlsec-mscrypto \
 		    --main-sgml-file=$(SGML_DIR)/xmlsec-mscrypto.sgml \
 		    --tmpl-dir=$(TMPL_DIR)/mscrypto \
 		    --output-dir=$(SGML_DIR)/mscrypto \
-		    --source-dir=$(DOC_SOURCE_DIR)/src/mscrypto \
-		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/mscrypto
+		    --source-dir=$(SOURCE_CODE_DIR)/src/mscrypto \
+		    --source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/mscrypto
 
 templates: scan templates-copy
 	$(GTKDOC_MKTMPL) --module=xmlsec \
@@ -161,54 +161,54 @@ templates-copy: $(TMPL_SRC_DIR) $(TMPL_DIR)/.sentinel
 		$(CP) -ru $(TMPL_SRC_DIR)/* $(TMPL_DIR)/ ; \
 	  fi ; )
 
-scan: doc_sources example_sources
+scan: SOURCE_CODEs example_sources
 	$(GTKDOC_SCAN) --module=xmlsec \
 		    --rebuild-sections \
 		    --output-dir=$(SCAN_DIR) \
-		    --source-dir=$(DOC_SOURCE_DIR)/src/base \
-		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/base
+		    --source-dir=$(SOURCE_CODE_DIR)/src/base \
+		    --source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/base
 	$(GTKDOC_SCAN) --module=xmlsec-openssl \
 		    --rebuild-sections \
 		    --output-dir=$(SCAN_DIR) \
-		    --source-dir=$(DOC_SOURCE_DIR)/src/openssl \
-		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/openssl
+		    --source-dir=$(SOURCE_CODE_DIR)/src/openssl \
+		    --source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/openssl
 	$(GTKDOC_SCAN) --module=xmlsec-gnutls \
 		    --rebuild-sections \
 		    --output-dir=$(SCAN_DIR) \
-		    --source-dir=$(DOC_SOURCE_DIR)/src/gnutls \
-		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/gnutls
+		    --source-dir=$(SOURCE_CODE_DIR)/src/gnutls \
+		    --source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/gnutls
 	$(GTKDOC_SCAN) --module=xmlsec-gcrypt \
 		    --rebuild-sections \
 		    --output-dir=$(SCAN_DIR) \
-		    --source-dir=$(DOC_SOURCE_DIR)/src/gcrypt \
-		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/gcrypt
+		    --source-dir=$(SOURCE_CODE_DIR)/src/gcrypt \
+		    --source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/gcrypt
 	$(GTKDOC_SCAN) --module=xmlsec-nss \
 		    --rebuild-sections \
 		    --output-dir=$(SCAN_DIR) \
-		    --source-dir=$(DOC_SOURCE_DIR)/src/nss \
-		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/nss
+		    --source-dir=$(SOURCE_CODE_DIR)/src/nss \
+		    --source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/nss
 	$(GTKDOC_SCAN) --module=xmlsec-mscrypto \
 		    --rebuild-sections \
 		    --output-dir=$(SCAN_DIR) \
-		    --source-dir=$(DOC_SOURCE_DIR)/src/mscrypto \
-		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/mscrypto
+		    --source-dir=$(SOURCE_CODE_DIR)/src/mscrypto \
+		    --source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/mscrypto
 
 #
 # Prepare source files by coping them to "code" folder and 
 # removing XMLSEC_EXPORT_* stuff that makes gtkdoc crazy
 #
-doc_sources: $(DOC_SOURCE_FILES) $(DOC_SOURCE_DIR)/.sentinel doc_sources_cleanup
-	@echo "Preprocessing source files into '$(DOC_SOURCE_DIR)' ..." 
-	@mkdir -p $(DOC_SOURCE_DIR)/src/base $(DOC_SOURCE_DIR)/include/xmlsec/base
+SOURCE_CODEs: $(SOURCE_CODE_FILES) $(SOURCE_CODE_DIR)/.sentinel SOURCE_CODEs_cleanup
+	@echo "Preprocessing source files into '$(SOURCE_CODE_DIR)' ..." 
+	@mkdir -p $(SOURCE_CODE_DIR)/src/base $(SOURCE_CODE_DIR)/include/xmlsec/base
 	@( \
-	for i in $(DOC_SOURCE_FILES) ; do \
+	for i in $(SOURCE_CODE_FILES) ; do \
 		folder_name=`echo "$$i" | \
 			sed 's#$(top_srcdir)/##' | \ 
 			sed 's#$(top_builddir)/##' | \ 
 			sed 's#/[^/]*$$##'`; \
 	    file_name=`echo "$$i" | \
 	    	sed 's#.*/##'`; \
-	    mkdir -p "$(DOC_SOURCE_DIR)/$$folder_name"; \
+	    mkdir -p "$(SOURCE_CODE_DIR)/$$folder_name"; \
 	    cat "$$i" | \
 		    sed 's/#if.*//' | \
 		    sed 's/#el.*//' | \
@@ -217,14 +217,14 @@ doc_sources: $(DOC_SOURCE_FILES) $(DOC_SOURCE_DIR)/.sentinel doc_sources_cleanup
 		    sed 's/XMLSEC_EXPORT_VAR//' | \
 		    sed 's/XMLSEC_EXPORT//' | \
 		    sed 's/XMLSEC_ERRORS_PRINTF_ATTRIBUTE//' > \
-		    $(DOC_SOURCE_DIR)/$$folder_name/$$file_name; \
+		    $(SOURCE_CODE_DIR)/$$folder_name/$$file_name; \
 	done);
-	-@mv -f $(DOC_SOURCE_DIR)/src/*.c $(DOC_SOURCE_DIR)/src/base
-	-@mv -f $(DOC_SOURCE_DIR)/include/xmlsec/*.h $(DOC_SOURCE_DIR)/include/xmlsec/base
-	-@rm -f $(DOC_SOURCE_DIR)/include/xmlsec/*/symbols.h
+	-@mv -f $(SOURCE_CODE_DIR)/src/*.c $(SOURCE_CODE_DIR)/src/base
+	-@mv -f $(SOURCE_CODE_DIR)/include/xmlsec/*.h $(SOURCE_CODE_DIR)/include/xmlsec/base
+	-@rm -f $(SOURCE_CODE_DIR)/include/xmlsec/*/symbols.h
 
-doc_sources_cleanup: $(DOC_SOURCE_DIR)/.sentinel
-	@rm -rf $(DOC_SOURCE_DIR)/*
+SOURCE_CODEs_cleanup: $(SOURCE_CODE_DIR)/.sentinel
+	@rm -rf $(SOURCE_CODE_DIR)/*
 
 #
 # Create index for all functions. For macros and defines need to add -CAPS suffix
@@ -276,7 +276,7 @@ dist-hook:
 	@cp -p $(srcdir)/*.html $(srcdir)/*.png $(distdir)
 
 clean:
-	-rm -rf $(DOC_SOURCE_DIR) $(EXAMPLES_DIR) $(SCAN_DIR)/*.txt $(SGML_DIR) $(XML_DIR)
+	-rm -rf $(SOURCE_CODE_DIR) $(EXAMPLES_DIR) $(SCAN_DIR)/*.txt $(SGML_DIR) $(XML_DIR)
 	-rm -f *.stamp *.types index.sgml 
 
 maintainer-clean-local: clean

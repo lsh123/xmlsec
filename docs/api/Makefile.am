@@ -154,6 +154,9 @@ templates: scan templates-copy
 		    --output-dir=$(TMPL_DIR)/nss
 	$(GTKDOC_MKTMPL) --module=xmlsec-mscrypto \
 		    --output-dir=$(TMPL_DIR)/mscrypto
+	(for i in `find $(TMPL_DIR) -name "*.sgml.bak" -print` ; do \
+		rm "$$i" ; \
+	done ; )
 
 templates-copy: $(TMPL_SRC_DIR) $(TMPL_DIR)/.sentinel
 	@echo "Copying original template files into '$(TMPL_DIR)' ..."

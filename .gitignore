@@ -1,6 +1,5 @@
 *~
 *.orig
-COPYING
 .deps/
 .libs/
 .cproject

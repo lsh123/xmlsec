@@ -309,7 +309,7 @@ dist-hook:
 	
 clean-local:
 	-rm -rf $(SOURCE_CODE_DIR) $(EXAMPLES_DIR) $(SCAN_DIR)/*.txt $(SGML_DIR) $(XML_DIR)
-	-rm -f *.stamp *.types index.sgml
+	-rm -f *.stamp *.types *.css index.sgml
 	( if [ z"$(TMPL_SRC_DIR)" != z"$(TMPL_DIR)" ] && [ -d "$(TMPL_DIR)" ] ; then \
 		chmod -R u+w $(TMPL_DIR) && rm -rf $(TMPL_DIR) ; \
 	 fi ; )

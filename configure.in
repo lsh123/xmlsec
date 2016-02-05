@@ -80,8 +80,8 @@ if test "z$enable_development" = "zyes" ; then
     enable_debugging="yes"
     enable_pedantic="yes"
     enable_static_linking="yes"
-    enable_manpages="yes"
-    enable_docs="yes"
+    enable_manpages_build="yes"
+    enable_docs_build="yes"
     enable_crypto_dl="no"
     AC_MSG_RESULT(yes)
 else
@@ -92,8 +92,8 @@ dnl ==========================================================================
 dnl Do we want to build manpages?
 dnl ==========================================================================
 AC_MSG_CHECKING(for man pages build) 
-AC_ARG_ENABLE(manpages,      [  --enable-manpages       man pages build (no)])
-if test "z$enable_manpages" = "zyes" ; then
+AC_ARG_ENABLE(manpages_build,[  --enable-manpages-build man pages build (no)])
+if test "z$enable_manpages_build" = "zyes" ; then
     AC_PATH_PROG(HELP2MAN, help2man)
 
     AC_MSG_RESULT(yes)
@@ -108,8 +108,8 @@ dnl ==========================================================================
 dnl Do we want to build docs?
 dnl ==========================================================================
 AC_MSG_CHECKING(for docs build) 
-AC_ARG_ENABLE(docs,          [  --enable-docs           docs build (no)])
-if test "z$enable_docs" = "zyes" ; then
+AC_ARG_ENABLE(docs_build,    [  --enable-docs-build     docs build (no)])
+if test "z$enable_docs_build" = "zyes" ; then
     AC_PATH_PROG(XSLTPROC, xsltproc)
     AC_PATH_PROG(MAN2HTML, man2html)
     AC_PATH_PROG(GTKDOC_MKHTML, gtkdoc-mkhtml)

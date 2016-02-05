@@ -5,38 +5,78 @@ SUBDIRS=api
 TARGET_DIR=@XMLSEC_DOCDIR@
 
 EXTRA_DIST=\
-	images \
-	xmlsec.xsl \
+	$(builddir)/images     \
+	$(builddir)/*.html     \
+	$(builddir)/*.ico      \
+	$(builddir)/xmlsec.xsl \
 	$(NULL)
 
+XMLSEC1_MAN=$(top_builddir)/man/xmlsec1.1
+XMLSEC_HTML=$(builddir)/xmlsec-man.html
+
+
 # just do nothing
-all:
+all: docs api-docs man-docs docs-format
 
-docs: api-docs-create docs-format
-
-api-docs-create:
-	@(cd api; \
-	    $(MAKE) docs; \
-	    echo "Cleaning up result files"; \
-	    perl ../../scripts/remove-gtkdoclink.pl `find . -name "*.html" -print` \
+docs:
+	@( \
+		echo "Copying docs..."; \
+		if [ z"$(srcdir)" != z"$(builddir)" ]; \
+		then \
+		    $(CP) -ru $(srcdir)/*.html $(srcdir)/*.ico $(srcdir)/images $(builddir)/  ; \
+		fi \
 	)
+
+# if build API docs, then we also have xsltproc
+if BUILD_API_DOCS
+api-docs: docs
+	@(cd api; $(MAKE) docs; \
+	    echo "Cleaning up result files"; \
+	    $(PERL) $(top_srcdir)/scripts/remove-gtkdoclink.pl `find . -name "*.html" -print` \
+	)
+else
+api-docs: docs
+	@( \
+		echo "Copying api-docs..."; \
+		if [ z"$(srcdir)" != z"$(builddir)" ]; \
+		then \
+		    $(CP) -ru $(srcdir)/api $(builddir)/ ; \
+		fi \
+	)
+endif
+
+# if we build docs then we also have xsltproc
+if BUILD_MAN_DOCS
+man-docs: $(XMLSEC_HTML)
+
+$(XMLSEC_HTML): api-docs $(XMLSEC1_MAN)
+	$(MAN2HTML) $(XMLSEC1_MAN) | \
+		  grep -v '^Content-type: text/html' | \
+		  tr "[:cntrl:]" " " > \
+		  $(XMLSEC_HTML)
+else
+# do nothing, we aready copied this file
+man-docs:
+
+endif
 
 api-docs-clean:
 	@(cd api; $(MAKE) clean)
 
+if HAS_XSLTPROC
 docs-format:
 	@(echo "Formatting html documents"; \
-	for i in `find . -name "*.html" -print`; \
+	for i in `find $(builddir) -name "*.html" -print`; \
 	do \
 	    top_folder=`echo $$i | sed 's#/[^/]*$$#/#' | sed 's#\./##' | \
 			sed 's#[^/]*/#../#g'`; \
-	    echo "Processing $$i ($$top_folder)"; \
-	    xsltproc --html --stringparam topfolder "$$top_folder" \
-		     --output $$i.tmp ./xmlsec.xsl $$i; \
+	    echo "Processing $$i (topfolder='$$top_folder')"; \
+	    $(XSLTPROC) --html --stringparam topfolder "$$top_folder" \
+		     --output $$i.tmp $(srcdir)/xmlsec.xsl $$i; \
 	    if [ $$? != 0 ]; \
 	    then \
-		echo "ERROR: processing file $$i"; \
-		exit 1; \
+			echo "ERROR: processing file $$i"; \
+			exit 1; \
 	    fi; \
 	    mv $$i.tmp $$i; \
 	done)
@@ -47,19 +87,26 @@ docs-format:
 	    sed 's/\xA0/ /g' $$i > $$i.tmp ; \
 	    mv $$i.tmp $$i ; \
 	done)
+else
+# do nothing
+docs-format:
+
+endif
 
 dist-hook:
-	@$(CP) -p $(srcdir)/*.html $(distdir)
+	@$(CP) -p $(builddir)/*.html $(distdir)/
+	@$(CP) -p $(builddir)/*.ico  $(distdir)/
 
 install-data-local: 
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/images
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/api
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/api/images
-	-@INSTALL@ -m 0644 $(srcdir)/*.html $(DESTDIR)$(TARGET_DIR)
-	-@INSTALL@ -m 0644 $(srcdir)/images/*.gif $(srcdir)/images/*.png $(DESTDIR)$(TARGET_DIR)/images
-	-@INSTALL@ -m 0644 $(srcdir)/api/*.html $(srcdir)/api/*.png $(srcdir)/api/*.sgml $(DESTDIR)$(TARGET_DIR)/api
-	-@INSTALL@ -m 0644 $(srcdir)/api/images/*.png $(DESTDIR)$(TARGET_DIR)/api/images
+	-@INSTALL@ -m 0644 $(builddir)/*.html $(DESTDIR)$(TARGET_DIR)
+	-@INSTALL@ -m 0644 $(builddir)/*.ico  $(DESTDIR)$(TARGET_DIR)
+	-@INSTALL@ -m 0644 $(builddir)/images/*.gif $(builddir)/images/*.png $(DESTDIR)$(TARGET_DIR)/images
+	-@INSTALL@ -m 0644 $(builddir)/api/*.html $(builddir)/api/*.png $(builddir)/api/*.sgml $(DESTDIR)$(TARGET_DIR)/api
+	-@INSTALL@ -m 0644 $(builddir)/api/images/*.png $(DESTDIR)$(TARGET_DIR)/api/images
 
 uninstall-local:
 	@rm -rf $(DESTDIR)$(TARGET_DIR)

@@ -30,16 +30,21 @@ EXAMPLES_SOURCE_FILES=\
 	$(shell find $(EXAMPLES_SOURCE_DIR) -name '*.c' -print) \
 	$(shell find $(EXAMPLES_SOURCE_DIR) -name '*.xml' -print) 
 
+REMOVE_GTKDOCLINK=$(top_srcdir)/scripts/remove-gtkdoclink.pl
+
 # do nothing for all
 all:
 
 docs: sgml html clean-sources
+	@(  echo "Cleaning up result files"; \
+	    $(PERL) $(REMOVE_GTKDOCLINK) `find . -name "*.html" -print` \
+	)
 
 # need to cleanup "bad" chars
 html: sgml $(srcdir)/src/xmlsec.sgml $(srcdir)/src/chapters xmlsec-index
 	$(CP) -u $(srcdir)/src/xmlsec.sgml $(builddir)/xmlsec.sgml
 	$(CP) -ru $(srcdir)/src/chapters $(builddir)/
-	$(GTKDOC_MKHTML) xmlsec $(builddir)/xmlsec.sgml
+	-$(GTKDOC_MKHTML) xmlsec $(builddir)/xmlsec.sgml
 
 #
 # Prepeare sgml files from sources for each library. We are also
@@ -48,6 +53,7 @@ html: sgml $(srcdir)/src/xmlsec.sgml $(srcdir)/src/chapters xmlsec-index
 # targets to make more references
 #
 sgml: templates
+	-@mkdir -p sgml
 	$(GTKDOC_MKDB) --module=xmlsec \
 			--main-sgml-file=xmlsec-base.sgml \
 			--output-dir=sgml/ \
@@ -102,6 +108,7 @@ sgml: templates
 	 done);
 
 templates: scan
+	-@mkdir -p tmpl
 	$(GTKDOC_MKTMPL) --module=xmlsec \
 			--output-dir=tmpl/base
 	$(GTKDOC_MKTMPL) --module=xmlsec-openssl \

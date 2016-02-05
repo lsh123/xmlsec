@@ -14,7 +14,6 @@ EXTRA_DIST=\
 XMLSEC1_MAN=$(top_builddir)/man/xmlsec1.1
 XMLSEC_HTML=$(builddir)/xmlsec-man.html
 
-REMOVE_GTKDOCLINK=$(top_srcdir)/scripts/remove-gtkdoclink.pl
 
 # just do nothing
 all: docs api-docs man-docs docs-format
@@ -31,10 +30,7 @@ docs:
 # if build API docs, then we also have xsltproc
 if BUILD_API_DOCS
 api-docs: docs
-	@(cd api; $(MAKE) docs; \
-	    echo "Cleaning up result files"; \
-	    $(PERL) $(REMOVE_GTKDOCLINK) `find . -name "*.html" -print` \
-	)
+	@(cd api; $(MAKE) docs; )
 else
 api-docs: docs
 	@( \

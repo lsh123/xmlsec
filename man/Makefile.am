@@ -1,52 +1,64 @@
 NULL =
 
+XMLSEC1_MAN=$(top_builddir)/man/xmlsec1.1
+XMLSEC1_CONFIG_MAN=$(top_builddir)/man/xmlsec1-config.1
+
+XMLSEC1_MAN_SRC=$(top_srcdir)/man/xmlsec1.1
+XMLSEC1_CONFIG_MAN_SRC=$(top_srcdir)/man/xmlsec1-config.1
+
 man_MANS = \
-	xmlsec1.1 \
-	xmlsec1-config.1 \
+	$(XMLSEC1_MAN) \
+	$(XMLSEC1_CONFIG_MAN) \
 	$(NULL)
 
 EXTRA_DIST = \
-	xmlsec1.1 \
-	xmlsec1-config.1 \
+	$(XMLSEC1_MAN) \
+	$(XMLSEC1_CONFIG_MAN) \
 	$(NULL)
 
 XMLSEC_PROGRAM=$(top_builddir)/apps/xmlsec1
 XMLSEC_CONFIG_PROGRAM=$(top_builddir)/xmlsec1-config
 XMLSEC_HTML=$(top_builddir)/docs/xmlsec-man.html
 
-all:
-
-docs: man-clean man $(XMLSEC_HTML)
+all: $(man_MANS) $(XMLSEC_HTML)
 	
-
-man-clean:
+clean:
 	@rm -rf $(man_MANS)
 
-man: $(man_MANS) 
-
-$(XMLSEC_HTML): xmlsec1.1
-	man2html xmlsec1.1 | \
+if HAS_MAN2HTML
+$(XMLSEC_HTML): $(XMLSEC1_MAN)
+	$(MAN2HTML) $(XMLSEC1_MAN) | \
 		  grep -v '^Content-type: text/html' | \
 		  tr "[:cntrl:]" " " > \
 		  $(XMLSEC_HTML)
+endif
 
-xmlsec1.1:
-	@rm -f xmlsec1.1
-	help2man --help-option=--help-all --no-info \
+if HAS_HELP2MAN
+$(XMLSEC1_MAN): $(XMLSEC_PROGRAM)
+	$(HELP2MAN) --help-option=--help-all --no-info \
 		  --name="sign, verify, encrypt and decrypt XML documents" \
 		  --version-option=--version \
-		  $(XMLSEC_PROGRAM) > xmlsec1.1
+		  --output=$(XMLSEC1_MAN) \
+		  $(XMLSEC_PROGRAM)
+else
+$(XMLSEC1_MAN):
+	$(CP) -u $(XMLSEC1_MAN_SRC) $(XMLSEC1_MAN)
+endif
 
-xmlsec1-config.1:
-	@chmod 766 $(XMLSEC_CONFIG_PROGRAM)
-	@rm -f xmlsec1-config.1
-	help2man --help-option=--help --no-info \
+if HAS_HELP2MAN
+$(XMLSEC1_CONFIG_MAN): $(XMLSEC_CONFIG_PROGRAM)
+	$(HELP2MAN) --help-option=--help --no-info \
 		  --name="detail installed version of xmlsec library" \
 		  --version-option=--version \
-		  $(XMLSEC_CONFIG_PROGRAM) > xmlsec1-config.1
+		  --output=$(XMLSEC1_CONFIG_MAN) \
+		  $(XMLSEC_CONFIG_PROGRAM)
+else
+$(XMLSEC1_CONFIG_MAN):
+	$(CP) -u $(XMLSEC1_CONFIG_MAN_SRC) $(XMLSEC1_CONFIG_MAN)
+endif
 
 $(XMLSEC_PROGRAM): 
 	@cd ../apps;make
 
-clean:
-	
+$(XMLSEC_CONFIG_PROGRAM):
+

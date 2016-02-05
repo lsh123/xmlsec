@@ -52,6 +52,9 @@ AC_PATH_PROG(TAR, tar, /bin/tar)
 AC_PATH_PROG(HELP2MAN, help2man)
 AC_PATH_PROG(MAN2HTML, man2html)
 
+AM_CONDITIONAL(HAS_HELP2MAN, [test x"$HELP2MAN" != x])
+AM_CONDITIONAL(HAS_MAN2HTML, [test x"$MAN2HTML" != x])
+
 dnl Checks for header files.
 AC_HEADER_DIRENT
 AC_HEADER_STDC
@@ -1635,14 +1638,14 @@ docs/Makefile
 docs/api/Makefile
 man/Makefile
 
-xmlsec1Conf.sh:xmlsecConf.sh.in
-xmlsec1-config:xmlsec-config.in
 xmlsec1-openssl.pc:xmlsec-openssl.pc.in
 xmlsec1-gnutls.pc:xmlsec-gnutls.pc.in
 xmlsec1-gcrypt.pc:xmlsec-gcrypt.pc.in
 xmlsec1-nss.pc:xmlsec-nss.pc.in
 xmlsec1.spec:xmlsec.spec.in
 ])
+AC_CONFIG_FILES([xmlsec1Conf.sh:xmlsecConf.sh.in], [chmod +x xmlsec1Conf.sh])
+AC_CONFIG_FILES([xmlsec1-config:xmlsec-config.in], [chmod +x xmlsec1-config])
 AC_OUTPUT
 
 

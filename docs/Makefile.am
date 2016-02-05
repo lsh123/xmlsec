@@ -14,11 +14,12 @@ EXTRA_DIST=\
 XMLSEC1_MAN=$(top_builddir)/man/xmlsec1.1
 XMLSEC_HTML=$(builddir)/xmlsec-man.html
 
+all: docs
 
-# just do nothing
-all: docs api-docs man-docs docs-format
+# docs is legacy
+docs: docs-copy api-docs man-docs docs-format
 
-docs:
+docs-copy:
 	@( \
 		echo "Copying docs..."; \
 		if [ z"$(srcdir)" != z"$(builddir)" ]; \

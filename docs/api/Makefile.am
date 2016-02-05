@@ -9,13 +9,7 @@ INCLUDE_DIR=$(top_srcdir)/include
 INCLUDE_DIR2=$(top_builddir)/include
 
 
-EXTRA_DIST = \
-	src \
-	images \
-	$(NULL)
-
 SCAN_DIR=$(builddir)
-TMPL_DIR=$(builddir)/tmpl.tmp
 SGML_DIR=$(builddir)/sgml.tmp
 XML_DIR=$(builddir)/xml.tmp
 EXAMPLES_DIR=$(SGML_DIR)/examples
@@ -24,11 +18,21 @@ DOC_SOURCE_DIR=$(builddir)/code
 
 # We need to copy some files to make gkdoc happy that
 # everything is in one folder
+TMPL_DIR=$(builddir)/tmpl
+TMPL_SRC_DIR=$(srcdir)/tmpl
+
 MAIN_SGML_FILE=$(SGML_DIR)/xmlsec-main.sgml
 MAIN_SGML_SRC_FILE=$(srcdir)/src/xmlsec.sgml
 
 SGML_CHAPTERS_DIR=$(SGML_DIR)/chapters
 SGML_CHAPTERS_SRC_DIR=$(srcdir)/src/chapters
+
+
+EXTRA_DIST = \
+	$(TMPL_DIR) \
+	$(srcdir)/src \
+	$(srcdir)/images \
+	$(NULL)
 
 #
 # We need to pre-process original source files
@@ -62,7 +66,7 @@ html-cleanup: html
 
 # need to cleanup "bad" chars
 html: sgml $(MAIN_SGML_FILE) $(SGML_CHAPTERS_DIR) xmlsec-index
-	-$(GTKDOC_MKHTML) xmlsec $(MAIN_SGML_FILE)
+	$(GTKDOC_MKHTML) xmlsec $(MAIN_SGML_FILE)
 
 $(SGML_CHAPTERS_DIR): $(SGML_CHAPTERS_SRC_DIR) $(SGML_CHAPTERS_DIR)/.sentinel
 	$(CP) -ru $(SGML_CHAPTERS_SRC_DIR)/* $(SGML_CHAPTERS_DIR)
@@ -137,7 +141,7 @@ sgml-base: templates $(SGML_DIR)/.sentinel
 		    --source-dir=$(DOC_SOURCE_DIR)/src/mscrypto \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/mscrypto
 
-templates: scan $(TMPL_DIR)/.sentinel
+templates: scan templates-copy
 	$(GTKDOC_MKTMPL) --module=xmlsec \
 			--output-dir=$(TMPL_DIR)/base
 	$(GTKDOC_MKTMPL) --module=xmlsec-openssl \
@@ -150,6 +154,9 @@ templates: scan $(TMPL_DIR)/.sentinel
 		    --output-dir=$(TMPL_DIR)/nss
 	$(GTKDOC_MKTMPL) --module=xmlsec-mscrypto \
 		    --output-dir=$(TMPL_DIR)/mscrypto
+
+templates-copy: $(TMPL_DIR)/.sentinel
+	$(CP) -r $(TMPL_SRC_DIR)/* $(TMPL_DIR)/
 
 scan: doc_sources example_sources
 	$(GTKDOC_SCAN) --module=xmlsec \
@@ -266,7 +273,7 @@ dist-hook:
 	@cp -p $(srcdir)/*.html $(srcdir)/*.png $(distdir)
 
 clean:
-	-rm -rf $(DOC_SOURCE_DIR) $(EXAMPLES_DIR) $(SCAN_DIR)/*.txt $(TMPL_DIR) $(SGML_DIR) $(XML_DIR)
+	-rm -rf $(DOC_SOURCE_DIR) $(EXAMPLES_DIR) $(SCAN_DIR)/*.txt $(SGML_DIR) $(XML_DIR)
 	-rm -f *.stamp *.types index.sgml 
 
 maintainer-clean-local: clean

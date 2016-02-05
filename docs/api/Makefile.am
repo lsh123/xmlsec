@@ -155,8 +155,11 @@ templates: scan templates-copy
 	$(GTKDOC_MKTMPL) --module=xmlsec-mscrypto \
 		    --output-dir=$(TMPL_DIR)/mscrypto
 
-templates-copy: $(TMPL_DIR)/.sentinel
-	$(CP) -r $(TMPL_SRC_DIR)/* $(TMPL_DIR)/
+templates-copy: $(TMPL_SRC_DIR) $(TMPL_DIR)/.sentinel
+	@echo "Copying original template files into '$(TMPL_DIR)' ..."
+	( if [ z"$(TMPL_DIR)" != z"$(TMPL_SRC_DIR)" ] ; then \
+		$(CP) -ru $(TMPL_SRC_DIR)/* $(TMPL_DIR)/ ; \
+	  fi ; )
 
 scan: doc_sources example_sources
 	$(GTKDOC_SCAN) --module=xmlsec \

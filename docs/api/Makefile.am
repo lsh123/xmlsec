@@ -77,7 +77,8 @@ sgml: templates
 		    --output-dir=sgml/mscrypto \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/mscrypto \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/mscrypto
-	(for i in `find xml -name "*.xml" -print` ; do \
+	(for i in `find sgml -name "*.sgml" -print` ; do \
+			echo "Fixing up '$$i'" ; \
 	        cat $$i | \
 	          sed 's!\(<dsig:\)\([^/]*\)\(\/>\)!\&lt;dsig:\2\/\&gt;!g' | \
 	          sed 's!\(<enc:\)\([^/]*\)\(\/>\)!\&lt;enc:\2\/\&gt;!g' | \
@@ -85,7 +86,8 @@ sgml: templates
 	          sed 's!\(<enc:\)\(\w*\)\(>\)!\&lt;enc:\2\/\&gt;!g' | \
 	          sed 's!\(&lt;dsig:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmldsig-core/#sec-\2\">\1\2\3</ulink>!g' | \
 	          sed 's!\(&lt;enc:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmlenc-core/#sec-\2\">\1\2\3</ulink>!g' | \
-	          sed 's!linkend=\"\(.*\)Ptr\"!linkend=\"\1\"!g' > \
+	          sed 's!linkend=\"\(.*\)Ptr\"!linkend=\"\1\"!g' | \
+	          sed 's!<colspec [^/]*\/>!!g' > \
 	          $$i.tmp; \
 	        mv -f $$i.tmp $$i; \
 	 done);

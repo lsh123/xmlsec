@@ -1,0 +1,66 @@
+<!-- ##### SECTION Title ##### -->
+keysstore
+
+<!-- ##### SECTION Short_Description ##### -->
+Keys store implementation for NSS.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+Keys store implementation for NSS.
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### MACRO xmlSecNssKeysStoreId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecNssKeysStoreGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNssKeysStoreAdoptKey ##### -->
+<para>
+
+</para>
+
+@store: 
+@key: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNssKeysStoreLoad ##### -->
+<para>
+
+</para>
+
+@store: 
+@uri: 
+@keysMngr: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNssKeysStoreSave ##### -->
+<para>
+
+</para>
+
+@store: 
+@filename: 
+@type: 
+@Returns: 
+
+

@@ -1,0 +1,86 @@
+<!-- ##### SECTION Title ##### -->
+io
+
+<!-- ##### SECTION Short_Description ##### -->
+Input/output support.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+Input/output support.
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### FUNCTION xmlSecIOInit ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecIOShutdown ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecIOCleanupCallbacks ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecIORegisterDefaultCallbacks ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecIORegisterCallbacks ##### -->
+<para>
+
+</para>
+
+@matchFunc: 
+@openFunc: 
+@readFunc: 
+@closeFunc: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecTransformInputURIId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformInputURIGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformInputURIOpen ##### -->
+<para>
+
+</para>
+
+@transform: 
+@uri: 
+@Returns: 
+
+

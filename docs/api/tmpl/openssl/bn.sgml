@@ -1,0 +1,40 @@
+<!-- ##### SECTION Title ##### -->
+bn
+
+<!-- ##### SECTION Short_Description ##### -->
+Big numbers helper functions.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+Big numbers helper functions.
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLNodeGetBNValue ##### -->
+<para>
+
+</para>
+
+@cur: 
+@a: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLNodeSetBNValue ##### -->
+<para>
+
+</para>
+
+@cur: 
+@a: 
+@addLineBreaks: 
+@Returns: 
+
+

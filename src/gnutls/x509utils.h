@@ -67,7 +67,7 @@ void                    xmlSecGnuTLSX509CertDebugXmlDump        (gnutls_x509_crt
  *
  ************************************************************************/
 gnutls_x509_crl_t       xmlSecGnuTLSX509CrlDup                  (gnutls_x509_crl_t src);
-xmlChar *               xmlSecGnuTLSX509CrLGetIssuerDN          (gnutls_x509_crl_t crl);
+xmlChar *               xmlSecGnuTLSX509CrlGetIssuerDN          (gnutls_x509_crl_t crl);
 gnutls_x509_crl_t       xmlSecGnuTLSX509CrlRead                 (const xmlSecByte* buf,
                                                                  xmlSecSize size,
                                                                  xmlSecKeyDataFormat format);

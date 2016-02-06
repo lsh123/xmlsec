@@ -7,7 +7,6 @@
 <link rel="UP" title="Keys manager." href="xmlsec-notes-keysmngr.html">
 <link rel="PREVIOUS" title="Using keys manager for signatures/encryption." href="xmlsec-notes-keys-manager-sign-enc.html">
 <link rel="NEXT" title="Implementing a custom keys store." href="xmlsec-notes-custom-keys-store.html">
-<meta name="GENERATOR" content="GTK-Doc V1.11 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -37,6 +36,29 @@
 .navigation .title {
     font-size: 200%;
 }</style>
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
 </head>
 <body><table width="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -79,11 +101,11 @@
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
 <table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-notes-keys-manager-sign-enc.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-notes-keysmngr.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<td><a accesskey="p" href="xmlsec-notes-keys-manager-sign-enc.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="xmlsec-notes-keysmngr.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <th width="100%" align="center">XML Security Library Reference Manual</th>
-<td><a accesskey="n" href="xmlsec-notes-custom-keys-store.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="xmlsec-notes-custom-keys-store.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <br clear="all"><div class="SECT1">
 <h1 class="SECT1"><a name="XMLSEC-NOTES-KEYS-MNGR-VERIFY-DECRYPT">Using keys manager for verification/decryption.</a></h1>
@@ -93,12 +115,12 @@
 	<code class="STRUCTFIELD">encKey</code> member of 
 	<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a> structure 
 	is not possible. Instead, the application should load known keys in 
-	the keys manager and use &lt;dsig:KeyName/&gt; element to specify 
+	the keys manager and use <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top">&lt;dsig:KeyName/&gt;</a> element to specify 
 	the key name.
 	</p>
 <p>	     </p>
 <div class="EXAMPLE">
-<a name="AEN391"></a><p><b>Example 3. Initializing keys manager and loading DES keys from binary files.</b></p>
+<a name="AEN503"></a><p><b>Example 3. Initializing keys manager and loading DES keys from binary files.</b></p>
 <pre class="PROGRAMLISTING">/**
  * load_des_keys:
  * @files:		the list of filenames.

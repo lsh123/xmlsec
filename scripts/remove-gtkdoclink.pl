@@ -12,8 +12,8 @@ while ($file = shift @ARGV) {
     }
     close (IN);
     
-    $entire_file =~ s%<GTKDOCLINK([^>]*)>%"<font>%gi;
-    $entire_file =~ s%</GTKDOCLINK([^>]*)>%"</font>"%gi;
+    $entire_file =~ s%<GTKDOCLINK([^>]*)>%<font>%gi;
+    $entire_file =~ s%</GTKDOCLINK([^>]*)>%</font>%gi;
     
     open (OUT, ">$file") || die "Can't open $file: $!";
     print OUT $entire_file;

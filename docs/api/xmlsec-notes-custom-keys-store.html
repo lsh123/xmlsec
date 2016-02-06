@@ -7,7 +7,6 @@
 <link rel="UP" title="Keys manager." href="xmlsec-notes-keysmngr.html">
 <link rel="PREVIOUS" title="Using keys manager for verification/decryption." href="xmlsec-notes-keys-mngr-verify-decrypt.html">
 <link rel="NEXT" title="Using X509 Certificates." href="xmlsec-notes-x509.html">
-<meta name="GENERATOR" content="GTK-Doc V1.11 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -37,6 +36,29 @@
 .navigation .title {
     font-size: 200%;
 }</style>
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
 </head>
 <body><table width="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -79,11 +101,11 @@
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
 <table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-notes-keys-mngr-verify-decrypt.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-notes-keysmngr.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<td><a accesskey="p" href="xmlsec-notes-keys-mngr-verify-decrypt.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="xmlsec-notes-keysmngr.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <th width="100%" align="center">XML Security Library Reference Manual</th>
-<td><a accesskey="n" href="xmlsec-notes-x509.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="xmlsec-notes-x509.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <br clear="all"><div class="SECT1">
 <h1 class="SECT1"><a name="XMLSEC-NOTES-CUSTOM-KEYS-STORE">Implementing a custom keys store.</a></h1>
@@ -94,7 +116,7 @@
 	add or remove keys while other threads use the store.</p>
 <p>	     </p>
 <div class="EXAMPLE">
-<a name="AEN400"></a><p><b>Example 4. Creating a custom keys manager.</b></p>
+<a name="AEN512"></a><p><b>Example 4. Creating a custom keys manager.</b></p>
 <pre class="PROGRAMLISTING">/**
  * create_files_keys_mngr:
  *  
@@ -146,7 +168,7 @@ create_files_keys_mngr(void) {
 /****************************************************************************
  *
  * Files Keys Store: we assume that key's name (content of the 
- * &lt;dsig:KeyName/&gt; element is a name of the file with a key.
+ * &lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&amp;lt;dsig:KeyName/&amp;gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt; element is a name of the file with a key.
  * Attention: this probably not a good solution for high traffic systems.
  * 
  ***************************************************************************/
@@ -183,7 +205,7 @@ files_keys_store_get_klass(void) {
  * files_keys_store_find_key:
  * @store:		the pointer to default keys store.
  * @name:		the desired key name.
- * @keyInfoCtx:		the pointer to &lt;dsig:KeyInfo/&gt; node processing context.
+ * @keyInfoCtx:		the pointer to &lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&amp;lt;dsig:KeyInfo/&amp;gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt; node processing context.
  *  
  * Lookups key in the @store.
  *

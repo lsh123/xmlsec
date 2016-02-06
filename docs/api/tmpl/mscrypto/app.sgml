@@ -17,6 +17,9 @@ Application functions implementation for MS Crypto.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### FUNCTION xmlSecMSCryptoAppInit ##### -->
 <para>
 
@@ -31,6 +34,7 @@ Application functions implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -39,6 +43,7 @@ Application functions implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -247,6 +252,7 @@ Application functions implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 

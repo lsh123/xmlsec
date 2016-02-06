@@ -7,7 +7,6 @@
 <link rel="UP" title="Examples." href="xmlsec-examples.html">
 <link rel="PREVIOUS" title="Signing a template file." href="xmlsec-examples-sign-template-file.html">
 <link rel="NEXT" title="Signing with X509 certificate." href="xmlsec-examples-sign-x509.html">
-<meta name="GENERATOR" content="GTK-Doc V1.11 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -37,6 +36,29 @@
 .navigation .title {
     font-size: 200%;
 }</style>
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
 </head>
 <body><table width="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -79,11 +101,11 @@
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
 <table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-examples-sign-template-file.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-examples.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<td><a accesskey="p" href="xmlsec-examples-sign-template-file.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="xmlsec-examples.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <th width="100%" align="center">XML Security Library Reference Manual</th>
-<td><a accesskey="n" href="xmlsec-examples-sign-x509.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="xmlsec-examples-sign-x509.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <br clear="all"><div class="SECT1">
 <h1 class="SECT1"><a name="XMLSEC-EXAMPLES-SIGN-DYNAMIMC-TEMPLATE">Signing a dynamicaly created template.</a></h1>
@@ -92,12 +114,12 @@
 <p></p>
 <div class="INFORMALEXAMPLE">
 <p></p>
-<a name="AEN667"></a><pre class="PROGRAMLISTING">/** 
+<a name="AEN812"></a><pre class="PROGRAMLISTING">/** 
  * XML Security Library example: Signing a file with a dynamicaly created template.
  * 
  * Signs a file using a dynamicaly created template and key from PEM file.
  * The signature has one reference with one enveloped transform to sign
- * the whole document except the &lt;dsig:Signature/&gt; node itself.
+ * the whole document except the <a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature" target="_top">&lt;dsig:Signature/&gt;</a> node itself.
  * 
  * Usage: 
  *      sign2 &lt;xml-doc&gt; &lt;pem-key&gt; 
@@ -267,7 +289,7 @@ sign_file(const char* xml_file, const char* key_file) {
         goto done;              
     }
 
-    /* add &lt;dsig:Signature/&gt; node to the doc */
+    /* add <a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature" target="_top">&lt;dsig:Signature/&gt;</a> node to the doc */
     xmlAddChild(xmlDocGetRootElement(doc), signNode);
     
     /* add reference */
@@ -284,7 +306,7 @@ sign_file(const char* xml_file, const char* key_file) {
         goto done;              
     }
     
-    /* add &lt;dsig:KeyInfo/&gt; and &lt;dsig:KeyName/&gt; nodes to put key name in the signed document */
+    /* add <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> and <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top">&lt;dsig:KeyName/&gt;</a> nodes to put key name in the signed document */
     keyInfoNode = xmlSecTmplSignatureEnsureKeyInfo(signNode, NULL);
     if(keyInfoNode == NULL) {
         fprintf(stderr, "Error: failed to add key info\n");
@@ -347,7 +369,7 @@ done:
 <p></p>
 <div class="INFORMALEXAMPLE">
 <p></p>
-<a name="AEN672"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<a name="AEN821"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: Original XML doc file for sign2 example. 
 --&gt;
@@ -364,7 +386,7 @@ XML Security Library example: Original XML doc file for sign2 example.
 <p></p>
 <div class="INFORMALEXAMPLE">
 <p></p>
-<a name="AEN677"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<a name="AEN826"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: Original XML doc file for sign2 example. 
 --&gt;

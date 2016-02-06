@@ -7,7 +7,6 @@
 <link rel="UP" title="XML Security Core Library API Reference." href="xmlsec-ref.html">
 <link rel="PREVIOUS" title="transforms" href="xmlsec-transforms.html">
 <link rel="NEXT" title="xmldsig" href="xmlsec-xmldsig.html">
-<meta name="GENERATOR" content="GTK-Doc V1.11 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -37,6 +36,29 @@
 .navigation .title {
     font-size: 200%;
 }</style>
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
 </head>
 <body><table width="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -79,65 +101,89 @@
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
 <table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-transforms.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-ref.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<td><a accesskey="p" href="xmlsec-transforms.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="xmlsec-ref.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <th width="100%" align="center">XML Security Library Reference Manual</th>
-<td><a accesskey="n" href="xmlsec-xmldsig.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="xmlsec-xmldsig.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <h1>
 <a name="XMLSEC-VERSION"></a>version</h1>
 <div class="REFNAMEDIV">
-<a name="AEN17556"></a><h2>Name</h2>version -- Version macros.</div>
-<div class="REFSYNOPSISDIV">
-<a name="XMLSEC-VERSION.SYNOPSIS"></a><h2>Synopsis</h2>
-<pre class="SYNOPSIS">#define             <a href="xmlsec-version.html#XMLSEC-VERSION--CAPS">XMLSEC_VERSION</a>
-#define             <a href="xmlsec-version.html#XMLSEC-VERSION-MAJOR--CAPS">XMLSEC_VERSION_MAJOR</a>
-#define             <a href="xmlsec-version.html#XMLSEC-VERSION-MINOR--CAPS">XMLSEC_VERSION_MINOR</a>
-#define             <a href="xmlsec-version.html#XMLSEC-VERSION-SUBMINOR--CAPS">XMLSEC_VERSION_SUBMINOR</a>
-#define             <a href="xmlsec-version.html#XMLSEC-VERSION-INFO--CAPS">XMLSEC_VERSION_INFO</a></pre>
+<a name="AEN23801"></a><h2>Name</h2>version -- Version macros.</div>
+<div class="REFSECT1">
+<a name="XMLSEC-VERSION.OTHER"></a><h2>Types and Values</h2>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN23806"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<tbody>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-version.html#XMLSEC-VERSION:CAPS">XMLSEC_VERSION</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-version.html#XMLSEC-VERSION-MAJOR:CAPS">XMLSEC_VERSION_MAJOR</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-version.html#XMLSEC-VERSION-MINOR:CAPS">XMLSEC_VERSION_MINOR</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-version.html#XMLSEC-VERSION-SUBMINOR:CAPS">XMLSEC_VERSION_SUBMINOR</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-version.html#XMLSEC-VERSION-INFO:CAPS">XMLSEC_VERSION_INFO</a></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
 </div>
 <div class="REFSECT1">
 <a name="XMLSEC-VERSION.DESCRIPTION"></a><h2>Description</h2>
 <p>Version macros.</p>
 </div>
 <div class="REFSECT1">
-<a name="XMLSEC-VERSION.DETAILS"></a><h2>Details</h2>
+<a name="XMLSEC-VERSION.FUNCTIONS_DETAILS"></a><h2>Functions</h2>
+<p></p>
+</div>
+<div class="REFSECT1">
+<a name="XMLSEC-VERSION.OTHER_DETAILS"></a><h2>Types and Values</h2>
 <div class="REFSECT2">
-<a name="XMLSEC-VERSION--CAPS"></a><h3>XMLSEC_VERSION</h3>
+<a name="XMLSEC-VERSION:CAPS"></a><h3>XMLSEC_VERSION</h3>
 <pre class="PROGRAMLISTING">#define XMLSEC_VERSION			"1.2.20"</pre>
 <p>The library version string in the format
 "&lt;major-number&gt;.&lt;minor-number&gt;.&lt;sub-minor-number&gt;".</p>
-<p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSEC-VERSION-MAJOR--CAPS"></a><h3>XMLSEC_VERSION_MAJOR</h3>
+<a name="XMLSEC-VERSION-MAJOR:CAPS"></a><h3>XMLSEC_VERSION_MAJOR</h3>
 <pre class="PROGRAMLISTING">#define XMLSEC_VERSION_MAJOR		1</pre>
 <p>The library major version number.</p>
-<p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSEC-VERSION-MINOR--CAPS"></a><h3>XMLSEC_VERSION_MINOR</h3>
+<a name="XMLSEC-VERSION-MINOR:CAPS"></a><h3>XMLSEC_VERSION_MINOR</h3>
 <pre class="PROGRAMLISTING">#define XMLSEC_VERSION_MINOR		2</pre>
 <p>The library minor version number.</p>
-<p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSEC-VERSION-SUBMINOR--CAPS"></a><h3>XMLSEC_VERSION_SUBMINOR</h3>
+<a name="XMLSEC-VERSION-SUBMINOR:CAPS"></a><h3>XMLSEC_VERSION_SUBMINOR</h3>
 <pre class="PROGRAMLISTING">#define XMLSEC_VERSION_SUBMINOR		20</pre>
 <p>The library sub-minor version number.</p>
-<p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="XMLSEC-VERSION-INFO--CAPS"></a><h3>XMLSEC_VERSION_INFO</h3>
+<a name="XMLSEC-VERSION-INFO:CAPS"></a><h3>XMLSEC_VERSION_INFO</h3>
 <pre class="PROGRAMLISTING">#define XMLSEC_VERSION_INFO		"3:20:2"</pre>
 <p>The library version info string in the format
 "&lt;major-number&gt;+&lt;minor-number&gt;:&lt;sub-minor-number&gt;:&lt;minor-number&gt;".</p>
-<p></p>
 </div>
 </div>
 <table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">

@@ -7,7 +7,6 @@
 <link rel="UP" title="Examples." href="xmlsec-examples.html">
 <link rel="PREVIOUS" title="Verifying a signature with X509 certificates." href="xmlsec-verify-with-x509.html">
 <link rel="NEXT" title="Encrypting data with a template file." href="xmlsec-encrypt-template-file.html">
-<meta name="GENERATOR" content="GTK-Doc V1.11 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -37,6 +36,29 @@
 .navigation .title {
     font-size: 200%;
 }</style>
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
 </head>
 <body><table width="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -79,11 +101,11 @@
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
 <table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-verify-with-x509.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-examples.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<td><a accesskey="p" href="xmlsec-verify-with-x509.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="xmlsec-examples.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <th width="100%" align="center">XML Security Library Reference Manual</th>
-<td><a accesskey="n" href="xmlsec-encrypt-template-file.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="xmlsec-encrypt-template-file.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <br clear="all"><div class="SECT1">
 <h1 class="SECT1"><a name="XMLSEC-VERIFY-WITH-RESTRICTIONS">Verifying a signature with additional restrictions.</a></h1>
@@ -92,11 +114,11 @@
 <p></p>
 <div class="INFORMALEXAMPLE">
 <p></p>
-<a name="AEN722"></a><pre class="PROGRAMLISTING">/** 
+<a name="AEN877"></a><pre class="PROGRAMLISTING">/** 
  * XML Security Library example: Verifying a simple SAML response with X509 certificate
  *
  * Verifies a simple SAML response. In addition to refular verification
- * we ensure that the signature has only one &lt;dsig:Reference/&gt; element
+ * we ensure that the signature has only one <a href="http://www.w3.org/TR/xmldsig-core/#sec-Reference" target="_top">&lt;dsig:Reference/&gt;</a> element
  * with an empty or NULL URI attribute and one enveloped signature transform
  * as it is required by SAML specification.
  * 
@@ -408,7 +430,7 @@ done:
 <p></p>
 <div class="INFORMALEXAMPLE">
 <p></p>
-<a name="AEN727"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<a name="AEN883"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: A simple SAML response template (verify4 example). 
 
@@ -426,12 +448,12 @@ Sign it using the following command (replace __ with double dashes):
           &lt;dsig:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/&gt;
         &lt;/dsig:Transforms&gt;
         &lt;dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/&gt;
-        &lt;dsig:DigestValue/&gt;
+        <a href="http://www.w3.org/TR/xmldsig-core/#sec-DigestValue" target="_top">&lt;dsig:DigestValue/&gt;</a>
       &lt;/dsig:Reference&gt;
     &lt;/dsig:SignedInfo&gt;
-    &lt;dsig:SignatureValue/&gt;
+    <a href="http://www.w3.org/TR/xmldsig-core/#sec-SignatureValue" target="_top">&lt;dsig:SignatureValue/&gt;</a>
     &lt;dsig:KeyInfo&gt;
-      &lt;dsig:X509Data/&gt;
+      <a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Data" target="_top">&lt;dsig:X509Data/&gt;</a>
     &lt;/dsig:KeyInfo&gt;
   &lt;/dsig:Signature&gt;
   &lt;Status&gt;
@@ -463,7 +485,7 @@ Sign it using the following command (replace __ with double dashes):
 <p></p>
 <div class="INFORMALEXAMPLE">
 <p></p>
-<a name="AEN732"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<a name="AEN891"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: A simple SAML response template (verify4 example). 
 
@@ -540,7 +562,7 @@ fBjXssrERn05kpBcrRfzou4r3DCgQFPhjxga&lt;/dsig:X509Certificate&gt;
 <p></p>
 <div class="INFORMALEXAMPLE">
 <p></p>
-<a name="AEN737"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<a name="AEN896"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: A simple bad SAML response template (verify4 example). 
 
@@ -565,12 +587,12 @@ Sign it using the following command (replace __ with double dashes):
           &lt;/dsig:Transform&gt;
         &lt;/dsig:Transforms&gt;
         &lt;dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/&gt;
-        &lt;dsig:DigestValue/&gt;
+        <a href="http://www.w3.org/TR/xmldsig-core/#sec-DigestValue" target="_top">&lt;dsig:DigestValue/&gt;</a>
       &lt;/dsig:Reference&gt;
     &lt;/dsig:SignedInfo&gt;
-    &lt;dsig:SignatureValue/&gt;
+    <a href="http://www.w3.org/TR/xmldsig-core/#sec-SignatureValue" target="_top">&lt;dsig:SignatureValue/&gt;</a>
     &lt;dsig:KeyInfo&gt;
-      &lt;dsig:X509Data/&gt;
+      <a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Data" target="_top">&lt;dsig:X509Data/&gt;</a>
     &lt;/dsig:KeyInfo&gt;
   &lt;/dsig:Signature&gt;
   &lt;Status&gt;
@@ -602,7 +624,7 @@ Sign it using the following command (replace __ with double dashes):
 <p></p>
 <div class="INFORMALEXAMPLE">
 <p></p>
-<a name="AEN742"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<a name="AEN904"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: A simple bad SAML response (verify4 example). 
 

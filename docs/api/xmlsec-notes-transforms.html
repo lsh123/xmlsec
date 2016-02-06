@@ -7,7 +7,6 @@
 <link rel="UP" title="XML Security Library Tutorial" href="xmlsec-notes.html">
 <link rel="PREVIOUS" title="Verifing document signed with X509 certificates." href="xmlsec-notes-verify-x509.html">
 <link rel="NEXT" title="Using context objects." href="xmlsec-notes-contexts.html">
-<meta name="GENERATOR" content="GTK-Doc V1.11 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -37,6 +36,29 @@
 .navigation .title {
     font-size: 200%;
 }</style>
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
 </head>
 <body><table width="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -79,11 +101,11 @@
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
 <table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-notes-verify-x509.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-notes.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<td><a accesskey="p" href="xmlsec-notes-verify-x509.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="xmlsec-notes.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <th width="100%" align="center">XML Security Library Reference Manual</th>
-<td><a accesskey="n" href="xmlsec-notes-contexts.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="xmlsec-notes-contexts.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="CHAPTER">
 <h1>
@@ -110,7 +132,7 @@
 <li><p>		    <a href="xmlsec-transforms.html#XMLSECTRANSFORMPOPXMLMETHOD">pop xml data</a>.
     		</p></li>
 </ul>
-<p>One additional <a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEMETHOD">execute</a>
+    <p>One additional <a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEMETHOD">execute</a>
 	callback was added to simplify the development and reduce code size. 
 	This callback is used by default
 	implementations of the four external callbacks from the list above.
@@ -120,7 +142,7 @@
 	directly is more efficient.
     </p>
 <div class="FIGURE">
-<a name="AEN470"></a><p><b>Figure 1. The XML Security Library transform.</b></p>
+<a name="AEN610"></a><p><b>Figure 1. The XML Security Library transform.</b></p>
 <p><img src="images/transform.png" align="CENTER"></p>
 </div>
 <p>XML Security Library constructs transforms chain according to the 
@@ -136,12 +158,12 @@
 	in the chain. 
     </p>
 <div class="FIGURE">
-<a name="AEN475"></a><p><b>Figure 2. Transforms chain created for &lt;dsig:Reference/&gt; element processing.</b></p>
+<a name="AEN615"></a><p><b>Figure 2. Transforms chain created for <a href="http://www.w3.org/TR/xmldsig-core/#sec-Reference" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-Reference" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-Reference" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-Reference" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-Reference" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-Reference" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-Reference" target="_top">&lt;dsig:Reference/&gt;</a> element processing.</b></p>
 <p><img src="images/transforms-chain.png" align="CENTER"></p>
 </div>
 <p>	</p>
 <div class="EXAMPLE">
-<a name="AEN479"></a><p><b>Example 1. Walking through transforms chain.</b></p>
+<a name="AEN626"></a><p><b>Example 1. Walking through transforms chain.</b></p>
 <pre class="PROGRAMLISTING">TODO
 	    </pre>
 </div>

@@ -17,11 +17,15 @@ Crypto-engine application support function used by xmlsec command line utility.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### FUNCTION xmlSecCryptoInit ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -30,6 +34,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -54,6 +59,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -69,6 +75,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -84,6 +91,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -99,6 +107,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -114,6 +123,39 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecKeyDataGostR3410_2012_256Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecKeyDataGostR3410_2012_256GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecKeyDataGostR3410_2012_512Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecKeyDataGostR3410_2012_512GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
 @Returns: 
 
 
@@ -129,6 +171,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -144,6 +187,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -159,6 +203,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -174,6 +219,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -189,6 +235,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -204,6 +251,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -219,6 +267,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -234,6 +283,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -249,6 +299,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -264,6 +315,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -279,6 +331,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -294,6 +347,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -309,6 +363,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -324,6 +379,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -339,6 +395,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -354,6 +411,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -369,6 +427,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -384,6 +443,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -399,6 +459,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -414,6 +475,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -429,6 +491,39 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecTransformGostR3410_2012GostR3411_2012_256Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformGostR3410_2012GostR3411_2012_256GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecTransformGostR3410_2012GostR3411_2012_512Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformGostR3410_2012GostR3411_2012_512GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
 @Returns: 
 
 
@@ -444,6 +539,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -459,6 +555,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -474,6 +571,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -489,6 +587,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -504,6 +603,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -519,6 +619,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -534,6 +635,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -549,6 +651,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -564,6 +667,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -579,6 +683,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -594,6 +699,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -609,6 +715,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -624,6 +731,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -639,6 +747,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -654,6 +763,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -669,6 +779,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -684,6 +795,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -699,6 +811,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -714,6 +827,39 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecTransformGostR3411_2012_256Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformGostR3411_2012_256GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecTransformGostR3411_2012_512Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformGostR3411_2012_512GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
 @Returns: 
 
 
@@ -729,6 +875,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -744,6 +891,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -759,6 +907,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -774,6 +923,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -789,6 +939,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -806,6 +957,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -954,6 +1106,7 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@void: 
 @Returns: 
 
 

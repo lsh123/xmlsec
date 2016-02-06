@@ -5,7 +5,7 @@
  * 
  * See Copyright for the status of this software.
  * 
- * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
+ * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #if defined(_MSC_VER)
 #define snprintf _snprintf

@@ -7,7 +7,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2010 Aleksey Sanin, All rights reserved.
+ * Copyright (C) 2010-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_MSCRYPTO_PRIVATE_H__
 #define __XMLSEC_MSCRYPTO_PRIVATE_H__

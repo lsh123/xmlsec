@@ -103,6 +103,17 @@ xmlSecShutdown(void) {
 }
 
 /**
+ * xmlSecShutdown:
+ *
+ * Gets the default crypto engine ("openssl", "nss", etc.) for the XML Security Library.
+ *
+ * Returns: the default crypto engine ("openssl", "nss", etc.).
+ */
+const xmlChar * xmlSecGetDefaultCrypto(void) {
+    return BAD_CAST XMLSEC_DEFAULT_CRYPTO;
+}
+
+/**
  * xmlSecCheckVersionExt:
  * @major:              the major version number.
  * @minor:              the minor version number.

@@ -9,7 +9,7 @@ XMLSEC_LIBS = $(top_builddir)/src/libxmlsec1.la
 if XMLSEC_NO_APPS_CRYPTO_DYNAMIC_LOADING
 
 CRYPTO_DEPS = \
-	$(top_builddir)/src/$(XMLSEC_CRYPTO)/lib$(XMLSEC_CRYPTO_LIB).la \
+	$(top_builddir)/src/@XMLSEC_DEFAULT_CRYPTO@/lib$(XMLSEC_CRYPTO_LIB).la \
 	$(NULL)    
 
 CRYPTO_INCLUDES = \
@@ -43,7 +43,6 @@ CRYPTO_LD_ADD = \
 endif 
 
 AM_CFLAGS = \
-	-DXMLSEC_CRYPTO=\"@XMLSEC_CRYPTO@\" \
 	-DPACKAGE=\"@PACKAGE@\" \
 	-I../include \
 	-I$(top_srcdir)/include \

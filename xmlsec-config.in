@@ -100,7 +100,7 @@ do
     ;;
     
     --crypto)
-        echo @XMLSEC_CRYPTO@
+        echo @XMLSEC_DEFAULT_CRYPTO@
         exit 0
     ;;
     
@@ -153,12 +153,12 @@ none)
     # than one crypto engine i sused by application)
     if [ "z@XMLSEC_NO_CRYPTO_DYNAMIC_LOADING@" != "z1" ] ;
     then
-        the_crypto_flags="-DXMLSEC_CRYPTO_DYNAMIC_LOADING=1 -DXMLSEC_CRYPTO=\\\"@XMLSEC_CRYPTO@\\\""
+        the_crypto_flags="-DXMLSEC_CRYPTO_DYNAMIC_LOADING=1 -DXMLSEC_CRYPTO=NULL
     fi
     ;;
 
 default) 
-    the_crypto_flags="@XMLSEC_CRYPTO_CFLAGS@ -DXMLSEC_CRYPTO=\\\"@XMLSEC_CRYPTO@\\\""
+    the_crypto_flags="@XMLSEC_CRYPTO_CFLAGS@ -DXMLSEC_CRYPTO=NULL
     the_crypto_libs="@XMLSEC_CRYPTO_LIBS@"
     the_xmlsec_crypto_lib="-l@XMLSEC_CRYPTO_LIB@"
     ;;
@@ -166,7 +166,7 @@ default)
 openssl)
     if test "@XMLSEC_NO_OPENSSL@" = "0" ;
     then
-        the_crypto_flags="@OPENSSL_CFLAGS@ -DXMLSEC_CRYPTO=\\\"openssl\\\""
+        the_crypto_flags="@OPENSSL_CFLAGS@ -DXMLSEC_CRYPTO=NULL
         the_crypto_libs="@OPENSSL_LIBS@"
         the_xmlsec_crypto_lib="-l@OPENSSL_CRYPTO_LIB@"
     else
@@ -178,7 +178,7 @@ openssl)
 gnutls)
     if test "@XMLSEC_NO_GNUTLS@" = "0" ;
     then
-        the_crypto_flags="@GNUTLS_CFLAGS@ -DXMLSEC_CRYPTO=\\\"gnutls\\\""
+        the_crypto_flags="@GNUTLS_CFLAGS@ -DXMLSEC_CRYPTO=NULL
         the_crypto_libs="@GNUTLS_LIBS@"
         the_xmlsec_crypto_lib="-l@GNUTLS_CRYPTO_LIB@"
     else
@@ -190,7 +190,7 @@ gnutls)
 gcrypt)
     if test "@XMLSEC_NO_GCRYPT@" = "0" ;
     then
-        the_crypto_flags="@GCRYPT_CFLAGS@ -DXMLSEC_CRYPTO=\\\"gcrypt\\\""
+        the_crypto_flags="@GCRYPT_CFLAGS@ -DXMLSEC_CRYPTO=NULLL
         the_crypto_libs="@GCRYPT_LIBS@"
         the_xmlsec_crypto_lib="-l@GCRYPT_CRYPTO_LIB@"
     else
@@ -202,7 +202,7 @@ gcrypt)
 nss)
     if test "@XMLSEC_NO_NSS@" = "0";
     then
-        the_crypto_flags="@NSS_CFLAGS@ -DXMLSEC_CRYPTO=\\\"nss\\\""
+        the_crypto_flags="@NSS_CFLAGS@ -DXMLSEC_CRYPTO=NULL
         the_crypto_libs="@NSS_LIBS@"
         the_xmlsec_crypto_lib="-l@NSS_CRYPTO_LIB@"
     else

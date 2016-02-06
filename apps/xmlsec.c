@@ -899,7 +899,7 @@ xmlSecKeysMngrPtr gKeysMngr = NULL;
 int repeats = 1;
 int print_debug = 0;
 clock_t total_time = 0;
-const char* xmlsec_crypto = XMLSEC_CRYPTO;
+const char* xmlsec_crypto = NULL;
 const char* tmp = NULL;
 
 int main(int argc, const char **argv) {
@@ -925,7 +925,7 @@ int main(int argc, const char **argv) {
         xmlSecAppPrintHelp(subCommand, cmdLineTopics);
         goto success;
     } else if(command == xmlSecAppCommandVersion) {
-        fprintf(stdout, "%s %s (%s)\n", PACKAGE, XMLSEC_VERSION, xmlsec_crypto);
+        fprintf(stdout, "%s %s (%s)\n", PACKAGE, XMLSEC_VERSION, xmlSecGetDefaultCrypto());
         goto success;
     }
     
@@ -968,8 +968,8 @@ int main(int argc, const char **argv) {
         xmlsec_crypto = tmp;
     }
 #else /* !defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING) */
-    if((tmp != NULL) && (strcmp(tmp, xmlsec_crypto) != 0)) {
-        fprintf(stderr, "Error: dynaimc crypto libraries loading is disabled and the only available crypto library is '%s'\n", xmlsec_crypto);
+    if((tmp != NULL) && (xmlStrcmp(BAD_CAST tmp, xmlSecGetDefaultCrypto()) != 0)) {
+        fprintf(stderr, "Error: dynaimc crypto libraries loading is disabled and the only available crypto library is '%s'\n", xmlSecGetDefaultCrypto());
         xmlSecAppPrintUsage();
         goto fail;
     }
@@ -2208,7 +2208,9 @@ xmlSecAppInit(void) {
         fprintf(stderr, "Error: unable to load xmlsec-%s library. Make sure that you have\n"
                         "this it installed, check shared libraries path (LD_LIBRARY_PATH)\n"
                         "envornment variable or use \"--crypto\" option to specify different\n"
-                        "crypto engine.\n", xmlsec_crypto);
+                        "crypto engine.\n",
+                        ((xmlsec_crypto != NULL) ? BAD_CAST xmlsec_crypto : xmlSecGetDefaultCrypto())
+        );
         return(-1);
     }
 #endif /* !defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING) */

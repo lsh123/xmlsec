@@ -1,12 +1,11 @@
 # Makefile for xmlsec, specific for Windows, MSVC and NMAKE.
 #
 # Take a look at the beginning and modify the variables to suit your 
-# environment. Having done that, you can do a
-
-XMLSEC_STATIC  = yes
-XMLSEC_CRYPTO  = openssl
-XMLSEC_CFLAGS  =
-XMLSEC_LIBS    =
+# environment.
+XMLSEC_STATIC          = yes
+XMLSEC_DEFAULT_CRYPTO  = openssl
+XMLSEC_CFLAGS          =
+XMLSEC_LIBS            =
 
 # There should never be a need to modify anything below this line.
 XMLSEC_OBJS_DIR = build
@@ -26,20 +25,20 @@ XMLSEC_EXAMPLES = \
 	$(XMLSEC_OBJS_DIR)\decrypt3.exe \
 
 # 
-!IF "$(XMLSEC_CRYPTO)" == "openssl"
-XMLSEC_CFLAGS = $(XMLSEC_CFLAGS) /D "XMLSEC_CRYPTO_OPENSSL" /D "XMLSEC_CRYPTO=\"openssl\""
+!IF "$(XMLSEC_DEFAULT_CRYPTO)" == "openssl"
+XMLSEC_CFLAGS = $(XMLSEC_CFLAGS) /D "XMLSEC_CRYPTO_OPENSSL" /D "XMLSEC_DEFAULT_CRYPTO=\"openssl\""
 XMLSEC_SOLIBS = libxmlsec-openssl.lib libeay32.lib wsock32.lib user32.lib gdi32.lib 
 XMLSEC_ALIBS  = libxmlsec-openssl_a.lib libeay32.lib wsock32.lib user32.lib gdi32.lib 
 !ENDIF
 
-!IF "$(XMLSEC_CRYPTO)" == "nss"
-XMLSEC_CFLAGS = $(XMLSEC_CFLAGS) /D "XMLSEC_CRYPTO_NSS" /D "XMLSEC_CRYPTO=\"nss\""
+!IF "$(XMLSEC_DEFAULT_CRYPTO)" == "nss"
+XMLSEC_CFLAGS = $(XMLSEC_CFLAGS) /D "XMLSEC_CRYPTO_NSS" /D "XMLSEC_DEFAULT_CRYPTO=\"nss\""
 XMLSEC_SOLIBS = libxmlsec-nss.lib nss3.lib nspr4.lib plds4.lib plc4.lib
 XMLSEC_ALIBS  = libxmlsec-nss_a.lib nss3.lib nspr4.lib plds4.lib plc4.lib
 !ENDIF
 
-!IF "$(XMLSEC_CRYPTO)" == "mscrypto"
-XMLSEC_CFLAGS = $(XMLSEC_CFLAGS) /D "XMLSEC_CRYPTO_MSCRYPTO" /D "XMLSEC_CRYPTO=\"mscrypto\""
+!IF "$(XMLSEC_DEFAULT_CRYPTO)" == "mscrypto"
+XMLSEC_CFLAGS = $(XMLSEC_CFLAGS) /D "XMLSEC_CRYPTO_MSCRYPTO" /D "XMLSEC_DEFAULT_CRYPTO=\"mscrypto\""
 XMLSEC_SOLIBS = libxmlsec-mscrypto.lib user32.lib gdi32.lib crypt32.lib advapi32.lib
 XMLSEC_ALIBS  = libxmlsec-mscrypto_a.lib user32.lib gdi32.lib crypt32.lib advapi32.lib
 !ENDIF

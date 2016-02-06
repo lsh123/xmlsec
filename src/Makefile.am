@@ -4,6 +4,7 @@ SUBDIRS = . $(XMLSEC_CRYPTO_LIST)
 
 AM_CFLAGS = \
 	-DPACKAGE=\"@PACKAGE@\" \
+	-DXMLSEC_DEFAULT_CRYPTO=\"@XMLSEC_DEFAULT_CRYPTO@\" \
 	-I../include \
 	-I$(top_srcdir)/include \
 	$(XMLSEC_DEFINES) \

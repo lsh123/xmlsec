@@ -83,8 +83,9 @@ typedef struct _xmlSecDSigCtx                   xmlSecDSigCtx, *xmlSecDSigCtxPtr
 typedef struct _xmlSecEncCtx                    xmlSecEncCtx, *xmlSecEncCtxPtr;
 #endif /* XMLSEC_NO_XMLENC */
 
-XMLSEC_EXPORT int       xmlSecInit              (void);
-XMLSEC_EXPORT int       xmlSecShutdown          (void);
+XMLSEC_EXPORT int                               xmlSecInit              (void);
+XMLSEC_EXPORT int                               xmlSecShutdown          (void);
+XMLSEC_EXPORT const xmlChar *                   xmlSecGetDefaultCrypto  (void);
 
 
 

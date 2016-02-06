@@ -2,7 +2,7 @@ NULL =
 
 SUBDIRS = . $(XMLSEC_CRYPTO_LIST)
 
-INCLUDES = \
+AM_CFLAGS = \
 	-DPACKAGE=\"@PACKAGE@\" \
 	-I../include \
 	-I$(top_srcdir)/include \

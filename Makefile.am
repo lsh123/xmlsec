@@ -114,7 +114,7 @@ check-crypto-%: $(TEST_APP)
         $(ABS_SRCDIR)/tests \
         $(ABS_BUILDDIR)/$(TEST_APP) \
         der \
-    ; \	
+    ; \
 	)
 	
 check-info:

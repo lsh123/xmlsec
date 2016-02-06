@@ -42,8 +42,7 @@ CRYPTO_LD_ADD = \
 
 endif 
 
-
-INCLUDES = \
+AM_CFLAGS = \
 	-DXMLSEC_CRYPTO=\"@XMLSEC_CRYPTO@\" \
 	-DPACKAGE=\"@PACKAGE@\" \
 	-I../include \

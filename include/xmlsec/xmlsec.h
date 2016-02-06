@@ -87,7 +87,15 @@ XMLSEC_EXPORT int                               xmlSecInit              (void);
 XMLSEC_EXPORT int                               xmlSecShutdown          (void);
 XMLSEC_EXPORT const xmlChar *                   xmlSecGetDefaultCrypto  (void);
 
-
+/**
+ * XMLSEC_CRYPTO:
+ *
+ * Macro. Deprecated. Defined for backward compatibility only. Do not use
+ * in your code and use xmlSecGetDefaultCrypto() function instead.
+ *
+ * Returns the default crypto engine.
+ */
+#define XMLSEC_CRYPTO                          (xmlSecGetDefaultCrypto())
 
 /***********************************************************************
  *

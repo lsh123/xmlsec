@@ -122,36 +122,13 @@ Igor Zlatkovic get an exception for the send before commit rule.
     This greatly helps when one needs to write a logs parser. For example, to 
     find the reason of memory allocation failures.				    
 
-3) Preparing and submiting a patch.
-If you want to submit a patch please do following:
-  - Get a CVS source copy (see http://www.aleksey.com/xmlsec/download.html).
-    It's much easier to prepare patch from CVS than to diff two set of files.
-  - Test your patch! Make sure that your patch complain with xmlsec coding 
-    style (see above) and that you don't introduce new warnings or memory leaks
-    (also see above). If you have a new functionality in the patch,
-    do not forget to add a test case(s) in the xmlsec test suite.
-  - If you have new files in your patch mark them "to be added" with 
-	cvs add <filename>
-    command. If you have binary files, do not forget to use '-kb' option
-	cvs add -kb <filename>
-    If you have new folders in your patch and you don't have write access to CVS, 
-    send a mail to xmlsec@aleksey.com and I'll create them for you.
-  - Prepare patch by running diff command from the top of the source tree:
-	cvs -z3 diff -uN [<file or folder names>...] > <output filename>
-    The file or folder names are optional and you can use it to save
-    yourself some time. "-u" option produces a human readble diff,
-    "-N" option includes to the diff new files created on prevous step.
-    Finally, "-z3" forces cvs to compress the network traffic and make things
-    faster. Please use ".diff" extension in your output filename. This will
-    add colors to my editor when I would be looking at it :)
-  - Gzip or zip your diff file! Don't send plain diff file because some mailers
-    corrupt it.
-  - Send your patch along with a short description of the problem or feature
+3) Preparing and submitting a patch.
+If you want to submit a patch please create a pull request on GitHub and then
+   send your pull request along with a short description of the problem or feature
     you are fixing/implementing to the xmlsec@aleksey.com mailing list 
     (you must be subscribed to the list, go to http://www.aleksey.com/mailman/listinfo/xmlsec to subscribe).
-    If you are fixing a bug, it might be a good idea to bugzilla it first
-    (http://www.aleksey.com/xmlsec/bugs.html) for the record. Do not forget
-    to put link or bug number in your message if the bug is in bugzilla.
+    If you are fixing a bug, it might be a good idea to create a GitHub ticket first
+    (http://www.aleksey.com/xmlsec/bugs.html) for the record.
     
 4) Building a release
 - Cleanup, make sure no other changes are pending

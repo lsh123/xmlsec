@@ -41,20 +41,12 @@
 	<itemizedlist>
 	<listitem><para>
 	Copy src/skeleton and include/xmlsec/skeleton folders to src/mycrypto and
-	include/xmlsec/mycrypto folders and remove CVS folders from the result:
+	include/xmlsec/mycrypto folders:
 	<example>
-	    <title>Coping skeleton folders.</title>
+	    <title>Coping skeleton folders:</title>
 	    <programlisting><![CDATA[
-cd src
-cp -r skeleton mycrypto
-cd mycrypto
-rm -rf CVS
-cd ../..
-cd include/xmlsec
-cp -r skeleton mycrypto
-cd mycrypto
-rm -rf CVS
-cd ../../..
+cp -r src/skeleton src/mycrypto
+cp -r include/xmlsec/skeleton include/xmlsec/mycrypto
 	    ]]></programlisting>
 	</example>	
 	</para></listitem>

@@ -498,6 +498,18 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeXPointer[];
 
 /*************************************************************************
  *
+ * RelationshipTransform strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRelationship[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRelationship[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRelationship[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRelationshipReference[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecRelationshipsNs[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecRelationshipReferenceNs[];
+
+/*************************************************************************
+ *
  * Xslt strings
  *
  ************************************************************************/

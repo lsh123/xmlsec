@@ -761,10 +761,10 @@ xmlSecTransformRelationshipPopBin(xmlSecTransformPtr transform, xmlSecByte* data
            outSize = XMLSEC_TRANSFORM_BINARY_CHUNK;
        }
        if(outSize > 0) {
-           xmlSecAssert2(xmlSecBufferGetData(&(transform->outBuf)), -1);
+           xmlSecAssert2(xmlSecBufferGetData(out), -1);
 
-           memcpy(data, xmlSecBufferGetData(&(transform->outBuf)), outSize);
-           ret = xmlSecBufferRemoveHead(&(transform->outBuf), outSize);
+           memcpy(data, xmlSecBufferGetData(out), outSize);
+           ret = xmlSecBufferRemoveHead(out, outSize);
            if(ret < 0) {
                xmlSecError(XMLSEC_ERRORS_HERE,
                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),

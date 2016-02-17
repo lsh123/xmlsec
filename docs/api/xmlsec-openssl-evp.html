@@ -1,25 +1,13 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->evp</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-TITLE="XML Security Library Reference Manual"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="XML Security Library for OpenSLL API Reference."
-HREF="xmlsec-openssl-ref.html"><LINK
-REL="PREVIOUS"
-TITLE="crypto"
-HREF="xmlsec-openssl-crypto.html"><LINK
-REL="NEXT"
-TITLE="x509"
-HREF="xmlsec-openssl-x509.html"><STYLE
-TYPE="text/css"
->.synopsis, .classsynopsis {
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>evp</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="XML Security Library for OpenSLL API Reference." href="xmlsec-openssl-ref.html">
+<link rel="PREVIOUS" title="crypto" href="xmlsec-openssl-crypto.html">
+<link rel="NEXT" title="x509" href="xmlsec-openssl-x509.html">
+<style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
     padding: 0.5em;
@@ -47,586 +35,256 @@ TYPE="text/css"
 }
 .navigation .title {
     font-size: 200%;
-}</STYLE
-></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><TABLE
-WIDTH="100%"
-CLASS="navigation"
-SUMMARY="Navigation header"
-CELLPADDING="2"
-CELLSPACING="2"
-><TR
-VALIGN="middle"
-><TD
-><A
-ACCESSKEY="p"
-HREF="xmlsec-openssl-crypto.html"
-><IMG
-SRC="left.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Prev"></A
-></TD
-><TD
-><A
-ACCESSKEY="u"
-HREF="xmlsec-openssl-ref.html"
-><IMG
-SRC="up.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Up"></A
-></TD
-><TD
-><A
-ACCESSKEY="h"
-HREF="index.html"
-><IMG
-SRC="home.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Home"></A
-></TD
-><TH
-WIDTH="100%"
-align="center"
->XML Security Library Reference Manual</TH
-><TD
-><A
-ACCESSKEY="n"
-HREF="xmlsec-openssl-x509.html"
-><IMG
-SRC="right.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Next"></A
-></TD
-></TR
-></TABLE
-><H1
-><A
-NAME="XMLSEC-OPENSSL-EVP"
-></A
->evp</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN32634"
-></A
-><H2
->Name</H2
->evp&nbsp;--&nbsp;EVP keys data implementation.</DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="XMLSEC-OPENSSL-EVP.FUNCTIONS"
-></A
-><H2
->Functions</H2
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN32639"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><TBODY
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-openssl-evp.html#XMLSECOPENSSLEVPKEYDATAADOPTEVP"
->xmlSecOpenSSLEvpKeyDataAdoptEvp</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="EVP-PKEY:CAPS"
-><SPAN
-CLASS="RETURNVALUE"
->EVP_PKEY</SPAN
-></GTKDOCLINK
-> *</TD
-><TD
-><A
-HREF="xmlsec-openssl-evp.html#XMLSECOPENSSLEVPKEYDATAGETEVP"
->xmlSecOpenSSLEvpKeyDataGetEvp</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="EVP-PKEY:CAPS"
-><SPAN
-CLASS="RETURNVALUE"
->EVP_PKEY</SPAN
-></GTKDOCLINK
-> *</TD
-><TD
-><A
-HREF="xmlsec-openssl-evp.html#XMLSECOPENSSLEVPKEYDUP"
->xmlSecOpenSSLEvpKeyDup</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><A
-HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecKeyDataPtr</SPAN
-></A
-></TD
-><TD
-><A
-HREF="xmlsec-openssl-evp.html#XMLSECOPENSSLEVPKEYADOPT"
->xmlSecOpenSSLEvpKeyAdopt</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="XMLSEC-OPENSSL-EVP.DESCRIPTION"
-></A
-><H2
->Description</H2
-><P
->EVP keys data implementation.</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="XMLSEC-OPENSSL-EVP.FUNCTIONS_DETAILS"
-></A
-><H2
->Functions</H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECOPENSSLEVPKEYDATAADOPTEVP"
-></A
-><H3
->xmlSecOpenSSLEvpKeyDataAdoptEvp ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecOpenSSLEvpKeyDataAdoptEvp (<CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
-><SPAN
-CLASS="TYPE"
->xmlSecKeyDataPtr</SPAN
-></A
-> data</CODE
->,
-                                 <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="EVP-PKEY:CAPS"
-><SPAN
-CLASS="TYPE"
->EVP_PKEY</SPAN
-></GTKDOCLINK
-> *pKey</CODE
->);</PRE
-><P
->Sets the value of key data.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN32689"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN32691"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->data</P
-></TD
-><TD
-><P
->the pointer to OpenSSL EVP key data.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->pKey</P
-></TD
-><TD
-><P
->the pointer to EVP key.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN32706"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value otherwise.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECOPENSSLEVPKEYDATAGETEVP"
-></A
-><H3
->xmlSecOpenSSLEvpKeyDataGetEvp ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="EVP-PKEY:CAPS"
-><SPAN
-CLASS="RETURNVALUE"
->EVP_PKEY</SPAN
-></GTKDOCLINK
-> *
-xmlSecOpenSSLEvpKeyDataGetEvp (<CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
-><SPAN
-CLASS="TYPE"
->xmlSecKeyDataPtr</SPAN
-></A
-> data</CODE
->);</PRE
-><P
->Gets the EVP_PKEY from the key data.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN32720"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN32722"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->data</P
-></TD
-><TD
-><P
->the pointer to OpenSSL EVP data.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN32731"
-></A
-><H4
->Returns</H4
-><P
-> pointer to EVP_PKEY or NULL if an error occurs.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECOPENSSLEVPKEYDUP"
-></A
-><H3
->xmlSecOpenSSLEvpKeyDup ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="EVP-PKEY:CAPS"
-><SPAN
-CLASS="RETURNVALUE"
->EVP_PKEY</SPAN
-></GTKDOCLINK
-> *
-xmlSecOpenSSLEvpKeyDup (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="EVP-PKEY:CAPS"
-><SPAN
-CLASS="TYPE"
->EVP_PKEY</SPAN
-></GTKDOCLINK
-> *pKey</CODE
->);</PRE
-><P
->Duplicates <CODE
-CLASS="PARAMETER"
->pKey</CODE
->
-.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN32746"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN32748"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->pKey</P
-></TD
-><TD
-><P
->the pointer to EVP_PKEY.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN32757"
-></A
-><H4
->Returns</H4
-><P
-> pointer to newly created EVP_PKEY object or NULL if an error occurs.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECOPENSSLEVPKEYADOPT"
-></A
-><H3
->xmlSecOpenSSLEvpKeyAdopt ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecKeyDataPtr</SPAN
-></A
->
-xmlSecOpenSSLEvpKeyAdopt (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="EVP-PKEY:CAPS"
-><SPAN
-CLASS="TYPE"
->EVP_PKEY</SPAN
-></GTKDOCLINK
-> *pKey</CODE
->);</PRE
-><P
->Creates xmlsec key object from OpenSSL key object.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN32771"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN32773"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->pKey</P
-></TD
-><TD
-><P
->the pointer to EVP_PKEY.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN32782"
-></A
-><H4
->Returns</H4
-><P
-> pointer to newly created xmlsec key or NULL if an error occurs.</P
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="XMLSEC-OPENSSL-EVP.OTHER_DETAILS"
-></A
-><H2
->Types and Values</H2
-><P
-></P
-></DIV
-><TABLE
-CLASS="navigation"
-WIDTH="100%"
-SUMMARY="Navigation footer"
-CELLPADDING="2"
-CELLSPACING="2"
-><TR
-VALIGN="middle"
-><TD
-ALIGN="left"
-><A
-ACCESSKEY="p"
-HREF="xmlsec-openssl-crypto.html"
-><B
->&lt;&lt;&lt;&nbsp;crypto</B
-></A
-></TD
-><TD
-ALIGN="right"
-><A
-ACCESSKEY="n"
-HREF="xmlsec-openssl-x509.html"
-><B
->x509&nbsp;&gt;&gt;&gt;</B
-></A
-></TD
-></TR
-></TABLE
-></BODY
-></HTML
->
+}</style>
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
+</head>
+<body><table width="100%" valign="top"><tr valign="top">
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<ul>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
+<li><a href="../api/xmlsec-reference.html">API reference</a></li>
+<li><a href="../api/xmlsec-examples.html">Examples</a></li>
+</ul>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul><li><a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a></li></ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+<li><a href="../authors.html">Authors</a></li>
+</ul>
+<table width="100%">
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
+</tr>
+<!--Links - start--><!--Links - end-->
+</table>
+</td>
+<td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
+<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="xmlsec-openssl-crypto.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="xmlsec-openssl-ref.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="n" href="xmlsec-openssl-x509.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<h1>
+<a name="XMLSEC-OPENSSL-EVP"></a>evp</h1>
+<div class="REFNAMEDIV">
+<a name="AEN32731"></a><h2>Name</h2>evp -- EVP keys data implementation.</div>
+<div class="REFSECT1">
+<a name="XMLSEC-OPENSSL-EVP.FUNCTIONS"></a><h2>Functions</h2>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN32736"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<tbody>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-openssl-evp.html#XMLSECOPENSSLEVPKEYDATAADOPTEVP">xmlSecOpenSSLEvpKeyDataAdoptEvp</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td>
+<font><span class="RETURNVALUE">EVP_PKEY</span></font> *</td>
+<td>
+<a href="xmlsec-openssl-evp.html#XMLSECOPENSSLEVPKEYDATAGETEVP">xmlSecOpenSSLEvpKeyDataGetEvp</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td>
+<font><span class="RETURNVALUE">EVP_PKEY</span></font> *</td>
+<td>
+<a href="xmlsec-openssl-evp.html#XMLSECOPENSSLEVPKEYDUP">xmlSecOpenSSLEvpKeyDup</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="RETURNVALUE">xmlSecKeyDataPtr</span></a></td>
+<td>
+<a href="xmlsec-openssl-evp.html#XMLSECOPENSSLEVPKEYADOPT">xmlSecOpenSSLEvpKeyAdopt</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT1">
+<a name="XMLSEC-OPENSSL-EVP.DESCRIPTION"></a><h2>Description</h2>
+<p>EVP keys data implementation.</p>
+</div>
+<div class="REFSECT1">
+<a name="XMLSEC-OPENSSL-EVP.FUNCTIONS_DETAILS"></a><h2>Functions</h2>
+<div class="REFSECT2">
+<a name="XMLSECOPENSSLEVPKEYDATAADOPTEVP"></a><h3>xmlSecOpenSSLEvpKeyDataAdoptEvp ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecOpenSSLEvpKeyDataAdoptEvp (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
+                                 <code class="PARAMETER"><font><span class="TYPE">EVP_PKEY</span></font> *pKey</code>);</pre>
+<p>Sets the value of key data.</p>
+<div class="REFSECT3">
+<a name="AEN32786"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN32788"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>data</p></td>
+<td><p>the pointer to OpenSSL EVP key data.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>pKey</p></td>
+<td><p>the pointer to EVP key.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN32803"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECOPENSSLEVPKEYDATAGETEVP"></a><h3>xmlSecOpenSSLEvpKeyDataGetEvp ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">EVP_PKEY</span></font> *
+xmlSecOpenSSLEvpKeyDataGetEvp (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>);</pre>
+<p>Gets the EVP_PKEY from the key data.</p>
+<div class="REFSECT3">
+<a name="AEN32817"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN32819"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody><tr>
+<td><p>data</p></td>
+<td><p>the pointer to OpenSSL EVP data.</p></td>
+<td> </td>
+</tr></tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN32828"></a><h4>Returns</h4>
+<p> pointer to EVP_PKEY or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECOPENSSLEVPKEYDUP"></a><h3>xmlSecOpenSSLEvpKeyDup ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">EVP_PKEY</span></font> *
+xmlSecOpenSSLEvpKeyDup (<code class="PARAMETER"><font><span class="TYPE">EVP_PKEY</span></font> *pKey</code>);</pre>
+<p>Duplicates <code class="PARAMETER">pKey</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN32843"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN32845"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody><tr>
+<td><p>pKey</p></td>
+<td><p>the pointer to EVP_PKEY.</p></td>
+<td> </td>
+</tr></tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN32854"></a><h4>Returns</h4>
+<p> pointer to newly created EVP_PKEY object or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECOPENSSLEVPKEYADOPT"></a><h3>xmlSecOpenSSLEvpKeyAdopt ()</h3>
+<pre class="PROGRAMLISTING"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="RETURNVALUE">xmlSecKeyDataPtr</span></a>
+xmlSecOpenSSLEvpKeyAdopt (<code class="PARAMETER"><font><span class="TYPE">EVP_PKEY</span></font> *pKey</code>);</pre>
+<p>Creates xmlsec key object from OpenSSL key object.</p>
+<div class="REFSECT3">
+<a name="AEN32868"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN32870"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody><tr>
+<td><p>pKey</p></td>
+<td><p>the pointer to EVP_PKEY.</p></td>
+<td> </td>
+</tr></tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN32879"></a><h4>Returns</h4>
+<p> pointer to newly created xmlsec key or NULL if an error occurs.</p>
+</div>
+</div>
+</div>
+<div class="REFSECT1">
+<a name="XMLSEC-OPENSSL-EVP.OTHER_DETAILS"></a><h2>Types and Values</h2>
+<p></p>
+</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td align="left"><a accesskey="p" href="xmlsec-openssl-crypto.html"><b>&lt;&lt;&lt; crypto</b></a></td>
+<td align="right"><a accesskey="n" href="xmlsec-openssl-x509.html"><b>x509 &gt;&gt;&gt;</b></a></td>
+</tr></table>
+</td></tr></table></td>
+</tr></table></body>
+</html>

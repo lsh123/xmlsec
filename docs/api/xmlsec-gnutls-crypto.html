@@ -1,25 +1,13 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->crypto</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-TITLE="XML Security Library Reference Manual"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="XML Security Library for GnuTLS API Reference."
-HREF="xmlsec-gnutls-ref.html"><LINK
-REL="PREVIOUS"
-TITLE="app"
-HREF="xmlsec-gnutls-app.html"><LINK
-REL="NEXT"
-TITLE="XML Security Library for GCrypt API Reference."
-HREF="xmlsec-gcrypt-ref.html"><STYLE
-TYPE="text/css"
->.synopsis, .classsynopsis {
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>crypto</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="XML Security Library for GnuTLS API Reference." href="xmlsec-gnutls-ref.html">
+<link rel="PREVIOUS" title="app" href="xmlsec-gnutls-app.html">
+<link rel="NEXT" title="XML Security Library for GCrypt API Reference." href="xmlsec-gcrypt-ref.html">
+<style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
     padding: 0.5em;
@@ -47,4268 +35,1508 @@ TYPE="text/css"
 }
 .navigation .title {
     font-size: 200%;
-}</STYLE
-></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><TABLE
-WIDTH="100%"
-CLASS="navigation"
-SUMMARY="Navigation header"
-CELLPADDING="2"
-CELLSPACING="2"
-><TR
-VALIGN="middle"
-><TD
-><A
-ACCESSKEY="p"
-HREF="xmlsec-gnutls-app.html"
-><IMG
-SRC="left.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Prev"></A
-></TD
-><TD
-><A
-ACCESSKEY="u"
-HREF="xmlsec-gnutls-ref.html"
-><IMG
-SRC="up.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Up"></A
-></TD
-><TD
-><A
-ACCESSKEY="h"
-HREF="index.html"
-><IMG
-SRC="home.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Home"></A
-></TD
-><TH
-WIDTH="100%"
-align="center"
->XML Security Library Reference Manual</TH
-><TD
-><A
-ACCESSKEY="n"
-HREF="xmlsec-gcrypt-ref.html"
-><IMG
-SRC="right.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Next"></A
-></TD
-></TR
-></TABLE
-><H1
-><A
-NAME="XMLSEC-GNUTLS-CRYPTO"
-></A
->crypto</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN34378"
-></A
-><H2
->Name</H2
->crypto&nbsp;--&nbsp;Crypto transforms implementation for GnuTLS.</DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="XMLSEC-GNUTLS-CRYPTO.FUNCTIONS"
-></A
-><H2
->Functions</H2
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN34383"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><TBODY
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECCRYPTODLFUNCTIONS"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecCryptoDLFunctionsPtr</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECCRYPTOGETFUNCTIONS-GNUTLS"
->xmlSecCryptoGetFunctions_gnutls</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSINIT"
->xmlSecGnuTLSInit</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSSHUTDOWN"
->xmlSecGnuTLSShutdown</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYSMNGRINIT"
->xmlSecGnuTLSKeysMngrInit</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSGENERATERANDOM"
->xmlSecGnuTLSGenerateRandom</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECKEYDATAID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecKeyDataId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATAAESGETKLASS"
->xmlSecGnuTLSKeyDataAesGetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATAAESSET"
->xmlSecGnuTLSKeyDataAesSet</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMAES128CBCGETKLASS"
->xmlSecGnuTLSTransformAes128CbcGetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMAES192CBCGETKLASS"
->xmlSecGnuTLSTransformAes192CbcGetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMAES256CBCGETKLASS"
->xmlSecGnuTLSTransformAes256CbcGetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMKWAES128GETKLASS"
->xmlSecGnuTLSTransformKWAes128GetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMKWAES192GETKLASS"
->xmlSecGnuTLSTransformKWAes192GetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMKWAES256GETKLASS"
->xmlSecGnuTLSTransformKWAes256GetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECKEYDATAID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecKeyDataId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATADESGETKLASS"
->xmlSecGnuTLSKeyDataDesGetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATADESSET"
->xmlSecGnuTLSKeyDataDesSet</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMDES3CBCGETKLASS"
->xmlSecGnuTLSTransformDes3CbcGetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMKWDES3GETKLASS"
->xmlSecGnuTLSTransformKWDes3GetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECKEYDATAID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecKeyDataId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATADSAGETKLASS"
->xmlSecGnuTLSKeyDataDsaGetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATADSAADOPTPRIVATEKEY"
->xmlSecGnuTLSKeyDataDsaAdoptPrivateKey</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATADSAADOPTPUBLICKEY"
->xmlSecGnuTLSKeyDataDsaAdoptPublicKey</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMDSASHA1GETKLASS"
->xmlSecGnuTLSTransformDsaSha1GetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSHMACGETMINOUTPUTLENGTH"
->xmlSecGnuTLSHmacGetMinOutputLength</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="VOID"
-><SPAN
-CLASS="RETURNVALUE"
->void</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSHMACSETMINOUTPUTLENGTH"
->xmlSecGnuTLSHmacSetMinOutputLength</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECKEYDATAID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecKeyDataId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATAHMACGETKLASS"
->xmlSecGnuTLSKeyDataHmacGetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATAHMACSET"
->xmlSecGnuTLSKeyDataHmacSet</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACMD5GETKLASS"
->xmlSecGnuTLSTransformHmacMd5GetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACRIPEMD160GETKLASS"
->xmlSecGnuTLSTransformHmacRipemd160GetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACSHA1GETKLASS"
->xmlSecGnuTLSTransformHmacSha1GetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACSHA256GETKLASS"
->xmlSecGnuTLSTransformHmacSha256GetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACSHA384GETKLASS"
->xmlSecGnuTLSTransformHmacSha384GetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACSHA512GETKLASS"
->xmlSecGnuTLSTransformHmacSha512GetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECKEYDATAID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecKeyDataId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATARSAGETKLASS"
->xmlSecGnuTLSKeyDataRsaGetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATARSAADOPTPRIVATEKEY"
->xmlSecGnuTLSKeyDataRsaAdoptPrivateKey</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATARSAADOPTPUBLICKEY"
->xmlSecGnuTLSKeyDataRsaAdoptPublicKey</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRSAMD5GETKLASS"
->xmlSecGnuTLSTransformRsaMd5GetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRSARIPEMD160GETKLASS"
->xmlSecGnuTLSTransformRsaRipemd160GetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRSASHA1GETKLASS"
->xmlSecGnuTLSTransformRsaSha1GetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRSASHA256GETKLASS"
->xmlSecGnuTLSTransformRsaSha256GetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRSASHA384GETKLASS"
->xmlSecGnuTLSTransformRsaSha384GetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRSASHA512GETKLASS"
->xmlSecGnuTLSTransformRsaSha512GetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMSHA1GETKLASS"
->xmlSecGnuTLSTransformSha1GetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMSHA256GETKLASS"
->xmlSecGnuTLSTransformSha256GetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMSHA384GETKLASS"
->xmlSecGnuTLSTransformSha384GetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMSHA512GETKLASS"
->xmlSecGnuTLSTransformSha512GetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMMD5GETKLASS"
->xmlSecGnuTLSTransformMd5GetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRIPEMD160GETKLASS"
->xmlSecGnuTLSTransformRipemd160GetKlass</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="XMLSEC-GNUTLS-CRYPTO.OTHER"
-></A
-><H2
->Types and Values</H2
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN34710"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><TBODY
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATAAESID"
->xmlSecGnuTLSKeyDataAesId</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMAES128CBCID"
->xmlSecGnuTLSTransformAes128CbcId</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMAES192CBCID"
->xmlSecGnuTLSTransformAes192CbcId</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMAES256CBCID"
->xmlSecGnuTLSTransformAes256CbcId</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMKWAES128ID"
->xmlSecGnuTLSTransformKWAes128Id</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMKWAES192ID"
->xmlSecGnuTLSTransformKWAes192Id</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMKWAES256ID"
->xmlSecGnuTLSTransformKWAes256Id</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATADESID"
->xmlSecGnuTLSKeyDataDesId</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMDES3CBCID"
->xmlSecGnuTLSTransformDes3CbcId</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMKWDES3ID"
->xmlSecGnuTLSTransformKWDes3Id</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATADSAID"
->xmlSecGnuTLSKeyDataDsaId</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMDSASHA1ID"
->xmlSecGnuTLSTransformDsaSha1Id</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATAHMACID"
->xmlSecGnuTLSKeyDataHmacId</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACMD5ID"
->xmlSecGnuTLSTransformHmacMd5Id</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACRIPEMD160ID"
->xmlSecGnuTLSTransformHmacRipemd160Id</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACSHA1ID"
->xmlSecGnuTLSTransformHmacSha1Id</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACSHA256ID"
->xmlSecGnuTLSTransformHmacSha256Id</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACSHA384ID"
->xmlSecGnuTLSTransformHmacSha384Id</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACSHA512ID"
->xmlSecGnuTLSTransformHmacSha512Id</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATARSAID"
->xmlSecGnuTLSKeyDataRsaId</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRSAMD5ID"
->xmlSecGnuTLSTransformRsaMd5Id</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRSARIPEMD160ID"
->xmlSecGnuTLSTransformRsaRipemd160Id</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRSASHA1ID"
->xmlSecGnuTLSTransformRsaSha1Id</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRSASHA256ID"
->xmlSecGnuTLSTransformRsaSha256Id</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRSASHA384ID"
->xmlSecGnuTLSTransformRsaSha384Id</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRSASHA512ID"
->xmlSecGnuTLSTransformRsaSha512Id</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMSHA1ID"
->xmlSecGnuTLSTransformSha1Id</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMSHA256ID"
->xmlSecGnuTLSTransformSha256Id</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMSHA384ID"
->xmlSecGnuTLSTransformSha384Id</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMSHA512ID"
->xmlSecGnuTLSTransformSha512Id</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMMD5ID"
->xmlSecGnuTLSTransformMd5Id</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRIPEMD160ID"
->xmlSecGnuTLSTransformRipemd160Id</A
-></TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="XMLSEC-GNUTLS-CRYPTO.DESCRIPTION"
-></A
-><H2
->Description</H2
-><P
->Crypto transforms implementation for GnuTLS.</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="XMLSEC-GNUTLS-CRYPTO.FUNCTIONS_DETAILS"
-></A
-><H2
->Functions</H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECCRYPTOGETFUNCTIONS-GNUTLS"
-></A
-><H3
->xmlSecCryptoGetFunctions_gnutls ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECCRYPTODLFUNCTIONS"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecCryptoDLFunctionsPtr</SPAN
-></GTKDOCLINK
->
-xmlSecCryptoGetFunctions_gnutls (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->Gets the pointer to xmlsec-gnutls functions table.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN34856"
-></A
-><H4
->Returns</H4
-><P
-> the xmlsec-gnutls functions table or NULL if an error occurs.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSINIT"
-></A
-><H3
->xmlSecGnuTLSInit ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSInit (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->XMLSec library specific crypto engine initialization.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN34869"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value otherwise.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSSHUTDOWN"
-></A
-><H3
->xmlSecGnuTLSShutdown ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSShutdown (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->XMLSec library specific crypto engine shutdown.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN34882"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value otherwise.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSKEYSMNGRINIT"
-></A
-><H3
->xmlSecGnuTLSKeysMngrInit ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSKeysMngrInit (<CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGR"
-><SPAN
-CLASS="TYPE"
->xmlSecKeysMngrPtr</SPAN
-></A
-> mngr</CODE
->);</PRE
-><P
->Adds GnuTLS specific key data stores in keys manager.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN34896"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN34898"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->mngr</P
-></TD
-><TD
-><P
->the pointer to keys manager.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN34907"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value otherwise.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSGENERATERANDOM"
-></A
-><H3
->xmlSecGnuTLSGenerateRandom ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSGenerateRandom (<CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-buffer.html#XMLSECBUFFER"
-><SPAN
-CLASS="TYPE"
->xmlSecBufferPtr</SPAN
-></A
-> buffer</CODE
->,
-                            <CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-xmlsec.html#XMLSECSIZE"
-><SPAN
-CLASS="TYPE"
->xmlSecSize</SPAN
-></A
-> size</CODE
->);</PRE
-><P
->Generates <CODE
-CLASS="PARAMETER"
->size</CODE
->
- random bytes and puts result in <CODE
-CLASS="PARAMETER"
->buffer</CODE
->
-.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN34926"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN34928"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->buffer</P
-></TD
-><TD
-><P
->the destination buffer.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->size</P
-></TD
-><TD
-><P
->the numer of bytes to generate.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN34943"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value otherwise.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSKEYDATAAESGETKLASS"
-></A
-><H3
->xmlSecGnuTLSKeyDataAesGetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECKEYDATAID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecKeyDataId</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSKeyDataAesGetKlass (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->The AES key data klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN34956"
-></A
-><H4
->Returns</H4
-><P
-> AES key data klass.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSKEYDATAAESSET"
-></A
-><H3
->xmlSecGnuTLSKeyDataAesSet ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSKeyDataAesSet (<CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
-><SPAN
-CLASS="TYPE"
->xmlSecKeyDataPtr</SPAN
-></A
-> data</CODE
->,
-                           <CODE
-CLASS="PARAMETER"
->const <A
-HREF="xmlsec-xmlsec.html#XMLSECBYTE"
-><SPAN
-CLASS="TYPE"
->xmlSecByte</SPAN
-></A
-> *buf</CODE
->,
-                           <CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-xmlsec.html#XMLSECSIZE"
-><SPAN
-CLASS="TYPE"
->xmlSecSize</SPAN
-></A
-> bufSize</CODE
->);</PRE
-><P
->Sets the value of AES key data.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN34976"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN34978"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->data</P
-></TD
-><TD
-><P
->the pointer to AES key data.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->buf</P
-></TD
-><TD
-><P
->the pointer to key value.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->bufSize</P
-></TD
-><TD
-><P
->the key value size (in bytes).</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN34999"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value if an error occurs.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMAES128CBCGETKLASS"
-></A
-><H3
->xmlSecGnuTLSTransformAes128CbcGetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
->
+}</style>
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
+</head>
+<body><table width="100%" valign="top"><tr valign="top">
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<ul>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
+<li><a href="../api/xmlsec-reference.html">API reference</a></li>
+<li><a href="../api/xmlsec-examples.html">Examples</a></li>
+</ul>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul><li><a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a></li></ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+<li><a href="../authors.html">Authors</a></li>
+</ul>
+<table width="100%">
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
+</tr>
+<!--Links - start--><!--Links - end-->
+</table>
+</td>
+<td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
+<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="xmlsec-gnutls-app.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="xmlsec-gnutls-ref.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="n" href="xmlsec-gcrypt-ref.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<h1>
+<a name="XMLSEC-GNUTLS-CRYPTO"></a>crypto</h1>
+<div class="REFNAMEDIV">
+<a name="AEN34475"></a><h2>Name</h2>crypto -- Crypto transforms implementation for GnuTLS.</div>
+<div class="REFSECT1">
+<a name="XMLSEC-GNUTLS-CRYPTO.FUNCTIONS"></a><h2>Functions</h2>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN34480"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<tbody>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecCryptoDLFunctionsPtr</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECCRYPTOGETFUNCTIONS-GNUTLS">xmlSecCryptoGetFunctions_gnutls</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSINIT">xmlSecGnuTLSInit</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSSHUTDOWN">xmlSecGnuTLSShutdown</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYSMNGRINIT">xmlSecGnuTLSKeysMngrInit</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSGENERATERANDOM">xmlSecGnuTLSGenerateRandom</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecKeyDataId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATAAESGETKLASS">xmlSecGnuTLSKeyDataAesGetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATAAESSET">xmlSecGnuTLSKeyDataAesSet</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMAES128CBCGETKLASS">xmlSecGnuTLSTransformAes128CbcGetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMAES192CBCGETKLASS">xmlSecGnuTLSTransformAes192CbcGetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMAES256CBCGETKLASS">xmlSecGnuTLSTransformAes256CbcGetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMKWAES128GETKLASS">xmlSecGnuTLSTransformKWAes128GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMKWAES192GETKLASS">xmlSecGnuTLSTransformKWAes192GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMKWAES256GETKLASS">xmlSecGnuTLSTransformKWAes256GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecKeyDataId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATADESGETKLASS">xmlSecGnuTLSKeyDataDesGetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATADESSET">xmlSecGnuTLSKeyDataDesSet</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMDES3CBCGETKLASS">xmlSecGnuTLSTransformDes3CbcGetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMKWDES3GETKLASS">xmlSecGnuTLSTransformKWDes3GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecKeyDataId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATADSAGETKLASS">xmlSecGnuTLSKeyDataDsaGetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATADSAADOPTPRIVATEKEY">xmlSecGnuTLSKeyDataDsaAdoptPrivateKey</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATADSAADOPTPUBLICKEY">xmlSecGnuTLSKeyDataDsaAdoptPublicKey</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMDSASHA1GETKLASS">xmlSecGnuTLSTransformDsaSha1GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSHMACGETMINOUTPUTLENGTH">xmlSecGnuTLSHmacGetMinOutputLength</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">void</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSHMACSETMINOUTPUTLENGTH">xmlSecGnuTLSHmacSetMinOutputLength</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecKeyDataId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATAHMACGETKLASS">xmlSecGnuTLSKeyDataHmacGetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATAHMACSET">xmlSecGnuTLSKeyDataHmacSet</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACMD5GETKLASS">xmlSecGnuTLSTransformHmacMd5GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACRIPEMD160GETKLASS">xmlSecGnuTLSTransformHmacRipemd160GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACSHA1GETKLASS">xmlSecGnuTLSTransformHmacSha1GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACSHA256GETKLASS">xmlSecGnuTLSTransformHmacSha256GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACSHA384GETKLASS">xmlSecGnuTLSTransformHmacSha384GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACSHA512GETKLASS">xmlSecGnuTLSTransformHmacSha512GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecKeyDataId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATARSAGETKLASS">xmlSecGnuTLSKeyDataRsaGetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATARSAADOPTPRIVATEKEY">xmlSecGnuTLSKeyDataRsaAdoptPrivateKey</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATARSAADOPTPUBLICKEY">xmlSecGnuTLSKeyDataRsaAdoptPublicKey</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRSAMD5GETKLASS">xmlSecGnuTLSTransformRsaMd5GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRSARIPEMD160GETKLASS">xmlSecGnuTLSTransformRsaRipemd160GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRSASHA1GETKLASS">xmlSecGnuTLSTransformRsaSha1GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRSASHA256GETKLASS">xmlSecGnuTLSTransformRsaSha256GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRSASHA384GETKLASS">xmlSecGnuTLSTransformRsaSha384GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRSASHA512GETKLASS">xmlSecGnuTLSTransformRsaSha512GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMSHA1GETKLASS">xmlSecGnuTLSTransformSha1GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMSHA256GETKLASS">xmlSecGnuTLSTransformSha256GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMSHA384GETKLASS">xmlSecGnuTLSTransformSha384GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMSHA512GETKLASS">xmlSecGnuTLSTransformSha512GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMMD5GETKLASS">xmlSecGnuTLSTransformMd5GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
+<td>
+<a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRIPEMD160GETKLASS">xmlSecGnuTLSTransformRipemd160GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT1">
+<a name="XMLSEC-GNUTLS-CRYPTO.OTHER"></a><h2>Types and Values</h2>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN34807"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<tbody>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATAAESID">xmlSecGnuTLSKeyDataAesId</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMAES128CBCID">xmlSecGnuTLSTransformAes128CbcId</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMAES192CBCID">xmlSecGnuTLSTransformAes192CbcId</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMAES256CBCID">xmlSecGnuTLSTransformAes256CbcId</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMKWAES128ID">xmlSecGnuTLSTransformKWAes128Id</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMKWAES192ID">xmlSecGnuTLSTransformKWAes192Id</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMKWAES256ID">xmlSecGnuTLSTransformKWAes256Id</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATADESID">xmlSecGnuTLSKeyDataDesId</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMDES3CBCID">xmlSecGnuTLSTransformDes3CbcId</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMKWDES3ID">xmlSecGnuTLSTransformKWDes3Id</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATADSAID">xmlSecGnuTLSKeyDataDsaId</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMDSASHA1ID">xmlSecGnuTLSTransformDsaSha1Id</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATAHMACID">xmlSecGnuTLSKeyDataHmacId</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACMD5ID">xmlSecGnuTLSTransformHmacMd5Id</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACRIPEMD160ID">xmlSecGnuTLSTransformHmacRipemd160Id</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACSHA1ID">xmlSecGnuTLSTransformHmacSha1Id</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACSHA256ID">xmlSecGnuTLSTransformHmacSha256Id</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACSHA384ID">xmlSecGnuTLSTransformHmacSha384Id</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACSHA512ID">xmlSecGnuTLSTransformHmacSha512Id</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATARSAID">xmlSecGnuTLSKeyDataRsaId</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRSAMD5ID">xmlSecGnuTLSTransformRsaMd5Id</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRSARIPEMD160ID">xmlSecGnuTLSTransformRsaRipemd160Id</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRSASHA1ID">xmlSecGnuTLSTransformRsaSha1Id</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRSASHA256ID">xmlSecGnuTLSTransformRsaSha256Id</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRSASHA384ID">xmlSecGnuTLSTransformRsaSha384Id</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRSASHA512ID">xmlSecGnuTLSTransformRsaSha512Id</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMSHA1ID">xmlSecGnuTLSTransformSha1Id</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMSHA256ID">xmlSecGnuTLSTransformSha256Id</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMSHA384ID">xmlSecGnuTLSTransformSha384Id</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMSHA512ID">xmlSecGnuTLSTransformSha512Id</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMMD5ID">xmlSecGnuTLSTransformMd5Id</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRIPEMD160ID">xmlSecGnuTLSTransformRipemd160Id</a></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT1">
+<a name="XMLSEC-GNUTLS-CRYPTO.DESCRIPTION"></a><h2>Description</h2>
+<p>Crypto transforms implementation for GnuTLS.</p>
+</div>
+<div class="REFSECT1">
+<a name="XMLSEC-GNUTLS-CRYPTO.FUNCTIONS_DETAILS"></a><h2>Functions</h2>
+<div class="REFSECT2">
+<a name="XMLSECCRYPTOGETFUNCTIONS-GNUTLS"></a><h3>xmlSecCryptoGetFunctions_gnutls ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecCryptoDLFunctionsPtr</span></font>
+xmlSecCryptoGetFunctions_gnutls (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>Gets the pointer to xmlsec-gnutls functions table.</p>
+<div class="REFSECT3">
+<a name="AEN34953"></a><h4>Returns</h4>
+<p> the xmlsec-gnutls functions table or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSINIT"></a><h3>xmlSecGnuTLSInit ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecGnuTLSInit (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>XMLSec library specific crypto engine initialization.</p>
+<div class="REFSECT3">
+<a name="AEN34966"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSSHUTDOWN"></a><h3>xmlSecGnuTLSShutdown ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecGnuTLSShutdown (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>XMLSec library specific crypto engine shutdown.</p>
+<div class="REFSECT3">
+<a name="AEN34979"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSKEYSMNGRINIT"></a><h3>xmlSecGnuTLSKeysMngrInit ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecGnuTLSKeysMngrInit (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="TYPE">xmlSecKeysMngrPtr</span></a> mngr</code>);</pre>
+<p>Adds GnuTLS specific key data stores in keys manager.</p>
+<div class="REFSECT3">
+<a name="AEN34993"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN34995"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody><tr>
+<td><p>mngr</p></td>
+<td><p>the pointer to keys manager.</p></td>
+<td> </td>
+</tr></tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN35004"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSGENERATERANDOM"></a><h3>xmlSecGnuTLSGenerateRandom ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecGnuTLSGenerateRandom (<code class="PARAMETER"><a href="xmlsec-buffer.html#XMLSECBUFFER"><span class="TYPE">xmlSecBufferPtr</span></a> buffer</code>,
+                            <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> size</code>);</pre>
+<p>Generates <code class="PARAMETER">size</code>
+ random bytes and puts result in <code class="PARAMETER">buffer</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN35023"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN35025"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>buffer</p></td>
+<td><p>the destination buffer.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>size</p></td>
+<td><p>the numer of bytes to generate.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN35040"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSKEYDATAAESGETKLASS"></a><h3>xmlSecGnuTLSKeyDataAesGetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecKeyDataId</span></font>
+xmlSecGnuTLSKeyDataAesGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>The AES key data klass.</p>
+<div class="REFSECT3">
+<a name="AEN35053"></a><h4>Returns</h4>
+<p> AES key data klass.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSKEYDATAAESSET"></a><h3>xmlSecGnuTLSKeyDataAesSet ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecGnuTLSKeyDataAesSet (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
+                           <code class="PARAMETER">const <a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *buf</code>,
+                           <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> bufSize</code>);</pre>
+<p>Sets the value of AES key data.</p>
+<div class="REFSECT3">
+<a name="AEN35073"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN35075"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>data</p></td>
+<td><p>the pointer to AES key data.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>buf</p></td>
+<td><p>the pointer to key value.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>bufSize</p></td>
+<td><p>the key value size (in bytes).</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN35096"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMAES128CBCGETKLASS"></a><h3>xmlSecGnuTLSTransformAes128CbcGetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
 xmlSecGnuTLSTransformAes128CbcGetKlass
-                               (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->AES 128 CBC encryption transform klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35012"
-></A
-><H4
->Returns</H4
-><P
-> pointer to AES 128 CBC encryption transform.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMAES192CBCGETKLASS"
-></A
-><H3
->xmlSecGnuTLSTransformAes192CbcGetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
->
+                               (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>AES 128 CBC encryption transform klass.</p>
+<div class="REFSECT3">
+<a name="AEN35109"></a><h4>Returns</h4>
+<p> pointer to AES 128 CBC encryption transform.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMAES192CBCGETKLASS"></a><h3>xmlSecGnuTLSTransformAes192CbcGetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
 xmlSecGnuTLSTransformAes192CbcGetKlass
-                               (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->AES 192 CBC encryption transform klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35025"
-></A
-><H4
->Returns</H4
-><P
-> pointer to AES 192 CBC encryption transform.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMAES256CBCGETKLASS"
-></A
-><H3
->xmlSecGnuTLSTransformAes256CbcGetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
->
+                               (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>AES 192 CBC encryption transform klass.</p>
+<div class="REFSECT3">
+<a name="AEN35122"></a><h4>Returns</h4>
+<p> pointer to AES 192 CBC encryption transform.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMAES256CBCGETKLASS"></a><h3>xmlSecGnuTLSTransformAes256CbcGetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
 xmlSecGnuTLSTransformAes256CbcGetKlass
-                               (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->AES 256 CBC encryption transform klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35038"
-></A
-><H4
->Returns</H4
-><P
-> pointer to AES 256 CBC encryption transform.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMKWAES128GETKLASS"
-></A
-><H3
->xmlSecGnuTLSTransformKWAes128GetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSTransformKWAes128GetKlass (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->The AES-128 kew wrapper transform klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35051"
-></A
-><H4
->Returns</H4
-><P
-> AES-128 kew wrapper transform klass.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMKWAES192GETKLASS"
-></A
-><H3
->xmlSecGnuTLSTransformKWAes192GetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSTransformKWAes192GetKlass (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->The AES-192 kew wrapper transform klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35064"
-></A
-><H4
->Returns</H4
-><P
-> AES-192 kew wrapper transform klass.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMKWAES256GETKLASS"
-></A
-><H3
->xmlSecGnuTLSTransformKWAes256GetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSTransformKWAes256GetKlass (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->The AES-256 kew wrapper transform klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35077"
-></A
-><H4
->Returns</H4
-><P
-> AES-256 kew wrapper transform klass.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSKEYDATADESGETKLASS"
-></A
-><H3
->xmlSecGnuTLSKeyDataDesGetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECKEYDATAID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecKeyDataId</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSKeyDataDesGetKlass (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->The DES key data klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35090"
-></A
-><H4
->Returns</H4
-><P
-> DES key data klass.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSKEYDATADESSET"
-></A
-><H3
->xmlSecGnuTLSKeyDataDesSet ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSKeyDataDesSet (<CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
-><SPAN
-CLASS="TYPE"
->xmlSecKeyDataPtr</SPAN
-></A
-> data</CODE
->,
-                           <CODE
-CLASS="PARAMETER"
->const <A
-HREF="xmlsec-xmlsec.html#XMLSECBYTE"
-><SPAN
-CLASS="TYPE"
->xmlSecByte</SPAN
-></A
-> *buf</CODE
->,
-                           <CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-xmlsec.html#XMLSECSIZE"
-><SPAN
-CLASS="TYPE"
->xmlSecSize</SPAN
-></A
-> bufSize</CODE
->);</PRE
-><P
->Sets the value of DES key data.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35110"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN35112"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->data</P
-></TD
-><TD
-><P
->the pointer to DES key data.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->buf</P
-></TD
-><TD
-><P
->the pointer to key value.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->bufSize</P
-></TD
-><TD
-><P
->the key value size (in bytes).</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35133"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value if an error occurs.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMDES3CBCGETKLASS"
-></A
-><H3
->xmlSecGnuTLSTransformDes3CbcGetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSTransformDes3CbcGetKlass (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->Triple DES CBC encryption transform klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35146"
-></A
-><H4
->Returns</H4
-><P
-> pointer to Triple DES encryption transform.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMKWDES3GETKLASS"
-></A
-><H3
->xmlSecGnuTLSTransformKWDes3GetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSTransformKWDes3GetKlass (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->The Triple DES key wrapper transform klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35159"
-></A
-><H4
->Returns</H4
-><P
-> Triple DES key wrapper transform klass.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSKEYDATADSAGETKLASS"
-></A
-><H3
->xmlSecGnuTLSKeyDataDsaGetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECKEYDATAID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecKeyDataId</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSKeyDataDsaGetKlass (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->The DSA key data klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35172"
-></A
-><H4
->Returns</H4
-><P
-> pointer to DSA key data klass.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSKEYDATADSAADOPTPRIVATEKEY"
-></A
-><H3
->xmlSecGnuTLSKeyDataDsaAdoptPrivateKey ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSKeyDataDsaAdoptPrivateKey (<CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
-><SPAN
-CLASS="TYPE"
->xmlSecKeyDataPtr</SPAN
-></A
-> data</CODE
->,
-                                       <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="GNUTLS-X509-PRIVKEY-T"
-><SPAN
-CLASS="TYPE"
->gnutls_x509_privkey_t</SPAN
-></GTKDOCLINK
-> dsa_key</CODE
->);</PRE
-><P
->Sets the value of DSA key data.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35189"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN35191"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->data</P
-></TD
-><TD
-><P
->the pointer to DSA key data.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->dsa_key</P
-></TD
-><TD
-><P
->the pointer to GnuTLS DSA private key.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35206"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value otherwise.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSKEYDATADSAADOPTPUBLICKEY"
-></A
-><H3
->xmlSecGnuTLSKeyDataDsaAdoptPublicKey ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSKeyDataDsaAdoptPublicKey (<CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
-><SPAN
-CLASS="TYPE"
->xmlSecKeyDataPtr</SPAN
-></A
-> data</CODE
->,
-                                      <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="GNUTLS-DATUM-T"
-><SPAN
-CLASS="TYPE"
->gnutls_datum_t</SPAN
-></GTKDOCLINK
-> *p</CODE
->,
-                                      <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="GNUTLS-DATUM-T"
-><SPAN
-CLASS="TYPE"
->gnutls_datum_t</SPAN
-></GTKDOCLINK
-> *q</CODE
->,
-                                      <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="GNUTLS-DATUM-T"
-><SPAN
-CLASS="TYPE"
->gnutls_datum_t</SPAN
-></GTKDOCLINK
-> *g</CODE
->,
-                                      <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="GNUTLS-DATUM-T"
-><SPAN
-CLASS="TYPE"
->gnutls_datum_t</SPAN
-></GTKDOCLINK
-> *y</CODE
->);</PRE
-><P
->Sets the value of DSA key data.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35232"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN35234"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->data</P
-></TD
-><TD
-><P
->the pointer to DSA key data.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->p</P
-></TD
-><TD
-><P
->the pointer to p component of the DSA public key</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->q</P
-></TD
-><TD
-><P
->the pointer to q component of the DSA public key</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->g</P
-></TD
-><TD
-><P
->the pointer to g component of the DSA public key</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->y</P
-></TD
-><TD
-><P
->the pointer to y component of the DSA public key</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35267"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value otherwise.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMDSASHA1GETKLASS"
-></A
-><H3
->xmlSecGnuTLSTransformDsaSha1GetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSTransformDsaSha1GetKlass (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->The DSA-SHA1 signature transform klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35280"
-></A
-><H4
->Returns</H4
-><P
-> DSA-SHA1 signature transform klass.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSHMACGETMINOUTPUTLENGTH"
-></A
-><H3
->xmlSecGnuTLSHmacGetMinOutputLength ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSHmacGetMinOutputLength (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->Gets the value of min HMAC length.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35293"
-></A
-><H4
->Returns</H4
-><P
-> the min HMAC output length</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSHMACSETMINOUTPUTLENGTH"
-></A
-><H3
->xmlSecGnuTLSHmacSetMinOutputLength ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="VOID"
-><SPAN
-CLASS="RETURNVALUE"
->void</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSHmacSetMinOutputLength (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="TYPE"
->int</SPAN
-></GTKDOCLINK
-> min_length</CODE
->);</PRE
-><P
->Sets the min HMAC output length</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35307"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN35309"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->min_length</P
-></TD
-><TD
-><P
->the new min length</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSKEYDATAHMACGETKLASS"
-></A
-><H3
->xmlSecGnuTLSKeyDataHmacGetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECKEYDATAID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecKeyDataId</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSKeyDataHmacGetKlass (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->The HMAC key data klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35328"
-></A
-><H4
->Returns</H4
-><P
-> HMAC key data klass.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSKEYDATAHMACSET"
-></A
-><H3
->xmlSecGnuTLSKeyDataHmacSet ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSKeyDataHmacSet (<CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
-><SPAN
-CLASS="TYPE"
->xmlSecKeyDataPtr</SPAN
-></A
-> data</CODE
->,
-                            <CODE
-CLASS="PARAMETER"
->const <A
-HREF="xmlsec-xmlsec.html#XMLSECBYTE"
-><SPAN
-CLASS="TYPE"
->xmlSecByte</SPAN
-></A
-> *buf</CODE
->,
-                            <CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-xmlsec.html#XMLSECSIZE"
-><SPAN
-CLASS="TYPE"
->xmlSecSize</SPAN
-></A
-> bufSize</CODE
->);</PRE
-><P
->Sets the value of HMAC key data.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35348"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN35350"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->data</P
-></TD
-><TD
-><P
->the pointer to HMAC key data.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->buf</P
-></TD
-><TD
-><P
->the pointer to key value.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->bufSize</P
-></TD
-><TD
-><P
->the key value size (in bytes).</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35371"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value if an error occurs.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMHMACMD5GETKLASS"
-></A
-><H3
->xmlSecGnuTLSTransformHmacMd5GetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSTransformHmacMd5GetKlass (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->The HMAC-MD5 transform klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35384"
-></A
-><H4
->Returns</H4
-><P
-> the HMAC-MD5 transform klass.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMHMACRIPEMD160GETKLASS"
-></A
-><H3
->xmlSecGnuTLSTransformHmacRipemd160GetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
->
+                               (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>AES 256 CBC encryption transform klass.</p>
+<div class="REFSECT3">
+<a name="AEN35135"></a><h4>Returns</h4>
+<p> pointer to AES 256 CBC encryption transform.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMKWAES128GETKLASS"></a><h3>xmlSecGnuTLSTransformKWAes128GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
+xmlSecGnuTLSTransformKWAes128GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>The AES-128 kew wrapper transform klass.</p>
+<div class="REFSECT3">
+<a name="AEN35148"></a><h4>Returns</h4>
+<p> AES-128 kew wrapper transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMKWAES192GETKLASS"></a><h3>xmlSecGnuTLSTransformKWAes192GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
+xmlSecGnuTLSTransformKWAes192GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>The AES-192 kew wrapper transform klass.</p>
+<div class="REFSECT3">
+<a name="AEN35161"></a><h4>Returns</h4>
+<p> AES-192 kew wrapper transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMKWAES256GETKLASS"></a><h3>xmlSecGnuTLSTransformKWAes256GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
+xmlSecGnuTLSTransformKWAes256GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>The AES-256 kew wrapper transform klass.</p>
+<div class="REFSECT3">
+<a name="AEN35174"></a><h4>Returns</h4>
+<p> AES-256 kew wrapper transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSKEYDATADESGETKLASS"></a><h3>xmlSecGnuTLSKeyDataDesGetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecKeyDataId</span></font>
+xmlSecGnuTLSKeyDataDesGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>The DES key data klass.</p>
+<div class="REFSECT3">
+<a name="AEN35187"></a><h4>Returns</h4>
+<p> DES key data klass.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSKEYDATADESSET"></a><h3>xmlSecGnuTLSKeyDataDesSet ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecGnuTLSKeyDataDesSet (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
+                           <code class="PARAMETER">const <a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *buf</code>,
+                           <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> bufSize</code>);</pre>
+<p>Sets the value of DES key data.</p>
+<div class="REFSECT3">
+<a name="AEN35207"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN35209"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>data</p></td>
+<td><p>the pointer to DES key data.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>buf</p></td>
+<td><p>the pointer to key value.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>bufSize</p></td>
+<td><p>the key value size (in bytes).</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN35230"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMDES3CBCGETKLASS"></a><h3>xmlSecGnuTLSTransformDes3CbcGetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
+xmlSecGnuTLSTransformDes3CbcGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>Triple DES CBC encryption transform klass.</p>
+<div class="REFSECT3">
+<a name="AEN35243"></a><h4>Returns</h4>
+<p> pointer to Triple DES encryption transform.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMKWDES3GETKLASS"></a><h3>xmlSecGnuTLSTransformKWDes3GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
+xmlSecGnuTLSTransformKWDes3GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>The Triple DES key wrapper transform klass.</p>
+<div class="REFSECT3">
+<a name="AEN35256"></a><h4>Returns</h4>
+<p> Triple DES key wrapper transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSKEYDATADSAGETKLASS"></a><h3>xmlSecGnuTLSKeyDataDsaGetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecKeyDataId</span></font>
+xmlSecGnuTLSKeyDataDsaGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>The DSA key data klass.</p>
+<div class="REFSECT3">
+<a name="AEN35269"></a><h4>Returns</h4>
+<p> pointer to DSA key data klass.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSKEYDATADSAADOPTPRIVATEKEY"></a><h3>xmlSecGnuTLSKeyDataDsaAdoptPrivateKey ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecGnuTLSKeyDataDsaAdoptPrivateKey (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
+                                       <code class="PARAMETER"><font><span class="TYPE">gnutls_x509_privkey_t</span></font> dsa_key</code>);</pre>
+<p>Sets the value of DSA key data.</p>
+<div class="REFSECT3">
+<a name="AEN35286"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN35288"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>data</p></td>
+<td><p>the pointer to DSA key data.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>dsa_key</p></td>
+<td><p>the pointer to GnuTLS DSA private key.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN35303"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSKEYDATADSAADOPTPUBLICKEY"></a><h3>xmlSecGnuTLSKeyDataDsaAdoptPublicKey ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecGnuTLSKeyDataDsaAdoptPublicKey (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
+                                      <code class="PARAMETER"><font><span class="TYPE">gnutls_datum_t</span></font> *p</code>,
+                                      <code class="PARAMETER"><font><span class="TYPE">gnutls_datum_t</span></font> *q</code>,
+                                      <code class="PARAMETER"><font><span class="TYPE">gnutls_datum_t</span></font> *g</code>,
+                                      <code class="PARAMETER"><font><span class="TYPE">gnutls_datum_t</span></font> *y</code>);</pre>
+<p>Sets the value of DSA key data.</p>
+<div class="REFSECT3">
+<a name="AEN35329"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN35331"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>data</p></td>
+<td><p>the pointer to DSA key data.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>p</p></td>
+<td><p>the pointer to p component of the DSA public key</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>q</p></td>
+<td><p>the pointer to q component of the DSA public key</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>g</p></td>
+<td><p>the pointer to g component of the DSA public key</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>y</p></td>
+<td><p>the pointer to y component of the DSA public key</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN35364"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMDSASHA1GETKLASS"></a><h3>xmlSecGnuTLSTransformDsaSha1GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
+xmlSecGnuTLSTransformDsaSha1GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>The DSA-SHA1 signature transform klass.</p>
+<div class="REFSECT3">
+<a name="AEN35377"></a><h4>Returns</h4>
+<p> DSA-SHA1 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSHMACGETMINOUTPUTLENGTH"></a><h3>xmlSecGnuTLSHmacGetMinOutputLength ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecGnuTLSHmacGetMinOutputLength (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>Gets the value of min HMAC length.</p>
+<div class="REFSECT3">
+<a name="AEN35390"></a><h4>Returns</h4>
+<p> the min HMAC output length</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSHMACSETMINOUTPUTLENGTH"></a><h3>xmlSecGnuTLSHmacSetMinOutputLength ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">void</span></font>
+xmlSecGnuTLSHmacSetMinOutputLength (<code class="PARAMETER"><font><span class="TYPE">int</span></font> min_length</code>);</pre>
+<p>Sets the min HMAC output length</p>
+<div class="REFSECT3">
+<a name="AEN35404"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN35406"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody><tr>
+<td><p>min_length</p></td>
+<td><p>the new min length</p></td>
+<td> </td>
+</tr></tbody>
+</table>
+<p></p>
+</div>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSKEYDATAHMACGETKLASS"></a><h3>xmlSecGnuTLSKeyDataHmacGetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecKeyDataId</span></font>
+xmlSecGnuTLSKeyDataHmacGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>The HMAC key data klass.</p>
+<div class="REFSECT3">
+<a name="AEN35425"></a><h4>Returns</h4>
+<p> HMAC key data klass.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSKEYDATAHMACSET"></a><h3>xmlSecGnuTLSKeyDataHmacSet ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecGnuTLSKeyDataHmacSet (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
+                            <code class="PARAMETER">const <a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *buf</code>,
+                            <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> bufSize</code>);</pre>
+<p>Sets the value of HMAC key data.</p>
+<div class="REFSECT3">
+<a name="AEN35445"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN35447"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>data</p></td>
+<td><p>the pointer to HMAC key data.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>buf</p></td>
+<td><p>the pointer to key value.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>bufSize</p></td>
+<td><p>the key value size (in bytes).</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN35468"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMHMACMD5GETKLASS"></a><h3>xmlSecGnuTLSTransformHmacMd5GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
+xmlSecGnuTLSTransformHmacMd5GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>The HMAC-MD5 transform klass.</p>
+<div class="REFSECT3">
+<a name="AEN35481"></a><h4>Returns</h4>
+<p> the HMAC-MD5 transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMHMACRIPEMD160GETKLASS"></a><h3>xmlSecGnuTLSTransformHmacRipemd160GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
 xmlSecGnuTLSTransformHmacRipemd160GetKlass
-                               (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->The HMAC-RIPEMD160 transform klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35397"
-></A
-><H4
->Returns</H4
-><P
-> the HMAC-RIPEMD160 transform klass.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMHMACSHA1GETKLASS"
-></A
-><H3
->xmlSecGnuTLSTransformHmacSha1GetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSTransformHmacSha1GetKlass (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->The HMAC-SHA1 transform klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35410"
-></A
-><H4
->Returns</H4
-><P
-> the HMAC-SHA1 transform klass.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMHMACSHA256GETKLASS"
-></A
-><H3
->xmlSecGnuTLSTransformHmacSha256GetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
->
+                               (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>The HMAC-RIPEMD160 transform klass.</p>
+<div class="REFSECT3">
+<a name="AEN35494"></a><h4>Returns</h4>
+<p> the HMAC-RIPEMD160 transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMHMACSHA1GETKLASS"></a><h3>xmlSecGnuTLSTransformHmacSha1GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
+xmlSecGnuTLSTransformHmacSha1GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>The HMAC-SHA1 transform klass.</p>
+<div class="REFSECT3">
+<a name="AEN35507"></a><h4>Returns</h4>
+<p> the HMAC-SHA1 transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMHMACSHA256GETKLASS"></a><h3>xmlSecGnuTLSTransformHmacSha256GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
 xmlSecGnuTLSTransformHmacSha256GetKlass
-                               (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->The HMAC-SHA256 transform klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35423"
-></A
-><H4
->Returns</H4
-><P
-> the HMAC-SHA256 transform klass.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMHMACSHA384GETKLASS"
-></A
-><H3
->xmlSecGnuTLSTransformHmacSha384GetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
->
+                               (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>The HMAC-SHA256 transform klass.</p>
+<div class="REFSECT3">
+<a name="AEN35520"></a><h4>Returns</h4>
+<p> the HMAC-SHA256 transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMHMACSHA384GETKLASS"></a><h3>xmlSecGnuTLSTransformHmacSha384GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
 xmlSecGnuTLSTransformHmacSha384GetKlass
-                               (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->The HMAC-SHA384 transform klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35436"
-></A
-><H4
->Returns</H4
-><P
-> the HMAC-SHA384 transform klass.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMHMACSHA512GETKLASS"
-></A
-><H3
->xmlSecGnuTLSTransformHmacSha512GetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
->
+                               (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>The HMAC-SHA384 transform klass.</p>
+<div class="REFSECT3">
+<a name="AEN35533"></a><h4>Returns</h4>
+<p> the HMAC-SHA384 transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMHMACSHA512GETKLASS"></a><h3>xmlSecGnuTLSTransformHmacSha512GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
 xmlSecGnuTLSTransformHmacSha512GetKlass
-                               (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->The HMAC-SHA512 transform klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35449"
-></A
-><H4
->Returns</H4
-><P
-> the HMAC-SHA512 transform klass.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSKEYDATARSAGETKLASS"
-></A
-><H3
->xmlSecGnuTLSKeyDataRsaGetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECKEYDATAID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecKeyDataId</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSKeyDataRsaGetKlass (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->The GnuTLS RSA key data klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35462"
-></A
-><H4
->Returns</H4
-><P
-> pointer to GnuTLS RSA key data klass.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSKEYDATARSAADOPTPRIVATEKEY"
-></A
-><H3
->xmlSecGnuTLSKeyDataRsaAdoptPrivateKey ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSKeyDataRsaAdoptPrivateKey (<CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
-><SPAN
-CLASS="TYPE"
->xmlSecKeyDataPtr</SPAN
-></A
-> data</CODE
->,
-                                       <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="GNUTLS-X509-PRIVKEY-T"
-><SPAN
-CLASS="TYPE"
->gnutls_x509_privkey_t</SPAN
-></GTKDOCLINK
-> rsa_key</CODE
->);</PRE
-><P
->Sets the value of RSA key data.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35479"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN35481"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->data</P
-></TD
-><TD
-><P
->the pointer to RSA key data.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->rsa_key</P
-></TD
-><TD
-><P
->the pointer to GnuTLS RSA private key.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35496"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value otherwise.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSKEYDATARSAADOPTPUBLICKEY"
-></A
-><H3
->xmlSecGnuTLSKeyDataRsaAdoptPublicKey ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSKeyDataRsaAdoptPublicKey (<CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
-><SPAN
-CLASS="TYPE"
->xmlSecKeyDataPtr</SPAN
-></A
-> data</CODE
->,
-                                      <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="GNUTLS-DATUM-T"
-><SPAN
-CLASS="TYPE"
->gnutls_datum_t</SPAN
-></GTKDOCLINK
-> *m</CODE
->,
-                                      <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="GNUTLS-DATUM-T"
-><SPAN
-CLASS="TYPE"
->gnutls_datum_t</SPAN
-></GTKDOCLINK
-> *e</CODE
->);</PRE
-><P
->Sets the value of RSA key data.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35516"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN35518"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->data</P
-></TD
-><TD
-><P
->the pointer to RSA key data.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->m</P
-></TD
-><TD
-><P
->the pointer to m component of the RSA public key</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->e</P
-></TD
-><TD
-><P
->the pointer to e component of the RSA public key</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35539"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value otherwise.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMRSAMD5GETKLASS"
-></A
-><H3
->xmlSecGnuTLSTransformRsaMd5GetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSTransformRsaMd5GetKlass (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->The RSA-MD5 signature transform klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35552"
-></A
-><H4
->Returns</H4
-><P
-> RSA-MD5 signature transform klass.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMRSARIPEMD160GETKLASS"
-></A
-><H3
->xmlSecGnuTLSTransformRsaRipemd160GetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
->
+                               (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>The HMAC-SHA512 transform klass.</p>
+<div class="REFSECT3">
+<a name="AEN35546"></a><h4>Returns</h4>
+<p> the HMAC-SHA512 transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSKEYDATARSAGETKLASS"></a><h3>xmlSecGnuTLSKeyDataRsaGetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecKeyDataId</span></font>
+xmlSecGnuTLSKeyDataRsaGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>The GnuTLS RSA key data klass.</p>
+<div class="REFSECT3">
+<a name="AEN35559"></a><h4>Returns</h4>
+<p> pointer to GnuTLS RSA key data klass.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSKEYDATARSAADOPTPRIVATEKEY"></a><h3>xmlSecGnuTLSKeyDataRsaAdoptPrivateKey ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecGnuTLSKeyDataRsaAdoptPrivateKey (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
+                                       <code class="PARAMETER"><font><span class="TYPE">gnutls_x509_privkey_t</span></font> rsa_key</code>);</pre>
+<p>Sets the value of RSA key data.</p>
+<div class="REFSECT3">
+<a name="AEN35576"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN35578"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>data</p></td>
+<td><p>the pointer to RSA key data.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>rsa_key</p></td>
+<td><p>the pointer to GnuTLS RSA private key.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN35593"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSKEYDATARSAADOPTPUBLICKEY"></a><h3>xmlSecGnuTLSKeyDataRsaAdoptPublicKey ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecGnuTLSKeyDataRsaAdoptPublicKey (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
+                                      <code class="PARAMETER"><font><span class="TYPE">gnutls_datum_t</span></font> *m</code>,
+                                      <code class="PARAMETER"><font><span class="TYPE">gnutls_datum_t</span></font> *e</code>);</pre>
+<p>Sets the value of RSA key data.</p>
+<div class="REFSECT3">
+<a name="AEN35613"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN35615"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>data</p></td>
+<td><p>the pointer to RSA key data.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>m</p></td>
+<td><p>the pointer to m component of the RSA public key</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>e</p></td>
+<td><p>the pointer to e component of the RSA public key</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN35636"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMRSAMD5GETKLASS"></a><h3>xmlSecGnuTLSTransformRsaMd5GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
+xmlSecGnuTLSTransformRsaMd5GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>The RSA-MD5 signature transform klass.</p>
+<div class="REFSECT3">
+<a name="AEN35649"></a><h4>Returns</h4>
+<p> RSA-MD5 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMRSARIPEMD160GETKLASS"></a><h3>xmlSecGnuTLSTransformRsaRipemd160GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
 xmlSecGnuTLSTransformRsaRipemd160GetKlass
-                               (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->The RSA-RIPEMD160 signature transform klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35565"
-></A
-><H4
->Returns</H4
-><P
-> RSA-RIPEMD160 signature transform klass.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMRSASHA1GETKLASS"
-></A
-><H3
->xmlSecGnuTLSTransformRsaSha1GetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSTransformRsaSha1GetKlass (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->The RSA-SHA1 signature transform klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35578"
-></A
-><H4
->Returns</H4
-><P
-> RSA-SHA1 signature transform klass.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMRSASHA256GETKLASS"
-></A
-><H3
->xmlSecGnuTLSTransformRsaSha256GetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
->
+                               (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>The RSA-RIPEMD160 signature transform klass.</p>
+<div class="REFSECT3">
+<a name="AEN35662"></a><h4>Returns</h4>
+<p> RSA-RIPEMD160 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMRSASHA1GETKLASS"></a><h3>xmlSecGnuTLSTransformRsaSha1GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
+xmlSecGnuTLSTransformRsaSha1GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>The RSA-SHA1 signature transform klass.</p>
+<div class="REFSECT3">
+<a name="AEN35675"></a><h4>Returns</h4>
+<p> RSA-SHA1 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMRSASHA256GETKLASS"></a><h3>xmlSecGnuTLSTransformRsaSha256GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
 xmlSecGnuTLSTransformRsaSha256GetKlass
-                               (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->The RSA-SHA256 signature transform klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35591"
-></A
-><H4
->Returns</H4
-><P
-> RSA-SHA256 signature transform klass.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMRSASHA384GETKLASS"
-></A
-><H3
->xmlSecGnuTLSTransformRsaSha384GetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
->
+                               (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>The RSA-SHA256 signature transform klass.</p>
+<div class="REFSECT3">
+<a name="AEN35688"></a><h4>Returns</h4>
+<p> RSA-SHA256 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMRSASHA384GETKLASS"></a><h3>xmlSecGnuTLSTransformRsaSha384GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
 xmlSecGnuTLSTransformRsaSha384GetKlass
-                               (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->The RSA-SHA384 signature transform klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35604"
-></A
-><H4
->Returns</H4
-><P
-> RSA-SHA384 signature transform klass.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMRSASHA512GETKLASS"
-></A
-><H3
->xmlSecGnuTLSTransformRsaSha512GetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
->
+                               (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>The RSA-SHA384 signature transform klass.</p>
+<div class="REFSECT3">
+<a name="AEN35701"></a><h4>Returns</h4>
+<p> RSA-SHA384 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMRSASHA512GETKLASS"></a><h3>xmlSecGnuTLSTransformRsaSha512GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
 xmlSecGnuTLSTransformRsaSha512GetKlass
-                               (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->The RSA-SHA512 signature transform klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35617"
-></A
-><H4
->Returns</H4
-><P
-> RSA-SHA512 signature transform klass.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMSHA1GETKLASS"
-></A
-><H3
->xmlSecGnuTLSTransformSha1GetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSTransformSha1GetKlass (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->SHA-1 digest transform klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35630"
-></A
-><H4
->Returns</H4
-><P
-> pointer to SHA-1 digest transform klass.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMSHA256GETKLASS"
-></A
-><H3
->xmlSecGnuTLSTransformSha256GetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSTransformSha256GetKlass (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->SHA256 digest transform klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35643"
-></A
-><H4
->Returns</H4
-><P
-> pointer to SHA256 digest transform klass.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMSHA384GETKLASS"
-></A
-><H3
->xmlSecGnuTLSTransformSha384GetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSTransformSha384GetKlass (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->SHA384 digest transform klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35656"
-></A
-><H4
->Returns</H4
-><P
-> pointer to SHA384 digest transform klass.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMSHA512GETKLASS"
-></A
-><H3
->xmlSecGnuTLSTransformSha512GetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSTransformSha512GetKlass (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->SHA512 digest transform klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35669"
-></A
-><H4
->Returns</H4
-><P
-> pointer to SHA512 digest transform klass.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMMD5GETKLASS"
-></A
-><H3
->xmlSecGnuTLSTransformMd5GetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
->
-xmlSecGnuTLSTransformMd5GetKlass (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->MD5 digest transform klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35682"
-></A
-><H4
->Returns</H4
-><P
-> pointer to MD5 digest transform klass.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMRIPEMD160GETKLASS"
-></A
-><H3
->xmlSecGnuTLSTransformRipemd160GetKlass ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMID"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecTransformId</SPAN
-></GTKDOCLINK
->
+                               (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>The RSA-SHA512 signature transform klass.</p>
+<div class="REFSECT3">
+<a name="AEN35714"></a><h4>Returns</h4>
+<p> RSA-SHA512 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMSHA1GETKLASS"></a><h3>xmlSecGnuTLSTransformSha1GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
+xmlSecGnuTLSTransformSha1GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>SHA-1 digest transform klass.</p>
+<div class="REFSECT3">
+<a name="AEN35727"></a><h4>Returns</h4>
+<p> pointer to SHA-1 digest transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMSHA256GETKLASS"></a><h3>xmlSecGnuTLSTransformSha256GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
+xmlSecGnuTLSTransformSha256GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>SHA256 digest transform klass.</p>
+<div class="REFSECT3">
+<a name="AEN35740"></a><h4>Returns</h4>
+<p> pointer to SHA256 digest transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMSHA384GETKLASS"></a><h3>xmlSecGnuTLSTransformSha384GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
+xmlSecGnuTLSTransformSha384GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>SHA384 digest transform klass.</p>
+<div class="REFSECT3">
+<a name="AEN35753"></a><h4>Returns</h4>
+<p> pointer to SHA384 digest transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMSHA512GETKLASS"></a><h3>xmlSecGnuTLSTransformSha512GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
+xmlSecGnuTLSTransformSha512GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>SHA512 digest transform klass.</p>
+<div class="REFSECT3">
+<a name="AEN35766"></a><h4>Returns</h4>
+<p> pointer to SHA512 digest transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMMD5GETKLASS"></a><h3>xmlSecGnuTLSTransformMd5GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
+xmlSecGnuTLSTransformMd5GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>MD5 digest transform klass.</p>
+<div class="REFSECT3">
+<a name="AEN35779"></a><h4>Returns</h4>
+<p> pointer to MD5 digest transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMRIPEMD160GETKLASS"></a><h3>xmlSecGnuTLSTransformRipemd160GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
 xmlSecGnuTLSTransformRipemd160GetKlass
-                               (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->RIPEMD160 digest transform klass.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN35695"
-></A
-><H4
->Returns</H4
-><P
-> pointer to RIPEMD160 digest transform klass.</P
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="XMLSEC-GNUTLS-CRYPTO.OTHER_DETAILS"
-></A
-><H2
->Types and Values</H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSKEYDATAAESID"
-></A
-><H3
->xmlSecGnuTLSKeyDataAesId</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSKeyDataAesId</PRE
-><P
->The AES key data klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMAES128CBCID"
-></A
-><H3
->xmlSecGnuTLSTransformAes128CbcId</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSTransformAes128CbcId</PRE
-><P
->The AES128 CBC cipher transform klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMAES192CBCID"
-></A
-><H3
->xmlSecGnuTLSTransformAes192CbcId</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSTransformAes192CbcId</PRE
-><P
->The AES192 CBC cipher transform klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMAES256CBCID"
-></A
-><H3
->xmlSecGnuTLSTransformAes256CbcId</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSTransformAes256CbcId</PRE
-><P
->The AES256 CBC cipher transform klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMKWAES128ID"
-></A
-><H3
->xmlSecGnuTLSTransformKWAes128Id</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSTransformKWAes128Id</PRE
-><P
->The AES 128 key wrap transform klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMKWAES192ID"
-></A
-><H3
->xmlSecGnuTLSTransformKWAes192Id</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSTransformKWAes192Id</PRE
-><P
->The AES 192 key wrap transform klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMKWAES256ID"
-></A
-><H3
->xmlSecGnuTLSTransformKWAes256Id</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSTransformKWAes256Id</PRE
-><P
->The AES 256 key wrap transform klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSKEYDATADESID"
-></A
-><H3
->xmlSecGnuTLSKeyDataDesId</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSKeyDataDesId</PRE
-><P
->The DES key data klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMDES3CBCID"
-></A
-><H3
->xmlSecGnuTLSTransformDes3CbcId</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSTransformDes3CbcId</PRE
-><P
->The DES3 CBC cipher transform klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMKWDES3ID"
-></A
-><H3
->xmlSecGnuTLSTransformKWDes3Id</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSTransformKWDes3Id</PRE
-><P
->The DES3 KW transform klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSKEYDATADSAID"
-></A
-><H3
->xmlSecGnuTLSKeyDataDsaId</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSKeyDataDsaId</PRE
-><P
->The DSA key klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMDSASHA1ID"
-></A
-><H3
->xmlSecGnuTLSTransformDsaSha1Id</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSTransformDsaSha1Id</PRE
-><P
->The DSA SHA1 signature transform klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSKEYDATAHMACID"
-></A
-><H3
->xmlSecGnuTLSKeyDataHmacId</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSKeyDataHmacId</PRE
-><P
->The HMAC key klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMHMACMD5ID"
-></A
-><H3
->xmlSecGnuTLSTransformHmacMd5Id</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSTransformHmacMd5Id</PRE
-><P
->The HMAC with MD5 signature transform klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMHMACRIPEMD160ID"
-></A
-><H3
->xmlSecGnuTLSTransformHmacRipemd160Id</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSTransformHmacRipemd160Id</PRE
-><P
->The HMAC with RipeMD160 signature transform klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMHMACSHA1ID"
-></A
-><H3
->xmlSecGnuTLSTransformHmacSha1Id</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSTransformHmacSha1Id</PRE
-><P
->The HMAC with SHA1 signature transform klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMHMACSHA256ID"
-></A
-><H3
->xmlSecGnuTLSTransformHmacSha256Id</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSTransformHmacSha256Id</PRE
-><P
->The HMAC with SHA256 signature transform klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMHMACSHA384ID"
-></A
-><H3
->xmlSecGnuTLSTransformHmacSha384Id</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSTransformHmacSha384Id</PRE
-><P
->The HMAC with SHA384 signature transform klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMHMACSHA512ID"
-></A
-><H3
->xmlSecGnuTLSTransformHmacSha512Id</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSTransformHmacSha512Id</PRE
-><P
->The HMAC with SHA512 signature transform klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSKEYDATARSAID"
-></A
-><H3
->xmlSecGnuTLSKeyDataRsaId</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSKeyDataRsaId</PRE
-><P
->The RSA key klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMRSAMD5ID"
-></A
-><H3
->xmlSecGnuTLSTransformRsaMd5Id</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSTransformRsaMd5Id</PRE
-><P
->The RSA-MD5 signature transform klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMRSARIPEMD160ID"
-></A
-><H3
->xmlSecGnuTLSTransformRsaRipemd160Id</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSTransformRsaRipemd160Id</PRE
-><P
->The RSA-RIPEMD160 signature transform klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMRSASHA1ID"
-></A
-><H3
->xmlSecGnuTLSTransformRsaSha1Id</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSTransformRsaSha1Id</PRE
-><P
->The RSA-SHA1 signature transform klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMRSASHA256ID"
-></A
-><H3
->xmlSecGnuTLSTransformRsaSha256Id</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSTransformRsaSha256Id</PRE
-><P
->The RSA-SHA256 signature transform klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMRSASHA384ID"
-></A
-><H3
->xmlSecGnuTLSTransformRsaSha384Id</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSTransformRsaSha384Id</PRE
-><P
->The RSA-SHA384 signature transform klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMRSASHA512ID"
-></A
-><H3
->xmlSecGnuTLSTransformRsaSha512Id</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSTransformRsaSha512Id</PRE
-><P
->The RSA-SHA512 signature transform klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMSHA1ID"
-></A
-><H3
->xmlSecGnuTLSTransformSha1Id</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSTransformSha1Id</PRE
-><P
->The HMAC with SHA1 signature transform klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMSHA256ID"
-></A
-><H3
->xmlSecGnuTLSTransformSha256Id</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSTransformSha256Id</PRE
-><P
->The HMAC with SHA256 signature transform klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMSHA384ID"
-></A
-><H3
->xmlSecGnuTLSTransformSha384Id</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSTransformSha384Id</PRE
-><P
->The HMAC with SHA384 signature transform klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMSHA512ID"
-></A
-><H3
->xmlSecGnuTLSTransformSha512Id</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSTransformSha512Id</PRE
-><P
->The HMAC with SHA512 signature transform klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMMD5ID"
-></A
-><H3
->xmlSecGnuTLSTransformMd5Id</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSTransformMd5Id</PRE
-><P
->The MD5 digest transform klass.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGNUTLSTRANSFORMRIPEMD160ID"
-></A
-><H3
->xmlSecGnuTLSTransformRipemd160Id</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGnuTLSTransformRipemd160Id</PRE
-><P
->The RIPEMD160 digest transform klass.</P
-></DIV
-></DIV
-><TABLE
-CLASS="navigation"
-WIDTH="100%"
-SUMMARY="Navigation footer"
-CELLPADDING="2"
-CELLSPACING="2"
-><TR
-VALIGN="middle"
-><TD
-ALIGN="left"
-><A
-ACCESSKEY="p"
-HREF="xmlsec-gnutls-app.html"
-><B
->&lt;&lt;&lt;&nbsp;app</B
-></A
-></TD
-><TD
-ALIGN="right"
-><A
-ACCESSKEY="n"
-HREF="xmlsec-gcrypt-ref.html"
-><B
->XML Security Library for GCrypt API Reference.&nbsp;&gt;&gt;&gt;</B
-></A
-></TD
-></TR
-></TABLE
-></BODY
-></HTML
->
+                               (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>RIPEMD160 digest transform klass.</p>
+<div class="REFSECT3">
+<a name="AEN35792"></a><h4>Returns</h4>
+<p> pointer to RIPEMD160 digest transform klass.</p>
+</div>
+</div>
+</div>
+<div class="REFSECT1">
+<a name="XMLSEC-GNUTLS-CRYPTO.OTHER_DETAILS"></a><h2>Types and Values</h2>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSKEYDATAAESID"></a><h3>xmlSecGnuTLSKeyDataAesId</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSKeyDataAesId</pre>
+<p>The AES key data klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMAES128CBCID"></a><h3>xmlSecGnuTLSTransformAes128CbcId</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformAes128CbcId</pre>
+<p>The AES128 CBC cipher transform klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMAES192CBCID"></a><h3>xmlSecGnuTLSTransformAes192CbcId</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformAes192CbcId</pre>
+<p>The AES192 CBC cipher transform klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMAES256CBCID"></a><h3>xmlSecGnuTLSTransformAes256CbcId</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformAes256CbcId</pre>
+<p>The AES256 CBC cipher transform klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMKWAES128ID"></a><h3>xmlSecGnuTLSTransformKWAes128Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformKWAes128Id</pre>
+<p>The AES 128 key wrap transform klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMKWAES192ID"></a><h3>xmlSecGnuTLSTransformKWAes192Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformKWAes192Id</pre>
+<p>The AES 192 key wrap transform klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMKWAES256ID"></a><h3>xmlSecGnuTLSTransformKWAes256Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformKWAes256Id</pre>
+<p>The AES 256 key wrap transform klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSKEYDATADESID"></a><h3>xmlSecGnuTLSKeyDataDesId</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSKeyDataDesId</pre>
+<p>The DES key data klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMDES3CBCID"></a><h3>xmlSecGnuTLSTransformDes3CbcId</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformDes3CbcId</pre>
+<p>The DES3 CBC cipher transform klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMKWDES3ID"></a><h3>xmlSecGnuTLSTransformKWDes3Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformKWDes3Id</pre>
+<p>The DES3 KW transform klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSKEYDATADSAID"></a><h3>xmlSecGnuTLSKeyDataDsaId</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSKeyDataDsaId</pre>
+<p>The DSA key klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMDSASHA1ID"></a><h3>xmlSecGnuTLSTransformDsaSha1Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformDsaSha1Id</pre>
+<p>The DSA SHA1 signature transform klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSKEYDATAHMACID"></a><h3>xmlSecGnuTLSKeyDataHmacId</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSKeyDataHmacId</pre>
+<p>The HMAC key klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMHMACMD5ID"></a><h3>xmlSecGnuTLSTransformHmacMd5Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformHmacMd5Id</pre>
+<p>The HMAC with MD5 signature transform klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMHMACRIPEMD160ID"></a><h3>xmlSecGnuTLSTransformHmacRipemd160Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformHmacRipemd160Id</pre>
+<p>The HMAC with RipeMD160 signature transform klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMHMACSHA1ID"></a><h3>xmlSecGnuTLSTransformHmacSha1Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformHmacSha1Id</pre>
+<p>The HMAC with SHA1 signature transform klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMHMACSHA256ID"></a><h3>xmlSecGnuTLSTransformHmacSha256Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformHmacSha256Id</pre>
+<p>The HMAC with SHA256 signature transform klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMHMACSHA384ID"></a><h3>xmlSecGnuTLSTransformHmacSha384Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformHmacSha384Id</pre>
+<p>The HMAC with SHA384 signature transform klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMHMACSHA512ID"></a><h3>xmlSecGnuTLSTransformHmacSha512Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformHmacSha512Id</pre>
+<p>The HMAC with SHA512 signature transform klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSKEYDATARSAID"></a><h3>xmlSecGnuTLSKeyDataRsaId</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSKeyDataRsaId</pre>
+<p>The RSA key klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMRSAMD5ID"></a><h3>xmlSecGnuTLSTransformRsaMd5Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformRsaMd5Id</pre>
+<p>The RSA-MD5 signature transform klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMRSARIPEMD160ID"></a><h3>xmlSecGnuTLSTransformRsaRipemd160Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformRsaRipemd160Id</pre>
+<p>The RSA-RIPEMD160 signature transform klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMRSASHA1ID"></a><h3>xmlSecGnuTLSTransformRsaSha1Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformRsaSha1Id</pre>
+<p>The RSA-SHA1 signature transform klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMRSASHA256ID"></a><h3>xmlSecGnuTLSTransformRsaSha256Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformRsaSha256Id</pre>
+<p>The RSA-SHA256 signature transform klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMRSASHA384ID"></a><h3>xmlSecGnuTLSTransformRsaSha384Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformRsaSha384Id</pre>
+<p>The RSA-SHA384 signature transform klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMRSASHA512ID"></a><h3>xmlSecGnuTLSTransformRsaSha512Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformRsaSha512Id</pre>
+<p>The RSA-SHA512 signature transform klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMSHA1ID"></a><h3>xmlSecGnuTLSTransformSha1Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformSha1Id</pre>
+<p>The HMAC with SHA1 signature transform klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMSHA256ID"></a><h3>xmlSecGnuTLSTransformSha256Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformSha256Id</pre>
+<p>The HMAC with SHA256 signature transform klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMSHA384ID"></a><h3>xmlSecGnuTLSTransformSha384Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformSha384Id</pre>
+<p>The HMAC with SHA384 signature transform klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMSHA512ID"></a><h3>xmlSecGnuTLSTransformSha512Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformSha512Id</pre>
+<p>The HMAC with SHA512 signature transform klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMMD5ID"></a><h3>xmlSecGnuTLSTransformMd5Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformMd5Id</pre>
+<p>The MD5 digest transform klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMRIPEMD160ID"></a><h3>xmlSecGnuTLSTransformRipemd160Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformRipemd160Id</pre>
+<p>The RIPEMD160 digest transform klass.</p>
+</div>
+</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td align="left"><a accesskey="p" href="xmlsec-gnutls-app.html"><b>&lt;&lt;&lt; app</b></a></td>
+<td align="right"><a accesskey="n" href="xmlsec-gcrypt-ref.html"><b>XML Security Library for GCrypt API Reference. &gt;&gt;&gt;</b></a></td>
+</tr></table>
+</td></tr></table></td>
+</tr></table></body>
+</html>

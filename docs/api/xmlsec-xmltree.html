@@ -1,25 +1,13 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->xmltree</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-TITLE="XML Security Library Reference Manual"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="XML Security Core Library API Reference."
-HREF="xmlsec-ref.html"><LINK
-REL="PREVIOUS"
-TITLE="xmlsec"
-HREF="xmlsec-xmlsec.html"><LINK
-REL="NEXT"
-TITLE="x509"
-HREF="xmlsec-x509.html"><STYLE
-TYPE="text/css"
->.synopsis, .classsynopsis {
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>xmltree</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="XML Security Core Library API Reference." href="xmlsec-ref.html">
+<link rel="PREVIOUS" title="xmlsec" href="xmlsec-xmlsec.html">
+<link rel="NEXT" title="x509" href="xmlsec-x509.html">
+<style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
     padding: 0.5em;
@@ -47,7182 +35,2492 @@ TYPE="text/css"
 }
 .navigation .title {
     font-size: 200%;
-}</STYLE
-></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><TABLE
-WIDTH="100%"
-CLASS="navigation"
-SUMMARY="Navigation header"
-CELLPADDING="2"
-CELLSPACING="2"
-><TR
-VALIGN="middle"
-><TD
-><A
-ACCESSKEY="p"
-HREF="xmlsec-xmlsec.html"
-><IMG
-SRC="left.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Prev"></A
-></TD
-><TD
-><A
-ACCESSKEY="u"
-HREF="xmlsec-ref.html"
-><IMG
-SRC="up.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Up"></A
-></TD
-><TD
-><A
-ACCESSKEY="h"
-HREF="index.html"
-><IMG
-SRC="home.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Home"></A
-></TD
-><TH
-WIDTH="100%"
-align="center"
->XML Security Library Reference Manual</TH
-><TD
-><A
-ACCESSKEY="n"
-HREF="xmlsec-x509.html"
-><IMG
-SRC="right.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Next"></A
-></TD
-></TR
-></TABLE
-><H1
-><A
-NAME="XMLSEC-XMLTREE"
-></A
->xmltree</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN26243"
-></A
-><H2
->Name</H2
->xmltree&nbsp;--&nbsp;XML tree operations.</DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="XMLSEC-XMLTREE.FUNCTIONS"
-></A
-><H2
->Functions</H2
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN26248"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><TBODY
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECNODEGETNAME"
->xmlSecNodeGetName</A
-><SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="RETURNVALUE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *</TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECGETNODENSHREF"
->xmlSecGetNodeNsHref</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECCHECKNODENAME"
->xmlSecCheckNodeName</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="RETURNVALUE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECGETNEXTELEMENTNODE"
->xmlSecGetNextElementNode</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="RETURNVALUE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECFINDCHILD"
->xmlSecFindChild</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="RETURNVALUE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECFINDPARENT"
->xmlSecFindParent</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="RETURNVALUE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECFINDNODE"
->xmlSecFindNode</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="RETURNVALUE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECADDCHILD"
->xmlSecAddChild</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="RETURNVALUE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECADDCHILDNODE"
->xmlSecAddChildNode</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="RETURNVALUE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECADDNEXTSIBLING"
->xmlSecAddNextSibling</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="RETURNVALUE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECADDPREVSIBLING"
->xmlSecAddPrevSibling</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECREPLACENODE"
->xmlSecReplaceNode</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECREPLACENODEANDRETURN"
->xmlSecReplaceNodeAndReturn</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECREPLACECONTENT"
->xmlSecReplaceContent</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECREPLACECONTENTANDRETURN"
->xmlSecReplaceContentAndReturn</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECREPLACENODEBUFFER"
->xmlSecReplaceNodeBuffer</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECREPLACENODEBUFFERANDRETURN"
->xmlSecReplaceNodeBufferAndReturn</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECNODEENCODEANDSETCONTENT"
->xmlSecNodeEncodeAndSetContent</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="VOID"
-><SPAN
-CLASS="RETURNVALUE"
->void</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECADDIDS"
->xmlSecAddIDs</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECGENERATEANDADDID"
->xmlSecGenerateAndAddID</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="RETURNVALUE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *</TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECGENERATEID"
->xmlSecGenerateID</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLDOC"
-><SPAN
-CLASS="RETURNVALUE"
->xmlDocPtr</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECCREATETREE"
->xmlSecCreateTree</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECISEMPTYNODE"
->xmlSecIsEmptyNode</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECISEMPTYSTRING"
->xmlSecIsEmptyString</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="RETURNVALUE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *</TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECGETQNAME"
->xmlSecGetQName</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECPRINTXMLSTRING"
->xmlSecPrintXmlString</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECISHEX"
->xmlSecIsHex</A
-><SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECGETHEX"
->xmlSecGetHex</A
-><SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECQNAME2INTEGERINFOCONST"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecQName2IntegerInfoConstPtr</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECQNAME2INTEGERGETINFO"
->xmlSecQName2IntegerGetInfo</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECQNAME2INTEGERGETINTEGER"
->xmlSecQName2IntegerGetInteger</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECQNAME2INTEGERGETINTEGERFROMSTRING"
->xmlSecQName2IntegerGetIntegerFromString</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="RETURNVALUE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *</TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECQNAME2INTEGERGETSTRINGFROMINTEGER"
->xmlSecQName2IntegerGetStringFromInteger</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECQNAME2INTEGERNODEREAD"
->xmlSecQName2IntegerNodeRead</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECQNAME2INTEGERNODEWRITE"
->xmlSecQName2IntegerNodeWrite</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECQNAME2INTEGERATTRIBUTEREAD"
->xmlSecQName2IntegerAttributeRead</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECQNAME2INTEGERATTRIBUTEWRITE"
->xmlSecQName2IntegerAttributeWrite</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="VOID"
-><SPAN
-CLASS="RETURNVALUE"
->void</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECQNAME2INTEGERDEBUGDUMP"
->xmlSecQName2IntegerDebugDump</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="VOID"
-><SPAN
-CLASS="RETURNVALUE"
->void</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECQNAME2INTEGERDEBUGXMLDUMP"
->xmlSecQName2IntegerDebugXmlDump</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLSECQNAME2BITMASKINFOCONST"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecQName2BitMaskInfoConstPtr</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECQNAME2BITMASKGETINFO"
->xmlSecQName2BitMaskGetInfo</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECQNAME2BITMASKGETBITMASK"
->xmlSecQName2BitMaskGetBitMask</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECQNAME2BITMASKNODESREAD"
->xmlSecQName2BitMaskNodesRead</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECQNAME2BITMASKGETBITMASKFROMSTRING"
->xmlSecQName2BitMaskGetBitMaskFromString</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="RETURNVALUE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *</TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECQNAME2BITMASKGETSTRINGFROMBITMASK"
->xmlSecQName2BitMaskGetStringFromBitMask</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECQNAME2BITMASKNODESWRITE"
->xmlSecQName2BitMaskNodesWrite</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="VOID"
-><SPAN
-CLASS="RETURNVALUE"
->void</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECQNAME2BITMASKDEBUGDUMP"
->xmlSecQName2BitMaskDebugDump</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="VOID"
-><SPAN
-CLASS="RETURNVALUE"
->void</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECQNAME2BITMASKDEBUGXMLDUMP"
->xmlSecQName2BitMaskDebugXmlDump</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="XMLSEC-XMLTREE.OTHER"
-></A
-><H2
->Types and Values</H2
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN26569"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><TBODY
-><TR
-><TD
->struct</TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECQNAME2INTEGERINFO"
->xmlSecQName2IntegerInfo</A
-></TD
-></TR
-><TR
-><TD
->typedef</TD
-><TD
-><GTKDOCLINK
-HREF="XMLSECQNAME2INTEGERINFOCONST"
->xmlSecQName2IntegerInfoConstPtr</GTKDOCLINK
-></TD
-></TR
-><TR
-><TD
->typedef</TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECBITMASK"
->xmlSecBitMask</A
-></TD
-></TR
-><TR
-><TD
->struct</TD
-><TD
-><A
-HREF="xmlsec-xmltree.html#XMLSECQNAME2BITMASKINFO"
->xmlSecQName2BitMaskInfo</A
-></TD
-></TR
-><TR
-><TD
->typedef</TD
-><TD
-><GTKDOCLINK
-HREF="XMLSECQNAME2BITMASKINFOCONST"
->xmlSecQName2BitMaskInfoConstPtr</GTKDOCLINK
-></TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="XMLSEC-XMLTREE.DESCRIPTION"
-></A
-><H2
->Description</H2
-><P
->XML tree operations.</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="XMLSEC-XMLTREE.FUNCTIONS_DETAILS"
-></A
-><H2
->Functions</H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECNODEGETNAME"
-></A
-><H3
->xmlSecNodeGetName()</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecNodeGetName(node)</PRE
-><P
->Macro. Returns node's name.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN26603"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN26605"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->node</P
-></TD
-><TD
-><P
->the pointer to node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGETNODENSHREF"
-></A
-><H3
->xmlSecGetNodeNsHref ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="RETURNVALUE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *
-xmlSecGetNodeNsHref (<CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> cur</CODE
->);</PRE
-><P
->Get's node's namespace href.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN26625"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN26627"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->cur</P
-></TD
-><TD
-><P
->the pointer to node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN26636"
-></A
-><H4
->Returns</H4
-><P
-> node's namespace href.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECCHECKNODENAME"
-></A
-><H3
->xmlSecCheckNodeName ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecCheckNodeName (<CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> cur</CODE
->,
-                     <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *name</CODE
->,
-                     <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *ns</CODE
->);</PRE
-><P
->Checks that the node has a given name and a given namespace href.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN26656"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN26658"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->cur</P
-></TD
-><TD
-><P
->the pointer to an XML node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->name</P
-></TD
-><TD
-><P
->the name,</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->ns</P
-></TD
-><TD
-><P
->the namespace href.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN26679"
-></A
-><H4
->Returns</H4
-><P
-> 1 if the node matches or 0 otherwise.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGETNEXTELEMENTNODE"
-></A
-><H3
->xmlSecGetNextElementNode ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="RETURNVALUE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
->
-xmlSecGetNextElementNode (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> cur</CODE
->);</PRE
-><P
->Seraches for the next element node.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN26693"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN26695"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->cur</P
-></TD
-><TD
-><P
->the pointer to an XML node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN26704"
-></A
-><H4
->Returns</H4
-><P
-> the pointer to next element node or NULL if it is not found.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECFINDCHILD"
-></A
-><H3
->xmlSecFindChild ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="RETURNVALUE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
->
-xmlSecFindChild (<CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> parent</CODE
->,
-                 <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *name</CODE
->,
-                 <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *ns</CODE
->);</PRE
-><P
->Searches a direct child of the <CODE
-CLASS="PARAMETER"
->parent</CODE
->
+}</style>
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
+</head>
+<body><table width="100%" valign="top"><tr valign="top">
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<ul>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
+<li><a href="../api/xmlsec-reference.html">API reference</a></li>
+<li><a href="../api/xmlsec-examples.html">Examples</a></li>
+</ul>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul><li><a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a></li></ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+<li><a href="../authors.html">Authors</a></li>
+</ul>
+<table width="100%">
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
+</tr>
+<!--Links - start--><!--Links - end-->
+</table>
+</td>
+<td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
+<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="xmlsec-xmlsec.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="xmlsec-ref.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="n" href="xmlsec-x509.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<h1>
+<a name="XMLSEC-XMLTREE"></a>xmltree</h1>
+<div class="REFNAMEDIV">
+<a name="AEN26340"></a><h2>Name</h2>xmltree -- XML tree operations.</div>
+<div class="REFSECT1">
+<a name="XMLSEC-XMLTREE.FUNCTIONS"></a><h2>Functions</h2>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN26345"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<tbody>
+<tr>
+<td>#define</td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECNODEGETNAME">xmlSecNodeGetName</a><span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td>const <font><span class="RETURNVALUE">xmlChar</span></font> *</td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECGETNODENSHREF">xmlSecGetNodeNsHref</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECCHECKNODENAME">xmlSecCheckNodeName</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlNodePtr</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECGETNEXTELEMENTNODE">xmlSecGetNextElementNode</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlNodePtr</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECFINDCHILD">xmlSecFindChild</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlNodePtr</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECFINDPARENT">xmlSecFindParent</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlNodePtr</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECFINDNODE">xmlSecFindNode</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlNodePtr</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECADDCHILD">xmlSecAddChild</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlNodePtr</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECADDCHILDNODE">xmlSecAddChildNode</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlNodePtr</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECADDNEXTSIBLING">xmlSecAddNextSibling</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlNodePtr</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECADDPREVSIBLING">xmlSecAddPrevSibling</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECREPLACENODE">xmlSecReplaceNode</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECREPLACENODEANDRETURN">xmlSecReplaceNodeAndReturn</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECREPLACECONTENT">xmlSecReplaceContent</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECREPLACECONTENTANDRETURN">xmlSecReplaceContentAndReturn</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECREPLACENODEBUFFER">xmlSecReplaceNodeBuffer</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECREPLACENODEBUFFERANDRETURN">xmlSecReplaceNodeBufferAndReturn</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECNODEENCODEANDSETCONTENT">xmlSecNodeEncodeAndSetContent</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">void</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECADDIDS">xmlSecAddIDs</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECGENERATEANDADDID">xmlSecGenerateAndAddID</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td>
+<font><span class="RETURNVALUE">xmlChar</span></font> *</td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECGENERATEID">xmlSecGenerateID</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlDocPtr</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECCREATETREE">xmlSecCreateTree</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECISEMPTYNODE">xmlSecIsEmptyNode</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECISEMPTYSTRING">xmlSecIsEmptyString</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td>
+<font><span class="RETURNVALUE">xmlChar</span></font> *</td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECGETQNAME">xmlSecGetQName</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECPRINTXMLSTRING">xmlSecPrintXmlString</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td>#define</td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECISHEX">xmlSecIsHex</a><span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td>#define</td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECGETHEX">xmlSecGetHex</a><span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecQName2IntegerInfoConstPtr</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERGETINFO">xmlSecQName2IntegerGetInfo</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERGETINTEGER">xmlSecQName2IntegerGetInteger</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERGETINTEGERFROMSTRING">xmlSecQName2IntegerGetIntegerFromString</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td>
+<font><span class="RETURNVALUE">xmlChar</span></font> *</td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERGETSTRINGFROMINTEGER">xmlSecQName2IntegerGetStringFromInteger</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERNODEREAD">xmlSecQName2IntegerNodeRead</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERNODEWRITE">xmlSecQName2IntegerNodeWrite</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERATTRIBUTEREAD">xmlSecQName2IntegerAttributeRead</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERATTRIBUTEWRITE">xmlSecQName2IntegerAttributeWrite</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">void</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERDEBUGDUMP">xmlSecQName2IntegerDebugDump</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">void</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERDEBUGXMLDUMP">xmlSecQName2IntegerDebugXmlDump</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecQName2BitMaskInfoConstPtr</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKGETINFO">xmlSecQName2BitMaskGetInfo</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKGETBITMASK">xmlSecQName2BitMaskGetBitMask</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKNODESREAD">xmlSecQName2BitMaskNodesRead</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKGETBITMASKFROMSTRING">xmlSecQName2BitMaskGetBitMaskFromString</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td>
+<font><span class="RETURNVALUE">xmlChar</span></font> *</td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKGETSTRINGFROMBITMASK">xmlSecQName2BitMaskGetStringFromBitMask</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKNODESWRITE">xmlSecQName2BitMaskNodesWrite</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">void</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKDEBUGDUMP">xmlSecQName2BitMaskDebugDump</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">void</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKDEBUGXMLDUMP">xmlSecQName2BitMaskDebugXmlDump</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT1">
+<a name="XMLSEC-XMLTREE.OTHER"></a><h2>Types and Values</h2>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN26666"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<tbody>
+<tr>
+<td>struct</td>
+<td><a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERINFO">xmlSecQName2IntegerInfo</a></td>
+</tr>
+<tr>
+<td>typedef</td>
+<td><font>xmlSecQName2IntegerInfoConstPtr</font></td>
+</tr>
+<tr>
+<td>typedef</td>
+<td><a href="xmlsec-xmltree.html#XMLSECBITMASK">xmlSecBitMask</a></td>
+</tr>
+<tr>
+<td>struct</td>
+<td><a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKINFO">xmlSecQName2BitMaskInfo</a></td>
+</tr>
+<tr>
+<td>typedef</td>
+<td><font>xmlSecQName2BitMaskInfoConstPtr</font></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT1">
+<a name="XMLSEC-XMLTREE.DESCRIPTION"></a><h2>Description</h2>
+<p>XML tree operations.</p>
+</div>
+<div class="REFSECT1">
+<a name="XMLSEC-XMLTREE.FUNCTIONS_DETAILS"></a><h2>Functions</h2>
+<div class="REFSECT2">
+<a name="XMLSECNODEGETNAME"></a><h3>xmlSecNodeGetName()</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecNodeGetName(node)</pre>
+<p>Macro. Returns node's name.</p>
+<div class="REFSECT3">
+<a name="AEN26700"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN26702"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody><tr>
+<td><p>node</p></td>
+<td><p>the pointer to node.</p></td>
+<td> </td>
+</tr></tbody>
+</table>
+<p></p>
+</div>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGETNODENSHREF"></a><h3>xmlSecGetNodeNsHref ()</h3>
+<pre class="PROGRAMLISTING">const <font><span class="RETURNVALUE">xmlChar</span></font> *
+xmlSecGetNodeNsHref (<code class="PARAMETER">const <font><span class="TYPE">xmlNodePtr</span></font> cur</code>);</pre>
+<p>Get's node's namespace href.</p>
+<div class="REFSECT3">
+<a name="AEN26722"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN26724"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody><tr>
+<td><p>cur</p></td>
+<td><p>the pointer to node.</p></td>
+<td> </td>
+</tr></tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN26733"></a><h4>Returns</h4>
+<p> node's namespace href.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECCHECKNODENAME"></a><h3>xmlSecCheckNodeName ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecCheckNodeName (<code class="PARAMETER">const <font><span class="TYPE">xmlNodePtr</span></font> cur</code>,
+                     <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *name</code>,
+                     <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *ns</code>);</pre>
+<p>Checks that the node has a given name and a given namespace href.</p>
+<div class="REFSECT3">
+<a name="AEN26753"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN26755"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>cur</p></td>
+<td><p>the pointer to an XML node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>name</p></td>
+<td><p>the name,</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>ns</p></td>
+<td><p>the namespace href.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN26776"></a><h4>Returns</h4>
+<p> 1 if the node matches or 0 otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGETNEXTELEMENTNODE"></a><h3>xmlSecGetNextElementNode ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlNodePtr</span></font>
+xmlSecGetNextElementNode (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> cur</code>);</pre>
+<p>Seraches for the next element node.</p>
+<div class="REFSECT3">
+<a name="AEN26790"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN26792"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody><tr>
+<td><p>cur</p></td>
+<td><p>the pointer to an XML node.</p></td>
+<td> </td>
+</tr></tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN26801"></a><h4>Returns</h4>
+<p> the pointer to next element node or NULL if it is not found.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECFINDCHILD"></a><h3>xmlSecFindChild ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlNodePtr</span></font>
+xmlSecFindChild (<code class="PARAMETER">const <font><span class="TYPE">xmlNodePtr</span></font> parent</code>,
+                 <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *name</code>,
+                 <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *ns</code>);</pre>
+<p>Searches a direct child of the <code class="PARAMETER">parent</code>
  node having given name and
-namespace href.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN26725"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN26727"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->parent</P
-></TD
-><TD
-><P
->the pointer to XML node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->name</P
-></TD
-><TD
-><P
->the name.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->ns</P
-></TD
-><TD
-><P
->the namespace href (may be NULL).</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN26748"
-></A
-><H4
->Returns</H4
-><P
-> the pointer to the found node or NULL if an error occurs or
-node is not found.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECFINDPARENT"
-></A
-><H3
->xmlSecFindParent ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="RETURNVALUE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
->
-xmlSecFindParent (<CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> cur</CODE
->,
-                  <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *name</CODE
->,
-                  <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *ns</CODE
->);</PRE
-><P
->Searches the ancestors axis of the <CODE
-CLASS="PARAMETER"
->cur</CODE
->
+namespace href.</p>
+<div class="REFSECT3">
+<a name="AEN26822"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN26824"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>parent</p></td>
+<td><p>the pointer to XML node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>name</p></td>
+<td><p>the name.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>ns</p></td>
+<td><p>the namespace href (may be NULL).</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN26845"></a><h4>Returns</h4>
+<p> the pointer to the found node or NULL if an error occurs or
+node is not found.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECFINDPARENT"></a><h3>xmlSecFindParent ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlNodePtr</span></font>
+xmlSecFindParent (<code class="PARAMETER">const <font><span class="TYPE">xmlNodePtr</span></font> cur</code>,
+                  <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *name</code>,
+                  <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *ns</code>);</pre>
+<p>Searches the ancestors axis of the <code class="PARAMETER">cur</code>
  node for a node having given name
-and namespace href.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN26769"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN26771"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->cur</P
-></TD
-><TD
-><P
->the pointer to an XML node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->name</P
-></TD
-><TD
-><P
->the name.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->ns</P
-></TD
-><TD
-><P
->the namespace href (may be NULL).</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN26792"
-></A
-><H4
->Returns</H4
-><P
-> the pointer to the found node or NULL if an error occurs or
-node is not found.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECFINDNODE"
-></A
-><H3
->xmlSecFindNode ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="RETURNVALUE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
->
-xmlSecFindNode (<CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> parent</CODE
->,
-                <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *name</CODE
->,
-                <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *ns</CODE
->);</PRE
-><P
->Searches all children of the <CODE
-CLASS="PARAMETER"
->parent</CODE
->
+and namespace href.</p>
+<div class="REFSECT3">
+<a name="AEN26866"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN26868"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>cur</p></td>
+<td><p>the pointer to an XML node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>name</p></td>
+<td><p>the name.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>ns</p></td>
+<td><p>the namespace href (may be NULL).</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN26889"></a><h4>Returns</h4>
+<p> the pointer to the found node or NULL if an error occurs or
+node is not found.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECFINDNODE"></a><h3>xmlSecFindNode ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlNodePtr</span></font>
+xmlSecFindNode (<code class="PARAMETER">const <font><span class="TYPE">xmlNodePtr</span></font> parent</code>,
+                <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *name</code>,
+                <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *ns</code>);</pre>
+<p>Searches all children of the <code class="PARAMETER">parent</code>
  node having given name and
-namespace href.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN26813"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN26815"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->parent</P
-></TD
-><TD
-><P
->the pointer to XML node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->name</P
-></TD
-><TD
-><P
->the name.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->ns</P
-></TD
-><TD
-><P
->the namespace href (may be NULL).</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN26836"
-></A
-><H4
->Returns</H4
-><P
-> the pointer to the found node or NULL if an error occurs or
-node is not found.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECADDCHILD"
-></A
-><H3
->xmlSecAddChild ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="RETURNVALUE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
->
-xmlSecAddChild (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> parent</CODE
->,
-                <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *name</CODE
->,
-                <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *ns</CODE
->);</PRE
-><P
->Adds a child to the node <CODE
-CLASS="PARAMETER"
->parent</CODE
->
- with given <CODE
-CLASS="PARAMETER"
->name</CODE
->
- and namespace <CODE
-CLASS="PARAMETER"
->ns</CODE
->
-.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN26859"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN26861"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->parent</P
-></TD
-><TD
-><P
->the pointer to an XML node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->name</P
-></TD
-><TD
-><P
->the new node name.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->ns</P
-></TD
-><TD
-><P
->the new node namespace.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN26882"
-></A
-><H4
->Returns</H4
-><P
-> pointer to the new node or NULL if an error occurs.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECADDCHILDNODE"
-></A
-><H3
->xmlSecAddChildNode ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="RETURNVALUE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
->
-xmlSecAddChildNode (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> parent</CODE
->,
-                    <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> child</CODE
->);</PRE
-><P
->Adds <CODE
-CLASS="PARAMETER"
->child</CODE
->
- node to the <CODE
-CLASS="PARAMETER"
->parent</CODE
->
- node.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN26901"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN26903"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->parent</P
-></TD
-><TD
-><P
->the pointer to an XML node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->child</P
-></TD
-><TD
-><P
->the new node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN26918"
-></A
-><H4
->Returns</H4
-><P
-> pointer to the new node or NULL if an error occurs.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECADDNEXTSIBLING"
-></A
-><H3
->xmlSecAddNextSibling ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="RETURNVALUE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
->
-xmlSecAddNextSibling (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> node</CODE
->,
-                      <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *name</CODE
->,
-                      <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *ns</CODE
->);</PRE
-><P
->Adds next sibling to the node <CODE
-CLASS="PARAMETER"
->node</CODE
->
- with given <CODE
-CLASS="PARAMETER"
->name</CODE
->
- and namespace <CODE
-CLASS="PARAMETER"
->ns</CODE
->
-.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN26941"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN26943"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->node</P
-></TD
-><TD
-><P
->the pointer to an XML node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->name</P
-></TD
-><TD
-><P
->the new node name.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->ns</P
-></TD
-><TD
-><P
->the new node namespace.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN26964"
-></A
-><H4
->Returns</H4
-><P
-> pointer to the new node or NULL if an error occurs.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECADDPREVSIBLING"
-></A
-><H3
->xmlSecAddPrevSibling ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="RETURNVALUE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
->
-xmlSecAddPrevSibling (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> node</CODE
->,
-                      <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *name</CODE
->,
-                      <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *ns</CODE
->);</PRE
-><P
->Adds prev sibling to the node <CODE
-CLASS="PARAMETER"
->node</CODE
->
- with given <CODE
-CLASS="PARAMETER"
->name</CODE
->
- and namespace <CODE
-CLASS="PARAMETER"
->ns</CODE
->
-.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN26987"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN26989"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->node</P
-></TD
-><TD
-><P
->the pointer to an XML node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->name</P
-></TD
-><TD
-><P
->the new node name.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->ns</P
-></TD
-><TD
-><P
->the new node namespace.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27010"
-></A
-><H4
->Returns</H4
-><P
-> pointer to the new node or NULL if an error occurs.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECREPLACENODE"
-></A
-><H3
->xmlSecReplaceNode ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecReplaceNode (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> node</CODE
->,
-                   <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> newNode</CODE
->);</PRE
-><P
->Swaps the <CODE
-CLASS="PARAMETER"
->node</CODE
->
- and <CODE
-CLASS="PARAMETER"
->newNode</CODE
->
- in the XML tree.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27029"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN27031"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->node</P
-></TD
-><TD
-><P
->the current node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->newNode</P
-></TD
-><TD
-><P
->the new node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27046"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value if an error occurs.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECREPLACENODEANDRETURN"
-></A
-><H3
->xmlSecReplaceNodeAndReturn ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecReplaceNodeAndReturn (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> node</CODE
->,
-                            <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> newNode</CODE
->,
-                            <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> *replaced</CODE
->);</PRE
-><P
->Swaps the <CODE
-CLASS="PARAMETER"
->node</CODE
->
- and <CODE
-CLASS="PARAMETER"
->newNode</CODE
->
- in the XML tree.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27068"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN27070"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->node</P
-></TD
-><TD
-><P
->the current node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->newNode</P
-></TD
-><TD
-><P
->the new node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->replaced</P
-></TD
-><TD
-><P
->the replaced node, or release it if NULL is given</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27091"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value if an error occurs.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECREPLACECONTENT"
-></A
-><H3
->xmlSecReplaceContent ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecReplaceContent (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> node</CODE
->,
-                      <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> newNode</CODE
->);</PRE
-><P
->Swaps the content of <CODE
-CLASS="PARAMETER"
->node</CODE
->
- and <CODE
-CLASS="PARAMETER"
->newNode</CODE
->
-.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27110"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN27112"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->node</P
-></TD
-><TD
-><P
->the current node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->newNode</P
-></TD
-><TD
-><P
->the new node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27127"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value if an error occurs.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECREPLACECONTENTANDRETURN"
-></A
-><H3
->xmlSecReplaceContentAndReturn ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecReplaceContentAndReturn (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> node</CODE
->,
-                               <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> newNode</CODE
->,
-                               <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> *replaced</CODE
->);</PRE
-><P
->Swaps the content of <CODE
-CLASS="PARAMETER"
->node</CODE
->
- and <CODE
-CLASS="PARAMETER"
->newNode</CODE
->
-.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27149"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN27151"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->node</P
-></TD
-><TD
-><P
->the current node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->newNode</P
-></TD
-><TD
-><P
->the new node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->replaced</P
-></TD
-><TD
-><P
->the replaced nodes, or release them if NULL is given</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27172"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value if an error occurs.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECREPLACENODEBUFFER"
-></A
-><H3
->xmlSecReplaceNodeBuffer ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecReplaceNodeBuffer (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> node</CODE
->,
-                         <CODE
-CLASS="PARAMETER"
->const <A
-HREF="xmlsec-xmlsec.html#XMLSECBYTE"
-><SPAN
-CLASS="TYPE"
->xmlSecByte</SPAN
-></A
-> *buffer</CODE
->,
-                         <CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-xmlsec.html#XMLSECSIZE"
-><SPAN
-CLASS="TYPE"
->xmlSecSize</SPAN
-></A
-> size</CODE
->);</PRE
-><P
->Swaps the <CODE
-CLASS="PARAMETER"
->node</CODE
->
- and the parsed XML data from the <CODE
-CLASS="PARAMETER"
->buffer</CODE
->
- in the XML tree.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27194"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN27196"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->node</P
-></TD
-><TD
-><P
->the current node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->buffer</P
-></TD
-><TD
-><P
->the XML data.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->size</P
-></TD
-><TD
-><P
->the XML data size.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27217"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value if an error occurs.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECREPLACENODEBUFFERANDRETURN"
-></A
-><H3
->xmlSecReplaceNodeBufferAndReturn ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecReplaceNodeBufferAndReturn (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> node</CODE
->,
-                                  <CODE
-CLASS="PARAMETER"
->const <A
-HREF="xmlsec-xmlsec.html#XMLSECBYTE"
-><SPAN
-CLASS="TYPE"
->xmlSecByte</SPAN
-></A
-> *buffer</CODE
->,
-                                  <CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-xmlsec.html#XMLSECSIZE"
-><SPAN
-CLASS="TYPE"
->xmlSecSize</SPAN
-></A
-> size</CODE
->,
-                                  <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> *replaced</CODE
->);</PRE
-><P
->Swaps the <CODE
-CLASS="PARAMETER"
->node</CODE
->
- and the parsed XML data from the <CODE
-CLASS="PARAMETER"
->buffer</CODE
->
- in the XML tree.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27242"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN27244"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->node</P
-></TD
-><TD
-><P
->the current node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->buffer</P
-></TD
-><TD
-><P
->the XML data.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->size</P
-></TD
-><TD
-><P
->the XML data size.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->replaced</P
-></TD
-><TD
-><P
->the replaced nodes, or release them if NULL is given</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27271"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value if an error occurs.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECNODEENCODEANDSETCONTENT"
-></A
-><H3
->xmlSecNodeEncodeAndSetContent ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecNodeEncodeAndSetContent (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> node</CODE
->,
-                               <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *buffer</CODE
->);</PRE
-><P
->Encodes "special" characters in the <CODE
-CLASS="PARAMETER"
->buffer</CODE
->
+namespace href.</p>
+<div class="REFSECT3">
+<a name="AEN26910"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN26912"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>parent</p></td>
+<td><p>the pointer to XML node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>name</p></td>
+<td><p>the name.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>ns</p></td>
+<td><p>the namespace href (may be NULL).</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN26933"></a><h4>Returns</h4>
+<p> the pointer to the found node or NULL if an error occurs or
+node is not found.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECADDCHILD"></a><h3>xmlSecAddChild ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlNodePtr</span></font>
+xmlSecAddChild (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> parent</code>,
+                <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *name</code>,
+                <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *ns</code>);</pre>
+<p>Adds a child to the node <code class="PARAMETER">parent</code>
+ with given <code class="PARAMETER">name</code>
+ and namespace <code class="PARAMETER">ns</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN26956"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN26958"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>parent</p></td>
+<td><p>the pointer to an XML node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>name</p></td>
+<td><p>the new node name.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>ns</p></td>
+<td><p>the new node namespace.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN26979"></a><h4>Returns</h4>
+<p> pointer to the new node or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECADDCHILDNODE"></a><h3>xmlSecAddChildNode ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlNodePtr</span></font>
+xmlSecAddChildNode (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> parent</code>,
+                    <code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> child</code>);</pre>
+<p>Adds <code class="PARAMETER">child</code>
+ node to the <code class="PARAMETER">parent</code>
+ node.</p>
+<div class="REFSECT3">
+<a name="AEN26998"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN27000"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>parent</p></td>
+<td><p>the pointer to an XML node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>child</p></td>
+<td><p>the new node.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN27015"></a><h4>Returns</h4>
+<p> pointer to the new node or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECADDNEXTSIBLING"></a><h3>xmlSecAddNextSibling ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlNodePtr</span></font>
+xmlSecAddNextSibling (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> node</code>,
+                      <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *name</code>,
+                      <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *ns</code>);</pre>
+<p>Adds next sibling to the node <code class="PARAMETER">node</code>
+ with given <code class="PARAMETER">name</code>
+ and namespace <code class="PARAMETER">ns</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN27038"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN27040"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>node</p></td>
+<td><p>the pointer to an XML node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>name</p></td>
+<td><p>the new node name.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>ns</p></td>
+<td><p>the new node namespace.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN27061"></a><h4>Returns</h4>
+<p> pointer to the new node or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECADDPREVSIBLING"></a><h3>xmlSecAddPrevSibling ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlNodePtr</span></font>
+xmlSecAddPrevSibling (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> node</code>,
+                      <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *name</code>,
+                      <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *ns</code>);</pre>
+<p>Adds prev sibling to the node <code class="PARAMETER">node</code>
+ with given <code class="PARAMETER">name</code>
+ and namespace <code class="PARAMETER">ns</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN27084"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN27086"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>node</p></td>
+<td><p>the pointer to an XML node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>name</p></td>
+<td><p>the new node name.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>ns</p></td>
+<td><p>the new node namespace.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN27107"></a><h4>Returns</h4>
+<p> pointer to the new node or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECREPLACENODE"></a><h3>xmlSecReplaceNode ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecReplaceNode (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> node</code>,
+                   <code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> newNode</code>);</pre>
+<p>Swaps the <code class="PARAMETER">node</code>
+ and <code class="PARAMETER">newNode</code>
+ in the XML tree.</p>
+<div class="REFSECT3">
+<a name="AEN27126"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN27128"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>node</p></td>
+<td><p>the current node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>newNode</p></td>
+<td><p>the new node.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN27143"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECREPLACENODEANDRETURN"></a><h3>xmlSecReplaceNodeAndReturn ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecReplaceNodeAndReturn (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> node</code>,
+                            <code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> newNode</code>,
+                            <code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> *replaced</code>);</pre>
+<p>Swaps the <code class="PARAMETER">node</code>
+ and <code class="PARAMETER">newNode</code>
+ in the XML tree.</p>
+<div class="REFSECT3">
+<a name="AEN27165"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN27167"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>node</p></td>
+<td><p>the current node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>newNode</p></td>
+<td><p>the new node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>replaced</p></td>
+<td><p>the replaced node, or release it if NULL is given</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN27188"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECREPLACECONTENT"></a><h3>xmlSecReplaceContent ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecReplaceContent (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> node</code>,
+                      <code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> newNode</code>);</pre>
+<p>Swaps the content of <code class="PARAMETER">node</code>
+ and <code class="PARAMETER">newNode</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN27207"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN27209"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>node</p></td>
+<td><p>the current node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>newNode</p></td>
+<td><p>the new node.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN27224"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECREPLACECONTENTANDRETURN"></a><h3>xmlSecReplaceContentAndReturn ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecReplaceContentAndReturn (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> node</code>,
+                               <code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> newNode</code>,
+                               <code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> *replaced</code>);</pre>
+<p>Swaps the content of <code class="PARAMETER">node</code>
+ and <code class="PARAMETER">newNode</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN27246"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN27248"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>node</p></td>
+<td><p>the current node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>newNode</p></td>
+<td><p>the new node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>replaced</p></td>
+<td><p>the replaced nodes, or release them if NULL is given</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN27269"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECREPLACENODEBUFFER"></a><h3>xmlSecReplaceNodeBuffer ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecReplaceNodeBuffer (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> node</code>,
+                         <code class="PARAMETER">const <a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *buffer</code>,
+                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> size</code>);</pre>
+<p>Swaps the <code class="PARAMETER">node</code>
+ and the parsed XML data from the <code class="PARAMETER">buffer</code>
+ in the XML tree.</p>
+<div class="REFSECT3">
+<a name="AEN27291"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN27293"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>node</p></td>
+<td><p>the current node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>buffer</p></td>
+<td><p>the XML data.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>size</p></td>
+<td><p>the XML data size.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN27314"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECREPLACENODEBUFFERANDRETURN"></a><h3>xmlSecReplaceNodeBufferAndReturn ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecReplaceNodeBufferAndReturn (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> node</code>,
+                                  <code class="PARAMETER">const <a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *buffer</code>,
+                                  <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> size</code>,
+                                  <code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> *replaced</code>);</pre>
+<p>Swaps the <code class="PARAMETER">node</code>
+ and the parsed XML data from the <code class="PARAMETER">buffer</code>
+ in the XML tree.</p>
+<div class="REFSECT3">
+<a name="AEN27339"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN27341"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>node</p></td>
+<td><p>the current node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>buffer</p></td>
+<td><p>the XML data.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>size</p></td>
+<td><p>the XML data size.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>replaced</p></td>
+<td><p>the replaced nodes, or release them if NULL is given</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN27368"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECNODEENCODEANDSETCONTENT"></a><h3>xmlSecNodeEncodeAndSetContent ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecNodeEncodeAndSetContent (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> node</code>,
+                               <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *buffer</code>);</pre>
+<p>Encodes "special" characters in the <code class="PARAMETER">buffer</code>
  and sets the result
-as the node content.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27289"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN27291"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->node</P
-></TD
-><TD
-><P
->the pointer to an XML node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->buffer</P
-></TD
-><TD
-><P
->the pointer to the node content.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27306"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value if an error occurs.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECADDIDS"
-></A
-><H3
->xmlSecAddIDs ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="VOID"
-><SPAN
-CLASS="RETURNVALUE"
->void</SPAN
-></GTKDOCLINK
->
-xmlSecAddIDs (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLDOC"
-><SPAN
-CLASS="TYPE"
->xmlDocPtr</SPAN
-></GTKDOCLINK
-> doc</CODE
->,
-              <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> cur</CODE
->,
-              <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> **ids</CODE
->);</PRE
-><P
->Walks thru all children of the <CODE
-CLASS="PARAMETER"
->cur</CODE
->
+as the node content.</p>
+<div class="REFSECT3">
+<a name="AEN27386"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN27388"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>node</p></td>
+<td><p>the pointer to an XML node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>buffer</p></td>
+<td><p>the pointer to the node content.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN27403"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECADDIDS"></a><h3>xmlSecAddIDs ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">void</span></font>
+xmlSecAddIDs (<code class="PARAMETER"><font><span class="TYPE">xmlDocPtr</span></font> doc</code>,
+              <code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> cur</code>,
+              <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> **ids</code>);</pre>
+<p>Walks thru all children of the <code class="PARAMETER">cur</code>
  node and adds all attributes
-from the <CODE
-CLASS="PARAMETER"
->ids</CODE
->
- list to the <CODE
-CLASS="PARAMETER"
->doc</CODE
->
- document IDs attributes hash.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27329"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN27331"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->doc</P
-></TD
-><TD
-><P
->the pointer to an XML document.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->cur</P
-></TD
-><TD
-><P
->the pointer to an XML node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->ids</P
-></TD
-><TD
-><P
->the pointer to a NULL terminated list of ID attributes.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGENERATEANDADDID"
-></A
-><H3
->xmlSecGenerateAndAddID ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecGenerateAndAddID (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> node</CODE
->,
-                        <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *attrName</CODE
->,
-                        <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *prefix</CODE
->,
-                        <CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-xmlsec.html#XMLSECSIZE"
-><SPAN
-CLASS="TYPE"
->xmlSecSize</SPAN
-></A
-> len</CODE
->);</PRE
-><P
->Generates a unique ID in the format &lt;<CODE
-CLASS="PARAMETER"
->prefix</CODE
->
-&#62;base64-encoded(<CODE
-CLASS="PARAMETER"
->len</CODE
->
+from the <code class="PARAMETER">ids</code>
+ list to the <code class="PARAMETER">doc</code>
+ document IDs attributes hash.</p>
+<div class="REFSECT3">
+<a name="AEN27426"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN27428"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>doc</p></td>
+<td><p>the pointer to an XML document.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>cur</p></td>
+<td><p>the pointer to an XML node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>ids</p></td>
+<td><p>the pointer to a NULL terminated list of ID attributes.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGENERATEANDADDID"></a><h3>xmlSecGenerateAndAddID ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecGenerateAndAddID (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> node</code>,
+                        <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *attrName</code>,
+                        <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *prefix</code>,
+                        <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> len</code>);</pre>
+<p>Generates a unique ID in the format &lt;<code class="PARAMETER">prefix</code>
+&gt;base64-encoded(<code class="PARAMETER">len</code>
  random bytes)
-and puts it in the attribute <CODE
-CLASS="PARAMETER"
->attrName</CODE
->
-.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27375"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN27377"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->node</P
-></TD
-><TD
-><P
->the node to ID attr to.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->attrName</P
-></TD
-><TD
-><P
->the ID attr name.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->prefix</P
-></TD
-><TD
-><P
->the prefix to add to the generated ID (can be NULL).</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->len</P
-></TD
-><TD
-><P
->the length of ID.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27404"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value if an error occurs.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGENERATEID"
-></A
-><H3
->xmlSecGenerateID ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="RETURNVALUE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *
-xmlSecGenerateID (<CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *prefix</CODE
->,
-                  <CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-xmlsec.html#XMLSECSIZE"
-><SPAN
-CLASS="TYPE"
->xmlSecSize</SPAN
-></A
-> len</CODE
->);</PRE
-><P
->Generates a unique ID in the format &lt;<CODE
-CLASS="PARAMETER"
->prefix</CODE
->
-&#62;base64-encoded(<CODE
-CLASS="PARAMETER"
->len</CODE
->
+and puts it in the attribute <code class="PARAMETER">attrName</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN27472"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN27474"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>node</p></td>
+<td><p>the node to ID attr to.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>attrName</p></td>
+<td><p>the ID attr name.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>prefix</p></td>
+<td><p>the prefix to add to the generated ID (can be NULL).</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>len</p></td>
+<td><p>the length of ID.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN27501"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGENERATEID"></a><h3>xmlSecGenerateID ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlChar</span></font> *
+xmlSecGenerateID (<code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *prefix</code>,
+                  <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> len</code>);</pre>
+<p>Generates a unique ID in the format &lt;<code class="PARAMETER">prefix</code>
+&gt;base64-encoded(<code class="PARAMETER">len</code>
  random bytes).
-The caller is responsible for freeing returned string using <CODE
-CLASS="PARAMETER"
->xmlFree</CODE
->
- function.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27424"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN27426"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->prefix</P
-></TD
-><TD
-><P
->the prefix to add to the generated ID (can be NULL).</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->len</P
-></TD
-><TD
-><P
->the length of ID.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27441"
-></A
-><H4
->Returns</H4
-><P
-> pointer to generated ID string or NULL if an error occurs.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECCREATETREE"
-></A
-><H3
->xmlSecCreateTree ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLDOC"
-><SPAN
-CLASS="RETURNVALUE"
->xmlDocPtr</SPAN
-></GTKDOCLINK
->
-xmlSecCreateTree (<CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *rootNodeName</CODE
->,
-                  <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *rootNodeNs</CODE
->);</PRE
-><P
->Creates a new XML tree with one root node <CODE
-CLASS="PARAMETER"
->rootNodeName</CODE
->
-.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27459"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN27461"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->rootNodeName</P
-></TD
-><TD
-><P
->the root node name.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->rootNodeNs</P
-></TD
-><TD
-><P
->the root node namespace (otpional).</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27476"
-></A
-><H4
->Returns</H4
-><P
-> pointer to the newly created tree or NULL if an error occurs.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECISEMPTYNODE"
-></A
-><H3
->xmlSecIsEmptyNode ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecIsEmptyNode (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> node</CODE
->);</PRE
-><P
->Checks whethere the <CODE
-CLASS="PARAMETER"
->node</CODE
->
- is empty (i.e. has only whitespaces children).</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27491"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN27493"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->node</P
-></TD
-><TD
-><P
->the node to check</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27502"
-></A
-><H4
->Returns</H4
-><P
-> 1 if <CODE
-CLASS="PARAMETER"
->node</CODE
->
-is empty, 0 otherwise or a negative value if an error occurs.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECISEMPTYSTRING"
-></A
-><H3
->xmlSecIsEmptyString ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecIsEmptyString (<CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *str</CODE
->);</PRE
-><P
->Checks whethere the <CODE
-CLASS="PARAMETER"
->str</CODE
->
- is empty (i.e. has only whitespaces children).</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27518"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN27520"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->str</P
-></TD
-><TD
-><P
->the string to check</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27529"
-></A
-><H4
->Returns</H4
-><P
-> 1 if <CODE
-CLASS="PARAMETER"
->str</CODE
->
-is empty, 0 otherwise or a negative value if an error occurs.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGETQNAME"
-></A
-><H3
->xmlSecGetQName ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="RETURNVALUE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *
-xmlSecGetQName (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> node</CODE
->,
-                <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *href</CODE
->,
-                <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *local</CODE
->);</PRE
-><P
->Creates QName (prefix:local) from <CODE
-CLASS="PARAMETER"
->href</CODE
->
- and <CODE
-CLASS="PARAMETER"
->local</CODE
->
- in the context of the <CODE
-CLASS="PARAMETER"
->node</CODE
->
+The caller is responsible for freeing returned string using <code class="PARAMETER">xmlFree</code>
+ function.</p>
+<div class="REFSECT3">
+<a name="AEN27521"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN27523"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>prefix</p></td>
+<td><p>the prefix to add to the generated ID (can be NULL).</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>len</p></td>
+<td><p>the length of ID.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN27538"></a><h4>Returns</h4>
+<p> pointer to generated ID string or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECCREATETREE"></a><h3>xmlSecCreateTree ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlDocPtr</span></font>
+xmlSecCreateTree (<code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *rootNodeName</code>,
+                  <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *rootNodeNs</code>);</pre>
+<p>Creates a new XML tree with one root node <code class="PARAMETER">rootNodeName</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN27556"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN27558"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>rootNodeName</p></td>
+<td><p>the root node name.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>rootNodeNs</p></td>
+<td><p>the root node namespace (otpional).</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN27573"></a><h4>Returns</h4>
+<p> pointer to the newly created tree or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECISEMPTYNODE"></a><h3>xmlSecIsEmptyNode ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecIsEmptyNode (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> node</code>);</pre>
+<p>Checks whethere the <code class="PARAMETER">node</code>
+ is empty (i.e. has only whitespaces children).</p>
+<div class="REFSECT3">
+<a name="AEN27588"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN27590"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody><tr>
+<td><p>node</p></td>
+<td><p>the node to check</p></td>
+<td> </td>
+</tr></tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN27599"></a><h4>Returns</h4>
+<p> 1 if <code class="PARAMETER">node</code>
+is empty, 0 otherwise or a negative value if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECISEMPTYSTRING"></a><h3>xmlSecIsEmptyString ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecIsEmptyString (<code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *str</code>);</pre>
+<p>Checks whethere the <code class="PARAMETER">str</code>
+ is empty (i.e. has only whitespaces children).</p>
+<div class="REFSECT3">
+<a name="AEN27615"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN27617"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody><tr>
+<td><p>str</p></td>
+<td><p>the string to check</p></td>
+<td> </td>
+</tr></tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN27626"></a><h4>Returns</h4>
+<p> 1 if <code class="PARAMETER">str</code>
+is empty, 0 otherwise or a negative value if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGETQNAME"></a><h3>xmlSecGetQName ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlChar</span></font> *
+xmlSecGetQName (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> node</code>,
+                <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *href</code>,
+                <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *local</code>);</pre>
+<p>Creates QName (prefix:local) from <code class="PARAMETER">href</code>
+ and <code class="PARAMETER">local</code>
+ in the context of the <code class="PARAMETER">node</code>
 .
-Caller is responsible for freeing returned string with xmlFree.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27553"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN27555"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->node</P
-></TD
-><TD
-><P
->the context node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->href</P
-></TD
-><TD
-><P
->the QName href (can be NULL).</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->local</P
-></TD
-><TD
-><P
->the QName local part.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27576"
-></A
-><H4
->Returns</H4
-><P
-> qname or NULL if an error occurs.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECPRINTXMLSTRING"
-></A
-><H3
->xmlSecPrintXmlString ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecPrintXmlString (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="FILE:CAPS"
-><SPAN
-CLASS="TYPE"
->FILE</SPAN
-></GTKDOCLINK
-> *fd</CODE
->,
-                      <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *str</CODE
->);</PRE
-><P
->Encodes the <CODE
-CLASS="PARAMETER"
->str</CODE
->
- (e.g. replaces '&amp;' with '&amp;') and writes it to <CODE
-CLASS="PARAMETER"
->fd</CODE
->
-.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27595"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN27597"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->fd</P
-></TD
-><TD
-><P
->the file descriptor to write the XML string to</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->str</P
-></TD
-><TD
-><P
->the string</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27612"
-></A
-><H4
->Returns</H4
-><P
-> he number of bytes transmitted or a negative value if an error occurs.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECISHEX"
-></A
-><H3
->xmlSecIsHex()</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecIsHex(c)</PRE
-><P
->Macro. Returns 1 if <CODE
-CLASS="PARAMETER"
->c</CODE
->
- is a hex digit or 0 other wise.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27622"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN27624"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->c</P
-></TD
-><TD
-><P
->the character.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECGETHEX"
-></A
-><H3
->xmlSecGetHex()</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecGetHex(c)</PRE
-><P
->Macro. Returns the hex value of the <CODE
-CLASS="PARAMETER"
->c</CODE
->
-.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27640"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN27642"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->c</P
-></TD
-><TD
-><P
->the character,</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECQNAME2INTEGERGETINFO"
-></A
-><H3
->xmlSecQName2IntegerGetInfo ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECQNAME2INTEGERINFOCONST"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecQName2IntegerInfoConstPtr</SPAN
-></GTKDOCLINK
->
-xmlSecQName2IntegerGetInfo (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLSECQNAME2INTEGERINFOCONST"
-><SPAN
-CLASS="TYPE"
->xmlSecQName2IntegerInfoConstPtr</SPAN
-></GTKDOCLINK
-> info</CODE
->,
-                            <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="TYPE"
->int</SPAN
-></GTKDOCLINK
-> intValue</CODE
->);</PRE
-><P
->Maps integer <CODE
-CLASS="PARAMETER"
->intValue</CODE
->
- to a QName prefix.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27666"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN27668"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->info</P
-></TD
-><TD
-><P
->the qname&lt;-&#62;integer mapping information.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->intValue</P
-></TD
-><TD
-><P
->the integer value.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27683"
-></A
-><H4
->Returns</H4
-><P
-> the QName info that is mapped to <CODE
-CLASS="PARAMETER"
->intValue</CODE
->
+Caller is responsible for freeing returned string with xmlFree.</p>
+<div class="REFSECT3">
+<a name="AEN27650"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN27652"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>node</p></td>
+<td><p>the context node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>href</p></td>
+<td><p>the QName href (can be NULL).</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>local</p></td>
+<td><p>the QName local part.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN27673"></a><h4>Returns</h4>
+<p> qname or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECPRINTXMLSTRING"></a><h3>xmlSecPrintXmlString ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecPrintXmlString (<code class="PARAMETER"><font><span class="TYPE">FILE</span></font> *fd</code>,
+                      <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *str</code>);</pre>
+<p>Encodes the <code class="PARAMETER">str</code>
+ (e.g. replaces '&amp;' with '&amp;') and writes it to <code class="PARAMETER">fd</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN27692"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN27694"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>fd</p></td>
+<td><p>the file descriptor to write the XML string to</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>str</p></td>
+<td><p>the string</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN27709"></a><h4>Returns</h4>
+<p> he number of bytes transmitted or a negative value if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECISHEX"></a><h3>xmlSecIsHex()</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecIsHex(c)</pre>
+<p>Macro. Returns 1 if <code class="PARAMETER">c</code>
+ is a hex digit or 0 other wise.</p>
+<div class="REFSECT3">
+<a name="AEN27719"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN27721"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody><tr>
+<td><p>c</p></td>
+<td><p>the character.</p></td>
+<td> </td>
+</tr></tbody>
+</table>
+<p></p>
+</div>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGETHEX"></a><h3>xmlSecGetHex()</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGetHex(c)</pre>
+<p>Macro. Returns the hex value of the <code class="PARAMETER">c</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN27737"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN27739"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody><tr>
+<td><p>c</p></td>
+<td><p>the character,</p></td>
+<td> </td>
+</tr></tbody>
+</table>
+<p></p>
+</div>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECQNAME2INTEGERGETINFO"></a><h3>xmlSecQName2IntegerGetInfo ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecQName2IntegerInfoConstPtr</span></font>
+xmlSecQName2IntegerGetInfo (<code class="PARAMETER"><font><span class="TYPE">xmlSecQName2IntegerInfoConstPtr</span></font> info</code>,
+                            <code class="PARAMETER"><font><span class="TYPE">int</span></font> intValue</code>);</pre>
+<p>Maps integer <code class="PARAMETER">intValue</code>
+ to a QName prefix.</p>
+<div class="REFSECT3">
+<a name="AEN27763"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN27765"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>info</p></td>
+<td><p>the qname&lt;-&gt;integer mapping information.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>intValue</p></td>
+<td><p>the integer value.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN27780"></a><h4>Returns</h4>
+<p> the QName info that is mapped to <code class="PARAMETER">intValue</code>
 or NULL if such value
-is not found.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECQNAME2INTEGERGETINTEGER"
-></A
-><H3
->xmlSecQName2IntegerGetInteger ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecQName2IntegerGetInteger (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLSECQNAME2INTEGERINFOCONST"
-><SPAN
-CLASS="TYPE"
->xmlSecQName2IntegerInfoConstPtr</SPAN
-></GTKDOCLINK
-> info</CODE
->,
-                               <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *qnameHref</CODE
->,
-                               <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *qnameLocalPart</CODE
->,
-                               <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="TYPE"
->int</SPAN
-></GTKDOCLINK
-> *intValue</CODE
->);</PRE
-><P
->Maps qname qname to an integer and returns it in <CODE
-CLASS="PARAMETER"
->intValue</CODE
->
-.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27708"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN27710"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->info</P
-></TD
-><TD
-><P
->the qname&lt;-&#62;integer mapping information.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->qnameHref</P
-></TD
-><TD
-><P
->the qname href value.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->qnameLocalPart</P
-></TD
-><TD
-><P
->the qname local part value.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->intValue</P
-></TD
-><TD
-><P
->the pointer to result integer value.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27737"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value if an error occurs,</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECQNAME2INTEGERGETINTEGERFROMSTRING"
-></A
-><H3
->xmlSecQName2IntegerGetIntegerFromString ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
+is not found.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECQNAME2INTEGERGETINTEGER"></a><h3>xmlSecQName2IntegerGetInteger ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecQName2IntegerGetInteger (<code class="PARAMETER"><font><span class="TYPE">xmlSecQName2IntegerInfoConstPtr</span></font> info</code>,
+                               <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *qnameHref</code>,
+                               <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *qnameLocalPart</code>,
+                               <code class="PARAMETER"><font><span class="TYPE">int</span></font> *intValue</code>);</pre>
+<p>Maps qname qname to an integer and returns it in <code class="PARAMETER">intValue</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN27805"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN27807"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>info</p></td>
+<td><p>the qname&lt;-&gt;integer mapping information.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>qnameHref</p></td>
+<td><p>the qname href value.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>qnameLocalPart</p></td>
+<td><p>the qname local part value.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>intValue</p></td>
+<td><p>the pointer to result integer value.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN27834"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs,</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECQNAME2INTEGERGETINTEGERFROMSTRING"></a><h3>xmlSecQName2IntegerGetIntegerFromString ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
 xmlSecQName2IntegerGetIntegerFromString
-                               (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLSECQNAME2INTEGERINFOCONST"
-><SPAN
-CLASS="TYPE"
->xmlSecQName2IntegerInfoConstPtr</SPAN
-></GTKDOCLINK
-> info</CODE
->,
-                                <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> node</CODE
->,
-                                <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *qname</CODE
->,
-                                <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="TYPE"
->int</SPAN
-></GTKDOCLINK
-> *intValue</CODE
->);</PRE
-><P
->Converts <CODE
-CLASS="PARAMETER"
->qname</CODE
->
- into integer in context of <CODE
-CLASS="PARAMETER"
->node</CODE
->
-.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27762"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN27764"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->info</P
-></TD
-><TD
-><P
->the qname&lt;-&#62;integer mapping information.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->node</P
-></TD
-><TD
-><P
->the pointer to node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->qname</P
-></TD
-><TD
-><P
->the qname string.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->intValue</P
-></TD
-><TD
-><P
->the pointer to result integer value.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27791"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value if an error occurs,</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECQNAME2INTEGERGETSTRINGFROMINTEGER"
-></A
-><H3
->xmlSecQName2IntegerGetStringFromInteger ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="RETURNVALUE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *
+                               (<code class="PARAMETER"><font><span class="TYPE">xmlSecQName2IntegerInfoConstPtr</span></font> info</code>,
+                                <code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> node</code>,
+                                <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *qname</code>,
+                                <code class="PARAMETER"><font><span class="TYPE">int</span></font> *intValue</code>);</pre>
+<p>Converts <code class="PARAMETER">qname</code>
+ into integer in context of <code class="PARAMETER">node</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN27859"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN27861"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>info</p></td>
+<td><p>the qname&lt;-&gt;integer mapping information.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>node</p></td>
+<td><p>the pointer to node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>qname</p></td>
+<td><p>the qname string.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>intValue</p></td>
+<td><p>the pointer to result integer value.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN27888"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs,</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECQNAME2INTEGERGETSTRINGFROMINTEGER"></a><h3>xmlSecQName2IntegerGetStringFromInteger ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlChar</span></font> *
 xmlSecQName2IntegerGetStringFromInteger
-                               (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLSECQNAME2INTEGERINFOCONST"
-><SPAN
-CLASS="TYPE"
->xmlSecQName2IntegerInfoConstPtr</SPAN
-></GTKDOCLINK
-> info</CODE
->,
-                                <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> node</CODE
->,
-                                <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="TYPE"
->int</SPAN
-></GTKDOCLINK
-> intValue</CODE
->);</PRE
-><P
->Creates qname string for <CODE
-CLASS="PARAMETER"
->intValue</CODE
->
- in context of given <CODE
-CLASS="PARAMETER"
->node</CODE
->
+                               (<code class="PARAMETER"><font><span class="TYPE">xmlSecQName2IntegerInfoConstPtr</span></font> info</code>,
+                                <code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> node</code>,
+                                <code class="PARAMETER"><font><span class="TYPE">int</span></font> intValue</code>);</pre>
+<p>Creates qname string for <code class="PARAMETER">intValue</code>
+ in context of given <code class="PARAMETER">node</code>
 . Caller
-is responsible for freeing returned string with <CODE
-CLASS="PARAMETER"
->xmlFree</CODE
->
-.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27814"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN27816"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->info</P
-></TD
-><TD
-><P
->the qname&lt;-&#62;integer mapping information.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->node</P
-></TD
-><TD
-><P
->the pointer to node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->intValue</P
-></TD
-><TD
-><P
->the integer value.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27837"
-></A
-><H4
->Returns</H4
-><P
-> pointer to newly allocated string on success or NULL if an error occurs,</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECQNAME2INTEGERNODEREAD"
-></A
-><H3
->xmlSecQName2IntegerNodeRead ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecQName2IntegerNodeRead (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLSECQNAME2INTEGERINFOCONST"
-><SPAN
-CLASS="TYPE"
->xmlSecQName2IntegerInfoConstPtr</SPAN
-></GTKDOCLINK
-> info</CODE
->,
-                             <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> node</CODE
->,
-                             <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="TYPE"
->int</SPAN
-></GTKDOCLINK
-> *intValue</CODE
->);</PRE
-><P
->Reads the content of <CODE
-CLASS="PARAMETER"
->node</CODE
->
+is responsible for freeing returned string with <code class="PARAMETER">xmlFree</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN27911"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN27913"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>info</p></td>
+<td><p>the qname&lt;-&gt;integer mapping information.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>node</p></td>
+<td><p>the pointer to node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>intValue</p></td>
+<td><p>the integer value.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN27934"></a><h4>Returns</h4>
+<p> pointer to newly allocated string on success or NULL if an error occurs,</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECQNAME2INTEGERNODEREAD"></a><h3>xmlSecQName2IntegerNodeRead ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecQName2IntegerNodeRead (<code class="PARAMETER"><font><span class="TYPE">xmlSecQName2IntegerInfoConstPtr</span></font> info</code>,
+                             <code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> node</code>,
+                             <code class="PARAMETER"><font><span class="TYPE">int</span></font> *intValue</code>);</pre>
+<p>Reads the content of <code class="PARAMETER">node</code>
  and converts it to an integer using mapping
-from <CODE
-CLASS="PARAMETER"
->info</CODE
->
-.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27859"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN27861"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->info</P
-></TD
-><TD
-><P
->the qname&lt;-&#62;integer mapping information.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->node</P
-></TD
-><TD
-><P
->the pointer to node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->intValue</P
-></TD
-><TD
-><P
->the pointer to result integer value.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27882"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value if an error occurs,</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECQNAME2INTEGERNODEWRITE"
-></A
-><H3
->xmlSecQName2IntegerNodeWrite ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecQName2IntegerNodeWrite (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLSECQNAME2INTEGERINFOCONST"
-><SPAN
-CLASS="TYPE"
->xmlSecQName2IntegerInfoConstPtr</SPAN
-></GTKDOCLINK
-> info</CODE
->,
-                              <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> node</CODE
->,
-                              <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *nodeName</CODE
->,
-                              <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *nodeNs</CODE
->,
-                              <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="TYPE"
->int</SPAN
-></GTKDOCLINK
-> intValue</CODE
->);</PRE
-><P
->Creates new child node in <CODE
-CLASS="PARAMETER"
->node</CODE
->
- and sets its value to <CODE
-CLASS="PARAMETER"
->intValue</CODE
->
-.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27910"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN27912"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->info</P
-></TD
-><TD
-><P
->the qname&lt;-&#62;integer mapping information.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->node</P
-></TD
-><TD
-><P
->the parent node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->nodeName</P
-></TD
-><TD
-><P
->the child node name.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->nodeNs</P
-></TD
-><TD
-><P
->the child node namespace.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->intValue</P
-></TD
-><TD
-><P
->the integer value.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27945"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value if an error occurs,</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECQNAME2INTEGERATTRIBUTEREAD"
-></A
-><H3
->xmlSecQName2IntegerAttributeRead ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecQName2IntegerAttributeRead (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLSECQNAME2INTEGERINFOCONST"
-><SPAN
-CLASS="TYPE"
->xmlSecQName2IntegerInfoConstPtr</SPAN
-></GTKDOCLINK
-> info</CODE
->,
-                                  <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> node</CODE
->,
-                                  <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *attrName</CODE
->,
-                                  <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="TYPE"
->int</SPAN
-></GTKDOCLINK
-> *intValue</CODE
->);</PRE
-><P
->Gets the value of <CODE
-CLASS="PARAMETER"
->attrName</CODE
->
- atrtibute from <CODE
-CLASS="PARAMETER"
->node</CODE
->
+from <code class="PARAMETER">info</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN27956"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN27958"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>info</p></td>
+<td><p>the qname&lt;-&gt;integer mapping information.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>node</p></td>
+<td><p>the pointer to node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>intValue</p></td>
+<td><p>the pointer to result integer value.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN27979"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs,</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECQNAME2INTEGERNODEWRITE"></a><h3>xmlSecQName2IntegerNodeWrite ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecQName2IntegerNodeWrite (<code class="PARAMETER"><font><span class="TYPE">xmlSecQName2IntegerInfoConstPtr</span></font> info</code>,
+                              <code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> node</code>,
+                              <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *nodeName</code>,
+                              <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *nodeNs</code>,
+                              <code class="PARAMETER"><font><span class="TYPE">int</span></font> intValue</code>);</pre>
+<p>Creates new child node in <code class="PARAMETER">node</code>
+ and sets its value to <code class="PARAMETER">intValue</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN28007"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN28009"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>info</p></td>
+<td><p>the qname&lt;-&gt;integer mapping information.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>node</p></td>
+<td><p>the parent node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>nodeName</p></td>
+<td><p>the child node name.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>nodeNs</p></td>
+<td><p>the child node namespace.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>intValue</p></td>
+<td><p>the integer value.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN28042"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs,</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECQNAME2INTEGERATTRIBUTEREAD"></a><h3>xmlSecQName2IntegerAttributeRead ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecQName2IntegerAttributeRead (<code class="PARAMETER"><font><span class="TYPE">xmlSecQName2IntegerInfoConstPtr</span></font> info</code>,
+                                  <code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> node</code>,
+                                  <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *attrName</code>,
+                                  <code class="PARAMETER"><font><span class="TYPE">int</span></font> *intValue</code>);</pre>
+<p>Gets the value of <code class="PARAMETER">attrName</code>
+ atrtibute from <code class="PARAMETER">node</code>
  and converts it to integer
-according to <CODE
-CLASS="PARAMETER"
->info</CODE
->
-.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN27971"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN27973"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->info</P
-></TD
-><TD
-><P
->the qname&lt;-&#62;integer mapping information.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->node</P
-></TD
-><TD
-><P
->the element node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->attrName</P
-></TD
-><TD
-><P
->the attribute name.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->intValue</P
-></TD
-><TD
-><P
->the pointer to result integer value.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN28000"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value if an error occurs,</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECQNAME2INTEGERATTRIBUTEWRITE"
-></A
-><H3
->xmlSecQName2IntegerAttributeWrite ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecQName2IntegerAttributeWrite (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLSECQNAME2INTEGERINFOCONST"
-><SPAN
-CLASS="TYPE"
->xmlSecQName2IntegerInfoConstPtr</SPAN
-></GTKDOCLINK
-> info</CODE
->,
-                                   <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> node</CODE
->,
-                                   <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *attrName</CODE
->,
-                                   <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="TYPE"
->int</SPAN
-></GTKDOCLINK
-> intValue</CODE
->);</PRE
-><P
->Converts <CODE
-CLASS="PARAMETER"
->intValue</CODE
->
+according to <code class="PARAMETER">info</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN28068"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN28070"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>info</p></td>
+<td><p>the qname&lt;-&gt;integer mapping information.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>node</p></td>
+<td><p>the element node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>attrName</p></td>
+<td><p>the attribute name.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>intValue</p></td>
+<td><p>the pointer to result integer value.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN28097"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs,</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECQNAME2INTEGERATTRIBUTEWRITE"></a><h3>xmlSecQName2IntegerAttributeWrite ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecQName2IntegerAttributeWrite (<code class="PARAMETER"><font><span class="TYPE">xmlSecQName2IntegerInfoConstPtr</span></font> info</code>,
+                                   <code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> node</code>,
+                                   <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *attrName</code>,
+                                   <code class="PARAMETER"><font><span class="TYPE">int</span></font> intValue</code>);</pre>
+<p>Converts <code class="PARAMETER">intValue</code>
  to a qname and sets it to the value of
-attribute <CODE
-CLASS="PARAMETER"
->attrName</CODE
->
- in <CODE
-CLASS="PARAMETER"
->node</CODE
->
-.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN28026"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN28028"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->info</P
-></TD
-><TD
-><P
->the qname&lt;-&#62;integer mapping information.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->node</P
-></TD
-><TD
-><P
->the parent node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->attrName</P
-></TD
-><TD
-><P
->the name of attribute.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->intValue</P
-></TD
-><TD
-><P
->the integer value.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN28055"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value if an error occurs,</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECQNAME2INTEGERDEBUGDUMP"
-></A
-><H3
->xmlSecQName2IntegerDebugDump ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="VOID"
-><SPAN
-CLASS="RETURNVALUE"
->void</SPAN
-></GTKDOCLINK
->
-xmlSecQName2IntegerDebugDump (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLSECQNAME2INTEGERINFOCONST"
-><SPAN
-CLASS="TYPE"
->xmlSecQName2IntegerInfoConstPtr</SPAN
-></GTKDOCLINK
-> info</CODE
->,
-                              <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="TYPE"
->int</SPAN
-></GTKDOCLINK
-> intValue</CODE
->,
-                              <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *name</CODE
->,
-                              <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="FILE:CAPS"
-><SPAN
-CLASS="TYPE"
->FILE</SPAN
-></GTKDOCLINK
-> *output</CODE
->);</PRE
-><P
->Prints <CODE
-CLASS="PARAMETER"
->intValue</CODE
->
- into <CODE
-CLASS="PARAMETER"
->output</CODE
->
-.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN28080"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN28082"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->info</P
-></TD
-><TD
-><P
->the qname&lt;-&#62;integer mapping information.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->intValue</P
-></TD
-><TD
-><P
->the integer value.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->name</P
-></TD
-><TD
-><P
->the value name to print.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->output</P
-></TD
-><TD
-><P
->the pointer to output FILE.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECQNAME2INTEGERDEBUGXMLDUMP"
-></A
-><H3
->xmlSecQName2IntegerDebugXmlDump ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="VOID"
-><SPAN
-CLASS="RETURNVALUE"
->void</SPAN
-></GTKDOCLINK
->
-xmlSecQName2IntegerDebugXmlDump (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLSECQNAME2INTEGERINFOCONST"
-><SPAN
-CLASS="TYPE"
->xmlSecQName2IntegerInfoConstPtr</SPAN
-></GTKDOCLINK
-> info</CODE
->,
-                                 <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="TYPE"
->int</SPAN
-></GTKDOCLINK
-> intValue</CODE
->,
-                                 <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *name</CODE
->,
-                                 <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="FILE:CAPS"
-><SPAN
-CLASS="TYPE"
->FILE</SPAN
-></GTKDOCLINK
-> *output</CODE
->);</PRE
-><P
->Prints <CODE
-CLASS="PARAMETER"
->intValue</CODE
->
- into <CODE
-CLASS="PARAMETER"
->output</CODE
->
- in XML format.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN28131"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN28133"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->info</P
-></TD
-><TD
-><P
->the qname&lt;-&#62;integer mapping information.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->intValue</P
-></TD
-><TD
-><P
->the integer value.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->name</P
-></TD
-><TD
-><P
->the value name to print.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->output</P
-></TD
-><TD
-><P
->the pointer to output FILE.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECQNAME2BITMASKGETINFO"
-></A
-><H3
->xmlSecQName2BitMaskGetInfo ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECQNAME2BITMASKINFOCONST"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecQName2BitMaskInfoConstPtr</SPAN
-></GTKDOCLINK
->
-xmlSecQName2BitMaskGetInfo (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLSECQNAME2BITMASKINFOCONST"
-><SPAN
-CLASS="TYPE"
->xmlSecQName2BitMaskInfoConstPtr</SPAN
-></GTKDOCLINK
-> info</CODE
->,
-                            <CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-xmltree.html#XMLSECBITMASK"
-><SPAN
-CLASS="TYPE"
->xmlSecBitMask</SPAN
-></A
-> mask</CODE
->);</PRE
-><P
->Converts <CODE
-CLASS="PARAMETER"
->mask</CODE
->
- to qname.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN28175"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN28177"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->info</P
-></TD
-><TD
-><P
->the qname&lt;-&#62;bit mask mapping information.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->mask</P
-></TD
-><TD
-><P
->the bit mask.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN28192"
-></A
-><H4
->Returns</H4
-><P
-> pointer to the qname info for <CODE
-CLASS="PARAMETER"
->mask</CODE
->
-or NULL if mask is unknown.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECQNAME2BITMASKGETBITMASK"
-></A
-><H3
->xmlSecQName2BitMaskGetBitMask ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecQName2BitMaskGetBitMask (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLSECQNAME2BITMASKINFOCONST"
-><SPAN
-CLASS="TYPE"
->xmlSecQName2BitMaskInfoConstPtr</SPAN
-></GTKDOCLINK
-> info</CODE
->,
-                               <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *qnameLocalPart</CODE
->,
-                               <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *qnameHref</CODE
->,
-                               <CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-xmltree.html#XMLSECBITMASK"
-><SPAN
-CLASS="TYPE"
->xmlSecBitMask</SPAN
-></A
-> *mask</CODE
->);</PRE
-><P
->Converts <CODE
-CLASS="PARAMETER"
->qnameLocalPart</CODE
->
- to <CODE
-CLASS="PARAMETER"
->mask</CODE
->
-.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN28218"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN28220"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->info</P
-></TD
-><TD
-><P
->the qname&lt;-&#62;bit mask mapping information.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->qnameLocalPart</P
-></TD
-><TD
-><P
->the qname LocalPart value.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->qnameHref</P
-></TD
-><TD
-><P
->the qname Href value.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->mask</P
-></TD
-><TD
-><P
->the pointer to result mask.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN28247"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value if an error occurs,</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECQNAME2BITMASKNODESREAD"
-></A
-><H3
->xmlSecQName2BitMaskNodesRead ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecQName2BitMaskNodesRead (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLSECQNAME2BITMASKINFOCONST"
-><SPAN
-CLASS="TYPE"
->xmlSecQName2BitMaskInfoConstPtr</SPAN
-></GTKDOCLINK
-> info</CODE
->,
-                              <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> *node</CODE
->,
-                              <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *nodeName</CODE
->,
-                              <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *nodeNs</CODE
->,
-                              <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="TYPE"
->int</SPAN
-></GTKDOCLINK
-> stopOnUnknown</CODE
->,
-                              <CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-xmltree.html#XMLSECBITMASK"
-><SPAN
-CLASS="TYPE"
->xmlSecBitMask</SPAN
-></A
-> *mask</CODE
->);</PRE
-><P
->Reads &lt;<CODE
-CLASS="PARAMETER"
->nodeNs</CODE
->
-:<CODE
-CLASS="PARAMETER"
->nodeName</CODE
->
-&#62; elements and puts the result bit mask
-into <CODE
-CLASS="PARAMETER"
->mask</CODE
->
-. When function exits, <CODE
-CLASS="PARAMETER"
->node</CODE
->
+attribute <code class="PARAMETER">attrName</code>
+ in <code class="PARAMETER">node</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN28123"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN28125"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>info</p></td>
+<td><p>the qname&lt;-&gt;integer mapping information.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>node</p></td>
+<td><p>the parent node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>attrName</p></td>
+<td><p>the name of attribute.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>intValue</p></td>
+<td><p>the integer value.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN28152"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs,</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECQNAME2INTEGERDEBUGDUMP"></a><h3>xmlSecQName2IntegerDebugDump ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">void</span></font>
+xmlSecQName2IntegerDebugDump (<code class="PARAMETER"><font><span class="TYPE">xmlSecQName2IntegerInfoConstPtr</span></font> info</code>,
+                              <code class="PARAMETER"><font><span class="TYPE">int</span></font> intValue</code>,
+                              <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *name</code>,
+                              <code class="PARAMETER"><font><span class="TYPE">FILE</span></font> *output</code>);</pre>
+<p>Prints <code class="PARAMETER">intValue</code>
+ into <code class="PARAMETER">output</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN28177"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN28179"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>info</p></td>
+<td><p>the qname&lt;-&gt;integer mapping information.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>intValue</p></td>
+<td><p>the integer value.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>name</p></td>
+<td><p>the value name to print.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>output</p></td>
+<td><p>the pointer to output FILE.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECQNAME2INTEGERDEBUGXMLDUMP"></a><h3>xmlSecQName2IntegerDebugXmlDump ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">void</span></font>
+xmlSecQName2IntegerDebugXmlDump (<code class="PARAMETER"><font><span class="TYPE">xmlSecQName2IntegerInfoConstPtr</span></font> info</code>,
+                                 <code class="PARAMETER"><font><span class="TYPE">int</span></font> intValue</code>,
+                                 <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *name</code>,
+                                 <code class="PARAMETER"><font><span class="TYPE">FILE</span></font> *output</code>);</pre>
+<p>Prints <code class="PARAMETER">intValue</code>
+ into <code class="PARAMETER">output</code>
+ in XML format.</p>
+<div class="REFSECT3">
+<a name="AEN28228"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN28230"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>info</p></td>
+<td><p>the qname&lt;-&gt;integer mapping information.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>intValue</p></td>
+<td><p>the integer value.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>name</p></td>
+<td><p>the value name to print.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>output</p></td>
+<td><p>the pointer to output FILE.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECQNAME2BITMASKGETINFO"></a><h3>xmlSecQName2BitMaskGetInfo ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecQName2BitMaskInfoConstPtr</span></font>
+xmlSecQName2BitMaskGetInfo (<code class="PARAMETER"><font><span class="TYPE">xmlSecQName2BitMaskInfoConstPtr</span></font> info</code>,
+                            <code class="PARAMETER"><a href="xmlsec-xmltree.html#XMLSECBITMASK"><span class="TYPE">xmlSecBitMask</span></a> mask</code>);</pre>
+<p>Converts <code class="PARAMETER">mask</code>
+ to qname.</p>
+<div class="REFSECT3">
+<a name="AEN28272"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN28274"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>info</p></td>
+<td><p>the qname&lt;-&gt;bit mask mapping information.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>mask</p></td>
+<td><p>the bit mask.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN28289"></a><h4>Returns</h4>
+<p> pointer to the qname info for <code class="PARAMETER">mask</code>
+or NULL if mask is unknown.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECQNAME2BITMASKGETBITMASK"></a><h3>xmlSecQName2BitMaskGetBitMask ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecQName2BitMaskGetBitMask (<code class="PARAMETER"><font><span class="TYPE">xmlSecQName2BitMaskInfoConstPtr</span></font> info</code>,
+                               <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *qnameLocalPart</code>,
+                               <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *qnameHref</code>,
+                               <code class="PARAMETER"><a href="xmlsec-xmltree.html#XMLSECBITMASK"><span class="TYPE">xmlSecBitMask</span></a> *mask</code>);</pre>
+<p>Converts <code class="PARAMETER">qnameLocalPart</code>
+ to <code class="PARAMETER">mask</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN28315"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN28317"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>info</p></td>
+<td><p>the qname&lt;-&gt;bit mask mapping information.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>qnameLocalPart</p></td>
+<td><p>the qname LocalPart value.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>qnameHref</p></td>
+<td><p>the qname Href value.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>mask</p></td>
+<td><p>the pointer to result mask.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN28344"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs,</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECQNAME2BITMASKNODESREAD"></a><h3>xmlSecQName2BitMaskNodesRead ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecQName2BitMaskNodesRead (<code class="PARAMETER"><font><span class="TYPE">xmlSecQName2BitMaskInfoConstPtr</span></font> info</code>,
+                              <code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> *node</code>,
+                              <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *nodeName</code>,
+                              <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *nodeNs</code>,
+                              <code class="PARAMETER"><font><span class="TYPE">int</span></font> stopOnUnknown</code>,
+                              <code class="PARAMETER"><a href="xmlsec-xmltree.html#XMLSECBITMASK"><span class="TYPE">xmlSecBitMask</span></a> *mask</code>);</pre>
+<p>Reads &lt;<code class="PARAMETER">nodeNs</code>
+:<code class="PARAMETER">nodeName</code>
+&gt; elements and puts the result bit mask
+into <code class="PARAMETER">mask</code>
+. When function exits, <code class="PARAMETER">node</code>
  points to the first element node
-after all the &lt;<CODE
-CLASS="PARAMETER"
->nodeNs</CODE
->
-:<CODE
-CLASS="PARAMETER"
->nodeName</CODE
->
-&#62; elements.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN28282"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN28284"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->info</P
-></TD
-><TD
-><P
->the qname&lt;-&#62;bit mask mapping information.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->node</P
-></TD
-><TD
-><P
->the start.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->nodeName</P
-></TD
-><TD
-><P
->the mask nodes name.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->nodeNs</P
-></TD
-><TD
-><P
->the mask nodes namespace.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->stopOnUnknown</P
-></TD
-><TD
-><P
->if this flag is set then function exits if unknown
-value was found.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->mask</P
-></TD
-><TD
-><P
->the pointer to result mask.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN28323"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value if an error occurs,</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECQNAME2BITMASKGETBITMASKFROMSTRING"
-></A
-><H3
->xmlSecQName2BitMaskGetBitMaskFromString ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
+after all the &lt;<code class="PARAMETER">nodeNs</code>
+:<code class="PARAMETER">nodeName</code>
+&gt; elements.</p>
+<div class="REFSECT3">
+<a name="AEN28379"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN28381"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>info</p></td>
+<td><p>the qname&lt;-&gt;bit mask mapping information.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>node</p></td>
+<td><p>the start.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>nodeName</p></td>
+<td><p>the mask nodes name.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>nodeNs</p></td>
+<td><p>the mask nodes namespace.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>stopOnUnknown</p></td>
+<td><p>if this flag is set then function exits if unknown
+value was found.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>mask</p></td>
+<td><p>the pointer to result mask.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN28420"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs,</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECQNAME2BITMASKGETBITMASKFROMSTRING"></a><h3>xmlSecQName2BitMaskGetBitMaskFromString ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
 xmlSecQName2BitMaskGetBitMaskFromString
-                               (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLSECQNAME2BITMASKINFOCONST"
-><SPAN
-CLASS="TYPE"
->xmlSecQName2BitMaskInfoConstPtr</SPAN
-></GTKDOCLINK
-> info</CODE
->,
-                                <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> node</CODE
->,
-                                <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *qname</CODE
->,
-                                <CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-xmltree.html#XMLSECBITMASK"
-><SPAN
-CLASS="TYPE"
->xmlSecBitMask</SPAN
-></A
-> *mask</CODE
->);</PRE
-><P
->Converts <CODE
-CLASS="PARAMETER"
->qname</CODE
->
- into integer in context of <CODE
-CLASS="PARAMETER"
->node</CODE
->
-.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN28348"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN28350"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->info</P
-></TD
-><TD
-><P
->the qname&lt;-&#62;integer mapping information.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->node</P
-></TD
-><TD
-><P
->the pointer to node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->qname</P
-></TD
-><TD
-><P
->the qname string.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->mask</P
-></TD
-><TD
-><P
->the pointer to result msk value.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN28377"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value if an error occurs,</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECQNAME2BITMASKGETSTRINGFROMBITMASK"
-></A
-><H3
->xmlSecQName2BitMaskGetStringFromBitMask ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="RETURNVALUE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *
+                               (<code class="PARAMETER"><font><span class="TYPE">xmlSecQName2BitMaskInfoConstPtr</span></font> info</code>,
+                                <code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> node</code>,
+                                <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *qname</code>,
+                                <code class="PARAMETER"><a href="xmlsec-xmltree.html#XMLSECBITMASK"><span class="TYPE">xmlSecBitMask</span></a> *mask</code>);</pre>
+<p>Converts <code class="PARAMETER">qname</code>
+ into integer in context of <code class="PARAMETER">node</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN28445"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN28447"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>info</p></td>
+<td><p>the qname&lt;-&gt;integer mapping information.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>node</p></td>
+<td><p>the pointer to node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>qname</p></td>
+<td><p>the qname string.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>mask</p></td>
+<td><p>the pointer to result msk value.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN28474"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs,</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECQNAME2BITMASKGETSTRINGFROMBITMASK"></a><h3>xmlSecQName2BitMaskGetStringFromBitMask ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlChar</span></font> *
 xmlSecQName2BitMaskGetStringFromBitMask
-                               (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLSECQNAME2BITMASKINFOCONST"
-><SPAN
-CLASS="TYPE"
->xmlSecQName2BitMaskInfoConstPtr</SPAN
-></GTKDOCLINK
-> info</CODE
->,
-                                <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> node</CODE
->,
-                                <CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-xmltree.html#XMLSECBITMASK"
-><SPAN
-CLASS="TYPE"
->xmlSecBitMask</SPAN
-></A
-> mask</CODE
->);</PRE
-><P
->Creates qname string for <CODE
-CLASS="PARAMETER"
->mask</CODE
->
- in context of given <CODE
-CLASS="PARAMETER"
->node</CODE
->
+                               (<code class="PARAMETER"><font><span class="TYPE">xmlSecQName2BitMaskInfoConstPtr</span></font> info</code>,
+                                <code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> node</code>,
+                                <code class="PARAMETER"><a href="xmlsec-xmltree.html#XMLSECBITMASK"><span class="TYPE">xmlSecBitMask</span></a> mask</code>);</pre>
+<p>Creates qname string for <code class="PARAMETER">mask</code>
+ in context of given <code class="PARAMETER">node</code>
 . Caller
-is responsible for freeing returned string with <CODE
-CLASS="PARAMETER"
->xmlFree</CODE
->
-.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN28400"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN28402"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->info</P
-></TD
-><TD
-><P
->the qname&lt;-&#62;integer mapping information.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->node</P
-></TD
-><TD
-><P
->the pointer to node.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->mask</P
-></TD
-><TD
-><P
->the mask.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN28423"
-></A
-><H4
->Returns</H4
-><P
-> pointer to newly allocated string on success or NULL if an error occurs,</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECQNAME2BITMASKNODESWRITE"
-></A
-><H3
->xmlSecQName2BitMaskNodesWrite ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecQName2BitMaskNodesWrite (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLSECQNAME2BITMASKINFOCONST"
-><SPAN
-CLASS="TYPE"
->xmlSecQName2BitMaskInfoConstPtr</SPAN
-></GTKDOCLINK
-> info</CODE
->,
-                               <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLNODE"
-><SPAN
-CLASS="TYPE"
->xmlNodePtr</SPAN
-></GTKDOCLINK
-> node</CODE
->,
-                               <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *nodeName</CODE
->,
-                               <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *nodeNs</CODE
->,
-                               <CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-xmltree.html#XMLSECBITMASK"
-><SPAN
-CLASS="TYPE"
->xmlSecBitMask</SPAN
-></A
-> mask</CODE
->);</PRE
-><P
->Writes &lt;<CODE
-CLASS="PARAMETER"
->nodeNs</CODE
->
-:<CODE
-CLASS="PARAMETER"
->nodeName</CODE
->
-&#62; elemnts with values from <CODE
-CLASS="PARAMETER"
->mask</CODE
->
- to <CODE
-CLASS="PARAMETER"
->node</CODE
->
-.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN28453"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN28455"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->info</P
-></TD
-><TD
-><P
->the qname&lt;-&#62;bit mask mapping information.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->node</P
-></TD
-><TD
-><P
->the parent element for mask nodes.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->nodeName</P
-></TD
-><TD
-><P
->the mask nodes name.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->nodeNs</P
-></TD
-><TD
-><P
->the mask nodes namespace.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->mask</P
-></TD
-><TD
-><P
->the bit mask.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN28488"
-></A
-><H4
->Returns</H4
-><P
-> 0 on success or a negative value if an error occurs,</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECQNAME2BITMASKDEBUGDUMP"
-></A
-><H3
->xmlSecQName2BitMaskDebugDump ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="VOID"
-><SPAN
-CLASS="RETURNVALUE"
->void</SPAN
-></GTKDOCLINK
->
-xmlSecQName2BitMaskDebugDump (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLSECQNAME2BITMASKINFOCONST"
-><SPAN
-CLASS="TYPE"
->xmlSecQName2BitMaskInfoConstPtr</SPAN
-></GTKDOCLINK
-> info</CODE
->,
-                              <CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-xmltree.html#XMLSECBITMASK"
-><SPAN
-CLASS="TYPE"
->xmlSecBitMask</SPAN
-></A
-> mask</CODE
->,
-                              <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *name</CODE
->,
-                              <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="FILE:CAPS"
-><SPAN
-CLASS="TYPE"
->FILE</SPAN
-></GTKDOCLINK
-> *output</CODE
->);</PRE
-><P
->Prints debug information about <CODE
-CLASS="PARAMETER"
->mask</CODE
->
- to <CODE
-CLASS="PARAMETER"
->output</CODE
->
-.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN28513"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN28515"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->info</P
-></TD
-><TD
-><P
->the qname&lt;-&#62;bit mask mapping information.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->mask</P
-></TD
-><TD
-><P
->the bit mask.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->name</P
-></TD
-><TD
-><P
->the value name to print.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->output</P
-></TD
-><TD
-><P
->the pointer to output FILE.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECQNAME2BITMASKDEBUGXMLDUMP"
-></A
-><H3
->xmlSecQName2BitMaskDebugXmlDump ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="VOID"
-><SPAN
-CLASS="RETURNVALUE"
->void</SPAN
-></GTKDOCLINK
->
-xmlSecQName2BitMaskDebugXmlDump (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="XMLSECQNAME2BITMASKINFOCONST"
-><SPAN
-CLASS="TYPE"
->xmlSecQName2BitMaskInfoConstPtr</SPAN
-></GTKDOCLINK
-> info</CODE
->,
-                                 <CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-xmltree.html#XMLSECBITMASK"
-><SPAN
-CLASS="TYPE"
->xmlSecBitMask</SPAN
-></A
-> mask</CODE
->,
-                                 <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *name</CODE
->,
-                                 <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="FILE:CAPS"
-><SPAN
-CLASS="TYPE"
->FILE</SPAN
-></GTKDOCLINK
-> *output</CODE
->);</PRE
-><P
->Prints debug information about <CODE
-CLASS="PARAMETER"
->mask</CODE
->
- to <CODE
-CLASS="PARAMETER"
->output</CODE
->
- in XML format.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN28564"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN28566"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->info</P
-></TD
-><TD
-><P
->the qname&lt;-&#62;bit mask mapping information.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->mask</P
-></TD
-><TD
-><P
->the bit mask.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->name</P
-></TD
-><TD
-><P
->the value name to print.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->output</P
-></TD
-><TD
-><P
->the pointer to output FILE.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="XMLSEC-XMLTREE.OTHER_DETAILS"
-></A
-><H2
->Types and Values</H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECQNAME2INTEGERINFO"
-></A
-><H3
->struct xmlSecQName2IntegerInfo</H3
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlSecQName2IntegerInfo {
+is responsible for freeing returned string with <code class="PARAMETER">xmlFree</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN28497"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN28499"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>info</p></td>
+<td><p>the qname&lt;-&gt;integer mapping information.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>node</p></td>
+<td><p>the pointer to node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>mask</p></td>
+<td><p>the mask.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN28520"></a><h4>Returns</h4>
+<p> pointer to newly allocated string on success or NULL if an error occurs,</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECQNAME2BITMASKNODESWRITE"></a><h3>xmlSecQName2BitMaskNodesWrite ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecQName2BitMaskNodesWrite (<code class="PARAMETER"><font><span class="TYPE">xmlSecQName2BitMaskInfoConstPtr</span></font> info</code>,
+                               <code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> node</code>,
+                               <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *nodeName</code>,
+                               <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *nodeNs</code>,
+                               <code class="PARAMETER"><a href="xmlsec-xmltree.html#XMLSECBITMASK"><span class="TYPE">xmlSecBitMask</span></a> mask</code>);</pre>
+<p>Writes &lt;<code class="PARAMETER">nodeNs</code>
+:<code class="PARAMETER">nodeName</code>
+&gt; elemnts with values from <code class="PARAMETER">mask</code>
+ to <code class="PARAMETER">node</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN28550"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN28552"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>info</p></td>
+<td><p>the qname&lt;-&gt;bit mask mapping information.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>node</p></td>
+<td><p>the parent element for mask nodes.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>nodeName</p></td>
+<td><p>the mask nodes name.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>nodeNs</p></td>
+<td><p>the mask nodes namespace.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>mask</p></td>
+<td><p>the bit mask.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN28585"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs,</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECQNAME2BITMASKDEBUGDUMP"></a><h3>xmlSecQName2BitMaskDebugDump ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">void</span></font>
+xmlSecQName2BitMaskDebugDump (<code class="PARAMETER"><font><span class="TYPE">xmlSecQName2BitMaskInfoConstPtr</span></font> info</code>,
+                              <code class="PARAMETER"><a href="xmlsec-xmltree.html#XMLSECBITMASK"><span class="TYPE">xmlSecBitMask</span></a> mask</code>,
+                              <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *name</code>,
+                              <code class="PARAMETER"><font><span class="TYPE">FILE</span></font> *output</code>);</pre>
+<p>Prints debug information about <code class="PARAMETER">mask</code>
+ to <code class="PARAMETER">output</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN28610"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN28612"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>info</p></td>
+<td><p>the qname&lt;-&gt;bit mask mapping information.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>mask</p></td>
+<td><p>the bit mask.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>name</p></td>
+<td><p>the value name to print.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>output</p></td>
+<td><p>the pointer to output FILE.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECQNAME2BITMASKDEBUGXMLDUMP"></a><h3>xmlSecQName2BitMaskDebugXmlDump ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">void</span></font>
+xmlSecQName2BitMaskDebugXmlDump (<code class="PARAMETER"><font><span class="TYPE">xmlSecQName2BitMaskInfoConstPtr</span></font> info</code>,
+                                 <code class="PARAMETER"><a href="xmlsec-xmltree.html#XMLSECBITMASK"><span class="TYPE">xmlSecBitMask</span></a> mask</code>,
+                                 <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *name</code>,
+                                 <code class="PARAMETER"><font><span class="TYPE">FILE</span></font> *output</code>);</pre>
+<p>Prints debug information about <code class="PARAMETER">mask</code>
+ to <code class="PARAMETER">output</code>
+ in XML format.</p>
+<div class="REFSECT3">
+<a name="AEN28661"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN28663"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>info</p></td>
+<td><p>the qname&lt;-&gt;bit mask mapping information.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>mask</p></td>
+<td><p>the bit mask.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>name</p></td>
+<td><p>the value name to print.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>output</p></td>
+<td><p>the pointer to output FILE.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+</div>
+</div>
+<div class="REFSECT1">
+<a name="XMLSEC-XMLTREE.OTHER_DETAILS"></a><h2>Types and Values</h2>
+<div class="REFSECT2">
+<a name="XMLSECQNAME2INTEGERINFO"></a><h3>struct xmlSecQName2IntegerInfo</h3>
+<pre class="PROGRAMLISTING">struct xmlSecQName2IntegerInfo {
     const xmlChar*      qnameHref;
     const xmlChar*      qnameLocalPart;
     int                 intValue;
-};</PRE
-><P
->QName &lt;-&#62; Integer conversion definition.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN28601"
-></A
-><H4
->Members</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN28603"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *<CODE
-CLASS="STRUCTFIELD"
->qnameHref</CODE
->;</P
-></TD
-><TD
-><P
->the QName href</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *<CODE
-CLASS="STRUCTFIELD"
->qnameLocalPart</CODE
->;</P
-></TD
-><TD
-><P
->the QName local</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="TYPE"
->int</SPAN
-></GTKDOCLINK
-> <CODE
-CLASS="STRUCTFIELD"
->intValue</CODE
->;</P
-></TD
-><TD
-><P
->the integer value</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECQNAME2INTEGERINFOCONSTPTR"
-></A
-><H3
->xmlSecQName2IntegerInfoConstPtr</H3
-><PRE
-CLASS="PROGRAMLISTING"
->typedef const xmlSecQName2IntegerInfo *         xmlSecQName2IntegerInfoConstPtr;</PRE
-><P
->Pointer to constant QName &lt;-&#62; Integer conversion definition.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECBITMASK"
-></A
-><H3
->xmlSecBitMask</H3
-><PRE
-CLASS="PROGRAMLISTING"
->typedef unsigned int                                    xmlSecBitMask;</PRE
-><P
->Bitmask datatype.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECQNAME2BITMASKINFO"
-></A
-><H3
->struct xmlSecQName2BitMaskInfo</H3
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlSecQName2BitMaskInfo {
+};</pre>
+<p>QName &lt;-&gt; Integer conversion definition.</p>
+<div class="REFSECT3">
+<a name="AEN28698"></a><h4>Members</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN28700"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>const <font><span class="TYPE">xmlChar</span></font> *<code class="STRUCTFIELD">qnameHref</code>;</p></td>
+<td><p>the QName href</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>const <font><span class="TYPE">xmlChar</span></font> *<code class="STRUCTFIELD">qnameLocalPart</code>;</p></td>
+<td><p>the QName local</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p><font><span class="TYPE">int</span></font> <code class="STRUCTFIELD">intValue</code>;</p></td>
+<td><p>the integer value</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECQNAME2INTEGERINFOCONSTPTR"></a><h3>xmlSecQName2IntegerInfoConstPtr</h3>
+<pre class="PROGRAMLISTING">typedef const xmlSecQName2IntegerInfo *         xmlSecQName2IntegerInfoConstPtr;</pre>
+<p>Pointer to constant QName &lt;-&gt; Integer conversion definition.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECBITMASK"></a><h3>xmlSecBitMask</h3>
+<pre class="PROGRAMLISTING">typedef unsigned int                                    xmlSecBitMask;</pre>
+<p>Bitmask datatype.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECQNAME2BITMASKINFO"></a><h3>struct xmlSecQName2BitMaskInfo</h3>
+<pre class="PROGRAMLISTING">struct xmlSecQName2BitMaskInfo {
     const xmlChar*      qnameHref;
     const xmlChar*      qnameLocalPart;
     xmlSecBitMask       mask;
-};</PRE
-><P
->QName &lt;-&#62; Bitmask conversion definition.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN28651"
-></A
-><H4
->Members</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN28653"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *<CODE
-CLASS="STRUCTFIELD"
->qnameHref</CODE
->;</P
-></TD
-><TD
-><P
->the QName href</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->const <GTKDOCLINK
-HREF="XMLCHAR"
-><SPAN
-CLASS="TYPE"
->xmlChar</SPAN
-></GTKDOCLINK
-> *<CODE
-CLASS="STRUCTFIELD"
->qnameLocalPart</CODE
->;</P
-></TD
-><TD
-><P
->the QName local</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
-><A
-HREF="xmlsec-xmltree.html#XMLSECBITMASK"
-><SPAN
-CLASS="TYPE"
->xmlSecBitMask</SPAN
-></A
-> <CODE
-CLASS="STRUCTFIELD"
->mask</CODE
->;</P
-></TD
-><TD
-><P
->the bitmask value</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECQNAME2BITMASKINFOCONSTPTR"
-></A
-><H3
->xmlSecQName2BitMaskInfoConstPtr</H3
-><PRE
-CLASS="PROGRAMLISTING"
->typedef const xmlSecQName2BitMaskInfo*          xmlSecQName2BitMaskInfoConstPtr;</PRE
-><P
->Pointer to constant QName &lt;-&#62; Bitmask conversion definition.</P
-></DIV
-></DIV
-><TABLE
-CLASS="navigation"
-WIDTH="100%"
-SUMMARY="Navigation footer"
-CELLPADDING="2"
-CELLSPACING="2"
-><TR
-VALIGN="middle"
-><TD
-ALIGN="left"
-><A
-ACCESSKEY="p"
-HREF="xmlsec-xmlsec.html"
-><B
->&lt;&lt;&lt;&nbsp;xmlsec</B
-></A
-></TD
-><TD
-ALIGN="right"
-><A
-ACCESSKEY="n"
-HREF="xmlsec-x509.html"
-><B
->x509&nbsp;&gt;&gt;&gt;</B
-></A
-></TD
-></TR
-></TABLE
-></BODY
-></HTML
->
+};</pre>
+<p>QName &lt;-&gt; Bitmask conversion definition.</p>
+<div class="REFSECT3">
+<a name="AEN28748"></a><h4>Members</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN28750"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>const <font><span class="TYPE">xmlChar</span></font> *<code class="STRUCTFIELD">qnameHref</code>;</p></td>
+<td><p>the QName href</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>const <font><span class="TYPE">xmlChar</span></font> *<code class="STRUCTFIELD">qnameLocalPart</code>;</p></td>
+<td><p>the QName local</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p><a href="xmlsec-xmltree.html#XMLSECBITMASK"><span class="TYPE">xmlSecBitMask</span></a> <code class="STRUCTFIELD">mask</code>;</p></td>
+<td><p>the bitmask value</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECQNAME2BITMASKINFOCONSTPTR"></a><h3>xmlSecQName2BitMaskInfoConstPtr</h3>
+<pre class="PROGRAMLISTING">typedef const xmlSecQName2BitMaskInfo*          xmlSecQName2BitMaskInfoConstPtr;</pre>
+<p>Pointer to constant QName &lt;-&gt; Bitmask conversion definition.</p>
+</div>
+</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td align="left"><a accesskey="p" href="xmlsec-xmlsec.html"><b>&lt;&lt;&lt; xmlsec</b></a></td>
+<td align="right"><a accesskey="n" href="xmlsec-x509.html"><b>x509 &gt;&gt;&gt;</b></a></td>
+</tr></table>
+</td></tr></table></td>
+</tr></table></body>
+</html>

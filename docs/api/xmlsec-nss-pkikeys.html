@@ -1,25 +1,13 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->pkikeys</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-TITLE="XML Security Library Reference Manual"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="XML Security Library for NSS API Reference."
-HREF="xmlsec-nss-ref.html"><LINK
-REL="PREVIOUS"
-TITLE="keysstore"
-HREF="xmlsec-nss-keysstore.html"><LINK
-REL="NEXT"
-TITLE="x509"
-HREF="xmlsec-nss-x509.html"><STYLE
-TYPE="text/css"
->.synopsis, .classsynopsis {
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>pkikeys</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="XML Security Library for NSS API Reference." href="xmlsec-nss-ref.html">
+<link rel="PREVIOUS" title="keysstore" href="xmlsec-nss-keysstore.html">
+<link rel="NEXT" title="x509" href="xmlsec-nss-x509.html">
+<style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
     padding: 0.5em;
@@ -47,705 +35,300 @@ TYPE="text/css"
 }
 .navigation .title {
     font-size: 200%;
-}</STYLE
-></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><TABLE
-WIDTH="100%"
-CLASS="navigation"
-SUMMARY="Navigation header"
-CELLPADDING="2"
-CELLSPACING="2"
-><TR
-VALIGN="middle"
-><TD
-><A
-ACCESSKEY="p"
-HREF="xmlsec-nss-keysstore.html"
-><IMG
-SRC="left.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Prev"></A
-></TD
-><TD
-><A
-ACCESSKEY="u"
-HREF="xmlsec-nss-ref.html"
-><IMG
-SRC="up.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Up"></A
-></TD
-><TD
-><A
-ACCESSKEY="h"
-HREF="index.html"
-><IMG
-SRC="home.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Home"></A
-></TD
-><TH
-WIDTH="100%"
-align="center"
->XML Security Library Reference Manual</TH
-><TD
-><A
-ACCESSKEY="n"
-HREF="xmlsec-nss-x509.html"
-><IMG
-SRC="right.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Next"></A
-></TD
-></TR
-></TABLE
-><H1
-><A
-NAME="XMLSEC-NSS-PKIKEYS"
-></A
->pkikeys</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN41131"
-></A
-><H2
->Name</H2
->pkikeys&nbsp;--&nbsp;PKI keys data implementation.</DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="XMLSEC-NSS-PKIKEYS.FUNCTIONS"
-></A
-><H2
->Functions</H2
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN41136"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><TBODY
-><TR
-><TD
-><A
-HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecKeyDataPtr</SPAN
-></A
-></TD
-><TD
-><A
-HREF="xmlsec-nss-pkikeys.html#XMLSECNSSPKIADOPTKEY"
->xmlSecNssPKIAdoptKey</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="SECKEYPUBLICKEY"
-><SPAN
-CLASS="RETURNVALUE"
->SECKEYPublicKey</SPAN
-></GTKDOCLINK
-> *</TD
-><TD
-><A
-HREF="xmlsec-nss-pkikeys.html#XMLSECNSSPKIKEYDATAGETPUBKEY"
->xmlSecNssPKIKeyDataGetPubKey</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="SECKEYPRIVATEKEY"
-><SPAN
-CLASS="RETURNVALUE"
->SECKEYPrivateKey</SPAN
-></GTKDOCLINK
-> *</TD
-><TD
-><A
-HREF="xmlsec-nss-pkikeys.html#XMLSECNSSPKIKEYDATAGETPRIVKEY"
->xmlSecNssPKIKeyDataGetPrivKey</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="KEYTYPE"
-><SPAN
-CLASS="RETURNVALUE"
->KeyType</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-nss-pkikeys.html#XMLSECNSSPKIKEYDATAGETKEYTYPE"
->xmlSecNssPKIKeyDataGetKeyType</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-nss-pkikeys.html#XMLSECNSSPKIKEYDATADUPLICATE"
->xmlSecNssPKIKeyDataDuplicate</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="XMLSEC-NSS-PKIKEYS.DESCRIPTION"
-></A
-><H2
->Description</H2
-><P
->PKI keys data implementation.</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="XMLSEC-NSS-PKIKEYS.FUNCTIONS_DETAILS"
-></A
-><H2
->Functions</H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECNSSPKIADOPTKEY"
-></A
-><H3
->xmlSecNssPKIAdoptKey ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
-><SPAN
-CLASS="RETURNVALUE"
->xmlSecKeyDataPtr</SPAN
-></A
->
-xmlSecNssPKIAdoptKey (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="SECKEYPRIVATEKEY"
-><SPAN
-CLASS="TYPE"
->SECKEYPrivateKey</SPAN
-></GTKDOCLINK
-> *privkey</CODE
->,
-                      <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="SECKEYPUBLICKEY"
-><SPAN
-CLASS="TYPE"
->SECKEYPublicKey</SPAN
-></GTKDOCLINK
-> *pubkey</CODE
->);</PRE
-><P
->Build a KeyData object from the given Private Key and Public
-Key handles.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN41193"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN41195"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->privkey</P
-></TD
-><TD
-><P
->the NSS Private Key handle</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->pubkey</P
-></TD
-><TD
-><P
->the NSS Public Key handle</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN41210"
-></A
-><H4
->Returns</H4
-><P
-> pointer to KeyData object or NULL if an error occurs.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECNSSPKIKEYDATAGETPUBKEY"
-></A
-><H3
->xmlSecNssPKIKeyDataGetPubKey ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="SECKEYPUBLICKEY"
-><SPAN
-CLASS="RETURNVALUE"
->SECKEYPublicKey</SPAN
-></GTKDOCLINK
-> *
-xmlSecNssPKIKeyDataGetPubKey (<CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
-><SPAN
-CLASS="TYPE"
->xmlSecKeyDataPtr</SPAN
-></A
-> data</CODE
->);</PRE
-><P
->Gets the Public Key from the key data.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN41224"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN41226"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->data</P
-></TD
-><TD
-><P
->the pointer to NSS Key data.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN41235"
-></A
-><H4
->Returns</H4
-><P
-> pointer to SECKEYPublicKey or NULL if an error occurs.
-Caller is responsible for freeing the key when done</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECNSSPKIKEYDATAGETPRIVKEY"
-></A
-><H3
->xmlSecNssPKIKeyDataGetPrivKey ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="SECKEYPRIVATEKEY"
-><SPAN
-CLASS="RETURNVALUE"
->SECKEYPrivateKey</SPAN
-></GTKDOCLINK
-> *
-xmlSecNssPKIKeyDataGetPrivKey (<CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
-><SPAN
-CLASS="TYPE"
->xmlSecKeyDataPtr</SPAN
-></A
-> data</CODE
->);</PRE
-><P
->Gets the Private Key from the key data.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN41249"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN41251"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->data</P
-></TD
-><TD
-><P
->the pointer to NSS Key data.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN41260"
-></A
-><H4
->Returns</H4
-><P
-> pointer to SECKEYPrivateKey or NULL if an error occurs.
-Caller is responsible for freeing the key when done</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECNSSPKIKEYDATAGETKEYTYPE"
-></A
-><H3
->xmlSecNssPKIKeyDataGetKeyType ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="KEYTYPE"
-><SPAN
-CLASS="RETURNVALUE"
->KeyType</SPAN
-></GTKDOCLINK
->
-xmlSecNssPKIKeyDataGetKeyType (<CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
-><SPAN
-CLASS="TYPE"
->xmlSecKeyDataPtr</SPAN
-></A
-> data</CODE
->);</PRE
-><P
->Gets the Key Type from the key data.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN41274"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN41276"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->data</P
-></TD
-><TD
-><P
->the pointer to NSS Key data.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN41285"
-></A
-><H4
->Returns</H4
-><P
-> Key Type</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECNSSPKIKEYDATADUPLICATE"
-></A
-><H3
->xmlSecNssPKIKeyDataDuplicate ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecNssPKIKeyDataDuplicate (<CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
-><SPAN
-CLASS="TYPE"
->xmlSecKeyDataPtr</SPAN
-></A
-> dst</CODE
->,
-                              <CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
-><SPAN
-CLASS="TYPE"
->xmlSecKeyDataPtr</SPAN
-></A
-> src</CODE
->);</PRE
-><P
->Duplicates the keydata from src to dst</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN41302"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN41304"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->dst</P
-></TD
-><TD
-><P
->the pointer to NSS Key data to copy to.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->src</P
-></TD
-><TD
-><P
->the pointer to NSS Key data to copy from.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN41319"
-></A
-><H4
->Returns</H4
-><P
-> -1 on error, 0 on success</P
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="XMLSEC-NSS-PKIKEYS.OTHER_DETAILS"
-></A
-><H2
->Types and Values</H2
-><P
-></P
-></DIV
-><TABLE
-CLASS="navigation"
-WIDTH="100%"
-SUMMARY="Navigation footer"
-CELLPADDING="2"
-CELLSPACING="2"
-><TR
-VALIGN="middle"
-><TD
-ALIGN="left"
-><A
-ACCESSKEY="p"
-HREF="xmlsec-nss-keysstore.html"
-><B
->&lt;&lt;&lt;&nbsp;keysstore</B
-></A
-></TD
-><TD
-ALIGN="right"
-><A
-ACCESSKEY="n"
-HREF="xmlsec-nss-x509.html"
-><B
->x509&nbsp;&gt;&gt;&gt;</B
-></A
-></TD
-></TR
-></TABLE
-></BODY
-></HTML
->
+}</style>
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
+</head>
+<body><table width="100%" valign="top"><tr valign="top">
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<ul>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
+<li><a href="../api/xmlsec-reference.html">API reference</a></li>
+<li><a href="../api/xmlsec-examples.html">Examples</a></li>
+</ul>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul><li><a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a></li></ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+<li><a href="../authors.html">Authors</a></li>
+</ul>
+<table width="100%">
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
+</tr>
+<!--Links - start--><!--Links - end-->
+</table>
+</td>
+<td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
+<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="xmlsec-nss-keysstore.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="xmlsec-nss-ref.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="n" href="xmlsec-nss-x509.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<h1>
+<a name="XMLSEC-NSS-PKIKEYS"></a>pkikeys</h1>
+<div class="REFNAMEDIV">
+<a name="AEN41228"></a><h2>Name</h2>pkikeys -- PKI keys data implementation.</div>
+<div class="REFSECT1">
+<a name="XMLSEC-NSS-PKIKEYS.FUNCTIONS"></a><h2>Functions</h2>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN41233"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<tbody>
+<tr>
+<td><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="RETURNVALUE">xmlSecKeyDataPtr</span></a></td>
+<td>
+<a href="xmlsec-nss-pkikeys.html#XMLSECNSSPKIADOPTKEY">xmlSecNssPKIAdoptKey</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td>
+<font><span class="RETURNVALUE">SECKEYPublicKey</span></font> *</td>
+<td>
+<a href="xmlsec-nss-pkikeys.html#XMLSECNSSPKIKEYDATAGETPUBKEY">xmlSecNssPKIKeyDataGetPubKey</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td>
+<font><span class="RETURNVALUE">SECKEYPrivateKey</span></font> *</td>
+<td>
+<a href="xmlsec-nss-pkikeys.html#XMLSECNSSPKIKEYDATAGETPRIVKEY">xmlSecNssPKIKeyDataGetPrivKey</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">KeyType</span></font></td>
+<td>
+<a href="xmlsec-nss-pkikeys.html#XMLSECNSSPKIKEYDATAGETKEYTYPE">xmlSecNssPKIKeyDataGetKeyType</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-nss-pkikeys.html#XMLSECNSSPKIKEYDATADUPLICATE">xmlSecNssPKIKeyDataDuplicate</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT1">
+<a name="XMLSEC-NSS-PKIKEYS.DESCRIPTION"></a><h2>Description</h2>
+<p>PKI keys data implementation.</p>
+</div>
+<div class="REFSECT1">
+<a name="XMLSEC-NSS-PKIKEYS.FUNCTIONS_DETAILS"></a><h2>Functions</h2>
+<div class="REFSECT2">
+<a name="XMLSECNSSPKIADOPTKEY"></a><h3>xmlSecNssPKIAdoptKey ()</h3>
+<pre class="PROGRAMLISTING"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="RETURNVALUE">xmlSecKeyDataPtr</span></a>
+xmlSecNssPKIAdoptKey (<code class="PARAMETER"><font><span class="TYPE">SECKEYPrivateKey</span></font> *privkey</code>,
+                      <code class="PARAMETER"><font><span class="TYPE">SECKEYPublicKey</span></font> *pubkey</code>);</pre>
+<p>Build a KeyData object from the given Private Key and Public
+Key handles.</p>
+<div class="REFSECT3">
+<a name="AEN41290"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN41292"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>privkey</p></td>
+<td><p>the NSS Private Key handle</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>pubkey</p></td>
+<td><p>the NSS Public Key handle</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN41307"></a><h4>Returns</h4>
+<p> pointer to KeyData object or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECNSSPKIKEYDATAGETPUBKEY"></a><h3>xmlSecNssPKIKeyDataGetPubKey ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">SECKEYPublicKey</span></font> *
+xmlSecNssPKIKeyDataGetPubKey (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>);</pre>
+<p>Gets the Public Key from the key data.</p>
+<div class="REFSECT3">
+<a name="AEN41321"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN41323"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody><tr>
+<td><p>data</p></td>
+<td><p>the pointer to NSS Key data.</p></td>
+<td> </td>
+</tr></tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN41332"></a><h4>Returns</h4>
+<p> pointer to SECKEYPublicKey or NULL if an error occurs.
+Caller is responsible for freeing the key when done</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECNSSPKIKEYDATAGETPRIVKEY"></a><h3>xmlSecNssPKIKeyDataGetPrivKey ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">SECKEYPrivateKey</span></font> *
+xmlSecNssPKIKeyDataGetPrivKey (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>);</pre>
+<p>Gets the Private Key from the key data.</p>
+<div class="REFSECT3">
+<a name="AEN41346"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN41348"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody><tr>
+<td><p>data</p></td>
+<td><p>the pointer to NSS Key data.</p></td>
+<td> </td>
+</tr></tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN41357"></a><h4>Returns</h4>
+<p> pointer to SECKEYPrivateKey or NULL if an error occurs.
+Caller is responsible for freeing the key when done</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECNSSPKIKEYDATAGETKEYTYPE"></a><h3>xmlSecNssPKIKeyDataGetKeyType ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">KeyType</span></font>
+xmlSecNssPKIKeyDataGetKeyType (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>);</pre>
+<p>Gets the Key Type from the key data.</p>
+<div class="REFSECT3">
+<a name="AEN41371"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN41373"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody><tr>
+<td><p>data</p></td>
+<td><p>the pointer to NSS Key data.</p></td>
+<td> </td>
+</tr></tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN41382"></a><h4>Returns</h4>
+<p> Key Type</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECNSSPKIKEYDATADUPLICATE"></a><h3>xmlSecNssPKIKeyDataDuplicate ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecNssPKIKeyDataDuplicate (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> dst</code>,
+                              <code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> src</code>);</pre>
+<p>Duplicates the keydata from src to dst</p>
+<div class="REFSECT3">
+<a name="AEN41399"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN41401"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>dst</p></td>
+<td><p>the pointer to NSS Key data to copy to.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>src</p></td>
+<td><p>the pointer to NSS Key data to copy from.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN41416"></a><h4>Returns</h4>
+<p> -1 on error, 0 on success</p>
+</div>
+</div>
+</div>
+<div class="REFSECT1">
+<a name="XMLSEC-NSS-PKIKEYS.OTHER_DETAILS"></a><h2>Types and Values</h2>
+<p></p>
+</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td align="left"><a accesskey="p" href="xmlsec-nss-keysstore.html"><b>&lt;&lt;&lt; keysstore</b></a></td>
+<td align="right"><a accesskey="n" href="xmlsec-nss-x509.html"><b>x509 &gt;&gt;&gt;</b></a></td>
+</tr></table>
+</td></tr></table></td>
+</tr></table></body>
+</html>

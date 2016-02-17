@@ -1,25 +1,13 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->errors</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-TITLE="XML Security Library Reference Manual"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="XML Security Core Library API Reference."
-HREF="xmlsec-ref.html"><LINK
-REL="PREVIOUS"
-TITLE="dl"
-HREF="xmlsec-dl.html"><LINK
-REL="NEXT"
-TITLE="io"
-HREF="xmlsec-io.html"><STYLE
-TYPE="text/css"
->.synopsis, .classsynopsis {
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>errors</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="XML Security Core Library API Reference." href="xmlsec-ref.html">
+<link rel="PREVIOUS" title="dl" href="xmlsec-dl.html">
+<link rel="NEXT" title="io" href="xmlsec-io.html">
+<style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
     padding: 0.5em;
@@ -47,2764 +35,1102 @@ TYPE="text/css"
 }
 .navigation .title {
     font-size: 200%;
-}</STYLE
-></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><TABLE
-WIDTH="100%"
-CLASS="navigation"
-SUMMARY="Navigation header"
-CELLPADDING="2"
-CELLSPACING="2"
-><TR
-VALIGN="middle"
-><TD
-><A
-ACCESSKEY="p"
-HREF="xmlsec-dl.html"
-><IMG
-SRC="left.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Prev"></A
-></TD
-><TD
-><A
-ACCESSKEY="u"
-HREF="xmlsec-ref.html"
-><IMG
-SRC="up.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Up"></A
-></TD
-><TD
-><A
-ACCESSKEY="h"
-HREF="index.html"
-><IMG
-SRC="home.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Home"></A
-></TD
-><TH
-WIDTH="100%"
-align="center"
->XML Security Library Reference Manual</TH
-><TD
-><A
-ACCESSKEY="n"
-HREF="xmlsec-io.html"
-><IMG
-SRC="right.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Next"></A
-></TD
-></TR
-></TABLE
-><H1
-><A
-NAME="XMLSEC-ERRORS"
-></A
->errors</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN6107"
-></A
-><H2
->Name</H2
->errors&nbsp;--&nbsp;Error/log messages support.</DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="XMLSEC-ERRORS.FUNCTIONS"
-></A
-><H2
->Functions</H2
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN6112"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><TBODY
-><TR
-><TD
-><GTKDOCLINK
-HREF="VOID"
-><SPAN
-CLASS="RETURNVALUE"
->void</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->(</SPAN
-></SPAN
-><A
-HREF="xmlsec-errors.html#XMLSECERRORSCALLBACK"
->*xmlSecErrorsCallback</A
-><SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->)</SPAN
-></SPAN
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="VOID"
-><SPAN
-CLASS="RETURNVALUE"
->void</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSECERRORSINIT"
->xmlSecErrorsInit</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="VOID"
-><SPAN
-CLASS="RETURNVALUE"
->void</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSECERRORSSHUTDOWN"
->xmlSecErrorsShutdown</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="VOID"
-><SPAN
-CLASS="RETURNVALUE"
->void</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSECERRORSSETCALLBACK"
->xmlSecErrorsSetCallback</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="VOID"
-><SPAN
-CLASS="RETURNVALUE"
->void</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSECERRORSDEFAULTCALLBACK"
->xmlSecErrorsDefaultCallback</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="VOID"
-><SPAN
-CLASS="RETURNVALUE"
->void</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSECERRORSDEFAULTCALLBACKENABLEOUTPUT"
->xmlSecErrorsDefaultCallbackEnableOutput</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSECERRORSGETCODE"
->xmlSecErrorsGetCode</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
->const <GTKDOCLINK
-HREF="CHAR"
-><SPAN
-CLASS="RETURNVALUE"
->char</SPAN
-></GTKDOCLINK
-> *</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSECERRORSGETMSG"
->xmlSecErrorsGetMsg</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSECERRORSSAFESTRING"
->xmlSecErrorsSafeString</A
-><SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
-><GTKDOCLINK
-HREF="VOID"
-><SPAN
-CLASS="RETURNVALUE"
->void</SPAN
-></GTKDOCLINK
-></TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSECERROR"
->xmlSecError</A
-> <SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSECASSERT"
->xmlSecAssert</A
-><SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSECASSERT2"
->xmlSecAssert2</A
-><SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->()</SPAN
-></SPAN
-></TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="XMLSEC-ERRORS.OTHER"
-></A
-><H2
->Types and Values</H2
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN6197"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><TBODY
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-XMLSEC-FAILED:CAPS"
->XMLSEC_ERRORS_R_XMLSEC_FAILED</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-MALLOC-FAILED:CAPS"
->XMLSEC_ERRORS_R_MALLOC_FAILED</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-STRDUP-FAILED:CAPS"
->XMLSEC_ERRORS_R_STRDUP_FAILED</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-CRYPTO-FAILED:CAPS"
->XMLSEC_ERRORS_R_CRYPTO_FAILED</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-XML-FAILED:CAPS"
->XMLSEC_ERRORS_R_XML_FAILED</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-XSLT-FAILED:CAPS"
->XMLSEC_ERRORS_R_XSLT_FAILED</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-IO-FAILED:CAPS"
->XMLSEC_ERRORS_R_IO_FAILED</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-DISABLED:CAPS"
->XMLSEC_ERRORS_R_DISABLED</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-NOT-IMPLEMENTED:CAPS"
->XMLSEC_ERRORS_R_NOT_IMPLEMENTED</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-SIZE:CAPS"
->XMLSEC_ERRORS_R_INVALID_SIZE</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-DATA:CAPS"
->XMLSEC_ERRORS_R_INVALID_DATA</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-RESULT:CAPS"
->XMLSEC_ERRORS_R_INVALID_RESULT</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-TYPE:CAPS"
->XMLSEC_ERRORS_R_INVALID_TYPE</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-OPERATION:CAPS"
->XMLSEC_ERRORS_R_INVALID_OPERATION</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-STATUS:CAPS"
->XMLSEC_ERRORS_R_INVALID_STATUS</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-FORMAT:CAPS"
->XMLSEC_ERRORS_R_INVALID_FORMAT</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-DATA-NOT-MATCH:CAPS"
->XMLSEC_ERRORS_R_DATA_NOT_MATCH</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-NODE:CAPS"
->XMLSEC_ERRORS_R_INVALID_NODE</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-NODE-CONTENT:CAPS"
->XMLSEC_ERRORS_R_INVALID_NODE_CONTENT</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-NODE-ATTRIBUTE:CAPS"
->XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-MISSING-NODE-ATTRIBUTE:CAPS"
->XMLSEC_ERRORS_R_MISSING_NODE_ATTRIBUTE</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-NODE-ALREADY-PRESENT:CAPS"
->XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-UNEXPECTED-NODE:CAPS"
->XMLSEC_ERRORS_R_UNEXPECTED_NODE</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-NODE-NOT-FOUND:CAPS"
->XMLSEC_ERRORS_R_NODE_NOT_FOUND</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-TRANSFORM:CAPS"
->XMLSEC_ERRORS_R_INVALID_TRANSFORM</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-TRANSFORM-KEY:CAPS"
->XMLSEC_ERRORS_R_INVALID_TRANSFORM_KEY</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-URI-TYPE:CAPS"
->XMLSEC_ERRORS_R_INVALID_URI_TYPE</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-TRANSFORM-SAME-DOCUMENT-REQUIRED:CAPS"
->XMLSEC_ERRORS_R_TRANSFORM_SAME_DOCUMENT_REQUIRED</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-TRANSFORM-DISABLED:CAPS"
->XMLSEC_ERRORS_R_TRANSFORM_DISABLED</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-KEY-DATA:CAPS"
->XMLSEC_ERRORS_R_INVALID_KEY_DATA</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-KEY-DATA-NOT-FOUND:CAPS"
->XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-KEY-DATA-ALREADY-EXIST:CAPS"
->XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-KEY-DATA-SIZE:CAPS"
->XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-KEY-NOT-FOUND:CAPS"
->XMLSEC_ERRORS_R_KEY_NOT_FOUND</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-KEYDATA-DISABLED:CAPS"
->XMLSEC_ERRORS_R_KEYDATA_DISABLED</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-MAX-RETRIEVALS-LEVEL:CAPS"
->XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-MAX-RETRIEVAL-TYPE-MISMATCH:CAPS"
->XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-MAX-ENCKEY-LEVEL:CAPS"
->XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-CERT-VERIFY-FAILED:CAPS"
->XMLSEC_ERRORS_R_CERT_VERIFY_FAILED</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-CERT-NOT-FOUND:CAPS"
->XMLSEC_ERRORS_R_CERT_NOT_FOUND</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-CERT-REVOKED:CAPS"
->XMLSEC_ERRORS_R_CERT_REVOKED</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-CERT-ISSUER-FAILED:CAPS"
->XMLSEC_ERRORS_R_CERT_ISSUER_FAILED</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-CERT-NOT-YET-VALID:CAPS"
->XMLSEC_ERRORS_R_CERT_NOT_YET_VALID</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-CERT-HAS-EXPIRED:CAPS"
->XMLSEC_ERRORS_R_CERT_HAS_EXPIRED</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-DSIG-NO-REFERENCES:CAPS"
->XMLSEC_ERRORS_R_DSIG_NO_REFERENCES</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-DSIG-INVALID-REFERENCE:CAPS"
->XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-R-ASSERTION:CAPS"
->XMLSEC_ERRORS_R_ASSERTION</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-MAX-NUMBER:CAPS"
->XMLSEC_ERRORS_MAX_NUMBER</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-HERE:CAPS"
->XMLSEC_ERRORS_HERE</A
-></TD
-></TR
-><TR
-><TD
->#define</TD
-><TD
-><A
-HREF="xmlsec-errors.html#XMLSEC-ERRORS-NO-MESSAGE:CAPS"
->XMLSEC_ERRORS_NO_MESSAGE</A
-></TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="XMLSEC-ERRORS.DESCRIPTION"
-></A
-><H2
->Description</H2
-><P
->Error/log messages support.</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="XMLSEC-ERRORS.FUNCTIONS_DETAILS"
-></A
-><H2
->Functions</H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECERRORSCALLBACK"
-></A
-><H3
->xmlSecErrorsCallback ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="VOID"
-><SPAN
-CLASS="RETURNVALUE"
->void</SPAN
-></GTKDOCLINK
->
-<SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->(</SPAN
-></SPAN
->*xmlSecErrorsCallback<SPAN
-CLASS="c_punctuation"
-><SPAN
-CLASS="PHRASE"
->)</SPAN
-></SPAN
-> (<CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="CHAR"
-><SPAN
-CLASS="TYPE"
->char</SPAN
-></GTKDOCLINK
-> *file</CODE
->,
-                         <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="TYPE"
->int</SPAN
-></GTKDOCLINK
-> line</CODE
->,
-                         <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="CHAR"
-><SPAN
-CLASS="TYPE"
->char</SPAN
-></GTKDOCLINK
-> *func</CODE
->,
-                         <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="CHAR"
-><SPAN
-CLASS="TYPE"
->char</SPAN
-></GTKDOCLINK
-> *errorObject</CODE
->,
-                         <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="CHAR"
-><SPAN
-CLASS="TYPE"
->char</SPAN
-></GTKDOCLINK
-> *errorSubject</CODE
->,
-                         <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="TYPE"
->int</SPAN
-></GTKDOCLINK
-> reason</CODE
->,
-                         <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="CHAR"
-><SPAN
-CLASS="TYPE"
->char</SPAN
-></GTKDOCLINK
-> *msg</CODE
->);</PRE
-><P
->The errors reporting callback function.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN6436"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN6438"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->file</P
-></TD
-><TD
-><P
->the error location file name (__FILE__ macro).</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->line</P
-></TD
-><TD
-><P
->the error location line number (__LINE__ macro).</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->func</P
-></TD
-><TD
-><P
->the error location function name (__func__ macro).</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->errorObject</P
-></TD
-><TD
-><P
->the error specific error object</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->errorSubject</P
-></TD
-><TD
-><P
->the error specific error subject.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->reason</P
-></TD
-><TD
-><P
->the error code.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->msg</P
-></TD
-><TD
-><P
->the additional error message.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECERRORSINIT"
-></A
-><H3
->xmlSecErrorsInit ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="VOID"
-><SPAN
-CLASS="RETURNVALUE"
->void</SPAN
-></GTKDOCLINK
->
-xmlSecErrorsInit (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->Initializes the errors reporting. It is called from <A
-HREF="xmlsec-xmlsec.html#XMLSECINIT"
-><SPAN
-CLASS="TYPE"
->xmlSecInit</SPAN
-></A
-> function.
-and applications must not call this function directly.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECERRORSSHUTDOWN"
-></A
-><H3
->xmlSecErrorsShutdown ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="VOID"
-><SPAN
-CLASS="RETURNVALUE"
->void</SPAN
-></GTKDOCLINK
->
-xmlSecErrorsShutdown (<CODE
-CLASS="PARAMETER"
-><SPAN
-CLASS="TYPE"
->void</SPAN
-></CODE
->);</PRE
-><P
->Cleanups the errors reporting. It is called from <A
-HREF="xmlsec-xmlsec.html#XMLSECSHUTDOWN"
-><SPAN
-CLASS="TYPE"
->xmlSecShutdown</SPAN
-></A
-> function.
-and applications must not call this function directly.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECERRORSSETCALLBACK"
-></A
-><H3
->xmlSecErrorsSetCallback ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="VOID"
-><SPAN
-CLASS="RETURNVALUE"
->void</SPAN
-></GTKDOCLINK
->
-xmlSecErrorsSetCallback (<CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-errors.html#XMLSECERRORSCALLBACK"
-><SPAN
-CLASS="TYPE"
->xmlSecErrorsCallback</SPAN
-></A
-> callback</CODE
->);</PRE
-><P
->Sets the errors callback function to <CODE
-CLASS="PARAMETER"
->callback</CODE
->
+}</style>
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
+</head>
+<body><table width="100%" valign="top"><tr valign="top">
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<ul>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
+<li><a href="../api/xmlsec-reference.html">API reference</a></li>
+<li><a href="../api/xmlsec-examples.html">Examples</a></li>
+</ul>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul><li><a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a></li></ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+<li><a href="../authors.html">Authors</a></li>
+</ul>
+<table width="100%">
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
+</tr>
+<!--Links - start--><!--Links - end-->
+</table>
+</td>
+<td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
+<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="xmlsec-dl.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="xmlsec-ref.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="n" href="xmlsec-io.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<h1>
+<a name="XMLSEC-ERRORS"></a>errors</h1>
+<div class="REFNAMEDIV">
+<a name="AEN6261"></a><h2>Name</h2>errors -- Error/log messages support.</div>
+<div class="REFSECT1">
+<a name="XMLSEC-ERRORS.FUNCTIONS"></a><h2>Functions</h2>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN6266"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<tbody>
+<tr>
+<td><font><span class="RETURNVALUE">void</span></font></td>
+<td>
+<span class="c_punctuation"><span class="PHRASE">(</span></span><a href="xmlsec-errors.html#XMLSECERRORSCALLBACK">*xmlSecErrorsCallback</a><span class="c_punctuation"><span class="PHRASE">)</span></span> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">void</span></font></td>
+<td>
+<a href="xmlsec-errors.html#XMLSECERRORSINIT">xmlSecErrorsInit</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">void</span></font></td>
+<td>
+<a href="xmlsec-errors.html#XMLSECERRORSSHUTDOWN">xmlSecErrorsShutdown</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">void</span></font></td>
+<td>
+<a href="xmlsec-errors.html#XMLSECERRORSSETCALLBACK">xmlSecErrorsSetCallback</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">void</span></font></td>
+<td>
+<a href="xmlsec-errors.html#XMLSECERRORSDEFAULTCALLBACK">xmlSecErrorsDefaultCallback</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">void</span></font></td>
+<td>
+<a href="xmlsec-errors.html#XMLSECERRORSDEFAULTCALLBACKENABLEOUTPUT">xmlSecErrorsDefaultCallbackEnableOutput</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-errors.html#XMLSECERRORSGETCODE">xmlSecErrorsGetCode</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td>const <font><span class="RETURNVALUE">char</span></font> *</td>
+<td>
+<a href="xmlsec-errors.html#XMLSECERRORSGETMSG">xmlSecErrorsGetMsg</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td>#define</td>
+<td>
+<a href="xmlsec-errors.html#XMLSECERRORSSAFESTRING">xmlSecErrorsSafeString</a><span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">void</span></font></td>
+<td>
+<a href="xmlsec-errors.html#XMLSECERROR">xmlSecError</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td>#define</td>
+<td>
+<a href="xmlsec-errors.html#XMLSECASSERT">xmlSecAssert</a><span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td>#define</td>
+<td>
+<a href="xmlsec-errors.html#XMLSECASSERT2">xmlSecAssert2</a><span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT1">
+<a name="XMLSEC-ERRORS.OTHER"></a><h2>Types and Values</h2>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN6351"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<tbody>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-XMLSEC-FAILED:CAPS">XMLSEC_ERRORS_R_XMLSEC_FAILED</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-MALLOC-FAILED:CAPS">XMLSEC_ERRORS_R_MALLOC_FAILED</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-STRDUP-FAILED:CAPS">XMLSEC_ERRORS_R_STRDUP_FAILED</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-CRYPTO-FAILED:CAPS">XMLSEC_ERRORS_R_CRYPTO_FAILED</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-XML-FAILED:CAPS">XMLSEC_ERRORS_R_XML_FAILED</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-XSLT-FAILED:CAPS">XMLSEC_ERRORS_R_XSLT_FAILED</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-IO-FAILED:CAPS">XMLSEC_ERRORS_R_IO_FAILED</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-DISABLED:CAPS">XMLSEC_ERRORS_R_DISABLED</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-NOT-IMPLEMENTED:CAPS">XMLSEC_ERRORS_R_NOT_IMPLEMENTED</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-SIZE:CAPS">XMLSEC_ERRORS_R_INVALID_SIZE</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-DATA:CAPS">XMLSEC_ERRORS_R_INVALID_DATA</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-RESULT:CAPS">XMLSEC_ERRORS_R_INVALID_RESULT</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-TYPE:CAPS">XMLSEC_ERRORS_R_INVALID_TYPE</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-OPERATION:CAPS">XMLSEC_ERRORS_R_INVALID_OPERATION</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-STATUS:CAPS">XMLSEC_ERRORS_R_INVALID_STATUS</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-FORMAT:CAPS">XMLSEC_ERRORS_R_INVALID_FORMAT</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-DATA-NOT-MATCH:CAPS">XMLSEC_ERRORS_R_DATA_NOT_MATCH</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-NODE:CAPS">XMLSEC_ERRORS_R_INVALID_NODE</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-NODE-CONTENT:CAPS">XMLSEC_ERRORS_R_INVALID_NODE_CONTENT</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-NODE-ATTRIBUTE:CAPS">XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-MISSING-NODE-ATTRIBUTE:CAPS">XMLSEC_ERRORS_R_MISSING_NODE_ATTRIBUTE</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-NODE-ALREADY-PRESENT:CAPS">XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-UNEXPECTED-NODE:CAPS">XMLSEC_ERRORS_R_UNEXPECTED_NODE</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-NODE-NOT-FOUND:CAPS">XMLSEC_ERRORS_R_NODE_NOT_FOUND</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-TRANSFORM:CAPS">XMLSEC_ERRORS_R_INVALID_TRANSFORM</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-TRANSFORM-KEY:CAPS">XMLSEC_ERRORS_R_INVALID_TRANSFORM_KEY</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-URI-TYPE:CAPS">XMLSEC_ERRORS_R_INVALID_URI_TYPE</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-TRANSFORM-SAME-DOCUMENT-REQUIRED:CAPS">XMLSEC_ERRORS_R_TRANSFORM_SAME_DOCUMENT_REQUIRED</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-TRANSFORM-DISABLED:CAPS">XMLSEC_ERRORS_R_TRANSFORM_DISABLED</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-KEY-DATA:CAPS">XMLSEC_ERRORS_R_INVALID_KEY_DATA</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-KEY-DATA-NOT-FOUND:CAPS">XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-KEY-DATA-ALREADY-EXIST:CAPS">XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-KEY-DATA-SIZE:CAPS">XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-KEY-NOT-FOUND:CAPS">XMLSEC_ERRORS_R_KEY_NOT_FOUND</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-KEYDATA-DISABLED:CAPS">XMLSEC_ERRORS_R_KEYDATA_DISABLED</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-MAX-RETRIEVALS-LEVEL:CAPS">XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-MAX-RETRIEVAL-TYPE-MISMATCH:CAPS">XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-MAX-ENCKEY-LEVEL:CAPS">XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-CERT-VERIFY-FAILED:CAPS">XMLSEC_ERRORS_R_CERT_VERIFY_FAILED</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-CERT-NOT-FOUND:CAPS">XMLSEC_ERRORS_R_CERT_NOT_FOUND</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-CERT-REVOKED:CAPS">XMLSEC_ERRORS_R_CERT_REVOKED</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-CERT-ISSUER-FAILED:CAPS">XMLSEC_ERRORS_R_CERT_ISSUER_FAILED</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-CERT-NOT-YET-VALID:CAPS">XMLSEC_ERRORS_R_CERT_NOT_YET_VALID</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-CERT-HAS-EXPIRED:CAPS">XMLSEC_ERRORS_R_CERT_HAS_EXPIRED</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-DSIG-NO-REFERENCES:CAPS">XMLSEC_ERRORS_R_DSIG_NO_REFERENCES</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-DSIG-INVALID-REFERENCE:CAPS">XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-ASSERTION:CAPS">XMLSEC_ERRORS_R_ASSERTION</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-MAX-NUMBER:CAPS">XMLSEC_ERRORS_MAX_NUMBER</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-HERE:CAPS">XMLSEC_ERRORS_HERE</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-errors.html#XMLSEC-ERRORS-NO-MESSAGE:CAPS">XMLSEC_ERRORS_NO_MESSAGE</a></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT1">
+<a name="XMLSEC-ERRORS.DESCRIPTION"></a><h2>Description</h2>
+<p>Error/log messages support.</p>
+</div>
+<div class="REFSECT1">
+<a name="XMLSEC-ERRORS.FUNCTIONS_DETAILS"></a><h2>Functions</h2>
+<div class="REFSECT2">
+<a name="XMLSECERRORSCALLBACK"></a><h3>xmlSecErrorsCallback ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">void</span></font>
+<span class="c_punctuation"><span class="PHRASE">(</span></span>*xmlSecErrorsCallback<span class="c_punctuation"><span class="PHRASE">)</span></span> (<code class="PARAMETER">const <font><span class="TYPE">char</span></font> *file</code>,
+                         <code class="PARAMETER"><font><span class="TYPE">int</span></font> line</code>,
+                         <code class="PARAMETER">const <font><span class="TYPE">char</span></font> *func</code>,
+                         <code class="PARAMETER">const <font><span class="TYPE">char</span></font> *errorObject</code>,
+                         <code class="PARAMETER">const <font><span class="TYPE">char</span></font> *errorSubject</code>,
+                         <code class="PARAMETER"><font><span class="TYPE">int</span></font> reason</code>,
+                         <code class="PARAMETER">const <font><span class="TYPE">char</span></font> *msg</code>);</pre>
+<p>The errors reporting callback function.</p>
+<div class="REFSECT3">
+<a name="AEN6590"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN6592"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>file</p></td>
+<td><p>the error location file name (__FILE__ macro).</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>line</p></td>
+<td><p>the error location line number (__LINE__ macro).</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>func</p></td>
+<td><p>the error location function name (__func__ macro).</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>errorObject</p></td>
+<td><p>the error specific error object</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>errorSubject</p></td>
+<td><p>the error specific error subject.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>reason</p></td>
+<td><p>the error code.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>msg</p></td>
+<td><p>the additional error message.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECERRORSINIT"></a><h3>xmlSecErrorsInit ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">void</span></font>
+xmlSecErrorsInit (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>Initializes the errors reporting. It is called from <a href="xmlsec-xmlsec.html#XMLSECINIT"><span class="TYPE">xmlSecInit</span></a> function.
+and applications must not call this function directly.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECERRORSSHUTDOWN"></a><h3>xmlSecErrorsShutdown ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">void</span></font>
+xmlSecErrorsShutdown (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>Cleanups the errors reporting. It is called from <a href="xmlsec-xmlsec.html#XMLSECSHUTDOWN"><span class="TYPE">xmlSecShutdown</span></a> function.
+and applications must not call this function directly.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECERRORSSETCALLBACK"></a><h3>xmlSecErrorsSetCallback ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">void</span></font>
+xmlSecErrorsSetCallback (<code class="PARAMETER"><a href="xmlsec-errors.html#XMLSECERRORSCALLBACK"><span class="TYPE">xmlSecErrorsCallback</span></a> callback</code>);</pre>
+<p>Sets the errors callback function to <code class="PARAMETER">callback</code>
  that will be called
-every time an error occurs.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN6519"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN6521"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->callback</P
-></TD
-><TD
-><P
->the new errors callback function.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECERRORSDEFAULTCALLBACK"
-></A
-><H3
->xmlSecErrorsDefaultCallback ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="VOID"
-><SPAN
-CLASS="RETURNVALUE"
->void</SPAN
-></GTKDOCLINK
->
-xmlSecErrorsDefaultCallback (<CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="CHAR"
-><SPAN
-CLASS="TYPE"
->char</SPAN
-></GTKDOCLINK
-> *file</CODE
->,
-                             <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="TYPE"
->int</SPAN
-></GTKDOCLINK
-> line</CODE
->,
-                             <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="CHAR"
-><SPAN
-CLASS="TYPE"
->char</SPAN
-></GTKDOCLINK
-> *func</CODE
->,
-                             <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="CHAR"
-><SPAN
-CLASS="TYPE"
->char</SPAN
-></GTKDOCLINK
-> *errorObject</CODE
->,
-                             <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="CHAR"
-><SPAN
-CLASS="TYPE"
->char</SPAN
-></GTKDOCLINK
-> *errorSubject</CODE
->,
-                             <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="TYPE"
->int</SPAN
-></GTKDOCLINK
-> reason</CODE
->,
-                             <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="CHAR"
-><SPAN
-CLASS="TYPE"
->char</SPAN
-></GTKDOCLINK
-> *msg</CODE
->);</PRE
-><P
->The default error reporting callback that utilizes LibXML
-error reporting <GTKDOCLINK
-HREF="XMLGENERICERROR"
-><SPAN
-CLASS="TYPE"
->xmlGenericError</SPAN
-></GTKDOCLINK
-> function.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN6561"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN6563"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->file</P
-></TD
-><TD
-><P
->the error location file name (__FILE__ macro).</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->line</P
-></TD
-><TD
-><P
->the error location line number (__LINE__ macro).</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->func</P
-></TD
-><TD
-><P
->the error location function name (__FUNCTION__ macro).</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->errorObject</P
-></TD
-><TD
-><P
->the error specific error object</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->errorSubject</P
-></TD
-><TD
-><P
->the error specific error subject.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->reason</P
-></TD
-><TD
-><P
->the error code.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->msg</P
-></TD
-><TD
-><P
->the additional error message.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECERRORSDEFAULTCALLBACKENABLEOUTPUT"
-></A
-><H3
->xmlSecErrorsDefaultCallbackEnableOutput ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="VOID"
-><SPAN
-CLASS="RETURNVALUE"
->void</SPAN
-></GTKDOCLINK
->
+every time an error occurs.</p>
+<div class="REFSECT3">
+<a name="AEN6673"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN6675"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody><tr>
+<td><p>callback</p></td>
+<td><p>the new errors callback function.</p></td>
+<td> </td>
+</tr></tbody>
+</table>
+<p></p>
+</div>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECERRORSDEFAULTCALLBACK"></a><h3>xmlSecErrorsDefaultCallback ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">void</span></font>
+xmlSecErrorsDefaultCallback (<code class="PARAMETER">const <font><span class="TYPE">char</span></font> *file</code>,
+                             <code class="PARAMETER"><font><span class="TYPE">int</span></font> line</code>,
+                             <code class="PARAMETER">const <font><span class="TYPE">char</span></font> *func</code>,
+                             <code class="PARAMETER">const <font><span class="TYPE">char</span></font> *errorObject</code>,
+                             <code class="PARAMETER">const <font><span class="TYPE">char</span></font> *errorSubject</code>,
+                             <code class="PARAMETER"><font><span class="TYPE">int</span></font> reason</code>,
+                             <code class="PARAMETER">const <font><span class="TYPE">char</span></font> *msg</code>);</pre>
+<p>The default error reporting callback that utilizes LibXML
+error reporting <font><span class="TYPE">xmlGenericError</span></font> function.</p>
+<div class="REFSECT3">
+<a name="AEN6715"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN6717"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>file</p></td>
+<td><p>the error location file name (__FILE__ macro).</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>line</p></td>
+<td><p>the error location line number (__LINE__ macro).</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>func</p></td>
+<td><p>the error location function name (__FUNCTION__ macro).</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>errorObject</p></td>
+<td><p>the error specific error object</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>errorSubject</p></td>
+<td><p>the error specific error subject.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>reason</p></td>
+<td><p>the error code.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>msg</p></td>
+<td><p>the additional error message.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECERRORSDEFAULTCALLBACKENABLEOUTPUT"></a><h3>xmlSecErrorsDefaultCallbackEnableOutput ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">void</span></font>
 xmlSecErrorsDefaultCallbackEnableOutput
-                               (<CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="TYPE"
->int</SPAN
-></GTKDOCLINK
-> enabled</CODE
->);</PRE
-><P
->Enables or disables calling LibXML2 callback from the default
-errors callback.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN6619"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN6621"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->enabled</P
-></TD
-><TD
-><P
->the flag.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECERRORSGETCODE"
-></A
-><H3
->xmlSecErrorsGetCode ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="RETURNVALUE"
->int</SPAN
-></GTKDOCLINK
->
-xmlSecErrorsGetCode (<CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-xmlsec.html#XMLSECSIZE"
-><SPAN
-CLASS="TYPE"
->xmlSecSize</SPAN
-></A
-> pos</CODE
->);</PRE
-><P
->Gets the known error code at position <CODE
-CLASS="PARAMETER"
->pos</CODE
->
-.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN6642"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN6644"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->pos</P
-></TD
-><TD
-><P
->the error position.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN6653"
-></A
-><H4
->Returns</H4
-><P
-> the known error code or 0 if <CODE
-CLASS="PARAMETER"
->pos</CODE
->
+                               (<code class="PARAMETER"><font><span class="TYPE">int</span></font> enabled</code>);</pre>
+<p>Enables or disables calling LibXML2 callback from the default
+errors callback.</p>
+<div class="REFSECT3">
+<a name="AEN6773"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN6775"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody><tr>
+<td><p>enabled</p></td>
+<td><p>the flag.</p></td>
+<td> </td>
+</tr></tbody>
+</table>
+<p></p>
+</div>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECERRORSGETCODE"></a><h3>xmlSecErrorsGetCode ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecErrorsGetCode (<code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> pos</code>);</pre>
+<p>Gets the known error code at position <code class="PARAMETER">pos</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN6796"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN6798"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody><tr>
+<td><p>pos</p></td>
+<td><p>the error position.</p></td>
+<td> </td>
+</tr></tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN6807"></a><h4>Returns</h4>
+<p> the known error code or 0 if <code class="PARAMETER">pos</code>
 is greater than
-total number of known error codes.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECERRORSGETMSG"
-></A
-><H3
->xmlSecErrorsGetMsg ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
->const <GTKDOCLINK
-HREF="CHAR"
-><SPAN
-CLASS="RETURNVALUE"
->char</SPAN
-></GTKDOCLINK
-> *
-xmlSecErrorsGetMsg (<CODE
-CLASS="PARAMETER"
-><A
-HREF="xmlsec-xmlsec.html#XMLSECSIZE"
-><SPAN
-CLASS="TYPE"
->xmlSecSize</SPAN
-></A
-> pos</CODE
->);</PRE
-><P
->Gets the known error message at position <CODE
-CLASS="PARAMETER"
->pos</CODE
->
-.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN6669"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN6671"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->pos</P
-></TD
-><TD
-><P
->the error position.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN6680"
-></A
-><H4
->Returns</H4
-><P
-> the known error message or NULL if <CODE
-CLASS="PARAMETER"
->pos</CODE
->
+total number of known error codes.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECERRORSGETMSG"></a><h3>xmlSecErrorsGetMsg ()</h3>
+<pre class="PROGRAMLISTING">const <font><span class="RETURNVALUE">char</span></font> *
+xmlSecErrorsGetMsg (<code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> pos</code>);</pre>
+<p>Gets the known error message at position <code class="PARAMETER">pos</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN6823"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN6825"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody><tr>
+<td><p>pos</p></td>
+<td><p>the error position.</p></td>
+<td> </td>
+</tr></tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN6834"></a><h4>Returns</h4>
+<p> the known error message or NULL if <code class="PARAMETER">pos</code>
 is greater than
-total number of known error codes.</P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECERRORSSAFESTRING"
-></A
-><H3
->xmlSecErrorsSafeString()</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecErrorsSafeString(str)</PRE
-><P
->Macro. Returns <CODE
-CLASS="PARAMETER"
->str</CODE
->
- if it is not NULL or pointer to "NULL" otherwise.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN6691"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN6693"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->str</P
-></TD
-><TD
-><P
->the string.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECERROR"
-></A
-><H3
->xmlSecError ()</H3
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="VOID"
-><SPAN
-CLASS="RETURNVALUE"
->void</SPAN
-></GTKDOCLINK
->
-xmlSecError (<CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="CHAR"
-><SPAN
-CLASS="TYPE"
->char</SPAN
-></GTKDOCLINK
-> *file</CODE
->,
-             <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="TYPE"
->int</SPAN
-></GTKDOCLINK
-> line</CODE
->,
-             <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="CHAR"
-><SPAN
-CLASS="TYPE"
->char</SPAN
-></GTKDOCLINK
-> *func</CODE
->,
-             <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="CHAR"
-><SPAN
-CLASS="TYPE"
->char</SPAN
-></GTKDOCLINK
-> *errorObject</CODE
->,
-             <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="CHAR"
-><SPAN
-CLASS="TYPE"
->char</SPAN
-></GTKDOCLINK
-> *errorSubject</CODE
->,
-             <CODE
-CLASS="PARAMETER"
-><GTKDOCLINK
-HREF="INT"
-><SPAN
-CLASS="TYPE"
->int</SPAN
-></GTKDOCLINK
-> reason</CODE
->,
-             <CODE
-CLASS="PARAMETER"
->const <GTKDOCLINK
-HREF="CHAR"
-><SPAN
-CLASS="TYPE"
->char</SPAN
-></GTKDOCLINK
-> *msg</CODE
->,
-             <CODE
-CLASS="PARAMETER"
->...</CODE
->);</PRE
-><P
->Reports an error to the default (<A
-HREF="xmlsec-errors.html#XMLSECERRORSDEFAULTCALLBACK"
-><SPAN
-CLASS="TYPE"
->xmlSecErrorsDefaultCallback</SPAN
-></A
->) or
-application specific callback installed using <A
-HREF="xmlsec-errors.html#XMLSECERRORSSETCALLBACK"
-><SPAN
-CLASS="TYPE"
->xmlSecErrorsSetCallback</SPAN
-></A
->
-function.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN6736"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN6738"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->file</P
-></TD
-><TD
-><P
->the error location filename (__FILE__).</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->line</P
-></TD
-><TD
-><P
->the error location line number (__LINE__).</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->func</P
-></TD
-><TD
-><P
->the error location function (__FUNCTIION__).</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->errorObject</P
-></TD
-><TD
-><P
->the error specific error object</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->errorSubject</P
-></TD
-><TD
-><P
->the error specific error subject.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->reason</P
-></TD
-><TD
-><P
->the error code.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->msg</P
-></TD
-><TD
-><P
->the error message in printf format.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->...</P
-></TD
-><TD
-><P
->the parameters for the <CODE
-CLASS="PARAMETER"
->msg</CODE
->
-.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECASSERT"
-></A
-><H3
->xmlSecAssert()</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecAssert( p )</PRE
-><P
->Macro. Verifies that <CODE
-CLASS="PARAMETER"
->p</CODE
->
- is true and calls <GTKDOCLINK
-HREF="RETURN"
-><CODE
-CLASS="FUNCTION"
->return()</CODE
-></GTKDOCLINK
-> otherwise.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN6799"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN6801"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->p</P
-></TD
-><TD
-><P
->the expression.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSECASSERT2"
-></A
-><H3
->xmlSecAssert2()</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define             xmlSecAssert2( p, ret )</PRE
-><P
->Macro. Verifies that <CODE
-CLASS="PARAMETER"
->p</CODE
->
- is true and calls return(<CODE
-CLASS="PARAMETER"
->ret</CODE
->
-) otherwise.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN6818"
-></A
-><H4
->Parameters</H4
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN6820"
-></A
-><TABLE
-BORDER="0"
-FRAME="void"
-WIDTH="100%"
-CLASS="CALSTABLE"
-><COL><COL><COL><TBODY
-><TR
-><TD
-><P
->p</P
-></TD
-><TD
-><P
->the expression.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><P
->ret</P
-></TD
-><TD
-><P
->the return value.</P
-></TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="XMLSEC-ERRORS.OTHER_DETAILS"
-></A
-><H2
->Types and Values</H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-XMLSEC-FAILED:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_XMLSEC_FAILED</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_XMLSEC_FAILED                   1</PRE
-><P
->An XMLSec function failed (error subject is the failed function).</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-MALLOC-FAILED:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_MALLOC_FAILED</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_MALLOC_FAILED                   2</PRE
-><P
->Failed to allocate memory error.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-STRDUP-FAILED:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_STRDUP_FAILED</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_STRDUP_FAILED                   3</PRE
-><P
->Failed to duplicate string error.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-CRYPTO-FAILED:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_CRYPTO_FAILED</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_CRYPTO_FAILED                   4</PRE
-><P
->Crypto (OpenSSL) function failed (error subject is the failed function).</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-XML-FAILED:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_XML_FAILED</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_XML_FAILED                      5</PRE
-><P
->LibXML function failed (error subject is the failed function).</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-XSLT-FAILED:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_XSLT_FAILED</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_XSLT_FAILED                     6</PRE
-><P
->LibXSLT function failed (error subject is the failed function).</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-IO-FAILED:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_IO_FAILED</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_IO_FAILED                       7</PRE
-><P
->IO operation failed.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-DISABLED:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_DISABLED</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_DISABLED                        8</PRE
-><P
->The feature is disabled during compilation.
+total number of known error codes.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECERRORSSAFESTRING"></a><h3>xmlSecErrorsSafeString()</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecErrorsSafeString(str)</pre>
+<p>Macro. Returns <code class="PARAMETER">str</code>
+ if it is not NULL or pointer to "NULL" otherwise.</p>
+<div class="REFSECT3">
+<a name="AEN6845"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN6847"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody><tr>
+<td><p>str</p></td>
+<td><p>the string.</p></td>
+<td> </td>
+</tr></tbody>
+</table>
+<p></p>
+</div>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECERROR"></a><h3>xmlSecError ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">void</span></font>
+xmlSecError (<code class="PARAMETER">const <font><span class="TYPE">char</span></font> *file</code>,
+             <code class="PARAMETER"><font><span class="TYPE">int</span></font> line</code>,
+             <code class="PARAMETER">const <font><span class="TYPE">char</span></font> *func</code>,
+             <code class="PARAMETER">const <font><span class="TYPE">char</span></font> *errorObject</code>,
+             <code class="PARAMETER">const <font><span class="TYPE">char</span></font> *errorSubject</code>,
+             <code class="PARAMETER"><font><span class="TYPE">int</span></font> reason</code>,
+             <code class="PARAMETER">const <font><span class="TYPE">char</span></font> *msg</code>,
+             <code class="PARAMETER">...</code>);</pre>
+<p>Reports an error to the default (<a href="xmlsec-errors.html#XMLSECERRORSDEFAULTCALLBACK"><span class="TYPE">xmlSecErrorsDefaultCallback</span></a>) or
+application specific callback installed using <a href="xmlsec-errors.html#XMLSECERRORSSETCALLBACK"><span class="TYPE">xmlSecErrorsSetCallback</span></a>
+function.</p>
+<div class="REFSECT3">
+<a name="AEN6890"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN6892"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>file</p></td>
+<td><p>the error location filename (__FILE__).</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>line</p></td>
+<td><p>the error location line number (__LINE__).</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>func</p></td>
+<td><p>the error location function (__FUNCTIION__).</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>errorObject</p></td>
+<td><p>the error specific error object</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>errorSubject</p></td>
+<td><p>the error specific error subject.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>reason</p></td>
+<td><p>the error code.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>msg</p></td>
+<td><p>the error message in printf format.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>...</p></td>
+<td><p>the parameters for the <code class="PARAMETER">msg</code>
+.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECASSERT"></a><h3>xmlSecAssert()</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecAssert( p )</pre>
+<p>Macro. Verifies that <code class="PARAMETER">p</code>
+ is true and calls <font><code class="FUNCTION">return()</code></font> otherwise.</p>
+<div class="REFSECT3">
+<a name="AEN6953"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN6955"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody><tr>
+<td><p>p</p></td>
+<td><p>the expression.</p></td>
+<td> </td>
+</tr></tbody>
+</table>
+<p></p>
+</div>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECASSERT2"></a><h3>xmlSecAssert2()</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecAssert2( p, ret )</pre>
+<p>Macro. Verifies that <code class="PARAMETER">p</code>
+ is true and calls return(<code class="PARAMETER">ret</code>
+) otherwise.</p>
+<div class="REFSECT3">
+<a name="AEN6972"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN6974"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>p</p></td>
+<td><p>the expression.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>ret</p></td>
+<td><p>the return value.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+</div>
+</div>
+<div class="REFSECT1">
+<a name="XMLSEC-ERRORS.OTHER_DETAILS"></a><h2>Types and Values</h2>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-XMLSEC-FAILED:CAPS"></a><h3>XMLSEC_ERRORS_R_XMLSEC_FAILED</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_XMLSEC_FAILED                   1</pre>
+<p>An XMLSec function failed (error subject is the failed function).</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-MALLOC-FAILED:CAPS"></a><h3>XMLSEC_ERRORS_R_MALLOC_FAILED</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_MALLOC_FAILED                   2</pre>
+<p>Failed to allocate memory error.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-STRDUP-FAILED:CAPS"></a><h3>XMLSEC_ERRORS_R_STRDUP_FAILED</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_STRDUP_FAILED                   3</pre>
+<p>Failed to duplicate string error.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-CRYPTO-FAILED:CAPS"></a><h3>XMLSEC_ERRORS_R_CRYPTO_FAILED</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_CRYPTO_FAILED                   4</pre>
+<p>Crypto (OpenSSL) function failed (error subject is the failed function).</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-XML-FAILED:CAPS"></a><h3>XMLSEC_ERRORS_R_XML_FAILED</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_XML_FAILED                      5</pre>
+<p>LibXML function failed (error subject is the failed function).</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-XSLT-FAILED:CAPS"></a><h3>XMLSEC_ERRORS_R_XSLT_FAILED</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_XSLT_FAILED                     6</pre>
+<p>LibXSLT function failed (error subject is the failed function).</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-IO-FAILED:CAPS"></a><h3>XMLSEC_ERRORS_R_IO_FAILED</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_IO_FAILED                       7</pre>
+<p>IO operation failed.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-DISABLED:CAPS"></a><h3>XMLSEC_ERRORS_R_DISABLED</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_DISABLED                        8</pre>
+<p>The feature is disabled during compilation.
 Check './configure --help' for details on how to
-enable it.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-NOT-IMPLEMENTED:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_NOT_IMPLEMENTED</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_NOT_IMPLEMENTED                 9</PRE
-><P
->Feature is not implemented.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-INVALID-SIZE:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_INVALID_SIZE</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_SIZE                    11</PRE
-><P
->Invalid size.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-INVALID-DATA:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_INVALID_DATA</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_DATA                    12</PRE
-><P
->Invalid data.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-INVALID-RESULT:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_INVALID_RESULT</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_RESULT                  13</PRE
-><P
->Invalid result.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-INVALID-TYPE:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_INVALID_TYPE</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_TYPE                    14</PRE
-><P
->Invalid type.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-INVALID-OPERATION:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_INVALID_OPERATION</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_OPERATION               15</PRE
-><P
->Invalid operation.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-INVALID-STATUS:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_INVALID_STATUS</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_STATUS                  16</PRE
-><P
->Invalid status.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-INVALID-FORMAT:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_INVALID_FORMAT</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_FORMAT                  17</PRE
-><P
->Invalid format.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-DATA-NOT-MATCH:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_DATA_NOT_MATCH</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_DATA_NOT_MATCH                  18</PRE
-><P
->The data do not match our expectation.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-INVALID-NODE:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_INVALID_NODE</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_NODE                    21</PRE
-><P
->Invalid node (error subject is the node name).</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-INVALID-NODE-CONTENT:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_INVALID_NODE_CONTENT</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_NODE_CONTENT            22</PRE
-><P
->Invalid node content (error subject is the node name).</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-INVALID-NODE-ATTRIBUTE:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE          23</PRE
-><P
->Invalid node attribute (error subject is the node name).</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-MISSING-NODE-ATTRIBUTE:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_MISSING_NODE_ATTRIBUTE</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_MISSING_NODE_ATTRIBUTE          25</PRE
-><P
->Missing node attribute (error subject is the node name).</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-NODE-ALREADY-PRESENT:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT            26</PRE
-><P
->Node already present,</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-UNEXPECTED-NODE:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_UNEXPECTED_NODE</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_UNEXPECTED_NODE                 27</PRE
-><P
->Unexpected node (error subject is the node name).</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-NODE-NOT-FOUND:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_NODE_NOT_FOUND</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_NODE_NOT_FOUND                  28</PRE
-><P
->Node not found (error subject is the required node name).</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-INVALID-TRANSFORM:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_INVALID_TRANSFORM</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_TRANSFORM               31</PRE
-><P
->This transform is invlaid here.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-INVALID-TRANSFORM-KEY:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_INVALID_TRANSFORM_KEY</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_TRANSFORM_KEY           32</PRE
-><P
->Key is invalid for this transform.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-INVALID-URI-TYPE:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_INVALID_URI_TYPE</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_URI_TYPE                33</PRE
-><P
->Invalid URI type.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-TRANSFORM-SAME-DOCUMENT-REQUIRED:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_TRANSFORM_SAME_DOCUMENT_REQUIRED</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_TRANSFORM_SAME_DOCUMENT_REQUIRED        34</PRE
-><P
->The transform requires the input document to be the same as context.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-TRANSFORM-DISABLED:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_TRANSFORM_DISABLED</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_TRANSFORM_DISABLED              35</PRE
-><P
->The transform is disabled.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-INVALID-KEY-DATA:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_INVALID_KEY_DATA</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_KEY_DATA                41</PRE
-><P
->Key data is invalid.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-KEY-DATA-NOT-FOUND:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND              42</PRE
-><P
->Data is not found (error subject is the data name).</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-KEY-DATA-ALREADY-EXIST:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST          43</PRE
-><P
->The key data is already exist.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-INVALID-KEY-DATA-SIZE:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE           44</PRE
-><P
->Invalid key size.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-KEY-NOT-FOUND:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_KEY_NOT_FOUND</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_KEY_NOT_FOUND                   45</PRE
-><P
->Key not found.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-KEYDATA-DISABLED:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_KEYDATA_DISABLED</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_KEYDATA_DISABLED                46</PRE
-><P
->The key data type disabled.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-MAX-RETRIEVALS-LEVEL:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL            51</PRE
-><P
->Max allowed retrievals level reached.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-MAX-RETRIEVAL-TYPE-MISMATCH:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH     52</PRE
-><P
->The retrieved key data type does not match the one specified
-in the &lt;dsig:RetrievalMethod/&#62; node.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-MAX-ENCKEY-LEVEL:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL                61</PRE
-><P
->Max EncryptedKey level reached.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-CERT-VERIFY-FAILED:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_CERT_VERIFY_FAILED</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_CERT_VERIFY_FAILED              71</PRE
-><P
->Certificate verification failed.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-CERT-NOT-FOUND:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_CERT_NOT_FOUND</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_CERT_NOT_FOUND                  72</PRE
-><P
->Requested certificate is not found.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-CERT-REVOKED:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_CERT_REVOKED</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_CERT_REVOKED                    73</PRE
-><P
->The certificate is revoked.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-CERT-ISSUER-FAILED:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_CERT_ISSUER_FAILED</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_CERT_ISSUER_FAILED              74</PRE
-><P
->Failed to get certificate issuer.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-CERT-NOT-YET-VALID:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_CERT_NOT_YET_VALID</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_CERT_NOT_YET_VALID              75</PRE
-><P
->"Not valid before" verification failed.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-CERT-HAS-EXPIRED:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_CERT_HAS_EXPIRED</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_CERT_HAS_EXPIRED                76</PRE
-><P
->"Not valid after" verification failed.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-DSIG-NO-REFERENCES:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_DSIG_NO_REFERENCES</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_DSIG_NO_REFERENCES              81</PRE
-><P
->The &lt;dsig:Reference&#62; nodes not found.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-DSIG-INVALID-REFERENCE:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE          82</PRE
-><P
->The &lt;dsig:Reference&#62; validation failed.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-R-ASSERTION:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_R_ASSERTION</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_ASSERTION                       100</PRE
-><P
->Invalid assertion.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-MAX-NUMBER:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_MAX_NUMBER</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_MAX_NUMBER                        256</PRE
-><P
->The maximum xmlsec errors number.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-HERE:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_HERE</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_HERE                      __FILE__,__LINE__,__XMLSEC_FUNCTION__</PRE
-><P
->The macro that specifies the location (file, line and function)
-for the <A
-HREF="xmlsec-errors.html#XMLSECERROR"
-><CODE
-CLASS="FUNCTION"
->xmlSecError()</CODE
-></A
-> function.</P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="XMLSEC-ERRORS-NO-MESSAGE:CAPS"
-></A
-><H3
->XMLSEC_ERRORS_NO_MESSAGE</H3
-><PRE
-CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_NO_MESSAGE                " "</PRE
-><P
->Empty error message " ".</P
-></DIV
-></DIV
-><TABLE
-CLASS="navigation"
-WIDTH="100%"
-SUMMARY="Navigation footer"
-CELLPADDING="2"
-CELLSPACING="2"
-><TR
-VALIGN="middle"
-><TD
-ALIGN="left"
-><A
-ACCESSKEY="p"
-HREF="xmlsec-dl.html"
-><B
->&lt;&lt;&lt;&nbsp;dl</B
-></A
-></TD
-><TD
-ALIGN="right"
-><A
-ACCESSKEY="n"
-HREF="xmlsec-io.html"
-><B
->io&nbsp;&gt;&gt;&gt;</B
-></A
-></TD
-></TR
-></TABLE
-></BODY
-></HTML
->
+enable it.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-NOT-IMPLEMENTED:CAPS"></a><h3>XMLSEC_ERRORS_R_NOT_IMPLEMENTED</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_NOT_IMPLEMENTED                 9</pre>
+<p>Feature is not implemented.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-INVALID-SIZE:CAPS"></a><h3>XMLSEC_ERRORS_R_INVALID_SIZE</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_SIZE                    11</pre>
+<p>Invalid size.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-INVALID-DATA:CAPS"></a><h3>XMLSEC_ERRORS_R_INVALID_DATA</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_DATA                    12</pre>
+<p>Invalid data.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-INVALID-RESULT:CAPS"></a><h3>XMLSEC_ERRORS_R_INVALID_RESULT</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_RESULT                  13</pre>
+<p>Invalid result.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-INVALID-TYPE:CAPS"></a><h3>XMLSEC_ERRORS_R_INVALID_TYPE</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_TYPE                    14</pre>
+<p>Invalid type.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-INVALID-OPERATION:CAPS"></a><h3>XMLSEC_ERRORS_R_INVALID_OPERATION</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_OPERATION               15</pre>
+<p>Invalid operation.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-INVALID-STATUS:CAPS"></a><h3>XMLSEC_ERRORS_R_INVALID_STATUS</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_STATUS                  16</pre>
+<p>Invalid status.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-INVALID-FORMAT:CAPS"></a><h3>XMLSEC_ERRORS_R_INVALID_FORMAT</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_FORMAT                  17</pre>
+<p>Invalid format.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-DATA-NOT-MATCH:CAPS"></a><h3>XMLSEC_ERRORS_R_DATA_NOT_MATCH</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_DATA_NOT_MATCH                  18</pre>
+<p>The data do not match our expectation.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-INVALID-NODE:CAPS"></a><h3>XMLSEC_ERRORS_R_INVALID_NODE</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_NODE                    21</pre>
+<p>Invalid node (error subject is the node name).</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-INVALID-NODE-CONTENT:CAPS"></a><h3>XMLSEC_ERRORS_R_INVALID_NODE_CONTENT</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_NODE_CONTENT            22</pre>
+<p>Invalid node content (error subject is the node name).</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-INVALID-NODE-ATTRIBUTE:CAPS"></a><h3>XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE          23</pre>
+<p>Invalid node attribute (error subject is the node name).</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-MISSING-NODE-ATTRIBUTE:CAPS"></a><h3>XMLSEC_ERRORS_R_MISSING_NODE_ATTRIBUTE</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_MISSING_NODE_ATTRIBUTE          25</pre>
+<p>Missing node attribute (error subject is the node name).</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-NODE-ALREADY-PRESENT:CAPS"></a><h3>XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT            26</pre>
+<p>Node already present,</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-UNEXPECTED-NODE:CAPS"></a><h3>XMLSEC_ERRORS_R_UNEXPECTED_NODE</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_UNEXPECTED_NODE                 27</pre>
+<p>Unexpected node (error subject is the node name).</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-NODE-NOT-FOUND:CAPS"></a><h3>XMLSEC_ERRORS_R_NODE_NOT_FOUND</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_NODE_NOT_FOUND                  28</pre>
+<p>Node not found (error subject is the required node name).</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-INVALID-TRANSFORM:CAPS"></a><h3>XMLSEC_ERRORS_R_INVALID_TRANSFORM</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_TRANSFORM               31</pre>
+<p>This transform is invlaid here.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-INVALID-TRANSFORM-KEY:CAPS"></a><h3>XMLSEC_ERRORS_R_INVALID_TRANSFORM_KEY</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_TRANSFORM_KEY           32</pre>
+<p>Key is invalid for this transform.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-INVALID-URI-TYPE:CAPS"></a><h3>XMLSEC_ERRORS_R_INVALID_URI_TYPE</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_URI_TYPE                33</pre>
+<p>Invalid URI type.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-TRANSFORM-SAME-DOCUMENT-REQUIRED:CAPS"></a><h3>XMLSEC_ERRORS_R_TRANSFORM_SAME_DOCUMENT_REQUIRED</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_TRANSFORM_SAME_DOCUMENT_REQUIRED        34</pre>
+<p>The transform requires the input document to be the same as context.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-TRANSFORM-DISABLED:CAPS"></a><h3>XMLSEC_ERRORS_R_TRANSFORM_DISABLED</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_TRANSFORM_DISABLED              35</pre>
+<p>The transform is disabled.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-INVALID-KEY-DATA:CAPS"></a><h3>XMLSEC_ERRORS_R_INVALID_KEY_DATA</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_KEY_DATA                41</pre>
+<p>Key data is invalid.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-KEY-DATA-NOT-FOUND:CAPS"></a><h3>XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND              42</pre>
+<p>Data is not found (error subject is the data name).</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-KEY-DATA-ALREADY-EXIST:CAPS"></a><h3>XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST          43</pre>
+<p>The key data is already exist.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-INVALID-KEY-DATA-SIZE:CAPS"></a><h3>XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE           44</pre>
+<p>Invalid key size.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-KEY-NOT-FOUND:CAPS"></a><h3>XMLSEC_ERRORS_R_KEY_NOT_FOUND</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_KEY_NOT_FOUND                   45</pre>
+<p>Key not found.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-KEYDATA-DISABLED:CAPS"></a><h3>XMLSEC_ERRORS_R_KEYDATA_DISABLED</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_KEYDATA_DISABLED                46</pre>
+<p>The key data type disabled.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-MAX-RETRIEVALS-LEVEL:CAPS"></a><h3>XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL            51</pre>
+<p>Max allowed retrievals level reached.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-MAX-RETRIEVAL-TYPE-MISMATCH:CAPS"></a><h3>XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH     52</pre>
+<p>The retrieved key data type does not match the one specified
+in the &lt;dsig:RetrievalMethod/&gt; node.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-MAX-ENCKEY-LEVEL:CAPS"></a><h3>XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL                61</pre>
+<p>Max EncryptedKey level reached.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-CERT-VERIFY-FAILED:CAPS"></a><h3>XMLSEC_ERRORS_R_CERT_VERIFY_FAILED</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_CERT_VERIFY_FAILED              71</pre>
+<p>Certificate verification failed.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-CERT-NOT-FOUND:CAPS"></a><h3>XMLSEC_ERRORS_R_CERT_NOT_FOUND</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_CERT_NOT_FOUND                  72</pre>
+<p>Requested certificate is not found.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-CERT-REVOKED:CAPS"></a><h3>XMLSEC_ERRORS_R_CERT_REVOKED</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_CERT_REVOKED                    73</pre>
+<p>The certificate is revoked.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-CERT-ISSUER-FAILED:CAPS"></a><h3>XMLSEC_ERRORS_R_CERT_ISSUER_FAILED</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_CERT_ISSUER_FAILED              74</pre>
+<p>Failed to get certificate issuer.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-CERT-NOT-YET-VALID:CAPS"></a><h3>XMLSEC_ERRORS_R_CERT_NOT_YET_VALID</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_CERT_NOT_YET_VALID              75</pre>
+<p>"Not valid before" verification failed.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-CERT-HAS-EXPIRED:CAPS"></a><h3>XMLSEC_ERRORS_R_CERT_HAS_EXPIRED</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_CERT_HAS_EXPIRED                76</pre>
+<p>"Not valid after" verification failed.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-DSIG-NO-REFERENCES:CAPS"></a><h3>XMLSEC_ERRORS_R_DSIG_NO_REFERENCES</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_DSIG_NO_REFERENCES              81</pre>
+<p>The &lt;dsig:Reference&gt; nodes not found.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-DSIG-INVALID-REFERENCE:CAPS"></a><h3>XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE          82</pre>
+<p>The &lt;dsig:Reference&gt; validation failed.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-R-ASSERTION:CAPS"></a><h3>XMLSEC_ERRORS_R_ASSERTION</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_ASSERTION                       100</pre>
+<p>Invalid assertion.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-MAX-NUMBER:CAPS"></a><h3>XMLSEC_ERRORS_MAX_NUMBER</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_MAX_NUMBER                        256</pre>
+<p>The maximum xmlsec errors number.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-HERE:CAPS"></a><h3>XMLSEC_ERRORS_HERE</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_HERE                      __FILE__,__LINE__,__XMLSEC_FUNCTION__</pre>
+<p>The macro that specifies the location (file, line and function)
+for the <a href="xmlsec-errors.html#XMLSECERROR"><code class="FUNCTION">xmlSecError()</code></a> function.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-ERRORS-NO-MESSAGE:CAPS"></a><h3>XMLSEC_ERRORS_NO_MESSAGE</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_NO_MESSAGE                " "</pre>
+<p>Empty error message " ".</p>
+</div>
+</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td align="left"><a accesskey="p" href="xmlsec-dl.html"><b>&lt;&lt;&lt; dl</b></a></td>
+<td align="right"><a accesskey="n" href="xmlsec-io.html"><b>io &gt;&gt;&gt;</b></a></td>
+</tr></table>
+</td></tr></table></td>
+</tr></table></body>
+</html>

@@ -1,25 +1,13 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Verifying a signed document</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-TITLE="XML Security Library Reference Manual"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Verifing and decrypting documents."
-HREF="xmlsec-notes-verify-decrypt.html"><LINK
-REL="PREVIOUS"
-TITLE="Verifing and decrypting documents."
-HREF="xmlsec-notes-verify-decrypt.html"><LINK
-REL="NEXT"
-TITLE="Decrypting an encrypted document"
-HREF="xmlsec-notes-decrypt.html"><STYLE
-TYPE="text/css"
->.synopsis, .classsynopsis {
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Verifying a signed document</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="Verifing and decrypting documents." href="xmlsec-notes-verify-decrypt.html">
+<link rel="PREVIOUS" title="Verifing and decrypting documents." href="xmlsec-notes-verify-decrypt.html">
+<link rel="NEXT" title="Decrypting an encrypted document" href="xmlsec-notes-decrypt.html">
+<style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
     padding: 0.5em;
@@ -47,181 +35,112 @@ TYPE="text/css"
 }
 .navigation .title {
     font-size: 200%;
-}</STYLE
-></HEAD
-><BODY
-CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><TABLE
-WIDTH="100%"
-CLASS="navigation"
-SUMMARY="Navigation header"
-CELLPADDING="2"
-CELLSPACING="2"
-><TR
-VALIGN="middle"
-><TD
-><A
-ACCESSKEY="p"
-HREF="xmlsec-notes-verify-decrypt.html"
-><IMG
-SRC="left.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Prev"></A
-></TD
-><TD
-><A
-ACCESSKEY="u"
-HREF="xmlsec-notes-verify-decrypt.html"
-><IMG
-SRC="up.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Up"></A
-></TD
-><TD
-><A
-ACCESSKEY="h"
-HREF="index.html"
-><IMG
-SRC="home.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Home"></A
-></TD
-><TH
-WIDTH="100%"
-align="center"
->XML Security Library Reference Manual</TH
-><TD
-><A
-ACCESSKEY="n"
-HREF="xmlsec-notes-decrypt.html"
-><IMG
-SRC="right.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Next"></A
-></TD
-></TR
-></TABLE
-><BR
-CLEAR="all"><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="XMLSEC-NOTES-VERIFY"
->Verifying a signed document</A
-></H1
-><P
->The typical signature verification process includes following steps:
-	  <P
-></P
-><UL
-><LI
-><P
->		Load keys, X509 certificates, etc. in the <A
-HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGR"
->keys manager</A
-> .
-	    </P
-></LI
-><LI
-><P
->		Create signature context <A
-HREF="xmlsec-xmldsig.html#XMLSECDSIGCTX"
->xmlSecDSigCtx</A
->
-		using <A
-HREF="xmlsec-xmldsig.html#XMLSECDSIGCTXCREATE"
->xmlSecDSigCtxCreate</A
-> or
-		<A
-HREF="xmlsec-xmldsig.html#XMLSECDSIGCTXINITIALIZE"
->xmlSecDSigCtxInitialize</A
->
+}</style>
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
+</head>
+<body><table width="100%" valign="top"><tr valign="top">
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<ul>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
+<li><a href="../api/xmlsec-reference.html">API reference</a></li>
+<li><a href="../api/xmlsec-examples.html">Examples</a></li>
+</ul>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul><li><a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a></li></ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+<li><a href="../authors.html">Authors</a></li>
+</ul>
+<table width="100%">
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
+</tr>
+<!--Links - start--><!--Links - end-->
+</table>
+</td>
+<td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
+<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="xmlsec-notes-verify-decrypt.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="xmlsec-notes-verify-decrypt.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="n" href="xmlsec-notes-decrypt.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<br clear="all"><div class="SECT1">
+<h1 class="SECT1"><a name="XMLSEC-NOTES-VERIFY">Verifying a signed document</a></h1>
+<p>The typical signature verification process includes following steps:
+	  </p>
+<p></p>
+<ul>
+<li><p>		Load keys, X509 certificates, etc. in the <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">keys manager</a> .
+	    </p></li>
+<li><p>		Create signature context <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a>
+		using <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXCREATE">xmlSecDSigCtxCreate</a> or
+		<a href="xmlsec-xmldsig.html#XMLSECDSIGCTXINITIALIZE">xmlSecDSigCtxInitialize</a>
 		functions.
-	    </P
-></LI
-><LI
-><P
->		Select start verification 
-    		<A
-HREF="http://www.w3.org/TR/xmldsig-core/#sec-Signature"
-TARGET="_top"
->&lt;dsig:Signature/&gt;</A
->
+	    </p></li>
+<li><p>		Select start verification 
+    		<a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature" target="_top">&lt;dsig:Signature/&gt;</a>
 		node in the signed XML document.
-	    </P
-></LI
-><LI
-><P
->		Verify signature by calling <A
-HREF="xmlsec-xmldsig.html#XMLSECDSIGCTXVERIFY"
->xmlSecDSigCtxVerify</A
-> 
+	    </p></li>
+<li><p>		Verify signature by calling <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXVERIFY">xmlSecDSigCtxVerify</a> 
 		function.
-	    </P
-></LI
-><LI
-><P
->		Check returned value and verification status (<CODE
-CLASS="STRUCTFIELD"
->status</CODE
->
-		member of <A
-HREF="xmlsec-xmldsig.html#XMLSECDSIGCTX"
->xmlSecDSigCtx</A
-> structure).
-		If necessary, consume returned data from the <A
-HREF="xmlsec-xmldsig.html#XMLSECDSIGCTX"
->context</A
->.
-	    </P
-></LI
-><LI
-><P
->		Destroy signature context <A
-HREF="xmlsec-xmldsig.html#XMLSECDSIGCTX"
->xmlSecDSigCtx</A
->
-		using <A
-HREF="xmlsec-xmldsig.html#XMLSECDSIGCTXDESTROY"
->xmlSecDSigCtxDestroy</A
-> or
-		<A
-HREF="xmlsec-xmldsig.html#XMLSECDSIGCTXFINALIZE"
->xmlSecDSigCtxFinalize</A
->
+	    </p></li>
+<li><p>		Check returned value and verification status (<code class="STRUCTFIELD">status</code>
+		member of <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a> structure).
+		If necessary, consume returned data from the <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">context</a>.
+	    </p></li>
+<li><p>		Destroy signature context <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a>
+		using <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXDESTROY">xmlSecDSigCtxDestroy</a> or
+		<a href="xmlsec-xmldsig.html#XMLSECDSIGCTXFINALIZE">xmlSecDSigCtxFinalize</a>
 		functions.
-	    </P
-></LI
-></UL
->
-	</P
-><P
->	     <DIV
-CLASS="EXAMPLE"
-><A
-NAME="AEN303"
-></A
-><P
-><B
->Example 1. Verifying a document.</B
-></P
-><PRE
-CLASS="PROGRAMLISTING"
->/** 
+	    </p></li>
+</ul>
+	<p>	     </p>
+<div class="EXAMPLE">
+<a name="AEN366"></a><p><b>Example 1. Verifying a document.</b></p>
+<pre class="PROGRAMLISTING">/** 
  * verify_file:
  * @xml_file:		the signed XML file name.
  * @key_file:		the PEM public key file name.
@@ -262,26 +181,26 @@ verify_file(const char* xml_file, const char* key_file) {
     }
 
     /* load public key */
-    dsigCtx-&#62;signKey = xmlSecCryptoAppKeyLoad(key_file,xmlSecKeyDataFormatPem, NULL, NULL, NULL);
-    if(dsigCtx-&#62;signKey == NULL) {
+    dsigCtx-&gt;signKey = xmlSecCryptoAppKeyLoad(key_file,xmlSecKeyDataFormatPem, NULL, NULL, NULL);
+    if(dsigCtx-&gt;signKey == NULL) {
         fprintf(stderr,"Error: failed to load public pem key from \"%s\"\n", key_file);
 	goto done;
     }
 
     /* set key name to the file name, this is just an example! */
-    if(xmlSecKeySetName(dsigCtx-&#62;signKey, key_file) &#60; 0) {
+    if(xmlSecKeySetName(dsigCtx-&gt;signKey, key_file) &lt; 0) {
     	fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
 	goto done;
     }
 
     /* Verify signature */
-    if(xmlSecDSigCtxVerify(dsigCtx, node) &#60; 0) {
+    if(xmlSecDSigCtxVerify(dsigCtx, node) &lt; 0) {
         fprintf(stderr,"Error: signature verify\n");
 	goto done;
     }
         
     /* print verification result to stdout */
-    if(dsigCtx-&#62;status == xmlSecDSigStatusSucceeded) {
+    if(dsigCtx-&gt;status == xmlSecDSigStatusSucceeded) {
 	fprintf(stdout, "Signature is OK\n");
     } else {
 	fprintf(stdout, "Signature is INVALID\n");
@@ -301,44 +220,14 @@ done:
     }
     return(res);
 }
-		</PRE
-><P
-><A
-HREF="xmlsec-verify-with-key.html#XMLSEC-EXAMPLE-VERIFY1"
->Full Program Listing</A
-></P
-></DIV
->
-	</P
-></DIV
-><TABLE
-CLASS="navigation"
-WIDTH="100%"
-SUMMARY="Navigation footer"
-CELLPADDING="2"
-CELLSPACING="2"
-><TR
-VALIGN="middle"
-><TD
-ALIGN="left"
-><A
-ACCESSKEY="p"
-HREF="xmlsec-notes-verify-decrypt.html"
-><B
->&lt;&lt;&lt;&nbsp;Verifing and decrypting documents.</B
-></A
-></TD
-><TD
-ALIGN="right"
-><A
-ACCESSKEY="n"
-HREF="xmlsec-notes-decrypt.html"
-><B
->Decrypting an encrypted document&nbsp;&gt;&gt;&gt;</B
-></A
-></TD
-></TR
-></TABLE
-></BODY
-></HTML
->
+		</pre>
+<p><a href="xmlsec-verify-with-key.html#XMLSEC-EXAMPLE-VERIFY1">Full Program Listing</a></p>
+</div>
+	</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td align="left"><a accesskey="p" href="xmlsec-notes-verify-decrypt.html"><b>&lt;&lt;&lt; Verifing and decrypting documents.</b></a></td>
+<td align="right"><a accesskey="n" href="xmlsec-notes-decrypt.html"><b>Decrypting an encrypted document &gt;&gt;&gt;</b></a></td>
+</tr></table>
+</td></tr></table></td>
+</tr></table></body>
+</html>

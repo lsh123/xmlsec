@@ -1,25 +1,13 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Verifying a signature with additional restrictions.</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-TITLE="XML Security Library Reference Manual"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Examples."
-HREF="xmlsec-examples.html"><LINK
-REL="PREVIOUS"
-TITLE="Verifying a signature with X509 certificates."
-HREF="xmlsec-verify-with-x509.html"><LINK
-REL="NEXT"
-TITLE="Encrypting data with a template file."
-HREF="xmlsec-encrypt-template-file.html"><STYLE
-TYPE="text/css"
->.synopsis, .classsynopsis {
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Verifying a signature with additional restrictions.</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="Examples." href="xmlsec-examples.html">
+<link rel="PREVIOUS" title="Verifying a signature with X509 certificates." href="xmlsec-verify-with-x509.html">
+<link rel="NEXT" title="Encrypting data with a template file." href="xmlsec-encrypt-template-file.html">
+<style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
     padding: 0.5em;
@@ -47,110 +35,90 @@ TYPE="text/css"
 }
 .navigation .title {
     font-size: 200%;
-}</STYLE
-></HEAD
-><BODY
-CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><TABLE
-WIDTH="100%"
-CLASS="navigation"
-SUMMARY="Navigation header"
-CELLPADDING="2"
-CELLSPACING="2"
-><TR
-VALIGN="middle"
-><TD
-><A
-ACCESSKEY="p"
-HREF="xmlsec-verify-with-x509.html"
-><IMG
-SRC="left.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Prev"></A
-></TD
-><TD
-><A
-ACCESSKEY="u"
-HREF="xmlsec-examples.html"
-><IMG
-SRC="up.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Up"></A
-></TD
-><TD
-><A
-ACCESSKEY="h"
-HREF="index.html"
-><IMG
-SRC="home.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Home"></A
-></TD
-><TH
-WIDTH="100%"
-align="center"
->XML Security Library Reference Manual</TH
-><TD
-><A
-ACCESSKEY="n"
-HREF="xmlsec-encrypt-template-file.html"
-><IMG
-SRC="right.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Next"></A
-></TD
-></TR
-></TABLE
-><BR
-CLEAR="all"><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="XMLSEC-VERIFY-WITH-RESTRICTIONS"
->Verifying a signature with additional restrictions.</A
-></H1
-><BR
-CLEAR="all"><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="XMLSEC-EXAMPLE-VERIFY4"
->verify4.c</A
-></H2
-><P
-><DIV
-CLASS="INFORMALEXAMPLE"
-><P
-></P
-><A
-NAME="AEN723"
-></A
-><PRE
-CLASS="PROGRAMLISTING"
->/** 
+}</style>
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
+</head>
+<body><table width="100%" valign="top"><tr valign="top">
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<ul>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
+<li><a href="../api/xmlsec-reference.html">API reference</a></li>
+<li><a href="../api/xmlsec-examples.html">Examples</a></li>
+</ul>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul><li><a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a></li></ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+<li><a href="../authors.html">Authors</a></li>
+</ul>
+<table width="100%">
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
+</tr>
+<!--Links - start--><!--Links - end-->
+</table>
+</td>
+<td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
+<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="xmlsec-verify-with-x509.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="xmlsec-examples.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="n" href="xmlsec-encrypt-template-file.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<br clear="all"><div class="SECT1">
+<h1 class="SECT1"><a name="XMLSEC-VERIFY-WITH-RESTRICTIONS">Verifying a signature with additional restrictions.</a></h1>
+<br clear="all"><div class="SECT2">
+<h2 class="SECT2"><a name="XMLSEC-EXAMPLE-VERIFY4">verify4.c</a></h2>
+<p></p>
+<div class="INFORMALEXAMPLE">
+<p></p>
+<a name="AEN877"></a><pre class="PROGRAMLISTING">/** 
  * XML Security Library example: Verifying a simple SAML response with X509 certificate
  *
  * Verifies a simple SAML response. In addition to refular verification
- * we ensure that the signature has only one <A
-HREF="http://www.w3.org/TR/xmldsig-core/#sec-Reference"
-TARGET="_top"
->&lt;dsig:Reference/&gt;</A
-> element
+ * we ensure that the signature has only one <a href="http://www.w3.org/TR/xmldsig-core/#sec-Reference" target="_top">&lt;dsig:Reference/&gt;</a> element
  * with an empty or NULL URI attribute and one enveloped signature transform
  * as it is required by SAML specification.
  * 
@@ -171,7 +139,7 @@ TARGET="_top"
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  * 
- * Copyright (C) 2002-2016 Aleksey Sanin &lt;aleksey@aleksey.com&gt;. All Rights Reserved.
+ * Copyright (C) 2002-2016 Aleksey Sanin &lt;aleksey@aleksey.com&gt;
  */
 #include &lt;stdlib.h&gt;
 #include &lt;string.h&gt;
@@ -248,7 +216,7 @@ main(int argc, char **argv) {
      * xmlsec-crypto library.
      */
 #ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING
-    if(xmlSecCryptoDLLoadLibrary(NULL) &lt; 0) {
+    if(xmlSecCryptoDLLoadLibrary(BAD_CAST XMLSEC_CRYPTO) &lt; 0) {
         fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
                         "that you have it installed and check shared libraries path\n"
                         "(LD_LIBRARY_PATH) envornment variable.\n");
@@ -451,27 +419,18 @@ done:
     if(doc != NULL) {
         xmlFreeDoc(doc); 
     }
-  
-	<BR
-CLEAR="all"><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="XMLSEC-EXAMPLE-VERIFY4-TMPL"
->verify4-tmpl.xml</A
-></H2
-><P
-><DIV
-CLASS="INFORMALEXAMPLE"
-><P
-></P
-><A
-NAME="AEN729"
-></A
-><PRE
-CLASS="PROGRAMLISTING"
->&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    return(res);
+}
+</pre>
+<p></p>
+</div>
+</div>
+<br clear="all"><div class="SECT2">
+<h2 class="SECT2"><a name="XMLSEC-EXAMPLE-VERIFY4-TMPL">verify4-tmpl.xml</a></h2>
+<p></p>
+<div class="INFORMALEXAMPLE">
+<p></p>
+<a name="AEN883"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: A simple SAML response template (verify4 example). 
 
@@ -489,24 +448,12 @@ Sign it using the following command (replace __ with double dashes):
           &lt;dsig:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/&gt;
         &lt;/dsig:Transforms&gt;
         &lt;dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/&gt;
-        <A
-HREF="http://www.w3.org/TR/xmldsig-core/#sec-DigestValue"
-TARGET="_top"
->&lt;dsig:DigestValue/&gt;</A
->
+        <a href="http://www.w3.org/TR/xmldsig-core/#sec-DigestValue" target="_top">&lt;dsig:DigestValue/&gt;</a>
       &lt;/dsig:Reference&gt;
     &lt;/dsig:SignedInfo&gt;
-    <A
-HREF="http://www.w3.org/TR/xmldsig-core/#sec-SignatureValue"
-TARGET="_top"
->&lt;dsig:SignatureValue/&gt;</A
->
+    <a href="http://www.w3.org/TR/xmldsig-core/#sec-SignatureValue" target="_top">&lt;dsig:SignatureValue/&gt;</a>
     &lt;dsig:KeyInfo&gt;
-      <A
-HREF="http://www.w3.org/TR/xmldsig-core/#sec-X509Data"
-TARGET="_top"
->&lt;dsig:X509Data/&gt;</A
->
+      <a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Data" target="_top">&lt;dsig:X509Data/&gt;</a>
     &lt;/dsig:KeyInfo&gt;
   &lt;/dsig:Signature&gt;
   &lt;Status&gt;
@@ -526,27 +473,19 @@ TARGET="_top"
         &lt;/SubjectConfirmation&gt;
       &lt;/Subject&gt;
       &lt;SubjectLocality IPAddress="127.0.0.1"/&gt;
-      &lt;AuthorityBinding AuthorityKind="samlp:AttributeQuery" Binding
-	<BR
-CLEAR="all"><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="XMLSEC-EXAMPLE-VERIFY4-RES"
->verify4-res.xml</A
-></H2
-><P
-><DIV
-CLASS="INFORMALEXAMPLE"
-><P
-></P
-><A
-NAME="AEN737"
-></A
-><PRE
-CLASS="PROGRAMLISTING"
->&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+      &lt;AuthorityBinding AuthorityKind="samlp:AttributeQuery" Binding="urn:oasis:names:tc:SAML:1.0:bindings:SOAP-binding" Location="https://aa.osu.edu/"/&gt;
+    &lt;/AuthenticationStatement&gt;
+  &lt;/Assertion&gt;
+&lt;/Response&gt;</pre>
+<p></p>
+</div>
+</div>
+<br clear="all"><div class="SECT2">
+<h2 class="SECT2"><a name="XMLSEC-EXAMPLE-VERIFY4-RES">verify4-res.xml</a></h2>
+<p></p>
+<div class="INFORMALEXAMPLE">
+<p></p>
+<a name="AEN891"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: A simple SAML response template (verify4 example). 
 
@@ -614,34 +553,16 @@ fBjXssrERn05kpBcrRfzou4r3DCgQFPhjxga&lt;/dsig:X509Certificate&gt;
       &lt;AuthorityBinding AuthorityKind="samlp:AttributeQuery" Binding="urn:oasis:names:tc:SAML:1.0:bindings:SOAP-binding" Location="https://aa.osu.edu/"/&gt;
     &lt;/AuthenticationStatement&gt;
   &lt;/Assertion&gt;
-&lt;/Response&gt;</PRE
-><P
-></P
-></DIV
-></P
-></DIV
->
-
-	<BR
-CLEAR="all"><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="XMLSEC-EXAMPLE-VERIFY4-BAD-TMPL"
->verify4-bad-tmpl.xml</A
-></H2
-><P
-><DIV
-CLASS="INFORMALEXAMPLE"
-><P
-></P
-><A
-NAME="AEN742"
-></A
-><PRE
-CLASS="PROGRAMLISTING"
->&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;/Response&gt;</pre>
+<p></p>
+</div>
+</div>
+<br clear="all"><div class="SECT2">
+<h2 class="SECT2"><a name="XMLSEC-EXAMPLE-VERIFY4-BAD-TMPL">verify4-bad-tmpl.xml</a></h2>
+<p></p>
+<div class="INFORMALEXAMPLE">
+<p></p>
+<a name="AEN896"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: A simple bad SAML response template (verify4 example). 
 
@@ -666,24 +587,12 @@ Sign it using the following command (replace __ with double dashes):
           &lt;/dsig:Transform&gt;
         &lt;/dsig:Transforms&gt;
         &lt;dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/&gt;
-        <A
-HREF="http://www.w3.org/TR/xmldsig-core/#sec-DigestValue"
-TARGET="_top"
->&lt;dsig:DigestValue/&gt;</A
->
+        <a href="http://www.w3.org/TR/xmldsig-core/#sec-DigestValue" target="_top">&lt;dsig:DigestValue/&gt;</a>
       &lt;/dsig:Reference&gt;
     &lt;/dsig:SignedInfo&gt;
-    <A
-HREF="http://www.w3.org/TR/xmldsig-core/#sec-SignatureValue"
-TARGET="_top"
->&lt;dsig:SignatureValue/&gt;</A
->
+    <a href="http://www.w3.org/TR/xmldsig-core/#sec-SignatureValue" target="_top">&lt;dsig:SignatureValue/&gt;</a>
     &lt;dsig:KeyInfo&gt;
-      <A
-HREF="http://www.w3.org/TR/xmldsig-core/#sec-X509Data"
-TARGET="_top"
->&lt;dsig:X509Data/&gt;</A
->
+      <a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Data" target="_top">&lt;dsig:X509Data/&gt;</a>
     &lt;/dsig:KeyInfo&gt;
   &lt;/dsig:Signature&gt;
   &lt;Status&gt;
@@ -703,27 +612,19 @@ TARGET="_top"
         &lt;/SubjectConfirmation&gt;
       &lt;/Subject&gt;
       &lt;SubjectLocality IPAddress="127.0.0.1"/&gt;
-      &lt;AuthorityBinding AuthorityKind="samlp:AttributeQuery" Binding
-	<BR
-CLEAR="all"><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="XMLSEC-EXAMPLE-VERIFY4-BAD-RES"
->verify4-bad-res.xml</A
-></H2
-><P
-><DIV
-CLASS="INFORMALEXAMPLE"
-><P
-></P
-><A
-NAME="AEN750"
-></A
-><PRE
-CLASS="PROGRAMLISTING"
->&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+      &lt;AuthorityBinding AuthorityKind="samlp:AttributeQuery" Binding="urn:oasis:names:tc:SAML:1.0:bindings:SOAP-binding" Location="https://aa.osu.edu/"/&gt;
+    &lt;/AuthenticationStatement&gt;
+  &lt;/Assertion&gt;
+&lt;/Response&gt;</pre>
+<p></p>
+</div>
+</div>
+<br clear="all"><div class="SECT2">
+<h2 class="SECT2"><a name="XMLSEC-EXAMPLE-VERIFY4-BAD-RES">verify4-bad-res.xml</a></h2>
+<p></p>
+<div class="INFORMALEXAMPLE">
+<p></p>
+<a name="AEN904"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: A simple bad SAML response (verify4 example). 
 
@@ -812,61 +713,15 @@ NJ2D&lt;/X509Certificate&gt;
       &lt;AuthorityBinding AuthorityKind="samlp:AttributeQuery" Binding="urn:oasis:names:tc:SAML:1.0:bindings:SOAP-binding" Location="https://aa.osu.edu/"/&gt;
     &lt;/AuthenticationStatement&gt;
   &lt;/Assertion&gt;
-&lt;/Response&gt;</PRE
-><P
-></P
-></DIV
-></P
-></DIV
->
-
-    </PRE
-><P
-></P
-></DIV
-></P
-></DIV
-></PRE
-><P
-></P
-></DIV
-></P
-></DIV
-></PRE
-><P
-></P
-></DIV
-></P
-></DIV
-></DIV
-><TABLE
-CLASS="navigation"
-WIDTH="100%"
-SUMMARY="Navigation footer"
-CELLPADDING="2"
-CELLSPACING="2"
-><TR
-VALIGN="middle"
-><TD
-ALIGN="left"
-><A
-ACCESSKEY="p"
-HREF="xmlsec-verify-with-x509.html"
-><B
->&lt;&lt;&lt;&nbsp;Verifying a signature with X509 certificates.</B
-></A
-></TD
-><TD
-ALIGN="right"
-><A
-ACCESSKEY="n"
-HREF="xmlsec-encrypt-template-file.html"
-><B
->Encrypting data with a template file.&nbsp;&gt;&gt;&gt;</B
-></A
-></TD
-></TR
-></TABLE
-></BODY
-></HTML
->
+&lt;/Response&gt;</pre>
+<p></p>
+</div>
+</div>
+</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td align="left"><a accesskey="p" href="xmlsec-verify-with-x509.html"><b>&lt;&lt;&lt; Verifying a signature with X509 certificates.</b></a></td>
+<td align="right"><a accesskey="n" href="xmlsec-encrypt-template-file.html"><b>Encrypting data with a template file. &gt;&gt;&gt;</b></a></td>
+</tr></table>
+</td></tr></table></td>
+</tr></table></body>
+</html>

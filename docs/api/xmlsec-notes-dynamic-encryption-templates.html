@@ -1,25 +1,13 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Creating dynamic encryption templates.</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-TITLE="XML Security Library Reference Manual"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Creating dynamic templates."
-HREF="xmlsec-notes-templates.html"><LINK
-REL="PREVIOUS"
-TITLE="Creating dynamic signature templates."
-HREF="xmlsec-notes-dynamic-signature-templates.html"><LINK
-REL="NEXT"
-TITLE="Verifing and decrypting documents."
-HREF="xmlsec-notes-verify-decrypt.html"><STYLE
-TYPE="text/css"
->.synopsis, .classsynopsis {
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Creating dynamic encryption templates.</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="Creating dynamic templates." href="xmlsec-notes-templates.html">
+<link rel="PREVIOUS" title="Creating dynamic signature templates." href="xmlsec-notes-dynamic-signature-templates.html">
+<link rel="NEXT" title="Verifing and decrypting documents." href="xmlsec-notes-verify-decrypt.html">
+<style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
     padding: 0.5em;
@@ -47,108 +35,92 @@ TYPE="text/css"
 }
 .navigation .title {
     font-size: 200%;
-}</STYLE
-></HEAD
-><BODY
-CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><TABLE
-WIDTH="100%"
-CLASS="navigation"
-SUMMARY="Navigation header"
-CELLPADDING="2"
-CELLSPACING="2"
-><TR
-VALIGN="middle"
-><TD
-><A
-ACCESSKEY="p"
-HREF="xmlsec-notes-dynamic-signature-templates.html"
-><IMG
-SRC="left.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Prev"></A
-></TD
-><TD
-><A
-ACCESSKEY="u"
-HREF="xmlsec-notes-templates.html"
-><IMG
-SRC="up.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Up"></A
-></TD
-><TD
-><A
-ACCESSKEY="h"
-HREF="index.html"
-><IMG
-SRC="home.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Home"></A
-></TD
-><TH
-WIDTH="100%"
-align="center"
->XML Security Library Reference Manual</TH
-><TD
-><A
-ACCESSKEY="n"
-HREF="xmlsec-notes-verify-decrypt.html"
-><IMG
-SRC="right.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Next"></A
-></TD
-></TR
-></TABLE
-><BR
-CLEAR="all"><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="XMLSEC-NOTES-DYNAMIC-ENCRYPTION-TEMPLATES"
->Creating dynamic encryption templates.</A
-></H1
-><P
->The encryption template has structure similar 
+}</style>
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
+</head>
+<body><table width="100%" valign="top"><tr valign="top">
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<ul>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
+<li><a href="../api/xmlsec-reference.html">API reference</a></li>
+<li><a href="../api/xmlsec-examples.html">Examples</a></li>
+</ul>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul><li><a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a></li></ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+<li><a href="../authors.html">Authors</a></li>
+</ul>
+<table width="100%">
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
+</tr>
+<!--Links - start--><!--Links - end-->
+</table>
+</td>
+<td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
+<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="xmlsec-notes-dynamic-signature-templates.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="xmlsec-notes-templates.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="n" href="xmlsec-notes-verify-decrypt.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<br clear="all"><div class="SECT1">
+<h1 class="SECT1"><a name="XMLSEC-NOTES-DYNAMIC-ENCRYPTION-TEMPLATES">Creating dynamic encryption templates.</a></h1>
+<p>The encryption template has structure similar 
 	to the XML Encryption structure as it is described in 
-	<A
-HREF="http://www.w3.org/TR/xmlenc-core"
-TARGET="_top"
->specification</A
->.
+	<a href="http://www.w3.org/TR/xmlenc-core" target="_top">specification</a>.
 	The only difference is that some nodes (for example,
-	&lt;enc:CipherValue/&gt;)
+	<a href="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue" target="_top">&lt;enc:CipherValue/&gt;</a>)
 	are empty. The XML Security Library sets the content of these
 	nodes after doing necessary calculations.
-	</P
-><DIV
-CLASS="FIGURE"
-><A
-NAME="AEN256"
-></A
-><P
-><B
->Figure 2. XML Encryption structure</B
-></P
-><PRE
-CLASS="PROGRAMLISTING"
->&lt;enc:EncryptedData Id? Type? MimeType? Encoding?&gt;
-    &lt;enc:EncryptionMethod Algorithm /&gt;?
+	</p>
+<div class="FIGURE">
+<a name="AEN305"></a><p><b>Figure 2. XML Encryption structure</b></p>
+<pre class="PROGRAMLISTING">&lt;enc:EncryptedData Id? Type? MimeType? Encoding?&gt;
+    <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionMethod%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionMethod%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionMethod%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionMethod%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionMethod%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionMethod%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionMethod%20Algorithm%20" target="_top">&lt;enc:EncryptionMethod Algorithm /&gt;</a>?
     (&lt;dsig:KeyInfo&gt;
 	&lt;dsig:KeyName&gt;?
 	&lt;dsig:KeyValue&gt;?
@@ -167,21 +139,12 @@ CLASS="PROGRAMLISTING"
     &lt;/enc:CipherData&gt;
     &lt;enc:EncryptionProperties&gt;?
 &lt;/enc:EncryptedData&gt;	
-	    </PRE
-></DIV
-><P
->	     <DIV
-CLASS="EXAMPLE"
-><A
-NAME="AEN260"
-></A
-><P
-><B
->Example 2. Creating dynamic encrytion template.</B
-></P
-><PRE
-CLASS="PROGRAMLISTING"
->/**
+	    </pre>
+</div>
+<p>	     </p>
+<div class="EXAMPLE">
+<a name="AEN316"></a><p><b>Example 2. Creating dynamic encrytion template.</b></p>
+<pre class="PROGRAMLISTING">/**
  * encrypt_file:
  * @xml_file:		the encryption template file name.
  * @key_file:		the Triple DES key file.
@@ -218,13 +181,13 @@ encrypt_file(const char* xml_file, const char* key_file) {
 	goto done;   
     }
 
-    /* we want to put encrypted data in the &#60;enc:CipherValue/&#62; node */
+    /* we want to put encrypted data in the &lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue"&gt;&amp;lt;enc:CipherValue/&amp;gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt; node */
     if(xmlSecTmplEncDataEnsureCipherValue(encDataNode) == NULL) {
 	fprintf(stderr, "Error: failed to add CipherValue node\n");
 	goto done;   
     }
 
-    /* add &#60;dsig:KeyInfo/&#62; and &#60;dsig:KeyName/&#62; nodes to put key name in the signed document */
+    /* add &lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&amp;lt;dsig:KeyInfo/&amp;gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt; and &lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&amp;lt;dsig:KeyName/&amp;gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt; nodes to put key name in the signed document */
     keyInfoNode = xmlSecTmplEncDataEnsureKeyInfo(encDataNode, NULL);
     if(keyInfoNode == NULL) {
 	fprintf(stderr, "Error: failed to add key info\n");
@@ -244,20 +207,20 @@ encrypt_file(const char* xml_file, const char* key_file) {
     }
 
     /* load DES key, assuming that there is not password */
-    encCtx-&#62;encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
-    if(encCtx-&#62;encKey == NULL) {
+    encCtx-&gt;encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
+    if(encCtx-&gt;encKey == NULL) {
         fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
 	goto done;
     }
 
     /* set key name to the file name, this is just an example! */
-    if(xmlSecKeySetName(encCtx-&#62;encKey, key_file) &#60; 0) {
+    if(xmlSecKeySetName(encCtx-&gt;encKey, key_file) &lt; 0) {
     	fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
 	goto done;
     }
 
     /* encrypt the data */
-    if(xmlSecEncCtxXmlEncrypt(encCtx, encDataNode, xmlDocGetRootElement(doc)) &#60; 0) {
+    if(xmlSecEncCtxXmlEncrypt(encCtx, encDataNode, xmlDocGetRootElement(doc)) &lt; 0) {
         fprintf(stderr,"Error: encryption failed\n");
 	goto done;
     }
@@ -287,44 +250,14 @@ done:
     }
     return(res);
 }
-		</PRE
-><P
-><A
-HREF="xmlsec-encrypt-dynamic-template.html#XMLSEC-EXAMPLE-ENCRYPT2"
->Full program listing</A
-></P
-></DIV
->
-	</P
-></DIV
-><TABLE
-CLASS="navigation"
-WIDTH="100%"
-SUMMARY="Navigation footer"
-CELLPADDING="2"
-CELLSPACING="2"
-><TR
-VALIGN="middle"
-><TD
-ALIGN="left"
-><A
-ACCESSKEY="p"
-HREF="xmlsec-notes-dynamic-signature-templates.html"
-><B
->&lt;&lt;&lt;&nbsp;Creating dynamic signature templates.</B
-></A
-></TD
-><TD
-ALIGN="right"
-><A
-ACCESSKEY="n"
-HREF="xmlsec-notes-verify-decrypt.html"
-><B
->Verifing and decrypting documents.&nbsp;&gt;&gt;&gt;</B
-></A
-></TD
-></TR
-></TABLE
-></BODY
-></HTML
->
+		</pre>
+<p><a href="xmlsec-encrypt-dynamic-template.html#XMLSEC-EXAMPLE-ENCRYPT2">Full program listing</a></p>
+</div>
+	</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td align="left"><a accesskey="p" href="xmlsec-notes-dynamic-signature-templates.html"><b>&lt;&lt;&lt; Creating dynamic signature templates.</b></a></td>
+<td align="right"><a accesskey="n" href="xmlsec-notes-verify-decrypt.html"><b>Verifing and decrypting documents. &gt;&gt;&gt;</b></a></td>
+</tr></table>
+</td></tr></table></td>
+</tr></table></body>
+</html>

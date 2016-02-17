@@ -1,25 +1,13 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Implementing a custom keys store.</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-TITLE="XML Security Library Reference Manual"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Keys manager."
-HREF="xmlsec-notes-keysmngr.html"><LINK
-REL="PREVIOUS"
-TITLE="Using keys manager for verification/decryption."
-HREF="xmlsec-notes-keys-mngr-verify-decrypt.html"><LINK
-REL="NEXT"
-TITLE="Using X509 Certificates."
-HREF="xmlsec-notes-x509.html"><STYLE
-TYPE="text/css"
->.synopsis, .classsynopsis {
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Implementing a custom keys store.</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="Keys manager." href="xmlsec-notes-keysmngr.html">
+<link rel="PREVIOUS" title="Using keys manager for verification/decryption." href="xmlsec-notes-keys-mngr-verify-decrypt.html">
+<link rel="NEXT" title="Using X509 Certificates." href="xmlsec-notes-x509.html">
+<style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
     padding: 0.5em;
@@ -47,101 +35,89 @@ TYPE="text/css"
 }
 .navigation .title {
     font-size: 200%;
-}</STYLE
-></HEAD
-><BODY
-CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><TABLE
-WIDTH="100%"
-CLASS="navigation"
-SUMMARY="Navigation header"
-CELLPADDING="2"
-CELLSPACING="2"
-><TR
-VALIGN="middle"
-><TD
-><A
-ACCESSKEY="p"
-HREF="xmlsec-notes-keys-mngr-verify-decrypt.html"
-><IMG
-SRC="left.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Prev"></A
-></TD
-><TD
-><A
-ACCESSKEY="u"
-HREF="xmlsec-notes-keysmngr.html"
-><IMG
-SRC="up.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Up"></A
-></TD
-><TD
-><A
-ACCESSKEY="h"
-HREF="index.html"
-><IMG
-SRC="home.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Home"></A
-></TD
-><TH
-WIDTH="100%"
-align="center"
->XML Security Library Reference Manual</TH
-><TD
-><A
-ACCESSKEY="n"
-HREF="xmlsec-notes-x509.html"
-><IMG
-SRC="right.png"
-WIDTH="16"
-HEIGHT="16"
-BORDER="0"
-ALT="Next"></A
-></TD
-></TR
-></TABLE
-><BR
-CLEAR="all"><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="XMLSEC-NOTES-CUSTOM-KEYS-STORE"
->Implementing a custom keys store.</A
-></H1
-><P
->In many cases, a default built-in list based keys store
+}</style>
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
+</head>
+<body><table width="100%" valign="top"><tr valign="top">
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<ul>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
+<li><a href="../api/xmlsec-reference.html">API reference</a></li>
+<li><a href="../api/xmlsec-examples.html">Examples</a></li>
+</ul>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul><li><a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a></li></ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+<li><a href="../authors.html">Authors</a></li>
+</ul>
+<table width="100%">
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
+</tr>
+<!--Links - start--><!--Links - end-->
+</table>
+</td>
+<td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
+<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="xmlsec-notes-keys-mngr-verify-decrypt.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="xmlsec-notes-keysmngr.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="n" href="xmlsec-notes-x509.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<br clear="all"><div class="SECT1">
+<h1 class="SECT1"><a name="XMLSEC-NOTES-CUSTOM-KEYS-STORE">Implementing a custom keys store.</a></h1>
+<p>In many cases, a default built-in list based keys store
 	is not good enough. For example, XML Security Library (and 
 	the built-in default keys store) have no synchronization and 
 	you'll need to implement a custom keys store if you want to 
-	add or remove keys while other threads use the store.</P
-><P
->	     <DIV
-CLASS="EXAMPLE"
-><A
-NAME="AEN400"
-></A
-><P
-><B
->Example 4. Creating a custom keys manager.</B
-></P
-><PRE
-CLASS="PROGRAMLISTING"
->/**
+	add or remove keys while other threads use the store.</p>
+<p>	     </p>
+<div class="EXAMPLE">
+<a name="AEN512"></a><p><b>Example 4. Creating a custom keys manager.</b></p>
+<pre class="PROGRAMLISTING">/**
  * create_files_keys_mngr:
  *  
  * Creates a files based keys manager: we assume that key name is 
@@ -170,7 +146,7 @@ create_files_keys_mngr(void) {
     }
 
     /* add store to keys manager, from now on keys manager destroys the store if needed */
-    if(xmlSecKeysMngrAdoptKeysStore(mngr, keysStore) &#60; 0) {
+    if(xmlSecKeysMngrAdoptKeysStore(mngr, keysStore) &lt; 0) {
 	fprintf(stderr, "Error: failed to add keys store to keys manager.\n");
 	xmlSecKeyStoreDestroy(keysStore);
 	xmlSecKeysMngrDestroy(mngr);
@@ -178,21 +154,21 @@ create_files_keys_mngr(void) {
     }
     
     /* initialize crypto library specific data in keys manager */
-    if(xmlSecCryptoKeysMngrInit(mngr) &#60; 0) {
+    if(xmlSecCryptoKeysMngrInit(mngr) &lt; 0) {
 	fprintf(stderr, "Error: failed to initialize crypto data in keys manager.\n");
 	xmlSecKeysMngrDestroy(mngr);
 	return(NULL);
     }
 
     /* set the get key callback */
-    mngr-&#62;getKey = xmlSecKeysMngrGetKey;
+    mngr-&gt;getKey = xmlSecKeysMngrGetKey;
     return(mngr);
 }
 
 /****************************************************************************
  *
  * Files Keys Store: we assume that key's name (content of the 
- * &#60;dsig:KeyName/&#62; element is a name of the file with a key.
+ * &lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&amp;lt;dsig:KeyName/&amp;gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt; element is a name of the file with a key.
  * Attention: this probably not a good solution for high traffic systems.
  * 
  ***************************************************************************/
@@ -222,14 +198,14 @@ static xmlSecKeyStoreKlass files_keys_store_klass = {
  */
 xmlSecKeyStoreId 
 files_keys_store_get_klass(void) {
-    return(&#38;files_keys_store_klass);
+    return(&amp;files_keys_store_klass);
 }
 
 /**
  * files_keys_store_find_key:
  * @store:		the pointer to default keys store.
  * @name:		the desired key name.
- * @keyInfoCtx:		the pointer to &#60;dsig:KeyInfo/&#62; node processing context.
+ * @keyInfoCtx:		the pointer to &lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&amp;lt;dsig:KeyInfo/&amp;gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt; node processing context.
  *  
  * Lookups key in the @store.
  *
@@ -245,7 +221,7 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
 
     /* it's possible to do not have the key name or desired key type 
      * but we could do nothing in this case */
-    if((name == NULL) || (keyInfoCtx-&#62;keyReq.keyId == xmlSecKeyDataIdUnknown)){
+    if((name == NULL) || (keyInfoCtx-&gt;keyReq.keyId == xmlSecKeyDataIdUnknown)){
 	return(NULL);
     }
 
@@ -254,12 +230,12 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
      * '.', '-' or '_'.
      */
     for(p = name; (*p) != '\0'; ++p) {
-	if(!isalnum((*p)) &#38;&#38; ((*p) != '.') &#38;&#38; ((*p) != '-') &#38;&#38; ((*p) != '_')) {
+	if(!isalnum((*p)) &amp;&amp; ((*p) != '.') &amp;&amp; ((*p) != '-') &amp;&amp; ((*p) != '_')) {
 	    return(NULL);
 	}
     }    
     
-    if((keyInfoCtx-&#62;keyReq.keyId == xmlSecKeyDataDsaId) || (keyInfoCtx-&#62;keyReq.keyId == xmlSecKeyDataRsaId)) {
+    if((keyInfoCtx-&gt;keyReq.keyId == xmlSecKeyDataDsaId) || (keyInfoCtx-&gt;keyReq.keyId == xmlSecKeyDataRsaId)) {
 	/* load key from a pem file, if key is not found then it's an error (is it?) */
 	key = xmlSecCryptoAppKeyLoad(name, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
 	if(key == NULL) {
@@ -268,7 +244,7 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
 	}
     } else {
 	/* otherwise it's a binary key, if key is not found then it's an error (is it?) */
-	key = xmlSecKeyReadBinaryFile(keyInfoCtx-&#62;keyReq.keyId, name);
+	key = xmlSecKeyReadBinaryFile(keyInfoCtx-&gt;keyReq.keyId, name);
 	if(key == NULL) {
     	    fprintf(stderr,"Error: failed to load key from binary file \"%s\"\n", name);
 	    return(NULL);
@@ -276,7 +252,7 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
     }
 
     /* set key name */
-    if(xmlSecKeySetName(key, name) &#60; 0) {
+    if(xmlSecKeySetName(key, name) &lt; 0) {
         fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", name);
         xmlSecKeyDestroy(key);
         return(NULL);	
@@ -284,44 +260,14 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
 
     return(key);
 }
-		</PRE
-><P
-><A
-HREF="xmlsec-custom-keys-manager.html#XMLSEC-EXAMPLE-DECRYPT3"
->Full program listing</A
-></P
-></DIV
->
-	</P
-></DIV
-><TABLE
-CLASS="navigation"
-WIDTH="100%"
-SUMMARY="Navigation footer"
-CELLPADDING="2"
-CELLSPACING="2"
-><TR
-VALIGN="middle"
-><TD
-ALIGN="left"
-><A
-ACCESSKEY="p"
-HREF="xmlsec-notes-keys-mngr-verify-decrypt.html"
-><B
->&lt;&lt;&lt;&nbsp;Using keys manager for verification/decryption.</B
-></A
-></TD
-><TD
-ALIGN="right"
-><A
-ACCESSKEY="n"
-HREF="xmlsec-notes-x509.html"
-><B
->Using X509 Certificates.&nbsp;&gt;&gt;&gt;</B
-></A
-></TD
-></TR
-></TABLE
-></BODY
-></HTML
->
+		</pre>
+<p><a href="xmlsec-custom-keys-manager.html#XMLSEC-EXAMPLE-DECRYPT3">Full program listing</a></p>
+</div>
+	</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td align="left"><a accesskey="p" href="xmlsec-notes-keys-mngr-verify-decrypt.html"><b>&lt;&lt;&lt; Using keys manager for verification/decryption.</b></a></td>
+<td align="right"><a accesskey="n" href="xmlsec-notes-x509.html"><b>Using X509 Certificates. &gt;&gt;&gt;</b></a></td>
+</tr></table>
+</td></tr></table></td>
+</tr></table></body>
+</html>

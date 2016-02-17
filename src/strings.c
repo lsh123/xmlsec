@@ -501,6 +501,9 @@ const xmlChar xmlSecNodeRelationship[]          = "Relationship";
 const xmlChar xmlSecNodeRelationshipReference[] = "RelationshipReference";
 const xmlChar xmlSecRelationshipsNs[]           = "http://schemas.openxmlformats.org/package/2006/relationships";
 const xmlChar xmlSecRelationshipReferenceNs[]   = "http://schemas.openxmlformats.org/package/2006/digital-signature";
+const xmlChar xmlSecRelationshipAttrId[]        = "Id";
+const xmlChar xmlSecRelationshipAttrSourceId[]  = "SourceId";
+const xmlChar xmlSecRelationshipAttrTargetMode[]= "TargetMode";
 
 /*************************************************************************
  *

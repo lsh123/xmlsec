@@ -17,7 +17,6 @@
 #include <libxml/xpath.h>
 #include <libxml/xpathInternals.h>
 #include <libxml/xpointer.h>
-#include <libxml/c14n.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
@@ -1161,4 +1160,3 @@ xmlSecTransformVisa3DHackExecute(xmlSecTransformPtr transform, int last,
     }
     return(0);
 }
-

@@ -508,6 +508,10 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRelationshipReference[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecRelationshipsNs[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecRelationshipReferenceNs[];
 
+XMLSEC_EXPORT_VAR const xmlChar xmlSecRelationshipAttrId[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecRelationshipAttrSourceId[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecRelationshipAttrTargetMode[];
+
 /*************************************************************************
  *
  * Xslt strings

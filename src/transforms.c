@@ -281,6 +281,16 @@ xmlSecTransformIdsRegisterDefault(void) {
         return(-1);
     }
 
+    if(xmlSecTransformIdsRegister(xmlSecTransformRelationshipId) < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecTransformIdsRegister",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "name=%s",
+                    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformRelationshipId)));
+        return(-1);
+    }
+
 #ifndef XMLSEC_NO_XSLT
     if(xmlSecTransformIdsRegister(xmlSecTransformXsltId) < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,

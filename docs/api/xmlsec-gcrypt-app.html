@@ -1,13 +1,25 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>app</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="XML Security Library for GCrypt API Reference." href="xmlsec-gcrypt-ref.html">
-<link rel="PREVIOUS" title="XML Security Library for GCrypt API Reference." href="xmlsec-gcrypt-ref.html">
-<link rel="NEXT" title="crypto" href="xmlsec-gcrypt-crypto.html">
-<style type="text/css">.synopsis, .classsynopsis {
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>app</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="XML Security Library Reference Manual"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="XML Security Library for GCrypt API Reference."
+HREF="xmlsec-gcrypt-ref.html"><LINK
+REL="PREVIOUS"
+TITLE="XML Security Library for GCrypt API Reference."
+HREF="xmlsec-gcrypt-ref.html"><LINK
+REL="NEXT"
+TITLE="crypto"
+HREF="xmlsec-gcrypt-crypto.html"><STYLE
+TYPE="text/css"
+>.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
     padding: 0.5em;
@@ -35,830 +47,2350 @@
 }
 .navigation .title {
     font-size: 200%;
-}</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-</head>
-<body><table width="100%" valign="top"><tr valign="top">
-<td valign="top" align="left" width="210">
-<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="../index.html">Home</a></li>
-<li><a href="../download.html">Download</a></li>
-<li><a href="../news.html">News</a></li>
-<li><a href="../documentation.html">Documentation</a></li>
-<ul>
-<li><a href="../faq.html">FAQ</a></li>
-<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
-<li><a href="../api/xmlsec-reference.html">API reference</a></li>
-<li><a href="../api/xmlsec-examples.html">Examples</a></li>
-</ul>
-<li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<ul><li><a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a></li></ul>
-<li><a href="../xmlenc.html">XML Encryption</a></li>
-<li><a href="../c14n.html">XML Canonicalization</a></li>
-<li><a href="../bugs.html">Reporting Bugs</a></li>
-<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
-<li><a href="../related.html">Related</a></li>
-<li><a href="../authors.html">Authors</a></li>
-</ul>
-<table width="100%">
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
-</tr>
-<!--Links - start--><!--Links - end-->
-</table>
-</td>
-<td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-gcrypt-ref.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-gcrypt-ref.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
-<td><a accesskey="n" href="xmlsec-gcrypt-crypto.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
-</tr></table>
-<h1>
-<a name="XMLSEC-GCRYPT-APP"></a>app</h1>
-<div class="REFNAMEDIV">
-<a name="AEN35997"></a><h2>Name</h2>app -- Application functions implementation for GnuTLS.</div>
-<div class="REFSECT1">
-<a name="XMLSEC-GCRYPT-APP.FUNCTIONS"></a><h2>Functions</h2>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN36002"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<tbody>
-<tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPINIT">xmlSecGCryptAppInit</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPSHUTDOWN">xmlSecGCryptAppShutdown</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPDEFAULTKEYSMNGRINIT">xmlSecGCryptAppDefaultKeysMngrInit</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPDEFAULTKEYSMNGRADOPTKEY">xmlSecGCryptAppDefaultKeysMngrAdoptKey</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPDEFAULTKEYSMNGRLOAD">xmlSecGCryptAppDefaultKeysMngrLoad</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPDEFAULTKEYSMNGRSAVE">xmlSecGCryptAppDefaultKeysMngrSave</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPKEYSMNGRCERTLOAD">xmlSecGCryptAppKeysMngrCertLoad</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPKEYSMNGRCERTLOADMEMORY">xmlSecGCryptAppKeysMngrCertLoadMemory</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><a href="xmlsec-keys.html#XMLSECKEY"><span class="RETURNVALUE">xmlSecKeyPtr</span></a></td>
-<td>
-<a href="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPKEYLOAD">xmlSecGCryptAppKeyLoad</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><a href="xmlsec-keys.html#XMLSECKEY"><span class="RETURNVALUE">xmlSecKeyPtr</span></a></td>
-<td>
-<a href="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPKEYLOADMEMORY">xmlSecGCryptAppKeyLoadMemory</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><a href="xmlsec-keys.html#XMLSECKEY"><span class="RETURNVALUE">xmlSecKeyPtr</span></a></td>
-<td>
-<a href="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPPKCS12LOAD">xmlSecGCryptAppPkcs12Load</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><a href="xmlsec-keys.html#XMLSECKEY"><span class="RETURNVALUE">xmlSecKeyPtr</span></a></td>
-<td>
-<a href="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPPKCS12LOADMEMORY">xmlSecGCryptAppPkcs12LoadMemory</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPKEYCERTLOAD">xmlSecGCryptAppKeyCertLoad</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPKEYCERTLOADMEMORY">xmlSecGCryptAppKeyCertLoadMemory</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td>
-<font><span class="RETURNVALUE">void</span></font> *</td>
-<td>
-<a href="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPGETDEFAULTPWDCALLBACK">xmlSecGCryptAppGetDefaultPwdCallback</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT1">
-<a name="XMLSEC-GCRYPT-APP.DESCRIPTION"></a><h2>Description</h2>
-<p>Application functions implementation for GCrypt.</p>
-</div>
-<div class="REFSECT1">
-<a name="XMLSEC-GCRYPT-APP.FUNCTIONS_DETAILS"></a><h2>Functions</h2>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTAPPINIT"></a><h3>xmlSecGCryptAppInit ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
-xmlSecGCryptAppInit (<code class="PARAMETER">const <font><span class="TYPE">char</span></font> *config</code>);</pre>
-<p>General crypto engine initialization. This function is used
+}</STYLE
+></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><TABLE
+WIDTH="100%"
+CLASS="navigation"
+SUMMARY="Navigation header"
+CELLPADDING="2"
+CELLSPACING="2"
+><TR
+VALIGN="middle"
+><TD
+><A
+ACCESSKEY="p"
+HREF="xmlsec-gcrypt-ref.html"
+><IMG
+SRC="left.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Prev"></A
+></TD
+><TD
+><A
+ACCESSKEY="u"
+HREF="xmlsec-gcrypt-ref.html"
+><IMG
+SRC="up.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Up"></A
+></TD
+><TD
+><A
+ACCESSKEY="h"
+HREF="index.html"
+><IMG
+SRC="home.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Home"></A
+></TD
+><TH
+WIDTH="100%"
+align="center"
+>XML Security Library Reference Manual</TH
+><TD
+><A
+ACCESSKEY="n"
+HREF="xmlsec-gcrypt-crypto.html"
+><IMG
+SRC="right.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Next"></A
+></TD
+></TR
+></TABLE
+><H1
+><A
+NAME="XMLSEC-GCRYPT-APP"
+></A
+>app</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN35900"
+></A
+><H2
+>Name</H2
+>app&nbsp;--&nbsp;Application functions implementation for GnuTLS.</DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="XMLSEC-GCRYPT-APP.FUNCTIONS"
+></A
+><H2
+>Functions</H2
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN35905"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><TBODY
+><TR
+><TD
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPINIT"
+>xmlSecGCryptAppInit</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPSHUTDOWN"
+>xmlSecGCryptAppShutdown</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPDEFAULTKEYSMNGRINIT"
+>xmlSecGCryptAppDefaultKeysMngrInit</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPDEFAULTKEYSMNGRADOPTKEY"
+>xmlSecGCryptAppDefaultKeysMngrAdoptKey</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPDEFAULTKEYSMNGRLOAD"
+>xmlSecGCryptAppDefaultKeysMngrLoad</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPDEFAULTKEYSMNGRSAVE"
+>xmlSecGCryptAppDefaultKeysMngrSave</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPKEYSMNGRCERTLOAD"
+>xmlSecGCryptAppKeysMngrCertLoad</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPKEYSMNGRCERTLOADMEMORY"
+>xmlSecGCryptAppKeysMngrCertLoadMemory</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><A
+HREF="xmlsec-keys.html#XMLSECKEY"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecKeyPtr</SPAN
+></A
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPKEYLOAD"
+>xmlSecGCryptAppKeyLoad</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><A
+HREF="xmlsec-keys.html#XMLSECKEY"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecKeyPtr</SPAN
+></A
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPKEYLOADMEMORY"
+>xmlSecGCryptAppKeyLoadMemory</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><A
+HREF="xmlsec-keys.html#XMLSECKEY"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecKeyPtr</SPAN
+></A
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPPKCS12LOAD"
+>xmlSecGCryptAppPkcs12Load</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><A
+HREF="xmlsec-keys.html#XMLSECKEY"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecKeyPtr</SPAN
+></A
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPPKCS12LOADMEMORY"
+>xmlSecGCryptAppPkcs12LoadMemory</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPKEYCERTLOAD"
+>xmlSecGCryptAppKeyCertLoad</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPKEYCERTLOADMEMORY"
+>xmlSecGCryptAppKeyCertLoadMemory</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="VOID"
+><SPAN
+CLASS="RETURNVALUE"
+>void</SPAN
+></GTKDOCLINK
+> *</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPGETDEFAULTPWDCALLBACK"
+>xmlSecGCryptAppGetDefaultPwdCallback</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="XMLSEC-GCRYPT-APP.DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>Application functions implementation for GCrypt.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="XMLSEC-GCRYPT-APP.FUNCTIONS_DETAILS"
+></A
+><H2
+>Functions</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTAPPINIT"
+></A
+><H3
+>xmlSecGCryptAppInit ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptAppInit (<CODE
+CLASS="PARAMETER"
+>const <GTKDOCLINK
+HREF="CHAR"
+><SPAN
+CLASS="TYPE"
+>char</SPAN
+></GTKDOCLINK
+> *config</CODE
+>);</PRE
+><P
+>General crypto engine initialization. This function is used
 by XMLSec command line utility and called before
-<code class="PARAMETER">xmlSecInit</code>
- function.</p>
-<div class="REFSECT3">
-<a name="AEN36127"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN36129"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody><tr>
-<td><p>config</p></td>
-<td><p>the path to GCrypt configuration (unused).</p></td>
-<td> </td>
-</tr></tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN36138"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTAPPSHUTDOWN"></a><h3>xmlSecGCryptAppShutdown ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
-xmlSecGCryptAppShutdown (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>General crypto engine shutdown. This function is used
+<CODE
+CLASS="PARAMETER"
+>xmlSecInit</CODE
+>
+ function.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN36030"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN36032"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>config</P
+></TD
+><TD
+><P
+>the path to GCrypt configuration (unused).</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN36041"
+></A
+><H4
+>Returns</H4
+><P
+> 0 on success or a negative value otherwise.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTAPPSHUTDOWN"
+></A
+><H3
+>xmlSecGCryptAppShutdown ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptAppShutdown (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>General crypto engine shutdown. This function is used
 by XMLSec command line utility and called after
-<code class="PARAMETER">xmlSecShutdown</code>
- function.</p>
-<div class="REFSECT3">
-<a name="AEN36152"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTAPPDEFAULTKEYSMNGRINIT"></a><h3>xmlSecGCryptAppDefaultKeysMngrInit ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
-xmlSecGCryptAppDefaultKeysMngrInit (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="TYPE">xmlSecKeysMngrPtr</span></a> mngr</code>);</pre>
-<p>Initializes <code class="PARAMETER">mngr</code>
- with simple keys store <a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTOREID"><span class="TYPE">xmlSecSimpleKeysStoreId</span></a>
-and a default GCrypt crypto key data stores.</p>
-<div class="REFSECT3">
-<a name="AEN36169"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN36171"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody><tr>
-<td><p>mngr</p></td>
-<td><p>the pointer to keys manager.</p></td>
-<td> </td>
-</tr></tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN36180"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTAPPDEFAULTKEYSMNGRADOPTKEY"></a><h3>xmlSecGCryptAppDefaultKeysMngrAdoptKey ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+<CODE
+CLASS="PARAMETER"
+>xmlSecShutdown</CODE
+>
+ function.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN36055"
+></A
+><H4
+>Returns</H4
+><P
+> 0 on success or a negative value otherwise.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTAPPDEFAULTKEYSMNGRINIT"
+></A
+><H3
+>xmlSecGCryptAppDefaultKeysMngrInit ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptAppDefaultKeysMngrInit (<CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGR"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeysMngrPtr</SPAN
+></A
+> mngr</CODE
+>);</PRE
+><P
+>Initializes <CODE
+CLASS="PARAMETER"
+>mngr</CODE
+>
+ with simple keys store <A
+HREF="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTOREID"
+><SPAN
+CLASS="TYPE"
+>xmlSecSimpleKeysStoreId</SPAN
+></A
+>
+and a default GCrypt crypto key data stores.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN36072"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN36074"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>mngr</P
+></TD
+><TD
+><P
+>the pointer to keys manager.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN36083"
+></A
+><H4
+>Returns</H4
+><P
+> 0 on success or a negative value otherwise.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTAPPDEFAULTKEYSMNGRADOPTKEY"
+></A
+><H3
+>xmlSecGCryptAppDefaultKeysMngrAdoptKey ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+>
 xmlSecGCryptAppDefaultKeysMngrAdoptKey
-                               (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="TYPE">xmlSecKeysMngrPtr</span></a> mngr</code>,
-                                <code class="PARAMETER"><a href="xmlsec-keys.html#XMLSECKEY"><span class="TYPE">xmlSecKeyPtr</span></a> key</code>);</pre>
-<p>Adds <code class="PARAMETER">key</code>
- to the keys manager <code class="PARAMETER">mngr</code>
- created with <a href="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPDEFAULTKEYSMNGRINIT"><span class="TYPE">xmlSecGCryptAppDefaultKeysMngrInit</span></a>
-function.</p>
-<div class="REFSECT3">
-<a name="AEN36201"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN36203"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody>
-<tr>
-<td><p>mngr</p></td>
-<td><p>the pointer to keys manager.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>key</p></td>
-<td><p>the pointer to key.</p></td>
-<td> </td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN36218"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTAPPDEFAULTKEYSMNGRLOAD"></a><h3>xmlSecGCryptAppDefaultKeysMngrLoad ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
-xmlSecGCryptAppDefaultKeysMngrLoad (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="TYPE">xmlSecKeysMngrPtr</span></a> mngr</code>,
-                                    <code class="PARAMETER">const <font><span class="TYPE">char</span></font> *uri</code>);</pre>
-<p>Loads XML keys file from <code class="PARAMETER">uri</code>
- to the keys manager <code class="PARAMETER">mngr</code>
+                               (<CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGR"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeysMngrPtr</SPAN
+></A
+> mngr</CODE
+>,
+                                <CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keys.html#XMLSECKEY"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyPtr</SPAN
+></A
+> key</CODE
+>);</PRE
+><P
+>Adds <CODE
+CLASS="PARAMETER"
+>key</CODE
+>
+ to the keys manager <CODE
+CLASS="PARAMETER"
+>mngr</CODE
+>
+ created with <A
+HREF="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPDEFAULTKEYSMNGRINIT"
+><SPAN
+CLASS="TYPE"
+>xmlSecGCryptAppDefaultKeysMngrInit</SPAN
+></A
+>
+function.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN36104"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN36106"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>mngr</P
+></TD
+><TD
+><P
+>the pointer to keys manager.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>key</P
+></TD
+><TD
+><P
+>the pointer to key.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN36121"
+></A
+><H4
+>Returns</H4
+><P
+> 0 on success or a negative value otherwise.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTAPPDEFAULTKEYSMNGRLOAD"
+></A
+><H3
+>xmlSecGCryptAppDefaultKeysMngrLoad ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptAppDefaultKeysMngrLoad (<CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGR"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeysMngrPtr</SPAN
+></A
+> mngr</CODE
+>,
+                                    <CODE
+CLASS="PARAMETER"
+>const <GTKDOCLINK
+HREF="CHAR"
+><SPAN
+CLASS="TYPE"
+>char</SPAN
+></GTKDOCLINK
+> *uri</CODE
+>);</PRE
+><P
+>Loads XML keys file from <CODE
+CLASS="PARAMETER"
+>uri</CODE
+>
+ to the keys manager <CODE
+CLASS="PARAMETER"
+>mngr</CODE
+>
  created
-with <a href="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPDEFAULTKEYSMNGRINIT"><span class="TYPE">xmlSecGCryptAppDefaultKeysMngrInit</span></a> function.</p>
-<div class="REFSECT3">
-<a name="AEN36239"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN36241"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody>
-<tr>
-<td><p>mngr</p></td>
-<td><p>the pointer to keys manager.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>uri</p></td>
-<td><p>the uri.</p></td>
-<td> </td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN36256"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTAPPDEFAULTKEYSMNGRSAVE"></a><h3>xmlSecGCryptAppDefaultKeysMngrSave ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
-xmlSecGCryptAppDefaultKeysMngrSave (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="TYPE">xmlSecKeysMngrPtr</span></a> mngr</code>,
-                                    <code class="PARAMETER">const <font><span class="TYPE">char</span></font> *filename</code>,
-                                    <code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE"><span class="TYPE">xmlSecKeyDataType</span></a> type</code>);</pre>
-<p>Saves keys from <code class="PARAMETER">mngr</code>
- to  XML keys file.</p>
-<div class="REFSECT3">
-<a name="AEN36277"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN36279"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody>
-<tr>
-<td><p>mngr</p></td>
-<td><p>the pointer to keys manager.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>filename</p></td>
-<td><p>the destination filename.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>type</p></td>
-<td><p>the type of keys to save (public/private/symmetric).</p></td>
-<td> </td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN36300"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTAPPKEYSMNGRCERTLOAD"></a><h3>xmlSecGCryptAppKeysMngrCertLoad ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
-xmlSecGCryptAppKeysMngrCertLoad (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="TYPE">xmlSecKeysMngrPtr</span></a> mngr</code>,
-                                 <code class="PARAMETER">const <font><span class="TYPE">char</span></font> *filename</code>,
-                                 <code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT"><span class="TYPE">xmlSecKeyDataFormat</span></a> format</code>,
-                                 <code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE"><span class="TYPE">xmlSecKeyDataType</span></a> type</code>);</pre>
-<p>Reads cert from <code class="PARAMETER">filename</code>
+with <A
+HREF="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPDEFAULTKEYSMNGRINIT"
+><SPAN
+CLASS="TYPE"
+>xmlSecGCryptAppDefaultKeysMngrInit</SPAN
+></A
+> function.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN36142"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN36144"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>mngr</P
+></TD
+><TD
+><P
+>the pointer to keys manager.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>uri</P
+></TD
+><TD
+><P
+>the uri.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN36159"
+></A
+><H4
+>Returns</H4
+><P
+> 0 on success or a negative value otherwise.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTAPPDEFAULTKEYSMNGRSAVE"
+></A
+><H3
+>xmlSecGCryptAppDefaultKeysMngrSave ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptAppDefaultKeysMngrSave (<CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGR"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeysMngrPtr</SPAN
+></A
+> mngr</CODE
+>,
+                                    <CODE
+CLASS="PARAMETER"
+>const <GTKDOCLINK
+HREF="CHAR"
+><SPAN
+CLASS="TYPE"
+>char</SPAN
+></GTKDOCLINK
+> *filename</CODE
+>,
+                                    <CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysdata.html#XMLSECKEYDATATYPE"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyDataType</SPAN
+></A
+> type</CODE
+>);</PRE
+><P
+>Saves keys from <CODE
+CLASS="PARAMETER"
+>mngr</CODE
+>
+ to  XML keys file.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN36180"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN36182"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>mngr</P
+></TD
+><TD
+><P
+>the pointer to keys manager.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>filename</P
+></TD
+><TD
+><P
+>the destination filename.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>type</P
+></TD
+><TD
+><P
+>the type of keys to save (public/private/symmetric).</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN36203"
+></A
+><H4
+>Returns</H4
+><P
+> 0 on success or a negative value otherwise.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTAPPKEYSMNGRCERTLOAD"
+></A
+><H3
+>xmlSecGCryptAppKeysMngrCertLoad ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptAppKeysMngrCertLoad (<CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGR"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeysMngrPtr</SPAN
+></A
+> mngr</CODE
+>,
+                                 <CODE
+CLASS="PARAMETER"
+>const <GTKDOCLINK
+HREF="CHAR"
+><SPAN
+CLASS="TYPE"
+>char</SPAN
+></GTKDOCLINK
+> *filename</CODE
+>,
+                                 <CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyDataFormat</SPAN
+></A
+> format</CODE
+>,
+                                 <CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysdata.html#XMLSECKEYDATATYPE"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyDataType</SPAN
+></A
+> type</CODE
+>);</PRE
+><P
+>Reads cert from <CODE
+CLASS="PARAMETER"
+>filename</CODE
+>
  and adds to the list of trusted or known
-untrusted certs in <code class="PARAMETER">store</code>
- (not implemented yet).</p>
-<div class="REFSECT3">
-<a name="AEN36325"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN36327"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody>
-<tr>
-<td><p>mngr</p></td>
-<td><p>the keys manager.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>filename</p></td>
-<td><p>the certificate file.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>format</p></td>
-<td><p>the certificate file format.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>type</p></td>
-<td><p>the flag that indicates is the certificate in <code class="PARAMETER">filename</code>
-trusted or not.</p></td>
-<td> </td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN36355"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTAPPKEYSMNGRCERTLOADMEMORY"></a><h3>xmlSecGCryptAppKeysMngrCertLoadMemory ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
-xmlSecGCryptAppKeysMngrCertLoadMemory (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="TYPE">xmlSecKeysMngrPtr</span></a> mngr</code>,
-                                       <code class="PARAMETER">const <a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *data</code>,
-                                       <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> dataSize</code>,
-                                       <code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT"><span class="TYPE">xmlSecKeyDataFormat</span></a> format</code>,
-                                       <code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE"><span class="TYPE">xmlSecKeyDataType</span></a> type</code>);</pre>
-<p>Reads cert from binary buffer <code class="PARAMETER">data</code>
+untrusted certs in <CODE
+CLASS="PARAMETER"
+>store</CODE
+>
+ (not implemented yet).</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN36228"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN36230"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>mngr</P
+></TD
+><TD
+><P
+>the keys manager.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>filename</P
+></TD
+><TD
+><P
+>the certificate file.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>format</P
+></TD
+><TD
+><P
+>the certificate file format.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>type</P
+></TD
+><TD
+><P
+>the flag that indicates is the certificate in <CODE
+CLASS="PARAMETER"
+>filename</CODE
+>
+trusted or not.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN36258"
+></A
+><H4
+>Returns</H4
+><P
+> 0 on success or a negative value otherwise.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTAPPKEYSMNGRCERTLOADMEMORY"
+></A
+><H3
+>xmlSecGCryptAppKeysMngrCertLoadMemory ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptAppKeysMngrCertLoadMemory (<CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGR"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeysMngrPtr</SPAN
+></A
+> mngr</CODE
+>,
+                                       <CODE
+CLASS="PARAMETER"
+>const <A
+HREF="xmlsec-xmlsec.html#XMLSECBYTE"
+><SPAN
+CLASS="TYPE"
+>xmlSecByte</SPAN
+></A
+> *data</CODE
+>,
+                                       <CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-xmlsec.html#XMLSECSIZE"
+><SPAN
+CLASS="TYPE"
+>xmlSecSize</SPAN
+></A
+> dataSize</CODE
+>,
+                                       <CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyDataFormat</SPAN
+></A
+> format</CODE
+>,
+                                       <CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysdata.html#XMLSECKEYDATATYPE"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyDataType</SPAN
+></A
+> type</CODE
+>);</PRE
+><P
+>Reads cert from binary buffer <CODE
+CLASS="PARAMETER"
+>data</CODE
+>
  and adds to the list of trusted or known
-untrusted certs in <code class="PARAMETER">store</code>
- (not implemented yet).</p>
-<div class="REFSECT3">
-<a name="AEN36383"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN36385"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody>
-<tr>
-<td><p>mngr</p></td>
-<td><p>the keys manager.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>data</p></td>
-<td><p>the certificate binary data.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>dataSize</p></td>
-<td><p>the certificate binary data size.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>format</p></td>
-<td><p>the certificate file format.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>type</p></td>
-<td><p>the flag that indicates is the certificate trusted or not.</p></td>
-<td> </td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN36418"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTAPPKEYLOAD"></a><h3>xmlSecGCryptAppKeyLoad ()</h3>
-<pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY"><span class="RETURNVALUE">xmlSecKeyPtr</span></a>
-xmlSecGCryptAppKeyLoad (<code class="PARAMETER">const <font><span class="TYPE">char</span></font> *filename</code>,
-                        <code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT"><span class="TYPE">xmlSecKeyDataFormat</span></a> format</code>,
-                        <code class="PARAMETER">const <font><span class="TYPE">char</span></font> *pwd</code>,
-                        <code class="PARAMETER"><font><span class="TYPE">void</span></font> *pwdCallback</code>,
-                        <code class="PARAMETER"><font><span class="TYPE">void</span></font> *pwdCallbackCtx</code>);</pre>
-<p>Reads key from the a file.</p>
-<div class="REFSECT3">
-<a name="AEN36444"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN36446"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody>
-<tr>
-<td><p>filename</p></td>
-<td><p>the key filename.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>format</p></td>
-<td><p>the key file format.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>pwd</p></td>
-<td><p>the key file password.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>pwdCallback</p></td>
-<td><p>the key password callback.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>pwdCallbackCtx</p></td>
-<td><p>the user context for password callback.</p></td>
-<td> </td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN36479"></a><h4>Returns</h4>
-<p> pointer to the key or NULL if an error occurs.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTAPPKEYLOADMEMORY"></a><h3>xmlSecGCryptAppKeyLoadMemory ()</h3>
-<pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY"><span class="RETURNVALUE">xmlSecKeyPtr</span></a>
-xmlSecGCryptAppKeyLoadMemory (<code class="PARAMETER">const <a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *data</code>,
-                              <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> dataSize</code>,
-                              <code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT"><span class="TYPE">xmlSecKeyDataFormat</span></a> format</code>,
-                              <code class="PARAMETER">const <font><span class="TYPE">char</span></font> *pwd</code>,
-                              <code class="PARAMETER"><font><span class="TYPE">void</span></font> *pwdCallback</code>,
-                              <code class="PARAMETER"><font><span class="TYPE">void</span></font> *pwdCallbackCtx</code>);</pre>
-<p>Reads key from the memory buffer.</p>
-<div class="REFSECT3">
-<a name="AEN36508"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN36510"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody>
-<tr>
-<td><p>data</p></td>
-<td><p>the binary key data.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>dataSize</p></td>
-<td><p>the size of binary key.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>format</p></td>
-<td><p>the key file format.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>pwd</p></td>
-<td><p>the key file password.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>pwdCallback</p></td>
-<td><p>the key password callback.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>pwdCallbackCtx</p></td>
-<td><p>the user context for password callback.</p></td>
-<td> </td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN36549"></a><h4>Returns</h4>
-<p> pointer to the key or NULL if an error occurs.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTAPPPKCS12LOAD"></a><h3>xmlSecGCryptAppPkcs12Load ()</h3>
-<pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY"><span class="RETURNVALUE">xmlSecKeyPtr</span></a>
-xmlSecGCryptAppPkcs12Load (<code class="PARAMETER">const <font><span class="TYPE">char</span></font> *filename</code>,
-                           <code class="PARAMETER">const <font><span class="TYPE">char</span></font> *pwd</code>,
-                           <code class="PARAMETER"><font><span class="TYPE">void</span></font> *pwdCallback</code>,
-                           <code class="PARAMETER"><font><span class="TYPE">void</span></font> *pwdCallbackCtx</code>);</pre>
-<p>Reads key and all associated certificates from the PKCS12 file
+untrusted certs in <CODE
+CLASS="PARAMETER"
+>store</CODE
+>
+ (not implemented yet).</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN36286"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN36288"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>mngr</P
+></TD
+><TD
+><P
+>the keys manager.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>data</P
+></TD
+><TD
+><P
+>the certificate binary data.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>dataSize</P
+></TD
+><TD
+><P
+>the certificate binary data size.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>format</P
+></TD
+><TD
+><P
+>the certificate file format.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>type</P
+></TD
+><TD
+><P
+>the flag that indicates is the certificate trusted or not.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN36321"
+></A
+><H4
+>Returns</H4
+><P
+> 0 on success or a negative value otherwise.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTAPPKEYLOAD"
+></A
+><H3
+>xmlSecGCryptAppKeyLoad ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="xmlsec-keys.html#XMLSECKEY"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecKeyPtr</SPAN
+></A
+>
+xmlSecGCryptAppKeyLoad (<CODE
+CLASS="PARAMETER"
+>const <GTKDOCLINK
+HREF="CHAR"
+><SPAN
+CLASS="TYPE"
+>char</SPAN
+></GTKDOCLINK
+> *filename</CODE
+>,
+                        <CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyDataFormat</SPAN
+></A
+> format</CODE
+>,
+                        <CODE
+CLASS="PARAMETER"
+>const <GTKDOCLINK
+HREF="CHAR"
+><SPAN
+CLASS="TYPE"
+>char</SPAN
+></GTKDOCLINK
+> *pwd</CODE
+>,
+                        <CODE
+CLASS="PARAMETER"
+><GTKDOCLINK
+HREF="VOID"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></GTKDOCLINK
+> *pwdCallback</CODE
+>,
+                        <CODE
+CLASS="PARAMETER"
+><GTKDOCLINK
+HREF="VOID"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></GTKDOCLINK
+> *pwdCallbackCtx</CODE
+>);</PRE
+><P
+>Reads key from the a file.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN36347"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN36349"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>filename</P
+></TD
+><TD
+><P
+>the key filename.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>format</P
+></TD
+><TD
+><P
+>the key file format.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>pwd</P
+></TD
+><TD
+><P
+>the key file password.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>pwdCallback</P
+></TD
+><TD
+><P
+>the key password callback.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>pwdCallbackCtx</P
+></TD
+><TD
+><P
+>the user context for password callback.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN36382"
+></A
+><H4
+>Returns</H4
+><P
+> pointer to the key or NULL if an error occurs.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTAPPKEYLOADMEMORY"
+></A
+><H3
+>xmlSecGCryptAppKeyLoadMemory ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="xmlsec-keys.html#XMLSECKEY"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecKeyPtr</SPAN
+></A
+>
+xmlSecGCryptAppKeyLoadMemory (<CODE
+CLASS="PARAMETER"
+>const <A
+HREF="xmlsec-xmlsec.html#XMLSECBYTE"
+><SPAN
+CLASS="TYPE"
+>xmlSecByte</SPAN
+></A
+> *data</CODE
+>,
+                              <CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-xmlsec.html#XMLSECSIZE"
+><SPAN
+CLASS="TYPE"
+>xmlSecSize</SPAN
+></A
+> dataSize</CODE
+>,
+                              <CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyDataFormat</SPAN
+></A
+> format</CODE
+>,
+                              <CODE
+CLASS="PARAMETER"
+>const <GTKDOCLINK
+HREF="CHAR"
+><SPAN
+CLASS="TYPE"
+>char</SPAN
+></GTKDOCLINK
+> *pwd</CODE
+>,
+                              <CODE
+CLASS="PARAMETER"
+><GTKDOCLINK
+HREF="VOID"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></GTKDOCLINK
+> *pwdCallback</CODE
+>,
+                              <CODE
+CLASS="PARAMETER"
+><GTKDOCLINK
+HREF="VOID"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></GTKDOCLINK
+> *pwdCallbackCtx</CODE
+>);</PRE
+><P
+>Reads key from the memory buffer.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN36411"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN36413"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>data</P
+></TD
+><TD
+><P
+>the binary key data.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>dataSize</P
+></TD
+><TD
+><P
+>the size of binary key.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>format</P
+></TD
+><TD
+><P
+>the key file format.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>pwd</P
+></TD
+><TD
+><P
+>the key file password.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>pwdCallback</P
+></TD
+><TD
+><P
+>the key password callback.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>pwdCallbackCtx</P
+></TD
+><TD
+><P
+>the user context for password callback.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN36452"
+></A
+><H4
+>Returns</H4
+><P
+> pointer to the key or NULL if an error occurs.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTAPPPKCS12LOAD"
+></A
+><H3
+>xmlSecGCryptAppPkcs12Load ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="xmlsec-keys.html#XMLSECKEY"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecKeyPtr</SPAN
+></A
+>
+xmlSecGCryptAppPkcs12Load (<CODE
+CLASS="PARAMETER"
+>const <GTKDOCLINK
+HREF="CHAR"
+><SPAN
+CLASS="TYPE"
+>char</SPAN
+></GTKDOCLINK
+> *filename</CODE
+>,
+                           <CODE
+CLASS="PARAMETER"
+>const <GTKDOCLINK
+HREF="CHAR"
+><SPAN
+CLASS="TYPE"
+>char</SPAN
+></GTKDOCLINK
+> *pwd</CODE
+>,
+                           <CODE
+CLASS="PARAMETER"
+><GTKDOCLINK
+HREF="VOID"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></GTKDOCLINK
+> *pwdCallback</CODE
+>,
+                           <CODE
+CLASS="PARAMETER"
+><GTKDOCLINK
+HREF="VOID"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></GTKDOCLINK
+> *pwdCallbackCtx</CODE
+>);</PRE
+><P
+>Reads key and all associated certificates from the PKCS12 file
 (not implemented yet).
 For uniformity, call xmlSecGCryptAppKeyLoad instead of this function. Pass
-in format=xmlSecKeyDataFormatPkcs12.</p>
-<div class="REFSECT3">
-<a name="AEN36572"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN36574"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody>
-<tr>
-<td><p>filename</p></td>
-<td><p>the PKCS12 key filename.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>pwd</p></td>
-<td><p>the PKCS12 file password.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>pwdCallback</p></td>
-<td><p>the password callback.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>pwdCallbackCtx</p></td>
-<td><p>the user context for password callback.</p></td>
-<td> </td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN36601"></a><h4>Returns</h4>
-<p> pointer to the key or NULL if an error occurs.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTAPPPKCS12LOADMEMORY"></a><h3>xmlSecGCryptAppPkcs12LoadMemory ()</h3>
-<pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY"><span class="RETURNVALUE">xmlSecKeyPtr</span></a>
-xmlSecGCryptAppPkcs12LoadMemory (<code class="PARAMETER">const <a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *data</code>,
-                                 <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> dataSize</code>,
-                                 <code class="PARAMETER">const <font><span class="TYPE">char</span></font> *pwd</code>,
-                                 <code class="PARAMETER"><font><span class="TYPE">void</span></font> *pwdCallback</code>,
-                                 <code class="PARAMETER"><font><span class="TYPE">void</span></font> *pwdCallbackCtx</code>);</pre>
-<p>Reads key and all associated certificates from the PKCS12 data in memory buffer.
+in format=xmlSecKeyDataFormatPkcs12.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN36475"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN36477"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>filename</P
+></TD
+><TD
+><P
+>the PKCS12 key filename.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>pwd</P
+></TD
+><TD
+><P
+>the PKCS12 file password.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>pwdCallback</P
+></TD
+><TD
+><P
+>the password callback.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>pwdCallbackCtx</P
+></TD
+><TD
+><P
+>the user context for password callback.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN36504"
+></A
+><H4
+>Returns</H4
+><P
+> pointer to the key or NULL if an error occurs.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTAPPPKCS12LOADMEMORY"
+></A
+><H3
+>xmlSecGCryptAppPkcs12LoadMemory ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="xmlsec-keys.html#XMLSECKEY"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecKeyPtr</SPAN
+></A
+>
+xmlSecGCryptAppPkcs12LoadMemory (<CODE
+CLASS="PARAMETER"
+>const <A
+HREF="xmlsec-xmlsec.html#XMLSECBYTE"
+><SPAN
+CLASS="TYPE"
+>xmlSecByte</SPAN
+></A
+> *data</CODE
+>,
+                                 <CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-xmlsec.html#XMLSECSIZE"
+><SPAN
+CLASS="TYPE"
+>xmlSecSize</SPAN
+></A
+> dataSize</CODE
+>,
+                                 <CODE
+CLASS="PARAMETER"
+>const <GTKDOCLINK
+HREF="CHAR"
+><SPAN
+CLASS="TYPE"
+>char</SPAN
+></GTKDOCLINK
+> *pwd</CODE
+>,
+                                 <CODE
+CLASS="PARAMETER"
+><GTKDOCLINK
+HREF="VOID"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></GTKDOCLINK
+> *pwdCallback</CODE
+>,
+                                 <CODE
+CLASS="PARAMETER"
+><GTKDOCLINK
+HREF="VOID"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></GTKDOCLINK
+> *pwdCallbackCtx</CODE
+>);</PRE
+><P
+>Reads key and all associated certificates from the PKCS12 data in memory buffer.
 For uniformity, call xmlSecGCryptAppKeyLoadMemory instead of this function. Pass
-in format=xmlSecKeyDataFormatPkcs12 (not implemented yet).</p>
-<div class="REFSECT3">
-<a name="AEN36627"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN36629"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody>
-<tr>
-<td><p>data</p></td>
-<td><p>the PKCS12 binary data.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>dataSize</p></td>
-<td><p>the PKCS12 binary data size.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>pwd</p></td>
-<td><p>the PKCS12 file password.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>pwdCallback</p></td>
-<td><p>the password callback.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>pwdCallbackCtx</p></td>
-<td><p>the user context for password callback.</p></td>
-<td> </td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN36662"></a><h4>Returns</h4>
-<p> pointer to the key or NULL if an error occurs.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTAPPKEYCERTLOAD"></a><h3>xmlSecGCryptAppKeyCertLoad ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
-xmlSecGCryptAppKeyCertLoad (<code class="PARAMETER"><a href="xmlsec-keys.html#XMLSECKEY"><span class="TYPE">xmlSecKeyPtr</span></a> key</code>,
-                            <code class="PARAMETER">const <font><span class="TYPE">char</span></font> *filename</code>,
-                            <code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT"><span class="TYPE">xmlSecKeyDataFormat</span></a> format</code>);</pre>
-<p>Reads the certificate from $<code class="PARAMETER">filename</code>
+in format=xmlSecKeyDataFormatPkcs12 (not implemented yet).</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN36530"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN36532"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>data</P
+></TD
+><TD
+><P
+>the PKCS12 binary data.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>dataSize</P
+></TD
+><TD
+><P
+>the PKCS12 binary data size.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>pwd</P
+></TD
+><TD
+><P
+>the PKCS12 file password.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>pwdCallback</P
+></TD
+><TD
+><P
+>the password callback.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>pwdCallbackCtx</P
+></TD
+><TD
+><P
+>the user context for password callback.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN36565"
+></A
+><H4
+>Returns</H4
+><P
+> pointer to the key or NULL if an error occurs.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTAPPKEYCERTLOAD"
+></A
+><H3
+>xmlSecGCryptAppKeyCertLoad ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptAppKeyCertLoad (<CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keys.html#XMLSECKEY"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyPtr</SPAN
+></A
+> key</CODE
+>,
+                            <CODE
+CLASS="PARAMETER"
+>const <GTKDOCLINK
+HREF="CHAR"
+><SPAN
+CLASS="TYPE"
+>char</SPAN
+></GTKDOCLINK
+> *filename</CODE
+>,
+                            <CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyDataFormat</SPAN
+></A
+> format</CODE
+>);</PRE
+><P
+>Reads the certificate from $<CODE
+CLASS="PARAMETER"
+>filename</CODE
+>
  and adds it to key
-(not implemented yet).</p>
-<div class="REFSECT3">
-<a name="AEN36683"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN36685"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody>
-<tr>
-<td><p>key</p></td>
-<td><p>the pointer to key.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>filename</p></td>
-<td><p>the certificate filename.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>format</p></td>
-<td><p>the certificate file format.</p></td>
-<td> </td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN36706"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTAPPKEYCERTLOADMEMORY"></a><h3>xmlSecGCryptAppKeyCertLoadMemory ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
-xmlSecGCryptAppKeyCertLoadMemory (<code class="PARAMETER"><a href="xmlsec-keys.html#XMLSECKEY"><span class="TYPE">xmlSecKeyPtr</span></a> key</code>,
-                                  <code class="PARAMETER">const <a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *data</code>,
-                                  <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> dataSize</code>,
-                                  <code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT"><span class="TYPE">xmlSecKeyDataFormat</span></a> format</code>);</pre>
-<p>Reads the certificate from memory buffer and adds it to key (not implemented yet).</p>
-<div class="REFSECT3">
-<a name="AEN36729"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN36731"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody>
-<tr>
-<td><p>key</p></td>
-<td><p>the pointer to key.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>data</p></td>
-<td><p>the certificate binary data.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>dataSize</p></td>
-<td><p>the certificate binary data size.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>format</p></td>
-<td><p>the certificate file format.</p></td>
-<td> </td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN36758"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTAPPGETDEFAULTPWDCALLBACK"></a><h3>xmlSecGCryptAppGetDefaultPwdCallback ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">void</span></font> *
-xmlSecGCryptAppGetDefaultPwdCallback (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>Gets default password callback.</p>
-<div class="REFSECT3">
-<a name="AEN36771"></a><h4>Returns</h4>
-<p> default password callback.</p>
-</div>
-</div>
-</div>
-<div class="REFSECT1">
-<a name="XMLSEC-GCRYPT-APP.OTHER_DETAILS"></a><h2>Types and Values</h2>
-<p></p>
-</div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-gcrypt-ref.html"><b>&lt;&lt;&lt; XML Security Library for GCrypt API Reference.</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-gcrypt-crypto.html"><b>crypto &gt;&gt;&gt;</b></a></td>
-</tr></table>
-</td></tr></table></td>
-</tr></table></body>
-</html>
+(not implemented yet).</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN36586"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN36588"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>key</P
+></TD
+><TD
+><P
+>the pointer to key.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>filename</P
+></TD
+><TD
+><P
+>the certificate filename.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>format</P
+></TD
+><TD
+><P
+>the certificate file format.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN36609"
+></A
+><H4
+>Returns</H4
+><P
+> 0 on success or a negative value otherwise.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTAPPKEYCERTLOADMEMORY"
+></A
+><H3
+>xmlSecGCryptAppKeyCertLoadMemory ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptAppKeyCertLoadMemory (<CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keys.html#XMLSECKEY"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyPtr</SPAN
+></A
+> key</CODE
+>,
+                                  <CODE
+CLASS="PARAMETER"
+>const <A
+HREF="xmlsec-xmlsec.html#XMLSECBYTE"
+><SPAN
+CLASS="TYPE"
+>xmlSecByte</SPAN
+></A
+> *data</CODE
+>,
+                                  <CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-xmlsec.html#XMLSECSIZE"
+><SPAN
+CLASS="TYPE"
+>xmlSecSize</SPAN
+></A
+> dataSize</CODE
+>,
+                                  <CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyDataFormat</SPAN
+></A
+> format</CODE
+>);</PRE
+><P
+>Reads the certificate from memory buffer and adds it to key (not implemented yet).</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN36632"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN36634"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>key</P
+></TD
+><TD
+><P
+>the pointer to key.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>data</P
+></TD
+><TD
+><P
+>the certificate binary data.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>dataSize</P
+></TD
+><TD
+><P
+>the certificate binary data size.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>format</P
+></TD
+><TD
+><P
+>the certificate file format.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN36661"
+></A
+><H4
+>Returns</H4
+><P
+> 0 on success or a negative value otherwise.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTAPPGETDEFAULTPWDCALLBACK"
+></A
+><H3
+>xmlSecGCryptAppGetDefaultPwdCallback ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="VOID"
+><SPAN
+CLASS="RETURNVALUE"
+>void</SPAN
+></GTKDOCLINK
+> *
+xmlSecGCryptAppGetDefaultPwdCallback (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>Gets default password callback.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN36674"
+></A
+><H4
+>Returns</H4
+><P
+> default password callback.</P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="XMLSEC-GCRYPT-APP.OTHER_DETAILS"
+></A
+><H2
+>Types and Values</H2
+><P
+></P
+></DIV
+><TABLE
+CLASS="navigation"
+WIDTH="100%"
+SUMMARY="Navigation footer"
+CELLPADDING="2"
+CELLSPACING="2"
+><TR
+VALIGN="middle"
+><TD
+ALIGN="left"
+><A
+ACCESSKEY="p"
+HREF="xmlsec-gcrypt-ref.html"
+><B
+>&lt;&lt;&lt;&nbsp;XML Security Library for GCrypt API Reference.</B
+></A
+></TD
+><TD
+ALIGN="right"
+><A
+ACCESSKEY="n"
+HREF="xmlsec-gcrypt-crypto.html"
+><B
+>crypto&nbsp;&gt;&gt;&gt;</B
+></A
+></TD
+></TR
+></TABLE
+></BODY
+></HTML
+>

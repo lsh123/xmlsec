@@ -1,13 +1,25 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>XML Security Core Library API Reference.</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="XML Security Library API Reference." href="xmlsec-reference.html">
-<link rel="PREVIOUS" title="XML Security Library API Reference." href="xmlsec-reference.html">
-<link rel="NEXT" title="app" href="xmlsec-app.html">
-<style type="text/css">.synopsis, .classsynopsis {
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>XML Security Core Library API Reference.</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="XML Security Library Reference Manual"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="XML Security Library API Reference."
+HREF="xmlsec-reference.html"><LINK
+REL="PREVIOUS"
+TITLE="XML Security Library API Reference."
+HREF="xmlsec-reference.html"><LINK
+REL="NEXT"
+TITLE="app"
+HREF="xmlsec-app.html"><STYLE
+TYPE="text/css"
+>.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
     padding: 0.5em;
@@ -35,138 +47,245 @@
 }
 .navigation .title {
     font-size: 200%;
-}</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-</head>
-<body><table width="100%" valign="top"><tr valign="top">
-<td valign="top" align="left" width="210">
-<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="../index.html">Home</a></li>
-<li><a href="../download.html">Download</a></li>
-<li><a href="../news.html">News</a></li>
-<li><a href="../documentation.html">Documentation</a></li>
-<ul>
-<li><a href="../faq.html">FAQ</a></li>
-<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
-<li><a href="../api/xmlsec-reference.html">API reference</a></li>
-<li><a href="../api/xmlsec-examples.html">Examples</a></li>
-</ul>
-<li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<ul><li><a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a></li></ul>
-<li><a href="../xmlenc.html">XML Encryption</a></li>
-<li><a href="../c14n.html">XML Canonicalization</a></li>
-<li><a href="../bugs.html">Reporting Bugs</a></li>
-<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
-<li><a href="../related.html">Related</a></li>
-<li><a href="../authors.html">Authors</a></li>
-</ul>
-<table width="100%">
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
-</tr>
-<!--Links - start--><!--Links - end-->
-</table>
-</td>
-<td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-reference.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-reference.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
-<td><a accesskey="n" href="xmlsec-app.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
-</tr></table>
-<div class="CHAPTER">
-<h1>
-<a name="XMLSEC-REF"></a>XML Security Core Library API Reference.</h1>
-<div class="TOC"><dl>
-<dt><b>Table of Contents</b></dt>
-<dt>
-<a href="xmlsec-app.html">app</a> -- Crypto-engine independent application support function.</dt>
-<dt>
-<a href="xmlsec-base64.html">base64</a> -- Base64 encoding/decoding functions.</dt>
-<dt>
-<a href="xmlsec-bn.html">bn</a> -- Big numbers support functions.</dt>
-<dt>
-<a href="xmlsec-buffer.html">buffer</a> -- Binary buffer implementation.</dt>
-<dt>
-<a href="xmlsec-dl.html">dl</a> -- Dynamic crypto-engine library loading support.</dt>
-<dt>
-<a href="xmlsec-errors.html">errors</a> -- Error/log messages support.</dt>
-<dt>
-<a href="xmlsec-io.html">io</a> -- Input/output support.</dt>
-<dt>
-<a href="xmlsec-keyinfo.html">keyinfo</a> -- <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node parser.</dt>
-<dt>
-<a href="xmlsec-keysdata.html">keysdata</a> -- Crypto key data object definition.</dt>
-<dt>
-<a href="xmlsec-keys.html">keys</a> -- Crypto key object definition.</dt>
-<dt>
-<a href="xmlsec-keysmngr.html">keysmngr</a> -- Keys manager object support.</dt>
-<dt>
-<a href="xmlsec-list.html">list</a> -- Generic list structure implementation.</dt>
-<dt>
-<a href="xmlsec-membuf.html">membuf</a> -- Memory buffer transform implementation.</dt>
-<dt>
-<a href="xmlsec-nodeset.html">nodeset</a> -- Nodeset object implementation.</dt>
-<dt>
-<a href="xmlsec-parser.html">parser</a> -- Parser transform implementation.</dt>
-<dt>
-<a href="xmlsec-templates.html">templates</a> -- Dynamic templates creation functions.</dt>
-<dt>
-<a href="xmlsec-transforms.html">transforms</a> -- Transform object definition.</dt>
-<dt>
-<a href="xmlsec-version.html">version</a> -- Version macros.</dt>
-<dt>
-<a href="xmlsec-xmldsig.html">xmldsig</a> -- XML Digital Signature support.</dt>
-<dt>
-<a href="xmlsec-xmlenc.html">xmlenc</a> -- XML Encryption support.</dt>
-<dt>
-<a href="xmlsec-xmlsec.html">xmlsec</a> -- Utility functions.</dt>
-<dt>
-<a href="xmlsec-xmltree.html">xmltree</a> -- XML tree operations.</dt>
-<dt>
-<a href="xmlsec-x509.html">x509</a> -- <a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate" target="_top">&lt;dsig:X509Certificate/&gt;</a> node parser.</dt>
-</dl></div>
-<p>This section contains the API reference for xmlsec. All
+}</STYLE
+></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><TABLE
+WIDTH="100%"
+CLASS="navigation"
+SUMMARY="Navigation header"
+CELLPADDING="2"
+CELLSPACING="2"
+><TR
+VALIGN="middle"
+><TD
+><A
+ACCESSKEY="p"
+HREF="xmlsec-reference.html"
+><IMG
+SRC="left.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Prev"></A
+></TD
+><TD
+><A
+ACCESSKEY="u"
+HREF="xmlsec-reference.html"
+><IMG
+SRC="up.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Up"></A
+></TD
+><TD
+><A
+ACCESSKEY="h"
+HREF="index.html"
+><IMG
+SRC="home.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Home"></A
+></TD
+><TH
+WIDTH="100%"
+align="center"
+>XML Security Library Reference Manual</TH
+><TD
+><A
+ACCESSKEY="n"
+HREF="xmlsec-app.html"
+><IMG
+SRC="right.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Next"></A
+></TD
+></TR
+></TABLE
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="XMLSEC-REF"
+></A
+>XML Security Core Library API Reference.</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="xmlsec-app.html"
+>app</A
+>&nbsp;--&nbsp;Crypto-engine independent application support function.</DT
+><DT
+><A
+HREF="xmlsec-base64.html"
+>base64</A
+>&nbsp;--&nbsp;Base64 encoding/decoding functions.</DT
+><DT
+><A
+HREF="xmlsec-bn.html"
+>bn</A
+>&nbsp;--&nbsp;Big numbers support functions.</DT
+><DT
+><A
+HREF="xmlsec-buffer.html"
+>buffer</A
+>&nbsp;--&nbsp;Binary buffer implementation.</DT
+><DT
+><A
+HREF="xmlsec-dl.html"
+>dl</A
+>&nbsp;--&nbsp;Dynamic crypto-engine library loading support.</DT
+><DT
+><A
+HREF="xmlsec-errors.html"
+>errors</A
+>&nbsp;--&nbsp;Error/log messages support.</DT
+><DT
+><A
+HREF="xmlsec-io.html"
+>io</A
+>&nbsp;--&nbsp;Input/output support.</DT
+><DT
+><A
+HREF="xmlsec-keyinfo.html"
+>keyinfo</A
+>&nbsp;--&nbsp;<A
+HREF="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"
+TARGET="_top"
+>&lt;dsig:KeyInfo/&gt;</A
+> node parser.</DT
+><DT
+><A
+HREF="xmlsec-keysdata.html"
+>keysdata</A
+>&nbsp;--&nbsp;Crypto key data object definition.</DT
+><DT
+><A
+HREF="xmlsec-keys.html"
+>keys</A
+>&nbsp;--&nbsp;Crypto key object definition.</DT
+><DT
+><A
+HREF="xmlsec-keysmngr.html"
+>keysmngr</A
+>&nbsp;--&nbsp;Keys manager object support.</DT
+><DT
+><A
+HREF="xmlsec-list.html"
+>list</A
+>&nbsp;--&nbsp;Generic list structure implementation.</DT
+><DT
+><A
+HREF="xmlsec-membuf.html"
+>membuf</A
+>&nbsp;--&nbsp;Memory buffer transform implementation.</DT
+><DT
+><A
+HREF="xmlsec-nodeset.html"
+>nodeset</A
+>&nbsp;--&nbsp;Nodeset object implementation.</DT
+><DT
+><A
+HREF="xmlsec-parser.html"
+>parser</A
+>&nbsp;--&nbsp;Parser transform implementation.</DT
+><DT
+><A
+HREF="xmlsec-templates.html"
+>templates</A
+>&nbsp;--&nbsp;Dynamic templates creation functions.</DT
+><DT
+><A
+HREF="xmlsec-transforms.html"
+>transforms</A
+>&nbsp;--&nbsp;Transform object definition.</DT
+><DT
+><A
+HREF="xmlsec-version.html"
+>version</A
+>&nbsp;--&nbsp;Version macros.</DT
+><DT
+><A
+HREF="xmlsec-xmldsig.html"
+>xmldsig</A
+>&nbsp;--&nbsp;XML Digital Signature support.</DT
+><DT
+><A
+HREF="xmlsec-xmlenc.html"
+>xmlenc</A
+>&nbsp;--&nbsp;XML Encryption support.</DT
+><DT
+><A
+HREF="xmlsec-xmlsec.html"
+>xmlsec</A
+>&nbsp;--&nbsp;Utility functions.</DT
+><DT
+><A
+HREF="xmlsec-xmltree.html"
+>xmltree</A
+>&nbsp;--&nbsp;XML tree operations.</DT
+><DT
+><A
+HREF="xmlsec-x509.html"
+>x509</A
+>&nbsp;--&nbsp;<A
+HREF="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate"
+TARGET="_top"
+>&lt;dsig:X509Certificate/&gt;</A
+> node parser.</DT
+></DL
+></DIV
+><P
+>This section contains the API reference for xmlsec. All
     the public interfaces are documented here. This reference guide is
-    build by extracting comments from the code sources. </p>
-</div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-reference.html"><b>&lt;&lt;&lt; XML Security Library API Reference.</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-app.html"><b>app &gt;&gt;&gt;</b></a></td>
-</tr></table>
-</td></tr></table></td>
-</tr></table></body>
-</html>
+    build by extracting comments from the code sources. </P
+></DIV
+><TABLE
+CLASS="navigation"
+WIDTH="100%"
+SUMMARY="Navigation footer"
+CELLPADDING="2"
+CELLSPACING="2"
+><TR
+VALIGN="middle"
+><TD
+ALIGN="left"
+><A
+ACCESSKEY="p"
+HREF="xmlsec-reference.html"
+><B
+>&lt;&lt;&lt;&nbsp;XML Security Library API Reference.</B
+></A
+></TD
+><TD
+ALIGN="right"
+><A
+ACCESSKEY="n"
+HREF="xmlsec-app.html"
+><B
+>app&nbsp;&gt;&gt;&gt;</B
+></A
+></TD
+></TR
+></TABLE
+></BODY
+></HTML
+>

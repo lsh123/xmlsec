@@ -1,13 +1,25 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>crypto</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="XML Security Library for GCrypt API Reference." href="xmlsec-gcrypt-ref.html">
-<link rel="PREVIOUS" title="app" href="xmlsec-gcrypt-app.html">
-<link rel="NEXT" title="XML Security Library for NSS API Reference." href="xmlsec-nss-ref.html">
-<style type="text/css">.synopsis, .classsynopsis {
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>crypto</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="XML Security Library Reference Manual"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="XML Security Library for GCrypt API Reference."
+HREF="xmlsec-gcrypt-ref.html"><LINK
+REL="PREVIOUS"
+TITLE="app"
+HREF="xmlsec-gcrypt-app.html"><LINK
+REL="NEXT"
+TITLE="XML Security Library for NSS API Reference."
+HREF="xmlsec-nss-ref.html"><STYLE
+TYPE="text/css"
+>.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
     padding: 0.5em;
@@ -35,1632 +47,4616 @@
 }
 .navigation .title {
     font-size: 200%;
-}</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-</head>
-<body><table width="100%" valign="top"><tr valign="top">
-<td valign="top" align="left" width="210">
-<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="../index.html">Home</a></li>
-<li><a href="../download.html">Download</a></li>
-<li><a href="../news.html">News</a></li>
-<li><a href="../documentation.html">Documentation</a></li>
-<ul>
-<li><a href="../faq.html">FAQ</a></li>
-<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
-<li><a href="../api/xmlsec-reference.html">API reference</a></li>
-<li><a href="../api/xmlsec-examples.html">Examples</a></li>
-</ul>
-<li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<ul><li><a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a></li></ul>
-<li><a href="../xmlenc.html">XML Encryption</a></li>
-<li><a href="../c14n.html">XML Canonicalization</a></li>
-<li><a href="../bugs.html">Reporting Bugs</a></li>
-<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
-<li><a href="../related.html">Related</a></li>
-<li><a href="../authors.html">Authors</a></li>
-</ul>
-<table width="100%">
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
-</tr>
-<!--Links - start--><!--Links - end-->
-</table>
-</td>
-<td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-gcrypt-app.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-gcrypt-ref.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
-<td><a accesskey="n" href="xmlsec-nss-ref.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
-</tr></table>
-<h1>
-<a name="XMLSEC-GCRYPT-CRYPTO"></a>crypto</h1>
-<div class="REFNAMEDIV">
-<a name="AEN36782"></a><h2>Name</h2>crypto -- Crypto transforms implementation for GCrypt.</div>
-<div class="REFSECT1">
-<a name="XMLSEC-GCRYPT-CRYPTO.FUNCTIONS"></a><h2>Functions</h2>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN36787"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<tbody>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecCryptoDLFunctionsPtr</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECCRYPTOGETFUNCTIONS-GCRYPT">xmlSecCryptoGetFunctions_gcrypt</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTINIT">xmlSecGCryptInit</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTSHUTDOWN">xmlSecGCryptShutdown</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYSMNGRINIT">xmlSecGCryptKeysMngrInit</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTGENERATERANDOM">xmlSecGCryptGenerateRandom</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecKeyDataId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATAAESGETKLASS">xmlSecGCryptKeyDataAesGetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATAAESSET">xmlSecGCryptKeyDataAesSet</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMAES128CBCGETKLASS">xmlSecGCryptTransformAes128CbcGetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMAES192CBCGETKLASS">xmlSecGCryptTransformAes192CbcGetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMAES256CBCGETKLASS">xmlSecGCryptTransformAes256CbcGetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMKWAES128GETKLASS">xmlSecGCryptTransformKWAes128GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMKWAES192GETKLASS">xmlSecGCryptTransformKWAes192GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMKWAES256GETKLASS">xmlSecGCryptTransformKWAes256GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecKeyDataId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATADESGETKLASS">xmlSecGCryptKeyDataDesGetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATADESSET">xmlSecGCryptKeyDataDesSet</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMDES3CBCGETKLASS">xmlSecGCryptTransformDes3CbcGetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMKWDES3GETKLASS">xmlSecGCryptTransformKWDes3GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecKeyDataId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATADSAGETKLASS">xmlSecGCryptKeyDataDsaGetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATADSAADOPTKEY">xmlSecGCryptKeyDataDsaAdoptKey</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATADSAADOPTKEYPAIR">xmlSecGCryptKeyDataDsaAdoptKeyPair</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">gcry_sexp_t</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATADSAGETPUBLICKEY">xmlSecGCryptKeyDataDsaGetPublicKey</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">gcry_sexp_t</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATADSAGETPRIVATEKEY">xmlSecGCryptKeyDataDsaGetPrivateKey</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMDSASHA1GETKLASS">xmlSecGCryptTransformDsaSha1GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTHMACGETMINOUTPUTLENGTH">xmlSecGCryptHmacGetMinOutputLength</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">void</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTHMACSETMINOUTPUTLENGTH">xmlSecGCryptHmacSetMinOutputLength</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecKeyDataId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATAHMACGETKLASS">xmlSecGCryptKeyDataHmacGetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATAHMACSET">xmlSecGCryptKeyDataHmacSet</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMHMACMD5GETKLASS">xmlSecGCryptTransformHmacMd5GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMHMACRIPEMD160GETKLASS">xmlSecGCryptTransformHmacRipemd160GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMHMACSHA1GETKLASS">xmlSecGCryptTransformHmacSha1GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMHMACSHA256GETKLASS">xmlSecGCryptTransformHmacSha256GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMHMACSHA384GETKLASS">xmlSecGCryptTransformHmacSha384GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMHMACSHA512GETKLASS">xmlSecGCryptTransformHmacSha512GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecKeyDataId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATARSAGETKLASS">xmlSecGCryptKeyDataRsaGetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATARSAADOPTKEY">xmlSecGCryptKeyDataRsaAdoptKey</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATARSAADOPTKEYPAIR">xmlSecGCryptKeyDataRsaAdoptKeyPair</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">gcry_sexp_t</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATARSAGETPUBLICKEY">xmlSecGCryptKeyDataRsaGetPublicKey</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">gcry_sexp_t</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATARSAGETPRIVATEKEY">xmlSecGCryptKeyDataRsaGetPrivateKey</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMRSAMD5GETKLASS">xmlSecGCryptTransformRsaMd5GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMRSARIPEMD160GETKLASS">xmlSecGCryptTransformRsaRipemd160GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMRSASHA1GETKLASS">xmlSecGCryptTransformRsaSha1GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMRSASHA256GETKLASS">xmlSecGCryptTransformRsaSha256GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMRSASHA384GETKLASS">xmlSecGCryptTransformRsaSha384GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMRSASHA512GETKLASS">xmlSecGCryptTransformRsaSha512GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMSHA1GETKLASS">xmlSecGCryptTransformSha1GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMSHA256GETKLASS">xmlSecGCryptTransformSha256GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMSHA384GETKLASS">xmlSecGCryptTransformSha384GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMSHA512GETKLASS">xmlSecGCryptTransformSha512GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMMD5GETKLASS">xmlSecGCryptTransformMd5GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
-<td>
-<a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMRIPEMD160GETKLASS">xmlSecGCryptTransformRipemd160GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT1">
-<a name="XMLSEC-GCRYPT-CRYPTO.OTHER"></a><h2>Types and Values</h2>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN37142"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<tbody>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATAAESID">xmlSecGCryptKeyDataAesId</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMAES128CBCID">xmlSecGCryptTransformAes128CbcId</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMAES192CBCID">xmlSecGCryptTransformAes192CbcId</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMAES256CBCID">xmlSecGCryptTransformAes256CbcId</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMKWAES128ID">xmlSecGCryptTransformKWAes128Id</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMKWAES192ID">xmlSecGCryptTransformKWAes192Id</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMKWAES256ID">xmlSecGCryptTransformKWAes256Id</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATADESID">xmlSecGCryptKeyDataDesId</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMDES3CBCID">xmlSecGCryptTransformDes3CbcId</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMKWDES3ID">xmlSecGCryptTransformKWDes3Id</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATADSAID">xmlSecGCryptKeyDataDsaId</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMDSASHA1ID">xmlSecGCryptTransformDsaSha1Id</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATAHMACID">xmlSecGCryptKeyDataHmacId</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMHMACMD5ID">xmlSecGCryptTransformHmacMd5Id</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMHMACRIPEMD160ID">xmlSecGCryptTransformHmacRipemd160Id</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMHMACSHA1ID">xmlSecGCryptTransformHmacSha1Id</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMHMACSHA256ID">xmlSecGCryptTransformHmacSha256Id</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMHMACSHA384ID">xmlSecGCryptTransformHmacSha384Id</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMHMACSHA512ID">xmlSecGCryptTransformHmacSha512Id</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATARSAID">xmlSecGCryptKeyDataRsaId</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMRSAMD5ID">xmlSecGCryptTransformRsaMd5Id</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMRSARIPEMD160ID">xmlSecGCryptTransformRsaRipemd160Id</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMRSASHA1ID">xmlSecGCryptTransformRsaSha1Id</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMRSASHA256ID">xmlSecGCryptTransformRsaSha256Id</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMRSASHA384ID">xmlSecGCryptTransformRsaSha384Id</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMRSASHA512ID">xmlSecGCryptTransformRsaSha512Id</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMSHA1ID">xmlSecGCryptTransformSha1Id</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMSHA256ID">xmlSecGCryptTransformSha256Id</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMSHA384ID">xmlSecGCryptTransformSha384Id</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMSHA512ID">xmlSecGCryptTransformSha512Id</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMMD5ID">xmlSecGCryptTransformMd5Id</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMRIPEMD160ID">xmlSecGCryptTransformRipemd160Id</a></td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT1">
-<a name="XMLSEC-GCRYPT-CRYPTO.DESCRIPTION"></a><h2>Description</h2>
-<p>Crypto transforms implementation for GCrypt.</p>
-</div>
-<div class="REFSECT1">
-<a name="XMLSEC-GCRYPT-CRYPTO.FUNCTIONS_DETAILS"></a><h2>Functions</h2>
-<div class="REFSECT2">
-<a name="XMLSECCRYPTOGETFUNCTIONS-GCRYPT"></a><h3>xmlSecCryptoGetFunctions_gcrypt ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecCryptoDLFunctionsPtr</span></font>
-xmlSecCryptoGetFunctions_gcrypt (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>Gets the pointer to xmlsec-gcrypt functions table.</p>
-<div class="REFSECT3">
-<a name="AEN37288"></a><h4>Returns</h4>
-<p> the xmlsec-gcrypt functions table or NULL if an error occurs.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTINIT"></a><h3>xmlSecGCryptInit ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
-xmlSecGCryptInit (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>XMLSec library specific crypto engine initialization.</p>
-<div class="REFSECT3">
-<a name="AEN37301"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTSHUTDOWN"></a><h3>xmlSecGCryptShutdown ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
-xmlSecGCryptShutdown (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>XMLSec library specific crypto engine shutdown.</p>
-<div class="REFSECT3">
-<a name="AEN37314"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTKEYSMNGRINIT"></a><h3>xmlSecGCryptKeysMngrInit ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
-xmlSecGCryptKeysMngrInit (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="TYPE">xmlSecKeysMngrPtr</span></a> mngr</code>);</pre>
-<p>Adds GCrypt specific key data stores in keys manager.</p>
-<div class="REFSECT3">
-<a name="AEN37328"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN37330"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody><tr>
-<td><p>mngr</p></td>
-<td><p>the pointer to keys manager.</p></td>
-<td> </td>
-</tr></tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN37339"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTGENERATERANDOM"></a><h3>xmlSecGCryptGenerateRandom ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
-xmlSecGCryptGenerateRandom (<code class="PARAMETER"><a href="xmlsec-buffer.html#XMLSECBUFFER"><span class="TYPE">xmlSecBufferPtr</span></a> buffer</code>,
-                            <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> size</code>);</pre>
-<p>Generates <code class="PARAMETER">size</code>
- random bytes and puts result in <code class="PARAMETER">buffer</code>
-.</p>
-<div class="REFSECT3">
-<a name="AEN37358"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN37360"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody>
-<tr>
-<td><p>buffer</p></td>
-<td><p>the destination buffer.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>size</p></td>
-<td><p>the numer of bytes to generate.</p></td>
-<td> </td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN37375"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTKEYDATAAESGETKLASS"></a><h3>xmlSecGCryptKeyDataAesGetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecKeyDataId</span></font>
-xmlSecGCryptKeyDataAesGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>The AES key data klass.</p>
-<div class="REFSECT3">
-<a name="AEN37388"></a><h4>Returns</h4>
-<p> AES key data klass.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTKEYDATAAESSET"></a><h3>xmlSecGCryptKeyDataAesSet ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
-xmlSecGCryptKeyDataAesSet (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
-                           <code class="PARAMETER">const <a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *buf</code>,
-                           <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> bufSize</code>);</pre>
-<p>Sets the value of AES key data.</p>
-<div class="REFSECT3">
-<a name="AEN37408"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN37410"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody>
-<tr>
-<td><p>data</p></td>
-<td><p>the pointer to AES key data.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>buf</p></td>
-<td><p>the pointer to key value.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>bufSize</p></td>
-<td><p>the key value size (in bytes).</p></td>
-<td> </td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN37431"></a><h4>Returns</h4>
-<p> 0 on success or a negative value if an error occurs.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMAES128CBCGETKLASS"></a><h3>xmlSecGCryptTransformAes128CbcGetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
+}</STYLE
+></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><TABLE
+WIDTH="100%"
+CLASS="navigation"
+SUMMARY="Navigation header"
+CELLPADDING="2"
+CELLSPACING="2"
+><TR
+VALIGN="middle"
+><TD
+><A
+ACCESSKEY="p"
+HREF="xmlsec-gcrypt-app.html"
+><IMG
+SRC="left.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Prev"></A
+></TD
+><TD
+><A
+ACCESSKEY="u"
+HREF="xmlsec-gcrypt-ref.html"
+><IMG
+SRC="up.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Up"></A
+></TD
+><TD
+><A
+ACCESSKEY="h"
+HREF="index.html"
+><IMG
+SRC="home.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Home"></A
+></TD
+><TH
+WIDTH="100%"
+align="center"
+>XML Security Library Reference Manual</TH
+><TD
+><A
+ACCESSKEY="n"
+HREF="xmlsec-nss-ref.html"
+><IMG
+SRC="right.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Next"></A
+></TD
+></TR
+></TABLE
+><H1
+><A
+NAME="XMLSEC-GCRYPT-CRYPTO"
+></A
+>crypto</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN36685"
+></A
+><H2
+>Name</H2
+>crypto&nbsp;--&nbsp;Crypto transforms implementation for GCrypt.</DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="XMLSEC-GCRYPT-CRYPTO.FUNCTIONS"
+></A
+><H2
+>Functions</H2
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN36690"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><TBODY
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECCRYPTODLFUNCTIONS"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecCryptoDLFunctionsPtr</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECCRYPTOGETFUNCTIONS-GCRYPT"
+>xmlSecCryptoGetFunctions_gcrypt</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTINIT"
+>xmlSecGCryptInit</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTSHUTDOWN"
+>xmlSecGCryptShutdown</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYSMNGRINIT"
+>xmlSecGCryptKeysMngrInit</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTGENERATERANDOM"
+>xmlSecGCryptGenerateRandom</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECKEYDATAID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecKeyDataId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATAAESGETKLASS"
+>xmlSecGCryptKeyDataAesGetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATAAESSET"
+>xmlSecGCryptKeyDataAesSet</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMAES128CBCGETKLASS"
+>xmlSecGCryptTransformAes128CbcGetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMAES192CBCGETKLASS"
+>xmlSecGCryptTransformAes192CbcGetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMAES256CBCGETKLASS"
+>xmlSecGCryptTransformAes256CbcGetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMKWAES128GETKLASS"
+>xmlSecGCryptTransformKWAes128GetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMKWAES192GETKLASS"
+>xmlSecGCryptTransformKWAes192GetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMKWAES256GETKLASS"
+>xmlSecGCryptTransformKWAes256GetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECKEYDATAID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecKeyDataId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATADESGETKLASS"
+>xmlSecGCryptKeyDataDesGetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATADESSET"
+>xmlSecGCryptKeyDataDesSet</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMDES3CBCGETKLASS"
+>xmlSecGCryptTransformDes3CbcGetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMKWDES3GETKLASS"
+>xmlSecGCryptTransformKWDes3GetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECKEYDATAID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecKeyDataId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATADSAGETKLASS"
+>xmlSecGCryptKeyDataDsaGetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATADSAADOPTKEY"
+>xmlSecGCryptKeyDataDsaAdoptKey</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATADSAADOPTKEYPAIR"
+>xmlSecGCryptKeyDataDsaAdoptKeyPair</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="GCRY-SEXP-T"
+><SPAN
+CLASS="RETURNVALUE"
+>gcry_sexp_t</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATADSAGETPUBLICKEY"
+>xmlSecGCryptKeyDataDsaGetPublicKey</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="GCRY-SEXP-T"
+><SPAN
+CLASS="RETURNVALUE"
+>gcry_sexp_t</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATADSAGETPRIVATEKEY"
+>xmlSecGCryptKeyDataDsaGetPrivateKey</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMDSASHA1GETKLASS"
+>xmlSecGCryptTransformDsaSha1GetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTHMACGETMINOUTPUTLENGTH"
+>xmlSecGCryptHmacGetMinOutputLength</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="VOID"
+><SPAN
+CLASS="RETURNVALUE"
+>void</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTHMACSETMINOUTPUTLENGTH"
+>xmlSecGCryptHmacSetMinOutputLength</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECKEYDATAID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecKeyDataId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATAHMACGETKLASS"
+>xmlSecGCryptKeyDataHmacGetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATAHMACSET"
+>xmlSecGCryptKeyDataHmacSet</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMHMACMD5GETKLASS"
+>xmlSecGCryptTransformHmacMd5GetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMHMACRIPEMD160GETKLASS"
+>xmlSecGCryptTransformHmacRipemd160GetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMHMACSHA1GETKLASS"
+>xmlSecGCryptTransformHmacSha1GetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMHMACSHA256GETKLASS"
+>xmlSecGCryptTransformHmacSha256GetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMHMACSHA384GETKLASS"
+>xmlSecGCryptTransformHmacSha384GetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMHMACSHA512GETKLASS"
+>xmlSecGCryptTransformHmacSha512GetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECKEYDATAID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecKeyDataId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATARSAGETKLASS"
+>xmlSecGCryptKeyDataRsaGetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATARSAADOPTKEY"
+>xmlSecGCryptKeyDataRsaAdoptKey</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATARSAADOPTKEYPAIR"
+>xmlSecGCryptKeyDataRsaAdoptKeyPair</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="GCRY-SEXP-T"
+><SPAN
+CLASS="RETURNVALUE"
+>gcry_sexp_t</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATARSAGETPUBLICKEY"
+>xmlSecGCryptKeyDataRsaGetPublicKey</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="GCRY-SEXP-T"
+><SPAN
+CLASS="RETURNVALUE"
+>gcry_sexp_t</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATARSAGETPRIVATEKEY"
+>xmlSecGCryptKeyDataRsaGetPrivateKey</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMRSAMD5GETKLASS"
+>xmlSecGCryptTransformRsaMd5GetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMRSARIPEMD160GETKLASS"
+>xmlSecGCryptTransformRsaRipemd160GetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMRSASHA1GETKLASS"
+>xmlSecGCryptTransformRsaSha1GetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMRSASHA256GETKLASS"
+>xmlSecGCryptTransformRsaSha256GetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMRSASHA384GETKLASS"
+>xmlSecGCryptTransformRsaSha384GetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMRSASHA512GETKLASS"
+>xmlSecGCryptTransformRsaSha512GetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMSHA1GETKLASS"
+>xmlSecGCryptTransformSha1GetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMSHA256GETKLASS"
+>xmlSecGCryptTransformSha256GetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMSHA384GETKLASS"
+>xmlSecGCryptTransformSha384GetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMSHA512GETKLASS"
+>xmlSecGCryptTransformSha512GetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMMD5GETKLASS"
+>xmlSecGCryptTransformMd5GetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMRIPEMD160GETKLASS"
+>xmlSecGCryptTransformRipemd160GetKlass</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="XMLSEC-GCRYPT-CRYPTO.OTHER"
+></A
+><H2
+>Types and Values</H2
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN37045"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><TBODY
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATAAESID"
+>xmlSecGCryptKeyDataAesId</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMAES128CBCID"
+>xmlSecGCryptTransformAes128CbcId</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMAES192CBCID"
+>xmlSecGCryptTransformAes192CbcId</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMAES256CBCID"
+>xmlSecGCryptTransformAes256CbcId</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMKWAES128ID"
+>xmlSecGCryptTransformKWAes128Id</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMKWAES192ID"
+>xmlSecGCryptTransformKWAes192Id</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMKWAES256ID"
+>xmlSecGCryptTransformKWAes256Id</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATADESID"
+>xmlSecGCryptKeyDataDesId</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMDES3CBCID"
+>xmlSecGCryptTransformDes3CbcId</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMKWDES3ID"
+>xmlSecGCryptTransformKWDes3Id</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATADSAID"
+>xmlSecGCryptKeyDataDsaId</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMDSASHA1ID"
+>xmlSecGCryptTransformDsaSha1Id</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATAHMACID"
+>xmlSecGCryptKeyDataHmacId</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMHMACMD5ID"
+>xmlSecGCryptTransformHmacMd5Id</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMHMACRIPEMD160ID"
+>xmlSecGCryptTransformHmacRipemd160Id</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMHMACSHA1ID"
+>xmlSecGCryptTransformHmacSha1Id</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMHMACSHA256ID"
+>xmlSecGCryptTransformHmacSha256Id</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMHMACSHA384ID"
+>xmlSecGCryptTransformHmacSha384Id</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMHMACSHA512ID"
+>xmlSecGCryptTransformHmacSha512Id</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTKEYDATARSAID"
+>xmlSecGCryptKeyDataRsaId</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMRSAMD5ID"
+>xmlSecGCryptTransformRsaMd5Id</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMRSARIPEMD160ID"
+>xmlSecGCryptTransformRsaRipemd160Id</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMRSASHA1ID"
+>xmlSecGCryptTransformRsaSha1Id</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMRSASHA256ID"
+>xmlSecGCryptTransformRsaSha256Id</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMRSASHA384ID"
+>xmlSecGCryptTransformRsaSha384Id</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMRSASHA512ID"
+>xmlSecGCryptTransformRsaSha512Id</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMSHA1ID"
+>xmlSecGCryptTransformSha1Id</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMSHA256ID"
+>xmlSecGCryptTransformSha256Id</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMSHA384ID"
+>xmlSecGCryptTransformSha384Id</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMSHA512ID"
+>xmlSecGCryptTransformSha512Id</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMMD5ID"
+>xmlSecGCryptTransformMd5Id</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMRIPEMD160ID"
+>xmlSecGCryptTransformRipemd160Id</A
+></TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="XMLSEC-GCRYPT-CRYPTO.DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>Crypto transforms implementation for GCrypt.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="XMLSEC-GCRYPT-CRYPTO.FUNCTIONS_DETAILS"
+></A
+><H2
+>Functions</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECCRYPTOGETFUNCTIONS-GCRYPT"
+></A
+><H3
+>xmlSecCryptoGetFunctions_gcrypt ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECCRYPTODLFUNCTIONS"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecCryptoDLFunctionsPtr</SPAN
+></GTKDOCLINK
+>
+xmlSecCryptoGetFunctions_gcrypt (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>Gets the pointer to xmlsec-gcrypt functions table.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37191"
+></A
+><H4
+>Returns</H4
+><P
+> the xmlsec-gcrypt functions table or NULL if an error occurs.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTINIT"
+></A
+><H3
+>xmlSecGCryptInit ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptInit (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>XMLSec library specific crypto engine initialization.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37204"
+></A
+><H4
+>Returns</H4
+><P
+> 0 on success or a negative value otherwise.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTSHUTDOWN"
+></A
+><H3
+>xmlSecGCryptShutdown ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptShutdown (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>XMLSec library specific crypto engine shutdown.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37217"
+></A
+><H4
+>Returns</H4
+><P
+> 0 on success or a negative value otherwise.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTKEYSMNGRINIT"
+></A
+><H3
+>xmlSecGCryptKeysMngrInit ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptKeysMngrInit (<CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGR"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeysMngrPtr</SPAN
+></A
+> mngr</CODE
+>);</PRE
+><P
+>Adds GCrypt specific key data stores in keys manager.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37231"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN37233"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>mngr</P
+></TD
+><TD
+><P
+>the pointer to keys manager.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37242"
+></A
+><H4
+>Returns</H4
+><P
+> 0 on success or a negative value otherwise.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTGENERATERANDOM"
+></A
+><H3
+>xmlSecGCryptGenerateRandom ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptGenerateRandom (<CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-buffer.html#XMLSECBUFFER"
+><SPAN
+CLASS="TYPE"
+>xmlSecBufferPtr</SPAN
+></A
+> buffer</CODE
+>,
+                            <CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-xmlsec.html#XMLSECSIZE"
+><SPAN
+CLASS="TYPE"
+>xmlSecSize</SPAN
+></A
+> size</CODE
+>);</PRE
+><P
+>Generates <CODE
+CLASS="PARAMETER"
+>size</CODE
+>
+ random bytes and puts result in <CODE
+CLASS="PARAMETER"
+>buffer</CODE
+>
+.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37261"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN37263"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>buffer</P
+></TD
+><TD
+><P
+>the destination buffer.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>size</P
+></TD
+><TD
+><P
+>the numer of bytes to generate.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37278"
+></A
+><H4
+>Returns</H4
+><P
+> 0 on success or a negative value otherwise.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTKEYDATAAESGETKLASS"
+></A
+><H3
+>xmlSecGCryptKeyDataAesGetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECKEYDATAID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecKeyDataId</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptKeyDataAesGetKlass (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>The AES key data klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37291"
+></A
+><H4
+>Returns</H4
+><P
+> AES key data klass.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTKEYDATAAESSET"
+></A
+><H3
+>xmlSecGCryptKeyDataAesSet ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptKeyDataAesSet (<CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyDataPtr</SPAN
+></A
+> data</CODE
+>,
+                           <CODE
+CLASS="PARAMETER"
+>const <A
+HREF="xmlsec-xmlsec.html#XMLSECBYTE"
+><SPAN
+CLASS="TYPE"
+>xmlSecByte</SPAN
+></A
+> *buf</CODE
+>,
+                           <CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-xmlsec.html#XMLSECSIZE"
+><SPAN
+CLASS="TYPE"
+>xmlSecSize</SPAN
+></A
+> bufSize</CODE
+>);</PRE
+><P
+>Sets the value of AES key data.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37311"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN37313"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>data</P
+></TD
+><TD
+><P
+>the pointer to AES key data.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>buf</P
+></TD
+><TD
+><P
+>the pointer to key value.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>bufSize</P
+></TD
+><TD
+><P
+>the key value size (in bytes).</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37334"
+></A
+><H4
+>Returns</H4
+><P
+> 0 on success or a negative value if an error occurs.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMAES128CBCGETKLASS"
+></A
+><H3
+>xmlSecGCryptTransformAes128CbcGetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+>
 xmlSecGCryptTransformAes128CbcGetKlass
-                               (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>AES 128 CBC encryption transform klass.</p>
-<div class="REFSECT3">
-<a name="AEN37444"></a><h4>Returns</h4>
-<p> pointer to AES 128 CBC encryption transform.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMAES192CBCGETKLASS"></a><h3>xmlSecGCryptTransformAes192CbcGetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
+                               (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>AES 128 CBC encryption transform klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37347"
+></A
+><H4
+>Returns</H4
+><P
+> pointer to AES 128 CBC encryption transform.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMAES192CBCGETKLASS"
+></A
+><H3
+>xmlSecGCryptTransformAes192CbcGetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+>
 xmlSecGCryptTransformAes192CbcGetKlass
-                               (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>AES 192 CBC encryption transform klass.</p>
-<div class="REFSECT3">
-<a name="AEN37457"></a><h4>Returns</h4>
-<p> pointer to AES 192 CBC encryption transform.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMAES256CBCGETKLASS"></a><h3>xmlSecGCryptTransformAes256CbcGetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
+                               (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>AES 192 CBC encryption transform klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37360"
+></A
+><H4
+>Returns</H4
+><P
+> pointer to AES 192 CBC encryption transform.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMAES256CBCGETKLASS"
+></A
+><H3
+>xmlSecGCryptTransformAes256CbcGetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+>
 xmlSecGCryptTransformAes256CbcGetKlass
-                               (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>AES 256 CBC encryption transform klass.</p>
-<div class="REFSECT3">
-<a name="AEN37470"></a><h4>Returns</h4>
-<p> pointer to AES 256 CBC encryption transform.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMKWAES128GETKLASS"></a><h3>xmlSecGCryptTransformKWAes128GetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
-xmlSecGCryptTransformKWAes128GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>The AES-128 kew wrapper transform klass.</p>
-<div class="REFSECT3">
-<a name="AEN37483"></a><h4>Returns</h4>
-<p> AES-128 kew wrapper transform klass.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMKWAES192GETKLASS"></a><h3>xmlSecGCryptTransformKWAes192GetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
-xmlSecGCryptTransformKWAes192GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>The AES-192 kew wrapper transform klass.</p>
-<div class="REFSECT3">
-<a name="AEN37496"></a><h4>Returns</h4>
-<p> AES-192 kew wrapper transform klass.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMKWAES256GETKLASS"></a><h3>xmlSecGCryptTransformKWAes256GetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
-xmlSecGCryptTransformKWAes256GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>The AES-256 kew wrapper transform klass.</p>
-<div class="REFSECT3">
-<a name="AEN37509"></a><h4>Returns</h4>
-<p> AES-256 kew wrapper transform klass.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTKEYDATADESGETKLASS"></a><h3>xmlSecGCryptKeyDataDesGetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecKeyDataId</span></font>
-xmlSecGCryptKeyDataDesGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>The DES key data klass.</p>
-<div class="REFSECT3">
-<a name="AEN37522"></a><h4>Returns</h4>
-<p> DES key data klass.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTKEYDATADESSET"></a><h3>xmlSecGCryptKeyDataDesSet ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
-xmlSecGCryptKeyDataDesSet (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
-                           <code class="PARAMETER">const <a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *buf</code>,
-                           <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> bufSize</code>);</pre>
-<p>Sets the value of DES key data.</p>
-<div class="REFSECT3">
-<a name="AEN37542"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN37544"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody>
-<tr>
-<td><p>data</p></td>
-<td><p>the pointer to DES key data.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>buf</p></td>
-<td><p>the pointer to key value.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>bufSize</p></td>
-<td><p>the key value size (in bytes).</p></td>
-<td> </td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN37565"></a><h4>Returns</h4>
-<p> 0 on success or a negative value if an error occurs.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMDES3CBCGETKLASS"></a><h3>xmlSecGCryptTransformDes3CbcGetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
-xmlSecGCryptTransformDes3CbcGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>Triple DES CBC encryption transform klass.</p>
-<div class="REFSECT3">
-<a name="AEN37578"></a><h4>Returns</h4>
-<p> pointer to Triple DES encryption transform.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMKWDES3GETKLASS"></a><h3>xmlSecGCryptTransformKWDes3GetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
-xmlSecGCryptTransformKWDes3GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>The Triple DES key wrapper transform klass.</p>
-<div class="REFSECT3">
-<a name="AEN37591"></a><h4>Returns</h4>
-<p> Triple DES key wrapper transform klass.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTKEYDATADSAGETKLASS"></a><h3>xmlSecGCryptKeyDataDsaGetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecKeyDataId</span></font>
-xmlSecGCryptKeyDataDsaGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>The DSA key data klass.</p>
-<div class="REFSECT3">
-<a name="AEN37604"></a><h4>Returns</h4>
-<p> pointer to DSA key data klass.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTKEYDATADSAADOPTKEY"></a><h3>xmlSecGCryptKeyDataDsaAdoptKey ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
-xmlSecGCryptKeyDataDsaAdoptKey (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
-                                <code class="PARAMETER"><font><span class="TYPE">gcry_sexp_t</span></font> dsa_key</code>);</pre>
-<p>Sets the value of DSA key data.</p>
-<div class="REFSECT3">
-<a name="AEN37621"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN37623"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody>
-<tr>
-<td><p>data</p></td>
-<td><p>the pointer to DSA key data.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>dsa_key</p></td>
-<td><p>the pointer to GCrypt DSA key.</p></td>
-<td> </td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN37638"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTKEYDATADSAADOPTKEYPAIR"></a><h3>xmlSecGCryptKeyDataDsaAdoptKeyPair ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
-xmlSecGCryptKeyDataDsaAdoptKeyPair (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
-                                    <code class="PARAMETER"><font><span class="TYPE">gcry_sexp_t</span></font> pub_key</code>,
-                                    <code class="PARAMETER"><font><span class="TYPE">gcry_sexp_t</span></font> priv_key</code>);</pre>
-<p>Sets the value of DSA key data.</p>
-<div class="REFSECT3">
-<a name="AEN37658"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN37660"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody>
-<tr>
-<td><p>data</p></td>
-<td><p>the pointer to DSA key data.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>pub_key</p></td>
-<td><p>the pointer to GCrypt DSA pub key.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>priv_key</p></td>
-<td><p>the pointer to GCrypt DSA priv key.</p></td>
-<td> </td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN37681"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTKEYDATADSAGETPUBLICKEY"></a><h3>xmlSecGCryptKeyDataDsaGetPublicKey ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">gcry_sexp_t</span></font>
-xmlSecGCryptKeyDataDsaGetPublicKey (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>);</pre>
-<p>Gets the GCrypt DSA public key from DSA key data.</p>
-<div class="REFSECT3">
-<a name="AEN37695"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN37697"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody><tr>
-<td><p>data</p></td>
-<td><p>the pointer to DSA key data.</p></td>
-<td> </td>
-</tr></tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN37706"></a><h4>Returns</h4>
-<p> pointer to GCrypt public DSA key or NULL if an error occurs.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTKEYDATADSAGETPRIVATEKEY"></a><h3>xmlSecGCryptKeyDataDsaGetPrivateKey ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">gcry_sexp_t</span></font>
-xmlSecGCryptKeyDataDsaGetPrivateKey (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>);</pre>
-<p>Gets the GCrypt DSA private key from DSA key data.</p>
-<div class="REFSECT3">
-<a name="AEN37720"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN37722"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody><tr>
-<td><p>data</p></td>
-<td><p>the pointer to DSA key data.</p></td>
-<td> </td>
-</tr></tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN37731"></a><h4>Returns</h4>
-<p> pointer to GCrypt private DSA key or NULL if an error occurs.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMDSASHA1GETKLASS"></a><h3>xmlSecGCryptTransformDsaSha1GetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
-xmlSecGCryptTransformDsaSha1GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>The DSA-SHA1 signature transform klass.</p>
-<div class="REFSECT3">
-<a name="AEN37744"></a><h4>Returns</h4>
-<p> DSA-SHA1 signature transform klass.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTHMACGETMINOUTPUTLENGTH"></a><h3>xmlSecGCryptHmacGetMinOutputLength ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
-xmlSecGCryptHmacGetMinOutputLength (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>Gets the value of min HMAC length.</p>
-<div class="REFSECT3">
-<a name="AEN37757"></a><h4>Returns</h4>
-<p> the min HMAC output length</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTHMACSETMINOUTPUTLENGTH"></a><h3>xmlSecGCryptHmacSetMinOutputLength ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">void</span></font>
-xmlSecGCryptHmacSetMinOutputLength (<code class="PARAMETER"><font><span class="TYPE">int</span></font> min_length</code>);</pre>
-<p>Sets the min HMAC output length</p>
-<div class="REFSECT3">
-<a name="AEN37771"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN37773"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody><tr>
-<td><p>min_length</p></td>
-<td><p>the new min length</p></td>
-<td> </td>
-</tr></tbody>
-</table>
-<p></p>
-</div>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTKEYDATAHMACGETKLASS"></a><h3>xmlSecGCryptKeyDataHmacGetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecKeyDataId</span></font>
-xmlSecGCryptKeyDataHmacGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>The HMAC key data klass.</p>
-<div class="REFSECT3">
-<a name="AEN37792"></a><h4>Returns</h4>
-<p> HMAC key data klass.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTKEYDATAHMACSET"></a><h3>xmlSecGCryptKeyDataHmacSet ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
-xmlSecGCryptKeyDataHmacSet (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
-                            <code class="PARAMETER">const <a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *buf</code>,
-                            <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> bufSize</code>);</pre>
-<p>Sets the value of HMAC key data.</p>
-<div class="REFSECT3">
-<a name="AEN37812"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN37814"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody>
-<tr>
-<td><p>data</p></td>
-<td><p>the pointer to HMAC key data.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>buf</p></td>
-<td><p>the pointer to key value.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>bufSize</p></td>
-<td><p>the key value size (in bytes).</p></td>
-<td> </td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN37835"></a><h4>Returns</h4>
-<p> 0 on success or a negative value if an error occurs.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMHMACMD5GETKLASS"></a><h3>xmlSecGCryptTransformHmacMd5GetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
-xmlSecGCryptTransformHmacMd5GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>The HMAC-MD5 transform klass.</p>
-<div class="REFSECT3">
-<a name="AEN37848"></a><h4>Returns</h4>
-<p> the HMAC-MD5 transform klass.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMHMACRIPEMD160GETKLASS"></a><h3>xmlSecGCryptTransformHmacRipemd160GetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
+                               (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>AES 256 CBC encryption transform klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37373"
+></A
+><H4
+>Returns</H4
+><P
+> pointer to AES 256 CBC encryption transform.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMKWAES128GETKLASS"
+></A
+><H3
+>xmlSecGCryptTransformKWAes128GetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptTransformKWAes128GetKlass (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>The AES-128 kew wrapper transform klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37386"
+></A
+><H4
+>Returns</H4
+><P
+> AES-128 kew wrapper transform klass.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMKWAES192GETKLASS"
+></A
+><H3
+>xmlSecGCryptTransformKWAes192GetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptTransformKWAes192GetKlass (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>The AES-192 kew wrapper transform klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37399"
+></A
+><H4
+>Returns</H4
+><P
+> AES-192 kew wrapper transform klass.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMKWAES256GETKLASS"
+></A
+><H3
+>xmlSecGCryptTransformKWAes256GetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptTransformKWAes256GetKlass (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>The AES-256 kew wrapper transform klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37412"
+></A
+><H4
+>Returns</H4
+><P
+> AES-256 kew wrapper transform klass.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTKEYDATADESGETKLASS"
+></A
+><H3
+>xmlSecGCryptKeyDataDesGetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECKEYDATAID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecKeyDataId</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptKeyDataDesGetKlass (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>The DES key data klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37425"
+></A
+><H4
+>Returns</H4
+><P
+> DES key data klass.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTKEYDATADESSET"
+></A
+><H3
+>xmlSecGCryptKeyDataDesSet ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptKeyDataDesSet (<CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyDataPtr</SPAN
+></A
+> data</CODE
+>,
+                           <CODE
+CLASS="PARAMETER"
+>const <A
+HREF="xmlsec-xmlsec.html#XMLSECBYTE"
+><SPAN
+CLASS="TYPE"
+>xmlSecByte</SPAN
+></A
+> *buf</CODE
+>,
+                           <CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-xmlsec.html#XMLSECSIZE"
+><SPAN
+CLASS="TYPE"
+>xmlSecSize</SPAN
+></A
+> bufSize</CODE
+>);</PRE
+><P
+>Sets the value of DES key data.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37445"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN37447"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>data</P
+></TD
+><TD
+><P
+>the pointer to DES key data.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>buf</P
+></TD
+><TD
+><P
+>the pointer to key value.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>bufSize</P
+></TD
+><TD
+><P
+>the key value size (in bytes).</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37468"
+></A
+><H4
+>Returns</H4
+><P
+> 0 on success or a negative value if an error occurs.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMDES3CBCGETKLASS"
+></A
+><H3
+>xmlSecGCryptTransformDes3CbcGetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptTransformDes3CbcGetKlass (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>Triple DES CBC encryption transform klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37481"
+></A
+><H4
+>Returns</H4
+><P
+> pointer to Triple DES encryption transform.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMKWDES3GETKLASS"
+></A
+><H3
+>xmlSecGCryptTransformKWDes3GetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptTransformKWDes3GetKlass (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>The Triple DES key wrapper transform klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37494"
+></A
+><H4
+>Returns</H4
+><P
+> Triple DES key wrapper transform klass.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTKEYDATADSAGETKLASS"
+></A
+><H3
+>xmlSecGCryptKeyDataDsaGetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECKEYDATAID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecKeyDataId</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptKeyDataDsaGetKlass (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>The DSA key data klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37507"
+></A
+><H4
+>Returns</H4
+><P
+> pointer to DSA key data klass.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTKEYDATADSAADOPTKEY"
+></A
+><H3
+>xmlSecGCryptKeyDataDsaAdoptKey ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptKeyDataDsaAdoptKey (<CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyDataPtr</SPAN
+></A
+> data</CODE
+>,
+                                <CODE
+CLASS="PARAMETER"
+><GTKDOCLINK
+HREF="GCRY-SEXP-T"
+><SPAN
+CLASS="TYPE"
+>gcry_sexp_t</SPAN
+></GTKDOCLINK
+> dsa_key</CODE
+>);</PRE
+><P
+>Sets the value of DSA key data.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37524"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN37526"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>data</P
+></TD
+><TD
+><P
+>the pointer to DSA key data.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>dsa_key</P
+></TD
+><TD
+><P
+>the pointer to GCrypt DSA key.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37541"
+></A
+><H4
+>Returns</H4
+><P
+> 0 on success or a negative value otherwise.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTKEYDATADSAADOPTKEYPAIR"
+></A
+><H3
+>xmlSecGCryptKeyDataDsaAdoptKeyPair ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptKeyDataDsaAdoptKeyPair (<CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyDataPtr</SPAN
+></A
+> data</CODE
+>,
+                                    <CODE
+CLASS="PARAMETER"
+><GTKDOCLINK
+HREF="GCRY-SEXP-T"
+><SPAN
+CLASS="TYPE"
+>gcry_sexp_t</SPAN
+></GTKDOCLINK
+> pub_key</CODE
+>,
+                                    <CODE
+CLASS="PARAMETER"
+><GTKDOCLINK
+HREF="GCRY-SEXP-T"
+><SPAN
+CLASS="TYPE"
+>gcry_sexp_t</SPAN
+></GTKDOCLINK
+> priv_key</CODE
+>);</PRE
+><P
+>Sets the value of DSA key data.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37561"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN37563"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>data</P
+></TD
+><TD
+><P
+>the pointer to DSA key data.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>pub_key</P
+></TD
+><TD
+><P
+>the pointer to GCrypt DSA pub key.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>priv_key</P
+></TD
+><TD
+><P
+>the pointer to GCrypt DSA priv key.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37584"
+></A
+><H4
+>Returns</H4
+><P
+> 0 on success or a negative value otherwise.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTKEYDATADSAGETPUBLICKEY"
+></A
+><H3
+>xmlSecGCryptKeyDataDsaGetPublicKey ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="GCRY-SEXP-T"
+><SPAN
+CLASS="RETURNVALUE"
+>gcry_sexp_t</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptKeyDataDsaGetPublicKey (<CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyDataPtr</SPAN
+></A
+> data</CODE
+>);</PRE
+><P
+>Gets the GCrypt DSA public key from DSA key data.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37598"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN37600"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>data</P
+></TD
+><TD
+><P
+>the pointer to DSA key data.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37609"
+></A
+><H4
+>Returns</H4
+><P
+> pointer to GCrypt public DSA key or NULL if an error occurs.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTKEYDATADSAGETPRIVATEKEY"
+></A
+><H3
+>xmlSecGCryptKeyDataDsaGetPrivateKey ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="GCRY-SEXP-T"
+><SPAN
+CLASS="RETURNVALUE"
+>gcry_sexp_t</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptKeyDataDsaGetPrivateKey (<CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyDataPtr</SPAN
+></A
+> data</CODE
+>);</PRE
+><P
+>Gets the GCrypt DSA private key from DSA key data.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37623"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN37625"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>data</P
+></TD
+><TD
+><P
+>the pointer to DSA key data.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37634"
+></A
+><H4
+>Returns</H4
+><P
+> pointer to GCrypt private DSA key or NULL if an error occurs.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMDSASHA1GETKLASS"
+></A
+><H3
+>xmlSecGCryptTransformDsaSha1GetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptTransformDsaSha1GetKlass (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>The DSA-SHA1 signature transform klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37647"
+></A
+><H4
+>Returns</H4
+><P
+> DSA-SHA1 signature transform klass.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTHMACGETMINOUTPUTLENGTH"
+></A
+><H3
+>xmlSecGCryptHmacGetMinOutputLength ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptHmacGetMinOutputLength (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>Gets the value of min HMAC length.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37660"
+></A
+><H4
+>Returns</H4
+><P
+> the min HMAC output length</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTHMACSETMINOUTPUTLENGTH"
+></A
+><H3
+>xmlSecGCryptHmacSetMinOutputLength ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="VOID"
+><SPAN
+CLASS="RETURNVALUE"
+>void</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptHmacSetMinOutputLength (<CODE
+CLASS="PARAMETER"
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="TYPE"
+>int</SPAN
+></GTKDOCLINK
+> min_length</CODE
+>);</PRE
+><P
+>Sets the min HMAC output length</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37674"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN37676"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>min_length</P
+></TD
+><TD
+><P
+>the new min length</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTKEYDATAHMACGETKLASS"
+></A
+><H3
+>xmlSecGCryptKeyDataHmacGetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECKEYDATAID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecKeyDataId</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptKeyDataHmacGetKlass (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>The HMAC key data klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37695"
+></A
+><H4
+>Returns</H4
+><P
+> HMAC key data klass.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTKEYDATAHMACSET"
+></A
+><H3
+>xmlSecGCryptKeyDataHmacSet ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptKeyDataHmacSet (<CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyDataPtr</SPAN
+></A
+> data</CODE
+>,
+                            <CODE
+CLASS="PARAMETER"
+>const <A
+HREF="xmlsec-xmlsec.html#XMLSECBYTE"
+><SPAN
+CLASS="TYPE"
+>xmlSecByte</SPAN
+></A
+> *buf</CODE
+>,
+                            <CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-xmlsec.html#XMLSECSIZE"
+><SPAN
+CLASS="TYPE"
+>xmlSecSize</SPAN
+></A
+> bufSize</CODE
+>);</PRE
+><P
+>Sets the value of HMAC key data.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37715"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN37717"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>data</P
+></TD
+><TD
+><P
+>the pointer to HMAC key data.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>buf</P
+></TD
+><TD
+><P
+>the pointer to key value.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>bufSize</P
+></TD
+><TD
+><P
+>the key value size (in bytes).</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37738"
+></A
+><H4
+>Returns</H4
+><P
+> 0 on success or a negative value if an error occurs.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMHMACMD5GETKLASS"
+></A
+><H3
+>xmlSecGCryptTransformHmacMd5GetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptTransformHmacMd5GetKlass (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>The HMAC-MD5 transform klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37751"
+></A
+><H4
+>Returns</H4
+><P
+> the HMAC-MD5 transform klass.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMHMACRIPEMD160GETKLASS"
+></A
+><H3
+>xmlSecGCryptTransformHmacRipemd160GetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+>
 xmlSecGCryptTransformHmacRipemd160GetKlass
-                               (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>The HMAC-RIPEMD160 transform klass.</p>
-<div class="REFSECT3">
-<a name="AEN37861"></a><h4>Returns</h4>
-<p> the HMAC-RIPEMD160 transform klass.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMHMACSHA1GETKLASS"></a><h3>xmlSecGCryptTransformHmacSha1GetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
-xmlSecGCryptTransformHmacSha1GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>The HMAC-SHA1 transform klass.</p>
-<div class="REFSECT3">
-<a name="AEN37874"></a><h4>Returns</h4>
-<p> the HMAC-SHA1 transform klass.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMHMACSHA256GETKLASS"></a><h3>xmlSecGCryptTransformHmacSha256GetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
+                               (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>The HMAC-RIPEMD160 transform klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37764"
+></A
+><H4
+>Returns</H4
+><P
+> the HMAC-RIPEMD160 transform klass.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMHMACSHA1GETKLASS"
+></A
+><H3
+>xmlSecGCryptTransformHmacSha1GetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptTransformHmacSha1GetKlass (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>The HMAC-SHA1 transform klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37777"
+></A
+><H4
+>Returns</H4
+><P
+> the HMAC-SHA1 transform klass.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMHMACSHA256GETKLASS"
+></A
+><H3
+>xmlSecGCryptTransformHmacSha256GetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+>
 xmlSecGCryptTransformHmacSha256GetKlass
-                               (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>The HMAC-SHA256 transform klass.</p>
-<div class="REFSECT3">
-<a name="AEN37887"></a><h4>Returns</h4>
-<p> the HMAC-SHA256 transform klass.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMHMACSHA384GETKLASS"></a><h3>xmlSecGCryptTransformHmacSha384GetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
+                               (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>The HMAC-SHA256 transform klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37790"
+></A
+><H4
+>Returns</H4
+><P
+> the HMAC-SHA256 transform klass.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMHMACSHA384GETKLASS"
+></A
+><H3
+>xmlSecGCryptTransformHmacSha384GetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+>
 xmlSecGCryptTransformHmacSha384GetKlass
-                               (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>The HMAC-SHA384 transform klass.</p>
-<div class="REFSECT3">
-<a name="AEN37900"></a><h4>Returns</h4>
-<p> the HMAC-SHA384 transform klass.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMHMACSHA512GETKLASS"></a><h3>xmlSecGCryptTransformHmacSha512GetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
+                               (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>The HMAC-SHA384 transform klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37803"
+></A
+><H4
+>Returns</H4
+><P
+> the HMAC-SHA384 transform klass.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMHMACSHA512GETKLASS"
+></A
+><H3
+>xmlSecGCryptTransformHmacSha512GetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+>
 xmlSecGCryptTransformHmacSha512GetKlass
-                               (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>The HMAC-SHA512 transform klass.</p>
-<div class="REFSECT3">
-<a name="AEN37913"></a><h4>Returns</h4>
-<p> the HMAC-SHA512 transform klass.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTKEYDATARSAGETKLASS"></a><h3>xmlSecGCryptKeyDataRsaGetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecKeyDataId</span></font>
-xmlSecGCryptKeyDataRsaGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>The GCrypt RSA key data klass.</p>
-<div class="REFSECT3">
-<a name="AEN37926"></a><h4>Returns</h4>
-<p> pointer to GCrypt RSA key data klass.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTKEYDATARSAADOPTKEY"></a><h3>xmlSecGCryptKeyDataRsaAdoptKey ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
-xmlSecGCryptKeyDataRsaAdoptKey (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
-                                <code class="PARAMETER"><font><span class="TYPE">gcry_sexp_t</span></font> rsa_key</code>);</pre>
-<p>Sets the value of RSA key data.</p>
-<div class="REFSECT3">
-<a name="AEN37943"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN37945"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody>
-<tr>
-<td><p>data</p></td>
-<td><p>the pointer to RSA key data.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>rsa_key</p></td>
-<td><p>the pointer to GCrypt RSA key.</p></td>
-<td> </td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN37960"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTKEYDATARSAADOPTKEYPAIR"></a><h3>xmlSecGCryptKeyDataRsaAdoptKeyPair ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
-xmlSecGCryptKeyDataRsaAdoptKeyPair (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
-                                    <code class="PARAMETER"><font><span class="TYPE">gcry_sexp_t</span></font> pub_key</code>,
-                                    <code class="PARAMETER"><font><span class="TYPE">gcry_sexp_t</span></font> priv_key</code>);</pre>
-<p>Sets the value of RSA key data.</p>
-<div class="REFSECT3">
-<a name="AEN37980"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN37982"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody>
-<tr>
-<td><p>data</p></td>
-<td><p>the pointer to RSA key data.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>pub_key</p></td>
-<td><p>the pointer to GCrypt RSA pub key.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>priv_key</p></td>
-<td><p>the pointer to GCrypt RSA priv key.</p></td>
-<td> </td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN38003"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTKEYDATARSAGETPUBLICKEY"></a><h3>xmlSecGCryptKeyDataRsaGetPublicKey ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">gcry_sexp_t</span></font>
-xmlSecGCryptKeyDataRsaGetPublicKey (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>);</pre>
-<p>Gets the GCrypt RSA public key from RSA key data.</p>
-<div class="REFSECT3">
-<a name="AEN38017"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN38019"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody><tr>
-<td><p>data</p></td>
-<td><p>the pointer to RSA key data.</p></td>
-<td> </td>
-</tr></tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN38028"></a><h4>Returns</h4>
-<p> pointer to GCrypt public RSA key or NULL if an error occurs.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTKEYDATARSAGETPRIVATEKEY"></a><h3>xmlSecGCryptKeyDataRsaGetPrivateKey ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">gcry_sexp_t</span></font>
-xmlSecGCryptKeyDataRsaGetPrivateKey (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>);</pre>
-<p>Gets the GCrypt RSA private key from RSA key data.</p>
-<div class="REFSECT3">
-<a name="AEN38042"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN38044"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody><tr>
-<td><p>data</p></td>
-<td><p>the pointer to RSA key data.</p></td>
-<td> </td>
-</tr></tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN38053"></a><h4>Returns</h4>
-<p> pointer to GCrypt private RSA key or NULL if an error occurs.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMRSAMD5GETKLASS"></a><h3>xmlSecGCryptTransformRsaMd5GetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
-xmlSecGCryptTransformRsaMd5GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>The RSA-MD5 signature transform klass.</p>
-<div class="REFSECT3">
-<a name="AEN38066"></a><h4>Returns</h4>
-<p> RSA-MD5 signature transform klass.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMRSARIPEMD160GETKLASS"></a><h3>xmlSecGCryptTransformRsaRipemd160GetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
+                               (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>The HMAC-SHA512 transform klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37816"
+></A
+><H4
+>Returns</H4
+><P
+> the HMAC-SHA512 transform klass.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTKEYDATARSAGETKLASS"
+></A
+><H3
+>xmlSecGCryptKeyDataRsaGetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECKEYDATAID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecKeyDataId</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptKeyDataRsaGetKlass (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>The GCrypt RSA key data klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37829"
+></A
+><H4
+>Returns</H4
+><P
+> pointer to GCrypt RSA key data klass.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTKEYDATARSAADOPTKEY"
+></A
+><H3
+>xmlSecGCryptKeyDataRsaAdoptKey ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptKeyDataRsaAdoptKey (<CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyDataPtr</SPAN
+></A
+> data</CODE
+>,
+                                <CODE
+CLASS="PARAMETER"
+><GTKDOCLINK
+HREF="GCRY-SEXP-T"
+><SPAN
+CLASS="TYPE"
+>gcry_sexp_t</SPAN
+></GTKDOCLINK
+> rsa_key</CODE
+>);</PRE
+><P
+>Sets the value of RSA key data.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37846"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN37848"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>data</P
+></TD
+><TD
+><P
+>the pointer to RSA key data.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>rsa_key</P
+></TD
+><TD
+><P
+>the pointer to GCrypt RSA key.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37863"
+></A
+><H4
+>Returns</H4
+><P
+> 0 on success or a negative value otherwise.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTKEYDATARSAADOPTKEYPAIR"
+></A
+><H3
+>xmlSecGCryptKeyDataRsaAdoptKeyPair ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptKeyDataRsaAdoptKeyPair (<CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyDataPtr</SPAN
+></A
+> data</CODE
+>,
+                                    <CODE
+CLASS="PARAMETER"
+><GTKDOCLINK
+HREF="GCRY-SEXP-T"
+><SPAN
+CLASS="TYPE"
+>gcry_sexp_t</SPAN
+></GTKDOCLINK
+> pub_key</CODE
+>,
+                                    <CODE
+CLASS="PARAMETER"
+><GTKDOCLINK
+HREF="GCRY-SEXP-T"
+><SPAN
+CLASS="TYPE"
+>gcry_sexp_t</SPAN
+></GTKDOCLINK
+> priv_key</CODE
+>);</PRE
+><P
+>Sets the value of RSA key data.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37883"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN37885"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>data</P
+></TD
+><TD
+><P
+>the pointer to RSA key data.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>pub_key</P
+></TD
+><TD
+><P
+>the pointer to GCrypt RSA pub key.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>priv_key</P
+></TD
+><TD
+><P
+>the pointer to GCrypt RSA priv key.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37906"
+></A
+><H4
+>Returns</H4
+><P
+> 0 on success or a negative value otherwise.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTKEYDATARSAGETPUBLICKEY"
+></A
+><H3
+>xmlSecGCryptKeyDataRsaGetPublicKey ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="GCRY-SEXP-T"
+><SPAN
+CLASS="RETURNVALUE"
+>gcry_sexp_t</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptKeyDataRsaGetPublicKey (<CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyDataPtr</SPAN
+></A
+> data</CODE
+>);</PRE
+><P
+>Gets the GCrypt RSA public key from RSA key data.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37920"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN37922"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>data</P
+></TD
+><TD
+><P
+>the pointer to RSA key data.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37931"
+></A
+><H4
+>Returns</H4
+><P
+> pointer to GCrypt public RSA key or NULL if an error occurs.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTKEYDATARSAGETPRIVATEKEY"
+></A
+><H3
+>xmlSecGCryptKeyDataRsaGetPrivateKey ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="GCRY-SEXP-T"
+><SPAN
+CLASS="RETURNVALUE"
+>gcry_sexp_t</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptKeyDataRsaGetPrivateKey (<CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyDataPtr</SPAN
+></A
+> data</CODE
+>);</PRE
+><P
+>Gets the GCrypt RSA private key from RSA key data.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37945"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN37947"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>data</P
+></TD
+><TD
+><P
+>the pointer to RSA key data.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37956"
+></A
+><H4
+>Returns</H4
+><P
+> pointer to GCrypt private RSA key or NULL if an error occurs.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMRSAMD5GETKLASS"
+></A
+><H3
+>xmlSecGCryptTransformRsaMd5GetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptTransformRsaMd5GetKlass (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>The RSA-MD5 signature transform klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37969"
+></A
+><H4
+>Returns</H4
+><P
+> RSA-MD5 signature transform klass.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMRSARIPEMD160GETKLASS"
+></A
+><H3
+>xmlSecGCryptTransformRsaRipemd160GetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+>
 xmlSecGCryptTransformRsaRipemd160GetKlass
-                               (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>The RSA-RIPEMD160 signature transform klass.</p>
-<div class="REFSECT3">
-<a name="AEN38079"></a><h4>Returns</h4>
-<p> RSA-RIPEMD160 signature transform klass.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMRSASHA1GETKLASS"></a><h3>xmlSecGCryptTransformRsaSha1GetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
-xmlSecGCryptTransformRsaSha1GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>The RSA-SHA1 signature transform klass.</p>
-<div class="REFSECT3">
-<a name="AEN38092"></a><h4>Returns</h4>
-<p> RSA-SHA1 signature transform klass.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMRSASHA256GETKLASS"></a><h3>xmlSecGCryptTransformRsaSha256GetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
+                               (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>The RSA-RIPEMD160 signature transform klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37982"
+></A
+><H4
+>Returns</H4
+><P
+> RSA-RIPEMD160 signature transform klass.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMRSASHA1GETKLASS"
+></A
+><H3
+>xmlSecGCryptTransformRsaSha1GetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptTransformRsaSha1GetKlass (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>The RSA-SHA1 signature transform klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN37995"
+></A
+><H4
+>Returns</H4
+><P
+> RSA-SHA1 signature transform klass.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMRSASHA256GETKLASS"
+></A
+><H3
+>xmlSecGCryptTransformRsaSha256GetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+>
 xmlSecGCryptTransformRsaSha256GetKlass
-                               (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>The RSA-SHA256 signature transform klass.</p>
-<div class="REFSECT3">
-<a name="AEN38105"></a><h4>Returns</h4>
-<p> RSA-SHA256 signature transform klass.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMRSASHA384GETKLASS"></a><h3>xmlSecGCryptTransformRsaSha384GetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
+                               (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>The RSA-SHA256 signature transform klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN38008"
+></A
+><H4
+>Returns</H4
+><P
+> RSA-SHA256 signature transform klass.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMRSASHA384GETKLASS"
+></A
+><H3
+>xmlSecGCryptTransformRsaSha384GetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+>
 xmlSecGCryptTransformRsaSha384GetKlass
-                               (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>The RSA-SHA384 signature transform klass.</p>
-<div class="REFSECT3">
-<a name="AEN38118"></a><h4>Returns</h4>
-<p> RSA-SHA384 signature transform klass.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMRSASHA512GETKLASS"></a><h3>xmlSecGCryptTransformRsaSha512GetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
+                               (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>The RSA-SHA384 signature transform klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN38021"
+></A
+><H4
+>Returns</H4
+><P
+> RSA-SHA384 signature transform klass.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMRSASHA512GETKLASS"
+></A
+><H3
+>xmlSecGCryptTransformRsaSha512GetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+>
 xmlSecGCryptTransformRsaSha512GetKlass
-                               (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>The RSA-SHA512 signature transform klass.</p>
-<div class="REFSECT3">
-<a name="AEN38131"></a><h4>Returns</h4>
-<p> RSA-SHA512 signature transform klass.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMSHA1GETKLASS"></a><h3>xmlSecGCryptTransformSha1GetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
-xmlSecGCryptTransformSha1GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>SHA-1 digest transform klass.</p>
-<div class="REFSECT3">
-<a name="AEN38144"></a><h4>Returns</h4>
-<p> pointer to SHA-1 digest transform klass.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMSHA256GETKLASS"></a><h3>xmlSecGCryptTransformSha256GetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
-xmlSecGCryptTransformSha256GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>SHA256 digest transform klass.</p>
-<div class="REFSECT3">
-<a name="AEN38157"></a><h4>Returns</h4>
-<p> pointer to SHA256 digest transform klass.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMSHA384GETKLASS"></a><h3>xmlSecGCryptTransformSha384GetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
-xmlSecGCryptTransformSha384GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>SHA384 digest transform klass.</p>
-<div class="REFSECT3">
-<a name="AEN38170"></a><h4>Returns</h4>
-<p> pointer to SHA384 digest transform klass.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMSHA512GETKLASS"></a><h3>xmlSecGCryptTransformSha512GetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
-xmlSecGCryptTransformSha512GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>SHA512 digest transform klass.</p>
-<div class="REFSECT3">
-<a name="AEN38183"></a><h4>Returns</h4>
-<p> pointer to SHA512 digest transform klass.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMMD5GETKLASS"></a><h3>xmlSecGCryptTransformMd5GetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
-xmlSecGCryptTransformMd5GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>MD5 digest transform klass.</p>
-<div class="REFSECT3">
-<a name="AEN38196"></a><h4>Returns</h4>
-<p> pointer to MD5 digest transform klass.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMRIPEMD160GETKLASS"></a><h3>xmlSecGCryptTransformRipemd160GetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
+                               (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>The RSA-SHA512 signature transform klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN38034"
+></A
+><H4
+>Returns</H4
+><P
+> RSA-SHA512 signature transform klass.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMSHA1GETKLASS"
+></A
+><H3
+>xmlSecGCryptTransformSha1GetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptTransformSha1GetKlass (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>SHA-1 digest transform klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN38047"
+></A
+><H4
+>Returns</H4
+><P
+> pointer to SHA-1 digest transform klass.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMSHA256GETKLASS"
+></A
+><H3
+>xmlSecGCryptTransformSha256GetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptTransformSha256GetKlass (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>SHA256 digest transform klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN38060"
+></A
+><H4
+>Returns</H4
+><P
+> pointer to SHA256 digest transform klass.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMSHA384GETKLASS"
+></A
+><H3
+>xmlSecGCryptTransformSha384GetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptTransformSha384GetKlass (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>SHA384 digest transform klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN38073"
+></A
+><H4
+>Returns</H4
+><P
+> pointer to SHA384 digest transform klass.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMSHA512GETKLASS"
+></A
+><H3
+>xmlSecGCryptTransformSha512GetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptTransformSha512GetKlass (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>SHA512 digest transform klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN38086"
+></A
+><H4
+>Returns</H4
+><P
+> pointer to SHA512 digest transform klass.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMMD5GETKLASS"
+></A
+><H3
+>xmlSecGCryptTransformMd5GetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+>
+xmlSecGCryptTransformMd5GetKlass (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>MD5 digest transform klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN38099"
+></A
+><H4
+>Returns</H4
+><P
+> pointer to MD5 digest transform klass.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMRIPEMD160GETKLASS"
+></A
+><H3
+>xmlSecGCryptTransformRipemd160GetKlass ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecTransformId</SPAN
+></GTKDOCLINK
+>
 xmlSecGCryptTransformRipemd160GetKlass
-                               (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>RIPEMD160 digest transform klass.</p>
-<div class="REFSECT3">
-<a name="AEN38209"></a><h4>Returns</h4>
-<p> pointer to RIPEMD160 digest transform klass.</p>
-</div>
-</div>
-</div>
-<div class="REFSECT1">
-<a name="XMLSEC-GCRYPT-CRYPTO.OTHER_DETAILS"></a><h2>Types and Values</h2>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTKEYDATAAESID"></a><h3>xmlSecGCryptKeyDataAesId</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptKeyDataAesId</pre>
-<p>The AES key data klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMAES128CBCID"></a><h3>xmlSecGCryptTransformAes128CbcId</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptTransformAes128CbcId</pre>
-<p>The AES128 CBC cipher transform klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMAES192CBCID"></a><h3>xmlSecGCryptTransformAes192CbcId</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptTransformAes192CbcId</pre>
-<p>The AES192 CBC cipher transform klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMAES256CBCID"></a><h3>xmlSecGCryptTransformAes256CbcId</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptTransformAes256CbcId</pre>
-<p>The AES256 CBC cipher transform klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMKWAES128ID"></a><h3>xmlSecGCryptTransformKWAes128Id</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptTransformKWAes128Id</pre>
-<p>The AES 128 key wrap transform klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMKWAES192ID"></a><h3>xmlSecGCryptTransformKWAes192Id</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptTransformKWAes192Id</pre>
-<p>The AES 192 key wrap transform klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMKWAES256ID"></a><h3>xmlSecGCryptTransformKWAes256Id</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptTransformKWAes256Id</pre>
-<p>The AES 256 key wrap transform klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTKEYDATADESID"></a><h3>xmlSecGCryptKeyDataDesId</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptKeyDataDesId</pre>
-<p>The DES key data klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMDES3CBCID"></a><h3>xmlSecGCryptTransformDes3CbcId</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptTransformDes3CbcId</pre>
-<p>The DES3 CBC cipher transform klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMKWDES3ID"></a><h3>xmlSecGCryptTransformKWDes3Id</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptTransformKWDes3Id</pre>
-<p>The DES3 KW transform klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTKEYDATADSAID"></a><h3>xmlSecGCryptKeyDataDsaId</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptKeyDataDsaId</pre>
-<p>The DSA key klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMDSASHA1ID"></a><h3>xmlSecGCryptTransformDsaSha1Id</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptTransformDsaSha1Id</pre>
-<p>The DSA SHA1 signature transform klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTKEYDATAHMACID"></a><h3>xmlSecGCryptKeyDataHmacId</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptKeyDataHmacId</pre>
-<p>The HMAC key klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMHMACMD5ID"></a><h3>xmlSecGCryptTransformHmacMd5Id</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptTransformHmacMd5Id</pre>
-<p>The HMAC with MD5 signature transform klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMHMACRIPEMD160ID"></a><h3>xmlSecGCryptTransformHmacRipemd160Id</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptTransformHmacRipemd160Id</pre>
-<p>The HMAC with RipeMD160 signature transform klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMHMACSHA1ID"></a><h3>xmlSecGCryptTransformHmacSha1Id</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptTransformHmacSha1Id</pre>
-<p>The HMAC with SHA1 signature transform klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMHMACSHA256ID"></a><h3>xmlSecGCryptTransformHmacSha256Id</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptTransformHmacSha256Id</pre>
-<p>The HMAC with SHA256 signature transform klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMHMACSHA384ID"></a><h3>xmlSecGCryptTransformHmacSha384Id</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptTransformHmacSha384Id</pre>
-<p>The HMAC with SHA384 signature transform klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMHMACSHA512ID"></a><h3>xmlSecGCryptTransformHmacSha512Id</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptTransformHmacSha512Id</pre>
-<p>The HMAC with SHA512 signature transform klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTKEYDATARSAID"></a><h3>xmlSecGCryptKeyDataRsaId</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptKeyDataRsaId</pre>
-<p>The RSA key klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMRSAMD5ID"></a><h3>xmlSecGCryptTransformRsaMd5Id</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptTransformRsaMd5Id</pre>
-<p>The RSA-MD5 signature transform klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMRSARIPEMD160ID"></a><h3>xmlSecGCryptTransformRsaRipemd160Id</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptTransformRsaRipemd160Id</pre>
-<p>The RSA-RIPEMD160 signature transform klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMRSASHA1ID"></a><h3>xmlSecGCryptTransformRsaSha1Id</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptTransformRsaSha1Id</pre>
-<p>The RSA-SHA1 signature transform klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMRSASHA256ID"></a><h3>xmlSecGCryptTransformRsaSha256Id</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptTransformRsaSha256Id</pre>
-<p>The RSA-SHA256 signature transform klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMRSASHA384ID"></a><h3>xmlSecGCryptTransformRsaSha384Id</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptTransformRsaSha384Id</pre>
-<p>The RSA-SHA384 signature transform klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMRSASHA512ID"></a><h3>xmlSecGCryptTransformRsaSha512Id</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptTransformRsaSha512Id</pre>
-<p>The RSA-SHA512 signature transform klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMSHA1ID"></a><h3>xmlSecGCryptTransformSha1Id</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptTransformSha1Id</pre>
-<p>The HMAC with SHA1 signature transform klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMSHA256ID"></a><h3>xmlSecGCryptTransformSha256Id</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptTransformSha256Id</pre>
-<p>The HMAC with SHA256 signature transform klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMSHA384ID"></a><h3>xmlSecGCryptTransformSha384Id</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptTransformSha384Id</pre>
-<p>The HMAC with SHA384 signature transform klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMSHA512ID"></a><h3>xmlSecGCryptTransformSha512Id</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptTransformSha512Id</pre>
-<p>The HMAC with SHA512 signature transform klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMMD5ID"></a><h3>xmlSecGCryptTransformMd5Id</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptTransformMd5Id</pre>
-<p>The MD5 digest transform klass.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECGCRYPTTRANSFORMRIPEMD160ID"></a><h3>xmlSecGCryptTransformRipemd160Id</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecGCryptTransformRipemd160Id</pre>
-<p>The RIPEMD160 digest transform klass.</p>
-</div>
-</div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-gcrypt-app.html"><b>&lt;&lt;&lt; app</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-nss-ref.html"><b>XML Security Library for NSS API Reference. &gt;&gt;&gt;</b></a></td>
-</tr></table>
-</td></tr></table></td>
-</tr></table></body>
-</html>
+                               (<CODE
+CLASS="PARAMETER"
+><SPAN
+CLASS="TYPE"
+>void</SPAN
+></CODE
+>);</PRE
+><P
+>RIPEMD160 digest transform klass.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN38112"
+></A
+><H4
+>Returns</H4
+><P
+> pointer to RIPEMD160 digest transform klass.</P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="XMLSEC-GCRYPT-CRYPTO.OTHER_DETAILS"
+></A
+><H2
+>Types and Values</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTKEYDATAAESID"
+></A
+><H3
+>xmlSecGCryptKeyDataAesId</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptKeyDataAesId</PRE
+><P
+>The AES key data klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMAES128CBCID"
+></A
+><H3
+>xmlSecGCryptTransformAes128CbcId</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptTransformAes128CbcId</PRE
+><P
+>The AES128 CBC cipher transform klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMAES192CBCID"
+></A
+><H3
+>xmlSecGCryptTransformAes192CbcId</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptTransformAes192CbcId</PRE
+><P
+>The AES192 CBC cipher transform klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMAES256CBCID"
+></A
+><H3
+>xmlSecGCryptTransformAes256CbcId</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptTransformAes256CbcId</PRE
+><P
+>The AES256 CBC cipher transform klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMKWAES128ID"
+></A
+><H3
+>xmlSecGCryptTransformKWAes128Id</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptTransformKWAes128Id</PRE
+><P
+>The AES 128 key wrap transform klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMKWAES192ID"
+></A
+><H3
+>xmlSecGCryptTransformKWAes192Id</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptTransformKWAes192Id</PRE
+><P
+>The AES 192 key wrap transform klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMKWAES256ID"
+></A
+><H3
+>xmlSecGCryptTransformKWAes256Id</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptTransformKWAes256Id</PRE
+><P
+>The AES 256 key wrap transform klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTKEYDATADESID"
+></A
+><H3
+>xmlSecGCryptKeyDataDesId</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptKeyDataDesId</PRE
+><P
+>The DES key data klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMDES3CBCID"
+></A
+><H3
+>xmlSecGCryptTransformDes3CbcId</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptTransformDes3CbcId</PRE
+><P
+>The DES3 CBC cipher transform klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMKWDES3ID"
+></A
+><H3
+>xmlSecGCryptTransformKWDes3Id</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptTransformKWDes3Id</PRE
+><P
+>The DES3 KW transform klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTKEYDATADSAID"
+></A
+><H3
+>xmlSecGCryptKeyDataDsaId</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptKeyDataDsaId</PRE
+><P
+>The DSA key klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMDSASHA1ID"
+></A
+><H3
+>xmlSecGCryptTransformDsaSha1Id</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptTransformDsaSha1Id</PRE
+><P
+>The DSA SHA1 signature transform klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTKEYDATAHMACID"
+></A
+><H3
+>xmlSecGCryptKeyDataHmacId</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptKeyDataHmacId</PRE
+><P
+>The HMAC key klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMHMACMD5ID"
+></A
+><H3
+>xmlSecGCryptTransformHmacMd5Id</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptTransformHmacMd5Id</PRE
+><P
+>The HMAC with MD5 signature transform klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMHMACRIPEMD160ID"
+></A
+><H3
+>xmlSecGCryptTransformHmacRipemd160Id</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptTransformHmacRipemd160Id</PRE
+><P
+>The HMAC with RipeMD160 signature transform klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMHMACSHA1ID"
+></A
+><H3
+>xmlSecGCryptTransformHmacSha1Id</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptTransformHmacSha1Id</PRE
+><P
+>The HMAC with SHA1 signature transform klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMHMACSHA256ID"
+></A
+><H3
+>xmlSecGCryptTransformHmacSha256Id</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptTransformHmacSha256Id</PRE
+><P
+>The HMAC with SHA256 signature transform klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMHMACSHA384ID"
+></A
+><H3
+>xmlSecGCryptTransformHmacSha384Id</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptTransformHmacSha384Id</PRE
+><P
+>The HMAC with SHA384 signature transform klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMHMACSHA512ID"
+></A
+><H3
+>xmlSecGCryptTransformHmacSha512Id</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptTransformHmacSha512Id</PRE
+><P
+>The HMAC with SHA512 signature transform klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTKEYDATARSAID"
+></A
+><H3
+>xmlSecGCryptKeyDataRsaId</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptKeyDataRsaId</PRE
+><P
+>The RSA key klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMRSAMD5ID"
+></A
+><H3
+>xmlSecGCryptTransformRsaMd5Id</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptTransformRsaMd5Id</PRE
+><P
+>The RSA-MD5 signature transform klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMRSARIPEMD160ID"
+></A
+><H3
+>xmlSecGCryptTransformRsaRipemd160Id</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptTransformRsaRipemd160Id</PRE
+><P
+>The RSA-RIPEMD160 signature transform klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMRSASHA1ID"
+></A
+><H3
+>xmlSecGCryptTransformRsaSha1Id</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptTransformRsaSha1Id</PRE
+><P
+>The RSA-SHA1 signature transform klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMRSASHA256ID"
+></A
+><H3
+>xmlSecGCryptTransformRsaSha256Id</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptTransformRsaSha256Id</PRE
+><P
+>The RSA-SHA256 signature transform klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMRSASHA384ID"
+></A
+><H3
+>xmlSecGCryptTransformRsaSha384Id</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptTransformRsaSha384Id</PRE
+><P
+>The RSA-SHA384 signature transform klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMRSASHA512ID"
+></A
+><H3
+>xmlSecGCryptTransformRsaSha512Id</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptTransformRsaSha512Id</PRE
+><P
+>The RSA-SHA512 signature transform klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMSHA1ID"
+></A
+><H3
+>xmlSecGCryptTransformSha1Id</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptTransformSha1Id</PRE
+><P
+>The HMAC with SHA1 signature transform klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMSHA256ID"
+></A
+><H3
+>xmlSecGCryptTransformSha256Id</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptTransformSha256Id</PRE
+><P
+>The HMAC with SHA256 signature transform klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMSHA384ID"
+></A
+><H3
+>xmlSecGCryptTransformSha384Id</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptTransformSha384Id</PRE
+><P
+>The HMAC with SHA384 signature transform klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMSHA512ID"
+></A
+><H3
+>xmlSecGCryptTransformSha512Id</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptTransformSha512Id</PRE
+><P
+>The HMAC with SHA512 signature transform klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMMD5ID"
+></A
+><H3
+>xmlSecGCryptTransformMd5Id</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptTransformMd5Id</PRE
+><P
+>The MD5 digest transform klass.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECGCRYPTTRANSFORMRIPEMD160ID"
+></A
+><H3
+>xmlSecGCryptTransformRipemd160Id</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             xmlSecGCryptTransformRipemd160Id</PRE
+><P
+>The RIPEMD160 digest transform klass.</P
+></DIV
+></DIV
+><TABLE
+CLASS="navigation"
+WIDTH="100%"
+SUMMARY="Navigation footer"
+CELLPADDING="2"
+CELLSPACING="2"
+><TR
+VALIGN="middle"
+><TD
+ALIGN="left"
+><A
+ACCESSKEY="p"
+HREF="xmlsec-gcrypt-app.html"
+><B
+>&lt;&lt;&lt;&nbsp;app</B
+></A
+></TD
+><TD
+ALIGN="right"
+><A
+ACCESSKEY="n"
+HREF="xmlsec-nss-ref.html"
+><B
+>XML Security Library for NSS API Reference.&nbsp;&gt;&gt;&gt;</B
+></A
+></TD
+></TR
+></TABLE
+></BODY
+></HTML
+>

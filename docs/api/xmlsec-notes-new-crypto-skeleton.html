@@ -1,13 +1,25 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Creating a framework from the skeleton.</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="Adding support for new cryptographic library." href="xmlsec-notes-new-crypto.html">
-<link rel="PREVIOUS" title="Adding support for new cryptographic library." href="xmlsec-notes-new-crypto.html">
-<link rel="NEXT" title="xmlSecCryptoApp* functions." href="xmlsec-notes-new-crypto-functions.html">
-<style type="text/css">.synopsis, .classsynopsis {
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Creating a framework from the skeleton.</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="XML Security Library Reference Manual"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Adding support for new cryptographic library."
+HREF="xmlsec-notes-new-crypto.html"><LINK
+REL="PREVIOUS"
+TITLE="Adding support for new cryptographic library."
+HREF="xmlsec-notes-new-crypto.html"><LINK
+REL="NEXT"
+TITLE="xmlSecCryptoApp* functions."
+HREF="xmlsec-notes-new-crypto-functions.html"><STYLE
+TYPE="text/css"
+>.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
     padding: 0.5em;
@@ -35,140 +47,184 @@
 }
 .navigation .title {
     font-size: 200%;
-}</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-</head>
-<body><table width="100%" valign="top"><tr valign="top">
-<td valign="top" align="left" width="210">
-<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="../index.html">Home</a></li>
-<li><a href="../download.html">Download</a></li>
-<li><a href="../news.html">News</a></li>
-<li><a href="../documentation.html">Documentation</a></li>
-<ul>
-<li><a href="../faq.html">FAQ</a></li>
-<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
-<li><a href="../api/xmlsec-reference.html">API reference</a></li>
-<li><a href="../api/xmlsec-examples.html">Examples</a></li>
-</ul>
-<li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<ul><li><a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a></li></ul>
-<li><a href="../xmlenc.html">XML Encryption</a></li>
-<li><a href="../c14n.html">XML Canonicalization</a></li>
-<li><a href="../bugs.html">Reporting Bugs</a></li>
-<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
-<li><a href="../related.html">Related</a></li>
-<li><a href="../authors.html">Authors</a></li>
-</ul>
-<table width="100%">
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
-</tr>
-<!--Links - start--><!--Links - end-->
-</table>
-</td>
-<td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-notes-new-crypto.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-notes-new-crypto.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
-<td><a accesskey="n" href="xmlsec-notes-new-crypto-functions.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
-</tr></table>
-<br clear="all"><div class="SECT1">
-<h1 class="SECT1"><a name="XMLSEC-NOTES-NEW-CRYPTO-SKELETON">Creating a framework from the skeleton.</a></h1>
-<p>	The XML Security Library contains a "skeleton" for creating new
+}</STYLE
+></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><TABLE
+WIDTH="100%"
+CLASS="navigation"
+SUMMARY="Navigation header"
+CELLPADDING="2"
+CELLSPACING="2"
+><TR
+VALIGN="middle"
+><TD
+><A
+ACCESSKEY="p"
+HREF="xmlsec-notes-new-crypto.html"
+><IMG
+SRC="left.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Prev"></A
+></TD
+><TD
+><A
+ACCESSKEY="u"
+HREF="xmlsec-notes-new-crypto.html"
+><IMG
+SRC="up.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Up"></A
+></TD
+><TD
+><A
+ACCESSKEY="h"
+HREF="index.html"
+><IMG
+SRC="home.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Home"></A
+></TD
+><TH
+WIDTH="100%"
+align="center"
+>XML Security Library Reference Manual</TH
+><TD
+><A
+ACCESSKEY="n"
+HREF="xmlsec-notes-new-crypto-functions.html"
+><IMG
+SRC="right.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Next"></A
+></TD
+></TR
+></TABLE
+><BR
+CLEAR="all"><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="XMLSEC-NOTES-NEW-CRYPTO-SKELETON"
+>Creating a framework from the skeleton.</A
+></H1
+><P
+>	The XML Security Library contains a "skeleton" for creating new
 	"xmlsec-&lt;crypto&gt;" libraries. In order to create "xmlsec-mycrypto"
 	library framework, do the following (this example assumes that you 
 	are using *nix system, adjust the commands if you are using something else):
-	</p>
-<p></p>
-<ul>
-<li>
-<p>	Copy src/skeleton and include/xmlsec/skeleton folders to src/mycrypto and
+	<P
+></P
+><UL
+><LI
+><P
+>	Copy src/skeleton and include/xmlsec/skeleton folders to src/mycrypto and
 	include/xmlsec/mycrypto folders:
-	</p>
-<div class="EXAMPLE">
-<a name="AEN666"></a><p><b>Example 1. Coping skeleton folders.</b></p>
-<pre class="PROGRAMLISTING">cd src
-cp -r src/skeleton src/mycrypto
+	<DIV
+CLASS="EXAMPLE"
+><A
+NAME="AEN512"
+></A
+><P
+><B
+>Example 1. Coping skeleton folders:</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>cp -r src/skeleton src/mycrypto
 cp -r include/xmlsec/skeleton include/xmlsec/mycrypto
-	    </pre>
-</div>	
-	</li>
-<li>
-<p>	Replace "skeleton" with "mycrypto" in the copied files (note that there
+	    </PRE
+></DIV
+>	
+	</P
+></LI
+><LI
+><P
+>	Replace "skeleton" with "mycrypto" in the copied files (note that there
 	are different possible cases here):
-	</p>
-<div class="EXAMPLE">
-<a name="AEN671"></a><p><b>Example 2. Replacing "skeleton" with "mycrypto".</b></p>
-<pre class="PROGRAMLISTING">for i in `ls include/xmlsec/mycrypto/* src/mycrypto/*`;  do 
+	<DIV
+CLASS="EXAMPLE"
+><A
+NAME="AEN517"
+></A
+><P
+><B
+>Example 2. Replacing "skeleton" with "mycrypto".</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>for i in `ls include/xmlsec/mycrypto/* src/mycrypto/*`;  do 
     echo Processing $i ..;
     sed 's/skeleton/mycrypto/g' $i | \
     sed 's/SKELETON/MYCRYPTO/g' | \
-    sed 's/Skeleton/MyCrypto/g' &gt; $i.tmp;
+    sed 's/Skeleton/MyCrypto/g' &#62; $i.tmp;
     mv $i.tmp $i;
 done
-	    </pre>
-</div>
-	</li>
-<li>
-<p>	Add "xmlsec-mycrypto" library to the "include/xmlsec/crypto.h" file:
-	</p>
-<div class="EXAMPLE">
-<a name="AEN676"></a><p><b>Example 3. Modifying include/xmlsec/crypto.h file.</b></p>
-<pre class="PROGRAMLISTING">...	    
+	    </PRE
+></DIV
+>
+	</P
+></LI
+><LI
+><P
+>	Add "xmlsec-mycrypto" library to the "include/xmlsec/crypto.h" file:
+	<DIV
+CLASS="EXAMPLE"
+><A
+NAME="AEN522"
+></A
+><P
+><B
+>Example 3. Modifying include/xmlsec/crypto.h file.</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>...	    
 #ifdef XMLSEC_CRYPTO_MYCRYPTO
-#include &lt;xmlsec/mycrypto/app.h&gt;
-#include &lt;xmlsec/mycrypto/crypto.h&gt;
-#include &lt;xmlsec/mycrypto/symbols.h&gt;
+#include &#60;xmlsec/mycrypto/app.h&#62;
+#include &#60;xmlsec/mycrypto/crypto.h&#62;
+#include &#60;xmlsec/mycrypto/symbols.h&#62;
 #else /* XMLSEC_CRYPTO_MYCRYPTO */
 ...
 #endif /* XMLSEC_CRYPTO_MYCRYPTO */
 ...
-	    </pre>
-</div>
-	</li>
-<li>
-<p>	Add "xmlsec-crypto" library to the configure.in file (for *nix systems;
+	    </PRE
+></DIV
+>
+	</P
+></LI
+><LI
+><P
+>	Add "xmlsec-crypto" library to the configure.in file (for *nix systems;
 	for Windows you need to modify win32/confgure.js and win32/Makefile.msvc
 	files, see win32/README.txt for details):
-	</p>
-<div class="EXAMPLE">
-<a name="AEN681"></a><p><b>Example 4. Modifying configure.in file.</b></p>
-<pre class="PROGRAMLISTING">dnl ==========================================================================
+	<DIV
+CLASS="EXAMPLE"
+><A
+NAME="AEN527"
+></A
+><P
+><B
+>Example 4. Modifying configure.in file.</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>dnl ==========================================================================
 dnl See if we can find MyCrypto
 dnl ==========================================================================
 XMLSEC_MYCRYPTO_DEFINES=""
@@ -180,7 +236,7 @@ MYCRYPTO_PREFIX=""
 MYCRYPTO_CFLAGS=""
 MYCRYPTO_LIBS=""
 MYCRYPTO_LDADDS=""
-AC_MSG_CHECKING(for mycrypto libraries &gt;= $MYCRYPTO_MIN_VERSION) 
+AC_MSG_CHECKING(for mycrypto libraries &#62;= $MYCRYPTO_MIN_VERSION) 
 AC_ARG_WITH(mycrypto, [  --with-mycrypto=[PFX]    mycrypto location])
 if test "$with_mycrypto" = "no" ; then
     XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST mycrypto"
@@ -190,7 +246,7 @@ else
 	MYCRYPTO_PREFIX=$with_mycrypto
 	MYCRYPTO_CONFIG=$MYCRYPTO_PREFIX/bin/$MYCRYPTO_CONFIG
     fi
-    if ! $MYCRYPTO_CONFIG --version &gt; /dev/null 2&gt;&amp;1 ; then
+    if ! $MYCRYPTO_CONFIG --version &#62; /dev/null 2&#62;&#38;1 ; then
 	if test "$with_mycrypto" != "" ; then
 	    AC_MSG_ERROR(Unable to find mycrypto at '$with_mycrypto')
 	fi
@@ -241,30 +297,71 @@ include/xmlsec/mycrypto/Makefile
 src/mycrypto/Makefile
 ...
 ])
-	    </pre>
-</div>
-	</li>
-<li><p>Modify "xmlsec.spec.in" file to create "xmlsec-mycrypto"
+	    </PRE
+></DIV
+>
+	</P
+></LI
+><LI
+><P
+>Modify "xmlsec.spec.in" file to create "xmlsec-mycrypto"
 	RPM (if necessary).
-	</p></li>
-</ul>
+	</P
+></LI
+></UL
+>
 	
 	By now you should be able to sucessfuly compile XML Security Library
 	with MyCrypto library (we disable all other libraries to make sure
 	that xmlsec command line utility is linked against xmlsec-mycrypto
 	library):
-	<div class="EXAMPLE">
-<a name="AEN686"></a><p><b>Example 5. Compiling the results.</b></p>
-<pre class="PROGRAMLISTING">./autogen.sh --without-openssl --without-nss --without-gnutls --without-gcrypt \
+	<DIV
+CLASS="EXAMPLE"
+><A
+NAME="AEN532"
+></A
+><P
+><B
+>Example 5. Compiling the results.</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>./autogen.sh --without-openssl --without-nss --without-gnutls --without-gcrypt \
     	     --with-mycrypto=$HOME --disable-tmpl-tests
 make	
-	    </pre>
-</div>
-	</div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-notes-new-crypto.html"><b>&lt;&lt;&lt; Adding support for new cryptographic library.</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-notes-new-crypto-functions.html"><b>xmlSecCryptoApp* functions. &gt;&gt;&gt;</b></a></td>
-</tr></table>
-</td></tr></table></td>
-</tr></table></body>
-</html>
+	    </PRE
+></DIV
+>
+	</P
+></DIV
+><TABLE
+CLASS="navigation"
+WIDTH="100%"
+SUMMARY="Navigation footer"
+CELLPADDING="2"
+CELLSPACING="2"
+><TR
+VALIGN="middle"
+><TD
+ALIGN="left"
+><A
+ACCESSKEY="p"
+HREF="xmlsec-notes-new-crypto.html"
+><B
+>&lt;&lt;&lt;&nbsp;Adding support for new cryptographic library.</B
+></A
+></TD
+><TD
+ALIGN="right"
+><A
+ACCESSKEY="n"
+HREF="xmlsec-notes-new-crypto-functions.html"
+><B
+>xmlSecCryptoApp* functions.&nbsp;&gt;&gt;&gt;</B
+></A
+></TD
+></TR
+></TABLE
+></BODY
+></HTML
+>

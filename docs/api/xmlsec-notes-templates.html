@@ -1,13 +1,25 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Creating dynamic templates.</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="XML Security Library Tutorial" href="xmlsec-notes.html">
-<link rel="PREVIOUS" title="Encrypting data." href="xmlsec-notes-encrypt.html">
-<link rel="NEXT" title="Creating dynamic signature templates." href="xmlsec-notes-dynamic-signature-templates.html">
-<style type="text/css">.synopsis, .classsynopsis {
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Creating dynamic templates.</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="XML Security Library Reference Manual"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="XML Security Library Tutorial"
+HREF="xmlsec-notes.html"><LINK
+REL="PREVIOUS"
+TITLE="Encrypting data."
+HREF="xmlsec-notes-encrypt.html"><LINK
+REL="NEXT"
+TITLE="Creating dynamic signature templates."
+HREF="xmlsec-notes-dynamic-signature-templates.html"><STYLE
+TYPE="text/css"
+>.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
     padding: 0.5em;
@@ -35,103 +47,152 @@
 }
 .navigation .title {
     font-size: 200%;
-}</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-</head>
-<body><table width="100%" valign="top"><tr valign="top">
-<td valign="top" align="left" width="210">
-<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="../index.html">Home</a></li>
-<li><a href="../download.html">Download</a></li>
-<li><a href="../news.html">News</a></li>
-<li><a href="../documentation.html">Documentation</a></li>
-<ul>
-<li><a href="../faq.html">FAQ</a></li>
-<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
-<li><a href="../api/xmlsec-reference.html">API reference</a></li>
-<li><a href="../api/xmlsec-examples.html">Examples</a></li>
-</ul>
-<li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<ul><li><a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a></li></ul>
-<li><a href="../xmlenc.html">XML Encryption</a></li>
-<li><a href="../c14n.html">XML Canonicalization</a></li>
-<li><a href="../bugs.html">Reporting Bugs</a></li>
-<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
-<li><a href="../related.html">Related</a></li>
-<li><a href="../authors.html">Authors</a></li>
-</ul>
-<table width="100%">
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
-</tr>
-<!--Links - start--><!--Links - end-->
-</table>
-</td>
-<td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-notes-encrypt.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-notes.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
-<td><a accesskey="n" href="xmlsec-notes-dynamic-signature-templates.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
-</tr></table>
-<div class="CHAPTER">
-<h1>
-<a name="XMLSEC-NOTES-TEMPLATES"></a>Creating dynamic templates.</h1>
-<div class="TOC"><dl>
-<dt><b>Table of Contents</b></dt>
-<dt><a href="xmlsec-notes-templates.html#XMLSEC-NOTES-TEMPLATES-OVERVIEW">Overview.</a></dt>
-<dt><a href="xmlsec-notes-dynamic-signature-templates.html">Creating dynamic signature templates.</a></dt>
-<dt><a href="xmlsec-notes-dynamic-encryption-templates.html">Creating dynamic encryption templates.</a></dt>
-</dl></div>
-<br clear="all"><div class="SECT1">
-<h1 class="SECT1"><a name="XMLSEC-NOTES-TEMPLATES-OVERVIEW">Overview.</a></h1>
-<p>The XML Security Library uses templates to describe
+}</STYLE
+></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><TABLE
+WIDTH="100%"
+CLASS="navigation"
+SUMMARY="Navigation header"
+CELLPADDING="2"
+CELLSPACING="2"
+><TR
+VALIGN="middle"
+><TD
+><A
+ACCESSKEY="p"
+HREF="xmlsec-notes-encrypt.html"
+><IMG
+SRC="left.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Prev"></A
+></TD
+><TD
+><A
+ACCESSKEY="u"
+HREF="xmlsec-notes.html"
+><IMG
+SRC="up.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Up"></A
+></TD
+><TD
+><A
+ACCESSKEY="h"
+HREF="index.html"
+><IMG
+SRC="home.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Home"></A
+></TD
+><TH
+WIDTH="100%"
+align="center"
+>XML Security Library Reference Manual</TH
+><TD
+><A
+ACCESSKEY="n"
+HREF="xmlsec-notes-dynamic-signature-templates.html"
+><IMG
+SRC="right.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Next"></A
+></TD
+></TR
+></TABLE
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="XMLSEC-NOTES-TEMPLATES"
+></A
+>Creating dynamic templates.</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="xmlsec-notes-templates.html#XMLSEC-NOTES-TEMPLATES-OVERVIEW"
+>Overview.</A
+></DT
+><DT
+><A
+HREF="xmlsec-notes-dynamic-signature-templates.html"
+>Creating dynamic signature templates.</A
+></DT
+><DT
+><A
+HREF="xmlsec-notes-dynamic-encryption-templates.html"
+>Creating dynamic encryption templates.</A
+></DT
+></DL
+></DIV
+><BR
+CLEAR="all"><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="XMLSEC-NOTES-TEMPLATES-OVERVIEW"
+>Overview.</A
+></H1
+><P
+>The XML Security Library uses templates to describe
         how and what data should be signed or encrypted. The template
         is a regular XML file. You can create templates in advance
         using your favorite XML files editor, load them from a file
         and use for creating signature or encrypting data. You can 
         also create templates dynamicaly. The XML Security Library
         provides helper functions to quickly create dynamic templates
-        inside your application.</p>
-</div>
-</div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-notes-encrypt.html"><b>&lt;&lt;&lt; Encrypting data.</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-notes-dynamic-signature-templates.html"><b>Creating dynamic signature templates. &gt;&gt;&gt;</b></a></td>
-</tr></table>
-</td></tr></table></td>
-</tr></table></body>
-</html>
+        inside your application.</P
+></DIV
+></DIV
+><TABLE
+CLASS="navigation"
+WIDTH="100%"
+SUMMARY="Navigation footer"
+CELLPADDING="2"
+CELLSPACING="2"
+><TR
+VALIGN="middle"
+><TD
+ALIGN="left"
+><A
+ACCESSKEY="p"
+HREF="xmlsec-notes-encrypt.html"
+><B
+>&lt;&lt;&lt;&nbsp;Encrypting data.</B
+></A
+></TD
+><TD
+ALIGN="right"
+><A
+ACCESSKEY="n"
+HREF="xmlsec-notes-dynamic-signature-templates.html"
+><B
+>Creating dynamic signature templates.&nbsp;&gt;&gt;&gt;</B
+></A
+></TD
+></TR
+></TABLE
+></BODY
+></HTML
+>

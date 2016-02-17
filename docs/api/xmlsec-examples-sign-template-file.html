@@ -1,13 +1,25 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Signing a template file.</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="Examples." href="xmlsec-examples.html">
-<link rel="PREVIOUS" title="Examples." href="xmlsec-examples.html">
-<link rel="NEXT" title="Signing a dynamicaly created template." href="xmlsec-examples-sign-dynamimc-template.html">
-<style type="text/css">.synopsis, .classsynopsis {
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Signing a template file.</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="XML Security Library Reference Manual"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Examples."
+HREF="xmlsec-examples.html"><LINK
+REL="PREVIOUS"
+TITLE="Examples."
+HREF="xmlsec-examples.html"><LINK
+REL="NEXT"
+TITLE="Signing a dynamicaly created template."
+HREF="xmlsec-examples-sign-dynamimc-template.html"><STYLE
+TYPE="text/css"
+>.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
     padding: 0.5em;
@@ -35,86 +47,102 @@
 }
 .navigation .title {
     font-size: 200%;
-}</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-</head>
-<body><table width="100%" valign="top"><tr valign="top">
-<td valign="top" align="left" width="210">
-<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="../index.html">Home</a></li>
-<li><a href="../download.html">Download</a></li>
-<li><a href="../news.html">News</a></li>
-<li><a href="../documentation.html">Documentation</a></li>
-<ul>
-<li><a href="../faq.html">FAQ</a></li>
-<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
-<li><a href="../api/xmlsec-reference.html">API reference</a></li>
-<li><a href="../api/xmlsec-examples.html">Examples</a></li>
-</ul>
-<li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<ul><li><a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a></li></ul>
-<li><a href="../xmlenc.html">XML Encryption</a></li>
-<li><a href="../c14n.html">XML Canonicalization</a></li>
-<li><a href="../bugs.html">Reporting Bugs</a></li>
-<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
-<li><a href="../related.html">Related</a></li>
-<li><a href="../authors.html">Authors</a></li>
-</ul>
-<table width="100%">
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
-</tr>
-<!--Links - start--><!--Links - end-->
-</table>
-</td>
-<td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-examples.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-examples.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
-<td><a accesskey="n" href="xmlsec-examples-sign-dynamimc-template.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
-</tr></table>
-<br clear="all"><div class="SECT1">
-<h1 class="SECT1"><a name="XMLSEC-EXAMPLES-SIGN-TEMPLATE-FILE">Signing a template file.</a></h1>
-<br clear="all"><div class="SECT2">
-<h2 class="SECT2"><a name="XMLSEC-EXAMPLE-SIGN1">sign1.c</a></h2>
-<p></p>
-<div class="INFORMALEXAMPLE">
-<p></p>
-<a name="AEN795"></a><pre class="PROGRAMLISTING">/** 
+}</STYLE
+></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><TABLE
+WIDTH="100%"
+CLASS="navigation"
+SUMMARY="Navigation header"
+CELLPADDING="2"
+CELLSPACING="2"
+><TR
+VALIGN="middle"
+><TD
+><A
+ACCESSKEY="p"
+HREF="xmlsec-examples.html"
+><IMG
+SRC="left.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Prev"></A
+></TD
+><TD
+><A
+ACCESSKEY="u"
+HREF="xmlsec-examples.html"
+><IMG
+SRC="up.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Up"></A
+></TD
+><TD
+><A
+ACCESSKEY="h"
+HREF="index.html"
+><IMG
+SRC="home.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Home"></A
+></TD
+><TH
+WIDTH="100%"
+align="center"
+>XML Security Library Reference Manual</TH
+><TD
+><A
+ACCESSKEY="n"
+HREF="xmlsec-examples-sign-dynamimc-template.html"
+><IMG
+SRC="right.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Next"></A
+></TD
+></TR
+></TABLE
+><BR
+CLEAR="all"><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="XMLSEC-EXAMPLES-SIGN-TEMPLATE-FILE"
+>Signing a template file.</A
+></H1
+><BR
+CLEAR="all"><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="XMLSEC-EXAMPLE-SIGN1"
+>sign1.c</A
+></H2
+><P
+><DIV
+CLASS="INFORMALEXAMPLE"
+><P
+></P
+><A
+NAME="AEN641"
+></A
+><PRE
+CLASS="PROGRAMLISTING"
+>/** 
  * XML Security Library example: Signing a template file.
  * 
  * Signs a template file using a key from PEM file
@@ -131,7 +159,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  * 
- * Copyright (C) 2002-2016 Aleksey Sanin &lt;aleksey@aleksey.com&gt;
+ * Copyright (C) 2002-2016 Aleksey Sanin &lt;aleksey@aleksey.com&gt;. All Rights Reserved.
  */
 #include &lt;stdlib.h&gt;
 #include &lt;string.h&gt;
@@ -206,7 +234,7 @@ main(int argc, char **argv) {
      * xmlsec-crypto library.
      */
 #ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING
-    if(xmlSecCryptoDLLoadLibrary(BAD_CAST XMLSEC_CRYPTO) &lt; 0) {
+    if(xmlSecCryptoDLLoadLibrary(NULL) &lt; 0) {
         fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
                         "that you have it installed and check shared libraries path\n"
                         "(LD_LIBRARY_PATH) envornment variable.\n");
@@ -324,16 +352,32 @@ done:
         xmlFreeDoc(doc); 
     }
     return(res);
-}</pre>
-<p></p>
-</div>
-</div>
-<br clear="all"><div class="SECT2">
-<h2 class="SECT2"><a name="XMLSEC-EXAMPLE-SIGN1-TMPL">sign1-tmpl.xml</a></h2>
-<p></p>
-<div class="INFORMALEXAMPLE">
-<p></p>
-<a name="AEN800"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+}&#13;</PRE
+><P
+></P
+></DIV
+></P
+></DIV
+><BR
+CLEAR="all"><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="XMLSEC-EXAMPLE-SIGN1-TMPL"
+>sign1-tmpl.xml</A
+></H2
+><P
+><DIV
+CLASS="INFORMALEXAMPLE"
+><P
+></P
+><A
+NAME="AEN646"
+></A
+><PRE
+CLASS="PROGRAMLISTING"
+>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: Simple signature template file for sign1 example. 
 --&gt;
@@ -358,16 +402,32 @@ XML Security Library example: Simple signature template file for sign1 example.
 	&lt;KeyName/&gt;
     &lt;/KeyInfo&gt;
   &lt;/Signature&gt;
-&lt;/Envelope&gt;</pre>
-<p></p>
-</div>
-</div>
-<br clear="all"><div class="SECT2">
-<h2 class="SECT2"><a name="XMLSEC-EXAMPLE-SIGN1-RES">sign1-res.xml</a></h2>
-<p></p>
-<div class="INFORMALEXAMPLE">
-<p></p>
-<a name="AEN805"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;/Envelope&gt;&#13;</PRE
+><P
+></P
+></DIV
+></P
+></DIV
+><BR
+CLEAR="all"><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="XMLSEC-EXAMPLE-SIGN1-RES"
+>sign1-res.xml</A
+></H2
+><P
+><DIV
+CLASS="INFORMALEXAMPLE"
+><P
+></P
+><A
+NAME="AEN651"
+></A
+><PRE
+CLASS="PROGRAMLISTING"
+>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: Simple signature template file for sign1 example. 
 --&gt;
@@ -393,15 +453,41 @@ elOnt4fo2gPK1a3IVEhMGg==&lt;/SignatureValue&gt;
 	&lt;KeyName&gt;rsakey.pem&lt;/KeyName&gt;
     &lt;/KeyInfo&gt;
   &lt;/Signature&gt;
-&lt;/Envelope&gt;</pre>
-<p></p>
-</div>
-</div>
-</div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-examples.html"><b>&lt;&lt;&lt; Examples.</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-examples-sign-dynamimc-template.html"><b>Signing a dynamicaly created template. &gt;&gt;&gt;</b></a></td>
-</tr></table>
-</td></tr></table></td>
-</tr></table></body>
-</html>
+&lt;/Envelope&gt;</PRE
+><P
+></P
+></DIV
+></P
+></DIV
+></DIV
+><TABLE
+CLASS="navigation"
+WIDTH="100%"
+SUMMARY="Navigation footer"
+CELLPADDING="2"
+CELLSPACING="2"
+><TR
+VALIGN="middle"
+><TD
+ALIGN="left"
+><A
+ACCESSKEY="p"
+HREF="xmlsec-examples.html"
+><B
+>&lt;&lt;&lt;&nbsp;Examples.</B
+></A
+></TD
+><TD
+ALIGN="right"
+><A
+ACCESSKEY="n"
+HREF="xmlsec-examples-sign-dynamimc-template.html"
+><B
+>Signing a dynamicaly created template.&nbsp;&gt;&gt;&gt;</B
+></A
+></TD
+></TR
+></TABLE
+></BODY
+></HTML
+>

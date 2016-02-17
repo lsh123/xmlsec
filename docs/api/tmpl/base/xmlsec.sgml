@@ -66,6 +66,22 @@ Utility functions.
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecGetDefaultCrypto ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO XMLSEC_CRYPTO ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### MACRO xmlSecCheckVersionExact ##### -->
 <para>
 

@@ -1,13 +1,25 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>x509</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="XML Security Core Library API Reference." href="xmlsec-ref.html">
-<link rel="PREVIOUS" title="xmltree" href="xmlsec-xmltree.html">
-<link rel="NEXT" title="XML Security Library for OpenSLL API Reference." href="xmlsec-openssl-ref.html">
-<style type="text/css">.synopsis, .classsynopsis {
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>x509</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="XML Security Library Reference Manual"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="XML Security Core Library API Reference."
+HREF="xmlsec-ref.html"><LINK
+REL="PREVIOUS"
+TITLE="xmltree"
+HREF="xmlsec-xmltree.html"><LINK
+REL="NEXT"
+TITLE="XML Security Library for OpenSLL API Reference."
+HREF="xmlsec-openssl-ref.html"><STYLE
+TYPE="text/css"
+>.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
     padding: 0.5em;
@@ -35,229 +47,477 @@
 }
 .navigation .title {
     font-size: 200%;
-}</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-</head>
-<body><table width="100%" valign="top"><tr valign="top">
-<td valign="top" align="left" width="210">
-<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="../index.html">Home</a></li>
-<li><a href="../download.html">Download</a></li>
-<li><a href="../news.html">News</a></li>
-<li><a href="../documentation.html">Documentation</a></li>
-<ul>
-<li><a href="../faq.html">FAQ</a></li>
-<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
-<li><a href="../api/xmlsec-reference.html">API reference</a></li>
-<li><a href="../api/xmlsec-examples.html">Examples</a></li>
-</ul>
-<li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<ul><li><a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a></li></ul>
-<li><a href="../xmlenc.html">XML Encryption</a></li>
-<li><a href="../c14n.html">XML Canonicalization</a></li>
-<li><a href="../bugs.html">Reporting Bugs</a></li>
-<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
-<li><a href="../related.html">Related</a></li>
-<li><a href="../authors.html">Authors</a></li>
-</ul>
-<table width="100%">
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
-</tr>
-<!--Links - start--><!--Links - end-->
-</table>
-</td>
-<td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-xmltree.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-ref.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
-<td><a accesskey="n" href="xmlsec-openssl-ref.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
-</tr></table>
-<h1>
-<a name="XMLSEC-X509"></a>x509</h1>
-<div class="REFNAMEDIV">
-<a name="AEN28791"></a><h2>Name</h2>x509 -- <a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate" target="_top">&lt;dsig:X509Certificate/&gt;</a> node parser.</div>
-<div class="REFSECT1">
-<a name="XMLSEC-X509.FUNCTIONS"></a><h2>Functions</h2>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN28797"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<tbody><tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-x509.html#XMLSECX509DATAGETNODECONTENT">xmlSecX509DataGetNodeContent</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr></tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT1">
-<a name="XMLSEC-X509.OTHER"></a><h2>Types and Values</h2>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN28809"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<tbody>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-x509.html#XMLSEC-X509DATA-CERTIFICATE-NODE:CAPS">XMLSEC_X509DATA_CERTIFICATE_NODE</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-x509.html#XMLSEC-X509DATA-SUBJECTNAME-NODE:CAPS">XMLSEC_X509DATA_SUBJECTNAME_NODE</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-x509.html#XMLSEC-X509DATA-ISSUERSERIAL-NODE:CAPS">XMLSEC_X509DATA_ISSUERSERIAL_NODE</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-x509.html#XMLSEC-X509DATA-SKI-NODE:CAPS">XMLSEC_X509DATA_SKI_NODE</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-x509.html#XMLSEC-X509DATA-CRL-NODE:CAPS">XMLSEC_X509DATA_CRL_NODE</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-x509.html#XMLSEC-X509DATA-DEFAULT:CAPS">XMLSEC_X509DATA_DEFAULT</a></td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT1">
-<a name="XMLSEC-X509.DESCRIPTION"></a><h2>Description</h2>
-<p><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate" target="_top">&lt;dsig:X509Certificate/&gt;</a> node parser.</p>
-</div>
-<div class="REFSECT1">
-<a name="XMLSEC-X509.FUNCTIONS_DETAILS"></a><h2>Functions</h2>
-<div class="REFSECT2">
-<a name="XMLSECX509DATAGETNODECONTENT"></a><h3>xmlSecX509DataGetNodeContent ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
-xmlSecX509DataGetNodeContent (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> node</code>,
-                              <code class="PARAMETER"><font><span class="TYPE">int</span></font> deleteChildren</code>,
-                              <code class="PARAMETER"><a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"><span class="TYPE">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code>);</pre>
-<p>Reads the contents of &lt;dsig:X509Data/&gt; node and returns it as
-a bits mask.</p>
-<div class="REFSECT3">
-<a name="AEN28859"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN28861"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody>
-<tr>
-<td><p>node</p></td>
-<td><p>the pointer to &lt;dsig:X509Data/&gt; node.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>deleteChildren</p></td>
-<td><p>the flag that indicates whether to remove node children after reading.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>keyInfoCtx</p></td>
-<td><p>the pointer to &lt;dsig:KeyInfo/&gt; node processing context.</p></td>
-<td> </td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN28882"></a><h4>Returns</h4>
-<p> the bit mask representing the &lt;dsig:X509Data/&gt; node content
-or a negative value if an error occurs.</p>
-</div>
-</div>
-</div>
-<div class="REFSECT1">
-<a name="XMLSEC-X509.OTHER_DETAILS"></a><h2>Types and Values</h2>
-<div class="REFSECT2">
-<a name="XMLSEC-X509DATA-CERTIFICATE-NODE:CAPS"></a><h3>XMLSEC_X509DATA_CERTIFICATE_NODE</h3>
-<pre class="PROGRAMLISTING">#define XMLSEC_X509DATA_CERTIFICATE_NODE                        0x00000001</pre>
-<p>&lt;dsig:X509Certificate/&gt; node found or would be written back.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSEC-X509DATA-SUBJECTNAME-NODE:CAPS"></a><h3>XMLSEC_X509DATA_SUBJECTNAME_NODE</h3>
-<pre class="PROGRAMLISTING">#define XMLSEC_X509DATA_SUBJECTNAME_NODE                        0x00000002</pre>
-<p>&lt;dsig:X509SubjectName/&gt; node found or would be written back.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSEC-X509DATA-ISSUERSERIAL-NODE:CAPS"></a><h3>XMLSEC_X509DATA_ISSUERSERIAL_NODE</h3>
-<pre class="PROGRAMLISTING">#define XMLSEC_X509DATA_ISSUERSERIAL_NODE                       0x00000004</pre>
-<p>&lt;dsig:X509IssuerSerial/&gt; node found or would be written back.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSEC-X509DATA-SKI-NODE:CAPS"></a><h3>XMLSEC_X509DATA_SKI_NODE</h3>
-<pre class="PROGRAMLISTING">#define XMLSEC_X509DATA_SKI_NODE                                0x00000008</pre>
-<p>&lt;dsig:X509SKI/&gt; node found or would be written back.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSEC-X509DATA-CRL-NODE:CAPS"></a><h3>XMLSEC_X509DATA_CRL_NODE</h3>
-<pre class="PROGRAMLISTING">#define XMLSEC_X509DATA_CRL_NODE                                0x00000010</pre>
-<p>&lt;dsig:X509CRL/&gt; node found or would be written back.</p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSEC-X509DATA-DEFAULT:CAPS"></a><h3>XMLSEC_X509DATA_DEFAULT</h3>
-<pre class="PROGRAMLISTING">#define             XMLSEC_X509DATA_DEFAULT</pre>
-<p>Default set of nodes to write in case of empty
-&lt;dsig:X509Data/&gt; node template.</p>
-</div>
-</div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-xmltree.html"><b>&lt;&lt;&lt; xmltree</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-openssl-ref.html"><b>XML Security Library for OpenSLL API Reference. &gt;&gt;&gt;</b></a></td>
-</tr></table>
-</td></tr></table></td>
-</tr></table></body>
-</html>
+}</STYLE
+></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><TABLE
+WIDTH="100%"
+CLASS="navigation"
+SUMMARY="Navigation header"
+CELLPADDING="2"
+CELLSPACING="2"
+><TR
+VALIGN="middle"
+><TD
+><A
+ACCESSKEY="p"
+HREF="xmlsec-xmltree.html"
+><IMG
+SRC="left.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Prev"></A
+></TD
+><TD
+><A
+ACCESSKEY="u"
+HREF="xmlsec-ref.html"
+><IMG
+SRC="up.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Up"></A
+></TD
+><TD
+><A
+ACCESSKEY="h"
+HREF="index.html"
+><IMG
+SRC="home.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Home"></A
+></TD
+><TH
+WIDTH="100%"
+align="center"
+>XML Security Library Reference Manual</TH
+><TD
+><A
+ACCESSKEY="n"
+HREF="xmlsec-openssl-ref.html"
+><IMG
+SRC="right.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Next"></A
+></TD
+></TR
+></TABLE
+><H1
+><A
+NAME="XMLSEC-X509"
+></A
+>x509</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN28694"
+></A
+><H2
+>Name</H2
+>x509&nbsp;--&nbsp;<A
+HREF="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate"
+TARGET="_top"
+>&lt;dsig:X509Certificate/&gt;</A
+> node parser.</DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="XMLSEC-X509.FUNCTIONS"
+></A
+><H2
+>Functions</H2
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN28700"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><TBODY
+><TR
+><TD
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-x509.html#XMLSECX509DATAGETNODECONTENT"
+>xmlSecX509DataGetNodeContent</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="XMLSEC-X509.OTHER"
+></A
+><H2
+>Types and Values</H2
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN28712"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><TBODY
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-x509.html#XMLSEC-X509DATA-CERTIFICATE-NODE:CAPS"
+>XMLSEC_X509DATA_CERTIFICATE_NODE</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-x509.html#XMLSEC-X509DATA-SUBJECTNAME-NODE:CAPS"
+>XMLSEC_X509DATA_SUBJECTNAME_NODE</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-x509.html#XMLSEC-X509DATA-ISSUERSERIAL-NODE:CAPS"
+>XMLSEC_X509DATA_ISSUERSERIAL_NODE</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-x509.html#XMLSEC-X509DATA-SKI-NODE:CAPS"
+>XMLSEC_X509DATA_SKI_NODE</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-x509.html#XMLSEC-X509DATA-CRL-NODE:CAPS"
+>XMLSEC_X509DATA_CRL_NODE</A
+></TD
+></TR
+><TR
+><TD
+>#define</TD
+><TD
+><A
+HREF="xmlsec-x509.html#XMLSEC-X509DATA-DEFAULT:CAPS"
+>XMLSEC_X509DATA_DEFAULT</A
+></TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="XMLSEC-X509.DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+><A
+HREF="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate"
+TARGET="_top"
+>&lt;dsig:X509Certificate/&gt;</A
+> node parser.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="XMLSEC-X509.FUNCTIONS_DETAILS"
+></A
+><H2
+>Functions</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECX509DATAGETNODECONTENT"
+></A
+><H3
+>xmlSecX509DataGetNodeContent ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="RETURNVALUE"
+>int</SPAN
+></GTKDOCLINK
+>
+xmlSecX509DataGetNodeContent (<CODE
+CLASS="PARAMETER"
+><GTKDOCLINK
+HREF="XMLNODE"
+><SPAN
+CLASS="TYPE"
+>xmlNodePtr</SPAN
+></GTKDOCLINK
+> node</CODE
+>,
+                              <CODE
+CLASS="PARAMETER"
+><GTKDOCLINK
+HREF="INT"
+><SPAN
+CLASS="TYPE"
+>int</SPAN
+></GTKDOCLINK
+> deleteChildren</CODE
+>,
+                              <CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyInfoCtxPtr</SPAN
+></A
+> keyInfoCtx</CODE
+>);</PRE
+><P
+>Reads the contents of &lt;dsig:X509Data/&#62; node and returns it as
+a bits mask.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN28762"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN28764"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>node</P
+></TD
+><TD
+><P
+>the pointer to &lt;dsig:X509Data/&#62; node.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>deleteChildren</P
+></TD
+><TD
+><P
+>the flag that indicates whether to remove node children after reading.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>keyInfoCtx</P
+></TD
+><TD
+><P
+>the pointer to &lt;dsig:KeyInfo/&#62; node processing context.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN28785"
+></A
+><H4
+>Returns</H4
+><P
+> the bit mask representing the &lt;dsig:X509Data/&#62; node content
+or a negative value if an error occurs.</P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="XMLSEC-X509.OTHER_DETAILS"
+></A
+><H2
+>Types and Values</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSEC-X509DATA-CERTIFICATE-NODE:CAPS"
+></A
+><H3
+>XMLSEC_X509DATA_CERTIFICATE_NODE</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define XMLSEC_X509DATA_CERTIFICATE_NODE                        0x00000001</PRE
+><P
+>&lt;dsig:X509Certificate/&#62; node found or would be written back.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSEC-X509DATA-SUBJECTNAME-NODE:CAPS"
+></A
+><H3
+>XMLSEC_X509DATA_SUBJECTNAME_NODE</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define XMLSEC_X509DATA_SUBJECTNAME_NODE                        0x00000002</PRE
+><P
+>&lt;dsig:X509SubjectName/&#62; node found or would be written back.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSEC-X509DATA-ISSUERSERIAL-NODE:CAPS"
+></A
+><H3
+>XMLSEC_X509DATA_ISSUERSERIAL_NODE</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define XMLSEC_X509DATA_ISSUERSERIAL_NODE                       0x00000004</PRE
+><P
+>&lt;dsig:X509IssuerSerial/&#62; node found or would be written back.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSEC-X509DATA-SKI-NODE:CAPS"
+></A
+><H3
+>XMLSEC_X509DATA_SKI_NODE</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define XMLSEC_X509DATA_SKI_NODE                                0x00000008</PRE
+><P
+>&lt;dsig:X509SKI/&#62; node found or would be written back.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSEC-X509DATA-CRL-NODE:CAPS"
+></A
+><H3
+>XMLSEC_X509DATA_CRL_NODE</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define XMLSEC_X509DATA_CRL_NODE                                0x00000010</PRE
+><P
+>&lt;dsig:X509CRL/&#62; node found or would be written back.</P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSEC-X509DATA-DEFAULT:CAPS"
+></A
+><H3
+>XMLSEC_X509DATA_DEFAULT</H3
+><PRE
+CLASS="PROGRAMLISTING"
+>#define             XMLSEC_X509DATA_DEFAULT</PRE
+><P
+>Default set of nodes to write in case of empty
+&lt;dsig:X509Data/&#62; node template.</P
+></DIV
+></DIV
+><TABLE
+CLASS="navigation"
+WIDTH="100%"
+SUMMARY="Navigation footer"
+CELLPADDING="2"
+CELLSPACING="2"
+><TR
+VALIGN="middle"
+><TD
+ALIGN="left"
+><A
+ACCESSKEY="p"
+HREF="xmlsec-xmltree.html"
+><B
+>&lt;&lt;&lt;&nbsp;xmltree</B
+></A
+></TD
+><TD
+ALIGN="right"
+><A
+ACCESSKEY="n"
+HREF="xmlsec-openssl-ref.html"
+><B
+>XML Security Library for OpenSLL API Reference.&nbsp;&gt;&gt;&gt;</B
+></A
+></TD
+></TR
+></TABLE
+></BODY
+></HTML
+>

@@ -1,13 +1,25 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>certkeys</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="XML Security Library for MSCrypto API Reference." href="xmlsec-mscrypto-ref.html">
-<link rel="PREVIOUS" title="app" href="xmlsec-mscrypto-app.html">
-<link rel="NEXT" title="crypto" href="xmlsec-mscrypto-crypto.html">
-<style type="text/css">.synopsis, .classsynopsis {
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>certkeys</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="XML Security Library Reference Manual"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="XML Security Library for MSCrypto API Reference."
+HREF="xmlsec-mscrypto-ref.html"><LINK
+REL="PREVIOUS"
+TITLE="app"
+HREF="xmlsec-mscrypto-app.html"><LINK
+REL="NEXT"
+TITLE="crypto"
+HREF="xmlsec-mscrypto-crypto.html"><STYLE
+TYPE="text/css"
+>.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
     padding: 0.5em;
@@ -35,370 +47,908 @@
 }
 .navigation .title {
     font-size: 200%;
-}</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-</head>
-<body><table width="100%" valign="top"><tr valign="top">
-<td valign="top" align="left" width="210">
-<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="../index.html">Home</a></li>
-<li><a href="../download.html">Download</a></li>
-<li><a href="../news.html">News</a></li>
-<li><a href="../documentation.html">Documentation</a></li>
-<ul>
-<li><a href="../faq.html">FAQ</a></li>
-<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
-<li><a href="../api/xmlsec-reference.html">API reference</a></li>
-<li><a href="../api/xmlsec-examples.html">Examples</a></li>
-</ul>
-<li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<ul><li><a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a></li></ul>
-<li><a href="../xmlenc.html">XML Encryption</a></li>
-<li><a href="../c14n.html">XML Canonicalization</a></li>
-<li><a href="../bugs.html">Reporting Bugs</a></li>
-<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
-<li><a href="../related.html">Related</a></li>
-<li><a href="../authors.html">Authors</a></li>
-</ul>
-<table width="100%">
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
-</tr>
-<!--Links - start--><!--Links - end-->
-</table>
-</td>
-<td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-mscrypto-app.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-mscrypto-ref.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
-<td><a accesskey="n" href="xmlsec-mscrypto-crypto.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
-</tr></table>
-<h1>
-<a name="XMLSEC-MSCRYPTO-CERTKEYS"></a>certkeys</h1>
-<div class="REFNAMEDIV">
-<a name="AEN43136"></a><h2>Name</h2>certkeys -- MS Crypto certificates helper functions.</div>
-<div class="REFSECT1">
-<a name="XMLSEC-MSCRYPTO-CERTKEYS.FUNCTIONS"></a><h2>Functions</h2>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN43141"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<tbody>
-<tr>
-<td><font><span class="RETURNVALUE">PCCERT_CONTEXT</span></font></td>
-<td>
-<a href="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOKEYDATAGETCERT">xmlSecMSCryptoKeyDataGetCert</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">HCRYPTKEY</span></font></td>
-<td>
-<a href="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOKEYDATAGETKEY">xmlSecMSCryptoKeyDataGetKey</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">HCRYPTKEY</span></font></td>
-<td>
-<a href="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOKEYDATAGETDECRYPTKEY">xmlSecMSCryptoKeyDataGetDecryptKey</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">PCCERT_CONTEXT</span></font></td>
-<td>
-<a href="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOCERTDUP">xmlSecMSCryptoCertDup</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="RETURNVALUE">xmlSecKeyDataPtr</span></a></td>
-<td>
-<a href="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOCERTADOPT">xmlSecMSCryptoCertAdopt</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">HCRYPTPROV</span></font></td>
-<td>
-<a href="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOKEYDATAGETMSCRYPTOPROVIDER">xmlSecMSCryptoKeyDataGetMSCryptoProvider</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">DWORD</span></font></td>
-<td>
-<a href="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOKEYDATAGETMSCRYPTOKEYSPEC">xmlSecMSCryptoKeyDataGetMSCryptoKeySpec</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT1">
-<a name="XMLSEC-MSCRYPTO-CERTKEYS.DESCRIPTION"></a><h2>Description</h2>
-<p>MS Crypto certificates helper functions.</p>
-</div>
-<div class="REFSECT1">
-<a name="XMLSEC-MSCRYPTO-CERTKEYS.FUNCTIONS_DETAILS"></a><h2>Functions</h2>
-<div class="REFSECT2">
-<a name="XMLSECMSCRYPTOKEYDATAGETCERT"></a><h3>xmlSecMSCryptoKeyDataGetCert ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">PCCERT_CONTEXT</span></font>
-xmlSecMSCryptoKeyDataGetCert (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>);</pre>
-<p>Native MSCrypto certificate retrieval from xmlsec keydata. The
-returned PCCERT_CONTEXT must not be released by the caller.</p>
-<div class="REFSECT3">
-<a name="AEN43209"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN43211"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody><tr>
-<td><p>data</p></td>
-<td><p>the key data to retrieve certificate from.</p></td>
-<td> </td>
-</tr></tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN43220"></a><h4>Returns</h4>
-<p> PCCERT_CONTEXT on success or NULL otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECMSCRYPTOKEYDATAGETKEY"></a><h3>xmlSecMSCryptoKeyDataGetKey ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">HCRYPTKEY</span></font>
-xmlSecMSCryptoKeyDataGetKey (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
-                             <code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE"><span class="TYPE">xmlSecKeyDataType</span></a> type</code>);</pre>
-<p>Native MSCrypto key retrieval from xmlsec keydata. The
-returned HKEY must not be destroyed by the caller.</p>
-<div class="REFSECT3">
-<a name="AEN43237"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN43239"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody>
-<tr>
-<td><p>data</p></td>
-<td><p>the key data to retrieve certificate from.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>type</p></td>
-<td><p>type of key requested (public/private)</p></td>
-<td> </td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN43254"></a><h4>Returns</h4>
-<p> HKEY on success or NULL otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECMSCRYPTOKEYDATAGETDECRYPTKEY"></a><h3>xmlSecMSCryptoKeyDataGetDecryptKey ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">HCRYPTKEY</span></font>
-xmlSecMSCryptoKeyDataGetDecryptKey (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>);</pre>
-<p>Native MSCrypto decrypt key retrieval from xmlsec keydata. The
-returned HKEY must not be destroyed by the caller.</p>
-<div class="REFSECT3">
-<a name="AEN43268"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN43270"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody><tr>
-<td><p>data</p></td>
-<td><p>the key data pointer</p></td>
-<td> </td>
-</tr></tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN43279"></a><h4>Returns</h4>
-<p> HKEY on success or NULL otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECMSCRYPTOCERTDUP"></a><h3>xmlSecMSCryptoCertDup ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">PCCERT_CONTEXT</span></font>
-xmlSecMSCryptoCertDup (<code class="PARAMETER"><font><span class="TYPE">PCCERT_CONTEXT</span></font> pCert</code>);</pre>
-<p>Duplicates the <code class="PARAMETER">pCert</code>
-.</p>
-<div class="REFSECT3">
-<a name="AEN43294"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN43296"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody><tr>
-<td><p>pCert</p></td>
-<td><p>the pointer to cert.</p></td>
-<td> </td>
-</tr></tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN43305"></a><h4>Returns</h4>
-<p> pointer to newly created PCCERT_CONTEXT object or
-NULL if an error occurs.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECMSCRYPTOCERTADOPT"></a><h3>xmlSecMSCryptoCertAdopt ()</h3>
-<pre class="PROGRAMLISTING"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="RETURNVALUE">xmlSecKeyDataPtr</span></a>
-xmlSecMSCryptoCertAdopt (<code class="PARAMETER"><font><span class="TYPE">PCCERT_CONTEXT</span></font> pCert</code>,
-                         <code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE"><span class="TYPE">xmlSecKeyDataType</span></a> type</code>);</pre>
-<p>Creates key data value from the cert.</p>
-<div class="REFSECT3">
-<a name="AEN43322"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN43324"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody>
-<tr>
-<td><p>pCert</p></td>
-<td><p>the pointer to cert.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>type</p></td>
-<td><p>the expected key type.</p></td>
-<td> </td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN43339"></a><h4>Returns</h4>
-<p> pointer to newly created xmlsec key or NULL if an error occurs.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECMSCRYPTOKEYDATAGETMSCRYPTOPROVIDER"></a><h3>xmlSecMSCryptoKeyDataGetMSCryptoProvider ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">HCRYPTPROV</span></font>
+}</STYLE
+></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><TABLE
+WIDTH="100%"
+CLASS="navigation"
+SUMMARY="Navigation header"
+CELLPADDING="2"
+CELLSPACING="2"
+><TR
+VALIGN="middle"
+><TD
+><A
+ACCESSKEY="p"
+HREF="xmlsec-mscrypto-app.html"
+><IMG
+SRC="left.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Prev"></A
+></TD
+><TD
+><A
+ACCESSKEY="u"
+HREF="xmlsec-mscrypto-ref.html"
+><IMG
+SRC="up.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Up"></A
+></TD
+><TD
+><A
+ACCESSKEY="h"
+HREF="index.html"
+><IMG
+SRC="home.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Home"></A
+></TD
+><TH
+WIDTH="100%"
+align="center"
+>XML Security Library Reference Manual</TH
+><TD
+><A
+ACCESSKEY="n"
+HREF="xmlsec-mscrypto-crypto.html"
+><IMG
+SRC="right.png"
+WIDTH="16"
+HEIGHT="16"
+BORDER="0"
+ALT="Next"></A
+></TD
+></TR
+></TABLE
+><H1
+><A
+NAME="XMLSEC-MSCRYPTO-CERTKEYS"
+></A
+>certkeys</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN43039"
+></A
+><H2
+>Name</H2
+>certkeys&nbsp;--&nbsp;MS Crypto certificates helper functions.</DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="XMLSEC-MSCRYPTO-CERTKEYS.FUNCTIONS"
+></A
+><H2
+>Functions</H2
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN43044"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><TBODY
+><TR
+><TD
+><GTKDOCLINK
+HREF="PCCERT-CONTEXT:CAPS"
+><SPAN
+CLASS="RETURNVALUE"
+>PCCERT_CONTEXT</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOKEYDATAGETCERT"
+>xmlSecMSCryptoKeyDataGetCert</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="HCRYPTKEY:CAPS"
+><SPAN
+CLASS="RETURNVALUE"
+>HCRYPTKEY</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOKEYDATAGETKEY"
+>xmlSecMSCryptoKeyDataGetKey</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="HCRYPTKEY:CAPS"
+><SPAN
+CLASS="RETURNVALUE"
+>HCRYPTKEY</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOKEYDATAGETDECRYPTKEY"
+>xmlSecMSCryptoKeyDataGetDecryptKey</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="PCCERT-CONTEXT:CAPS"
+><SPAN
+CLASS="RETURNVALUE"
+>PCCERT_CONTEXT</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOCERTDUP"
+>xmlSecMSCryptoCertDup</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><A
+HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecKeyDataPtr</SPAN
+></A
+></TD
+><TD
+><A
+HREF="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOCERTADOPT"
+>xmlSecMSCryptoCertAdopt</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="HCRYPTPROV:CAPS"
+><SPAN
+CLASS="RETURNVALUE"
+>HCRYPTPROV</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOKEYDATAGETMSCRYPTOPROVIDER"
+>xmlSecMSCryptoKeyDataGetMSCryptoProvider</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><GTKDOCLINK
+HREF="DWORD:CAPS"
+><SPAN
+CLASS="RETURNVALUE"
+>DWORD</SPAN
+></GTKDOCLINK
+></TD
+><TD
+><A
+HREF="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOKEYDATAGETMSCRYPTOKEYSPEC"
+>xmlSecMSCryptoKeyDataGetMSCryptoKeySpec</A
+> <SPAN
+CLASS="c_punctuation"
+><SPAN
+CLASS="PHRASE"
+>()</SPAN
+></SPAN
+></TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="XMLSEC-MSCRYPTO-CERTKEYS.DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>MS Crypto certificates helper functions.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="XMLSEC-MSCRYPTO-CERTKEYS.FUNCTIONS_DETAILS"
+></A
+><H2
+>Functions</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECMSCRYPTOKEYDATAGETCERT"
+></A
+><H3
+>xmlSecMSCryptoKeyDataGetCert ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="PCCERT-CONTEXT:CAPS"
+><SPAN
+CLASS="RETURNVALUE"
+>PCCERT_CONTEXT</SPAN
+></GTKDOCLINK
+>
+xmlSecMSCryptoKeyDataGetCert (<CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyDataPtr</SPAN
+></A
+> data</CODE
+>);</PRE
+><P
+>Native MSCrypto certificate retrieval from xmlsec keydata. The
+returned PCCERT_CONTEXT must not be released by the caller.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN43112"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN43114"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>data</P
+></TD
+><TD
+><P
+>the key data to retrieve certificate from.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN43123"
+></A
+><H4
+>Returns</H4
+><P
+> PCCERT_CONTEXT on success or NULL otherwise.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECMSCRYPTOKEYDATAGETKEY"
+></A
+><H3
+>xmlSecMSCryptoKeyDataGetKey ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="HCRYPTKEY:CAPS"
+><SPAN
+CLASS="RETURNVALUE"
+>HCRYPTKEY</SPAN
+></GTKDOCLINK
+>
+xmlSecMSCryptoKeyDataGetKey (<CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyDataPtr</SPAN
+></A
+> data</CODE
+>,
+                             <CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysdata.html#XMLSECKEYDATATYPE"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyDataType</SPAN
+></A
+> type</CODE
+>);</PRE
+><P
+>Native MSCrypto key retrieval from xmlsec keydata. The
+returned HKEY must not be destroyed by the caller.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN43140"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN43142"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>data</P
+></TD
+><TD
+><P
+>the key data to retrieve certificate from.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>type</P
+></TD
+><TD
+><P
+>type of key requested (public/private)</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN43157"
+></A
+><H4
+>Returns</H4
+><P
+> HKEY on success or NULL otherwise.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECMSCRYPTOKEYDATAGETDECRYPTKEY"
+></A
+><H3
+>xmlSecMSCryptoKeyDataGetDecryptKey ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="HCRYPTKEY:CAPS"
+><SPAN
+CLASS="RETURNVALUE"
+>HCRYPTKEY</SPAN
+></GTKDOCLINK
+>
+xmlSecMSCryptoKeyDataGetDecryptKey (<CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyDataPtr</SPAN
+></A
+> data</CODE
+>);</PRE
+><P
+>Native MSCrypto decrypt key retrieval from xmlsec keydata. The
+returned HKEY must not be destroyed by the caller.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN43171"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN43173"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>data</P
+></TD
+><TD
+><P
+>the key data pointer</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN43182"
+></A
+><H4
+>Returns</H4
+><P
+> HKEY on success or NULL otherwise.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECMSCRYPTOCERTDUP"
+></A
+><H3
+>xmlSecMSCryptoCertDup ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="PCCERT-CONTEXT:CAPS"
+><SPAN
+CLASS="RETURNVALUE"
+>PCCERT_CONTEXT</SPAN
+></GTKDOCLINK
+>
+xmlSecMSCryptoCertDup (<CODE
+CLASS="PARAMETER"
+><GTKDOCLINK
+HREF="PCCERT-CONTEXT:CAPS"
+><SPAN
+CLASS="TYPE"
+>PCCERT_CONTEXT</SPAN
+></GTKDOCLINK
+> pCert</CODE
+>);</PRE
+><P
+>Duplicates the <CODE
+CLASS="PARAMETER"
+>pCert</CODE
+>
+.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN43197"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN43199"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>pCert</P
+></TD
+><TD
+><P
+>the pointer to cert.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN43208"
+></A
+><H4
+>Returns</H4
+><P
+> pointer to newly created PCCERT_CONTEXT object or
+NULL if an error occurs.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECMSCRYPTOCERTADOPT"
+></A
+><H3
+>xmlSecMSCryptoCertAdopt ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
+><SPAN
+CLASS="RETURNVALUE"
+>xmlSecKeyDataPtr</SPAN
+></A
+>
+xmlSecMSCryptoCertAdopt (<CODE
+CLASS="PARAMETER"
+><GTKDOCLINK
+HREF="PCCERT-CONTEXT:CAPS"
+><SPAN
+CLASS="TYPE"
+>PCCERT_CONTEXT</SPAN
+></GTKDOCLINK
+> pCert</CODE
+>,
+                         <CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysdata.html#XMLSECKEYDATATYPE"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyDataType</SPAN
+></A
+> type</CODE
+>);</PRE
+><P
+>Creates key data value from the cert.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN43225"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN43227"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>pCert</P
+></TD
+><TD
+><P
+>the pointer to cert.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+><P
+>type</P
+></TD
+><TD
+><P
+>the expected key type.</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN43242"
+></A
+><H4
+>Returns</H4
+><P
+> pointer to newly created xmlsec key or NULL if an error occurs.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECMSCRYPTOKEYDATAGETMSCRYPTOPROVIDER"
+></A
+><H3
+>xmlSecMSCryptoKeyDataGetMSCryptoProvider ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="HCRYPTPROV:CAPS"
+><SPAN
+CLASS="RETURNVALUE"
+>HCRYPTPROV</SPAN
+></GTKDOCLINK
+>
 xmlSecMSCryptoKeyDataGetMSCryptoProvider
-                               (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>);</pre>
-<p>Gets crypto provider handle</p>
-<div class="REFSECT3">
-<a name="AEN43353"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN43355"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody><tr>
-<td><p>data</p></td>
-<td><p>the key data</p></td>
-<td> </td>
-</tr></tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN43364"></a><h4>Returns</h4>
-<p> the crypto provider handler or 0 if there is an error.</p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECMSCRYPTOKEYDATAGETMSCRYPTOKEYSPEC"></a><h3>xmlSecMSCryptoKeyDataGetMSCryptoKeySpec ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">DWORD</span></font>
+                               (<CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyDataPtr</SPAN
+></A
+> data</CODE
+>);</PRE
+><P
+>Gets crypto provider handle</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN43256"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN43258"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>data</P
+></TD
+><TD
+><P
+>the key data</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN43267"
+></A
+><H4
+>Returns</H4
+><P
+> the crypto provider handler or 0 if there is an error.</P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="XMLSECMSCRYPTOKEYDATAGETMSCRYPTOKEYSPEC"
+></A
+><H3
+>xmlSecMSCryptoKeyDataGetMSCryptoKeySpec ()</H3
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="DWORD:CAPS"
+><SPAN
+CLASS="RETURNVALUE"
+>DWORD</SPAN
+></GTKDOCLINK
+>
 xmlSecMSCryptoKeyDataGetMSCryptoKeySpec
-                               (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>);</pre>
-<p>Gets key spec info.</p>
-<div class="REFSECT3">
-<a name="AEN43378"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN43380"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody><tr>
-<td><p>data</p></td>
-<td><p>the key data</p></td>
-<td> </td>
-</tr></tbody>
-</table>
-<p></p>
-</div>
-</div>
-<div class="REFSECT3">
-<a name="AEN43389"></a><h4>Returns</h4>
-<p> the key spec info from key data</p>
-</div>
-</div>
-</div>
-<div class="REFSECT1">
-<a name="XMLSEC-MSCRYPTO-CERTKEYS.OTHER_DETAILS"></a><h2>Types and Values</h2>
-<p></p>
-</div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-mscrypto-app.html"><b>&lt;&lt;&lt; app</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-mscrypto-crypto.html"><b>crypto &gt;&gt;&gt;</b></a></td>
-</tr></table>
-</td></tr></table></td>
-</tr></table></body>
-</html>
+                               (<CODE
+CLASS="PARAMETER"
+><A
+HREF="xmlsec-keysdata.html#XMLSECKEYDATA"
+><SPAN
+CLASS="TYPE"
+>xmlSecKeyDataPtr</SPAN
+></A
+> data</CODE
+>);</PRE
+><P
+>Gets key spec info.</P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN43281"
+></A
+><H4
+>Parameters</H4
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN43283"
+></A
+><TABLE
+BORDER="0"
+FRAME="void"
+WIDTH="100%"
+CLASS="CALSTABLE"
+><COL><COL><COL><TBODY
+><TR
+><TD
+><P
+>data</P
+></TD
+><TD
+><P
+>the key data</P
+></TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN43292"
+></A
+><H4
+>Returns</H4
+><P
+> the key spec info from key data</P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="XMLSEC-MSCRYPTO-CERTKEYS.OTHER_DETAILS"
+></A
+><H2
+>Types and Values</H2
+><P
+></P
+></DIV
+><TABLE
+CLASS="navigation"
+WIDTH="100%"
+SUMMARY="Navigation footer"
+CELLPADDING="2"
+CELLSPACING="2"
+><TR
+VALIGN="middle"
+><TD
+ALIGN="left"
+><A
+ACCESSKEY="p"
+HREF="xmlsec-mscrypto-app.html"
+><B
+>&lt;&lt;&lt;&nbsp;app</B
+></A
+></TD
+><TD
+ALIGN="right"
+><A
+ACCESSKEY="n"
+HREF="xmlsec-mscrypto-crypto.html"
+><B
+>crypto&nbsp;&gt;&gt;&gt;</B
+></A
+></TD
+></TR
+></TABLE
+></BODY
+></HTML
+>

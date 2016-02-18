@@ -1160,6 +1160,3 @@ xmlSecTransformVisa3DHackExecute(xmlSecTransformPtr transform, int last,
     }
     return(0);
 }
-
-
-

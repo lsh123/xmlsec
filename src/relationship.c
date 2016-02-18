@@ -75,6 +75,22 @@
  *   empty content, or as empty elements. A canonicalization transform, applied immediately after the
  *   Relationships Transform, converts all XML elements into start-tag/end-tag pairs.
  *
+ *
+ *   IMPLEMENTATION NOTES (https://github.com/lsh123/xmlsec/pull/24):
+ *
+ *   * We don't simply manipulate the XML tree, but do an XML tree -> output bytes transformation,
+ *     so e.g. because we never write characters inside XML elements, we implicitly remove all character
+ *     contents, as required by step 3, point 1. It also simplifies the task of the situation that
+ *     realistically the input of the transformation is always a document that conforms to the OOXML
+ *     relationships XML schema, so in practice it'll never happen that the input document has e.g.
+ *     characters, as the schema requires that the document has only XML elements and attributes,
+ *     but no characters.
+ *
+ *   * Step 2, point 4 talks about a SourceType value, but given that neither Microsoft Office, nor LibreOffice
+ *     writes that theoretical attribute, the implementation doesn't handle it. If there is a real-world situation
+ *     when there will be such an input, then it'll be easy to add support for that. But I didn't want to clutter
+ *     the current implementation with details that doesn't seem to be used in practice
+ *
  *****************************************************************************/
 typedef struct _xmlSecRelationshipCtx           xmlSecRelationshipCtx,
                                                 *xmlSecRelationshipCtxPtr;

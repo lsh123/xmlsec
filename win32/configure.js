@@ -21,7 +21,7 @@ var baseName = "libxmlsec";
 
 /* Configure file which contains the version and the output file where
    we can store our build configuration. */
-var configFile = baseDir + "\\configure.in";
+var configFile = baseDir + "\\configure.ac";
 var versionFile = ".\\configure.txt";
 
 /* Input and output files regarding the lib(e)xml features. The second

@@ -366,6 +366,7 @@ execEncTest $res_success \
 # test dynamicencryption
 #
 ##########################################################################
+if [ -n "$XMLSEC_TEST_NAME" -a "$XMLSEC_TEST_NAME" = "enc-dynamic" ]; then
 echo "Dynamic encryption template"
 printf "    Encrypt template                                     "
 echo "$VALGRIND $xmlsec_app encrypt-tmpl $xmlsec_params --keys-file $keysfile --output $tmpfile" >> $logfile
@@ -375,6 +376,7 @@ printf "    Decrypt document                                     "
 echo "$VALGRIND $xmlsec_app decrypt $xmlsec_params $keysfile $tmpfile" >> $logfile
 $VALGRIND $xmlsec_app decrypt $xmlsec_params --keys-file $keysfile $tmpfile >> $logfile 2>> $logfile
 printRes $res_success $?
+fi
 
 
 ##########################################################################

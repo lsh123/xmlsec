@@ -842,6 +842,7 @@ execDSigTest $res_success \
 # test dynamic signature
 #
 ##########################################################################
+if [ -n "$XMLSEC_TEST_NAME" -a "$XMLSEC_TEST_NAME" = "dsig-dynamic" ]; then
 echo "Dynamic signature template"
 printf "    Create new signature                                 "
 echo "$VALGRIND $xmlsec_app sign-tmpl $xmlsec_params --keys-file $keysfile --output $tmpfile" >> $logfile
@@ -851,6 +852,7 @@ printf "    Verify new signature                                 "
 echo "$VALGRIND $xmlsec_app verify --keys-file $keysfile $tmpfile" >> $logfile
 $VALGRIND $xmlsec_app verify $xmlsec_params --keys-file $keysfile $tmpfile >> $logfile 2>> $logfile
 printRes $res_success $?
+fi
 
 
 ##########################################################################

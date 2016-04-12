@@ -21,7 +21,7 @@ AC_SUBST(XMLSEC_VERSION_SUBMINOR)
 AC_SUBST(XMLSEC_VERSION_INFO)
 
 AC_CONFIG_MACRO_DIR(m4)
-AM_INIT_AUTOMAKE([1.7 tar-ustar])
+AM_INIT_AUTOMAKE([1.7 tar-ustar subdir-objects -Wno-portability])
 AC_CONFIG_HEADERS([config.h])
 AM_MAINTAINER_MODE
 
@@ -1046,7 +1046,7 @@ AC_SUBST(MSCRYPTO_CRYPTO_LIB)
 dnl ==========================================================================
 dnl Figure out the default crypt - the first crypto library wins
 dnl ==========================================================================
-XMLSEC_CRYPTO=""
+XMLSEC_DEFAULT_CRYPTO=""
 XMLSEC_CRYPTO_LIB=""
 XMLSEC_CRYPTO_CFLAGS=""
 XMLSEC_CRYPTO_LIBS=""
@@ -1057,35 +1057,35 @@ AC_ARG_WITH(default_crypto, [  --with-default-crypto=name default crypto name])
 case "z$with_default_crypto" in
     'zmscrypto')
         if test "z$XMLSEC_NO_MSCRYPTO" != "z1" ; then
-            XMLSEC_CRYPTO="mscrypto"
+            XMLSEC_DEFAULT_CRYPTO="mscrypto"
         else
             AC_MSG_ERROR('$with_default_crypto' is specified as default crypto library but it is not configured or found)
         fi
         ;;
     'zopenssl')
         if test "z$XMLSEC_NO_OPENSSL" != "z1" ; then
-            XMLSEC_CRYPTO="openssl"
+            XMLSEC_DEFAULT_CRYPTO="openssl"
         else
             AC_MSG_ERROR('$with_default_crypto' is specified as default crypto library but it is not configured or found)
         fi
         ;;
     'znss')
         if test "z$XMLSEC_NO_NSS" != "z1" ; then
-            XMLSEC_CRYPTO="nss"
+            XMLSEC_DEFAULT_CRYPTO="nss"
         else
             AC_MSG_ERROR('$with_default_crypto' is specified as default crypto library but it is not configured or found)
         fi
         ;;
     'zgnutls')
         if test "z$XMLSEC_NO_GNUTLS" != "z1" ; then
-            XMLSEC_CRYPTO="gnutls"
+            XMLSEC_DEFAULT_CRYPTO="gnutls"
         else
             AC_MSG_ERROR('$with_default_crypto' is specified as default crypto library but it is not configured or found)
         fi
         ;;
     'zgcrypt')
         if test "z$XMLSEC_NO_GCRYPT" != "z1" ; then
-            XMLSEC_CRYPTO="gcrypt"
+            XMLSEC_DEFAULT_CRYPTO="gcrypt"
         else
             AC_MSG_ERROR('$with_default_crypto' is specified as default crypto library but it is not configured or found)
         fi
@@ -1093,15 +1093,15 @@ case "z$with_default_crypto" in
     'z')
         dnl The first crypto library wins
         if test "z$XMLSEC_NO_MSCRYPTO" != "z1" ; then
-            XMLSEC_CRYPTO="mscrypto"
+            XMLSEC_DEFAULT_CRYPTO="mscrypto"
         elif test "z$XMLSEC_NO_OPENSSL" != "z1" ; then
-            XMLSEC_CRYPTO="openssl"
+            XMLSEC_DEFAULT_CRYPTO="openssl"
         elif test "z$XMLSEC_NO_NSS" != "z1" ; then
-            XMLSEC_CRYPTO="nss"
+            XMLSEC_DEFAULT_CRYPTO="nss"
         elif test "z$XMLSEC_NO_GNUTLS" != "z1" ; then
-            XMLSEC_CRYPTO="gnutls"
+            XMLSEC_DEFAULT_CRYPTO="gnutls"
         elif test "z$XMLSEC_NO_GCRYPT" != "z1" ; then
-            XMLSEC_CRYPTO="gcrypt"
+            XMLSEC_DEFAULT_CRYPTO="gcrypt"
         else
             AC_MSG_ERROR(At least one crypto library should exist for $XMLSEC_PACKAGE)
         fi
@@ -1112,7 +1112,7 @@ case "z$with_default_crypto" in
 esac
 
 dnl Set the flags for default crypto lib
-case "$XMLSEC_CRYPTO" in
+case "$XMLSEC_DEFAULT_CRYPTO" in
     'mscrypto')
         XMLSEC_CRYPTO_LIB="$MSCRYPTO_CRYPTO_LIB"
         XMLSEC_CRYPTO_CFLAGS="$MSCRYPTO_CFLAGS"
@@ -1139,10 +1139,10 @@ case "$XMLSEC_CRYPTO" in
         XMLSEC_CRYPTO_LIBS="$GCRYPT_LIBS"
         ;;
     *)
-        AC_MSG_ERROR(The value \"$XMLSEC_CRYPTO\" is not a recongnized crypto library name)
+        AC_MSG_ERROR(The value \"$XMLSEC_DEFAULT_CRYPTO\" is not a recongnized crypto library name)
         ;;
 esac
-AC_MSG_RESULT(yes ('$XMLSEC_CRYPTO'))
+AC_MSG_RESULT(yes ('$XMLSEC_DEFAULT_CRYPTO'))
 
 dnl ==========================================================================
 dnl See do we need MD5 support
@@ -1621,7 +1621,7 @@ AC_SUBST(LDFLAGS)
 AC_SUBST(XMLSEC_EXTRA_LDFLAGS)
 AC_SUBST(XMLSEC_CRYPTO_EXTRA_LDFLAGS)
 
-AC_SUBST(XMLSEC_CRYPTO)
+AC_SUBST(XMLSEC_DEFAULT_CRYPTO)
 AC_SUBST(XMLSEC_CRYPTO_LIST)
 AC_SUBST(XMLSEC_CRYPTO_DISABLED_LIST)
 AC_SUBST(XMLSEC_CRYPTO_LIB)
@@ -1660,7 +1660,7 @@ AC_CONFIG_FILES([include/xmlsec/mscrypto/Makefile src/mscrypto/Makefile])
 fi
 
 if test "z$XMLSEC_NO_CRYPTO_DYNAMIC_LOADING" = "z1" ; then
-(rm -f xmlsec1.pc && $LN_S xmlsec1-$XMLSEC_CRYPTO.pc xmlsec1.pc)
+(rm -f xmlsec1.pc && $LN_S xmlsec1-$XMLSEC_DEFAULT_CRYPTO.pc xmlsec1.pc)
 else
 AC_CONFIG_FILES([xmlsec1.pc:xmlsec.pc.in])
 fi

@@ -7,7 +7,6 @@
 <link rel="UP" title="XML Security Library for NSS API Reference." href="xmlsec-nss-ref.html">
 <link rel="PREVIOUS" title="app" href="xmlsec-nss-app.html">
 <link rel="NEXT" title="crypto" href="xmlsec-nss-crypto.html">
-<meta name="GENERATOR" content="GTK-Doc V1.11 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -37,6 +36,29 @@
 .navigation .title {
     font-size: 200%;
 }</style>
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
 </head>
 <body><table width="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -79,96 +101,145 @@
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
 <table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-nss-app.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-nss-ref.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<td><a accesskey="p" href="xmlsec-nss-app.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="xmlsec-nss-ref.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <th width="100%" align="center">XML Security Library Reference Manual</th>
-<td><a accesskey="n" href="xmlsec-nss-crypto.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="xmlsec-nss-crypto.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <h1>
 <a name="XMLSEC-NSS-BIGNUM"></a>bignum</h1>
 <div class="REFNAMEDIV">
-<a name="AEN29303"></a><h2>Name</h2>bignum -- Big numbers helper functions.</div>
-<div class="REFSYNOPSISDIV">
-<a name="XMLSEC-NSS-BIGNUM.SYNOPSIS"></a><h2>Synopsis</h2>
-<pre class="SYNOPSIS"><font>SECItem</font>*            <a href="xmlsec-nss-bignum.html#XMLSECNSSNODEGETBIGNUMVALUE">xmlSecNssNodeGetBigNumValue</a>         (<font>PRArenaPool</font> *arena,
-                                                         const <font>xmlNodePtr</font> cur,
-                                                         <font>SECItem</font> *a);
-<font>int</font>                 <a href="xmlsec-nss-bignum.html#XMLSECNSSNODESETBIGNUMVALUE">xmlSecNssNodeSetBigNumValue</a>         (<font>xmlNodePtr</font> cur,
-                                                         const <font>SECItem</font> *a,
-                                                         <font>int</font> addLineBreaks);</pre>
+<a name="AEN39482"></a><h2>Name</h2>bignum -- Big numbers helper functions.</div>
+<div class="REFSECT1">
+<a name="XMLSEC-NSS-BIGNUM.FUNCTIONS"></a><h2>Functions</h2>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN39487"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<tbody>
+<tr>
+<td>
+<font><span class="RETURNVALUE">SECItem</span></font> *</td>
+<td>
+<a href="xmlsec-nss-bignum.html#XMLSECNSSNODEGETBIGNUMVALUE">xmlSecNssNodeGetBigNumValue</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-nss-bignum.html#XMLSECNSSNODESETBIGNUMVALUE">xmlSecNssNodeSetBigNumValue</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
 </div>
 <div class="REFSECT1">
 <a name="XMLSEC-NSS-BIGNUM.DESCRIPTION"></a><h2>Description</h2>
 <p>Big numbers helper functions.</p>
 </div>
 <div class="REFSECT1">
-<a name="XMLSEC-NSS-BIGNUM.DETAILS"></a><h2>Details</h2>
+<a name="XMLSEC-NSS-BIGNUM.FUNCTIONS_DETAILS"></a><h2>Functions</h2>
 <div class="REFSECT2">
 <a name="XMLSECNSSNODEGETBIGNUMVALUE"></a><h3>xmlSecNssNodeGetBigNumValue ()</h3>
-<pre class="PROGRAMLISTING"><font>SECItem</font>*            xmlSecNssNodeGetBigNumValue         (<font>PRArenaPool</font> *arena,
-                                                         const <font>xmlNodePtr</font> cur,
-                                                         <font>SECItem</font> *a);</pre>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">SECItem</span></font> *
+xmlSecNssNodeGetBigNumValue (<code class="PARAMETER"><font><span class="TYPE">PRArenaPool</span></font> *arena</code>,
+                             <code class="PARAMETER">const <font><span class="TYPE">xmlNodePtr</span></font> cur</code>,
+                             <code class="PARAMETER"><font><span class="TYPE">SECItem</span></font> *a</code>);</pre>
 <p>Converts the node content from CryptoBinary format
 (http://www.w3.org/TR/xmldsig-core/<font><span class="TYPE">sec-CryptoBinary</span></font>)
 to a SECItem. If no SECItem object provided then a new
 one is created (caller is responsible for freeing it).</p>
+<div class="REFSECT3">
+<a name="AEN39528"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
 <p></p>
+<a name="AEN39530"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>arena</p></td>
+<td><p>the arena from which to allocate memory</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>cur</p></td>
+<td><p>the poitner to an XML node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>a</p></td>
+<td><p>a SECItem object to hold the BigNum value</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
 <p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN29338"><span style="white-space: nowrap"><code class="PARAMETER">arena</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> the arena from which to allocate memory</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN29343"><span style="white-space: nowrap"><code class="PARAMETER">cur</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> the poitner to an XML node.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN29348"><span style="white-space: nowrap"><code class="PARAMETER">a</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> a SECItem object to hold the BigNum value</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN29353"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> a pointer to SECItem produced from CryptoBinary string
-or NULL if an error occurs.</p></td>
-</tr>
-</tbody></table>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN39551"></a><h4>Returns</h4>
+<p> a pointer to SECItem produced from CryptoBinary string
+or NULL if an error occurs.</p>
+</div>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECNSSNODESETBIGNUMVALUE"></a><h3>xmlSecNssNodeSetBigNumValue ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecNssNodeSetBigNumValue         (<font>xmlNodePtr</font> cur,
-                                                         const <font>SECItem</font> *a,
-                                                         <font>int</font> addLineBreaks);</pre>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecNssNodeSetBigNumValue (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> cur</code>,
+                             <code class="PARAMETER">const <font><span class="TYPE">SECItem</span></font> *a</code>,
+                             <code class="PARAMETER"><font><span class="TYPE">int</span></font> addLineBreaks</code>);</pre>
 <p>Converts SECItem to CryptoBinary string
 (http://www.w3.org/TR/xmldsig-core/<font><span class="TYPE">sec-CryptoBinary</span></font>)
 and sets it as the content of the given node. If the
 addLineBreaks is set then line breaks are added
 before and after the CryptoBinary string.</p>
+<div class="REFSECT3">
+<a name="AEN39573"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
 <p></p>
+<a name="AEN39575"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>cur</p></td>
+<td><p>the pointer to an XML node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>a</p></td>
+<td><p>a SECItem containing the BigNum value.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>addLineBreaks</p></td>
+<td><p>if the flag is equal to 1 then
+linebreaks will be added before and after
+new buffer content.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
 <p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN29372"><span style="white-space: nowrap"><code class="PARAMETER">cur</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> the pointer to an XML node.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN29377"><span style="white-space: nowrap"><code class="PARAMETER">a</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> a SECItem containing the BigNum value.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN29382"><span style="white-space: nowrap"><code class="PARAMETER">addLineBreaks</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> if the flag is equal to 1 then
-             linebreaks will be added before and after
-             new buffer content.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN29387"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 0 on success or -1 otherwise.</p></td>
-</tr>
-</tbody></table>
 </div>
+</div>
+<div class="REFSECT3">
+<a name="AEN39596"></a><h4>Returns</h4>
+<p> 0 on success or -1 otherwise.</p>
+</div>
+</div>
+</div>
+<div class="REFSECT1">
+<a name="XMLSEC-NSS-BIGNUM.OTHER_DETAILS"></a><h2>Types and Values</h2>
+<p></p>
 </div>
 <table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
 <td align="left"><a accesskey="p" href="xmlsec-nss-app.html"><b>&lt;&lt;&lt; app</b></a></td>

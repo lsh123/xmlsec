@@ -303,6 +303,15 @@ execDSigTest $res_success \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
+    "aleksey-xmldsig-01" \
+    "enveloping-sha256-rsa-sha256-relationship" \
+    "sha256 rsa-sha256 relationship" \
+    "rsa x509" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "$priv_key_option $topfolder/keys/rsakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloping-sha384-rsa-sha384" \
     "sha384 rsa-sha384" \
@@ -833,6 +842,7 @@ execDSigTest $res_success \
 # test dynamic signature
 #
 ##########################################################################
+if [ -n "$XMLSEC_TEST_NAME" -a "$XMLSEC_TEST_NAME" = "dsig-dynamic" ]; then
 echo "Dynamic signature template"
 printf "    Create new signature                                 "
 echo "$VALGRIND $xmlsec_app sign-tmpl $xmlsec_params --keys-file $keysfile --output $tmpfile" >> $logfile
@@ -842,6 +852,7 @@ printf "    Verify new signature                                 "
 echo "$VALGRIND $xmlsec_app verify --keys-file $keysfile $tmpfile" >> $logfile
 $VALGRIND $xmlsec_app verify $xmlsec_params --keys-file $keysfile $tmpfile >> $logfile 2>> $logfile
 printRes $res_success $?
+fi
 
 
 ##########################################################################

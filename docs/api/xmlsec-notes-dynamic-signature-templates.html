@@ -7,7 +7,6 @@
 <link rel="UP" title="Creating dynamic templates." href="xmlsec-notes-templates.html">
 <link rel="PREVIOUS" title="Creating dynamic templates." href="xmlsec-notes-templates.html">
 <link rel="NEXT" title="Creating dynamic encryption templates." href="xmlsec-notes-dynamic-encryption-templates.html">
-<meta name="GENERATOR" content="GTK-Doc V1.11 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -37,6 +36,29 @@
 .navigation .title {
     font-size: 200%;
 }</style>
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
 </head>
 <body><table width="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -79,11 +101,11 @@
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
 <table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-notes-templates.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-notes-templates.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<td><a accesskey="p" href="xmlsec-notes-templates.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="xmlsec-notes-templates.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <th width="100%" align="center">XML Security Library Reference Manual</th>
-<td><a accesskey="n" href="xmlsec-notes-dynamic-encryption-templates.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="xmlsec-notes-dynamic-encryption-templates.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <br clear="all"><div class="SECT1">
 <h1 class="SECT1"><a name="XMLSEC-NOTES-DYNAMIC-SIGNATURE-TEMPLATES">Creating dynamic signature templates.</a></h1>
@@ -91,19 +113,19 @@
 	to the XML Digital Signature structure as it is described in 
 	<a href="http://www.w3.org/TR/xmldsig-core" target="_top">specification</a>.
 	The only difference is that some nodes (for example,
-	&lt;dsig:DigestValue/&gt; or &lt;SignatureValue/&gt;)
+	<a href="http://www.w3.org/TR/xmldsig-core/#sec-DigestValue" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-DigestValue" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-DigestValue" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-DigestValue" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-DigestValue" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-DigestValue" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-DigestValue" target="_top">&lt;dsig:DigestValue/&gt;</a> or &lt;SignatureValue/&gt;)
 	are empty. The XML Security Library sets the content of these
 	nodes after doing necessary calculations.
 	</p>
 <div class="FIGURE">
-<a name="AEN243"></a><p><b>Figure 1. XML Digital Signature structure</b></p>
+<a name="AEN264"></a><p><b>Figure 1. XML Digital Signature structure</b></p>
 <pre class="PROGRAMLISTING">&lt;dsig:Signature ID?&gt; 
     &lt;dsig:SignedInfo&gt;
-        &lt;dsig:CanonicalizationMethod Algorithm /&gt;
-        &lt;dsig:SignatureMethod Algorithm /&gt;
+        <a href="http://www.w3.org/TR/xmldsig-core/#sec-CanonicalizationMethod%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-CanonicalizationMethod%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-CanonicalizationMethod%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-CanonicalizationMethod%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-CanonicalizationMethod%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-CanonicalizationMethod%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-CanonicalizationMethod%20Algorithm%20" target="_top">&lt;dsig:CanonicalizationMethod Algorithm /&gt;</a>
+        <a href="http://www.w3.org/TR/xmldsig-core/#sec-SignatureMethod%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-SignatureMethod%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-SignatureMethod%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-SignatureMethod%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-SignatureMethod%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-SignatureMethod%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-SignatureMethod%20Algorithm%20" target="_top">&lt;dsig:SignatureMethod Algorithm /&gt;</a>
         (&lt;dsig:Reference URI? &gt;
     	    (&lt;dsig:Transforms&gt;
-		(&lt;dsig:Transform Algorithm /&gt;)+
+		(<a href="http://www.w3.org/TR/xmldsig-core/#sec-Transform%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-Transform%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-Transform%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-Transform%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-Transform%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-Transform%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-Transform%20Algorithm%20" target="_top">&lt;dsig:Transform Algorithm /&gt;</a>)+
 	     &lt;/dsig:Transforms&gt;)?
 	    &lt;dsig:DigestMethod Algorithm &gt;
 	    &lt;dsig:DigestValue&gt;
@@ -128,7 +150,7 @@
 </div>
 <p>	     </p>
 <div class="EXAMPLE">
-<a name="AEN247"></a><p><b>Example 1. Creating dynamic signature template.</b></p>
+<a name="AEN289"></a><p><b>Example 1. Creating dynamic signature template.</b></p>
 <pre class="PROGRAMLISTING">/** 
  * sign_file:
  * @xml_file:		the XML file name.
@@ -166,7 +188,7 @@ sign_file(const char* xml_file, const char* key_file) {
 	goto done;		
     }
 
-    /* add &lt;dsig:Signature/&gt; node to the doc */
+    /* add &lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"&gt;&amp;lt;dsig:Signature/&amp;gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt; node to the doc */
     xmlAddChild(xmlDocGetRootElement(doc), signNode);
     
     /* add reference */
@@ -183,7 +205,7 @@ sign_file(const char* xml_file, const char* key_file) {
 	goto done;		
     }
 
-    /* add &lt;dsig:KeyInfo/&gt; and &lt;dsig:KeyName/&gt; nodes to put key name in the signed document */
+    /* add &lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&amp;lt;dsig:KeyInfo/&amp;gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt; and &lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&amp;lt;dsig:KeyName/&amp;gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt; nodes to put key name in the signed document */
     keyInfoNode = xmlSecTmplSignatureEnsureKeyInfo(signNode, NULL);
     if(keyInfoNode == NULL) {
 	fprintf(stderr, "Error: failed to add key info\n");

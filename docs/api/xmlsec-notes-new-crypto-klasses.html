@@ -7,7 +7,6 @@
 <link rel="UP" title="Adding support for new cryptographic library." href="xmlsec-notes-new-crypto.html">
 <link rel="PREVIOUS" title="xmlSecCryptoApp* functions." href="xmlsec-notes-new-crypto-functions.html">
 <link rel="NEXT" title="Cryptographic transforms." href="xmlsec-notes-new-crypto-transforms.html">
-<meta name="GENERATOR" content="GTK-Doc V1.11 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -37,6 +36,29 @@
 .navigation .title {
     font-size: 200%;
 }</style>
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
 </head>
 <body><table width="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -79,11 +101,11 @@
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
 <table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-notes-new-crypto-functions.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-notes-new-crypto.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<td><a accesskey="p" href="xmlsec-notes-new-crypto-functions.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="xmlsec-notes-new-crypto.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <th width="100%" align="center">XML Security Library Reference Manual</th>
-<td><a accesskey="n" href="xmlsec-notes-new-crypto-transforms.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="xmlsec-notes-new-crypto-transforms.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <br clear="all"><div class="SECT1">
 <h1 class="SECT1"><a name="XMLSEC-NOTES-NEW-CRYPTO-KLASSES">Klasses and objects.</a></h1>
@@ -107,7 +129,7 @@
 	the "klass").
 	</p>
 <div class="EXAMPLE">
-<a name="AEN562"></a><p><b>Example 6. Base transform "klass" and its child XPath transform "klass" structure.</b></p>
+<a name="AEN716"></a><p><b>Example 6. Base transform "klass" and its child XPath transform "klass" structure.</b></p>
 <pre class="PROGRAMLISTING">struct _xmlSecTransformKlass {
     /* data */
     size_t				klassSize;
@@ -153,7 +175,7 @@ static xmlSecTransformKlass xmlSecTransformXPathKlass = {
 	to the "klass" declaration and to pass "klass" strucutre to functions.
 	</p>
 <div class="EXAMPLE">
-<a name="AEN567"></a><p><b>Example 7. Base transform "klass" id declaration and its child XPath transform "klass" id implementation.</b></p>
+<a name="AEN721"></a><p><b>Example 7. Base transform "klass" id declaration and its child XPath transform "klass" id implementation.</b></p>
 <pre class="PROGRAMLISTING">typedef const struct _xmlSecTransformKlass		xmlSecTransformKlass, *xmlSecTransformId;
 
 ...
@@ -175,7 +197,7 @@ xmlSecTransformXPathGetKlass(void) {
 	object data.
 	</p>
 <div class="EXAMPLE">
-<a name="AEN572"></a><p><b>Example 8. Base transform object strucutre and its child XPath transform object.</b></p>
+<a name="AEN726"></a><p><b>Example 8. Base transform object strucutre and its child XPath transform object.</b></p>
 <pre class="PROGRAMLISTING">struct _xmlSecTransform {
     xmlSecTransformId 			id; 
     xmlSecTransformOperation		operation;
@@ -208,7 +230,7 @@ xmlSecTransformXPathGetKlass(void) {
 </div>
 	</li>
 </ul>
-</div>
+	</div>
 <table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
 <td align="left"><a accesskey="p" href="xmlsec-notes-new-crypto-functions.html"><b>&lt;&lt;&lt; xmlSecCryptoApp* functions.</b></a></td>
 <td align="right"><a accesskey="n" href="xmlsec-notes-new-crypto-transforms.html"><b>Cryptographic transforms. &gt;&gt;&gt;</b></a></td>

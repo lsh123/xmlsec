@@ -3,7 +3,7 @@ REM
 REM This is my personal configuration file. 
 REM I am lazy to type all this crap again and again
 REM You are welcome to customize this file for your
-REM needs but do not check it into the CVS, please.
+REM needs but do not check it into the GitHub, please.
 REM
 REM Aleksey Sanin <aleksey@aleksey.com>
 REM 

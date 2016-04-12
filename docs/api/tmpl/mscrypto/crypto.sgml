@@ -17,11 +17,15 @@ Crypto transforms implementation for MS Crypto.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### FUNCTION xmlSecCryptoGetFunctions_mscrypto ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -30,6 +34,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -38,6 +43,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -149,6 +155,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -164,6 +171,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -179,6 +187,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -194,6 +203,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -209,6 +219,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -224,6 +235,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -239,6 +251,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -254,6 +267,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -269,6 +283,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -284,6 +299,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -299,6 +315,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -314,6 +331,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -329,6 +347,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -344,6 +363,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -359,6 +379,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -374,6 +395,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -389,6 +411,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -404,6 +427,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -419,6 +443,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -445,6 +470,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -460,6 +486,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -475,6 +502,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -490,6 +518,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -505,6 +534,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -520,6 +550,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -535,6 +566,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -550,6 +582,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -565,6 +598,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -573,6 +607,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -596,6 +631,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -622,6 +658,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -637,6 +674,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -652,6 +690,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -667,6 +706,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -682,6 +722,7 @@ Crypto transforms implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 

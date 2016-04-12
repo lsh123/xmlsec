@@ -115,7 +115,7 @@ sgml: sgml-base
 	          sed 's!<para \/>!<para></para>!g' | \
 	          sed 's!linkend=\"\(.*\)Ptr\"!linkend=\"\1\"!g' | \
 	          sed 's!<colspec [^/]*\/>!!g' | \
-	          sed 's!<programlisting language="C"!<programlisting!g' | \ 
+	          sed 's!<programlisting language="C"!<programlisting!g' | \
 	          $(PERL) -pe 's!title>\n!title>!g' | \
 	          $(PERL) -pe 's!title>\n!title>!g' | \
 	          $(PERL) -pe 's!<\/title><\/refsect1>\n!<\/title><para><\/para><\/refsect1>!g' | \
@@ -226,8 +226,8 @@ SOURCE_CODEs: $(SOURCE_CODE_FILES) $(SOURCE_CODE_DIR)/.sentinel SOURCE_CODEs_cle
 	@( \
 	for i in $(SOURCE_CODE_FILES) ; do \
 		folder_name=`echo "$$i" | \
-			sed 's#$(top_srcdir)/##' | \ 
-			sed 's#$(top_builddir)/##' | \ 
+			sed 's#$(top_srcdir)/##' | \
+			sed 's#$(top_builddir)/##' | \
 			sed 's#/[^/]*$$##'`; \
 	    file_name=`echo "$$i" | \
 	    	sed 's#.*/##'`; \

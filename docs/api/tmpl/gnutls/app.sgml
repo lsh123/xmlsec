@@ -17,6 +17,9 @@ Application functions implementation for GnuTLS.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### FUNCTION xmlSecGnuTLSAppInit ##### -->
 <para>
 
@@ -31,6 +34,7 @@ Application functions implementation for GnuTLS.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -179,6 +183,7 @@ Application functions implementation for GnuTLS.
 
 </para>
 
+@void: 
 @Returns: 
 
 

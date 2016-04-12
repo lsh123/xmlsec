@@ -17,6 +17,9 @@ X509 certificates support implementation for GnuTLS.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### MACRO xmlSecGnuTLSKeyDataX509Id ##### -->
 <para>
 
@@ -29,6 +32,7 @@ X509 certificates support implementation for GnuTLS.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -130,6 +134,7 @@ X509 certificates support implementation for GnuTLS.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -145,6 +150,7 @@ X509 certificates support implementation for GnuTLS.
 
 </para>
 
+@void: 
 @Returns: 
 
 

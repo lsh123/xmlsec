@@ -17,11 +17,15 @@ Crypto transforms implementation for OpenSSL.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### FUNCTION xmlSecCryptoGetFunctions_openssl ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -30,6 +34,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -38,6 +43,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -74,6 +80,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -89,6 +96,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -115,6 +123,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -130,6 +139,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -145,6 +155,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -160,6 +171,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -175,6 +187,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -190,6 +203,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -205,6 +219,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -231,6 +246,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -246,6 +262,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -261,6 +278,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -314,6 +332,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -329,6 +348,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -344,6 +364,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -397,6 +418,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -412,6 +434,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -427,6 +450,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -442,6 +466,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -457,6 +482,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -472,6 +498,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -487,6 +514,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -502,6 +530,103 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecOpenSSLKeyDataGostR3410_2012_256Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLKeyDataGostR3410_2012_256GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecOpenSSLKeyDataGostR3410_2012_512Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLKeyDataGostR3410_2012_512GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_256Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_256GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_512Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_512GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecOpenSSLTransformGostR3411_2012_256Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLTransformGostR3411_2012_256GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecOpenSSLTransformGostR3411_2012_512Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLTransformGostR3411_2012_512GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
 @Returns: 
 
 
@@ -510,6 +635,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -533,6 +659,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -559,6 +686,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -574,6 +702,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -589,6 +718,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -604,6 +734,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -619,6 +750,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -634,6 +766,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -649,6 +782,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -664,6 +798,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -679,6 +814,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -694,6 +830,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -747,6 +884,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -762,6 +900,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -777,6 +916,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -792,6 +932,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -807,6 +948,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -822,6 +964,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -837,6 +980,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -852,6 +996,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -867,6 +1012,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -882,6 +1028,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -897,6 +1044,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -912,6 +1060,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -927,6 +1076,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -942,6 +1092,7 @@ Crypto transforms implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 

@@ -7,7 +7,6 @@
 <link rel="UP" title="Examples." href="xmlsec-examples.html">
 <link rel="PREVIOUS" title="Encrypting data with a dynamicaly created template." href="xmlsec-encrypt-dynamic-template.html">
 <link rel="NEXT" title="Decrypting data with a single key." href="xmlsec-decrypt-with-signle-key.html">
-<meta name="GENERATOR" content="GTK-Doc V1.11 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -37,6 +36,29 @@
 .navigation .title {
     font-size: 200%;
 }</style>
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
 </head>
 <body><table width="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -79,11 +101,11 @@
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
 <table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-encrypt-dynamic-template.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-examples.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<td><a accesskey="p" href="xmlsec-encrypt-dynamic-template.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="xmlsec-examples.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <th width="100%" align="center">XML Security Library Reference Manual</th>
-<td><a accesskey="n" href="xmlsec-decrypt-with-signle-key.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="xmlsec-decrypt-with-signle-key.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <br clear="all"><div class="SECT1">
 <h1 class="SECT1"><a name="XMLSEC-ENCRYPT-WITH-SESSION-KEY">Encrypting data with a session key.</a></h1>
@@ -92,7 +114,7 @@
 <p></p>
 <div class="INFORMALEXAMPLE">
 <p></p>
-<a name="AEN783"></a><pre class="PROGRAMLISTING">/** 
+<a name="AEN948"></a><pre class="PROGRAMLISTING">/** 
  * XML Security Library example: Encrypting XML file with a session key and dynamicaly created template.
  * 
  * Encrypts XML file using a dynamicaly created template file and a session 
@@ -110,7 +132,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  * 
- * Copyright (C) 2002-2003 Aleksey Sanin &lt;aleksey@aleksey.com&gt;
+ * Copyright (C) 2002-2016 Aleksey Sanin &lt;aleksey@aleksey.com&gt;
  */
 #include &lt;stdlib.h&gt;
 #include &lt;string.h&gt;
@@ -345,20 +367,20 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
         goto done;   
     }
 
-    /* we want to put encrypted data in the &lt;enc:CipherValue/&gt; node */
+    /* we want to put encrypted data in the <a href="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue" target="_top">&lt;enc:CipherValue/&gt;</a> node */
     if(xmlSecTmplEncDataEnsureCipherValue(encDataNode) == NULL) {
         fprintf(stderr, "Error: failed to add CipherValue node\n");
         goto done;   
     }
 
-    /* add &lt;dsig:KeyInfo/&gt; */
+    /* add <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> */
     keyInfoNode = xmlSecTmplEncDataEnsureKeyInfo(encDataNode, NULL);
     if(keyInfoNode == NULL) {
         fprintf(stderr, "Error: failed to add key info\n");
         goto done;              
     }
 
-    /* add &lt;enc:EncryptedKey/&gt; to store the encrypted session key */
+    /* add <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> to store the encrypted session key */
     encKeyNode = xmlSecTmplKeyInfoAddEncryptedKey(keyInfoNode, 
                                     xmlSecTransformRsaPkcs1Id, 
                                     NULL, NULL, NULL);
@@ -367,13 +389,13 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
         goto done;              
     }
 
-    /* we want to put encrypted key in the &lt;enc:CipherValue/&gt; node */
+    /* we want to put encrypted key in the <a href="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue" target="_top">&lt;enc:CipherValue/&gt;</a> node */
     if(xmlSecTmplEncDataEnsureCipherValue(encKeyNode) == NULL) {
         fprintf(stderr, "Error: failed to add CipherValue node\n");
         goto done;   
     }
 
-    /* add &lt;dsig:KeyInfo/&gt; and &lt;dsig:KeyName/&gt; nodes to &lt;enc:EncryptedKey/&gt; */
+    /* add <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> and <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top">&lt;dsig:KeyName/&gt;</a> nodes to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> */
     keyInfoNode2 = xmlSecTmplEncDataEnsureKeyInfo(encKeyNode, NULL);
     if(keyInfoNode2 == NULL) {
         fprintf(stderr, "Error: failed to add key info\n");
@@ -439,7 +461,7 @@ done:
 <p></p>
 <div class="INFORMALEXAMPLE">
 <p></p>
-<a name="AEN788"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<a name="AEN960"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: Original XML doc file before encryption (encrypt3 example). 
 --&gt;
@@ -456,31 +478,27 @@ XML Security Library example: Original XML doc file before encryption (encrypt3 
 <p></p>
 <div class="INFORMALEXAMPLE">
 <p></p>
-<a name="AEN793"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<a name="AEN965"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
-XML Security Library example: XML doc file encrypted with a session DES key (encrypt3 example). 
+XML Security Library example: Original XML doc file before encryption (encrypt3 example). 
 --&gt;
 &lt;EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#" Type="http://www.w3.org/2001/04/xmlenc#Element"&gt;
 &lt;EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#tripledes-cbc"/&gt;
 &lt;KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;
 &lt;EncryptedKey xmlns="http://www.w3.org/2001/04/xmlenc#"&gt;
-&lt;EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p"/&gt;
+&lt;EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-1_5"/&gt;
 &lt;KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;
 &lt;KeyName&gt;rsakey.pem&lt;/KeyName&gt;
 &lt;/KeyInfo&gt;
 &lt;CipherData&gt;
-&lt;CipherValue&gt;IPiEu9Nv+EsGyvVeXO9nl5iZhhi+uzQH1I3/DTs3+eamBvioyaawRIlvTql7LYL5
-Mi91Qs8ozfW/fWZ8zB8AE2PosaX37SqiuEta68+65/Ed4v1rkGN0Awux8+gJqJmp
-c2kJhzAoQIAIGAW4nTGP9tl9QUHfwKh2KPA104vezk70ijvF7TrbTmhdfmULAuWK
-Tbsg8sXAPhGmPh5KckM2Xe387iPh4ue2+2TGdWqwXygVdvIUIbcIMq6F+/mWlcmf
-Gs5FVI7CTjaLmeyO4ho+FGmicmqH2hEkZW0a2ktDh4BU/MxYF6L7oayrVWDGp2IH
-dzQAwUT2qJcFjElO8xUz3g==&lt;/CipherValue&gt;
+&lt;CipherValue&gt;QYYKljhcX20QyP20hYmq8CSES875oIdbrsjMOxnb0VnYDn01Jk00OIPpb9gdIdZg
+MLOtSy26mWrQ+XqfPGuyaA==&lt;/CipherValue&gt;
 &lt;/CipherData&gt;
 &lt;/EncryptedKey&gt;
 &lt;/KeyInfo&gt;
 &lt;CipherData&gt;
-&lt;CipherValue&gt;xrfPSA+BEI+8ca23RN34gtee5lOMx8Cn+ZGWyxitiktdZ1+XREH+57li63VutCwp
-s6ifbZgXIBsFdxPpMBUFlyTWAAO+NLooIwGoczXi14z62lHr7Ck6FA==&lt;/CipherValue&gt;
+&lt;CipherValue&gt;+UiDv73SE8K8KwXuOmHLHK7N2hNWDakTAEu6NprbCdULC1w/LXT9FLtNRJetmwwO
+XpBqTY56AAMeMgpxPWN3SPO0ETeQw7pR+bp0IjUvcGlFSXz6yE1qgQ==&lt;/CipherValue&gt;
 &lt;/CipherData&gt;
 &lt;/EncryptedData&gt;</pre>
 <p></p>

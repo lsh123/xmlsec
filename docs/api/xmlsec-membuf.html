@@ -7,7 +7,6 @@
 <link rel="UP" title="XML Security Core Library API Reference." href="xmlsec-ref.html">
 <link rel="PREVIOUS" title="list" href="xmlsec-list.html">
 <link rel="NEXT" title="nodeset" href="xmlsec-nodeset.html">
-<meta name="GENERATOR" content="GTK-Doc V1.11 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -37,6 +36,29 @@
 .navigation .title {
     font-size: 200%;
 }</style>
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
 </head>
 <body><table width="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -79,63 +101,107 @@
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
 <table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-list.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-ref.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<td><a accesskey="p" href="xmlsec-list.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="xmlsec-ref.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <th width="100%" align="center">XML Security Library Reference Manual</th>
-<td><a accesskey="n" href="xmlsec-nodeset.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="xmlsec-nodeset.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <h1>
 <a name="XMLSEC-MEMBUF"></a>membuf</h1>
 <div class="REFNAMEDIV">
-<a name="AEN11674"></a><h2>Name</h2>membuf -- Memory buffer transform implementation.</div>
-<div class="REFSYNOPSISDIV">
-<a name="XMLSEC-MEMBUF.SYNOPSIS"></a><h2>Synopsis</h2>
-<pre class="SYNOPSIS">#define             <a href="xmlsec-membuf.html#XMLSECTRANSFORMMEMBUFID">xmlSecTransformMemBufId</a>
-<font>xmlSecTransformId</font>   <a href="xmlsec-membuf.html#XMLSECTRANSFORMMEMBUFGETKLASS">xmlSecTransformMemBufGetKlass</a>       (void);
-<font>xmlSecBufferPtr</font>     <a href="xmlsec-membuf.html#XMLSECTRANSFORMMEMBUFGETBUFFER">xmlSecTransformMemBufGetBuffer</a>      (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform);</pre>
+<a name="AEN15986"></a><h2>Name</h2>membuf -- Memory buffer transform implementation.</div>
+<div class="REFSECT1">
+<a name="XMLSEC-MEMBUF.FUNCTIONS"></a><h2>Functions</h2>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN15991"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<tbody>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
+<td>
+<a href="xmlsec-membuf.html#XMLSECTRANSFORMMEMBUFGETKLASS">xmlSecTransformMemBufGetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><a href="xmlsec-buffer.html#XMLSECBUFFER"><span class="RETURNVALUE">xmlSecBufferPtr</span></a></td>
+<td>
+<a href="xmlsec-membuf.html#XMLSECTRANSFORMMEMBUFGETBUFFER">xmlSecTransformMemBufGetBuffer</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT1">
+<a name="XMLSEC-MEMBUF.OTHER"></a><h2>Types and Values</h2>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN16010"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<tbody><tr>
+<td>#define</td>
+<td><a href="xmlsec-membuf.html#XMLSECTRANSFORMMEMBUFID">xmlSecTransformMemBufId</a></td>
+</tr></tbody>
+</table>
+<p></p>
+</div>
 </div>
 <div class="REFSECT1">
 <a name="XMLSEC-MEMBUF.DESCRIPTION"></a><h2>Description</h2>
 <p>Memory buffer transform implementation.</p>
 </div>
 <div class="REFSECT1">
-<a name="XMLSEC-MEMBUF.DETAILS"></a><h2>Details</h2>
-<div class="REFSECT2">
-<a name="XMLSECTRANSFORMMEMBUFID"></a><h3>xmlSecTransformMemBufId</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecTransformMemBufId</pre>
-<p>The Memory Buffer transform klass.</p>
-<p></p>
-</div>
-<hr>
+<a name="XMLSEC-MEMBUF.FUNCTIONS_DETAILS"></a><h2>Functions</h2>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMMEMBUFGETKLASS"></a><h3>xmlSecTransformMemBufGetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecTransformMemBufGetKlass       (void);</pre>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
+xmlSecTransformMemBufGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The memory buffer transorm (used to store the data that go through it).</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN11707"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> memory buffer transform klass.</p></td>
-</tr></tbody></table>
+<div class="REFSECT3">
+<a name="AEN16032"></a><h4>Returns</h4>
+<p> memory buffer transform klass.</p>
+</div>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMMEMBUFGETBUFFER"></a><h3>xmlSecTransformMemBufGetBuffer ()</h3>
-<pre class="PROGRAMLISTING"><font>xmlSecBufferPtr</font>     xmlSecTransformMemBufGetBuffer      (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform);</pre>
+<pre class="PROGRAMLISTING"><a href="xmlsec-buffer.html#XMLSECBUFFER"><span class="RETURNVALUE">xmlSecBufferPtr</span></a>
+xmlSecTransformMemBufGetBuffer (<code class="PARAMETER"><a href="xmlsec-transforms.html#XMLSECTRANSFORM"><span class="TYPE">xmlSecTransformPtr</span></a> transform</code>);</pre>
 <p>Gets the pointer to memory buffer transform buffer.</p>
+<div class="REFSECT3">
+<a name="AEN16046"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
 <p></p>
+<a name="AEN16048"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody><tr>
+<td><p>transform</p></td>
+<td><p>the pointer to memory buffer transform.</p></td>
+<td> </td>
+</tr></tbody>
+</table>
 <p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN11722"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>          the pointer to memory buffer transform.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN11727"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> pointer to the transform's <a href="xmlsec-buffer.html#XMLSECBUFFER"><span class="TYPE">xmlSecBuffer</span></a>.</p></td>
-</tr>
-</tbody></table>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN16057"></a><h4>Returns</h4>
+<p> pointer to the transform's <a href="xmlsec-buffer.html#XMLSECBUFFER"><span class="TYPE">xmlSecBuffer</span></a>.</p>
+</div>
+</div>
+</div>
+<div class="REFSECT1">
+<a name="XMLSEC-MEMBUF.OTHER_DETAILS"></a><h2>Types and Values</h2>
+<div class="REFSECT2">
+<a name="XMLSECTRANSFORMMEMBUFID"></a><h3>xmlSecTransformMemBufId</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecTransformMemBufId</pre>
+<p>The Memory Buffer transform klass.</p>
 </div>
 </div>
 <table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">

@@ -17,6 +17,9 @@ X509 certificates support implementation for OpenSSL.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### MACRO XMLSEC_STACK_OF_X509 ##### -->
 <para>
 
@@ -43,6 +46,7 @@ X509 certificates support implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -144,6 +148,7 @@ X509 certificates support implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -159,6 +164,7 @@ X509 certificates support implementation for OpenSSL.
 
 </para>
 
+@void: 
 @Returns: 
 
 

@@ -7,7 +7,6 @@
 <link rel="UP" title="XML Security Library for NSS API Reference." href="xmlsec-nss-ref.html">
 <link rel="PREVIOUS" title="pkikeys" href="xmlsec-nss-pkikeys.html">
 <link rel="NEXT" title="XML Security Library for MSCrypto API Reference." href="xmlsec-mscrypto-ref.html">
-<meta name="GENERATOR" content="GTK-Doc V1.11 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -37,6 +36,29 @@
 .navigation .title {
     font-size: 200%;
 }</style>
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
 </head>
 <body><table width="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -79,402 +101,659 @@
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
 <table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-nss-pkikeys.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-nss-ref.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<td><a accesskey="p" href="xmlsec-nss-pkikeys.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="xmlsec-nss-ref.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <th width="100%" align="center">XML Security Library Reference Manual</th>
-<td><a accesskey="n" href="xmlsec-mscrypto-ref.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="xmlsec-mscrypto-ref.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <h1>
 <a name="XMLSEC-NSS-X509"></a>x509</h1>
 <div class="REFNAMEDIV">
-<a name="AEN30797"></a><h2>Name</h2>x509 -- X509 certificates support implementation for NSS.</div>
-<div class="REFSYNOPSISDIV">
-<a name="XMLSEC-NSS-X509.SYNOPSIS"></a><h2>Synopsis</h2>
-<pre class="SYNOPSIS">#define             <a href="xmlsec-nss-x509.html#XMLSECNSSKEYDATAX509ID">xmlSecNssKeyDataX509Id</a>
-<font>xmlSecKeyDataId</font>     <a href="xmlsec-nss-x509.html#XMLSECNSSKEYDATAX509GETKLASS">xmlSecNssKeyDataX509GetKlass</a>        (void);
-<font>CERTCertificate</font>*    <a href="xmlsec-nss-x509.html#XMLSECNSSKEYDATAX509GETKEYCERT">xmlSecNssKeyDataX509GetKeyCert</a>      (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);
-<font>int</font>                 <a href="xmlsec-nss-x509.html#XMLSECNSSKEYDATAX509ADOPTKEYCERT">xmlSecNssKeyDataX509AdoptKeyCert</a>    (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
-                                                         <font>CERTCertificate</font> *cert);
-<font>int</font>                 <a href="xmlsec-nss-x509.html#XMLSECNSSKEYDATAX509ADOPTCERT">xmlSecNssKeyDataX509AdoptCert</a>       (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
-                                                         <font>CERTCertificate</font> *cert);
-<font>CERTCertificate</font>*    <a href="xmlsec-nss-x509.html#XMLSECNSSKEYDATAX509GETCERT">xmlSecNssKeyDataX509GetCert</a>         (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
-                                                         <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> pos);
-<a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a>          <a href="xmlsec-nss-x509.html#XMLSECNSSKEYDATAX509GETCERTSSIZE">xmlSecNssKeyDataX509GetCertsSize</a>    (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);
-<font>int</font>                 <a href="xmlsec-nss-x509.html#XMLSECNSSKEYDATAX509ADOPTCRL">xmlSecNssKeyDataX509AdoptCrl</a>        (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
-                                                         <font>CERTSignedCrl</font> *crl);
-<font>CERTSignedCrl</font>*      <a href="xmlsec-nss-x509.html#XMLSECNSSKEYDATAX509GETCRL">xmlSecNssKeyDataX509GetCrl</a>          (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
-                                                         <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> pos);
-<a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a>          <a href="xmlsec-nss-x509.html#XMLSECNSSKEYDATAX509GETCRLSSIZE">xmlSecNssKeyDataX509GetCrlsSize</a>     (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);
-<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a>    <a href="xmlsec-nss-x509.html#XMLSECNSSX509CERTGETKEY">xmlSecNssX509CertGetKey</a>             (<font>CERTCertificate</font> *cert);
-#define             <a href="xmlsec-nss-x509.html#XMLSECNSSKEYDATARAWX509CERTID">xmlSecNssKeyDataRawX509CertId</a>
-<font>xmlSecKeyDataId</font>     <a href="xmlsec-nss-x509.html#XMLSECNSSKEYDATARAWX509CERTGETKLASS">xmlSecNssKeyDataRawX509CertGetKlass</a> (void);
-#define             <a href="xmlsec-nss-x509.html#XMLSECNSSX509STOREID">xmlSecNssX509StoreId</a>
-<font>xmlSecKeyDataStoreId</font>  <a href="xmlsec-nss-x509.html#XMLSECNSSX509STOREGETKLASS">xmlSecNssX509StoreGetKlass</a>        (void);
-<font>CERTCertificate</font>*    <a href="xmlsec-nss-x509.html#XMLSECNSSX509STOREFINDCERT">xmlSecNssX509StoreFindCert</a>          (<a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> store,
-                                                         <font>xmlChar</font> *subjectName,
-                                                         <font>xmlChar</font> *issuerName,
-                                                         <font>xmlChar</font> *issuerSerial,
-                                                         <font>xmlChar</font> *ski,
-                                                         <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtx</a> *keyInfoCtx);
-<font>CERTCertificate</font>*    <a href="xmlsec-nss-x509.html#XMLSECNSSX509STOREVERIFY">xmlSecNssX509StoreVerify</a>            (<a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> store,
-                                                         <font>CERTCertList</font> *certs,
-                                                         <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtx</a> *keyInfoCtx);
-<font>int</font>                 <a href="xmlsec-nss-x509.html#XMLSECNSSX509STOREADOPTCERT">xmlSecNssX509StoreAdoptCert</a>         (<a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> store,
-                                                         <font>CERTCertificate</font> *cert,
-                                                         <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre>
+<a name="AEN41427"></a><h2>Name</h2>x509 -- X509 certificates support implementation for NSS.</div>
+<div class="REFSECT1">
+<a name="XMLSEC-NSS-X509.FUNCTIONS"></a><h2>Functions</h2>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN41432"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<tbody>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecKeyDataId</span></font></td>
+<td>
+<a href="xmlsec-nss-x509.html#XMLSECNSSKEYDATAX509GETKLASS">xmlSecNssKeyDataX509GetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td>
+<font><span class="RETURNVALUE">CERTCertificate</span></font> *</td>
+<td>
+<a href="xmlsec-nss-x509.html#XMLSECNSSKEYDATAX509GETKEYCERT">xmlSecNssKeyDataX509GetKeyCert</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-nss-x509.html#XMLSECNSSKEYDATAX509ADOPTKEYCERT">xmlSecNssKeyDataX509AdoptKeyCert</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-nss-x509.html#XMLSECNSSKEYDATAX509ADOPTCERT">xmlSecNssKeyDataX509AdoptCert</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td>
+<font><span class="RETURNVALUE">CERTCertificate</span></font> *</td>
+<td>
+<a href="xmlsec-nss-x509.html#XMLSECNSSKEYDATAX509GETCERT">xmlSecNssKeyDataX509GetCert</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="RETURNVALUE">xmlSecSize</span></a></td>
+<td>
+<a href="xmlsec-nss-x509.html#XMLSECNSSKEYDATAX509GETCERTSSIZE">xmlSecNssKeyDataX509GetCertsSize</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-nss-x509.html#XMLSECNSSKEYDATAX509ADOPTCRL">xmlSecNssKeyDataX509AdoptCrl</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td>
+<font><span class="RETURNVALUE">CERTSignedCrl</span></font> *</td>
+<td>
+<a href="xmlsec-nss-x509.html#XMLSECNSSKEYDATAX509GETCRL">xmlSecNssKeyDataX509GetCrl</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="RETURNVALUE">xmlSecSize</span></a></td>
+<td>
+<a href="xmlsec-nss-x509.html#XMLSECNSSKEYDATAX509GETCRLSSIZE">xmlSecNssKeyDataX509GetCrlsSize</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="RETURNVALUE">xmlSecKeyDataPtr</span></a></td>
+<td>
+<a href="xmlsec-nss-x509.html#XMLSECNSSX509CERTGETKEY">xmlSecNssX509CertGetKey</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecKeyDataId</span></font></td>
+<td>
+<a href="xmlsec-nss-x509.html#XMLSECNSSKEYDATARAWX509CERTGETKLASS">xmlSecNssKeyDataRawX509CertGetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecKeyDataStoreId</span></font></td>
+<td>
+<a href="xmlsec-nss-x509.html#XMLSECNSSX509STOREGETKLASS">xmlSecNssX509StoreGetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td>
+<font><span class="RETURNVALUE">CERTCertificate</span></font> *</td>
+<td>
+<a href="xmlsec-nss-x509.html#XMLSECNSSX509STOREFINDCERT">xmlSecNssX509StoreFindCert</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td>
+<font><span class="RETURNVALUE">CERTCertificate</span></font> *</td>
+<td>
+<a href="xmlsec-nss-x509.html#XMLSECNSSX509STOREVERIFY">xmlSecNssX509StoreVerify</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">int</span></font></td>
+<td>
+<a href="xmlsec-nss-x509.html#XMLSECNSSX509STOREADOPTCERT">xmlSecNssX509StoreAdoptCert</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT1">
+<a name="XMLSEC-NSS-X509.OTHER"></a><h2>Types and Values</h2>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN41542"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<tbody>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-nss-x509.html#XMLSECNSSKEYDATAX509ID">xmlSecNssKeyDataX509Id</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-nss-x509.html#XMLSECNSSKEYDATARAWX509CERTID">xmlSecNssKeyDataRawX509CertId</a></td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-nss-x509.html#XMLSECNSSX509STOREID">xmlSecNssX509StoreId</a></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
 </div>
 <div class="REFSECT1">
 <a name="XMLSEC-NSS-X509.DESCRIPTION"></a><h2>Description</h2>
 <p>X509 certificates support implementation for NSS.</p>
 </div>
 <div class="REFSECT1">
-<a name="XMLSEC-NSS-X509.DETAILS"></a><h2>Details</h2>
-<div class="REFSECT2">
-<a name="XMLSECNSSKEYDATAX509ID"></a><h3>xmlSecNssKeyDataX509Id</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecNssKeyDataX509Id</pre>
-<p>The NSS X509 data klass.</p>
-<p></p>
-</div>
-<hr>
+<a name="XMLSEC-NSS-X509.FUNCTIONS_DETAILS"></a><h2>Functions</h2>
 <div class="REFSECT2">
 <a name="XMLSECNSSKEYDATAX509GETKLASS"></a><h3>xmlSecNssKeyDataX509GetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font>     xmlSecNssKeyDataX509GetKlass        (void);</pre>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecKeyDataId</span></font>
+xmlSecNssKeyDataX509GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The NSS X509 key data klass (http://www.w3.org/TR/xmldsig-core/<font><span class="TYPE">sec-X509Data</span></font>).</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN30885"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> the X509 data klass.</p></td>
-</tr></tbody></table>
+<div class="REFSECT3">
+<a name="AEN41574"></a><h4>Returns</h4>
+<p> the X509 data klass.</p>
+</div>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECNSSKEYDATAX509GETKEYCERT"></a><h3>xmlSecNssKeyDataX509GetKeyCert ()</h3>
-<pre class="PROGRAMLISTING"><font>CERTCertificate</font>*    xmlSecNssKeyDataX509GetKeyCert      (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">CERTCertificate</span></font> *
+xmlSecNssKeyDataX509GetKeyCert (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>);</pre>
 <p>Gets the certificate from which the key was extracted.</p>
+<div class="REFSECT3">
+<a name="AEN41588"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
 <p></p>
+<a name="AEN41590"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody><tr>
+<td><p>data</p></td>
+<td><p>the pointer to X509 key data.</p></td>
+<td> </td>
+</tr></tbody>
+</table>
 <p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN30900"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>               the pointer to X509 key data.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN30905"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> the key's certificate or NULL if key data was not used for key
-extraction or an error occurs.</p></td>
-</tr>
-</tbody></table>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN41599"></a><h4>Returns</h4>
+<p> the key's certificate or NULL if key data was not used for key
+extraction or an error occurs.</p>
+</div>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECNSSKEYDATAX509ADOPTKEYCERT"></a><h3>xmlSecNssKeyDataX509AdoptKeyCert ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecNssKeyDataX509AdoptKeyCert    (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
-                                                         <font>CERTCertificate</font> *cert);</pre>
-<p>Sets the key's certificate in <code class="PARAMETER">data</code>.</p>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecNssKeyDataX509AdoptKeyCert (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
+                                  <code class="PARAMETER"><font><span class="TYPE">CERTCertificate</span></font> *cert</code>);</pre>
+<p>Sets the key's certificate in <code class="PARAMETER">data</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN41617"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
 <p></p>
+<a name="AEN41619"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>data</p></td>
+<td><p>the pointer to X509 key data.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>cert</p></td>
+<td><p>the pointer to NSS X509 certificate.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
 <p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN30922"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>               the pointer to X509 key data.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN30927"><span style="white-space: nowrap"><code class="PARAMETER">cert</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>               the pointer to NSS X509 certificate.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN30932"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
-</tr>
-</tbody></table>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN41634"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
+</div>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECNSSKEYDATAX509ADOPTCERT"></a><h3>xmlSecNssKeyDataX509AdoptCert ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecNssKeyDataX509AdoptCert       (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
-                                                         <font>CERTCertificate</font> *cert);</pre>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecNssKeyDataX509AdoptCert (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
+                               <code class="PARAMETER"><font><span class="TYPE">CERTCertificate</span></font> *cert</code>);</pre>
 <p>Adds certificate to the X509 key data.</p>
+<div class="REFSECT3">
+<a name="AEN41651"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
 <p></p>
+<a name="AEN41653"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>data</p></td>
+<td><p>the pointer to X509 key data.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>cert</p></td>
+<td><p>the pointer to NSS X509 certificate.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
 <p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN30948"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>               the pointer to X509 key data.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN30953"><span style="white-space: nowrap"><code class="PARAMETER">cert</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>               the pointer to NSS X509 certificate.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN30958"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
-</tr>
-</tbody></table>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN41668"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
+</div>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECNSSKEYDATAX509GETCERT"></a><h3>xmlSecNssKeyDataX509GetCert ()</h3>
-<pre class="PROGRAMLISTING"><font>CERTCertificate</font>*    xmlSecNssKeyDataX509GetCert         (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
-                                                         <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> pos);</pre>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">CERTCertificate</span></font> *
+xmlSecNssKeyDataX509GetCert (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
+                             <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> pos</code>);</pre>
 <p>Gets a certificate from X509 key data.</p>
+<div class="REFSECT3">
+<a name="AEN41685"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
 <p></p>
+<a name="AEN41687"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>data</p></td>
+<td><p>the pointer to X509 key data.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>pos</p></td>
+<td><p>the desired certificate position.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
 <p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN30974"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>               the pointer to X509 key data.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN30979"><span style="white-space: nowrap"><code class="PARAMETER">pos</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>                the desired certificate position.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN30984"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> the pointer to certificate or NULL if <code class="PARAMETER">pos</code> is larger than the
-number of certificates in <code class="PARAMETER">data</code> or an error occurs.</p></td>
-</tr>
-</tbody></table>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN41702"></a><h4>Returns</h4>
+<p> the pointer to certificate or NULL if <code class="PARAMETER">pos</code>
+is larger than the
+number of certificates in <code class="PARAMETER">data</code>
+or an error occurs.</p>
+</div>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECNSSKEYDATAX509GETCERTSSIZE"></a><h3>xmlSecNssKeyDataX509GetCertsSize ()</h3>
-<pre class="PROGRAMLISTING"><a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a>          xmlSecNssKeyDataX509GetCertsSize    (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre>
-<p>Gets the number of certificates in <code class="PARAMETER">data</code>.</p>
+<pre class="PROGRAMLISTING"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="RETURNVALUE">xmlSecSize</span></a>
+xmlSecNssKeyDataX509GetCertsSize (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>);</pre>
+<p>Gets the number of certificates in <code class="PARAMETER">data</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN41719"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
 <p></p>
+<a name="AEN41721"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody><tr>
+<td><p>data</p></td>
+<td><p>the pointer to X509 key data.</p></td>
+<td> </td>
+</tr></tbody>
+</table>
 <p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN31002"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>               the pointer to X509 key data.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN31007"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> te number of certificates in <code class="PARAMETER">data</code>.</p></td>
-</tr>
-</tbody></table>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN41730"></a><h4>Returns</h4>
+<p> te number of certificates in <code class="PARAMETER">data</code>
+.</p>
+</div>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECNSSKEYDATAX509ADOPTCRL"></a><h3>xmlSecNssKeyDataX509AdoptCrl ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecNssKeyDataX509AdoptCrl        (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
-                                                         <font>CERTSignedCrl</font> *crl);</pre>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecNssKeyDataX509AdoptCrl (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
+                              <code class="PARAMETER"><font><span class="TYPE">CERTSignedCrl</span></font> *crl</code>);</pre>
 <p>Adds CRL to the X509 key data.</p>
+<div class="REFSECT3">
+<a name="AEN41748"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
 <p></p>
+<a name="AEN41750"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>data</p></td>
+<td><p>the pointer to X509 key data.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>crl</p></td>
+<td><p>the pointer to NSS X509 CRL.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
 <p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN31024"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>               the pointer to X509 key data.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN31029"><span style="white-space: nowrap"><code class="PARAMETER">crl</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>                the pointer to NSS X509 CRL.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN31034"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
-</tr>
-</tbody></table>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN41765"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
+</div>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECNSSKEYDATAX509GETCRL"></a><h3>xmlSecNssKeyDataX509GetCrl ()</h3>
-<pre class="PROGRAMLISTING"><font>CERTSignedCrl</font>*      xmlSecNssKeyDataX509GetCrl          (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
-                                                         <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> pos);</pre>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">CERTSignedCrl</span></font> *
+xmlSecNssKeyDataX509GetCrl (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>,
+                            <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> pos</code>);</pre>
 <p>Gets a CRL from X509 key data.</p>
+<div class="REFSECT3">
+<a name="AEN41782"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
 <p></p>
+<a name="AEN41784"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>data</p></td>
+<td><p>the pointer to X509 key data.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>pos</p></td>
+<td><p>the desired CRL position.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
 <p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN31050"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>               the pointer to X509 key data.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN31055"><span style="white-space: nowrap"><code class="PARAMETER">pos</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>                the desired CRL position.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN31060"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> the pointer to CRL or NULL if <code class="PARAMETER">pos</code> is larger than the
-number of CRLs in <code class="PARAMETER">data</code> or an error occurs.</p></td>
-</tr>
-</tbody></table>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN41799"></a><h4>Returns</h4>
+<p> the pointer to CRL or NULL if <code class="PARAMETER">pos</code>
+is larger than the
+number of CRLs in <code class="PARAMETER">data</code>
+or an error occurs.</p>
+</div>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECNSSKEYDATAX509GETCRLSSIZE"></a><h3>xmlSecNssKeyDataX509GetCrlsSize ()</h3>
-<pre class="PROGRAMLISTING"><a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a>          xmlSecNssKeyDataX509GetCrlsSize     (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre>
-<p>Gets the number of CRLs in <code class="PARAMETER">data</code>.</p>
+<pre class="PROGRAMLISTING"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="RETURNVALUE">xmlSecSize</span></a>
+xmlSecNssKeyDataX509GetCrlsSize (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>);</pre>
+<p>Gets the number of CRLs in <code class="PARAMETER">data</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN41816"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
 <p></p>
+<a name="AEN41818"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody><tr>
+<td><p>data</p></td>
+<td><p>the pointer to X509 key data.</p></td>
+<td> </td>
+</tr></tbody>
+</table>
 <p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN31078"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>               the pointer to X509 key data.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN31083"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> te number of CRLs in <code class="PARAMETER">data</code>.</p></td>
-</tr>
-</tbody></table>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN41827"></a><h4>Returns</h4>
+<p> te number of CRLs in <code class="PARAMETER">data</code>
+.</p>
+</div>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECNSSX509CERTGETKEY"></a><h3>xmlSecNssX509CertGetKey ()</h3>
-<pre class="PROGRAMLISTING"><a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a>    xmlSecNssX509CertGetKey             (<font>CERTCertificate</font> *cert);</pre>
-<p>Extracts public key from the <code class="PARAMETER">cert</code>.</p>
+<pre class="PROGRAMLISTING"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="RETURNVALUE">xmlSecKeyDataPtr</span></a>
+xmlSecNssX509CertGetKey (<code class="PARAMETER"><font><span class="TYPE">CERTCertificate</span></font> *cert</code>);</pre>
+<p>Extracts public key from the <code class="PARAMETER">cert</code>
+.</p>
+<div class="REFSECT3">
+<a name="AEN41843"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
 <p></p>
+<a name="AEN41845"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody><tr>
+<td><p>cert</p></td>
+<td><p>the certificate.</p></td>
+<td> </td>
+</tr></tbody>
+</table>
 <p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN41854"></a><h4>Returns</h4>
+<p> public key value or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECNSSKEYDATARAWX509CERTGETKLASS"></a><h3>xmlSecNssKeyDataRawX509CertGetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecKeyDataId</span></font>
+xmlSecNssKeyDataRawX509CertGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>The raw X509 certificates key data klass.</p>
+<div class="REFSECT3">
+<a name="AEN41867"></a><h4>Returns</h4>
+<p> raw X509 certificates key data klass.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECNSSX509STOREGETKLASS"></a><h3>xmlSecNssX509StoreGetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecKeyDataStoreId</span></font>
+xmlSecNssX509StoreGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p>The NSS X509 certificates key data store klass.</p>
+<div class="REFSECT3">
+<a name="AEN41880"></a><h4>Returns</h4>
+<p> pointer to NSS X509 certificates key data store klass.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECNSSX509STOREFINDCERT"></a><h3>xmlSecNssX509StoreFindCert ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">CERTCertificate</span></font> *
+xmlSecNssX509StoreFindCert (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE"><span class="TYPE">xmlSecKeyDataStorePtr</span></a> store</code>,
+                            <code class="PARAMETER"><font><span class="TYPE">xmlChar</span></font> *subjectName</code>,
+                            <code class="PARAMETER"><font><span class="TYPE">xmlChar</span></font> *issuerName</code>,
+                            <code class="PARAMETER"><font><span class="TYPE">xmlChar</span></font> *issuerSerial</code>,
+                            <code class="PARAMETER"><font><span class="TYPE">xmlChar</span></font> *ski</code>,
+                            <code class="PARAMETER"><a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"><span class="TYPE">xmlSecKeyInfoCtx</span></a> *keyInfoCtx</code>);</pre>
+<p>Searches <code class="PARAMETER">store</code>
+ for a certificate that matches given criteria.</p>
+<div class="REFSECT3">
+<a name="AEN41910"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN41912"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN31100"><span style="white-space: nowrap"><code class="PARAMETER">cert</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>               the certificate.</p></td>
+<td><p>store</p></td>
+<td><p>the pointer to X509 key data store klass.</p></td>
+<td> </td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN31105"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> public key value or NULL if an error occurs.</p></td>
+<td><p>subjectName</p></td>
+<td><p>the desired certificate name.</p></td>
+<td> </td>
 </tr>
-</tbody></table>
+<tr>
+<td><p>issuerName</p></td>
+<td><p>the desired certificate issuer name.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>issuerSerial</p></td>
+<td><p>the desired certificate issuer serial number.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>ski</p></td>
+<td><p>the desired certificate SKI.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>keyInfoCtx</p></td>
+<td><p>the pointer to &lt;dsig:KeyInfo/&gt; element processing context.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN41951"></a><h4>Returns</h4>
+<p> pointer to found certificate or NULL if certificate is not found
+or an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECNSSX509STOREVERIFY"></a><h3>xmlSecNssX509StoreVerify ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">CERTCertificate</span></font> *
+xmlSecNssX509StoreVerify (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE"><span class="TYPE">xmlSecKeyDataStorePtr</span></a> store</code>,
+                          <code class="PARAMETER"><font><span class="TYPE">CERTCertList</span></font> *certs</code>,
+                          <code class="PARAMETER"><a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"><span class="TYPE">xmlSecKeyInfoCtx</span></a> *keyInfoCtx</code>);</pre>
+<p>Verifies <code class="PARAMETER">certs</code>
+ list.</p>
+<div class="REFSECT3">
+<a name="AEN41972"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN41974"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>store</p></td>
+<td><p>the pointer to X509 key data store klass.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>certs</p></td>
+<td><p>the untrusted certificates stack.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>keyInfoCtx</p></td>
+<td><p>the pointer to &lt;dsig:KeyInfo/&gt; element processing context.</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN41995"></a><h4>Returns</h4>
+<p> pointer to the first verified certificate from <code class="PARAMETER">certs</code>
+.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECNSSX509STOREADOPTCERT"></a><h3>xmlSecNssX509StoreAdoptCert ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
+xmlSecNssX509StoreAdoptCert (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE"><span class="TYPE">xmlSecKeyDataStorePtr</span></a> store</code>,
+                             <code class="PARAMETER"><font><span class="TYPE">CERTCertificate</span></font> *cert</code>,
+                             <code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE"><span class="TYPE">xmlSecKeyDataType</span></a> type</code>);</pre>
+<p>Adds trusted (root) or untrusted certificate to the store.</p>
+<div class="REFSECT3">
+<a name="AEN42016"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN42018"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>store</p></td>
+<td><p>the pointer to X509 key data store klass.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>cert</p></td>
+<td><p>the pointer to NSS X509 certificate.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>type</p></td>
+<td><p>the certificate type (trusted/untrusted).</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN42039"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
+</div>
+</div>
+</div>
+<div class="REFSECT1">
+<a name="XMLSEC-NSS-X509.OTHER_DETAILS"></a><h2>Types and Values</h2>
+<div class="REFSECT2">
+<a name="XMLSECNSSKEYDATAX509ID"></a><h3>xmlSecNssKeyDataX509Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecNssKeyDataX509Id</pre>
+<p>The NSS X509 data klass.</p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECNSSKEYDATARAWX509CERTID"></a><h3>xmlSecNssKeyDataRawX509CertId</h3>
 <pre class="PROGRAMLISTING">#define             xmlSecNssKeyDataRawX509CertId</pre>
 <p>The NSS raw X509 certificate klass.</p>
-<p></p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECNSSKEYDATARAWX509CERTGETKLASS"></a><h3>xmlSecNssKeyDataRawX509CertGetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font>     xmlSecNssKeyDataRawX509CertGetKlass (void);</pre>
-<p>The raw X509 certificates key data klass.</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN31126"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> raw X509 certificates key data klass.</p></td>
-</tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECNSSX509STOREID"></a><h3>xmlSecNssX509StoreId</h3>
 <pre class="PROGRAMLISTING">#define             xmlSecNssX509StoreId</pre>
 <p>The NSS X509 store klass.</p>
-<p></p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECNSSX509STOREGETKLASS"></a><h3>xmlSecNssX509StoreGetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font>xmlSecKeyDataStoreId</font>  xmlSecNssX509StoreGetKlass        (void);</pre>
-<p>The NSS X509 certificates key data store klass.</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN31147"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> pointer to NSS X509 certificates key data store klass.</p></td>
-</tr></tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECNSSX509STOREFINDCERT"></a><h3>xmlSecNssX509StoreFindCert ()</h3>
-<pre class="PROGRAMLISTING"><font>CERTCertificate</font>*    xmlSecNssX509StoreFindCert          (<a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> store,
-                                                         <font>xmlChar</font> *subjectName,
-                                                         <font>xmlChar</font> *issuerName,
-                                                         <font>xmlChar</font> *issuerSerial,
-                                                         <font>xmlChar</font> *ski,
-                                                         <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtx</a> *keyInfoCtx);</pre>
-<p>Searches <code class="PARAMETER">store</code> for a certificate that matches given criteria.</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN31168"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>              the pointer to X509 key data store klass.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN31173"><span style="white-space: nowrap"><code class="PARAMETER">subjectName</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>        the desired certificate name.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN31178"><span style="white-space: nowrap"><code class="PARAMETER">issuerName</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>         the desired certificate issuer name.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN31183"><span style="white-space: nowrap"><code class="PARAMETER">issuerSerial</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>       the desired certificate issuer serial number.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN31188"><span style="white-space: nowrap"><code class="PARAMETER">ski</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>                the desired certificate SKI.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN31193"><span style="white-space: nowrap"><code class="PARAMETER">keyInfoCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>         the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> element processing context.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN31199"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> pointer to found certificate or NULL if certificate is not found
-or an error occurs.</p></td>
-</tr>
-</tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECNSSX509STOREVERIFY"></a><h3>xmlSecNssX509StoreVerify ()</h3>
-<pre class="PROGRAMLISTING"><font>CERTCertificate</font>*    xmlSecNssX509StoreVerify            (<a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> store,
-                                                         <font>CERTCertList</font> *certs,
-                                                         <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtx</a> *keyInfoCtx);</pre>
-<p>Verifies <code class="PARAMETER">certs</code> list.</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN31217"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>              the pointer to X509 key data store klass.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN31222"><span style="white-space: nowrap"><code class="PARAMETER">certs</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>              the untrusted certificates stack.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN31227"><span style="white-space: nowrap"><code class="PARAMETER">keyInfoCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>         the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> element processing context.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN31233"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> pointer to the first verified certificate from <code class="PARAMETER">certs</code>.</p></td>
-</tr>
-</tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSECNSSX509STOREADOPTCERT"></a><h3>xmlSecNssX509StoreAdoptCert ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecNssX509StoreAdoptCert         (<a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> store,
-                                                         <font>CERTCertificate</font> *cert,
-                                                         <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre>
-<p>Adds trusted (root) or untrusted certificate to the store.</p>
-<p></p>
-<p></p>
-<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN31251"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>              the pointer to X509 key data store klass.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN31256"><span style="white-space: nowrap"><code class="PARAMETER">cert</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>               the pointer to NSS X509 certificate.</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN31261"><span style="white-space: nowrap"><code class="PARAMETER">type</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>               the certificate type (trusted/untrusted).</p></td>
-</tr>
-<tr>
-<td align="LEFT" valign="TOP"><a name="AEN31266"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
-</tr>
-</tbody></table>
 </div>
 </div>
 <table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">

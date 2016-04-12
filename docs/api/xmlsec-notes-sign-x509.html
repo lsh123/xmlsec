@@ -7,7 +7,6 @@
 <link rel="UP" title="Using X509 Certificates." href="xmlsec-notes-x509.html">
 <link rel="PREVIOUS" title="Using X509 Certificates." href="xmlsec-notes-x509.html">
 <link rel="NEXT" title="Verifing document signed with X509 certificates." href="xmlsec-notes-verify-x509.html">
-<meta name="GENERATOR" content="GTK-Doc V1.11 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -37,6 +36,29 @@
 .navigation .title {
     font-size: 200%;
 }</style>
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
 </head>
 <body><table width="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -79,11 +101,11 @@
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
 <table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-notes-x509.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-notes-x509.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<td><a accesskey="p" href="xmlsec-notes-x509.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="xmlsec-notes-x509.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <th width="100%" align="center">XML Security Library Reference Manual</th>
-<td><a accesskey="n" href="xmlsec-notes-verify-x509.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="xmlsec-notes-verify-x509.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <br clear="all"><div class="SECT1">
 <h1 class="SECT1"><a name="XMLSEC-NOTES-SIGN-X509">Signing data with X509 certificate.</a></h1>
@@ -102,9 +124,9 @@
 <li><p>	    <a href="xmlsec-keys.html#XMLSECKEYADOPTDATA">xmlSecKeyAdoptData</a> - low level
 	    function to add key data (including X509 key data) to the key.
 	    </p></li>
-</ul>
-<div class="EXAMPLE">
-<a name="AEN423"></a><p><b>Example 1. Loading private key and X509 certificate.</b></p>
+</ul>	    
+	<div class="EXAMPLE">
+<a name="AEN535"></a><p><b>Example 1. Loading private key and X509 certificate.</b></p>
 <pre class="PROGRAMLISTING">    /* load private key, assuming that there is not password */
     key = xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
     if(key == NULL) {
@@ -120,14 +142,14 @@
 	    </pre>
 <p><a href="xmlsec-examples-sign-x509.html#XMLSEC-EXAMPLE-SIGN3">Full program listing</a></p>
 </div>
-	<p>Next step is to prepare signature template with &lt;dsig:X509Data/&gt;
-	child of the &lt;dsig:KeyInfo/&gt; element. When XML Security Library finds
-	this node in the template, it automaticaly creates &lt;dsig:X509Certificate/&gt; 
-	children of the &lt;dsig:X509Data/&gt; element and writes to result XML document
+	<p>Next step is to prepare signature template with <a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Data" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Data" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Data" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Data" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Data" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Data" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Data" target="_top">&lt;dsig:X509Data/&gt;</a>
+	child of the <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> element. When XML Security Library finds
+	this node in the template, it automaticaly creates <a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate" target="_top">&lt;dsig:X509Certificate/&gt;</a> 
+	children of the <a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Data" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Data" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Data" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Data" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Data" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Data" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Data" target="_top">&lt;dsig:X509Data/&gt;</a> element and writes to result XML document
 	all the certificates associated with the signature key. 
 	</p>
 <div class="EXAMPLE">
-<a name="AEN429"></a><p><b>Example 2. Dynamicaly creating a signature template for signing document using X509 certificate.</b></p>
+<a name="AEN569"></a><p><b>Example 2. Dynamicaly creating a signature template for signing document using X509 certificate.</b></p>
 <pre class="PROGRAMLISTING">    /* create signature template for RSA-SHA1 enveloped signature */
     signNode = xmlSecTmplSignatureCreate(doc, xmlSecTransformExclC14NId,
 				         xmlSecTransformRsaSha1Id, NULL);
@@ -136,7 +158,7 @@
 	goto done;		
     }
 
-    /* add &lt;dsig:Signature/&gt; node to the doc */
+    /* add &lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"&gt;&amp;lt;dsig:Signature/&amp;gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt; node to the doc */
     xmlAddChild(xmlDocGetRootElement(doc), signNode);
     
     /* add reference */
@@ -153,7 +175,7 @@
 	goto done;		
     }
     
-    /* add &lt;dsig:KeyInfo/&gt; and &lt;dsig:X509Data/&gt; */
+    /* add &lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&amp;lt;dsig:KeyInfo/&amp;gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt; and &lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data"&gt;&amp;lt;dsig:X509Data/&amp;gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt; */
     keyInfoNode = xmlSecTmplSignatureEnsureKeyInfo(signNode, NULL);
     if(keyInfoNode == NULL) {
 	fprintf(stderr, "Error: failed to add key info\n");

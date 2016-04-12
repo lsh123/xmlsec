@@ -6,7 +6,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
+ * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_STRINGS_H__
 #define __XMLSEC_STRINGS_H__
@@ -495,6 +495,22 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecXPath2FilterSubtract[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPath2FilterUnion[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameXPointer[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeXPointer[];
+
+/*************************************************************************
+ *
+ * RelationshipTransform strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRelationship[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRelationship[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRelationship[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRelationshipReference[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecRelationshipsNs[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecRelationshipReferenceNs[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecRelationshipAttrId[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecRelationshipAttrSourceId[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecRelationshipAttrTargetMode[];
 
 /*************************************************************************
  *

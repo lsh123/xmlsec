@@ -6,7 +6,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
+ * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #include "globals.h"
 
@@ -100,6 +100,17 @@ xmlSecShutdown(void) {
     xmlSecIOShutdown();
     xmlSecErrorsShutdown();
     return(res);
+}
+
+/**
+ * xmlSecShutdown:
+ *
+ * Gets the default crypto engine ("openssl", "nss", etc.) for the XML Security Library.
+ *
+ * Returns: the default crypto engine ("openssl", "nss", etc.).
+ */
+const xmlChar * xmlSecGetDefaultCrypto(void) {
+    return BAD_CAST XMLSEC_DEFAULT_CRYPTO;
 }
 
 /**

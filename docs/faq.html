@@ -2,6 +2,34 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>XML Security Library: Documentation</title>
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+</style>
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
 </head>
 <body><table width="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -150,9 +178,7 @@ the application is not distributed.<br>
 </td>
                 </tr>
 <tr>
-<td style="vertical-align: top;">xmlsec-nss (also
-requires
-xmlsec-core library) </td>
+<td style="vertical-align: top;">xmlsec-nss (also requires xmlsec-core library) </td>
                   <td style="vertical-align: top;">
 <a href="http://www.mozilla.org/projects/security/pki/nss/">NSS</a><br>
 </td>
@@ -161,10 +187,7 @@ Public License</a> and <a href="http://www.opensource.org/licenses/gpl-license.p
                   <td style="vertical-align: top;">Yes.<br>
 </td>
                   <td style="vertical-align: top;">Yes.</td>
-                  <td style="vertical-align: top;">Probably yes, but at
-the time I
-am writing this there are some <a href="http://bugzilla.mozilla.org/show_bug.cgi?id=217162">unresolved
-issues</a>.<br>
+                  <td style="vertical-align: top;">Yes<br>
 </td>
                 </tr>
 <tr>
@@ -233,8 +256,7 @@ If this does not help then probably there is a bug in the xmlsec or in
 the xmlsec tests. Please submit the <a href="http://www.aleksey.com/xmlsec/bugs.html">bug report</a> and I'll
 try to fix it. </p>
 <h4> <a name="section_2_5"></a>2.5. I get the xmlsec
-sources
-from CVS and there is no
+sources from GitHub and there is no
 configure script. Where can I get it?</h4>
 <p> The configure (and other Makefiles) are generated. Use
 the <code>autogen.sh</code> script to regenerate the configure and

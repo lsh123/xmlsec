@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
+ * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #include "globals.h"
 
@@ -429,7 +429,8 @@ xmlSecCryptoDLShutdown(void) {
 
 /**
  * xmlSecCryptoDLLoadLibrary:
- * @crypto:             the desired crypto library name ("openssl", "nss", ...).
+ * @crypto:             the desired crypto library name ("openssl", "nss", ...). If NULL
+ *                      then the default crypto engine will be used.
  *
  * Loads the xmlsec-$crypto library. This function is NOT thread safe,
  * application MUST NOT call #xmlSecCryptoDLLoadLibrary, #xmlSecCryptoDLGetLibraryFunctions,
@@ -442,9 +443,8 @@ xmlSecCryptoDLLoadLibrary(const xmlChar* crypto) {
     xmlSecCryptoDLFunctionsPtr functions;
     int ret;
 
-    xmlSecAssert2(crypto != NULL, -1);
-
-    functions = xmlSecCryptoDLGetLibraryFunctions(crypto);
+    /* if crypto is not specified, then used default */
+    functions = xmlSecCryptoDLGetLibraryFunctions((crypto != NULL ) ? crypto : xmlSecGetDefaultCrypto());
     if(functions == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
@@ -463,6 +463,7 @@ xmlSecCryptoDLLoadLibrary(const xmlChar* crypto) {
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
+
     return(0);
 }
 

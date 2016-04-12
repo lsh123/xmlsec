@@ -17,6 +17,9 @@ Utility functions.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### TYPEDEF xmlSecPtr ##### -->
 <para>
 
@@ -50,6 +53,7 @@ Utility functions.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -58,6 +62,7 @@ Utility functions.
 
 </para>
 
+@void: 
 @Returns: 
 
 

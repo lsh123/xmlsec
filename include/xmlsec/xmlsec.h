@@ -6,7 +6,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
+ * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_H__
 #define __XMLSEC_H__
@@ -83,10 +83,19 @@ typedef struct _xmlSecDSigCtx                   xmlSecDSigCtx, *xmlSecDSigCtxPtr
 typedef struct _xmlSecEncCtx                    xmlSecEncCtx, *xmlSecEncCtxPtr;
 #endif /* XMLSEC_NO_XMLENC */
 
-XMLSEC_EXPORT int       xmlSecInit              (void);
-XMLSEC_EXPORT int       xmlSecShutdown          (void);
+XMLSEC_EXPORT int                               xmlSecInit              (void);
+XMLSEC_EXPORT int                               xmlSecShutdown          (void);
+XMLSEC_EXPORT const xmlChar *                   xmlSecGetDefaultCrypto  (void);
 
-
+/**
+ * XMLSEC_CRYPTO:
+ *
+ * Macro. Deprecated. Defined for backward compatibility only. Do not use
+ * in your code and use xmlSecGetDefaultCrypto() function instead.
+ *
+ * Returns the default crypto engine.
+ */
+#define XMLSEC_CRYPTO                          (xmlSecGetDefaultCrypto())
 
 /***********************************************************************
  *

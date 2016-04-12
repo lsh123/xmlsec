@@ -6,7 +6,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
+ * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_TRANSFORMS_H__
 #define __XMLSEC_TRANSFORMS_H__
@@ -949,6 +949,15 @@ XMLSEC_EXPORT int               xmlSecTransformXPointerSetExpr          (xmlSecT
                                                                          const xmlChar* expr,
                                                                          xmlSecNodeSetType nodeSetType,
                                                                          xmlNodePtr hereNode);
+/**
+ * xmlSecTransformRelationshipId:
+ *
+ * The Relationship transform klass.
+ */
+#define xmlSecTransformRelationshipId \
+        xmlSecTransformRelationshipGetKlass()
+XMLSEC_EXPORT xmlSecTransformId xmlSecTransformRelationshipGetKlass     (void);
+
 #ifndef XMLSEC_NO_XSLT
 #include <libxslt/security.h>
 

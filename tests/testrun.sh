@@ -144,6 +144,10 @@ execKeysTest() {
     key_name="$3"
     alg_name="$4"
 
+    if [ -n "$XMLSEC_TEST_NAME" -a "$XMLSEC_TEST_NAME" != "$key_name" ]; then
+        return
+    fi
+
     # prepare
     rm -f $tmpfile
     old_pwd=`pwd`
@@ -197,6 +201,10 @@ execDSigTest() {
     params1="$6"
     params2="$7"
     params3="$8"
+
+    if [ -n "$XMLSEC_TEST_NAME" -a "$XMLSEC_TEST_NAME" != "$filename" ]; then
+        return
+    fi
 
     # prepare
     rm -f $tmpfile
@@ -286,6 +294,10 @@ execEncTest() {
     params1="$5"
     params2="$6"
     params3="$7"
+
+    if [ -n "$XMLSEC_TEST_NAME" -a "$XMLSEC_TEST_NAME" != "$filename" ]; then
+        return
+    fi
 
     # prepare
     rm -f $tmpfile $tmpfile.2

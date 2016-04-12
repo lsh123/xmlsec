@@ -36,7 +36,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
+ * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 
 #include "globals.h"
@@ -278,6 +278,16 @@ xmlSecTransformIdsRegisterDefault(void) {
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "name=%s",
                     xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformXPointerId)));
+        return(-1);
+    }
+
+    if(xmlSecTransformIdsRegister(xmlSecTransformRelationshipId) < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecTransformIdsRegister",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "name=%s",
+                    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformRelationshipId)));
         return(-1);
     }
 

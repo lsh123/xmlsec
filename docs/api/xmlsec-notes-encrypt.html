@@ -7,7 +7,6 @@
 <link rel="UP" title="Signing and encrypting documents." href="xmlsec-notes-sign-encrypt.html">
 <link rel="PREVIOUS" title="Signing a document." href="xmlsec-notes-sign.html">
 <link rel="NEXT" title="Creating dynamic templates." href="xmlsec-notes-templates.html">
-<meta name="GENERATOR" content="GTK-Doc V1.11 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -37,6 +36,29 @@
 .navigation .title {
     font-size: 200%;
 }</style>
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
 </head>
 <body><table width="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -79,11 +101,11 @@
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
 <table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-notes-sign.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-notes-sign-encrypt.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<td><a accesskey="p" href="xmlsec-notes-sign.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="xmlsec-notes-sign-encrypt.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <th width="100%" align="center">XML Security Library Reference Manual</th>
-<td><a accesskey="n" href="xmlsec-notes-templates.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="xmlsec-notes-templates.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <br clear="all"><div class="SECT1">
 <h1 class="SECT1"><a name="XMLSEC-NOTES-ENCRYPT">Encrypting data.</a></h1>
@@ -94,7 +116,7 @@
 <li><p>		Prepare data for encryption.
 	    </p></li>
 <li><p>		Create or load encryption template and select start
-		&lt;enc:EncryptedData/&gt; node.
+		<a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> node.
 	    </p></li>
 <li><p>		Create encryption context <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a>
 		using <a href="xmlsec-xmlenc.html#XMLSECENCCTXCREATE">xmlSecEncCtxCreate</a> or
@@ -118,7 +140,7 @@
 <li><p>			<a href="xmlsec-xmlenc.html#XMLSECENCCTXURIENCRYPT">xmlSecEncCtxUriEncrypt</a>
 		    </p></li>
 </ul>
-</li>
+	    </li>
 <li><p>		Check returned value and if necessary consume encrypted data.
 	    </p></li>
 <li><p>		Destroy encryption context <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a>
@@ -127,9 +149,9 @@
 		functions.
 	    </p></li>
 </ul>
-<p>	     </p>
+	<p>	     </p>
 <div class="EXAMPLE">
-<a name="AEN227"></a><p><b>Example 2. Encrypting binary data with a template.</b></p>
+<a name="AEN241"></a><p><b>Example 2. Encrypting binary data with a template.</b></p>
 <pre class="PROGRAMLISTING">/**
  * encrypt_file:
  * @tmpl_file:		the encryption template file name.

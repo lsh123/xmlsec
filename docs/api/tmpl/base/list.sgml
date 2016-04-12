@@ -17,6 +17,9 @@ Generic list structure implementation.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### STRUCT xmlSecPtrList ##### -->
 <para>
 
@@ -266,6 +269,7 @@ Generic list structure implementation.
 
 </para>
 
+@void: 
 @Returns: 
 
 

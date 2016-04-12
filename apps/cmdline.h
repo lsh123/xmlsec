@@ -5,7 +5,7 @@
  *
  * See Copyright for the status of this software.
  * 
- * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
+ * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_APPS_CMDLINE_H__
 #define __XMLSEC_APPS_CMDLINE_H__    

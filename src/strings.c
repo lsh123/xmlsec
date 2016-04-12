@@ -6,7 +6,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
+ * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #include "globals.h"
 
@@ -489,6 +489,21 @@ const xmlChar xmlSecXPath2FilterUnion[]         = "union";
 
 const xmlChar xmlSecNameXPointer[]              = "xpointer";
 const xmlChar xmlSecNodeXPointer[]              = "XPointer";
+
+/*************************************************************************
+ *
+ * Relationship strings
+ *
+ ************************************************************************/
+const xmlChar xmlSecNameRelationship[]          = "relationship";
+const xmlChar xmlSecHrefRelationship[]          = "http://schemas.openxmlformats.org/package/2006/RelationshipTransform";
+const xmlChar xmlSecNodeRelationship[]          = "Relationship";
+const xmlChar xmlSecNodeRelationshipReference[] = "RelationshipReference";
+const xmlChar xmlSecRelationshipsNs[]           = "http://schemas.openxmlformats.org/package/2006/relationships";
+const xmlChar xmlSecRelationshipReferenceNs[]   = "http://schemas.openxmlformats.org/package/2006/digital-signature";
+const xmlChar xmlSecRelationshipAttrId[]        = "Id";
+const xmlChar xmlSecRelationshipAttrSourceId[]  = "SourceId";
+const xmlChar xmlSecRelationshipAttrTargetMode[]= "TargetMode";
 
 /*************************************************************************
  *

@@ -31,3 +31,8 @@ echo "Cleanup"
 cd "$cur_pwd"
 #rm -rf "$build_root"
 
+echo "DO NOT FORGET TO TAG THE RELEASE"
+echo "git tag -a xmlsec-1_2_N -m 'XMLSec release 1.2.N'"
+echo "git push origin xmlsec-1_2_N"
+
+

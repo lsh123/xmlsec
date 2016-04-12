@@ -1,5 +1,8 @@
-2016-02-15 Aleksey Sanin  <aleksey@aleksey.com>
+2016-04-12 Aleksey Sanin  <aleksey@aleksey.com>
         * 1.2.21 release
+
+2016-02-17 Aleksey Sanin  <aleksey@aleksey.com>
+        * Added OOXML Relationships Transform Algorithm (patch from Miklos Vajna)
 
 2016-02-06 Aleksey Sanin  <aleksey@aleksey.com>
         * Deprecated XMLSEC_CRYPTO define in favor of xmlSecGetDefaultCrypto() function

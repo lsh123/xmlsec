@@ -1,3 +1,7 @@
+2016-04-20 Aleksey Sanin  <aleksey@aleksey.com>
+	* Restored SOAP support for Lasso
+	* 1.2.22 release
+
 2016-04-12 Aleksey Sanin  <aleksey@aleksey.com>
         * 1.2.21 release
 

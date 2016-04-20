@@ -520,6 +520,40 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecRelationshipAttrTargetMode[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameXslt[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefXslt[];
 
+#ifndef XMLSEC_NO_SOAP
+/*************************************************************************
+ *
+ * SOAP 1.1/1.2 strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeEnvelope[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeHeader[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeBody[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeFault[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeFaultCode[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeFaultString[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeFaultActor[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeFaultDetail[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeCode[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeReason[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeNode[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRole[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDetail[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeSubcode[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeText[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecSoapFaultCodeVersionMismatch[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecSoapFaultCodeMustUnderstand[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecSoapFaultCodeClient[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecSoapFaultCodeServer[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecSoapFaultCodeReceiver[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecSoapFaultCodeSender[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecSoapFaultDataEncodningUnknown[];
+
+
+#endif /* XMLSEC_NO_SOAP */
+
 /*************************************************************************
  *
  * Utility strings

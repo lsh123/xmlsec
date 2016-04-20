@@ -46,6 +46,7 @@ libxmlsec1_la_SOURCES = \
 	nodeset.c \
 	parser.c \
 	relationship.c \
+	soap.c \
 	strings.c \
 	templates.c \
 	transforms.c \

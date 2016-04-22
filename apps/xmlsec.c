@@ -1003,12 +1003,12 @@ int main(int argc, const char **argv) {
             break;
         case xmlSecAppCommandCheckKeyData:
             for(i = pos; i < argc; ++i) {
-            if(xmlSecAppCheckKeyData(argv[i]) < 0) {
-                fprintf(stderr, "Error: key data \"%s\" not found\n", argv[i]);
-                goto fail;
-            } else {
-                fprintf(stdout, "Key data \"%s\" found\n", argv[i]);
-            }
+                if(xmlSecAppCheckKeyData(argv[i]) < 0) {
+                    fprintf(stderr, "Error: key data \"%s\" not found\n", argv[i]);
+                    goto fail;
+                } else {
+                    fprintf(stdout, "Key data \"%s\" found\n", argv[i]);
+                }
             }
             break;
         case xmlSecAppCommandListTransforms:
@@ -2696,7 +2696,7 @@ static FILE*
 xmlSecAppOpenFile(const char* filename) {
     FILE* file;
     
-    if((filename == NULL) || (strcmp(filename, "-") == 0)) {
+    if((filename == NULL) || (strcmp(filename, XMLSEC_STDOUT_FILENAME) == 0)) {
         return(stdout);
     }
     file = fopen(filename, "wb");

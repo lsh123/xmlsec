@@ -84,7 +84,7 @@ xmlSecAppCmdLineParamsListParse(xmlSecAppCmdLineParamPtr* params,
     assert(params != NULL);
     assert(argv != NULL);
     
-    while((pos < argc) && (argv[pos][0] == '-')) {
+    while((pos < argc) && (argv[pos][0] == '-') && (strcmp(argv[pos], XMLSEC_STDOUT_FILENAME) != 0)) {
         param = xmlSecAppCmdLineParamsListFind(params, topics, argv[pos]);
         if(param == NULL) {
             fprintf(stderr, "Error: parameter \"%s\" is not supported or the requested\nfeature might have been disabled during compilation.\n", argv[pos]);
@@ -101,15 +101,13 @@ xmlSecAppCmdLineParamsListParse(xmlSecAppCmdLineParamPtr* params,
     
     /* check that all parameters at the end are filenames */
     for(ii = pos; (ii < argc); ++ii) {
-        if(argv[ii][0] == '-') {
+        if((argv[ii][0] == '-') && (strcmp(argv[pos], XMLSEC_STDOUT_FILENAME) != 0)) {
             fprintf(stderr, "Error: filename is expected instead of parameter \"%s\".\n", argv[ii]);
             return(-1);
-            
         }
     }
-    
-    
-    
+
+    /* done */
     return(pos);
 }
 

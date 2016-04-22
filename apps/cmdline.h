@@ -26,6 +26,8 @@ typedef unsigned int                            xmlSecAppCmdLineParamTopic;
 #define xmlSecAppCmdLineParamFlagParamNameValue         0x0001
 #define xmlSecAppCmdLineParamFlagMultipleValues         0x0002
 
+#define XMLSEC_STDOUT_FILENAME                          "-"
+
 typedef enum {
     xmlSecAppCmdLineParamTypeFlag,
     xmlSecAppCmdLineParamTypeString,

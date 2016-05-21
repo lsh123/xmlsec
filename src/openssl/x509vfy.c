@@ -317,7 +317,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
                     X509_VERIFY_PARAM_set_time(vpm, keyInfoCtx->certsVerificationTime);
                 }
 
-                X509_VERIFY_PARAM_set_depth(vpm, 9);
+                X509_VERIFY_PARAM_set_depth(vpm, keyInfoCtx->certsVerificationDepth);
                 X509_VERIFY_PARAM_set_flags(vpm, vpm_flags);
                 X509_STORE_CTX_set0_param(&xsc, vpm);
             }

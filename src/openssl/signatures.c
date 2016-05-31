@@ -31,7 +31,7 @@
 #define EVP_MD_CTX_free(x)     EVP_MD_CTX_destroy((x))
 #define EVP_MD_CTX_md_data(x)  ((x)->md_data)
 
-#ifndef XMLSEC_NO_DSA
+#ifndef XMLSEC_NO_ECDSA
 /* we expect the r/s to be NOT NULL */
 static void ECDSA_SIG_get0(BIGNUM **pr, BIGNUM **ps, ECDSA_SIG *sig) {
     if (pr != NULL) {

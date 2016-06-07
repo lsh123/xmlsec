@@ -53,6 +53,7 @@ static void ECDSA_SIG_get0(BIGNUM **pr, BIGNUM **ps, ECDSA_SIG *sig) {
 
 /* Preparation for OpenSSL 1.1.0 compatibility: we expect the r/s to be NOT NULL */
 #ifndef XMLSEC_NO_DSA
+#if !defined(XMLSEC_OPENSSL_110)
 static void DSA_SIG_get0(BIGNUM **pr, BIGNUM **ps, DSA_SIG *sig) {
     if (pr != NULL) {
         if(sig->r == NULL) {
@@ -67,8 +68,8 @@ static void DSA_SIG_get0(BIGNUM **pr, BIGNUM **ps, DSA_SIG *sig) {
         *ps = sig->s;
     }
 }
+#endif /* !defined(XMLSEC_OPENSSL_110) */
 #endif /* XMLSEC_NO_DSA */
-
 
 
 
@@ -808,6 +809,12 @@ xmlSecOpenSSLSignatureDsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSecBy
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         goto done;
+    }
+    if (rr == NULL) {
+        rr = BN_new();
+    }
+    if (ss == NULL) {
+        ss = BN_new();
     }
 
     rr = BN_bin2bn(signData, signHalfSize, rr);

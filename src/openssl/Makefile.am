@@ -35,6 +35,7 @@ libxmlsec1_openssl_la_SOURCES =\
 	x509.c \
 	x509vfy.c \
 	globals.h \
+	openssl11_wrapper.h \
 	$(NULL)
 
 if SHAREDLIB_HACK

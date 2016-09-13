@@ -2612,4 +2612,21 @@ xmlSecMSCryptoKeyDataGost2001DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
             xmlSecMSCryptoKeyDataGost2001GetSize(data));
 }
 
+PCRYPT_KEY_PROV_INFO xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo(xmlSecKeyDataPtr data) {
+    xmlSecMSCryptoKeyDataCtxPtr ctx;
+    LPBYTE pInfoData = NULL;
+    DWORD dwInfoDataLength = 0;
+
+    ctx = xmlSecMSCryptoKeyDataGetCtx(data);
+    CertGetCertificateContextProperty(ctx->pCert, CERT_KEY_PROV_INFO_PROP_ID, NULL, &dwInfoDataLength);
+
+    if (dwInfoDataLength > 0)
+    {
+        pInfoData = malloc(dwInfoDataLength * sizeof(BYTE));
+        CertGetCertificateContextProperty(ctx->pCert, CERT_KEY_PROV_INFO_PROP_ID, pInfoData, &dwInfoDataLength);
+    }
+
+    return (PCRYPT_KEY_PROV_INFO)pInfoData;
+}
+
 #endif /* XMLSEC_NO_GOST*/

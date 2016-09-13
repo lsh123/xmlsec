@@ -430,6 +430,11 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
     int ret;
     DWORD dwSigLen;
     BYTE *tmpBuf, *outBuf;
+    int bOk;
+    PCRYPT_KEY_PROV_INFO pProviderInfo = NULL;
+    char strContName[1000];
+    char strProvName[1000];
+    size_t size;
 
     xmlSecAssert2(xmlSecMSCryptoSignatureCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationSign) || (transform->operation == xmlSecTransformOperationVerify), -1);
@@ -460,7 +465,56 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             return (-1);
         }
 
-        if (!CryptCreateHash(hProv, ctx->digestAlgId, 0, 0, &(ctx->mscHash))) {
+        //First try create hash with provider acquired in function xmlSecMSCryptoKeyDataAdoptCert.
+        bOk = CryptCreateHash(hProv, ctx->digestAlgId, 0, 0, &(ctx->mscHash));
+
+        //Then try it with container name, provider name and type acquired from certificate context.
+        if (!bOk) {
+            pProviderInfo = xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo(ctx->data);
+
+            if (pProviderInfo == NULL) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                            NULL,
+                            "xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo",
+                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                            XMLSEC_ERRORS_NO_MESSAGE);
+                return(-1);
+            }
+
+            wcstombs_s(&size, strContName, 1000, pProviderInfo->pwszContainerName, _TRUNCATE);
+            wcstombs_s(&size, strProvName, 1000, pProviderInfo->pwszProvName, _TRUNCATE);
+
+            CryptReleaseContext(hProv, 0);
+            hProv = NULL;
+
+            CryptAcquireContext(&hProv,
+                strContName,
+                strProvName,
+                pProviderInfo->dwProvType,
+                0);
+
+            bOk = CryptCreateHash(hProv, ctx->digestAlgId, 0, 0, &(ctx->mscHash));
+        }
+
+        //Last try it with PROV_RSA_AES provider type.
+        if (!bOk) {
+            CryptReleaseContext(hProv, 0);
+            hProv = NULL;
+
+            CryptAcquireContext(&hProv,
+                strContName,
+                NULL,
+                PROV_RSA_AES,
+                0);
+
+            bOk = CryptCreateHash(hProv, ctx->digestAlgId, 0, 0, &(ctx->mscHash));
+        }
+
+        if (pProviderInfo != NULL) {
+            free(pProviderInfo);
+        }
+
+        if (!bOk) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         "CryptCreateHash",

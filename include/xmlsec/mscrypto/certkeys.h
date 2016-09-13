@@ -31,6 +31,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr   xmlSecMSCryptoCertAdopt         (PCCERT_
 
 XMLSEC_CRYPTO_EXPORT HCRYPTPROV         xmlSecMSCryptoKeyDataGetMSCryptoProvider(xmlSecKeyDataPtr data);
 XMLSEC_CRYPTO_EXPORT DWORD              xmlSecMSCryptoKeyDataGetMSCryptoKeySpec(xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT PCRYPT_KEY_PROV_INFO xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo(xmlSecKeyDataPtr data);
 
 
 #ifdef __cplusplus

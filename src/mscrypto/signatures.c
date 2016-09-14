@@ -481,31 +481,59 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
                 return(-1);
             }
 
-            wcstombs_s(&size, strContName, 1000, pProviderInfo->pwszContainerName, _TRUNCATE);
-            wcstombs_s(&size, strProvName, 1000, pProviderInfo->pwszProvName, _TRUNCATE);
+            xmlSecAssert2(wcstombs_s(&size, strContName, 1000, pProviderInfo->pwszContainerName, _TRUNCATE) == 0, -1);
+            xmlSecAssert2(wcstombs_s(&size, strProvName, 1000, pProviderInfo->pwszProvName, _TRUNCATE) == 0, -1);
 
-            CryptReleaseContext(hProv, 0);
+            if (!CryptReleaseContext(hProv, 0)) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                            NULL,
+                            "CryptReleaseContext",
+                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                            XMLSEC_ERRORS_NO_MESSAGE);
+                return(-1);
+            }
             hProv = NULL;
 
-            CryptAcquireContext(&hProv,
+            if (!CryptAcquireContext(&hProv,
                 strContName,
                 strProvName,
                 pProviderInfo->dwProvType,
-                0);
+                0)) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                            NULL,
+                            "CryptAcquireContext",
+                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                            XMLSEC_ERRORS_NO_MESSAGE);
+                return(-1);
+            }
 
             bOk = CryptCreateHash(hProv, ctx->digestAlgId, 0, 0, &(ctx->mscHash));
         }
 
         //Last try it with PROV_RSA_AES provider type.
         if (!bOk) {
-            CryptReleaseContext(hProv, 0);
+            if (!CryptReleaseContext(hProv, 0)) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                            NULL,
+                            "CryptReleaseContext",
+                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                            XMLSEC_ERRORS_NO_MESSAGE);
+                return(-1);
+            }
             hProv = NULL;
 
-            CryptAcquireContext(&hProv,
+            if (!CryptAcquireContext(&hProv,
                 strContName,
                 NULL,
                 PROV_RSA_AES,
-                0);
+                0)) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                            NULL,
+                            "CryptAcquireContext",
+                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                            XMLSEC_ERRORS_NO_MESSAGE);
+                return(-1);
+            }
 
             bOk = CryptCreateHash(hProv, ctx->digestAlgId, 0, 0, &(ctx->mscHash));
         }

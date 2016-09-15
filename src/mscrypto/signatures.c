@@ -469,22 +469,37 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
         bOk = CryptCreateHash(hProv, ctx->digestAlgId, 0, 0, &(ctx->mscHash));
 
         //Then try it with container name, provider name and type acquired from certificate context.
-        if (!bOk) {
+        if(!bOk) {
             pProviderInfo = xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo(ctx->data);
 
-            if (pProviderInfo == NULL) {
+            if(pProviderInfo == NULL) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
                             NULL,
                             "xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
                             XMLSEC_ERRORS_NO_MESSAGE);
                 return(-1);
             }
 
-            xmlSecAssert2(wcstombs_s(&size, strContName, 1000, pProviderInfo->pwszContainerName, _TRUNCATE) == 0, -1);
-            xmlSecAssert2(wcstombs_s(&size, strProvName, 1000, pProviderInfo->pwszProvName, _TRUNCATE) == 0, -1);
+            if(wcstombs_s(&size, strContName, 1000, pProviderInfo->pwszContainerName, _TRUNCATE) != 0) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                            NULL,
+                            "wcstombs_s",
+                            XMLSEC_ERRORS_R_INVALID_DATA,
+                            XMLSEC_ERRORS_NO_MESSAGE);
+                return(-1);
+            }
 
-            if (!CryptReleaseContext(hProv, 0)) {
+            if(wcstombs_s(&size, strProvName, 1000, pProviderInfo->pwszProvName, _TRUNCATE) != 0) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                            NULL,
+                            "wcstombs_s",
+                            XMLSEC_ERRORS_R_INVALID_DATA,
+                            XMLSEC_ERRORS_NO_MESSAGE);
+                return(-1);
+            }
+
+            if(!CryptReleaseContext(hProv, 0)) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
                             NULL,
                             "CryptReleaseContext",
@@ -494,7 +509,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             }
             hProv = NULL;
 
-            if (!CryptAcquireContext(&hProv,
+            if(!CryptAcquireContext(&hProv,
                 strContName,
                 strProvName,
                 pProviderInfo->dwProvType,
@@ -511,7 +526,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
         }
 
         //Last try it with PROV_RSA_AES provider type.
-        if (!bOk) {
+        if(!bOk) {
             if (!CryptReleaseContext(hProv, 0)) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
                             NULL,
@@ -522,7 +537,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             }
             hProv = NULL;
 
-            if (!CryptAcquireContext(&hProv,
+            if(!CryptAcquireContext(&hProv,
                 strContName,
                 NULL,
                 PROV_RSA_AES,
@@ -538,11 +553,11 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             bOk = CryptCreateHash(hProv, ctx->digestAlgId, 0, 0, &(ctx->mscHash));
         }
 
-        if (pProviderInfo != NULL) {
+        if(pProviderInfo != NULL) {
             free(pProviderInfo);
         }
 
-        if (!bOk) {
+        if(!bOk) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         "CryptCreateHash",

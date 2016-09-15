@@ -2623,23 +2623,23 @@ PCRYPT_KEY_PROV_INFO xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo(xmlSecKeyDataP
     xmlSecAssert2(ctx != NULL, NULL);
     xmlSecAssert2(ctx->pCert != NULL, NULL);
 
-    if (!CertGetCertificateContextProperty(ctx->pCert, CERT_KEY_PROV_INFO_PROP_ID, NULL, &dwInfoDataLength)) {
+    if(!CertGetCertificateContextProperty(ctx->pCert, CERT_KEY_PROV_INFO_PROP_ID, NULL, &dwInfoDataLength)) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "CertGetCertificateContextProperty",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return NULL;
     }
 
-    if (dwInfoDataLength > 0) {
+    if(dwInfoDataLength > 0) {
         pInfoData = malloc(dwInfoDataLength * sizeof(BYTE));
 
-        if (!CertGetCertificateContextProperty(ctx->pCert, CERT_KEY_PROV_INFO_PROP_ID, pInfoData, &dwInfoDataLength)) {
+        if(!CertGetCertificateContextProperty(ctx->pCert, CERT_KEY_PROV_INFO_PROP_ID, pInfoData, &dwInfoDataLength)) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         "CertGetCertificateContextProperty",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
             free(pInfoData);
             return NULL;

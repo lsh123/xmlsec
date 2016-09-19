@@ -481,21 +481,23 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
                 return(-1);
             }
 
-            if(wcstombs_s(&size, strContName, 1000, pProviderInfo->pwszContainerName, _TRUNCATE) != 0) {
+            ret = wcstombs_s(&size, strContName, 1000, pProviderInfo->pwszContainerName, _TRUNCATE);
+            if(ret != 0) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
                             NULL,
                             "wcstombs_s",
                             XMLSEC_ERRORS_R_INVALID_DATA,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                            "ret=%d", ret);
                 return(-1);
             }
 
-            if(wcstombs_s(&size, strProvName, 1000, pProviderInfo->pwszProvName, _TRUNCATE) != 0) {
+            ret = wcstombs_s(&size, strProvName, 1000, pProviderInfo->pwszProvName, _TRUNCATE);
+            if(ret != 0) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
                             NULL,
                             "wcstombs_s",
                             XMLSEC_ERRORS_R_INVALID_DATA,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                            "ret=%d", ret);
                 return(-1);
             }
 

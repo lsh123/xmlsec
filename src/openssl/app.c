@@ -61,7 +61,11 @@ XMLSEC_PTR_TO_FUNC_IMPL(pem_password_cb)
 int
 xmlSecOpenSSLAppInit(const char* config) {
     ERR_load_crypto_strings();
+
+#ifndef XMLSEC_OPENSSL_110
     OPENSSL_config(NULL);
+#endif
+
     OpenSSL_add_all_algorithms();
 
     if((RAND_status() != 1) && (xmlSecOpenSSLAppLoadRANDFile(NULL) != 1)) {
@@ -111,7 +115,9 @@ xmlSecOpenSSLAppShutdown(void) {
     CRYPTO_cleanup_all_ex_data();
 
     /* finally cleanup errors */
-#if defined(XMLSEC_OPENSSL_100) || defined(XMLSEC_OPENSSL_110)
+#if defined(XMLSEC_OPENSSL_110)
+    ERR_remove_thread_state();
+#elif defined(XMLSEC_OPENSSL_100)
     ERR_remove_thread_state(NULL);
 #else
     ERR_remove_state(0);

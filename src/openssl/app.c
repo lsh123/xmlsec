@@ -1487,11 +1487,13 @@ xmlSecOpenSSLAppLoadRANDFile(const char *file) {
 
     if(file == NULL) {
         file = RAND_file_name(buffer, sizeof(buffer));
+#ifndef OPENSSL_NO_EGD
     }else if(RAND_egd(file) > 0) {
         /* we try if the given filename is an EGD socket.
          * if it is, we don't write anything back to the file. */
         egdsocket = 1;
         return 1;
+#endif
     }
 
     if((file == NULL) || !RAND_load_file(file, -1)) {

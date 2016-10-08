@@ -495,7 +495,7 @@ if test "z$OPENSSL_FOUND" = "zyes" -a "z$OPENSSL_VERSION" = "z" ; then
     if test "z$OPENSSL_VERSION" = "z" ; then
         AC_EGREP_CPP(yes,[
             #include <openssl/opensslv.h>
-        #if OPENSSL_VERSION_NUMBER >= 0x10100000L
+        #if OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined(LIBRESSL_VERSION_NUMBER)
         yes
         #endif
     ],[

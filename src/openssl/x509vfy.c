@@ -747,9 +747,9 @@ xmlSecOpenSSLX509StoreFinalize(xmlSecKeyDataStorePtr store) {
  *****************************************************************************/
 static int
 xmlSecOpenSSLX509VerifyCRL(X509_STORE* xst, X509_CRL *crl ) {
-    X509_STORE_CTX *xsc;
-    X509_OBJECT *xobj;
-    EVP_PKEY *pkey;
+    X509_STORE_CTX *xsc = NULL;
+    X509_OBJECT *xobj = NULL;
+    EVP_PKEY *pkey = NULL;
     int ret;
 
     xmlSecAssert2(xst != NULL, -1);
@@ -1011,7 +1011,7 @@ xmlSecOpenSSLX509VerifyCertAgainstCrls(STACK_OF(X509_CRL) *crls, X509* cert) {
     /*
      * Check date of CRL to make sure it's not expired
      */
-    ret = X509_cmp_current_time(X509_CRL_get_nextUpdate(crl));
+    ret = X509_cmp_current_time(X509_CRL_get0_nextUpdate(crl));
     if (ret == 0) {
         /* crl expired */
         return(1);
@@ -1317,6 +1317,7 @@ static int
 xmlSecOpenSSLX509_NAME_ENTRY_cmp(const X509_NAME_ENTRY * const *a, const X509_NAME_ENTRY * const *b) {
     ASN1_STRING *a_value, *b_value;
     ASN1_OBJECT *a_name,  *b_name;
+    int a_len, b_len;
     int ret;
 
     xmlSecAssert2(a != NULL, -1);
@@ -1337,13 +1338,15 @@ xmlSecOpenSSLX509_NAME_ENTRY_cmp(const X509_NAME_ENTRY * const *a, const X509_NA
         return(0);
     }
 
-    ret = ASN1_STRING_length(a_value) - ASN1_STRING_length(b_value);
+    a_len = ASN1_STRING_length(a_value);
+    b_len = ASN1_STRING_length(b_value);
+    ret = a_len - b_len;
     if(ret != 0) {
         return(ret);
     }
 
-    if(ASN1_STRING_length(a_value) > 0) {
-        ret = memcmp(ASN1_STRING_data(a_value), ASN1_STRING_data(b_value), ASN1_STRING_length(a_value));
+    if(a_len > 0) {
+        ret = memcmp(ASN1_STRING_get0_data(a_value), ASN1_STRING_get0_data(b_value), a_len);
         if(ret != 0) {
             return(ret);
         }

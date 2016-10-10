@@ -2220,7 +2220,7 @@ xmlSecOpenSSLX509SKIWrite(X509* cert) {
         return(NULL);
     }
 
-    res = xmlSecBase64Encode(ASN1_STRING_data(keyId), ASN1_STRING_length(keyId), 0);
+    res = xmlSecBase64Encode(ASN1_STRING_get0_data(keyId), ASN1_STRING_length(keyId), 0);
     if(res == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,

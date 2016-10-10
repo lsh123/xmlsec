@@ -247,7 +247,7 @@ static int
 xmlSecTransformRelationshipCompare(xmlNodePtr node1, xmlNodePtr node2) {
     xmlChar* id1 = NULL;
     xmlChar* id2 = NULL;
-	int ret;
+    int ret;
 
     if(node1 == node2) {
         return(0);

@@ -39,6 +39,7 @@
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
 #include <xmlsec/openssl/x509.h>
+#include "openssl11_wrapper.h"
 
 /*************************************************************************
  *
@@ -2220,7 +2221,7 @@ xmlSecOpenSSLX509SKIWrite(X509* cert) {
         return(NULL);
     }
 
-    res = xmlSecBase64Encode(ASN1_STRING_data(keyId), ASN1_STRING_length(keyId), 0);
+    res = xmlSecBase64Encode(ASN1_STRING_get0_data(keyId), ASN1_STRING_length(keyId), 0);
     if(res == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,

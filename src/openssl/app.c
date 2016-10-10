@@ -60,9 +60,30 @@ XMLSEC_PTR_TO_FUNC_IMPL(pem_password_cb)
  */
 int
 xmlSecOpenSSLAppInit(const char* config) {
+    
+#if (OPENSSL_VERSION_NUMBER < 0x10100000)
     ERR_load_crypto_strings();
     OPENSSL_config(NULL);
     OpenSSL_add_all_algorithms();
+#else /* OPENSSL_VERSION_NUMBER < 0x10100000 */
+    int ret;
+    
+    ret = OPENSSL_init_crypto(OPENSSL_INIT_LOAD_CRYPTO_STRINGS | 
+                              OPENSSL_INIT_ADD_ALL_CIPHERS |
+                              OPENSSL_INIT_ADD_ALL_DIGESTS |
+                              OPENSSL_INIT_LOAD_CONFIG |
+                              OPENSSL_INIT_ASYNC |
+                              OPENSSL_INIT_ENGINE_ALL_BUILTIN,
+                              NULL);
+    if(ret != 1) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "OPENSSL_init_crypto",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
+#endif /* OPENSSL_VERSION_NUMBER < 0x10100000 */
 
     if((RAND_status() != 1) && (xmlSecOpenSSLAppLoadRANDFile(NULL) != 1)) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -98,6 +119,7 @@ int
 xmlSecOpenSSLAppShutdown(void) {
     xmlSecOpenSSLAppSaveRANDFile(NULL);
 
+#if (OPENSSL_VERSION_NUMBER < 0x10100000)
     RAND_cleanup();
     EVP_cleanup();
 
@@ -111,13 +133,14 @@ xmlSecOpenSSLAppShutdown(void) {
     CRYPTO_cleanup_all_ex_data();
 
     /* finally cleanup errors */
-#if defined(XMLSEC_OPENSSL_100) || defined(XMLSEC_OPENSSL_110)
+#if (defined(XMLSEC_OPENSSL_100) || defined(XMLSEC_OPENSSL_110))
     ERR_remove_thread_state(NULL);
 #else
     ERR_remove_state(0);
 #endif /* defined(XMLSEC_OPENSSL_100) || defined(XMLSEC_OPENSSL_110) */
 
     ERR_free_strings();
+#endif /* (OPENSSL_VERSION_NUMBER < 0x10100000) */
 
     /* done */
     return(0);

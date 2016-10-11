@@ -1016,12 +1016,12 @@ int main(int argc, const char **argv) {
             break;          
         case xmlSecAppCommandCheckTransforms:
             for(i = pos; i < argc; ++i) {
-            if(xmlSecAppCheckTransform(argv[i]) < 0) {
-                fprintf(stderr, "Error: transform \"%s\" not found\n", argv[i]);
-                goto fail;
-            } else {
-                fprintf(stdout, "Transforms \"%s\" found\n", argv[i]);
-            }
+                if(xmlSecAppCheckTransform(argv[i]) < 0) {
+                    fprintf(stderr, "Error: transform \"%s\" not found\n", argv[i]);
+                    goto fail;
+                } else {
+                    fprintf(stdout, "Transforms \"%s\" found\n", argv[i]);
+                }
             }
             break;          
         case xmlSecAppCommandKeys:

@@ -197,7 +197,7 @@ elif test "z$ac_function_exists" = "zyes" ; then
     AC_MSG_RESULT(__FUNCTION__)
     XMLSEC_DEFINES="$XMLSEC_DEFINES -D__XMLSEC_FUNCTION__=__FUNCTION__"
 else 
-	AC_MSG_RESULT("no")
+    AC_MSG_RESULT("no")
 fi
 
 dnl ==========================================================================
@@ -213,16 +213,13 @@ fi
 dnl ==========================================================================
 dnl Check if pkg-config enabled and installed
 dnl ==========================================================================
-PKG_CONFIG="pkg-config"
 PKGCONFIG_FOUND="no"
 AC_ARG_ENABLE(pkgconfig,   [  --enable-pkgconfig      enable pkgconfig for configuration (yes)])
 if test "z$enable_pkgconfig" != "zno" ; then
-    AC_CHECK_PROG(PKGCONFIG_PRESENT, $PKG_CONFIG, yes, no)
-    if test "z$PKGCONFIG_PRESENT" = "zyes" ; then
-        if $PKG_CONFIG --atleast-pkgconfig-version 0.9 ; then
-            PKGCONFIG_FOUND="yes"
-        fi
-    fi
+    PKG_PROG_PKG_CONFIG
+    PKGCONFIG_FOUND="yes"
+else
+    PKGCONFIG_FOUND="no"
 fi
 
 dnl ==========================================================================

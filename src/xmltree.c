@@ -327,10 +327,12 @@ xmlSecEnsureEmptyChild(const xmlNodePtr parent, const xmlChar *name, const xmlCh
     }
 
     /* if not found then either add next or add at the end */
-    if(cur != NULL) {
-        cur = xmlSecAddNextSibling(cur, name, ns);
-    } else {
+    if(cur == NULL) {
         cur = xmlSecAddChild(parent, name, ns);
+    } else if((cur->next != NULL) && (cur->next->type == XML_TEXT_NODE)) {
+        cur = xmlSecAddNextSibling(cur->next, name, ns);
+    } else {
+        cur = xmlSecAddNextSibling(cur, name, ns);
     }
     if(cur == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,

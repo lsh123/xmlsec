@@ -42,8 +42,7 @@
 int
 xmlSecX509DataGetNodeContent (xmlNodePtr node, int deleteChildren,
                             xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlNodePtr cur, next;
-    int deleteCurNode;
+    xmlNodePtr cur;
     int content = 0;
 
     xmlSecAssert2(node != NULL, 0);
@@ -52,42 +51,30 @@ xmlSecX509DataGetNodeContent (xmlNodePtr node, int deleteChildren,
     /* determine the current node content */
     cur = xmlSecGetNextElementNode(node->children);
     while(cur != NULL) {
-        deleteCurNode = 0;
         if(xmlSecCheckNodeName(cur, xmlSecNodeX509Certificate, xmlSecDSigNs)) {
             if(xmlSecIsEmptyNode(cur) == 1) {
                 content |= XMLSEC_X509DATA_CERTIFICATE_NODE;
-                deleteCurNode = 1;
             }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509SubjectName, xmlSecDSigNs)) {
             if(xmlSecIsEmptyNode(cur) == 1) {
                 content |= XMLSEC_X509DATA_SUBJECTNAME_NODE;
-                deleteCurNode = 1;
             }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509IssuerSerial, xmlSecDSigNs)) {
             if(xmlSecIsEmptyNode(cur) == 1) {
                 content |= XMLSEC_X509DATA_ISSUERSERIAL_NODE;
-                deleteCurNode = 1;
             }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509SKI, xmlSecDSigNs)) {
             if(xmlSecIsEmptyNode(cur) == 1) {
                 content |= XMLSEC_X509DATA_SKI_NODE;
-                deleteCurNode = 1;
             }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509CRL, xmlSecDSigNs)) {
             if(xmlSecIsEmptyNode(cur) == 1) {
                 content |= XMLSEC_X509DATA_CRL_NODE;
-                deleteCurNode = 1;
             }
         } else {
             /* todo: fail on unknown child node? */
         }
-        next = xmlSecGetNextElementNode(cur->next);
-        if((deleteCurNode != 0) && (deleteChildren != 0)) {
-            /* remove "template" nodes */
-            xmlUnlinkNode(cur);
-            xmlFreeNode(cur);
-        }
-        cur = next;
+        cur = xmlSecGetNextElementNode(cur->next);
     }
 
     return (content);

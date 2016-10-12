@@ -35,6 +35,9 @@ XMLSEC_EXPORT int               xmlSecCheckNodeName     (const xmlNodePtr cur,
                                                          const xmlChar *name,
                                                          const xmlChar *ns);
 XMLSEC_EXPORT xmlNodePtr        xmlSecGetNextElementNode(xmlNodePtr cur);
+XMLSEC_EXPORT xmlNodePtr        xmlSecFindSibling       (const xmlNodePtr cur,
+                                                         const xmlChar *name,
+                                                         const xmlChar *ns);
 XMLSEC_EXPORT xmlNodePtr        xmlSecFindChild         (const xmlNodePtr parent,
                                                          const xmlChar *name,
                                                          const xmlChar *ns);
@@ -45,6 +48,9 @@ XMLSEC_EXPORT xmlNodePtr        xmlSecFindNode          (const xmlNodePtr parent
                                                          const xmlChar *name,
                                                          const xmlChar *ns);
 XMLSEC_EXPORT xmlNodePtr        xmlSecAddChild          (xmlNodePtr parent,
+                                                         const xmlChar *name,
+                                                         const xmlChar *ns);
+XMLSEC_EXPORT xmlNodePtr        xmlSecEnsureEmptyChild  (xmlNodePtr parent,
                                                          const xmlChar *name,
                                                          const xmlChar *ns);
 XMLSEC_EXPORT xmlNodePtr        xmlSecAddChildNode      (xmlNodePtr parent,

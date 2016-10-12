@@ -1043,11 +1043,11 @@ xmlSecMSCryptoX509CertificateNodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node,
         return(-1);
     }
 
-    cur = xmlSecAddChild(node, xmlSecNodeX509Certificate, xmlSecDSigNs);
+    cur = xmlSecEnsureEmptyChild(node, xmlSecNodeX509Certificate, xmlSecDSigNs);
     if(cur == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
-                    "xmlSecAddChild",
+                    "xmlSecEnsureEmptyChild",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeX509Certificate));
@@ -1151,11 +1151,11 @@ xmlSecMSCryptoX509SubjectNameNodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node, xml
         return(-1);
     }
 
-    cur = xmlSecAddChild(node, xmlSecNodeX509SubjectName, xmlSecDSigNs);
+    cur = xmlSecEnsureEmptyChild(node, xmlSecNodeX509SubjectName, xmlSecDSigNs);
     if(cur == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
-                    "xmlSecAddChild",
+                    "xmlSecEnsureEmptyChild",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeX509SubjectName));
@@ -1314,33 +1314,33 @@ xmlSecMSCryptoX509IssuerSerialNodeWrite(PCCERT_CONTEXT cert,
     xmlSecAssert2(node != NULL, -1);
 
     /* create xml nodes */
-    cur = xmlSecAddChild(node, xmlSecNodeX509IssuerSerial, xmlSecDSigNs);
+    cur = xmlSecEnsureEmptyChild(node, xmlSecNodeX509IssuerSerial, xmlSecDSigNs);
     if(cur == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
-                    "xmlSecAddChild",
+                    "xmlSecEnsureEmptyChild",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeX509IssuerSerial));
         return(-1);
     }
 
-    issuerNameNode = xmlSecAddChild(cur, xmlSecNodeX509IssuerName, xmlSecDSigNs);
+    issuerNameNode = xmlSecEnsureEmptyChild(cur, xmlSecNodeX509IssuerName, xmlSecDSigNs);
     if(issuerNameNode == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
-                    "xmlSecAddChild",
+                    "xmlSecEnsureEmptyChild",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeX509IssuerName));
         return(-1);
     }
 
-    issuerNumberNode = xmlSecAddChild(cur, xmlSecNodeX509SerialNumber, xmlSecDSigNs);
+    issuerNumberNode = xmlSecEnsureEmptyChild(cur, xmlSecNodeX509SerialNumber, xmlSecDSigNs);
     if(issuerNumberNode == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
-                    "xmlSecAddChild",
+                    "xmlSecEnsureEmptyChild",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeX509SerialNumber));
@@ -1461,11 +1461,11 @@ xmlSecMSCryptoX509SKINodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node, xmlSecKeyIn
         return(-1);
     }
 
-    cur = xmlSecAddChild(node, xmlSecNodeX509SKI, xmlSecDSigNs);
+    cur = xmlSecEnsureEmptyChild(node, xmlSecNodeX509SKI, xmlSecDSigNs);
     if(cur == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
-                    "xmlSecAddChild",
+                    "xmlSecEnsureEmptyChild",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "new_node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeX509SKI));
@@ -1549,11 +1549,11 @@ xmlSecMSCryptoX509CRLNodeWrite(PCCRL_CONTEXT crl, xmlNodePtr node, xmlSecKeyInfo
         return(-1);
     }
 
-    cur = xmlSecAddChild(node, xmlSecNodeX509CRL, xmlSecDSigNs);
+    cur = xmlSecEnsureEmptyChild(node, xmlSecNodeX509CRL, xmlSecDSigNs);
     if(cur == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
-                    "xmlSecAddChild",
+                    "xmlSecEnsureEmptyChild",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "new_node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeX509CRL));

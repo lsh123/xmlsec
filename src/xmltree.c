@@ -28,6 +28,33 @@
 #include <xmlsec/errors.h>
 
 /**
+ * xmlSecFindSibling:
+ * @cur:                the pointer to XML node.
+ * @name:               the name.
+ * @ns:                 the namespace href (may be NULL).
+ *
+ * Searches @cur and the next siblings of the @cur node having given name and
+ * namespace href.
+ *
+ * Returns: the pointer to the found node or NULL if an error occurs or
+ * node is not found.
+ */
+xmlNodePtr
+xmlSecFindSibling(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns) {
+    xmlNodePtr tmp;
+    xmlSecAssert2(name != NULL, NULL);
+
+    for(tmp = cur; tmp != NULL; tmp = tmp->next) {
+        if(tmp->type == XML_ELEMENT_NODE) {
+            if(xmlSecCheckNodeName(tmp, name, ns)) {
+                return(tmp);
+            }
+        }
+    }
+    return(NULL);
+}
+
+/**
  * xmlSecFindChild:
  * @parent:             the pointer to XML node.
  * @name:               the name.
@@ -41,21 +68,10 @@
  */
 xmlNodePtr
 xmlSecFindChild(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
-    xmlNodePtr cur;
-
     xmlSecAssert2(parent != NULL, NULL);
     xmlSecAssert2(name != NULL, NULL);
 
-    cur = parent->children;
-    while(cur != NULL) {
-        if(cur->type == XML_ELEMENT_NODE) {
-            if(xmlSecCheckNodeName(cur, name, ns)) {
-                return(cur);
-            }
-        }
-        cur = cur->next;
-    }
-    return(NULL);
+    return(xmlSecFindChild(parent->children, name, ns));
 }
 
 /**
@@ -278,6 +294,56 @@ xmlSecAddChildNode(xmlNodePtr parent, xmlNodePtr child) {
     xmlAddChild(parent, text);
 
     return(child);
+}
+
+/**
+ * xmlSecEnsureEmptyChild:
+ * @parent:             the pointer to XML node.
+ * @name:               the name.
+ * @ns:                 the namespace href (may be NULL).
+ *
+ * Searches a direct child of the @parent node having given name and
+ * namespace href. If not found then element node with given name / namespace
+ * is added.
+ *
+ * Returns: the pointer to the found or created node; or NULL if an error occurs.
+ */
+xmlNodePtr
+xmlSecEnsureEmptyChild(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
+    xmlNodePtr cur = NULL;
+    xmlNodePtr tmp;
+
+    xmlSecAssert2(parent != NULL, NULL);
+    xmlSecAssert2(name != NULL, NULL);
+
+    /* try to find an empty node first */
+    tmp = xmlSecFindNode(parent, name, ns);
+    while(tmp != NULL) {
+        cur = tmp;
+        if(xmlSecIsEmptyNode(cur) == 1) {
+            return(cur);
+        }
+        tmp = xmlSecFindSibling(cur->next, name, ns);
+    }
+
+    /* if not found then either add next or add at the end */
+    if(cur == NULL) {
+        cur = xmlSecAddChild(parent, name, ns);
+    } else if((cur->next != NULL) && (cur->next->type == XML_TEXT_NODE)) {
+        cur = xmlSecAddNextSibling(cur->next, name, ns);
+    } else {
+        cur = xmlSecAddNextSibling(cur, name, ns);
+    }
+    if(cur == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecAddChild or xmlSecAddNextSibling",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "node=%s",
+                    xmlSecErrorsSafeString(name));
+        return(NULL);
+    }
+    return(cur);
 }
 
 /**

@@ -212,7 +212,6 @@ xmlSecRelationshipReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSec
     while(cur != NULL) {
         if(xmlSecCheckNodeName(cur, xmlSecNodeRelationshipReference, xmlSecRelationshipReferenceNs)) {
             xmlChar* sourceId;
-            xmlChar* tmp;
 
             sourceId = xmlGetProp(cur, xmlSecRelationshipAttrSourceId);
             if(sourceId == NULL) {
@@ -225,24 +224,14 @@ xmlSecRelationshipReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSec
                 return(-1);
             }
 
-            tmp = xmlStrdup(sourceId);
-            if(tmp == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "xmlStrdup",
-                            XMLSEC_ERRORS_R_STRDUP_FAILED,
-                            "len=%d", xmlStrlen(sourceId));
-                return(-1);
-            }
-
-            ret = xmlSecPtrListAdd(ctx->sourceIdList, tmp);
+            ret = xmlSecPtrListAdd(ctx->sourceIdList, sourceId);
             if(ret < 0) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                             "xmlSecPtrListAdd",
                             XMLSEC_ERRORS_R_XMLSEC_FAILED,
                             XMLSEC_ERRORS_NO_MESSAGE);
-                xmlFree(tmp);
+                xmlFree(sourceId);
                 return(-1);
             }
         }
@@ -256,8 +245,9 @@ xmlSecRelationshipReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSec
 /* Sorts Relationship elements by Id value in lexicographical order. */
 static int
 xmlSecTransformRelationshipCompare(xmlNodePtr node1, xmlNodePtr node2) {
-    xmlChar* id1;
-    xmlChar* id2;
+    xmlChar* id1 = NULL;
+    xmlChar* id2 = NULL;
+    int ret;
 
     if(node1 == node2) {
         return(0);
@@ -272,13 +262,25 @@ xmlSecTransformRelationshipCompare(xmlNodePtr node1, xmlNodePtr node2) {
     id1 = xmlGetProp(node1, xmlSecRelationshipAttrId);
     id2 = xmlGetProp(node2, xmlSecRelationshipAttrId);
     if(id1 == NULL) {
-        return(-1);
+        ret = -1;
+        goto done;
     }
     if(id2 == NULL) {
-        return(1);
+        ret = 1;
+        goto done;
     }
 
-    return(xmlStrcmp(id1, id2));
+    ret = xmlStrcmp(id1, id2);
+
+done:
+    if (id1 != NULL) {
+        xmlFree(id1);
+    }
+    if (id2 != NULL) {
+        xmlFree(id2);
+    }
+
+    return ret;
 }
 
 /**
@@ -314,6 +316,8 @@ xmlSecTransformRelationshipProcessNode(xmlSecTransformPtr transform, xmlOutputBu
                 break;
             }
         }
+
+        xmlFree(id);
 
         if(found < 0) {
             return(0);
@@ -536,8 +540,11 @@ xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlO
                         "xmlSecTransformRelationshipWriteProp",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
+            xmlFree(value);
             return(-1);
         }
+
+        xmlFree(value);
     }
 
     /* write TargetMode */

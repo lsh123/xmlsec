@@ -197,7 +197,7 @@ elif test "z$ac_function_exists" = "zyes" ; then
     AC_MSG_RESULT(__FUNCTION__)
     XMLSEC_DEFINES="$XMLSEC_DEFINES -D__XMLSEC_FUNCTION__=__FUNCTION__"
 else 
-	AC_MSG_RESULT("no")
+    AC_MSG_RESULT("no")
 fi
 
 dnl ==========================================================================
@@ -213,16 +213,13 @@ fi
 dnl ==========================================================================
 dnl Check if pkg-config enabled and installed
 dnl ==========================================================================
-PKG_CONFIG="pkg-config"
 PKGCONFIG_FOUND="no"
 AC_ARG_ENABLE(pkgconfig,   [  --enable-pkgconfig      enable pkgconfig for configuration (yes)])
 if test "z$enable_pkgconfig" != "zno" ; then
-    AC_CHECK_PROG(PKGCONFIG_PRESENT, $PKG_CONFIG, yes, no)
-    if test "z$PKGCONFIG_PRESENT" = "zyes" ; then
-        if $PKG_CONFIG --atleast-pkgconfig-version 0.9 ; then
-            PKGCONFIG_FOUND="yes"
-        fi
-    fi
+    PKG_PROG_PKG_CONFIG
+    PKGCONFIG_FOUND="yes"
+else
+    PKGCONFIG_FOUND="no"
 fi
 
 dnl ==========================================================================
@@ -495,7 +492,7 @@ if test "z$OPENSSL_FOUND" = "zyes" -a "z$OPENSSL_VERSION" = "z" ; then
     if test "z$OPENSSL_VERSION" = "z" ; then
         AC_EGREP_CPP(yes,[
             #include <openssl/opensslv.h>
-        #if OPENSSL_VERSION_NUMBER >= 0x10100000L
+        #if OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined(LIBRESSL_VERSION_NUMBER)
         yes
         #endif
     ],[
@@ -853,8 +850,6 @@ GCRYPT_CRYPTO_LIB="$XMLSEC_PACKAGE-gcrypt"
 GCRYPT_FOUND="no"
 AC_ARG_WITH(gcrypt, [  --with-gcrypt=[PFX]       gcrypt location])
 if test "z$with_gcrypt" = "zno" ; then
-    AC_MSG_CHECKING(for gcrypt libraries >= $GCRYPT_MIN_VERSION) 
-    AC_MSG_RESULT(no)
     GCRYPT_FOUND="without"
 elif test "z$with_gcrypt" = "z" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
     PKG_CHECK_MODULES(GCRYPT, gcrypt >= $GCRYPT_MIN_VERSION,
@@ -875,7 +870,6 @@ elif test "z$with_gcrypt" = "z" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
 fi
 
 if test "z$GCRYPT_FOUND" = "zno" ; then
-    AC_MSG_CHECKING(for gcrypt libraries >= $GCRYPT_MIN_VERSION) 
     if test "z$with_gcrypt" != "z" ; then
         GCRYPT_CONFIG=$with_gcrypt/bin/$GCRYPT_CONFIG
     fi
@@ -898,12 +892,15 @@ if test "z$GCRYPT_FOUND" = "zno" ; then
     fi
 fi
 
+AC_MSG_CHECKING(for gcrypt libraries >= $GCRYPT_MIN_VERSION) 
 if test "z$GCRYPT_FOUND" = "zyes" ; then 
     XMLSEC_NO_GCRYPT="0"
     GCRYPT_CFLAGS="$GCRYPT_CFLAGS -DXMLSEC_CRYPTO_GCRYPT=1"
     XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST gcrypt"
+    AC_MSG_RESULT(yes)
 else
     XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST gcrypt"
+    AC_MSG_RESULT(no)
 fi
 
 AM_CONDITIONAL(XMLSEC_NO_GCRYPT, test "z$XMLSEC_NO_GCRYPT" = "z1")
@@ -917,7 +914,6 @@ AC_SUBST(GCRYPT_MIN_VERSION)
 dnl ==========================================================================
 dnl See if we can find GnuTLS
 dnl ==========================================================================
-GNUTLS_CONFIG="libgnutls-config"
 XMLSEC_NO_GNUTLS="1"
 GNUTLS_MIN_VERSION="2.8.0"
 GNUTLS_VERSION=""
@@ -927,8 +923,6 @@ GNUTLS_CRYPTO_LIB="$XMLSEC_PACKAGE-gnutls"
 GNUTLS_FOUND="no"
 AC_ARG_WITH(gnutls, [  --with-gnutls=[PFX]       gnutls location])
 if test "z$with_gnutls" = "zno" ; then
-    AC_MSG_CHECKING(for gnutls libraries >= $GNUTLS_MIN_VERSION) 
-    AC_MSG_RESULT(no)
     GNUTLS_FOUND="without"
 elif test "z$with_gnutls" = "z" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
     PKG_CHECK_MODULES(GNUTLS, gnutls >= $GNUTLS_MIN_VERSION,
@@ -942,29 +936,25 @@ elif test "z$with_gnutls" = "z" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
 fi
 
 if test "z$GNUTLS_FOUND" = "zno" ; then
-    AC_MSG_CHECKING(for gnutls libraries >= $GNUTLS_MIN_VERSION) 
-    if test "z$with_gnutls" != "z" ; then
-	GNUTLS_CONFIG=$with_gnutls/bin/$GNUTLS_CONFIG
+    SAVE_CFLAGS="$CFLAGS"
+    SAVE_LDFLAGS="$LDFLAGS"
+    if test "z$with_gnutls" != "z" -a "z$with_gnutls" != "zno" ; then
+        GNUTLS_CFLAGS="-I$with_gnutls/include"
+        GNUTLS_LIBS="-L$with_gnutls/lib -lgnutls"
+        CFLAGS="$GNUTLS_CFLAGS $CFLAGS"
+        LDFLAGS="$GNUTLS_LIBS $LDFLAGS"
     fi
-    if ! $GNUTLS_CONFIG --version > /dev/null 2>&1 ; then
-	if test "z$with_gnutls" != "z" ; then
-	    AC_MSG_ERROR(Unable to find gnutls at '$with_gnutls')
-	else
-	    AC_MSG_RESULT(no)
-	fi
-    else
-        vers=`$GNUTLS_CONFIG --version | awk -F. '{ printf "%d", ($1 * 1000 + $2) * 1000 + $3;}'`
-	minvers=`echo $GNUTLS_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 1000 + $2) * 1000 + $3;}'`
-	if test "$vers" -ge "$minvers" ; then
-	    GNUTLS_CFLAGS="$GNUTLS_CFLAGS `$GNUTLS_CONFIG --cflags`"
-	    GNUTLS_LIBS="$GNUTLS_LIBS `$GNUTLS_CONFIG --libs`"
-	    GNUTLS_FOUND=yes
-	else
-	    AC_MSG_ERROR(You need at least gnutls $GNUTLS_MIN_VERSION for this version of $XMLSEC_PACKAGE)
-	fi	
+    AC_CHECK_HEADERS([gnutls/gnutls.h],[
+        AC_CHECK_LIB([gnutls], [gnutls_check_version], [ GNUTLS_FOUND=yes ])
+    ], [], [AC_INCLUDES_DEFAULT])
+    if test "z$with_gnutls" != "z" -a "z$with_gnutls" != "zno" -a "z$GNUTLS_FOUND" != "zyes" ; then
+        AC_MSG_ERROR([can't find usable libgnutls at specified location "$with_gnutls"])
     fi
+    CFLAGS="$SAVE_CFLAGS"
+    LDFLAGS="$SAVE_LDFLAGS"
 fi
 
+AC_MSG_CHECKING(for gnutls libraries >= $GNUTLS_MIN_VERSION)
 if test "z$GNUTLS_FOUND" = "zyes" ; then 
     XMLSEC_NO_GNUTLS="0"
     GNUTLS_CFLAGS="$GNUTLS_CFLAGS -DXMLSEC_CRYPTO_GNUTLS=1"
@@ -974,9 +964,10 @@ if test "z$GNUTLS_FOUND" = "zyes" ; then
     if test "z$GCRYPT_FOUND" != "zyes" ; then
         AC_MSG_ERROR(xmlsec-gnutls library requires xmlsec-gcrypt library which is disabled or missing)
     fi
-
+    AC_MSG_RESULT(yes)
 else
     XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST gnutls"
+    AC_MSG_RESULT(no)
 fi
 
 AM_CONDITIONAL(XMLSEC_NO_GNUTLS, test "z$XMLSEC_NO_GNUTLS" = "z1")

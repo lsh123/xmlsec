@@ -158,6 +158,7 @@ sign_file(const char* xml_file, const char* key_file, const char* cert_file) {
     xmlNodePtr signNode = NULL;
     xmlNodePtr refNode = NULL;
     xmlNodePtr keyInfoNode = NULL;
+    xmlNodePtr x509DataNode = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
     int res = -1;
     
@@ -204,9 +205,20 @@ sign_file(const char* xml_file, const char* key_file, const char* cert_file) {
         goto done;              
     }
     
-    if(xmlSecTmplKeyInfoAddX509Data(keyInfoNode) == NULL) {
+    x509DataNode = xmlSecTmplKeyInfoAddX509Data(keyInfoNode);
+    if(x509DataNode == NULL) {
         fprintf(stderr, "Error: failed to add X509Data node\n");
         goto done;              
+    }
+
+    if(xmlSecTmplX509DataAddSubjectName(x509DataNode) == NULL) {
+        fprintf(stderr, "Error: failed to add X509SubjectName node\n");
+        goto done;
+    }
+
+    if(xmlSecTmplX509DataAddCertificate(x509DataNode) == NULL) {
+        fprintf(stderr, "Error: failed to add X509Certificate node\n");
+        goto done;
     }
 
     /* create signature context, we don't need keys manager in this example */

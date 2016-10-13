@@ -61,7 +61,7 @@ XMLSEC_PTR_TO_FUNC_IMPL(pem_password_cb)
 int
 xmlSecOpenSSLAppInit(const char* config) {
     
-#if (OPENSSL_VERSION_NUMBER < 0x10100000)
+#if (OPENSSL_VERSION_NUMBER < 0x10100000 || defined(LIBRESSL_VERSION_NUMBER))
     ERR_load_crypto_strings();
     OPENSSL_config(NULL);
     OpenSSL_add_all_algorithms();

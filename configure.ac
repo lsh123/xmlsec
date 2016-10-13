@@ -418,6 +418,18 @@ elif test "z$with_openssl" != "z" ; then
     OPENSSL_FOUND="yes"
 elif test "z$PKGCONFIG_FOUND" = "zyes" ; then
     if test "z$OPENSSL_VERSION" = "z" ; then
+        AC_EGREP_CPP(yes,[
+            #include <openssl/opensslv.h>
+        #if defined(LIBRESSL_VERSION_NUMBER)
+        yes
+        #endif
+    ],[
+        OPENSSL_VERSION="1.0.0"
+    ],[
+        OPENSSL_VERSION=""
+    ])
+    fi
+    if test "z$OPENSSL_VERSION" = "z" ; then
         PKG_CHECK_MODULES(OPENSSL, openssl >= 1.1.0,
             [OPENSSL_VERSION="1.1.0"],
             [OPENSSL_VERSION=""])
@@ -488,6 +500,19 @@ if test "z$OPENSSL_FOUND" = "zyes" -a "z$OPENSSL_VERSION" = "z" ; then
     dnl Check the OpenSSL version    
     OLD_CPPFLAGS=$CPPFLAGS
     CPPFLAGS="$OPENSSL_CFLAGS"
+
+    if test "z$OPENSSL_VERSION" = "z" ; then
+        AC_EGREP_CPP(yes,[
+            #include <openssl/opensslv.h>
+        #if defined(LIBRESSL_VERSION_NUMBER)
+        yes
+        #endif
+    ],[
+        OPENSSL_VERSION="1.0.0"
+    ],[
+        OPENSSL_VERSION=""
+    ])
+    fi
 
     if test "z$OPENSSL_VERSION" = "z" ; then
         AC_EGREP_CPP(yes,[

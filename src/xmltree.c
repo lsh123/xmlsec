@@ -71,7 +71,7 @@ xmlSecFindChild(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns)
     xmlSecAssert2(parent != NULL, NULL);
     xmlSecAssert2(name != NULL, NULL);
 
-    return(xmlSecFindChild(parent->children, name, ns));
+    return(xmlSecFindSibling(parent->children, name, ns));
 }
 
 /**

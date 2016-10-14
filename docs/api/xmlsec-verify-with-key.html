@@ -114,7 +114,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <p></p>
 <div class="INFORMALEXAMPLE">
 <p></p>
-<a name="AEN856"></a><pre class="PROGRAMLISTING">/** 
+<a name="AEN702"></a><pre class="PROGRAMLISTING">/** 
  * XML Security Library example: Verifying a file using a single key.
  *
  * Verifies a file using a key from PEM file.
@@ -129,7 +129,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  * 
- * Copyright (C) 2002-2016 Aleksey Sanin &lt;aleksey@aleksey.com&gt;
+ * Copyright (C) 2002-2016 Aleksey Sanin &lt;aleksey@aleksey.com&gt;. All Rights Reserved.
  */
 #include &lt;stdlib.h&gt;
 #include &lt;string.h&gt;
@@ -204,7 +204,7 @@ main(int argc, char **argv) {
      * xmlsec-crypto library.
      */
 #ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING
-    if(xmlSecCryptoDLLoadLibrary(BAD_CAST XMLSEC_CRYPTO) &lt; 0) {
+    if(xmlSecCryptoDLLoadLibrary(NULL) &lt; 0) {
         fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
                         "that you have it installed and check shared libraries path\n"
                         "(LD_LIBRARY_PATH) envornment variable.\n");

@@ -110,12 +110,12 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <h1>
 <a name="XMLSEC-TRANSFORMS"></a>transforms</h1>
 <div class="REFNAMEDIV">
-<a name="AEN18955"></a><h2>Name</h2>transforms -- Transform object definition.</div>
+<a name="AEN18801"></a><h2>Name</h2>transforms -- Transform object definition.</div>
 <div class="REFSECT1">
 <a name="XMLSEC-TRANSFORMS.FUNCTIONS"></a><h2>Functions</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN18960"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN18806"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody>
@@ -660,6 +660,12 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <tr>
 <td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
 <td>
+<a href="xmlsec-transforms.html#XMLSECTRANSFORMRELATIONSHIPGETKLASS">xmlSecTransformRelationshipGetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
+<td>
 <a href="xmlsec-transforms.html#XMLSECTRANSFORMXSLTGETKLASS">xmlSecTransformXsltGetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
 </td>
 </tr>
@@ -696,7 +702,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="XMLSEC-TRANSFORMS.OTHER"></a><h2>Types and Values</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN19645"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN19498"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody>
@@ -858,6 +864,10 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </tr>
 <tr>
 <td>#define</td>
+<td><a href="xmlsec-transforms.html#XMLSECTRANSFORMRELATIONSHIPID">xmlSecTransformRelationshipId</a></td>
+</tr>
+<tr>
+<td>#define</td>
 <td><a href="xmlsec-transforms.html#XMLSECTRANSFORMXSLTID">xmlSecTransformXsltId</a></td>
 </tr>
 <tr>
@@ -885,7 +895,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 xmlSecTransformIdsGet (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>Gets global registered transform klasses list.</p>
 <div class="REFSECT3">
-<a name="AEN19831"></a><h4>Returns</h4>
+<a name="AEN19688"></a><h4>Returns</h4>
 <p> the pointer to list of all registered transform klasses.</p>
 </div>
 </div>
@@ -897,7 +907,7 @@ xmlSecTransformIdsInit (<code class="PARAMETER"><span class="TYPE">void</span></
 <p>Initializes the transform klasses. This function is called from the
 <a href="xmlsec-xmlsec.html#XMLSECINIT"><span class="TYPE">xmlSecInit</span></a> function and the application should not call it directly.</p>
 <div class="REFSECT3">
-<a name="AEN19846"></a><h4>Returns</h4>
+<a name="AEN19703"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -917,7 +927,7 @@ xmlSecTransformIdsRegisterDefault (<code class="PARAMETER"><span class="TYPE">vo
 <p>Registers default (implemented by XML Security Library)
 transform klasses: XPath transform, Base64 transform, ...</p>
 <div class="REFSECT3">
-<a name="AEN19871"></a><h4>Returns</h4>
+<a name="AEN19728"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -929,10 +939,10 @@ xmlSecTransformIdsRegister (<code class="PARAMETER"><font><span class="TYPE">xml
 <p>Registers <code class="PARAMETER">id</code>
  in the global list of transform klasses.</p>
 <div class="REFSECT3">
-<a name="AEN19886"></a><h4>Parameters</h4>
+<a name="AEN19743"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN19888"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN19745"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -946,7 +956,7 @@ xmlSecTransformIdsRegister (<code class="PARAMETER"><font><span class="TYPE">xml
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN19897"></a><h4>Returns</h4>
+<a name="AEN19754"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -960,10 +970,10 @@ xmlSecTransformUriTypeCheck (<code class="PARAMETER"><a href="xmlsec-transforms.
  matches expected type <code class="PARAMETER">type</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN19916"></a><h4>Parameters</h4>
+<a name="AEN19773"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN19918"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN19775"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -984,7 +994,7 @@ xmlSecTransformUriTypeCheck (<code class="PARAMETER"><a href="xmlsec-transforms.
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN19933"></a><h4>Returns</h4>
+<a name="AEN19790"></a><h4>Returns</h4>
 <p> 1 if <code class="PARAMETER">uri</code>
 matches <code class="PARAMETER">type</code>
 , 0 if not or a negative value
@@ -1002,10 +1012,10 @@ starting data processing. Application can use this callback to
 do additional transforms chain verification or modification and
 aborting transforms execution (if necessary).</p>
 <div class="REFSECT3">
-<a name="AEN19951"></a><h4>Parameters</h4>
+<a name="AEN19808"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN19953"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN19810"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1019,7 +1029,7 @@ aborting transforms execution (if necessary).</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN19962"></a><h4>Returns</h4>
+<a name="AEN19819"></a><h4>Returns</h4>
 <p> 0 on success and a negative value otherwise (in this case,
 transforms chain will not be executed and xmlsec processing stops).</p>
 </div>
@@ -1033,7 +1043,7 @@ xmlSecTransformCtxCreate (<code class="PARAMETER"><span class="TYPE">void</span>
 The caller is responsible for destroying returned object by calling
 <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXDESTROY"><span class="TYPE">xmlSecTransformCtxDestroy</span></a> function.</p>
 <div class="REFSECT3">
-<a name="AEN19977"></a><h4>Returns</h4>
+<a name="AEN19834"></a><h4>Returns</h4>
 <p> pointer to newly allocated context object or NULL if an error
 occurs.</p>
 </div>
@@ -1045,10 +1055,10 @@ occurs.</p>
 xmlSecTransformCtxDestroy (<code class="PARAMETER"><a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX"><span class="TYPE">xmlSecTransformCtxPtr</span></a> ctx</code>);</pre>
 <p>Destroy context object created with <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXCREATE"><span class="TYPE">xmlSecTransformCtxCreate</span></a> function.</p>
 <div class="REFSECT3">
-<a name="AEN19993"></a><h4>Parameters</h4>
+<a name="AEN19850"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN19995"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN19852"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1071,10 +1081,10 @@ xmlSecTransformCtxInitialize (<code class="PARAMETER"><a href="xmlsec-transforms
 The caller is responsible for cleaning up returned object by calling
 <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXFINALIZE"><span class="TYPE">xmlSecTransformCtxFinalize</span></a> function.</p>
 <div class="REFSECT3">
-<a name="AEN20017"></a><h4>Parameters</h4>
+<a name="AEN19874"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN20019"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN19876"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1088,7 +1098,7 @@ The caller is responsible for cleaning up returned object by calling
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN20028"></a><h4>Returns</h4>
+<a name="AEN19885"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -1100,10 +1110,10 @@ xmlSecTransformCtxFinalize (<code class="PARAMETER"><a href="xmlsec-transforms.h
 <p>Cleans up <code class="PARAMETER">ctx</code>
  object initialized with <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXINITIALIZE"><span class="TYPE">xmlSecTransformCtxInitialize</span></a> function.</p>
 <div class="REFSECT3">
-<a name="AEN20045"></a><h4>Parameters</h4>
+<a name="AEN19902"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN20047"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN19904"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1124,10 +1134,10 @@ xmlSecTransformCtxFinalize (<code class="PARAMETER"><a href="xmlsec-transforms.h
 xmlSecTransformCtxReset (<code class="PARAMETER"><a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX"><span class="TYPE">xmlSecTransformCtxPtr</span></a> ctx</code>);</pre>
 <p>Resets transfroms context for new processing.</p>
 <div class="REFSECT3">
-<a name="AEN20067"></a><h4>Parameters</h4>
+<a name="AEN19924"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN20069"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN19926"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1151,10 +1161,10 @@ xmlSecTransformCtxCopyUserPref (<code class="PARAMETER"><a href="xmlsec-transfor
  context to <code class="PARAMETER">dst</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN20094"></a><h4>Parameters</h4>
+<a name="AEN19951"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN20096"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN19953"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1175,7 +1185,7 @@ xmlSecTransformCtxCopyUserPref (<code class="PARAMETER"><a href="xmlsec-transfor
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN20111"></a><h4>Returns</h4>
+<a name="AEN19968"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -1213,10 +1223,10 @@ identifies a node-set containing the element with ID attribute value
 all descendents including namespaces and attributes -- but not comments.</p></li>
 </ul>
 <div class="REFSECT3">
-<a name="AEN20147"></a><h4>Parameters</h4>
+<a name="AEN20004"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN20149"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN20006"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1243,7 +1253,7 @@ XML transforms (may be NULL).</p></td>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN20170"></a><h4>Returns</h4>
+<a name="AEN20027"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -1258,10 +1268,10 @@ xmlSecTransformCtxAppend (<code class="PARAMETER"><a href="xmlsec-transforms.htm
 
 (see <a href="xmlsec-transforms.html#XMLSECTRANSFORMCONNECT"><span class="TYPE">xmlSecTransformConnect</span></a> function for details).</p>
 <div class="REFSECT3">
-<a name="AEN20191"></a><h4>Parameters</h4>
+<a name="AEN20048"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN20193"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN20050"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1282,7 +1292,7 @@ xmlSecTransformCtxAppend (<code class="PARAMETER"><a href="xmlsec-transforms.htm
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN20208"></a><h4>Returns</h4>
+<a name="AEN20065"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -1297,10 +1307,10 @@ xmlSecTransformCtxPrepend (<code class="PARAMETER"><a href="xmlsec-transforms.ht
 
 (see <a href="xmlsec-transforms.html#XMLSECTRANSFORMCONNECT"><span class="TYPE">xmlSecTransformConnect</span></a> function for details).</p>
 <div class="REFSECT3">
-<a name="AEN20229"></a><h4>Parameters</h4>
+<a name="AEN20086"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN20231"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN20088"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1321,7 +1331,7 @@ xmlSecTransformCtxPrepend (<code class="PARAMETER"><a href="xmlsec-transforms.ht
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN20246"></a><h4>Returns</h4>
+<a name="AEN20103"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -1335,10 +1345,10 @@ xmlSecTransformCtxCreateAndAppend (<code class="PARAMETER"><a href="xmlsec-trans
 transforms in the <code class="PARAMETER">ctx</code>
  (see <a href="xmlsec-transforms.html#XMLSECTRANSFORMCONNECT"><span class="TYPE">xmlSecTransformConnect</span></a> function for details).</p>
 <div class="REFSECT3">
-<a name="AEN20266"></a><h4>Parameters</h4>
+<a name="AEN20123"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN20268"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN20125"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1359,7 +1369,7 @@ transforms in the <code class="PARAMETER">ctx</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN20283"></a><h4>Returns</h4>
+<a name="AEN20140"></a><h4>Returns</h4>
 <p> pointer to newly created transform or NULL if an error occurs.</p>
 </div>
 </div>
@@ -1373,10 +1383,10 @@ xmlSecTransformCtxCreateAndPrepend (<code class="PARAMETER"><a href="xmlsec-tran
 transforms in the <code class="PARAMETER">ctx</code>
  (see <a href="xmlsec-transforms.html#XMLSECTRANSFORMCONNECT"><span class="TYPE">xmlSecTransformConnect</span></a> function for details).</p>
 <div class="REFSECT3">
-<a name="AEN20303"></a><h4>Parameters</h4>
+<a name="AEN20160"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN20305"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN20162"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1397,7 +1407,7 @@ transforms in the <code class="PARAMETER">ctx</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN20320"></a><h4>Returns</h4>
+<a name="AEN20177"></a><h4>Returns</h4>
 <p> pointer to newly created transform or NULL if an error occurs.</p>
 </div>
 </div>
@@ -1413,10 +1423,10 @@ xmlSecTransformCtxNodeRead (<code class="PARAMETER"><a href="xmlsec-transforms.h
 of transforms in <code class="PARAMETER">ctx</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN20342"></a><h4>Parameters</h4>
+<a name="AEN20199"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN20344"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN20201"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1442,7 +1452,7 @@ of transforms in <code class="PARAMETER">ctx</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN20365"></a><h4>Returns</h4>
+<a name="AEN20222"></a><h4>Returns</h4>
 <p> pointer to newly created transform or NULL if an error occurs.</p>
 </div>
 </div>
@@ -1458,10 +1468,10 @@ xmlSecTransformCtxNodesListRead (<code class="PARAMETER"><a href="xmlsec-transfo
 appends them to the current transforms chain in <code class="PARAMETER">ctx</code>
  object.</p>
 <div class="REFSECT3">
-<a name="AEN20387"></a><h4>Parameters</h4>
+<a name="AEN20244"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN20389"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN20246"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1487,7 +1497,7 @@ appends them to the current transforms chain in <code class="PARAMETER">ctx</cod
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN20410"></a><h4>Returns</h4>
+<a name="AEN20267"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -1500,10 +1510,10 @@ xmlSecTransformCtxPrepare (<code class="PARAMETER"><a href="xmlsec-transforms.ht
 <p>Prepares the transform context for processing data of <code class="PARAMETER">inputDataType</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN20428"></a><h4>Parameters</h4>
+<a name="AEN20285"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN20430"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN20287"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1524,7 +1534,7 @@ xmlSecTransformCtxPrepare (<code class="PARAMETER"><a href="xmlsec-transforms.ht
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN20445"></a><h4>Returns</h4>
+<a name="AEN20302"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -1538,10 +1548,10 @@ xmlSecTransformCtxBinaryExecute (<code class="PARAMETER"><a href="xmlsec-transfo
 <p>Processes binary data using transforms chain in the <code class="PARAMETER">ctx</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN20466"></a><h4>Parameters</h4>
+<a name="AEN20323"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN20468"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN20325"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1567,7 +1577,7 @@ xmlSecTransformCtxBinaryExecute (<code class="PARAMETER"><a href="xmlsec-transfo
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN20489"></a><h4>Returns</h4>
+<a name="AEN20346"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -1580,10 +1590,10 @@ xmlSecTransformCtxUriExecute (<code class="PARAMETER"><a href="xmlsec-transforms
 <p>Process binary data from the URI using transforms chain in <code class="PARAMETER">ctx</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN20507"></a><h4>Parameters</h4>
+<a name="AEN20364"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN20509"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN20366"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1604,7 +1614,7 @@ xmlSecTransformCtxUriExecute (<code class="PARAMETER"><a href="xmlsec-transforms
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN20524"></a><h4>Returns</h4>
+<a name="AEN20381"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -1618,10 +1628,10 @@ xmlSecTransformCtxXmlExecute (<code class="PARAMETER"><a href="xmlsec-transforms
  using transforms in the transforms chain in <code class="PARAMETER">ctx</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN20543"></a><h4>Parameters</h4>
+<a name="AEN20400"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN20545"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN20402"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1642,7 +1652,7 @@ xmlSecTransformCtxXmlExecute (<code class="PARAMETER"><a href="xmlsec-transforms
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN20560"></a><h4>Returns</h4>
+<a name="AEN20417"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -1655,10 +1665,10 @@ xmlSecTransformCtxExecute (<code class="PARAMETER"><a href="xmlsec-transforms.ht
 <p>Executes transforms chain in <code class="PARAMETER">ctx</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN20578"></a><h4>Parameters</h4>
+<a name="AEN20435"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN20580"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN20437"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1679,7 +1689,7 @@ xmlSecTransformCtxExecute (<code class="PARAMETER"><a href="xmlsec-transforms.ht
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN20595"></a><h4>Returns</h4>
+<a name="AEN20452"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -1692,10 +1702,10 @@ xmlSecTransformCtxDebugDump (<code class="PARAMETER"><a href="xmlsec-transforms.
 <p>Prints transforms context debug information to <code class="PARAMETER">output</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN20613"></a><h4>Parameters</h4>
+<a name="AEN20470"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN20615"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN20472"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1725,10 +1735,10 @@ xmlSecTransformCtxDebugXmlDump (<code class="PARAMETER"><a href="xmlsec-transfor
 <p>Prints transforms context debug information to <code class="PARAMETER">output</code>
  in XML format.</p>
 <div class="REFSECT3">
-<a name="AEN20645"></a><h4>Parameters</h4>
+<a name="AEN20502"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN20647"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN20504"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1758,10 +1768,10 @@ xmlSecTransformCreate (<code class="PARAMETER"><font><span class="TYPE">xmlSecTr
  klass. The caller is responsible for
 destroying returned tansform using <a href="xmlsec-transforms.html#XMLSECTRANSFORMDESTROY"><span class="TYPE">xmlSecTransformDestroy</span></a> function.</p>
 <div class="REFSECT3">
-<a name="AEN20676"></a><h4>Parameters</h4>
+<a name="AEN20533"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN20678"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN20535"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1775,7 +1785,7 @@ destroying returned tansform using <a href="xmlsec-transforms.html#XMLSECTRANSFO
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN20687"></a><h4>Returns</h4>
+<a name="AEN20544"></a><h4>Returns</h4>
 <p> pointer to newly created transform or NULL if an error occurs.</p>
 </div>
 </div>
@@ -1786,10 +1796,10 @@ destroying returned tansform using <a href="xmlsec-transforms.html#XMLSECTRANSFO
 xmlSecTransformDestroy (<code class="PARAMETER"><a href="xmlsec-transforms.html#XMLSECTRANSFORM"><span class="TYPE">xmlSecTransformPtr</span></a> transform</code>);</pre>
 <p>Destroys transform created with <a href="xmlsec-transforms.html#XMLSECTRANSFORMCREATE"><span class="TYPE">xmlSecTransformCreate</span></a> function.</p>
 <div class="REFSECT3">
-<a name="AEN20703"></a><h4>Parameters</h4>
+<a name="AEN20560"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN20705"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN20562"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1817,10 +1827,10 @@ xmlSecTransformNodeRead (<code class="PARAMETER"><font><span class="TYPE">xmlNod
 <p>   3) calls transform's create method;</p>
 <p>   4) calls transform's read transform node method.</p>
 <div class="REFSECT3">
-<a name="AEN20736"></a><h4>Parameters</h4>
+<a name="AEN20593"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN20738"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN20595"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1846,7 +1856,7 @@ xmlSecTransformNodeRead (<code class="PARAMETER"><font><span class="TYPE">xmlNod
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN20759"></a><h4>Returns</h4>
+<a name="AEN20616"></a><h4>Returns</h4>
 <p> pointer to newly created transform or NULL if an error occurs.</p>
 </div>
 </div>
@@ -1862,10 +1872,10 @@ xmlSecTransformPump (<code class="PARAMETER"><a href="xmlsec-transforms.html#XML
  transform until
 no more data is available.</p>
 <div class="REFSECT3">
-<a name="AEN20781"></a><h4>Parameters</h4>
+<a name="AEN20638"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN20783"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN20640"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1891,7 +1901,7 @@ no more data is available.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN20804"></a><h4>Returns</h4>
+<a name="AEN20661"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -1903,10 +1913,10 @@ xmlSecTransformSetKey (<code class="PARAMETER"><a href="xmlsec-transforms.html#X
                        <code class="PARAMETER"><a href="xmlsec-keys.html#XMLSECKEY"><span class="TYPE">xmlSecKeyPtr</span></a> key</code>);</pre>
 <p>Sets the transform's key.</p>
 <div class="REFSECT3">
-<a name="AEN20821"></a><h4>Parameters</h4>
+<a name="AEN20678"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN20823"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN20680"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1927,7 +1937,7 @@ xmlSecTransformSetKey (<code class="PARAMETER"><a href="xmlsec-transforms.html#X
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN20838"></a><h4>Returns</h4>
+<a name="AEN20695"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -1941,10 +1951,10 @@ xmlSecTransformSetKeyReq (<code class="PARAMETER"><a href="xmlsec-transforms.htm
  in the <code class="PARAMETER">keyReq</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN20857"></a><h4>Parameters</h4>
+<a name="AEN20714"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN20859"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN20716"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1965,7 +1975,7 @@ xmlSecTransformSetKeyReq (<code class="PARAMETER"><a href="xmlsec-transforms.htm
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN20874"></a><h4>Returns</h4>
+<a name="AEN20731"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -1981,10 +1991,10 @@ xmlSecTransformVerify (<code class="PARAMETER"><a href="xmlsec-transforms.html#X
 (for digest, HMAC and signature transforms). The verification
 result is stored in the <font><span class="TYPE">status</span></font> member of <a href="xmlsec-transforms.html#XMLSECTRANSFORM"><span class="TYPE">xmlSecTransform</span></a> object.</p>
 <div class="REFSECT3">
-<a name="AEN20901"></a><h4>Parameters</h4>
+<a name="AEN20758"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN20903"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN20760"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2015,7 +2025,7 @@ result is stored in the <font><span class="TYPE">status</span></font> member of 
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN20930"></a><h4>Returns</h4>
+<a name="AEN20787"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -2030,10 +2040,10 @@ xmlSecTransformVerifyNodeContent (<code class="PARAMETER"><a href="xmlsec-transf
  content, base64 decodes it and calls <a href="xmlsec-transforms.html#XMLSECTRANSFORMVERIFY"><span class="TYPE">xmlSecTransformVerify</span></a>
 function to verify binary results.</p>
 <div class="REFSECT3">
-<a name="AEN20953"></a><h4>Parameters</h4>
+<a name="AEN20810"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN20955"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN20812"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2059,7 +2069,7 @@ function to verify binary results.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN20976"></a><h4>Returns</h4>
+<a name="AEN20833"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -2075,10 +2085,10 @@ xmlSecTransformGetDataType (<code class="PARAMETER"><a href="xmlsec-transforms.h
  is "pop") data
 type (binary or XML).</p>
 <div class="REFSECT3">
-<a name="AEN20998"></a><h4>Parameters</h4>
+<a name="AEN20855"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN21000"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN20857"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2104,7 +2114,7 @@ type (binary or XML).</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN21021"></a><h4>Returns</h4>
+<a name="AEN20878"></a><h4>Returns</h4>
 <p> the transform's data type for the <code class="PARAMETER">mode</code>
 operation.</p>
 </div>
@@ -2121,10 +2131,10 @@ xmlSecTransformPushBin (<code class="PARAMETER"><a href="xmlsec-transforms.html#
 <p>Process binary <code class="PARAMETER">data</code>
  and pushes results to next transform.</p>
 <div class="REFSECT3">
-<a name="AEN21049"></a><h4>Parameters</h4>
+<a name="AEN20906"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN21051"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN20908"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2161,7 +2171,7 @@ data chunk.</p></td>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN21084"></a><h4>Returns</h4>
+<a name="AEN20941"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -2180,10 +2190,10 @@ returns result in the <code class="PARAMETER">data</code>
 placed in the <code class="PARAMETER">dataSize</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN21112"></a><h4>Parameters</h4>
+<a name="AEN20969"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN21114"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN20971"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2219,7 +2229,7 @@ placed in the <code class="PARAMETER">dataSize</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN21149"></a><h4>Returns</h4>
+<a name="AEN21006"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -2233,10 +2243,10 @@ xmlSecTransformPushXml (<code class="PARAMETER"><a href="xmlsec-transforms.html#
 <p>Processes <code class="PARAMETER">nodes</code>
  and pushes result to the next transform in the chain.</p>
 <div class="REFSECT3">
-<a name="AEN21170"></a><h4>Parameters</h4>
+<a name="AEN21027"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN21172"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN21029"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2262,7 +2272,7 @@ xmlSecTransformPushXml (<code class="PARAMETER"><a href="xmlsec-transforms.html#
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN21193"></a><h4>Returns</h4>
+<a name="AEN21050"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -2277,10 +2287,10 @@ xmlSecTransformPopXml (<code class="PARAMETER"><a href="xmlsec-transforms.html#X
 returns result in <code class="PARAMETER">nodes</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN21214"></a><h4>Parameters</h4>
+<a name="AEN21071"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN21216"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN21073"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2306,7 +2316,7 @@ returns result in <code class="PARAMETER">nodes</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN21237"></a><h4>Returns</h4>
+<a name="AEN21094"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -2319,10 +2329,10 @@ xmlSecTransformExecute (<code class="PARAMETER"><a href="xmlsec-transforms.html#
                         <code class="PARAMETER"><a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX"><span class="TYPE">xmlSecTransformCtxPtr</span></a> transformCtx</code>);</pre>
 <p>Executes transform (used by default popBin/pushBin/popXml/pushXml methods).</p>
 <div class="REFSECT3">
-<a name="AEN21257"></a><h4>Parameters</h4>
+<a name="AEN21114"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN21259"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN21116"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2348,7 +2358,7 @@ xmlSecTransformExecute (<code class="PARAMETER"><a href="xmlsec-transforms.html#
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN21280"></a><h4>Returns</h4>
+<a name="AEN21137"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -2361,10 +2371,10 @@ xmlSecTransformDebugDump (<code class="PARAMETER"><a href="xmlsec-transforms.htm
 <p>Prints transform's debug information to <code class="PARAMETER">output</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN21298"></a><h4>Parameters</h4>
+<a name="AEN21155"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN21300"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN21157"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2394,10 +2404,10 @@ xmlSecTransformDebugXmlDump (<code class="PARAMETER"><a href="xmlsec-transforms.
 <p>Prints transform's debug information to <code class="PARAMETER">output</code>
  in XML format.</p>
 <div class="REFSECT3">
-<a name="AEN21330"></a><h4>Parameters</h4>
+<a name="AEN21187"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN21332"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN21189"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2424,10 +2434,10 @@ xmlSecTransformDebugXmlDump (<code class="PARAMETER"><a href="xmlsec-transforms.
 <pre class="PROGRAMLISTING">#define             xmlSecTransformGetName(transform)</pre>
 <p>Macro. Returns transform name.</p>
 <div class="REFSECT3">
-<a name="AEN21353"></a><h4>Parameters</h4>
+<a name="AEN21210"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN21355"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN21212"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2448,10 +2458,10 @@ xmlSecTransformDebugXmlDump (<code class="PARAMETER"><a href="xmlsec-transforms.
 <p>Macro. Returns 1 if the <code class="PARAMETER">transform</code>
  is valid or 0 otherwise.</p>
 <div class="REFSECT3">
-<a name="AEN21371"></a><h4>Parameters</h4>
+<a name="AEN21228"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN21373"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN21230"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2474,10 +2484,10 @@ xmlSecTransformDebugXmlDump (<code class="PARAMETER"><a href="xmlsec-transforms.
 
 or 0 otherwise.</p>
 <div class="REFSECT3">
-<a name="AEN21390"></a><h4>Parameters</h4>
+<a name="AEN21247"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN21392"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN21249"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2507,10 +2517,10 @@ or 0 otherwise.</p>
 
 bytes or 0 otherwise.</p>
 <div class="REFSECT3">
-<a name="AEN21415"></a><h4>Parameters</h4>
+<a name="AEN21272"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN21417"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN21274"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2554,10 +2564,10 @@ automatically strips away the start and end tags of the identified element
 and any of its descendant elements as well as any descendant comments and
 processing instructions. The output of this transform is an octet stream.</p>
 <div class="REFSECT3">
-<a name="AEN21455"></a><h4>Parameters</h4>
+<a name="AEN21312"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN21457"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN21314"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2583,7 +2593,7 @@ processing instructions. The output of this transform is an octet stream.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN21478"></a><h4>Returns</h4>
+<a name="AEN21335"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -2595,10 +2605,10 @@ xmlSecTransformRemove (<code class="PARAMETER"><a href="xmlsec-transforms.html#X
 <p>Removes <code class="PARAMETER">transform</code>
  from the chain.</p>
 <div class="REFSECT3">
-<a name="AEN21493"></a><h4>Parameters</h4>
+<a name="AEN21350"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN21495"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN21352"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2625,10 +2635,10 @@ xmlSecTransformDefaultGetDataType (<code class="PARAMETER"><a href="xmlsec-trans
 type (binary or XML) by analyzing available pushBin/popBin/pushXml/popXml
 methods.</p>
 <div class="REFSECT3">
-<a name="AEN21525"></a><h4>Parameters</h4>
+<a name="AEN21382"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN21527"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN21384"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2654,7 +2664,7 @@ methods.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN21548"></a><h4>Returns</h4>
+<a name="AEN21405"></a><h4>Returns</h4>
 <p> the transform's data type for the <code class="PARAMETER">mode</code>
 operation.</p>
 </div>
@@ -2672,10 +2682,10 @@ xmlSecTransformDefaultPushBin (<code class="PARAMETER"><a href="xmlsec-transform
  by calling transform's execute method and pushes
 results to next transform.</p>
 <div class="REFSECT3">
-<a name="AEN21576"></a><h4>Parameters</h4>
+<a name="AEN21433"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN21578"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN21435"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2712,7 +2722,7 @@ data chunk.</p></td>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN21611"></a><h4>Returns</h4>
+<a name="AEN21468"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -2731,10 +2741,10 @@ transform's execute method and returns result in the <code class="PARAMETER">dat
 size of returned data is placed in the <code class="PARAMETER">dataSize</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN21639"></a><h4>Parameters</h4>
+<a name="AEN21496"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN21641"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN21498"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2770,7 +2780,7 @@ size of returned data is placed in the <code class="PARAMETER">dataSize</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN21676"></a><h4>Returns</h4>
+<a name="AEN21533"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -2785,10 +2795,10 @@ xmlSecTransformDefaultPushXml (<code class="PARAMETER"><a href="xmlsec-transform
  by calling transform's execute method and pushes
 result to the next transform in the chain.</p>
 <div class="REFSECT3">
-<a name="AEN21697"></a><h4>Parameters</h4>
+<a name="AEN21554"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN21699"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN21556"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2814,7 +2824,7 @@ result to the next transform in the chain.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN21720"></a><h4>Returns</h4>
+<a name="AEN21577"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -2829,10 +2839,10 @@ xmlSecTransformDefaultPopXml (<code class="PARAMETER"><a href="xmlsec-transforms
 by calling transform's execute method and returns result in <code class="PARAMETER">nodes</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN21741"></a><h4>Parameters</h4>
+<a name="AEN21598"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN21743"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN21600"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2858,7 +2868,7 @@ by calling transform's execute method and returns result in <code class="PARAMET
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN21764"></a><h4>Returns</h4>
+<a name="AEN21621"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -2871,10 +2881,10 @@ xmlSecTransformCreateOutputBuffer (<code class="PARAMETER"><a href="xmlsec-trans
 <p>Creates output buffer to write data to <code class="PARAMETER">transform</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN21782"></a><h4>Parameters</h4>
+<a name="AEN21639"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN21784"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN21641"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2895,7 +2905,7 @@ xmlSecTransformCreateOutputBuffer (<code class="PARAMETER"><a href="xmlsec-trans
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN21799"></a><h4>Returns</h4>
+<a name="AEN21656"></a><h4>Returns</h4>
 <p> pointer to new output buffer or NULL if an error occurs.</p>
 </div>
 </div>
@@ -2908,10 +2918,10 @@ xmlSecTransformCreateInputBuffer (<code class="PARAMETER"><a href="xmlsec-transf
 <p>Creates input buffer to read data from <code class="PARAMETER">transform</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN21817"></a><h4>Parameters</h4>
+<a name="AEN21674"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN21819"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN21676"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2932,7 +2942,7 @@ xmlSecTransformCreateInputBuffer (<code class="PARAMETER"><a href="xmlsec-transf
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN21834"></a><h4>Returns</h4>
+<a name="AEN21691"></a><h4>Returns</h4>
 <p> pointer to new input buffer or NULL if an error occurs.</p>
 </div>
 </div>
@@ -2943,10 +2953,10 @@ xmlSecTransformCreateInputBuffer (<code class="PARAMETER"><a href="xmlsec-transf
 <span class="c_punctuation"><span class="PHRASE">(</span></span>*xmlSecTransformInitializeMethod<span class="c_punctuation"><span class="PHRASE">)</span></span> (<code class="PARAMETER"><a href="xmlsec-transforms.html#XMLSECTRANSFORM"><span class="TYPE">xmlSecTransformPtr</span></a> transform</code>);</pre>
 <p>The transform specific initialization method.</p>
 <div class="REFSECT3">
-<a name="AEN21850"></a><h4>Parameters</h4>
+<a name="AEN21707"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN21852"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN21709"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2960,7 +2970,7 @@ xmlSecTransformCreateInputBuffer (<code class="PARAMETER"><a href="xmlsec-transf
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN21861"></a><h4>Returns</h4>
+<a name="AEN21718"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -2971,10 +2981,10 @@ xmlSecTransformCreateInputBuffer (<code class="PARAMETER"><a href="xmlsec-transf
 <span class="c_punctuation"><span class="PHRASE">(</span></span>*xmlSecTransformFinalizeMethod<span class="c_punctuation"><span class="PHRASE">)</span></span> (<code class="PARAMETER"><a href="xmlsec-transforms.html#XMLSECTRANSFORM"><span class="TYPE">xmlSecTransformPtr</span></a> transform</code>);</pre>
 <p>The transform specific destroy method.</p>
 <div class="REFSECT3">
-<a name="AEN21877"></a><h4>Parameters</h4>
+<a name="AEN21734"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN21879"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN21736"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2999,10 +3009,10 @@ xmlSecTransformCreateInputBuffer (<code class="PARAMETER"><a href="xmlsec-transf
 data type in specified mode <code class="PARAMETER">mode</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN21908"></a><h4>Parameters</h4>
+<a name="AEN21765"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN21910"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN21767"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -3028,7 +3038,7 @@ data type in specified mode <code class="PARAMETER">mode</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN21931"></a><h4>Returns</h4>
+<a name="AEN21788"></a><h4>Returns</h4>
 <p> transform data type.</p>
 </div>
 </div>
@@ -3043,10 +3053,10 @@ data type in specified mode <code class="PARAMETER">mode</code>
 the <code class="PARAMETER">node</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN21954"></a><h4>Parameters</h4>
+<a name="AEN21811"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN21956"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN21813"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -3072,7 +3082,7 @@ the <code class="PARAMETER">node</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN21977"></a><h4>Returns</h4>
+<a name="AEN21834"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -3086,10 +3096,10 @@ the <code class="PARAMETER">node</code>
 <p>The transform specific method to write transform information to an XML node <code class="PARAMETER">node</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN22000"></a><h4>Parameters</h4>
+<a name="AEN21857"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN22002"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN21859"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -3115,7 +3125,7 @@ the <code class="PARAMETER">node</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN22023"></a><h4>Returns</h4>
+<a name="AEN21880"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -3128,10 +3138,10 @@ the <code class="PARAMETER">node</code>
                                 <code class="PARAMETER"><a href="xmlsec-keys.html#XMLSECKEYREQ"><span class="TYPE">xmlSecKeyReqPtr</span></a> keyReq</code>);</pre>
 <p>Transform specific method to set transform's key requirements.</p>
 <div class="REFSECT3">
-<a name="AEN22042"></a><h4>Parameters</h4>
+<a name="AEN21899"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN22044"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN21901"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -3152,7 +3162,7 @@ the <code class="PARAMETER">node</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN22059"></a><h4>Returns</h4>
+<a name="AEN21916"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -3164,10 +3174,10 @@ the <code class="PARAMETER">node</code>
                                 <code class="PARAMETER"><a href="xmlsec-keys.html#XMLSECKEY"><span class="TYPE">xmlSecKeyPtr</span></a> key</code>);</pre>
 <p>The transform specific method to set the key for use.</p>
 <div class="REFSECT3">
-<a name="AEN22078"></a><h4>Parameters</h4>
+<a name="AEN21935"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN22080"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN21937"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -3188,7 +3198,7 @@ the <code class="PARAMETER">node</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN22095"></a><h4>Returns</h4>
+<a name="AEN21952"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -3206,10 +3216,10 @@ the <code class="PARAMETER">node</code>
 member of the <a href="xmlsec-transforms.html#XMLSECTRANSFORM"><span class="TYPE">xmlSecTransform</span></a> structure to either <a href="xmlsec-transforms.html#XMLSECTRANSFORMSTATUSOK"><span class="TYPE">xmlSecTransformStatusOk</span></a>
 if verification succeeded or <a href="xmlsec-transforms.html#XMLSECTRANSFORMSTATUSFAIL"><span class="TYPE">xmlSecTransformStatusFail</span></a> otherwise.</p>
 <div class="REFSECT3">
-<a name="AEN22127"></a><h4>Parameters</h4>
+<a name="AEN21984"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN22129"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN21986"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -3241,7 +3251,7 @@ if verification succeeded or <a href="xmlsec-transforms.html#XMLSECTRANSFORMSTAT
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN22157"></a><h4>Returns</h4>
+<a name="AEN22014"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -3258,10 +3268,10 @@ if verification succeeded or <a href="xmlsec-transforms.html#XMLSECTRANSFORMSTAT
  and push
 result to the next transform in the chain.</p>
 <div class="REFSECT3">
-<a name="AEN22186"></a><h4>Parameters</h4>
+<a name="AEN22043"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN22188"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN22045"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -3298,7 +3308,7 @@ data chunk.</p></td>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN22221"></a><h4>Returns</h4>
+<a name="AEN22078"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -3317,10 +3327,10 @@ in the chain and return result in the <code class="PARAMETER">data</code>
 data is placed in the <code class="PARAMETER">dataSize</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN22251"></a><h4>Parameters</h4>
+<a name="AEN22108"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN22253"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN22110"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -3357,7 +3367,7 @@ data is placed in the <code class="PARAMETER">dataSize</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN22287"></a><h4>Returns</h4>
+<a name="AEN22144"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -3372,10 +3382,10 @@ data is placed in the <code class="PARAMETER">dataSize</code>
  and push result to the next
 transform in the chain.</p>
 <div class="REFSECT3">
-<a name="AEN22310"></a><h4>Parameters</h4>
+<a name="AEN22167"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN22312"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN22169"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -3401,7 +3411,7 @@ transform in the chain.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN22333"></a><h4>Returns</h4>
+<a name="AEN22190"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -3416,10 +3426,10 @@ transform in the chain.</p>
 process the data and return result in <code class="PARAMETER">nodes</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN22356"></a><h4>Parameters</h4>
+<a name="AEN22213"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN22358"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN22215"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -3445,7 +3455,7 @@ process the data and return result in <code class="PARAMETER">nodes</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN22379"></a><h4>Returns</h4>
+<a name="AEN22236"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -3458,10 +3468,10 @@ process the data and return result in <code class="PARAMETER">nodes</code>
                                  <code class="PARAMETER"><a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX"><span class="TYPE">xmlSecTransformCtxPtr</span></a> transformCtx</code>);</pre>
 <p>Transform specific method to process a chunk of data.</p>
 <div class="REFSECT3">
-<a name="AEN22401"></a><h4>Parameters</h4>
+<a name="AEN22258"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN22403"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN22260"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -3487,7 +3497,7 @@ process the data and return result in <code class="PARAMETER">nodes</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN22424"></a><h4>Returns</h4>
+<a name="AEN22281"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -3497,10 +3507,10 @@ process the data and return result in <code class="PARAMETER">nodes</code>
 <pre class="PROGRAMLISTING">#define             xmlSecTransformKlassGetName(klass)</pre>
 <p>Macro. Returns transform klass name.</p>
 <div class="REFSECT3">
-<a name="AEN22433"></a><h4>Parameters</h4>
+<a name="AEN22290"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN22435"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN22292"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -3521,7 +3531,7 @@ process the data and return result in <code class="PARAMETER">nodes</code>
 xmlSecTransformIdListGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The transform id list klass.</p>
 <div class="REFSECT3">
-<a name="AEN22454"></a><h4>Returns</h4>
+<a name="AEN22311"></a><h4>Returns</h4>
 <p> pointer to the transform id list klass.</p>
 </div>
 </div>
@@ -3535,10 +3545,10 @@ xmlSecTransformIdListFind (<code class="PARAMETER"><a href="xmlsec-list.html#XML
  in <code class="PARAMETER">list</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN22473"></a><h4>Parameters</h4>
+<a name="AEN22330"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN22475"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN22332"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -3559,7 +3569,7 @@ xmlSecTransformIdListFind (<code class="PARAMETER"><a href="xmlsec-list.html#XML
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN22490"></a><h4>Returns</h4>
+<a name="AEN22347"></a><h4>Returns</h4>
 <p> 1 if <code class="PARAMETER">dataId</code>
 is found in the <code class="PARAMETER">list</code>
 , 0 if not and a negative
@@ -3578,10 +3588,10 @@ xmlSecTransformIdListFindByHref (<code class="PARAMETER"><a href="xmlsec-list.ht
  in <code class="PARAMETER">list</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN22515"></a><h4>Parameters</h4>
+<a name="AEN22372"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN22517"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN22374"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -3607,7 +3617,7 @@ xmlSecTransformIdListFindByHref (<code class="PARAMETER"><a href="xmlsec-list.ht
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN22538"></a><h4>Returns</h4>
+<a name="AEN22395"></a><h4>Returns</h4>
 <p> transform klass is found and NULL otherwise.</p>
 </div>
 </div>
@@ -3623,10 +3633,10 @@ xmlSecTransformIdListFindByName (<code class="PARAMETER"><a href="xmlsec-list.ht
  in <code class="PARAMETER">list</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN22561"></a><h4>Parameters</h4>
+<a name="AEN22418"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN22563"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN22420"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -3652,7 +3662,7 @@ xmlSecTransformIdListFindByName (<code class="PARAMETER"><a href="xmlsec-list.ht
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN22584"></a><h4>Returns</h4>
+<a name="AEN22441"></a><h4>Returns</h4>
 <p> transform klass is found and NULL otherwise.</p>
 </div>
 </div>
@@ -3665,10 +3675,10 @@ xmlSecTransformIdListDebugDump (<code class="PARAMETER"><a href="xmlsec-list.htm
 <p>Prints binary transform debug information to <code class="PARAMETER">output</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN22602"></a><h4>Parameters</h4>
+<a name="AEN22459"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN22604"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN22461"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -3698,10 +3708,10 @@ xmlSecTransformIdListDebugXmlDump (<code class="PARAMETER"><a href="xmlsec-list.
 <p>Prints binary transform debug information to <code class="PARAMETER">output</code>
  in XML format.</p>
 <div class="REFSECT3">
-<a name="AEN22634"></a><h4>Parameters</h4>
+<a name="AEN22491"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN22636"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN22493"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -3740,7 +3750,7 @@ no content. The input is decoded by the algorithms. This transform is
 useful if an application needs to sign the raw data associated with
 the encoded content of an element.</p>
 <div class="REFSECT3">
-<a name="AEN22669"></a><h4>Returns</h4>
+<a name="AEN22526"></a><h4>Returns</h4>
 <p> base64 transform id.</p>
 </div>
 </div>
@@ -3753,10 +3763,10 @@ xmlSecTransformBase64SetLineSize (<code class="PARAMETER"><a href="xmlsec-transf
 <p>Sets the max line size to <code class="PARAMETER">lineSize</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN22687"></a><h4>Parameters</h4>
+<a name="AEN22544"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN22689"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN22546"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -3786,7 +3796,7 @@ xmlSecTransformInclC14NGetKlass (<code class="PARAMETER"><span class="TYPE">void
 (http://www.w3.org/TR/xmldsig-core/<font><span class="TYPE">sec-c14nAlg</span></font> and
 http://www.w3.org/TR/2001/REC-xml-c14n-20010315).</p>
 <div class="REFSECT3">
-<a name="AEN22716"></a><h4>Returns</h4>
+<a name="AEN22573"></a><h4>Returns</h4>
 <p> c14n transform id.</p>
 </div>
 </div>
@@ -3800,7 +3810,7 @@ xmlSecTransformInclC14NWithCommentsGetKlass
 (http://www.w3.org/TR/xmldsig-core/<font><span class="TYPE">sec-c14nAlg</span></font> and
 http://www.w3.org/TR/2001/REC-xml-c14n-20010315).</p>
 <div class="REFSECT3">
-<a name="AEN22731"></a><h4>Returns</h4>
+<a name="AEN22588"></a><h4>Returns</h4>
 <p> c14n with comments transform id.</p>
 </div>
 </div>
@@ -3811,7 +3821,7 @@ http://www.w3.org/TR/2001/REC-xml-c14n-20010315).</p>
 xmlSecTransformInclC14N11GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>C14N version 1.1 (http://www.w3.org/TR/xml-c14n11)</p>
 <div class="REFSECT3">
-<a name="AEN22744"></a><h4>Returns</h4>
+<a name="AEN22601"></a><h4>Returns</h4>
 <p> c14n v1.1 transform id.</p>
 </div>
 </div>
@@ -3823,7 +3833,7 @@ xmlSecTransformInclC14N11WithCommentsGetKlass
                                (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>C14N version 1.1 (http://www.w3.org/TR/xml-c14n11) with comments</p>
 <div class="REFSECT3">
-<a name="AEN22757"></a><h4>Returns</h4>
+<a name="AEN22614"></a><h4>Returns</h4>
 <p> c14n v1.1 with comments transform id.</p>
 </div>
 </div>
@@ -3835,7 +3845,7 @@ xmlSecTransformExclC14NGetKlass (<code class="PARAMETER"><span class="TYPE">void
 <p>Exclusive canoncicalization that ommits comments transform klass
 (http://www.w3.org/TR/xml-exc-c14n/).</p>
 <div class="REFSECT3">
-<a name="AEN22770"></a><h4>Returns</h4>
+<a name="AEN22627"></a><h4>Returns</h4>
 <p> exclusive c14n transform id.</p>
 </div>
 </div>
@@ -3848,7 +3858,7 @@ xmlSecTransformExclC14NWithCommentsGetKlass
 <p>Exclusive canoncicalization that includes comments transform klass
 (http://www.w3.org/TR/xml-exc-c14n/).</p>
 <div class="REFSECT3">
-<a name="AEN22783"></a><h4>Returns</h4>
+<a name="AEN22640"></a><h4>Returns</h4>
 <p> exclusive c14n with comments transform id.</p>
 </div>
 </div>
@@ -3877,7 +3887,7 @@ expression evaluator to create this transform. However, this transform
 MUST produce output in exactly the same manner as the XPath transform
 parameterized by the XPath expression above.</p>
 <div class="REFSECT3">
-<a name="AEN22803"></a><h4>Returns</h4>
+<a name="AEN22660"></a><h4>Returns</h4>
 <p> enveloped transform id.</p>
 </div>
 </div>
@@ -3890,7 +3900,7 @@ xmlSecTransformXPathGetKlass (<code class="PARAMETER"><span class="TYPE">void</s
 intersects the result with the previous nodes set. See
 http://www.w3.org/TR/xmldsig-core/<font><span class="TYPE">sec-XPath</span></font> for more details.</p>
 <div class="REFSECT3">
-<a name="AEN22818"></a><h4>Returns</h4>
+<a name="AEN22675"></a><h4>Returns</h4>
 <p> XPath transform id.</p>
 </div>
 </div>
@@ -3901,7 +3911,7 @@ http://www.w3.org/TR/xmldsig-core/<font><span class="TYPE">sec-XPath</span></fon
 xmlSecTransformXPath2GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The XPath2 transform (http://www.w3.org/TR/xmldsig-filter2/).</p>
 <div class="REFSECT3">
-<a name="AEN22831"></a><h4>Returns</h4>
+<a name="AEN22688"></a><h4>Returns</h4>
 <p> XPath2 transform klass.</p>
 </div>
 </div>
@@ -3913,7 +3923,7 @@ xmlSecTransformXPointerGetKlass (<code class="PARAMETER"><span class="TYPE">void
 <p>The XPointer transform klass
 (http://www.ietf.org/internet-drafts/draft-eastlake-xmldsig-uri-02.txt).</p>
 <div class="REFSECT3">
-<a name="AEN22844"></a><h4>Returns</h4>
+<a name="AEN22701"></a><h4>Returns</h4>
 <p> XPointer transform klass.</p>
 </div>
 </div>
@@ -3928,10 +3938,10 @@ xmlSecTransformXPointerSetExpr (<code class="PARAMETER"><a href="xmlsec-transfor
 <p>Sets the XPointer expression for an XPointer <code class="PARAMETER">transform</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN22868"></a><h4>Parameters</h4>
+<a name="AEN22725"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN22870"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN22727"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -3962,9 +3972,16 @@ xmlSecTransformXPointerSetExpr (<code class="PARAMETER"><a href="xmlsec-transfor
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN22897"></a><h4>Returns</h4>
+<a name="AEN22754"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECTRANSFORMRELATIONSHIPGETKLASS"></a><h3>xmlSecTransformRelationshipGetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
+xmlSecTransformRelationshipGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p></p>
 </div>
 <hr>
 <div class="REFSECT2">
@@ -3995,7 +4012,7 @@ to ensure interoperability of the resulting signatures among applications
 that support the XSLT transform. Note that if the output is actually HTML,
 then the result of these steps is logically equivalent [XHTML].</p>
 <div class="REFSECT3">
-<a name="AEN22915"></a><h4>Returns</h4>
+<a name="AEN22782"></a><h4>Returns</h4>
 <p> pointer to XSLT transform klass.</p>
 </div>
 </div>
@@ -4008,10 +4025,10 @@ xmlSecTransformXsltSetDefaultSecurityPrefs
 <p>Sets the new default security preferences. The xmlsec default security policy is 
 to disable everything.</p>
 <div class="REFSECT3">
-<a name="AEN22929"></a><h4>Parameters</h4>
+<a name="AEN22796"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN22931"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN22798"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -4043,7 +4060,7 @@ automatically strips away the start and end tags of the identified element
 and any of its descendant elements as well as any descendant comments and
 processing instructions. The output of this transform is an octet stream.</p>
 <div class="REFSECT3">
-<a name="AEN22954"></a><h4>Returns</h4>
+<a name="AEN22821"></a><h4>Returns</h4>
 <p> "remove xml tags" transform id.</p>
 </div>
 </div>
@@ -4057,7 +4074,7 @@ is Visa3D protocol. It doesn't follow XML/XPointer/XMLDSig specs and allows
 invalid XPointer expressions in the URI attribute. Since we couldn't evaluate
 such expressions thru XPath/XPointer engine, we need to have this hack here.</p>
 <div class="REFSECT3">
-<a name="AEN22967"></a><h4>Returns</h4>
+<a name="AEN22834"></a><h4>Returns</h4>
 <p> Visa3DHack transform klass.</p>
 </div>
 </div>
@@ -4070,10 +4087,10 @@ xmlSecTransformVisa3DHackSetID (<code class="PARAMETER"><a href="xmlsec-transfor
 <p>Sets the ID value for an Visa3DHack <code class="PARAMETER">transform</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN22985"></a><h4>Parameters</h4>
+<a name="AEN22852"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN22987"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN22854"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -4094,7 +4111,7 @@ xmlSecTransformVisa3DHackSetID (<code class="PARAMETER"><a href="xmlsec-transfor
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN23002"></a><h4>Returns</h4>
+<a name="AEN22869"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -4112,10 +4129,10 @@ at a time. Changing this impacts xmlsec memory usage and performance.</p>
 <a name="XMLSECTRANSFORMSTATUS"></a><h3>enum xmlSecTransformStatus</h3>
 <p>The transform execution status.</p>
 <div class="REFSECT3">
-<a name="AEN23018"></a><h4>Members</h4>
+<a name="AEN22885"></a><h4>Members</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN23020"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN22887"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -4156,10 +4173,10 @@ at a time. Changing this impacts xmlsec memory usage and performance.</p>
 <a name="XMLSECTRANSFORMMODE"></a><h3>enum xmlSecTransformMode</h3>
 <p>The transform operation mode</p>
 <div class="REFSECT3">
-<a name="AEN23058"></a><h4>Members</h4>
+<a name="AEN22925"></a><h4>Members</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN23060"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN22927"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -4190,10 +4207,10 @@ at a time. Changing this impacts xmlsec memory usage and performance.</p>
 <a name="XMLSECTRANSFORMOPERATION"></a><h3>enum xmlSecTransformOperation</h3>
 <p>The transform operation.</p>
 <div class="REFSECT3">
-<a name="AEN23086"></a><h4>Members</h4>
+<a name="AEN22953"></a><h4>Members</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN23088"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN22955"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -4387,10 +4404,10 @@ documents that don't follow XML, XPointer and XML DSig specifications.</p>
 };</pre>
 <p>The transform execution context.</p>
 <div class="REFSECT3">
-<a name="AEN23259"></a><h4>Members</h4>
+<a name="AEN23126"></a><h4>Members</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN23261"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN23128"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -4507,10 +4524,10 @@ if needed).</p></td>
 };</pre>
 <p>The transform structure.</p>
 <div class="REFSECT3">
-<a name="AEN23396"></a><h4>Members</h4>
+<a name="AEN23263"></a><h4>Members</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN23398"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN23265"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -4618,10 +4635,10 @@ if needed).</p></td>
 };</pre>
 <p>The transform klass desccription structure.</p>
 <div class="REFSECT3">
-<a name="AEN23517"></a><h4>Members</h4>
+<a name="AEN23384"></a><h4>Members</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN23519"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN23386"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -4808,6 +4825,12 @@ and <code class="PARAMETER">popXml</code>
 <a name="XMLSECTRANSFORMXPOINTERID"></a><h3>xmlSecTransformXPointerId</h3>
 <pre class="PROGRAMLISTING">#define             xmlSecTransformXPointerId</pre>
 <p>The XPointer transform klass.</p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECTRANSFORMRELATIONSHIPID"></a><h3>xmlSecTransformRelationshipId</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecTransformRelationshipId</pre>
+<p>The Relationship transform klass.</p>
 </div>
 <hr>
 <div class="REFSECT2">

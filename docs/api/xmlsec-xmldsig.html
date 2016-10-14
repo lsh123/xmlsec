@@ -110,12 +110,12 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <h1>
 <a name="XMLSEC-XMLDSIG"></a>xmldsig</h1>
 <div class="REFNAMEDIV">
-<a name="AEN23872"></a><h2>Name</h2>xmldsig -- XML Digital Signature support.</div>
+<a name="AEN23745"></a><h2>Name</h2>xmldsig -- XML Digital Signature support.</div>
 <div class="REFSECT1">
 <a name="XMLSEC-XMLDSIG.FUNCTIONS"></a><h2>Functions</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN23877"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN23750"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody>
@@ -248,7 +248,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="XMLSEC-XMLDSIG.OTHER"></a><h2>Types and Values</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN24022"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN23895"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody>
@@ -311,10 +311,10 @@ xmlSecDSigCtxCreate (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSE
 The caller is responsible for destroying returned object by calling
 <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXDESTROY"><span class="TYPE">xmlSecDSigCtxDestroy</span></a> function.</p>
 <div class="REFSECT3">
-<a name="AEN24083"></a><h4>Parameters</h4>
+<a name="AEN23956"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN24085"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN23958"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -328,7 +328,7 @@ The caller is responsible for destroying returned object by calling
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN24094"></a><h4>Returns</h4>
+<a name="AEN23967"></a><h4>Returns</h4>
 <p> pointer to newly allocated context object or NULL if an error
 occurs.</p>
 </div>
@@ -340,10 +340,10 @@ occurs.</p>
 xmlSecDSigCtxDestroy (<code class="PARAMETER"><a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"><span class="TYPE">xmlSecDSigCtxPtr</span></a> dsigCtx</code>);</pre>
 <p>Destroy context object created with <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXCREATE"><span class="TYPE">xmlSecDSigCtxCreate</span></a> function.</p>
 <div class="REFSECT3">
-<a name="AEN24110"></a><h4>Parameters</h4>
+<a name="AEN23983"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN24112"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN23985"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -367,10 +367,10 @@ xmlSecDSigCtxInitialize (<code class="PARAMETER"><a href="xmlsec-xmldsig.html#XM
 The caller is responsible for cleaning up returned object by calling
 <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXFINALIZE"><span class="TYPE">xmlSecDSigCtxFinalize</span></a> function.</p>
 <div class="REFSECT3">
-<a name="AEN24137"></a><h4>Parameters</h4>
+<a name="AEN24010"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN24139"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN24012"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -391,7 +391,7 @@ The caller is responsible for cleaning up returned object by calling
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN24154"></a><h4>Returns</h4>
+<a name="AEN24027"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -403,10 +403,10 @@ xmlSecDSigCtxFinalize (<code class="PARAMETER"><a href="xmlsec-xmldsig.html#XMLS
 <p>Cleans up <code class="PARAMETER">dsigCtx</code>
  object initialized with <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXINITIALIZE"><span class="TYPE">xmlSecDSigCtxInitialize</span></a> function.</p>
 <div class="REFSECT3">
-<a name="AEN24171"></a><h4>Parameters</h4>
+<a name="AEN24044"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN24173"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN24046"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -429,10 +429,10 @@ xmlSecDSigCtxSign (<code class="PARAMETER"><a href="xmlsec-xmldsig.html#XMLSECDS
 <p>Signs the data as described in <code class="PARAMETER">tmpl</code>
  node.</p>
 <div class="REFSECT3">
-<a name="AEN24197"></a><h4>Parameters</h4>
+<a name="AEN24070"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN24199"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN24072"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -453,7 +453,7 @@ xmlSecDSigCtxSign (<code class="PARAMETER"><a href="xmlsec-xmldsig.html#XMLSECDS
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN24214"></a><h4>Returns</h4>
+<a name="AEN24087"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -468,10 +468,10 @@ xmlSecDSigCtxVerify (<code class="PARAMETER"><a href="xmlsec-xmldsig.html#XMLSEC
 in <font><span class="TYPE">status</span></font> member of the <code class="PARAMETER">dsigCtx</code>
  object.</p>
 <div class="REFSECT3">
-<a name="AEN24235"></a><h4>Parameters</h4>
+<a name="AEN24108"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN24237"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN24110"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -492,7 +492,7 @@ in <font><span class="TYPE">status</span></font> member of the <code class="PARA
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN24252"></a><h4>Returns</h4>
+<a name="AEN24125"></a><h4>Returns</h4>
 <p> 0 on success (check <font><span class="TYPE">status</span></font> member of <code class="PARAMETER">dsigCtx</code>
 to get
 signature verification result) or a negative value if an error occurs.</p>
@@ -507,10 +507,10 @@ xmlSecDSigCtxEnableReferenceTransform (<code class="PARAMETER"><a href="xmlsec-x
 <p>Enables <code class="PARAMETER">transformId</code>
  for &lt;dsig:Reference/&gt; elements processing.</p>
 <div class="REFSECT3">
-<a name="AEN24273"></a><h4>Parameters</h4>
+<a name="AEN24146"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN24275"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN24148"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -531,7 +531,7 @@ xmlSecDSigCtxEnableReferenceTransform (<code class="PARAMETER"><a href="xmlsec-x
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN24290"></a><h4>Returns</h4>
+<a name="AEN24163"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -544,10 +544,10 @@ xmlSecDSigCtxEnableSignatureTransform (<code class="PARAMETER"><a href="xmlsec-x
 <p>Enables <code class="PARAMETER">transformId</code>
  for &lt;dsig:SignedInfo/&gt; element processing.</p>
 <div class="REFSECT3">
-<a name="AEN24308"></a><h4>Parameters</h4>
+<a name="AEN24181"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN24310"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN24183"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -568,7 +568,7 @@ xmlSecDSigCtxEnableSignatureTransform (<code class="PARAMETER"><a href="xmlsec-x
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN24325"></a><h4>Returns</h4>
+<a name="AEN24198"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -581,10 +581,10 @@ xmlSecDSigCtxGetPreSignBuffer (<code class="PARAMETER"><a href="xmlsec-xmldsig.h
 just before signature claculation (valid if and only if
 <a href="xmlsec-xmldsig.html#XMLSEC-DSIG-FLAGS-STORE-SIGNATURE:CAPS"><span class="TYPE">XMLSEC_DSIG_FLAGS_STORE_SIGNATURE</span></a> context flag is set.</p>
 <div class="REFSECT3">
-<a name="AEN24341"></a><h4>Parameters</h4>
+<a name="AEN24214"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN24343"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN24216"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -598,7 +598,7 @@ just before signature claculation (valid if and only if
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN24352"></a><h4>Returns</h4>
+<a name="AEN24225"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -612,10 +612,10 @@ xmlSecDSigCtxDebugDump (<code class="PARAMETER"><a href="xmlsec-xmldsig.html#XML
  to <code class="PARAMETER">output</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN24371"></a><h4>Parameters</h4>
+<a name="AEN24244"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN24373"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN24246"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -646,10 +646,10 @@ xmlSecDSigCtxDebugXmlDump (<code class="PARAMETER"><a href="xmlsec-xmldsig.html#
  to <code class="PARAMETER">output</code>
  in XML format.</p>
 <div class="REFSECT3">
-<a name="AEN24404"></a><h4>Parameters</h4>
+<a name="AEN24277"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN24406"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN24279"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -680,10 +680,10 @@ xmlSecDSigReferenceCtxCreate (<code class="PARAMETER"><a href="xmlsec-xmldsig.ht
 for destroying the returned context by calling <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTXDESTROY"><span class="TYPE">xmlSecDSigReferenceCtxDestroy</span></a>
 function.</p>
 <div class="REFSECT3">
-<a name="AEN24437"></a><h4>Parameters</h4>
+<a name="AEN24310"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN24439"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN24312"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -704,7 +704,7 @@ function.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN24454"></a><h4>Returns</h4>
+<a name="AEN24327"></a><h4>Returns</h4>
 <p> pointer to newly created context or NULL if an error occurs.</p>
 </div>
 </div>
@@ -715,10 +715,10 @@ function.</p>
 xmlSecDSigReferenceCtxDestroy (<code class="PARAMETER"><a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTX"><span class="TYPE">xmlSecDSigReferenceCtxPtr</span></a> dsigRefCtx</code>);</pre>
 <p>Destroy context object created with <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTXCREATE"><span class="TYPE">xmlSecDSigReferenceCtxCreate</span></a> function.</p>
 <div class="REFSECT3">
-<a name="AEN24470"></a><h4>Parameters</h4>
+<a name="AEN24343"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN24472"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN24345"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -743,10 +743,10 @@ xmlSecDSigReferenceCtxInitialize (<code class="PARAMETER"><a href="xmlsec-xmldsi
 for cleaning up the returned context by calling <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTXFINALIZE"><span class="TYPE">xmlSecDSigReferenceCtxFinalize</span></a>
 function.</p>
 <div class="REFSECT3">
-<a name="AEN24500"></a><h4>Parameters</h4>
+<a name="AEN24373"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN24502"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN24375"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -772,7 +772,7 @@ function.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN24523"></a><h4>Returns</h4>
+<a name="AEN24396"></a><h4>Returns</h4>
 <p> 0 on succes or aa negative value otherwise.</p>
 </div>
 </div>
@@ -783,10 +783,10 @@ function.</p>
 xmlSecDSigReferenceCtxFinalize (<code class="PARAMETER"><a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTX"><span class="TYPE">xmlSecDSigReferenceCtxPtr</span></a> dsigRefCtx</code>);</pre>
 <p>Cleans up context object created with <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTXINITIALIZE"><span class="TYPE">xmlSecDSigReferenceCtxInitialize</span></a> function.</p>
 <div class="REFSECT3">
-<a name="AEN24539"></a><h4>Parameters</h4>
+<a name="AEN24412"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN24541"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN24414"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -818,10 +818,10 @@ external data, an application may wish to signal that the referent is a
 Manifest. An optional ID attribute permits a Reference to be referenced
 from elsewhere.</p>
 <div class="REFSECT3">
-<a name="AEN24567"></a><h4>Parameters</h4>
+<a name="AEN24440"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN24569"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN24442"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -842,7 +842,7 @@ from elsewhere.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN24584"></a><h4>Returns</h4>
+<a name="AEN24457"></a><h4>Returns</h4>
 <p> 0 on succes or aa negative value otherwise.</p>
 </div>
 </div>
@@ -857,10 +857,10 @@ xmlSecDSigReferenceCtxGetPreDigestBuffer
 <a href="xmlsec-xmldsig.html#XMLSEC-DSIG-FLAGS-STORE-MANIFEST-REFERENCES:CAPS"><span class="TYPE">XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES</span></a> flas of signature context
 is set).</p>
 <div class="REFSECT3">
-<a name="AEN24602"></a><h4>Parameters</h4>
+<a name="AEN24475"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN24604"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN24477"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -874,7 +874,7 @@ is set).</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN24613"></a><h4>Returns</h4>
+<a name="AEN24486"></a><h4>Returns</h4>
 <p> pointer to the buffer or NULL if an error occurs.</p>
 </div>
 </div>
@@ -888,10 +888,10 @@ xmlSecDSigReferenceCtxDebugDump (<code class="PARAMETER"><a href="xmlsec-xmldsig
  to <code class="PARAMETER">output</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN24632"></a><h4>Parameters</h4>
+<a name="AEN24505"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN24634"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN24507"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -922,10 +922,10 @@ xmlSecDSigReferenceCtxDebugXmlDump (<code class="PARAMETER"><a href="xmlsec-xmld
  to <code class="PARAMETER">output</code>
  in output format.</p>
 <div class="REFSECT3">
-<a name="AEN24665"></a><h4>Parameters</h4>
+<a name="AEN24538"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN24667"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN24540"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -953,7 +953,7 @@ xmlSecDSigReferenceCtxDebugXmlDump (<code class="PARAMETER"><a href="xmlsec-xmld
 xmlSecDSigReferenceCtxListGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The &lt;dsig:Reference/&gt; element processing contexts list klass.</p>
 <div class="REFSECT3">
-<a name="AEN24692"></a><h4>Returns</h4>
+<a name="AEN24565"></a><h4>Returns</h4>
 <p> &lt;dsig:Reference/&gt; element processing context list klass.</p>
 </div>
 </div>
@@ -964,10 +964,10 @@ xmlSecDSigReferenceCtxListGetKlass (<code class="PARAMETER"><span class="TYPE">v
 <a name="XMLSECDSIGSTATUS"></a><h3>enum xmlSecDSigStatus</h3>
 <p>XML Digital signature processing status.</p>
 <div class="REFSECT3">
-<a name="AEN24702"></a><h4>Members</h4>
+<a name="AEN24575"></a><h4>Members</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN24704"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN24577"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1065,10 +1065,10 @@ documents that don't follow XML, XPointer and XML DSig specifications.</p>
 };</pre>
 <p>XML DSig processing context.</p>
 <div class="REFSECT3">
-<a name="AEN24767"></a><h4>Members</h4>
+<a name="AEN24640"></a><h4>Members</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN24769"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN24642"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1214,10 +1214,10 @@ functions.</p></td>
 <p>The possible &lt;dsig:Reference/&gt; node locations: in the &lt;dsig:SignedInfo/&gt;
 node or in the &lt;dsig:Manifest/&gt; node.</p>
 <div class="REFSECT3">
-<a name="AEN25010"></a><h4>Members</h4>
+<a name="AEN24883"></a><h4>Members</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN25012"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN24885"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1261,10 +1261,10 @@ node or in the &lt;dsig:Manifest/&gt; node.</p>
 };</pre>
 <p>The &lt;dsig:Reference/&gt; processing context.</p>
 <div class="REFSECT3">
-<a name="AEN25033"></a><h4>Members</h4>
+<a name="AEN24906"></a><h4>Members</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN25035"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN24908"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>

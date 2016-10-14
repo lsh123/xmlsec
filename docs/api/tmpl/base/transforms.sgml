@@ -1239,6 +1239,22 @@ Transform object definition.
 @Returns: 
 
 
+<!-- ##### MACRO xmlSecTransformRelationshipId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformRelationshipGetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
 <!-- ##### MACRO xmlSecTransformXsltId ##### -->
 <para>
 

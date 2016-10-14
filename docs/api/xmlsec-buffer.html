@@ -110,12 +110,12 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <h1>
 <a name="XMLSEC-BUFFER"></a>buffer</h1>
 <div class="REFNAMEDIV">
-<a name="AEN5104"></a><h2>Name</h2>buffer -- Binary buffer implementation.</div>
+<a name="AEN4950"></a><h2>Name</h2>buffer -- Binary buffer implementation.</div>
 <div class="REFSECT1">
 <a name="XMLSEC-BUFFER.FUNCTIONS"></a><h2>Functions</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN5109"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN4955"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody>
@@ -249,7 +249,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="XMLSEC-BUFFER.OTHER"></a><h2>Types and Values</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN5254"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN5100"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody>
@@ -279,10 +279,10 @@ xmlSecBufferSetDefaultAllocMode (<code class="PARAMETER"><a href="xmlsec-buffer.
                                  <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> defInitialSize</code>);</pre>
 <p>Sets new global default allocation mode and minimal intial size.</p>
 <div class="REFSECT3">
-<a name="AEN5284"></a><h4>Parameters</h4>
+<a name="AEN5130"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN5286"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN5132"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -312,10 +312,10 @@ xmlSecBufferCreate (<code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSI
 Caller is responsible for calling <a href="xmlsec-buffer.html#XMLSECBUFFERDESTROY"><span class="TYPE">xmlSecBufferDestroy</span></a> function
 to free the buffer.</p>
 <div class="REFSECT3">
-<a name="AEN5314"></a><h4>Parameters</h4>
+<a name="AEN5160"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN5316"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN5162"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -329,7 +329,7 @@ to free the buffer.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN5325"></a><h4>Returns</h4>
+<a name="AEN5171"></a><h4>Returns</h4>
 <p> pointer to newly allocated buffer or NULL if an error occurs.</p>
 </div>
 </div>
@@ -340,10 +340,10 @@ to free the buffer.</p>
 xmlSecBufferDestroy (<code class="PARAMETER"><a href="xmlsec-buffer.html#XMLSECBUFFER"><span class="TYPE">xmlSecBufferPtr</span></a> buf</code>);</pre>
 <p>Desrtoys buffer object created with <a href="xmlsec-buffer.html#XMLSECBUFFERCREATE"><span class="TYPE">xmlSecBufferCreate</span></a> function.</p>
 <div class="REFSECT3">
-<a name="AEN5341"></a><h4>Parameters</h4>
+<a name="AEN5187"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN5343"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN5189"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -367,10 +367,10 @@ xmlSecBufferInitialize (<code class="PARAMETER"><a href="xmlsec-buffer.html#XMLS
 . Caller is responsible for calling
 <a href="xmlsec-buffer.html#XMLSECBUFFERFINALIZE"><span class="TYPE">xmlSecBufferFinalize</span></a> function to free allocated resources.</p>
 <div class="REFSECT3">
-<a name="AEN5369"></a><h4>Parameters</h4>
+<a name="AEN5215"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN5371"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN5217"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -391,7 +391,7 @@ xmlSecBufferInitialize (<code class="PARAMETER"><a href="xmlsec-buffer.html#XMLS
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN5386"></a><h4>Returns</h4>
+<a name="AEN5232"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -403,10 +403,10 @@ xmlSecBufferFinalize (<code class="PARAMETER"><a href="xmlsec-buffer.html#XMLSEC
 <p>Frees allocated resource for a buffer intialized with <a href="xmlsec-buffer.html#XMLSECBUFFERINITIALIZE"><span class="TYPE">xmlSecBufferInitialize</span></a>
 function.</p>
 <div class="REFSECT3">
-<a name="AEN5402"></a><h4>Parameters</h4>
+<a name="AEN5248"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN5404"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN5250"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -427,10 +427,10 @@ function.</p>
 xmlSecBufferGetData (<code class="PARAMETER"><a href="xmlsec-buffer.html#XMLSECBUFFER"><span class="TYPE">xmlSecBufferPtr</span></a> buf</code>);</pre>
 <p>Gets pointer to buffer's data.</p>
 <div class="REFSECT3">
-<a name="AEN5424"></a><h4>Parameters</h4>
+<a name="AEN5270"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN5426"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN5272"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -444,7 +444,7 @@ xmlSecBufferGetData (<code class="PARAMETER"><a href="xmlsec-buffer.html#XMLSECB
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN5435"></a><h4>Returns</h4>
+<a name="AEN5281"></a><h4>Returns</h4>
 <p> pointer to buffer's data.</p>
 </div>
 </div>
@@ -458,10 +458,10 @@ xmlSecBufferSetData (<code class="PARAMETER"><a href="xmlsec-buffer.html#XMLSECB
 <p>Sets the value of the buffer to <code class="PARAMETER">data</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN5456"></a><h4>Parameters</h4>
+<a name="AEN5302"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN5458"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN5304"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -487,7 +487,7 @@ xmlSecBufferSetData (<code class="PARAMETER"><a href="xmlsec-buffer.html#XMLSECB
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN5479"></a><h4>Returns</h4>
+<a name="AEN5325"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -498,10 +498,10 @@ xmlSecBufferSetData (<code class="PARAMETER"><a href="xmlsec-buffer.html#XMLSECB
 xmlSecBufferGetSize (<code class="PARAMETER"><a href="xmlsec-buffer.html#XMLSECBUFFER"><span class="TYPE">xmlSecBufferPtr</span></a> buf</code>);</pre>
 <p>Gets the current buffer data size.</p>
 <div class="REFSECT3">
-<a name="AEN5493"></a><h4>Parameters</h4>
+<a name="AEN5339"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN5495"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN5341"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -515,7 +515,7 @@ xmlSecBufferGetSize (<code class="PARAMETER"><a href="xmlsec-buffer.html#XMLSECB
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN5504"></a><h4>Returns</h4>
+<a name="AEN5350"></a><h4>Returns</h4>
 <p> the current data size.</p>
 </div>
 </div>
@@ -529,10 +529,10 @@ xmlSecBufferSetSize (<code class="PARAMETER"><a href="xmlsec-buffer.html#XMLSECB
 have at least <code class="PARAMETER">size</code>
  bytes.</p>
 <div class="REFSECT3">
-<a name="AEN5522"></a><h4>Parameters</h4>
+<a name="AEN5368"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN5524"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN5370"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -553,7 +553,7 @@ have at least <code class="PARAMETER">size</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN5539"></a><h4>Returns</h4>
+<a name="AEN5385"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -564,10 +564,10 @@ have at least <code class="PARAMETER">size</code>
 xmlSecBufferGetMaxSize (<code class="PARAMETER"><a href="xmlsec-buffer.html#XMLSECBUFFER"><span class="TYPE">xmlSecBufferPtr</span></a> buf</code>);</pre>
 <p>Gets the maximum (allocated) buffer size.</p>
 <div class="REFSECT3">
-<a name="AEN5553"></a><h4>Parameters</h4>
+<a name="AEN5399"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN5555"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN5401"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -581,7 +581,7 @@ xmlSecBufferGetMaxSize (<code class="PARAMETER"><a href="xmlsec-buffer.html#XMLS
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN5564"></a><h4>Returns</h4>
+<a name="AEN5410"></a><h4>Returns</h4>
 <p> the maximum (allocated) buffer size.</p>
 </div>
 </div>
@@ -595,10 +595,10 @@ xmlSecBufferSetMaxSize (<code class="PARAMETER"><a href="xmlsec-buffer.html#XMLS
 have at least <code class="PARAMETER">size</code>
  bytes.</p>
 <div class="REFSECT3">
-<a name="AEN5582"></a><h4>Parameters</h4>
+<a name="AEN5428"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN5584"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN5430"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -619,7 +619,7 @@ have at least <code class="PARAMETER">size</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN5599"></a><h4>Returns</h4>
+<a name="AEN5445"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -630,10 +630,10 @@ have at least <code class="PARAMETER">size</code>
 xmlSecBufferEmpty (<code class="PARAMETER"><a href="xmlsec-buffer.html#XMLSECBUFFER"><span class="TYPE">xmlSecBufferPtr</span></a> buf</code>);</pre>
 <p>Empties the buffer.</p>
 <div class="REFSECT3">
-<a name="AEN5613"></a><h4>Parameters</h4>
+<a name="AEN5459"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN5615"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN5461"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -657,10 +657,10 @@ xmlSecBufferAppend (<code class="PARAMETER"><a href="xmlsec-buffer.html#XMLSECBU
 <p>Appends the <code class="PARAMETER">data</code>
  after the current data stored in the buffer.</p>
 <div class="REFSECT3">
-<a name="AEN5642"></a><h4>Parameters</h4>
+<a name="AEN5488"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN5644"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN5490"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -686,7 +686,7 @@ xmlSecBufferAppend (<code class="PARAMETER"><a href="xmlsec-buffer.html#XMLSECBU
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN5665"></a><h4>Returns</h4>
+<a name="AEN5511"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -700,10 +700,10 @@ xmlSecBufferPrepend (<code class="PARAMETER"><a href="xmlsec-buffer.html#XMLSECB
 <p>Prepends the <code class="PARAMETER">data</code>
  before the current data stored in the buffer.</p>
 <div class="REFSECT3">
-<a name="AEN5686"></a><h4>Parameters</h4>
+<a name="AEN5532"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN5688"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN5534"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -729,7 +729,7 @@ xmlSecBufferPrepend (<code class="PARAMETER"><a href="xmlsec-buffer.html#XMLSECB
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN5709"></a><h4>Returns</h4>
+<a name="AEN5555"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -742,10 +742,10 @@ xmlSecBufferRemoveHead (<code class="PARAMETER"><a href="xmlsec-buffer.html#XMLS
 <p>Removes <code class="PARAMETER">size</code>
  bytes from the beginning of the current buffer.</p>
 <div class="REFSECT3">
-<a name="AEN5727"></a><h4>Parameters</h4>
+<a name="AEN5573"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN5729"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN5575"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -766,7 +766,7 @@ xmlSecBufferRemoveHead (<code class="PARAMETER"><a href="xmlsec-buffer.html#XMLS
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN5744"></a><h4>Returns</h4>
+<a name="AEN5590"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -779,10 +779,10 @@ xmlSecBufferRemoveTail (<code class="PARAMETER"><a href="xmlsec-buffer.html#XMLS
 <p>Removes <code class="PARAMETER">size</code>
  bytes from the end of current buffer.</p>
 <div class="REFSECT3">
-<a name="AEN5762"></a><h4>Parameters</h4>
+<a name="AEN5608"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN5764"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN5610"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -803,7 +803,7 @@ xmlSecBufferRemoveTail (<code class="PARAMETER"><a href="xmlsec-buffer.html#XMLS
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN5779"></a><h4>Returns</h4>
+<a name="AEN5625"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -816,10 +816,10 @@ xmlSecBufferReadFile (<code class="PARAMETER"><a href="xmlsec-buffer.html#XMLSEC
 <p>Reads the content of the file <code class="PARAMETER">filename</code>
  in the buffer.</p>
 <div class="REFSECT3">
-<a name="AEN5797"></a><h4>Parameters</h4>
+<a name="AEN5643"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN5799"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN5645"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -840,7 +840,7 @@ xmlSecBufferReadFile (<code class="PARAMETER"><a href="xmlsec-buffer.html#XMLSEC
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN5814"></a><h4>Returns</h4>
+<a name="AEN5660"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -854,10 +854,10 @@ xmlSecBufferBase64NodeContentRead (<code class="PARAMETER"><a href="xmlsec-buffe
 , base64 decodes it and stores the
 result in the buffer.</p>
 <div class="REFSECT3">
-<a name="AEN5832"></a><h4>Parameters</h4>
+<a name="AEN5678"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN5834"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN5680"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -878,7 +878,7 @@ result in the buffer.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN5849"></a><h4>Returns</h4>
+<a name="AEN5695"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -892,10 +892,10 @@ xmlSecBufferBase64NodeContentWrite (<code class="PARAMETER"><a href="xmlsec-buff
 <p>Sets the content of the <code class="PARAMETER">node</code>
  to the base64 encoded buffer data.</p>
 <div class="REFSECT3">
-<a name="AEN5870"></a><h4>Parameters</h4>
+<a name="AEN5716"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN5872"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN5718"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -921,7 +921,7 @@ xmlSecBufferBase64NodeContentWrite (<code class="PARAMETER"><a href="xmlsec-buff
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN5893"></a><h4>Returns</h4>
+<a name="AEN5739"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -935,10 +935,10 @@ xmlSecBufferCreateOutputBuffer (<code class="PARAMETER"><a href="xmlsec-buffer.h
 responsible for destroying <code class="PARAMETER">buf</code>
  when processing is done.</p>
 <div class="REFSECT3">
-<a name="AEN5909"></a><h4>Parameters</h4>
+<a name="AEN5755"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN5911"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN5757"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -952,7 +952,7 @@ responsible for destroying <code class="PARAMETER">buf</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN5920"></a><h4>Returns</h4>
+<a name="AEN5766"></a><h4>Returns</h4>
 <p> pointer to newly allocated output buffer or NULL if an error
 occurs.</p>
 </div>
@@ -966,10 +966,10 @@ occurs.</p>
  and <code class="PARAMETER">xmlSecList</code>
 ).</p>
 <div class="REFSECT3">
-<a name="AEN5932"></a><h4>Members</h4>
+<a name="AEN5778"></a><h4>Members</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN5934"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN5780"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1003,10 +1003,10 @@ occurs.</p>
 };</pre>
 <p>Binary data buffer.</p>
 <div class="REFSECT3">
-<a name="AEN5955"></a><h4>Members</h4>
+<a name="AEN5801"></a><h4>Members</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN5957"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN5803"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>

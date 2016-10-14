@@ -57,6 +57,17 @@ XML tree operations.
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecFindSibling ##### -->
+<para>
+
+</para>
+
+@cur: 
+@name: 
+@ns: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecFindChild ##### -->
 <para>
 
@@ -91,6 +102,17 @@ XML tree operations.
 
 
 <!-- ##### FUNCTION xmlSecAddChild ##### -->
+<para>
+
+</para>
+
+@parent: 
+@name: 
+@ns: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecEnsureEmptyChild ##### -->
 <para>
 
 </para>

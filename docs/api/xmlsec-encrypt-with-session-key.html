@@ -114,7 +114,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <p></p>
 <div class="INFORMALEXAMPLE">
 <p></p>
-<a name="AEN948"></a><pre class="PROGRAMLISTING">/** 
+<a name="AEN794"></a><pre class="PROGRAMLISTING">/** 
  * XML Security Library example: Encrypting XML file with a session key and dynamicaly created template.
  * 
  * Encrypts XML file using a dynamicaly created template file and a session 
@@ -132,7 +132,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  * 
- * Copyright (C) 2002-2016 Aleksey Sanin &lt;aleksey@aleksey.com&gt;
+ * Copyright (C) 2002-2016 Aleksey Sanin &lt;aleksey@aleksey.com&gt;. All Rights Reserved.
  */
 #include &lt;stdlib.h&gt;
 #include &lt;string.h&gt;
@@ -210,7 +210,7 @@ main(int argc, char **argv) {
      * xmlsec-crypto library.
      */
 #ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING
-    if(xmlSecCryptoDLLoadLibrary(BAD_CAST XMLSEC_CRYPTO) &lt; 0) {
+    if(xmlSecCryptoDLLoadLibrary(NULL) &lt; 0) {
         fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
                         "that you have it installed and check shared libraries path\n"
                         "(LD_LIBRARY_PATH) envornment variable.\n");
@@ -461,7 +461,7 @@ done:
 <p></p>
 <div class="INFORMALEXAMPLE">
 <p></p>
-<a name="AEN960"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<a name="AEN806"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: Original XML doc file before encryption (encrypt3 example). 
 --&gt;
@@ -478,7 +478,7 @@ XML Security Library example: Original XML doc file before encryption (encrypt3 
 <p></p>
 <div class="INFORMALEXAMPLE">
 <p></p>
-<a name="AEN965"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<a name="AEN811"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: Original XML doc file before encryption (encrypt3 example). 
 --&gt;

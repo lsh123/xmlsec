@@ -110,12 +110,12 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <h1>
 <a name="XMLSEC-X509"></a>x509</h1>
 <div class="REFNAMEDIV">
-<a name="AEN28791"></a><h2>Name</h2>x509 -- <a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate" target="_top">&lt;dsig:X509Certificate/&gt;</a> node parser.</div>
+<a name="AEN28797"></a><h2>Name</h2>x509 -- <a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate" target="_top">&lt;dsig:X509Certificate/&gt;</a> node parser.</div>
 <div class="REFSECT1">
 <a name="XMLSEC-X509.FUNCTIONS"></a><h2>Functions</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN28797"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN28803"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody><tr>
@@ -132,7 +132,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="XMLSEC-X509.OTHER"></a><h2>Types and Values</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN28809"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN28815"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody>
@@ -175,15 +175,14 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="XMLSECX509DATAGETNODECONTENT"></a><h3>xmlSecX509DataGetNodeContent ()</h3>
 <pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
 xmlSecX509DataGetNodeContent (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> node</code>,
-                              <code class="PARAMETER"><font><span class="TYPE">int</span></font> deleteChildren</code>,
                               <code class="PARAMETER"><a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"><span class="TYPE">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code>);</pre>
 <p>Reads the contents of &lt;dsig:X509Data/&gt; node and returns it as
 a bits mask.</p>
 <div class="REFSECT3">
-<a name="AEN28859"></a><h4>Parameters</h4>
+<a name="AEN28862"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN28861"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN28864"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -191,11 +190,6 @@ a bits mask.</p>
 <tr>
 <td><p>node</p></td>
 <td><p>the pointer to &lt;dsig:X509Data/&gt; node.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>deleteChildren</p></td>
-<td><p>the flag that indicates whether to remove node children after reading.</p></td>
 <td> </td>
 </tr>
 <tr>
@@ -209,7 +203,7 @@ a bits mask.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN28882"></a><h4>Returns</h4>
+<a name="AEN28879"></a><h4>Returns</h4>
 <p> the bit mask representing the &lt;dsig:X509Data/&gt; node content
 or a negative value if an error occurs.</p>
 </div>

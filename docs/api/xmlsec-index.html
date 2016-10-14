@@ -230,6 +230,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <li><p><font>xmlSecCryptoKeyDataStoreGetKlassMethod</font></p></li>
 <li><p><font>xmlSecCryptoKeysMngrInitMethod</font></p></li>
 <li><p><a href="xmlsec-app.html#XMLSECCRYPTOKEYSMNGRINIT">xmlSecCryptoKeysMngrInit</a></p></li>
+<li><p><font>XMLSEC-CRYPTO</font></p></li>
 <li><p><font>xmlSecCryptoShutdownMethod</font></p></li>
 <li><p><a href="xmlsec-app.html#XMLSECCRYPTOSHUTDOWN">xmlSecCryptoShutdown</a></p></li>
 <li><p><font>xmlSecCryptoTransformGetKlassMethod</font></p></li>
@@ -278,6 +279,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <li><p><a href="xmlsec-xmlenc.html#XMLSECENCCTXURIENCRYPT">xmlSecEncCtxUriEncrypt</a></p></li>
 <li><p><a href="xmlsec-xmlenc.html#XMLSECENCCTXXMLENCRYPT">xmlSecEncCtxXmlEncrypt</a></p></li>
 <li><p><font>XMLSEC-ENC-RETURN-REPLACED-NODE</font></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECENSUREEMPTYCHILD">xmlSecEnsureEmptyChild</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSECERROR">xmlSecError</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSECERRORSCALLBACK">xmlSecErrorsCallback</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSECERRORSDEFAULTCALLBACKENABLEOUTPUT">xmlSecErrorsDefaultCallbackEnableOutput</a></p></li>
@@ -341,6 +343,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <li><p><a href="xmlsec-xmltree.html#XMLSECFINDCHILD">xmlSecFindChild</a></p></li>
 <li><p><a href="xmlsec-xmltree.html#XMLSECFINDNODE">xmlSecFindNode</a></p></li>
 <li><p><a href="xmlsec-xmltree.html#XMLSECFINDPARENT">xmlSecFindParent</a></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECFINDSIBLING">xmlSecFindSibling</a></p></li>
 <li><p><font>XMLSEC-FUNC-TO-PTR</font></p></li>
 <li><p><a href="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPDEFAULTKEYSMNGRADOPTKEY">xmlSecGCryptAppDefaultKeysMngrAdoptKey</a></p></li>
 <li><p><a href="xmlsec-gcrypt-app.html#XMLSECGCRYPTAPPDEFAULTKEYSMNGRINIT">xmlSecGCryptAppDefaultKeysMngrInit</a></p></li>
@@ -440,6 +443,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <li><p><a href="xmlsec-gcrypt-crypto.html#XMLSECGCRYPTTRANSFORMSHA512ID">xmlSecGCryptTransformSha512Id</a></p></li>
 <li><p><a href="xmlsec-xmltree.html#XMLSECGENERATEANDADDID">xmlSecGenerateAndAddID</a></p></li>
 <li><p><a href="xmlsec-xmltree.html#XMLSECGENERATEID">xmlSecGenerateID</a></p></li>
+<li><p><a href="xmlsec-xmlsec.html#XMLSECGETDEFAULTCRYPTO">xmlSecGetDefaultCrypto</a></p></li>
 <li><p><a href="xmlsec-xmltree.html#XMLSECGETHEX">xmlSecGetHex</a></p></li>
 <li><p><a href="xmlsec-keysmngr.html#XMLSECGETKEYCALLBACK">xmlSecGetKeyCallback</a></p></li>
 <li><p><a href="xmlsec-xmltree.html#XMLSECGETNEXTELEMENTNODE">xmlSecGetNextElementNode</a></p></li>
@@ -844,6 +848,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <li><p><a href="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOKEYDATAGETDECRYPTKEY">xmlSecMSCryptoKeyDataGetDecryptKey</a></p></li>
 <li><p><a href="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOKEYDATAGETKEY">xmlSecMSCryptoKeyDataGetKey</a></p></li>
 <li><p><a href="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOKEYDATAGETMSCRYPTOKEYSPEC">xmlSecMSCryptoKeyDataGetMSCryptoKeySpec</a></p></li>
+<li><p><a href="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOKEYDATAGETMSCRYPTOPROVIDERINFO">xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo</a></p></li>
 <li><p><a href="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOKEYDATAGETMSCRYPTOPROVIDER">xmlSecMSCryptoKeyDataGetMSCryptoProvider</a></p></li>
 <li><p><a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOKEYDATAGOST2001GETKLASS">xmlSecMSCryptoKeyDataGost2001GetKlass</a></p></li>
 <li><p><a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOKEYDATAGOST2001ID">xmlSecMSCryptoKeyDataGost2001Id</a></p></li>
@@ -1326,6 +1331,30 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <li><p><a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTORESAVE">xmlSecSimpleKeysStoreSave</a></p></li>
 <li><p><font>XMLSEC-SIZE-BAD-CAST</font></p></li>
 <li><p><a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a></p></li>
+<li><p><font>xmlSecSoap11AddBodyEntry</font></p></li>
+<li><p><font>xmlSecSoap11AddFaultEntry</font></p></li>
+<li><p><font>xmlSecSoap11CheckEnvelope</font></p></li>
+<li><p><font>xmlSecSoap11CreateEnvelope</font></p></li>
+<li><p><font>xmlSecSoap11EnsureHeader</font></p></li>
+<li><p><font>xmlSecSoap11GetBodyEntriesNumber</font></p></li>
+<li><p><font>xmlSecSoap11GetBodyEntry</font></p></li>
+<li><p><font>xmlSecSoap11GetBody</font></p></li>
+<li><p><font>xmlSecSoap11GetFaultEntry</font></p></li>
+<li><p><font>xmlSecSoap11GetHeader</font></p></li>
+<li><p><font>xmlSecSoap12AddBodyEntry</font></p></li>
+<li><p><font>xmlSecSoap12AddFaultDetailEntry</font></p></li>
+<li><p><font>xmlSecSoap12AddFaultEntry</font></p></li>
+<li><p><font>xmlSecSoap12AddFaultReasonText</font></p></li>
+<li><p><font>xmlSecSoap12AddFaultSubcode</font></p></li>
+<li><p><font>xmlSecSoap12CheckEnvelope</font></p></li>
+<li><p><font>xmlSecSoap12CreateEnvelope</font></p></li>
+<li><p><font>xmlSecSoap12EnsureHeader</font></p></li>
+<li><p><font>xmlSecSoap12FaultCode</font></p></li>
+<li><p><font>xmlSecSoap12GetBodyEntriesNumber</font></p></li>
+<li><p><font>xmlSecSoap12GetBodyEntry</font></p></li>
+<li><p><font>xmlSecSoap12GetBody</font></p></li>
+<li><p><font>xmlSecSoap12GetFaultEntry</font></p></li>
+<li><p><font>xmlSecSoap12GetHeader</font></p></li>
 <li><p><font>XMLSEC-STACK-OF-X509-CRL</font></p></li>
 <li><p><font>XMLSEC-STACK-OF-X509</font></p></li>
 <li><p><a href="xmlsec-list.html#XMLSECSTRINGLISTGETKLASS">xmlSecStringListGetKlass</a></p></li>
@@ -1535,6 +1564,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <li><p><a href="xmlsec-transforms.html#XMLSECTRANSFORMPUSHBIN">xmlSecTransformPushBin</a></p></li>
 <li><p><a href="xmlsec-transforms.html#XMLSECTRANSFORMPUSHXMLMETHOD">xmlSecTransformPushXmlMethod</a></p></li>
 <li><p><a href="xmlsec-transforms.html#XMLSECTRANSFORMPUSHXML">xmlSecTransformPushXml</a></p></li>
+<li><p><a href="xmlsec-transforms.html#XMLSECTRANSFORMRELATIONSHIPGETKLASS">xmlSecTransformRelationshipGetKlass</a></p></li>
+<li><p><a href="xmlsec-transforms.html#XMLSECTRANSFORMRELATIONSHIPID">xmlSecTransformRelationshipId</a></p></li>
 <li><p><a href="xmlsec-transforms.html#XMLSECTRANSFORMREMOVE">xmlSecTransformRemove</a></p></li>
 <li><p><a href="xmlsec-transforms.html#XMLSECTRANSFORMREMOVEXMLTAGSC14NGETKLASS">xmlSecTransformRemoveXmlTagsC14NGetKlass</a></p></li>
 <li><p><a href="xmlsec-transforms.html#XMLSECTRANSFORMREMOVEXMLTAGSC14NID">xmlSecTransformRemoveXmlTagsC14NId</a></p></li>

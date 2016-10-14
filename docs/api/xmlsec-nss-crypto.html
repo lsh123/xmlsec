@@ -110,12 +110,12 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <h1>
 <a name="XMLSEC-NSS-CRYPTO"></a>crypto</h1>
 <div class="REFNAMEDIV">
-<a name="AEN39607"></a><h2>Name</h2>crypto -- Crypto transforms implementation for NSS.</div>
+<a name="AEN39604"></a><h2>Name</h2>crypto -- Crypto transforms implementation for NSS.</div>
 <div class="REFSECT1">
 <a name="XMLSEC-NSS-CRYPTO.FUNCTIONS"></a><h2>Functions</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN39612"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN39609"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody>
@@ -393,7 +393,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="XMLSEC-NSS-CRYPTO.OTHER"></a><h2>Types and Values</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN39925"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN39922"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody>
@@ -542,7 +542,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 xmlSecCryptoGetFunctions_nss (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>Gets the pointer to xmlsec-nss functions table.</p>
 <div class="REFSECT3">
-<a name="AEN40071"></a><h4>Returns</h4>
+<a name="AEN40068"></a><h4>Returns</h4>
 <p> the xmlsec-nss functions table or NULL if an error occurs.</p>
 </div>
 </div>
@@ -553,7 +553,7 @@ xmlSecCryptoGetFunctions_nss (<code class="PARAMETER"><span class="TYPE">void</s
 xmlSecNssInit (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>XMLSec library specific crypto engine initialization.</p>
 <div class="REFSECT3">
-<a name="AEN40084"></a><h4>Returns</h4>
+<a name="AEN40081"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -564,7 +564,7 @@ xmlSecNssInit (<code class="PARAMETER"><span class="TYPE">void</span></code>);</
 xmlSecNssShutdown (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>XMLSec library specific crypto engine shutdown.</p>
 <div class="REFSECT3">
-<a name="AEN40097"></a><h4>Returns</h4>
+<a name="AEN40094"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -575,10 +575,10 @@ xmlSecNssShutdown (<code class="PARAMETER"><span class="TYPE">void</span></code>
 xmlSecNssKeysMngrInit (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="TYPE">xmlSecKeysMngrPtr</span></a> mngr</code>);</pre>
 <p>Adds NSS specific key data stores in keys manager.</p>
 <div class="REFSECT3">
-<a name="AEN40111"></a><h4>Parameters</h4>
+<a name="AEN40108"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN40113"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN40110"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -592,7 +592,7 @@ xmlSecNssKeysMngrInit (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XML
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN40122"></a><h4>Returns</h4>
+<a name="AEN40119"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -606,10 +606,10 @@ xmlSecNssGenerateRandom (<code class="PARAMETER"><a href="xmlsec-buffer.html#XML
  random bytes and puts result in <code class="PARAMETER">buffer</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN40141"></a><h4>Parameters</h4>
+<a name="AEN40138"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN40143"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN40140"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -630,7 +630,7 @@ xmlSecNssGenerateRandom (<code class="PARAMETER"><a href="xmlsec-buffer.html#XML
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN40158"></a><h4>Returns</h4>
+<a name="AEN40155"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -647,10 +647,10 @@ xmlSecNssErrorsDefaultCallback (<code class="PARAMETER">const <font><span class=
                                 <code class="PARAMETER">const <font><span class="TYPE">char</span></font> *msg</code>);</pre>
 <p>The default errors reporting callback function.</p>
 <div class="REFSECT3">
-<a name="AEN40190"></a><h4>Parameters</h4>
+<a name="AEN40187"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN40192"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN40189"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -703,7 +703,7 @@ xmlSecNssErrorsDefaultCallback (<code class="PARAMETER">const <font><span class=
 xmlSecNssGetInternalKeySlot (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>Gets internal NSS key slot.</p>
 <div class="REFSECT3">
-<a name="AEN40247"></a><h4>Returns</h4>
+<a name="AEN40244"></a><h4>Returns</h4>
 <p> internal key slot and initializes it if needed.</p>
 </div>
 </div>
@@ -714,7 +714,7 @@ xmlSecNssGetInternalKeySlot (<code class="PARAMETER"><span class="TYPE">void</sp
 xmlSecNssKeyDataAesGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The AES key data klass.</p>
 <div class="REFSECT3">
-<a name="AEN40260"></a><h4>Returns</h4>
+<a name="AEN40257"></a><h4>Returns</h4>
 <p> AES key data klass.</p>
 </div>
 </div>
@@ -727,10 +727,10 @@ xmlSecNssKeyDataAesSet (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XM
                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> bufSize</code>);</pre>
 <p>Sets the value of AES key data.</p>
 <div class="REFSECT3">
-<a name="AEN40280"></a><h4>Parameters</h4>
+<a name="AEN40277"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN40282"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN40279"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -756,7 +756,7 @@ xmlSecNssKeyDataAesSet (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XM
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN40303"></a><h4>Returns</h4>
+<a name="AEN40300"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -767,7 +767,7 @@ xmlSecNssKeyDataAesSet (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XM
 xmlSecNssTransformAes128CbcGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>AES 128 CBC encryption transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN40316"></a><h4>Returns</h4>
+<a name="AEN40313"></a><h4>Returns</h4>
 <p> pointer to AES 128 CBC encryption transform.</p>
 </div>
 </div>
@@ -778,7 +778,7 @@ xmlSecNssTransformAes128CbcGetKlass (<code class="PARAMETER"><span class="TYPE">
 xmlSecNssTransformAes192CbcGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>AES 192 CBC encryption transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN40329"></a><h4>Returns</h4>
+<a name="AEN40326"></a><h4>Returns</h4>
 <p> pointer to AES 192 CBC encryption transform.</p>
 </div>
 </div>
@@ -789,7 +789,7 @@ xmlSecNssTransformAes192CbcGetKlass (<code class="PARAMETER"><span class="TYPE">
 xmlSecNssTransformAes256CbcGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>AES 256 CBC encryption transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN40342"></a><h4>Returns</h4>
+<a name="AEN40339"></a><h4>Returns</h4>
 <p> pointer to AES 256 CBC encryption transform.</p>
 </div>
 </div>
@@ -800,7 +800,7 @@ xmlSecNssTransformAes256CbcGetKlass (<code class="PARAMETER"><span class="TYPE">
 xmlSecNssTransformKWAes128GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The AES-128 key wrapper transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN40355"></a><h4>Returns</h4>
+<a name="AEN40352"></a><h4>Returns</h4>
 <p> AES-128 key wrapper transform klass.</p>
 </div>
 </div>
@@ -811,7 +811,7 @@ xmlSecNssTransformKWAes128GetKlass (<code class="PARAMETER"><span class="TYPE">v
 xmlSecNssTransformKWAes192GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The AES-192 key wrapper transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN40368"></a><h4>Returns</h4>
+<a name="AEN40365"></a><h4>Returns</h4>
 <p> AES-192 key wrapper transform klass.</p>
 </div>
 </div>
@@ -822,7 +822,7 @@ xmlSecNssTransformKWAes192GetKlass (<code class="PARAMETER"><span class="TYPE">v
 xmlSecNssTransformKWAes256GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The AES-256 key wrapper transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN40381"></a><h4>Returns</h4>
+<a name="AEN40378"></a><h4>Returns</h4>
 <p> AES-256 key wrapper transform klass.</p>
 </div>
 </div>
@@ -833,7 +833,7 @@ xmlSecNssTransformKWAes256GetKlass (<code class="PARAMETER"><span class="TYPE">v
 xmlSecNssKeyDataDesGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The DES key data klass.</p>
 <div class="REFSECT3">
-<a name="AEN40394"></a><h4>Returns</h4>
+<a name="AEN40391"></a><h4>Returns</h4>
 <p> DES key data klass.</p>
 </div>
 </div>
@@ -846,10 +846,10 @@ xmlSecNssKeyDataDesSet (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XM
                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> bufSize</code>);</pre>
 <p>Sets the value of DES key data.</p>
 <div class="REFSECT3">
-<a name="AEN40414"></a><h4>Parameters</h4>
+<a name="AEN40411"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN40416"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN40413"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -875,7 +875,7 @@ xmlSecNssKeyDataDesSet (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XM
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN40437"></a><h4>Returns</h4>
+<a name="AEN40434"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -886,7 +886,7 @@ xmlSecNssKeyDataDesSet (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XM
 xmlSecNssTransformDes3CbcGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>Triple DES CBC encryption transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN40450"></a><h4>Returns</h4>
+<a name="AEN40447"></a><h4>Returns</h4>
 <p> pointer to Triple DES encryption transform.</p>
 </div>
 </div>
@@ -897,7 +897,7 @@ xmlSecNssTransformDes3CbcGetKlass (<code class="PARAMETER"><span class="TYPE">vo
 xmlSecNssTransformKWDes3GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The Triple DES key wrapper transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN40463"></a><h4>Returns</h4>
+<a name="AEN40460"></a><h4>Returns</h4>
 <p> Triple DES key wrapper transform klass.</p>
 </div>
 </div>
@@ -908,7 +908,7 @@ xmlSecNssTransformKWDes3GetKlass (<code class="PARAMETER"><span class="TYPE">voi
 xmlSecNssKeyDataDsaGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The DSA key data klass.</p>
 <div class="REFSECT3">
-<a name="AEN40476"></a><h4>Returns</h4>
+<a name="AEN40473"></a><h4>Returns</h4>
 <p> pointer to DSA key data klass.</p>
 </div>
 </div>
@@ -919,7 +919,7 @@ xmlSecNssKeyDataDsaGetKlass (<code class="PARAMETER"><span class="TYPE">void</sp
 xmlSecNssTransformDsaSha1GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The DSA-SHA1 signature transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN40489"></a><h4>Returns</h4>
+<a name="AEN40486"></a><h4>Returns</h4>
 <p> DSA-SHA1 signature transform klass.</p>
 </div>
 </div>
@@ -930,7 +930,7 @@ xmlSecNssTransformDsaSha1GetKlass (<code class="PARAMETER"><span class="TYPE">vo
 xmlSecNssHmacGetMinOutputLength (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>Gets the value of min HMAC length.</p>
 <div class="REFSECT3">
-<a name="AEN40502"></a><h4>Returns</h4>
+<a name="AEN40499"></a><h4>Returns</h4>
 <p> the min HMAC output length</p>
 </div>
 </div>
@@ -941,10 +941,10 @@ xmlSecNssHmacGetMinOutputLength (<code class="PARAMETER"><span class="TYPE">void
 xmlSecNssHmacSetMinOutputLength (<code class="PARAMETER"><font><span class="TYPE">int</span></font> min_length</code>);</pre>
 <p>Sets the min HMAC output length</p>
 <div class="REFSECT3">
-<a name="AEN40516"></a><h4>Parameters</h4>
+<a name="AEN40513"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN40518"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN40515"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -965,7 +965,7 @@ xmlSecNssHmacSetMinOutputLength (<code class="PARAMETER"><font><span class="TYPE
 xmlSecNssKeyDataHmacGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The HMAC key data klass.</p>
 <div class="REFSECT3">
-<a name="AEN40537"></a><h4>Returns</h4>
+<a name="AEN40534"></a><h4>Returns</h4>
 <p> HMAC key data klass.</p>
 </div>
 </div>
@@ -978,10 +978,10 @@ xmlSecNssKeyDataHmacSet (<code class="PARAMETER"><a href="xmlsec-keysdata.html#X
                          <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> bufSize</code>);</pre>
 <p>Sets the value of HMAC key data.</p>
 <div class="REFSECT3">
-<a name="AEN40557"></a><h4>Parameters</h4>
+<a name="AEN40554"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN40559"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN40556"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1007,7 +1007,7 @@ xmlSecNssKeyDataHmacSet (<code class="PARAMETER"><a href="xmlsec-keysdata.html#X
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN40580"></a><h4>Returns</h4>
+<a name="AEN40577"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -1018,7 +1018,7 @@ xmlSecNssKeyDataHmacSet (<code class="PARAMETER"><a href="xmlsec-keysdata.html#X
 xmlSecNssTransformHmacMd5GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The HMAC-MD5 transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN40593"></a><h4>Returns</h4>
+<a name="AEN40590"></a><h4>Returns</h4>
 <p> the HMAC-MD5 transform klass.</p>
 </div>
 </div>
@@ -1030,7 +1030,7 @@ xmlSecNssTransformHmacRipemd160GetKlass
                                (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The HMAC-RIPEMD160 transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN40606"></a><h4>Returns</h4>
+<a name="AEN40603"></a><h4>Returns</h4>
 <p> the HMAC-RIPEMD160 transform klass.</p>
 </div>
 </div>
@@ -1041,7 +1041,7 @@ xmlSecNssTransformHmacRipemd160GetKlass
 xmlSecNssTransformHmacSha1GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The HMAC-SHA1 transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN40619"></a><h4>Returns</h4>
+<a name="AEN40616"></a><h4>Returns</h4>
 <p> the HMAC-SHA1 transform klass.</p>
 </div>
 </div>
@@ -1052,7 +1052,7 @@ xmlSecNssTransformHmacSha1GetKlass (<code class="PARAMETER"><span class="TYPE">v
 xmlSecNssTransformHmacSha256GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The HMAC-SHA256 transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN40632"></a><h4>Returns</h4>
+<a name="AEN40629"></a><h4>Returns</h4>
 <p> the HMAC-SHA256 transform klass.</p>
 </div>
 </div>
@@ -1063,7 +1063,7 @@ xmlSecNssTransformHmacSha256GetKlass (<code class="PARAMETER"><span class="TYPE"
 xmlSecNssTransformHmacSha384GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The HMAC-SHA384 transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN40645"></a><h4>Returns</h4>
+<a name="AEN40642"></a><h4>Returns</h4>
 <p> the HMAC-SHA384 transform klass.</p>
 </div>
 </div>
@@ -1074,7 +1074,7 @@ xmlSecNssTransformHmacSha384GetKlass (<code class="PARAMETER"><span class="TYPE"
 xmlSecNssTransformHmacSha512GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The HMAC-SHA512 transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN40658"></a><h4>Returns</h4>
+<a name="AEN40655"></a><h4>Returns</h4>
 <p> the HMAC-SHA512 transform klass.</p>
 </div>
 </div>
@@ -1085,7 +1085,7 @@ xmlSecNssTransformHmacSha512GetKlass (<code class="PARAMETER"><span class="TYPE"
 xmlSecNssKeyDataRsaGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The RSA key data klass.</p>
 <div class="REFSECT3">
-<a name="AEN40671"></a><h4>Returns</h4>
+<a name="AEN40668"></a><h4>Returns</h4>
 <p> pointer to RSA key data klass.</p>
 </div>
 </div>
@@ -1096,7 +1096,7 @@ xmlSecNssKeyDataRsaGetKlass (<code class="PARAMETER"><span class="TYPE">void</sp
 xmlSecNssTransformRsaMd5GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The RSA-MD5 signature transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN40684"></a><h4>Returns</h4>
+<a name="AEN40681"></a><h4>Returns</h4>
 <p> RSA-MD5 signature transform klass.</p>
 </div>
 </div>
@@ -1107,7 +1107,7 @@ xmlSecNssTransformRsaMd5GetKlass (<code class="PARAMETER"><span class="TYPE">voi
 xmlSecNssTransformRsaSha1GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The RSA-SHA1 signature transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN40697"></a><h4>Returns</h4>
+<a name="AEN40694"></a><h4>Returns</h4>
 <p> RSA-SHA1 signature transform klass.</p>
 </div>
 </div>
@@ -1118,7 +1118,7 @@ xmlSecNssTransformRsaSha1GetKlass (<code class="PARAMETER"><span class="TYPE">vo
 xmlSecNssTransformRsaSha256GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The RSA-SHA256 signature transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN40710"></a><h4>Returns</h4>
+<a name="AEN40707"></a><h4>Returns</h4>
 <p> RSA-SHA256 signature transform klass.</p>
 </div>
 </div>
@@ -1129,7 +1129,7 @@ xmlSecNssTransformRsaSha256GetKlass (<code class="PARAMETER"><span class="TYPE">
 xmlSecNssTransformRsaSha384GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The RSA-SHA384 signature transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN40723"></a><h4>Returns</h4>
+<a name="AEN40720"></a><h4>Returns</h4>
 <p> RSA-SHA384 signature transform klass.</p>
 </div>
 </div>
@@ -1140,7 +1140,7 @@ xmlSecNssTransformRsaSha384GetKlass (<code class="PARAMETER"><span class="TYPE">
 xmlSecNssTransformRsaSha512GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The RSA-SHA512 signature transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN40736"></a><h4>Returns</h4>
+<a name="AEN40733"></a><h4>Returns</h4>
 <p> RSA-SHA512 signature transform klass.</p>
 </div>
 </div>
@@ -1151,7 +1151,7 @@ xmlSecNssTransformRsaSha512GetKlass (<code class="PARAMETER"><span class="TYPE">
 xmlSecNssTransformRsaPkcs1GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The RSA-PKCS1 key transport transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN40749"></a><h4>Returns</h4>
+<a name="AEN40746"></a><h4>Returns</h4>
 <p> RSA-PKCS1 key transport transform klass.</p>
 </div>
 </div>
@@ -1162,7 +1162,7 @@ xmlSecNssTransformRsaPkcs1GetKlass (<code class="PARAMETER"><span class="TYPE">v
 xmlSecNssTransformRsaOaepGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The RSA-PKCS1 key transport transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN40762"></a><h4>Returns</h4>
+<a name="AEN40759"></a><h4>Returns</h4>
 <p> RSA-PKCS1 key transport transform klass.</p>
 </div>
 </div>
@@ -1173,7 +1173,7 @@ xmlSecNssTransformRsaOaepGetKlass (<code class="PARAMETER"><span class="TYPE">vo
 xmlSecNssTransformSha1GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>SHA-1 digest transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN40775"></a><h4>Returns</h4>
+<a name="AEN40772"></a><h4>Returns</h4>
 <p> pointer to SHA-1 digest transform klass.</p>
 </div>
 </div>
@@ -1184,7 +1184,7 @@ xmlSecNssTransformSha1GetKlass (<code class="PARAMETER"><span class="TYPE">void<
 xmlSecNssTransformSha256GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>SHA256 digest transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN40788"></a><h4>Returns</h4>
+<a name="AEN40785"></a><h4>Returns</h4>
 <p> pointer to SHA256 digest transform klass.</p>
 </div>
 </div>
@@ -1195,7 +1195,7 @@ xmlSecNssTransformSha256GetKlass (<code class="PARAMETER"><span class="TYPE">voi
 xmlSecNssTransformSha384GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>SHA384 digest transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN40801"></a><h4>Returns</h4>
+<a name="AEN40798"></a><h4>Returns</h4>
 <p> pointer to SHA384 digest transform klass.</p>
 </div>
 </div>
@@ -1206,7 +1206,7 @@ xmlSecNssTransformSha384GetKlass (<code class="PARAMETER"><span class="TYPE">voi
 xmlSecNssTransformSha512GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>SHA512 digest transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN40814"></a><h4>Returns</h4>
+<a name="AEN40811"></a><h4>Returns</h4>
 <p> pointer to SHA512 digest transform klass.</p>
 </div>
 </div>
@@ -1217,7 +1217,7 @@ xmlSecNssTransformSha512GetKlass (<code class="PARAMETER"><span class="TYPE">voi
 xmlSecNssTransformMd5GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>MD5 digest transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN40827"></a><h4>Returns</h4>
+<a name="AEN40824"></a><h4>Returns</h4>
 <p> pointer to MD5 digest transform klass.</p>
 </div>
 </div>

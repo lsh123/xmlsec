@@ -121,12 +121,12 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 	session key encryption in the 
 	<a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top">&lt;EncryptedKey/&gt;</a>
 	node could be selected using
-	<a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top">&lt;dsig:KeyName/&gt;</a> 
+	<a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top">&lt;dsig:KeyName/&gt;</a> 
 	node in the template.
 	</p>
 <p>	     </p>
 <div class="EXAMPLE">
-<a name="AEN483"></a><p><b>Example 2. Encrypting file using a session key and a permanent key from keys manager.</b></p>
+<a name="AEN378"></a><p><b>Example 2. Encrypting file using a session key and a permanent key from keys manager.</b></p>
 <pre class="PROGRAMLISTING">/**
  * load_rsa_keys:
  * @key_file:		the key filename.
@@ -230,20 +230,20 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
 	goto done;   
     }
 
-    /* we want to put encrypted data in the &lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue"&gt;&amp;lt;enc:CipherValue/&amp;gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt; node */
+    /* we want to put encrypted data in the &lt;enc:CipherValue/&gt; node */
     if(xmlSecTmplEncDataEnsureCipherValue(encDataNode) == NULL) {
 	fprintf(stderr, "Error: failed to add CipherValue node\n");
 	goto done;   
     }
 
-    /* add &lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&amp;lt;dsig:KeyInfo/&amp;gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt; */
+    /* add &lt;dsig:KeyInfo/&gt; */
     keyInfoNode = xmlSecTmplEncDataEnsureKeyInfo(encDataNode, NULL);
     if(keyInfoNode == NULL) {
 	fprintf(stderr, "Error: failed to add key info\n");
 	goto done;		
     }
 
-    /* add &lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"&gt;&amp;lt;enc:EncryptedKey/&amp;gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt; to store the encrypted session key */
+    /* add &lt;enc:EncryptedKey/&gt; to store the encrypted session key */
     encKeyNode = xmlSecTmplKeyInfoAddEncryptedKey(keyInfoNode, 
 				    xmlSecTransformRsaOaepId, 
 				    NULL, NULL, NULL);
@@ -252,13 +252,13 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
 	goto done;		
     }
 
-    /* we want to put encrypted key in the &lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue"&gt;&amp;lt;enc:CipherValue/&amp;gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt; node */
+    /* we want to put encrypted key in the &lt;enc:CipherValue/&gt; node */
     if(xmlSecTmplEncDataEnsureCipherValue(encKeyNode) == NULL) {
 	fprintf(stderr, "Error: failed to add CipherValue node\n");
 	goto done;   
     }
 
-    /* add &lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&amp;lt;dsig:KeyInfo/&amp;gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt; and &lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&amp;lt;dsig:KeyName/&amp;gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt; nodes to &lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"&gt;&amp;lt;enc:EncryptedKey/&amp;gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt; */
+    /* add &lt;dsig:KeyInfo/&gt; and &lt;dsig:KeyName/&gt; nodes to &lt;enc:EncryptedKey/&gt; */
     keyInfoNode2 = xmlSecTmplEncDataEnsureKeyInfo(encKeyNode, NULL);
     if(keyInfoNode2 == NULL) {
 	fprintf(stderr, "Error: failed to add key info\n");

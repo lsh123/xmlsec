@@ -110,12 +110,12 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <h1>
 <a name="XMLSEC-LIST"></a>list</h1>
 <div class="REFNAMEDIV">
-<a name="AEN14965"></a><h2>Name</h2>list -- Generic list structure implementation.</div>
+<a name="AEN14811"></a><h2>Name</h2>list -- Generic list structure implementation.</div>
 <div class="REFSECT1">
 <a name="XMLSEC-LIST.FUNCTIONS"></a><h2>Functions</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN14970"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN14816"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody>
@@ -272,7 +272,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="XMLSEC-LIST.OTHER"></a><h2>Types and Values</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN15141"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN14987"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody>
@@ -310,10 +310,10 @@ xmlSecPtrListSetDefaultAllocMode (<code class="PARAMETER"><a href="xmlsec-buffer
                                   <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> defInitialSize</code>);</pre>
 <p>Sets new default allocation mode and minimal initial list size.</p>
 <div class="REFSECT3">
-<a name="AEN15179"></a><h4>Parameters</h4>
+<a name="AEN15025"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN15181"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN15027"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -343,10 +343,10 @@ xmlSecPtrListInitialize (<code class="PARAMETER"><a href="xmlsec-list.html#XMLSE
 <p>Initializes the list of given klass. Caller is responsible
 for cleaning up by calling <a href="xmlsec-list.html#XMLSECPTRLISTFINALIZE"><span class="TYPE">xmlSecPtrListFinalize</span></a> function.</p>
 <div class="REFSECT3">
-<a name="AEN15212"></a><h4>Parameters</h4>
+<a name="AEN15058"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN15214"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN15060"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -367,7 +367,7 @@ for cleaning up by calling <a href="xmlsec-list.html#XMLSECPTRLISTFINALIZE"><spa
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN15229"></a><h4>Returns</h4>
+<a name="AEN15075"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -379,10 +379,10 @@ xmlSecPtrListFinalize (<code class="PARAMETER"><a href="xmlsec-list.html#XMLSECP
 <p>Cleans up the list initialized with <a href="xmlsec-list.html#XMLSECPTRLISTINITIALIZE"><span class="TYPE">xmlSecPtrListInitialize</span></a>
 function.</p>
 <div class="REFSECT3">
-<a name="AEN15245"></a><h4>Parameters</h4>
+<a name="AEN15091"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN15247"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN15093"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -404,10 +404,10 @@ xmlSecPtrListCreate (<code class="PARAMETER"><font><span class="TYPE">xmlSecPtrL
 <p>Creates new list object. Caller is responsible for freeing returned list
 by calling <a href="xmlsec-list.html#XMLSECPTRLISTDESTROY"><span class="TYPE">xmlSecPtrListDestroy</span></a> function.</p>
 <div class="REFSECT3">
-<a name="AEN15269"></a><h4>Parameters</h4>
+<a name="AEN15115"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN15271"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN15117"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -421,7 +421,7 @@ by calling <a href="xmlsec-list.html#XMLSECPTRLISTDESTROY"><span class="TYPE">xm
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN15280"></a><h4>Returns</h4>
+<a name="AEN15126"></a><h4>Returns</h4>
 <p> pointer to newly allocated list or NULL if an error occurs.</p>
 </div>
 </div>
@@ -433,10 +433,10 @@ xmlSecPtrListDestroy (<code class="PARAMETER"><a href="xmlsec-list.html#XMLSECPT
 <p>Destroys <code class="PARAMETER">list</code>
  created with <a href="xmlsec-list.html#XMLSECPTRLISTCREATE"><span class="TYPE">xmlSecPtrListCreate</span></a> function.</p>
 <div class="REFSECT3">
-<a name="AEN15297"></a><h4>Parameters</h4>
+<a name="AEN15143"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN15299"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN15145"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -458,10 +458,10 @@ xmlSecPtrListEmpty (<code class="PARAMETER"><a href="xmlsec-list.html#XMLSECPTRL
 <p>Remove all items from <code class="PARAMETER">list</code>
  (if any).</p>
 <div class="REFSECT3">
-<a name="AEN15320"></a><h4>Parameters</h4>
+<a name="AEN15166"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN15322"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN15168"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -487,10 +487,10 @@ xmlSecPtrListCopy (<code class="PARAMETER"><a href="xmlsec-list.html#XMLSECPTRLI
 of the list klass. If <font><span class="TYPE">duplicateItem</span></font> method is NULL then
 we jsut copy pointers to items.</p>
 <div class="REFSECT3">
-<a name="AEN15351"></a><h4>Parameters</h4>
+<a name="AEN15197"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN15353"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN15199"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -511,7 +511,7 @@ we jsut copy pointers to items.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN15368"></a><h4>Returns</h4>
+<a name="AEN15214"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -523,10 +523,10 @@ xmlSecPtrListDuplicate (<code class="PARAMETER"><a href="xmlsec-list.html#XMLSEC
 <p>Creates a new copy of <code class="PARAMETER">list</code>
  and all its items.</p>
 <div class="REFSECT3">
-<a name="AEN15383"></a><h4>Parameters</h4>
+<a name="AEN15229"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN15385"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN15231"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -540,7 +540,7 @@ xmlSecPtrListDuplicate (<code class="PARAMETER"><a href="xmlsec-list.html#XMLSEC
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN15394"></a><h4>Returns</h4>
+<a name="AEN15240"></a><h4>Returns</h4>
 <p> pointer to newly allocated list or NULL if an error occurs.</p>
 </div>
 </div>
@@ -551,10 +551,10 @@ xmlSecPtrListDuplicate (<code class="PARAMETER"><a href="xmlsec-list.html#XMLSEC
 xmlSecPtrListGetSize (<code class="PARAMETER"><a href="xmlsec-list.html#XMLSECPTRLIST"><span class="TYPE">xmlSecPtrListPtr</span></a> list</code>);</pre>
 <p>Gets list size.</p>
 <div class="REFSECT3">
-<a name="AEN15408"></a><h4>Parameters</h4>
+<a name="AEN15254"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN15410"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN15256"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -568,7 +568,7 @@ xmlSecPtrListGetSize (<code class="PARAMETER"><a href="xmlsec-list.html#XMLSECPT
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN15419"></a><h4>Returns</h4>
+<a name="AEN15265"></a><h4>Returns</h4>
 <p> the number of itmes in <code class="PARAMETER">list</code>
 .</p>
 </div>
@@ -581,10 +581,10 @@ xmlSecPtrListGetItem (<code class="PARAMETER"><a href="xmlsec-list.html#XMLSECPT
                       <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> pos</code>);</pre>
 <p>Gets item from the list.</p>
 <div class="REFSECT3">
-<a name="AEN15437"></a><h4>Parameters</h4>
+<a name="AEN15283"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN15439"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN15285"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -605,7 +605,7 @@ xmlSecPtrListGetItem (<code class="PARAMETER"><a href="xmlsec-list.html#XMLSECPT
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN15454"></a><h4>Returns</h4>
+<a name="AEN15300"></a><h4>Returns</h4>
 <p> the list item at position <code class="PARAMETER">pos</code>
 or NULL if <code class="PARAMETER">pos</code>
 is greater
@@ -622,10 +622,10 @@ xmlSecPtrListAdd (<code class="PARAMETER"><a href="xmlsec-list.html#XMLSECPTRLIS
  to the end of the <code class="PARAMETER">list</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN15475"></a><h4>Parameters</h4>
+<a name="AEN15321"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN15477"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN15323"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -646,7 +646,7 @@ xmlSecPtrListAdd (<code class="PARAMETER"><a href="xmlsec-list.html#XMLSECPTRLIS
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN15492"></a><h4>Returns</h4>
+<a name="AEN15338"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -661,10 +661,10 @@ xmlSecPtrListSet (<code class="PARAMETER"><a href="xmlsec-list.html#XMLSECPTRLIS
 . The old value
 is destroyed.</p>
 <div class="REFSECT3">
-<a name="AEN15513"></a><h4>Parameters</h4>
+<a name="AEN15359"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN15515"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN15361"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -690,7 +690,7 @@ is destroyed.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN15536"></a><h4>Returns</h4>
+<a name="AEN15382"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -703,10 +703,10 @@ xmlSecPtrListRemove (<code class="PARAMETER"><a href="xmlsec-list.html#XMLSECPTR
 <p>Destroys list item at the position <code class="PARAMETER">pos</code>
  and sets it value to NULL.</p>
 <div class="REFSECT3">
-<a name="AEN15554"></a><h4>Parameters</h4>
+<a name="AEN15400"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN15556"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN15402"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -727,7 +727,7 @@ xmlSecPtrListRemove (<code class="PARAMETER"><a href="xmlsec-list.html#XMLSECPTR
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN15571"></a><h4>Returns</h4>
+<a name="AEN15417"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -740,10 +740,10 @@ xmlSecPtrListRemoveAndReturn (<code class="PARAMETER"><a href="xmlsec-list.html#
 <p>Remove the list item at the position <code class="PARAMETER">pos</code>
  and return it back.</p>
 <div class="REFSECT3">
-<a name="AEN15589"></a><h4>Parameters</h4>
+<a name="AEN15435"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN15591"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN15437"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -764,7 +764,7 @@ xmlSecPtrListRemoveAndReturn (<code class="PARAMETER"><a href="xmlsec-list.html#
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN15606"></a><h4>Returns</h4>
+<a name="AEN15452"></a><h4>Returns</h4>
 <p> the pointer to the list item.</p>
 </div>
 </div>
@@ -778,10 +778,10 @@ xmlSecPtrListDebugDump (<code class="PARAMETER"><a href="xmlsec-list.html#XMLSEC
  to the <code class="PARAMETER">output</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN15625"></a><h4>Parameters</h4>
+<a name="AEN15471"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN15627"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN15473"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -812,10 +812,10 @@ xmlSecPtrListDebugXmlDump (<code class="PARAMETER"><a href="xmlsec-list.html#XML
  to the <code class="PARAMETER">output</code>
  in XML format.</p>
 <div class="REFSECT3">
-<a name="AEN15658"></a><h4>Parameters</h4>
+<a name="AEN15504"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN15660"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN15506"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -842,10 +842,10 @@ xmlSecPtrListDebugXmlDump (<code class="PARAMETER"><a href="xmlsec-list.html#XML
 <pre class="PROGRAMLISTING">#define             xmlSecPtrListGetName(list)</pre>
 <p>Macro. Returns lists's name.</p>
 <div class="REFSECT3">
-<a name="AEN15681"></a><h4>Parameters</h4>
+<a name="AEN15527"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN15683"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN15529"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -868,10 +868,10 @@ xmlSecPtrListDebugXmlDump (<code class="PARAMETER"><a href="xmlsec-list.html#XML
  is not NULL
 or 0 otherwise.</p>
 <div class="REFSECT3">
-<a name="AEN15700"></a><h4>Parameters</h4>
+<a name="AEN15546"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN15702"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN15548"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -894,10 +894,10 @@ or 0 otherwise.</p>
 's id is equal to <code class="PARAMETER">dataId</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN15720"></a><h4>Parameters</h4>
+<a name="AEN15566"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN15722"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN15568"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -926,10 +926,10 @@ or 0 otherwise.</p>
 <p>Duplicates item <code class="PARAMETER">ptr</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN15751"></a><h4>Parameters</h4>
+<a name="AEN15597"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN15753"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN15599"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -943,7 +943,7 @@ or 0 otherwise.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN15762"></a><h4>Returns</h4>
+<a name="AEN15608"></a><h4>Returns</h4>
 <p> pointer to new item copy or NULL if an error occurs.</p>
 </div>
 </div>
@@ -955,10 +955,10 @@ or 0 otherwise.</p>
 <p>Destroys list item <code class="PARAMETER">ptr</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN15779"></a><h4>Parameters</h4>
+<a name="AEN15625"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN15781"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN15627"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -982,10 +982,10 @@ or 0 otherwise.</p>
  to <code class="PARAMETER">output</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN15808"></a><h4>Parameters</h4>
+<a name="AEN15654"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN15810"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN15656"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1012,10 +1012,10 @@ or 0 otherwise.</p>
 <pre class="PROGRAMLISTING">#define             xmlSecPtrListKlassGetName(klass)</pre>
 <p>Macro. Returns the list klass name.</p>
 <div class="REFSECT3">
-<a name="AEN15831"></a><h4>Parameters</h4>
+<a name="AEN15677"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN15833"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN15679"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1037,7 +1037,7 @@ or 0 otherwise.</p>
 xmlSecStringListGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The strins list class.</p>
 <div class="REFSECT3">
-<a name="AEN15852"></a><h4>Returns</h4>
+<a name="AEN15698"></a><h4>Returns</h4>
 <p> strings list klass.</p>
 </div>
 </div>
@@ -1056,10 +1056,10 @@ xmlSecStringListGetKlass (<code class="PARAMETER"><span class="TYPE">void</span>
 };</pre>
 <p>The pointers list.</p>
 <div class="REFSECT3">
-<a name="AEN15863"></a><h4>Members</h4>
+<a name="AEN15709"></a><h4>Members</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN15865"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN15711"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1113,10 +1113,10 @@ xmlSecStringListGetKlass (<code class="PARAMETER"><span class="TYPE">void</span>
 };</pre>
 <p>List klass.</p>
 <div class="REFSECT3">
-<a name="AEN15925"></a><h4>Members</h4>
+<a name="AEN15771"></a><h4>Members</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN15927"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN15773"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>

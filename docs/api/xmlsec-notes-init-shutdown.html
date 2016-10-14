@@ -167,7 +167,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
      * xmlsec-crypto library.
      */
 #ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING
-    if(xmlSecCryptoDLLoadLibrary(BAD_CAST XMLSEC_CRYPTO) &lt; 0) {
+    if(xmlSecCryptoDLLoadLibrary(NULL) &lt; 0) {
 	fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
 			"that you have it installed and check shared libraries path\n"
 			"(LD_LIBRARY_PATH) envornment variable.\n");

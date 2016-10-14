@@ -110,12 +110,12 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <h1>
 <a name="XMLSEC-APP"></a>app</h1>
 <div class="REFNAMEDIV">
-<a name="AEN1011"></a><h2>Name</h2>app -- Crypto-engine independent application support function.</div>
+<a name="AEN857"></a><h2>Name</h2>app -- Crypto-engine independent application support function.</div>
 <div class="REFSECT1">
 <a name="XMLSEC-APP.FUNCTIONS"></a><h2>Functions</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN1016"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN862"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody>
@@ -573,7 +573,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="XMLSEC-APP.OTHER"></a><h2>Types and Values</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN1539"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN1385"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody>
@@ -818,7 +818,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 xmlSecCryptoInit (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>XMLSec library specific crypto engine initialization.</p>
 <div class="REFSECT3">
-<a name="AEN1781"></a><h4>Returns</h4>
+<a name="AEN1627"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -829,7 +829,7 @@ xmlSecCryptoInit (<code class="PARAMETER"><span class="TYPE">void</span></code>)
 xmlSecCryptoShutdown (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>XMLSec library specific crypto engine shutdown.</p>
 <div class="REFSECT3">
-<a name="AEN1794"></a><h4>Returns</h4>
+<a name="AEN1640"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -840,10 +840,10 @@ xmlSecCryptoShutdown (<code class="PARAMETER"><span class="TYPE">void</span></co
 xmlSecCryptoKeysMngrInit (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="TYPE">xmlSecKeysMngrPtr</span></a> mngr</code>);</pre>
 <p>Adds crypto specific key data stores in keys manager.</p>
 <div class="REFSECT3">
-<a name="AEN1808"></a><h4>Parameters</h4>
+<a name="AEN1654"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN1810"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN1656"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -857,7 +857,7 @@ xmlSecCryptoKeysMngrInit (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN1819"></a><h4>Returns</h4>
+<a name="AEN1665"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -868,7 +868,7 @@ xmlSecCryptoKeysMngrInit (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#
 xmlSecKeyDataAesGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The AES key data klass.</p>
 <div class="REFSECT3">
-<a name="AEN1832"></a><h4>Returns</h4>
+<a name="AEN1678"></a><h4>Returns</h4>
 <p> AES key data klass or NULL if an error occurs
 (xmlsec-crypto library is not loaded or the AES key data
 klass is not implemented).</p>
@@ -881,7 +881,7 @@ klass is not implemented).</p>
 xmlSecKeyDataDesGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The DES key data klass.</p>
 <div class="REFSECT3">
-<a name="AEN1845"></a><h4>Returns</h4>
+<a name="AEN1691"></a><h4>Returns</h4>
 <p> DES key data klass or NULL if an error occurs
 (xmlsec-crypto library is not loaded or the DES key data
 klass is not implemented).</p>
@@ -894,7 +894,7 @@ klass is not implemented).</p>
 xmlSecKeyDataDsaGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The DSA key data klass.</p>
 <div class="REFSECT3">
-<a name="AEN1858"></a><h4>Returns</h4>
+<a name="AEN1704"></a><h4>Returns</h4>
 <p> DSA key data klass or NULL if an error occurs
 (xmlsec-crypto library is not loaded or the DSA key data
 klass is not implemented).</p>
@@ -907,7 +907,7 @@ klass is not implemented).</p>
 xmlSecKeyDataEcdsaGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The ECDSA key data klass.</p>
 <div class="REFSECT3">
-<a name="AEN1871"></a><h4>Returns</h4>
+<a name="AEN1717"></a><h4>Returns</h4>
 <p> ECDSA key data klass or NULL if an error occurs
 (xmlsec-crypto library is not loaded or the ECDSA key data
 klass is not implemented).</p>
@@ -920,7 +920,7 @@ klass is not implemented).</p>
 xmlSecKeyDataGost2001GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The GOST2001 key data klass.</p>
 <div class="REFSECT3">
-<a name="AEN1884"></a><h4>Returns</h4>
+<a name="AEN1730"></a><h4>Returns</h4>
 <p> GOST2001 key data klass or NULL if an error occurs
 (xmlsec-crypto library is not loaded or the GOST2001 key data
 klass is not implemented).</p>
@@ -934,7 +934,7 @@ xmlSecKeyDataGostR3410_2012_256GetKlass
                                (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The GOST R 34.10-2012 256 bit key data klass.</p>
 <div class="REFSECT3">
-<a name="AEN1897"></a><h4>Returns</h4>
+<a name="AEN1743"></a><h4>Returns</h4>
 <p> GOST R 34.10-2012 256 bit key data klass or NULL if an error occurs
 (xmlsec-crypto library is not loaded or the GOST R 34.10-2012 key data
 klass is not implemented).</p>
@@ -948,7 +948,7 @@ xmlSecKeyDataGostR3410_2012_512GetKlass
                                (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The GOST R 34.10-2012 512 bit key data klass.</p>
 <div class="REFSECT3">
-<a name="AEN1910"></a><h4>Returns</h4>
+<a name="AEN1756"></a><h4>Returns</h4>
 <p> GOST R 34.10-2012 512 bit key data klass or NULL if an error occurs
 (xmlsec-crypto library is not loaded or the GOST R 34.10-2012 key data
 klass is not implemented).</p>
@@ -961,7 +961,7 @@ klass is not implemented).</p>
 xmlSecKeyDataHmacGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The HMAC key data klass.</p>
 <div class="REFSECT3">
-<a name="AEN1923"></a><h4>Returns</h4>
+<a name="AEN1769"></a><h4>Returns</h4>
 <p> HMAC key data klass or NULL if an error occurs
 (xmlsec-crypto library is not loaded or the HMAC key data
 klass is not implemented).</p>
@@ -974,7 +974,7 @@ klass is not implemented).</p>
 xmlSecKeyDataRsaGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The RSA key data klass.</p>
 <div class="REFSECT3">
-<a name="AEN1936"></a><h4>Returns</h4>
+<a name="AEN1782"></a><h4>Returns</h4>
 <p> RSA key data klass or NULL if an error occurs
 (xmlsec-crypto library is not loaded or the RSA key data
 klass is not implemented).</p>
@@ -987,7 +987,7 @@ klass is not implemented).</p>
 xmlSecKeyDataX509GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The X509 key data klass.</p>
 <div class="REFSECT3">
-<a name="AEN1949"></a><h4>Returns</h4>
+<a name="AEN1795"></a><h4>Returns</h4>
 <p> X509 key data klass or NULL if an error occurs
 (xmlsec-crypto library is not loaded or the X509 key data
 klass is not implemented).</p>
@@ -1000,7 +1000,7 @@ klass is not implemented).</p>
 xmlSecKeyDataRawX509CertGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The raw X509 cert key data klass.</p>
 <div class="REFSECT3">
-<a name="AEN1962"></a><h4>Returns</h4>
+<a name="AEN1808"></a><h4>Returns</h4>
 <p> raw x509 cert key data klass or NULL if an error occurs
 (xmlsec-crypto library is not loaded or the raw X509 cert key data
 klass is not implemented).</p>
@@ -1013,7 +1013,7 @@ klass is not implemented).</p>
 xmlSecX509StoreGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The X509 certificates key data store klass.</p>
 <div class="REFSECT3">
-<a name="AEN1975"></a><h4>Returns</h4>
+<a name="AEN1821"></a><h4>Returns</h4>
 <p> pointer to X509 certificates key data store klass or NULL if
 an error occurs (xmlsec-crypto library is not loaded or the raw X509
 cert key data klass is not implemented).</p>
@@ -1026,7 +1026,7 @@ cert key data klass is not implemented).</p>
 xmlSecTransformAes128CbcGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>AES 128 CBC encryption transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN1988"></a><h4>Returns</h4>
+<a name="AEN1834"></a><h4>Returns</h4>
 <p> pointer to AES 128 CBC encryption transform or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1039,7 +1039,7 @@ implemented).</p>
 xmlSecTransformAes192CbcGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>AES 192 CBC encryption transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2001"></a><h4>Returns</h4>
+<a name="AEN1847"></a><h4>Returns</h4>
 <p> pointer to AES 192 CBC encryption transform or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1052,7 +1052,7 @@ implemented).</p>
 xmlSecTransformAes256CbcGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>AES 256 CBC encryption transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2014"></a><h4>Returns</h4>
+<a name="AEN1860"></a><h4>Returns</h4>
 <p> pointer to AES 256 CBC encryption transform or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1065,7 +1065,7 @@ implemented).</p>
 xmlSecTransformKWAes128GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The AES-128 kew wrapper transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2027"></a><h4>Returns</h4>
+<a name="AEN1873"></a><h4>Returns</h4>
 <p> AES-128 kew wrapper transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1078,7 +1078,7 @@ implemented).</p>
 xmlSecTransformKWAes192GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The AES-192 kew wrapper transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2040"></a><h4>Returns</h4>
+<a name="AEN1886"></a><h4>Returns</h4>
 <p> AES-192 kew wrapper transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1091,7 +1091,7 @@ implemented).</p>
 xmlSecTransformKWAes256GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The AES-256 kew wrapper transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2053"></a><h4>Returns</h4>
+<a name="AEN1899"></a><h4>Returns</h4>
 <p> AES-256 kew wrapper transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1104,7 +1104,7 @@ implemented).</p>
 xmlSecTransformDes3CbcGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>Triple DES CBC encryption transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2066"></a><h4>Returns</h4>
+<a name="AEN1912"></a><h4>Returns</h4>
 <p> pointer to Triple DES encryption transform or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1117,7 +1117,7 @@ implemented).</p>
 xmlSecTransformKWDes3GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The Triple DES key wrapper transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2079"></a><h4>Returns</h4>
+<a name="AEN1925"></a><h4>Returns</h4>
 <p> Triple DES key wrapper transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1130,7 +1130,7 @@ implemented).</p>
 xmlSecTransformDsaSha1GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The DSA-SHA1 signature transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2092"></a><h4>Returns</h4>
+<a name="AEN1938"></a><h4>Returns</h4>
 <p> DSA-SHA1 signature transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1143,7 +1143,7 @@ implemented).</p>
 xmlSecTransformDsaSha256GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The DSA-SHA256 signature transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2105"></a><h4>Returns</h4>
+<a name="AEN1951"></a><h4>Returns</h4>
 <p> DSA-SHA256 signature transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1156,7 +1156,7 @@ implemented).</p>
 xmlSecTransformEcdsaSha1GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The ECDSA-SHA1 signature transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2118"></a><h4>Returns</h4>
+<a name="AEN1964"></a><h4>Returns</h4>
 <p> ECDSA-SHA1 signature transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1169,7 +1169,7 @@ implemented).</p>
 xmlSecTransformEcdsaSha224GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The ECDSA-SHA224 signature transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2131"></a><h4>Returns</h4>
+<a name="AEN1977"></a><h4>Returns</h4>
 <p> ECDSA-SHA224 signature transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1182,7 +1182,7 @@ implemented).</p>
 xmlSecTransformEcdsaSha256GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The ECDSA-SHA256 signature transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2144"></a><h4>Returns</h4>
+<a name="AEN1990"></a><h4>Returns</h4>
 <p> ECDSA-SHA256 signature transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1195,7 +1195,7 @@ implemented).</p>
 xmlSecTransformEcdsaSha384GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The ECDSA-SHA384 signature transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2157"></a><h4>Returns</h4>
+<a name="AEN2003"></a><h4>Returns</h4>
 <p> ECDSA-SHA384 signature transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1208,7 +1208,7 @@ implemented).</p>
 xmlSecTransformEcdsaSha512GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The ECDSA-SHA512 signature transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2170"></a><h4>Returns</h4>
+<a name="AEN2016"></a><h4>Returns</h4>
 <p> ECDSA-SHA512 signature transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1222,7 +1222,7 @@ xmlSecTransformGost2001GostR3411_94GetKlass
                                (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The GOST2001-GOSTR3411_94 signature transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2183"></a><h4>Returns</h4>
+<a name="AEN2029"></a><h4>Returns</h4>
 <p> GOST2001-GOSTR3411_94 signature transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1236,7 +1236,7 @@ xmlSecTransformGostR3410_2012GostR3411_2012_256GetKlass
                                (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2196"></a><h4>Returns</h4>
+<a name="AEN2042"></a><h4>Returns</h4>
 <p> GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1250,7 +1250,7 @@ xmlSecTransformGostR3410_2012GostR3411_2012_512GetKlass
                                (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2209"></a><h4>Returns</h4>
+<a name="AEN2055"></a><h4>Returns</h4>
 <p> GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1263,7 +1263,7 @@ implemented).</p>
 xmlSecTransformHmacMd5GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The HMAC-MD5 transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2222"></a><h4>Returns</h4>
+<a name="AEN2068"></a><h4>Returns</h4>
 <p> the HMAC-MD5 transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1276,7 +1276,7 @@ implemented).</p>
 xmlSecTransformHmacRipemd160GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The HMAC-RIPEMD160 transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2235"></a><h4>Returns</h4>
+<a name="AEN2081"></a><h4>Returns</h4>
 <p> the HMAC-RIPEMD160 transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1289,7 +1289,7 @@ implemented).</p>
 xmlSecTransformHmacSha1GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The HMAC-SHA1 transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2248"></a><h4>Returns</h4>
+<a name="AEN2094"></a><h4>Returns</h4>
 <p> the HMAC-SHA1 transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1302,7 +1302,7 @@ implemented).</p>
 xmlSecTransformHmacSha224GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The HMAC-SHA224 transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2261"></a><h4>Returns</h4>
+<a name="AEN2107"></a><h4>Returns</h4>
 <p> the HMAC-SHA224 transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1315,7 +1315,7 @@ implemented).</p>
 xmlSecTransformHmacSha256GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The HMAC-SHA256 transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2274"></a><h4>Returns</h4>
+<a name="AEN2120"></a><h4>Returns</h4>
 <p> the HMAC-SHA256 transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1328,7 +1328,7 @@ implemented).</p>
 xmlSecTransformHmacSha384GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The HMAC-SHA384 transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2287"></a><h4>Returns</h4>
+<a name="AEN2133"></a><h4>Returns</h4>
 <p> the HMAC-SHA384 transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1341,7 +1341,7 @@ implemented).</p>
 xmlSecTransformHmacSha512GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The HMAC-SHA512 transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2300"></a><h4>Returns</h4>
+<a name="AEN2146"></a><h4>Returns</h4>
 <p> the HMAC-SHA512 transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1354,7 +1354,7 @@ implemented).</p>
 xmlSecTransformMd5GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>MD5 digest transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2313"></a><h4>Returns</h4>
+<a name="AEN2159"></a><h4>Returns</h4>
 <p> pointer to MD5 digest transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1367,7 +1367,7 @@ implemented).</p>
 xmlSecTransformRipemd160GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>RIPEMD-160 digest transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2326"></a><h4>Returns</h4>
+<a name="AEN2172"></a><h4>Returns</h4>
 <p> pointer to RIPEMD-160 digest transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1380,7 +1380,7 @@ implemented).</p>
 xmlSecTransformRsaMd5GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The RSA-MD5 signature transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2339"></a><h4>Returns</h4>
+<a name="AEN2185"></a><h4>Returns</h4>
 <p> RSA-MD5 signature transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1393,7 +1393,7 @@ implemented).</p>
 xmlSecTransformRsaRipemd160GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The RSA-RIPEMD160 signature transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2352"></a><h4>Returns</h4>
+<a name="AEN2198"></a><h4>Returns</h4>
 <p> RSA-RIPEMD160 signature transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1406,7 +1406,7 @@ implemented).</p>
 xmlSecTransformRsaSha1GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The RSA-SHA1 signature transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2365"></a><h4>Returns</h4>
+<a name="AEN2211"></a><h4>Returns</h4>
 <p> RSA-SHA1 signature transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1419,7 +1419,7 @@ implemented).</p>
 xmlSecTransformRsaSha224GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The RSA-SHA224 signature transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2378"></a><h4>Returns</h4>
+<a name="AEN2224"></a><h4>Returns</h4>
 <p> RSA-SHA224 signature transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1432,7 +1432,7 @@ implemented).</p>
 xmlSecTransformRsaSha256GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The RSA-SHA256 signature transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2391"></a><h4>Returns</h4>
+<a name="AEN2237"></a><h4>Returns</h4>
 <p> RSA-SHA256 signature transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1445,7 +1445,7 @@ implemented).</p>
 xmlSecTransformRsaSha384GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The RSA-SHA384 signature transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2404"></a><h4>Returns</h4>
+<a name="AEN2250"></a><h4>Returns</h4>
 <p> RSA-SHA384 signature transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1458,7 +1458,7 @@ implemented).</p>
 xmlSecTransformRsaSha512GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The RSA-SHA512 signature transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2417"></a><h4>Returns</h4>
+<a name="AEN2263"></a><h4>Returns</h4>
 <p> RSA-SHA512 signature transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1471,7 +1471,7 @@ implemented).</p>
 xmlSecTransformRsaPkcs1GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The RSA-PKCS1 key transport transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2430"></a><h4>Returns</h4>
+<a name="AEN2276"></a><h4>Returns</h4>
 <p> RSA-PKCS1 key transport transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1484,7 +1484,7 @@ implemented).</p>
 xmlSecTransformRsaOaepGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The RSA-OAEP key transport transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2443"></a><h4>Returns</h4>
+<a name="AEN2289"></a><h4>Returns</h4>
 <p> RSA-OAEP key transport transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1497,7 +1497,7 @@ implemented).</p>
 xmlSecTransformGostR3411_94GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>GOSTR3411_94 digest transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2456"></a><h4>Returns</h4>
+<a name="AEN2302"></a><h4>Returns</h4>
 <p> pointer to GOSTR3411_94 digest transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1511,7 +1511,7 @@ xmlSecTransformGostR3411_2012_256GetKlass
                                (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>GOST R 34.11-2012 256 bit digest transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2469"></a><h4>Returns</h4>
+<a name="AEN2315"></a><h4>Returns</h4>
 <p> pointer to GOST R 34.11-2012 256 bit digest transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1525,7 +1525,7 @@ xmlSecTransformGostR3411_2012_512GetKlass
                                (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>GOST R 34.11-2012 512 bit digest transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2482"></a><h4>Returns</h4>
+<a name="AEN2328"></a><h4>Returns</h4>
 <p> pointer to GOST R 34.11-2012 512 bit digest transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1538,7 +1538,7 @@ implemented).</p>
 xmlSecTransformSha1GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>SHA-1 digest transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2495"></a><h4>Returns</h4>
+<a name="AEN2341"></a><h4>Returns</h4>
 <p> pointer to SHA-1 digest transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1551,7 +1551,7 @@ implemented).</p>
 xmlSecTransformSha224GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>SHA224 digest transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2508"></a><h4>Returns</h4>
+<a name="AEN2354"></a><h4>Returns</h4>
 <p> pointer to SHA224 digest transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1564,7 +1564,7 @@ implemented).</p>
 xmlSecTransformSha256GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>SHA256 digest transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2521"></a><h4>Returns</h4>
+<a name="AEN2367"></a><h4>Returns</h4>
 <p> pointer to SHA256 digest transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1577,7 +1577,7 @@ implemented).</p>
 xmlSecTransformSha384GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>SHA384 digest transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2534"></a><h4>Returns</h4>
+<a name="AEN2380"></a><h4>Returns</h4>
 <p> pointer to SHA384 digest transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1590,7 +1590,7 @@ implemented).</p>
 xmlSecTransformSha512GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>SHA512 digest transform klass.</p>
 <div class="REFSECT3">
-<a name="AEN2547"></a><h4>Returns</h4>
+<a name="AEN2393"></a><h4>Returns</h4>
 <p> pointer to SHA512 digest transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
@@ -1606,10 +1606,10 @@ by XMLSec command line utility and called before
 <code class="PARAMETER">xmlSecInit</code>
  function.</p>
 <div class="REFSECT3">
-<a name="AEN2562"></a><h4>Parameters</h4>
+<a name="AEN2408"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN2564"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN2410"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1623,7 +1623,7 @@ by XMLSec command line utility and called before
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN2573"></a><h4>Returns</h4>
+<a name="AEN2419"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -1637,7 +1637,7 @@ by XMLSec command line utility and called after
 <code class="PARAMETER">xmlSecShutdown</code>
  function.</p>
 <div class="REFSECT3">
-<a name="AEN2587"></a><h4>Returns</h4>
+<a name="AEN2433"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -1650,10 +1650,10 @@ xmlSecCryptoAppDefaultKeysMngrInit (<code class="PARAMETER"><a href="xmlsec-keys
  with simple keys store <a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTOREID"><span class="TYPE">xmlSecSimpleKeysStoreId</span></a>
 and a default crypto key data stores.</p>
 <div class="REFSECT3">
-<a name="AEN2604"></a><h4>Parameters</h4>
+<a name="AEN2450"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN2606"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN2452"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1667,7 +1667,7 @@ and a default crypto key data stores.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN2615"></a><h4>Returns</h4>
+<a name="AEN2461"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -1683,10 +1683,10 @@ xmlSecCryptoAppDefaultKeysMngrAdoptKey
  created with <a href="xmlsec-app.html#XMLSECCRYPTOAPPDEFAULTKEYSMNGRINIT"><span class="TYPE">xmlSecCryptoAppDefaultKeysMngrInit</span></a>
 function.</p>
 <div class="REFSECT3">
-<a name="AEN2636"></a><h4>Parameters</h4>
+<a name="AEN2482"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN2638"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN2484"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1707,7 +1707,7 @@ function.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN2653"></a><h4>Returns</h4>
+<a name="AEN2499"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -1722,10 +1722,10 @@ xmlSecCryptoAppDefaultKeysMngrLoad (<code class="PARAMETER"><a href="xmlsec-keys
  created
 with <a href="xmlsec-app.html#XMLSECCRYPTOAPPDEFAULTKEYSMNGRINIT"><span class="TYPE">xmlSecCryptoAppDefaultKeysMngrInit</span></a> function.</p>
 <div class="REFSECT3">
-<a name="AEN2674"></a><h4>Parameters</h4>
+<a name="AEN2520"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN2676"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN2522"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1746,7 +1746,7 @@ with <a href="xmlsec-app.html#XMLSECCRYPTOAPPDEFAULTKEYSMNGRINIT"><span class="T
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN2691"></a><h4>Returns</h4>
+<a name="AEN2537"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -1760,10 +1760,10 @@ xmlSecCryptoAppDefaultKeysMngrSave (<code class="PARAMETER"><a href="xmlsec-keys
 <p>Saves keys from <code class="PARAMETER">mngr</code>
  to  XML keys file.</p>
 <div class="REFSECT3">
-<a name="AEN2712"></a><h4>Parameters</h4>
+<a name="AEN2558"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN2714"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN2560"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1789,7 +1789,7 @@ xmlSecCryptoAppDefaultKeysMngrSave (<code class="PARAMETER"><a href="xmlsec-keys
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN2735"></a><h4>Returns</h4>
+<a name="AEN2581"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -1806,10 +1806,10 @@ xmlSecCryptoAppKeysMngrCertLoad (<code class="PARAMETER"><a href="xmlsec-keysmng
 untrusted certs in <code class="PARAMETER">store</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN2760"></a><h4>Parameters</h4>
+<a name="AEN2606"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN2762"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN2608"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1841,7 +1841,7 @@ trusted or not.</p></td>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN2790"></a><h4>Returns</h4>
+<a name="AEN2636"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -1859,10 +1859,10 @@ xmlSecCryptoAppKeysMngrCertLoadMemory (<code class="PARAMETER"><a href="xmlsec-k
 untrusted certs in <code class="PARAMETER">store</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN2818"></a><h4>Parameters</h4>
+<a name="AEN2664"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN2820"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN2666"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1898,7 +1898,7 @@ untrusted certs in <code class="PARAMETER">store</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN2853"></a><h4>Returns</h4>
+<a name="AEN2699"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -1913,10 +1913,10 @@ xmlSecCryptoAppKeyLoad (<code class="PARAMETER">const <font><span class="TYPE">c
                         <code class="PARAMETER"><font><span class="TYPE">void</span></font> *pwdCallbackCtx</code>);</pre>
 <p>Reads key from the a file.</p>
 <div class="REFSECT3">
-<a name="AEN2879"></a><h4>Parameters</h4>
+<a name="AEN2725"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN2881"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN2727"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1952,7 +1952,7 @@ xmlSecCryptoAppKeyLoad (<code class="PARAMETER">const <font><span class="TYPE">c
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN2914"></a><h4>Returns</h4>
+<a name="AEN2760"></a><h4>Returns</h4>
 <p> pointer to the key or NULL if an error occurs.</p>
 </div>
 </div>
@@ -1968,10 +1968,10 @@ xmlSecCryptoAppKeyLoadMemory (<code class="PARAMETER">const <a href="xmlsec-xmls
                               <code class="PARAMETER"><font><span class="TYPE">void</span></font> *pwdCallbackCtx</code>);</pre>
 <p>Reads key from the memory buffer.</p>
 <div class="REFSECT3">
-<a name="AEN2943"></a><h4>Parameters</h4>
+<a name="AEN2789"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN2945"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN2791"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2012,7 +2012,7 @@ xmlSecCryptoAppKeyLoadMemory (<code class="PARAMETER">const <a href="xmlsec-xmls
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN2984"></a><h4>Returns</h4>
+<a name="AEN2830"></a><h4>Returns</h4>
 <p> pointer to the key or NULL if an error occurs.</p>
 </div>
 </div>
@@ -2028,10 +2028,10 @@ xmlSecCryptoAppPkcs12Load (<code class="PARAMETER">const <font><span class="TYPE
 For uniformity, call xmlSecCryptoAppKeyLoad instead of this function. Pass
 in format=xmlSecKeyDataFormatPkcs12.</p>
 <div class="REFSECT3">
-<a name="AEN3007"></a><h4>Parameters</h4>
+<a name="AEN2853"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN3009"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN2855"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2062,7 +2062,7 @@ in format=xmlSecKeyDataFormatPkcs12.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN3036"></a><h4>Returns</h4>
+<a name="AEN2882"></a><h4>Returns</h4>
 <p> pointer to the key or NULL if an error occurs.</p>
 </div>
 </div>
@@ -2079,10 +2079,10 @@ xmlSecCryptoAppPkcs12LoadMemory (<code class="PARAMETER">const <a href="xmlsec-x
 For uniformity, call xmlSecCryptoAppKeyLoadMemory instead of this function. Pass
 in format=xmlSecKeyDataFormatPkcs12.</p>
 <div class="REFSECT3">
-<a name="AEN3062"></a><h4>Parameters</h4>
+<a name="AEN2908"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN3064"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN2910"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2118,7 +2118,7 @@ in format=xmlSecKeyDataFormatPkcs12.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN3097"></a><h4>Returns</h4>
+<a name="AEN2943"></a><h4>Returns</h4>
 <p> pointer to the key or NULL if an error occurs.</p>
 </div>
 </div>
@@ -2132,10 +2132,10 @@ xmlSecCryptoAppKeyCertLoad (<code class="PARAMETER"><a href="xmlsec-keys.html#XM
 <p>Reads the certificate from $<code class="PARAMETER">filename</code>
  and adds it to key.</p>
 <div class="REFSECT3">
-<a name="AEN3118"></a><h4>Parameters</h4>
+<a name="AEN2964"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN3120"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN2966"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2161,7 +2161,7 @@ xmlSecCryptoAppKeyCertLoad (<code class="PARAMETER"><a href="xmlsec-keys.html#XM
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN3141"></a><h4>Returns</h4>
+<a name="AEN2987"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -2175,10 +2175,10 @@ xmlSecCryptoAppKeyCertLoadMemory (<code class="PARAMETER"><a href="xmlsec-keys.h
                                   <code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT"><span class="TYPE">xmlSecKeyDataFormat</span></a> format</code>);</pre>
 <p>Reads the certificate from memory buffer and adds it to key.</p>
 <div class="REFSECT3">
-<a name="AEN3164"></a><h4>Parameters</h4>
+<a name="AEN3010"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN3166"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN3012"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2209,7 +2209,7 @@ xmlSecCryptoAppKeyCertLoadMemory (<code class="PARAMETER"><a href="xmlsec-keys.h
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN3193"></a><h4>Returns</h4>
+<a name="AEN3039"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -2220,7 +2220,7 @@ xmlSecCryptoAppKeyCertLoadMemory (<code class="PARAMETER"><a href="xmlsec-keys.h
 xmlSecCryptoAppGetDefaultPwdCallback (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>Gets default password callback.</p>
 <div class="REFSECT3">
-<a name="AEN3206"></a><h4>Returns</h4>
+<a name="AEN3052"></a><h4>Returns</h4>
 <p> default password callback.</p>
 </div>
 </div>

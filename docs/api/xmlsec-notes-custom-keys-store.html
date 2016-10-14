@@ -116,7 +116,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 	add or remove keys while other threads use the store.</p>
 <p>	     </p>
 <div class="EXAMPLE">
-<a name="AEN512"></a><p><b>Example 4. Creating a custom keys manager.</b></p>
+<a name="AEN400"></a><p><b>Example 4. Creating a custom keys manager.</b></p>
 <pre class="PROGRAMLISTING">/**
  * create_files_keys_mngr:
  *  
@@ -168,7 +168,7 @@ create_files_keys_mngr(void) {
 /****************************************************************************
  *
  * Files Keys Store: we assume that key's name (content of the 
- * &lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&amp;lt;dsig:KeyName/&amp;gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt; element is a name of the file with a key.
+ * &lt;dsig:KeyName/&gt; element is a name of the file with a key.
  * Attention: this probably not a good solution for high traffic systems.
  * 
  ***************************************************************************/
@@ -205,7 +205,7 @@ files_keys_store_get_klass(void) {
  * files_keys_store_find_key:
  * @store:		the pointer to default keys store.
  * @name:		the desired key name.
- * @keyInfoCtx:		the pointer to &lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&amp;lt;dsig:KeyInfo/&amp;gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt; node processing context.
+ * @keyInfoCtx:		the pointer to &lt;dsig:KeyInfo/&gt; node processing context.
  *  
  * Lookups key in the @store.
  *

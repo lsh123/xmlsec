@@ -110,12 +110,12 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <h1>
 <a name="XMLSEC-OPENSSL-X509"></a>x509</h1>
 <div class="REFNAMEDIV">
-<a name="AEN32890"></a><h2>Name</h2>x509 -- X509 certificates support implementation for OpenSSL.</div>
+<a name="AEN32887"></a><h2>Name</h2>x509 -- X509 certificates support implementation for OpenSSL.</div>
 <div class="REFSECT1">
 <a name="XMLSEC-OPENSSL-X509.FUNCTIONS"></a><h2>Functions</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN32895"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN32892"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody>
@@ -241,7 +241,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="XMLSEC-OPENSSL-X509.OTHER"></a><h2>Types and Values</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN33026"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN33023"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody>
@@ -282,7 +282,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 xmlSecOpenSSLKeyDataX509GetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The OpenSSL X509 key data klass (http://www.w3.org/TR/xmldsig-core/<font><span class="TYPE">sec-X509Data</span></font>).</p>
 <div class="REFSECT3">
-<a name="AEN33066"></a><h4>Returns</h4>
+<a name="AEN33063"></a><h4>Returns</h4>
 <p> the X509 data klass.</p>
 </div>
 </div>
@@ -293,10 +293,10 @@ xmlSecOpenSSLKeyDataX509GetKlass (<code class="PARAMETER"><span class="TYPE">voi
 xmlSecOpenSSLKeyDataX509GetKeyCert (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>);</pre>
 <p>Gets the certificate from which the key was extracted.</p>
 <div class="REFSECT3">
-<a name="AEN33080"></a><h4>Parameters</h4>
+<a name="AEN33077"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN33082"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN33079"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -310,7 +310,7 @@ xmlSecOpenSSLKeyDataX509GetKeyCert (<code class="PARAMETER"><a href="xmlsec-keys
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN33091"></a><h4>Returns</h4>
+<a name="AEN33088"></a><h4>Returns</h4>
 <p> the key's certificate or NULL if key data was not used for key
 extraction or an error occurs.</p>
 </div>
@@ -324,10 +324,10 @@ xmlSecOpenSSLKeyDataX509AdoptKeyCert (<code class="PARAMETER"><a href="xmlsec-ke
 <p>Sets the key's certificate in <code class="PARAMETER">data</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN33109"></a><h4>Parameters</h4>
+<a name="AEN33106"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN33111"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN33108"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -348,7 +348,7 @@ xmlSecOpenSSLKeyDataX509AdoptKeyCert (<code class="PARAMETER"><a href="xmlsec-ke
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN33126"></a><h4>Returns</h4>
+<a name="AEN33123"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -360,10 +360,10 @@ xmlSecOpenSSLKeyDataX509AdoptCert (<code class="PARAMETER"><a href="xmlsec-keysd
                                    <code class="PARAMETER"><font><span class="TYPE">X509</span></font> *cert</code>);</pre>
 <p>Adds certificate to the X509 key data.</p>
 <div class="REFSECT3">
-<a name="AEN33143"></a><h4>Parameters</h4>
+<a name="AEN33140"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN33145"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN33142"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -384,7 +384,7 @@ xmlSecOpenSSLKeyDataX509AdoptCert (<code class="PARAMETER"><a href="xmlsec-keysd
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN33160"></a><h4>Returns</h4>
+<a name="AEN33157"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -396,10 +396,10 @@ xmlSecOpenSSLKeyDataX509GetCert (<code class="PARAMETER"><a href="xmlsec-keysdat
                                  <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> pos</code>);</pre>
 <p>Gets a certificate from X509 key data.</p>
 <div class="REFSECT3">
-<a name="AEN33177"></a><h4>Parameters</h4>
+<a name="AEN33174"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN33179"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN33176"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -420,7 +420,7 @@ xmlSecOpenSSLKeyDataX509GetCert (<code class="PARAMETER"><a href="xmlsec-keysdat
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN33194"></a><h4>Returns</h4>
+<a name="AEN33191"></a><h4>Returns</h4>
 <p> the pointer to certificate or NULL if <code class="PARAMETER">pos</code>
 is larger than the
 number of certificates in <code class="PARAMETER">data</code>
@@ -435,10 +435,10 @@ xmlSecOpenSSLKeyDataX509GetCertsSize (<code class="PARAMETER"><a href="xmlsec-ke
 <p>Gets the number of certificates in <code class="PARAMETER">data</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN33211"></a><h4>Parameters</h4>
+<a name="AEN33208"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN33213"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN33210"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -452,7 +452,7 @@ xmlSecOpenSSLKeyDataX509GetCertsSize (<code class="PARAMETER"><a href="xmlsec-ke
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN33222"></a><h4>Returns</h4>
+<a name="AEN33219"></a><h4>Returns</h4>
 <p> te number of certificates in <code class="PARAMETER">data</code>
 .</p>
 </div>
@@ -465,10 +465,10 @@ xmlSecOpenSSLKeyDataX509AdoptCrl (<code class="PARAMETER"><a href="xmlsec-keysda
                                   <code class="PARAMETER"><font><span class="TYPE">X509_CRL</span></font> *crl</code>);</pre>
 <p>Adds CRL to the X509 key data.</p>
 <div class="REFSECT3">
-<a name="AEN33240"></a><h4>Parameters</h4>
+<a name="AEN33237"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN33242"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN33239"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -489,7 +489,7 @@ xmlSecOpenSSLKeyDataX509AdoptCrl (<code class="PARAMETER"><a href="xmlsec-keysda
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN33257"></a><h4>Returns</h4>
+<a name="AEN33254"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -501,10 +501,10 @@ xmlSecOpenSSLKeyDataX509GetCrl (<code class="PARAMETER"><a href="xmlsec-keysdata
                                 <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> pos</code>);</pre>
 <p>Gets a CRL from X509 key data.</p>
 <div class="REFSECT3">
-<a name="AEN33274"></a><h4>Parameters</h4>
+<a name="AEN33271"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN33276"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN33273"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -525,7 +525,7 @@ xmlSecOpenSSLKeyDataX509GetCrl (<code class="PARAMETER"><a href="xmlsec-keysdata
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN33291"></a><h4>Returns</h4>
+<a name="AEN33288"></a><h4>Returns</h4>
 <p> the pointer to CRL or NULL if <code class="PARAMETER">pos</code>
 is larger than the
 number of CRLs in <code class="PARAMETER">data</code>
@@ -540,10 +540,10 @@ xmlSecOpenSSLKeyDataX509GetCrlsSize (<code class="PARAMETER"><a href="xmlsec-key
 <p>Gets the number of CRLs in <code class="PARAMETER">data</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN33308"></a><h4>Parameters</h4>
+<a name="AEN33305"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN33310"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN33307"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -557,7 +557,7 @@ xmlSecOpenSSLKeyDataX509GetCrlsSize (<code class="PARAMETER"><a href="xmlsec-key
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN33319"></a><h4>Returns</h4>
+<a name="AEN33316"></a><h4>Returns</h4>
 <p> te number of CRLs in <code class="PARAMETER">data</code>
 .</p>
 </div>
@@ -570,10 +570,10 @@ xmlSecOpenSSLX509CertGetKey (<code class="PARAMETER"><font><span class="TYPE">X5
 <p>Extracts public key from the <code class="PARAMETER">cert</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN33335"></a><h4>Parameters</h4>
+<a name="AEN33332"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN33337"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN33334"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -587,7 +587,7 @@ xmlSecOpenSSLX509CertGetKey (<code class="PARAMETER"><font><span class="TYPE">X5
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN33346"></a><h4>Returns</h4>
+<a name="AEN33343"></a><h4>Returns</h4>
 <p> public key value or NULL if an error occurs.</p>
 </div>
 </div>
@@ -599,7 +599,7 @@ xmlSecOpenSSLKeyDataRawX509CertGetKlass
                                (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The raw X509 certificates key data klass.</p>
 <div class="REFSECT3">
-<a name="AEN33359"></a><h4>Returns</h4>
+<a name="AEN33356"></a><h4>Returns</h4>
 <p> raw X509 certificates key data klass.</p>
 </div>
 </div>
@@ -610,7 +610,7 @@ xmlSecOpenSSLKeyDataRawX509CertGetKlass
 xmlSecOpenSSLX509StoreGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The OpenSSL X509 certificates key data store klass.</p>
 <div class="REFSECT3">
-<a name="AEN33372"></a><h4>Returns</h4>
+<a name="AEN33369"></a><h4>Returns</h4>
 <p> pointer to OpenSSL X509 certificates key data store klass.</p>
 </div>
 </div>
@@ -627,10 +627,10 @@ xmlSecOpenSSLX509StoreFindCert (<code class="PARAMETER"><a href="xmlsec-keysdata
 <p>Searches <code class="PARAMETER">store</code>
  for a certificate that matches given criteria.</p>
 <div class="REFSECT3">
-<a name="AEN33402"></a><h4>Parameters</h4>
+<a name="AEN33399"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN33404"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN33401"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -671,7 +671,7 @@ xmlSecOpenSSLX509StoreFindCert (<code class="PARAMETER"><a href="xmlsec-keysdata
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN33443"></a><h4>Returns</h4>
+<a name="AEN33440"></a><h4>Returns</h4>
 <p> pointer to found certificate or NULL if certificate is not found
 or an error occurs.</p>
 </div>
@@ -687,10 +687,10 @@ xmlSecOpenSSLX509StoreVerify (<code class="PARAMETER"><a href="xmlsec-keysdata.h
 <p>Verifies <code class="PARAMETER">certs</code>
  list.</p>
 <div class="REFSECT3">
-<a name="AEN33467"></a><h4>Parameters</h4>
+<a name="AEN33464"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN33469"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN33466"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -721,7 +721,7 @@ xmlSecOpenSSLX509StoreVerify (<code class="PARAMETER"><a href="xmlsec-keysdata.h
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN33496"></a><h4>Returns</h4>
+<a name="AEN33493"></a><h4>Returns</h4>
 <p> pointer to the first verified certificate from <code class="PARAMETER">certs</code>
 .</p>
 </div>
@@ -735,10 +735,10 @@ xmlSecOpenSSLX509StoreAdoptCert (<code class="PARAMETER"><a href="xmlsec-keysdat
                                  <code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE"><span class="TYPE">xmlSecKeyDataType</span></a> type</code>);</pre>
 <p>Adds trusted (root) or untrusted certificate to the store.</p>
 <div class="REFSECT3">
-<a name="AEN33517"></a><h4>Parameters</h4>
+<a name="AEN33514"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN33519"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN33516"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -764,7 +764,7 @@ xmlSecOpenSSLX509StoreAdoptCert (<code class="PARAMETER"><a href="xmlsec-keysdat
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN33540"></a><h4>Returns</h4>
+<a name="AEN33537"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -776,10 +776,10 @@ xmlSecOpenSSLX509StoreAdoptCrl (<code class="PARAMETER"><a href="xmlsec-keysdata
                                 <code class="PARAMETER"><font><span class="TYPE">X509_CRL</span></font> *crl</code>);</pre>
 <p>Adds X509 CRL to the store.</p>
 <div class="REFSECT3">
-<a name="AEN33557"></a><h4>Parameters</h4>
+<a name="AEN33554"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN33559"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN33556"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -800,7 +800,7 @@ xmlSecOpenSSLX509StoreAdoptCrl (<code class="PARAMETER"><a href="xmlsec-keysdata
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN33574"></a><h4>Returns</h4>
+<a name="AEN33571"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -815,10 +815,10 @@ xmlSecOpenSSLX509StoreAddCertsPath (<code class="PARAMETER"><a href="xmlsec-keys
 in <code class="PARAMETER">store</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN33593"></a><h4>Parameters</h4>
+<a name="AEN33590"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN33595"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN33592"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -839,7 +839,7 @@ in <code class="PARAMETER">store</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN33610"></a><h4>Returns</h4>
+<a name="AEN33607"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -855,10 +855,10 @@ in <code class="PARAMETER">store</code>
 . It is possible for <code class="PARAMETER">file</code>
  to contain multiple certs.</p>
 <div class="REFSECT3">
-<a name="AEN33630"></a><h4>Parameters</h4>
+<a name="AEN33627"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN33632"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN33629"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -879,7 +879,7 @@ in <code class="PARAMETER">store</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN33647"></a><h4>Returns</h4>
+<a name="AEN33644"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>

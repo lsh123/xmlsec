@@ -465,6 +465,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         }
 
         /* Convert from OpenSSL parameter ordering to the OpenPGP order. */
+        /* (http://gnupg.10057.n7.nabble.com/RSA-PKCS-1-signing-differs-from-OpenSSL-s-td27920.html) */
         /* First check that p < q; if not swap p and q and recompute u.  */ 
         if (gcry_mpi_cmp (keyparms[4], keyparms[5]) > 0) {
             gcry_mpi_swap (keyparms[4], keyparms[5]);
@@ -474,9 +475,8 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         /* Build the S-expression.  */
         err = gcry_sexp_build (&s_priv_key, NULL,
                          "(private-key(rsa(n%m)(e%m)(d%m)(p%m)(q%m)(u%m)))",
-                         keyparms[1], keyparms[2],
-                         keyparms[3], keyparms[4],
-                         keyparms[5], keyparms[8]
+                         keyparms[1], keyparms[2], keyparms[3],
+                         keyparms[4], keyparms[5], keyparms[8]
         );
         if((err != GPG_ERR_NO_ERROR) || (s_priv_key == NULL)) {
             xmlSecError(XMLSEC_ERRORS_HERE,

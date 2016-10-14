@@ -141,6 +141,12 @@ xmlSecGnuTLSKeyDataDsaAdoptPrivateKey(xmlSecKeyDataPtr data, gnutls_x509_privkey
     }
     xmlSecGnuTLSDestroyParams(params, sizeof(params)/sizeof(params[0]));
 
+    /* Convert from OpenSSL parameter ordering to the OpenPGP order. */
+    /* First check that x < y; if not swap x and y  */
+    if (gcry_mpi_cmp (mpis[4], mpis[3]) > 0) {
+        gcry_mpi_swap (mpis[3], mpis[4]);
+    }
+
     /* build expressions */
     rc = gcry_sexp_build(&(priv_key), NULL, "(private-key(dsa(p%m)(q%m)(g%m)(y%m)(x%m)))",
                         mpis[0], mpis[1], mpis[2], mpis[3], mpis[4]);
@@ -334,6 +340,14 @@ xmlSecGnuTLSKeyDataRsaAdoptPrivateKey(xmlSecKeyDataPtr data, gnutls_x509_privkey
         return(-1);
     }
     xmlSecGnuTLSDestroyParams(params, sizeof(params)/sizeof(params[0]));
+
+    /* Convert from OpenSSL parameter ordering to the OpenPGP order. */
+    /* (http://gnupg.10057.n7.nabble.com/RSA-PKCS-1-signing-differs-from-OpenSSL-s-td27920.html) */
+    /* First check that p < q; if not swap p and q and recompute u.  */ 
+    if (gcry_mpi_cmp(mpis[3], mpis[4]) > 0) {
+        gcry_mpi_swap(mpis[3], mpis[4]);
+        gcry_mpi_invm(mpis[5], mpis[3], mpis[4]);
+    }
 
     /* build expressions */
     rc = gcry_sexp_build(&(priv_key), NULL, "(private-key(rsa((n%m)(e%m)(d%m)(p%m)(q%m)(u%m))))",

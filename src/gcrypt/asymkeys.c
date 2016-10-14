@@ -1082,6 +1082,11 @@ xmlSecGCryptKeyDataDsaXmlRead(xmlSecKeyDataId id,
         goto done;
     }
 
+    /* Convert from OpenSSL parameter ordering to the OpenPGP order. */
+    /* First check that x < y; if not swap x and y  */
+    if((x != NULL) && (gcry_mpi_cmp (x, y) > 0)) {
+        gcry_mpi_swap (x, y);
+    }
 
     /* construct pub/priv key pairs */
     err = gcry_sexp_build(&pub_key, NULL,

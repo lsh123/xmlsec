@@ -67,7 +67,6 @@ extern "C" {
         (XMLSEC_X509DATA_CERTIFICATE_NODE | XMLSEC_X509DATA_CRL_NODE)
 
 XMLSEC_EXPORT int               xmlSecX509DataGetNodeContent    (xmlNodePtr node,
-                                                                 int deleteChildren,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 #ifdef __cplusplus

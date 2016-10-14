@@ -627,7 +627,7 @@ xmlSecGnuTLSKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    content = xmlSecX509DataGetNodeContent (node, 1, keyInfoCtx);
+    content = xmlSecX509DataGetNodeContent (node, keyInfoCtx);
     if (content < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),

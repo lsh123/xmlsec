@@ -1,3 +1,35 @@
+2016-10-15 Aleksey Sanin  <aleksey@aleksey.com>
+	* 1.2.23 release
+
+2016-10-14 Aleksey Sanin  <aleksey@aleksey.com>
+	* Fixed gcrypto RSA/DSA keys params ordering
+
+2016-10-12 Aleksey Sanin  <aleksey@aleksey.com>
+	* Better X509Data templates
+
+2016-10-07 Aleksey Sanin  <aleksey@aleksey.com>
+	* Fixed memory leak caused by xmlGetProp (patch from Dafan Zhai)
+	* Fixed KW transforms (overlapping buffer error) for OpenSSL 1.1.0
+	* Fixed pkg-config detection
+
+2016-09-27 Aleksey Sanin  <aleksey@aleksey.com>
+	* Added initial support OpenSSL 1.1.0 (patch from Andrzej Siewior)
+
+2016-09-19 Aleksey Sanin  <aleksey@aleksey.com>
+	* Fixed signing with RSA SHA2 via mscrypto (patch from PepaRokos)
+
+2016-07-08 Aleksey Sanin  <aleksey@aleksey.com>
+	* Fixed mscrypto undeclared XMLSEC_DEFAULT_CRYPTO (patch from vmiklos)
+
+2016-05-31 Aleksey Sanin  <aleksey@aleksey.com>
+	* Fixed mismatched conditional for XMLSEC_NO_ECDSA (patch from Eric Sproul)
+
+2016-05-20 Aleksey Sanin  <aleksey@aleksey.com>
+	* Fixed openssl cert depth verification param usage (patch from R-Tur)
+
+2016-04-22 Aleksey Sanin  <aleksey@aleksey.com>
+	* Fixed stdin/stdout in xmlsec1 app
+
 2016-04-20 Aleksey Sanin  <aleksey@aleksey.com>
 	* Restored SOAP support for Lasso
 	* 1.2.22 release

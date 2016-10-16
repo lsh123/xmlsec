@@ -110,12 +110,12 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <h1>
 <a name="XMLSEC-XMLENC"></a>xmlenc</h1>
 <div class="REFNAMEDIV">
-<a name="AEN25170"></a><h2>Name</h2>xmlenc -- XML Encryption support.</div>
+<a name="AEN25043"></a><h2>Name</h2>xmlenc -- XML Encryption support.</div>
 <div class="REFSECT1">
 <a name="XMLSEC-XMLENC.FUNCTIONS"></a><h2>Functions</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN25175"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN25048"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody>
@@ -206,7 +206,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="XMLSEC-XMLENC.OTHER"></a><h2>Types and Values</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN25271"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN25144"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody>
@@ -241,10 +241,10 @@ xmlSecEncCtxCreate (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSEC
 The caller is responsible for destroying returned object by calling
 <a href="xmlsec-xmlenc.html#XMLSECENCCTXDESTROY"><span class="TYPE">xmlSecEncCtxDestroy</span></a> function.</p>
 <div class="REFSECT3">
-<a name="AEN25304"></a><h4>Parameters</h4>
+<a name="AEN25177"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN25306"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN25179"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -258,7 +258,7 @@ The caller is responsible for destroying returned object by calling
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN25315"></a><h4>Returns</h4>
+<a name="AEN25188"></a><h4>Returns</h4>
 <p> pointer to newly allocated context object or NULL if an error
 occurs.</p>
 </div>
@@ -270,10 +270,10 @@ occurs.</p>
 xmlSecEncCtxDestroy (<code class="PARAMETER"><a href="xmlsec-xmlenc.html#XMLSECENCCTX"><span class="TYPE">xmlSecEncCtxPtr</span></a> encCtx</code>);</pre>
 <p>Destroy context object created with <a href="xmlsec-xmlenc.html#XMLSECENCCTXCREATE"><span class="TYPE">xmlSecEncCtxCreate</span></a> function.</p>
 <div class="REFSECT3">
-<a name="AEN25331"></a><h4>Parameters</h4>
+<a name="AEN25204"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN25333"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN25206"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -297,10 +297,10 @@ xmlSecEncCtxInitialize (<code class="PARAMETER"><a href="xmlsec-xmlenc.html#XMLS
 The caller is responsible for cleaning up returned object by calling
 <a href="xmlsec-xmlenc.html#XMLSECENCCTXFINALIZE"><span class="TYPE">xmlSecEncCtxFinalize</span></a> function.</p>
 <div class="REFSECT3">
-<a name="AEN25358"></a><h4>Parameters</h4>
+<a name="AEN25231"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN25360"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN25233"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -321,7 +321,7 @@ The caller is responsible for cleaning up returned object by calling
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN25375"></a><h4>Returns</h4>
+<a name="AEN25248"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -333,10 +333,10 @@ xmlSecEncCtxFinalize (<code class="PARAMETER"><a href="xmlsec-xmlenc.html#XMLSEC
 <p>Cleans up <code class="PARAMETER">encCtx</code>
  object.</p>
 <div class="REFSECT3">
-<a name="AEN25390"></a><h4>Parameters</h4>
+<a name="AEN25263"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN25392"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN25265"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -360,10 +360,10 @@ xmlSecEncCtxCopyUserPref (<code class="PARAMETER"><a href="xmlsec-xmlenc.html#XM
  context to <code class="PARAMETER">dst</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN25417"></a><h4>Parameters</h4>
+<a name="AEN25290"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN25419"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN25292"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -384,7 +384,7 @@ xmlSecEncCtxCopyUserPref (<code class="PARAMETER"><a href="xmlsec-xmlenc.html#XM
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN25434"></a><h4>Returns</h4>
+<a name="AEN25307"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -396,10 +396,10 @@ xmlSecEncCtxReset (<code class="PARAMETER"><a href="xmlsec-xmlenc.html#XMLSECENC
 <p>Resets <code class="PARAMETER">encCtx</code>
  object, user settings are not touched.</p>
 <div class="REFSECT3">
-<a name="AEN25449"></a><h4>Parameters</h4>
+<a name="AEN25322"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN25451"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN25324"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -425,10 +425,10 @@ xmlSecEncCtxBinaryEncrypt (<code class="PARAMETER"><a href="xmlsec-xmlenc.html#X
  according to template <code class="PARAMETER">tmpl</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN25482"></a><h4>Parameters</h4>
+<a name="AEN25355"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN25484"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN25357"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -460,7 +460,7 @@ buffer size.</p></td>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN25512"></a><h4>Returns</h4>
+<a name="AEN25385"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -477,10 +477,10 @@ xmlSecEncCtxXmlEncrypt (<code class="PARAMETER"><a href="xmlsec-xmlenc.html#XMLS
  is replaced
 with result &lt;enc:EncryptedData/&gt; node.</p>
 <div class="REFSECT3">
-<a name="AEN25535"></a><h4>Parameters</h4>
+<a name="AEN25408"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN25537"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN25410"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -506,7 +506,7 @@ with result &lt;enc:EncryptedData/&gt; node.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN25558"></a><h4>Returns</h4>
+<a name="AEN25431"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -521,10 +521,10 @@ xmlSecEncCtxUriEncrypt (<code class="PARAMETER"><a href="xmlsec-xmlenc.html#XMLS
  according to template <code class="PARAMETER">tmpl</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN25580"></a><h4>Parameters</h4>
+<a name="AEN25453"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN25582"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN25455"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -550,7 +550,7 @@ xmlSecEncCtxUriEncrypt (<code class="PARAMETER"><a href="xmlsec-xmlenc.html#XMLS
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN25603"></a><h4>Returns</h4>
+<a name="AEN25476"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -564,10 +564,10 @@ xmlSecEncCtxDecrypt (<code class="PARAMETER"><a href="xmlsec-xmlenc.html#XMLSECE
  and if necessary replaces <code class="PARAMETER">node</code>
  with decrypted data.</p>
 <div class="REFSECT3">
-<a name="AEN25622"></a><h4>Parameters</h4>
+<a name="AEN25495"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN25624"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN25497"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -588,7 +588,7 @@ xmlSecEncCtxDecrypt (<code class="PARAMETER"><a href="xmlsec-xmlenc.html#XMLSECE
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN25639"></a><h4>Returns</h4>
+<a name="AEN25512"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -602,10 +602,10 @@ xmlSecEncCtxDecryptToBuffer (<code class="PARAMETER"><a href="xmlsec-xmlenc.html
  data to the <code class="PARAMETER">encCtx</code>
  buffer.</p>
 <div class="REFSECT3">
-<a name="AEN25658"></a><h4>Parameters</h4>
+<a name="AEN25531"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN25660"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN25533"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -626,7 +626,7 @@ xmlSecEncCtxDecryptToBuffer (<code class="PARAMETER"><a href="xmlsec-xmlenc.html
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN25675"></a><h4>Returns</h4>
+<a name="AEN25548"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -640,10 +640,10 @@ xmlSecEncCtxDebugDump (<code class="PARAMETER"><a href="xmlsec-xmlenc.html#XMLSE
  to <code class="PARAMETER">output</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN25694"></a><h4>Parameters</h4>
+<a name="AEN25567"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN25696"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN25569"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -674,10 +674,10 @@ xmlSecEncCtxDebugXmlDump (<code class="PARAMETER"><a href="xmlsec-xmlenc.html#XM
  to <code class="PARAMETER">output</code>
  in XML format.</p>
 <div class="REFSECT3">
-<a name="AEN25727"></a><h4>Parameters</h4>
+<a name="AEN25600"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN25729"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN25602"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -705,10 +705,10 @@ xmlSecEncCtxDebugXmlDump (<code class="PARAMETER"><a href="xmlsec-xmlenc.html#XM
 <a name="XMLENCCTXMODE"></a><h3>enum xmlEncCtxMode</h3>
 <p>The <a href="xmlsec-xmlenc.html#XMLSECENCCTX"><span class="TYPE">xmlSecEncCtx</span></a> mode.</p>
 <div class="REFSECT3">
-<a name="AEN25753"></a><h4>Members</h4>
+<a name="AEN25626"></a><h4>Members</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN25755"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN25628"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -776,10 +776,10 @@ xmlSecEncCtxDebugXmlDump (<code class="PARAMETER"><a href="xmlsec-xmlenc.html#XM
 };</pre>
 <p>XML Encrypiton context.</p>
 <div class="REFSECT3">
-<a name="AEN25782"></a><h4>Members</h4>
+<a name="AEN25655"></a><h4>Members</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN25784"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN25657"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>

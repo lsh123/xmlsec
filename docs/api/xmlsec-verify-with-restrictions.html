@@ -114,7 +114,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <p></p>
 <div class="INFORMALEXAMPLE">
 <p></p>
-<a name="AEN877"></a><pre class="PROGRAMLISTING">/** 
+<a name="AEN723"></a><pre class="PROGRAMLISTING">/** 
  * XML Security Library example: Verifying a simple SAML response with X509 certificate
  *
  * Verifies a simple SAML response. In addition to refular verification
@@ -139,7 +139,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  * 
- * Copyright (C) 2002-2016 Aleksey Sanin &lt;aleksey@aleksey.com&gt;
+ * Copyright (C) 2002-2016 Aleksey Sanin &lt;aleksey@aleksey.com&gt;. All Rights Reserved.
  */
 #include &lt;stdlib.h&gt;
 #include &lt;string.h&gt;
@@ -216,7 +216,7 @@ main(int argc, char **argv) {
      * xmlsec-crypto library.
      */
 #ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING
-    if(xmlSecCryptoDLLoadLibrary(BAD_CAST XMLSEC_CRYPTO) &lt; 0) {
+    if(xmlSecCryptoDLLoadLibrary(NULL) &lt; 0) {
         fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
                         "that you have it installed and check shared libraries path\n"
                         "(LD_LIBRARY_PATH) envornment variable.\n");
@@ -430,7 +430,7 @@ done:
 <p></p>
 <div class="INFORMALEXAMPLE">
 <p></p>
-<a name="AEN883"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<a name="AEN729"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: A simple SAML response template (verify4 example). 
 
@@ -485,7 +485,7 @@ Sign it using the following command (replace __ with double dashes):
 <p></p>
 <div class="INFORMALEXAMPLE">
 <p></p>
-<a name="AEN891"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<a name="AEN737"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: A simple SAML response template (verify4 example). 
 
@@ -562,7 +562,7 @@ fBjXssrERn05kpBcrRfzou4r3DCgQFPhjxga&lt;/dsig:X509Certificate&gt;
 <p></p>
 <div class="INFORMALEXAMPLE">
 <p></p>
-<a name="AEN896"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<a name="AEN742"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: A simple bad SAML response template (verify4 example). 
 
@@ -624,7 +624,7 @@ Sign it using the following command (replace __ with double dashes):
 <p></p>
 <div class="INFORMALEXAMPLE">
 <p></p>
-<a name="AEN904"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<a name="AEN750"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: A simple bad SAML response (verify4 example). 
 

@@ -111,7 +111,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <h1>
 <a name="XMLSEC-NOTES-KEYS"></a>Keys.</h1>
 <p>A key in XML Security Library is a representation of the 
-	<a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a>
+	<a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a>
 	element and consist of several key data objects. 
 	The "value" key data usually contains raw key material (or handlers to 
 	key material) required to execute particular crypto transform. Other 
@@ -123,14 +123,14 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 	and PGP key data.
     </p>
 <div class="FIGURE">
-<a name="AEN412"></a><p><b>Figure 1. The key structure.</b></p>
+<a name="AEN342"></a><p><b>Figure 1. The key structure.</b></p>
 <p><img src="images/key.png" align="CENTER"></p>
 </div>
 <p>XML Security Library has several "invisible" key data classes. 
 	These classes never show up in the keys data list of a key but are used for 
-	<a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a>
-	children processing (<a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top"></a><a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top">&lt;dsig:KeyName/&gt;</a>, 
-	<a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a>, ...). As with transforms, application might 
+	<a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a>
+	children processing (<a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top">&lt;dsig:KeyName/&gt;</a>, 
+	&lt;enc:EncryptedKey/&gt;, ...). As with transforms, application might 
 	add any new key data objects or replace the default ones.
     </p>
 </div>

@@ -113,14 +113,14 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 	to the XML Encryption structure as it is described in 
 	<a href="http://www.w3.org/TR/xmlenc-core" target="_top">specification</a>.
 	The only difference is that some nodes (for example,
-	<a href="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue" target="_top">&lt;enc:CipherValue/&gt;</a>)
+	&lt;enc:CipherValue/&gt;)
 	are empty. The XML Security Library sets the content of these
 	nodes after doing necessary calculations.
 	</p>
 <div class="FIGURE">
-<a name="AEN305"></a><p><b>Figure 2. XML Encryption structure</b></p>
+<a name="AEN256"></a><p><b>Figure 2. XML Encryption structure</b></p>
 <pre class="PROGRAMLISTING">&lt;enc:EncryptedData Id? Type? MimeType? Encoding?&gt;
-    <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionMethod%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionMethod%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionMethod%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionMethod%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionMethod%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionMethod%20Algorithm%20" target="_top"></a><a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionMethod%20Algorithm%20" target="_top">&lt;enc:EncryptionMethod Algorithm /&gt;</a>?
+    &lt;enc:EncryptionMethod Algorithm /&gt;?
     (&lt;dsig:KeyInfo&gt;
 	&lt;dsig:KeyName&gt;?
 	&lt;dsig:KeyValue&gt;?
@@ -143,7 +143,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </div>
 <p>	     </p>
 <div class="EXAMPLE">
-<a name="AEN316"></a><p><b>Example 2. Creating dynamic encrytion template.</b></p>
+<a name="AEN260"></a><p><b>Example 2. Creating dynamic encrytion template.</b></p>
 <pre class="PROGRAMLISTING">/**
  * encrypt_file:
  * @xml_file:		the encryption template file name.
@@ -181,13 +181,13 @@ encrypt_file(const char* xml_file, const char* key_file) {
 	goto done;   
     }
 
-    /* we want to put encrypted data in the &lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue"&gt;&lt;ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue"&gt;&amp;lt;enc:CipherValue/&amp;gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt; node */
+    /* we want to put encrypted data in the &lt;enc:CipherValue/&gt; node */
     if(xmlSecTmplEncDataEnsureCipherValue(encDataNode) == NULL) {
 	fprintf(stderr, "Error: failed to add CipherValue node\n");
 	goto done;   
     }
 
-    /* add &lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"&gt;&amp;lt;dsig:KeyInfo/&amp;gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt; and &lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&lt;ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"&gt;&amp;lt;dsig:KeyName/&amp;gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt;&lt;/ulink&gt; nodes to put key name in the signed document */
+    /* add &lt;dsig:KeyInfo/&gt; and &lt;dsig:KeyName/&gt; nodes to put key name in the signed document */
     keyInfoNode = xmlSecTmplEncDataEnsureKeyInfo(encDataNode, NULL);
     if(keyInfoNode == NULL) {
 	fprintf(stderr, "Error: failed to add key info\n");

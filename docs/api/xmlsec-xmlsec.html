@@ -110,12 +110,12 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <h1>
 <a name="XMLSEC-XMLSEC"></a>xmlsec</h1>
 <div class="REFNAMEDIV">
-<a name="AEN26030"></a><h2>Name</h2>xmlsec -- Utility functions.</div>
+<a name="AEN25903"></a><h2>Name</h2>xmlsec -- Utility functions.</div>
 <div class="REFSECT1">
 <a name="XMLSEC-XMLSEC.FUNCTIONS"></a><h2>Functions</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN26035"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN25908"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody>
@@ -136,6 +136,16 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <td>
 <a href="xmlsec-xmlsec.html#XMLSECSHUTDOWN">xmlSecShutdown</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
 </td>
+</tr>
+<tr>
+<td>const <font><span class="RETURNVALUE">xmlChar</span></font> *</td>
+<td>
+<a href="xmlsec-xmlsec.html#XMLSECGETDEFAULTCRYPTO">xmlSecGetDefaultCrypto</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td>#define</td>
+<td><a href="xmlsec-xmlsec.html#XMLSEC-CRYPTO:CAPS">XMLSEC_CRYPTO</a></td>
 </tr>
 <tr>
 <td>#define</td>
@@ -178,7 +188,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="XMLSEC-XMLSEC.OTHER"></a><h2>Types and Values</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN26089"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN25973"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody>
@@ -218,10 +228,10 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <pre class="PROGRAMLISTING">#define XMLSEC_SIZE_BAD_CAST(val)               ((xmlSecSize)(val))</pre>
 <p>Bad cast to xmlSecSize</p>
 <div class="REFSECT3">
-<a name="AEN26123"></a><h4>Parameters</h4>
+<a name="AEN26007"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN26125"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN26009"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -243,7 +253,7 @@ xmlSecInit (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre
 <p>Initializes XML Security Library. The depended libraries
 (LibXML and LibXSLT) must be initialized before.</p>
 <div class="REFSECT3">
-<a name="AEN26144"></a><h4>Returns</h4>
+<a name="AEN26028"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -252,11 +262,26 @@ xmlSecInit (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre
 <a name="XMLSECSHUTDOWN"></a><h3>xmlSecShutdown ()</h3>
 <pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
 xmlSecShutdown (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p>Clean ups the XML Security Library.</p>
+<p>Gets the default crypto engine ("openssl", "nss", etc.) for the XML Security Library.</p>
 <div class="REFSECT3">
-<a name="AEN26157"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
+<a name="AEN26041"></a><h4>Returns</h4>
+<p> the default crypto engine ("openssl", "nss", etc.).</p>
 </div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGETDEFAULTCRYPTO"></a><h3>xmlSecGetDefaultCrypto ()</h3>
+<pre class="PROGRAMLISTING">const <font><span class="RETURNVALUE">xmlChar</span></font> *
+xmlSecGetDefaultCrypto (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSEC-CRYPTO:CAPS"></a><h3>XMLSEC_CRYPTO</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_CRYPTO                          (xmlSecGetDefaultCrypto())</pre>
+<p>Macro. Deprecated. Defined for backward compatibility only. Do not use
+in your code and use <a href="xmlsec-xmlsec.html#XMLSECGETDEFAULTCRYPTO"><code class="FUNCTION">xmlSecGetDefaultCrypto()</code></a> function instead.</p>
+<p>Returns the default crypto engine.</p>
 </div>
 <hr>
 <div class="REFSECT2">
@@ -284,10 +309,10 @@ xmlSecCheckVersionExt (<code class="PARAMETER"><font><span class="TYPE">int</spa
                        <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECCHECKVERSIONMODE"><span class="TYPE">xmlSecCheckVersionMode</span></a> mode</code>);</pre>
 <p>Checks if the loaded version of xmlsec library could be used.</p>
 <div class="REFSECT3">
-<a name="AEN26192"></a><h4>Parameters</h4>
+<a name="AEN26095"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN26194"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN26097"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -318,7 +343,7 @@ xmlSecCheckVersionExt (<code class="PARAMETER"><font><span class="TYPE">int</spa
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN26221"></a><h4>Returns</h4>
+<a name="AEN26124"></a><h4>Returns</h4>
 <p> 1 if the loaded xmlsec library version is OK to use
 0 if it is not or a negative value if an error occurs.</p>
 </div>
@@ -330,10 +355,10 @@ xmlSecCheckVersionExt (<code class="PARAMETER"><font><span class="TYPE">int</spa
 <p>Macro declares helper functions to convert between "void *" pointer and
 function pointer.</p>
 <div class="REFSECT3">
-<a name="AEN26230"></a><h4>Parameters</h4>
+<a name="AEN26133"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN26232"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN26135"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -353,10 +378,10 @@ function pointer.</p>
 <pre class="PROGRAMLISTING">#define             XMLSEC_PTR_TO_FUNC(func_type, ptr)</pre>
 <p>Macro converts from "void*" pointer to "func_type" function pointer.</p>
 <div class="REFSECT3">
-<a name="AEN26247"></a><h4>Parameters</h4>
+<a name="AEN26150"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN26249"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN26152"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -383,10 +408,10 @@ function pointer.</p>
 <pre class="PROGRAMLISTING">#define             XMLSEC_FUNC_TO_PTR(func_type, func)</pre>
 <p>Macro converts from "func_type" function pointer to "void*" pointer.</p>
 <div class="REFSECT3">
-<a name="AEN26270"></a><h4>Parameters</h4>
+<a name="AEN26173"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN26272"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN26175"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -434,10 +459,10 @@ but it will break ABI (todo).</p>
 <a name="XMLSECCHECKVERSIONMODE"></a><h3>enum xmlSecCheckVersionMode</h3>
 <p>The xmlsec library version mode.</p>
 <div class="REFSECT3">
-<a name="AEN26312"></a><h4>Members</h4>
+<a name="AEN26215"></a><h4>Members</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN26314"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN26217"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>

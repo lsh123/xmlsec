@@ -110,12 +110,12 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <h1>
 <a name="XMLSEC-NODESET"></a>nodeset</h1>
 <div class="REFNAMEDIV">
-<a name="AEN16075"></a><h2>Name</h2>nodeset -- Nodeset object implementation.</div>
+<a name="AEN15921"></a><h2>Name</h2>nodeset -- Nodeset object implementation.</div>
 <div class="REFSECT1">
 <a name="XMLSEC-NODESET.FUNCTIONS"></a><h2>Functions</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN16080"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN15926"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody>
@@ -194,7 +194,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="XMLSEC-NODESET.OTHER"></a><h2>Types and Values</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN16164"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN16010"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody>
@@ -230,10 +230,10 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
                               <code class="PARAMETER"><font><span class="TYPE">void</span></font> *data</code>);</pre>
 <p>The callback function called once per each node in the nodes set.</p>
 <div class="REFSECT3">
-<a name="AEN16206"></a><h4>Parameters</h4>
+<a name="AEN16052"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN16208"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN16054"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -265,7 +265,7 @@ parent node.</p></td>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN16238"></a><h4>Returns</h4>
+<a name="AEN16084"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs
 an walk procedure should be interrupted.</p>
 </div>
@@ -280,10 +280,10 @@ xmlSecNodeSetCreate (<code class="PARAMETER"><font><span class="TYPE">xmlDocPtr<
 <p>Creates new nodes set. Caller is responsible for freeing returned object
 by calling <a href="xmlsec-nodeset.html#XMLSECNODESETDESTROY"><span class="TYPE">xmlSecNodeSetDestroy</span></a> function.</p>
 <div class="REFSECT3">
-<a name="AEN16260"></a><h4>Parameters</h4>
+<a name="AEN16106"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN16262"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN16108"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -309,7 +309,7 @@ by calling <a href="xmlsec-nodeset.html#XMLSECNODESETDESTROY"><span class="TYPE"
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN16283"></a><h4>Returns</h4>
+<a name="AEN16129"></a><h4>Returns</h4>
 <p> pointer to newly allocated node set or NULL if an error occurs.</p>
 </div>
 </div>
@@ -320,10 +320,10 @@ by calling <a href="xmlsec-nodeset.html#XMLSECNODESETDESTROY"><span class="TYPE"
 xmlSecNodeSetDestroy (<code class="PARAMETER"><a href="xmlsec-nodeset.html#XMLSECNODESET"><span class="TYPE">xmlSecNodeSetPtr</span></a> nset</code>);</pre>
 <p>Destroys the nodes set created with <a href="xmlsec-nodeset.html#XMLSECNODESETCREATE"><span class="TYPE">xmlSecNodeSetCreate</span></a> function.</p>
 <div class="REFSECT3">
-<a name="AEN16299"></a><h4>Parameters</h4>
+<a name="AEN16145"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN16301"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN16147"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -344,10 +344,10 @@ xmlSecNodeSetDestroy (<code class="PARAMETER"><a href="xmlsec-nodeset.html#XMLSE
 xmlSecNodeSetDocDestroy (<code class="PARAMETER"><a href="xmlsec-nodeset.html#XMLSECNODESET"><span class="TYPE">xmlSecNodeSetPtr</span></a> nset</code>);</pre>
 <p>Instructs node set to destroy nodes parent doc when node set is destroyed.</p>
 <div class="REFSECT3">
-<a name="AEN16321"></a><h4>Parameters</h4>
+<a name="AEN16167"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN16323"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN16169"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -371,10 +371,10 @@ xmlSecNodeSetContains (<code class="PARAMETER"><a href="xmlsec-nodeset.html#XMLS
 <p>Checks whether the <code class="PARAMETER">node</code>
  is in the nodes set or not.</p>
 <div class="REFSECT3">
-<a name="AEN16350"></a><h4>Parameters</h4>
+<a name="AEN16196"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN16352"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN16198"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -401,7 +401,7 @@ parent node.</p></td>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN16374"></a><h4>Returns</h4>
+<a name="AEN16220"></a><h4>Returns</h4>
 <p> 1 if the <code class="PARAMETER">node</code>
 is in the nodes set <code class="PARAMETER">nset</code>
 , 0 if it is not
@@ -420,10 +420,10 @@ xmlSecNodeSetAdd (<code class="PARAMETER"><a href="xmlsec-nodeset.html#XMLSECNOD
  using operation <code class="PARAMETER">op</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN16399"></a><h4>Parameters</h4>
+<a name="AEN16245"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN16401"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN16247"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -449,7 +449,7 @@ xmlSecNodeSetAdd (<code class="PARAMETER"><a href="xmlsec-nodeset.html#XMLSECNOD
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN16422"></a><h4>Returns</h4>
+<a name="AEN16268"></a><h4>Returns</h4>
 <p> the pointer to combined nodes set or NULL if an error
 occurs.</p>
 </div>
@@ -466,10 +466,10 @@ xmlSecNodeSetAddList (<code class="PARAMETER"><a href="xmlsec-nodeset.html#XMLSE
  as child using operation <code class="PARAMETER">op</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN16445"></a><h4>Parameters</h4>
+<a name="AEN16291"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN16447"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN16293"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -495,7 +495,7 @@ xmlSecNodeSetAddList (<code class="PARAMETER"><a href="xmlsec-nodeset.html#XMLSE
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN16468"></a><h4>Returns</h4>
+<a name="AEN16314"></a><h4>Returns</h4>
 <p> the pointer to combined nodes set or NULL if an error
 occurs.</p>
 </div>
@@ -536,10 +536,10 @@ all nodes in the <code class="PARAMETER">doc</code>
 and comment nodes.</p></li>
 </ul>
 <div class="REFSECT3">
-<a name="AEN16514"></a><h4>Parameters</h4>
+<a name="AEN16360"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN16516"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN16362"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -570,7 +570,7 @@ and comment nodes.</p></li>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN16543"></a><h4>Returns</h4>
+<a name="AEN16389"></a><h4>Returns</h4>
 <p> pointer to the newly created <a href="xmlsec-nodeset.html#XMLSECNODESET"><span class="TYPE">xmlSecNodeSet</span></a> structure
 or NULL if an error occurs.</p>
 </div>
@@ -589,10 +589,10 @@ If the <code class="PARAMETER">walkFunc</code>
  returns a negative value, then the walk procedure
 is interrupted.</p>
 <div class="REFSECT3">
-<a name="AEN16568"></a><h4>Parameters</h4>
+<a name="AEN16414"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN16570"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN16416"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -619,7 +619,7 @@ is interrupted.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN16592"></a><h4>Returns</h4>
+<a name="AEN16438"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -633,10 +633,10 @@ xmlSecNodeSetDumpTextNodes (<code class="PARAMETER"><a href="xmlsec-nodeset.html
  to <code class="PARAMETER">out</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN16611"></a><h4>Parameters</h4>
+<a name="AEN16457"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN16613"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN16459"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -657,7 +657,7 @@ xmlSecNodeSetDumpTextNodes (<code class="PARAMETER"><a href="xmlsec-nodeset.html
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN16628"></a><h4>Returns</h4>
+<a name="AEN16474"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -671,10 +671,10 @@ xmlSecNodeSetDebugDump (<code class="PARAMETER"><a href="xmlsec-nodeset.html#XML
  to the <code class="PARAMETER">output</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN16647"></a><h4>Parameters</h4>
+<a name="AEN16493"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN16649"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN16495"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -702,10 +702,10 @@ xmlSecNodeSetDebugDump (<code class="PARAMETER"><a href="xmlsec-nodeset.html#XML
 <a name="XMLSECNODESETTYPE"></a><h3>enum xmlSecNodeSetType</h3>
 <p>The basic nodes sets types.</p>
 <div class="REFSECT3">
-<a name="AEN16671"></a><h4>Members</h4>
+<a name="AEN16517"></a><h4>Members</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN16673"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN16519"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -760,10 +760,10 @@ xmlSecNodeSetDebugDump (<code class="PARAMETER"><a href="xmlsec-nodeset.html#XML
 <a name="XMLSECNODESETOP"></a><h3>enum xmlSecNodeSetOp</h3>
 <p>The simple nodes sets operations.</p>
 <div class="REFSECT3">
-<a name="AEN16723"></a><h4>Members</h4>
+<a name="AEN16569"></a><h4>Members</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN16725"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN16571"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -804,10 +804,10 @@ xmlSecNodeSetDebugDump (<code class="PARAMETER"><a href="xmlsec-nodeset.html#XML
 };</pre>
 <p>The enchanced nodes set.</p>
 <div class="REFSECT3">
-<a name="AEN16752"></a><h4>Members</h4>
+<a name="AEN16598"></a><h4>Members</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN16754"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN16600"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>

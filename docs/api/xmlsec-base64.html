@@ -110,12 +110,12 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <h1>
 <a name="XMLSEC-BASE64"></a>base64</h1>
 <div class="REFNAMEDIV">
-<a name="AEN3552"></a><h2>Name</h2>base64 -- Base64 encoding/decoding functions.</div>
+<a name="AEN3398"></a><h2>Name</h2>base64 -- Base64 encoding/decoding functions.</div>
 <div class="REFSECT1">
 <a name="XMLSEC-BASE64.FUNCTIONS"></a><h2>Functions</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN3557"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN3403"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody>
@@ -189,7 +189,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="XMLSEC-BASE64.OTHER"></a><h2>Types and Values</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN3632"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN3478"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody><tr>
@@ -212,7 +212,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 xmlSecBase64GetDefaultLineSize (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>Gets the current default line size.</p>
 <div class="REFSECT3">
-<a name="AEN3654"></a><h4>Returns</h4>
+<a name="AEN3500"></a><h4>Returns</h4>
 <p> the current default line size.</p>
 </div>
 </div>
@@ -223,10 +223,10 @@ xmlSecBase64GetDefaultLineSize (<code class="PARAMETER"><span class="TYPE">void<
 xmlSecBase64SetDefaultLineSize (<code class="PARAMETER"><font><span class="TYPE">int</span></font> columns</code>);</pre>
 <p>Sets the current default line size.</p>
 <div class="REFSECT3">
-<a name="AEN3668"></a><h4>Parameters</h4>
+<a name="AEN3514"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN3670"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN3516"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -248,10 +248,10 @@ xmlSecBase64CtxCreate (<code class="PARAMETER"><font><span class="TYPE">int</spa
                        <code class="PARAMETER"><font><span class="TYPE">int</span></font> columns</code>);</pre>
 <p>Allocates and initializes new base64 context.</p>
 <div class="REFSECT3">
-<a name="AEN3693"></a><h4>Parameters</h4>
+<a name="AEN3539"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN3695"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN3541"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -272,7 +272,7 @@ xmlSecBase64CtxCreate (<code class="PARAMETER"><font><span class="TYPE">int</spa
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN3710"></a><h4>Returns</h4>
+<a name="AEN3556"></a><h4>Returns</h4>
 <p> a pointer to newly created <font><span class="TYPE">xmlSecBase64Ctx</span></font> structure
 or NULL if an error occurs.</p>
 </div>
@@ -284,10 +284,10 @@ or NULL if an error occurs.</p>
 xmlSecBase64CtxDestroy (<code class="PARAMETER"><font><span class="TYPE">xmlSecBase64CtxPtr</span></font> ctx</code>);</pre>
 <p>Destroys base64 context.</p>
 <div class="REFSECT3">
-<a name="AEN3726"></a><h4>Parameters</h4>
+<a name="AEN3572"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN3728"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN3574"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -310,10 +310,10 @@ xmlSecBase64CtxInitialize (<code class="PARAMETER"><font><span class="TYPE">xmlS
                            <code class="PARAMETER"><font><span class="TYPE">int</span></font> columns</code>);</pre>
 <p>Initializes new base64 context.</p>
 <div class="REFSECT3">
-<a name="AEN3756"></a><h4>Parameters</h4>
+<a name="AEN3602"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN3758"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN3604"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -339,7 +339,7 @@ xmlSecBase64CtxInitialize (<code class="PARAMETER"><font><span class="TYPE">xmlS
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN3781"></a><h4>Returns</h4>
+<a name="AEN3627"></a><h4>Returns</h4>
 <p> 0 on success and a negative value otherwise.</p>
 </div>
 </div>
@@ -351,10 +351,10 @@ xmlSecBase64CtxFinalize (<code class="PARAMETER"><font><span class="TYPE">xmlSec
 <p>Frees all the resources allocated by <code class="PARAMETER">ctx</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN3796"></a><h4>Parameters</h4>
+<a name="AEN3642"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN3798"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN3644"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -379,10 +379,10 @@ xmlSecBase64CtxUpdate (<code class="PARAMETER"><font><span class="TYPE">xmlSecBa
                        <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> outSize</code>);</pre>
 <p>Encodes or decodes the next piece of data from input buffer.</p>
 <div class="REFSECT3">
-<a name="AEN3832"></a><h4>Parameters</h4>
+<a name="AEN3678"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN3834"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN3680"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -418,7 +418,7 @@ xmlSecBase64CtxUpdate (<code class="PARAMETER"><font><span class="TYPE">xmlSecBa
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN3869"></a><h4>Returns</h4>
+<a name="AEN3715"></a><h4>Returns</h4>
 <p> the number of bytes written to output buffer or
 -1 if an error occurs.</p>
 </div>
@@ -433,10 +433,10 @@ xmlSecBase64CtxFinal (<code class="PARAMETER"><font><span class="TYPE">xmlSecBas
 <p>Encodes or decodes the last piece of data stored in the context
 and finalizes the result.</p>
 <div class="REFSECT3">
-<a name="AEN3889"></a><h4>Parameters</h4>
+<a name="AEN3735"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN3891"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN3737"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -462,7 +462,7 @@ and finalizes the result.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN3914"></a><h4>Returns</h4>
+<a name="AEN3760"></a><h4>Returns</h4>
 <p> the number of bytes written to output buffer or
 -1 if an error occurs.</p>
 </div>
@@ -478,10 +478,10 @@ xmlSecBase64Encode (<code class="PARAMETER">const <a href="xmlsec-xmlsec.html#XM
 The caller is responsible for freeing returned buffer using
 <font><code class="FUNCTION">xmlFree()</code></font> function.</p>
 <div class="REFSECT3">
-<a name="AEN3936"></a><h4>Parameters</h4>
+<a name="AEN3782"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN3938"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN3784"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -508,7 +508,7 @@ would be inserted)</p></td>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN3959"></a><h4>Returns</h4>
+<a name="AEN3805"></a><h4>Returns</h4>
 <p> newly allocated string with base64 encoded data
 or NULL if an error occurs.</p>
 </div>
@@ -523,10 +523,10 @@ xmlSecBase64Decode (<code class="PARAMETER">const <font><span class="TYPE">xmlCh
 <p>Decodes input base64 encoded string and puts result into
 the output buffer.</p>
 <div class="REFSECT3">
-<a name="AEN3979"></a><h4>Parameters</h4>
+<a name="AEN3825"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN3981"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN3827"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -552,7 +552,7 @@ the output buffer.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN4002"></a><h4>Returns</h4>
+<a name="AEN3848"></a><h4>Returns</h4>
 <p> the number of bytes written to the output buffer or
 a negative value if an error occurs</p>
 </div>

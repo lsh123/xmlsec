@@ -110,12 +110,12 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <h1>
 <a name="XMLSEC-DL"></a>dl</h1>
 <div class="REFNAMEDIV">
-<a name="AEN6001"></a><h2>Name</h2>dl -- Dynamic crypto-engine library loading support.</div>
+<a name="AEN5847"></a><h2>Name</h2>dl -- Dynamic crypto-engine library loading support.</div>
 <div class="REFSECT1">
 <a name="XMLSEC-DL.FUNCTIONS"></a><h2>Functions</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN6006"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN5852"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody>
@@ -186,10 +186,10 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms
 <p>Registers the key data and transforms klasses from <code class="PARAMETER">functions</code>
  table in xmlsec.</p>
 <div class="REFSECT3">
-<a name="AEN6082"></a><h4>Parameters</h4>
+<a name="AEN5928"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN6084"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN5930"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -203,7 +203,7 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN6093"></a><h4>Returns</h4>
+<a name="AEN5939"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -215,7 +215,7 @@ xmlSecCryptoDLInit (<code class="PARAMETER"><span class="TYPE">void</span></code
 <p>Initializes dynamic loading engine. This is an internal function
 and should not be called by application directly.</p>
 <div class="REFSECT3">
-<a name="AEN6106"></a><h4>Returns</h4>
+<a name="AEN5952"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -227,7 +227,7 @@ xmlSecCryptoDLShutdown (<code class="PARAMETER"><span class="TYPE">void</span></
 <p>Shutdowns dynamic loading engine. This is an internal function
 and should not be called by application directly.</p>
 <div class="REFSECT3">
-<a name="AEN6119"></a><h4>Returns</h4>
+<a name="AEN5965"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -240,16 +240,17 @@ xmlSecCryptoDLLoadLibrary (<code class="PARAMETER">const <font><span class="TYPE
 application MUST NOT call <a href="xmlsec-dl.html#XMLSECCRYPTODLLOADLIBRARY"><span class="TYPE">xmlSecCryptoDLLoadLibrary</span></a>, <a href="xmlsec-dl.html#XMLSECCRYPTODLGETLIBRARYFUNCTIONS"><span class="TYPE">xmlSecCryptoDLGetLibraryFunctions</span></a>,
 and <a href="xmlsec-dl.html#XMLSECCRYPTODLUNLOADLIBRARY"><span class="TYPE">xmlSecCryptoDLUnloadLibrary</span></a> functions from multiple threads.</p>
 <div class="REFSECT3">
-<a name="AEN6139"></a><h4>Parameters</h4>
+<a name="AEN5985"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN6141"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN5987"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
 <tbody><tr>
 <td><p>crypto</p></td>
-<td><p>the desired crypto library name ("openssl", "nss", ...).</p></td>
+<td><p>the desired crypto library name ("openssl", "nss", ...). If NULL
+then the default crypto engine will be used.</p></td>
 <td> </td>
 </tr></tbody>
 </table>
@@ -257,7 +258,7 @@ and <a href="xmlsec-dl.html#XMLSECCRYPTODLUNLOADLIBRARY"><span class="TYPE">xmlS
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN6150"></a><h4>Returns</h4>
+<a name="AEN5996"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -270,10 +271,10 @@ xmlSecCryptoDLGetLibraryFunctions (<code class="PARAMETER">const <font><span cla
 table. This function is NOT thread safe, application MUST NOT call <a href="xmlsec-dl.html#XMLSECCRYPTODLLOADLIBRARY"><span class="TYPE">xmlSecCryptoDLLoadLibrary</span></a>,
 <a href="xmlsec-dl.html#XMLSECCRYPTODLGETLIBRARYFUNCTIONS"><span class="TYPE">xmlSecCryptoDLGetLibraryFunctions</span></a>, and <a href="xmlsec-dl.html#XMLSECCRYPTODLUNLOADLIBRARY"><span class="TYPE">xmlSecCryptoDLUnloadLibrary</span></a> functions from multiple threads.</p>
 <div class="REFSECT3">
-<a name="AEN6170"></a><h4>Parameters</h4>
+<a name="AEN6016"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN6172"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN6018"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -287,7 +288,7 @@ table. This function is NOT thread safe, application MUST NOT call <a href="xmls
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN6181"></a><h4>Returns</h4>
+<a name="AEN6027"></a><h4>Returns</h4>
 <p> the table or NULL if an error occurs.</p>
 </div>
 </div>
@@ -301,10 +302,10 @@ functions tables became invalid. This function is NOT thread safe,
 application MUST NOT call <a href="xmlsec-dl.html#XMLSECCRYPTODLLOADLIBRARY"><span class="TYPE">xmlSecCryptoDLLoadLibrary</span></a>, <a href="xmlsec-dl.html#XMLSECCRYPTODLGETLIBRARYFUNCTIONS"><span class="TYPE">xmlSecCryptoDLGetLibraryFunctions</span></a>,
 and <a href="xmlsec-dl.html#XMLSECCRYPTODLUNLOADLIBRARY"><span class="TYPE">xmlSecCryptoDLUnloadLibrary</span></a> functions from multiple threads.</p>
 <div class="REFSECT3">
-<a name="AEN6201"></a><h4>Parameters</h4>
+<a name="AEN6047"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN6203"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN6049"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -318,7 +319,7 @@ and <a href="xmlsec-dl.html#XMLSECCRYPTODLUNLOADLIBRARY"><span class="TYPE">xmlS
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN6212"></a><h4>Returns</h4>
+<a name="AEN6058"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -329,10 +330,10 @@ and <a href="xmlsec-dl.html#XMLSECCRYPTODLUNLOADLIBRARY"><span class="TYPE">xmlS
 xmlSecCryptoDLSetFunctions (<code class="PARAMETER"><font><span class="TYPE">xmlSecCryptoDLFunctionsPtr</span></font> functions</code>);</pre>
 <p>Sets global crypto functions/transforms/keys data/keys store table.</p>
 <div class="REFSECT3">
-<a name="AEN6226"></a><h4>Parameters</h4>
+<a name="AEN6072"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN6228"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN6074"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -346,7 +347,7 @@ xmlSecCryptoDLSetFunctions (<code class="PARAMETER"><font><span class="TYPE">xml
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN6237"></a><h4>Returns</h4>
+<a name="AEN6083"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -357,7 +358,7 @@ xmlSecCryptoDLSetFunctions (<code class="PARAMETER"><font><span class="TYPE">xml
 xmlSecCryptoDLGetFunctions (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>Gets global crypto functions/transforms/keys data/keys store table.</p>
 <div class="REFSECT3">
-<a name="AEN6250"></a><h4>Returns</h4>
+<a name="AEN6096"></a><h4>Returns</h4>
 <p> the table.</p>
 </div>
 </div>

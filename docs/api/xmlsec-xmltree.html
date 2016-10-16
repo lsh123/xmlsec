@@ -110,12 +110,12 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <h1>
 <a name="XMLSEC-XMLTREE"></a>xmltree</h1>
 <div class="REFNAMEDIV">
-<a name="AEN26340"></a><h2>Name</h2>xmltree -- XML tree operations.</div>
+<a name="AEN26243"></a><h2>Name</h2>xmltree -- XML tree operations.</div>
 <div class="REFSECT1">
 <a name="XMLSEC-XMLTREE.FUNCTIONS"></a><h2>Functions</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN26345"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN26248"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody>
@@ -146,6 +146,12 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <tr>
 <td><font><span class="RETURNVALUE">xmlNodePtr</span></font></td>
 <td>
+<a href="xmlsec-xmltree.html#XMLSECFINDSIBLING">xmlSecFindSibling</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlNodePtr</span></font></td>
+<td>
 <a href="xmlsec-xmltree.html#XMLSECFINDCHILD">xmlSecFindChild</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
 </td>
 </tr>
@@ -165,6 +171,12 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <td><font><span class="RETURNVALUE">xmlNodePtr</span></font></td>
 <td>
 <a href="xmlsec-xmltree.html#XMLSECADDCHILD">xmlSecAddChild</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+</td>
+</tr>
+<tr>
+<td><font><span class="RETURNVALUE">xmlNodePtr</span></font></td>
+<td>
+<a href="xmlsec-xmltree.html#XMLSECENSUREEMPTYCHILD">xmlSecEnsureEmptyChild</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
 </td>
 </tr>
 <tr>
@@ -408,7 +420,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="XMLSEC-XMLTREE.OTHER"></a><h2>Types and Values</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN26666"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN26583"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody>
@@ -448,10 +460,10 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <pre class="PROGRAMLISTING">#define             xmlSecNodeGetName(node)</pre>
 <p>Macro. Returns node's name.</p>
 <div class="REFSECT3">
-<a name="AEN26700"></a><h4>Parameters</h4>
+<a name="AEN26617"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN26702"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN26619"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -472,10 +484,10 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 xmlSecGetNodeNsHref (<code class="PARAMETER">const <font><span class="TYPE">xmlNodePtr</span></font> cur</code>);</pre>
 <p>Get's node's namespace href.</p>
 <div class="REFSECT3">
-<a name="AEN26722"></a><h4>Parameters</h4>
+<a name="AEN26639"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN26724"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN26641"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -489,7 +501,7 @@ xmlSecGetNodeNsHref (<code class="PARAMETER">const <font><span class="TYPE">xmlN
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN26733"></a><h4>Returns</h4>
+<a name="AEN26650"></a><h4>Returns</h4>
 <p> node's namespace href.</p>
 </div>
 </div>
@@ -502,10 +514,10 @@ xmlSecCheckNodeName (<code class="PARAMETER">const <font><span class="TYPE">xmlN
                      <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *ns</code>);</pre>
 <p>Checks that the node has a given name and a given namespace href.</p>
 <div class="REFSECT3">
-<a name="AEN26753"></a><h4>Parameters</h4>
+<a name="AEN26670"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN26755"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN26672"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -531,7 +543,7 @@ xmlSecCheckNodeName (<code class="PARAMETER">const <font><span class="TYPE">xmlN
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN26776"></a><h4>Returns</h4>
+<a name="AEN26693"></a><h4>Returns</h4>
 <p> 1 if the node matches or 0 otherwise.</p>
 </div>
 </div>
@@ -542,10 +554,10 @@ xmlSecCheckNodeName (<code class="PARAMETER">const <font><span class="TYPE">xmlN
 xmlSecGetNextElementNode (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> cur</code>);</pre>
 <p>Seraches for the next element node.</p>
 <div class="REFSECT3">
-<a name="AEN26790"></a><h4>Parameters</h4>
+<a name="AEN26707"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN26792"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN26709"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -559,8 +571,54 @@ xmlSecGetNextElementNode (<code class="PARAMETER"><font><span class="TYPE">xmlNo
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN26801"></a><h4>Returns</h4>
+<a name="AEN26718"></a><h4>Returns</h4>
 <p> the pointer to next element node or NULL if it is not found.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECFINDSIBLING"></a><h3>xmlSecFindSibling ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlNodePtr</span></font>
+xmlSecFindSibling (<code class="PARAMETER">const <font><span class="TYPE">xmlNodePtr</span></font> cur</code>,
+                   <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *name</code>,
+                   <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *ns</code>);</pre>
+<p>Searches <code class="PARAMETER">cur</code>
+ and the next siblings of the <code class="PARAMETER">cur</code>
+ node having given name and
+namespace href.</p>
+<div class="REFSECT3">
+<a name="AEN26740"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN26742"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>cur</p></td>
+<td><p>the pointer to XML node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>name</p></td>
+<td><p>the name.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>ns</p></td>
+<td><p>the namespace href (may be NULL).</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN26763"></a><h4>Returns</h4>
+<p> the pointer to the found node or NULL if an error occurs or
+node is not found.</p>
 </div>
 </div>
 <hr>
@@ -574,10 +632,10 @@ xmlSecFindChild (<code class="PARAMETER">const <font><span class="TYPE">xmlNodeP
  node having given name and
 namespace href.</p>
 <div class="REFSECT3">
-<a name="AEN26822"></a><h4>Parameters</h4>
+<a name="AEN26784"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN26824"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN26786"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -603,7 +661,7 @@ namespace href.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN26845"></a><h4>Returns</h4>
+<a name="AEN26807"></a><h4>Returns</h4>
 <p> the pointer to the found node or NULL if an error occurs or
 node is not found.</p>
 </div>
@@ -619,10 +677,10 @@ xmlSecFindParent (<code class="PARAMETER">const <font><span class="TYPE">xmlNode
  node for a node having given name
 and namespace href.</p>
 <div class="REFSECT3">
-<a name="AEN26866"></a><h4>Parameters</h4>
+<a name="AEN26828"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN26868"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN26830"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -648,7 +706,7 @@ and namespace href.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN26889"></a><h4>Returns</h4>
+<a name="AEN26851"></a><h4>Returns</h4>
 <p> the pointer to the found node or NULL if an error occurs or
 node is not found.</p>
 </div>
@@ -664,10 +722,10 @@ xmlSecFindNode (<code class="PARAMETER">const <font><span class="TYPE">xmlNodePt
  node having given name and
 namespace href.</p>
 <div class="REFSECT3">
-<a name="AEN26910"></a><h4>Parameters</h4>
+<a name="AEN26872"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN26912"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN26874"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -693,7 +751,7 @@ namespace href.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN26933"></a><h4>Returns</h4>
+<a name="AEN26895"></a><h4>Returns</h4>
 <p> the pointer to the found node or NULL if an error occurs or
 node is not found.</p>
 </div>
@@ -710,10 +768,10 @@ xmlSecAddChild (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</spa
  and namespace <code class="PARAMETER">ns</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN26956"></a><h4>Parameters</h4>
+<a name="AEN26918"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN26958"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN26920"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -739,8 +797,53 @@ xmlSecAddChild (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</spa
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN26979"></a><h4>Returns</h4>
+<a name="AEN26941"></a><h4>Returns</h4>
 <p> pointer to the new node or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECENSUREEMPTYCHILD"></a><h3>xmlSecEnsureEmptyChild ()</h3>
+<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlNodePtr</span></font>
+xmlSecEnsureEmptyChild (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> parent</code>,
+                        <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *name</code>,
+                        <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *ns</code>);</pre>
+<p>Searches a direct child of the <code class="PARAMETER">parent</code>
+ node having given name and
+namespace href. If not found then element node with given name / namespace
+is added.</p>
+<div class="REFSECT3">
+<a name="AEN26962"></a><h4>Parameters</h4>
+<div class="INFORMALTABLE">
+<p></p>
+<a name="AEN26964"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td><p>parent</p></td>
+<td><p>the pointer to XML node.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>name</p></td>
+<td><p>the name.</p></td>
+<td> </td>
+</tr>
+<tr>
+<td><p>ns</p></td>
+<td><p>the namespace href (may be NULL).</p></td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+</div>
+<div class="REFSECT3">
+<a name="AEN26985"></a><h4>Returns</h4>
+<p> the pointer to the found or created node; or NULL if an error occurs.</p>
 </div>
 </div>
 <hr>
@@ -753,10 +856,10 @@ xmlSecAddChildNode (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr<
  node to the <code class="PARAMETER">parent</code>
  node.</p>
 <div class="REFSECT3">
-<a name="AEN26998"></a><h4>Parameters</h4>
+<a name="AEN27004"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN27000"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN27006"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -777,7 +880,7 @@ xmlSecAddChildNode (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr<
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN27015"></a><h4>Returns</h4>
+<a name="AEN27021"></a><h4>Returns</h4>
 <p> pointer to the new node or NULL if an error occurs.</p>
 </div>
 </div>
@@ -793,10 +896,10 @@ xmlSecAddNextSibling (<code class="PARAMETER"><font><span class="TYPE">xmlNodePt
  and namespace <code class="PARAMETER">ns</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN27038"></a><h4>Parameters</h4>
+<a name="AEN27044"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN27040"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN27046"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -822,7 +925,7 @@ xmlSecAddNextSibling (<code class="PARAMETER"><font><span class="TYPE">xmlNodePt
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN27061"></a><h4>Returns</h4>
+<a name="AEN27067"></a><h4>Returns</h4>
 <p> pointer to the new node or NULL if an error occurs.</p>
 </div>
 </div>
@@ -838,10 +941,10 @@ xmlSecAddPrevSibling (<code class="PARAMETER"><font><span class="TYPE">xmlNodePt
  and namespace <code class="PARAMETER">ns</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN27084"></a><h4>Parameters</h4>
+<a name="AEN27090"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN27086"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN27092"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -867,7 +970,7 @@ xmlSecAddPrevSibling (<code class="PARAMETER"><font><span class="TYPE">xmlNodePt
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN27107"></a><h4>Returns</h4>
+<a name="AEN27113"></a><h4>Returns</h4>
 <p> pointer to the new node or NULL if an error occurs.</p>
 </div>
 </div>
@@ -881,10 +984,10 @@ xmlSecReplaceNode (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</
  and <code class="PARAMETER">newNode</code>
  in the XML tree.</p>
 <div class="REFSECT3">
-<a name="AEN27126"></a><h4>Parameters</h4>
+<a name="AEN27132"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN27128"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN27134"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -905,7 +1008,7 @@ xmlSecReplaceNode (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN27143"></a><h4>Returns</h4>
+<a name="AEN27149"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -920,10 +1023,10 @@ xmlSecReplaceNodeAndReturn (<code class="PARAMETER"><font><span class="TYPE">xml
  and <code class="PARAMETER">newNode</code>
  in the XML tree.</p>
 <div class="REFSECT3">
-<a name="AEN27165"></a><h4>Parameters</h4>
+<a name="AEN27171"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN27167"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN27173"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -949,7 +1052,7 @@ xmlSecReplaceNodeAndReturn (<code class="PARAMETER"><font><span class="TYPE">xml
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN27188"></a><h4>Returns</h4>
+<a name="AEN27194"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -963,10 +1066,10 @@ xmlSecReplaceContent (<code class="PARAMETER"><font><span class="TYPE">xmlNodePt
  and <code class="PARAMETER">newNode</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN27207"></a><h4>Parameters</h4>
+<a name="AEN27213"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN27209"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN27215"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -987,7 +1090,7 @@ xmlSecReplaceContent (<code class="PARAMETER"><font><span class="TYPE">xmlNodePt
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN27224"></a><h4>Returns</h4>
+<a name="AEN27230"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -1002,10 +1105,10 @@ xmlSecReplaceContentAndReturn (<code class="PARAMETER"><font><span class="TYPE">
  and <code class="PARAMETER">newNode</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN27246"></a><h4>Parameters</h4>
+<a name="AEN27252"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN27248"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN27254"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1031,7 +1134,7 @@ xmlSecReplaceContentAndReturn (<code class="PARAMETER"><font><span class="TYPE">
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN27269"></a><h4>Returns</h4>
+<a name="AEN27275"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -1046,10 +1149,10 @@ xmlSecReplaceNodeBuffer (<code class="PARAMETER"><font><span class="TYPE">xmlNod
  and the parsed XML data from the <code class="PARAMETER">buffer</code>
  in the XML tree.</p>
 <div class="REFSECT3">
-<a name="AEN27291"></a><h4>Parameters</h4>
+<a name="AEN27297"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN27293"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN27299"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1075,7 +1178,7 @@ xmlSecReplaceNodeBuffer (<code class="PARAMETER"><font><span class="TYPE">xmlNod
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN27314"></a><h4>Returns</h4>
+<a name="AEN27320"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -1091,10 +1194,10 @@ xmlSecReplaceNodeBufferAndReturn (<code class="PARAMETER"><font><span class="TYP
  and the parsed XML data from the <code class="PARAMETER">buffer</code>
  in the XML tree.</p>
 <div class="REFSECT3">
-<a name="AEN27339"></a><h4>Parameters</h4>
+<a name="AEN27345"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN27341"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN27347"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1125,7 +1228,7 @@ xmlSecReplaceNodeBufferAndReturn (<code class="PARAMETER"><font><span class="TYP
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN27368"></a><h4>Returns</h4>
+<a name="AEN27374"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -1139,10 +1242,10 @@ xmlSecNodeEncodeAndSetContent (<code class="PARAMETER"><font><span class="TYPE">
  and sets the result
 as the node content.</p>
 <div class="REFSECT3">
-<a name="AEN27386"></a><h4>Parameters</h4>
+<a name="AEN27392"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN27388"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN27394"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1163,7 +1266,7 @@ as the node content.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN27403"></a><h4>Returns</h4>
+<a name="AEN27409"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -1180,10 +1283,10 @@ from the <code class="PARAMETER">ids</code>
  list to the <code class="PARAMETER">doc</code>
  document IDs attributes hash.</p>
 <div class="REFSECT3">
-<a name="AEN27426"></a><h4>Parameters</h4>
+<a name="AEN27432"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN27428"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN27434"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1223,10 +1326,10 @@ xmlSecGenerateAndAddID (<code class="PARAMETER"><font><span class="TYPE">xmlNode
 and puts it in the attribute <code class="PARAMETER">attrName</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN27472"></a><h4>Parameters</h4>
+<a name="AEN27478"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN27474"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN27480"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1257,7 +1360,7 @@ and puts it in the attribute <code class="PARAMETER">attrName</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN27501"></a><h4>Returns</h4>
+<a name="AEN27507"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -1273,10 +1376,10 @@ xmlSecGenerateID (<code class="PARAMETER">const <font><span class="TYPE">xmlChar
 The caller is responsible for freeing returned string using <code class="PARAMETER">xmlFree</code>
  function.</p>
 <div class="REFSECT3">
-<a name="AEN27521"></a><h4>Parameters</h4>
+<a name="AEN27527"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN27523"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN27529"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1297,7 +1400,7 @@ The caller is responsible for freeing returned string using <code class="PARAMET
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN27538"></a><h4>Returns</h4>
+<a name="AEN27544"></a><h4>Returns</h4>
 <p> pointer to generated ID string or NULL if an error occurs.</p>
 </div>
 </div>
@@ -1310,10 +1413,10 @@ xmlSecCreateTree (<code class="PARAMETER">const <font><span class="TYPE">xmlChar
 <p>Creates a new XML tree with one root node <code class="PARAMETER">rootNodeName</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN27556"></a><h4>Parameters</h4>
+<a name="AEN27562"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN27558"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN27564"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1334,7 +1437,7 @@ xmlSecCreateTree (<code class="PARAMETER">const <font><span class="TYPE">xmlChar
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN27573"></a><h4>Returns</h4>
+<a name="AEN27579"></a><h4>Returns</h4>
 <p> pointer to the newly created tree or NULL if an error occurs.</p>
 </div>
 </div>
@@ -1346,10 +1449,10 @@ xmlSecIsEmptyNode (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</
 <p>Checks whethere the <code class="PARAMETER">node</code>
  is empty (i.e. has only whitespaces children).</p>
 <div class="REFSECT3">
-<a name="AEN27588"></a><h4>Parameters</h4>
+<a name="AEN27594"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN27590"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN27596"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1363,7 +1466,7 @@ xmlSecIsEmptyNode (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN27599"></a><h4>Returns</h4>
+<a name="AEN27605"></a><h4>Returns</h4>
 <p> 1 if <code class="PARAMETER">node</code>
 is empty, 0 otherwise or a negative value if an error occurs.</p>
 </div>
@@ -1376,10 +1479,10 @@ xmlSecIsEmptyString (<code class="PARAMETER">const <font><span class="TYPE">xmlC
 <p>Checks whethere the <code class="PARAMETER">str</code>
  is empty (i.e. has only whitespaces children).</p>
 <div class="REFSECT3">
-<a name="AEN27615"></a><h4>Parameters</h4>
+<a name="AEN27621"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN27617"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN27623"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1393,7 +1496,7 @@ xmlSecIsEmptyString (<code class="PARAMETER">const <font><span class="TYPE">xmlC
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN27626"></a><h4>Returns</h4>
+<a name="AEN27632"></a><h4>Returns</h4>
 <p> 1 if <code class="PARAMETER">str</code>
 is empty, 0 otherwise or a negative value if an error occurs.</p>
 </div>
@@ -1411,10 +1514,10 @@ xmlSecGetQName (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</spa
 .
 Caller is responsible for freeing returned string with xmlFree.</p>
 <div class="REFSECT3">
-<a name="AEN27650"></a><h4>Parameters</h4>
+<a name="AEN27656"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN27652"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN27658"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1440,7 +1543,7 @@ Caller is responsible for freeing returned string with xmlFree.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN27673"></a><h4>Returns</h4>
+<a name="AEN27679"></a><h4>Returns</h4>
 <p> qname or NULL if an error occurs.</p>
 </div>
 </div>
@@ -1454,10 +1557,10 @@ xmlSecPrintXmlString (<code class="PARAMETER"><font><span class="TYPE">FILE</spa
  (e.g. replaces '&amp;' with '&amp;') and writes it to <code class="PARAMETER">fd</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN27692"></a><h4>Parameters</h4>
+<a name="AEN27698"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN27694"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN27700"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1478,7 +1581,7 @@ xmlSecPrintXmlString (<code class="PARAMETER"><font><span class="TYPE">FILE</spa
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN27709"></a><h4>Returns</h4>
+<a name="AEN27715"></a><h4>Returns</h4>
 <p> he number of bytes transmitted or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -1489,10 +1592,10 @@ xmlSecPrintXmlString (<code class="PARAMETER"><font><span class="TYPE">FILE</spa
 <p>Macro. Returns 1 if <code class="PARAMETER">c</code>
  is a hex digit or 0 other wise.</p>
 <div class="REFSECT3">
-<a name="AEN27719"></a><h4>Parameters</h4>
+<a name="AEN27725"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN27721"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN27727"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1513,10 +1616,10 @@ xmlSecPrintXmlString (<code class="PARAMETER"><font><span class="TYPE">FILE</spa
 <p>Macro. Returns the hex value of the <code class="PARAMETER">c</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN27737"></a><h4>Parameters</h4>
+<a name="AEN27743"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN27739"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN27745"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1539,10 +1642,10 @@ xmlSecQName2IntegerGetInfo (<code class="PARAMETER"><font><span class="TYPE">xml
 <p>Maps integer <code class="PARAMETER">intValue</code>
  to a QName prefix.</p>
 <div class="REFSECT3">
-<a name="AEN27763"></a><h4>Parameters</h4>
+<a name="AEN27769"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN27765"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN27771"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1563,7 +1666,7 @@ xmlSecQName2IntegerGetInfo (<code class="PARAMETER"><font><span class="TYPE">xml
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN27780"></a><h4>Returns</h4>
+<a name="AEN27786"></a><h4>Returns</h4>
 <p> the QName info that is mapped to <code class="PARAMETER">intValue</code>
 or NULL if such value
 is not found.</p>
@@ -1580,10 +1683,10 @@ xmlSecQName2IntegerGetInteger (<code class="PARAMETER"><font><span class="TYPE">
 <p>Maps qname qname to an integer and returns it in <code class="PARAMETER">intValue</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN27805"></a><h4>Parameters</h4>
+<a name="AEN27811"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN27807"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN27813"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1614,7 +1717,7 @@ xmlSecQName2IntegerGetInteger (<code class="PARAMETER"><font><span class="TYPE">
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN27834"></a><h4>Returns</h4>
+<a name="AEN27840"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs,</p>
 </div>
 </div>
@@ -1631,10 +1734,10 @@ xmlSecQName2IntegerGetIntegerFromString
  into integer in context of <code class="PARAMETER">node</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN27859"></a><h4>Parameters</h4>
+<a name="AEN27865"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN27861"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN27867"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1665,7 +1768,7 @@ xmlSecQName2IntegerGetIntegerFromString
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN27888"></a><h4>Returns</h4>
+<a name="AEN27894"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs,</p>
 </div>
 </div>
@@ -1683,10 +1786,10 @@ xmlSecQName2IntegerGetStringFromInteger
 is responsible for freeing returned string with <code class="PARAMETER">xmlFree</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN27911"></a><h4>Parameters</h4>
+<a name="AEN27917"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN27913"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN27919"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1712,7 +1815,7 @@ is responsible for freeing returned string with <code class="PARAMETER">xmlFree<
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN27934"></a><h4>Returns</h4>
+<a name="AEN27940"></a><h4>Returns</h4>
 <p> pointer to newly allocated string on success or NULL if an error occurs,</p>
 </div>
 </div>
@@ -1728,10 +1831,10 @@ xmlSecQName2IntegerNodeRead (<code class="PARAMETER"><font><span class="TYPE">xm
 from <code class="PARAMETER">info</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN27956"></a><h4>Parameters</h4>
+<a name="AEN27962"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN27958"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN27964"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1757,7 +1860,7 @@ from <code class="PARAMETER">info</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN27979"></a><h4>Returns</h4>
+<a name="AEN27985"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs,</p>
 </div>
 </div>
@@ -1774,10 +1877,10 @@ xmlSecQName2IntegerNodeWrite (<code class="PARAMETER"><font><span class="TYPE">x
  and sets its value to <code class="PARAMETER">intValue</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN28007"></a><h4>Parameters</h4>
+<a name="AEN28013"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN28009"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN28015"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1813,7 +1916,7 @@ xmlSecQName2IntegerNodeWrite (<code class="PARAMETER"><font><span class="TYPE">x
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN28042"></a><h4>Returns</h4>
+<a name="AEN28048"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs,</p>
 </div>
 </div>
@@ -1831,10 +1934,10 @@ xmlSecQName2IntegerAttributeRead (<code class="PARAMETER"><font><span class="TYP
 according to <code class="PARAMETER">info</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN28068"></a><h4>Parameters</h4>
+<a name="AEN28074"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN28070"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN28076"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1865,7 +1968,7 @@ according to <code class="PARAMETER">info</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN28097"></a><h4>Returns</h4>
+<a name="AEN28103"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs,</p>
 </div>
 </div>
@@ -1883,10 +1986,10 @@ attribute <code class="PARAMETER">attrName</code>
  in <code class="PARAMETER">node</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN28123"></a><h4>Parameters</h4>
+<a name="AEN28129"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN28125"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN28131"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1917,7 +2020,7 @@ attribute <code class="PARAMETER">attrName</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN28152"></a><h4>Returns</h4>
+<a name="AEN28158"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs,</p>
 </div>
 </div>
@@ -1933,10 +2036,10 @@ xmlSecQName2IntegerDebugDump (<code class="PARAMETER"><font><span class="TYPE">x
  into <code class="PARAMETER">output</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN28177"></a><h4>Parameters</h4>
+<a name="AEN28183"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN28179"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN28185"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1979,10 +2082,10 @@ xmlSecQName2IntegerDebugXmlDump (<code class="PARAMETER"><font><span class="TYPE
  into <code class="PARAMETER">output</code>
  in XML format.</p>
 <div class="REFSECT3">
-<a name="AEN28228"></a><h4>Parameters</h4>
+<a name="AEN28234"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN28230"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN28236"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2022,10 +2125,10 @@ xmlSecQName2BitMaskGetInfo (<code class="PARAMETER"><font><span class="TYPE">xml
 <p>Converts <code class="PARAMETER">mask</code>
  to qname.</p>
 <div class="REFSECT3">
-<a name="AEN28272"></a><h4>Parameters</h4>
+<a name="AEN28278"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN28274"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN28280"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2046,7 +2149,7 @@ xmlSecQName2BitMaskGetInfo (<code class="PARAMETER"><font><span class="TYPE">xml
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN28289"></a><h4>Returns</h4>
+<a name="AEN28295"></a><h4>Returns</h4>
 <p> pointer to the qname info for <code class="PARAMETER">mask</code>
 or NULL if mask is unknown.</p>
 </div>
@@ -2063,10 +2166,10 @@ xmlSecQName2BitMaskGetBitMask (<code class="PARAMETER"><font><span class="TYPE">
  to <code class="PARAMETER">mask</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN28315"></a><h4>Parameters</h4>
+<a name="AEN28321"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN28317"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN28323"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2097,7 +2200,7 @@ xmlSecQName2BitMaskGetBitMask (<code class="PARAMETER"><font><span class="TYPE">
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN28344"></a><h4>Returns</h4>
+<a name="AEN28350"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs,</p>
 </div>
 </div>
@@ -2121,10 +2224,10 @@ after all the &lt;<code class="PARAMETER">nodeNs</code>
 :<code class="PARAMETER">nodeName</code>
 &gt; elements.</p>
 <div class="REFSECT3">
-<a name="AEN28379"></a><h4>Parameters</h4>
+<a name="AEN28385"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN28381"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN28387"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2166,7 +2269,7 @@ value was found.</p></td>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN28420"></a><h4>Returns</h4>
+<a name="AEN28426"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs,</p>
 </div>
 </div>
@@ -2183,10 +2286,10 @@ xmlSecQName2BitMaskGetBitMaskFromString
  into integer in context of <code class="PARAMETER">node</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN28445"></a><h4>Parameters</h4>
+<a name="AEN28451"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN28447"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN28453"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2217,7 +2320,7 @@ xmlSecQName2BitMaskGetBitMaskFromString
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN28474"></a><h4>Returns</h4>
+<a name="AEN28480"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs,</p>
 </div>
 </div>
@@ -2235,10 +2338,10 @@ xmlSecQName2BitMaskGetStringFromBitMask
 is responsible for freeing returned string with <code class="PARAMETER">xmlFree</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN28497"></a><h4>Parameters</h4>
+<a name="AEN28503"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN28499"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN28505"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2264,7 +2367,7 @@ is responsible for freeing returned string with <code class="PARAMETER">xmlFree<
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN28520"></a><h4>Returns</h4>
+<a name="AEN28526"></a><h4>Returns</h4>
 <p> pointer to newly allocated string on success or NULL if an error occurs,</p>
 </div>
 </div>
@@ -2283,10 +2386,10 @@ xmlSecQName2BitMaskNodesWrite (<code class="PARAMETER"><font><span class="TYPE">
  to <code class="PARAMETER">node</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN28550"></a><h4>Parameters</h4>
+<a name="AEN28556"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN28552"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN28558"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2322,7 +2425,7 @@ xmlSecQName2BitMaskNodesWrite (<code class="PARAMETER"><font><span class="TYPE">
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN28585"></a><h4>Returns</h4>
+<a name="AEN28591"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs,</p>
 </div>
 </div>
@@ -2338,10 +2441,10 @@ xmlSecQName2BitMaskDebugDump (<code class="PARAMETER"><font><span class="TYPE">x
  to <code class="PARAMETER">output</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN28610"></a><h4>Parameters</h4>
+<a name="AEN28616"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN28612"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN28618"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2384,10 +2487,10 @@ xmlSecQName2BitMaskDebugXmlDump (<code class="PARAMETER"><font><span class="TYPE
  to <code class="PARAMETER">output</code>
  in XML format.</p>
 <div class="REFSECT3">
-<a name="AEN28661"></a><h4>Parameters</h4>
+<a name="AEN28667"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN28663"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN28669"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2430,10 +2533,10 @@ xmlSecQName2BitMaskDebugXmlDump (<code class="PARAMETER"><font><span class="TYPE
 };</pre>
 <p>QName &lt;-&gt; Integer conversion definition.</p>
 <div class="REFSECT3">
-<a name="AEN28698"></a><h4>Members</h4>
+<a name="AEN28704"></a><h4>Members</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN28700"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN28706"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2481,10 +2584,10 @@ xmlSecQName2BitMaskDebugXmlDump (<code class="PARAMETER"><font><span class="TYPE
 };</pre>
 <p>QName &lt;-&gt; Bitmask conversion definition.</p>
 <div class="REFSECT3">
-<a name="AEN28748"></a><h4>Members</h4>
+<a name="AEN28754"></a><h4>Members</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN28750"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN28756"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>

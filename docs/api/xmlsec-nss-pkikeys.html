@@ -110,12 +110,12 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <h1>
 <a name="XMLSEC-NSS-PKIKEYS"></a>pkikeys</h1>
 <div class="REFNAMEDIV">
-<a name="AEN41228"></a><h2>Name</h2>pkikeys -- PKI keys data implementation.</div>
+<a name="AEN41225"></a><h2>Name</h2>pkikeys -- PKI keys data implementation.</div>
 <div class="REFSECT1">
 <a name="XMLSEC-NSS-PKIKEYS.FUNCTIONS"></a><h2>Functions</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN41233"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN41230"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody>
@@ -170,10 +170,10 @@ xmlSecNssPKIAdoptKey (<code class="PARAMETER"><font><span class="TYPE">SECKEYPri
 <p>Build a KeyData object from the given Private Key and Public
 Key handles.</p>
 <div class="REFSECT3">
-<a name="AEN41290"></a><h4>Parameters</h4>
+<a name="AEN41287"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN41292"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN41289"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -194,7 +194,7 @@ Key handles.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN41307"></a><h4>Returns</h4>
+<a name="AEN41304"></a><h4>Returns</h4>
 <p> pointer to KeyData object or NULL if an error occurs.</p>
 </div>
 </div>
@@ -205,10 +205,10 @@ Key handles.</p>
 xmlSecNssPKIKeyDataGetPubKey (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>);</pre>
 <p>Gets the Public Key from the key data.</p>
 <div class="REFSECT3">
-<a name="AEN41321"></a><h4>Parameters</h4>
+<a name="AEN41318"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN41323"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN41320"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -222,7 +222,7 @@ xmlSecNssPKIKeyDataGetPubKey (<code class="PARAMETER"><a href="xmlsec-keysdata.h
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN41332"></a><h4>Returns</h4>
+<a name="AEN41329"></a><h4>Returns</h4>
 <p> pointer to SECKEYPublicKey or NULL if an error occurs.
 Caller is responsible for freeing the key when done</p>
 </div>
@@ -234,10 +234,10 @@ Caller is responsible for freeing the key when done</p>
 xmlSecNssPKIKeyDataGetPrivKey (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>);</pre>
 <p>Gets the Private Key from the key data.</p>
 <div class="REFSECT3">
-<a name="AEN41346"></a><h4>Parameters</h4>
+<a name="AEN41343"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN41348"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN41345"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -251,7 +251,7 @@ xmlSecNssPKIKeyDataGetPrivKey (<code class="PARAMETER"><a href="xmlsec-keysdata.
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN41357"></a><h4>Returns</h4>
+<a name="AEN41354"></a><h4>Returns</h4>
 <p> pointer to SECKEYPrivateKey or NULL if an error occurs.
 Caller is responsible for freeing the key when done</p>
 </div>
@@ -263,10 +263,10 @@ Caller is responsible for freeing the key when done</p>
 xmlSecNssPKIKeyDataGetKeyType (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>);</pre>
 <p>Gets the Key Type from the key data.</p>
 <div class="REFSECT3">
-<a name="AEN41371"></a><h4>Parameters</h4>
+<a name="AEN41368"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN41373"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN41370"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -280,7 +280,7 @@ xmlSecNssPKIKeyDataGetKeyType (<code class="PARAMETER"><a href="xmlsec-keysdata.
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN41382"></a><h4>Returns</h4>
+<a name="AEN41379"></a><h4>Returns</h4>
 <p> Key Type</p>
 </div>
 </div>
@@ -292,10 +292,10 @@ xmlSecNssPKIKeyDataDuplicate (<code class="PARAMETER"><a href="xmlsec-keysdata.h
                               <code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> src</code>);</pre>
 <p>Duplicates the keydata from src to dst</p>
 <div class="REFSECT3">
-<a name="AEN41399"></a><h4>Parameters</h4>
+<a name="AEN41396"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN41401"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN41398"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -316,7 +316,7 @@ xmlSecNssPKIKeyDataDuplicate (<code class="PARAMETER"><a href="xmlsec-keysdata.h
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN41416"></a><h4>Returns</h4>
+<a name="AEN41413"></a><h4>Returns</h4>
 <p> -1 on error, 0 on success</p>
 </div>
 </div>

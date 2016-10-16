@@ -110,12 +110,12 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <h1>
 <a name="XMLSEC-TEMPLATES"></a>templates</h1>
 <div class="REFNAMEDIV">
-<a name="AEN17059"></a><h2>Name</h2>templates -- Dynamic templates creation functions.</div>
+<a name="AEN16905"></a><h2>Name</h2>templates -- Dynamic templates creation functions.</div>
 <div class="REFSECT1">
 <a name="XMLSEC-TEMPLATES.FUNCTIONS"></a><h2>Functions</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN17064"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN16910"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody>
@@ -389,10 +389,10 @@ xmlSecTmplSignatureCreate (<code class="PARAMETER"><font><span class="TYPE">xmlD
 The application is responsible for inserting the returned node
 in the XML document.</p>
 <div class="REFSECT3">
-<a name="AEN17379"></a><h4>Parameters</h4>
+<a name="AEN17225"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN17381"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN17227"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -426,7 +426,7 @@ pointer to XML document.</p></td>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN17409"></a><h4>Returns</h4>
+<a name="AEN17255"></a><h4>Returns</h4>
 <p> the pointer to newly created &lt;dsig:Signature/&gt; node or NULL if an
 error occurs.</p>
 </div>
@@ -449,10 +449,10 @@ namespace with the given prefix that will be used for all of the
 appropriate child nodes.  The application is responsible for
 inserting the returned node in the XML document.</p>
 <div class="REFSECT3">
-<a name="AEN17435"></a><h4>Parameters</h4>
+<a name="AEN17281"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN17437"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN17283"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -491,7 +491,7 @@ pointer to XML document.</p></td>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN17471"></a><h4>Returns</h4>
+<a name="AEN17317"></a><h4>Returns</h4>
 <p> the pointer to newly created &lt;dsig:Signature/&gt; node or NULL if an
 error occurs.</p>
 </div>
@@ -506,10 +506,10 @@ xmlSecTmplSignatureEnsureKeyInfo (<code class="PARAMETER"><font><span class="TYP
 node <code class="PARAMETER">signNode</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN17489"></a><h4>Parameters</h4>
+<a name="AEN17335"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN17491"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN17337"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -530,7 +530,7 @@ node <code class="PARAMETER">signNode</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN17506"></a><h4>Returns</h4>
+<a name="AEN17352"></a><h4>Returns</h4>
 <p> the pointer to newly created &lt;dsig:KeyInfo/&gt; node or NULL if an
 error occurs.</p>
 </div>
@@ -552,10 +552,10 @@ Type (<code class="PARAMETER">type</code>
 &lt;dsig:DigestValue/&gt; to the &lt;dsig:SignedInfo/&gt; child of <code class="PARAMETER">signNode</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN17536"></a><h4>Parameters</h4>
+<a name="AEN17382"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN17538"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN17384"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -591,7 +591,7 @@ Type (<code class="PARAMETER">type</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN17571"></a><h4>Returns</h4>
+<a name="AEN17417"></a><h4>Returns</h4>
 <p> the pointer to newly created &lt;dsig:Reference/&gt; node or NULL
 if an error occurs.</p>
 </div>
@@ -607,10 +607,10 @@ xmlSecTmplSignatureAddObject (<code class="PARAMETER"><font><span class="TYPE">x
 <p>Adds &lt;dsig:Object/&gt; node to the &lt;dsig:Signature/&gt; node <code class="PARAMETER">signNode</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN17595"></a><h4>Parameters</h4>
+<a name="AEN17441"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN17597"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN17443"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -641,7 +641,7 @@ xmlSecTmplSignatureAddObject (<code class="PARAMETER"><font><span class="TYPE">x
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN17624"></a><h4>Returns</h4>
+<a name="AEN17470"></a><h4>Returns</h4>
 <p> the pointer to newly created &lt;dsig:Object/&gt; node or NULL
 if an error occurs.</p>
 </div>
@@ -653,10 +653,10 @@ if an error occurs.</p>
 xmlSecTmplSignatureGetSignMethodNode (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> signNode</code>);</pre>
 <p>Gets pointer to &lt;dsig:SignatureMethod/&gt; child of &lt;dsig:KeyInfo/&gt; node.</p>
 <div class="REFSECT3">
-<a name="AEN17638"></a><h4>Parameters</h4>
+<a name="AEN17484"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN17640"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN17486"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -670,7 +670,7 @@ xmlSecTmplSignatureGetSignMethodNode (<code class="PARAMETER"><font><span class=
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN17649"></a><h4>Returns</h4>
+<a name="AEN17495"></a><h4>Returns</h4>
 <p> pointer to &lt;dsig:SignatureMethod /&gt; node or NULL if an error occurs.</p>
 </div>
 </div>
@@ -681,10 +681,10 @@ xmlSecTmplSignatureGetSignMethodNode (<code class="PARAMETER"><font><span class=
 xmlSecTmplSignatureGetC14NMethodNode (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> signNode</code>);</pre>
 <p>Gets pointer to &lt;dsig:CanonicalizationMethod/&gt; child of &lt;dsig:KeyInfo/&gt; node.</p>
 <div class="REFSECT3">
-<a name="AEN17663"></a><h4>Parameters</h4>
+<a name="AEN17509"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN17665"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN17511"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -698,7 +698,7 @@ xmlSecTmplSignatureGetC14NMethodNode (<code class="PARAMETER"><font><span class=
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN17674"></a><h4>Returns</h4>
+<a name="AEN17520"></a><h4>Returns</h4>
 <p> pointer to &lt;dsig:CanonicalizationMethod /&gt; node or NULL if an error occurs.</p>
 </div>
 </div>
@@ -711,10 +711,10 @@ xmlSecTmplReferenceAddTransform (<code class="PARAMETER"><font><span class="TYPE
 <p>Adds &lt;dsig:Transform/&gt; node to the &lt;dsig:Reference/&gt; node <code class="PARAMETER">referenceNode</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN17692"></a><h4>Parameters</h4>
+<a name="AEN17538"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN17694"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN17540"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -735,7 +735,7 @@ xmlSecTmplReferenceAddTransform (<code class="PARAMETER"><font><span class="TYPE
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN17709"></a><h4>Returns</h4>
+<a name="AEN17555"></a><h4>Returns</h4>
 <p> the pointer to newly created &lt;dsig:Transform/&gt; node or NULL if an
 error occurs.</p>
 </div>
@@ -750,10 +750,10 @@ xmlSecTmplObjectAddSignProperties (<code class="PARAMETER"><font><span class="TY
 <p>Adds &lt;dsig:SignatureProperties/&gt; node to the &lt;dsig:Object/&gt; node <code class="PARAMETER">objectNode</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN17730"></a><h4>Parameters</h4>
+<a name="AEN17576"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN17732"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN17578"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -779,7 +779,7 @@ xmlSecTmplObjectAddSignProperties (<code class="PARAMETER"><font><span class="TY
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN17753"></a><h4>Returns</h4>
+<a name="AEN17599"></a><h4>Returns</h4>
 <p> the pointer to newly created &lt;dsig:SignatureProperties/&gt; node or NULL
 if an error occurs.</p>
 </div>
@@ -793,10 +793,10 @@ xmlSecTmplObjectAddManifest (<code class="PARAMETER"><font><span class="TYPE">xm
 <p>Adds &lt;dsig:Manifest/&gt; node to the &lt;dsig:Object/&gt; node <code class="PARAMETER">objectNode</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN17771"></a><h4>Parameters</h4>
+<a name="AEN17617"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN17773"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN17619"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -817,7 +817,7 @@ xmlSecTmplObjectAddManifest (<code class="PARAMETER"><font><span class="TYPE">xm
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN17788"></a><h4>Returns</h4>
+<a name="AEN17634"></a><h4>Returns</h4>
 <p> the pointer to newly created &lt;dsig:Manifest/&gt; node or NULL
 if an error occurs.</p>
 </div>
@@ -839,10 +839,10 @@ Type (<code class="PARAMETER">type</code>
 &lt;dsig:DigestValue/&gt; to the &lt;dsig:Manifest/&gt; node <code class="PARAMETER">manifestNode</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN17818"></a><h4>Parameters</h4>
+<a name="AEN17664"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN17820"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN17666"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -878,7 +878,7 @@ Type (<code class="PARAMETER">type</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN17853"></a><h4>Returns</h4>
+<a name="AEN17699"></a><h4>Returns</h4>
 <p> the pointer to newly created &lt;dsig:Reference/&gt; node or NULL
 if an error occurs.</p>
 </div>
@@ -895,10 +895,10 @@ xmlSecTmplEncDataCreate (<code class="PARAMETER"><font><span class="TYPE">xmlDoc
                          <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *encoding</code>);</pre>
 <p>Creates new &lt;enc:EncryptedData /&gt; node for encryption template.</p>
 <div class="REFSECT3">
-<a name="AEN17882"></a><h4>Parameters</h4>
+<a name="AEN17728"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN17884"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN17730"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -942,7 +942,7 @@ that all the children nodes have correct pointer to XML document.</p></td>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN17924"></a><h4>Returns</h4>
+<a name="AEN17770"></a><h4>Returns</h4>
 <p> the pointer newly created  &lt;enc:EncryptedData/&gt; node or NULL
 if an error occurs.</p>
 </div>
@@ -956,10 +956,10 @@ xmlSecTmplEncDataEnsureKeyInfo (<code class="PARAMETER"><font><span class="TYPE"
 <p>Adds &lt;dsig:KeyInfo/&gt; to the  &lt;enc:EncryptedData/&gt; node <code class="PARAMETER">encNode</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN17942"></a><h4>Parameters</h4>
+<a name="AEN17788"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN17944"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN17790"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -980,7 +980,7 @@ xmlSecTmplEncDataEnsureKeyInfo (<code class="PARAMETER"><font><span class="TYPE"
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN17959"></a><h4>Returns</h4>
+<a name="AEN17805"></a><h4>Returns</h4>
 <p> the pointer to newly created &lt;dsig:KeyInfo/&gt; node or
 NULL if an error occurs.</p>
 </div>
@@ -995,10 +995,10 @@ xmlSecTmplEncDataEnsureEncProperties (<code class="PARAMETER"><font><span class=
 node <code class="PARAMETER">encNode</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN17977"></a><h4>Parameters</h4>
+<a name="AEN17823"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN17979"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN17825"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1019,7 +1019,7 @@ node <code class="PARAMETER">encNode</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN17994"></a><h4>Returns</h4>
+<a name="AEN17840"></a><h4>Returns</h4>
 <p> the pointer to newly created &lt;enc:EncryptionProperties/&gt; node or
 NULL if an error occurs.</p>
 </div>
@@ -1036,10 +1036,10 @@ xmlSecTmplEncDataAddEncProperty (<code class="PARAMETER"><font><span class="TYPE
 &lt;enc:EncryptedData/&gt; node <code class="PARAMETER">encNode</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN18015"></a><h4>Parameters</h4>
+<a name="AEN17861"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN18017"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN17863"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1065,7 +1065,7 @@ xmlSecTmplEncDataAddEncProperty (<code class="PARAMETER"><font><span class="TYPE
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN18038"></a><h4>Returns</h4>
+<a name="AEN17884"></a><h4>Returns</h4>
 <p> the pointer to newly created &lt;enc:EncryptionProperty/&gt; node or
 NULL if an error occurs.</p>
 </div>
@@ -1078,10 +1078,10 @@ xmlSecTmplEncDataEnsureCipherValue (<code class="PARAMETER"><font><span class="T
 <p>Adds &lt;enc:CipherValue/&gt; to the &lt;enc:EncryptedData/&gt; node <code class="PARAMETER">encNode</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN18053"></a><h4>Parameters</h4>
+<a name="AEN17899"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN18055"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN17901"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1095,7 +1095,7 @@ xmlSecTmplEncDataEnsureCipherValue (<code class="PARAMETER"><font><span class="T
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN18064"></a><h4>Returns</h4>
+<a name="AEN17910"></a><h4>Returns</h4>
 <p> the pointer to newly created &lt;enc:CipherValue/&gt; node or
 NULL if an error occurs.</p>
 </div>
@@ -1112,10 +1112,10 @@ xmlSecTmplEncDataEnsureCipherReference
 to the &lt;enc:EncryptedData/&gt; node <code class="PARAMETER">encNode</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN18083"></a><h4>Parameters</h4>
+<a name="AEN17929"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN18085"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN17931"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1136,7 +1136,7 @@ to the &lt;enc:EncryptedData/&gt; node <code class="PARAMETER">encNode</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN18100"></a><h4>Returns</h4>
+<a name="AEN17946"></a><h4>Returns</h4>
 <p> the pointer to newly created &lt;enc:CipherReference/&gt; node or
 NULL if an error occurs.</p>
 </div>
@@ -1148,10 +1148,10 @@ NULL if an error occurs.</p>
 xmlSecTmplEncDataGetEncMethodNode (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> encNode</code>);</pre>
 <p>Gets pointer to &lt;enc:EncrytpionMethod/&gt; node.</p>
 <div class="REFSECT3">
-<a name="AEN18114"></a><h4>Parameters</h4>
+<a name="AEN17960"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN18116"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN17962"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1165,7 +1165,7 @@ xmlSecTmplEncDataGetEncMethodNode (<code class="PARAMETER"><font><span class="TY
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN18125"></a><h4>Returns</h4>
+<a name="AEN17971"></a><h4>Returns</h4>
 <p> pointer to &lt;enc:EncryptionMethod /&gt; node or NULL if an error occurs.</p>
 </div>
 </div>
@@ -1181,10 +1181,10 @@ with specified transform methods <code class="PARAMETER">transform</code>
 child node of the &lt;enc:EncryptedData/&gt; node <code class="PARAMETER">encNode</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN18144"></a><h4>Parameters</h4>
+<a name="AEN17990"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN18146"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN17992"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1205,7 +1205,7 @@ child node of the &lt;enc:EncryptedData/&gt; node <code class="PARAMETER">encNod
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN18161"></a><h4>Returns</h4>
+<a name="AEN18007"></a><h4>Returns</h4>
 <p> the pointer to newly created &lt;dsig:Transform/&gt; node or
 NULL if an error occurs.</p>
 </div>
@@ -1219,10 +1219,10 @@ xmlSecTmplReferenceListAddDataReference
                                 <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *uri</code>);</pre>
 <p>Adds &lt;enc:DataReference/&gt; and the parent &lt;enc:ReferenceList/&gt; node (if needed).</p>
 <div class="REFSECT3">
-<a name="AEN18178"></a><h4>Parameters</h4>
+<a name="AEN18024"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN18180"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN18026"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1243,7 +1243,7 @@ xmlSecTmplReferenceListAddDataReference
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN18195"></a><h4>Returns</h4>
+<a name="AEN18041"></a><h4>Returns</h4>
 <p> the pointer to newly created &lt;enc:DataReference/&gt; node or
 NULL if an error occurs.</p>
 </div>
@@ -1257,10 +1257,10 @@ xmlSecTmplReferenceListAddKeyReference
                                 <code class="PARAMETER">const <font><span class="TYPE">xmlChar</span></font> *uri</code>);</pre>
 <p>Adds &lt;enc:KeyReference/&gt; and the parent &lt;enc:ReferenceList/&gt; node (if needed).</p>
 <div class="REFSECT3">
-<a name="AEN18212"></a><h4>Parameters</h4>
+<a name="AEN18058"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN18214"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN18060"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1281,7 +1281,7 @@ xmlSecTmplReferenceListAddKeyReference
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN18229"></a><h4>Returns</h4>
+<a name="AEN18075"></a><h4>Returns</h4>
 <p> the pointer to newly created &lt;enc:KeyReference/&gt; node or
 NULL if an error occurs.</p>
 </div>
@@ -1295,10 +1295,10 @@ xmlSecTmplKeyInfoAddKeyName (<code class="PARAMETER"><font><span class="TYPE">xm
 <p>Adds &lt;dsig:KeyName/&gt; node to the &lt;dsig:KeyInfo/&gt; node <code class="PARAMETER">keyInfoNode</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN18247"></a><h4>Parameters</h4>
+<a name="AEN18093"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN18249"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN18095"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1319,7 +1319,7 @@ xmlSecTmplKeyInfoAddKeyName (<code class="PARAMETER"><font><span class="TYPE">xm
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN18264"></a><h4>Returns</h4>
+<a name="AEN18110"></a><h4>Returns</h4>
 <p> the pointer to the newly created &lt;dsig:KeyName/&gt; node or
 NULL if an error occurs.</p>
 </div>
@@ -1332,10 +1332,10 @@ xmlSecTmplKeyInfoAddKeyValue (<code class="PARAMETER"><font><span class="TYPE">x
 <p>Adds &lt;dsig:KeyValue/&gt; node to the &lt;dsig:KeyInfo/&gt; node <code class="PARAMETER">keyInfoNode</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN18279"></a><h4>Parameters</h4>
+<a name="AEN18125"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN18281"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN18127"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1349,7 +1349,7 @@ xmlSecTmplKeyInfoAddKeyValue (<code class="PARAMETER"><font><span class="TYPE">x
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN18290"></a><h4>Returns</h4>
+<a name="AEN18136"></a><h4>Returns</h4>
 <p> the pointer to the newly created &lt;dsig:KeyValue/&gt; node or
 NULL if an error occurs.</p>
 </div>
@@ -1362,10 +1362,10 @@ xmlSecTmplKeyInfoAddX509Data (<code class="PARAMETER"><font><span class="TYPE">x
 <p>Adds &lt;dsig:X509Data/&gt; node to the &lt;dsig:KeyInfo/&gt; node <code class="PARAMETER">keyInfoNode</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN18305"></a><h4>Parameters</h4>
+<a name="AEN18151"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN18307"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN18153"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1379,7 +1379,7 @@ xmlSecTmplKeyInfoAddX509Data (<code class="PARAMETER"><font><span class="TYPE">x
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN18316"></a><h4>Returns</h4>
+<a name="AEN18162"></a><h4>Returns</h4>
 <p> the pointer to the newly created &lt;dsig:X509Data/&gt; node or
 NULL if an error occurs.</p>
 </div>
@@ -1394,10 +1394,10 @@ xmlSecTmplKeyInfoAddRetrievalMethod (<code class="PARAMETER"><font><span class="
 <p>Adds &lt;dsig:RetrievalMethod/&gt; node to the &lt;dsig:KeyInfo/&gt; node <code class="PARAMETER">keyInfoNode</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN18337"></a><h4>Parameters</h4>
+<a name="AEN18183"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN18339"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN18185"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1423,7 +1423,7 @@ xmlSecTmplKeyInfoAddRetrievalMethod (<code class="PARAMETER"><font><span class="
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN18360"></a><h4>Returns</h4>
+<a name="AEN18206"></a><h4>Returns</h4>
 <p> the pointer to the newly created &lt;dsig:RetrievalMethod/&gt; node or
 NULL if an error occurs.</p>
 </div>
@@ -1438,10 +1438,10 @@ xmlSecTmplRetrievalMethodAddTransform (<code class="PARAMETER"><font><span class
 if required) to the &lt;dsig:RetrievalMethod/&gt; node <code class="PARAMETER">retrMethod</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN18378"></a><h4>Parameters</h4>
+<a name="AEN18224"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN18380"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN18226"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1462,7 +1462,7 @@ if required) to the &lt;dsig:RetrievalMethod/&gt; node <code class="PARAMETER">r
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN18395"></a><h4>Returns</h4>
+<a name="AEN18241"></a><h4>Returns</h4>
 <p> the pointer to the newly created &lt;dsig:Transforms/&gt; node or
 NULL if an error occurs.</p>
 </div>
@@ -1480,10 +1480,10 @@ xmlSecTmplKeyInfoAddEncryptedKey (<code class="PARAMETER"><font><span class="TYP
 the &lt;dsig:KeyInfo/&gt; node <code class="PARAMETER">keyInfoNode</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN18422"></a><h4>Parameters</h4>
+<a name="AEN18268"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN18424"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN18270"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1519,7 +1519,7 @@ the &lt;dsig:KeyInfo/&gt; node <code class="PARAMETER">keyInfoNode</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN18457"></a><h4>Returns</h4>
+<a name="AEN18303"></a><h4>Returns</h4>
 <p> the pointer to the newly created &lt;enc:EncryptedKey/&gt; node or
 NULL if an error occurs.</p>
 </div>
@@ -1531,10 +1531,10 @@ NULL if an error occurs.</p>
 xmlSecTmplX509DataAddIssuerSerial (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> x509DataNode</code>);</pre>
 <p>Adds &lt;dsig:X509IssuerSerial/&gt; node to the given &lt;dsig:X509Data/&gt; node.</p>
 <div class="REFSECT3">
-<a name="AEN18471"></a><h4>Parameters</h4>
+<a name="AEN18317"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN18473"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN18319"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1548,7 +1548,7 @@ xmlSecTmplX509DataAddIssuerSerial (<code class="PARAMETER"><font><span class="TY
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN18482"></a><h4>Returns</h4>
+<a name="AEN18328"></a><h4>Returns</h4>
 <p> the pointer to the newly created &lt;dsig:X509IssuerSerial/&gt; node or
 NULL if an error occurs.</p>
 </div>
@@ -1563,10 +1563,10 @@ xmlSecTmplX509IssuerSerialAddIssuerName
 <p>Adds &lt;dsig:X509IssuerName/&gt; node to the &lt;dsig:X509IssuerSerial/&gt; node <code class="PARAMETER">x509IssuerSerialNode</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN18500"></a><h4>Parameters</h4>
+<a name="AEN18346"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN18502"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN18348"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1587,7 +1587,7 @@ xmlSecTmplX509IssuerSerialAddIssuerName
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN18517"></a><h4>Returns</h4>
+<a name="AEN18363"></a><h4>Returns</h4>
 <p> the pointer to the newly created &lt;dsig:X509IssuerName/&gt; node or
 NULL if an error occurs.</p>
 </div>
@@ -1602,10 +1602,10 @@ xmlSecTmplX509IssuerSerialAddSerialNumber
 <p>Adds &lt;dsig:X509SerialNumber/&gt; node to the &lt;dsig:X509IssuerSerial/&gt; node <code class="PARAMETER">x509IssuerSerialNode</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN18535"></a><h4>Parameters</h4>
+<a name="AEN18381"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN18537"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN18383"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1626,7 +1626,7 @@ xmlSecTmplX509IssuerSerialAddSerialNumber
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN18552"></a><h4>Returns</h4>
+<a name="AEN18398"></a><h4>Returns</h4>
 <p> the pointer to the newly created &lt;dsig:X509SerialNumber/&gt; node or
 NULL if an error occurs.</p>
 </div>
@@ -1638,10 +1638,10 @@ NULL if an error occurs.</p>
 xmlSecTmplX509DataAddSubjectName (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> x509DataNode</code>);</pre>
 <p>Adds &lt;dsig:X509SubjectName/&gt; node to the given &lt;dsig:X509Data/&gt; node.</p>
 <div class="REFSECT3">
-<a name="AEN18566"></a><h4>Parameters</h4>
+<a name="AEN18412"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN18568"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN18414"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1655,7 +1655,7 @@ xmlSecTmplX509DataAddSubjectName (<code class="PARAMETER"><font><span class="TYP
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN18577"></a><h4>Returns</h4>
+<a name="AEN18423"></a><h4>Returns</h4>
 <p> the pointer to the newly created &lt;dsig:X509SubjectName/&gt; node or
 NULL if an error occurs.</p>
 </div>
@@ -1667,10 +1667,10 @@ NULL if an error occurs.</p>
 xmlSecTmplX509DataAddSKI (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> x509DataNode</code>);</pre>
 <p>Adds &lt;dsig:X509SKI/&gt; node to the given &lt;dsig:X509Data/&gt; node.</p>
 <div class="REFSECT3">
-<a name="AEN18591"></a><h4>Parameters</h4>
+<a name="AEN18437"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN18593"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN18439"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1684,7 +1684,7 @@ xmlSecTmplX509DataAddSKI (<code class="PARAMETER"><font><span class="TYPE">xmlNo
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN18602"></a><h4>Returns</h4>
+<a name="AEN18448"></a><h4>Returns</h4>
 <p> the pointer to the newly created &lt;dsig:X509SKI/&gt; node or
 NULL if an error occurs.</p>
 </div>
@@ -1696,10 +1696,10 @@ NULL if an error occurs.</p>
 xmlSecTmplX509DataAddCertificate (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> x509DataNode</code>);</pre>
 <p>Adds &lt;dsig:X509Certificate/&gt; node to the given &lt;dsig:X509Data/&gt; node.</p>
 <div class="REFSECT3">
-<a name="AEN18616"></a><h4>Parameters</h4>
+<a name="AEN18462"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN18618"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN18464"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1713,7 +1713,7 @@ xmlSecTmplX509DataAddCertificate (<code class="PARAMETER"><font><span class="TYP
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN18627"></a><h4>Returns</h4>
+<a name="AEN18473"></a><h4>Returns</h4>
 <p> the pointer to the newly created &lt;dsig:X509Certificate/&gt; node or
 NULL if an error occurs.</p>
 </div>
@@ -1725,10 +1725,10 @@ NULL if an error occurs.</p>
 xmlSecTmplX509DataAddCRL (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> x509DataNode</code>);</pre>
 <p>Adds &lt;dsig:X509CRL/&gt; node to the given &lt;dsig:X509Data/&gt; node.</p>
 <div class="REFSECT3">
-<a name="AEN18641"></a><h4>Parameters</h4>
+<a name="AEN18487"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN18643"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN18489"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1742,7 +1742,7 @@ xmlSecTmplX509DataAddCRL (<code class="PARAMETER"><font><span class="TYPE">xmlNo
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN18652"></a><h4>Returns</h4>
+<a name="AEN18498"></a><h4>Returns</h4>
 <p> the pointer to the newly created &lt;dsig:X509CRL/&gt; node or
 NULL if an error occurs.</p>
 </div>
@@ -1758,10 +1758,10 @@ xmlSecTmplTransformAddHmacOutputLength
 node <code class="PARAMETER">node</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN18670"></a><h4>Parameters</h4>
+<a name="AEN18516"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN18672"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN18518"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1782,7 +1782,7 @@ node <code class="PARAMETER">node</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN18687"></a><h4>Returns</h4>
+<a name="AEN18533"></a><h4>Returns</h4>
 <p> 0 on success and a negatie value otherwise.</p>
 </div>
 </div>
@@ -1796,10 +1796,10 @@ xmlSecTmplTransformAddRsaOaepParam (<code class="PARAMETER"><font><span class="T
 <p>Creates &lt;enc:OAEPParam/&gt; child node in the <code class="PARAMETER">node</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN18708"></a><h4>Parameters</h4>
+<a name="AEN18554"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN18710"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN18556"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1825,7 +1825,7 @@ xmlSecTmplTransformAddRsaOaepParam (<code class="PARAMETER"><font><span class="T
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN18731"></a><h4>Returns</h4>
+<a name="AEN18577"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -1838,10 +1838,10 @@ xmlSecTmplTransformAddXsltStylesheet (<code class="PARAMETER"><font><span class=
 <p>Writes the XSLT transform expression to the <code class="PARAMETER">node</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN18749"></a><h4>Parameters</h4>
+<a name="AEN18595"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN18751"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN18597"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1862,7 +1862,7 @@ xmlSecTmplTransformAddXsltStylesheet (<code class="PARAMETER"><font><span class=
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN18766"></a><h4>Returns</h4>
+<a name="AEN18612"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
@@ -1876,10 +1876,10 @@ xmlSecTmplTransformAddC14NInclNamespaces
 <p>Adds "inclusive" namespaces to the ExcC14N transform node <code class="PARAMETER">node</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN18784"></a><h4>Parameters</h4>
+<a name="AEN18630"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN18786"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN18632"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1902,7 +1902,7 @@ where "<font><span class="TYPE">default</span></font>" indicates the default nam
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN18803"></a><h4>Returns</h4>
+<a name="AEN18649"></a><h4>Returns</h4>
 <p> 0 if success or a negative value otherwise.</p>
 </div>
 </div>
@@ -1917,10 +1917,10 @@ xmlSecTmplTransformAddXPath (<code class="PARAMETER"><font><span class="TYPE">xm
 <code class="PARAMETER">node</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN18824"></a><h4>Parameters</h4>
+<a name="AEN18670"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN18826"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN18672"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1947,7 +1947,7 @@ xmlSecTmplTransformAddXPath (<code class="PARAMETER"><font><span class="TYPE">xm
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN18847"></a><h4>Returns</h4>
+<a name="AEN18693"></a><h4>Returns</h4>
 <p> 0 for success or a negative value otherwise.</p>
 </div>
 </div>
@@ -1963,10 +1963,10 @@ xmlSecTmplTransformAddXPath2 (<code class="PARAMETER"><font><span class="TYPE">x
 <code class="PARAMETER">node</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN18871"></a><h4>Parameters</h4>
+<a name="AEN18717"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN18873"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN18719"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -1998,7 +1998,7 @@ xmlSecTmplTransformAddXPath2 (<code class="PARAMETER"><font><span class="TYPE">x
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN18900"></a><h4>Returns</h4>
+<a name="AEN18746"></a><h4>Returns</h4>
 <p> 0 for success or a negative value otherwise.</p>
 </div>
 </div>
@@ -2013,10 +2013,10 @@ xmlSecTmplTransformAddXPointer (<code class="PARAMETER"><font><span class="TYPE"
 <code class="PARAMETER">node</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN18921"></a><h4>Parameters</h4>
+<a name="AEN18767"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN18923"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN18769"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -2043,7 +2043,7 @@ xmlSecTmplTransformAddXPointer (<code class="PARAMETER"><font><span class="TYPE"
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN18944"></a><h4>Returns</h4>
+<a name="AEN18790"></a><h4>Returns</h4>
 <p> 0 for success or a negative value otherwise.</p>
 </div>
 </div>

@@ -110,12 +110,12 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <h1>
 <a name="XMLSEC-KEYINFO"></a>keyinfo</h1>
 <div class="REFNAMEDIV">
-<a name="AEN7565"></a><h2>Name</h2>keyinfo -- <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node parser.</div>
+<a name="AEN7411"></a><h2>Name</h2>keyinfo -- <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node parser.</div>
 <div class="REFSECT1">
 <a name="XMLSEC-KEYINFO.FUNCTIONS"></a><h2>Functions</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN7571"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN7417"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody>
@@ -218,7 +218,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="XMLSEC-KEYINFO.OTHER"></a><h2>Types and Values</h2>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN7681"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN7527"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <tbody>
@@ -320,10 +320,10 @@ xmlSecKeyInfoNodeRead (<code class="PARAMETER"><font><span class="TYPE">xmlNodeP
 and stores into <code class="PARAMETER">key</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN7785"></a><h4>Parameters</h4>
+<a name="AEN7631"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN7787"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN7633"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -349,7 +349,7 @@ and stores into <code class="PARAMETER">key</code>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN7808"></a><h4>Returns</h4>
+<a name="AEN7654"></a><h4>Returns</h4>
 <p> 0 on success or -1 if an error occurs.</p>
 </div>
 </div>
@@ -364,10 +364,10 @@ xmlSecKeyInfoNodeWrite (<code class="PARAMETER"><font><span class="TYPE">xmlNode
  into the &lt;dsig:KeyInfo/&gt; element template <code class="PARAMETER">keyInfoNode</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN7830"></a><h4>Parameters</h4>
+<a name="AEN7676"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN7832"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN7678"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -393,7 +393,7 @@ xmlSecKeyInfoNodeWrite (<code class="PARAMETER"><font><span class="TYPE">xmlNode
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN7853"></a><h4>Returns</h4>
+<a name="AEN7699"></a><h4>Returns</h4>
 <p> 0 on success or -1 if an error occurs.</p>
 </div>
 </div>
@@ -406,10 +406,10 @@ xmlSecKeyInfoCtxCreate (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XM
 Caller is responsible for freeing it by calling <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTXDESTROY"><span class="TYPE">xmlSecKeyInfoCtxDestroy</span></a>
 function.</p>
 <div class="REFSECT3">
-<a name="AEN7869"></a><h4>Parameters</h4>
+<a name="AEN7715"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN7871"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN7717"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -423,7 +423,7 @@ function.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN7880"></a><h4>Returns</h4>
+<a name="AEN7726"></a><h4>Returns</h4>
 <p> pointer to newly allocated object or NULL if an error occurs.</p>
 </div>
 </div>
@@ -435,10 +435,10 @@ xmlSecKeyInfoCtxDestroy (<code class="PARAMETER"><a href="xmlsec-keyinfo.html#XM
 <p>Destroys <code class="PARAMETER">keyInfoCtx</code>
  object created with <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTXCREATE"><span class="TYPE">xmlSecKeyInfoCtxCreate</span></a> function.</p>
 <div class="REFSECT3">
-<a name="AEN7897"></a><h4>Parameters</h4>
+<a name="AEN7743"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN7899"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN7745"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -461,10 +461,10 @@ xmlSecKeyInfoCtxInitialize (<code class="PARAMETER"><a href="xmlsec-keyinfo.html
 <p>Initializes &lt;dsig:KeyInfo/&gt; element processing context. Caller is
 responsible for cleaning it up by <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTXFINALIZE"><span class="TYPE">xmlSecKeyInfoCtxFinalize</span></a> function.</p>
 <div class="REFSECT3">
-<a name="AEN7924"></a><h4>Parameters</h4>
+<a name="AEN7770"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN7926"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN7772"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -485,7 +485,7 @@ responsible for cleaning it up by <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTXF
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN7941"></a><h4>Returns</h4>
+<a name="AEN7787"></a><h4>Returns</h4>
 <p> 0 on success and a negative value if an error occurs.</p>
 </div>
 </div>
@@ -498,10 +498,10 @@ xmlSecKeyInfoCtxFinalize (<code class="PARAMETER"><a href="xmlsec-keyinfo.html#X
  initialized with <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTXINITIALIZE"><span class="TYPE">xmlSecKeyInfoCtxInitialize</span></a>
 function.</p>
 <div class="REFSECT3">
-<a name="AEN7958"></a><h4>Parameters</h4>
+<a name="AEN7804"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN7960"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN7806"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -523,10 +523,10 @@ xmlSecKeyInfoCtxReset (<code class="PARAMETER"><a href="xmlsec-keyinfo.html#XMLS
 <p>Resets the <code class="PARAMETER">keyInfoCtx</code>
  state. User settings are not changed.</p>
 <div class="REFSECT3">
-<a name="AEN7981"></a><h4>Parameters</h4>
+<a name="AEN7827"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN7983"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN7829"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -550,10 +550,10 @@ xmlSecKeyInfoCtxCopyUserPref (<code class="PARAMETER"><a href="xmlsec-keyinfo.ht
  context to <code class="PARAMETER">dst</code>
  context.</p>
 <div class="REFSECT3">
-<a name="AEN8008"></a><h4>Parameters</h4>
+<a name="AEN7854"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN8010"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN7856"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -574,7 +574,7 @@ xmlSecKeyInfoCtxCopyUserPref (<code class="PARAMETER"><a href="xmlsec-keyinfo.ht
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN8025"></a><h4>Returns</h4>
+<a name="AEN7871"></a><h4>Returns</h4>
 <p> 0 on success and a negative value if an error occurs.</p>
 </div>
 </div>
@@ -586,10 +586,10 @@ xmlSecKeyInfoCtxCreateEncCtx (<code class="PARAMETER"><a href="xmlsec-keyinfo.ht
 <p>Creates encryption context form processing &lt;enc:EncryptedKey/&gt; child
 of &lt;dsig:KeyInfo/&gt; element.</p>
 <div class="REFSECT3">
-<a name="AEN8039"></a><h4>Parameters</h4>
+<a name="AEN7885"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN8041"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN7887"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -603,7 +603,7 @@ of &lt;dsig:KeyInfo/&gt; element.</p>
 </div>
 </div>
 <div class="REFSECT3">
-<a name="AEN8050"></a><h4>Returns</h4>
+<a name="AEN7896"></a><h4>Returns</h4>
 <p> 0 on success and a negative value if an error occurs.</p>
 </div>
 </div>
@@ -616,10 +616,10 @@ xmlSecKeyInfoCtxDebugDump (<code class="PARAMETER"><a href="xmlsec-keyinfo.html#
 <p>Prints user settings and current context state to <code class="PARAMETER">output</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN8068"></a><h4>Parameters</h4>
+<a name="AEN7914"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN8070"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN7916"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -649,10 +649,10 @@ xmlSecKeyInfoCtxDebugXmlDump (<code class="PARAMETER"><a href="xmlsec-keyinfo.ht
 <p>Prints user settings and current context state in XML format to <code class="PARAMETER">output</code>
 .</p>
 <div class="REFSECT3">
-<a name="AEN8100"></a><h4>Parameters</h4>
+<a name="AEN7946"></a><h4>Parameters</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN8102"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN7948"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -688,7 +688,7 @@ other protocol-related information that indirectly identifies a key pair.
 (Common uses of KeyName include simple string names for keys, a key index,
 a distinguished name (DN), an email address, etc.)</p>
 <div class="REFSECT3">
-<a name="AEN8130"></a><h4>Returns</h4>
+<a name="AEN7976"></a><h4>Returns</h4>
 <p> the &lt;dsig:KeyName/&gt; element processing key data klass.</p>
 </div>
 </div>
@@ -702,7 +702,7 @@ xmlSecKeyDataValueGetKlass (<code class="PARAMETER"><span class="TYPE">void</spa
 <p>The KeyValue element contains a single public key that may be useful in
 validating the signature.</p>
 <div class="REFSECT3">
-<a name="AEN8146"></a><h4>Returns</h4>
+<a name="AEN7992"></a><h4>Returns</h4>
 <p> the &lt;dsig:KeyValue/&gt; element processing key data klass.</p>
 </div>
 </div>
@@ -723,7 +723,7 @@ sequence of X509Certificate elements.</p>
 <p>RetrievalMethod uses the same syntax and dereferencing behavior as
 Reference's URI and The Reference Processing Model.</p>
 <div class="REFSECT3">
-<a name="AEN8162"></a><h4>Returns</h4>
+<a name="AEN8008"></a><h4>Returns</h4>
 <p> the &lt;dsig:RetrievalMethod/&gt; element processing key data klass.</p>
 </div>
 </div>
@@ -742,7 +742,7 @@ is always encrypted to the recipient(s). When EncryptedKey is decrypted the
 resulting octets are made available to the EncryptionMethod algorithm
 without any additional processing.</p>
 <div class="REFSECT3">
-<a name="AEN8178"></a><h4>Returns</h4>
+<a name="AEN8024"></a><h4>Returns</h4>
 <p> the &lt;enc:EncryptedKey/&gt; element processing key data klass.</p>
 </div>
 </div>
@@ -754,10 +754,10 @@ without any additional processing.</p>
 <p>The <code class="PARAMETER">xmlSecKeyInfoCtx</code>
  operation mode (read or write).</p>
 <div class="REFSECT3">
-<a name="AEN8189"></a><h4>Members</h4>
+<a name="AEN8035"></a><h4>Members</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN8191"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN8037"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>
@@ -911,10 +911,10 @@ Otherwise we just ignore it.</p>
 };</pre>
 <p>The &lt;dsig:KeyInfo /&gt; reading or writing context.</p>
 <div class="REFSECT3">
-<a name="AEN8290"></a><h4>Members</h4>
+<a name="AEN8136"></a><h4>Members</h4>
 <div class="INFORMALTABLE">
 <p></p>
-<a name="AEN8292"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
+<a name="AEN8138"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
 <col>
 <col>
 <col>

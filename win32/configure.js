@@ -59,6 +59,8 @@ var buildLibPrefix = "$(PREFIX)\\lib";
 var buildSoPrefix = "$(PREFIX)\\lib";
 var buildInclude = ".";
 var buildLib = ".";
+var cruntime = "/MD";
+
 /* Local stuff */
 var error = 0;
 
@@ -176,6 +178,7 @@ function discoverVersion()
 	vf.WriteLine("SOPREFIX=" + buildSoPrefix);
 	vf.WriteLine("INCLUDE=$(INCLUDE);" + buildInclude);
 	vf.WriteLine("LIB=$(LIB);" + buildLib);
+	vf.WriteLine("CRUNTIME=" + cruntime);
 	vf.Close();
 }
 
@@ -281,6 +284,8 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			buildInclude = arg.substring(opt.length + 1, arg.length);
 		else if (opt == "lib")
 			buildLib = arg.substring(opt.length + 1, arg.length);
+		else if (opt == "cruntime")
+			cruntime = arg.substring(opt.length + 1, arg.length);
 		else
 			error = 1;
 	} else if (i == 0) {
@@ -311,7 +316,7 @@ for (j = 0; j < crlist.length; j++) {
 	if (crlist[j] == "openssl") {
 		curcrypto="openssl";
 		withOpenSSL = 1;
-		withOpenSSLVersion = "100"; /* default */
+		withOpenSSLVersion = "110"; /* default */
 	} else if (crlist[j] == "openssl=098") {
 		curcrypto="openssl";
 		withOpenSSL = 1;
@@ -379,6 +384,7 @@ txtOut += "     NT 4.0 support: " + boolToStr(withNT4) + "\n";
 txtOut += "\n";
 txtOut += "Win32 build configuration\n";
 txtOut += "-------------------------\n";
+txtOut += "  C-Runtime option: " + cruntime + "\n";
 txtOut += "           Unicode: " + boolToStr(buildUnicode) + "\n";
 txtOut += "     Debug symbols: " + boolToStr(buildDebug) + "\n";
 txtOut += "     Static xmlsec: " + boolToStr(buildStatic) + "\n";

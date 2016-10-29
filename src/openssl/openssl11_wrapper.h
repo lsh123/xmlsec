@@ -18,6 +18,9 @@
 
 #define ASN1_STRING_get0_data(data)        ASN1_STRING_data((data))
 #define X509_CRL_get0_nextUpdate(crl)      X509_CRL_get_nextUpdate((crl))
+#define X509_getm_notBefore(x509)          X509_get_notBefore(x509)
+#define X509_getm_notAfter(x509)           X509_get_notAfter(x509)
+#define X509_STORE_CTX_get_by_subject      X509_STORE_get_by_subject
 #define X509_REVOKED_get0_serialNumber(r)  (((r) != NULL) ? ((r)->serialNumber) : (const ASN1_INTEGER *)NULL)
 #define X509_OBJECT_get0_X509(x)           (((x) != NULL) ? ((x)->data.x509) : (X509 *)NULL)
 

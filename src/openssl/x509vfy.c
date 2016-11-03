@@ -783,12 +783,12 @@ xmlSecOpenSSLX509VerifyCRL(X509_STORE* xst, X509_CRL *crl ) {
                     XMLSEC_ERRORS_NO_MESSAGE);
         goto err;
     }
-    ret = X509_STORE_get_by_subject(xsc, X509_LU_X509,
-                                    X509_CRL_get_issuer(crl), xobj);
+    ret = X509_STORE_CTX_get_by_subject(xsc, X509_LU_X509,
+                                        X509_CRL_get_issuer(crl), xobj);
     if(ret <= 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
-                    "X509_STORE_get_by_subject",
+                    "X509_STORE_CTX_get_by_subject",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         goto err;

@@ -99,7 +99,7 @@ static void             xmlSecOpenSSLX509CertDebugDump          (X509* cert,
                                                                  FILE* output);
 static void             xmlSecOpenSSLX509CertDebugXmlDump       (X509* cert,
                                                                  FILE* output);
-static int              xmlSecOpenSSLX509CertGetTime            (ASN1_TIME* t,
+static int              xmlSecOpenSSLX509CertGetTime            (const ASN1_TIME* t,
                                                                  time_t* res);
 
 /*************************************************************************
@@ -1667,8 +1667,8 @@ xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr 
                 return(-1);
             }
 
-            if((X509_get_notBefore(ctx->keyCert) != NULL) && (X509_get_notAfter(ctx->keyCert) != NULL)) {
-                ret = xmlSecOpenSSLX509CertGetTime(X509_get_notBefore(ctx->keyCert), &(key->notValidBefore));
+            if((X509_get0_notBefore(ctx->keyCert) != NULL) && (X509_get0_notAfter(ctx->keyCert) != NULL)) {
+                ret = xmlSecOpenSSLX509CertGetTime(X509_get0_notBefore(ctx->keyCert), &(key->notValidBefore));
                 if(ret < 0) {
                     xmlSecError(XMLSEC_ERRORS_HERE,
                                 xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
@@ -1677,7 +1677,7 @@ xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr 
                                 "notValidBefore");
                     return(-1);
                 }
-                ret = xmlSecOpenSSLX509CertGetTime(X509_get_notAfter(ctx->keyCert), &(key->notValidAfter));
+                ret = xmlSecOpenSSLX509CertGetTime(X509_get0_notAfter(ctx->keyCert), &(key->notValidAfter));
                 if(ret < 0) {
                     xmlSecError(XMLSEC_ERRORS_HERE,
                                 xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
@@ -1744,7 +1744,7 @@ my_timegm(struct tm *t) {
 #endif /* HAVE_TIMEGM */
 
 static int
-xmlSecOpenSSLX509CertGetTime(ASN1_TIME* t, time_t* res) {
+xmlSecOpenSSLX509CertGetTime(const ASN1_TIME* t, time_t* res) {
     struct tm tm;
     int offset;
 

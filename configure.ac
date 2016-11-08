@@ -1411,6 +1411,21 @@ AM_CONDITIONAL(XMLSEC_NO_XMLENC, test "z$XMLSEC_NO_XMLENC" = "z1")
 AC_SUBST(XMLSEC_NO_XMLENC)
 
 dnl ==========================================================================
+dnl See do we need docs
+dnl ==========================================================================
+AC_MSG_CHECKING(for docs)
+AC_ARG_ENABLE(docs,   [  --enable-docs         enable documentation (yes)])
+if test "z$enable_docs" = "zno" ; then
+    XMLSEC_DOCS="0"
+    AC_MSG_RESULT(no)
+else
+    XMLSEC_DOCS="1"
+    AC_MSG_RESULT(yes)
+fi
+AM_CONDITIONAL(XMLSEC_DOCS, test "z$XMLSEC_DOCS" = "z1")
+AC_SUBST(XMLSEC_DOCS)
+
+dnl ==========================================================================
 dnl check if we need dynamic loading support
 dnl ==========================================================================
 XMLSEC_DL_INCLUDES=""

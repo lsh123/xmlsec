@@ -115,11 +115,7 @@ xmlSecTransformMemBufInitialize(xmlSecTransformPtr transform) {
 
     ret = xmlSecBufferInitialize(buffer, 0);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlSecBufferInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecBufferInitialize");
         return(-1);
     }
     return(0);
@@ -162,31 +158,25 @@ xmlSecTransformMemBufExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
         /* just copy everything from in to our buffer and out */
         ret = xmlSecBufferAppend(buffer, xmlSecBufferGetData(in), inSize);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlSecBufferAppend",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "size=%d", inSize);
+            xmlSecInternalError2(xmlSecTransformGetName(transform),
+                                 "xmlSecBufferAppend",
+                                 "size=%d", inSize);
             return(-1);
         }
 
         ret = xmlSecBufferAppend(out, xmlSecBufferGetData(in), inSize);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlSecBufferAppend",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "size=%d", inSize);
+            xmlSecInternalError2(xmlSecTransformGetName(transform),
+                                 "xmlSecBufferAppend",
+                                 "size=%d", inSize);
             return(-1);
         }
 
         ret = xmlSecBufferRemoveHead(in, inSize);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlSecBufferRemoveHead",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "size=%d", inSize);
+            xmlSecInternalError2(xmlSecTransformGetName(transform),
+                                "xmlSecBufferRemoveHead",
+                                "size=%d", inSize);
             return(-1);
         }
 

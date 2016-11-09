@@ -71,11 +71,7 @@ xmlSecPtrListCreate(xmlSecPtrListId id) {
 
     ret = xmlSecPtrListInitialize(list, id);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecPtrListKlassGetName(id)),
-                    "xmlSecPtrListInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(xmlSecPtrListKlassGetName(id), "xmlSecPtrListInitialize");
         xmlFree(list);
         return(NULL);
     }
@@ -186,11 +182,9 @@ xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
     /* allocate memory */
     ret = xmlSecPtrListEnsureSize(dst, dst->use + src->use);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecPtrListGetName(src)),
-                    "xmlSecPtrListEnsureSize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "size=%d", src->use);
+        xmlSecInternalError2(xmlSecPtrListGetName(src),
+                             "xmlSecPtrListEnsureSize",
+                             "size=%d", src->use);
         return(-1);
     }
 
@@ -202,11 +196,7 @@ xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
         if((dst->id->duplicateItem != NULL) && (src->data[i] != NULL)) {
             dst->data[dst->use] = dst->id->duplicateItem(src->data[i]);
             if(dst->data[dst->use] == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecPtrListGetName(src)),
-                            "duplicateItem",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError(xmlSecPtrListGetName(src), "duplicateItem");
                 return(-1);
             }
         } else {
@@ -234,21 +224,13 @@ xmlSecPtrListDuplicate(xmlSecPtrListPtr list) {
 
     newList = xmlSecPtrListCreate(list->id);
     if(newList == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecPtrListGetName(list)),
-                    "xmlSecPtrListCreate",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(xmlSecPtrListGetName(list), "xmlSecPtrListCreate");
         return(NULL);
     }
 
     ret = xmlSecPtrListCopy(newList, list);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecPtrListGetName(list)),
-                    "xmlSecPtrListCopy",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(xmlSecPtrListGetName(list), "xmlSecPtrListCopy");
         xmlSecPtrListDestroy(newList);
         return(NULL);
     }
@@ -306,11 +288,9 @@ xmlSecPtrListAdd(xmlSecPtrListPtr list, xmlSecPtr item) {
 
     ret = xmlSecPtrListEnsureSize(list, list->use + 1);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecPtrListGetName(list)),
-                    "xmlSecPtrListAdd",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "size=%d", list->use + 1);
+        xmlSecInternalError2(xmlSecPtrListGetName(list),
+                            "xmlSecPtrListAdd",
+                            "size=%d", list->use + 1);
         return(-1);
     }
 

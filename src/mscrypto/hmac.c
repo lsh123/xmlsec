@@ -231,11 +231,7 @@ xmlSecMSCryptoHmacInitialize(xmlSecTransformPtr transform) {
 
     ctx->provider = xmlSecMSCryptoFindProvider(ctx->providers, NULL, CRYPT_VERIFYCONTEXT, TRUE);
     if(ctx->provider == 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-            "xmlSecMSCryptoFindProvider",
-            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-            XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecMSCryptoFindProvider");
         return(-1);
     }
 
@@ -400,11 +396,7 @@ xmlSecMSCryptoHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         &(ctx->cryptKey)
         ) || (ctx->cryptKey == 0))  {
 
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlSecMSCryptoImportPlainSessionBlob",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecMSCryptoImportPlainSessionBlob");
         return(-1);
     }   
 

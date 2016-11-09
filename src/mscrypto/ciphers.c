@@ -548,11 +548,7 @@ xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
 
     ctx->cryptProvider = xmlSecMSCryptoFindProvider(ctx->providers, NULL, CRYPT_VERIFYCONTEXT, TRUE);
     if(ctx->cryptProvider == 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlSecMSCryptoFindProvider",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecMSCryptoFindProvider");
 
         return(-1);
     }
@@ -664,11 +660,7 @@ xmlSecMSCryptoBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
         TRUE,
         &(ctx->cryptKey)))  {
 
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlSecMSCryptoImportPlainSessionBlob",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecMSCryptoImportPlainSessionBlob");
         return(-1);
     }
 
@@ -706,11 +698,7 @@ xmlSecMSCryptoBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecT
                                                    transformCtx);
 
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "xmlSecMSCryptoBlockCipherCtxInit",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecMSCryptoBlockCipherCtxInit");
                 return(-1);
             }
         }
@@ -727,11 +715,7 @@ xmlSecMSCryptoBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecT
                 (transform->operation == xmlSecTransformOperationEncrypt) ? 1 : 0,
                 xmlSecTransformGetName(transform), transformCtx);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "xmlSecMSCryptoBlockCipherCtxUpdate",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecMSCryptoBlockCipherCtxUpdate");
                 return(-1);
             }
         }
@@ -742,11 +726,7 @@ xmlSecMSCryptoBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecT
                 xmlSecTransformGetName(transform), transformCtx);
 
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "xmlSecMSCryptoBlockCipherCtxFinal",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecMSCryptoBlockCipherCtxFinal");
                 return(-1);
             }
             transform->status = xmlSecTransformStatusFinished;

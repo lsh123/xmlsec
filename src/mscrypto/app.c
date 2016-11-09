@@ -236,12 +236,7 @@ xmlSecMSCryptoAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlS
 
     x509Data = xmlSecKeyDataCreate(xmlSecMSCryptoKeyDataX509Id);
     if(x509Data == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeyDataCreate",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "transform=%s",
-                    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecMSCryptoKeyDataX509Id)));
+        xmlSecInternalError(NULL, "xmlSecKeyDataCreate(xmlSecMSCryptoKeyDataX509Id)");
         goto done;
     }
 
@@ -410,12 +405,7 @@ xmlSecMSCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xml
 
     kdata = xmlSecKeyEnsureData(key, xmlSecMSCryptoKeyDataX509Id);
     if(kdata == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeyEnsureData",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "transform=%s",
-                    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecMSCryptoKeyDataX509Id)));
+        xmlSecInternalError(NULL, "xmlSecKeyEnsureData(xmlSecMSCryptoKeyDataX509Id)");
         return(-1);
     }
 
@@ -598,12 +588,7 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
 
     x509Data = xmlSecKeyDataCreate(xmlSecMSCryptoKeyDataX509Id);
     if(x509Data == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeyDataCreate",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "transform=%s",
-                    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecMSCryptoKeyDataX509Id)));
+        xmlSecInternalError(NULL, "xmlSecKeyDataCreate(xmlSecMSCryptoKeyDataX509Id)");
         goto done;
     }
 

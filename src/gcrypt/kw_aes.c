@@ -125,11 +125,7 @@ xmlSecGCryptKWAesInitialize(xmlSecTransformPtr transform) {
 
     ret = xmlSecBufferInitialize(&(ctx->keyBuffer), 0);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlSecGCryptKWAesGetKey",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecGCryptKWAesGetKey");
         return(-1);
     }
 
@@ -282,11 +278,7 @@ xmlSecGCryptKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
                                     xmlSecBufferGetData(in), inSize,
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "xmlSecKWAesEncode",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecKWAesEncode");
                 return(-1);
             }
             outSize = ret;
@@ -295,11 +287,7 @@ xmlSecGCryptKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
                                     xmlSecBufferGetData(in), inSize,
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "xmlSecKWAesEncode",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecKWAesEncode");
                 return(-1);
             }
             outSize = ret;

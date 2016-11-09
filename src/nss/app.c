@@ -613,12 +613,7 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
 
     data = xmlSecKeyEnsureData(key, xmlSecNssKeyDataX509Id);
     if(data == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeyEnsureData",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "transform=%s",
-                    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecNssKeyDataX509Id)));
+        xmlSecInternalError(NULL, "xmlSecKeyEnsureData(xmlSecNssKeyDataX509Id)");
         return(-1);
     }
 
@@ -881,12 +876,7 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
 
     x509Data = xmlSecKeyDataCreate(xmlSecNssKeyDataX509Id);
     if(x509Data == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeyDataCreate",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "transform=%s",
-                    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecNssKeyDataX509Id)));
+        xmlSecInternalError("xmlSecKeyDataCreate", "xmlSecTransformIdsRegister(xmlSecNssKeyDataX509Id)");
         goto done;
     }
 

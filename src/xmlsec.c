@@ -116,7 +116,7 @@ xmlSecCheckVersionExt(int major, int minor, int subminor, xmlSecCheckVersionMode
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     NULL,
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_R_INVALID_VERSION,
                     "expected major version=%d;real major version=%d",
                     XMLSEC_VERSION_MAJOR, major);
         return(0);
@@ -128,7 +128,7 @@ xmlSecCheckVersionExt(int major, int minor, int subminor, xmlSecCheckVersionMode
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         NULL,
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_R_INVALID_VERSION,
                         "mode=exact;expected minor version=%d;real minor version=%d;expected subminor version=%d;real subminor version=%d",
                         XMLSEC_VERSION_MINOR, minor,
                         XMLSEC_VERSION_SUBMINOR, subminor);
@@ -142,7 +142,7 @@ xmlSecCheckVersionExt(int major, int minor, int subminor, xmlSecCheckVersionMode
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         NULL,
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_R_INVALID_VERSION,
                         "mode=abi compatible;expected minor version=%d;real minor version=%d;expected subminor version=%d;real subminor version=%d",
                         XMLSEC_VERSION_MINOR, minor,
                         XMLSEC_VERSION_SUBMINOR, subminor);

@@ -365,11 +365,7 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
     output = xmlSecTransformCreateOutputBuffer(encCtx->transformCtx.first,
                                                 &(encCtx->transformCtx));
     if(output == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(encCtx->transformCtx.first)),
-                    "xmlSecTransformCreateOutputBuffer",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(xmlSecTransformGetName(encCtx->transformCtx.first), "xmlSecTransformCreateOutputBuffer");
         return(-1);
     }
 

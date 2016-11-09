@@ -84,12 +84,7 @@ xmlSecSoap11CreateEnvelope(xmlDocPtr doc) {
     /* add required Body node */
     bodyNode = xmlSecAddChild(envNode, xmlSecNodeBody, xmlSecSoap11Ns);
     if(bodyNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeBody));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeBody)");
         xmlFreeNode(envNode);
         return(NULL);
     }
@@ -242,24 +237,14 @@ xmlSecSoap11AddFaultEntry(xmlNodePtr envNode, const xmlChar* faultCodeHref,
     /* add Fault node */
     faultNode = xmlSecAddChild(bodyNode, xmlSecNodeFault, xmlSecSoap11Ns);
     if(faultNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeFault));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeFault)");
         return(NULL);
     }
 
     /* add faultcode node */
     cur = xmlSecAddChild(faultNode, xmlSecNodeFaultCode, xmlSecSoap11Ns);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeFaultCode));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeFaultCode)");
         xmlUnlinkNode(faultNode);
         xmlFreeNode(faultNode);
         return(NULL);
@@ -286,12 +271,7 @@ xmlSecSoap11AddFaultEntry(xmlNodePtr envNode, const xmlChar* faultCodeHref,
     /* add faultstring node */
     cur = xmlSecAddChild(faultNode, xmlSecNodeFaultString, xmlSecSoap11Ns);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeFaultString));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeFaultString)");
         xmlUnlinkNode(faultNode);
         xmlFreeNode(faultNode);
         return(NULL);
@@ -304,12 +284,7 @@ xmlSecSoap11AddFaultEntry(xmlNodePtr envNode, const xmlChar* faultCodeHref,
         /* add faultactor node */
         cur = xmlSecAddChild(faultNode, xmlSecNodeFaultActor, xmlSecSoap11Ns);
         if(cur == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecAddChild",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeFaultActor));
+            xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeFaultActor)");
             xmlUnlinkNode(faultNode);
             xmlFreeNode(faultNode);
             return(NULL);
@@ -586,12 +561,7 @@ xmlSecSoap12CreateEnvelope(xmlDocPtr doc) {
     /* add required Body node */
     bodyNode = xmlSecAddChild(envNode, xmlSecNodeBody, xmlSecSoap12Ns);
     if(bodyNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeBody));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeBody)");
         xmlFreeNode(envNode);
         return(NULL);
     }
@@ -799,24 +769,14 @@ xmlSecSoap12AddFaultEntry(xmlNodePtr envNode, xmlSecSoap12FaultCode faultCode,
     /* add Fault node */
     faultNode = xmlSecAddChild(bodyNode, xmlSecNodeFault, xmlSecSoap12Ns);
     if(faultNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeFault));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeFault)");
         return(NULL);
     }
 
     /* add Code node */
     cur = xmlSecAddChild(faultNode, xmlSecNodeCode, xmlSecSoap12Ns);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeCode));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeCode)");
         xmlUnlinkNode(faultNode);
         xmlFreeNode(faultNode);
         return(NULL);
@@ -827,12 +787,8 @@ xmlSecSoap12AddFaultEntry(xmlNodePtr envNode, xmlSecSoap12FaultCode faultCode,
                                        xmlSecNodeValue, xmlSecSoap12Ns,
                                        faultCode);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecQName2IntegerNodeWrite",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "faultCode=%d",
-                    faultCode);
+        xmlSecInternalError2(NULL, "xmlSecQName2IntegerNodeWrite",
+                             "faultCode=%d", faultCode);
         xmlUnlinkNode(faultNode);
         xmlFreeNode(faultNode);
         return(NULL);
@@ -841,12 +797,7 @@ xmlSecSoap12AddFaultEntry(xmlNodePtr envNode, xmlSecSoap12FaultCode faultCode,
     /* add Reason node */
     cur = xmlSecAddChild(faultNode, xmlSecNodeReason, xmlSecSoap12Ns);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeReason));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeReason)");
         xmlUnlinkNode(faultNode);
         xmlFreeNode(faultNode);
         return(NULL);
@@ -854,12 +805,8 @@ xmlSecSoap12AddFaultEntry(xmlNodePtr envNode, xmlSecSoap12FaultCode faultCode,
 
     /* Add Reason/Text node */
     if(xmlSecSoap12AddFaultReasonText(faultNode, faultReasonText, faultReasonLang) == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecSoap12AddFaultReasonText",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "text=%s",
-                    xmlSecErrorsSafeString(faultReasonText));
+        xmlSecInternalError2(NULL, "xmlSecSoap12AddFaultReasonText",
+                             "text=%s", xmlSecErrorsSafeString(faultReasonText));
         xmlUnlinkNode(faultNode);
         xmlFreeNode(faultNode);
         return(NULL);
@@ -869,12 +816,7 @@ xmlSecSoap12AddFaultEntry(xmlNodePtr envNode, xmlSecSoap12FaultCode faultCode,
         /* add Node node */
         cur = xmlSecAddChild(faultNode, xmlSecNodeNode, xmlSecSoap12Ns);
         if(cur == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecAddChild",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeNode));
+            xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeNode)");
             xmlUnlinkNode(faultNode);
             xmlFreeNode(faultNode);
             return(NULL);
@@ -886,12 +828,7 @@ xmlSecSoap12AddFaultEntry(xmlNodePtr envNode, xmlSecSoap12FaultCode faultCode,
         /* add Role node */
         cur = xmlSecAddChild(faultNode, xmlSecNodeRole, xmlSecSoap12Ns);
         if(cur == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecAddChild",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeRole));
+            xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeRole)");
             xmlUnlinkNode(faultNode);
             xmlFreeNode(faultNode);
             return(NULL);
@@ -950,24 +887,14 @@ xmlSecSoap12AddFaultSubcode(xmlNodePtr faultNode, const xmlChar* subCodeHref, co
     /* add Subcode node */
     subcodeNode = xmlSecAddChild(cur, xmlSecNodeSubcode, xmlSecSoap12Ns);
     if(subcodeNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeSubcode));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeSubcode)");
         return(NULL);
     }
 
     /* add Value node */
     valueNode = xmlSecAddChild(subcodeNode, xmlSecNodeValue, xmlSecSoap12Ns);
     if(valueNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeValue));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeValue)");
         xmlUnlinkNode(subcodeNode);
         xmlFreeNode(subcodeNode);
         return(NULL);
@@ -1020,24 +947,14 @@ xmlSecSoap12AddFaultReasonText(xmlNodePtr faultNode, const xmlChar* faultReasonT
     /* find Reason node */
     reasonNode = xmlSecFindChild(faultNode,  xmlSecNodeReason, xmlSecSoap12Ns);
     if(reasonNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecFindChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeReason));
+        xmlSecInternalError(NULL, "xmlSecFindChild(xmlSecNodeReason)");
         return(NULL);
     }
 
     /* add Text node */
     textNode = xmlSecAddChild(reasonNode, xmlSecNodeText, xmlSecSoap12Ns);
     if(textNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeText));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeText)");
         return(NULL);
     }
     xmlNodeSetContent(textNode, faultReasonText);
@@ -1068,12 +985,7 @@ xmlSecSoap12AddFaultDetailEntry(xmlNodePtr faultNode, xmlNodePtr detailEntryNode
     if(detailNode == NULL) {
         detailNode = xmlSecAddChild(faultNode, xmlSecNodeDetail, xmlSecSoap12Ns);
         if(detailNode == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecAddChild",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeDetail));
+            xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeDetail)");
             return(NULL);
         }
     }

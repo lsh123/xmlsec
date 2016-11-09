@@ -327,11 +327,7 @@ xmlSecGCryptPkSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     ctx->key_data = xmlSecKeyDataDuplicate(key_data);
     if(ctx->key_data == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlSecKeyDataDuplicate",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecKeyDataDuplicate");
         return(-1);
     }
 
@@ -486,11 +482,7 @@ xmlSecGCryptPkSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             if(transform->operation == xmlSecTransformOperationSign) {
                 ret = ctx->sign(ctx->digest, ctx->key_data, ctx->dgst, ctx->dgstSize, out);
                 if(ret < 0) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                                "ctx->sign",
-                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                                XMLSEC_ERRORS_NO_MESSAGE);
+                    xmlSecInternalError(xmlSecTransformGetName(transform), "ctx->sign");
                     return(-1);
                 }
             }

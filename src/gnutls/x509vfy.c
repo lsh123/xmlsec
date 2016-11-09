@@ -271,11 +271,7 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
         for(ii = 0; ii < crl_list_length; ++ii) {
             crl_list[ii] = xmlSecPtrListGetItem(crls, ii);
             if(crl_list[ii] == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                            "xmlSecPtrListGetItem(crls)",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError(xmlSecKeyDataStoreGetName(store), "xmlSecPtrListGetItem(crls)");
                 goto done;
             }
         }
@@ -295,11 +291,7 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
         for(ii = 0; ii < ca_list_length; ++ii) {
             ca_list[ii] = xmlSecPtrListGetItem(&(ctx->certsTrusted), ii);
             if(ca_list[ii] == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                            "xmlSecPtrListGetItem(certsTrusted)",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError(xmlSecKeyDataStoreGetName(store), "xmlSecPtrListGetItem(certsTrusted)");
                 goto done;
             }
         }
@@ -325,11 +317,7 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
 
         cert = xmlSecPtrListGetItem(certs, ii);
         if(cert == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                        "xmlSecPtrListGetItem(certs)",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(xmlSecKeyDataStoreGetName(store), "xmlSecPtrListGetItem(certs)");
             goto done;
         }
 
@@ -437,21 +425,13 @@ xmlSecGnuTLSX509StoreAdoptCert(xmlSecKeyDataStorePtr store, gnutls_x509_crt_t ce
     if((type & xmlSecKeyDataTypeTrusted) != 0) {
         ret = xmlSecPtrListAdd(&(ctx->certsTrusted), cert);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                        "xmlSecPtrListAdd(trusted)",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(xmlSecKeyDataStoreGetName(store), "xmlSecPtrListAdd(trusted)");
             return(-1);
         }
     } else {
         ret = xmlSecPtrListAdd(&(ctx->certsUntrusted), cert);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                        "xmlSecPtrListAdd(untrusted)",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(xmlSecKeyDataStoreGetName(store), "xmlSecPtrListAdd(untrusted)");
             return(-1);
         }
     }
@@ -474,21 +454,13 @@ xmlSecGnuTLSX509StoreInitialize(xmlSecKeyDataStorePtr store) {
 
     ret = xmlSecPtrListInitialize(&(ctx->certsTrusted), xmlSecGnuTLSX509CrtListId);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                    "xmlSecPtrListInitialize(trusted)",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(xmlSecKeyDataStoreGetName(store), "xmlSecPtrListInitialize(trusted)");
         return(-1);
     }
 
     ret = xmlSecPtrListInitialize(&(ctx->certsUntrusted), xmlSecGnuTLSX509CrtListId);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                    "xmlSecPtrListInitialize(untrusted)",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(xmlSecKeyDataStoreGetName(store), "xmlSecPtrListInitialize(untrusted)");
         return(-1);
     }
 

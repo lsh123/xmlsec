@@ -94,11 +94,8 @@ xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, void *context,
     /* step 2: calculate sha1 and CMS */
     ret = kwDes3Id->sha1(context, in, inSize, sha1, sizeof(sha1));
     if((ret < 0) || (ret != sizeof(sha1))) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "kwDes3Id->sha1",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "ret=%d", ret);
+        xmlSecInternalError2(NULL, "kwDes3Id->sha1",
+                             "ret=%d", ret);
         return(-1);
     }
 
@@ -109,11 +106,8 @@ xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, void *context,
     /* step 4: generate random iv */
     ret = kwDes3Id->generateRandom(context, iv, sizeof(iv));
     if((ret < 0) || (ret != sizeof(iv))) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "kwDes3Id->generateRandom",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "ret=%d", ret);
+        xmlSecInternalError2(NULL, "kwDes3Id->generateRandom",
+                            "ret=%d", ret);
         return(-1);
     }
 
@@ -123,11 +117,7 @@ xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, void *context,
                            out, inSize + XMLSEC_KW_DES3_BLOCK_LENGTH,
                            out, outSize);
     if((ret < 0) || ((xmlSecSize)ret != inSize + XMLSEC_KW_DES3_BLOCK_LENGTH)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "kwDes3Id->encrypt",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "ret=%d", ret);
+        xmlSecInternalError(NULL, "kwDes3Id->encrypt");
         return(-1);
     }
 
@@ -139,11 +129,7 @@ xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, void *context,
     /* step 7: reverse octets order, result is TEMP3 */
     ret = xmlSecKWDes3BufferReverse(out, s);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKWDes3BufferReverse",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "ret=%d", ret);
+        xmlSecInternalError(NULL, "xmlSecKWDes3BufferReverse");
         return(-1);
     }
 
@@ -153,11 +139,7 @@ xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, void *context,
                            out, s,
                            out, outSize);
     if((ret < 0) || ((xmlSecSize)ret != s)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "kwDes3Id->encrypt",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "ret=%d", ret);
+        xmlSecInternalError(NULL, "kwDes3Id->encrypt");
         return(-1);
     }
 
@@ -186,11 +168,8 @@ xmlSecKWDes3Decode(xmlSecKWDes3Id kwDes3Id, void *context,
     /* step 2: first decryption with static IV, result is TEMP3 */
     tmp = xmlSecBufferCreate(inSize);
     if(tmp == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBufferCreate",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "inSize=%d", (int)inSize);
+        xmlSecInternalError2(NULL, "xmlSecBufferCreate",
+                             "inSize=%d", (int)inSize);
         return(-1);
     }
     
@@ -199,11 +178,7 @@ xmlSecKWDes3Decode(xmlSecKWDes3Id kwDes3Id, void *context,
                            in, inSize, 
                            xmlSecBufferGetData(tmp), xmlSecBufferGetMaxSize(tmp));
     if((ret < 0) || (ret < XMLSEC_KW_DES3_IV_LENGTH)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "kwDes3Id->decrypt",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "ret=%d", ret);
+        xmlSecInternalError(NULL, "kwDes3Id->decrypt");
         xmlSecBufferDestroy(tmp);
         return(-1);
     }
@@ -212,11 +187,7 @@ xmlSecKWDes3Decode(xmlSecKWDes3Id kwDes3Id, void *context,
     /* step 3: reverse octets order in TEMP3, result is TEMP2 */
     ret = xmlSecKWDes3BufferReverse(xmlSecBufferGetData(tmp), s);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKWDes3BufferReverse",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "ret=%d", ret);
+        xmlSecInternalError(NULL, "xmlSecKWDes3BufferReverse");
         xmlSecBufferDestroy(tmp);
         return(-1);
     }
@@ -227,11 +198,7 @@ xmlSecKWDes3Decode(xmlSecKWDes3Id kwDes3Id, void *context,
                            xmlSecBufferGetData(tmp) + XMLSEC_KW_DES3_IV_LENGTH, s - XMLSEC_KW_DES3_IV_LENGTH,
                            out, outSize);
     if((ret < 0) || (ret < XMLSEC_KW_DES3_BLOCK_LENGTH)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "kwDes3Id->decrypt",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "ret=%d", ret);
+        xmlSecInternalError(NULL, "kwDes3Id->decrypt");
         xmlSecBufferDestroy(tmp);
         return(-1);
     }
@@ -242,11 +209,7 @@ xmlSecKWDes3Decode(xmlSecKWDes3Id kwDes3Id, void *context,
                         out, s,
                         sha1, sizeof(sha1));
     if((ret < 0) || (ret != sizeof(sha1))) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "kwDes3Id->sha1",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "ret=%d", ret);
+        xmlSecInternalError(NULL, "kwDes3Id->sha1");
         xmlSecBufferDestroy(tmp);
         return(-1);
     }

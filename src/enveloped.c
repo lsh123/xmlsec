@@ -127,23 +127,18 @@ xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last,
 
     children = xmlSecNodeSetGetChildren(node->doc, node, 1, 1);
     if(children == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlSecNodeSetGetChildren",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
+        xmlSecInternalError2(xmlSecTransformGetName(transform),
+                             "xmlSecNodeSetGetChildren",
+                             "node=%s",
+                             xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
         return(-1);
     }
 
     /* intersect <dsig:Signature/> node children with input nodes (if exist) */
     transform->outNodes = xmlSecNodeSetAdd(transform->inNodes, children, xmlSecNodeSetIntersection);
     if(transform->outNodes == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlSecNodeSetAdd",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(xmlSecTransformGetName(transform),
+                            "xmlSecNodeSetAdd");
         xmlSecNodeSetDestroy(children);
         return(-1);
     }

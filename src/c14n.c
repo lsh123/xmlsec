@@ -84,11 +84,7 @@ xmlSecTransformC14NInitialize(xmlSecTransformPtr transform) {
 
     ret = xmlSecPtrListInitialize(nsList, xmlSecStringListId);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlSecPtrListInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecPtrListInitialize");
         return(-1);
     }
     return(0);
@@ -166,11 +162,7 @@ xmlSecTransformC14NNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSe
 
             ret = xmlSecPtrListAdd(nsList, tmp);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "xmlSecPtrListAdd",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecPtrListAdd");
                 xmlFree(tmp);
                 xmlFree(list);
                 return(-1);
@@ -181,11 +173,7 @@ xmlSecTransformC14NNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSe
         /* add NULL at the end */
         ret = xmlSecPtrListAdd(nsList, NULL);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlSecPtrListAdd",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecPtrListAdd");
             return(-1);
         }
 
@@ -239,21 +227,15 @@ xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
     if(transform->next != NULL) {
         buf = xmlSecTransformCreateOutputBuffer(transform->next, transformCtx);
         if(buf == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlSecTransformCreateOutputBuffer",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(xmlSecTransformGetName(transform),
+                                "xmlSecTransformCreateOutputBuffer");
             return(-1);
         }
     } else {
         buf = xmlSecBufferCreateOutputBuffer(&(transform->outBuf));
         if(buf == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlSecBufferCreateOutputBuffer",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(xmlSecTransformGetName(transform),
+                                "xmlSecBufferCreateOutputBuffer");
             return(-1);
         }
     }
@@ -265,11 +247,8 @@ xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
 
     ret = xmlSecTransformC14NExecute(transform->id, nodes, (xmlChar**)(nsList->data), buf);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlSecTransformC14NExecute",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(xmlSecTransformGetName(transform),
+                            "xmlSecTransformC14NExecute");
         xmlOutputBufferClose(buf);
         return(-1);
     }
@@ -316,22 +295,16 @@ xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
         /* get xml data from previous transform */
         ret = xmlSecTransformPopXml(transform->prev, &(transform->inNodes), transformCtx);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlSecTransformPopXml",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(xmlSecTransformGetName(transform),
+                                "xmlSecTransformPopXml");
             return(-1);
         }
 
         /* dump everything to internal buffer */
         buf = xmlSecBufferCreateOutputBuffer(out);
         if(buf == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlSecBufferCreateOutputBuffer",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(xmlSecTransformGetName(transform),
+                                "xmlSecBufferCreateOutputBuffer");
             return(-1);
         }
 
@@ -342,11 +315,8 @@ xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
 
         ret = xmlSecTransformC14NExecute(transform->id, transform->inNodes, (xmlChar**)(nsList->data), buf);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlSecTransformC14NExecute",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(xmlSecTransformGetName(transform),
+                                "xmlSecTransformC14NExecute");
             xmlOutputBufferClose(buf);
             return(-1);
         }
@@ -379,11 +349,9 @@ xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
             memcpy(data, xmlSecBufferGetData(&(transform->outBuf)), outSize);
             ret = xmlSecBufferRemoveHead(&(transform->outBuf), outSize);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "xmlSecBufferRemoveHead",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "size=%d", outSize);
+                xmlSecInternalError2(xmlSecTransformGetName(transform),
+                                     "xmlSecBufferRemoveHead",
+                                     "size=%d", outSize);
                 return(-1);
             }
         } else if(xmlSecBufferGetSize(out) == 0) {

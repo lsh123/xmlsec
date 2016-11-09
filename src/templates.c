@@ -132,12 +132,7 @@ xmlSecTmplSignatureCreateNsPref(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
     /* add SignedInfo node */
     signedInfoNode = xmlSecAddChild(signNode, xmlSecNodeSignedInfo, xmlSecDSigNs);
     if(signedInfoNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeSignedInfo));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeSignedInfo)");
         xmlFreeNode(signNode);
         return(NULL);
     }
@@ -145,12 +140,7 @@ xmlSecTmplSignatureCreateNsPref(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
     /* add SignatureValue node */
     cur = xmlSecAddChild(signNode, xmlSecNodeSignatureValue, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeSignatureValue));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeSignatureValue)");
         xmlFreeNode(signNode);
         return(NULL);
     }
@@ -158,12 +148,7 @@ xmlSecTmplSignatureCreateNsPref(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
     /* add CanonicaizationMethod node to SignedInfo */
     cur = xmlSecAddChild(signedInfoNode, xmlSecNodeCanonicalizationMethod, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeCanonicalizationMethod));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeCanonicalizationMethod)");
         xmlFreeNode(signNode);
         return(NULL);
     }
@@ -182,12 +167,7 @@ xmlSecTmplSignatureCreateNsPref(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
     /* add SignatureMethod node to SignedInfo */
     cur = xmlSecAddChild(signedInfoNode, xmlSecNodeSignatureMethod, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeSignatureMethod));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeSignatureMethod)");
         xmlFreeNode(signNode);
         return(NULL);
     }
@@ -239,12 +219,7 @@ xmlSecTmplSignatureEnsureKeyInfo(xmlNodePtr signNode, const xmlChar *id) {
 
         res = xmlSecAddNextSibling(signValueNode, xmlSecNodeKeyInfo, xmlSecDSigNs);
         if(res == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecAddNextSibling",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeKeyInfo));
+            xmlSecInternalError(NULL, "xmlSecAddNextSibling(xmlSecNodeKeyInfo)");
             return(NULL);
         }
     }
@@ -304,12 +279,7 @@ xmlSecTmplAddReference(xmlNodePtr parentNode, xmlSecTransformId digestMethodId,
     /* add Reference node */
     res = xmlSecAddChild(parentNode, xmlSecNodeReference, xmlSecDSigNs);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeReference));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeReference)");
         return(NULL);
     }
 
@@ -327,12 +297,7 @@ xmlSecTmplAddReference(xmlNodePtr parentNode, xmlSecTransformId digestMethodId,
     /* add DigestMethod node and set algorithm */
     cur = xmlSecAddChild(res, xmlSecNodeDigestMethod, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeDigestMethod));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeDigestMethod)");
         xmlUnlinkNode(res);
         xmlFreeNode(res);
         return(NULL);
@@ -353,12 +318,7 @@ xmlSecTmplAddReference(xmlNodePtr parentNode, xmlSecTransformId digestMethodId,
     /* add DigestValue node */
     cur = xmlSecAddChild(res, xmlSecNodeDigestValue, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeDigestValue));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeDigestValue)");
         xmlUnlinkNode(res);
         xmlFreeNode(res);
         return(NULL);
@@ -388,12 +348,7 @@ xmlSecTmplSignatureAddObject(xmlNodePtr signNode, const xmlChar *id,
 
     res = xmlSecAddChild(signNode, xmlSecNodeObject, xmlSecDSigNs);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeObject));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeObject)");
         return(NULL);
     }
     if(id != NULL) {
@@ -491,24 +446,14 @@ xmlSecTmplReferenceAddTransform(xmlNodePtr referenceNode, xmlSecTransformId tran
             transformsNode = xmlSecAddPrevSibling(tmp, xmlSecNodeTransforms, xmlSecDSigNs);
         }
         if(transformsNode == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecAddChild or xmlSecAddPrevSibling",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeTransforms));
+            xmlSecInternalError(NULL, "xmlSecAddChild or xmlSecAddPrevSibling(xmlSecNodeTransforms)");
             return(NULL);
         }
     }
 
     res = xmlSecAddChild(transformsNode, xmlSecNodeTransform, xmlSecDSigNs);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeTransform));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeTransform)");
         return(NULL);
     }
 
@@ -547,12 +492,7 @@ xmlSecTmplObjectAddSignProperties(xmlNodePtr objectNode, const xmlChar *id, cons
 
     res = xmlSecAddChild(objectNode, xmlSecNodeSignatureProperties, xmlSecDSigNs);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeSignatureProperties));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeSignatureProperties)");
         return(NULL);
     }
     if(id != NULL) {
@@ -582,12 +522,7 @@ xmlSecTmplObjectAddManifest(xmlNodePtr objectNode,  const xmlChar *id) {
 
     res = xmlSecAddChild(objectNode, xmlSecNodeManifest, xmlSecDSigNs);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeManifest));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeManifest)");
         return(NULL);
     }
     if(id != NULL) {
@@ -699,12 +634,7 @@ xmlSecTmplPrepareEncData(xmlNodePtr parentNode, xmlSecTransformId encMethodId) {
     if(encMethodId != NULL) {
         cur = xmlSecAddChild(parentNode, xmlSecNodeEncryptionMethod, xmlSecEncNs);
         if(cur == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecAddChild",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeEncryptionMethod));
+            xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeEncryptionMethod)");
             return(-1);
         }
         if(xmlSetProp(cur, xmlSecAttrAlgorithm, encMethodId->href) == NULL) {
@@ -722,12 +652,7 @@ xmlSecTmplPrepareEncData(xmlNodePtr parentNode, xmlSecTransformId encMethodId) {
     /* and CipherData node */
     cur = xmlSecAddChild(parentNode, xmlSecNodeCipherData, xmlSecEncNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeCipherData));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeCipherData)");
         return(-1);
     }
 
@@ -767,12 +692,7 @@ xmlSecTmplEncDataEnsureKeyInfo(xmlNodePtr encNode, const xmlChar* id) {
 
         res = xmlSecAddPrevSibling(cipherDataNode, xmlSecNodeKeyInfo, xmlSecDSigNs);
         if(res == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecAddPrevSibling",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeKeyInfo));
+            xmlSecInternalError(NULL, "xmlSecAddPrevSibling(xmlSecNodeKeyInfo)");
             return(NULL);
         }
     }
@@ -803,12 +723,7 @@ xmlSecTmplEncDataEnsureEncProperties(xmlNodePtr encNode, const xmlChar *id) {
     if(res == NULL) {
         res = xmlSecAddChild(encNode, xmlSecNodeEncryptionProperties, xmlSecEncNs);
         if(res == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecAddChild",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeEncryptionProperties));
+            xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeEncryptionProperties)");
             return(NULL);
         }
     }
@@ -848,12 +763,7 @@ xmlSecTmplEncDataAddEncProperty(xmlNodePtr encNode, const xmlChar *id, const xml
 
     res = xmlSecAddChild(encProps, xmlSecNodeEncryptionProperty, xmlSecEncNs);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeEncryptionProperty));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeEncryptionProperty)");
         return(NULL);
     }
     if(id != NULL) {
@@ -907,12 +817,7 @@ xmlSecTmplEncDataEnsureCipherValue(xmlNodePtr encNode) {
     if(res == NULL) {
         res = xmlSecAddChild(cipherDataNode, xmlSecNodeCipherValue, xmlSecEncNs);
         if(res == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecAddChild",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeCipherValue));
+            xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeCipherValue)");
             return(NULL);
         }
     }
@@ -963,12 +868,7 @@ xmlSecTmplEncDataEnsureCipherReference(xmlNodePtr encNode, const xmlChar *uri) {
     if(res == NULL) {
         res = xmlSecAddChild(cipherDataNode, xmlSecNodeCipherReference, xmlSecEncNs);
         if(res == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecAddChild",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeCipherReference));
+            xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeCipherReference)");
             return(NULL);
         }
     }
@@ -1021,24 +921,14 @@ xmlSecTmplCipherReferenceAddTransform(xmlNodePtr cipherReferenceNode,
     if(transformsNode == NULL) {
         transformsNode = xmlSecAddChild(cipherReferenceNode, xmlSecNodeTransforms, xmlSecEncNs);
         if(transformsNode == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecAddChild",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeTransforms));
+            xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeTransforms)");
             return(NULL);
         }
     }
 
     res = xmlSecAddChild(transformsNode,  xmlSecNodeTransform, xmlSecDSigNs);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeTransform));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeTransform)");
         return(NULL);
     }
 
@@ -1085,24 +975,14 @@ xmlSecTmplReferenceListAddDataReference(xmlNodePtr encNode, const xmlChar *uri) 
     if(refListNode == NULL) {
         refListNode = xmlSecAddChild(encNode, xmlSecNodeReferenceList, xmlSecEncNs);
         if(refListNode == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecAddChild",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeReferenceList));
+            xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeReferenceList)");
             return(NULL);
         }
     }
 
     res = xmlSecAddChild(refListNode,  xmlSecNodeDataReference, xmlSecEncNs);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeDataReference));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeDataReference)");
         return(NULL);
     }
 
@@ -1144,24 +1024,14 @@ xmlSecTmplReferenceListAddKeyReference(xmlNodePtr encNode, const xmlChar *uri) {
     if(refListNode == NULL) {
         refListNode = xmlSecAddChild(encNode, xmlSecNodeReferenceList, xmlSecEncNs);
         if(refListNode == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecAddChild",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeReferenceList));
+            xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeReferenceList)");
             return(NULL);
         }
     }
 
     res = xmlSecAddChild(refListNode,  xmlSecNodeKeyReference, xmlSecEncNs);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeKeyReference));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeKeyReference)");
         return(NULL);
     }
 
@@ -1208,12 +1078,7 @@ xmlSecTmplKeyInfoAddKeyName(xmlNodePtr keyInfoNode, const xmlChar* name) {
 
     res = xmlSecAddChild(keyInfoNode, xmlSecNodeKeyName, xmlSecDSigNs);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeKeyName));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeKeyName)");
         return(NULL);
     }
     if(name != NULL) {
@@ -1239,12 +1104,7 @@ xmlSecTmplKeyInfoAddKeyValue(xmlNodePtr keyInfoNode) {
 
     res = xmlSecAddChild(keyInfoNode, xmlSecNodeKeyValue, xmlSecDSigNs);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeKeyValue));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeKeyValue)");
         return(NULL);
     }
 
@@ -1268,12 +1128,7 @@ xmlSecTmplKeyInfoAddX509Data(xmlNodePtr keyInfoNode) {
 
     res = xmlSecAddChild(keyInfoNode, xmlSecNodeX509Data, xmlSecDSigNs);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeX509Data));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeX509Data)");
         return(NULL);
     }
 
@@ -1300,12 +1155,7 @@ xmlSecTmplKeyInfoAddRetrievalMethod(xmlNodePtr keyInfoNode, const xmlChar *uri,
 
     res = xmlSecAddChild(keyInfoNode, xmlSecNodeRetrievalMethod, xmlSecDSigNs);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeRetrievalMethod));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeRetrievalMethod)");
         return(NULL);
     }
 
@@ -1342,24 +1192,14 @@ xmlSecTmplRetrievalMethodAddTransform(xmlNodePtr retrMethodNode, xmlSecTransform
     if(transformsNode == NULL) {
         transformsNode = xmlSecAddChild(retrMethodNode, xmlSecNodeTransforms, xmlSecDSigNs);
         if(transformsNode == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecAddChild",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeTransforms));
+            xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeTransforms)");
             return(NULL);
         }
     }
 
     res = xmlSecAddChild(transformsNode,  xmlSecNodeTransform, xmlSecDSigNs);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeTransform));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeTransform)");
         return(NULL);
     }
 
@@ -1404,12 +1244,7 @@ xmlSecTmplKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, xmlSecTransformId encMe
     /* we allow multiple encrypted key elements */
     encKeyNode = xmlSecAddChild(keyInfoNode, xmlSecNodeEncryptedKey, xmlSecEncNs);
     if(encKeyNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeEncryptedKey));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeEncryptedKey)");
         return(NULL);
     }
 
@@ -1464,12 +1299,7 @@ xmlSecTmplX509DataAddIssuerSerial(xmlNodePtr x509DataNode) {
 
     cur = xmlSecAddChild(x509DataNode, xmlSecNodeX509IssuerSerial, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeX509IssuerSerial));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeX509IssuerSerial)");
         return(NULL);
     }
 
@@ -1504,12 +1334,7 @@ xmlSecTmplX509IssuerSerialAddIssuerName(xmlNodePtr x509IssuerSerialNode, const x
 
         res = xmlSecAddChild(x509IssuerSerialNode, xmlSecNodeX509IssuerName, xmlSecDSigNs);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeX509IssuerName));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeX509IssuerName)");
         return(NULL);
     }
 
@@ -1547,12 +1372,7 @@ xmlSecTmplX509IssuerSerialAddSerialNumber(xmlNodePtr x509IssuerSerialNode, const
 
         res = xmlSecAddChild(x509IssuerSerialNode, xmlSecNodeX509SerialNumber, xmlSecDSigNs);
         if(res == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                                NULL,
-                                "xmlSecAddChild",
-                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                                "node=%s",
-                                xmlSecErrorsSafeString(xmlSecNodeX509SerialNumber));
+                xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeX509SerialNumber)");
                 return(NULL);
         }
 
@@ -1590,12 +1410,7 @@ xmlSecTmplX509DataAddSubjectName(xmlNodePtr x509DataNode) {
 
     cur = xmlSecAddChild(x509DataNode, xmlSecNodeX509SubjectName, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeX509SubjectName));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeX509SubjectName)");
         return(NULL);
     }
 
@@ -1630,12 +1445,7 @@ xmlSecTmplX509DataAddSKI(xmlNodePtr x509DataNode) {
 
     cur = xmlSecAddChild(x509DataNode, xmlSecNodeX509SKI, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeX509SKI));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeX509SKI)");
         return(NULL);
     }
 
@@ -1671,12 +1481,7 @@ xmlSecTmplX509DataAddCertificate(xmlNodePtr x509DataNode) {
 
     cur = xmlSecAddChild(x509DataNode, xmlSecNodeX509Certificate, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeX509Certificate));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeX509Certificate)");
         return(NULL);
     }
 
@@ -1711,12 +1516,7 @@ xmlSecTmplX509DataAddCRL(xmlNodePtr x509DataNode) {
 
     cur = xmlSecAddChild(x509DataNode, xmlSecNodeX509CRL, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeX509CRL));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeX509CRL)");
         return(NULL);
     }
 
@@ -1759,12 +1559,7 @@ xmlSecTmplTransformAddHmacOutputLength(xmlNodePtr transformNode, xmlSecSize bits
 
     cur = xmlSecAddChild(transformNode, xmlSecNodeHMACOutputLength, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeHMACOutputLength));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeHMACOutputLength)");
         return(-1);
     }
 
@@ -1805,22 +1600,13 @@ xmlSecTmplTransformAddRsaOaepParam(xmlNodePtr transformNode,
 
     oaepParamNode = xmlSecAddChild(transformNode, xmlSecNodeRsaOAEPparams, xmlSecEncNs);
     if(oaepParamNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeRsaOAEPparams));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeRsaOAEPparams)");
         return(-1);
     }
 
     base64 = xmlSecBase64Encode(buf, size, 0);
     if(base64 == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBase64Encode",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "size=%d", size);
+        xmlSecInternalError2(NULL, "xmlSecBase64Encode", "size=%d", size);
         return(-1);
     }
 
@@ -1898,12 +1684,8 @@ xmlSecTmplTransformAddC14NInclNamespaces(xmlNodePtr transformNode,
 
     cur = xmlSecAddChild(transformNode, xmlSecNodeInclusiveNamespaces, xmlSecNsExcC14N);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(transformNode)),
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeInclusiveNamespaces));
+        xmlSecInternalError(xmlSecNodeGetName(transformNode),
+                            "xmlSecAddChild(xmlSecNodeInclusiveNamespaces)");
         return(-1);
     }
 
@@ -1943,12 +1725,7 @@ xmlSecTmplTransformAddXPath(xmlNodePtr transformNode, const xmlChar *expression,
 
     xpathNode = xmlSecAddChild(transformNode, xmlSecNodeXPath, xmlSecDSigNs);
     if(xpathNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeXPath));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeXPath)");
         return(-1);
     }
 
@@ -1980,12 +1757,7 @@ xmlSecTmplTransformAddXPath2(xmlNodePtr transformNode, const xmlChar* type,
 
     xpathNode = xmlSecAddChild(transformNode, xmlSecNodeXPath, xmlSecXPath2Ns);
     if(xpathNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeXPath));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeXPath)");
         return(-1);
     }
     xmlSetProp(xpathNode, xmlSecAttrFilter, type);
@@ -2026,12 +1798,7 @@ xmlSecTmplTransformAddXPointer(xmlNodePtr transformNode, const xmlChar *expressi
 
     xpointerNode = xmlSecAddChild(transformNode, xmlSecNodeXPointer, xmlSecXPointerNs);
     if(xpointerNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeXPointer));
+        xmlSecInternalError(NULL, "xmlSecAddChild(xmlSecNodeXPointer)");
         return(-1);
     }
 

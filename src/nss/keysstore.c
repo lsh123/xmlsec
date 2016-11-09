@@ -175,11 +175,7 @@ xmlSecNssKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
 
         ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx, NULL);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-                        "xmlSecKeyInfoCtxInitialize",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(xmlSecKeyStoreGetName(store), "xmlSecKeyInfoCtxInitialize");
             xmlSecKeyDestroy(key);
             xmlFreeDoc(doc);
             return(-1);
@@ -195,11 +191,7 @@ xmlSecNssKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
 
         ret = xmlSecKeyInfoNodeRead(cur, key, &keyInfoCtx);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-                        "xmlSecKeyInfoNodeRead",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(xmlSecKeyStoreGetName(store), "xmlSecKeyInfoNodeRead");
             xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
             xmlSecKeyDestroy(key);
             xmlFreeDoc(doc);
@@ -210,11 +202,7 @@ xmlSecNssKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
         if(xmlSecKeyIsValid(key)) {
             ret = xmlSecNssKeysStoreAdoptKey(store, key);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-                            "xmlSecNssKeysStoreAdoptKey",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError(xmlSecKeyStoreGetName(store), "xmlSecNssKeysStoreAdoptKey");
                 xmlSecKeyDestroy(key);
                 xmlFreeDoc(doc);
                 return(-1);
@@ -383,12 +371,7 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 
         x509Data = xmlSecKeyDataCreate(xmlSecNssKeyDataX509Id);
         if(x509Data == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeyDataCreate",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "transform=%s",
-                        xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecNssKeyDataX509Id)));
+            xmlSecInternalError("xmlSecKeyDataCreate", "xmlSecTransformIdsRegister(xmlSecNssKeyDataX509Id)");
             goto done;
         }
 

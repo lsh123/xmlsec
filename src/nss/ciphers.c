@@ -606,11 +606,7 @@ xmlSecNssBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
                         (transform->operation == xmlSecTransformOperationEncrypt) ? 1 : 0,
                         xmlSecTransformGetName(transform), transformCtx);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "xmlSecNssBlockCipherCtxInit",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecNssBlockCipherCtxInit");
                 return(-1);
             }
         }
@@ -628,11 +624,7 @@ xmlSecNssBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
                         (transform->operation == xmlSecTransformOperationEncrypt) ? 1 : 0,
                         xmlSecTransformGetName(transform), transformCtx);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "xmlSecNssBlockCipherCtxUpdate",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecNssBlockCipherCtxUpdate");
                 return(-1);
             }
         }
@@ -642,11 +634,7 @@ xmlSecNssBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
                         (transform->operation == xmlSecTransformOperationEncrypt) ? 1 : 0,
                         xmlSecTransformGetName(transform), transformCtx);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "xmlSecNssBlockCipherCtxFinal",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecNssBlockCipherCtxFinal");
                 return(-1);
             }
             transform->status = xmlSecTransformStatusFinished;

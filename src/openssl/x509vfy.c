@@ -230,11 +230,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
             } else if(ret == 0) {
                 (void)sk_X509_CRL_delete(crls2, i);
             } else {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                            "xmlSecOpenSSLX509VerifyCRL",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError(xmlSecKeyDataStoreGetName(store), "xmlSecOpenSSLX509VerifyCRL");
                 goto done;
             }
         }
@@ -250,11 +246,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
                 (void)sk_X509_delete(certs2, i);
                 continue;
             } else if(ret != 1) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                            "xmlSecOpenSSLX509VerifyCertAgainstCrls",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError(xmlSecKeyDataStoreGetName(store), "xmlSecOpenSSLX509VerifyCertAgainstCrls");
                 goto done;
             }
         }
@@ -265,11 +257,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
                 (void)sk_X509_delete(certs2, i);
                 continue;
             } else if(ret != 1) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                            "xmlSecOpenSSLX509VerifyCertAgainstCrls",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError(xmlSecKeyDataStoreGetName(store), "xmlSecOpenSSLX509VerifyCertAgainstCrls");
                 goto done;
             }
         }

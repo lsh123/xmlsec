@@ -251,11 +251,7 @@ xmlSecIORegisterDefaultCallbacks(void) {
     ret = xmlSecIORegisterCallbacks(xmlIOHTTPMatch, xmlIOHTTPOpen,
                               xmlIOHTTPRead, xmlIOHTTPClose);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecIORegisterCallbacks",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "http");
+        xmlSecInternalError(NULL, "xmlSecIORegisterCallbacks(http)");
         return(-1);
     }
 #endif /* LIBXML_HTTP_ENABLED */
@@ -264,11 +260,7 @@ xmlSecIORegisterDefaultCallbacks(void) {
     ret = xmlSecIORegisterCallbacks(xmlIOFTPMatch, xmlIOFTPOpen,
                               xmlIOFTPRead, xmlIOFTPClose);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecIORegisterCallbacks",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "ftp");
+        xmlSecInternalError(NULL, "xmlSecIORegisterCallbacks(ftp)");
         return(-1);
     }
 #endif /* LIBXML_FTP_ENABLED */
@@ -276,11 +268,7 @@ xmlSecIORegisterDefaultCallbacks(void) {
     ret = xmlSecIORegisterCallbacks(xmlFileMatch, xmlFileOpen,
                               xmlFileRead, xmlFileClose);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecIORegisterCallbacks",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "file");
+        xmlSecInternalError(NULL, "xmlSecIORegisterCallbacks(file)");
         return(-1);
     }
 
@@ -475,11 +463,9 @@ xmlSecTransformInputURIFinalize(xmlSecTransformPtr transform) {
 
     ret = xmlSecTransformInputURIClose(transform);
     if(ret < 0) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-					xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-					"xmlSecTransformInputURIClose",
-					XMLSEC_ERRORS_R_XMLSEC_FAILED,
-					"ret=%d", ret);
+        xmlSecInternalError2(xmlSecTransformGetName(transform),
+					         "xmlSecTransformInputURIClose",
+					         "ret=%d", ret);
 		/* ignore the error */
 		/* return; */
 	}

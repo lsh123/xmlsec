@@ -206,11 +206,7 @@ xmlSecMSCryptoX509StoreCertError(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT cer
     /* get certs subject */
     subject = xmlSecMSCryptoX509GetNameString(cert, CERT_NAME_RDN_TYPE, 0, NULL);
     if(subject == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-            "xmlSecMSCryptoX509GetNameString",
-            NULL,
-            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-            XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecMSCryptoX509GetNameString");
         return;
     }
 
@@ -1374,11 +1370,7 @@ xmlSecMSCryptoX509GetNameString(PCCERT_CONTEXT pCertContext, DWORD dwType, DWORD
 
     res = xmlSecMSCryptoConvertTstrToUtf8(name);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    "xmlSecMSCryptoConvertTstrToUtf8",
-                    NULL,
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecMSCryptoConvertTstrToUtf8");
         xmlFree(name);
         return (NULL);
     }

@@ -568,12 +568,7 @@ xmlSecDSigCtxProcessSignatureNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
         xmlSecAssert2(signedInfoNode != NULL, -1);
         nodeset = xmlSecNodeSetGetChildren(signedInfoNode->doc, signedInfoNode, 1, 0);
         if(nodeset == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecNodeSetGetChildren",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeGetName(signedInfoNode)));
+            xmlSecInternalError(NULL, "xmlSecNodeSetGetChildren(signedInfoNode)");
             return(-1);
         }
 
@@ -651,12 +646,8 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xm
         dsigCtx->c14nMethod = xmlSecTransformCtxNodeRead(&(dsigCtx->transformCtx),
                                         cur, xmlSecTransformUsageC14NMethod);
         if(dsigCtx->c14nMethod == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecTransformCtxNodeRead",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+            xmlSecInternalError2(NULL, "xmlSecTransformCtxNodeRead",
+                                "node=%s", xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
             return(-1);
         }
     } else if(dsigCtx->defC14NMethodId != xmlSecTransformIdUnknown) {
@@ -685,12 +676,8 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xm
         dsigCtx->preSignMemBufMethod = xmlSecTransformCtxCreateAndAppend(&(dsigCtx->transformCtx),
                                                 xmlSecTransformMemBufId);
         if(dsigCtx->preSignMemBufMethod == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecTransformCtxCreateAndAppend",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "transform=%s",
-                        xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformMemBufId)));
+            xmlSecInternalError(xmlSecTransformKlassGetName(xmlSecTransformMemBufId),
+                                "xmlSecTransformCtxCreateAndAppend");
         }
     }
 
@@ -700,12 +687,7 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xm
         dsigCtx->signMethod = xmlSecTransformCtxNodeRead(&(dsigCtx->transformCtx),
                                         cur, xmlSecTransformUsageSignatureMethod);
         if(dsigCtx->signMethod == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecTransformCtxNodeRead",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+            xmlSecInternalError(xmlSecNodeGetName(cur), "xmlSecTransformCtxNodeRead");
             return(-1);
         }
     } else if(dsigCtx->defSignMethodId != xmlSecTransformIdUnknown) {
@@ -812,12 +794,7 @@ xmlSecDSigCtxProcessReferences(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr firstReferen
         /* process */
         ret = xmlSecDSigReferenceCtxProcessNode(dsigRefCtx, cur);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecDSigReferenceCtxProcessNode",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+            xmlSecInternalError(xmlSecNodeGetName(cur), "xmlSecDSigReferenceCtxProcessNode");
             return(-1);
         }
 
@@ -843,12 +820,7 @@ xmlSecDSigCtxProcessKeyInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     /* set key requirements */
     ret = xmlSecTransformSetKeyReq(dsigCtx->signMethod, &(dsigCtx->keyInfoReadCtx.keyReq));
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecTransformSetKeyReq",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "transform=%s",
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(dsigCtx->signMethod)));
+        xmlSecInternalError(xmlSecTransformGetName(dsigCtx->signMethod), "xmlSecTransformSetKeyReq");
         return(-1);
     }
 
@@ -872,12 +844,7 @@ xmlSecDSigCtxProcessKeyInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     /* set the key to the transform */
     ret = xmlSecTransformSetKey(dsigCtx->signMethod, dsigCtx->signKey);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecTransformSetKey",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "transform=%s",
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(dsigCtx->signMethod)));
+        xmlSecInternalError(xmlSecTransformGetName(dsigCtx->signMethod), "xmlSecTransformSetKey");
         return(-1);
     }
 
@@ -1006,12 +973,7 @@ xmlSecDSigCtxProcessManifestNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
         /* process */
         ret = xmlSecDSigReferenceCtxProcessNode(dsigRefCtx, cur);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecDSigReferenceCtxProcessNode",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+            xmlSecInternalError(xmlSecNodeGetName(cur), "xmlSecDSigReferenceCtxProcessNode");
             return(-1);
         }
 
@@ -1401,12 +1363,7 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
     /* set start URI (and check that it is enabled!) */
     ret = xmlSecTransformCtxSetUri(transformCtx, dsigRefCtx->uri, node);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecTransformCtxSetUri",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "uri=%s",
-                    xmlSecErrorsSafeString(dsigRefCtx->uri));
+        xmlSecInternalError(dsigRefCtx->uri, "xmlSecTransformCtxSetUri");
         return(-1);
     }
 
@@ -1416,12 +1373,7 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
         ret = xmlSecTransformCtxNodesListRead(transformCtx,
                                         cur, xmlSecTransformUsageDSigTransform);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecTransformCtxNodesListRead",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+            xmlSecInternalError(xmlSecNodeGetName(cur), "xmlSecTransformCtxNodesListRead");
             return(-1);
         }
 
@@ -1439,12 +1391,7 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
                                                 transformCtx,
                                                 xmlSecTransformMemBufId);
         if(dsigRefCtx->preDigestMemBufMethod == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecTransformCtxCreateAndAppend",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "transform=%s",
-                        xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformMemBufId)));
+            xmlSecInternalError(NULL, "xmlSecTransformCtxCreateAndAppend(xmlSecTransformMemBufId)");
             return(-1);
         }
     }
@@ -1454,12 +1401,7 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
         dsigRefCtx->digestMethod = xmlSecTransformCtxNodeRead(&(dsigRefCtx->transformCtx),
                                         cur, xmlSecTransformUsageDigestMethod);
         if(dsigRefCtx->digestMethod == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecTransformCtxNodeRead",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+            xmlSecInternalError(xmlSecNodeGetName(cur), "xmlSecTransformCtxNodeRead");
             return(-1);
         }
 
@@ -1490,12 +1432,7 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
         digestValueNode = cur;
         cur = xmlSecGetNextElementNode(cur->next);
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeDigestValue));
+        xmlSecInternalError(xmlSecNodeDigestValue, xmlSecNodeGetName(cur));
         return(-1);
     }
 

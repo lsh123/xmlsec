@@ -240,11 +240,7 @@ xmlSecNssSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
             SECKEY_DestroyPrivateKey(ctx->u.sig.privkey);
         ctx->u.sig.privkey = xmlSecNssPKIKeyDataGetPrivKey(value);
         if(ctx->u.sig.privkey == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlSecNssPKIKeyDataGetPrivKey",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecNssPKIKeyDataGetPrivKey");
             return(-1);
         }
 
@@ -262,11 +258,7 @@ xmlSecNssSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
             SECKEY_DestroyPublicKey(ctx->u.vfy.pubkey);
         ctx->u.vfy.pubkey = xmlSecNssPKIKeyDataGetPubKey(value);
         if(ctx->u.vfy.pubkey == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlSecNssPKIKeyDataGetPubKey",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecNssPKIKeyDataGetPubKey");
             return(-1);
         }
 
@@ -461,11 +453,7 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 
         ret = xmlSecBufferRemoveHead(in, inSize);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlSecBufferRemoveHead",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecBufferRemoveHead");
             return(-1);
         }
     }

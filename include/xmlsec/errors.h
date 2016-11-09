@@ -135,6 +135,14 @@ extern "C" {
 #define XMLSEC_ERRORS_R_INVALID_FORMAT                  17
 
 /**
+ * XMLSEC_ERRORS_R_INVALID_VERSION:
+ *
+ * Version mismatch.
+ */
+#define XMLSEC_ERRORS_R_INVALID_VERSION                 18
+
+
+/**
  * XMLSEC_ERRORS_R_DATA_NOT_MATCH:
  *
  * The data do not match our expectation.
@@ -467,6 +475,60 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
                 (errorSubject),                         \
                 XMLSEC_ERRORS_R_XMLSEC_FAILED,          \
                 XMLSEC_ERRORS_NO_MESSAGE                \
+    )
+
+/**
+ * xmlSecInternalError2:
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ * @errorSubject:       the error specific error subject (e.g. failed function name).
+ * @msg:                the extra message.
+ * @param:              the extra message param.
+ *
+ * Macro. The XMLSec library macro for reporting internal XMLSec errors.
+ */
+#define xmlSecInternalError2(errorObject, errorSubject, msg, param)  \
+    xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                (((errorObject) != NULL) ? xmlSecErrorsSafeString(errorObject) : NULL), \
+                (errorSubject),                         \
+                XMLSEC_ERRORS_R_XMLSEC_FAILED,          \
+                xmlSecErrorsSafeString(msg), (param)    \
+    )
+
+/**
+ * xmlSecInternalError3:
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ * @errorSubject:       the error specific error subject (e.g. failed function name).
+ * @msg:                the extra message.
+ * @param1:             the extra message param1.
+ * @param2:             the extra message param2.
+ *
+ * Macro. The XMLSec library macro for reporting internal XMLSec errors.
+ */
+#define xmlSecInternalError3(errorObject, errorSubject, msg, param1, param2)  \
+    xmlSecError(XMLSEC_ERRORS_HERE,                              \
+                (((errorObject) != NULL) ? xmlSecErrorsSafeString(errorObject) : NULL), \
+                (errorSubject),                                  \
+                XMLSEC_ERRORS_R_XMLSEC_FAILED,                   \
+                xmlSecErrorsSafeString(msg), (param1), (param2)  \
+    )
+
+/**
+ * xmlSecInternalError4:
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ * @errorSubject:       the error specific error subject (e.g. failed function name).
+ * @msg:                the extra message.
+ * @param1:             the extra message param1.
+ * @param2:             the extra message param2.
+ * @param3:             the extra message param3.
+ *
+ * Macro. The XMLSec library macro for reporting internal XMLSec errors.
+ */
+#define xmlSecInternalError4(errorObject, errorSubject, msg, param1, param2, param3)  \
+    xmlSecError(XMLSEC_ERRORS_HERE,                                      \
+                (((errorObject) != NULL) ? xmlSecErrorsSafeString(errorObject) : NULL), \
+                (errorSubject),                                           \
+                XMLSEC_ERRORS_R_XMLSEC_FAILED,                            \
+                xmlSecErrorsSafeString(msg), (param1), (param2), (param3) \
     )
 
 /**********************************************************************

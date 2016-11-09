@@ -538,21 +538,13 @@ xmlSecGnuTLSX509DnsEqual(const xmlChar * ll, const xmlChar * rr) {
     /* parse */
     ret = xmlSecGnuTLSDnAttrsParse(ll, ll_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGnuTLSDnAttrsParse(ll)",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecGnuTLSDnAttrsParse(ll)");
         goto done;
     }
 
     ret = xmlSecGnuTLSDnAttrsParse(rr, rr_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGnuTLSDnAttrsParse(rr)",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecGnuTLSDnAttrsParse(rr)");
         goto done;
     }
 
@@ -564,11 +556,7 @@ xmlSecGnuTLSX509DnsEqual(const xmlChar * ll, const xmlChar * rr) {
     } else if(ret == 0) {
         res = 0;
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGnuTLSDnAttrsEqual",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecGnuTLSDnAttrsEqual");
         goto done;
     }
 
@@ -688,11 +676,7 @@ xmlSecGnuTLSX509FindSignedCert(xmlSecPtrListPtr certs, gnutls_x509_crt_t cert) {
     /* get subject */
     subject = xmlSecGnuTLSX509CertGetSubjectDN(cert);
     if(subject == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGnuTLSX509CertGetSubjectDN",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecGnuTLSX509CertGetSubjectDN");
         goto done;
     }
 
@@ -749,11 +733,7 @@ xmlSecGnuTLSX509FindSignerCert(xmlSecPtrListPtr certs, gnutls_x509_crt_t cert) {
     /* get issuer */
     issuer = xmlSecGnuTLSX509CertGetIssuerDN(cert);
     if(issuer == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGnuTLSX509CertGetIssuerDN",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecGnuTLSX509CertGetIssuerDN");
         goto done;
     }
 

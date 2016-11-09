@@ -956,11 +956,7 @@ xmlSecOpenSSLSignatureEcdsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPt
     /* calculate signature size */
     signHalfSize = xmlSecOpenSSLSignatureEcdsaSignatureHalfSize(ecKey);
     if(signHalfSize <= 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecOpenSSLSignatureEcdsaSignatureHalfSize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecOpenSSLSignatureEcdsaSignatureHalfSize");
         goto done;
     }
 
@@ -1061,11 +1057,7 @@ xmlSecOpenSSLSignatureEcdsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSec
     /* calculate signature size */
     signHalfSize = xmlSecOpenSSLSignatureEcdsaSignatureHalfSize(ecKey);
     if(signHalfSize <= 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecOpenSSLSignatureEcdsaSignatureHalfSize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecOpenSSLSignatureEcdsaSignatureHalfSize");
         goto done;
     }
 

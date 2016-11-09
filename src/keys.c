@@ -119,22 +119,14 @@ xmlSecKeyUseWithCreate(const xmlChar* application, const xmlChar* identifier) {
 
     ret = xmlSecKeyUseWithInitialize(keyUseWith);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeyUseWithInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecKeyUseWithInitialize");
         xmlSecKeyUseWithDestroy(keyUseWith);
         return(NULL);
     }
 
     ret = xmlSecKeyUseWithSet(keyUseWith, application, identifier);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeyUseWithSet",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecKeyUseWithSet");
         xmlSecKeyUseWithDestroy(keyUseWith);
         return(NULL);
     }
@@ -161,21 +153,13 @@ xmlSecKeyUseWithDuplicate(xmlSecKeyUseWithPtr keyUseWith) {
 
     newKeyUseWith = xmlSecKeyUseWithCreate(NULL, NULL);
     if(newKeyUseWith == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeyUseWithCreate",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecKeyUseWithCreate");
         return(NULL);
     }
 
     ret = xmlSecKeyUseWithCopy(newKeyUseWith, keyUseWith);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeyUseWithCopy",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecKeyUseWithCopy");
         xmlSecKeyUseWithDestroy(keyUseWith);
         return(NULL);
     }
@@ -341,11 +325,7 @@ xmlSecKeyReqInitialize(xmlSecKeyReqPtr keyReq) {
     keyReq->keyUsage    = xmlSecKeyUsageAny;    /* by default you can do whatever you want with the key */
     ret = xmlSecPtrListInitialize(&keyReq->keyUseWithList, xmlSecKeyUseWithPtrListId);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecPtrListInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecPtrListInitialize");
         return(-1);
     }
 
@@ -408,11 +388,7 @@ xmlSecKeyReqCopy(xmlSecKeyReqPtr dst, xmlSecKeyReqPtr src) {
 
     ret = xmlSecPtrListCopy(&dst->keyUseWithList, &src->keyUseWithList);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecPtrListCopy",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecPtrListCopy");
         return(-1);
     }
 
@@ -626,11 +602,7 @@ xmlSecKeyCopy(xmlSecKeyPtr keyDst, xmlSecKeyPtr keySrc) {
     if(keySrc->value != NULL) {
         keyDst->value = xmlSecKeyDataDuplicate(keySrc->value);
         if(keyDst->value == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeyDataDuplicate",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(NULL, "xmlSecKeyDataDuplicate");
             return(-1);
         }
     }
@@ -638,11 +610,7 @@ xmlSecKeyCopy(xmlSecKeyPtr keyDst, xmlSecKeyPtr keySrc) {
     if(keySrc->dataList != NULL) {
         keyDst->dataList = xmlSecPtrListDuplicate(keySrc->dataList);
         if(keyDst->dataList == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecPtrListDuplicate",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(NULL, "xmlSecPtrListDuplicate");
             return(-1);
         }
     }
@@ -671,21 +639,13 @@ xmlSecKeyDuplicate(xmlSecKeyPtr key) {
 
     newKey = xmlSecKeyCreate();
     if(newKey == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeyCreate",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecKeyCreate");
         return(NULL);
     }
 
     ret = xmlSecKeyCopy(newKey, key);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeyCopy",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecKeyCopy");
         xmlSecKeyDestroy(newKey);
         return(NULL);
     }
@@ -932,11 +892,7 @@ xmlSecKeyAdoptData(xmlSecKeyPtr key, xmlSecKeyDataPtr data) {
     if(key->dataList == NULL) {
         key->dataList = xmlSecPtrListCreate(xmlSecKeyDataListId);
         if(key->dataList == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecPtrListCreate",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(NULL, "xmlSecPtrListCreate");
             return(-1);
         }
     }
@@ -1335,11 +1291,7 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     /* first try to read data from <dsig:KeyInfo/> node */
     key = xmlSecKeyCreate();
     if(key == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeyCreate",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecKeyCreate");
         return(NULL);
     }
 
@@ -1367,11 +1319,7 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     if(keyInfoCtx->keysMngr != NULL) {
         key = xmlSecKeysMngrFindKey(keyInfoCtx->keysMngr, NULL, keyInfoCtx);
         if(key == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeysMngrFindKey",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(NULL, "xmlSecKeysMngrFindKey");
             return(NULL);
         }
         if(xmlSecKeyGetValue(key) != NULL) {

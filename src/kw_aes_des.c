@@ -396,11 +396,7 @@ xmlSecKWAesEncode(xmlSecKWAesId kwAesId, void *context,
     if(N == 1) {
         ret = kwAesId->encrypt(out, inSize + XMLSEC_KW_AES_MAGIC_BLOCK_SIZE, out, outSize, context);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "kwAesId->encrypt",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(NULL, "kwAesId->encrypt");
             return(-1);
         }
     } else {
@@ -414,11 +410,7 @@ xmlSecKWAesEncode(xmlSecKWAesId kwAesId, void *context,
 
                 ret = kwAesId->encrypt(block, sizeof(block), block, sizeof(block), context);
                 if(ret < 0) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                NULL,
-                                "kwAesId->encrypt",
-                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                                XMLSEC_ERRORS_NO_MESSAGE);
+                    xmlSecInternalError(NULL, "kwAesId->encrypt");
                     return(-1);
                 }
                 block[7] ^=  t;
@@ -458,11 +450,7 @@ xmlSecKWAesDecode(xmlSecKWAesId kwAesId, void *context,
     if(N == 1) {
         ret = kwAesId->decrypt(out, inSize, out, outSize, context);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "kwAesId->decrypt",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(NULL, "kwAesId->decrypt");
             return(-1);
         }
     } else {
@@ -477,11 +465,7 @@ xmlSecKWAesDecode(xmlSecKWAesId kwAesId, void *context,
 
                 ret = kwAesId->decrypt(block, sizeof(block), block, sizeof(block), context);
                 if(ret < 0) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                NULL,
-                                "kwAesId->decrypt",
-                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                                XMLSEC_ERRORS_NO_MESSAGE);
+                    xmlSecInternalError(NULL, "kwAesId->decrypt");
                     return(-1);
                 }
                 memcpy(out, block, 8);

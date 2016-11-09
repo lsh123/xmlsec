@@ -107,11 +107,7 @@ xmlSecTransformIdsInit(void) {
 
     ret = xmlSecTransformIdsRegisterDefault();
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecTransformIdsRegisterDefault",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecTransformIdsRegisterDefault");
         return(-1);
     }
 
@@ -371,11 +367,7 @@ xmlSecTransformCtxCreate(void) {
 
     ret = xmlSecTransformCtxInitialize(ctx);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecTransformCtxInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecTransformCtxInitialize");
         xmlSecTransformCtxDestroy(ctx);
         return(NULL);
     }
@@ -417,11 +409,7 @@ xmlSecTransformCtxInitialize(xmlSecTransformCtxPtr ctx) {
 
     ret = xmlSecPtrListInitialize(&(ctx->enabledTransforms), xmlSecTransformIdListId);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecPtrListInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecPtrListInitialize");
         return(-1);
     }
 
@@ -501,11 +489,7 @@ xmlSecTransformCtxCopyUserPref(xmlSecTransformCtxPtr dst, xmlSecTransformCtxPtr 
 
     ret = xmlSecPtrListCopy(&(dst->enabledTransforms), &(src->enabledTransforms));
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecPtrListCopy",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecPtrListCopy");
         return(-1);
     }
 
@@ -1082,11 +1066,7 @@ xmlSecTransformCtxPrepare(xmlSecTransformCtxPtr ctx, xmlSecTransformDataType inp
     if(ctx->preExecCallback != NULL) {
         ret = (ctx->preExecCallback)(ctx);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "ctx->preExecCallback",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(NULL, "ctx->preExecCallback");
             return(-1);
         }
     }
@@ -1299,11 +1279,7 @@ xmlSecTransformCtxExecute(xmlSecTransformCtxPtr ctx, xmlDocPtr doc) {
             /* our xpointer transform takes care of providing correct nodes set */
             nodes = xmlSecNodeSetCreate(doc, NULL, xmlSecNodeSetNormal);
             if(nodes == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "xmlSecNodeSetCreate",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError(NULL, "xmlSecNodeSetCreate");
                 return(-1);
             }
 
@@ -1311,21 +1287,13 @@ xmlSecTransformCtxExecute(xmlSecTransformCtxPtr ctx, xmlDocPtr doc) {
             /* we do not want to have comments for empty URI */
             nodes = xmlSecNodeSetGetChildren(doc, NULL, 0, 0);
             if(nodes == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "xmlSecNodeSetGetChildren",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError(NULL, "xmlSecNodeSetGetChildren");
                 return(-1);
             }
         }
         ret = xmlSecTransformCtxXmlExecute(ctx, nodes);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecTransformCtxXmlExecute",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(NULL, "xmlSecTransformCtxXmlExecute");
             xmlSecNodeSetDestroy(nodes);
             return(-1);
         }
@@ -1334,11 +1302,7 @@ xmlSecTransformCtxExecute(xmlSecTransformCtxPtr ctx, xmlDocPtr doc) {
     } else {
         ret = xmlSecTransformCtxUriExecute(ctx, ctx->uri);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecTransformCtxUriExecute",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(NULL, "xmlSecTransformCtxUriExecute");
             return(-1);
         }
     }

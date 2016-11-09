@@ -233,11 +233,7 @@ xmlSecKeyInfoCtxCreate(xmlSecKeysMngrPtr keysMngr) {
 
     ret = xmlSecKeyInfoCtxInitialize(keyInfoCtx, keysMngr);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeyInfoCtxInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecKeyInfoCtxInitialize");
         xmlSecKeyInfoCtxDestroy(keyInfoCtx);
         return(NULL);
     }
@@ -280,22 +276,14 @@ xmlSecKeyInfoCtxInitialize(xmlSecKeyInfoCtxPtr keyInfoCtx, xmlSecKeysMngrPtr key
     keyInfoCtx->base64LineSize = xmlSecBase64GetDefaultLineSize();
     ret = xmlSecPtrListInitialize(&(keyInfoCtx->enabledKeyData), xmlSecKeyDataIdListId);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecPtrListInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecPtrListInitialize");
         return(-1);
     }
 
     keyInfoCtx->maxRetrievalMethodLevel = 1;
     ret = xmlSecTransformCtxInitialize(&(keyInfoCtx->retrievalMethodCtx));
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecTransformCtxInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecTransformCtxInitialize");
         return(-1);
     }
 
@@ -309,11 +297,7 @@ xmlSecKeyInfoCtxInitialize(xmlSecKeyInfoCtxPtr keyInfoCtx, xmlSecKeysMngrPtr key
 
     ret = xmlSecKeyReqInitialize(&(keyInfoCtx->keyReq));
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeyReqInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecKeyReqInitialize");
         return(-1);
     }
 
@@ -388,11 +372,7 @@ xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     /* we have to use tmp variable to avoid a recursive loop */
     tmp = xmlSecEncCtxCreate(keyInfoCtx->keysMngr);
     if(tmp == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecEncCtxCreate",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecEncCtxCreate");
         return(-1);
     }
     tmp->mode = xmlEncCtxModeEncryptedKey;
@@ -402,11 +382,7 @@ xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
         case xmlSecKeyInfoModeRead:
             ret = xmlSecKeyInfoCtxCopyUserPref(&(tmp->keyInfoReadCtx), keyInfoCtx);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "xmlSecKeyInfoCtxCopyUserPref",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError(NULL, "xmlSecKeyInfoCtxCopyUserPref");
                 xmlSecEncCtxDestroy(tmp);
                 return(-1);
             }
@@ -414,11 +390,7 @@ xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
         case xmlSecKeyInfoModeWrite:
             ret = xmlSecKeyInfoCtxCopyUserPref(&(tmp->keyInfoWriteCtx), keyInfoCtx);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "xmlSecKeyInfoCtxCopyUserPref",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError(NULL, "xmlSecKeyInfoCtxCopyUserPref");
                 xmlSecEncCtxDestroy(tmp);
                 return(-1);
             }
@@ -489,22 +461,14 @@ xmlSecKeyInfoCtxCopyUserPref(xmlSecKeyInfoCtxPtr dst, xmlSecKeyInfoCtxPtr src) {
     if(src->encCtx != NULL) {
         dst->encCtx = xmlSecEncCtxCreate(dst->keysMngr);
         if(dst->encCtx == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecEncCtxCreate",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(NULL, "xmlSecEncCtxCreate");
             return(-1);
         }
 
         dst->encCtx->mode = xmlEncCtxModeEncryptedKey;
         ret = xmlSecEncCtxCopyUserPref(dst->encCtx, src->encCtx);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecEncCtxCopyUserPref",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(NULL, "xmlSecEncCtxCopyUserPref");
             return(-1);
         }
     }

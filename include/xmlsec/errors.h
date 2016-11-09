@@ -454,6 +454,20 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
                                                          const char* msg, ...) XMLSEC_ERRORS_PRINTF_ATTRIBUTE;
 
 
+/**
+ * xmlSecInternalError:
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ * @errorSubject:       the error specific error subject (e.g. failed function name).
+ *
+ * Macro. The XMLSec library macro for reporting internal XMLSec errors.
+ */
+#define xmlSecInternalError(errorObject, errorSubject)  \
+    xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                (((errorObject) != NULL) ? xmlSecErrorsSafeString(errorObject) : NULL), \
+                (errorSubject),                         \
+                XMLSEC_ERRORS_R_XMLSEC_FAILED,          \
+                XMLSEC_ERRORS_NO_MESSAGE                \
+    )
 
 /**********************************************************************
  *

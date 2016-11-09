@@ -154,11 +154,7 @@ xmlSecIOInit(void) {
 
     ret = xmlSecPtrListInitialize(&xmlSecAllIOCallbacks, xmlSecIOCallbackPtrListId);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecPtrListPtrInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecPtrListPtrInitialize");
         return(-1);
     }
 
@@ -226,21 +222,13 @@ xmlSecIORegisterCallbacks(xmlInputMatchCallback matchFunc,
 
     callbacks = xmlSecIOCallbackCreate(matchFunc, openFunc, readFunc, closeFunc);
     if(callbacks == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecIOCallbackCreate",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecIOCallbackCreate");
         return(-1);
     }
 
     ret = xmlSecPtrListAdd(&xmlSecAllIOCallbacks, callbacks);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecPtrListAdd",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecPtrListAdd");
         xmlSecIOCallbackDestroy(callbacks);
         return(-1);
     }

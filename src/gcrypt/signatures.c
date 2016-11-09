@@ -755,21 +755,13 @@ xmlSecGCryptDsaPkSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
     /* write out: r + s */
     ret = xmlSecGCryptAppendMpi(m_r, out, 20);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGCryptAppendMpi",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecGCryptAppendMpi");
         goto done;
     }
     xmlSecAssert2(xmlSecBufferGetSize(out) == 20, -1);
     ret = xmlSecGCryptAppendMpi(m_s, out, 20);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGCryptAppendMpi",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecGCryptAppendMpi");
         goto done;
     }
     xmlSecAssert2(xmlSecBufferGetSize(out) == (20 + 20), -1);
@@ -1089,11 +1081,7 @@ xmlSecGCryptRsaPkcs1PkSign(int digest, xmlSecKeyDataPtr key_data,
     /* write out */
     ret = xmlSecGCryptAppendMpi(m_sig, out, 0);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGCryptAppendMpi",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecGCryptAppendMpi");
         goto done;
     }
 

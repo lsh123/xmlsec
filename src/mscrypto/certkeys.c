@@ -378,11 +378,7 @@ xmlSecMSCryptoKeyDataCtxDuplicateCert(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xmlSec
     if(ctxSrc->pCert != NULL) {
             ctxDst->pCert = xmlSecMSCryptoCertDup(ctxSrc->pCert);
             if(ctxDst->pCert == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "xmlSecMSCryptoPCCDup",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError(NULL, "xmlSecMSCryptoPCCDup");
                 return(-1);
             }
     }
@@ -458,11 +454,7 @@ xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlS
 
         hProv = xmlSecMSCryptoFindProvider(ctx->providers, NULL, CRYPT_VERIFYCONTEXT, FALSE);
         if (hProv == 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecMSCryptoFindProvider",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(NULL, "xmlSecMSCryptoFindProvider");
             return(-1);
         }
         xmlSecMSCryptoKeyDataCtxSetProvider(ctx, hProv, TRUE);
@@ -882,11 +874,7 @@ xmlSecMSCryptoCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
 
     ret = xmlSecMSCryptoKeyDataAdoptCert(data, pCert, type);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecMSCryptoPCCDataAdoptPCC",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecMSCryptoPCCDataAdoptPCC");
         xmlSecKeyDataDestroy(data);
         return(NULL);
     }

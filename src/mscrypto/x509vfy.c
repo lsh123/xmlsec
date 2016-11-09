@@ -1178,11 +1178,7 @@ xmlSecMSCryptoX509GetCertName(const xmlChar * name) {
     /* get name */
     res = xmlSecMSCryptoConvertUtf8ToTstr(name2);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecMSCryptoConvertUtf8ToTstr",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecMSCryptoConvertUtf8ToTstr");
         xmlFree(name2);
         return(NULL);
     }
@@ -1234,21 +1230,13 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store,
         /* get serial number */
         ret = xmlSecBnInitialize(&issuerSerialBn, 0);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecBnInitialize",
-                XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(NULL, "xmlSecBnInitialize");
             return(NULL);
         }
 
         ret = xmlSecBnFromDecString(&issuerSerialBn, issuerSerial);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecBnInitialize",
-                XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(NULL, "xmlSecBnInitialize");
             xmlSecBnFinalize(&issuerSerialBn);
             return(NULL);
         }
@@ -1259,11 +1247,7 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store,
         */
         ret = xmlSecBnReverse(&issuerSerialBn);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecBnReverse",
-                XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(NULL, "xmlSecBnReverse");
             xmlSecBnFinalize(&issuerSerialBn);
             return(NULL);
         }

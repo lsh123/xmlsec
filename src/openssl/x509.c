@@ -988,11 +988,7 @@ xmlSecOpenSSLX509CertificateNodeWrite(X509* cert, xmlNodePtr node, xmlSecKeyInfo
     /* set base64 lines size from context */
     buf = xmlSecOpenSSLX509CertBase64DerWrite(cert, keyInfoCtx->base64LineSize);
     if(buf == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecOpenSSLX509CertBase64DerWrite",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecOpenSSLX509CertBase64DerWrite");
         return(-1);
     }
 
@@ -1106,11 +1102,7 @@ xmlSecOpenSSLX509SubjectNameNodeWrite(X509* cert, xmlNodePtr node, xmlSecKeyInfo
 
     buf = xmlSecOpenSSLX509NameWrite(X509_get_subject_name(cert));
     if(buf == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-            NULL,
-            "xmlSecOpenSSLX509NameWrite(X509_get_subject_name)",
-            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-            XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecOpenSSLX509NameWrite(X509_get_subject_name)");
         return(-1);
     }
 
@@ -1319,11 +1311,7 @@ xmlSecOpenSSLX509IssuerSerialNodeWrite(X509* cert, xmlNodePtr node, xmlSecKeyInf
     /* write data */
     buf = xmlSecOpenSSLX509NameWrite(X509_get_issuer_name(cert));
     if(buf == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecOpenSSLX509NameWrite(X509_get_issuer_name)",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecOpenSSLX509NameWrite(X509_get_issuer_name)");
         return(-1);
     }
     xmlSecNodeEncodeAndSetContent(issuerNameNode, buf);
@@ -1331,11 +1319,7 @@ xmlSecOpenSSLX509IssuerSerialNodeWrite(X509* cert, xmlNodePtr node, xmlSecKeyInf
 
     buf = xmlSecOpenSSLASN1IntegerWrite(X509_get_serialNumber(cert));
     if(buf == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecOpenSSLASN1IntegerWrite(X509_get_serialNumber)",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecOpenSSLASN1IntegerWrite(X509_get_serialNumber)");
         return(-1);
     }
     xmlSecNodeEncodeAndSetContent(issuerNumberNode, buf);
@@ -1434,11 +1418,7 @@ xmlSecOpenSSLX509SKINodeWrite(X509* cert, xmlNodePtr node, xmlSecKeyInfoCtxPtr k
 
     buf = xmlSecOpenSSLX509SKIWrite(cert);
     if(buf == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecOpenSSLX509SKIWrite",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecOpenSSLX509SKIWrite");
         return(-1);
     }
 
@@ -1524,11 +1504,7 @@ xmlSecOpenSSLX509CRLNodeWrite(X509_CRL* crl, xmlNodePtr node, xmlSecKeyInfoCtxPt
     /* set base64 lines size from context */
     buf = xmlSecOpenSSLX509CrlBase64DerWrite(crl, keyInfoCtx->base64LineSize);
     if(buf == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecOpenSSLX509CrlBase64DerWrite",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecOpenSSLX509CrlBase64DerWrite");
         return(-1);
     }
 
@@ -1788,11 +1764,7 @@ xmlSecOpenSSLX509CertGetKey(X509* cert) {
 
     data = xmlSecOpenSSLEvpKeyAdopt(pKey);
     if(data == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecOpenSSLEvpKeyAdopt",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecOpenSSLEvpKeyAdopt");
         EVP_PKEY_free(pKey);
         return(NULL);
     }
@@ -1809,11 +1781,7 @@ xmlSecOpenSSLX509CertBase64DerRead(xmlChar* buf) {
     /* usual trick with base64 decoding "in-place" */
     ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, xmlStrlen(buf));
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBase64Decode",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecBase64Decode");
         return(NULL);
     }
 
@@ -1881,11 +1849,7 @@ xmlSecOpenSSLX509CertBase64DerWrite(X509* cert, int base64LineWrap) {
 
     res = xmlSecBase64Encode(p, size, base64LineWrap);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBase64Encode",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecBase64Encode");
         BIO_free_all(mem);
         return(NULL);
     }
@@ -1903,11 +1867,7 @@ xmlSecOpenSSLX509CrlBase64DerRead(xmlChar* buf) {
     /* usual trick with base64 decoding "in-place" */
     ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, xmlStrlen(buf));
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBase64Decode",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecBase64Decode");
         return(NULL);
     }
 
@@ -1975,11 +1935,7 @@ xmlSecOpenSSLX509CrlBase64DerWrite(X509_CRL* crl, int base64LineWrap) {
 
     res = xmlSecBase64Encode(p, size, base64LineWrap);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBase64Encode",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecBase64Encode");
         BIO_free_all(mem);
         return(NULL);
     }
@@ -2101,11 +2057,7 @@ xmlSecOpenSSLX509SKIWrite(X509* cert) {
 
     res = xmlSecBase64Encode(ASN1_STRING_get0_data(keyId), ASN1_STRING_length(keyId), 0);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBase64Encode",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecBase64Encode");
         ASN1_OCTET_STRING_free(keyId);
         return(NULL);
     }
@@ -2246,11 +2198,7 @@ xmlSecOpenSSLKeyDataRawX509CertBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     cert = xmlSecOpenSSLX509CertDerRead(buf, bufSize);
     if(cert == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecOpenSSLX509CertDerRead",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecOpenSSLX509CertDerRead");
         return(-1);
     }
 

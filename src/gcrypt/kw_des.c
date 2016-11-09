@@ -477,11 +477,7 @@ xmlSecGCryptKWDes3BlockEncrypt(void * context,
                                     out, outSize,
                                     1); /* encrypt */
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGCryptKWDes3Encrypt",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecGCryptKWDes3Encrypt");
         return(-1);
     }
 
@@ -513,11 +509,7 @@ xmlSecGCryptKWDes3BlockDecrypt(void * context,
                                     out, outSize,
                                     0); /* decrypt */
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGCryptKWDes3Encrypt",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecGCryptKWDes3Encrypt");
         return(-1);
     }
     return(ret);

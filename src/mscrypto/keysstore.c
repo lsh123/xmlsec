@@ -536,11 +536,7 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         /* set cert in key data */
         data = xmlSecMSCryptoCertAdopt(pCertContext, keyReq->keyType);
         if(data == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecMSCryptoCertAdopt",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(NULL, "xmlSecMSCryptoCertAdopt");
             goto done;
         }
         pCertContext = NULL;
@@ -548,11 +544,7 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         /* create key and add key data and x509 data to it */
         key = xmlSecKeyCreate();
         if (key == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeyCreate",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(NULL, "xmlSecKeyCreate");
             goto done;
         }
 

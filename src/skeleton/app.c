@@ -324,11 +324,7 @@ xmlSecSkeletonAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 
         ret = xmlSecKeysMngrAdoptKeysStore(mngr, keysStore);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeysMngrAdoptKeysStore",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(NULL, "xmlSecKeysMngrAdoptKeysStore");
             xmlSecKeyStoreDestroy(keysStore);
             return(-1);
         }
@@ -336,11 +332,7 @@ xmlSecSkeletonAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 
     ret = xmlSecSkeletonKeysMngrInit(mngr);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecSkeletonKeysMngrInit",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecSkeletonKeysMngrInit");
         return(-1);
     }
 
@@ -372,21 +364,13 @@ xmlSecSkeletonAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr ke
 
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeysMngrGetKeysStore",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecKeysMngrGetKeysStore");
         return(-1);
     }
 
     ret = xmlSecSimpleKeysStoreAdoptKey(store, key);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecSimpleKeysStoreAdoptKey",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecSimpleKeysStoreAdoptKey");
         return(-1);
     }
 
@@ -417,11 +401,7 @@ xmlSecSkeletonAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
 
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeysMngrGetKeysStore",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecKeysMngrGetKeysStore");
         return(-1);
     }
 
@@ -462,11 +442,7 @@ xmlSecSkeletonAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filenam
 
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeysMngrGetKeysStore",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecKeysMngrGetKeysStore");
         return(-1);
     }
 

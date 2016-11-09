@@ -440,11 +440,7 @@ xmlSecMSCryptoKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
         TRUE,
         &cryptKey))  {
 
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecMSCryptoImportPlainSessionBlob",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecMSCryptoImportPlainSessionBlob");
         return(-1);
     }
     xmlSecAssert2(cryptKey != 0, -1);
@@ -496,11 +492,7 @@ xmlSecMSCryptoKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
         TRUE,
         &cryptKey))  {
 
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecMSCryptoImportPlainSessionBlob",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecMSCryptoImportPlainSessionBlob");
         return(-1);
     }
     xmlSecAssert2(cryptKey != 0, -1);

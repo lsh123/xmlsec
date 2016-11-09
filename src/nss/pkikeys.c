@@ -266,11 +266,7 @@ xmlSecNssPKIAdoptKey(SECKEYPrivateKey *privkey,
     xmlSecAssert2(data != NULL, NULL);
     ret = xmlSecNssPKIKeyDataAdoptKey(data, privkey, pubkey);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecNssPKIKeyDataAdoptKey",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecNssPKIKeyDataAdoptKey");
         xmlSecKeyDataDestroy(data);
         return(NULL);
     }

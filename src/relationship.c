@@ -418,50 +418,30 @@ xmlSecTransformRelationshipWriteProp(xmlOutputBufferPtr buf, const xmlChar * nam
 
     ret = xmlOutputBufferWriteString(buf, " ");
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlOutputBufferWriteString",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlOutputBufferWriteString");
         return(-1);
     }
 
     ret = xmlOutputBufferWriteString(buf, (const char*) name);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlOutputBufferWriteString",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlOutputBufferWriteString");
         return(-1);
     }
 
     if(value != NULL) {
         ret = xmlOutputBufferWriteString(buf, "=\"");
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlOutputBufferWriteString",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(NULL, "xmlOutputBufferWriteString");
             return(-1);
         }
         ret = xmlOutputBufferWriteString(buf, (const char*) value);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlOutputBufferWriteString",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(NULL, "xmlOutputBufferWriteString");
             return(-1);
         }
         ret = xmlOutputBufferWriteString(buf, "\"");
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlOutputBufferWriteString",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(NULL, "xmlOutputBufferWriteString");
             return(-1);
         }
     }

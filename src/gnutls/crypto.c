@@ -242,21 +242,13 @@ int
 xmlSecGnuTLSInit (void)  {
     /* Check loaded xmlsec library version */
     if(xmlSecCheckVersionExact() != 1) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecCheckVersionExact",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecCheckVersionExact");
         return(-1);
     }
 
     /* register our klasses */
     if(xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(xmlSecCryptoGetFunctions_gnutls()) < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms");
         return(-1);
     }
 
@@ -306,11 +298,7 @@ xmlSecGnuTLSKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 
         ret = xmlSecKeysMngrAdoptDataStore(mngr, x509Store);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeysMngrAdoptDataStore",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(NULL, "xmlSecKeysMngrAdoptDataStore");
             xmlSecKeyDataStoreDestroy(x509Store);
             return(-1);
         }

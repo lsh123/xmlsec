@@ -949,11 +949,7 @@ xmlSecOpenSSLX509NameRead(xmlSecByte *str, int len) {
 
         nameLen = xmlSecOpenSSLX509NameStringRead(&str, &len, name, sizeof(name), '=', 0);
         if(nameLen < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecOpenSSLX509NameStringRead",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(NULL, "xmlSecOpenSSLX509NameStringRead");
             X509_NAME_free(nm);
             return(NULL);
         }
@@ -965,11 +961,7 @@ xmlSecOpenSSLX509NameRead(xmlSecByte *str, int len) {
                 valueLen = xmlSecOpenSSLX509NameStringRead(&str, &len,
                                         value, sizeof(value), '"', 1);
                 if(valueLen < 0) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                NULL,
-                                "xmlSecOpenSSLX509NameStringRead",
-                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                                XMLSEC_ERRORS_NO_MESSAGE);
+                    xmlSecInternalError(NULL, "xmlSecOpenSSLX509NameStringRead");
                     X509_NAME_free(nm);
                     return(NULL);
                 }
@@ -1018,11 +1010,7 @@ xmlSecOpenSSLX509NameRead(xmlSecByte *str, int len) {
                 valueLen = xmlSecOpenSSLX509NameStringRead(&str, &len,
                                         value, sizeof(value), ',', 1);
                 if(valueLen < 0) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                NULL,
-                                "xmlSecOpenSSLX509NameStringRead",
-                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                                XMLSEC_ERRORS_NO_MESSAGE);
+                    xmlSecInternalError(NULL, "xmlSecOpenSSLX509NameStringRead");
                     X509_NAME_free(nm);
                     return(NULL);
                 }
@@ -1162,20 +1150,12 @@ xmlSecOpenSSLX509NamesCompare(X509_NAME *a, X509_NAME *b) {
 
     a1 = xmlSecOpenSSLX509_NAME_ENTRIES_copy(a);
     if(a1 == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecOpenSSLX509_NAME_ENTRIES_copy",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecOpenSSLX509_NAME_ENTRIES_copy");
         return(-1);
     }
     b1 = xmlSecOpenSSLX509_NAME_ENTRIES_copy(b);
     if(b1 == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecOpenSSLX509_NAME_ENTRIES_copy",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecOpenSSLX509_NAME_ENTRIES_copy");
         sk_X509_NAME_ENTRY_free(a1);
         return(1);
     }

@@ -180,11 +180,7 @@ xmlSecGnuTLSAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
 
     ret = xmlSecBufferInitialize(&buffer, 4*1024);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBufferInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecBufferInitialize");
         return(-1);
     }
 
@@ -247,31 +243,19 @@ xmlSecGnuTLSAppKeyCertLoadMemory(xmlSecKeyPtr key,
 
     keyData = xmlSecKeyEnsureData(key, xmlSecGnuTLSKeyDataX509Id);
     if(keyData == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeyEnsureData",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecKeyEnsureData");
         return(-1);
     }
 
     cert = xmlSecGnuTLSX509CertRead(data, dataSize, format);
     if(cert == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGnuTLSX509CertRead",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecGnuTLSX509CertRead");
         return(-1);
     }
 
     ret = xmlSecGnuTLSKeyDataX509AdoptCert(keyData, cert);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGnuTLSKeyDataX509AdoptCert",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecGnuTLSKeyDataX509AdoptCert");
         gnutls_x509_crt_deinit(cert);
         return(-1);
     }
@@ -305,11 +289,7 @@ xmlSecGnuTLSAppPkcs12Load(const char *filename,
 
     ret = xmlSecBufferInitialize(&buffer, 4*1024);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBufferInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecBufferInitialize");
         return(NULL);
     }
 
@@ -391,33 +371,21 @@ xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     /* load pkcs12 */
     ret = xmlSecGnuTLSPkcs12LoadMemory(data, dataSize, pwd, &priv_key, &key_cert, &certsList);
     if((ret < 0) || (priv_key == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGnuTLSPkcs12LoadMemory",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecGnuTLSPkcs12LoadMemory");
         goto done;
     }
 
     /* create key */
     key = xmlSecKeyCreate();
     if(key == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeyCreate",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecKeyCreate");
         goto done;
     }
 
     /* create key value data */
     keyData = xmlSecGnuTLSCreateKeyDataAndAdoptPrivKey(priv_key);
     if(keyData == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGnuTLSCreateKeyDataAndAdoptPrivKey",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecGnuTLSCreateKeyDataAndAdoptPrivKey");
         goto done;
     }
     priv_key = NULL; /* owned by keyData now */
@@ -442,11 +410,7 @@ xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
 
         x509Data = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataX509Id);
         if(x509Data == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataX509Id)",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(NULL, "xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataX509Id)");
             goto done;
         }
 
@@ -454,11 +418,7 @@ xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
         if(key_cert != NULL) {
             ret = xmlSecGnuTLSKeyDataX509AdoptKeyCert(x509Data, key_cert);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "xmlSecGnuTLSKeyDataX509AdoptKeyCert",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError(NULL, "xmlSecGnuTLSKeyDataX509AdoptKeyCert");
                 goto done;
             }
             key_cert = NULL; /* owned by x509Data now */
@@ -473,11 +433,7 @@ xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
 
             ret = xmlSecGnuTLSKeyDataX509AdoptCert(x509Data, cert);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "xmlSecGnuTLSKeyDataX509AdoptCert",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError(NULL, "xmlSecGnuTLSKeyDataX509AdoptCert");
                 gnutls_x509_crt_deinit(cert);
                 goto done;
             }
@@ -533,11 +489,7 @@ xmlSecGnuTLSAppKeyFromCertLoad(const char *filename,
 
     ret = xmlSecBufferInitialize(&buffer, 4*1024);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBufferInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecBufferInitialize");
         return(NULL);
     }
 
@@ -592,33 +544,21 @@ xmlSecGnuTLSAppKeyFromCertLoadMemory(const xmlSecByte* data,
     /* read cert */
     cert = xmlSecGnuTLSX509CertRead(data, dataSize, format);
     if(cert == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGnuTLSX509CertRead",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecGnuTLSX509CertRead");
         goto done;
     }
 
     /* create key */
     key = xmlSecKeyCreate();
     if(key == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeyCreate",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecKeyCreate");
         goto done;
     }
 
     /* create key value data */
     keyData = xmlSecGnuTLSX509CertGetKey(cert);
     if(keyData == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGnuTLSX509CertGetKey",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecGnuTLSX509CertGetKey");
         goto done;
     }
 
@@ -637,20 +577,12 @@ xmlSecGnuTLSAppKeyFromCertLoadMemory(const xmlSecByte* data,
     /* create x509 data */
     x509Data = xmlSecKeyEnsureData(key, xmlSecGnuTLSKeyDataX509Id);
     if(x509Data == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeyEnsureData",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecKeyEnsureData");
         goto done;
     }
     ret = xmlSecGnuTLSKeyDataX509AdoptKeyCert(x509Data, cert);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGnuTLSKeyDataX509AdoptKeyCert",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecGnuTLSKeyDataX509AdoptKeyCert");
         goto done;
     }
     cert = NULL; /* owned by x509Data now */
@@ -699,11 +631,7 @@ xmlSecGnuTLSAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr,
 
     ret = xmlSecBufferInitialize(&buffer, 4*1024);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBufferInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecBufferInitialize");
         return(-1);
     }
 
@@ -780,21 +708,13 @@ xmlSecGnuTLSAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr,
 
     cert = xmlSecGnuTLSX509CertRead(data, dataSize, format);
     if(cert == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGnuTLSX509CertRead",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecGnuTLSX509CertRead");
         return(-1);
     }
 
     ret = xmlSecGnuTLSX509StoreAdoptCert(x509Store, cert, type);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGnuTLSX509StoreAdoptCert",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecGnuTLSX509StoreAdoptCert");
         gnutls_x509_crt_deinit(cert);
         return(-1);
     }
@@ -835,11 +755,7 @@ xmlSecGnuTLSAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 
         ret = xmlSecKeysMngrAdoptKeysStore(mngr, keysStore);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeysMngrAdoptKeysStore",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(NULL, "xmlSecKeysMngrAdoptKeysStore");
             xmlSecKeyStoreDestroy(keysStore);
             return(-1);
         }
@@ -847,11 +763,7 @@ xmlSecGnuTLSAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 
     ret = xmlSecGnuTLSKeysMngrInit(mngr);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGnuTLSKeysMngrInit",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecGnuTLSKeysMngrInit");
         return(-1);
     }
 
@@ -880,21 +792,13 @@ xmlSecGnuTLSAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key)
 
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeysMngrGetKeysStore",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecKeysMngrGetKeysStore");
         return(-1);
     }
 
     ret = xmlSecSimpleKeysStoreAdoptKey(store, key);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecSimpleKeysStoreAdoptKey",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecSimpleKeysStoreAdoptKey");
         return(-1);
     }
 
@@ -921,11 +825,7 @@ xmlSecGnuTLSAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
 
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeysMngrGetKeysStore",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecKeysMngrGetKeysStore");
         return(-1);
     }
 
@@ -962,11 +862,7 @@ xmlSecGnuTLSAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename,
 
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeysMngrGetKeysStore",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecKeysMngrGetKeysStore");
         return(-1);
     }
 

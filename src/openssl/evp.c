@@ -300,11 +300,7 @@ xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
     xmlSecAssert2(data != NULL, NULL);
     ret = xmlSecOpenSSLEvpKeyDataAdoptEvp(data, pKey);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecOpenSSLEvpKeyDataAdoptEvp",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecOpenSSLEvpKeyDataAdoptEvp");
         xmlSecKeyDataDestroy(data);
         return(NULL);
     }

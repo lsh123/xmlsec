@@ -273,11 +273,7 @@ int
 xmlSecMSCryptoInit (void)  {
     /* Check loaded xmlsec library version */
     if(xmlSecCheckVersionExact() != 1) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecCheckVersionExact",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecCheckVersionExact");
         return(-1);
     }
 
@@ -286,11 +282,7 @@ xmlSecMSCryptoInit (void)  {
 
     /* register our klasses */
     if(xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(xmlSecCryptoGetFunctions_mscrypto()) < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms");
         return(-1);
     }
     return(0);
@@ -340,11 +332,7 @@ xmlSecMSCryptoKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 
         ret = xmlSecKeysMngrAdoptDataStore(mngr, x509Store);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeysMngrAdoptDataStore",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(NULL, "xmlSecKeysMngrAdoptDataStore");
             xmlSecKeyDataStoreDestroy(x509Store);
             return(-1);
         }
@@ -391,11 +379,7 @@ xmlSecMSCryptoGenerateRandom(xmlSecBufferPtr buffer, size_t size) {
 
     hProv = xmlSecMSCryptoFindProvider(xmlSecMSCryptoProviderInfo_Random, NULL, CRYPT_VERIFYCONTEXT, FALSE);
     if (0 == hProv) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecMSCryptoFindProvider",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecMSCryptoFindProvider");
         return(-1);
     }
     if (FALSE == CryptGenRandom(hProv, (DWORD)size, xmlSecBufferGetData(buffer))) {

@@ -782,11 +782,7 @@ xmlSecGenerateAndAddID(xmlNodePtr node, const xmlChar* attrName, const xmlChar* 
     for(count = 0; count < 5; count++) {
         id = xmlSecGenerateID(prefix, len);
         if(id == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecGenerateID",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError(NULL, "xmlSecGenerateID");
             return(-1);
         }
 
@@ -836,11 +832,7 @@ xmlSecGenerateID(const xmlChar* prefix, xmlSecSize len) {
 
     ret = xmlSecBufferInitialize(&buffer, binLen + 1);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBufferInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecBufferInitialize");
         return(NULL);
     }
     xmlSecAssert2(xmlSecBufferGetData(&buffer) != NULL, NULL);
@@ -848,11 +840,7 @@ xmlSecGenerateID(const xmlChar* prefix, xmlSecSize len) {
 
     ret = xmlSecBufferSetSize(&buffer, binLen);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBufferSetSize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecBufferSetSize");
         xmlSecBufferFinalize(&buffer);
         return(NULL);
     }
@@ -866,11 +854,7 @@ xmlSecGenerateID(const xmlChar* prefix, xmlSecSize len) {
     /* base64 encode random bytes */
     res = xmlSecBase64Encode(xmlSecBufferGetData(&buffer), xmlSecBufferGetSize(&buffer), 0);
     if((res == NULL) || (xmlStrlen(res) == 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBase64Encode",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecBase64Encode");
         xmlSecBufferFinalize(&buffer);
         return(NULL);
     }

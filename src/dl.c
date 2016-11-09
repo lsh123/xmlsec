@@ -446,21 +446,13 @@ xmlSecCryptoDLLoadLibrary(const xmlChar* crypto) {
     /* if crypto is not specified, then used default */
     functions = xmlSecCryptoDLGetLibraryFunctions((crypto != NULL ) ? crypto : xmlSecGetDefaultCrypto());
     if(functions == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecCryptoDLGetLibraryFunctions",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecCryptoDLGetLibraryFunctions");
         return(-1);
     }
 
     ret = xmlSecCryptoDLSetFunctions(functions);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecCryptoDLSetFunctions",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecCryptoDLSetFunctions");
         return(-1);
     }
 
@@ -552,11 +544,7 @@ xmlSecCryptoDLUnloadLibrary(const xmlChar* crypto) {
 
     ret = xmlSecPtrListRemove(&gXmlSecCryptoDLLibraries, pos);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecPtrListRemove",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError(NULL, "xmlSecPtrListRemove");
         return(-1);
     }
 

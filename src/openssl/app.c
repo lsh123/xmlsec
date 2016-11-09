@@ -637,7 +637,8 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
 
     x509Data = xmlSecKeyDataCreate(xmlSecOpenSSLKeyDataX509Id);
     if(x509Data == NULL) {
-        xmlSecInternalError("xmlSecKeyDataCreate", "xmlSecTransformIdsRegister(xmlSecOpenSSLKeyDataX509Id)");
+        xmlSecInternalError(xmlSecTransformKlassGetName(xmlSecOpenSSLKeyDataX509Id),
+            "xmlSecKeyDataCreate");
         goto done;
     }
 

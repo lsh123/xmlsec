@@ -12,6 +12,7 @@ missing
 *.o
 *.lo
 *.la
+.settings/
 apps/xmlsec1
 autom4te.cache/
 config.guess

@@ -135,19 +135,18 @@ extern "C" {
 #define XMLSEC_ERRORS_R_INVALID_FORMAT                  17
 
 /**
- * XMLSEC_ERRORS_R_INVALID_VERSION:
- *
- * Version mismatch.
- */
-#define XMLSEC_ERRORS_R_INVALID_VERSION                 18
-
-
-/**
  * XMLSEC_ERRORS_R_DATA_NOT_MATCH:
  *
  * The data do not match our expectation.
  */
 #define XMLSEC_ERRORS_R_DATA_NOT_MATCH                  18
+
+/**
+ * XMLSEC_ERRORS_R_INVALID_VERSION:
+ *
+ * Version mismatch.
+ */
+#define XMLSEC_ERRORS_R_INVALID_VERSION                 19
 
 /**
  * XMLSEC_ERRORS_R_INVALID_NODE:

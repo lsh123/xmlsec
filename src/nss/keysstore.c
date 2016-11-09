@@ -371,7 +371,8 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 
         x509Data = xmlSecKeyDataCreate(xmlSecNssKeyDataX509Id);
         if(x509Data == NULL) {
-            xmlSecInternalError("xmlSecKeyDataCreate", "xmlSecTransformIdsRegister(xmlSecNssKeyDataX509Id)");
+            xmlSecInternalError(xmlSecTransformKlassGetName(xmlSecNssKeyDataX509Id),
+                                "xmlSecKeyDataCreate");
             goto done;
         }
 

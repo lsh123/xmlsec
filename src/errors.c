@@ -209,8 +209,8 @@ xmlSecErrorsGetMsg(xmlSecSize pos) {
  * @file:               the error location filename (__FILE__).
  * @line:               the error location line number (__LINE__).
  * @func:               the error location function (__FUNCTIION__).
- * @errorObject:        the error specific error object
- * @errorSubject:       the error specific error subject.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ * @errorSubject:       the error specific error subject (e.g. failed function name).
  * @reason:             the error code.
  * @msg:                the error message in printf format.
  * @...:                the parameters for the @msg.

@@ -351,22 +351,14 @@ xmlSecOpenSSLKeyDataX509AdoptCert(xmlSecKeyDataPtr data, X509* cert) {
     if(ctx->certsList == NULL) {
         ctx->certsList = sk_X509_new_null();
         if(ctx->certsList == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                        "sk_X509_new_null",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecOpenSSLError(xmlSecKeyDataGetName(data), "sk_X509_new_null");
             return(-1);
         }
     }
 
     ret = sk_X509_push(ctx->certsList, cert);
     if(ret < 1) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                    "sk_X509_push",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(xmlSecKeyDataGetName(data), "sk_X509_push");
         return(-1);
     }
 
@@ -440,22 +432,14 @@ xmlSecOpenSSLKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, X509_CRL* crl) {
     if(ctx->crlsList == NULL) {
         ctx->crlsList = sk_X509_CRL_new_null();
         if(ctx->crlsList == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                        "sk_X509_CRL_new_null",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecOpenSSLError(xmlSecKeyDataGetName(data), "sk_X509_CRL_new_null");
             return(-1);
         }
     }
 
     ret = sk_X509_CRL_push(ctx->crlsList, crl);
     if(ret < 1) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                    "sk_X509_CRL_push",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(xmlSecKeyDataGetName(data), "sk_X509_CRL_push");
         return(-1);
     }
 
@@ -547,11 +531,7 @@ xmlSecOpenSSLKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
 
         certDst = X509_dup(certSrc);
         if(certDst == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(dst)),
-                        "X509_dup",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecOpenSSLError(xmlSecKeyDataGetName(dst), "X509_dup");
             return(-1);
         }
 
@@ -582,11 +562,7 @@ xmlSecOpenSSLKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
 
         crlDst = X509_CRL_dup(crlSrc);
         if(crlDst == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(dst)),
-                        "X509_CRL_dup",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecOpenSSLError(xmlSecKeyDataGetName(dst), "X509_CRL_dup");
             return(-1);
         }
 
@@ -607,11 +583,7 @@ xmlSecOpenSSLKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     if(certSrc != NULL) {
         certDst = X509_dup(certSrc);
         if(certDst == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(dst)),
-                        "X509_dup",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecOpenSSLError(xmlSecKeyDataGetName(dst), "X509_dup");
             return(-1);
         }
         ret = xmlSecOpenSSLKeyDataX509AdoptKeyCert(dst, certDst);
@@ -1103,12 +1075,7 @@ xmlSecOpenSSLX509SubjectNameNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xml
 
     cert2 = X509_dup(cert);
     if(cert2 == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                    "X509_dup",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
-
+        xmlSecOpenSSLError(xmlSecKeyDataGetName(data), "X509_dup");
         xmlFree(subject);
         return(-1);
     }
@@ -1281,11 +1248,7 @@ xmlSecOpenSSLX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xm
 
     cert2 = X509_dup(cert);
     if(cert2 == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                    "X509_dup",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(xmlSecKeyDataGetName(data), "X509_dup");
         xmlFree(issuerSerial);
         xmlFree(issuerName);
         return(-1);
@@ -1440,11 +1403,7 @@ xmlSecOpenSSLX509SKINodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyIn
 
     cert2 = X509_dup(cert);
     if(cert2 == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                    "X509_dup",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(xmlSecKeyDataGetName(data), "X509_dup");
         xmlFree(ski);
         return(-1);
     }
@@ -1627,11 +1586,7 @@ xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr 
 
             ctx->keyCert = X509_dup(cert);
             if(ctx->keyCert == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                            "X509_dup",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecOpenSSLError(xmlSecKeyDataGetName(data), "X509_dup");
                 return(-1);
             }
 
@@ -1753,11 +1708,7 @@ xmlSecOpenSSLX509CertGetTime(const ASN1_TIME* t, time_t* res) {
 
     (*res) = 0;
     if(!ASN1_TIME_check(t)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "ASN1_TIME_check",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(NULL, "ASN1_TIME_check");
         return(-1);
     }
 
@@ -1766,7 +1717,6 @@ xmlSecOpenSSLX509CertGetTime(const ASN1_TIME* t, time_t* res) {
 #define g2(p) (((p)[0]-'0')*10+(p)[1]-'0')
     if(t->type == V_ASN1_UTCTIME) {
         xmlSecAssert2(t->length > 12, -1);
-
 
         /* this code is copied from OpenSSL asn1/a_utctm.c file */
         tm.tm_year = g2(t->data);
@@ -1832,11 +1782,7 @@ xmlSecOpenSSLX509CertGetKey(X509* cert) {
 
     pKey = X509_get_pubkey(cert);
     if(pKey == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "X509_get_pubkey",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(NULL, "X509_get_pubkey");
         return(NULL);
     }
 
@@ -1885,32 +1831,20 @@ xmlSecOpenSSLX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
 
     mem = BIO_new(BIO_s_mem());
     if(mem == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "BIO_new",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "BIO_s_mem");
+        xmlSecOpenSSLError(NULL, "BIO_new");
         return(NULL);
     }
 
     ret = BIO_write(mem, buf, size);
     if(ret <= 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "BIO_write",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "size=%d", size);
+        xmlSecOpenSSLError(NULL, "BIO_write");
         BIO_free_all(mem);
         return(NULL);
     }
 
     cert = d2i_X509_bio(mem, NULL);
     if(cert == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "d2i_X509_bio",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(NULL, "d2i_X509_bio");
         BIO_free_all(mem);
         return(NULL);
     }
@@ -1930,11 +1864,7 @@ xmlSecOpenSSLX509CertBase64DerWrite(X509* cert, int base64LineWrap) {
 
     mem = BIO_new(BIO_s_mem());
     if(mem == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "BIO_new",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "BIO_s_mem");
+        xmlSecOpenSSLError(NULL, "BIO_new");
         return(NULL);
     }
 
@@ -1944,11 +1874,7 @@ xmlSecOpenSSLX509CertBase64DerWrite(X509* cert, int base64LineWrap) {
 
     size = BIO_get_mem_data(mem, &p);
     if((size <= 0) || (p == NULL)){
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "BIO_get_mem_data",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(NULL, "BIO_get_mem_data");
         BIO_free_all(mem);
         return(NULL);
     }
@@ -1999,32 +1925,20 @@ xmlSecOpenSSLX509CrlDerRead(xmlSecByte* buf, xmlSecSize size) {
 
     mem = BIO_new(BIO_s_mem());
     if(mem == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "BIO_new",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "BIO_s_mem");
+        xmlSecOpenSSLError(NULL, "BIO_new");
         return(NULL);
     }
 
     ret = BIO_write(mem, buf, size);
     if(ret <= 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "BIO_write",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "size=%d", size);
+        xmlSecOpenSSLError(NULL, "BIO_write");
         BIO_free_all(mem);
         return(NULL);
     }
 
     crl = d2i_X509_CRL_bio(mem, NULL);
     if(crl == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "d2i_X509_CRL_bio",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(NULL, "d2i_X509_CRL_bio");
         BIO_free_all(mem);
         return(NULL);
     }
@@ -2044,11 +1958,7 @@ xmlSecOpenSSLX509CrlBase64DerWrite(X509_CRL* crl, int base64LineWrap) {
 
     mem = BIO_new(BIO_s_mem());
     if(mem == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "BIO_new",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "BIO_s_mem");
+        xmlSecOpenSSLError(NULL, "BIO_new");
         return(NULL);
     }
 
@@ -2058,11 +1968,7 @@ xmlSecOpenSSLX509CrlBase64DerWrite(X509_CRL* crl, int base64LineWrap) {
 
     size = BIO_get_mem_data(mem, &p);
     if((size <= 0) || (p == NULL)){
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "BIO_get_mem_data",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(NULL, "BIO_get_mem_data");
         BIO_free_all(mem);
         return(NULL);
     }
@@ -2092,20 +1998,12 @@ xmlSecOpenSSLX509NameWrite(X509_NAME* nm) {
 
     mem = BIO_new(BIO_s_mem());
     if(mem == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "BIO_new",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "BIO_s_mem");
+        xmlSecOpenSSLError(NULL, "BIO_new");
         return(NULL);
     }
 
     if (X509_NAME_print_ex(mem, nm, 0, XN_FLAG_RFC2253) <=0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "X509_NAME_print_ex",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(NULL, "X509_NAME_print_ex");
         BIO_free_all(mem);
         return(NULL);
     }
@@ -2141,21 +2039,13 @@ xmlSecOpenSSLASN1IntegerWrite(ASN1_INTEGER *asni) {
 
     bn = ASN1_INTEGER_to_BN(asni, NULL);
     if(bn == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "ASN1_INTEGER_to_BN",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(NULL, "ASN1_INTEGER_to_BN");
         return(NULL);
     }
 
     p = BN_bn2dec(bn);
     if (p == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "BN_bn2dec",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(NULL, "BN_bn2dec");
         BN_free(bn);
         return(NULL);
     }
@@ -2192,31 +2082,19 @@ xmlSecOpenSSLX509SKIWrite(X509* cert) {
 
     index = X509_get_ext_by_NID(cert, NID_subject_key_identifier, -1);
     if (index < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "Certificate without SubjectKeyIdentifier extension",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(NULL, "X509_get_ext_by_NID(): Certificate without SubjectKeyIdentifier extension");
         return(NULL);
     }
 
     ext = X509_get_ext(cert, index);
     if (ext == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "X509_get_ext",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(NULL, "X509_get_ext");
         return(NULL);
     }
 
     keyId = X509V3_EXT_d2i(ext);
     if (keyId == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "X509V3_EXT_d2i",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(NULL, "X509V3_EXT_d2i");
         ASN1_OCTET_STRING_free(keyId);
         return(NULL);
     }

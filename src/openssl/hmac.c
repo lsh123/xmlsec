@@ -245,11 +245,7 @@ xmlSecOpenSSLHmacInitialize(xmlSecTransformPtr transform) {
     /* create hmac CTX */
     ctx->hmacCtx = HMAC_CTX_new();
     if(ctx->hmacCtx == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "HMAC_CTX_new",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(xmlSecTransformGetName(transform), "HMAC_CTX_new");
         return(-1);
     }
 
@@ -394,11 +390,7 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 #endif /* (defined(XMLSEC_OPENSSL_098)) */
 
     if(ret != 1) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "HMAC_Init_ex",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    NULL);
+        xmlSecOpenSSLError(xmlSecTransformGetName(transform), "HMAC_Init_ex");
         return(-1);
     }
 

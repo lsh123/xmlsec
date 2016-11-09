@@ -363,7 +363,7 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
     key = xmlSecKeyCreate();
     if(key == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
+                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
                     "xmlSecKeyCreate",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
@@ -373,7 +373,11 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
 
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
-        xmlSecOpenSSLError(xmlSecKeyDataGetName(data), "xmlSecKeySetValue");
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+                    "xmlSecKeySetValue",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
         xmlSecKeyDestroy(key);
         xmlSecKeyDataDestroy(data);
         return(NULL);
@@ -493,8 +497,11 @@ xmlSecOpenSSLAppKeyCertLoadBIO(xmlSecKeyPtr key, BIO* bio, xmlSecKeyDataFormat f
 
     data = xmlSecKeyEnsureData(key, xmlSecOpenSSLKeyDataX509Id);
     if(data == NULL) {
-        xmlSecOpenSSLError(xmlSecTransformKlassGetName(xmlSecOpenSSLKeyDataX509Id),
-                           "xmlSecKeyEnsureData");
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecOpenSSLKeyDataX509Id)),
+                    "xmlSecKeyEnsureData",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
 
@@ -513,7 +520,7 @@ xmlSecOpenSSLAppKeyCertLoadBIO(xmlSecKeyPtr key, BIO* bio, xmlSecKeyDataFormat f
     cert = xmlSecOpenSSLAppCertLoadBIO(bio, certFormat);
     if(cert == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
+                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
                     "xmlSecOpenSSLAppCertLoad",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
@@ -522,8 +529,11 @@ xmlSecOpenSSLAppKeyCertLoadBIO(xmlSecKeyPtr key, BIO* bio, xmlSecKeyDataFormat f
 
     ret = xmlSecOpenSSLKeyDataX509AdoptCert(data, cert);
     if(ret < 0) {
-        xmlSecOpenSSLError(xmlSecKeyDataGetName(data),
-                           "xmlSecOpenSSLKeyDataX509AdoptCert");
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+                    "xmlSecOpenSSLKeyDataX509AdoptCert",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
         X509_free(cert);
         return(-1);
     }

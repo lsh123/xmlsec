@@ -273,11 +273,8 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                                       8 * keySize,
                                       &aesKey);
             if(ret != 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "AES_set_decrypt_key",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecOpenSSLError(xmlSecTransformGetName(transform),
+                                   "AES_set_decrypt_key");
                 return(-1);
             }
 
@@ -285,11 +282,8 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                                     xmlSecBufferGetData(in), inSize,
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "xmlSecKWAesEncode",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecOpenSSLError(xmlSecTransformGetName(transform),
+                                  "xmlSecKWAesEncode");
                 return(-1);
             }
             outSize = ret;
@@ -299,11 +293,8 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                                       8 * keySize,
                                       &aesKey);
             if(ret != 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "AES_set_decrypt_key",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecOpenSSLError(xmlSecTransformGetName(transform),
+                                   "AES_set_decrypt_key");
                 return(-1);
             }
 

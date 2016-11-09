@@ -435,7 +435,7 @@ XMLSEC_EXPORT const char*       xmlSecErrorsGetMsg              (xmlSecSize pos)
  * Macro. Returns @str if it is not NULL or pointer to "NULL" otherwise.
  */
 #define xmlSecErrorsSafeString(str) \
-        (((str) != NULL) ? ((char*)(str)) : (char*)"NULL")
+        (((str) != NULL) ? ((const char*)(str)) : (char*)"NULL")
 
 /**
  * XMLSEC_ERRORS_NO_MESSAGE:

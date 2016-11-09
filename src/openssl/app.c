@@ -33,8 +33,8 @@
 #include <xmlsec/openssl/evp.h>
 #include <xmlsec/openssl/x509.h>
 
-static int      xmlSecOpenSSLAppLoadRANDFile            (const char *file);
-static int      xmlSecOpenSSLAppSaveRANDFile            (const char *file);
+static int      xmlSecOpenSSLAppLoadRANDFile            (const char *filename);
+static int      xmlSecOpenSSLAppSaveRANDFile            (const char *filename);
 static int      xmlSecOpenSSLDefaultPasswordCallback    (char *buf,
                                                          int bufsiz,
                                                          int verify,
@@ -76,11 +76,7 @@ xmlSecOpenSSLAppInit(const char* config) {
                               OPENSSL_INIT_ENGINE_ALL_BUILTIN,
                               NULL);
     if(ret != 1) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "OPENSSL_init_crypto",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(NULL, "OPENSSL_init_crypto");
         return(-1);
     }
 #endif /* OPENSSL_VERSION_NUMBER < 0x10100000 */
@@ -170,25 +166,17 @@ xmlSecOpenSSLAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
 
     bio = BIO_new_file(filename, "rb");
     if(bio == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "BIO_new_file",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "filename=%s;errno=%d",
-                    xmlSecErrorsSafeString(filename),
-                    errno);
+        xmlSecOpenSSLError(filename, "BIO_new_file");
         return(NULL);
     }
 
     key = xmlSecOpenSSLAppKeyLoadBIO (bio, format, pwd, pwdCallback, pwdCallbackCtx);
     if(key == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
+                    filename,
                     "xmlSecOpenSSLAppKeyLoadBIO",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "filename=%s;errno=%d",
-                    xmlSecErrorsSafeString(filename),
-                    errno);
+                    "errno=%d", errno);
         BIO_free(bio);
         return(NULL);
     }
@@ -223,12 +211,7 @@ xmlSecOpenSSLAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     /* this would be a read only BIO, cast from const is ok */
     bio = BIO_new_mem_buf((void*)data, dataSize);
     if(bio == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "BIO_new_mem_buf",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "errno=%d",
-                    errno);
+        xmlSecOpenSSLError(NULL, "BIO_new_mem_buf");
         return(NULL);
     }
 
@@ -292,11 +275,7 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
                             XMLSEC_PTR_TO_FUNC(pem_password_cb, pwdCallback),
                             pwdCallbackCtx);
             if(pKey == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "PEM_read_bio_PrivateKey and PEM_read_bio_PUBKEY",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecOpenSSLError(NULL, "PEM_read_bio_PrivateKey and PEM_read_bio_PUBKEY");
                 return(NULL);
             }
         }
@@ -309,11 +288,7 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
             (void)BIO_reset(bio);
             pKey = d2i_PUBKEY_bio(bio, NULL);
             if(pKey == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "d2i_PrivateKey_bio and d2i_PUBKEY_bio",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecOpenSSLError(NULL, "d2i_PrivateKey_bio and d2i_PUBKEY_bio");
                 return(NULL);
             }
         }
@@ -324,11 +299,7 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
                             XMLSEC_PTR_TO_FUNC(pem_password_cb, pwdCallback),
                             pwdCallbackCtx);
         if(pKey == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "PEM_read_bio_PrivateKey",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecOpenSSLError(NULL, "PEM_read_bio_PrivateKey");
             return(NULL);
         }
         break;
@@ -338,11 +309,7 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
                             XMLSEC_PTR_TO_FUNC(pem_password_cb, pwdCallback),
                             pwdCallbackCtx);
         if(pKey == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "d2i_PrivateKey_bio and d2i_PUBKEY_bio",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecOpenSSLError(NULL, "d2i_PrivateKey_bio and d2i_PUBKEY_bio");
             return(NULL);
         }
         break;
@@ -406,12 +373,7 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
 
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeySetValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "data=%s",
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)));
+        xmlSecOpenSSLError(xmlSecKeyDataGetName(data), "xmlSecKeySetValue");
         xmlSecKeyDestroy(key);
         xmlSecKeyDataDestroy(data);
         return(NULL);
@@ -445,25 +407,17 @@ xmlSecOpenSSLAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDat
 
     bio = BIO_new_file(filename, "rb");
     if(bio == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "BIO_new_file",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "filename=%s;errno=%d",
-                    xmlSecErrorsSafeString(filename),
-                    errno);
+        xmlSecOpenSSLError(filename, "BIO_new_file");
         return(-1);
     }
 
     ret = xmlSecOpenSSLAppKeyCertLoadBIO (key, bio, format);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
+                    filename,
                     "xmlSecOpenSSLAppKeyCertLoadBIO",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "filename=%s;errno=%d",
-                    xmlSecErrorsSafeString(filename),
-                    errno);
+                    "errno=%d", errno);
         BIO_free(bio);
         return(-1);
     }
@@ -496,12 +450,7 @@ xmlSecOpenSSLAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlS
     /* this would be a read only BIO, cast from const is ok */
     bio = BIO_new_mem_buf((void*)data, dataSize);
     if(bio == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "BIO_new_mem_buf",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "errno=%d",
-                    errno);
+        xmlSecOpenSSLError(NULL, "BIO_new_mem_buf");
         return(-1);
     }
 
@@ -544,12 +493,8 @@ xmlSecOpenSSLAppKeyCertLoadBIO(xmlSecKeyPtr key, BIO* bio, xmlSecKeyDataFormat f
 
     data = xmlSecKeyEnsureData(key, xmlSecOpenSSLKeyDataX509Id);
     if(data == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeyEnsureData",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "transform=%s",
-                    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecOpenSSLKeyDataX509Id)));
+        xmlSecOpenSSLError(xmlSecTransformKlassGetName(xmlSecOpenSSLKeyDataX509Id),
+                           "xmlSecKeyEnsureData");
         return(-1);
     }
 
@@ -577,12 +522,8 @@ xmlSecOpenSSLAppKeyCertLoadBIO(xmlSecKeyPtr key, BIO* bio, xmlSecKeyDataFormat f
 
     ret = xmlSecOpenSSLKeyDataX509AdoptCert(data, cert);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecOpenSSLKeyDataX509AdoptCert",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "data=%s",
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)));
+        xmlSecOpenSSLError(xmlSecKeyDataGetName(data),
+                           "xmlSecOpenSSLKeyDataX509AdoptCert");
         X509_free(cert);
         return(-1);
     }
@@ -613,13 +554,7 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd,
 
     bio = BIO_new_file(filename, "rb");
     if(bio == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "BIO_new_file",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "filename=%s;errno=%d",
-                    xmlSecErrorsSafeString(filename),
-                    errno);
+        xmlSecOpenSSLError(filename, "BIO_new_file");
         return(NULL);
     }
 
@@ -666,12 +601,7 @@ xmlSecOpenSSLAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     /* this would be a read only BIO, cast from const is ok */
     bio = BIO_new_mem_buf((void*)data, dataSize);
     if(bio == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "BIO_new_mem_buf",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "errno=%d",
-                    errno);
+        xmlSecOpenSSLError(NULL, "BIO_new_mem_buf");
         return(NULL);
     }
 
@@ -724,31 +654,19 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
 
     p12 = d2i_PKCS12_bio(bio, NULL);
     if(p12 == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "d2i_PKCS12_fp",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(NULL, "d2i_PKCS12_fp");
         goto done;
     }
 
     ret = PKCS12_verify_mac(p12, pwd, (pwd != NULL) ? strlen(pwd) : 0);
     if(ret != 1) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "PKCS12_verify_mac",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(NULL, "PKCS12_verify_mac");
         goto done;
     }
 
     ret = PKCS12_parse(p12, pwd, &pKey, &cert, &chain);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "PKCS12_parse",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(NULL, "PKCS12_parse");
         goto done;
     }
 
@@ -780,11 +698,7 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
     if(chain == NULL) {
         chain = sk_X509_new_null();
         if(chain == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "sk_X509_new_null",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecOpenSSLError(NULL, "sk_X509_new_null");
             goto done;
         }
     }
@@ -812,23 +726,13 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
     if(has_cert == 0) {
         tmpcert = X509_dup(cert);
         if(tmpcert == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "X509_dup",
-                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "data=%s",
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+            xmlSecOpenSSLError(xmlSecKeyDataGetName(x509Data), "X509_dup");
             goto done;
         }
 
         ret = sk_X509_push(chain, tmpcert);
         if(ret < 1) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "sk_X509_push",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "data=%s",
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+            xmlSecOpenSSLError(xmlSecKeyDataGetName(x509Data), "sk_X509_push");
             X509_free(tmpcert);
             goto done;
         }
@@ -851,12 +755,7 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
 
         tmpcert = X509_dup(sk_X509_value(chain, i));
         if(tmpcert == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "X509_dup",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "data=%s",
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+            xmlSecOpenSSLError(xmlSecKeyDataGetName(x509Data), "X509_dup");
             X509_free(tmpcert);
             goto done;
         }
@@ -1055,13 +954,7 @@ xmlSecOpenSSLAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
 
     bio = BIO_new_file(filename, "rb");
     if(bio == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "BIO_new_file",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "filename=%s;errno=%d",
-                    xmlSecErrorsSafeString(filename),
-                    errno);
+        xmlSecOpenSSLError(filename, "BIO_new_file");
         return(-1);
     }
 
@@ -1109,12 +1002,7 @@ xmlSecOpenSSLAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte*
     /* this would be a read only BIO, cast from const is ok */
     bio = BIO_new_mem_buf((void*)data, dataSize);
     if(bio == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "BIO_new_mem_buf",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "errno=%d",
-                    errno);
+        xmlSecOpenSSLError(NULL, "BIO_new_mem_buf");
         return(-1);
     }
 
@@ -1283,11 +1171,7 @@ xmlSecOpenSSLAppCertLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
     case xmlSecKeyDataFormatCertPem:
         cert = PEM_read_bio_X509_AUX(bio, NULL, NULL, NULL);
         if(cert == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "PEM_read_bio_X509_AUX",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecOpenSSLError(NULL, "PEM_read_bio_X509_AUX");
             return(NULL);
         }
         break;
@@ -1295,11 +1179,7 @@ xmlSecOpenSSLAppCertLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
     case xmlSecKeyDataFormatCertDer:
         cert = d2i_X509_bio(bio, NULL);
         if(cert == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "d2i_X509_bio",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecOpenSSLError(NULL, "d2i_X509_bio");
             return(NULL);
         }
         break;
@@ -1505,13 +1385,13 @@ static int seeded = 0;
 static int egdsocket = 0;
 
 static int
-xmlSecOpenSSLAppLoadRANDFile(const char *file) {
+xmlSecOpenSSLAppLoadRANDFile(const char *filename) {
     char buffer[1024];
 
-    if(file == NULL) {
-        file = RAND_file_name(buffer, sizeof(buffer));
+    if(filename == NULL) {
+        filename = RAND_file_name(buffer, sizeof(buffer));
 #ifndef OPENSSL_NO_EGD
-    }else if(RAND_egd(file) > 0) {
+    }else if(RAND_egd(filename) > 0) {
         /* we try if the given filename is an EGD socket.
          * if it is, we don't write anything back to the file. */
         egdsocket = 1;
@@ -1519,13 +1399,9 @@ xmlSecOpenSSLAppLoadRANDFile(const char *file) {
 #endif
     }
 
-    if((file == NULL) || !RAND_load_file(file, -1)) {
+    if((filename == NULL) || !RAND_load_file(filename, -1)) {
         if(RAND_status() == 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "RAND_load_file",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "file=%s", xmlSecErrorsSafeString(file));
+            xmlSecOpenSSLError(filename, "RAND_load_file");
             return 0;
         }
     }
@@ -1534,7 +1410,7 @@ xmlSecOpenSSLAppLoadRANDFile(const char *file) {
 }
 
 static int
-xmlSecOpenSSLAppSaveRANDFile(const char *file) {
+xmlSecOpenSSLAppSaveRANDFile(const char *filename) {
     char buffer[1024];
 
     if(egdsocket || !seeded) {
@@ -1545,16 +1421,11 @@ xmlSecOpenSSLAppSaveRANDFile(const char *file) {
         return 0;
     }
 
-    if(file == NULL) {
-        file = RAND_file_name(buffer, sizeof(buffer));
+    if(filename == NULL) {
+        filename = RAND_file_name(buffer, sizeof(buffer));
     }
-    if((file == NULL) || !RAND_write_file(file)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "RAND_write_file",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "file=%s",
-                    xmlSecErrorsSafeString(file));
+    if((filename == NULL) || !RAND_write_file(filename)) {
+        xmlSecOpenSSLError(filename, "RAND_write_file");
         return 0;
     }
 
@@ -1591,11 +1462,7 @@ xmlSecOpenSSLDefaultPasswordCallback(char *buf, int bufsize, int verify, void *u
         }
         ret = EVP_read_pw_string(buf, bufsize, (char*)prompt, 0);
         if(ret != 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "EVP_read_pw_string",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecOpenSSLError(NULL, "EVP_read_pw_string");
             return(-1);
         }
 
@@ -1621,11 +1488,7 @@ xmlSecOpenSSLDefaultPasswordCallback(char *buf, int bufsize, int verify, void *u
         }
         ret = EVP_read_pw_string(buf2, bufsize, (char*)prompt, 0);
         if(ret != 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "EVP_read_pw_string",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecOpenSSLError(NULL, "EVP_read_pw_string");
             memset(buf2, 0, bufsize);
             xmlFree(buf2);
             return(-1);

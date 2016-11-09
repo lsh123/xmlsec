@@ -66,11 +66,7 @@ xmlSecOpenSSLNodeGetBNValue(const xmlNodePtr cur, BIGNUM **a) {
 
     (*a) = BN_bin2bn(xmlSecBufferGetData(&buf), xmlSecBufferGetSize(&buf), (*a));
     if( (*a) == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "BN_bin2bn",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(NULL, "BN_bin2bn");
         xmlSecBufferFinalize(&buf);
         return(NULL);
     }
@@ -115,11 +111,7 @@ xmlSecOpenSSLNodeSetBNValue(xmlNodePtr cur, const BIGNUM *a, int addLineBreaks) 
 
     ret = BN_bn2bin(a, xmlSecBufferGetData(&buf));
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "BN_bn2bin",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(NULL, "BN_bn2bin");
         xmlSecBufferFinalize(&buf);
         return(-1);
     }

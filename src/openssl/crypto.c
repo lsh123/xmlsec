@@ -434,11 +434,7 @@ xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
     /* get random data */
     ret = RAND_bytes((xmlSecByte*)xmlSecBufferGetData(buffer), size);
     if(ret != 1) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "RAND_bytes",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "size=%d", size);
+        xmlSecOpenSSLError(NULL, "RAND_bytes");
         return(-1);
     }
     return(0);

@@ -394,11 +394,7 @@ xmlSecOpenSSLKWDes3Sha1(void * context,
     xmlSecAssert2(outSize >= SHA_DIGEST_LENGTH, -1);
 
     if(SHA1(in, inSize, out) == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "SHA1",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(NULL, "SHA1");
         return(-1);
     }
     return(SHA_DIGEST_LENGTH);
@@ -416,11 +412,7 @@ xmlSecOpenSSLKWDes3GenerateRandom(void * context,
 
     ret = RAND_bytes(out, outSize);
     if(ret != 1) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "RAND_bytes",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "ret=%d", ret);
+        xmlSecOpenSSLError(NULL, "RAND_bytes");
         return(-1);
     }
 
@@ -521,21 +513,13 @@ xmlSecOpenSSLKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
 
     cipherCtx = EVP_CIPHER_CTX_new();
     if(cipherCtx == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "EVP_CIPHER_CTX_new",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(NULL, "EVP_CIPHER_CTX_new");
         return(-1);
     }
 
     ret = EVP_CipherInit(cipherCtx, EVP_des_ede3_cbc(), key, iv, enc);
     if(ret != 1) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "EVP_CipherInit",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(NULL, "EVP_CipherInit");
         EVP_CIPHER_CTX_free(cipherCtx);
         return(-1);
     }
@@ -544,22 +528,14 @@ xmlSecOpenSSLKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
 
     ret = EVP_CipherUpdate(cipherCtx, out, &updateLen, in, inSize);
     if(ret != 1) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "EVP_CipherUpdate",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(NULL, "EVP_CipherUpdate");
         EVP_CIPHER_CTX_free(cipherCtx);
         return(-1);
     }
 
     ret = EVP_CipherFinal(cipherCtx, out + updateLen, &finalLen);
     if(ret != 1) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "EVP_CipherFinal",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(NULL, "EVP_CipherFinal");
         EVP_CIPHER_CTX_free(cipherCtx);
         return(-1);
     }

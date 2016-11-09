@@ -93,11 +93,7 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         /* generate random iv */
         ret = RAND_bytes(ctx->iv, ivLen);
         if(ret != 1) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(cipherName),
-                        "RAND_bytes",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "size=%d", ivLen);
+            xmlSecOpenSSLError(cipherName, "RAND_bytes");
             return(-1);
         }
 
@@ -138,11 +134,7 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     /* set iv */
     ret = EVP_CipherInit(ctx->cipherCtx, ctx->cipher, ctx->key, ctx->iv, encrypt);
     if(ret != 1) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(cipherName),
-                    "EVP_CipherInit",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(cipherName, "EVP_CipherIn");
         return(-1);
     }
 
@@ -204,11 +196,7 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     /* encrypt/decrypt */
     ret = EVP_CipherUpdate(ctx->cipherCtx, outBuf, &outLen, in, inSize);
     if(ret != 1) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(cipherName),
-                    "EVP_CipherUpdate",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(cipherName, "EVP_CipherUpdate");
         return(-1);
     }
     xmlSecAssert2(outLen == inSize, -1);
@@ -219,11 +207,7 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 
         ret = EVP_CipherFinal(ctx->cipherCtx, outBuf + outLen, &outLen2);
         if(ret != 1) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(cipherName),
-                        "EVP_CipherFinal",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecOpenSSLError(cipherName, "EVP_CipherFinal");
             return(-1);
         }
 
@@ -371,11 +355,7 @@ xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         if(padLen > 1) {
             ret = RAND_bytes(ctx->pad + inSize, padLen - 1);
             if(ret != 1) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(cipherName),
-                            "RAND_bytes",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            "size=%d", (int)(padLen - 1));
+                xmlSecOpenSSLError(cipherName, "RAND_bytes");
                 return(-1);
             }
         }
@@ -550,11 +530,8 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
     /* create cipher ctx */
     ctx->cipherCtx = EVP_CIPHER_CTX_new();
     if(ctx->cipherCtx == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "EVP_CIPHER_CTX_new",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(xmlSecTransformGetName(transform),
+                           "EVP_CIPHER_CTX_new");
         return(-1);
     }
 

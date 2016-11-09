@@ -244,11 +244,8 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
     /* create digest CTX */
     ctx->digestCtx = EVP_MD_CTX_new();
     if(ctx->digestCtx == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "EVP_MD_CTX_new",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOpenSSLError(xmlSecTransformGetName(transform),
+                           "EVP_MD_CTX_new");
         return(-1);
     }
 
@@ -340,11 +337,8 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
     if(transform->status == xmlSecTransformStatusNone) {
         ret = EVP_DigestInit(ctx->digestCtx, ctx->digest);
         if(ret != 1) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "EVP_DigestInit",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecOpenSSLError(xmlSecTransformGetName(transform),
+                               "EVP_DigestInit");
             return(-1);
         }
         transform->status = xmlSecTransformStatusWorking;
@@ -357,11 +351,8 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
         if(inSize > 0) {
             ret = EVP_DigestUpdate(ctx->digestCtx, xmlSecBufferGetData(in), inSize);
             if(ret != 1) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "EVP_DigestUpdate",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            "size=%d", inSize);
+                xmlSecOpenSSLError(xmlSecTransformGetName(transform),
+                                   "EVP_DigestUpdate");
                 return(-1);
             }
 
@@ -382,11 +373,8 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 
             ret = EVP_DigestFinal(ctx->digestCtx, ctx->dgst, &dgstSize);
             if(ret != 1) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "EVP_DigestFinal",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecOpenSSLError(xmlSecTransformGetName(transform),
+                                   "EVP_DigestFinal");
                 return(-1);
             }
             xmlSecAssert2(dgstSize > 0, -1);

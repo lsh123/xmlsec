@@ -127,8 +127,8 @@ xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last,
 
     children = xmlSecNodeSetGetChildren(node->doc, node, 1, 1);
     if(children == NULL) {
-        xmlSecInternalError2(xmlSecTransformGetName(transform),
-                             "xmlSecNodeSetGetChildren",
+        xmlSecInternalError2("xmlSecNodeSetGetChildren",
+                             xmlSecTransformGetName(transform),
                              "node=%s",
                              xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
         return(-1);
@@ -137,8 +137,8 @@ xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last,
     /* intersect <dsig:Signature/> node children with input nodes (if exist) */
     transform->outNodes = xmlSecNodeSetAdd(transform->inNodes, children, xmlSecNodeSetIntersection);
     if(transform->outNodes == NULL) {
-        xmlSecInternalError(xmlSecTransformGetName(transform),
-                            "xmlSecNodeSetAdd");
+        xmlSecInternalError("xmlSecNodeSetAdd", xmlSecTransformGetName(transform));
+
         xmlSecNodeSetDestroy(children);
         return(-1);
     }

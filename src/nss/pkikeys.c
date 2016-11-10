@@ -266,7 +266,8 @@ xmlSecNssPKIAdoptKey(SECKEYPrivateKey *privkey,
     xmlSecAssert2(data != NULL, NULL);
     ret = xmlSecNssPKIKeyDataAdoptKey(data, privkey, pubkey);
     if(ret < 0) {
-        xmlSecInternalError(NULL, "xmlSecNssPKIKeyDataAdoptKey");
+        xmlSecInternalError("xmlSecNssPKIKeyDataAdoptKey", NULL);
+
         xmlSecKeyDataDestroy(data);
         return(NULL);
     }
@@ -376,7 +377,8 @@ xmlSecNssPKIKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlSecAssert2(ctxSrc != NULL, -1);
 
     if (xmlSecNSSPKIKeyDataCtxDup(ctxDst, ctxSrc) != 0) {
-        xmlSecInternalError(xmlSecKeyDataGetName(dst), "xmlSecNssPKIKeydataCtxDup");
+        xmlSecInternalError("xmlSecNssPKIKeydataCtxDup", xmlSecKeyDataGetName(dst));
+
         return(-1);
     }
 
@@ -756,21 +758,24 @@ xmlSecNssKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     data = xmlSecKeyDataCreate(id);
     if(data == NULL ) {
-        xmlSecInternalError(xmlSecKeyDataKlassGetName(id), "xmlSecKeyDataCreate");
+        xmlSecInternalError("xmlSecKeyDataCreate", xmlSecKeyDataKlassGetName(id));
+
         ret = -1;
         goto done;
     }
 
     ret = xmlSecNssPKIKeyDataAdoptKey(data, NULL, pubkey);
     if(ret < 0) {
-        xmlSecInternalError(xmlSecKeyDataGetName(data), "xmlSecNssPKIKeyDataAdoptKey");
+        xmlSecInternalError("xmlSecNssPKIKeyDataAdoptKey", xmlSecKeyDataGetName(data));
+
         goto done;
     }
     pubkey = NULL;
 
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
-        xmlSecInternalError(xmlSecKeyDataGetName(data), "xmlSecKeySetValue");
+        xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyDataGetName(data));
+
         goto done;
     }
     data = NULL;
@@ -960,7 +965,8 @@ xmlSecNssKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKe
 
     ret = xmlSecNssPKIKeyDataAdoptKey(data, privkey, pubkey);
     if(ret < 0) {
-        xmlSecInternalError(xmlSecKeyDataGetName(data), "xmlSecNssPKIKeyDataAdoptKey");
+        xmlSecInternalError("xmlSecNssPKIKeyDataAdoptKey", xmlSecKeyDataGetName(data));
+
         goto done;
     }
 
@@ -1304,14 +1310,16 @@ xmlSecNssKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     data = xmlSecKeyDataCreate(id);
     if(data == NULL ) {
-        xmlSecInternalError(xmlSecKeyDataKlassGetName(id), "xmlSecKeyDataCreate");
+        xmlSecInternalError("xmlSecKeyDataCreate", xmlSecKeyDataKlassGetName(id));
+
         ret = -1;
         goto done;
     }
 
     ret = xmlSecNssPKIKeyDataAdoptKey(data, NULL, pubkey);
     if(ret < 0) {
-        xmlSecInternalError(xmlSecKeyDataKlassGetName(id), "xmlSecNssPKIKeyDataAdoptKey");
+        xmlSecInternalError("xmlSecNssPKIKeyDataAdoptKey", xmlSecKeyDataKlassGetName(id));
+
         xmlSecKeyDataDestroy(data);
         goto done;
     }
@@ -1319,7 +1327,8 @@ xmlSecNssKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
-        xmlSecInternalError(xmlSecKeyDataKlassGetName(id), "xmlSecKeySetValue");
+        xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyDataKlassGetName(id));
+
         xmlSecKeyDataDestroy(data);
         goto done;
     }
@@ -1445,7 +1454,8 @@ xmlSecNssKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKe
 
     ret = xmlSecNssPKIKeyDataAdoptKey(data, privkey, pubkey);
     if(ret < 0) {
-        xmlSecInternalError(xmlSecKeyDataGetName(data), "xmlSecNssPKIKeyDataAdoptKey");
+        xmlSecInternalError("xmlSecNssPKIKeyDataAdoptKey", xmlSecKeyDataGetName(data));
+
         goto done;
     }
 

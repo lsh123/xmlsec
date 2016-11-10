@@ -204,7 +204,8 @@ xmlSecMSCryptoDigestInitialize(xmlSecTransformPtr transform) {
 
     ctx->provider = xmlSecMSCryptoFindProvider(ctx->providers, NULL, CRYPT_VERIFYCONTEXT, TRUE);
     if(ctx->provider == 0) {
-        xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecMSCryptoFindProvider");
+        xmlSecInternalError("xmlSecMSCryptoFindProvider", xmlSecTransformGetName(transform));
+
         return(-1);
     }
 

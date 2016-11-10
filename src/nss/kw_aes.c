@@ -252,7 +252,8 @@ xmlSecNssKWAesInitialize(xmlSecTransformPtr transform) {
 
     ret = xmlSecBufferInitialize(&(ctx->keyBuffer), 0);
     if(ret < 0) {
-        xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecBufferInitialize");
+        xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
+
         return(-1);
     }
 
@@ -420,7 +421,8 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
                                     xmlSecBufferGetData(in), inSize,
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
-                xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecKWAesEncode");
+                xmlSecInternalError("xmlSecKWAesEncode", xmlSecTransformGetName(transform));
+
                 PK11_FreeSymKey(aeskey);
                 return(-1);
             }
@@ -446,7 +448,8 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
                                     xmlSecBufferGetData(in), inSize,
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
-                xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecKWAesDecode");
+                xmlSecInternalError("xmlSecKWAesDecode", xmlSecTransformGetName(transform));
+
                 PK11_FreeSymKey(aeskey);
                 return(-1);
             }
@@ -511,7 +514,8 @@ xmlSecNSSKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
     /* one block */
     ret = xmlSecNssAesOp(aeskey, in, out, 1); /* encrypt */
     if(ret < 0) {
-        xmlSecInternalError(NULL, "xmlSecNssAesOp");
+        xmlSecInternalError("xmlSecNssAesOp", NULL);
+
         return(-1);
     }
     return(XMLSEC_KW_AES_BLOCK_SIZE);
@@ -533,7 +537,8 @@ xmlSecNSSKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
     /* one block */
     ret = xmlSecNssAesOp(aeskey, in, out, 0); /* decrypt */
     if(ret < 0) {
-        xmlSecInternalError(NULL, "xmlSecNssAesOp");
+        xmlSecInternalError("xmlSecNssAesOp", NULL);
+
         return(-1);
     }
     return(XMLSEC_KW_AES_BLOCK_SIZE);

@@ -335,7 +335,8 @@ xmlSecOpenSSLSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     pKey = xmlSecOpenSSLEvpKeyDataGetEvp(value);
     if(pKey == NULL) {
-        xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecOpenSSLEvpKeyDataGetEvp");
+        xmlSecInternalError("xmlSecOpenSSLEvpKeyDataGetEvp", xmlSecTransformGetName(transform));
+
         return(-1);
     }
 
@@ -345,7 +346,8 @@ xmlSecOpenSSLSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     ctx->pKey = xmlSecOpenSSLEvpKeyDup(pKey);
     if(ctx->pKey == NULL) {
-        xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecOpenSSLEvpKeyDup");
+        xmlSecInternalError("xmlSecOpenSSLEvpKeyDup", xmlSecTransformGetName(transform));
+
         return(-1);
     }
 
@@ -398,7 +400,8 @@ xmlSecOpenSSLSignatureVerify(xmlSecTransformPtr transform,
 
     ret = (ctx->verifyCallback)(ctx, data, dataSize);
     if(ret < 0) {
-        xmlSecInternalError(xmlSecTransformGetName(transform), "verifyCallback");
+        xmlSecInternalError("verifyCallback", xmlSecTransformGetName(transform));
+
         return(-1);
     }
 
@@ -464,7 +467,8 @@ xmlSecOpenSSLSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 
         ret = xmlSecBufferRemoveHead(in, inSize);
         if(ret < 0) {
-            xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecBufferRemoveHead");
+            xmlSecInternalError("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform));
+
             return(-1);
         }
     }
@@ -484,7 +488,8 @@ xmlSecOpenSSLSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTran
         if(transform->operation == xmlSecTransformOperationSign) {
             ret = (ctx->signCallback)(ctx, out);
             if(ret < 0) {
-                xmlSecInternalError(xmlSecTransformGetName(transform), "signCallback");
+                xmlSecInternalError("signCallback", xmlSecTransformGetName(transform));
+
                 return(-1);
             }
         }
@@ -936,7 +941,8 @@ xmlSecOpenSSLSignatureEcdsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPt
     /* calculate signature size */
     signHalfSize = xmlSecOpenSSLSignatureEcdsaSignatureHalfSize(ecKey);
     if(signHalfSize <= 0) {
-        xmlSecInternalError(NULL, "xmlSecOpenSSLSignatureEcdsaSignatureHalfSize");
+        xmlSecInternalError("xmlSecOpenSSLSignatureEcdsaSignatureHalfSize", NULL);
+
         goto done;
     }
 
@@ -1037,7 +1043,8 @@ xmlSecOpenSSLSignatureEcdsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSec
     /* calculate signature size */
     signHalfSize = xmlSecOpenSSLSignatureEcdsaSignatureHalfSize(ecKey);
     if(signHalfSize <= 0) {
-        xmlSecInternalError(NULL, "xmlSecOpenSSLSignatureEcdsaSignatureHalfSize");
+        xmlSecInternalError("xmlSecOpenSSLSignatureEcdsaSignatureHalfSize", NULL);
+
         goto done;
     }
 

@@ -624,7 +624,8 @@ xmlSecGCryptBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTra
                         (transform->operation == xmlSecTransformOperationEncrypt) ? 1 : 0,
                         xmlSecTransformGetName(transform), transformCtx);
             if(ret < 0) {
-                xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecGCryptBlockCipherCtxInit");
+                xmlSecInternalError("xmlSecGCryptBlockCipherCtxInit", xmlSecTransformGetName(transform));
+
                 return(-1);
             }
         }
@@ -641,7 +642,8 @@ xmlSecGCryptBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTra
                         (transform->operation == xmlSecTransformOperationEncrypt) ? 1 : 0,
                         xmlSecTransformGetName(transform), transformCtx);
             if(ret < 0) {
-                xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecGCryptBlockCipherCtxUpdate");
+                xmlSecInternalError("xmlSecGCryptBlockCipherCtxUpdate", xmlSecTransformGetName(transform));
+
                 return(-1);
             }
         }
@@ -651,7 +653,8 @@ xmlSecGCryptBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTra
                         (transform->operation == xmlSecTransformOperationEncrypt) ? 1 : 0,
                         xmlSecTransformGetName(transform), transformCtx);
             if(ret < 0) {
-                xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecGCryptBlockCipherCtxFinal");
+                xmlSecInternalError("xmlSecGCryptBlockCipherCtxFinal", xmlSecTransformGetName(transform));
+
                 return(-1);
             }
             transform->status = xmlSecTransformStatusFinished;

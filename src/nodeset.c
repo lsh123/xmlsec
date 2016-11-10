@@ -310,14 +310,16 @@ xmlSecNodeSetAddList(xmlSecNodeSetPtr nset, xmlSecNodeSetPtr newNSet, xmlSecNode
 
     tmp1 = xmlSecNodeSetCreate(newNSet->doc, NULL, xmlSecNodeSetList);
     if(tmp1 == NULL) {
-        xmlSecInternalError(NULL, "xmlSecNodeSetCreate");
+        xmlSecInternalError("xmlSecNodeSetCreate", NULL);
+
         return(NULL);
     }
     tmp1->children = newNSet;
 
     tmp2 = xmlSecNodeSetAdd(nset, tmp1, op);
     if(tmp2 == NULL) {
-        xmlSecInternalError(NULL, "xmlSecNodeSetAdd");
+        xmlSecInternalError("xmlSecNodeSetAdd", NULL);
+
         xmlSecNodeSetDestroy(tmp1);
         return(NULL);
     }

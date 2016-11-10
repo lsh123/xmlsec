@@ -316,7 +316,8 @@ xmlSecOpenSSLEvpSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
 
     pKey = xmlSecOpenSSLEvpKeyDataGetEvp(value);
     if(pKey == NULL) {
-        xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecOpenSSLEvpKeyDataGetEvp");
+        xmlSecInternalError("xmlSecOpenSSLEvpKeyDataGetEvp", xmlSecTransformGetName(transform));
+
         return(-1);
     }
 
@@ -326,7 +327,8 @@ xmlSecOpenSSLEvpSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
 
     ctx->pKey = xmlSecOpenSSLEvpKeyDup(pKey);
     if(ctx->pKey == NULL) {
-        xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecOpenSSLEvpKeyDup");
+        xmlSecInternalError("xmlSecOpenSSLEvpKeyDup", xmlSecTransformGetName(transform));
+
         return(-1);
     }
 
@@ -459,7 +461,8 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
 
         ret = xmlSecBufferRemoveHead(in, inSize);
         if(ret < 0) {
-            xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecBufferRemoveHead");
+            xmlSecInternalError("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform));
+
             return(-1);
         }
     }

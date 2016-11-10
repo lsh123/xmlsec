@@ -278,7 +278,8 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         keyparms,  sizeof(keyparms) / sizeof(keyparms[0])
     );
     if(ret < 0) {
-        xmlSecInternalError(NULL, "xmlSecGCryptAsn1ParseIntegerSequence");
+        xmlSecInternalError("xmlSecGCryptAsn1ParseIntegerSequence", NULL);
+
         goto done;
     }
     keyparms_num = ret;

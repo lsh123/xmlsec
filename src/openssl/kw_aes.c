@@ -114,7 +114,8 @@ xmlSecOpenSSLKWAesInitialize(xmlSecTransformPtr transform) {
 
     ret = xmlSecBufferInitialize(&(ctx->keyBuffer), 0);
     if(ret < 0) {
-        xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecOpenSSLKWAesGetKey");
+        xmlSecInternalError("xmlSecOpenSSLKWAesGetKey", xmlSecTransformGetName(transform));
+
         return(-1);
     }
 
@@ -278,7 +279,8 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                                     xmlSecBufferGetData(in), inSize,
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
-                xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecKWAesEncode");
+                xmlSecInternalError("xmlSecKWAesEncode", xmlSecTransformGetName(transform));
+
                 return(-1);
             }
             outSize = ret;
@@ -297,7 +299,8 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                                     xmlSecBufferGetData(in), inSize,
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
-                xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecKWAesEncode");
+                xmlSecInternalError("xmlSecKWAesEncode", xmlSecTransformGetName(transform));
+
                 return(-1);
             }
             outSize = ret;

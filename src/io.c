@@ -154,7 +154,8 @@ xmlSecIOInit(void) {
 
     ret = xmlSecPtrListInitialize(&xmlSecAllIOCallbacks, xmlSecIOCallbackPtrListId);
     if(ret < 0) {
-        xmlSecInternalError(NULL, "xmlSecPtrListPtrInitialize");
+        xmlSecInternalError("xmlSecPtrListPtrInitialize", NULL);
+
         return(-1);
     }
 
@@ -222,13 +223,15 @@ xmlSecIORegisterCallbacks(xmlInputMatchCallback matchFunc,
 
     callbacks = xmlSecIOCallbackCreate(matchFunc, openFunc, readFunc, closeFunc);
     if(callbacks == NULL) {
-        xmlSecInternalError(NULL, "xmlSecIOCallbackCreate");
+        xmlSecInternalError("xmlSecIOCallbackCreate", NULL);
+
         return(-1);
     }
 
     ret = xmlSecPtrListAdd(&xmlSecAllIOCallbacks, callbacks);
     if(ret < 0) {
-        xmlSecInternalError(NULL, "xmlSecPtrListAdd");
+        xmlSecInternalError("xmlSecPtrListAdd", NULL);
+
         xmlSecIOCallbackDestroy(callbacks);
         return(-1);
     }
@@ -251,7 +254,8 @@ xmlSecIORegisterDefaultCallbacks(void) {
     ret = xmlSecIORegisterCallbacks(xmlIOHTTPMatch, xmlIOHTTPOpen,
                               xmlIOHTTPRead, xmlIOHTTPClose);
     if(ret < 0) {
-        xmlSecInternalError(NULL, "xmlSecIORegisterCallbacks(http)");
+        xmlSecInternalError("xmlSecIORegisterCallbacks(http)", NULL);
+
         return(-1);
     }
 #endif /* LIBXML_HTTP_ENABLED */
@@ -260,7 +264,8 @@ xmlSecIORegisterDefaultCallbacks(void) {
     ret = xmlSecIORegisterCallbacks(xmlIOFTPMatch, xmlIOFTPOpen,
                               xmlIOFTPRead, xmlIOFTPClose);
     if(ret < 0) {
-        xmlSecInternalError(NULL, "xmlSecIORegisterCallbacks(ftp)");
+        xmlSecInternalError("xmlSecIORegisterCallbacks(ftp)", NULL);
+
         return(-1);
     }
 #endif /* LIBXML_FTP_ENABLED */
@@ -268,7 +273,8 @@ xmlSecIORegisterDefaultCallbacks(void) {
     ret = xmlSecIORegisterCallbacks(xmlFileMatch, xmlFileOpen,
                               xmlFileRead, xmlFileClose);
     if(ret < 0) {
-        xmlSecInternalError(NULL, "xmlSecIORegisterCallbacks(file)");
+        xmlSecInternalError("xmlSecIORegisterCallbacks(file)", NULL);
+
         return(-1);
     }
 
@@ -463,9 +469,9 @@ xmlSecTransformInputURIFinalize(xmlSecTransformPtr transform) {
 
     ret = xmlSecTransformInputURIClose(transform);
     if(ret < 0) {
-        xmlSecInternalError2(xmlSecTransformGetName(transform),
-					         "xmlSecTransformInputURIClose",
-					         "ret=%d", ret);
+        xmlSecInternalError2("xmlSecTransformInputURIClose",
+                             xmlSecTransformGetName(transform),
+                             "ret=%d", ret);
 		/* ignore the error */
 		/* return; */
 	}

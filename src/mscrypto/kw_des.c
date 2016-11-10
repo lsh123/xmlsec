@@ -197,21 +197,24 @@ xmlSecMSCryptoKWDes3Initialize(xmlSecTransformPtr transform) {
 
     ret = xmlSecBufferInitialize(&(ctx->keyBuffer), 0);
     if(ret < 0) {
-        xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecBufferInitialize");
+        xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
+
         return(-1);
     }
 
     /* find providers */
     ctx->desCryptProvider = xmlSecMSCryptoFindProvider(ctx->desProviders, NULL, CRYPT_VERIFYCONTEXT, TRUE);
     if(ctx->desCryptProvider == 0) {
-        xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecMSCryptoFindProvider(des)");
+        xmlSecInternalError("xmlSecMSCryptoFindProvider(des)", xmlSecTransformGetName(transform));
+
 
         return(-1);
     }
 
     ctx->sha1CryptProvider = xmlSecMSCryptoFindProvider(ctx->sha1Providers, NULL, CRYPT_VERIFYCONTEXT, TRUE);
     if(ctx->sha1CryptProvider == 0) {
-        xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecMSCryptoFindProvider(sha1)");
+        xmlSecInternalError("xmlSecMSCryptoFindProvider(sha1)", xmlSecTransformGetName(transform));
+
 
         return(-1);
     }
@@ -575,7 +578,8 @@ xmlSecMSCryptoKWDes3BlockEncrypt(void * context,
         TRUE,
         &cryptKey))  {
 
-        xmlSecInternalError(NULL, "xmlSecMSCryptoImportPlainSessionBlob");
+        xmlSecInternalError("xmlSecMSCryptoImportPlainSessionBlob", NULL);
+
         return(-1);
     }
     xmlSecAssert2(cryptKey != 0, -1);
@@ -655,7 +659,8 @@ xmlSecMSCryptoKWDes3BlockDecrypt(void * context,
         TRUE,
         &cryptKey))  {
 
-        xmlSecInternalError(NULL, "xmlSecMSCryptoImportPlainSessionBlob");
+        xmlSecInternalError("xmlSecMSCryptoImportPlainSessionBlob", NULL);
+
         return(-1);
     }
     xmlSecAssert2(cryptKey != 0, -1);

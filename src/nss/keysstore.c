@@ -175,7 +175,8 @@ xmlSecNssKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
 
         ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx, NULL);
         if(ret < 0) {
-            xmlSecInternalError(xmlSecKeyStoreGetName(store), "xmlSecKeyInfoCtxInitialize");
+            xmlSecInternalError("xmlSecKeyInfoCtxInitialize", xmlSecKeyStoreGetName(store));
+
             xmlSecKeyDestroy(key);
             xmlFreeDoc(doc);
             return(-1);
@@ -191,7 +192,8 @@ xmlSecNssKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
 
         ret = xmlSecKeyInfoNodeRead(cur, key, &keyInfoCtx);
         if(ret < 0) {
-            xmlSecInternalError(xmlSecKeyStoreGetName(store), "xmlSecKeyInfoNodeRead");
+            xmlSecInternalError("xmlSecKeyInfoNodeRead", xmlSecKeyStoreGetName(store));
+
             xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
             xmlSecKeyDestroy(key);
             xmlFreeDoc(doc);
@@ -202,7 +204,8 @@ xmlSecNssKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
         if(xmlSecKeyIsValid(key)) {
             ret = xmlSecNssKeysStoreAdoptKey(store, key);
             if(ret < 0) {
-                xmlSecInternalError(xmlSecKeyStoreGetName(store), "xmlSecNssKeysStoreAdoptKey");
+                xmlSecInternalError("xmlSecNssKeysStoreAdoptKey", xmlSecKeyStoreGetName(store));
+
                 xmlSecKeyDestroy(key);
                 xmlFreeDoc(doc);
                 return(-1);
@@ -357,7 +360,8 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 
         data = xmlSecNssPKIAdoptKey(privkey, pubkey);
         if(data == NULL) {
-            xmlSecInternalError(NULL, "xmlSecNssPKIAdoptKey");
+            xmlSecInternalError("xmlSecNssPKIAdoptKey", NULL);
+
             goto done;
         }
         privkey = NULL;
@@ -365,14 +369,15 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 
         key = xmlSecKeyCreate();
         if (key == NULL) {
-            xmlSecInternalError(NULL, "xmlSecKeyCreate");
+            xmlSecInternalError("xmlSecKeyCreate", NULL);
+
             return (NULL);
         }
 
         x509Data = xmlSecKeyDataCreate(xmlSecNssKeyDataX509Id);
         if(x509Data == NULL) {
-            xmlSecInternalError(xmlSecTransformKlassGetName(xmlSecNssKeyDataX509Id),
-                                "xmlSecKeyDataCreate");
+            xmlSecInternalError("xmlSecKeyDataCreate", xmlSecTransformKlassGetName(xmlSecNssKeyDataX509Id));
+
             goto done;
         }
 

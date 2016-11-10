@@ -71,7 +71,8 @@ xmlSecPtrListCreate(xmlSecPtrListId id) {
 
     ret = xmlSecPtrListInitialize(list, id);
     if(ret < 0) {
-        xmlSecInternalError(xmlSecPtrListKlassGetName(id), "xmlSecPtrListInitialize");
+        xmlSecInternalError("xmlSecPtrListInitialize", xmlSecPtrListKlassGetName(id));
+
         xmlFree(list);
         return(NULL);
     }
@@ -182,8 +183,7 @@ xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
     /* allocate memory */
     ret = xmlSecPtrListEnsureSize(dst, dst->use + src->use);
     if(ret < 0) {
-        xmlSecInternalError2(xmlSecPtrListGetName(src),
-                             "xmlSecPtrListEnsureSize",
+        xmlSecInternalError2("xmlSecPtrListEnsureSize", xmlSecPtrListGetName(src),
                              "size=%d", src->use);
         return(-1);
     }
@@ -196,7 +196,8 @@ xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
         if((dst->id->duplicateItem != NULL) && (src->data[i] != NULL)) {
             dst->data[dst->use] = dst->id->duplicateItem(src->data[i]);
             if(dst->data[dst->use] == NULL) {
-                xmlSecInternalError(xmlSecPtrListGetName(src), "duplicateItem");
+                xmlSecInternalError("duplicateItem", xmlSecPtrListGetName(src));
+
                 return(-1);
             }
         } else {
@@ -224,13 +225,15 @@ xmlSecPtrListDuplicate(xmlSecPtrListPtr list) {
 
     newList = xmlSecPtrListCreate(list->id);
     if(newList == NULL) {
-        xmlSecInternalError(xmlSecPtrListGetName(list), "xmlSecPtrListCreate");
+        xmlSecInternalError("xmlSecPtrListCreate", xmlSecPtrListGetName(list));
+
         return(NULL);
     }
 
     ret = xmlSecPtrListCopy(newList, list);
     if(ret < 0) {
-        xmlSecInternalError(xmlSecPtrListGetName(list), "xmlSecPtrListCopy");
+        xmlSecInternalError("xmlSecPtrListCopy", xmlSecPtrListGetName(list));
+
         xmlSecPtrListDestroy(newList);
         return(NULL);
     }
@@ -288,9 +291,8 @@ xmlSecPtrListAdd(xmlSecPtrListPtr list, xmlSecPtr item) {
 
     ret = xmlSecPtrListEnsureSize(list, list->use + 1);
     if(ret < 0) {
-        xmlSecInternalError2(xmlSecPtrListGetName(list),
-                            "xmlSecPtrListAdd",
-                            "size=%d", list->use + 1);
+        xmlSecInternalError2("xmlSecPtrListAdd", xmlSecPtrListGetName(list),
+                             "size=%d", list->use + 1);
         return(-1);
     }
 

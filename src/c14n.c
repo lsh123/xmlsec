@@ -84,7 +84,8 @@ xmlSecTransformC14NInitialize(xmlSecTransformPtr transform) {
 
     ret = xmlSecPtrListInitialize(nsList, xmlSecStringListId);
     if(ret < 0) {
-        xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecPtrListInitialize");
+        xmlSecInternalError("xmlSecPtrListInitialize", xmlSecTransformGetName(transform));
+
         return(-1);
     }
     return(0);
@@ -162,7 +163,8 @@ xmlSecTransformC14NNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSe
 
             ret = xmlSecPtrListAdd(nsList, tmp);
             if(ret < 0) {
-                xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecPtrListAdd");
+                xmlSecInternalError("xmlSecPtrListAdd", xmlSecTransformGetName(transform));
+
                 xmlFree(tmp);
                 xmlFree(list);
                 return(-1);
@@ -173,7 +175,8 @@ xmlSecTransformC14NNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSe
         /* add NULL at the end */
         ret = xmlSecPtrListAdd(nsList, NULL);
         if(ret < 0) {
-            xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecPtrListAdd");
+            xmlSecInternalError("xmlSecPtrListAdd", xmlSecTransformGetName(transform));
+
             return(-1);
         }
 
@@ -227,15 +230,15 @@ xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
     if(transform->next != NULL) {
         buf = xmlSecTransformCreateOutputBuffer(transform->next, transformCtx);
         if(buf == NULL) {
-            xmlSecInternalError(xmlSecTransformGetName(transform),
-                                "xmlSecTransformCreateOutputBuffer");
+            xmlSecInternalError("xmlSecTransformCreateOutputBuffer", xmlSecTransformGetName(transform));
+
             return(-1);
         }
     } else {
         buf = xmlSecBufferCreateOutputBuffer(&(transform->outBuf));
         if(buf == NULL) {
-            xmlSecInternalError(xmlSecTransformGetName(transform),
-                                "xmlSecBufferCreateOutputBuffer");
+            xmlSecInternalError("xmlSecBufferCreateOutputBuffer", xmlSecTransformGetName(transform));
+
             return(-1);
         }
     }
@@ -247,8 +250,8 @@ xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
 
     ret = xmlSecTransformC14NExecute(transform->id, nodes, (xmlChar**)(nsList->data), buf);
     if(ret < 0) {
-        xmlSecInternalError(xmlSecTransformGetName(transform),
-                            "xmlSecTransformC14NExecute");
+        xmlSecInternalError("xmlSecTransformC14NExecute", xmlSecTransformGetName(transform));
+
         xmlOutputBufferClose(buf);
         return(-1);
     }
@@ -295,16 +298,16 @@ xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
         /* get xml data from previous transform */
         ret = xmlSecTransformPopXml(transform->prev, &(transform->inNodes), transformCtx);
         if(ret < 0) {
-            xmlSecInternalError(xmlSecTransformGetName(transform),
-                                "xmlSecTransformPopXml");
+            xmlSecInternalError("xmlSecTransformPopXml", xmlSecTransformGetName(transform));
+
             return(-1);
         }
 
         /* dump everything to internal buffer */
         buf = xmlSecBufferCreateOutputBuffer(out);
         if(buf == NULL) {
-            xmlSecInternalError(xmlSecTransformGetName(transform),
-                                "xmlSecBufferCreateOutputBuffer");
+            xmlSecInternalError("xmlSecBufferCreateOutputBuffer", xmlSecTransformGetName(transform));
+
             return(-1);
         }
 
@@ -315,8 +318,8 @@ xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
 
         ret = xmlSecTransformC14NExecute(transform->id, transform->inNodes, (xmlChar**)(nsList->data), buf);
         if(ret < 0) {
-            xmlSecInternalError(xmlSecTransformGetName(transform),
-                                "xmlSecTransformC14NExecute");
+            xmlSecInternalError("xmlSecTransformC14NExecute", xmlSecTransformGetName(transform));
+
             xmlOutputBufferClose(buf);
             return(-1);
         }
@@ -349,8 +352,8 @@ xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
             memcpy(data, xmlSecBufferGetData(&(transform->outBuf)), outSize);
             ret = xmlSecBufferRemoveHead(&(transform->outBuf), outSize);
             if(ret < 0) {
-                xmlSecInternalError2(xmlSecTransformGetName(transform),
-                                     "xmlSecBufferRemoveHead",
+                xmlSecInternalError2("xmlSecBufferRemoveHead",
+                                     xmlSecTransformGetName(transform),
                                      "size=%d", outSize);
                 return(-1);
             }

@@ -246,7 +246,8 @@ int
 xmlSecNssInit (void)  {
     /* Check loaded xmlsec library version */
     if(xmlSecCheckVersionExact() != 1) {
-        xmlSecInternalError(NULL, "xmlSecCheckVersionExact");
+        xmlSecInternalError("xmlSecCheckVersionExact", NULL);
+
         return(-1);
     }
 
@@ -255,7 +256,8 @@ xmlSecNssInit (void)  {
 
     /* register our klasses */
     if(xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(xmlSecCryptoGetFunctions_nss()) < 0) {
-        xmlSecInternalError(NULL, "xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms");
+        xmlSecInternalError("xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms", NULL);
+
         return(-1);
     }
 
@@ -305,7 +307,8 @@ xmlSecNssKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 
         ret = xmlSecKeysMngrAdoptDataStore(mngr, x509Store);
         if(ret < 0) {
-            xmlSecInternalError(NULL, "xmlSecKeysMngrAdoptDataStore");
+            xmlSecInternalError("xmlSecKeysMngrAdoptDataStore", NULL);
+
             xmlSecKeyDataStoreDestroy(x509Store);
             return(-1);
         }

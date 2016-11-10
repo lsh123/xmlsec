@@ -172,7 +172,8 @@ xmlSecMSCryptoKWAesInitialize(xmlSecTransformPtr transform) {
     /* find provider */
     ctx->cryptProvider = xmlSecMSCryptoFindProvider(ctx->providers, NULL, CRYPT_VERIFYCONTEXT, TRUE);
     if(ctx->cryptProvider == 0) {
-        xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecMSCryptoFindProvider");
+        xmlSecInternalError("xmlSecMSCryptoFindProvider", xmlSecTransformGetName(transform));
+
 
         return(-1);
     }
@@ -346,7 +347,8 @@ xmlSecMSCryptoKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfo
                                     xmlSecBufferGetData(in), inSize,
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
-                xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecKWAesEncode");
+                xmlSecInternalError("xmlSecKWAesEncode", xmlSecTransformGetName(transform));
+
                 return(-1);
             }
             outSize = ret;
@@ -355,7 +357,8 @@ xmlSecMSCryptoKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfo
                                     xmlSecBufferGetData(in), inSize,
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
-                xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecKWAesEncode");
+                xmlSecInternalError("xmlSecKWAesEncode", xmlSecTransformGetName(transform));
+
                 return(-1);
             }
             outSize = ret;
@@ -428,7 +431,8 @@ xmlSecMSCryptoKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
         TRUE,
         &cryptKey))  {
 
-        xmlSecInternalError(NULL, "xmlSecMSCryptoImportPlainSessionBlob");
+        xmlSecInternalError("xmlSecMSCryptoImportPlainSessionBlob", NULL);
+
         return(-1);
     }
     xmlSecAssert2(cryptKey != 0, -1);
@@ -480,7 +484,8 @@ xmlSecMSCryptoKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
         TRUE,
         &cryptKey))  {
 
-        xmlSecInternalError(NULL, "xmlSecMSCryptoImportPlainSessionBlob");
+        xmlSecInternalError("xmlSecMSCryptoImportPlainSessionBlob", NULL);
+
         return(-1);
     }
     xmlSecAssert2(cryptKey != 0, -1);

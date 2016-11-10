@@ -253,7 +253,8 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransfor
     doc = xmlSecParseMemory(xmlBufferContent(buffer),
                              xmlBufferLength(buffer), 1);
     if(doc == NULL) {
-        xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecParseMemory");
+        xmlSecInternalError("xmlSecParseMemory", xmlSecTransformGetName(transform));
+
         xmlBufferFree(buffer);
         return(-1);
     }
@@ -359,7 +360,8 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
 
         docOut = xmlSecXsApplyStylesheet(ctx, docIn);
         if(docOut == NULL) {
-            xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecXsApplyStylesheet");
+            xmlSecInternalError("xmlSecXsApplyStylesheet", xmlSecTransformGetName(transform));
+
             xmlFreeDoc(docIn);
             return(-1);
         }
@@ -368,14 +370,16 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         if(transform->next != NULL) {
             output = xmlSecTransformCreateOutputBuffer(transform->next, transformCtx);
             if(output == NULL) {
-                xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecTransformCreateOutputBuffer");
+                xmlSecInternalError("xmlSecTransformCreateOutputBuffer", xmlSecTransformGetName(transform));
+
                 xmlFreeDoc(docOut);
                 return(-1);
             }
         } else {
             output = xmlSecBufferCreateOutputBuffer(&(transform->outBuf));
             if(output == NULL) {
-                xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecBufferCreateOutputBuffer");
+                xmlSecInternalError("xmlSecBufferCreateOutputBuffer", xmlSecTransformGetName(transform));
+
                 xmlFreeDoc(docOut);
                 return(-1);
             }
@@ -443,14 +447,15 @@ xmlSecXsltExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr 
 
         ret = xmlSecXslProcess(ctx, in, out);
         if(ret < 0) {
-            xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecXslProcess");
+            xmlSecInternalError("xmlSecXslProcess", xmlSecTransformGetName(transform));
+
             return(-1);
         }
 
         ret = xmlSecBufferRemoveHead(in, inSize);
         if(ret < 0) {
-            xmlSecInternalError2(xmlSecTransformGetName(transform),
-                                 "xmlSecBufferRemoveHead",
+            xmlSecInternalError2("xmlSecBufferRemoveHead",
+                                 xmlSecTransformGetName(transform),
                                  "size=%d", inSize);
             return(-1);
         }
@@ -485,19 +490,22 @@ xmlSecXslProcess(xmlSecXsltCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) 
 
     docIn = xmlSecParseMemory(xmlSecBufferGetData(in), xmlSecBufferGetSize(in), 1);
     if(docIn == NULL) {
-        xmlSecInternalError(NULL, "xmlSecParseMemory");
+        xmlSecInternalError("xmlSecParseMemory", NULL);
+
         goto done;
     }
 
     docOut = xmlSecXsApplyStylesheet(ctx, docIn);
     if(docOut == NULL) {
-        xmlSecInternalError(NULL, "xmlSecXsApplyStylesheet");
+        xmlSecInternalError("xmlSecXsApplyStylesheet", NULL);
+
         goto done;
     }
 
     output = xmlSecBufferCreateOutputBuffer(out);
     if(output == NULL) {
-        xmlSecInternalError(NULL, "xmlSecBufferCreateOutputBuffer");
+        xmlSecInternalError("xmlSecBufferCreateOutputBuffer", NULL);
+
         goto done;
     }
 

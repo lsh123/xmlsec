@@ -65,7 +65,8 @@ Noteworthy changes in version 1.4.3 (2008-09-18)
 
     /* NOTE configure.in defines GCRYPT_MIN_VERSION */
     if (!gcry_check_version (GCRYPT_MIN_VERSION)) {
-        xmlSecInternalError(NULL, "gcry_check_version");
+        xmlSecInternalError("gcry_check_version", NULL);
+
         return(-1);
     }
 
@@ -109,7 +110,8 @@ xmlSecGCryptAppShutdown(void) {
 
     err = gcry_control(GCRYCTL_TERM_SECMEM);
     if (gcry_err_code(err)) {
-        xmlSecInternalError(NULL, "gcry_control(GCRYCTL_TERM_SECMEM)");
+        xmlSecInternalError("gcry_control(GCRYCTL_TERM_SECMEM)", NULL);
+
         return(-1);
     }
     return(0);
@@ -141,7 +143,8 @@ xmlSecGCryptAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
 
     ret = xmlSecBufferInitialize(&buffer, 4*1024);
     if(ret < 0) {
-        xmlSecInternalError(NULL, "xmlSecBufferInitialize");
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
+
         return(NULL);
     }
 
@@ -208,7 +211,8 @@ xmlSecGCryptAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     case xmlSecKeyDataFormatDer:
         key_data = xmlSecGCryptParseDer(data, dataSize, xmlSecGCryptDerKeyTypeAuto);
         if(key_data == NULL) {
-            xmlSecInternalError(NULL, "xmlSecGCryptParseDer");
+            xmlSecInternalError("xmlSecGCryptParseDer", NULL);
+
             return(NULL);
         }
         break;
@@ -241,7 +245,8 @@ xmlSecGCryptAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     xmlSecAssert2(key_data != NULL, NULL);
     key = xmlSecKeyCreate();
     if(key == NULL) {
-        xmlSecInternalError(NULL, "xmlSecKeyCreate");
+        xmlSecInternalError("xmlSecKeyCreate", NULL);
+
         xmlSecKeyDataDestroy(key_data);
         return(NULL);
     }
@@ -480,7 +485,8 @@ xmlSecGCryptAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 
         ret = xmlSecKeysMngrAdoptKeysStore(mngr, keysStore);
         if(ret < 0) {
-            xmlSecInternalError(NULL, "xmlSecKeysMngrAdoptKeysStore");
+            xmlSecInternalError("xmlSecKeysMngrAdoptKeysStore", NULL);
+
             xmlSecKeyStoreDestroy(keysStore);
             return(-1);
         }
@@ -488,7 +494,8 @@ xmlSecGCryptAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 
     ret = xmlSecGCryptKeysMngrInit(mngr);
     if(ret < 0) {
-        xmlSecInternalError(NULL, "xmlSecGCryptKeysMngrInit");
+        xmlSecInternalError("xmlSecGCryptKeysMngrInit", NULL);
+
         return(-1);
     }
 
@@ -517,13 +524,15 @@ xmlSecGCryptAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key)
 
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
-        xmlSecInternalError(NULL, "xmlSecKeysMngrGetKeysStore");
+        xmlSecInternalError("xmlSecKeysMngrGetKeysStore", NULL);
+
         return(-1);
     }
 
     ret = xmlSecSimpleKeysStoreAdoptKey(store, key);
     if(ret < 0) {
-        xmlSecInternalError(NULL, "xmlSecSimpleKeysStoreAdoptKey");
+        xmlSecInternalError("xmlSecSimpleKeysStoreAdoptKey", NULL);
+
         return(-1);
     }
 
@@ -550,7 +559,8 @@ xmlSecGCryptAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
 
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
-        xmlSecInternalError(NULL, "xmlSecKeysMngrGetKeysStore");
+        xmlSecInternalError("xmlSecKeysMngrGetKeysStore", NULL);
+
         return(-1);
     }
 
@@ -587,7 +597,8 @@ xmlSecGCryptAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename,
 
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
-        xmlSecInternalError(NULL, "xmlSecKeysMngrGetKeysStore");
+        xmlSecInternalError("xmlSecKeysMngrGetKeysStore", NULL);
+
         return(-1);
     }
 

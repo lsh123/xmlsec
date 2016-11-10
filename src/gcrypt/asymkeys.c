@@ -109,7 +109,8 @@ xmlSecGCryptAsymKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     if(ctxSrc->pub_key != NULL) {
         ctxDst->pub_key = xmlSecGCryptAsymSExpDup(ctxSrc->pub_key);
         if(ctxDst->pub_key == NULL) {
-            xmlSecInternalError(xmlSecKeyDataGetName(dst), "xmlSecGCryptAsymSExpDup(pub_key)");
+            xmlSecInternalError("xmlSecGCryptAsymSExpDup(pub_key)", xmlSecKeyDataGetName(dst));
+
             return(-1);
         }
     }
@@ -117,7 +118,8 @@ xmlSecGCryptAsymKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     if(ctxSrc->priv_key != NULL) {
         ctxDst->priv_key = xmlSecGCryptAsymSExpDup(ctxSrc->priv_key);
         if(ctxDst->priv_key == NULL) {
-            xmlSecInternalError(xmlSecKeyDataGetName(dst), "xmlSecGCryptAsymSExpDup(priv_key)");
+            xmlSecInternalError("xmlSecGCryptAsymSExpDup(priv_key)", xmlSecKeyDataGetName(dst));
+
             return(-1);
         }
     }
@@ -173,7 +175,8 @@ xmlSecGCryptAsymKeyDataAdoptKey(xmlSecKeyDataPtr data, gcry_sexp_t key_pair) {
 
     /* assign */
     if(xmlSecGCryptAsymKeyDataAdoptKeyPair(data, pub_key, priv_key) < 0) {
-        xmlSecInternalError(NULL, "xmlSecGCryptAsymKeyDataAdoptKeyPair");
+        xmlSecInternalError("xmlSecGCryptAsymKeyDataAdoptKeyPair", NULL);
+
         goto done;
     }
     pub_key = NULL; /* data owns it now */
@@ -434,13 +437,15 @@ xmlSecGCryptNodeGetMpiValue(const xmlNodePtr cur) {
 
     ret = xmlSecBufferInitialize(&buf, 128);
     if(ret < 0) {
-        xmlSecInternalError(NULL, "xmlSecBufferInitialize");
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
+
         return(NULL);
     }
 
     ret = xmlSecBufferBase64NodeContentRead(&buf, cur);
     if(ret < 0) {
-        xmlSecInternalError(NULL, "xmlSecBufferBase64NodeContentRead");
+        xmlSecInternalError("xmlSecBufferBase64NodeContentRead", NULL);
+
         xmlSecBufferFinalize(&buf);
         return(NULL);
     }
@@ -545,7 +550,8 @@ xmlSecGCryptNodeSetMpiValue(xmlNodePtr cur, const gcry_mpi_t a, int addLineBreak
 
     ret = xmlSecBufferBase64NodeContentWrite(&buf, cur, xmlSecBase64GetDefaultLineSize());
     if(ret < 0) {
-        xmlSecInternalError(NULL, "xmlSecBufferBase64NodeContentWrite");
+        xmlSecInternalError("xmlSecBufferBase64NodeContentWrite", NULL);
+
         xmlSecBufferFinalize(&buf);
         return(-1);
     }
@@ -1093,13 +1099,15 @@ xmlSecGCryptKeyDataDsaXmlRead(xmlSecKeyDataId id,
     /* create key data */
     data = xmlSecKeyDataCreate(id);
     if(data == NULL ) {
-        xmlSecInternalError(xmlSecKeyDataKlassGetName(id), "xmlSecKeyDataCreate");
+        xmlSecInternalError("xmlSecKeyDataCreate", xmlSecKeyDataKlassGetName(id));
+
         goto done;
     }
 
     ret = xmlSecGCryptKeyDataDsaAdoptKeyPair(data, pub_key, priv_key);
     if(ret < 0) {
-        xmlSecInternalError(xmlSecKeyDataGetName(data), "xmlSecGCryptKeyDataDsaAdoptKeyPair");
+        xmlSecInternalError("xmlSecGCryptKeyDataDsaAdoptKeyPair", xmlSecKeyDataGetName(data));
+
         goto done;
     }
     pub_key = NULL; /* pub_key is owned by data now */
@@ -1108,7 +1116,8 @@ xmlSecGCryptKeyDataDsaXmlRead(xmlSecKeyDataId id,
     /* set key */
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
-        xmlSecInternalError(xmlSecKeyDataGetName(data), "xmlSecKeySetValue");
+        xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyDataGetName(data));
+
         goto done;
     }
     data = NULL; /* data is owned by key now */
@@ -1178,7 +1187,8 @@ xmlSecGCryptKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     if(pub_priv_key == NULL) {
         pub_priv_key = xmlSecGCryptKeyDataDsaGetPublicKey(xmlSecKeyGetValue(key));
         if(pub_priv_key == NULL) {
-            xmlSecInternalError(xmlSecKeyDataKlassGetName(id), "xmlSecGCryptKeyDataDsaGetPublicKey()");
+            xmlSecInternalError("xmlSecGCryptKeyDataDsaGetPublicKey()", xmlSecKeyDataKlassGetName(id));
+
             goto done;
         }
     } else {
@@ -1187,7 +1197,8 @@ xmlSecGCryptKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     dsa = gcry_sexp_find_token(pub_priv_key, "dsa", 0);
     if(dsa == NULL) {
-        xmlSecInternalError(xmlSecKeyDataKlassGetName(id), "gcry_sexp_find_token(dsa)");
+        xmlSecInternalError("gcry_sexp_find_token(dsa)", xmlSecKeyDataKlassGetName(id));
+
         goto done;
     }
 
@@ -1687,13 +1698,15 @@ xmlSecGCryptKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     /* create key data */
     data = xmlSecKeyDataCreate(id);
     if(data == NULL ) {
-        xmlSecInternalError(xmlSecKeyDataKlassGetName(id), "xmlSecKeyDataCreate");
+        xmlSecInternalError("xmlSecKeyDataCreate", xmlSecKeyDataKlassGetName(id));
+
         goto done;
     }
 
     ret = xmlSecGCryptKeyDataRsaAdoptKeyPair(data, pub_key, priv_key);
     if(ret < 0) {
-        xmlSecInternalError(xmlSecKeyDataGetName(data), "xmlSecGCryptKeyDataRsaAdoptKeyPair");
+        xmlSecInternalError("xmlSecGCryptKeyDataRsaAdoptKeyPair", xmlSecKeyDataGetName(data));
+
         goto done;
     }
     pub_key = NULL; /* pub_key is owned by data now */
@@ -1702,7 +1715,8 @@ xmlSecGCryptKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     /* set key */
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
-        xmlSecInternalError(xmlSecKeyDataGetName(data), "xmlSecKeySetValue");
+        xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyDataGetName(data));
+
         goto done;
     }
     data = NULL; /* data is owned by key now */
@@ -1766,7 +1780,8 @@ xmlSecGCryptKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     if(pub_priv_key == NULL) {
         pub_priv_key = xmlSecGCryptKeyDataRsaGetPublicKey(xmlSecKeyGetValue(key));
         if(pub_priv_key == NULL) {
-            xmlSecInternalError(xmlSecKeyDataKlassGetName(id), "xmlSecGCryptKeyDataRsaGetPublicKey()");
+            xmlSecInternalError("xmlSecGCryptKeyDataRsaGetPublicKey()", xmlSecKeyDataKlassGetName(id));
+
             goto done;
         }
     } else {
@@ -1775,7 +1790,8 @@ xmlSecGCryptKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     rsa = gcry_sexp_find_token(pub_priv_key, "rsa", 0);
     if(rsa == NULL) {
-        xmlSecInternalError(xmlSecKeyDataKlassGetName(id), "gcry_sexp_find_token(rsa)");
+        xmlSecInternalError("gcry_sexp_find_token(rsa)", xmlSecKeyDataKlassGetName(id));
+
         goto done;
     }
 

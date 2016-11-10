@@ -45,13 +45,15 @@ xmlSecOpenSSLNodeGetBNValue(const xmlNodePtr cur, BIGNUM **a) {
 
     ret = xmlSecBufferInitialize(&buf, 128);
     if(ret < 0) {
-        xmlSecInternalError(NULL, "xmlSecBufferInitialize");
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
+
         return(NULL);
     }
 
     ret = xmlSecBufferBase64NodeContentRead(&buf, cur);
     if(ret < 0) {
-        xmlSecInternalError(NULL, "xmlSecBufferBase64NodeContentRead");
+        xmlSecInternalError("xmlSecBufferBase64NodeContentRead", NULL);
+
         xmlSecBufferFinalize(&buf);
         return(NULL);
     }
@@ -128,7 +130,8 @@ xmlSecOpenSSLNodeSetBNValue(xmlNodePtr cur, const BIGNUM *a, int addLineBreaks) 
 
     ret = xmlSecBufferBase64NodeContentWrite(&buf, cur, xmlSecBase64GetDefaultLineSize());
     if(ret < 0) {
-        xmlSecInternalError(NULL, "xmlSecBufferBase64NodeContentWrite");
+        xmlSecInternalError("xmlSecBufferBase64NodeContentWrite", NULL);
+
         xmlSecBufferFinalize(&buf);
         return(-1);
     }

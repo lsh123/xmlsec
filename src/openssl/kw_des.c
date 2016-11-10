@@ -159,7 +159,8 @@ xmlSecOpenSSLKWDes3Initialize(xmlSecTransformPtr transform) {
 
     ret = xmlSecBufferInitialize(&(ctx->keyBuffer), 0);
     if(ret < 0) {
-        xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecBufferInitialize");
+        xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
+
         return(-1);
     }
 
@@ -439,7 +440,8 @@ xmlSecOpenSSLKWDes3BlockEncrypt(void * context,
                                     out, outSize, 
                                     1); /* encrypt */
     if(ret < 0) {
-        xmlSecInternalError(NULL, "xmlSecOpenSSLKWDes3Encrypt");
+        xmlSecInternalError("xmlSecOpenSSLKWDes3Encrypt", NULL);
+
         return(-1);
     }
 
@@ -470,7 +472,8 @@ xmlSecOpenSSLKWDes3BlockDecrypt(void * context,
                                     out, outSize, 
                                     0); /* decrypt */
     if(ret < 0) {
-        xmlSecInternalError(NULL, "xmlSecOpenSSLKWDes3Encrypt");
+        xmlSecInternalError("xmlSecOpenSSLKWDes3Encrypt", NULL);
+
         return(-1);
     }
 

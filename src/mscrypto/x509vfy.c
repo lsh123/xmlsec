@@ -206,7 +206,8 @@ xmlSecMSCryptoX509StoreCertError(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT cer
     /* get certs subject */
     subject = xmlSecMSCryptoX509GetNameString(cert, CERT_NAME_RDN_TYPE, 0, NULL);
     if(subject == NULL) {
-        xmlSecInternalError(NULL, "xmlSecMSCryptoX509GetNameString");
+        xmlSecInternalError("xmlSecMSCryptoX509GetNameString", NULL);
+
         return;
     }
 
@@ -1174,7 +1175,8 @@ xmlSecMSCryptoX509GetCertName(const xmlChar * name) {
     /* get name */
     res = xmlSecMSCryptoConvertUtf8ToTstr(name2);
     if(res == NULL) {
-        xmlSecInternalError(NULL, "xmlSecMSCryptoConvertUtf8ToTstr");
+        xmlSecInternalError("xmlSecMSCryptoConvertUtf8ToTstr", NULL);
+
         xmlFree(name2);
         return(NULL);
     }
@@ -1226,13 +1228,15 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store,
         /* get serial number */
         ret = xmlSecBnInitialize(&issuerSerialBn, 0);
         if(ret < 0) {
-            xmlSecInternalError(NULL, "xmlSecBnInitialize");
+            xmlSecInternalError("xmlSecBnInitialize", NULL);
+
             return(NULL);
         }
 
         ret = xmlSecBnFromDecString(&issuerSerialBn, issuerSerial);
         if(ret < 0) {
-            xmlSecInternalError(NULL, "xmlSecBnInitialize");
+            xmlSecInternalError("xmlSecBnInitialize", NULL);
+
             xmlSecBnFinalize(&issuerSerialBn);
             return(NULL);
         }
@@ -1243,7 +1247,8 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store,
         */
         ret = xmlSecBnReverse(&issuerSerialBn);
         if(ret < 0) {
-            xmlSecInternalError(NULL, "xmlSecBnReverse");
+            xmlSecInternalError("xmlSecBnReverse", NULL);
+
             xmlSecBnFinalize(&issuerSerialBn);
             return(NULL);
         }
@@ -1370,7 +1375,8 @@ xmlSecMSCryptoX509GetNameString(PCCERT_CONTEXT pCertContext, DWORD dwType, DWORD
 
     res = xmlSecMSCryptoConvertTstrToUtf8(name);
     if(res == NULL) {
-        xmlSecInternalError(NULL, "xmlSecMSCryptoConvertTstrToUtf8");
+        xmlSecInternalError("xmlSecMSCryptoConvertTstrToUtf8", NULL);
+
         xmlFree(name);
         return (NULL);
     }

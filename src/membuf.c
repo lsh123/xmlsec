@@ -115,7 +115,8 @@ xmlSecTransformMemBufInitialize(xmlSecTransformPtr transform) {
 
     ret = xmlSecBufferInitialize(buffer, 0);
     if(ret < 0) {
-        xmlSecInternalError(xmlSecTransformGetName(transform), "xmlSecBufferInitialize");
+        xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
+
         return(-1);
     }
     return(0);
@@ -158,25 +159,25 @@ xmlSecTransformMemBufExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
         /* just copy everything from in to our buffer and out */
         ret = xmlSecBufferAppend(buffer, xmlSecBufferGetData(in), inSize);
         if(ret < 0) {
-            xmlSecInternalError2(xmlSecTransformGetName(transform),
-                                 "xmlSecBufferAppend",
+            xmlSecInternalError2("xmlSecBufferAppend",
+                                 xmlSecTransformGetName(transform),
                                  "size=%d", inSize);
             return(-1);
         }
 
         ret = xmlSecBufferAppend(out, xmlSecBufferGetData(in), inSize);
         if(ret < 0) {
-            xmlSecInternalError2(xmlSecTransformGetName(transform),
-                                 "xmlSecBufferAppend",
+            xmlSecInternalError2("xmlSecBufferAppend",
+                                 xmlSecTransformGetName(transform),
                                  "size=%d", inSize);
             return(-1);
         }
 
         ret = xmlSecBufferRemoveHead(in, inSize);
         if(ret < 0) {
-            xmlSecInternalError2(xmlSecTransformGetName(transform),
-                                "xmlSecBufferRemoveHead",
-                                "size=%d", inSize);
+            xmlSecInternalError2("xmlSecBufferRemoveHead",
+                                 xmlSecTransformGetName(transform),
+                                 "size=%d", inSize);
             return(-1);
         }
 

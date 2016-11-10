@@ -463,58 +463,58 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
 
 /**
  * xmlSecInternalError:
+ * @errorFunction:      the failed function name.
  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
- * @errorSubject:       the error specific error subject (e.g. failed function name).
  *
  * Macro. The XMLSec library macro for reporting internal XMLSec errors.
  */
-#define xmlSecInternalError(errorObject, errorSubject)  \
+#define xmlSecInternalError(errorFunction, errorObject)  \
     xmlSecError(XMLSEC_ERRORS_HERE,                     \
                 (((errorObject) != NULL) ? xmlSecErrorsSafeString(errorObject) : NULL), \
-                (errorSubject),                         \
+                (errorFunction),                         \
                 XMLSEC_ERRORS_R_XMLSEC_FAILED,          \
                 XMLSEC_ERRORS_NO_MESSAGE                \
     )
 
 /**
  * xmlSecInternalError2:
+ * @errorFunction:      the failed function name.
  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
- * @errorSubject:       the error specific error subject (e.g. failed function name).
  * @msg:                the extra message.
  * @param:              the extra message param.
  *
  * Macro. The XMLSec library macro for reporting internal XMLSec errors.
  */
-#define xmlSecInternalError2(errorObject, errorSubject, msg, param)  \
+#define xmlSecInternalError2(errorFunction, errorObject, msg, param)  \
     xmlSecError(XMLSEC_ERRORS_HERE,                     \
                 (((errorObject) != NULL) ? xmlSecErrorsSafeString(errorObject) : NULL), \
-                (errorSubject),                         \
+                (errorFunction),                         \
                 XMLSEC_ERRORS_R_XMLSEC_FAILED,          \
                 xmlSecErrorsSafeString(msg), (param)    \
     )
 
 /**
  * xmlSecInternalError3:
+ * @errorFunction:      the failed function name.
  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
- * @errorSubject:       the error specific error subject (e.g. failed function name).
  * @msg:                the extra message.
  * @param1:             the extra message param1.
  * @param2:             the extra message param2.
  *
  * Macro. The XMLSec library macro for reporting internal XMLSec errors.
  */
-#define xmlSecInternalError3(errorObject, errorSubject, msg, param1, param2)  \
+#define xmlSecInternalError3(errorFunction, errorObject, msg, param1, param2)  \
     xmlSecError(XMLSEC_ERRORS_HERE,                              \
                 (((errorObject) != NULL) ? xmlSecErrorsSafeString(errorObject) : NULL), \
-                (errorSubject),                                  \
+                (errorFunction),                                  \
                 XMLSEC_ERRORS_R_XMLSEC_FAILED,                   \
                 xmlSecErrorsSafeString(msg), (param1), (param2)  \
     )
 
 /**
  * xmlSecInternalError4:
+ * @errorFunction:      the failed function name.
  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
- * @errorSubject:       the error specific error subject (e.g. failed function name).
  * @msg:                the extra message.
  * @param1:             the extra message param1.
  * @param2:             the extra message param2.
@@ -522,10 +522,10 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
  *
  * Macro. The XMLSec library macro for reporting internal XMLSec errors.
  */
-#define xmlSecInternalError4(errorObject, errorSubject, msg, param1, param2, param3)  \
+#define xmlSecInternalError4(errorFunction, errorObject, msg, param1, param2, param3)  \
     xmlSecError(XMLSEC_ERRORS_HERE,                                      \
                 (((errorObject) != NULL) ? xmlSecErrorsSafeString(errorObject) : NULL), \
-                (errorSubject),                                           \
+                (errorFunction),                                           \
                 XMLSEC_ERRORS_R_XMLSEC_FAILED,                            \
                 xmlSecErrorsSafeString(msg), (param1), (param2), (param3) \
     )

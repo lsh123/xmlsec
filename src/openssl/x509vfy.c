@@ -230,7 +230,8 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
             } else if(ret == 0) {
                 (void)sk_X509_CRL_delete(crls2, i);
             } else {
-                xmlSecInternalError(xmlSecKeyDataStoreGetName(store), "xmlSecOpenSSLX509VerifyCRL");
+                xmlSecInternalError("xmlSecOpenSSLX509VerifyCRL", xmlSecKeyDataStoreGetName(store));
+
                 goto done;
             }
         }
@@ -246,7 +247,8 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
                 (void)sk_X509_delete(certs2, i);
                 continue;
             } else if(ret != 1) {
-                xmlSecInternalError(xmlSecKeyDataStoreGetName(store), "xmlSecOpenSSLX509VerifyCertAgainstCrls");
+                xmlSecInternalError("xmlSecOpenSSLX509VerifyCertAgainstCrls", xmlSecKeyDataStoreGetName(store));
+
                 goto done;
             }
         }
@@ -257,7 +259,8 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
                 (void)sk_X509_delete(certs2, i);
                 continue;
             } else if(ret != 1) {
-                xmlSecInternalError(xmlSecKeyDataStoreGetName(store), "xmlSecOpenSSLX509VerifyCertAgainstCrls");
+                xmlSecInternalError("xmlSecOpenSSLX509VerifyCertAgainstCrls", xmlSecKeyDataStoreGetName(store));
+
                 goto done;
             }
         }
@@ -937,7 +940,8 @@ xmlSecOpenSSLX509NameRead(xmlSecByte *str, int len) {
 
         nameLen = xmlSecOpenSSLX509NameStringRead(&str, &len, name, sizeof(name), '=', 0);
         if(nameLen < 0) {
-            xmlSecInternalError(NULL, "xmlSecOpenSSLX509NameStringRead");
+            xmlSecInternalError("xmlSecOpenSSLX509NameStringRead", NULL);
+
             X509_NAME_free(nm);
             return(NULL);
         }
@@ -949,7 +953,8 @@ xmlSecOpenSSLX509NameRead(xmlSecByte *str, int len) {
                 valueLen = xmlSecOpenSSLX509NameStringRead(&str, &len,
                                         value, sizeof(value), '"', 1);
                 if(valueLen < 0) {
-                    xmlSecInternalError(NULL, "xmlSecOpenSSLX509NameStringRead");
+                    xmlSecInternalError("xmlSecOpenSSLX509NameStringRead", NULL);
+
                     X509_NAME_free(nm);
                     return(NULL);
                 }
@@ -998,7 +1003,8 @@ xmlSecOpenSSLX509NameRead(xmlSecByte *str, int len) {
                 valueLen = xmlSecOpenSSLX509NameStringRead(&str, &len,
                                         value, sizeof(value), ',', 1);
                 if(valueLen < 0) {
-                    xmlSecInternalError(NULL, "xmlSecOpenSSLX509NameStringRead");
+                    xmlSecInternalError("xmlSecOpenSSLX509NameStringRead", NULL);
+
                     X509_NAME_free(nm);
                     return(NULL);
                 }
@@ -1138,12 +1144,14 @@ xmlSecOpenSSLX509NamesCompare(X509_NAME *a, X509_NAME *b) {
 
     a1 = xmlSecOpenSSLX509_NAME_ENTRIES_copy(a);
     if(a1 == NULL) {
-        xmlSecInternalError(NULL, "xmlSecOpenSSLX509_NAME_ENTRIES_copy");
+        xmlSecInternalError("xmlSecOpenSSLX509_NAME_ENTRIES_copy", NULL);
+
         return(-1);
     }
     b1 = xmlSecOpenSSLX509_NAME_ENTRIES_copy(b);
     if(b1 == NULL) {
-        xmlSecInternalError(NULL, "xmlSecOpenSSLX509_NAME_ENTRIES_copy");
+        xmlSecInternalError("xmlSecOpenSSLX509_NAME_ENTRIES_copy", NULL);
+
         sk_X509_NAME_ENTRY_free(a1);
         return(1);
     }

@@ -324,7 +324,8 @@ xmlSecSkeletonAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 
         ret = xmlSecKeysMngrAdoptKeysStore(mngr, keysStore);
         if(ret < 0) {
-            xmlSecInternalError(NULL, "xmlSecKeysMngrAdoptKeysStore");
+            xmlSecInternalError("xmlSecKeysMngrAdoptKeysStore", NULL);
+
             xmlSecKeyStoreDestroy(keysStore);
             return(-1);
         }
@@ -332,7 +333,8 @@ xmlSecSkeletonAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 
     ret = xmlSecSkeletonKeysMngrInit(mngr);
     if(ret < 0) {
-        xmlSecInternalError(NULL, "xmlSecSkeletonKeysMngrInit");
+        xmlSecInternalError("xmlSecSkeletonKeysMngrInit", NULL);
+
         return(-1);
     }
 
@@ -364,13 +366,15 @@ xmlSecSkeletonAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr ke
 
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
-        xmlSecInternalError(NULL, "xmlSecKeysMngrGetKeysStore");
+        xmlSecInternalError("xmlSecKeysMngrGetKeysStore", NULL);
+
         return(-1);
     }
 
     ret = xmlSecSimpleKeysStoreAdoptKey(store, key);
     if(ret < 0) {
-        xmlSecInternalError(NULL, "xmlSecSimpleKeysStoreAdoptKey");
+        xmlSecInternalError("xmlSecSimpleKeysStoreAdoptKey", NULL);
+
         return(-1);
     }
 
@@ -401,7 +405,8 @@ xmlSecSkeletonAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
 
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
-        xmlSecInternalError(NULL, "xmlSecKeysMngrGetKeysStore");
+        xmlSecInternalError("xmlSecKeysMngrGetKeysStore", NULL);
+
         return(-1);
     }
 
@@ -442,7 +447,8 @@ xmlSecSkeletonAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filenam
 
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
-        xmlSecInternalError(NULL, "xmlSecKeysMngrGetKeysStore");
+        xmlSecInternalError("xmlSecKeysMngrGetKeysStore", NULL);
+
         return(-1);
     }
 

@@ -173,13 +173,15 @@ xmlSecGnuTLSX509CertDup(gnutls_x509_crt_t src) {
 
     buf = xmlSecGnuTLSX509CertBase64DerWrite(src, 0);
     if(buf == NULL) {
-        xmlSecInternalError(NULL, "xmlSecGnuTLSX509CertBase64DerWrite");
+        xmlSecInternalError("xmlSecGnuTLSX509CertBase64DerWrite", NULL);
+
         return (NULL);
     }
 
     res = xmlSecGnuTLSX509CertBase64DerRead(buf);
     if(res == NULL) {
-        xmlSecInternalError(NULL, "xmlSecGnuTLSX509CertBase64DerRead");
+        xmlSecInternalError("xmlSecGnuTLSX509CertBase64DerRead", NULL);
+
         xmlFree(buf);
         return (NULL);
     }
@@ -327,7 +329,8 @@ xmlSecGnuTLSX509CertGetIssuerSerial(gnutls_x509_crt_t cert) {
     /* convert to string */
     res = xmlSecGnuTLSASN1IntegerWrite(buf, bufSize);
     if(res == NULL) {
-        xmlSecInternalError(NULL, "xmlSecGnuTLSASN1IntegerWrite");
+        xmlSecInternalError("xmlSecGnuTLSASN1IntegerWrite", NULL);
+
         xmlFree(buf);
         return(NULL);
     }
@@ -384,7 +387,8 @@ xmlSecGnuTLSX509CertGetSKI(gnutls_x509_crt_t cert) {
     /* convert to string */
     res = xmlSecBase64Encode(buf, bufSize, 0);
     if(res == NULL) {
-        xmlSecInternalError(NULL, "xmlSecBase64Encode");
+        xmlSecInternalError("xmlSecBase64Encode", NULL);
+
         xmlFree(buf);
         return(NULL);
     }
@@ -404,7 +408,8 @@ xmlSecGnuTLSX509CertBase64DerRead(xmlChar* buf) {
     /* usual trick with base64 decoding "in-place" */
     ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, xmlStrlen(buf));
     if(ret < 0) {
-        xmlSecInternalError(NULL, "xmlSecBase64Decode");
+        xmlSecInternalError("xmlSecBase64Decode", NULL);
+
         return(NULL);
     }
 
@@ -513,7 +518,8 @@ xmlSecGnuTLSX509CertBase64DerWrite(gnutls_x509_crt_t cert, int base64LineWrap) {
     /* convert to string */
     res = xmlSecBase64Encode(buf, bufSize, base64LineWrap);
     if(res == NULL) {
-        xmlSecInternalError(NULL, "xmlSecBase64Encode");
+        xmlSecInternalError("xmlSecBase64Encode", NULL);
+
         xmlFree(buf);
         return(NULL);
     }
@@ -604,13 +610,15 @@ xmlSecGnuTLSX509CrlDup(gnutls_x509_crl_t src) {
 
     buf = xmlSecGnuTLSX509CrlBase64DerWrite(src, 0);
     if(buf == NULL) {
-        xmlSecInternalError(NULL, "xmlSecGnuTLSX509CrlBase64DerWrite");
+        xmlSecInternalError("xmlSecGnuTLSX509CrlBase64DerWrite", NULL);
+
         return (NULL);
     }
 
     res = xmlSecGnuTLSX509CrlBase64DerRead(buf);
     if(res == NULL) {
-        xmlSecInternalError(NULL, "xmlSecGnuTLSX509CrlBase64DerRead");
+        xmlSecInternalError("xmlSecGnuTLSX509CrlBase64DerRead", NULL);
+
         xmlFree(buf);
         return (NULL);
     }
@@ -675,7 +683,8 @@ xmlSecGnuTLSX509CrlBase64DerRead(xmlChar* buf) {
     /* usual trick with base64 decoding "in-place" */
     ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, xmlStrlen(buf));
     if(ret < 0) {
-        xmlSecInternalError(NULL, "xmlSecBase64Decode");
+        xmlSecInternalError("xmlSecBase64Decode", NULL);
+
         return(NULL);
     }
 
@@ -784,7 +793,8 @@ xmlSecGnuTLSX509CrlBase64DerWrite(gnutls_x509_crl_t crl, int base64LineWrap) {
     /* convert to string */
     res = xmlSecBase64Encode(buf, bufSize, base64LineWrap);
     if(res == NULL) {
-        xmlSecInternalError(NULL, "xmlSecBase64Encode");
+        xmlSecInternalError("xmlSecBase64Encode", NULL);
+
         xmlFree(buf);
         return(NULL);
     }
@@ -1059,7 +1069,8 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
 
                 ret = xmlSecPtrListAdd(certsList, cert);
                 if(ret < 0) {
-                    xmlSecInternalError(NULL, "xmlSecPtrListAdd(certsList)");
+                    xmlSecInternalError("xmlSecPtrListAdd(certsList)", NULL);
+
                     goto done;
                 }
                 cert = NULL; /* owned by certsList now */
@@ -1127,7 +1138,8 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
             if((key_id_size == cert_id_size) && (memcmp(key_id, cert_id, key_id_size) == 0)) {
                 (*key_cert) = xmlSecGnuTLSX509CertDup(tmp);
                 if((*key_cert) == NULL) {
-                    xmlSecInternalError(NULL, "xmlSecGnuTLSX509CertDup");
+                    xmlSecInternalError("xmlSecGnuTLSX509CertDup", NULL);
+
                     goto done;
                 }
 

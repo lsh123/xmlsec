@@ -730,12 +730,8 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
 
         nm = xmlSecOpenSSLX509NameRead(subjectName, xmlStrlen(subjectName));
         if(nm == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecOpenSSLX509NameRead",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "subject=%s",
-                        xmlSecErrorsSafeString(subjectName));
+            xmlSecInternalError2("xmlSecOpenSSLX509NameRead", NULL,
+                                 "subject=%s", xmlSecErrorsSafeString(subjectName));
             return(NULL);
         }
 
@@ -756,12 +752,8 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
 
         nm = xmlSecOpenSSLX509NameRead(issuerName, xmlStrlen(issuerName));
         if(nm == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecOpenSSLX509NameRead",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "issuer=%s",
-                        xmlSecErrorsSafeString(issuerName));
+            xmlSecInternalError2("xmlSecOpenSSLX509NameRead", NULL,
+                                 "issuer=%s", xmlSecErrorsSafeString(issuerName));
             return(NULL);
         }
 
@@ -812,12 +804,8 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
         /* our usual trick with base64 decode */
         len = xmlSecBase64Decode(ski, (xmlSecByte*)ski, xmlStrlen(ski));
         if(len < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecBase64Decode",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "ski=%s",
-                        xmlSecErrorsSafeString(ski));
+            xmlSecInternalError2("xmlSecBase64Decode", NULL,
+                                 "ski=%s", xmlSecErrorsSafeString(ski));
             return(NULL);
         }
         for(i = 0; i < sk_X509_num(certs); ++i) {

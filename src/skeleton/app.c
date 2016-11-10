@@ -314,18 +314,13 @@ xmlSecSkeletonAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 
         keysStore = xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId);
         if(keysStore == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeyStoreCreate",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "xmlSecSimpleKeysStoreId");
+            xmlSecInternalError("xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId)", NULL);
             return(-1);
         }
 
         ret = xmlSecKeysMngrAdoptKeysStore(mngr, keysStore);
         if(ret < 0) {
             xmlSecInternalError("xmlSecKeysMngrAdoptKeysStore", NULL);
-
             xmlSecKeyStoreDestroy(keysStore);
             return(-1);
         }
@@ -334,7 +329,6 @@ xmlSecSkeletonAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     ret = xmlSecSkeletonKeysMngrInit(mngr);
     if(ret < 0) {
         xmlSecInternalError("xmlSecSkeletonKeysMngrInit", NULL);
-
         return(-1);
     }
 
@@ -412,11 +406,8 @@ xmlSecSkeletonAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
 
     ret = xmlSecSimpleKeysStoreLoad(store, uri, mngr);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecSimpleKeysStoreLoad",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "uri=%s", xmlSecErrorsSafeString(uri));
+        xmlSecInternalError2("xmlSecSimpleKeysStoreLoad", NULL,
+                             "uri=%s", xmlSecErrorsSafeString(uri));
         return(-1);
     }
 
@@ -454,12 +445,9 @@ xmlSecSkeletonAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filenam
 
     ret = xmlSecSimpleKeysStoreSave(store, filename, type);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecSimpleKeysStoreSave",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "filename=%s",
-                    xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecSimpleKeysStoreSave", NULL,
+                             "filename=%s",
+                             xmlSecErrorsSafeString(filename));
         return(-1);
     }
 

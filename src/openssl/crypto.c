@@ -373,18 +373,13 @@ xmlSecOpenSSLKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 
         x509Store = xmlSecKeyDataStoreCreate(xmlSecOpenSSLX509StoreId);
         if(x509Store == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeyDataStoreCreate",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "xmlSecOpenSSLX509StoreId");
+            xmlSecInternalError("xmlSecKeyDataStoreCreate(xmlSecOpenSSLX509StoreId)", NULL);
             return(-1);
         }
 
         ret = xmlSecKeysMngrAdoptDataStore(mngr, x509Store);
         if(ret < 0) {
             xmlSecInternalError("xmlSecKeysMngrAdoptDataStore", NULL);
-
             xmlSecKeyDataStoreDestroy(x509Store);
             return(-1);
         }
@@ -411,11 +406,7 @@ xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
 
     ret = xmlSecBufferSetSize(buffer, size);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBufferSetSize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "size=%d", size);
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=%d", size);
         return(-1);
     }
 

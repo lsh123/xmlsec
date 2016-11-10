@@ -779,7 +779,6 @@ xmlSecGenerateAndAddID(xmlNodePtr node, const xmlChar* attrName, const xmlChar* 
         id = xmlSecGenerateID(prefix, len);
         if(id == NULL) {
             xmlSecInternalError("xmlSecGenerateID", NULL);
-
             return(-1);
         }
 
@@ -830,7 +829,6 @@ xmlSecGenerateID(const xmlChar* prefix, xmlSecSize len) {
     ret = xmlSecBufferInitialize(&buffer, binLen + 1);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize", NULL);
-
         return(NULL);
     }
     xmlSecAssert2(xmlSecBufferGetData(&buffer) != NULL, NULL);
@@ -839,7 +837,6 @@ xmlSecGenerateID(const xmlChar* prefix, xmlSecSize len) {
     ret = xmlSecBufferSetSize(&buffer, binLen);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferSetSize", NULL);
-
         xmlSecBufferFinalize(&buffer);
         return(NULL);
     }
@@ -854,7 +851,6 @@ xmlSecGenerateID(const xmlChar* prefix, xmlSecSize len) {
     res = xmlSecBase64Encode(xmlSecBufferGetData(&buffer), xmlSecBufferGetSize(&buffer), 0);
     if((res == NULL) || (xmlStrlen(res) == 0)) {
         xmlSecInternalError("xmlSecBase64Encode", NULL);
-
         xmlSecBufferFinalize(&buffer);
         return(NULL);
     }

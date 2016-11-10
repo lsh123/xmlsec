@@ -515,7 +515,6 @@ xmlSecNSSKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
     ret = xmlSecNssAesOp(aeskey, in, out, 1); /* encrypt */
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssAesOp", NULL);
-
         return(-1);
     }
     return(XMLSEC_KW_AES_BLOCK_SIZE);
@@ -538,7 +537,6 @@ xmlSecNSSKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
     ret = xmlSecNssAesOp(aeskey, in, out, 0); /* decrypt */
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssAesOp", NULL);
-
         return(-1);
     }
     return(XMLSEC_KW_AES_BLOCK_SIZE);

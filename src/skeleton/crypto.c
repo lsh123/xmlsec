@@ -245,14 +245,12 @@ xmlSecSkeletonInit (void)  {
     /* Check loaded xmlsec library version */
     if(xmlSecCheckVersionExact() != 1) {
         xmlSecInternalError("xmlSecCheckVersionExact", NULL);
-
         return(-1);
     }
 
     /* register our klasses */
     if(xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(xmlSecCryptoGetFunctions_skeleton()) < 0) {
         xmlSecInternalError("xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms", NULL);
-
         return(-1);
     }
     return(0);

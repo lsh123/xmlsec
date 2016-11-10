@@ -230,7 +230,6 @@ xmlSecKeyInfoCtxCreate(xmlSecKeysMngrPtr keysMngr) {
     ret = xmlSecKeyInfoCtxInitialize(keyInfoCtx, keysMngr);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyInfoCtxInitialize", NULL);
-
         xmlSecKeyInfoCtxDestroy(keyInfoCtx);
         return(NULL);
     }
@@ -274,7 +273,6 @@ xmlSecKeyInfoCtxInitialize(xmlSecKeyInfoCtxPtr keyInfoCtx, xmlSecKeysMngrPtr key
     ret = xmlSecPtrListInitialize(&(keyInfoCtx->enabledKeyData), xmlSecKeyDataIdListId);
     if(ret < 0) {
         xmlSecInternalError("xmlSecPtrListInitialize", NULL);
-
         return(-1);
     }
 
@@ -282,7 +280,6 @@ xmlSecKeyInfoCtxInitialize(xmlSecKeyInfoCtxPtr keyInfoCtx, xmlSecKeysMngrPtr key
     ret = xmlSecTransformCtxInitialize(&(keyInfoCtx->retrievalMethodCtx));
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformCtxInitialize", NULL);
-
         return(-1);
     }
 
@@ -297,7 +294,6 @@ xmlSecKeyInfoCtxInitialize(xmlSecKeyInfoCtxPtr keyInfoCtx, xmlSecKeysMngrPtr key
     ret = xmlSecKeyReqInitialize(&(keyInfoCtx->keyReq));
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyReqInitialize", NULL);
-
         return(-1);
     }
 
@@ -373,7 +369,6 @@ xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     tmp = xmlSecEncCtxCreate(keyInfoCtx->keysMngr);
     if(tmp == NULL) {
         xmlSecInternalError("xmlSecEncCtxCreate", NULL);
-
         return(-1);
     }
     tmp->mode = xmlEncCtxModeEncryptedKey;
@@ -384,7 +379,6 @@ xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
             ret = xmlSecKeyInfoCtxCopyUserPref(&(tmp->keyInfoReadCtx), keyInfoCtx);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref", NULL);
-
                 xmlSecEncCtxDestroy(tmp);
                 return(-1);
             }
@@ -393,7 +387,6 @@ xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
             ret = xmlSecKeyInfoCtxCopyUserPref(&(tmp->keyInfoWriteCtx), keyInfoCtx);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref", NULL);
-
                 xmlSecEncCtxDestroy(tmp);
                 return(-1);
             }
@@ -459,7 +452,6 @@ xmlSecKeyInfoCtxCopyUserPref(xmlSecKeyInfoCtxPtr dst, xmlSecKeyInfoCtxPtr src) {
         dst->encCtx = xmlSecEncCtxCreate(dst->keysMngr);
         if(dst->encCtx == NULL) {
             xmlSecInternalError("xmlSecEncCtxCreate", NULL);
-
             return(-1);
         }
 
@@ -467,7 +459,6 @@ xmlSecKeyInfoCtxCopyUserPref(xmlSecKeyInfoCtxPtr dst, xmlSecKeyInfoCtxPtr src) {
         ret = xmlSecEncCtxCopyUserPref(dst->encCtx, src->encCtx);
         if(ret < 0) {
             xmlSecInternalError("xmlSecEncCtxCopyUserPref", NULL);
-
             return(-1);
         }
     }

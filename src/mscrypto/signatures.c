@@ -468,7 +468,6 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 
             if(pProviderInfo == NULL) {
                 xmlSecInternalError("xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo", NULL);
-
                 return(-1);
             }
 

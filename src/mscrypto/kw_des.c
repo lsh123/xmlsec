@@ -579,7 +579,6 @@ xmlSecMSCryptoKWDes3BlockEncrypt(void * context,
         &cryptKey))  {
 
         xmlSecInternalError("xmlSecMSCryptoImportPlainSessionBlob", NULL);
-
         return(-1);
     }
     xmlSecAssert2(cryptKey != 0, -1);
@@ -660,7 +659,6 @@ xmlSecMSCryptoKWDes3BlockDecrypt(void * context,
         &cryptKey))  {
 
         xmlSecInternalError("xmlSecMSCryptoImportPlainSessionBlob", NULL);
-
         return(-1);
     }
     xmlSecAssert2(cryptKey != 0, -1);

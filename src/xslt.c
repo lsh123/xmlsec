@@ -491,21 +491,18 @@ xmlSecXslProcess(xmlSecXsltCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) 
     docIn = xmlSecParseMemory(xmlSecBufferGetData(in), xmlSecBufferGetSize(in), 1);
     if(docIn == NULL) {
         xmlSecInternalError("xmlSecParseMemory", NULL);
-
         goto done;
     }
 
     docOut = xmlSecXsApplyStylesheet(ctx, docIn);
     if(docOut == NULL) {
         xmlSecInternalError("xmlSecXsApplyStylesheet", NULL);
-
         goto done;
     }
 
     output = xmlSecBufferCreateOutputBuffer(out);
     if(output == NULL) {
         xmlSecInternalError("xmlSecBufferCreateOutputBuffer", NULL);
-
         goto done;
     }
 

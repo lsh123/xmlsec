@@ -39,20 +39,17 @@ xmlSecInit(void) {
 #ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
     if(xmlSecCryptoDLInit() < 0) {
         xmlSecInternalError("xmlSecCryptoDLInit", NULL);
-
         return(-1);
     }
 #endif /* XMLSEC_NO_CRYPTO_DYNAMIC_LOADING */
 
     if(xmlSecKeyDataIdsInit() < 0) {
         xmlSecInternalError("xmlSecKeyDataIdsInit", NULL);
-
         return(-1);
     }
 
     if(xmlSecTransformIdsInit() < 0) {
         xmlSecInternalError("xmlSecTransformIdsInit", NULL);
-
         return(-1);
     }
 
@@ -80,7 +77,6 @@ xmlSecShutdown(void) {
 #ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
     if(xmlSecCryptoDLShutdown() < 0) {
         xmlSecInternalError("xmlSecCryptoDLShutdown", NULL);
-
         res = -1;
     }
 #endif /* XMLSEC_NO_CRYPTO_DYNAMIC_LOADING */

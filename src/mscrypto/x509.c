@@ -648,7 +648,6 @@ xmlSecMSCryptoKeyDataX509Finalize(xmlSecKeyDataPtr data) {
     if (ctx->hMemStore != 0) {
         if (!CertCloseStore(ctx->hMemStore, CERT_CLOSE_STORE_FORCE_FLAG)) {
             xmlSecInternalError("CertCloseStore", NULL);
-
             return;
         }
     }
@@ -1009,7 +1008,6 @@ xmlSecMSCryptoX509CertificateNodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node,
     buf = xmlSecMSCryptoX509CertBase64DerWrite(cert, keyInfoCtx->base64LineSize);
     if(buf == NULL) {
         xmlSecInternalError("xmlSecMSCryptoX509CertBase64DerWrite", NULL);
-
         return(-1);
     }
 
@@ -1397,7 +1395,6 @@ xmlSecMSCryptoX509SKINodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node, xmlSecKeyIn
     buf = xmlSecMSCryptoX509SKIWrite(cert);
     if(buf == NULL) {
         xmlSecInternalError("xmlSecMSCryptoX509SKIWrite", NULL);
-
         return(-1);
     }
 
@@ -1476,7 +1473,6 @@ xmlSecMSCryptoX509CRLNodeWrite(PCCRL_CONTEXT crl, xmlNodePtr node, xmlSecKeyInfo
     buf = xmlSecMSCryptoX509CrlBase64DerWrite(crl, keyInfoCtx->base64LineSize);
     if(buf == NULL) {
         xmlSecInternalError("xmlSecMSCryptoX509CrlBase64DerWrite", NULL);
-
         return(-1);
     }
 
@@ -1652,7 +1648,6 @@ xmlSecMSCryptoX509CertBase64DerRead(xmlChar* buf) {
     ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, xmlStrlen(buf));
     if(ret < 0) {
         xmlSecInternalError("xmlSecBase64Decode", NULL);
-
         return(NULL);
     }
 
@@ -1702,7 +1697,6 @@ xmlSecMSCryptoX509CertBase64DerWrite(PCCERT_CONTEXT cert, int base64LineWrap) {
     res = xmlSecBase64Encode(p, size, base64LineWrap);
     if(res == NULL) {
         xmlSecInternalError("xmlSecBase64Encode", NULL);
-
         return(NULL);
     }
 
@@ -1720,7 +1714,6 @@ xmlSecMSCryptoX509CrlBase64DerRead(xmlChar* buf,
     ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, xmlStrlen(buf));
     if(ret < 0) {
         xmlSecInternalError("xmlSecBase64Decode", NULL);
-
         return(NULL);
     }
 
@@ -1773,7 +1766,6 @@ xmlSecMSCryptoX509CrlBase64DerWrite(PCCRL_CONTEXT crl, int base64LineWrap) {
     res = xmlSecBase64Encode(p, size, base64LineWrap);
     if(res == NULL) {
         xmlSecInternalError("xmlSecBase64Encode", NULL);
-
         return(NULL);
     }
 
@@ -1824,7 +1816,6 @@ xmlSecMSCryptoX509NameWrite(PCERT_NAME_BLOB nm) {
     res = xmlSecMSCryptoConvertTstrToUtf8(resT);
     if (NULL == res) {
         xmlSecInternalError("xmlSecMSCryptoConvertTstrToUtf8", NULL);
-
         xmlFree(resT);
         return(NULL);
     }
@@ -1856,7 +1847,6 @@ xmlSecMSCryptoASN1IntegerWrite(xmlNodePtr node, PCRYPT_INTEGER_BLOB num) {
     ret = xmlSecBnSetData(&bn, num->pbData, num->cbData);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBnSetData", NULL);
-
         xmlSecBnFinalize(&bn);
         return(-1);
     }
@@ -1868,7 +1858,6 @@ xmlSecMSCryptoASN1IntegerWrite(xmlNodePtr node, PCRYPT_INTEGER_BLOB num) {
     ret = xmlSecBnSetNodeValue(&bn, node, xmlSecBnDec, 1, 0);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBnSetNodeValue", NULL);
-
         xmlSecBnFinalize(&bn);
         return(-1);
     }
@@ -1932,7 +1921,6 @@ xmlSecMSCryptoX509SKIWrite(PCCERT_CONTEXT cert) {
     res = xmlSecBase64Encode(bSKI, dwSize, 0);
     if(res == NULL) {
         xmlSecInternalError("xmlSecBase64Encode", NULL);
-
         xmlFree(bSKI);
         return(NULL);
     }
@@ -2130,7 +2118,6 @@ xmlSecMSCryptoKeyDataRawX509CertBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     cert = xmlSecMSCryptoX509CertDerRead(buf, bufSize);
     if(cert == NULL) {
         xmlSecInternalError("xmlSecMSCryptoX509CertDerRead", NULL);
-
         return(-1);
     }
 

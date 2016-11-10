@@ -432,7 +432,6 @@ xmlSecMSCryptoKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
         &cryptKey))  {
 
         xmlSecInternalError("xmlSecMSCryptoImportPlainSessionBlob", NULL);
-
         return(-1);
     }
     xmlSecAssert2(cryptKey != 0, -1);
@@ -485,7 +484,6 @@ xmlSecMSCryptoKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
         &cryptKey))  {
 
         xmlSecInternalError("xmlSecMSCryptoImportPlainSessionBlob", NULL);
-
         return(-1);
     }
     xmlSecAssert2(cryptKey != 0, -1);

@@ -939,7 +939,6 @@ xmlSecOpenSSLSignatureEcdsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPt
     signHalfSize = xmlSecOpenSSLSignatureEcdsaSignatureHalfSize(ecKey);
     if(signHalfSize <= 0) {
         xmlSecInternalError("xmlSecOpenSSLSignatureEcdsaSignatureHalfSize", NULL);
-
         goto done;
     }
 
@@ -1038,7 +1037,6 @@ xmlSecOpenSSLSignatureEcdsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSec
     signHalfSize = xmlSecOpenSSLSignatureEcdsaSignatureHalfSize(ecKey);
     if(signHalfSize <= 0) {
         xmlSecInternalError("xmlSecOpenSSLSignatureEcdsaSignatureHalfSize", NULL);
-
         goto done;
     }
 

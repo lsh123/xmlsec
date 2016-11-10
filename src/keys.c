@@ -120,7 +120,6 @@ xmlSecKeyUseWithCreate(const xmlChar* application, const xmlChar* identifier) {
     ret = xmlSecKeyUseWithInitialize(keyUseWith);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyUseWithInitialize", NULL);
-
         xmlSecKeyUseWithDestroy(keyUseWith);
         return(NULL);
     }
@@ -128,7 +127,6 @@ xmlSecKeyUseWithCreate(const xmlChar* application, const xmlChar* identifier) {
     ret = xmlSecKeyUseWithSet(keyUseWith, application, identifier);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyUseWithSet", NULL);
-
         xmlSecKeyUseWithDestroy(keyUseWith);
         return(NULL);
     }
@@ -156,14 +154,12 @@ xmlSecKeyUseWithDuplicate(xmlSecKeyUseWithPtr keyUseWith) {
     newKeyUseWith = xmlSecKeyUseWithCreate(NULL, NULL);
     if(newKeyUseWith == NULL) {
         xmlSecInternalError("xmlSecKeyUseWithCreate", NULL);
-
         return(NULL);
     }
 
     ret = xmlSecKeyUseWithCopy(newKeyUseWith, keyUseWith);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyUseWithCopy", NULL);
-
         xmlSecKeyUseWithDestroy(keyUseWith);
         return(NULL);
     }
@@ -330,7 +326,6 @@ xmlSecKeyReqInitialize(xmlSecKeyReqPtr keyReq) {
     ret = xmlSecPtrListInitialize(&keyReq->keyUseWithList, xmlSecKeyUseWithPtrListId);
     if(ret < 0) {
         xmlSecInternalError("xmlSecPtrListInitialize", NULL);
-
         return(-1);
     }
 
@@ -394,7 +389,6 @@ xmlSecKeyReqCopy(xmlSecKeyReqPtr dst, xmlSecKeyReqPtr src) {
     ret = xmlSecPtrListCopy(&dst->keyUseWithList, &src->keyUseWithList);
     if(ret < 0) {
         xmlSecInternalError("xmlSecPtrListCopy", NULL);
-
         return(-1);
     }
 
@@ -609,7 +603,6 @@ xmlSecKeyCopy(xmlSecKeyPtr keyDst, xmlSecKeyPtr keySrc) {
         keyDst->value = xmlSecKeyDataDuplicate(keySrc->value);
         if(keyDst->value == NULL) {
             xmlSecInternalError("xmlSecKeyDataDuplicate", NULL);
-
             return(-1);
         }
     }
@@ -618,7 +611,6 @@ xmlSecKeyCopy(xmlSecKeyPtr keyDst, xmlSecKeyPtr keySrc) {
         keyDst->dataList = xmlSecPtrListDuplicate(keySrc->dataList);
         if(keyDst->dataList == NULL) {
             xmlSecInternalError("xmlSecPtrListDuplicate", NULL);
-
             return(-1);
         }
     }
@@ -648,14 +640,12 @@ xmlSecKeyDuplicate(xmlSecKeyPtr key) {
     newKey = xmlSecKeyCreate();
     if(newKey == NULL) {
         xmlSecInternalError("xmlSecKeyCreate", NULL);
-
         return(NULL);
     }
 
     ret = xmlSecKeyCopy(newKey, key);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyCopy", NULL);
-
         xmlSecKeyDestroy(newKey);
         return(NULL);
     }
@@ -897,7 +887,6 @@ xmlSecKeyAdoptData(xmlSecKeyPtr key, xmlSecKeyDataPtr data) {
         key->dataList = xmlSecPtrListCreate(xmlSecKeyDataListId);
         if(key->dataList == NULL) {
             xmlSecInternalError("xmlSecPtrListCreate", NULL);
-
             return(-1);
         }
     }
@@ -1261,7 +1250,6 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     key = xmlSecKeyCreate();
     if(key == NULL) {
         xmlSecInternalError("xmlSecKeyCreate", NULL);
-
         return(NULL);
     }
 
@@ -1288,7 +1276,6 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
         key = xmlSecKeysMngrFindKey(keyInfoCtx->keysMngr, NULL, keyInfoCtx);
         if(key == NULL) {
             xmlSecInternalError("xmlSecKeysMngrFindKey", NULL);
-
             return(NULL);
         }
         if(xmlSecKeyGetValue(key) != NULL) {

@@ -174,14 +174,12 @@ xmlSecGnuTLSX509CertDup(gnutls_x509_crt_t src) {
     buf = xmlSecGnuTLSX509CertBase64DerWrite(src, 0);
     if(buf == NULL) {
         xmlSecInternalError("xmlSecGnuTLSX509CertBase64DerWrite", NULL);
-
         return (NULL);
     }
 
     res = xmlSecGnuTLSX509CertBase64DerRead(buf);
     if(res == NULL) {
         xmlSecInternalError("xmlSecGnuTLSX509CertBase64DerRead", NULL);
-
         xmlFree(buf);
         return (NULL);
     }
@@ -330,7 +328,6 @@ xmlSecGnuTLSX509CertGetIssuerSerial(gnutls_x509_crt_t cert) {
     res = xmlSecGnuTLSASN1IntegerWrite(buf, bufSize);
     if(res == NULL) {
         xmlSecInternalError("xmlSecGnuTLSASN1IntegerWrite", NULL);
-
         xmlFree(buf);
         return(NULL);
     }
@@ -388,7 +385,6 @@ xmlSecGnuTLSX509CertGetSKI(gnutls_x509_crt_t cert) {
     res = xmlSecBase64Encode(buf, bufSize, 0);
     if(res == NULL) {
         xmlSecInternalError("xmlSecBase64Encode", NULL);
-
         xmlFree(buf);
         return(NULL);
     }
@@ -409,7 +405,6 @@ xmlSecGnuTLSX509CertBase64DerRead(xmlChar* buf) {
     ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, xmlStrlen(buf));
     if(ret < 0) {
         xmlSecInternalError("xmlSecBase64Decode", NULL);
-
         return(NULL);
     }
 
@@ -519,7 +514,6 @@ xmlSecGnuTLSX509CertBase64DerWrite(gnutls_x509_crt_t cert, int base64LineWrap) {
     res = xmlSecBase64Encode(buf, bufSize, base64LineWrap);
     if(res == NULL) {
         xmlSecInternalError("xmlSecBase64Encode", NULL);
-
         xmlFree(buf);
         return(NULL);
     }
@@ -611,14 +605,12 @@ xmlSecGnuTLSX509CrlDup(gnutls_x509_crl_t src) {
     buf = xmlSecGnuTLSX509CrlBase64DerWrite(src, 0);
     if(buf == NULL) {
         xmlSecInternalError("xmlSecGnuTLSX509CrlBase64DerWrite", NULL);
-
         return (NULL);
     }
 
     res = xmlSecGnuTLSX509CrlBase64DerRead(buf);
     if(res == NULL) {
         xmlSecInternalError("xmlSecGnuTLSX509CrlBase64DerRead", NULL);
-
         xmlFree(buf);
         return (NULL);
     }
@@ -684,7 +676,6 @@ xmlSecGnuTLSX509CrlBase64DerRead(xmlChar* buf) {
     ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, xmlStrlen(buf));
     if(ret < 0) {
         xmlSecInternalError("xmlSecBase64Decode", NULL);
-
         return(NULL);
     }
 
@@ -794,7 +785,6 @@ xmlSecGnuTLSX509CrlBase64DerWrite(gnutls_x509_crl_t crl, int base64LineWrap) {
     res = xmlSecBase64Encode(buf, bufSize, base64LineWrap);
     if(res == NULL) {
         xmlSecInternalError("xmlSecBase64Encode", NULL);
-
         xmlFree(buf);
         return(NULL);
     }
@@ -1139,7 +1129,6 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
                 (*key_cert) = xmlSecGnuTLSX509CertDup(tmp);
                 if((*key_cert) == NULL) {
                     xmlSecInternalError("xmlSecGnuTLSX509CertDup", NULL);
-
                     goto done;
                 }
 

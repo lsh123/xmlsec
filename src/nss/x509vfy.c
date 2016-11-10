@@ -631,7 +631,6 @@ xmlSecNssX509NameRead(xmlSecByte *str, int len) {
         nameLen = xmlSecNssX509NameStringRead(&str, &len, name, sizeof(name), '=', 0);
         if(nameLen < 0) {
             xmlSecInternalError("xmlSecNssX509NameStringRead", NULL);
-
             goto done;
         }
         memcpy(p, name, nameLen);
@@ -644,7 +643,6 @@ xmlSecNssX509NameRead(xmlSecByte *str, int len) {
                                         value, sizeof(value), '"', 1);
                 if(valueLen < 0) {
                     xmlSecInternalError("xmlSecNssX509NameStringRead", NULL);
-
                     goto done;
                 }
                 /* skip spaces before comma or semicolon */
@@ -679,7 +677,6 @@ xmlSecNssX509NameRead(xmlSecByte *str, int len) {
                                         value, sizeof(value), ',', 1);
                 if(valueLen < 0) {
                     xmlSecInternalError("xmlSecNssX509NameStringRead", NULL);
-
                     goto done;
                 }
                 memcpy(p, value, valueLen);

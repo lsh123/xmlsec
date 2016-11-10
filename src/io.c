@@ -155,7 +155,6 @@ xmlSecIOInit(void) {
     ret = xmlSecPtrListInitialize(&xmlSecAllIOCallbacks, xmlSecIOCallbackPtrListId);
     if(ret < 0) {
         xmlSecInternalError("xmlSecPtrListPtrInitialize", NULL);
-
         return(-1);
     }
 
@@ -224,14 +223,12 @@ xmlSecIORegisterCallbacks(xmlInputMatchCallback matchFunc,
     callbacks = xmlSecIOCallbackCreate(matchFunc, openFunc, readFunc, closeFunc);
     if(callbacks == NULL) {
         xmlSecInternalError("xmlSecIOCallbackCreate", NULL);
-
         return(-1);
     }
 
     ret = xmlSecPtrListAdd(&xmlSecAllIOCallbacks, callbacks);
     if(ret < 0) {
         xmlSecInternalError("xmlSecPtrListAdd", NULL);
-
         xmlSecIOCallbackDestroy(callbacks);
         return(-1);
     }

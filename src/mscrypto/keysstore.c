@@ -528,7 +528,6 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         data = xmlSecMSCryptoCertAdopt(pCertContext, keyReq->keyType);
         if(data == NULL) {
             xmlSecInternalError("xmlSecMSCryptoCertAdopt", NULL);
-
             goto done;
         }
         pCertContext = NULL;
@@ -537,7 +536,6 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         key = xmlSecKeyCreate();
         if (key == NULL) {
             xmlSecInternalError("xmlSecKeyCreate", NULL);
-
             goto done;
         }
 

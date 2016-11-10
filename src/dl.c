@@ -121,7 +121,6 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
     lib->filename = xmlSecCryptoDLLibraryConstructFilename(name);
     if(lib->filename == NULL) {
         xmlSecInternalError("xmlSecCryptoDLLibraryConstructFilename", NULL);
-
         xmlSecCryptoDLLibraryDestroy(lib);
         return(NULL);
     }
@@ -129,7 +128,6 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
     lib->getFunctionsName = xmlSecCryptoDLLibraryConstructGetFunctionsName(name);
     if(lib->getFunctionsName == NULL) {
         xmlSecInternalError("xmlSecCryptoDLLibraryConstructGetFunctionsName", NULL);
-
         xmlSecCryptoDLLibraryDestroy(lib);
         return(NULL);
     }
@@ -202,7 +200,6 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
     lib->functions = getFunctions();
     if(lib->functions == NULL) {
         xmlSecInternalError("getFunctions", NULL);
-
         xmlSecCryptoDLLibraryDestroy(lib);
         return(NULL);
     }
@@ -363,7 +360,6 @@ xmlSecCryptoDLInit(void) {
     ret = xmlSecPtrListInitialize(&gXmlSecCryptoDLLibraries, xmlSecCryptoDLLibrariesListGetKlass());
     if(ret < 0) {
         xmlSecInternalError("xmlSecPtrListPtrInitialize", "xmlSecCryptoDLLibrariesListGetKlass");
-
         return(-1);
     }
 
@@ -431,14 +427,12 @@ xmlSecCryptoDLLoadLibrary(const xmlChar* crypto) {
     functions = xmlSecCryptoDLGetLibraryFunctions((crypto != NULL ) ? crypto : xmlSecGetDefaultCrypto());
     if(functions == NULL) {
         xmlSecInternalError("xmlSecCryptoDLGetLibraryFunctions", NULL);
-
         return(-1);
     }
 
     ret = xmlSecCryptoDLSetFunctions(functions);
     if(ret < 0) {
         xmlSecInternalError("xmlSecCryptoDLSetFunctions", NULL);
-
         return(-1);
     }
 
@@ -523,7 +517,6 @@ xmlSecCryptoDLUnloadLibrary(const xmlChar* crypto) {
     ret = xmlSecPtrListRemove(&gXmlSecCryptoDLLibraries, pos);
     if(ret < 0) {
         xmlSecInternalError("xmlSecPtrListRemove", NULL);
-
         return(-1);
     }
 

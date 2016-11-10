@@ -491,7 +491,6 @@ xmlSecNssKWDes3BlockEncrypt(void * context,
                                  1); /* encrypt */
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssKWDes3Encrypt", NULL);
-
         return(-1);
     }
 
@@ -523,7 +522,6 @@ xmlSecNssKWDes3BlockDecrypt(void * context,
                                  0); /* decrypt */
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssKWDes3Encrypt", NULL);
-
         return(-1);
     }
 

@@ -274,7 +274,6 @@ xmlSecMSCryptoInit (void)  {
     /* Check loaded xmlsec library version */
     if(xmlSecCheckVersionExact() != 1) {
         xmlSecInternalError("xmlSecCheckVersionExact", NULL);
-
         return(-1);
     }
 
@@ -284,7 +283,6 @@ xmlSecMSCryptoInit (void)  {
     /* register our klasses */
     if(xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(xmlSecCryptoGetFunctions_mscrypto()) < 0) {
         xmlSecInternalError("xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms", NULL);
-
         return(-1);
     }
     return(0);
@@ -335,7 +333,6 @@ xmlSecMSCryptoKeysMngrInit(xmlSecKeysMngrPtr mngr) {
         ret = xmlSecKeysMngrAdoptDataStore(mngr, x509Store);
         if(ret < 0) {
             xmlSecInternalError("xmlSecKeysMngrAdoptDataStore", NULL);
-
             xmlSecKeyDataStoreDestroy(x509Store);
             return(-1);
         }
@@ -383,7 +380,6 @@ xmlSecMSCryptoGenerateRandom(xmlSecBufferPtr buffer, size_t size) {
     hProv = xmlSecMSCryptoFindProvider(xmlSecMSCryptoProviderInfo_Random, NULL, CRYPT_VERIFYCONTEXT, FALSE);
     if (0 == hProv) {
         xmlSecInternalError("xmlSecMSCryptoFindProvider", NULL);
-
         return(-1);
     }
     if (FALSE == CryptGenRandom(hProv, (DWORD)size, xmlSecBufferGetData(buffer))) {

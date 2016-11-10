@@ -126,7 +126,6 @@ xmlSecGCryptKWAesInitialize(xmlSecTransformPtr transform) {
     ret = xmlSecBufferInitialize(&(ctx->keyBuffer), 0);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptKWAesGetKey", xmlSecTransformGetName(transform));
-
         return(-1);
     }
 
@@ -280,7 +279,6 @@ xmlSecGCryptKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecKWAesEncode", xmlSecTransformGetName(transform));
-
                 return(-1);
             }
             outSize = ret;
@@ -290,7 +288,6 @@ xmlSecGCryptKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecKWAesEncode", xmlSecTransformGetName(transform));
-
                 return(-1);
             }
             outSize = ret;

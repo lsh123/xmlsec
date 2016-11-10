@@ -287,14 +287,12 @@ xmlSecNssAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
     ret = xmlSecNssAppReadSECItem(&secItem, filename);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssAppReadSECItem", NULL);
-
         return(NULL);
     }
 
     res = xmlSecNssAppKeyLoadSECItem(&secItem, format, pwd, pwdCallback, pwdCallbackCtx);
     if(res == NULL) {
         xmlSecInternalError("xmlSecNssAppKeyLoadSECItem", NULL);
-
         SECITEM_FreeItem(&secItem, PR_FALSE);
         return(NULL);
     }
@@ -330,14 +328,12 @@ xmlSecNssAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecKey
     ret = xmlSecNssAppCreateSECItem(&secItem, data, dataSize);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssAppCreateSECItem", NULL);
-
         return(NULL);
     }
 
     res = xmlSecNssAppKeyLoadSECItem(&secItem, format, pwd, pwdCallback, pwdCallbackCtx);
     if(res == NULL) {
         xmlSecInternalError("xmlSecNssAppKeyLoadSECItem", NULL);
-
         SECITEM_FreeItem(&secItem, PR_FALSE);
         return(NULL);
     }
@@ -374,7 +370,6 @@ xmlSecNssAppKeyLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format,
         key = xmlSecNssAppPkcs12LoadSECItem(secItem, pwd, pwdCallback, pwdCallbackCtx);
         if(key == NULL) {
             xmlSecInternalError("xmlSecNssAppPkcs12LoadSECItem", NULL);
-
             return(NULL);
         }
         break;
@@ -382,7 +377,6 @@ xmlSecNssAppKeyLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format,
         key = xmlSecNssAppKeyFromCertLoadSECItem(secItem, format);
         if(key == NULL) {
             xmlSecInternalError("xmlSecNssAppKeyFromCertLoadSECItem", NULL);
-
             return(NULL);
         }
         break;
@@ -391,7 +385,6 @@ xmlSecNssAppKeyLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format,
         key = xmlSecNssAppDerKeyLoadSECItem(secItem);
         if(key == NULL) {
             xmlSecInternalError("xmlSecNssAppDerKeyLoadSECItem", NULL);
-
             return(NULL);
         }
         break;
@@ -472,7 +465,6 @@ xmlSecNssAppDerKeyLoadSECItem(SECItem* secItem) {
     data = xmlSecNssPKIAdoptKey(privkey, pubkey);
     if(data == NULL) {
         xmlSecInternalError("xmlSecNssPKIAdoptKey", NULL);
-
         goto done;
     }
     privkey = NULL;
@@ -481,7 +473,6 @@ xmlSecNssAppDerKeyLoadSECItem(SECItem* secItem) {
     key = xmlSecKeyCreate();
     if(key == NULL) {
         xmlSecInternalError("xmlSecKeyCreate", NULL);
-
         goto done;
     }
 
@@ -547,14 +538,12 @@ xmlSecNssAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDataFor
     ret = xmlSecNssAppReadSECItem(&secItem, filename);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssAppReadSECItem", NULL);
-
         return(-1);
     }
 
     ret = xmlSecNssAppKeyCertLoadSECItem(key, &secItem, format);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssAppKeyCertLoadSECItem", NULL);
-
         SECITEM_FreeItem(&secItem, PR_FALSE);
         return(-1);
     }
@@ -588,14 +577,12 @@ xmlSecNssAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSi
     ret = xmlSecNssAppCreateSECItem(&secItem, data, dataSize);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssAppCreateSECItem", NULL);
-
         return(-1);
     }
 
     ret = xmlSecNssAppKeyCertLoadSECItem(key, &secItem, format);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssAppKeyCertLoadSECItem", NULL);
-
         SECITEM_FreeItem(&secItem, PR_FALSE);
         return(-1);
     }
@@ -698,14 +685,12 @@ xmlSecNssAppPkcs12Load(const char *filename, const char *pwd,
     ret = xmlSecNssAppReadSECItem(&secItem, filename);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssAppReadSECItem", NULL);
-
         return(NULL);
     }
 
     res = xmlSecNssAppPkcs12LoadSECItem(&secItem, pwd, pwdCallback, pwdCallbackCtx);
     if(res == NULL) {
         xmlSecInternalError("xmlSecNssAppPkcs12LoadSECItem", NULL);
-
         SECITEM_FreeItem(&secItem, PR_FALSE);
         return(NULL);
     }
@@ -742,14 +727,12 @@ xmlSecNssAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const 
     ret = xmlSecNssAppCreateSECItem(&secItem, data, dataSize);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssAppCreateSECItem", NULL);
-
         return(NULL);
     }
 
     res = xmlSecNssAppPkcs12LoadSECItem(&secItem, pwd, pwdCallback, pwdCallbackCtx);
     if(res == NULL) {
         xmlSecInternalError("xmlSecNssAppPkcs12LoadSECItem", NULL);
-
         SECITEM_FreeItem(&secItem, PR_FALSE);
         return(NULL);
     }
@@ -806,7 +789,6 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
     slot = xmlSecNssGetInternalKeySlot();
     if (slot == NULL) {
         xmlSecInternalError("xmlSecNssGetInternalKeySlot", NULL);
-
         goto done;
     }
 
@@ -926,7 +908,6 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
                 data = xmlSecNssPKIAdoptKey(privkey, pubkey);
                 if(data == NULL) {
                     xmlSecInternalError("xmlSecNssPKIAdoptKey", NULL);
-
                     goto done;
                 }
 
@@ -995,7 +976,6 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
     key = xmlSecKeyCreate();
     if(key == NULL) {
         xmlSecInternalError("xmlSecKeyCreate", NULL);
-
         goto done;
     }
 
@@ -1101,7 +1081,6 @@ xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format)
     keyData = xmlSecNssX509CertGetKey(cert);
     if(keyData == NULL) {
         xmlSecInternalError("xmlSecNssX509CertGetKey", NULL);
-
         CERT_DestroyCertificate(cert);
         return(NULL);
     }
@@ -1110,7 +1089,6 @@ xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format)
     key = xmlSecKeyCreate();
     if(key == NULL) {
         xmlSecInternalError("xmlSecKeyCreate", NULL);
-
         xmlSecKeyDataDestroy(keyData);
         CERT_DestroyCertificate(cert);
         return(NULL);
@@ -1120,7 +1098,6 @@ xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format)
     ret = xmlSecKeySetValue(key, keyData);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeySetValue", NULL);
-
         xmlSecKeyDestroy(key);
         xmlSecKeyDataDestroy(keyData);
         CERT_DestroyCertificate(cert);
@@ -1131,7 +1108,6 @@ xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format)
     certData = xmlSecKeyEnsureData(key, xmlSecNssKeyDataX509Id);
     if(certData == NULL) {
         xmlSecInternalError("xmlSecKeyEnsureData", NULL);
-
         xmlSecKeyDestroy(key);
         CERT_DestroyCertificate(cert);
         return(NULL);
@@ -1141,7 +1117,6 @@ xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format)
     ret = xmlSecNssKeyDataX509AdoptCert(certData, cert);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssKeyDataX509AdoptCert", NULL);
-
         xmlSecKeyDestroy(key);
         CERT_DestroyCertificate(cert);
         return(NULL);
@@ -1179,14 +1154,12 @@ xmlSecNssAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
     ret = xmlSecNssAppReadSECItem(&secItem, filename);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssAppReadSECItem", NULL);
-
         return(-1);
     }
 
     ret = xmlSecNssAppKeysMngrCertLoadSECItem(mngr, &secItem, format, type);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssAppKeysMngrCertLoadSECItem", NULL);
-
         SECITEM_FreeItem(&secItem, PR_FALSE);
         return(-1);
     }
@@ -1223,14 +1196,12 @@ xmlSecNssAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* dat
     ret = xmlSecNssAppCreateSECItem(&secItem, data, dataSize);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssAppCreateSECItem", NULL);
-
         return(-1);
     }
 
     ret = xmlSecNssAppKeysMngrCertLoadSECItem(mngr, &secItem, format, type);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssAppKeysMngrCertLoadSECItem", NULL);
-
         SECITEM_FreeItem(&secItem, PR_FALSE);
         return(-1);
     }
@@ -1298,7 +1269,6 @@ xmlSecNssAppKeysMngrCertLoadSECItem(xmlSecKeysMngrPtr mngr, SECItem* secItem,
     ret = xmlSecNssX509StoreAdoptCert(x509Store, cert, type);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssX509StoreAdoptCert", NULL);
-
         CERT_DestroyCertificate(cert);
         return(-1);
     }
@@ -1340,7 +1310,6 @@ xmlSecNssAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
         ret = xmlSecKeysMngrAdoptKeysStore(mngr, keysStore);
         if(ret < 0) {
             xmlSecInternalError("xmlSecKeysMngrAdoptKeysStore", NULL);
-
             xmlSecKeyStoreDestroy(keysStore);
             return(-1);
         }
@@ -1349,7 +1318,6 @@ xmlSecNssAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     ret = xmlSecNssKeysMngrInit(mngr);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssKeysMngrInit", NULL);
-
         return(-1);
     }
 
@@ -1378,14 +1346,12 @@ xmlSecNssAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
         xmlSecInternalError("xmlSecKeysMngrGetKeysStore", NULL);
-
         return(-1);
     }
 
     ret = xmlSecNssKeysStoreAdoptKey(store, key);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssKeysStoreAdoptKey", NULL);
-
         return(-1);
     }
 
@@ -1413,7 +1379,6 @@ xmlSecNssAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
         xmlSecInternalError("xmlSecKeysMngrGetKeysStore", NULL);
-
         return(-1);
     }
 
@@ -1451,7 +1416,6 @@ xmlSecNssAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, xm
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
         xmlSecInternalError("xmlSecKeysMngrGetKeysStore", NULL);
-
         return(-1);
     }
 

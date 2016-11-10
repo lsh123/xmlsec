@@ -421,7 +421,6 @@ xmlSecOpenSSLKWDes3BlockEncrypt(void * context,
                                     1); /* encrypt */
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLKWDes3Encrypt", NULL);
-
         return(-1);
     }
 
@@ -453,7 +452,6 @@ xmlSecOpenSSLKWDes3BlockDecrypt(void * context,
                                     0); /* decrypt */
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLKWDes3Encrypt", NULL);
-
         return(-1);
     }
 

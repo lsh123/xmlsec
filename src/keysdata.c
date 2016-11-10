@@ -67,7 +67,6 @@ xmlSecKeyDataIdsInit(void) {
     ret = xmlSecKeyDataIdsRegisterDefault();
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyDataIdsRegisterDefault", NULL);
-
         return(-1);
     }
 
@@ -134,7 +133,6 @@ xmlSecKeyDataIdsRegisterDefault(void) {
 
     if(xmlSecKeyDataIdsRegister(xmlSecKeyDataRetrievalMethodId) < 0) {
         xmlSecInternalError("xmlSecKeyDataIdsRegister(xmlSecKeyDataRetrievalMethodId", NULL);
-
         return(-1);
     }
 

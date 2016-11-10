@@ -140,7 +140,6 @@ xmlSecSoap11EnsureHeader(xmlNodePtr envNode) {
     hdrNode = xmlSecAddPrevSibling(cur, xmlSecNodeHeader, xmlSecSoap11Ns);
     if(hdrNode == NULL) {
         xmlSecInternalError("xmlSecAddPrevSibling", NULL);
-
         return(NULL);
     }
 
@@ -166,7 +165,6 @@ xmlSecSoap11AddBodyEntry(xmlNodePtr envNode, xmlNodePtr entryNode) {
     bodyNode = xmlSecSoap11GetBody(envNode);
     if(bodyNode == NULL) {
         xmlSecInternalError("xmlSecSoap11GetBody", NULL);
-
         return(NULL);
     }
 
@@ -223,7 +221,6 @@ xmlSecSoap11AddFaultEntry(xmlNodePtr envNode, const xmlChar* faultCodeHref,
     bodyNode = xmlSecSoap11GetBody(envNode);
     if(bodyNode == NULL) {
         xmlSecInternalError("xmlSecSoap11GetBody", NULL);
-
         return(NULL);
     }
 
@@ -425,7 +422,6 @@ xmlSecSoap11GetBodyEntriesNumber(xmlNodePtr envNode) {
     bodyNode = xmlSecSoap11GetBody(envNode);
     if(bodyNode == NULL) {
         xmlSecInternalError("xmlSecSoap11GetBody", NULL);
-
         return(0);
     }
 
@@ -458,7 +454,6 @@ xmlSecSoap11GetBodyEntry(xmlNodePtr envNode, xmlSecSize pos) {
     bodyNode = xmlSecSoap11GetBody(envNode);
     if(bodyNode == NULL) {
         xmlSecInternalError("xmlSecSoap11GetBody", NULL);
-
         return(NULL);
     }
 
@@ -489,7 +484,6 @@ xmlSecSoap11GetFaultEntry(xmlNodePtr envNode) {
     bodyNode = xmlSecSoap11GetBody(envNode);
     if(bodyNode == NULL) {
         xmlSecInternalError("xmlSecSoap11GetBody", NULL);
-
         return(NULL);
     }
 
@@ -628,7 +622,6 @@ xmlSecSoap12EnsureHeader(xmlNodePtr envNode) {
     hdrNode = xmlSecAddPrevSibling(cur, xmlSecNodeHeader, xmlSecSoap12Ns);
     if(hdrNode == NULL) {
         xmlSecInternalError("xmlSecAddPrevSibling", NULL);
-
         return(NULL);
     }
 
@@ -665,7 +658,6 @@ xmlSecSoap12AddBodyEntry(xmlNodePtr envNode, xmlNodePtr entryNode) {
     bodyNode = xmlSecSoap12GetBody(envNode);
     if(bodyNode == NULL) {
         xmlSecInternalError("xmlSecSoap12GetBody", NULL);
-
         return(NULL);
     }
 
@@ -766,7 +758,6 @@ xmlSecSoap12AddFaultEntry(xmlNodePtr envNode, xmlSecSoap12FaultCode faultCode,
     bodyNode = xmlSecSoap12GetBody(envNode);
     if(bodyNode == NULL) {
         xmlSecInternalError("xmlSecSoap12GetBody", NULL);
-
         return(NULL);
     }
 
@@ -1138,7 +1129,6 @@ xmlSecSoap12GetBodyEntriesNumber(xmlNodePtr envNode) {
     bodyNode = xmlSecSoap12GetBody(envNode);
     if(bodyNode == NULL) {
         xmlSecInternalError("xmlSecSoap12GetBody", NULL);
-
         return(0);
     }
 
@@ -1171,7 +1161,6 @@ xmlSecSoap12GetBodyEntry(xmlNodePtr envNode, xmlSecSize pos) {
     bodyNode = xmlSecSoap12GetBody(envNode);
     if(bodyNode == NULL) {
         xmlSecInternalError("xmlSecSoap12GetBody", NULL);
-
         return(NULL);
     }
 
@@ -1202,7 +1191,6 @@ xmlSecSoap12GetFaultEntry(xmlNodePtr envNode) {
     bodyNode = xmlSecSoap12GetBody(envNode);
     if(bodyNode == NULL) {
         xmlSecInternalError("xmlSecSoap12GetBody", NULL);
-
         return(NULL);
     }
 

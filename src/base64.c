@@ -168,7 +168,6 @@ xmlSecBase64CtxCreate(int encode, int columns) {
     ret = xmlSecBase64CtxInitialize(ctx, encode, columns);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBase64CtxInitialize", NULL);
-
         xmlSecBase64CtxDestroy(ctx);
         return(NULL);
     }
@@ -252,7 +251,6 @@ xmlSecBase64CtxUpdate(xmlSecBase64CtxPtr ctx,
                                     out, outSize, &outResSize);
         if((ret < 0) || (inResSize != inSize)) {
             xmlSecInternalError("xmlSecBase64CtxEncode", NULL);
-
             return(-1);
         }
     } else {
@@ -260,7 +258,6 @@ xmlSecBase64CtxUpdate(xmlSecBase64CtxPtr ctx,
                                     out, outSize, &outResSize);
         if((ret < 0) || (inResSize != inSize)) {
             xmlSecInternalError("xmlSecBase64CtxDecode", NULL);
-
             return(-1);
         }
     }
@@ -299,7 +296,6 @@ xmlSecBase64CtxFinal(xmlSecBase64CtxPtr ctx,
     } else {
         if(!xmlSecBase64CtxDecodeIsFinished(ctx)) {
             xmlSecInternalError("xmlSecBase64CtxIsFinished", NULL);
-
             return(-1);
         }
     }
@@ -635,7 +631,6 @@ xmlSecBase64Encode(const xmlSecByte *buf, xmlSecSize len, int columns) {
     ret = xmlSecBase64CtxInitialize(&ctx, 1, columns);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBase64CtxInitialize", NULL);
-
         return(NULL);
     }
 
@@ -667,7 +662,6 @@ xmlSecBase64Encode(const xmlSecByte *buf, xmlSecSize len, int columns) {
     ret = xmlSecBase64CtxFinal(&ctx, ((xmlSecByte*)ptr) + size_update, size - size_update);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBase64CtxFinal", NULL);
-
         xmlFree(ptr);
         xmlSecBase64CtxFinalize(&ctx);
         return(NULL);
@@ -704,14 +698,12 @@ xmlSecBase64Decode(const xmlChar* str, xmlSecByte *buf, xmlSecSize len) {
     ret = xmlSecBase64CtxInitialize(&ctx, 0, 0);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBase64CtxInitialize", NULL);
-
         return(-1);
     }
 
     ret = xmlSecBase64CtxUpdate(&ctx, (const xmlSecByte*)str, xmlStrlen(str), buf, len);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBase64CtxUpdate", NULL);
-
         xmlSecBase64CtxFinalize(&ctx);
         return(-1);
     }
@@ -720,7 +712,6 @@ xmlSecBase64Decode(const xmlChar* str, xmlSecByte *buf, xmlSecSize len) {
     ret = xmlSecBase64CtxFinal(&ctx, buf + size_update, len - size_update);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBase64CtxFinal", NULL);
-
         xmlSecBase64CtxFinalize(&ctx);
         return(-1);
     }

@@ -159,7 +159,6 @@ xmlSecGCryptKWDes3Initialize(xmlSecTransformPtr transform) {
     ret = xmlSecBufferInitialize(&(ctx->keyBuffer), 0);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
-
         return(-1);
     }
 
@@ -475,7 +474,6 @@ xmlSecGCryptKWDes3BlockEncrypt(void * context,
                                     1); /* encrypt */
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptKWDes3Encrypt", NULL);
-
         return(-1);
     }
 
@@ -508,7 +506,6 @@ xmlSecGCryptKWDes3BlockDecrypt(void * context,
                                     0); /* decrypt */
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptKWDes3Encrypt", NULL);
-
         return(-1);
     }
     return(ret);

@@ -132,7 +132,6 @@ xmlSecGnuTLSKeyDataDsaAdoptPrivateKey(xmlSecKeyDataPtr data, gnutls_x509_privkey
             mpis, sizeof(mpis)/sizeof(mpis[0]));
     if(ret < 0) {
         xmlSecInternalError("xmlSecGnuTLSConvertParamsToMpis", NULL);
-
         xmlSecGnuTLSDestroyParams(params, sizeof(params)/sizeof(params[0]));
         return(-1);
     }
@@ -173,7 +172,6 @@ xmlSecGnuTLSKeyDataDsaAdoptPrivateKey(xmlSecKeyDataPtr data, gnutls_x509_privkey
     ret = xmlSecGCryptKeyDataDsaAdoptKeyPair(data, pub_key, priv_key);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptKeyDataDsaAdoptKeyPair", NULL);
-
         gcry_sexp_release(pub_key);
         gcry_sexp_release(priv_key);
         return(-1);
@@ -225,7 +223,6 @@ xmlSecGnuTLSKeyDataDsaAdoptPublicKey(xmlSecKeyDataPtr data,
             mpis, sizeof(mpis)/sizeof(mpis[0]));
     if(ret < 0) {
         xmlSecInternalError("xmlSecGnuTLSConvertParamsToMpis", NULL);
-
         /* don't destroy params - we got them from outside !!! */
         return(-1);
     }
@@ -248,7 +245,6 @@ xmlSecGnuTLSKeyDataDsaAdoptPublicKey(xmlSecKeyDataPtr data,
     ret = xmlSecGCryptKeyDataDsaAdoptKeyPair(data, pub_key, NULL);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptKeyDataDsaAdoptKeyPair", NULL);
-
         gcry_sexp_release(pub_key);
         return(-1);
     }
@@ -320,7 +316,6 @@ xmlSecGnuTLSKeyDataRsaAdoptPrivateKey(xmlSecKeyDataPtr data, gnutls_x509_privkey
             mpis, sizeof(mpis)/sizeof(mpis[0]));
     if(ret < 0) {
         xmlSecInternalError("xmlSecGnuTLSConvertParamsToMpis", NULL);
-
         xmlSecGnuTLSDestroyParams(params, sizeof(params)/sizeof(params[0]));
         return(-1);
     }
@@ -364,7 +359,6 @@ xmlSecGnuTLSKeyDataRsaAdoptPrivateKey(xmlSecKeyDataPtr data, gnutls_x509_privkey
     ret = xmlSecGCryptKeyDataRsaAdoptKeyPair(data, pub_key, priv_key);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptKeyDataRsaAdoptKeyPair", NULL);
-
         gcry_sexp_release(pub_key);
         gcry_sexp_release(priv_key);
         return(-1);
@@ -409,7 +403,6 @@ xmlSecGnuTLSKeyDataRsaAdoptPublicKey(xmlSecKeyDataPtr data,
             mpis, sizeof(mpis)/sizeof(mpis[0]));
     if(ret < 0) {
         xmlSecInternalError("xmlSecGnuTLSConvertParamsToMpis", NULL);
-
         /* don't destroy params - we got them from outside !!! */
         return(-1);
     }
@@ -432,7 +425,6 @@ xmlSecGnuTLSKeyDataRsaAdoptPublicKey(xmlSecKeyDataPtr data,
     ret = xmlSecGCryptKeyDataRsaAdoptKeyPair(data, pub_key, NULL);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptKeyDataRsaAdoptKeyPair", NULL);
-
         gcry_sexp_release(pub_key);
         return(-1);
     }

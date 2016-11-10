@@ -398,14 +398,12 @@ xmlSecTransformRelationshipWriteProp(xmlOutputBufferPtr buf, const xmlChar * nam
     ret = xmlOutputBufferWriteString(buf, " ");
     if(ret < 0) {
         xmlSecInternalError("xmlOutputBufferWriteString", NULL);
-
         return(-1);
     }
 
     ret = xmlOutputBufferWriteString(buf, (const char*) name);
     if(ret < 0) {
         xmlSecInternalError("xmlOutputBufferWriteString", NULL);
-
         return(-1);
     }
 
@@ -413,19 +411,16 @@ xmlSecTransformRelationshipWriteProp(xmlOutputBufferPtr buf, const xmlChar * nam
         ret = xmlOutputBufferWriteString(buf, "=\"");
         if(ret < 0) {
             xmlSecInternalError("xmlOutputBufferWriteString", NULL);
-
             return(-1);
         }
         ret = xmlOutputBufferWriteString(buf, (const char*) value);
         if(ret < 0) {
             xmlSecInternalError("xmlOutputBufferWriteString", NULL);
-
             return(-1);
         }
         ret = xmlOutputBufferWriteString(buf, "\"");
         if(ret < 0) {
             xmlSecInternalError("xmlOutputBufferWriteString", NULL);
-
             return(-1);
         }
     }

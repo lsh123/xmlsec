@@ -773,7 +773,6 @@ xmlSecTmplEncDataAddEncProperty(xmlNodePtr encNode, const xmlChar *id, const xml
     encProps = xmlSecTmplEncDataEnsureEncProperties(encNode, NULL);
     if(encProps == NULL) {
         xmlSecInternalError("xmlSecTmplEncDataEnsureEncProperties", NULL);
-
         return(NULL);
     }
 
@@ -1686,7 +1685,6 @@ xmlSecTmplTransformAddXsltStylesheet(xmlNodePtr transformNode, const xmlChar *xs
     ret = xmlSecReplaceContent(transformNode, xmlDocGetRootElement(xsltDoc));
     if(ret < 0) {
         xmlSecInternalError("xmlSecReplaceContent", NULL);
-
         xmlFreeDoc(xsltDoc);
         return(-1);
     }

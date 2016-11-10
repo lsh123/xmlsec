@@ -328,7 +328,6 @@ xmlSecGCryptPkSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     ctx->key_data = xmlSecKeyDataDuplicate(key_data);
     if(ctx->key_data == NULL) {
         xmlSecInternalError("xmlSecKeyDataDuplicate", xmlSecTransformGetName(transform));
-
         return(-1);
     }
 
@@ -484,7 +483,6 @@ xmlSecGCryptPkSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
                 ret = ctx->sign(ctx->digest, ctx->key_data, ctx->dgst, ctx->dgstSize, out);
                 if(ret < 0) {
                     xmlSecInternalError("ctx->sign", xmlSecTransformGetName(transform));
-
                     return(-1);
                 }
             }
@@ -750,14 +748,12 @@ xmlSecGCryptDsaPkSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
     ret = xmlSecGCryptAppendMpi(m_r, out, 20);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptAppendMpi", NULL);
-
         goto done;
     }
     xmlSecAssert2(xmlSecBufferGetSize(out) == 20, -1);
     ret = xmlSecGCryptAppendMpi(m_s, out, 20);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptAppendMpi", NULL);
-
         goto done;
     }
     xmlSecAssert2(xmlSecBufferGetSize(out) == (20 + 20), -1);
@@ -1078,7 +1074,6 @@ xmlSecGCryptRsaPkcs1PkSign(int digest, xmlSecKeyDataPtr key_data,
     ret = xmlSecGCryptAppendMpi(m_sig, out, 0);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptAppendMpi", NULL);
-
         goto done;
     }
 

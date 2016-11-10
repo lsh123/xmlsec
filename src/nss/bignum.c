@@ -54,14 +54,12 @@ xmlSecNssNodeGetBigNumValue(PRArenaPool *arena, const xmlNodePtr cur,
     ret = xmlSecBufferInitialize(&buf, 128);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize", NULL);
-
         return(NULL);
     }
 
     ret = xmlSecBufferBase64NodeContentRead(&buf, cur);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferBase64NodeContentRead", NULL);
-
         xmlSecBufferFinalize(&buf);
         return(NULL);
     }
@@ -139,7 +137,6 @@ xmlSecNssNodeSetBigNumValue(xmlNodePtr cur, const SECItem *a, int addLineBreaks)
     ret = xmlSecBufferBase64NodeContentWrite(&buf, cur, xmlSecBase64GetDefaultLineSize());
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferBase64NodeContentWrite", NULL);
-
         xmlSecBufferFinalize(&buf);
         return(-1);
     }

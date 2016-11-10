@@ -210,7 +210,6 @@ xmlSecXPathDataNodeRead(xmlSecXPathDataPtr data, xmlNodePtr node) {
     ret = xmlSecXPathDataRegisterNamespaces (data, node);
     if(ret < 0) {
         xmlSecInternalError("xmlSecXPathDataRegisterNamespaces", NULL);
-
         return(-1);
     }
 
@@ -360,7 +359,6 @@ xmlSecXPathDataListExecute(xmlSecPtrListPtr dataList, xmlDocPtr doc,
         tmp = xmlSecXPathDataExecute(data, doc, hereNode);
         if(tmp == NULL) {
             xmlSecInternalError("xmlSecXPathDataExecute", NULL);
-
             if((res != NULL) && (res != nodes)) {
                 xmlSecNodeSetDestroy(res);
             }

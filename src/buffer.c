@@ -525,7 +525,6 @@ xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
     ret = xmlSecBufferSetMaxSize(buf, xmlStrlen(content));
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferSetMaxSize", NULL);
-
         xmlFree(content);
         return(-1);
     }
@@ -533,7 +532,6 @@ xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
     ret = xmlSecBase64Decode(content, xmlSecBufferGetData(buf), xmlSecBufferGetMaxSize(buf));
     if(ret < 0) {
         xmlSecInternalError("xmlSecBase64Decode", NULL);
-
         xmlFree(content);
         return(-1);
     }
@@ -570,7 +568,6 @@ xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf, xmlNodePtr node, int col
     content = xmlSecBase64Encode(xmlSecBufferGetData(buf), xmlSecBufferGetSize(buf), columns);
     if(content == NULL) {
         xmlSecInternalError("xmlSecBase64Encode", NULL);
-
         return(-1);
     }
     xmlNodeAddContent(node, content);

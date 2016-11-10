@@ -361,7 +361,6 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         data = xmlSecNssPKIAdoptKey(privkey, pubkey);
         if(data == NULL) {
             xmlSecInternalError("xmlSecNssPKIAdoptKey", NULL);
-
             goto done;
         }
         privkey = NULL;
@@ -370,7 +369,6 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         key = xmlSecKeyCreate();
         if (key == NULL) {
             xmlSecInternalError("xmlSecKeyCreate", NULL);
-
             return (NULL);
         }
 

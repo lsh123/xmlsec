@@ -796,7 +796,6 @@ xmlSecBnGetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
         ret = xmlSecBufferBase64NodeContentRead(bn, cur);
         if(ret < 0) {
             xmlSecInternalError("xmlSecBufferBase64NodeContentRead", NULL);
-
             return(-1);
         }
         break;
@@ -813,7 +812,6 @@ xmlSecBnGetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
         ret = xmlSecBnFromHexString(bn, content);
         if(ret < 0) {
             xmlSecInternalError("xmlSecBnFromHexString", NULL);
-
             xmlFree(content);
             return(-1);
         }
@@ -832,7 +830,6 @@ xmlSecBnGetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
         ret = xmlSecBnFromDecString(bn, content);
         if(ret < 0) {
             xmlSecInternalError("xmlSecBnFromDecString", NULL);
-
             xmlFree(content);
             return(-1);
         }
@@ -844,7 +841,6 @@ xmlSecBnGetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
         ret = xmlSecBnReverse(bn);
         if(ret < 0) {
             xmlSecInternalError("xmlSecBnReverse", NULL);
-
             return(-1);
         }
     }
@@ -875,7 +871,6 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
         ret = xmlSecBnReverse(bn);
         if(ret < 0) {
             xmlSecInternalError("xmlSecBnReverse", NULL);
-
             return(-1);
         }
     }
@@ -889,7 +884,6 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
         ret = xmlSecBufferBase64NodeContentWrite(bn, cur, xmlSecBase64GetDefaultLineSize());
         if(ret < 0) {
             xmlSecInternalError("xmlSecBufferBase64NodeContentWrite", NULL);
-
             return(-1);
         }
         break;
@@ -897,7 +891,6 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
         content = xmlSecBnToHexString(bn);
         if(content == NULL) {
             xmlSecInternalError("xmlSecBnToHexString", NULL);
-
             xmlFree(content);
             return(-1);
         }
@@ -908,7 +901,6 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
         content = xmlSecBnToDecString(bn);
         if(content == NULL) {
             xmlSecInternalError("xmlSecBnToDecString", NULL);
-
             xmlFree(content);
             return(-1);
         }
@@ -952,14 +944,12 @@ xmlSecBnBlobSetNodeValue(const xmlSecByte* data, xmlSecSize dataSize,
     ret = xmlSecBnInitialize(&bn, dataSize);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBnInitialize", NULL);
-
         return(-1);
     }
 
     ret = xmlSecBnSetData(&bn, data, dataSize);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBnSetData", NULL);
-
         xmlSecBnFinalize(&bn);
         return(-1);
     }
@@ -967,7 +957,6 @@ xmlSecBnBlobSetNodeValue(const xmlSecByte* data, xmlSecSize dataSize,
     ret = xmlSecBnSetNodeValue(&bn, cur, format, reverse, addLineBreaks);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBnSetNodeValue", NULL);
-
         xmlSecBnFinalize(&bn);
         return(-1);
     }

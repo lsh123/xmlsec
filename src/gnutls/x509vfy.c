@@ -538,7 +538,6 @@ xmlSecGnuTLSX509DnsEqual(const xmlChar * ll, const xmlChar * rr) {
         res = 0;
     } else {
         xmlSecInternalError("xmlSecGnuTLSDnAttrsEqual", NULL);
-
         goto done;
     }
 
@@ -659,7 +658,6 @@ xmlSecGnuTLSX509FindSignedCert(xmlSecPtrListPtr certs, gnutls_x509_crt_t cert) {
     subject = xmlSecGnuTLSX509CertGetSubjectDN(cert);
     if(subject == NULL) {
         xmlSecInternalError("xmlSecGnuTLSX509CertGetSubjectDN", NULL);
-
         goto done;
     }
 
@@ -717,7 +715,6 @@ xmlSecGnuTLSX509FindSignerCert(xmlSecPtrListPtr certs, gnutls_x509_crt_t cert) {
     issuer = xmlSecGnuTLSX509CertGetIssuerDN(cert);
     if(issuer == NULL) {
         xmlSecInternalError("xmlSecGnuTLSX509CertGetIssuerDN", NULL);
-
         goto done;
     }
 

@@ -105,7 +105,6 @@ xmlSecTransformIdsInit(void) {
     ret = xmlSecTransformIdsRegisterDefault();
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformIdsRegisterDefault", NULL);
-
         return(-1);
     }
 
@@ -323,7 +322,6 @@ xmlSecTransformCtxCreate(void) {
     ret = xmlSecTransformCtxInitialize(ctx);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformCtxInitialize", NULL);
-
         xmlSecTransformCtxDestroy(ctx);
         return(NULL);
     }
@@ -954,7 +952,6 @@ xmlSecTransformCtxPrepare(xmlSecTransformCtxPtr ctx, xmlSecTransformDataType inp
         ret = (ctx->preExecCallback)(ctx);
         if(ret < 0) {
             xmlSecInternalError("ctx->preExecCallback", NULL);
-
             return(-1);
         }
     }
@@ -1036,7 +1033,6 @@ xmlSecTransformCtxUriExecute(xmlSecTransformCtxPtr ctx, const xmlChar* uri) {
     ret = xmlSecTransformInputURIOpen(uriTransform, uri);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformInputURIOpen", uri);
-
         return(-1);
     }
 
@@ -1137,7 +1133,6 @@ xmlSecTransformCtxExecute(xmlSecTransformCtxPtr ctx, xmlDocPtr doc) {
             nodes = xmlSecNodeSetCreate(doc, NULL, xmlSecNodeSetNormal);
             if(nodes == NULL) {
                 xmlSecInternalError("xmlSecNodeSetCreate", NULL);
-
                 return(-1);
             }
 
@@ -1146,14 +1141,12 @@ xmlSecTransformCtxExecute(xmlSecTransformCtxPtr ctx, xmlDocPtr doc) {
             nodes = xmlSecNodeSetGetChildren(doc, NULL, 0, 0);
             if(nodes == NULL) {
                 xmlSecInternalError("xmlSecNodeSetGetChildren", NULL);
-
                 return(-1);
             }
         }
         ret = xmlSecTransformCtxXmlExecute(ctx, nodes);
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformCtxXmlExecute", NULL);
-
             xmlSecNodeSetDestroy(nodes);
             return(-1);
         }
@@ -1163,7 +1156,6 @@ xmlSecTransformCtxExecute(xmlSecTransformCtxPtr ctx, xmlDocPtr doc) {
         ret = xmlSecTransformCtxUriExecute(ctx, ctx->uri);
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformCtxUriExecute", NULL);
-
             return(-1);
         }
     }
@@ -1385,7 +1377,6 @@ xmlSecTransformNodeRead(xmlNodePtr node, xmlSecTransformUsage usage, xmlSecTrans
     id = xmlSecTransformIdListFindByHref(xmlSecTransformIdsGet(), href, usage);
     if(id == xmlSecTransformIdUnknown) {
         xmlSecInternalError("xmlSecTransformIdListFindByHref", href);
-
         xmlFree(href);
         return(NULL);
     }

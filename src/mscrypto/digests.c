@@ -336,11 +336,8 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
 
             ret = xmlSecBufferRemoveHead(in, inSize);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "xmlSecBufferRemoveHead",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "size=%d", inSize);
+                xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform),
+                                     "size=%d", inSize);
                 return(-1);
             }
         }
@@ -357,11 +354,9 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
                 0);
 
             if (ret == 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "CryptGetHashParam(HP_HASHVAL)",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "size=%d", MSCRYPTO_MAX_HASH_SIZE);
+                /* Should be XMLSEC_ERRORS_R_CRYPTO_FAILED */
+                xmlSecInternalError2("CryptGetHashParam(HP_HASHVAL)", xmlSecTransformGetName(transform),
+                                     "size=%d", MSCRYPTO_MAX_HASH_SIZE);
                 return(-1);
             }
 
@@ -373,11 +368,8 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
             if(transform->operation == xmlSecTransformOperationSign) {
                 ret = xmlSecBufferAppend(out, ctx->dgst, ctx->dgstSize);
                 if(ret < 0) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                                "xmlSecBufferAppend",
-                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                                "size=%d", ctx->dgstSize);
+                    xmlSecInternalError2("xmlSecBufferAppend", xmlSecTransformGetName(transform),
+                                         "size=%d", ctx->dgstSize);
                     return(-1);
                 }
             }

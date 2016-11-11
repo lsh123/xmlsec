@@ -90,11 +90,8 @@ xmlSecMSCryptoBlockCipherCtxInit(xmlSecMSCryptoBlockCipherCtxPtr ctx,
         outSize = xmlSecBufferGetSize(out);
         ret = xmlSecBufferSetSize(out, outSize + blockLen);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(cipherName),
-                        "xmlSecBufferSetSize",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "size=%d", outSize + blockLen);
+            xmlSecInternalError2("xmlSecBufferSetSize", cipherName,
+                                 "size=%d", outSize + blockLen);
             return(-1);
         }
         iv = xmlSecBufferGetData(out) + outSize;
@@ -138,11 +135,8 @@ xmlSecMSCryptoBlockCipherCtxInit(xmlSecMSCryptoBlockCipherCtxPtr ctx,
         /* and remove from input */
         ret = xmlSecBufferRemoveHead(in, blockLen);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(cipherName),
-                        "xmlSecBufferRemoveHead",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "size=%d", blockLen);
+            xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName,
+                                 "size=%d", blockLen);
             return(-1);
 
         }
@@ -202,11 +196,8 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     /* we write out the input size plus may be one block */
     ret = xmlSecBufferSetMaxSize(out, outSize + inSize + blockLen);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(cipherName),
-                    "xmlSecBufferSetMaxSize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "size=%d", outSize + inSize + blockLen);
+        xmlSecInternalError2("xmlSecBufferSetMaxSize", cipherName,
+                             "size=%d", outSize + inSize + blockLen);
         return(-1);
     }
     outBuf = xmlSecBufferGetData(out) + outSize;
@@ -236,33 +227,24 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     }
     /* Check if we really have de/encrypted the numbers of bytes that we requested */
     if (dwCLen != inSize) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(cipherName),
-                    "CryptEn/Decrypt",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "size=%ld", dwCLen);
+        xmlSecInternalError2("CryptEn/Decrypt", cipherName,
+                             "size=%ld", dwCLen);
         return(-1);
     }
 
     /* set correct output buffer size */
     ret = xmlSecBufferSetSize(out, outSize + inSize);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(cipherName),
-                    "xmlSecBufferSetSize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "size=%d", outSize + inSize);
+        xmlSecInternalError2("xmlSecBufferSetSize", cipherName,
+                             "size=%d", outSize + inSize);
         return(-1);
     }
 
     /* remove the processed block from input */
     ret = xmlSecBufferRemoveHead(in, inSize);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(cipherName),
-                    "xmlSecBufferRemoveHead",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "size=%d", inSize);
+        xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName,
+                             "size=%d", inSize);
         return(-1);
     }
     return(0);
@@ -309,11 +291,8 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
         /* create padding */
         ret = xmlSecBufferSetMaxSize(in, blockLen);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(cipherName),
-                        "xmlSecBufferSetMaxSize",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "size=%d", blockLen);
+            xmlSecInternalError2("xmlSecBufferSetMaxSize", cipherName,
+                                 "size=%d", blockLen);
             return(-1);
         }
         inBuf = xmlSecBufferGetData(in);
@@ -346,11 +325,8 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     /* process last block */
     ret = xmlSecBufferSetMaxSize(out, outSize + 2 * blockLen);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(cipherName),
-                    "xmlSecBufferSetMaxSize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "size=%d", outSize + 2 * blockLen);
+        xmlSecInternalError2("xmlSecBufferSetMaxSize", cipherName,
+                             "size=%d", outSize + 2 * blockLen);
         return(-1);
     }
     outBuf = xmlSecBufferGetData(out) + outSize;
@@ -381,11 +357,8 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
 
     /* Check if we really have de/encrypted the numbers of bytes that we requested */
     if (dwCLen != inSize) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(cipherName),
-                    "CryptEn/Decrypt",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "size=%ld", dwCLen);
+        xmlSecInternalError2("CryptEn/Decrypt", cipherName,
+                             "size=%ld", dwCLen);
         return(-1);
     }
 
@@ -408,22 +381,16 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     /* set correct output buffer size */
     ret = xmlSecBufferSetSize(out, outSize + outLen);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(cipherName),
-                    "xmlSecBufferSetSize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "size=%d", outSize + outLen);
+        xmlSecInternalError2("xmlSecBufferSetSize", cipherName,
+                             "size=%d", outSize + outLen);
         return(-1);
     }
 
     /* remove the processed block from input */
     ret = xmlSecBufferRemoveHead(in, inSize);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(cipherName),
-                    "xmlSecBufferRemoveHead",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "size=%d", inSize);
+        xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName,
+                             "size=%d", inSize);
         return(-1);
     }
 

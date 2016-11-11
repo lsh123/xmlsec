@@ -1081,7 +1081,7 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     NULL,
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_R_KEY_NOT_FOUND,
                     "Private key was not found in pkcs12 object");
         goto done;
     }
@@ -1141,7 +1141,7 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         NULL,
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_R_CERT_NOT_FOUND,
                         "Certificate for the private key was not found in pkcs12 object");
             goto done;
         }
@@ -1187,21 +1187,13 @@ xmlSecGnuTLSCreateKeyDataAndAdoptPrivKey(gnutls_x509_privkey_t priv_key) {
     case GNUTLS_PK_RSA:
         res = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataRsaId);
         if(res == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeyDataCreate",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "xmlSecGnuTLSKeyDataRsaId");
+            xmlSecInternalError("xmlSecKeyDataCreate(KeyDataRsaId)", NULL);
             return(NULL);
         }
 
         ret = xmlSecGnuTLSKeyDataRsaAdoptPrivateKey(res, priv_key);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecGnuTLSKeyDataRsaAdoptPrivateKey",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "xmlSecGnuTLSKeyDataRsaId");
+            xmlSecInternalError("xmlSecGnuTLSKeyDataRsaAdoptPrivateKey(KeyDataRsaId)", NULL);
             xmlSecKeyDataDestroy(res);
             return(NULL);
         }
@@ -1212,21 +1204,13 @@ xmlSecGnuTLSCreateKeyDataAndAdoptPrivKey(gnutls_x509_privkey_t priv_key) {
     case GNUTLS_PK_DSA:
         res = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataDsaId);
         if(res == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeyDataCreate",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "xmlSecGnuTLSKeyDataDsaId");
+            xmlSecInternalError("xmlSecKeyDataCreate(KeyDataDsaId)", NULL);
             return(NULL);
         }
 
         ret = xmlSecGnuTLSKeyDataDsaAdoptPrivateKey(res, priv_key);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecGnuTLSKeyDataDsaAdoptPrivateKey",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "xmlSecGnuTLSKeyDataDsaId");
+            xmlSecInternalError("xmlSecGnuTLSKeyDataDsaAdoptPrivateKey(KeyDataDsaId)", NULL);
             xmlSecKeyDataDestroy(res);
             return(NULL);
         }
@@ -1488,7 +1472,7 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
                     xmlSecError(XMLSEC_ERRORS_HERE,
                                 NULL,
                                 "",
-                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                                XMLSEC_ERRORS_R_INVALID_SIZE,
                                 "Not enough space: size=%d", (int)attrsSize);
                     goto done;
                 }
@@ -1584,7 +1568,7 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
                     xmlSecError(XMLSEC_ERRORS_HERE,
                                 NULL,
                                 "",
-                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                                XMLSEC_ERRORS_R_INVALID_DATA,
                                 "Unexpected character %c (expected space or ',' or ';')",
                                 ch);
                     goto done;
@@ -1606,7 +1590,7 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_R_INVALID_DATA,
                     "Unexpected state %d at the end of parsing",
                     (int)state);
         goto done;

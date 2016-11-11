@@ -163,12 +163,8 @@ xmlSecMSCryptoAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
 
         ret = xmlSecBufferReadFile(&buffer, filename);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecBufferReadFile",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "filename=%s",
-                        xmlSecErrorsSafeString(filename));
+            xmlSecInternalError2("xmlSecBufferReadFile", NULL,
+                                 "filename=%s", xmlSecErrorsSafeString(filename));
             xmlSecBufferFinalize(&buffer);
             return (NULL);
         }
@@ -254,12 +250,8 @@ xmlSecMSCryptoAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlS
 
     ret = xmlSecMSCryptoKeyDataX509AdoptKeyCert(x509Data, tmpcert);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecMSCryptoKeyDataX509AdoptKeyCert",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "data=%s",
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+        xmlSecInternalError("xmlSecMSCryptoKeyDataX509AdoptKeyCert",
+                            xmlSecKeyDataGetName(x509Data));
         CertFreeCertificateContext(tmpcert);
         goto done;
     }
@@ -280,24 +272,16 @@ xmlSecMSCryptoAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlS
 
     ret = xmlSecKeySetValue(key, keyData);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeySetValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "data=%s",
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+        xmlSecInternalError("xmlSecKeySetValue",
+                            xmlSecKeyDataGetName(x509Data));
         goto done;
     }
     keyData = NULL;
 
     ret = xmlSecKeyAdoptData(key, x509Data);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeyAdoptData",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "data=%s",
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+        xmlSecInternalError("xmlSecKeyAdoptData",
+                            xmlSecKeyDataGetName(x509Data));
         goto done;
     }
     x509Data = NULL;
@@ -360,12 +344,8 @@ xmlSecMSCryptoAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
 
     ret = xmlSecBufferReadFile(&buffer, filename);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBufferReadFile",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "filename=%s",
-                    xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecBufferReadFile", NULL,
+                             "filename=%s", xmlSecErrorsSafeString(filename));
         xmlSecBufferFinalize(&buffer);
         return (-1);
     }
@@ -418,22 +398,15 @@ xmlSecMSCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xml
     case xmlSecKeyDataFormatCertDer:
         pCert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, data, dataSize);
         if (NULL == pCert) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "CertCreateCertificateContext",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "format=%d", format);
+            xmlSecInternalError2("CertCreateCertificateContext", NULL,
+                                 "format=%d", format);
             return(-1);
         }
 
         ret = xmlSecMSCryptoKeyDataX509AdoptCert(kdata, pCert);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecMSCryptoKeyDataX509AdoptCert",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "data=%s",
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(kdata)));
+            xmlSecInternalError("xmlSecMSCryptoKeyDataX509AdoptCert",
+                                xmlSecKeyDataGetName(kdata));
             CertFreeCertificateContext(pCert);
             return(-1);
         }
@@ -481,12 +454,8 @@ xmlSecMSCryptoAppPkcs12Load(const char *filename,
 
     ret = xmlSecBufferReadFile(&buffer, filename);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBufferReadFile",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "filename=%s",
-                    xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecBufferReadFile", NULL,
+                             "filename=%s", xmlSecErrorsSafeString(filename));
         xmlSecBufferFinalize(&buffer);
         return (NULL);
     }
@@ -561,11 +530,7 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
 
     wcPwd = xmlSecMSCryptoConvertLocaleToUnicode(pwd);
     if (wcPwd == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecMSCryptoConvertLocaleToUnicode",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "wcPwd");
+        xmlSecInternalError("xmlSecMSCryptoConvertLocaleToUnicode(pw)", NULL);
         goto done;
     }
 
@@ -632,12 +597,8 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
 
             ret = xmlSecMSCryptoKeyDataX509AdoptKeyCert(x509Data, tmpcert);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecMSCryptoKeyDataX509AdoptKeyCert",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "data=%s",
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+                xmlSecInternalError("xmlSecMSCryptoKeyDataX509AdoptKeyCert",
+                                    xmlSecKeyDataGetName(x509Data));
                 goto done;
             }
             tmpcert = NULL;
@@ -657,23 +618,16 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
 
         ret = xmlSecMSCryptoKeyDataX509AdoptCert(x509Data, tmpcert);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecMSCryptoKeyDataX509AdoptCert",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "data=%s",
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+            xxmlSecInternalError("xmlSecMSCryptoKeyDataX509AdoptCert",
+                                 xmlSecKeyDataGetName(x509Data));
             goto done;
         }
         tmpcert = NULL;
     }
 
     if (keyData == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecMSCryptoAppPkcs12Load",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "private key not found in PKCS12 file");
+        /* private key not found in PKCS12 file */
+        xmlSecInternalError("xmlSecMSCryptoAppPkcs12Load", NULL);
         goto done;
     }
 
@@ -685,12 +639,8 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
 
     ret = xmlSecKeySetValue(key, keyData);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeySetValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "data=%s",
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+        xmlSecInternalError("xmlSecKeySetValue",
+                            xmlSecKeyDataGetName(x509Data));
         xmlSecKeyDestroy(key);
         key = NULL;
         goto done;
@@ -699,12 +649,8 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
 
     ret = xmlSecKeyAdoptData(key, x509Data);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeyAdoptData",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "data=%s",
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+        xmlSecInternalError("xmlSecKeyAdoptData",
+                            xmlSecKeyDataGetName(x509Data));
         xmlSecKeyDestroy(key);
         key = NULL;
         goto done;
@@ -762,12 +708,8 @@ xmlSecMSCryptoAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
 
     ret = xmlSecBufferReadFile(&buffer, filename);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBufferReadFile",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "filename=%s",
-                    xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecBufferReadFile", NULL.
+                             "filename=%s", xmlSecErrorsSafeString(filename));
         xmlSecBufferFinalize(&buffer);
         return (-1);
     }
@@ -775,12 +717,8 @@ xmlSecMSCryptoAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
     ret = xmlSecMSCryptoAppKeysMngrCertLoadMemory(mngr, xmlSecBufferGetData(&buffer),
         xmlSecBufferGetSize(&buffer), format, type);
     if (ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecMSCryptoAppKeysMngrCertLoadMemory",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "filename=%s",
-                    xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecMSCryptoAppKeysMngrCertLoadMemory", NULL.
+                             "filename=%s", xmlSecErrorsSafeString(filename));
         xmlSecBufferFinalize(&buffer);
         return(-1);
     }
@@ -818,11 +756,7 @@ xmlSecMSCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte
 
     x509Store = xmlSecKeysMngrGetDataStore(mngr, xmlSecMSCryptoX509StoreId);
     if(x509Store == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeysMngrGetDataStore",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "xmlSecMSCryptoX509StoreId");
+        xmlSecInternalError("xmlSecKeysMngrGetDataStore(xmlSecMSCryptoX509StoreId)", NULL);
         return(-1);
     }
 
@@ -879,21 +813,14 @@ xmlSecMSCryptoAppDefaultKeysMngrAdoptKeyStore(xmlSecKeysMngrPtr mngr, HCERTSTORE
 
     x509Store = xmlSecKeysMngrGetDataStore( mngr, xmlSecMSCryptoX509StoreId) ;
         if( x509Store == NULL ) {
-                xmlSecError( XMLSEC_ERRORS_HERE ,
-                        NULL ,
-                        "xmlSecKeysMngrGetDataStore" ,
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED ,
-                        XMLSEC_ERRORS_NO_MESSAGE ) ;
-                return(-1) ;
+            xmlSecInternalError("xmlSecKeysMngrGetDataStore(xmlSecMSCryptoX509StoreId)", NULL);
+            return(-1) ;
         }
 
         if( xmlSecMSCryptoX509StoreAdoptKeyStore( x509Store, keyStore ) < 0 ) {
-                xmlSecError( XMLSEC_ERRORS_HERE ,
-                        xmlSecErrorsSafeString( xmlSecKeyDataStoreGetName( x509Store ) ) ,
-                        "xmlSecMSCryptoX509StoreAdoptKeyStore" ,
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED ,
-                        XMLSEC_ERRORS_NO_MESSAGE ) ;
-                return(-1) ;
+            xmlSecInternalError("xmlSecMSCryptoX509StoreAdoptKeyStore",
+                                xmlSecKeyDataStoreGetName(x509Store));
+            return(-1) ;
         }
 
         return (0) ;
@@ -918,21 +845,14 @@ xmlSecMSCryptoAppDefaultKeysMngrAdoptTrustedStore(xmlSecKeysMngrPtr mngr, HCERTS
 
     x509Store = xmlSecKeysMngrGetDataStore( mngr, xmlSecMSCryptoX509StoreId ) ;
         if( x509Store == NULL ) {
-                xmlSecError( XMLSEC_ERRORS_HERE ,
-                        NULL ,
-                        "xmlSecKeysMngrGetDataStore" ,
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED ,
-                        XMLSEC_ERRORS_NO_MESSAGE ) ;
-                return(-1) ;
+            xmlSecInternalError("xmlSecKeysMngrGetDataStore", NULL);
+            return(-1) ;
         }
 
         if( xmlSecMSCryptoX509StoreAdoptTrustedStore( x509Store, trustedStore ) < 0 ) {
-                xmlSecError( XMLSEC_ERRORS_HERE ,
-                        xmlSecErrorsSafeString( xmlSecKeyDataStoreGetName( x509Store ) ) ,
-                        "xmlSecMSCryptoX509StoreAdoptKeyStore" ,
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED ,
-                        XMLSEC_ERRORS_NO_MESSAGE ) ;
-                return(-1) ;
+            xmlSecInternalError("xmlSecMSCryptoX509StoreAdoptKeyStore",
+                                xmlSecKeyDataStoreGetName(x509Store));
+            return(-1) ;
         }
 
         return(0);
@@ -956,25 +876,18 @@ xmlSecMSCryptoAppDefaultKeysMngrAdoptUntrustedStore(xmlSecKeysMngrPtr mngr, HCER
         xmlSecAssert2( untrustedStore != NULL, -1 ) ;
 
     x509Store = xmlSecKeysMngrGetDataStore( mngr, xmlSecMSCryptoX509StoreId);
-        if( x509Store == NULL ) {
-                xmlSecError( XMLSEC_ERRORS_HERE ,
-                        NULL ,
-                        "xmlSecKeysMngrGetDataStore" ,
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED ,
-                        XMLSEC_ERRORS_NO_MESSAGE ) ;
-                return(-1);
-        }
+    if(x509Store == NULL) {
+        xmlSecInternalError("xmlSecKeysMngrGetDataStore", NULL);
+        return(-1);
+    }
 
-        if( xmlSecMSCryptoX509StoreAdoptUntrustedStore( x509Store, untrustedStore ) < 0) {
-                xmlSecError( XMLSEC_ERRORS_HERE ,
-                        xmlSecErrorsSafeString( xmlSecKeyDataStoreGetName( x509Store ) ) ,
-                        "xmlSecMSCryptoX509StoreAdoptKeyStore" ,
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED ,
-                        XMLSEC_ERRORS_NO_MESSAGE ) ;
-                return(-1);
-        }
+    if(xmlSecMSCryptoX509StoreAdoptUntrustedStore(x509Store, untrustedStore) < 0) {
+        xmlSecInternalError("xmlSecMSCryptoX509StoreAdoptKeyStore",
+                            xmlSecKeyDataStoreGetName(x509Store));
+        return(-1);
+    }
 
-        return(0) ;
+    return(0) ;
 }
 
 #endif /* XMLSEC_NO_X509 */
@@ -1000,11 +913,7 @@ xmlSecMSCryptoAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 
         keysStore = xmlSecKeyStoreCreate(xmlSecMSCryptoKeysStoreId);
         if(keysStore == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeyStoreCreate",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "xmlSecMSCryptoKeysStoreId");
+            xmlSecInternalError("xmlSecKeyStoreCreate(xmlSecMSCryptoX509StoreId)", NULL);
             return(-1);
         }
 
@@ -1085,11 +994,8 @@ xmlSecMSCryptoAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
 
     ret = xmlSecMSCryptoKeysStoreLoad(store, uri, mngr);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecMSCryptoKeysStoreLoad",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "uri=%s", xmlSecErrorsSafeString(uri));
+        xmlSecInternalError2("xmlSecMSCryptoKeysStoreLoad", NULL,
+                             "uri=%s", xmlSecErrorsSafeString(uri));
         return(-1);
     }
 
@@ -1122,11 +1028,8 @@ xmlSecMSCryptoAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filenam
 
     ret = xmlSecMSCryptoKeysStoreSave(store, filename, type);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecMSCryptoKeysStoreSave",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "filename%s", xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecMSCryptoKeysStoreSave", NULL,
+                             "filename%s", xmlSecErrorsSafeString(filename));
         return(-1);
     }
 

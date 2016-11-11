@@ -1201,11 +1201,7 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store,
         /* get unicode subject name */
         wcSubjectName = xmlSecMSCryptoX509GetCertName(subjectName);
         if(wcSubjectName == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecMSCryptoX509GetCertName",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "wcSubjectName");
+            xmlSecInternalError("xmlSecMSCryptoX509GetCertName(subjectName)", NULL);
             return(NULL);
         }
 
@@ -1251,11 +1247,7 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store,
         /* get issuer name */
         wcIssuerName = xmlSecMSCryptoX509GetCertName(issuerName);
         if(wcIssuerName == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecMSCryptoX509GetCertName",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "wcIssuerName");
+            xmlSecInternalError("xmlSecMSCryptoX509GetCertName(issuerName)", NULL);
             xmlSecBnFinalize(&issuerSerialBn);
             return(NULL);
         }
@@ -1290,12 +1282,7 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store,
         /* trick: base64 decode "in place" */
         binSkiLen = xmlSecBase64Decode(binSki, (xmlSecByte*)binSki, xmlStrlen(binSki));
         if(binSkiLen < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecBase64Decode",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "ski=%s",
-                        xmlSecErrorsSafeString(ski));
+            xmlSecInternalError("xmlSecBase64Decode", NULL);
             xmlFree(binSki);
             return(NULL);
         }

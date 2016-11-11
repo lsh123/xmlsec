@@ -304,11 +304,8 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
 
     ret = xmlSecBufferInitialize(&tmp, dataSize);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlSecBufferInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "dataSize=%d", dataSize);
+        xmlSecInternalError2("xmlSecBufferInitialize", xmlSecTransformGetName(transform),
+                             "dataSize=%d", dataSize);
         return(-1);
     }
 
@@ -368,7 +365,7 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_R_INVALID_TYPE,
                     "Invalid algo");
         xmlSecBufferFinalize(&tmp);
         return(-1);
@@ -600,11 +597,8 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 
             ret = xmlSecBufferInitialize(&tmp, outSize);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "xmlSecBufferSetMaxSize",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "size=%d", outSize);
+                xmlSecInternalError2("xmlSecBufferSetMaxSize", xmlSecTransformGetName(transform),
+                                     "size=%d", outSize);
                 return(-1);
             }
             tmpBuf = xmlSecBufferGetData(&tmp);
@@ -623,11 +617,8 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 
             ret = xmlSecBufferSetSize(out, outSize);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "xmlSecBufferSetSize",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "size=%d", outSize);
+                xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform),
+                                     "size=%d", outSize);
                 xmlSecBufferFinalize(&tmp);
                 return(-1);
             }
@@ -688,7 +679,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
                 xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                             NULL,
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                            XMLSEC_ERRORS_R_INVALID_TYPE,
                             "Invalid algo");
                 xmlSecBufferFinalize(&tmp);
                 return(-1);

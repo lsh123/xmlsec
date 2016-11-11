@@ -288,11 +288,7 @@ xmlSecGnuTLSKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 
         x509Store = xmlSecKeyDataStoreCreate(xmlSecGnuTLSX509StoreId);
         if(x509Store == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeyDataStoreCreate",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "xmlSecGnuTLSX509StoreId");
+            xmlSecInternalError("xmlSecKeyDataStoreCreate(StoreId)", NULL);
             return(-1);
         }
 
@@ -325,11 +321,8 @@ xmlSecGnuTLSGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
 
     ret = xmlSecBufferSetSize(buffer, size);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBufferSetSize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "size=%d", size);
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
+                             "size=%d", size);
         return(-1);
     }
 

@@ -1,3 +1,4 @@
+
 /**
  * XMLSec library
  *
@@ -463,21 +464,13 @@ xmlSecGnuTLSKeyDataX509Initialize(xmlSecKeyDataPtr data) {
 
     ret = xmlSecPtrListInitialize(&(ctx->certsList), xmlSecGnuTLSX509CrtListId);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                    "xmlSecPtrListInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "certsList");
+        xmlSecInternalError("xmlSecPtrListInitialize(certsList)", xmlSecKeyDataGetName(data));
         return(-1);
     }
 
     ret = xmlSecPtrListInitialize(&(ctx->crlsList), xmlSecGnuTLSX509CrlListId);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                    "xmlSecPtrListInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "crlsList");
+        xmlSecInternalError("xmlSecPtrListInitialize(crlsList)", xmlSecKeyDataGetName(data));
         return(-1);
     }
 
@@ -516,11 +509,7 @@ xmlSecGnuTLSKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlSecPtrListEmpty(&(ctxDst->certsList));
     ret = xmlSecPtrListCopy(&(ctxDst->certsList), &(ctxSrc->certsList));
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(src)),
-                    "xmlSecPtrListCopy",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "certsList");
+        xmlSecInternalError("xmlSecPtrListCopy(certsList)", xmlSecKeyDataGetName(src));
         return(-1);
     }
 
@@ -528,13 +517,10 @@ xmlSecGnuTLSKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlSecPtrListEmpty(&(ctxDst->crlsList));
     ret = xmlSecPtrListCopy(&(ctxDst->crlsList), &(ctxSrc->crlsList));
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(src)),
-                    "xmlSecPtrListCopy",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "crlsList");
+        xmlSecInternalError("xmlSecPtrListCopy(crlsList)", xmlSecKeyDataGetName(src));
         return(-1);
     }
+
     /* done */
     return(0);
 }
@@ -609,11 +595,8 @@ xmlSecGnuTLSKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     content = xmlSecX509DataGetNodeContent (node, keyInfoCtx);
     if (content < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecX509DataGetNodeContent",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "content=%d", content);
+        xmlSecInternalError2("xmlSecX509DataGetNodeContent", xmlSecKeyDataKlassGetName(id),
+                             "content=%d", content);
         return(-1);
     } else if(content == 0) {
         /* by default we are writing certificates and crls */
@@ -632,22 +615,16 @@ xmlSecGnuTLSKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     for(pos = 0; pos < size; ++pos) {
         cert = xmlSecGnuTLSKeyDataX509GetCert(data, pos);
         if(cert == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                        "xmlSecGnuTLSKeyDataX509GetCert",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "pos=%d", pos);
+            xmlSecInternalError2("xmlSecGnuTLSKeyDataX509GetCert", xmlSecKeyDataKlassGetName(id),
+                                 "pos=%d", pos);
             return(-1);
         }
 
         if((content & XMLSEC_X509DATA_CERTIFICATE_NODE) != 0) {
             ret = xmlSecGnuTLSX509CertificateNodeWrite(cert, node, keyInfoCtx);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                            "xmlSecGnuTLSX509CertificateNodeWrite",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "pos=%d", pos);
+                xmlSecInternalError2("xmlSecGnuTLSX509CertificateNodeWrite", xmlSecKeyDataKlassGetName(id),
+                                     "pos=%d", pos);
                 return(-1);
             }
         }
@@ -655,11 +632,8 @@ xmlSecGnuTLSKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
         if((content & XMLSEC_X509DATA_SUBJECTNAME_NODE) != 0) {
             ret = xmlSecGnuTLSX509SubjectNameNodeWrite(cert, node, keyInfoCtx);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                            "xmlSecGnuTLSX509SubjectNameNodeWrite",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "pos=%d", pos);
+                xmlSecInternalError2("xmlSecGnuTLSX509SubjectNameNodeWrite", xmlSecKeyDataKlassGetName(id),
+                                     "pos=%d", pos);
                 return(-1);
             }
         }
@@ -667,11 +641,8 @@ xmlSecGnuTLSKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
         if((content & XMLSEC_X509DATA_ISSUERSERIAL_NODE) != 0) {
             ret = xmlSecGnuTLSX509IssuerSerialNodeWrite(cert, node, keyInfoCtx);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                            "xmlSecGnuTLSX509IssuerSerialNodeWrite",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "pos=%d", pos);
+                xmlSecInternalError2("xmlSecGnuTLSX509IssuerSerialNodeWrite", xmlSecKeyDataKlassGetName(id),
+                                     "pos=%d", pos);
                 return(-1);
             }
         }
@@ -679,11 +650,8 @@ xmlSecGnuTLSKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
         if((content & XMLSEC_X509DATA_SKI_NODE) != 0) {
             ret = xmlSecGnuTLSX509SKINodeWrite(cert, node, keyInfoCtx);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                            "xmlSecGnuTLSX509SKINodeWrite",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "pos=%d", pos);
+                xmlSecInternalError2("xmlSecGnuTLSX509SKINodeWrite", xmlSecKeyDataKlassGetName(id),
+                                     "pos=%d", pos);
                 return(-1);
             }
         }
@@ -695,21 +663,15 @@ xmlSecGnuTLSKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
         for(pos = 0; pos < size; ++pos) {
             crl = xmlSecGnuTLSKeyDataX509GetCrl(data, pos);
             if(crl == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                            "xmlSecGnuTLSKeyDataX509GetCrl",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "pos=%d", pos);
+                xmlSecInternalError2("xmlSecGnuTLSKeyDataX509GetCrl", xmlSecKeyDataKlassGetName(id),
+                                     "pos=%d", pos);
                 return(-1);
             }
 
             ret = xmlSecGnuTLSX509CRLNodeWrite(crl, node, keyInfoCtx);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                            "xmlSecGnuTLSX509CRLNodeWrite",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "pos=%d", pos);
+                xmlSecInternalError2("xmlSecGnuTLSX509CRLNodeWrite", xmlSecKeyDataKlassGetName(id),
+                                     "pos=%d", pos);
                 return(-1);
             }
         }
@@ -763,11 +725,8 @@ xmlSecGnuTLSKeyDataX509DebugDump(xmlSecKeyDataPtr data, FILE* output) {
 
         cert = xmlSecGnuTLSKeyDataX509GetCert(data, pos);
         if(cert == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                        "xmlSecGnuTLSKeyDataX509GetCert",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "pos=%d", pos);
+            xmlSecInternalError2("xmlSecGnuTLSKeyDataX509GetCert", xmlSecKeyDataGetName(data),
+                                 "pos=%d", pos);
             return;
         }
         fprintf(output, "==== Certificate:\n");
@@ -781,11 +740,8 @@ xmlSecGnuTLSKeyDataX509DebugDump(xmlSecKeyDataPtr data, FILE* output) {
 
         crl = xmlSecGnuTLSKeyDataX509GetCrl(data, pos);
         if(crl == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                        "xmlSecGnuTLSKeyDataX509GetCrl",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "pos=%d", pos);
+            xmlSecInternalError2("xmlSecGnuTLSKeyDataX509GetCrl", xmlSecKeyDataGetName(data),
+                                 "pos=%d", pos);
             return;
         }
         fprintf(output, "==== Crl:\n");
@@ -821,11 +777,8 @@ xmlSecGnuTLSKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 
         cert = xmlSecGnuTLSKeyDataX509GetCert(data, pos);
         if(cert == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                        "xmlSecGnuTLSKeyDataX509GetCert",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "pos=%d", pos);
+            xmlSecInternalError2("xmlSecGnuTLSKeyDataX509GetCert", xmlSecKeyDataGetName(data),
+                                 "pos=%d", pos);
             return;
         }
         fprintf(output, "<Certificate>\n");
@@ -840,11 +793,8 @@ xmlSecGnuTLSKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 
         crl = xmlSecGnuTLSKeyDataX509GetCrl(data, pos);
         if(crl == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                        "xmlSecGnuTLSKeyDataX509GetCrl",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "pos=%d", pos);
+            xmlSecInternalError2("xmlSecGnuTLSKeyDataX509GetCrl", xmlSecKeyDataGetName(data),
+                                 "pos=%d", pos);
             return;
         }
         fprintf(output, "<CRL>\n");
@@ -872,14 +822,39 @@ xmlSecGnuTLSX509DataNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyIn
         ret = 0;
         if(xmlSecCheckNodeName(cur, xmlSecNodeX509Certificate, xmlSecDSigNs)) {
             ret = xmlSecGnuTLSX509CertificateNodeRead(data, cur, keyInfoCtx);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecGnuTLSX509CertificateNodeRead",
+                                    xmlSecKeyDataGetName(data));
+                return(-1);
+            }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509SubjectName, xmlSecDSigNs)) {
             ret = xmlSecGnuTLSX509SubjectNameNodeRead(data, cur, keyInfoCtx);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecGnuTLSX509SubjectNameNodeRead",
+                                    xmlSecKeyDataGetName(data));
+                return(-1);
+            }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509IssuerSerial, xmlSecDSigNs)) {
             ret = xmlSecGnuTLSX509IssuerSerialNodeRead(data, cur, keyInfoCtx);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecGnuTLSX509IssuerSerialNodeRead",
+                                    xmlSecKeyDataGetName(data));
+                return(-1);
+            }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509SKI, xmlSecDSigNs)) {
             ret = xmlSecGnuTLSX509SKINodeRead(data, cur, keyInfoCtx);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecGnuTLSX509SKINodeRead",
+                                    xmlSecKeyDataGetName(data));
+                return(-1);
+            }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509CRL, xmlSecDSigNs)) {
             ret = xmlSecGnuTLSX509CRLNodeRead(data, cur, keyInfoCtx);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecGnuTLSX509CRLNodeRead",
+                                    xmlSecKeyDataGetName(data));
+                return(-1);
+            }
         } else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CHILD) != 0) {
             /* laxi schema validation: ignore unknown nodes */
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -887,14 +862,6 @@ xmlSecGnuTLSX509DataNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyIn
                         xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
                         XMLSEC_ERRORS_R_UNEXPECTED_NODE,
                         XMLSEC_ERRORS_NO_MESSAGE);
-            return(-1);
-        }
-        if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                        xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "read node failed");
             return(-1);
         }
     }
@@ -966,12 +933,7 @@ xmlSecGnuTLSX509CertificateNodeWrite(gnutls_x509_crt_t cert, xmlNodePtr node, xm
 
     cur = xmlSecEnsureEmptyChild(node, xmlSecNodeX509Certificate, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecEnsureEmptyChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeX509Certificate));
+        xmlSecInternalError("xmlSecEnsureEmptyChild(NodeX509Certificate)", NULL);
         xmlFree(buf);
         return(-1);
     }
@@ -1100,12 +1062,7 @@ xmlSecGnuTLSX509SubjectNameNodeWrite(gnutls_x509_crt_t cert, xmlNodePtr node, xm
     /* add node */
     cur = xmlSecEnsureEmptyChild(node, xmlSecNodeX509SubjectName, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-            NULL,
-            "xmlSecEnsureEmptyChild",
-            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-            "node=%s",
-            xmlSecErrorsSafeString(xmlSecNodeX509SubjectName));
+        xmlSecInternalError("xmlSecEnsureEmptyChild(NodeX509SubjectName)", NULL);
         return(-1);
     }
 
@@ -1276,34 +1233,19 @@ xmlSecGnuTLSX509IssuerSerialNodeWrite(gnutls_x509_crt_t cert, xmlNodePtr node, x
     /* create xml nodes */
     cur = xmlSecEnsureEmptyChild(node, xmlSecNodeX509IssuerSerial, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecEnsureEmptyChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeX509IssuerSerial));
+        xmlSecInternalError("xmlSecEnsureEmptyChild(NodeX509IssuerSerial)", NULL);
         return(-1);
     }
 
     issuerNameNode = xmlSecEnsureEmptyChild(cur, xmlSecNodeX509IssuerName, xmlSecDSigNs);
     if(issuerNameNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecEnsureEmptyChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeX509IssuerName));
+        xmlSecInternalError("xmlSecEnsureEmptyChild(NodeX509IssuerName)", NULL);
         return(-1);
     }
 
     issuerNumberNode = xmlSecEnsureEmptyChild(cur, xmlSecNodeX509SerialNumber, xmlSecDSigNs);
     if(issuerNumberNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecEnsureEmptyChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeX509SerialNumber));
+        xmlSecInternalError("xmlSecEnsureEmptyChild(NodeX509SerialNumber)", NULL);
         return(-1);
     }
 
@@ -1414,12 +1356,7 @@ xmlSecGnuTLSX509SKINodeWrite(gnutls_x509_crt_t cert, xmlNodePtr node, xmlSecKeyI
     /* add node */
     cur = xmlSecEnsureEmptyChild(node, xmlSecNodeX509SKI, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecEnsureEmptyChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "new_node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeX509SKI));
+        xmlSecInternalError("xmlSecEnsureEmptyChild(NodeX509SKI)", NULL);
         return(-1);
     }
 
@@ -1501,12 +1438,7 @@ xmlSecGnuTLSX509CRLNodeWrite(gnutls_x509_crl_t crl, xmlNodePtr node, xmlSecKeyIn
 
     cur = xmlSecEnsureEmptyChild(node, xmlSecNodeX509CRL, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecEnsureEmptyChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "new_node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeX509CRL));
+        xmlSecInternalError("xmlSecEnsureEmptyChild(NodeX509CRL)", NULL);
         xmlFree(buf);
         return(-1);
     }
@@ -1646,11 +1578,7 @@ xmlSecGnuTLSX509CertGetKey(gnutls_x509_crt_t cert) {
 
             data = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataRsaId);
             if(data == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "xmlSecKeyDataCreate",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "xmlSecGnuTLSKeyDataRsaId");
+                xmlSecInternalError("xmlSecKeyDataCreate(KeyDataRsaId)", NULL);
                 return(NULL);
             }
 
@@ -1683,11 +1611,7 @@ xmlSecGnuTLSX509CertGetKey(gnutls_x509_crt_t cert) {
 
             data = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataDsaId);
             if(data == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "xmlSecKeyDataCreate",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "xmlSecGnuTLSKeyDataDsaId");
+                xmlSecInternalError("xmlSecKeyDataCreate(KeyDataDsaId)", NULL);
                 return(NULL);
             }
 

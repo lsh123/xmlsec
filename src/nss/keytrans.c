@@ -412,12 +412,8 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx,  xmlSecBufferPtr 
 
         result = xmlSecBufferCreate( blockSize * 2 ) ;
         if( result == NULL ) {
-                xmlSecError( XMLSEC_ERRORS_HERE ,
-                        NULL,
-                        "xmlSecBufferCreate" ,
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED ,
-                        XMLSEC_ERRORS_NO_MESSAGE) ;
-                return(-1);
+            xmlSecInternalError("xmlSecBufferCreate", NULL);
+            return(-1);
         }
 
         oriskv.type = siBuffer ;

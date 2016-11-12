@@ -637,6 +637,52 @@ xmlSecMSCryptoKeyDataGetMSCryptoKeySpec(xmlSecKeyDataPtr data) {
     return(ctx->dwKeySpec);
 }
 
+/**
+ * xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo:
+ * @data:              the key data
+ *
+ * Gets key provider info.
+ *
+ * Returns: the key provider info.
+ */
+PCRYPT_KEY_PROV_INFO
+xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo(xmlSecKeyDataPtr data) {
+    xmlSecMSCryptoKeyDataCtxPtr ctx;
+    LPBYTE pInfoData = NULL;
+    DWORD dwInfoDataLength = 0;
+
+    xmlSecAssert2(data != NULL, NULL);
+
+    ctx = xmlSecMSCryptoKeyDataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, NULL);
+    xmlSecAssert2(ctx->pCert != NULL, NULL);
+
+    if(!CertGetCertificateContextProperty(ctx->pCert, CERT_KEY_PROV_INFO_PROP_ID, NULL, &dwInfoDataLength)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "CertGetCertificateContextProperty",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return NULL;
+    }
+
+    if(dwInfoDataLength > 0) {
+        pInfoData = malloc(dwInfoDataLength * sizeof(BYTE));
+
+        if(!CertGetCertificateContextProperty(ctx->pCert, CERT_KEY_PROV_INFO_PROP_ID, pInfoData, &dwInfoDataLength)) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "CertGetCertificateContextProperty",
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            free(pInfoData);
+            return NULL;
+        }
+    }
+
+    return (PCRYPT_KEY_PROV_INFO)pInfoData;
+}
+
 static int
 xmlSecMSCryptoKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlSecMSCryptoKeyDataCtxPtr ctxDst;
@@ -2411,44 +2457,6 @@ xmlSecMSCryptoKeyDataGost2001DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 
     fprintf(output, "<GOST2001KeyValue size=\"%d\" />\n",
             xmlSecMSCryptoKeyDataGost2001GetSize(data));
-}
-
-PCRYPT_KEY_PROV_INFO
-xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo(xmlSecKeyDataPtr data) {
-    xmlSecMSCryptoKeyDataCtxPtr ctx;
-    LPBYTE pInfoData = NULL;
-    DWORD dwInfoDataLength = 0;
-
-    xmlSecAssert2(data != NULL, NULL);
-
-    ctx = xmlSecMSCryptoKeyDataGetCtx(data);
-    xmlSecAssert2(ctx != NULL, NULL);
-    xmlSecAssert2(ctx->pCert != NULL, NULL);
-
-    if(!CertGetCertificateContextProperty(ctx->pCert, CERT_KEY_PROV_INFO_PROP_ID, NULL, &dwInfoDataLength)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "CertGetCertificateContextProperty",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
-        return NULL;
-    }
-
-    if(dwInfoDataLength > 0) {
-        pInfoData = malloc(dwInfoDataLength * sizeof(BYTE));
-
-        if(!CertGetCertificateContextProperty(ctx->pCert, CERT_KEY_PROV_INFO_PROP_ID, pInfoData, &dwInfoDataLength)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "CertGetCertificateContextProperty",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
-            free(pInfoData);
-            return NULL;
-        }
-    }
-
-    return (PCRYPT_KEY_PROV_INFO)pInfoData;
 }
 
 #endif /* XMLSEC_NO_GOST*/

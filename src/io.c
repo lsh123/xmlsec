@@ -252,7 +252,6 @@ xmlSecIORegisterDefaultCallbacks(void) {
                               xmlIOHTTPRead, xmlIOHTTPClose);
     if(ret < 0) {
         xmlSecInternalError("xmlSecIORegisterCallbacks(http)", NULL);
-
         return(-1);
     }
 #endif /* LIBXML_HTTP_ENABLED */
@@ -262,7 +261,6 @@ xmlSecIORegisterDefaultCallbacks(void) {
                               xmlIOFTPRead, xmlIOFTPClose);
     if(ret < 0) {
         xmlSecInternalError("xmlSecIORegisterCallbacks(ftp)", NULL);
-
         return(-1);
     }
 #endif /* LIBXML_FTP_ENABLED */
@@ -271,7 +269,6 @@ xmlSecIORegisterDefaultCallbacks(void) {
                               xmlFileRead, xmlFileClose);
     if(ret < 0) {
         xmlSecInternalError("xmlSecIORegisterCallbacks(file)", NULL);
-
         return(-1);
     }
 

@@ -205,7 +205,6 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
                                                   NULL, xmlSecNodeSetTree);
         if(transform->outNodes == NULL) {
             xmlSecInternalError("xmlSecNodeSetCreate", xmlSecTransformGetName(transform));
-
             xmlFreeDoc(ctx->parserCtx->myDoc);
             ctx->parserCtx->myDoc = NULL;
             return(-1);
@@ -218,7 +217,6 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
             ret = xmlSecTransformPushXml(transform->next, transform->outNodes, transformCtx);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecTransformPushXml", xmlSecTransformGetName(transform));
-
                 return(-1);
             }
         }
@@ -280,7 +278,6 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
     buf = xmlSecTransformCreateInputBuffer(transform->prev, transformCtx);
     if(buf == NULL) {
         xmlSecInternalError("xmlSecTransformCreateInputBuffer", xmlSecTransformGetName(transform));
-
         return(-1);
     }
 
@@ -348,7 +345,6 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
     (*nodes) = xmlSecNodeSetCreate(doc, NULL, xmlSecNodeSetTree);
     if((*nodes) == NULL) {
         xmlSecInternalError("xmlSecNodeSetCreate", xmlSecTransformGetName(transform));
-
         xmlFreeDoc(doc);
         return(-1);
     }

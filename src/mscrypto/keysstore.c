@@ -183,7 +183,6 @@ xmlSecMSCryptoKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
         ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx, NULL);
         if(ret < 0) {
             xmlSecInternalError("xmlSecKeyInfoCtxInitialize", xmlSecKeyStoreGetName(store));
-
             xmlSecKeyDestroy(key);
             xmlFreeDoc(doc);
             return(-1);
@@ -200,7 +199,6 @@ xmlSecMSCryptoKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
         ret = xmlSecKeyInfoNodeRead(cur, key, &keyInfoCtx);
         if(ret < 0) {
             xmlSecInternalError("xmlSecKeyInfoNodeRead", xmlSecKeyStoreGetName(store));
-
             xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
             xmlSecKeyDestroy(key);
             xmlFreeDoc(doc);
@@ -212,7 +210,6 @@ xmlSecMSCryptoKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
             ret = xmlSecMSCryptoKeysStoreAdoptKey(store, key);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecMSCryptoKeysStoreAdoptKey", xmlSecKeyStoreGetName(store));
-
                 xmlSecKeyDestroy(key);
                 xmlFreeDoc(doc);
                 return(-1);
@@ -540,7 +537,6 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         ret = xmlSecKeySetName(key, name);
         if (ret < 0) {
             xmlSecInternalError("xmlSecKeySetName", xmlSecKeyStoreGetName(store));
-
             goto done;
         }
 

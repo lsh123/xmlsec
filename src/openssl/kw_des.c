@@ -160,7 +160,6 @@ xmlSecOpenSSLKWDes3Initialize(xmlSecTransformPtr transform) {
     ret = xmlSecBufferInitialize(&(ctx->keyBuffer), 0);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
-
         return(-1);
     }
 

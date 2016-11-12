@@ -182,7 +182,6 @@ xmlSecOpenSSLRsaPkcs1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     pKey = xmlSecOpenSSLKeyDataRsaGetEvp(xmlSecKeyGetValue(key));
     if(pKey == NULL) {
         xmlSecInternalError("xmlSecOpenSSLKeyDataRsaGetEvp", xmlSecTransformGetName(transform));
-
         return(-1);
     }
     xmlSecAssert2(EVP_PKEY_base_id(pKey) == EVP_PKEY_RSA, -1);
@@ -192,7 +191,6 @@ xmlSecOpenSSLRsaPkcs1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     ctx->pKey = xmlSecOpenSSLEvpKeyDup(pKey);
     if(ctx->pKey == NULL) {
         xmlSecInternalError("xmlSecOpenSSLEvpKeyDup", xmlSecTransformGetName(transform));
-
         return(-1);
     }
 
@@ -223,7 +221,6 @@ xmlSecOpenSSLRsaPkcs1Execute(xmlSecTransformPtr transform, int last, xmlSecTrans
         ret = xmlSecOpenSSLRsaPkcs1Process(transform, transformCtx);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLRsaPkcs1Process", xmlSecTransformGetName(transform));
-
             return(-1);
         }
         transform->status = xmlSecTransformStatusFinished;
@@ -429,7 +426,6 @@ xmlSecOpenSSLRsaOaepInitialize(xmlSecTransformPtr transform) {
     ret = xmlSecBufferInitialize(&(ctx->oaepParams), 0);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
-
         return(-1);
     }
     return(0);
@@ -473,7 +469,6 @@ xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
             ret = xmlSecBufferBase64NodeContentRead(&(ctx->oaepParams), cur);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecBufferBase64NodeContentRead", xmlSecTransformGetName(transform));
-
                 return(-1);
             }
         } else if(xmlSecCheckNodeName(cur,  xmlSecNodeDigestMethod, xmlSecDSigNs)) {
@@ -562,7 +557,6 @@ xmlSecOpenSSLRsaOaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     pKey = xmlSecOpenSSLKeyDataRsaGetEvp(xmlSecKeyGetValue(key));
     if(pKey == NULL) {
         xmlSecInternalError("xmlSecOpenSSLKeyDataRsaGetEvp", xmlSecTransformGetName(transform));
-
         return(-1);
     }
     xmlSecAssert2(EVP_PKEY_base_id(pKey) == EVP_PKEY_RSA, -1);
@@ -572,7 +566,6 @@ xmlSecOpenSSLRsaOaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     ctx->pKey = xmlSecOpenSSLEvpKeyDup(pKey);
     if(ctx->pKey == NULL) {
         xmlSecInternalError("xmlSecOpenSSLEvpKeyDup", xmlSecTransformGetName(transform));
-
         return(-1);
     }
 
@@ -603,7 +596,6 @@ xmlSecOpenSSLRsaOaepExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
         ret = xmlSecOpenSSLRsaOaepProcess(transform, transformCtx);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLRsaOaepProcess", xmlSecTransformGetName(transform));
-
             return(-1);
         }
         transform->status = xmlSecTransformStatusFinished;

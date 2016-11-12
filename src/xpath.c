@@ -418,7 +418,6 @@ xmlSecTransformXPathInitialize(xmlSecTransformPtr transform) {
     ret = xmlSecPtrListInitialize(dataList, xmlSecXPathDataListId);
     if(ret < 0) {
         xmlSecInternalError("xmlSecPtrListInitialize", xmlSecTransformGetName(transform));
-
         return(-1);
     }
     return(0);
@@ -459,7 +458,6 @@ xmlSecTransformXPathExecute(xmlSecTransformPtr transform, int last,
                                 transform->hereNode, transform->inNodes);
     if(transform->outNodes == NULL) {
         xmlSecInternalError("xmlSecXPathDataExecute", xmlSecTransformGetName(transform));
-
         return(-1);
     }
     return(0);
@@ -548,14 +546,12 @@ xmlSecTransformXPathNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
     data = xmlSecXPathDataCreate(xmlSecXPathDataTypeXPath);
     if(data == NULL) {
         xmlSecInternalError("xmlSecXPathDataCreate", xmlSecTransformGetName(transform));
-
         return(-1);
     }
 
     ret = xmlSecXPathDataNodeRead(data, cur);
     if(ret < 0) {
         xmlSecInternalError("xmlSecXPathDataNodeRead", xmlSecTransformGetName(transform));
-
         xmlSecXPathDataDestroy(data);
         return(-1);
     }
@@ -564,7 +560,6 @@ xmlSecTransformXPathNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
     ret = xmlSecPtrListAdd(dataList, data);
     if(ret < 0) {
         xmlSecInternalError("xmlSecPtrListAdd", xmlSecTransformGetName(transform));
-
         xmlSecXPathDataDestroy(data);
         return(-1);
     }
@@ -673,14 +668,12 @@ xmlSecTransformXPath2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xml
         data = xmlSecXPathDataCreate(xmlSecXPathDataTypeXPath2);
         if(data == NULL) {
             xmlSecInternalError("xmlSecXPathDataCreate", xmlSecTransformGetName(transform));
-
             return(-1);
         }
 
         ret = xmlSecXPathDataNodeRead(data, cur);
         if(ret < 0) {
             xmlSecInternalError("xmlSecXPathDataNodeRead", xmlSecTransformGetName(transform));
-
             xmlSecXPathDataDestroy(data);
             return(-1);
         }
@@ -689,7 +682,6 @@ xmlSecTransformXPath2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xml
         ret = xmlSecPtrListAdd(dataList, data);
         if(ret < 0) {
             xmlSecInternalError("xmlSecPtrListAdd", xmlSecTransformGetName(transform));
-
             xmlSecXPathDataDestroy(data);
             return(-1);
         }
@@ -819,14 +811,12 @@ xmlSecTransformXPointerSetExpr(xmlSecTransformPtr transform, const xmlChar* expr
     data = xmlSecXPathDataCreate(xmlSecXPathDataTypeXPointer);
     if(data == NULL) {
         xmlSecInternalError("xmlSecXPathDataCreate", xmlSecTransformGetName(transform));
-
         return(-1);
     }
 
     ret = xmlSecXPathDataRegisterNamespaces(data, hereNode);
     if(ret < 0) {
         xmlSecInternalError("xmlSecXPathDataRegisterNamespaces", xmlSecTransformGetName(transform));
-
         xmlSecXPathDataDestroy(data);
         return(-1);
     }
@@ -834,7 +824,6 @@ xmlSecTransformXPointerSetExpr(xmlSecTransformPtr transform, const xmlChar* expr
     ret = xmlSecXPathDataSetExpr(data, expr);
     if(ret < 0) {
         xmlSecInternalError("xmlSecXPathDataSetExpr", xmlSecTransformGetName(transform));
-
         xmlSecXPathDataDestroy(data);
         return(-1);
     }
@@ -843,7 +832,6 @@ xmlSecTransformXPointerSetExpr(xmlSecTransformPtr transform, const xmlChar* expr
     ret = xmlSecPtrListAdd(dataList, data);
     if(ret < 0) {
         xmlSecInternalError("xmlSecPtrListAdd", xmlSecTransformGetName(transform));
-
         xmlSecXPathDataDestroy(data);
         return(-1);
     }
@@ -886,14 +874,12 @@ xmlSecTransformXPointerNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, x
     data = xmlSecXPathDataCreate(xmlSecXPathDataTypeXPointer);
     if(data == NULL) {
         xmlSecInternalError("xmlSecXPathDataCreate", xmlSecTransformGetName(transform));
-
         return(-1);
     }
 
     ret = xmlSecXPathDataNodeRead(data, cur);
     if(ret < 0) {
         xmlSecInternalError("xmlSecXPathDataNodeRead", xmlSecTransformGetName(transform));
-
         xmlSecXPathDataDestroy(data);
         return(-1);
     }
@@ -902,7 +888,6 @@ xmlSecTransformXPointerNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, x
     ret = xmlSecPtrListAdd(dataList, data);
     if(ret < 0) {
         xmlSecInternalError("xmlSecPtrListAdd", xmlSecTransformGetName(transform));
-
         xmlSecXPathDataDestroy(data);
         return(-1);
     }
@@ -1087,7 +1072,6 @@ xmlSecTransformVisa3DHackExecute(xmlSecTransformPtr transform, int last,
     transform->outNodes = xmlSecNodeSetCreate(doc, nodeSet, xmlSecNodeSetTreeWithoutComments);
     if(transform->outNodes == NULL) {
         xmlSecInternalError("xmlSecNodeSetCreate", xmlSecTransformGetName(transform));
-
         xmlXPathFreeNodeSet(nodeSet);
         return(-1);
     }

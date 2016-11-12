@@ -618,7 +618,6 @@ xmlSecOpenSSLEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSe
                         xmlSecTransformGetName(transform), transformCtx);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecOpenSSLEvpBlockCipherCtxInit", xmlSecTransformGetName(transform));
-
                 return(-1);
             }
         }
@@ -637,7 +636,6 @@ xmlSecOpenSSLEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSe
                                                 transformCtx);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecOpenSSLEvpBlockCipherCtxUpdate", xmlSecTransformGetName(transform));
-
                 return(-1);
             }
         }
@@ -648,7 +646,6 @@ xmlSecOpenSSLEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSe
                                             transformCtx);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecOpenSSLEvpBlockCipherCtxFinal", xmlSecTransformGetName(transform));
-
                 return(-1);
             }
             transform->status = xmlSecTransformStatusFinished;

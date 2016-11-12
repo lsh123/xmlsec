@@ -233,7 +233,6 @@ xmlSecMSCryptoAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlS
     x509Data = xmlSecKeyDataCreate(xmlSecMSCryptoKeyDataX509Id);
     if(x509Data == NULL) {
         xmlSecInternalError("xmlSecKeyDataCreate(xmlSecMSCryptoKeyDataX509Id)", NULL);
-
         goto done;
     }
 
@@ -387,7 +386,6 @@ xmlSecMSCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xml
     kdata = xmlSecKeyEnsureData(key, xmlSecMSCryptoKeyDataX509Id);
     if(kdata == NULL) {
         xmlSecInternalError("xmlSecKeyEnsureData(xmlSecMSCryptoKeyDataX509Id)", NULL);
-
         return(-1);
     }
 
@@ -556,7 +554,6 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
     x509Data = xmlSecKeyDataCreate(xmlSecMSCryptoKeyDataX509Id);
     if(x509Data == NULL) {
         xmlSecInternalError("xmlSecKeyDataCreate(xmlSecMSCryptoKeyDataX509Id)", NULL);
-
         goto done;
     }
 

@@ -137,7 +137,6 @@ xmlSecOpenSSLEvpKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
         ctxDst->pKey = xmlSecOpenSSLEvpKeyDup(ctxSrc->pKey);
         if(ctxDst->pKey == NULL) {
             xmlSecInternalError("xmlSecOpenSSLEvpKeyDup", xmlSecKeyDataGetName(dst));
-
             return(-1);
         }
     }
@@ -462,7 +461,6 @@ xmlSecOpenSSLKeyDataDsaAdoptDsa(xmlSecKeyDataPtr data, DSA* dsa) {
     ret = xmlSecOpenSSLKeyDataDsaAdoptEvp(data, pKey);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLKeyDataDsaAdoptEvp", xmlSecKeyDataGetName(data));
-
         if(pKey != NULL) {
             EVP_PKEY_free(pKey);
         }
@@ -685,7 +683,6 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     data = xmlSecKeyDataCreate(id);
     if(data == NULL ) {
         xmlSecInternalError("xmlSecKeyDataCreate", xmlSecKeyDataKlassGetName(id));
-
         goto err_cleanup;
     }
 
@@ -709,7 +706,6 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     ret = xmlSecOpenSSLKeyDataDsaAdoptDsa(data, dsa);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLKeyDataDsaAdoptDsa", xmlSecKeyDataGetName(data));
-
         goto err_cleanup;
     }
     dsa = NULL;
@@ -717,7 +713,6 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyDataGetName(data));
-
         data = NULL;
         goto err_cleanup;
     }
@@ -875,7 +870,6 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     ret = xmlSecOpenSSLKeyDataDsaAdoptDsa(data, dsa);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLKeyDataDsaAdoptDsa", xmlSecKeyDataGetName(data));
-
         DSA_free(dsa);
         return(-1);
     }
@@ -1070,7 +1064,6 @@ xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa(xmlSecKeyDataPtr data, EC_KEY* ecdsa) {
     ret = xmlSecOpenSSLKeyDataEcdsaAdoptEvp(data, pKey);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLKeyDataEcdsaAdoptEvp", xmlSecKeyDataGetName(data));
-
         if(pKey != NULL) {
             EVP_PKEY_free(pKey);
         }
@@ -1371,7 +1364,6 @@ xmlSecOpenSSLKeyDataRsaAdoptRsa(xmlSecKeyDataPtr data, RSA* rsa) {
     ret = xmlSecOpenSSLKeyDataRsaAdoptEvp(data, pKey);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLKeyDataRsaAdoptEvp", xmlSecKeyDataGetName(data));
-
         if(pKey != NULL) {
             EVP_PKEY_free(pKey);
         }
@@ -1552,21 +1544,18 @@ xmlSecOpenSSLKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     data = xmlSecKeyDataCreate(id);
     if(data == NULL ) {
         xmlSecInternalError("xmlSecKeyDataCreate", xmlSecKeyDataKlassGetName(id));
-
         goto err_cleanup;
     }
 
     ret = xmlSecOpenSSLKeyDataRsaAdoptRsa(data, rsa);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLKeyDataRsaAdoptRsa", xmlSecKeyDataKlassGetName(id));
-
         goto err_cleanup;
     }
 
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyDataKlassGetName(id));
-
         data = NULL;
         goto err_cleanup;
     }
@@ -1696,7 +1685,6 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     ret = xmlSecOpenSSLKeyDataRsaAdoptRsa(data, rsa);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLKeyDataRsaAdoptRsa", xmlSecKeyDataGetName(data));
-
         RSA_free(rsa);
         BN_free(e);
         return(-1);

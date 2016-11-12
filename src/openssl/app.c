@@ -335,7 +335,6 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
     key = xmlSecKeyCreate();
     if(key == NULL) {
         xmlSecInternalError("xmlSecKeyCreate", xmlSecKeyDataGetName(data));
-
         xmlSecKeyDataDestroy(data);
         return(NULL);
     }
@@ -343,7 +342,6 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyDataGetName(data));
-
         xmlSecKeyDestroy(key);
         xmlSecKeyDataDestroy(data);
         return(NULL);
@@ -456,7 +454,6 @@ xmlSecOpenSSLAppKeyCertLoadBIO(xmlSecKeyPtr key, BIO* bio, xmlSecKeyDataFormat f
     data = xmlSecKeyEnsureData(key, xmlSecOpenSSLKeyDataX509Id);
     if(data == NULL) {
         xmlSecInternalError("xmlSecKeyEnsureData", xmlSecTransformKlassGetName(xmlSecOpenSSLKeyDataX509Id));
-
         return(-1);
     }
 
@@ -475,14 +472,12 @@ xmlSecOpenSSLAppKeyCertLoadBIO(xmlSecKeyPtr key, BIO* bio, xmlSecKeyDataFormat f
     cert = xmlSecOpenSSLAppCertLoadBIO(bio, certFormat);
     if(cert == NULL) {
         xmlSecInternalError("xmlSecOpenSSLAppCertLoad", xmlSecKeyDataGetName(data));
-
         return(-1);
     }
 
     ret = xmlSecOpenSSLKeyDataX509AdoptCert(data, cert);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptCert", xmlSecKeyDataGetName(data));
-
         X509_free(cert);
         return(-1);
     }
@@ -629,7 +624,6 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
     x509Data = xmlSecKeyDataCreate(xmlSecOpenSSLKeyDataX509Id);
     if(x509Data == NULL) {
         xmlSecInternalError("xmlSecKeyDataCreate", xmlSecTransformKlassGetName(xmlSecOpenSSLKeyDataX509Id));
-
         goto done;
     }
 

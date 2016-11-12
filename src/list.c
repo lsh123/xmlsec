@@ -72,7 +72,6 @@ xmlSecPtrListCreate(xmlSecPtrListId id) {
     ret = xmlSecPtrListInitialize(list, id);
     if(ret < 0) {
         xmlSecInternalError("xmlSecPtrListInitialize", xmlSecPtrListKlassGetName(id));
-
         xmlFree(list);
         return(NULL);
     }
@@ -197,7 +196,6 @@ xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
             dst->data[dst->use] = dst->id->duplicateItem(src->data[i]);
             if(dst->data[dst->use] == NULL) {
                 xmlSecInternalError("duplicateItem", xmlSecPtrListGetName(src));
-
                 return(-1);
             }
         } else {
@@ -226,14 +224,12 @@ xmlSecPtrListDuplicate(xmlSecPtrListPtr list) {
     newList = xmlSecPtrListCreate(list->id);
     if(newList == NULL) {
         xmlSecInternalError("xmlSecPtrListCreate", xmlSecPtrListGetName(list));
-
         return(NULL);
     }
 
     ret = xmlSecPtrListCopy(newList, list);
     if(ret < 0) {
         xmlSecInternalError("xmlSecPtrListCopy", xmlSecPtrListGetName(list));
-
         xmlSecPtrListDestroy(newList);
         return(NULL);
     }

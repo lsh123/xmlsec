@@ -569,7 +569,6 @@ xmlSecDSigCtxProcessSignatureNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
         nodeset = xmlSecNodeSetGetChildren(signedInfoNode->doc, signedInfoNode, 1, 0);
         if(nodeset == NULL) {
             xmlSecInternalError("xmlSecNodeSetGetChildren(signedInfoNode)", NULL);
-
             return(-1);
         }
 
@@ -679,7 +678,6 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xm
         if(dsigCtx->preSignMemBufMethod == NULL) {
             xmlSecInternalError("xmlSecTransformCtxCreateAndAppend",
                                 xmlSecTransformKlassGetName(xmlSecTransformMemBufId));
-
         }
     }
 
@@ -690,7 +688,6 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xm
                                         cur, xmlSecTransformUsageSignatureMethod);
         if(dsigCtx->signMethod == NULL) {
             xmlSecInternalError("xmlSecTransformCtxNodeRead", xmlSecNodeGetName(cur));
-
             return(-1);
         }
     } else if(dsigCtx->defSignMethodId != xmlSecTransformIdUnknown) {
@@ -798,7 +795,6 @@ xmlSecDSigCtxProcessReferences(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr firstReferen
         ret = xmlSecDSigReferenceCtxProcessNode(dsigRefCtx, cur);
         if(ret < 0) {
             xmlSecInternalError("xmlSecDSigReferenceCtxProcessNode", xmlSecNodeGetName(cur));
-
             return(-1);
         }
 
@@ -825,7 +821,6 @@ xmlSecDSigCtxProcessKeyInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     ret = xmlSecTransformSetKeyReq(dsigCtx->signMethod, &(dsigCtx->keyInfoReadCtx.keyReq));
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformSetKeyReq", xmlSecTransformGetName(dsigCtx->signMethod));
-
         return(-1);
     }
 
@@ -850,7 +845,6 @@ xmlSecDSigCtxProcessKeyInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     ret = xmlSecTransformSetKey(dsigCtx->signMethod, dsigCtx->signKey);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformSetKey", xmlSecTransformGetName(dsigCtx->signMethod));
-
         return(-1);
     }
 
@@ -980,7 +974,6 @@ xmlSecDSigCtxProcessManifestNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
         ret = xmlSecDSigReferenceCtxProcessNode(dsigRefCtx, cur);
         if(ret < 0) {
             xmlSecInternalError("xmlSecDSigReferenceCtxProcessNode", xmlSecNodeGetName(cur));
-
             return(-1);
         }
 
@@ -1381,7 +1374,6 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
                                         cur, xmlSecTransformUsageDSigTransform);
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformCtxNodesListRead", xmlSecNodeGetName(cur));
-
             return(-1);
         }
 
@@ -1400,7 +1392,6 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
                                                 xmlSecTransformMemBufId);
         if(dsigRefCtx->preDigestMemBufMethod == NULL) {
             xmlSecInternalError("xmlSecTransformCtxCreateAndAppend(xmlSecTransformMemBufId)", NULL);
-
             return(-1);
         }
     }
@@ -1411,7 +1402,6 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
                                         cur, xmlSecTransformUsageDigestMethod);
         if(dsigRefCtx->digestMethod == NULL) {
             xmlSecInternalError("xmlSecTransformCtxNodeRead", xmlSecNodeGetName(cur));
-
             return(-1);
         }
 

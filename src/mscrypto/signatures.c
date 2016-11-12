@@ -250,7 +250,6 @@ static int xmlSecMSCryptoSignatureSetKey(xmlSecTransformPtr transform, xmlSecKey
     ctx->data = xmlSecKeyDataDuplicate(value);
     if(ctx->data == NULL) {
         xmlSecInternalError("xmlSecKeyDataDuplicate", xmlSecTransformGetName(transform));
-
         return(-1);
     }
 
@@ -374,7 +373,6 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
     hKey = xmlSecMSCryptoKeyDataGetKey(ctx->data, xmlSecKeyDataTypePublic);
     if (hKey == 0) {
         xmlSecInternalError("xmlSecMSCryptoKeyDataGetKey", xmlSecTransformGetName(transform));
-
         xmlSecBufferFinalize(&tmp);
         return(-1);
     }
@@ -551,7 +549,6 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
         ret = xmlSecBufferRemoveHead(in, inSize);
         if(ret < 0) {
             xmlSecInternalError("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform));
-
             return(-1);
         }
     }

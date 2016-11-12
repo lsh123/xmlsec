@@ -333,7 +333,6 @@ xmlSecMSCryptoKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfo
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecKWAesEncode", xmlSecTransformGetName(transform));
-
                 return(-1);
             }
             outSize = ret;
@@ -343,7 +342,6 @@ xmlSecMSCryptoKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfo
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecKWAesEncode", xmlSecTransformGetName(transform));
-
                 return(-1);
             }
             outSize = ret;

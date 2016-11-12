@@ -272,7 +272,6 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
             crl_list[ii] = xmlSecPtrListGetItem(crls, ii);
             if(crl_list[ii] == NULL) {
                 xmlSecInternalError("xmlSecPtrListGetItem(crls)", xmlSecKeyDataStoreGetName(store));
-
                 goto done;
             }
         }
@@ -293,7 +292,6 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
             ca_list[ii] = xmlSecPtrListGetItem(&(ctx->certsTrusted), ii);
             if(ca_list[ii] == NULL) {
                 xmlSecInternalError("xmlSecPtrListGetItem(certsTrusted)", xmlSecKeyDataStoreGetName(store));
-
                 goto done;
             }
         }
@@ -320,7 +318,6 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
         cert = xmlSecPtrListGetItem(certs, ii);
         if(cert == NULL) {
             xmlSecInternalError("xmlSecPtrListGetItem(certs)", xmlSecKeyDataStoreGetName(store));
-
             goto done;
         }
 
@@ -429,14 +426,12 @@ xmlSecGnuTLSX509StoreAdoptCert(xmlSecKeyDataStorePtr store, gnutls_x509_crt_t ce
         ret = xmlSecPtrListAdd(&(ctx->certsTrusted), cert);
         if(ret < 0) {
             xmlSecInternalError("xmlSecPtrListAdd(trusted)", xmlSecKeyDataStoreGetName(store));
-
             return(-1);
         }
     } else {
         ret = xmlSecPtrListAdd(&(ctx->certsUntrusted), cert);
         if(ret < 0) {
             xmlSecInternalError("xmlSecPtrListAdd(untrusted)", xmlSecKeyDataStoreGetName(store));
-
             return(-1);
         }
     }
@@ -460,14 +455,12 @@ xmlSecGnuTLSX509StoreInitialize(xmlSecKeyDataStorePtr store) {
     ret = xmlSecPtrListInitialize(&(ctx->certsTrusted), xmlSecGnuTLSX509CrtListId);
     if(ret < 0) {
         xmlSecInternalError("xmlSecPtrListInitialize(trusted)", xmlSecKeyDataStoreGetName(store));
-
         return(-1);
     }
 
     ret = xmlSecPtrListInitialize(&(ctx->certsUntrusted), xmlSecGnuTLSX509CrtListId);
     if(ret < 0) {
         xmlSecInternalError("xmlSecPtrListInitialize(untrusted)", xmlSecKeyDataStoreGetName(store));
-
         return(-1);
     }
 
@@ -518,14 +511,12 @@ xmlSecGnuTLSX509DnsEqual(const xmlChar * ll, const xmlChar * rr) {
     ret = xmlSecGnuTLSDnAttrsParse(ll, ll_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGnuTLSDnAttrsParse(ll)", NULL);
-
         goto done;
     }
 
     ret = xmlSecGnuTLSDnAttrsParse(rr, rr_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGnuTLSDnAttrsParse(rr)", NULL);
-
         goto done;
     }
 

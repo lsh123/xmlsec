@@ -1018,7 +1018,6 @@ xmlSecKeyGenerate(xmlSecKeyDataId dataId, xmlSecSize sizeBits, xmlSecKeyDataType
     data = xmlSecKeyDataCreate(dataId);
     if(data == NULL) {
         xmlSecInternalError("xmlSecKeyDataCreate", xmlSecKeyDataKlassGetName(dataId));
-
         return(NULL);
     }
 
@@ -1034,7 +1033,6 @@ xmlSecKeyGenerate(xmlSecKeyDataId dataId, xmlSecSize sizeBits, xmlSecKeyDataType
     key = xmlSecKeyCreate();
     if(key == NULL) {
         xmlSecInternalError("xmlSecKeyCreate", xmlSecKeyDataKlassGetName(dataId));
-
         xmlSecKeyDataDestroy(data);
         return(NULL);
     }
@@ -1042,7 +1040,6 @@ xmlSecKeyGenerate(xmlSecKeyDataId dataId, xmlSecSize sizeBits, xmlSecKeyDataType
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyDataKlassGetName(dataId));
-
         xmlSecKeyDataDestroy(data);
         xmlSecKeyDestroy(key);
         return(NULL);
@@ -1102,14 +1099,12 @@ xmlSecKeyReadBuffer(xmlSecKeyDataId dataId, xmlSecBuffer* buffer) {
     key = xmlSecKeyCreate();
     if(key == NULL) {
         xmlSecInternalError("xmlSecKeyCreate", xmlSecKeyDataKlassGetName(dataId));
-
         return(NULL);
     }
 
     ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx, NULL);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyInfoCtxInitialize", xmlSecKeyDataKlassGetName(dataId));
-
         xmlSecKeyDestroy(key);
         return(NULL);
     }
@@ -1121,7 +1116,6 @@ xmlSecKeyReadBuffer(xmlSecKeyDataId dataId, xmlSecBuffer* buffer) {
                         &keyInfoCtx);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyDataBinRead", xmlSecKeyDataKlassGetName(dataId));
-
         xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
         xmlSecKeyDestroy(key);
         return(NULL);
@@ -1153,7 +1147,6 @@ xmlSecKeyReadBinaryFile(xmlSecKeyDataId dataId, const char* filename) {
     ret = xmlSecBufferInitialize(&buffer, 0);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize", xmlSecKeyDataKlassGetName(dataId));
-
         return(NULL);
     }
 
@@ -1205,13 +1198,11 @@ xmlSecKeyReadMemory(xmlSecKeyDataId dataId, const xmlSecByte* data, xmlSecSize d
     ret = xmlSecBufferInitialize(&buffer, 0);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize", xmlSecKeyDataKlassGetName(dataId));
-
         return(NULL);
     }
 
     if (xmlSecBufferAppend(&buffer, data, dataSize) < 0) {
         xmlSecInternalError("xmlSecBufferAppend", xmlSecKeyDataKlassGetName(dataId));
-
         xmlSecBufferFinalize(&buffer);
         return(NULL);
     }
@@ -1219,7 +1210,6 @@ xmlSecKeyReadMemory(xmlSecKeyDataId dataId, const xmlSecByte* data, xmlSecSize d
     key = xmlSecKeyReadBuffer(dataId, &buffer);
     if(key == NULL) {
         xmlSecInternalError("xmlSecKeyReadBuffer", xmlSecKeyDataKlassGetName(dataId));
-
         xmlSecBufferFinalize(&buffer);
         return(NULL);
     }

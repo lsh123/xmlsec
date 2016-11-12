@@ -1060,7 +1060,6 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
                 ret = xmlSecPtrListAdd(certsList, cert);
                 if(ret < 0) {
                     xmlSecInternalError("xmlSecPtrListAdd(certsList)", NULL);
-
                     goto done;
                 }
                 cert = NULL; /* owned by certsList now */

@@ -85,7 +85,6 @@ xmlSecSoap11CreateEnvelope(xmlDocPtr doc) {
     bodyNode = xmlSecAddChild(envNode, xmlSecNodeBody, xmlSecSoap11Ns);
     if(bodyNode == NULL) {
         xmlSecInternalError("xmlSecAddChild(xmlSecNodeBody)", NULL);
-
         xmlFreeNode(envNode);
         return(NULL);
     }
@@ -239,7 +238,6 @@ xmlSecSoap11AddFaultEntry(xmlNodePtr envNode, const xmlChar* faultCodeHref,
     faultNode = xmlSecAddChild(bodyNode, xmlSecNodeFault, xmlSecSoap11Ns);
     if(faultNode == NULL) {
         xmlSecInternalError("xmlSecAddChild(xmlSecNodeFault)", NULL);
-
         return(NULL);
     }
 
@@ -247,7 +245,6 @@ xmlSecSoap11AddFaultEntry(xmlNodePtr envNode, const xmlChar* faultCodeHref,
     cur = xmlSecAddChild(faultNode, xmlSecNodeFaultCode, xmlSecSoap11Ns);
     if(cur == NULL) {
         xmlSecInternalError("xmlSecAddChild(xmlSecNodeFaultCode)", NULL);
-
         xmlUnlinkNode(faultNode);
         xmlFreeNode(faultNode);
         return(NULL);
@@ -275,7 +272,6 @@ xmlSecSoap11AddFaultEntry(xmlNodePtr envNode, const xmlChar* faultCodeHref,
     cur = xmlSecAddChild(faultNode, xmlSecNodeFaultString, xmlSecSoap11Ns);
     if(cur == NULL) {
         xmlSecInternalError("xmlSecAddChild(xmlSecNodeFaultString)", NULL);
-
         xmlUnlinkNode(faultNode);
         xmlFreeNode(faultNode);
         return(NULL);
@@ -289,7 +285,6 @@ xmlSecSoap11AddFaultEntry(xmlNodePtr envNode, const xmlChar* faultCodeHref,
         cur = xmlSecAddChild(faultNode, xmlSecNodeFaultActor, xmlSecSoap11Ns);
         if(cur == NULL) {
             xmlSecInternalError("xmlSecAddChild(xmlSecNodeFaultActor)", NULL);
-
             xmlUnlinkNode(faultNode);
             xmlFreeNode(faultNode);
             return(NULL);
@@ -567,7 +562,6 @@ xmlSecSoap12CreateEnvelope(xmlDocPtr doc) {
     bodyNode = xmlSecAddChild(envNode, xmlSecNodeBody, xmlSecSoap12Ns);
     if(bodyNode == NULL) {
         xmlSecInternalError("xmlSecAddChild(xmlSecNodeBody)", NULL);
-
         xmlFreeNode(envNode);
         return(NULL);
     }
@@ -776,7 +770,6 @@ xmlSecSoap12AddFaultEntry(xmlNodePtr envNode, xmlSecSoap12FaultCode faultCode,
     faultNode = xmlSecAddChild(bodyNode, xmlSecNodeFault, xmlSecSoap12Ns);
     if(faultNode == NULL) {
         xmlSecInternalError("xmlSecAddChild(xmlSecNodeFault)", NULL);
-
         return(NULL);
     }
 
@@ -784,7 +777,6 @@ xmlSecSoap12AddFaultEntry(xmlNodePtr envNode, xmlSecSoap12FaultCode faultCode,
     cur = xmlSecAddChild(faultNode, xmlSecNodeCode, xmlSecSoap12Ns);
     if(cur == NULL) {
         xmlSecInternalError("xmlSecAddChild(xmlSecNodeCode)", NULL);
-
         xmlUnlinkNode(faultNode);
         xmlFreeNode(faultNode);
         return(NULL);
@@ -806,7 +798,6 @@ xmlSecSoap12AddFaultEntry(xmlNodePtr envNode, xmlSecSoap12FaultCode faultCode,
     cur = xmlSecAddChild(faultNode, xmlSecNodeReason, xmlSecSoap12Ns);
     if(cur == NULL) {
         xmlSecInternalError("xmlSecAddChild(xmlSecNodeReason)", NULL);
-
         xmlUnlinkNode(faultNode);
         xmlFreeNode(faultNode);
         return(NULL);
@@ -826,7 +817,6 @@ xmlSecSoap12AddFaultEntry(xmlNodePtr envNode, xmlSecSoap12FaultCode faultCode,
         cur = xmlSecAddChild(faultNode, xmlSecNodeNode, xmlSecSoap12Ns);
         if(cur == NULL) {
             xmlSecInternalError("xmlSecAddChild(xmlSecNodeNode)", NULL);
-
             xmlUnlinkNode(faultNode);
             xmlFreeNode(faultNode);
             return(NULL);
@@ -839,7 +829,6 @@ xmlSecSoap12AddFaultEntry(xmlNodePtr envNode, xmlSecSoap12FaultCode faultCode,
         cur = xmlSecAddChild(faultNode, xmlSecNodeRole, xmlSecSoap12Ns);
         if(cur == NULL) {
             xmlSecInternalError("xmlSecAddChild(xmlSecNodeRole)", NULL);
-
             xmlUnlinkNode(faultNode);
             xmlFreeNode(faultNode);
             return(NULL);
@@ -899,7 +888,6 @@ xmlSecSoap12AddFaultSubcode(xmlNodePtr faultNode, const xmlChar* subCodeHref, co
     subcodeNode = xmlSecAddChild(cur, xmlSecNodeSubcode, xmlSecSoap12Ns);
     if(subcodeNode == NULL) {
         xmlSecInternalError("xmlSecAddChild(xmlSecNodeSubcode)", NULL);
-
         return(NULL);
     }
 
@@ -907,7 +895,6 @@ xmlSecSoap12AddFaultSubcode(xmlNodePtr faultNode, const xmlChar* subCodeHref, co
     valueNode = xmlSecAddChild(subcodeNode, xmlSecNodeValue, xmlSecSoap12Ns);
     if(valueNode == NULL) {
         xmlSecInternalError("xmlSecAddChild(xmlSecNodeValue)", NULL);
-
         xmlUnlinkNode(subcodeNode);
         xmlFreeNode(subcodeNode);
         return(NULL);
@@ -961,7 +948,6 @@ xmlSecSoap12AddFaultReasonText(xmlNodePtr faultNode, const xmlChar* faultReasonT
     reasonNode = xmlSecFindChild(faultNode,  xmlSecNodeReason, xmlSecSoap12Ns);
     if(reasonNode == NULL) {
         xmlSecInternalError("xmlSecFindChild(xmlSecNodeReason)", NULL);
-
         return(NULL);
     }
 
@@ -969,7 +955,6 @@ xmlSecSoap12AddFaultReasonText(xmlNodePtr faultNode, const xmlChar* faultReasonT
     textNode = xmlSecAddChild(reasonNode, xmlSecNodeText, xmlSecSoap12Ns);
     if(textNode == NULL) {
         xmlSecInternalError("xmlSecAddChild(xmlSecNodeText)", NULL);
-
         return(NULL);
     }
     xmlNodeSetContent(textNode, faultReasonText);
@@ -1001,7 +986,6 @@ xmlSecSoap12AddFaultDetailEntry(xmlNodePtr faultNode, xmlNodePtr detailEntryNode
         detailNode = xmlSecAddChild(faultNode, xmlSecNodeDetail, xmlSecSoap12Ns);
         if(detailNode == NULL) {
             xmlSecInternalError("xmlSecAddChild(xmlSecNodeDetail)", NULL);
-
             return(NULL);
         }
     }

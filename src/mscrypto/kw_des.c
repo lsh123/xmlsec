@@ -198,7 +198,6 @@ xmlSecMSCryptoKWDes3Initialize(xmlSecTransformPtr transform) {
     ret = xmlSecBufferInitialize(&(ctx->keyBuffer), 0);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
-
         return(-1);
     }
 
@@ -206,16 +205,12 @@ xmlSecMSCryptoKWDes3Initialize(xmlSecTransformPtr transform) {
     ctx->desCryptProvider = xmlSecMSCryptoFindProvider(ctx->desProviders, NULL, CRYPT_VERIFYCONTEXT, TRUE);
     if(ctx->desCryptProvider == 0) {
         xmlSecInternalError("xmlSecMSCryptoFindProvider(des)", xmlSecTransformGetName(transform));
-
-
         return(-1);
     }
 
     ctx->sha1CryptProvider = xmlSecMSCryptoFindProvider(ctx->sha1Providers, NULL, CRYPT_VERIFYCONTEXT, TRUE);
     if(ctx->sha1CryptProvider == 0) {
         xmlSecInternalError("xmlSecMSCryptoFindProvider(sha1)", xmlSecTransformGetName(transform));
-
-
         return(-1);
     }
 

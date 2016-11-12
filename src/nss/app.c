@@ -609,7 +609,6 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
     data = xmlSecKeyEnsureData(key, xmlSecNssKeyDataX509Id);
     if(data == NULL) {
         xmlSecInternalError("xmlSecKeyEnsureData(xmlSecNssKeyDataX509Id)", NULL);
-
         return(-1);
     }
 
@@ -868,7 +867,6 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
     x509Data = xmlSecKeyDataCreate(xmlSecNssKeyDataX509Id);
     if(x509Data == NULL) {
         xmlSecInternalError("xmlSecKeyDataCreate", xmlSecTransformKlassGetName(xmlSecNssKeyDataX509Id));
-
         goto done;
     }
 

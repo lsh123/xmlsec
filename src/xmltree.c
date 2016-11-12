@@ -309,7 +309,7 @@ xmlSecAddChildNode(xmlNodePtr parent, xmlNodePtr child) {
  * Returns: the pointer to the found or created node; or NULL if an error occurs.
  */
 xmlNodePtr
-xmlSecEnsureEmptyChild(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
+xmlSecEnsureEmptyChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
     xmlNodePtr cur = NULL;
     xmlNodePtr tmp;
 

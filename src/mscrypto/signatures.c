@@ -423,8 +423,6 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
     BYTE *tmpBuf, *outBuf;
     int bOk;
     PCRYPT_KEY_PROV_INFO pProviderInfo = NULL;
-    char strContName[1000];
-    char strProvName[1000];
     size_t size;
 
     xmlSecAssert2(xmlSecMSCryptoSignatureCheckId(transform), -1);
@@ -468,26 +466,6 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
                 return(-1);
             }
 
-            ret = wcstombs_s(&size, strContName, 1000, pProviderInfo->pwszContainerName, _TRUNCATE);
-            if(ret != 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "wcstombs_s",
-                            XMLSEC_ERRORS_R_INVALID_DATA,
-                            "ret=%d", ret);
-                return(-1);
-            }
-
-            ret = wcstombs_s(&size, strProvName, 1000, pProviderInfo->pwszProvName, _TRUNCATE);
-            if(ret != 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "wcstombs_s",
-                            XMLSEC_ERRORS_R_INVALID_DATA,
-                            "ret=%d", ret);
-                return(-1);
-            }
-
             if(!CryptReleaseContext(hProv, 0)) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
                             NULL,
@@ -496,19 +474,19 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
                             XMLSEC_ERRORS_NO_MESSAGE);
                 return(-1);
             }
-            hProv = NULL;
+            hProv = (HCRYPTPROV)0;
 
             if(!CryptAcquireContext(&hProv,
-                strContName,
-                strProvName,
+                pProviderInfo->pwszContainerName,
+                pProviderInfo->pwszProvName,
                 pProviderInfo->dwProvType,
                 0)) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
+                                       xmlSecError(XMLSEC_ERRORS_HERE,
                             NULL,
                             "CryptAcquireContext",
                             XMLSEC_ERRORS_R_CRYPTO_FAILED,
                             XMLSEC_ERRORS_NO_MESSAGE);
-                return(-1);
+                                       return(-1);
             }
 
             bOk = CryptCreateHash(hProv, ctx->digestAlgId, 0, 0, &(ctx->mscHash));
@@ -524,10 +502,10 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
                             XMLSEC_ERRORS_NO_MESSAGE);
                 return(-1);
             }
-            hProv = NULL;
+            hProv = (HCRYPTPROV)0;
 
             if(!CryptAcquireContext(&hProv,
-                strContName,
+                pProviderInfo->pwszContainerName,
                 NULL,
                 PROV_RSA_AES,
                 0)) {

@@ -19,3 +19,5 @@ cscript configure.js prefix=%PREFIX% %XMLSEC_OPTIONS% include=%XMLSEC_INCLUDE% l
 mkdir binaries
 copy %PREFIX%\bin\*.dll binaries
 copy %PREFIX%\lib\*.dll binaries
+
+REM cscript configure.js crypto=mscrypto prefix=c:\Users\Aleksey\dev\local include=c:\Users\Aleksey\dev\local\include lib=c:\Users\Aleksey\dev\local\lib

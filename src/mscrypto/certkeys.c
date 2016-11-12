@@ -1126,7 +1126,7 @@ xmlSecMSCryptoKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     blobBufferLen = sizeof(PUBLICKEYSTRUC) + sizeof(RSAPUBKEY) + xmlSecBnGetSize(&modulus);
     ret = xmlSecBufferSetSize(&blob, blobBufferLen);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferSetSize", NULL, "size=%d", blobBufferLen);
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=%d", blobBufferLen);
         goto done;
     }
 
@@ -2413,7 +2413,8 @@ xmlSecMSCryptoKeyDataGost2001DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
             xmlSecMSCryptoKeyDataGost2001GetSize(data));
 }
 
-PCRYPT_KEY_PROV_INFO xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo(xmlSecKeyDataPtr data) {
+PCRYPT_KEY_PROV_INFO
+xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo(xmlSecKeyDataPtr data) {
     xmlSecMSCryptoKeyDataCtxPtr ctx;
     LPBYTE pInfoData = NULL;
     DWORD dwInfoDataLength = 0;

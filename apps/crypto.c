@@ -99,14 +99,16 @@ xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
     key = xmlSecCryptoAppKeyLoad(files, format, pwd, 
                 xmlSecCryptoAppGetDefaultPwdCallback(), (void*)files);
     if(key == NULL) {
-        xmlSecInternalError("xmlSecCryptoAppKeyLoad", files);
+        xmlSecInternalError2("xmlSecCryptoAppKeyLoad", NULL,
+                             "files=%s", xmlSecErrorsSafeString(files));
         return(-1);
     }
     
     if(name != NULL) {
         ret = xmlSecKeySetName(key, BAD_CAST name);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecKeySetName", name);
+            xmlSecInternalError2("xmlSecKeySetName", NULL,
+                                 "name=%s", xmlSecErrorsSafeString(name));
             xmlSecKeyDestroy(key);
             return(-1);
         }
@@ -116,7 +118,8 @@ xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
     for(files += strlen(files) + 1; (files[0] != '\0'); files += strlen(files) + 1) {
         ret = xmlSecCryptoAppKeyCertLoad(key, files, format);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecCryptoAppKeyCertLoad", files);
+            xmlSecInternalError2("xmlSecCryptoAppKeyCertLoad", NULL,
+                                "files=%s", xmlSecErrorsSafeString(files));
             xmlSecKeyDestroy(key);
             return(-1);
         }
@@ -156,14 +159,16 @@ xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *f
     key = xmlSecCryptoAppKeyLoad(filename, xmlSecKeyDataFormatPkcs12, pwd, 
                     xmlSecCryptoAppGetDefaultPwdCallback(), (void*)filename);
     if(key == NULL) {
-        xmlSecInternalError("xmlSecCryptoAppKeyLoad", filename);
+        xmlSecInternalError2("xmlSecCryptoAppKeyLoad", NULL,
+                             "filename=%s", xmlSecErrorsSafeString(filename));
         return(-1);
     }
         
     if(name != NULL) {
         ret = xmlSecKeySetName(key, BAD_CAST name);
         if(ret < 0) {   
-            xmlSecInternalError("xmlSecKeySetName", name);
+            xmlSecInternalError2("xmlSecKeySetName", NULL,
+                                 "name=%s", xmlSecErrorsSafeString(name));
             xmlSecKeyDestroy(key);
             return(-1);
         }
@@ -201,8 +206,9 @@ xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(xmlSecKeysMngrPtr mngr, const char* k
     dataId = xmlSecKeyDataIdListFindByName(xmlSecKeyDataIdsGet(), BAD_CAST keyKlass, 
                                            xmlSecKeyDataUsageAny);
     if(dataId == xmlSecKeyDataIdUnknown) {
-        xmlSecInternalError("xmlSecKeyDataIdListFindByName", keyKlass);
-        return(-1);    
+        xmlSecInternalError2("xmlSecKeyDataIdListFindByName", NULL,
+                             "keyKlass=%s", xmlSecErrorsSafeString(keyKlass));
+        return(-1);
     }
 
     key = xmlSecKeyReadBinaryFile(dataId, filename);
@@ -213,7 +219,8 @@ xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(xmlSecKeysMngrPtr mngr, const char* k
     
     ret = xmlSecKeySetName(key, BAD_CAST name);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeySetName", name);
+        xmlSecInternalError2("xmlSecKeySetName", NULL,
+                             "name=%s", xmlSecErrorsSafeString(name));
         xmlSecKeyDestroy(key);
         return(-1);    
     }
@@ -240,7 +247,8 @@ xmlSecAppCryptoSimpleKeysMngrKeyGenerate(xmlSecKeysMngrPtr mngr, const char* key
     
     key = xmlSecAppCryptoKeyGenerate(keyKlassAndSize, name, xmlSecKeyDataTypePermanent);
     if(key == NULL) {
-        xmlSecInternalError("xmlSecAppCryptoSimpleKeysMngrKeyGenerate", name);
+        xmlSecInternalError2("xmlSecAppCryptoSimpleKeysMngrKeyGenerate", NULL,
+                             "name=%s", xmlSecErrorsSafeString(name));
         return(-1);    
     }    
 
@@ -291,14 +299,17 @@ xmlSecAppCryptoKeyGenerate(const char* keyKlassAndSize, const char* name, xmlSec
     
     key = xmlSecKeyGenerateByName(BAD_CAST buf, size, type);
     if(key == NULL) {
-        xmlSecInternalError("xmlSecKeyGenerate", keyKlassAndSize);
+        xmlSecInternalError4("xmlSecKeyGenerate", NULL,
+                             "name=%s;size=%d;type=%d",
+                             xmlSecErrorsSafeString(buf), size, (int)type);
         xmlFree(buf);
         return(NULL);   
     }
     
     ret = xmlSecKeySetName(key, BAD_CAST name);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeySetName", name);
+        xmlSecInternalError2("xmlSecKeySetName", NULL,
+                             "name=%s", xmlSecErrorsSafeString(name));
         xmlSecKeyDestroy(key);
         xmlFree(buf);
         return(NULL);

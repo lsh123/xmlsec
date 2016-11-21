@@ -158,7 +158,8 @@ xmlSecOpenSSLAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
 
     bio = BIO_new_file(filename, "rb");
     if(bio == NULL) {
-        xmlSecOpenSSLError("BIO_new_file", filename);
+        xmlSecOpenSSLError2("BIO_new_file", NULL,
+                            "filename=%s", xmlSecErrorsSafeString(filename));
         return(NULL);
     }
 
@@ -378,7 +379,8 @@ xmlSecOpenSSLAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDat
 
     bio = BIO_new_file(filename, "rb");
     if(bio == NULL) {
-        xmlSecOpenSSLError("BIO_new_file", filename);
+        xmlSecOpenSSLError2("BIO_new_file", NULL,
+                            "filename=%s", xmlSecErrorsSafeString(filename));
         return(-1);
     }
 
@@ -515,7 +517,8 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd,
 
     bio = BIO_new_file(filename, "rb");
     if(bio == NULL) {
-        xmlSecOpenSSLError("BIO_new_file", filename);
+        xmlSecOpenSSLError2("BIO_new_file", NULL,
+                            "filename=%s", xmlSecErrorsSafeString(filename));
         return(NULL);
     }
 

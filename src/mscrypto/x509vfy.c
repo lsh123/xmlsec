@@ -901,11 +901,7 @@ xmlSecMSCryptoCertStrToName(DWORD dwCertEncodingType, LPTSTR pszX500, DWORD dwSt
 
     str = (BYTE *)xmlMalloc(sizeof(TCHAR) * ((*len) + 1));
     if(str == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "len=%ld", (*len));
+        xmlSecMallocError(sizeof(TCHAR) * ((*len) + 1), NULL);
         return(NULL);
     }
     memset(str, 0, (*len) + 1);
@@ -1162,7 +1158,7 @@ xmlSecMSCryptoX509GetCertName(const xmlChar * name) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                    XMLSEC_ERRORS_R_XML_FAILED,
                     "xmlStrlen(name)=%d",
                     xmlStrlen(name));
         return(NULL);
@@ -1274,7 +1270,7 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store,
             xmlSecError(XMLSEC_ERRORS_HERE,
                 NULL,
                 "xmlStrdup",
-                XMLSEC_ERRORS_R_MALLOC_FAILED,
+                XMLSEC_ERRORS_R_XML_FAILED,
                 XMLSEC_ERRORS_NO_MESSAGE);
             return (NULL);
         }
@@ -1335,11 +1331,7 @@ xmlSecMSCryptoX509GetNameString(PCCERT_CONTEXT pCertContext, DWORD dwType, DWORD
     /* allocate buffer */
     name = (LPTSTR)xmlMalloc(sizeof(TCHAR) * (dwSize + 1));
     if(name == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMallocError(sizeof(TCHAR) * (dwSize + 1), NULL);
         return (NULL);
     }
 

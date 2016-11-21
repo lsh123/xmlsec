@@ -482,11 +482,7 @@ xmlSecMSCryptoConvertUtf8ToUnicode(const xmlChar* str) {
     /* allocate buffer */
     res = (LPWSTR)xmlMalloc(sizeof(WCHAR) * len);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", sizeof(WCHAR) * len);
+        xmlSecMallocError(sizeof(WCHAR) * len, NULL);
         return(NULL);
     }
 
@@ -527,11 +523,7 @@ xmlSecMSCryptoConvertUnicodeToUtf8(LPCWSTR str) {
     /* allocate buffer */
     res = (xmlChar*)xmlMalloc(sizeof(xmlChar) * len);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", sizeof(xmlChar) * len);
+        xmlSecMallocError(sizeof(xmlChar) * len, NULL);
         return(NULL);
     }
 
@@ -572,19 +564,15 @@ xmlSecMSCryptoConvertLocaleToUnicode(const char* str) {
     /* allocate buffer */
     res = (LPWSTR)xmlMalloc(sizeof(WCHAR) * len);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMallocError(sizeof(WCHAR) * len, NULL);
         return(NULL);
     }
 
     /* convert */
     ret = MultiByteToWideChar(CP_ACP, 0, str, -1, res, len);
     if(ret <= 0) {
-            xmlFree(res);
-            return(NULL);
+        xmlFree(res);
+        return(NULL);
     }
 
     /* done */
@@ -624,11 +612,7 @@ xmlSecMSCryptoConvertLocaleToUtf8(const char * str) {
     /* allocate buffer */
     res = (xmlChar*)xmlMalloc(sizeof(xmlChar) * len);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", sizeof(xmlChar) * len);
+        xmlSecMallocError(sizeof(xmlChar) * len, NULL);
         xmlFree(strW);
         return(NULL);
     }
@@ -679,11 +663,7 @@ xmlSecMSCryptoConvertUtf8ToLocale(const xmlChar* str) {
     /* allocate buffer */
     res = (char*)xmlMalloc(sizeof(char) * len);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", sizeof(xmlChar) * len);
+        xmlSecMallocError(sizeof(char) * len, NULL);
         xmlFree(strW);
         return(NULL);
     }

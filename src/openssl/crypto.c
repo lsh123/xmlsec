@@ -494,7 +494,7 @@ xmlSecOpenSSLSetDefaultTrustedCertsFolder(const xmlChar* path) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         "xmlStrdup",
-                        XMLSEC_ERRORS_R_MALLOC_FAILED,
+                        XMLSEC_ERRORS_R_XML_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
             return(-1);
         }

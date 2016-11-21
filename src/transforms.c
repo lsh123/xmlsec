@@ -284,11 +284,7 @@ xmlSecTransformCtxCreate(void) {
     /* Allocate a new xmlSecTransform and fill the fields. */
     ctx = (xmlSecTransformCtxPtr)xmlMalloc(sizeof(xmlSecTransformCtx));
     if(ctx == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", (int)sizeof(xmlSecTransformCtx));
+        xmlSecMallocError(sizeof(xmlSecTransformCtx), NULL);
         return(NULL);
     }
 
@@ -789,11 +785,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
         size = xmlStrlen(BAD_CAST tmpl) + xmlStrlen(xptr) + 2;
         buf = (xmlChar*)xmlMalloc(size * sizeof(xmlChar));
         if(buf == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_MALLOC_FAILED,
-                        "size=%d", size);
+            xmlSecMallocError(size * sizeof(xmlChar), NULL);
             return(-1);
         }
         sprintf((char*)buf, tmpl, xptr + 1);
@@ -1227,11 +1219,7 @@ xmlSecTransformCreate(xmlSecTransformId id) {
     /* Allocate a new xmlSecTransform and fill the fields. */
     transform = (xmlSecTransformPtr)xmlMalloc(id->objSize);
     if(transform == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", id->objSize);
+        xmlSecMallocError(id->objSize, NULL);
         return(NULL);
     }
     memset(transform, 0, id->objSize);
@@ -2530,11 +2518,7 @@ xmlSecTransformIOBufferCreate(xmlSecTransformIOBufferMode mode, xmlSecTransformP
 
     buffer = (xmlSecTransformIOBufferPtr)xmlMalloc(sizeof(xmlSecTransformIOBuffer));
     if(buffer == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", (int)sizeof(xmlSecTransformIOBuffer));
+        xmlSecMallocError(sizeof(xmlSecTransformIOBuffer), NULL);
         return(NULL);
     }
     memset(buffer, 0, sizeof(xmlSecTransformIOBuffer));

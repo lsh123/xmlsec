@@ -98,12 +98,13 @@ struct _xmlSecMSCryptoKeyDataCtx {
 /******************************** Provider *****************************************/
 #define xmlSecMSCryptoKeyDataCtxGetProvider(ctx)            (ctx)->hProv
 
-static void
+static int
 xmlSecMSCryptoKeyDataCtxCreateProvider(xmlSecMSCryptoKeyDataCtxPtr ctx) {
-    xmlSecAssert(ctx != NULL);
+    xmlSecAssert2(ctx != NULL, -1);
 
-        ctx->hProv = 0;
-        ctx->fCallerFreeProv = FALSE;
+    ctx->hProv = 0;
+    ctx->fCallerFreeProv = FALSE;
+    return(0);
 }
 
 static void
@@ -111,20 +112,21 @@ xmlSecMSCryptoKeyDataCtxDestroyProvider(xmlSecMSCryptoKeyDataCtxPtr ctx) {
     xmlSecAssert(ctx != NULL);
 
     if ((ctx->hProv != 0) && (ctx->fCallerFreeProv)) {
-            CryptReleaseContext(ctx->hProv, 0);
+        CryptReleaseContext(ctx->hProv, 0);
     }
-        ctx->hProv = 0;
-        ctx->fCallerFreeProv = FALSE;
+    ctx->hProv = 0;
+    ctx->fCallerFreeProv = FALSE;
 }
 
-static void
+static int
 xmlSecMSCryptoKeyDataCtxSetProvider(xmlSecMSCryptoKeyDataCtxPtr ctx, HCRYPTPROV hProv, BOOL fCallerFreeProv)
 {
-    xmlSecAssert(ctx != NULL);
+    xmlSecAssert2(ctx != NULL, -1);
 
     xmlSecMSCryptoKeyDataCtxDestroyProvider(ctx);
     ctx->hProv               = hProv;
     ctx->fCallerFreeProv = fCallerFreeProv;
+    return(0);
 }
 
 static int
@@ -154,11 +156,12 @@ xmlSecMSCryptoKeyDataCtxDuplicateProvider(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xm
 /******************************** Key *****************************************/
 #define xmlSecMSCryptoKeyDataCtxGetKey(ctx)            ((ctx)->hKey)
 
-static void
+static int
 xmlSecMSCryptoKeyDataCtxCreateKey(xmlSecMSCryptoKeyDataCtxPtr ctx) {
-    xmlSecAssert(ctx != NULL);
+    xmlSecAssert2(ctx != NULL, -1);
 
     ctx->hKey = 0;
+    return(0);
 }
 
 static void
@@ -171,12 +174,13 @@ xmlSecMSCryptoKeyDataCtxDestroyKey(xmlSecMSCryptoKeyDataCtxPtr ctx) {
     ctx->hKey = 0;
 }
 
-static void
+static int
 xmlSecMSCryptoKeyDataCtxSetKey(xmlSecMSCryptoKeyDataCtxPtr ctx, HCRYPTKEY hKey) {
-    xmlSecAssert(ctx != NULL);
+    xmlSecAssert2(ctx != NULL, -1);
 
     xmlSecMSCryptoKeyDataCtxDestroyKey(ctx);
     ctx->hKey = hKey;
+    return(0);
 }
 
 static int
@@ -204,58 +208,62 @@ xmlSecMSCryptoKeyDataCtxDuplicateKey(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xmlSecM
 /******************************** Provider *****************************************/
 #define xmlSecMSCryptoKeyDataCtxGetProvider(ctx)            (((ctx)->p_prov) ? ((ctx)->p_prov->hProv) : 0)
 
-static void
+static int
 xmlSecMSCryptoKeyDataCtxCreateProvider(xmlSecMSCryptoKeyDataCtxPtr ctx) {
-    xmlSecAssert(ctx != NULL);
+    xmlSecAssert2(ctx != NULL, -1);
 
-        ctx->p_prov = (struct _mscrypt_prov*)xmlMalloc(sizeof(struct _mscrypt_prov));
-        if(ctx->p_prov == NULL ) {
-                xmlSecError( XMLSEC_ERRORS_HERE,
-                        "mscrypt_create_prov" ,
-                        NULL,
-                        XMLSEC_ERRORS_R_MALLOC_FAILED ,
-                        XMLSEC_ERRORS_NO_MESSAGE
-                );
-        }
+    ctx->p_prov = (struct _mscrypt_prov*)xmlMalloc(sizeof(struct _mscrypt_prov));
+    if(ctx->p_prov == NULL) {
+        xmlSecMallocError(sizeof(struct _mscrypt_prov), NULL);
+        return(-1);
+    }
     memset(ctx->p_prov, 0, sizeof(struct _mscrypt_prov));
+    return(0);
 }
 
 static void
 xmlSecMSCryptoKeyDataCtxDestroyProvider(xmlSecMSCryptoKeyDataCtxPtr ctx) {
     xmlSecAssert(ctx != NULL);
 
-        if(ctx->p_prov != NULL) {
-                if(InterlockedDecrement(&(ctx->p_prov->refcnt)) <= 0) {
-                        if((ctx->p_prov->hProv != 0) && (ctx->p_prov->fCallerFreeProv)) {
-                                CryptReleaseContext(ctx->p_prov->hProv, 0) ;
-                        }
+    if(ctx->p_prov != NULL) {
+        if(InterlockedDecrement(&(ctx->p_prov->refcnt)) <= 0) {
+            if((ctx->p_prov->hProv != 0) && (ctx->p_prov->fCallerFreeProv)) {
+                CryptReleaseContext(ctx->p_prov->hProv, 0) ;
+            }
             memset(ctx->p_prov, 0, sizeof(struct _mscrypt_prov));
-                        xmlFree(ctx->p_prov) ;
-                }
-        ctx->p_prov = NULL;
+            xmlFree(ctx->p_prov) ;
         }
+        ctx->p_prov = NULL;
+    }
 }
 
-static void
+static int
 xmlSecMSCryptoKeyDataCtxSetProvider(xmlSecMSCryptoKeyDataCtxPtr ctx, HCRYPTPROV hProv, BOOL fCallerFreeProv)
 {
-    xmlSecAssert(ctx != NULL);
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
 
     xmlSecMSCryptoKeyDataCtxDestroyProvider(ctx);
 
     if((ctx->p_prov != NULL) && (ctx->p_prov->refcnt == 1)) {
-                if((ctx->p_prov->hProv != 0) && (ctx->p_prov->fCallerFreeProv)) {
-                        CryptReleaseContext(ctx->p_prov->hProv, 0) ;
-                }
+        if((ctx->p_prov->hProv != 0) && (ctx->p_prov->fCallerFreeProv)) {
+                CryptReleaseContext(ctx->p_prov->hProv, 0) ;
+        }
         memset(ctx->p_prov, 0, sizeof(struct _mscrypt_prov));
     } else {
         xmlSecMSCryptoKeyDataCtxDestroyProvider(ctx);
-        xmlSecMSCryptoKeyDataCtxCreateProvider(ctx);
+        ret = xmlSecMSCryptoKeyDataCtxCreateProvider(ctx);
+        if(ret != 0) {
+            xmlSecInternalError("xmlSecMSCryptoKeyDataCtxCreateProvider", NULL);
+            return(-1);
+        }
     }
 
     ctx->p_prov->hProv = hProv;
     ctx->p_prov->fCallerFreeProv = fCallerFreeProv;
     ctx->p_prov->refcnt = 1;
+    return(0);
 }
 
 static int
@@ -276,20 +284,17 @@ xmlSecMSCryptoKeyDataCtxDuplicateProvider(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xm
 /********************************  Key  *****************************************/
 #define xmlSecMSCryptoKeyDataCtxGetKey(ctx)            (((ctx)->p_key) ? ((ctx)->p_key->hKey) : 0)
 
-static void
+static int
 xmlSecMSCryptoKeyDataCtxCreateKey(xmlSecMSCryptoKeyDataCtxPtr ctx) {
-    xmlSecAssert(ctx != NULL);
+    xmlSecAssert2(ctx != NULL, -1);
 
-        ctx->p_key = (struct _mscrypt_key*)xmlMalloc(sizeof(struct _mscrypt_key));
-        if(ctx->p_key == NULL ) {
-                xmlSecError( XMLSEC_ERRORS_HERE,
-                        "mscrypt_create_key" ,
-                        NULL,
-                        XMLSEC_ERRORS_R_MALLOC_FAILED ,
-                        XMLSEC_ERRORS_NO_MESSAGE
-                );
-        }
+    ctx->p_key = (struct _mscrypt_key*)xmlMalloc(sizeof(struct _mscrypt_key));
+    if(ctx->p_key == NULL ) {
+        xmlSecMallocError(sizeof(struct _mscrypt_key), NULL);
+        return(-1);
+    }
     memset(ctx->p_key, 0, sizeof(struct _mscrypt_key));
+    return(0);
 }
 
 static void
@@ -308,21 +313,27 @@ xmlSecMSCryptoKeyDataCtxDestroyKey(xmlSecMSCryptoKeyDataCtxPtr ctx) {
         }
 }
 
-static void
+static int
 xmlSecMSCryptoKeyDataCtxSetKey(xmlSecMSCryptoKeyDataCtxPtr ctx, HCRYPTKEY hKey) {
-    xmlSecAssert(ctx != NULL);
+    int ret;
+    xmlSecAssert2(ctx != NULL, -1);
 
     if((ctx->p_key != NULL) && (ctx->p_key->refcnt == 1)) {
-                if(ctx->p_key->hKey != 0) {
-                        CryptDestroyKey(ctx->p_key->hKey) ;
-                }
+        if(ctx->p_key->hKey != 0) {
+            CryptDestroyKey(ctx->p_key->hKey) ;
+        }
         memset(ctx->p_key, 0, sizeof(struct _mscrypt_key));
     } else {
         xmlSecMSCryptoKeyDataCtxDestroyKey(ctx);
-        xmlSecMSCryptoKeyDataCtxCreateKey(ctx);
+        ret = xmlSecMSCryptoKeyDataCtxCreateKey(ctx);
+        if(ret != 0) {
+            xmlSecInternalError("xmlSecMSCryptoKeyDataCtxCreateKey", NULL);
+            return(-1);
+        }
     }
     ctx->p_key->hKey = hKey;
     ctx->p_key->refcnt = 1;
+    return(0);
 }
 
 static int
@@ -361,12 +372,13 @@ xmlSecMSCryptoKeyDataCtxDestroyCert(xmlSecMSCryptoKeyDataCtxPtr ctx) {
     ctx->pCert = NULL;
 }
 
-static void
+static int
 xmlSecMSCryptoKeyDataCtxSetCert(xmlSecMSCryptoKeyDataCtxPtr ctx, PCCERT_CONTEXT pCert) {
-    xmlSecAssert(ctx != NULL);
+    xmlSecAssert2(ctx != NULL, -1);
 
     xmlSecMSCryptoKeyDataCtxDestroyCert(ctx);
     ctx->pCert = pCert;
+    return(0);
 }
 
 static int
@@ -412,6 +424,7 @@ static int
 xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
     xmlSecMSCryptoKeyDataCtxPtr ctx;
     HCRYPTKEY hKey = 0;
+    int ret;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
     xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCryptoKeyDataSize), -1);
@@ -448,7 +461,11 @@ xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlS
                             XMLSEC_ERRORS_NO_MESSAGE);
                 return(-1);
         }
-        xmlSecMSCryptoKeyDataCtxSetProvider(ctx, hProv, fCallerFreeProv);
+        ret = xmlSecMSCryptoKeyDataCtxSetProvider(ctx, hProv, fCallerFreeProv);
+        if(ret != 0) {
+            xmlSecInternalError("xmlSecMSCryptoKeyDataCtxSetProvider", NULL);
+            return(-1);
+        }
     } else if((type & xmlSecKeyDataTypePublic) != 0){
         HCRYPTPROV hProv;
 
@@ -457,7 +474,11 @@ xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlS
             xmlSecInternalError("xmlSecMSCryptoFindProvider", NULL);
             return(-1);
         }
-        xmlSecMSCryptoKeyDataCtxSetProvider(ctx, hProv, TRUE);
+        ret = xmlSecMSCryptoKeyDataCtxSetProvider(ctx, hProv, TRUE);
+        if(ret != 0) {
+            xmlSecInternalError("xmlSecMSCryptoKeyDataCtxSetProvider", NULL);
+            return(-1);
+        }
         ctx->dwKeySpec = 0;
     } else {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -487,8 +508,16 @@ xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlS
             return(-1);
     }
 
-    xmlSecMSCryptoKeyDataCtxSetKey(ctx, hKey);
-    xmlSecMSCryptoKeyDataCtxSetCert(ctx, pCert);
+    ret = xmlSecMSCryptoKeyDataCtxSetKey(ctx, hKey);
+    if(ret != 0) {
+        xmlSecInternalError("xmlSecMSCryptoKeyDataCtxSetKey", NULL);
+        return(-1);
+    }
+    ret = xmlSecMSCryptoKeyDataCtxSetCert(ctx, pCert);
+    if(ret != 0) {
+        xmlSecInternalError("xmlSecMSCryptoKeyDataCtxSetCert", NULL);
+        return(-1);
+    }
     return(0);
 }
 
@@ -500,6 +529,7 @@ xmlSecMSCryptoKeyDataAdoptKey(xmlSecKeyDataPtr data,
                               DWORD dwKeySpec,
                               xmlSecKeyDataType type) {
     xmlSecMSCryptoKeyDataCtxPtr ctx;
+    int ret;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
     xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCryptoKeyDataSize), -1);
@@ -509,9 +539,21 @@ xmlSecMSCryptoKeyDataAdoptKey(xmlSecKeyDataPtr data,
     ctx = xmlSecMSCryptoKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
-    xmlSecMSCryptoKeyDataCtxSetProvider(ctx, hProv, fCallerFreeProv);
-    xmlSecMSCryptoKeyDataCtxSetKey(ctx, hKey);
-    xmlSecMSCryptoKeyDataCtxSetCert(ctx, NULL);
+    ret = xmlSecMSCryptoKeyDataCtxSetProvider(ctx, hProv, fCallerFreeProv);
+    if(ret != 0) {
+        xmlSecInternalError("xmlSecMSCryptoKeyDataCtxSetProvider", NULL);
+        return(-1);
+    }
+    ret = xmlSecMSCryptoKeyDataCtxSetKey(ctx, hKey);
+    if(ret != 0) {
+        xmlSecInternalError("xmlSecMSCryptoKeyDataCtxSetKey", NULL);
+        return(-1);
+    }
+    ret = xmlSecMSCryptoKeyDataCtxSetCert(ctx, NULL);
+    if(ret != 0) {
+        xmlSecInternalError("xmlSecMSCryptoKeyDataCtxSetCert", NULL);
+        return(-1);
+    }
 
     ctx->dwKeySpec       = dwKeySpec;
     ctx->type            = type;
@@ -724,21 +766,31 @@ xmlSecMSCryptoKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     return(0);
 }
 
-static void
+static int
 xmlSecMSCryptoKeyDataInitialize(xmlSecKeyDataPtr data) {
     xmlSecMSCryptoKeyDataCtxPtr ctx;
+    int ret;
 
-    xmlSecAssert(xmlSecKeyDataIsValid(data));
-    xmlSecAssert(xmlSecKeyDataCheckSize(data, xmlSecMSCryptoKeyDataSize));
+    xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCryptoKeyDataSize), -1);
 
     ctx = xmlSecMSCryptoKeyDataGetCtx(data);
-    xmlSecAssert(ctx != NULL);
+    xmlSecAssert2(ctx != NULL, -1);
 
     memset(ctx, 0, sizeof(xmlSecMSCryptoKeyDataCtx));
 
-    xmlSecMSCryptoKeyDataCtxCreateProvider(ctx);
-    xmlSecMSCryptoKeyDataCtxCreateKey(ctx);
+    ret = xmlSecMSCryptoKeyDataCtxCreateProvider(ctx);
+    if(ret != 0) {
+        xmlSecInternalError("xmlSecMSCryptoKeyDataCtxCreateProvider", NULL);
+        return(-1);
+    }
+    ret = xmlSecMSCryptoKeyDataCtxCreateKey(ctx);
+    if(ret != 0) {
+        xmlSecInternalError("xmlSecMSCryptoKeyDataCtxCreateKey", NULL);
+        return(-1);
+    }
     xmlSecMSCryptoKeyDataCtxCreateCert(ctx);
+    return(0);
 }
 
 static void
@@ -1036,10 +1088,15 @@ xmlSecMSCryptoKeyDataRsaGetKlass(void) {
 static int
 xmlSecMSCryptoKeyDataRsaInitialize(xmlSecKeyDataPtr data) {
     xmlSecMSCryptoKeyDataCtxPtr ctx;
+    int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataRsaId), xmlSecKeyDataTypeUnknown);
 
-    xmlSecMSCryptoKeyDataInitialize(data);
+    ret = xmlSecMSCryptoKeyDataInitialize(data);
+    if(ret != 0) {
+        xmlSecInternalError("xmlSecMSCryptoKeyDataInitialize", NULL);
+        return(-1);
+    }
 
     ctx = xmlSecMSCryptoKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
@@ -1678,10 +1735,15 @@ xmlSecMSCryptoKeyDataDsaGetKlass(void) {
 static int
 xmlSecMSCryptoKeyDataDsaInitialize(xmlSecKeyDataPtr data) {
     xmlSecMSCryptoKeyDataCtxPtr ctx;
+    int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataDsaId), xmlSecKeyDataTypeUnknown);
 
-    xmlSecMSCryptoKeyDataInitialize(data);
+    ret = xmlSecMSCryptoKeyDataInitialize(data);
+    if(ret != 0) {
+        xmlSecInternalError("xmlSecMSCryptoKeyDataInitialize", NULL);
+        return(-1);
+    }
 
     ctx = xmlSecMSCryptoKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
@@ -2421,10 +2483,15 @@ xmlSecMSCryptoKeyDataGost2001GetKlass(void) {
 static int
 xmlSecMSCryptoKeyDataGost2001Initialize(xmlSecKeyDataPtr data) {
     xmlSecMSCryptoKeyDataCtxPtr ctx;
+    int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2001Id), xmlSecKeyDataTypeUnknown);
 
-    xmlSecMSCryptoKeyDataInitialize(data);
+    ret = xmlSecMSCryptoKeyDataInitialize(data);
+    if(ret != 0) {
+        xmlSecInternalError("xmlSecMSCryptoKeyDataInitialize", NULL);
+        return(-1);
+    }
 
     ctx = xmlSecMSCryptoKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);

@@ -876,11 +876,7 @@ xmlSecGenerateID(const xmlChar* prefix, xmlSecSize len) {
         tmpLen = xmlStrlen(prefix) + xmlStrlen(res) + 1;
         tmp = xmlMalloc(tmpLen + 1);
         if(tmp == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlMalloc",
-                        XMLSEC_ERRORS_R_MALLOC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecMallocError(tmpLen + 1, NULL);
             xmlFree(res);
             return(NULL);
         }
@@ -1091,12 +1087,7 @@ xmlSecGetQName(xmlNodePtr node, const xmlChar* href, const xmlChar* local) {
         len = xmlStrlen(local) + xmlStrlen(ns->prefix) + 4;
         qname = xmlMalloc(len);
         if(qname == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlMalloc",
-                        XMLSEC_ERRORS_R_MALLOC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(node->name));
+            xmlSecMallocError(len, NULL);
             return(NULL);
         }
         xmlSecStrPrintf(qname, len, BAD_CAST "%s:%s", ns->prefix, local);
@@ -1106,7 +1097,7 @@ xmlSecGetQName(xmlNodePtr node, const xmlChar* href, const xmlChar* local) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         "xmlStrdup",
-                        XMLSEC_ERRORS_R_MALLOC_FAILED,
+                        XMLSEC_ERRORS_R_XML_FAILED,
                         "node=%s",
                         xmlSecErrorsSafeString(node->name));
             return(NULL);
@@ -1213,7 +1204,7 @@ xmlSecQName2IntegerGetIntegerFromString(xmlSecQName2IntegerInfoConstPtr info,
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         "xmlStrndup",
-                        XMLSEC_ERRORS_R_MALLOC_FAILED,
+                        XMLSEC_ERRORS_R_XML_FAILED,
                         "node=%s,value=%s",
                         xmlSecErrorsSafeString(node->name),
                         xmlSecErrorsSafeString(qname));
@@ -1637,7 +1628,7 @@ xmlSecQName2BitMaskGetBitMaskFromString(xmlSecQName2BitMaskInfoConstPtr info,
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         "xmlStrndup",
-                        XMLSEC_ERRORS_R_MALLOC_FAILED,
+                        XMLSEC_ERRORS_R_XML_FAILED,
                         "node=%s,value=%s",
                         xmlSecErrorsSafeString(node->name),
                         xmlSecErrorsSafeString(qname));

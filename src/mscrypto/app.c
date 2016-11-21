@@ -64,12 +64,8 @@ xmlSecMSCryptoAppInit(const char* config) {
 #ifdef UNICODE
         gXmlSecMSCryptoAppCertStoreName = xmlSecMSCryptoConvertLocaleToUnicode(config);
         if (gXmlSecMSCryptoAppCertStoreName == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        "xmlSecMSCryptoConvertLocaleToUnicode",
-                        NULL,
-                        XMLSEC_ERRORS_R_MALLOC_FAILED,
-                        "config=%s",
-                        xmlSecErrorsSafeString(config));
+            xmlSecInternalError2("xmlSecMSCryptoConvertLocaleToUnicode", NULL,
+                                 "config=%s", xmlSecErrorsSafeString(config));
             return (-1);
         }
 #else  /* UNICODE */
@@ -78,7 +74,7 @@ xmlSecMSCryptoAppInit(const char* config) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         "xmlStrdup",
                         NULL,
-                        XMLSEC_ERRORS_R_MALLOC_FAILED,
+                        XMLSEC_ERRORS_R_XML_FAILED,
                         "config=%s",
                         xmlSecErrorsSafeString(config));
             return (-1);

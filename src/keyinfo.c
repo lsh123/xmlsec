@@ -219,11 +219,7 @@ xmlSecKeyInfoCtxCreate(xmlSecKeysMngrPtr keysMngr) {
     /* Allocate a new xmlSecKeyInfoCtx and fill the fields. */
     keyInfoCtx = (xmlSecKeyInfoCtxPtr)xmlMalloc(sizeof(xmlSecKeyInfoCtx));
     if(keyInfoCtx == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", (int)sizeof(xmlSecKeyInfoCtx));
+        xmlSecMallocError(sizeof(xmlSecKeyInfoCtx), NULL);
         return(NULL);
     }
 

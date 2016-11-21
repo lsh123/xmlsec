@@ -470,12 +470,11 @@ xmlSecNssKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, CERTSignedCrl* crl) {
     xmlSecAssert2(ctx != NULL, -1);
 
     crlnode = (xmlSecNssX509CrlNodePtr)PR_Malloc(sizeof(xmlSecNssX509CrlNode));
-
     if(crlnode == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
                     "PR_Malloc",
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
@@ -1815,7 +1814,7 @@ xmlSecNssX509NameWrite(CERTName* nm) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "xmlStrdup",
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                    XMLSEC_ERRORS_R_XML_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         PORT_Free(str);
         return(NULL);
@@ -1846,11 +1845,7 @@ xmlSecNssASN1IntegerWrite(SECItem *num) {
 
     res = (xmlChar*)xmlMalloc(resLen + 1);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlStrdup",
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMallocError(resLen + 1, NULL);
         return (NULL);
     }
 

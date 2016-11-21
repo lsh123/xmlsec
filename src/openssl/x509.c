@@ -1875,11 +1875,7 @@ xmlSecOpenSSLX509NameWrite(X509_NAME* nm) {
     size = BIO_pending(mem);
     res = xmlMalloc(size + 1);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlMalloc",
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMallocError(size + 1, NULL);
         BIO_free_all(mem);
         return(NULL);
     }
@@ -1923,7 +1919,7 @@ xmlSecOpenSSLASN1IntegerWrite(ASN1_INTEGER *asni) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "xmlCharStrdup",
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                    XMLSEC_ERRORS_R_XML_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         OPENSSL_free(p);
         return(NULL);

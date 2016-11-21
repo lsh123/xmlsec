@@ -98,11 +98,7 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
     /* Allocate a new xmlSecCryptoDLLibrary and fill the fields. */
     lib = (xmlSecCryptoDLLibraryPtr)xmlMalloc(sizeof(xmlSecCryptoDLLibrary));
     if(lib == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", (int)sizeof(lib));
+        xmlSecMallocError(sizeof(xmlSecCryptoDLLibrary), NULL);
         return(NULL);
     }
     memset(lib, 0, sizeof(xmlSecCryptoDLLibrary));
@@ -112,7 +108,7 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     "xmlStrdup",
                     NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                    XMLSEC_ERRORS_R_XML_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         xmlSecCryptoDLLibraryDestroy(lib);
         return(NULL);
@@ -279,11 +275,7 @@ xmlSecCryptoDLLibraryConstructFilename(const xmlChar* name) {
     len = xmlStrlen(BAD_CAST PACKAGE) + xmlStrlen(name) + xmlStrlen(tmpl) + 1;
     res = (xmlChar*)xmlMalloc(len + 1);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", len + 1);
+        xmlSecMallocError(len + 1, NULL);
         return(NULL);
     }
     xmlSecStrPrintf(res, len, tmpl, PACKAGE, name);
@@ -302,11 +294,7 @@ xmlSecCryptoDLLibraryConstructGetFunctionsName(const xmlChar* name) {
     len = xmlStrlen(name) + xmlStrlen(tmpl) + 1;
     res = (xmlChar*)xmlMalloc(len + 1);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", len + 1);
+        xmlSecMallocError(len + 1, NULL);
         return(NULL);
     }
     xmlSecStrPrintf(res, len, tmpl, name);

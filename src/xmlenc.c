@@ -60,12 +60,7 @@ xmlSecEncCtxCreate(xmlSecKeysMngrPtr keysMngr) {
 
     encCtx = (xmlSecEncCtxPtr) xmlMalloc(sizeof(xmlSecEncCtx));
     if(encCtx == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "sizeof(xmlSecEncCtx)=%d",
-                    (int)sizeof(xmlSecEncCtx));
+        xmlSecMallocError(sizeof(xmlSecEncCtx), NULL);
         return(NULL);
     }
 

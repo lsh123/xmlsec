@@ -367,7 +367,7 @@ xmlSecNssGetCertName(const xmlChar * name) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                    XMLSEC_ERRORS_R_XML_FAILED,
                     "xmlStrlen(name)=%d",
                     xmlStrlen(name));
         return(NULL);
@@ -597,7 +597,7 @@ xmlSecNssX509NameRead(xmlSecByte *str, int len) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "PORT_Alloc",
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(NULL);
     }

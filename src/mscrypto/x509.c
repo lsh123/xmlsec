@@ -1743,11 +1743,7 @@ xmlSecMSCryptoX509NameWrite(PCERT_NAME_BLOB nm) {
 
     resT = (LPTSTR)xmlMalloc(sizeof(TCHAR) * (csz + 1));
     if (NULL == resT) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlMalloc",
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", sizeof(WCHAR) * (csz + 1));
+        xmlSecMallocError(sizeof(TCHAR) * (csz + 1), NULL);
         return (NULL);
     }
 
@@ -1842,11 +1838,7 @@ xmlSecMSCryptoX509SKIWrite(PCCERT_CONTEXT cert) {
     }
     bSKI = xmlMalloc(dwSize);
     if (NULL == bSKI) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlMalloc",
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMallocError(dwSize, NULL);
         return (NULL);
     }
 

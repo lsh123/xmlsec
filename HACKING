@@ -96,8 +96,8 @@ Igor Zlatkovic get an exception for the send before commit rule.
     The correct usage rule is:
 	if the failed function starts with "xmlSec" then use
     	    xmlSecInternalError() aka XMLSEC_ERRORS_R_XMLSEC_FAILED
-	else if it is xmlMalloc/xmlFree/xmlStrdup/etc then use
-            XMLSEC_ERRORS_R_MALLOC_FAILED
+	else if it is xmlMalloc/xmlFree/etc then use
+            xmlSecMallocError() aka XMLSEC_ERRORS_R_MALLOC_FAILED
 	else if the function starts with "xml" or "xslt" (i.e. it comes 
 	from libxml or libxslt) then use
 	    XMLSEC_ERRORS_R_XML_FAILED

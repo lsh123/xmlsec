@@ -107,12 +107,7 @@ xmlSecKeyUseWithCreate(const xmlChar* application, const xmlChar* identifier) {
     /* Allocate a new xmlSecKeyUseWith and fill the fields. */
     keyUseWith = (xmlSecKeyUseWithPtr)xmlMalloc(sizeof(xmlSecKeyUseWith));
     if(keyUseWith == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "sizeof(xmlSecKeyUseWith)=%d",
-                    (int)sizeof(xmlSecKeyUseWith));
+        xmlSecMallocError(sizeof(xmlSecKeyUseWith), NULL);
         return(NULL);
     }
     memset(keyUseWith, 0, sizeof(xmlSecKeyUseWith));
@@ -211,7 +206,7 @@ xmlSecKeyUseWithSet(xmlSecKeyUseWithPtr keyUseWith, const xmlChar* application, 
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         NULL,
-                        XMLSEC_ERRORS_R_MALLOC_FAILED,
+                        XMLSEC_ERRORS_R_XML_FAILED,
                         "xmlStrlen(application)=%d",
                         xmlStrlen(application));
             return(-1);
@@ -223,7 +218,7 @@ xmlSecKeyUseWithSet(xmlSecKeyUseWithPtr keyUseWith, const xmlChar* application, 
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         NULL,
-                        XMLSEC_ERRORS_R_MALLOC_FAILED,
+                        XMLSEC_ERRORS_R_XML_FAILED,
                         "xmlStrlen(identifier)=%d",
                         xmlStrlen(identifier));
             return(-1);
@@ -519,12 +514,7 @@ xmlSecKeyCreate(void)  {
     /* Allocate a new xmlSecKey and fill the fields. */
     key = (xmlSecKeyPtr)xmlMalloc(sizeof(xmlSecKey));
     if(key == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "sizeof(xmlSecKey)=%d",
-                    (int)sizeof(xmlSecKey));
+        xmlSecMallocError(sizeof(xmlSecKey), NULL);
         return(NULL);
     }
     memset(key, 0, sizeof(xmlSecKey));

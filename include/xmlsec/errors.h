@@ -530,6 +530,21 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
                 xmlSecErrorsSafeString(msg), (param1), (param2), (param3) \
     )
 
+/**
+ * xmlSecMallocError:
+ * @allocSize:          the failed allocation size.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting internal XMLSec errors.
+ */
+#define xmlSecMallocError(allocSize, errorObject)  \
+    xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                (((errorObject) != NULL) ? xmlSecErrorsSafeString(errorObject) : NULL), \
+                "xmlMalloc",                            \
+                XMLSEC_ERRORS_R_MALLOC_FAILED,          \
+                "size=%lu", (unsigned long)(allocSize)  \
+    )
+
 /**********************************************************************
  *
  * Assertions

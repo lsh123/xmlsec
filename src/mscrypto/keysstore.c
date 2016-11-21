@@ -357,11 +357,7 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
 
             pbFriendlyName = xmlMalloc(dwPropSize);
             if(pbFriendlyName == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-                            NULL,
-                            XMLSEC_ERRORS_R_MALLOC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecMallocError(dwPropSize, xmlSecKeyStoreGetName(store));
                 xmlFree(wcName);
                 CertCloseStore(hStoreHandle, 0);
                 return(NULL);

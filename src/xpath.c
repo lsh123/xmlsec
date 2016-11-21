@@ -149,11 +149,7 @@ xmlSecXPathDataSetExpr(xmlSecXPathDataPtr data, const xmlChar* expr) {
 
     data->expr = xmlStrdup(expr);
     if(data->expr == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_STRDUP_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecStrdupError(expr, NULL);
         return(-1);
     }
     return(0);
@@ -1001,11 +997,7 @@ xmlSecTransformVisa3DHackSetID(xmlSecTransformPtr transform, const xmlChar* id) 
 
     (*idPtr) = xmlStrdup(id);
     if((*idPtr) == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlStrdup",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecStrdupError(id, xmlSecTransformGetName(transform));
         return(-1);
     }
 

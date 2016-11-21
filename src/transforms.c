@@ -732,11 +732,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
     } else if(xmlStrcmp(uri, BAD_CAST "#xpointer(/)") == 0) {
         ctx->xptrExpr = xmlStrdup(uri);
         if(ctx->xptrExpr == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_STRDUP_FAILED,
-                        "size=%d", xmlStrlen(uri));
+            xmlSecStrdupError(uri, NULL);
             return(-1);
         }
         /* we are done */
@@ -745,21 +741,13 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
 
     ctx->uri = xmlStrndup(uri, xptr - uri);
     if(ctx->uri == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_STRDUP_FAILED,
-                    "size=%d", (int)(xptr - uri));
+        xmlSecStrdupError(uri, NULL);
         return(-1);
     }
 
     ctx->xptrExpr = xmlStrdup(xptr);
     if(ctx->xptrExpr == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_STRDUP_FAILED,
-                    "size=%d", xmlStrlen(xptr));
+        xmlSecStrdupError(xptr, NULL);
         return(-1);
     }
 

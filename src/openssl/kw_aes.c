@@ -265,7 +265,8 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                                       8 * keySize,
                                       &aesKey);
             if(ret != 0) {
-                xmlSecOpenSSLError("AES_set_decrypt_key", xmlSecTransformGetName(transform));
+                xmlSecOpenSSLError("AES_set_decrypt_key",
+                                   xmlSecTransformGetName(transform));
                 return(-1);
             }
 
@@ -284,7 +285,8 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                                       8 * keySize,
                                       &aesKey);
             if(ret != 0) {
-                xmlSecOpenSSLError("AES_set_decrypt_key", xmlSecTransformGetName(transform));
+                xmlSecOpenSSLError("AES_set_decrypt_key",
+                                   xmlSecTransformGetName(transform));
                 return(-1);
             }
 

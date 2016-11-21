@@ -670,13 +670,15 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
     if(has_cert == 0) {
         tmpcert = X509_dup(cert);
         if(tmpcert == NULL) {
-            xmlSecOpenSSLError("X509_dup", xmlSecKeyDataGetName(x509Data));
+            xmlSecOpenSSLError("X509_dup",
+                               xmlSecKeyDataGetName(x509Data));
             goto done;
         }
 
         ret = sk_X509_push(chain, tmpcert);
         if(ret < 1) {
-            xmlSecOpenSSLError("sk_X509_push", xmlSecKeyDataGetName(x509Data));
+            xmlSecOpenSSLError("sk_X509_push",
+                               xmlSecKeyDataGetName(x509Data));
             X509_free(tmpcert);
             goto done;
         }
@@ -695,7 +697,8 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
 
         tmpcert = X509_dup(sk_X509_value(chain, i));
         if(tmpcert == NULL) {
-            xmlSecOpenSSLError("X509_dup", xmlSecKeyDataGetName(x509Data));
+            xmlSecOpenSSLError("X509_dup",
+                               xmlSecKeyDataGetName(x509Data));
             X509_free(tmpcert);
             goto done;
         }
@@ -854,7 +857,8 @@ xmlSecOpenSSLAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
 
     bio = BIO_new_file(filename, "rb");
     if(bio == NULL) {
-        xmlSecOpenSSLError("BIO_new_file", filename);
+        xmlSecOpenSSLError2("BIO_new_file", NULL,
+                            "filename=%s", xmlSecErrorsSafeString(filename));
         return(-1);
     }
 
@@ -1232,7 +1236,8 @@ xmlSecOpenSSLAppLoadRANDFile(const char *filename) {
 
     if((filename == NULL) || !RAND_load_file(filename, -1)) {
         if(RAND_status() == 0) {
-            xmlSecOpenSSLError("RAND_load_file", filename);
+            xmlSecOpenSSLError2("RAND_load_file", NULL,
+                                "filename=%s", xmlSecErrorsSafeString(filename));
             return 0;
         }
     }
@@ -1256,7 +1261,8 @@ xmlSecOpenSSLAppSaveRANDFile(const char *filename) {
         filename = RAND_file_name(buffer, sizeof(buffer));
     }
     if((filename == NULL) || !RAND_write_file(filename)) {
-        xmlSecOpenSSLError("RAND_write_file", filename);
+        xmlSecOpenSSLError2("RAND_write_file", NULL,
+                            "filename=%s", xmlSecErrorsSafeString(filename));
         return 0;
     }
 

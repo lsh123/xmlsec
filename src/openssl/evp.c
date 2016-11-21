@@ -447,13 +447,15 @@ xmlSecOpenSSLKeyDataDsaAdoptDsa(xmlSecKeyDataPtr data, DSA* dsa) {
     if(dsa != NULL) {
         pKey = EVP_PKEY_new();
         if(pKey == NULL) {
-            xmlSecOpenSSLError("EVP_PKEY_new", xmlSecKeyDataGetName(data));
+            xmlSecOpenSSLError("EVP_PKEY_new",
+                               xmlSecKeyDataGetName(data));
             return(-1);
         }
 
         ret = EVP_PKEY_assign_DSA(pKey, dsa);
         if(ret != 1) {
-            xmlSecOpenSSLError("EVP_PKEY_assign_DSA", xmlSecKeyDataGetName(data));
+            xmlSecOpenSSLError("EVP_PKEY_assign_DSA",
+                               xmlSecKeyDataGetName(data));
             EVP_PKEY_free(pKey);
             return(-1);
         }
@@ -572,7 +574,8 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     dsa = DSA_new();
     if(dsa == NULL) {
-        xmlSecOpenSSLError("DSA_new", xmlSecKeyDataKlassGetName(id));
+        xmlSecOpenSSLError("DSA_new",
+                           xmlSecKeyDataKlassGetName(id));
         goto err_cleanup;
     }
 
@@ -696,7 +699,8 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     ret = DSA_set0_pqg(dsa, p, q, g);
     if(ret != 1) {
-        xmlSecOpenSSLError("DSA_set0_pqg", xmlSecKeyDataKlassGetName(id));
+        xmlSecOpenSSLError("DSA_set0_pqg",
+                           xmlSecKeyDataKlassGetName(id));
         goto err_cleanup;
     }
     p = NULL;
@@ -705,7 +709,8 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     ret = DSA_set0_key(dsa, pub_key, priv_key);
     if(ret != 1) {
-        xmlSecOpenSSLError("DSA_set0_key", xmlSecKeyDataKlassGetName(id));
+        xmlSecOpenSSLError("DSA_set0_key",
+                           xmlSecKeyDataKlassGetName(id));
         goto err_cleanup;
     }
     pub_key = NULL;
@@ -869,20 +874,23 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
 
     dsa = DSA_new();
     if(dsa == NULL) {
-        xmlSecOpenSSLError("DSA_new", xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("DSA_new",
+                           xmlSecKeyDataGetName(data));
         return(-1);
     }
 
     ret = DSA_generate_parameters_ex(dsa, sizeBits, NULL, 0, &counter_ret, &h_ret, NULL);
     if(ret != 1) {
-        xmlSecOpenSSLError("DSA_generate_parameters_ex", xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("DSA_generate_parameters_ex",
+                           xmlSecKeyDataGetName(data));
         DSA_free(dsa);
         return(-1);
     }
 
     ret = DSA_generate_key(dsa);
     if(ret < 0) {
-        xmlSecOpenSSLError("DSA_generate_key", xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("DSA_generate_key",
+                           xmlSecKeyDataGetName(data));
         DSA_free(dsa);
         return(-1);
     }
@@ -1070,13 +1078,15 @@ xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa(xmlSecKeyDataPtr data, EC_KEY* ecdsa) {
     if(ecdsa != NULL) {
         pKey = EVP_PKEY_new();
         if(pKey == NULL) {
-            xmlSecOpenSSLError("EVP_PKEY_new", xmlSecKeyDataGetName(data));
+            xmlSecOpenSSLError("EVP_PKEY_new",
+                               xmlSecKeyDataGetName(data));
             return(-1);
         }
 
         ret = EVP_PKEY_assign_EC_KEY(pKey, ecdsa);
         if(ret != 1) {
-            xmlSecOpenSSLError("EVP_PKEY_assign_EC_KEY", xmlSecKeyDataGetName(data));
+            xmlSecOpenSSLError("EVP_PKEY_assign_EC_KEY",
+                               xmlSecKeyDataGetName(data));
             EVP_PKEY_free(pKey);
             return(-1);
         }
@@ -1371,13 +1381,15 @@ xmlSecOpenSSLKeyDataRsaAdoptRsa(xmlSecKeyDataPtr data, RSA* rsa) {
     if(rsa != NULL) {
         pKey = EVP_PKEY_new();
         if(pKey == NULL) {
-            xmlSecOpenSSLError("EVP_PKEY_new", xmlSecKeyDataGetName(data));
+            xmlSecOpenSSLError("EVP_PKEY_new",
+                               xmlSecKeyDataGetName(data));
             return(-1);
         }
 
         ret = EVP_PKEY_assign_RSA(pKey, rsa);
         if(ret != 1) {
-            xmlSecOpenSSLError("EVP_PKEY_assign_RSA", xmlSecKeyDataGetName(data));
+            xmlSecOpenSSLError("EVP_PKEY_assign_RSA",
+                               xmlSecKeyDataGetName(data));
             EVP_PKEY_free(pKey);
             return(-1);
         }
@@ -1495,7 +1507,8 @@ xmlSecOpenSSLKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     rsa = RSA_new();
     if(rsa == NULL) {
-        xmlSecOpenSSLError("RSA_new", xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("RSA_new",
+                           xmlSecKeyDataGetName(data));
         return(-1);
     }
 
@@ -1560,7 +1573,8 @@ xmlSecOpenSSLKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     ret = RSA_set0_key(rsa, n, e, d);
     if(ret == 0) {
-        xmlSecOpenSSLError("RSA_set0_key", xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("RSA_set0_key",
+                           xmlSecKeyDataGetName(data));
         goto err_cleanup;
     }
     n = NULL;
@@ -1691,27 +1705,31 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     /* create exponent */
     e = BN_new();
     if(e == NULL) {
-        xmlSecOpenSSLError("BN_new", xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("BN_new",
+                           xmlSecKeyDataGetName(data));
         return(-1);
     }
 
     ret = BN_set_word(e, RSA_F4);
     if(ret != 1){
-        xmlSecOpenSSLError("BN_set_word", xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("BN_set_word",
+                           xmlSecKeyDataGetName(data));
         BN_free(e);
         return(-1);
     }
 
     rsa = RSA_new();
     if(rsa == NULL) {
-        xmlSecOpenSSLError("RSA_new", xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("RSA_new",
+                           xmlSecKeyDataGetName(data));
         BN_free(e);
         return(-1);
     }
 
     ret = RSA_generate_key_ex(rsa, sizeBits, e, NULL);
     if(ret != 1) {
-        xmlSecOpenSSLError("RSA_generate_key", xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("RSA_generate_key",
+                           xmlSecKeyDataGetName(data));
         RSA_free(rsa);
         BN_free(e);
         return(-1);

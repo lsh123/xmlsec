@@ -351,14 +351,16 @@ xmlSecOpenSSLKeyDataX509AdoptCert(xmlSecKeyDataPtr data, X509* cert) {
     if(ctx->certsList == NULL) {
         ctx->certsList = sk_X509_new_null();
         if(ctx->certsList == NULL) {
-            xmlSecOpenSSLError("sk_X509_new_null", xmlSecKeyDataGetName(data));
+            xmlSecOpenSSLError("sk_X509_new_null",
+                               xmlSecKeyDataGetName(data));
             return(-1);
         }
     }
 
     ret = sk_X509_push(ctx->certsList, cert);
     if(ret < 1) {
-        xmlSecOpenSSLError("sk_X509_push", xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("sk_X509_push",
+                           xmlSecKeyDataGetName(data));
         return(-1);
     }
 
@@ -432,14 +434,16 @@ xmlSecOpenSSLKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, X509_CRL* crl) {
     if(ctx->crlsList == NULL) {
         ctx->crlsList = sk_X509_CRL_new_null();
         if(ctx->crlsList == NULL) {
-            xmlSecOpenSSLError("sk_X509_CRL_new_null", xmlSecKeyDataGetName(data));
+            xmlSecOpenSSLError("sk_X509_CRL_new_null",
+                               xmlSecKeyDataGetName(data));
             return(-1);
         }
     }
 
     ret = sk_X509_CRL_push(ctx->crlsList, crl);
     if(ret < 1) {
-        xmlSecOpenSSLError("sk_X509_CRL_push", xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("sk_X509_CRL_push",
+                           xmlSecKeyDataGetName(data));
         return(-1);
     }
 
@@ -529,7 +533,8 @@ xmlSecOpenSSLKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
 
         certDst = X509_dup(certSrc);
         if(certDst == NULL) {
-            xmlSecOpenSSLError("X509_dup", xmlSecKeyDataGetName(dst));
+            xmlSecOpenSSLError("X509_dup",
+                               xmlSecKeyDataGetName(dst));
             return(-1);
         }
 
@@ -555,7 +560,8 @@ xmlSecOpenSSLKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
 
         crlDst = X509_CRL_dup(crlSrc);
         if(crlDst == NULL) {
-            xmlSecOpenSSLError("X509_CRL_dup", xmlSecKeyDataGetName(dst));
+            xmlSecOpenSSLError("X509_CRL_dup",
+                               xmlSecKeyDataGetName(dst));
             return(-1);
         }
 
@@ -573,7 +579,8 @@ xmlSecOpenSSLKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     if(certSrc != NULL) {
         certDst = X509_dup(certSrc);
         if(certDst == NULL) {
-            xmlSecOpenSSLError("X509_dup", xmlSecKeyDataGetName(dst));
+            xmlSecOpenSSLError("X509_dup",
+                               xmlSecKeyDataGetName(dst));
             return(-1);
         }
         ret = xmlSecOpenSSLKeyDataX509AdoptKeyCert(dst, certDst);
@@ -1032,7 +1039,8 @@ xmlSecOpenSSLX509SubjectNameNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xml
 
     cert2 = X509_dup(cert);
     if(cert2 == NULL) {
-        xmlSecOpenSSLError("X509_dup", xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("X509_dup",
+                           xmlSecKeyDataGetName(data));
         xmlFree(subject);
         return(-1);
     }
@@ -1190,7 +1198,8 @@ xmlSecOpenSSLX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xm
 
     cert2 = X509_dup(cert);
     if(cert2 == NULL) {
-        xmlSecOpenSSLError("X509_dup", xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("X509_dup",
+                           xmlSecKeyDataGetName(data));
         xmlFree(issuerSerial);
         xmlFree(issuerName);
         return(-1);
@@ -1316,7 +1325,8 @@ xmlSecOpenSSLX509SKINodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyIn
 
     cert2 = X509_dup(cert);
     if(cert2 == NULL) {
-        xmlSecOpenSSLError("X509_dup", xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("X509_dup",
+                           xmlSecKeyDataGetName(data));
         xmlFree(ski);
         return(-1);
     }
@@ -1469,7 +1479,8 @@ xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr 
 
             ctx->keyCert = X509_dup(cert);
             if(ctx->keyCert == NULL) {
-                xmlSecOpenSSLError("X509_dup", xmlSecKeyDataGetName(data));
+                xmlSecOpenSSLError("X509_dup",
+                                   xmlSecKeyDataGetName(data));
                 return(-1);
             }
 

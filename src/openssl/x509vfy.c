@@ -274,8 +274,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
 
             ret = X509_STORE_CTX_init(xsc, ctx->xst, cert, certs2);
             if(ret != 1) {
-                xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),
-                                   "X509_STORE_CTX_init");
+                xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                                    "X509_STORE_CTX_init");
                 goto done;
             }
 
@@ -289,8 +288,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
 
                 vpm = X509_VERIFY_PARAM_new();
                 if(vpm == NULL) {
-                    xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),
-                                       "X509_VERIFY_PARAM_new");
+                    xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                                        "X509_VERIFY_PARAM_new");
                     goto done;
                 }
                 vpm_flags = X509_VERIFY_PARAM_get_flags(vpm);
@@ -433,8 +431,7 @@ xmlSecOpenSSLX509StoreAdoptCert(xmlSecKeyDataStorePtr store, X509* cert, xmlSecK
 
         ret = X509_STORE_add_cert(ctx->xst, cert);
         if(ret != 1) {
-            xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),
-                               "X509_STORE_add_cert");
+            xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                                "X509_STORE_add_cert");
             return(-1);
         }
         /* add cert increments the reference */
@@ -444,8 +441,7 @@ xmlSecOpenSSLX509StoreAdoptCert(xmlSecKeyDataStorePtr store, X509* cert, xmlSecK
 
         ret = sk_X509_push(ctx->untrusted, cert);
         if(ret < 1) {
-            xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),
-                               "sk_X509_push");
+            xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                                "sk_X509_push");
             return(-1);
         }
     }
@@ -475,8 +471,7 @@ xmlSecOpenSSLX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, X509_CRL* crl) {
 
         ret = sk_X509_CRL_push(ctx->crls, crl);
         if(ret < 1) {
-            xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),
-                               "sk_X509_CRL_push");
+            xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                                "sk_X509_CRL_push");
             return(-1);
         }
 
@@ -507,13 +502,11 @@ xmlSecOpenSSLX509StoreAddCertsPath(xmlSecKeyDataStorePtr store, const char *path
 
     lookup = X509_STORE_add_lookup(ctx->xst, X509_LOOKUP_hash_dir());
     if(lookup == NULL) {
-        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),
-                           "X509_STORE_add_lookup");
+        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                            "X509_STORE_add_lookup");
         return(-1);
     }
     if(!X509_LOOKUP_add_dir(lookup, path, X509_FILETYPE_PEM)) {
-        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),
-                           "X509_LOOKUP_add_dir");
+        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                            "X509_LOOKUP_add_dir");
         return(-1);
     }
     return(0);
@@ -543,13 +536,11 @@ xmlSecOpenSSLX509StoreAddCertsFile(xmlSecKeyDataStorePtr store, const char *file
 
     lookup = X509_STORE_add_lookup(ctx->xst, X509_LOOKUP_file());
     if(lookup == NULL) {
-        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),
-                           "X509_STORE_add_lookup");
+        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                            "X509_STORE_add_lookup");
         return(-1);
     }
     if(!X509_LOOKUP_load_file(lookup, file, X509_FILETYPE_PEM)) {
-        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),
-                           "X509_LOOKUP_load_file");
+        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                            "X509_LOOKUP_load_file");
         return(-1);
     }
     return(0);
@@ -570,58 +561,50 @@ xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
 
     ctx->xst = X509_STORE_new();
     if(ctx->xst == NULL) {
-        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),
-                           "X509_STORE_new");
+        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                            "X509_STORE_new");
         return(-1);
     }
 
     if(!X509_STORE_set_default_paths(ctx->xst)) {
-        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),
-                           "X509_STORE_set_default_paths");
+        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                            "X509_STORE_set_default_paths");
         return(-1);
     }
 
 
     lookup = X509_STORE_add_lookup(ctx->xst, X509_LOOKUP_hash_dir());
     if(lookup == NULL) {
-        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),
-                           "X509_STORE_add_lookup");
+        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                            "X509_STORE_add_lookup");
          return(-1);
     }
 
     path = xmlSecOpenSSLGetDefaultTrustedCertsFolder();
     if(path != NULL) {
         if(!X509_LOOKUP_add_dir(lookup, (char*)path, X509_FILETYPE_PEM)) {
-            xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),
-                               "X509_LOOKUP_add_dir");
+            xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                                "X509_LOOKUP_add_dir");
             return(-1);
         }
     } else {
         if(!X509_LOOKUP_add_dir(lookup, NULL, X509_FILETYPE_DEFAULT)) {
-            xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),
-                               "X509_LOOKUP_add_dir");
+            xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                                "X509_LOOKUP_add_dir");
             return(-1);
         }
     }
 
     ctx->untrusted = sk_X509_new_null();
     if(ctx->untrusted == NULL) {
-        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),
-                           "sk_X509_new_null");
+        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                            "sk_X509_new_null");
         return(-1);
     }
 
     ctx->crls = sk_X509_CRL_new_null();
     if(ctx->crls == NULL) {
-        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),
-                           "sk_X509_CRL_new_null");
+        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                            "sk_X509_CRL_new_null");
         return(-1);
     }
 
     ctx->vpm = X509_VERIFY_PARAM_new();
     if(ctx->vpm == NULL) {
-        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),
-                           "X509_VERIFY_PARAM_new");
+        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                            "X509_VERIFY_PARAM_new");
         return(-1);
     }
     X509_VERIFY_PARAM_set_depth(ctx->vpm, 9); /* the default cert verification path in openssl */

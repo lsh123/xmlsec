@@ -493,8 +493,7 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
     /* create cipher ctx */
     ctx->cipherCtx = EVP_CIPHER_CTX_new();
     if(ctx->cipherCtx == NULL) {
-        xmlSecOpenSSLError(xmlSecTransformGetName(transform),
-                           "EVP_CIPHER_CTX_new");
+        xmlSecOpenSSLError(xmlSecTransformGetName(transform),                            "EVP_CIPHER_CTX_new");
         return(-1);
     }
 

@@ -276,15 +276,13 @@ xmlSecOpenSSLSignatureInitialize(xmlSecTransformPtr transform) {
     /* create/init digest CTX */
     ctx->digestCtx = EVP_MD_CTX_new();
     if(ctx->digestCtx == NULL) {
-        xmlSecOpenSSLError(xmlSecTransformGetName(transform),
-                           "EVP_MD_CTX_new");
+        xmlSecOpenSSLError(xmlSecTransformGetName(transform),                            "EVP_MD_CTX_new");
         return(-1);
     }
 
     ret = EVP_DigestInit(ctx->digestCtx, ctx->digest);
     if(ret != 1) {
-        xmlSecOpenSSLError(xmlSecTransformGetName(transform),
-                           "EVP_DigestInit");
+        xmlSecOpenSSLError(xmlSecTransformGetName(transform),                            "EVP_DigestInit");
         return(-1);
     }
 
@@ -460,8 +458,7 @@ xmlSecOpenSSLSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 
         ret = EVP_DigestUpdate(ctx->digestCtx, xmlSecBufferGetData(in), inSize);
         if(ret != 1) {
-            xmlSecOpenSSLError(xmlSecTransformGetName(transform),
-                               "EVP_DigestUpdate");
+            xmlSecOpenSSLError(xmlSecTransformGetName(transform),                                "EVP_DigestUpdate");
             return(-1);
         }
 
@@ -478,8 +475,7 @@ xmlSecOpenSSLSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 
         ret = EVP_DigestFinal(ctx->digestCtx, ctx->dgst, &ctx->dgstSize);
         if(ret != 1) {
-            xmlSecOpenSSLError(xmlSecTransformGetName(transform),
-                               "EVP_DigestFinal");
+            xmlSecOpenSSLError(xmlSecTransformGetName(transform),                                "EVP_DigestFinal");
             return(-1);
         }
         xmlSecAssert2(ctx->dgstSize > 0, -1);

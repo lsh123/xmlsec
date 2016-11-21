@@ -751,15 +751,15 @@ XMLSEC_CRYPTO_EXPORT void       xmlSecOpenSSLErrorsDefaultCallback      (const c
 
 /**
  * xmlSecOpenSSLError:
+ * @errorFunction:      the failed function name.
  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
- * @errorSubject:       the error specific error subject (e.g. failed function name).
  *
  * Macro. The XMLSec library macro for reporting OpenSSL crypro errors.
  */
-#define xmlSecOpenSSLError(errorObject, errorSubject)   \
+#define xmlSecOpenSSLError(errorFunction, errorObject)  \
     xmlSecError(XMLSEC_ERRORS_HERE,                     \
                 (((errorObject) != NULL) ? xmlSecErrorsSafeString(errorObject) : NULL), \
-                (errorSubject),                         \
+                (errorFunction),                         \
                 XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
                 "openssl error: %lu: %s: %s %s",        \
                 ERR_peek_error(),                       \

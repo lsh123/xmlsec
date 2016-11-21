@@ -203,24 +203,14 @@ xmlSecKeyUseWithSet(xmlSecKeyUseWithPtr keyUseWith, const xmlChar* application, 
     if(application != NULL) {
         keyUseWith->application = xmlStrdup(application);
         if(keyUseWith->application == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        "xmlStrlen(application)=%d",
-                        xmlStrlen(application));
+            xmlSecStrdupError(application, NULL);
             return(-1);
         }
     }
     if(identifier != NULL) {
         keyUseWith->identifier = xmlStrdup(identifier);
         if(keyUseWith->identifier == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        "xmlStrlen(identifier)=%d",
-                        xmlStrlen(identifier));
+            xmlSecStrdupError(identifier, NULL);
             return(-1);
         }
     }
@@ -580,11 +570,7 @@ xmlSecKeyCopy(xmlSecKeyPtr keyDst, xmlSecKeyPtr keySrc) {
     if(keySrc->name != NULL) {
         keyDst->name = xmlStrdup(keySrc->name);
         if(keyDst->name == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_STRDUP_FAILED,
-                        "len=%d", xmlStrlen(keySrc->name));
+            xmlSecStrdupError(keySrc->name, NULL);
             return(-1);
         }
     }
@@ -721,11 +707,7 @@ xmlSecKeySetName(xmlSecKeyPtr key, const xmlChar* name) {
     if(name != NULL) {
         key->name = xmlStrdup(name);
         if(key->name == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_STRDUP_FAILED,
-                        "len=%d", xmlStrlen(name));
+            xmlSecStrdupError(name, NULL);
             return(-1);
         }
     }

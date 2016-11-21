@@ -724,11 +724,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
     if(xptr == NULL){
         ctx->uri = xmlStrdup(uri);
         if(ctx->uri == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_STRDUP_FAILED,
-                        "size=%d", xmlStrlen(uri));
+            xmlSecStrdupError(uri, NULL);
             return(-1);
         }
         /* we are done */

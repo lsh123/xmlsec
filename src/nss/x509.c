@@ -1811,11 +1811,7 @@ xmlSecNssX509NameWrite(CERTName* nm) {
 
     res = xmlStrdup(BAD_CAST str);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlStrdup",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecStrdupError(BAD_CAST str, NULL);
         PORT_Free(str);
         return(NULL);
     }

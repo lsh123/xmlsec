@@ -491,11 +491,7 @@ xmlSecOpenSSLSetDefaultTrustedCertsFolder(const xmlChar* path) {
     if(path != NULL) {
         gXmlSecOpenSSLTrustedCertsFolder = xmlStrdup(BAD_CAST path);
         if(gXmlSecOpenSSLTrustedCertsFolder == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlStrdup",
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecStrdupError(BAD_CAST path, NULL);
             return(-1);
         }
     }

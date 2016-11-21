@@ -1441,11 +1441,7 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
                 }
                 attrs[pos].key = xmlStrdup(tmp);
                 if(attrs[pos].key == NULL) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                NULL,
-                                "xmlStrdup",
-                                XMLSEC_ERRORS_R_XML_FAILED,
-                                "size=%d", (int)(xmlStrlen(tmp) + 1));
+                    xmlSecStrdupError(tmp, NULL);
                     goto done;
                 }
 
@@ -1483,11 +1479,7 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
 
                 attrs[pos].value = xmlStrdup(tmp);
                 if(attrs[pos].value == NULL) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                NULL,
-                                "xmlStrdup",
-                                XMLSEC_ERRORS_R_XML_FAILED,
-                                "size=%d", (int)(xmlStrlen(tmp) + 1));
+                    xmlSecStrdupError(tmp, NULL);
                     goto done;
                 }
                 state = xmlSecGnuTLSDnParseState_BeforeNameComponent;
@@ -1509,11 +1501,7 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
 
                 attrs[pos].value = xmlStrdup(tmp);
                 if(attrs[pos].value == NULL) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                NULL,
-                                "xmlStrdup",
-                                XMLSEC_ERRORS_R_XML_FAILED,
-                                "size=%d", (int)(xmlStrlen(tmp) + 1));
+                    xmlSecStrdupError(tmp, NULL);
                     goto done;
                 }
                 state = xmlSecGnuTLSDnParseState_AfterQuotedString;

@@ -71,12 +71,7 @@ xmlSecMSCryptoAppInit(const char* config) {
 #else  /* UNICODE */
         gXmlSecMSCryptoAppCertStoreName = xmlStrdup(config);
         if (gXmlSecMSCryptoAppCertStoreName == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        "xmlStrdup",
-                        NULL,
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        "config=%s",
-                        xmlSecErrorsSafeString(config));
+            xmlSecStrdupError(config, NULL);
             return (-1);
         }
 #endif /* UNICODE */

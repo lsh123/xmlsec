@@ -1916,11 +1916,7 @@ xmlSecOpenSSLASN1IntegerWrite(ASN1_INTEGER *asni) {
      */
     res = xmlCharStrdup(p);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlCharStrdup",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecStrdupError(BAD_CAST p, NULL);
         OPENSSL_free(p);
         return(NULL);
     }

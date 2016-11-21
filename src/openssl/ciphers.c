@@ -93,7 +93,8 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         /* generate random iv */
         ret = RAND_bytes(ctx->iv, ivLen);
         if(ret != 1) {
-            xmlSecOpenSSLError("RAND_bytes", cipherName);
+            xmlSecOpenSSLError2("RAND_bytes", cipherName,
+                                "size=%lu", (unsigned long)ivLen);
             return(-1);
         }
 

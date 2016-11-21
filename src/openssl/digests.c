@@ -351,8 +351,9 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
         if(inSize > 0) {
             ret = EVP_DigestUpdate(ctx->digestCtx, xmlSecBufferGetData(in), inSize);
             if(ret != 1) {
-                xmlSecOpenSSLError("EVP_DigestUpdate",
-                                   xmlSecTransformGetName(transform));
+                xmlSecOpenSSLError2("EVP_DigestUpdate",
+                                    xmlSecTransformGetName(transform),
+                                    "size=%lu", (unsigned long)inSize);
                 return(-1);
             }
 

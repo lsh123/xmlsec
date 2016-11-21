@@ -301,21 +301,23 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
 
     if(transform->operation == xmlSecTransformOperationEncrypt) {
         ret = RSA_public_encrypt(inSize, xmlSecBufferGetData(in),
-                                xmlSecBufferGetData(out),
-                                rsa, RSA_PKCS1_PADDING);
+                                 xmlSecBufferGetData(out),
+                                 rsa, RSA_PKCS1_PADDING);
         if(ret <= 0) {
-            xmlSecOpenSSLError("RSA_public_encrypt",
-                               xmlSecTransformGetName(transform));
+            xmlSecOpenSSLError2("RSA_public_encrypt",
+                                xmlSecTransformGetName(transform),
+                                "size=%lu", (unsigned long)inSize);
             return(-1);
         }
         outSize = ret;
     } else {
         ret = RSA_private_decrypt(inSize, xmlSecBufferGetData(in),
-                                xmlSecBufferGetData(out),
-                                rsa, RSA_PKCS1_PADDING);
+                                  xmlSecBufferGetData(out),
+                                  rsa, RSA_PKCS1_PADDING);
         if(ret <= 0) {
-            xmlSecOpenSSLError("RSA_private_decrypt",
-                               xmlSecTransformGetName(transform));
+            xmlSecOpenSSLError2("RSA_private_decrypt",
+                                xmlSecTransformGetName(transform),
+                                "size=%lu", (unsigned long)inSize);
             return(-1);
         }
         outSize = ret;
@@ -768,8 +770,9 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
          * buffer again
          */
         if(BN_bin2bn(xmlSecBufferGetData(out), outSize, bn) == NULL) {
-            xmlSecOpenSSLError("BN_bin2bn",
-                               xmlSecTransformGetName(transform));
+            xmlSecOpenSSLError2("BN_bin2bn",
+                                xmlSecTransformGetName(transform),
+                                "size=%lu", (unsigned long)outSize);
             BN_free(bn);
             return(-1);
         }

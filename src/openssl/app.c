@@ -201,7 +201,8 @@ xmlSecOpenSSLAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     /* this would be a read only BIO, cast from const is ok */
     bio = BIO_new_mem_buf((void*)data, dataSize);
     if(bio == NULL) {
-        xmlSecOpenSSLError("BIO_new_mem_buf", NULL);
+        xmlSecOpenSSLError2("BIO_new_mem_buf", NULL,
+                            "dataSize=%lu", (unsigned long)dataSize);
         return(NULL);
     }
 
@@ -420,7 +421,8 @@ xmlSecOpenSSLAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlS
     /* this would be a read only BIO, cast from const is ok */
     bio = BIO_new_mem_buf((void*)data, dataSize);
     if(bio == NULL) {
-        xmlSecOpenSSLError("BIO_new_mem_buf", NULL);
+        xmlSecOpenSSLError2("BIO_new_mem_buf", NULL,
+                            "dataSize=%lu", (unsigned long)dataSize);
         return(-1);
     }
 
@@ -560,7 +562,8 @@ xmlSecOpenSSLAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     /* this would be a read only BIO, cast from const is ok */
     bio = BIO_new_mem_buf((void*)data, dataSize);
     if(bio == NULL) {
-        xmlSecOpenSSLError("BIO_new_mem_buf", NULL);
+        xmlSecOpenSSLError2("BIO_new_mem_buf", NULL,
+                            "dataSize=%lu", (unsigned long)dataSize);
         return(NULL);
     }
 
@@ -904,7 +907,8 @@ xmlSecOpenSSLAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte*
     /* this would be a read only BIO, cast from const is ok */
     bio = BIO_new_mem_buf((void*)data, dataSize);
     if(bio == NULL) {
-        xmlSecOpenSSLError("BIO_new_mem_buf", NULL);
+        xmlSecOpenSSLError2("BIO_new_mem_buf", NULL,
+                            "dataSize=%lu", (unsigned long)dataSize);
         return(-1);
     }
 
@@ -1240,7 +1244,8 @@ xmlSecOpenSSLAppLoadRANDFile(const char *filename) {
     if((filename == NULL) || !RAND_load_file(filename, -1)) {
         if(RAND_status() == 0) {
             xmlSecOpenSSLError2("RAND_load_file", NULL,
-                                "filename=%s", xmlSecErrorsSafeString(filename));
+                                "filename=%s",
+                                xmlSecErrorsSafeString(filename));
             return 0;
         }
     }

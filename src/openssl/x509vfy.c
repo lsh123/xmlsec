@@ -516,8 +516,10 @@ xmlSecOpenSSLX509StoreAddCertsPath(xmlSecKeyDataStorePtr store, const char *path
         return(-1);
     }
     if(!X509_LOOKUP_add_dir(lookup, path, X509_FILETYPE_PEM)) {
-        xmlSecOpenSSLError("X509_LOOKUP_add_dir",
-                           xmlSecKeyDataStoreGetName(store));
+        xmlSecOpenSSLError2("X509_LOOKUP_add_dir",
+                            xmlSecKeyDataStoreGetName(store),
+                            "path='%s'",
+                            xmlSecErrorsSafeString(path));
         return(-1);
     }
     return(0);
@@ -526,7 +528,7 @@ xmlSecOpenSSLX509StoreAddCertsPath(xmlSecKeyDataStorePtr store, const char *path
 /**
  * xmlSecOpenSSLX509StoreAddCertsFile:
  * @store: the pointer to OpenSSL x509 store.
- * @file: the certs file.
+ * @filename: the certs file.
  *
  * Adds all certs in @file to the list of trusted certs
  * in @store. It is possible for @file to contain multiple certs.
@@ -534,12 +536,12 @@ xmlSecOpenSSLX509StoreAddCertsPath(xmlSecKeyDataStorePtr store, const char *path
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecOpenSSLX509StoreAddCertsFile(xmlSecKeyDataStorePtr store, const char *file) {
+xmlSecOpenSSLX509StoreAddCertsFile(xmlSecKeyDataStorePtr store, const char *filename) {
     xmlSecOpenSSLX509StoreCtxPtr ctx;
     X509_LOOKUP *lookup = NULL;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId), -1);
-    xmlSecAssert2(file != NULL, -1);
+    xmlSecAssert2(filename != NULL, -1);
 
     ctx = xmlSecOpenSSLX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, -1);
@@ -551,9 +553,11 @@ xmlSecOpenSSLX509StoreAddCertsFile(xmlSecKeyDataStorePtr store, const char *file
                            xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
-    if(!X509_LOOKUP_load_file(lookup, file, X509_FILETYPE_PEM)) {
-        xmlSecOpenSSLError("X509_LOOKUP_load_file",
-                           xmlSecKeyDataStoreGetName(store));
+    if(!X509_LOOKUP_load_file(lookup, filename, X509_FILETYPE_PEM)) {
+        xmlSecOpenSSLError2("X509_LOOKUP_load_file",
+                            xmlSecKeyDataStoreGetName(store),
+                            "filename='%s'",
+                            xmlSecErrorsSafeString(filename));
         return(-1);
     }
     return(0);
@@ -596,8 +600,10 @@ xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
     path = xmlSecOpenSSLGetDefaultTrustedCertsFolder();
     if(path != NULL) {
         if(!X509_LOOKUP_add_dir(lookup, (char*)path, X509_FILETYPE_PEM)) {
-            xmlSecOpenSSLError("X509_LOOKUP_add_dir",
-                               xmlSecKeyDataStoreGetName(store));
+            xmlSecOpenSSLError2("X509_LOOKUP_add_dir",
+                                xmlSecKeyDataStoreGetName(store),
+                                "path='%s'",
+                                xmlSecErrorsSafeString(path));
             return(-1);
         }
     } else {

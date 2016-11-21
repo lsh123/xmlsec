@@ -1708,14 +1708,16 @@ xmlSecOpenSSLX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
 
     ret = BIO_write(mem, buf, size);
     if(ret <= 0) {
-        xmlSecOpenSSLError("BIO_write", NULL);
+        xmlSecOpenSSLError2("BIO_write", NULL,
+                            "size=%lu", (unsigned long)size);
         BIO_free_all(mem);
         return(NULL);
     }
 
     cert = d2i_X509_bio(mem, NULL);
     if(cert == NULL) {
-        xmlSecOpenSSLError("d2i_X509_bio", NULL);
+        xmlSecOpenSSLError2("d2i_X509_bio", NULL,
+                            "size=%lu", (unsigned long)size);
         BIO_free_all(mem);
         return(NULL);
     }
@@ -1794,7 +1796,8 @@ xmlSecOpenSSLX509CrlDerRead(xmlSecByte* buf, xmlSecSize size) {
 
     ret = BIO_write(mem, buf, size);
     if(ret <= 0) {
-        xmlSecOpenSSLError("BIO_write", NULL);
+        xmlSecOpenSSLError2("BIO_write", NULL,
+                            "size=%lu", (unsigned long)size);
         BIO_free_all(mem);
         return(NULL);
     }

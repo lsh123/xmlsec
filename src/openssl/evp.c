@@ -881,8 +881,9 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
 
     ret = DSA_generate_parameters_ex(dsa, sizeBits, NULL, 0, &counter_ret, &h_ret, NULL);
     if(ret != 1) {
-        xmlSecOpenSSLError("DSA_generate_parameters_ex",
-                           xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError2("DSA_generate_parameters_ex",
+                            xmlSecKeyDataGetName(data),
+                            "sizeBits=%lu", (unsigned long)sizeBits);
         DSA_free(dsa);
         return(-1);
     }
@@ -1728,8 +1729,9 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
 
     ret = RSA_generate_key_ex(rsa, sizeBits, e, NULL);
     if(ret != 1) {
-        xmlSecOpenSSLError("RSA_generate_key",
-                           xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError2("RSA_generate_key_ex",
+                            xmlSecKeyDataGetName(data),
+                            "sizeBits=%lu", (unsigned long)sizeBits);
         RSA_free(rsa);
         BN_free(e);
         return(-1);

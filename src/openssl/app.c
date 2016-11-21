@@ -76,7 +76,7 @@ xmlSecOpenSSLAppInit(const char* config) {
                               OPENSSL_INIT_ENGINE_ALL_BUILTIN,
                               NULL);
     if(ret != 1) {
-        xmlSec2OpenSSLError("OPENSSL_init_crypto", NULL);
+        xmlSecOpenSSLError("OPENSSL_init_crypto", NULL);
         return(-1);
     }
 #endif /* OPENSSL_VERSION_NUMBER < 0x10100000 */
@@ -158,7 +158,7 @@ xmlSecOpenSSLAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
 
     bio = BIO_new_file(filename, "rb");
     if(bio == NULL) {
-        xmlSec2OpenSSLError("BIO_new_file", filename);
+        xmlSecOpenSSLError("BIO_new_file", filename);
         return(NULL);
     }
 
@@ -200,7 +200,7 @@ xmlSecOpenSSLAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     /* this would be a read only BIO, cast from const is ok */
     bio = BIO_new_mem_buf((void*)data, dataSize);
     if(bio == NULL) {
-        xmlSec2OpenSSLError("BIO_new_mem_buf", NULL);
+        xmlSecOpenSSLError("BIO_new_mem_buf", NULL);
         return(NULL);
     }
 
@@ -260,7 +260,7 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
                             XMLSEC_PTR_TO_FUNC(pem_password_cb, pwdCallback),
                             pwdCallbackCtx);
             if(pKey == NULL) {
-                xmlSec2OpenSSLError("PEM_read_bio_PrivateKey and PEM_read_bio_PUBKEY", NULL);
+                xmlSecOpenSSLError("PEM_read_bio_PrivateKey and PEM_read_bio_PUBKEY", NULL);
                 return(NULL);
             }
         }
@@ -273,7 +273,7 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
             (void)BIO_reset(bio);
             pKey = d2i_PUBKEY_bio(bio, NULL);
             if(pKey == NULL) {
-                xmlSec2OpenSSLError("d2i_PrivateKey_bio and d2i_PUBKEY_bio", NULL);
+                xmlSecOpenSSLError("d2i_PrivateKey_bio and d2i_PUBKEY_bio", NULL);
                 return(NULL);
             }
         }
@@ -284,7 +284,7 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
                             XMLSEC_PTR_TO_FUNC(pem_password_cb, pwdCallback),
                             pwdCallbackCtx);
         if(pKey == NULL) {
-            xmlSec2OpenSSLError("PEM_read_bio_PrivateKey", NULL);
+            xmlSecOpenSSLError("PEM_read_bio_PrivateKey", NULL);
             return(NULL);
         }
         break;
@@ -294,7 +294,7 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
                             XMLSEC_PTR_TO_FUNC(pem_password_cb, pwdCallback),
                             pwdCallbackCtx);
         if(pKey == NULL) {
-            xmlSec2OpenSSLError("d2i_PrivateKey_bio and d2i_PUBKEY_bio", NULL);
+            xmlSecOpenSSLError("d2i_PrivateKey_bio and d2i_PUBKEY_bio", NULL);
             return(NULL);
         }
         break;
@@ -378,7 +378,7 @@ xmlSecOpenSSLAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDat
 
     bio = BIO_new_file(filename, "rb");
     if(bio == NULL) {
-        xmlSec2OpenSSLError("BIO_new_file", filename);
+        xmlSecOpenSSLError("BIO_new_file", filename);
         return(-1);
     }
 
@@ -418,7 +418,7 @@ xmlSecOpenSSLAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlS
     /* this would be a read only BIO, cast from const is ok */
     bio = BIO_new_mem_buf((void*)data, dataSize);
     if(bio == NULL) {
-        xmlSec2OpenSSLError("BIO_new_mem_buf", NULL);
+        xmlSecOpenSSLError("BIO_new_mem_buf", NULL);
         return(-1);
     }
 
@@ -515,7 +515,7 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd,
 
     bio = BIO_new_file(filename, "rb");
     if(bio == NULL) {
-        xmlSec2OpenSSLError("BIO_new_file", filename);
+        xmlSecOpenSSLError("BIO_new_file", filename);
         return(NULL);
     }
 
@@ -557,7 +557,7 @@ xmlSecOpenSSLAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     /* this would be a read only BIO, cast from const is ok */
     bio = BIO_new_mem_buf((void*)data, dataSize);
     if(bio == NULL) {
-        xmlSec2OpenSSLError("BIO_new_mem_buf", NULL);
+        xmlSecOpenSSLError("BIO_new_mem_buf", NULL);
         return(NULL);
     }
 
@@ -606,19 +606,19 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
 
     p12 = d2i_PKCS12_bio(bio, NULL);
     if(p12 == NULL) {
-        xmlSec2OpenSSLError("d2i_PKCS12_fp", NULL);
+        xmlSecOpenSSLError("d2i_PKCS12_fp", NULL);
         goto done;
     }
 
     ret = PKCS12_verify_mac(p12, pwd, (pwd != NULL) ? strlen(pwd) : 0);
     if(ret != 1) {
-        xmlSec2OpenSSLError("PKCS12_verify_mac", NULL);
+        xmlSecOpenSSLError("PKCS12_verify_mac", NULL);
         goto done;
     }
 
     ret = PKCS12_parse(p12, pwd, &pKey, &cert, &chain);
     if(ret < 0) {
-        xmlSec2OpenSSLError("PKCS12_parse", NULL);
+        xmlSecOpenSSLError("PKCS12_parse", NULL);
         goto done;
     }
 
@@ -642,7 +642,7 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
     if(chain == NULL) {
         chain = sk_X509_new_null();
         if(chain == NULL) {
-            xmlSec2OpenSSLError("sk_X509_new_null", NULL);
+            xmlSecOpenSSLError("sk_X509_new_null", NULL);
             goto done;
         }
     }
@@ -670,13 +670,13 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
     if(has_cert == 0) {
         tmpcert = X509_dup(cert);
         if(tmpcert == NULL) {
-            xmlSec2OpenSSLError("X509_dup", xmlSecKeyDataGetName(x509Data));
+            xmlSecOpenSSLError("X509_dup", xmlSecKeyDataGetName(x509Data));
             goto done;
         }
 
         ret = sk_X509_push(chain, tmpcert);
         if(ret < 1) {
-            xmlSec2OpenSSLError("sk_X509_push", xmlSecKeyDataGetName(x509Data));
+            xmlSecOpenSSLError("sk_X509_push", xmlSecKeyDataGetName(x509Data));
             X509_free(tmpcert);
             goto done;
         }
@@ -695,7 +695,7 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
 
         tmpcert = X509_dup(sk_X509_value(chain, i));
         if(tmpcert == NULL) {
-            xmlSec2OpenSSLError("X509_dup", xmlSecKeyDataGetName(x509Data));
+            xmlSecOpenSSLError("X509_dup", xmlSecKeyDataGetName(x509Data));
             X509_free(tmpcert);
             goto done;
         }
@@ -854,7 +854,7 @@ xmlSecOpenSSLAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
 
     bio = BIO_new_file(filename, "rb");
     if(bio == NULL) {
-        xmlSec2OpenSSLError("BIO_new_file", filename);
+        xmlSecOpenSSLError("BIO_new_file", filename);
         return(-1);
     }
 
@@ -897,7 +897,7 @@ xmlSecOpenSSLAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte*
     /* this would be a read only BIO, cast from const is ok */
     bio = BIO_new_mem_buf((void*)data, dataSize);
     if(bio == NULL) {
-        xmlSec2OpenSSLError("BIO_new_mem_buf", NULL);
+        xmlSecOpenSSLError("BIO_new_mem_buf", NULL);
         return(-1);
     }
 
@@ -1036,7 +1036,7 @@ xmlSecOpenSSLAppCertLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
     case xmlSecKeyDataFormatCertPem:
         cert = PEM_read_bio_X509_AUX(bio, NULL, NULL, NULL);
         if(cert == NULL) {
-            xmlSec2OpenSSLError("PEM_read_bio_X509_AUX", NULL);
+            xmlSecOpenSSLError("PEM_read_bio_X509_AUX", NULL);
             return(NULL);
         }
         break;
@@ -1044,7 +1044,7 @@ xmlSecOpenSSLAppCertLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
     case xmlSecKeyDataFormatCertDer:
         cert = d2i_X509_bio(bio, NULL);
         if(cert == NULL) {
-            xmlSec2OpenSSLError("d2i_X509_bio", NULL);
+            xmlSecOpenSSLError("d2i_X509_bio", NULL);
             return(NULL);
         }
         break;
@@ -1232,7 +1232,7 @@ xmlSecOpenSSLAppLoadRANDFile(const char *filename) {
 
     if((filename == NULL) || !RAND_load_file(filename, -1)) {
         if(RAND_status() == 0) {
-            xmlSec2OpenSSLError("RAND_load_file", filename);
+            xmlSecOpenSSLError("RAND_load_file", filename);
             return 0;
         }
     }
@@ -1256,7 +1256,7 @@ xmlSecOpenSSLAppSaveRANDFile(const char *filename) {
         filename = RAND_file_name(buffer, sizeof(buffer));
     }
     if((filename == NULL) || !RAND_write_file(filename)) {
-        xmlSec2OpenSSLError("RAND_write_file", filename);
+        xmlSecOpenSSLError("RAND_write_file", filename);
         return 0;
     }
 
@@ -1293,7 +1293,7 @@ xmlSecOpenSSLDefaultPasswordCallback(char *buf, int bufsize, int verify, void *u
         }
         ret = EVP_read_pw_string(buf, bufsize, (char*)prompt, 0);
         if(ret != 0) {
-            xmlSec2OpenSSLError("EVP_read_pw_string", NULL);
+            xmlSecOpenSSLError("EVP_read_pw_string", NULL);
             return(-1);
         }
 
@@ -1319,7 +1319,7 @@ xmlSecOpenSSLDefaultPasswordCallback(char *buf, int bufsize, int verify, void *u
         }
         ret = EVP_read_pw_string(buf2, bufsize, (char*)prompt, 0);
         if(ret != 0) {
-            xmlSec2OpenSSLError("EVP_read_pw_string", NULL);
+            xmlSecOpenSSLError("EVP_read_pw_string", NULL);
             memset(buf2, 0, bufsize);
             xmlFree(buf2);
             return(-1);

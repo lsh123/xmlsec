@@ -245,7 +245,7 @@ xmlSecOpenSSLHmacInitialize(xmlSecTransformPtr transform) {
     /* create hmac CTX */
     ctx->hmacCtx = HMAC_CTX_new();
     if(ctx->hmacCtx == NULL) {
-        xmlSec2OpenSSLError("HMAC_CTX_new", xmlSecTransformGetName(transform));
+        xmlSecOpenSSLError("HMAC_CTX_new", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -390,7 +390,7 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 #endif /* (defined(XMLSEC_OPENSSL_098)) */
 
     if(ret != 1) {
-        xmlSec2OpenSSLError("HMAC_Init_ex", xmlSecTransformGetName(transform));
+        xmlSecOpenSSLError("HMAC_Init_ex", xmlSecTransformGetName(transform));
         return(-1);
     }
 

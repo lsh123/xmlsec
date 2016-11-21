@@ -131,11 +131,7 @@ xmlSecGnuTLSKeyDataDsaAdoptPrivateKey(xmlSecKeyDataPtr data, gnutls_x509_privkey
             params, sizeof(params)/sizeof(params[0]),
             mpis, sizeof(mpis)/sizeof(mpis[0]));
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGnuTLSConvertParamsToMpis",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecGnuTLSConvertParamsToMpis", NULL);
         xmlSecGnuTLSDestroyParams(params, sizeof(params)/sizeof(params[0]));
         return(-1);
     }
@@ -154,7 +150,7 @@ xmlSecGnuTLSKeyDataDsaAdoptPrivateKey(xmlSecKeyDataPtr data, gnutls_x509_privkey
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "gcry_sexp_build(private/dsa)",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_GNUTLS_GCRYPT_REPORT_ERROR(rc));
         xmlSecGnuTLSDestroyMpis(mpis, sizeof(mpis)/sizeof(mpis[0]));
         return(-1);
@@ -165,7 +161,7 @@ xmlSecGnuTLSKeyDataDsaAdoptPrivateKey(xmlSecKeyDataPtr data, gnutls_x509_privkey
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "gcry_sexp_build(private/rsa)",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_GNUTLS_GCRYPT_REPORT_ERROR(rc));
         gcry_sexp_release(priv_key);
         xmlSecGnuTLSDestroyMpis(mpis, sizeof(mpis)/sizeof(mpis[0]));
@@ -175,11 +171,7 @@ xmlSecGnuTLSKeyDataDsaAdoptPrivateKey(xmlSecKeyDataPtr data, gnutls_x509_privkey
 
     ret = xmlSecGCryptKeyDataDsaAdoptKeyPair(data, pub_key, priv_key);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGCryptKeyDataDsaAdoptKeyPair",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecGCryptKeyDataDsaAdoptKeyPair", NULL);
         gcry_sexp_release(pub_key);
         gcry_sexp_release(priv_key);
         return(-1);
@@ -230,11 +222,7 @@ xmlSecGnuTLSKeyDataDsaAdoptPublicKey(xmlSecKeyDataPtr data,
             params, sizeof(params)/sizeof(params[0]),
             mpis, sizeof(mpis)/sizeof(mpis[0]));
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGnuTLSConvertParamsToMpis",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecGnuTLSConvertParamsToMpis", NULL);
         /* don't destroy params - we got them from outside !!! */
         return(-1);
     }
@@ -247,7 +235,7 @@ xmlSecGnuTLSKeyDataDsaAdoptPublicKey(xmlSecKeyDataPtr data,
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "gcry_sexp_build(private/rsa)",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_GNUTLS_GCRYPT_REPORT_ERROR(rc));
         xmlSecGnuTLSDestroyMpis(mpis, sizeof(mpis)/sizeof(mpis[0]));
         return(-1);
@@ -256,11 +244,7 @@ xmlSecGnuTLSKeyDataDsaAdoptPublicKey(xmlSecKeyDataPtr data,
 
     ret = xmlSecGCryptKeyDataDsaAdoptKeyPair(data, pub_key, NULL);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGCryptKeyDataDsaAdoptKeyPair",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecGCryptKeyDataDsaAdoptKeyPair", NULL);
         gcry_sexp_release(pub_key);
         return(-1);
     }
@@ -331,11 +315,7 @@ xmlSecGnuTLSKeyDataRsaAdoptPrivateKey(xmlSecKeyDataPtr data, gnutls_x509_privkey
             params, sizeof(params)/sizeof(params[0]),
             mpis, sizeof(mpis)/sizeof(mpis[0]));
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGnuTLSConvertParamsToMpis",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecGnuTLSConvertParamsToMpis", NULL);
         xmlSecGnuTLSDestroyParams(params, sizeof(params)/sizeof(params[0]));
         return(-1);
     }
@@ -357,7 +337,7 @@ xmlSecGnuTLSKeyDataRsaAdoptPrivateKey(xmlSecKeyDataPtr data, gnutls_x509_privkey
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "gcry_sexp_build(private/rsa)",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_GNUTLS_GCRYPT_REPORT_ERROR(rc));
         xmlSecGnuTLSDestroyMpis(mpis, sizeof(mpis)/sizeof(mpis[0]));
         return(-1);
@@ -368,7 +348,7 @@ xmlSecGnuTLSKeyDataRsaAdoptPrivateKey(xmlSecKeyDataPtr data, gnutls_x509_privkey
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "gcry_sexp_build(private/rsa)",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_GNUTLS_GCRYPT_REPORT_ERROR(rc));
         gcry_sexp_release(priv_key);
         xmlSecGnuTLSDestroyMpis(mpis, sizeof(mpis)/sizeof(mpis[0]));
@@ -378,11 +358,7 @@ xmlSecGnuTLSKeyDataRsaAdoptPrivateKey(xmlSecKeyDataPtr data, gnutls_x509_privkey
 
     ret = xmlSecGCryptKeyDataRsaAdoptKeyPair(data, pub_key, priv_key);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGCryptKeyDataRsaAdoptKeyPair",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecGCryptKeyDataRsaAdoptKeyPair", NULL);
         gcry_sexp_release(pub_key);
         gcry_sexp_release(priv_key);
         return(-1);
@@ -426,11 +402,7 @@ xmlSecGnuTLSKeyDataRsaAdoptPublicKey(xmlSecKeyDataPtr data,
             params, sizeof(params)/sizeof(params[0]),
             mpis, sizeof(mpis)/sizeof(mpis[0]));
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGnuTLSConvertParamsToMpis",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecGnuTLSConvertParamsToMpis", NULL);
         /* don't destroy params - we got them from outside !!! */
         return(-1);
     }
@@ -443,7 +415,7 @@ xmlSecGnuTLSKeyDataRsaAdoptPublicKey(xmlSecKeyDataPtr data,
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "gcry_sexp_build(private/rsa)",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_GNUTLS_GCRYPT_REPORT_ERROR(rc));
         xmlSecGnuTLSDestroyMpis(mpis, sizeof(mpis)/sizeof(mpis[0]));
         return(-1);
@@ -452,11 +424,7 @@ xmlSecGnuTLSKeyDataRsaAdoptPublicKey(xmlSecKeyDataPtr data,
 
     ret = xmlSecGCryptKeyDataRsaAdoptKeyPair(data, pub_key, NULL);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGCryptKeyDataRsaAdoptKeyPair",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecGCryptKeyDataRsaAdoptKeyPair", NULL);
         gcry_sexp_release(pub_key);
         return(-1);
     }

@@ -197,34 +197,23 @@ xmlSecMSCryptoKWDes3Initialize(xmlSecTransformPtr transform) {
 
     ret = xmlSecBufferInitialize(&(ctx->keyBuffer), 0);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlSecBufferInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecBufferInitialize",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }
 
     /* find providers */
     ctx->desCryptProvider = xmlSecMSCryptoFindProvider(ctx->desProviders, NULL, CRYPT_VERIFYCONTEXT, TRUE);
     if(ctx->desCryptProvider == 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlSecMSCryptoFindProvider(des)",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
-
+        xmlSecInternalError("xmlSecMSCryptoFindProvider(des)",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }
 
     ctx->sha1CryptProvider = xmlSecMSCryptoFindProvider(ctx->sha1Providers, NULL, CRYPT_VERIFYCONTEXT, TRUE);
     if(ctx->sha1CryptProvider == 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlSecMSCryptoFindProvider(sha1)",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
-
+        xmlSecInternalError("xmlSecMSCryptoFindProvider(sha1)",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -322,11 +311,9 @@ xmlSecMSCryptoKWDes3SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     ret = xmlSecBufferSetData(&(ctx->keyBuffer), xmlSecBufferGetData(buffer), XMLSEC_KW_DES3_KEY_LENGTH);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlSecBufferSetData",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "size=%d", XMLSEC_KW_DES3_KEY_LENGTH);
+        xmlSecInternalError2("xmlSecBufferSetData",
+                             xmlSecTransformGetName(transform),
+                             "size=%d", XMLSEC_KW_DES3_KEY_LENGTH);
         return(-1);
     }
 
@@ -386,11 +373,9 @@ xmlSecMSCryptoKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransf
 
         ret = xmlSecBufferSetMaxSize(out, outSize);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlSecBufferSetMaxSize",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "size=%d", outSize);
+            xmlSecInternalError2("xmlSecBufferSetMaxSize",
+                                 xmlSecTransformGetName(transform),
+                                 "size=%d", outSize);
             return(-1);
         }
 
@@ -399,12 +384,9 @@ xmlSecMSCryptoKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransf
                                     xmlSecBufferGetData(in), inSize,
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "xmlSecKWDes3Encode",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "key=%d,in=%d,out=%d",
-                            keySize, inSize, outSize);
+                xmlSecInternalError4("xmlSecKWDes3Encode", xmlSecTransformGetName(transform),
+                                     "key=%d,in=%d,out=%d",
+                                    keySize, inSize, outSize);
                 return(-1);
             }
             outSize = ret;
@@ -413,12 +395,9 @@ xmlSecMSCryptoKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransf
                                     xmlSecBufferGetData(in), inSize,
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "xmlSecKWDes3Decode",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "key=%d,in=%d,out=%d",
-                            keySize, inSize, outSize);
+                xmlSecInternalError4("xmlSecKWDes3Decode", xmlSecTransformGetName(transform),
+                                     "key=%d,in=%d,out=%d",
+                                     keySize, inSize, outSize);
                 return(-1);
             }
             outSize = ret;
@@ -426,21 +405,17 @@ xmlSecMSCryptoKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransf
 
         ret = xmlSecBufferSetSize(out, outSize);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlSecBufferSetSize",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "size=%d", outSize);
+            xmlSecInternalError2("xmlSecBufferSetSize",
+                                 xmlSecTransformGetName(transform),
+                                 "size=%d", outSize);
             return(-1);
         }
 
         ret = xmlSecBufferRemoveHead(in, inSize);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlSecBufferRemoveHead",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "size=%d", inSize);
+            xmlSecInternalError2("xmlSecBufferRemoveHead",
+                                 xmlSecTransformGetName(transform),
+                                 "size=%d", inSize);
             return(-1);
         }
 
@@ -519,11 +494,9 @@ xmlSecMSCryptoKWDes3Sha1(void * context,
         &retLen,
         0);
     if (ret == 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "CryptGetHashParam(HP_HASHVAL)",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "size=%d", outSize);
+        /* TODO: XMLSEC_ERRORS_R_CRYPTO_FAILED */
+        xmlSecInternalError2("CryptGetHashParam(HP_HASHVAL)", NULL,
+                             "size=%d", outSize);
         CryptDestroyHash(mscHash);
         return(-1);
     }
@@ -587,11 +560,7 @@ xmlSecMSCryptoKWDes3BlockEncrypt(void * context,
         TRUE,
         &cryptKey))  {
 
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecMSCryptoImportPlainSessionBlob",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecMSCryptoImportPlainSessionBlob", NULL);
         return(-1);
     }
     xmlSecAssert2(cryptKey != 0, -1);
@@ -671,11 +640,7 @@ xmlSecMSCryptoKWDes3BlockDecrypt(void * context,
         TRUE,
         &cryptKey))  {
 
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecMSCryptoImportPlainSessionBlob",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecMSCryptoImportPlainSessionBlob", NULL);
         return(-1);
     }
     xmlSecAssert2(cryptKey != 0, -1);

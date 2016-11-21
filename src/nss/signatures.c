@@ -240,11 +240,8 @@ xmlSecNssSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
             SECKEY_DestroyPrivateKey(ctx->u.sig.privkey);
         ctx->u.sig.privkey = xmlSecNssPKIKeyDataGetPrivKey(value);
         if(ctx->u.sig.privkey == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlSecNssPKIKeyDataGetPrivKey",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecNssPKIKeyDataGetPrivKey",
+                                xmlSecTransformGetName(transform));
             return(-1);
         }
 
@@ -262,11 +259,8 @@ xmlSecNssSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
             SECKEY_DestroyPublicKey(ctx->u.vfy.pubkey);
         ctx->u.vfy.pubkey = xmlSecNssPKIKeyDataGetPubKey(value);
         if(ctx->u.vfy.pubkey == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlSecNssPKIKeyDataGetPubKey",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecNssPKIKeyDataGetPubKey",
+                                xmlSecTransformGetName(transform));
             return(-1);
         }
 
@@ -461,11 +455,8 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 
         ret = xmlSecBufferRemoveHead(in, inSize);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlSecBufferRemoveHead",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecBufferRemoveHead",
+                                xmlSecTransformGetName(transform));
             return(-1);
         }
     }
@@ -502,12 +493,9 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 
                 ret = xmlSecBufferSetData(out, signatureClr->data, signatureClr->len);
                 if(ret < 0) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "xmlSecBufferSetData",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "size=%d",
-                            signatureClr->len);
+                    xmlSecInternalError2("xmlSecBufferSetData",
+                                         xmlSecTransformGetName(transform),
+                                         "size=%d", signatureClr->len);
                     SECITEM_FreeItem(&signature, PR_FALSE);
                     return(-1);
                 }
@@ -517,12 +505,9 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                 /* This signature is used as-is */
                 ret = xmlSecBufferSetData(out, signature.data, signature.len);
                 if(ret < 0) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "xmlSecBufferSetData",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "size=%d",
-                            signature.len);
+                    xmlSecInternalError2("xmlSecBufferSetData",
+                                         xmlSecTransformGetName(transform),
+                                         "size=%d", signature.len);
                     SECITEM_FreeItem(&signature, PR_FALSE);
                     return(-1);
                 }

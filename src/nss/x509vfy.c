@@ -378,22 +378,18 @@ xmlSecNssGetCertName(const xmlChar * name) {
 
     tmp = xmlSecNssX509NameRead(name2, xmlStrlen(name2));
     if(tmp == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecNssX509NameRead",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "name2=\"%s\"",
-                    xmlSecErrorsSafeString(name2));
+        xmlSecInternalError2("xmlSecNssX509NameRead", NULL,
+                             "name2=\"%s\"", xmlSecErrorsSafeString(name2));
         xmlFree(name2);
         return(NULL);
     }
 
     res = CERT_AsciiToName((char*)tmp);
-    if (name == NULL) {
+    if (res == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "CERT_AsciiToName",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     "ascii=\"%s\", error code=%d",
                     xmlSecErrorsSafeString((char*)tmp),
                     PORT_GetError());
@@ -422,12 +418,9 @@ xmlSecNssX509FindCert(CERTCertList* certsList, const xmlChar *subjectName,
     if ((cert == NULL) && (subjectName != NULL)) {
         name = xmlSecNssGetCertName(subjectName);
         if (name == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecNssGetCertName",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "subject=%s",
-                        xmlSecErrorsSafeString(subjectName));
+            xmlSecInternalError2("xmlSecNssGetCertName", NULL,
+                                 "subject=%s",
+                                 xmlSecErrorsSafeString(subjectName));
             goto done;
         }
 
@@ -449,7 +442,7 @@ xmlSecNssX509FindCert(CERTCertList* certsList, const xmlChar *subjectName,
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         "SEC_ASN1EncodeItem",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         "error code=%d", PORT_GetError());
             goto done;
         }
@@ -463,12 +456,9 @@ xmlSecNssX509FindCert(CERTCertList* certsList, const xmlChar *subjectName,
 
         name = xmlSecNssGetCertName(issuerName);
         if (name == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecNssGetCertName",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "issuer=%s",
-                        xmlSecErrorsSafeString(issuerName));
+            xmlSecInternalError2("xmlSecNssGetCertName", NULL,
+                                 "issuer=%s",
+                                 xmlSecErrorsSafeString(issuerName));
             goto done;
         }
 
@@ -505,7 +495,7 @@ xmlSecNssX509FindCert(CERTCertList* certsList, const xmlChar *subjectName,
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         "PR_sscanf",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         "error code=%d", PR_GetError());
             SECITEM_FreeItem(&issuerAndSN.serialNumber, PR_FALSE);
             goto done;
@@ -513,11 +503,7 @@ xmlSecNssX509FindCert(CERTCertList* certsList, const xmlChar *subjectName,
 
         rv = xmlSecNssNumToItem(&issuerAndSN.serialNumber, issuerSN);
         if(rv <= 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecNssNumToItem",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "error code=%d", PR_GetError());
+            xmlSecInternalError("xmlSecNssNumToItem(serialNumber)", NULL);
             SECITEM_FreeItem(&issuerAndSN.serialNumber, PR_FALSE);
             goto done;
         }
@@ -532,12 +518,7 @@ xmlSecNssX509FindCert(CERTCertList* certsList, const xmlChar *subjectName,
 
         len = xmlSecBase64Decode(ski, (xmlSecByte*)ski, xmlStrlen(ski));
         if(len < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecBase64Decode",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "ski=%s",
-                        xmlSecErrorsSafeString(ski));
+            xmlSecInternalError("xmlSecBase64Decode", NULL);
             goto done;
         }
 
@@ -630,11 +611,7 @@ xmlSecNssX509NameRead(xmlSecByte *str, int len) {
 
         nameLen = xmlSecNssX509NameStringRead(&str, &len, name, sizeof(name), '=', 0);
         if(nameLen < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecNssX509NameStringRead",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecNssX509NameStringRead", NULL);
             goto done;
         }
         memcpy(p, name, nameLen);
@@ -646,11 +623,7 @@ xmlSecNssX509NameRead(xmlSecByte *str, int len) {
                 valueLen = xmlSecNssX509NameStringRead(&str, &len,
                                         value, sizeof(value), '"', 1);
                 if(valueLen < 0) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                NULL,
-                                "xmlSecNssX509NameStringRead",
-                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                                XMLSEC_ERRORS_NO_MESSAGE);
+                    xmlSecInternalError("xmlSecNssX509NameStringRead", NULL);
                     goto done;
                 }
                 /* skip spaces before comma or semicolon */
@@ -684,11 +657,7 @@ xmlSecNssX509NameRead(xmlSecByte *str, int len) {
                 valueLen = xmlSecNssX509NameStringRead(&str, &len,
                                         value, sizeof(value), ',', 1);
                 if(valueLen < 0) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                NULL,
-                                "xmlSecNssX509NameStringRead",
-                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                                XMLSEC_ERRORS_NO_MESSAGE);
+                    xmlSecInternalError("xmlSecNssX509NameStringRead", NULL);
                     goto done;
                 }
                 memcpy(p, value, valueLen);

@@ -45,21 +45,13 @@ xmlSecOpenSSLNodeGetBNValue(const xmlNodePtr cur, BIGNUM **a) {
 
     ret = xmlSecBufferInitialize(&buf, 128);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBufferInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
         return(NULL);
     }
 
     ret = xmlSecBufferBase64NodeContentRead(&buf, cur);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBufferBase64NodeContentRead",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecBufferBase64NodeContentRead", NULL);
         xmlSecBufferFinalize(&buf);
         return(NULL);
     }
@@ -101,11 +93,8 @@ xmlSecOpenSSLNodeSetBNValue(xmlNodePtr cur, const BIGNUM *a, int addLineBreaks) 
 
     ret = xmlSecBufferInitialize(&buf, BN_num_bytes(a) + 1);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBufferInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "size=%d", BN_num_bytes(a) + 1);
+        xmlSecInternalError2("xmlSecBufferInitialize", NULL,
+                             "size=%d", BN_num_bytes(a) + 1);
         return(-1);
     }
 
@@ -119,11 +108,8 @@ xmlSecOpenSSLNodeSetBNValue(xmlNodePtr cur, const BIGNUM *a, int addLineBreaks) 
 
     ret = xmlSecBufferSetSize(&buf, size);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBufferSetSize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "size=%d", size);
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
+                             "size=%d", size);
         xmlSecBufferFinalize(&buf);
         return(-1);
     }
@@ -136,11 +122,7 @@ xmlSecOpenSSLNodeSetBNValue(xmlNodePtr cur, const BIGNUM *a, int addLineBreaks) 
 
     ret = xmlSecBufferBase64NodeContentWrite(&buf, cur, xmlSecBase64GetDefaultLineSize());
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBufferBase64NodeContentWrite",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecBufferBase64NodeContentWrite", NULL);
         xmlSecBufferFinalize(&buf);
         return(-1);
     }

@@ -206,11 +206,7 @@ xmlSecMSCryptoX509StoreCertError(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT cer
     /* get certs subject */
     subject = xmlSecMSCryptoX509GetNameString(cert, CERT_NAME_RDN_TYPE, 0, NULL);
     if(subject == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-            "xmlSecMSCryptoX509GetNameString",
-            NULL,
-            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-            XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecMSCryptoX509GetNameString", NULL);
         return;
     }
 
@@ -1178,11 +1174,7 @@ xmlSecMSCryptoX509GetCertName(const xmlChar * name) {
     /* get name */
     res = xmlSecMSCryptoConvertUtf8ToTstr(name2);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecMSCryptoConvertUtf8ToTstr",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecMSCryptoConvertUtf8ToTstr", NULL);
         xmlFree(name2);
         return(NULL);
     }
@@ -1209,11 +1201,7 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store,
         /* get unicode subject name */
         wcSubjectName = xmlSecMSCryptoX509GetCertName(subjectName);
         if(wcSubjectName == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecMSCryptoX509GetCertName",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "wcSubjectName");
+            xmlSecInternalError("xmlSecMSCryptoX509GetCertName(subjectName)", NULL);
             return(NULL);
         }
 
@@ -1234,21 +1222,13 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store,
         /* get serial number */
         ret = xmlSecBnInitialize(&issuerSerialBn, 0);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecBnInitialize",
-                XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecBnInitialize", NULL);
             return(NULL);
         }
 
         ret = xmlSecBnFromDecString(&issuerSerialBn, issuerSerial);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecBnInitialize",
-                XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecBnInitialize", NULL);
             xmlSecBnFinalize(&issuerSerialBn);
             return(NULL);
         }
@@ -1259,11 +1239,7 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store,
         */
         ret = xmlSecBnReverse(&issuerSerialBn);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecBnReverse",
-                XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecBnReverse", NULL);
             xmlSecBnFinalize(&issuerSerialBn);
             return(NULL);
         }
@@ -1271,11 +1247,7 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store,
         /* get issuer name */
         wcIssuerName = xmlSecMSCryptoX509GetCertName(issuerName);
         if(wcIssuerName == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecMSCryptoX509GetCertName",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "wcIssuerName");
+            xmlSecInternalError("xmlSecMSCryptoX509GetCertName(issuerName)", NULL);
             xmlSecBnFinalize(&issuerSerialBn);
             return(NULL);
         }
@@ -1310,12 +1282,7 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store,
         /* trick: base64 decode "in place" */
         binSkiLen = xmlSecBase64Decode(binSki, (xmlSecByte*)binSki, xmlStrlen(binSki));
         if(binSkiLen < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecBase64Decode",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "ski=%s",
-                        xmlSecErrorsSafeString(ski));
+            xmlSecInternalError("xmlSecBase64Decode", NULL);
             xmlFree(binSki);
             return(NULL);
         }
@@ -1390,11 +1357,7 @@ xmlSecMSCryptoX509GetNameString(PCCERT_CONTEXT pCertContext, DWORD dwType, DWORD
 
     res = xmlSecMSCryptoConvertTstrToUtf8(name);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    "xmlSecMSCryptoConvertTstrToUtf8",
-                    NULL,
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecMSCryptoConvertTstrToUtf8", NULL);
         xmlFree(name);
         return (NULL);
     }

@@ -309,7 +309,7 @@ xmlSecAddChildNode(xmlNodePtr parent, xmlNodePtr child) {
  * Returns: the pointer to the found or created node; or NULL if an error occurs.
  */
 xmlNodePtr
-xmlSecEnsureEmptyChild(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
+xmlSecEnsureEmptyChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
     xmlNodePtr cur = NULL;
     xmlNodePtr tmp;
 
@@ -335,12 +335,8 @@ xmlSecEnsureEmptyChild(const xmlNodePtr parent, const xmlChar *name, const xmlCh
         cur = xmlSecAddNextSibling(cur, name, ns);
     }
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild or xmlSecAddNextSibling",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(name));
+        xmlSecInternalError2("xmlSecAddChild or xmlSecAddNextSibling", NULL,
+                             "node=%s", xmlSecErrorsSafeString(name));
         return(NULL);
     }
     return(cur);
@@ -782,11 +778,7 @@ xmlSecGenerateAndAddID(xmlNodePtr node, const xmlChar* attrName, const xmlChar* 
     for(count = 0; count < 5; count++) {
         id = xmlSecGenerateID(prefix, len);
         if(id == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecGenerateID",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecGenerateID", NULL);
             return(-1);
         }
 
@@ -836,11 +828,7 @@ xmlSecGenerateID(const xmlChar* prefix, xmlSecSize len) {
 
     ret = xmlSecBufferInitialize(&buffer, binLen + 1);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBufferInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
         return(NULL);
     }
     xmlSecAssert2(xmlSecBufferGetData(&buffer) != NULL, NULL);
@@ -848,11 +836,7 @@ xmlSecGenerateID(const xmlChar* prefix, xmlSecSize len) {
 
     ret = xmlSecBufferSetSize(&buffer, binLen);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBufferSetSize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecBufferSetSize", NULL);
         xmlSecBufferFinalize(&buffer);
         return(NULL);
     }
@@ -866,11 +850,7 @@ xmlSecGenerateID(const xmlChar* prefix, xmlSecSize len) {
     /* base64 encode random bytes */
     res = xmlSecBase64Encode(xmlSecBufferGetData(&buffer), xmlSecBufferGetSize(&buffer), 0);
     if((res == NULL) || (xmlStrlen(res) == 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBase64Encode",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecBase64Encode", NULL);
         xmlSecBufferFinalize(&buffer);
         return(NULL);
     }
@@ -1265,14 +1245,11 @@ xmlSecQName2IntegerGetIntegerFromString(xmlSecQName2IntegerInfoConstPtr info,
     /* and finally search for integer */
     ret = xmlSecQName2IntegerGetInteger(info, qnameHref, qnameLocalPart, intValue);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecQName2IntegerGetInteger",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s,qnameLocalPart=%s,qnameHref=%s",
-                    xmlSecErrorsSafeString(node->name),
-                    xmlSecErrorsSafeString(qnameLocalPart),
-                    xmlSecErrorsSafeString(qnameHref));
+        xmlSecInternalError4("xmlSecQName2IntegerGetInteger", NULL,
+                             "node=%s,qnameLocalPart=%s,qnameHref=%s",
+                             xmlSecErrorsSafeString(node->name),
+                             xmlSecErrorsSafeString(qnameLocalPart),
+                             xmlSecErrorsSafeString(qnameHref));
         if(qnamePrefix != NULL) {
             xmlFree(qnamePrefix);
         }
@@ -1307,13 +1284,10 @@ xmlSecQName2IntegerGetStringFromInteger(xmlSecQName2IntegerInfoConstPtr info,
 
     qnameInfo = xmlSecQName2IntegerGetInfo(info, intValue);
     if(qnameInfo == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecQName2IntegerGetInfo",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s,intValue=%d",
-                    xmlSecErrorsSafeString(node->name),
-                    intValue);
+        xmlSecInternalError3("xmlSecQName2IntegerGetInfo", NULL,
+                             "node=%s,intValue=%d",
+                             xmlSecErrorsSafeString(node->name),
+                             intValue);
         return(NULL);
     }
 
@@ -1354,13 +1328,10 @@ xmlSecQName2IntegerNodeRead(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr nod
 
     ret = xmlSecQName2IntegerGetIntegerFromString(info, node, content, intValue);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecQName2IntegerGetIntegerFromString",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s,value=%s",
-                    xmlSecErrorsSafeString(node->name),
-                    xmlSecErrorsSafeString(content));
+        xmlSecInternalError3("xmlSecQName2IntegerGetIntegerFromString", NULL,
+                             "node=%s,value=%s",
+                             xmlSecErrorsSafeString(node->name),
+                             xmlSecErrorsSafeString(content));
         xmlFree(content);
         return(-1);
     }
@@ -1394,25 +1365,19 @@ xmlSecQName2IntegerNodeWrite(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr no
     /* find and build qname */
     qname = xmlSecQName2IntegerGetStringFromInteger(info, node, intValue);
     if(qname == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecQName2IntegerGetStringFromInteger",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s,intValue=%d",
-                    xmlSecErrorsSafeString(node->name),
-                    intValue);
+        xmlSecInternalError3("xmlSecQName2IntegerGetStringFromInteger", NULL,
+                             "node=%s,intValue=%d",
+                             xmlSecErrorsSafeString(node->name),
+                             intValue);
         return(-1);
     }
 
     cur = xmlSecAddChild(node, nodeName, nodeNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s,intValue=%d",
-                    xmlSecErrorsSafeString(nodeName),
-                    intValue);
+        xmlSecInternalError3("xmlSecAddChild", NULL,
+                             "node=%s,intValue=%d",
+                             xmlSecErrorsSafeString(nodeName),
+                             intValue);
         xmlFree(qname);
         return(-1);
     }
@@ -1460,14 +1425,11 @@ xmlSecQName2IntegerAttributeRead(xmlSecQName2IntegerInfoConstPtr info, xmlNodePt
 
     ret = xmlSecQName2IntegerGetIntegerFromString(info, node, attrValue, intValue);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecQName2IntegerGetIntegerFromString",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s,attrName=%s,attrValue=%s",
-                    xmlSecErrorsSafeString(node->name),
-                    xmlSecErrorsSafeString(attrName),
-                    xmlSecErrorsSafeString(attrValue));
+        xmlSecInternalError4("xmlSecQName2IntegerGetIntegerFromString", NULL,
+                             "node=%s,attrName=%s,attrValue=%s",
+                             xmlSecErrorsSafeString(node->name),
+                             xmlSecErrorsSafeString(attrName),
+                             xmlSecErrorsSafeString(attrValue));
         xmlFree(attrValue);
         return(-1);
     }
@@ -1501,27 +1463,21 @@ xmlSecQName2IntegerAttributeWrite(xmlSecQName2IntegerInfoConstPtr info, xmlNodeP
     /* find and build qname */
     qname = xmlSecQName2IntegerGetStringFromInteger(info, node, intValue);
     if(qname == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecQName2IntegerGetStringFromInteger",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s,attrName=%s,intValue=%d",
-                    xmlSecErrorsSafeString(node->name),
-                    xmlSecErrorsSafeString(attrName),
-                    intValue);
+        xmlSecInternalError4("xmlSecQName2IntegerGetStringFromInteger", NULL,
+                             "node=%s,attrName=%s,intValue=%d",
+                             xmlSecErrorsSafeString(node->name),
+                             xmlSecErrorsSafeString(attrName),
+                             intValue);
         return(-1);
     }
 
     attr = xmlSetProp(node, attrName, qname);
     if(attr == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecAddChildNode",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s,attrName=%s,intValue=%d",
-                    xmlSecErrorsSafeString(node->name),
-                    xmlSecErrorsSafeString(attrName),
-                    intValue);
+        xmlSecInternalError4("xmlSecAddChildNode", NULL,
+                             "node=%s,attrName=%s,intValue=%d",
+                             xmlSecErrorsSafeString(node->name),
+                             xmlSecErrorsSafeString(attrName),
+                             intValue);
         xmlFree(qname);
         return(-1);
     }
@@ -1713,14 +1669,11 @@ xmlSecQName2BitMaskGetBitMaskFromString(xmlSecQName2BitMaskInfoConstPtr info,
     /* and finally search for integer */
     ret = xmlSecQName2BitMaskGetBitMask(info, qnameHref, qnameLocalPart, mask);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecQName2BitMaskGetBitMask",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s,qnameLocalPart=%s,qnameHref=%s",
-                    xmlSecErrorsSafeString(node->name),
-                    xmlSecErrorsSafeString(qnameLocalPart),
-                    xmlSecErrorsSafeString(qnameHref));
+        xmlSecInternalError4("xmlSecQName2BitMaskGetBitMask", NULL,
+                             "node=%s,qnameLocalPart=%s,qnameHref=%s",
+                             xmlSecErrorsSafeString(node->name),
+                             xmlSecErrorsSafeString(qnameLocalPart),
+                             xmlSecErrorsSafeString(qnameHref));
         if(qnamePrefix != NULL) {
             xmlFree(qnamePrefix);
         }
@@ -1755,13 +1708,10 @@ xmlSecQName2BitMaskGetStringFromBitMask(xmlSecQName2BitMaskInfoConstPtr info,
 
     qnameInfo = xmlSecQName2BitMaskGetInfo(info, mask);
     if(qnameInfo == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecQName2BitMaskGetInfo",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s,mask=%d",
-                    xmlSecErrorsSafeString(node->name),
-                    mask);
+        xmlSecInternalError3("xmlSecQName2BitMaskGetInfo", NULL,
+                             "node=%s,mask=%d",
+                             xmlSecErrorsSafeString(node->name),
+                             mask);
         return(NULL);
     }
 
@@ -1813,12 +1763,8 @@ xmlSecQName2BitMaskNodesRead(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr* n
 
         ret = xmlSecQName2BitMaskGetBitMaskFromString(info, cur, content, &tmp);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecQName2BitMaskGetBitMaskFromString",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "value=%s",
-                        xmlSecErrorsSafeString(content));
+            xmlSecInternalError2("xmlSecQName2BitMaskGetBitMaskFromString", NULL,
+                                 "value=%s", xmlSecErrorsSafeString(content));
             xmlFree(content);
             return(-1);
         }
@@ -1826,12 +1772,8 @@ xmlSecQName2BitMaskNodesRead(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr* n
 
         if((stopOnUnknown != 0) && (tmp == 0)) {
             /* todo: better error */
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecQName2BitMaskGetBitMaskFromString",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "value=%s",
-                        xmlSecErrorsSafeString(content));
+            xmlSecInternalError2("xmlSecQName2BitMaskGetBitMaskFromString", NULL,
+                                 "value=%s", xmlSecErrorsSafeString(content));
             return(-1);
         }
 

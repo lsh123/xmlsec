@@ -100,11 +100,7 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         /* write iv to the output */
         ret = xmlSecBufferAppend(out, ctx->iv, ivLen);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(cipherName),
-                        "xmlSecBufferAppend",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "size=%d", ivLen);
+            xmlSecInternalError2("xmlSecBufferAppend", cipherName, "size=%d", ivLen);
             return(-1);
         }
 
@@ -122,11 +118,7 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         /* and remove from input */
         ret = xmlSecBufferRemoveHead(in, ivLen);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(cipherName),
-                        "xmlSecBufferRemoveHead",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "size=%d", ivLen);
+            xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName, "size=%d", ivLen);
             return(-1);
         }
     }
@@ -184,11 +176,9 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     outSize = xmlSecBufferGetSize(out);
     ret = xmlSecBufferSetMaxSize(out, outSize + inSize + blockLen);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(cipherName),
-                    "xmlSecBufferSetMaxSize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "size=%d", (int)(outSize + inSize + blockLen));
+        xmlSecInternalError2("xmlSecBufferSetMaxSize",
+                             xmlSecErrorsSafeString(cipherName),
+                            "size=%d", (int)(outSize + inSize + blockLen));
         return(-1);
     }
     outBuf  = xmlSecBufferGetData(out) + outSize;
@@ -217,11 +207,8 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     /* set correct output buffer size */
     ret = xmlSecBufferSetSize(out, outSize + outLen);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(cipherName),
-                    "xmlSecBufferSetSize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "size=%d", (int)(outSize + outLen));
+        xmlSecInternalError2("xmlSecBufferSetSize", cipherName,
+                             "size=%d", (int)(outSize + outLen));
         return(-1);
     }
 
@@ -271,22 +258,14 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdate(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     inBuf  = xmlSecBufferGetData(in);
     ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, inBuf, inBlocksLen, out, cipherName, 0); /* not final */
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(cipherName),
-                    "xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    NULL);
+        xmlSecInternalError("xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock", cipherName);
         return(-1);
     }
 
     /* remove the processed block from input */
     ret = xmlSecBufferRemoveHead(in, inBlocksLen);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(cipherName),
-                    "xmlSecBufferRemoveHead",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "size=%d", (int)inSize);
+        xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName, "size=%d", (int)inSize);
         return(-1);
     }
 
@@ -366,11 +345,7 @@ xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         /* update the last 1 or 2 blocks with padding */
         ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, ctx->pad, inSize + padLen, out, cipherName, 1); /* final */
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(cipherName),
-                        "xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        NULL);
+            xmlSecInternalError("xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock", cipherName);
             return(-1);
         }
     } else {
@@ -379,11 +354,7 @@ xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         /* update the last one block with padding */
         ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, inBuf, inSize, out, cipherName, 1); /* final */
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(cipherName),
-                        "xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        NULL);
+            xmlSecInternalError("xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock", cipherName);
             return(-1);
         }
 
@@ -416,11 +387,7 @@ xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         /* remove the padding */
         ret = xmlSecBufferRemoveTail(out, padLen);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(cipherName),
-                        "xmlSecBufferRemoveTail",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "size=%d", (int)padLen);
+            xmlSecInternalError2("xmlSecBufferRemoveTail", cipherName, "size=%d", (int)padLen);
             return(-1);
         }
     }
@@ -428,11 +395,7 @@ xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     /* remove the processed block from input */
     ret = xmlSecBufferRemoveHead(in, inSize);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(cipherName),
-                    "xmlSecBufferRemoveHead",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "size=%d", (int)inSize);
+        xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName, "size=%d", (int)inSize);
         return(-1);
     }
 
@@ -655,11 +618,8 @@ xmlSecOpenSSLEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSe
                         (transform->operation == xmlSecTransformOperationEncrypt) ? 1 : 0,
                         xmlSecTransformGetName(transform), transformCtx);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "xmlSecOpenSSLEvpBlockCipherCtxInit",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError("xmlSecOpenSSLEvpBlockCipherCtxInit",
+                                    xmlSecTransformGetName(transform));
                 return(-1);
             }
         }
@@ -677,11 +637,8 @@ xmlSecOpenSSLEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSe
                                                 xmlSecTransformGetName(transform),
                                                 transformCtx);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "xmlSecOpenSSLEvpBlockCipherCtxUpdate",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError("xmlSecOpenSSLEvpBlockCipherCtxUpdate",
+                                    xmlSecTransformGetName(transform));
                 return(-1);
             }
         }
@@ -691,11 +648,8 @@ xmlSecOpenSSLEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSe
                                             xmlSecTransformGetName(transform),
                                             transformCtx);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "xmlSecOpenSSLEvpBlockCipherCtxFinal",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError("xmlSecOpenSSLEvpBlockCipherCtxFinal",
+                                    xmlSecTransformGetName(transform));
                 return(-1);
             }
             transform->status = xmlSecTransformStatusFinished;

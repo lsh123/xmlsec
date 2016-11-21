@@ -173,21 +173,13 @@ xmlSecGnuTLSX509CertDup(gnutls_x509_crt_t src) {
 
     buf = xmlSecGnuTLSX509CertBase64DerWrite(src, 0);
     if(buf == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGnuTLSX509CertBase64DerWrite",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecGnuTLSX509CertBase64DerWrite", NULL);
         return (NULL);
     }
 
     res = xmlSecGnuTLSX509CertBase64DerRead(buf);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGnuTLSX509CertBase64DerRead",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecGnuTLSX509CertBase64DerRead", NULL);
         xmlFree(buf);
         return (NULL);
     }
@@ -335,11 +327,7 @@ xmlSecGnuTLSX509CertGetIssuerSerial(gnutls_x509_crt_t cert) {
     /* convert to string */
     res = xmlSecGnuTLSASN1IntegerWrite(buf, bufSize);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGnuTLSASN1IntegerWrite",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecGnuTLSASN1IntegerWrite", NULL);
         xmlFree(buf);
         return(NULL);
     }
@@ -396,11 +384,7 @@ xmlSecGnuTLSX509CertGetSKI(gnutls_x509_crt_t cert) {
     /* convert to string */
     res = xmlSecBase64Encode(buf, bufSize, 0);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBase64Encode",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecBase64Encode", NULL);
         xmlFree(buf);
         return(NULL);
     }
@@ -420,11 +404,7 @@ xmlSecGnuTLSX509CertBase64DerRead(xmlChar* buf) {
     /* usual trick with base64 decoding "in-place" */
     ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, xmlStrlen(buf));
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBase64Decode",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecBase64Decode", NULL);
         return(NULL);
     }
 
@@ -533,11 +513,7 @@ xmlSecGnuTLSX509CertBase64DerWrite(gnutls_x509_crt_t cert, int base64LineWrap) {
     /* convert to string */
     res = xmlSecBase64Encode(buf, bufSize, base64LineWrap);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBase64Encode",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecBase64Encode", NULL);
         xmlFree(buf);
         return(NULL);
     }
@@ -628,21 +604,13 @@ xmlSecGnuTLSX509CrlDup(gnutls_x509_crl_t src) {
 
     buf = xmlSecGnuTLSX509CrlBase64DerWrite(src, 0);
     if(buf == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGnuTLSX509CrlBase64DerWrite",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecGnuTLSX509CrlBase64DerWrite", NULL);
         return (NULL);
     }
 
     res = xmlSecGnuTLSX509CrlBase64DerRead(buf);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGnuTLSX509CrlBase64DerRead",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecGnuTLSX509CrlBase64DerRead", NULL);
         xmlFree(buf);
         return (NULL);
     }
@@ -707,11 +675,7 @@ xmlSecGnuTLSX509CrlBase64DerRead(xmlChar* buf) {
     /* usual trick with base64 decoding "in-place" */
     ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, xmlStrlen(buf));
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBase64Decode",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecBase64Decode", NULL);
         return(NULL);
     }
 
@@ -820,11 +784,7 @@ xmlSecGnuTLSX509CrlBase64DerWrite(gnutls_x509_crl_t crl, int base64LineWrap) {
     /* convert to string */
     res = xmlSecBase64Encode(buf, bufSize, base64LineWrap);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBase64Encode",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecBase64Encode", NULL);
         xmlFree(buf);
         return(NULL);
     }
@@ -1099,11 +1059,7 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
 
                 ret = xmlSecPtrListAdd(certsList, cert);
                 if(ret < 0) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                NULL,
-                                "xmlSecPtrListAdd(certsList)",
-                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                                XMLSEC_ERRORS_NO_MESSAGE);
+                    xmlSecInternalError("xmlSecPtrListAdd(certsList)", NULL);
                     goto done;
                 }
                 cert = NULL; /* owned by certsList now */
@@ -1124,7 +1080,7 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     NULL,
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_R_KEY_NOT_FOUND,
                     "Private key was not found in pkcs12 object");
         goto done;
     }
@@ -1171,11 +1127,7 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
             if((key_id_size == cert_id_size) && (memcmp(key_id, cert_id, key_id_size) == 0)) {
                 (*key_cert) = xmlSecGnuTLSX509CertDup(tmp);
                 if((*key_cert) == NULL) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                NULL,
-                                "xmlSecGnuTLSX509CertDup",
-                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                                XMLSEC_ERRORS_NO_MESSAGE);
+                    xmlSecInternalError("xmlSecGnuTLSX509CertDup", NULL);
                     goto done;
                 }
 
@@ -1188,7 +1140,7 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         NULL,
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_R_CERT_NOT_FOUND,
                         "Certificate for the private key was not found in pkcs12 object");
             goto done;
         }
@@ -1234,21 +1186,13 @@ xmlSecGnuTLSCreateKeyDataAndAdoptPrivKey(gnutls_x509_privkey_t priv_key) {
     case GNUTLS_PK_RSA:
         res = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataRsaId);
         if(res == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeyDataCreate",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "xmlSecGnuTLSKeyDataRsaId");
+            xmlSecInternalError("xmlSecKeyDataCreate(KeyDataRsaId)", NULL);
             return(NULL);
         }
 
         ret = xmlSecGnuTLSKeyDataRsaAdoptPrivateKey(res, priv_key);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecGnuTLSKeyDataRsaAdoptPrivateKey",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "xmlSecGnuTLSKeyDataRsaId");
+            xmlSecInternalError("xmlSecGnuTLSKeyDataRsaAdoptPrivateKey(KeyDataRsaId)", NULL);
             xmlSecKeyDataDestroy(res);
             return(NULL);
         }
@@ -1259,21 +1203,13 @@ xmlSecGnuTLSCreateKeyDataAndAdoptPrivKey(gnutls_x509_privkey_t priv_key) {
     case GNUTLS_PK_DSA:
         res = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataDsaId);
         if(res == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeyDataCreate",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "xmlSecGnuTLSKeyDataDsaId");
+            xmlSecInternalError("xmlSecKeyDataCreate(KeyDataDsaId)", NULL);
             return(NULL);
         }
 
         ret = xmlSecGnuTLSKeyDataDsaAdoptPrivateKey(res, priv_key);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecGnuTLSKeyDataDsaAdoptPrivateKey",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "xmlSecGnuTLSKeyDataDsaId");
+            xmlSecInternalError("xmlSecGnuTLSKeyDataDsaAdoptPrivateKey(KeyDataDsaId)", NULL);
             xmlSecKeyDataDestroy(res);
             return(NULL);
         }
@@ -1535,7 +1471,7 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
                     xmlSecError(XMLSEC_ERRORS_HERE,
                                 NULL,
                                 "",
-                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                                XMLSEC_ERRORS_R_INVALID_SIZE,
                                 "Not enough space: size=%d", (int)attrsSize);
                     goto done;
                 }
@@ -1631,7 +1567,7 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
                     xmlSecError(XMLSEC_ERRORS_HERE,
                                 NULL,
                                 "",
-                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                                XMLSEC_ERRORS_R_INVALID_DATA,
                                 "Unexpected character %c (expected space or ',' or ';')",
                                 ch);
                     goto done;
@@ -1653,7 +1589,7 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_R_INVALID_DATA,
                     "Unexpected state %d at the end of parsing",
                     (int)state);
         goto done;

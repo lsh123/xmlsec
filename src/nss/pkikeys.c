@@ -232,11 +232,7 @@ xmlSecNssPKIAdoptKey(SECKEYPrivateKey *privkey,
     case rsaKey:
         data = xmlSecKeyDataCreate(xmlSecNssKeyDataRsaId);
         if(data == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeyDataCreate",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "xmlSecNssKeyDataRsaId");
+            xmlSecInternalError("xmlSecKeyDataCreate(KeyDataRsaId)", NULL);
             return(NULL);
         }
         break;
@@ -245,11 +241,7 @@ xmlSecNssPKIAdoptKey(SECKEYPrivateKey *privkey,
     case dsaKey:
         data = xmlSecKeyDataCreate(xmlSecNssKeyDataDsaId);
         if(data == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeyDataCreate",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "xmlSecNssKeyDataDsaId");
+            xmlSecInternalError("xmlSecKeyDataCreate", NULL);
             return(NULL);
         }
         break;
@@ -266,11 +258,7 @@ xmlSecNssPKIAdoptKey(SECKEYPrivateKey *privkey,
     xmlSecAssert2(data != NULL, NULL);
     ret = xmlSecNssPKIKeyDataAdoptKey(data, privkey, pubkey);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecNssPKIKeyDataAdoptKey",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecNssPKIKeyDataAdoptKey", NULL);
         xmlSecKeyDataDestroy(data);
         return(NULL);
     }
@@ -380,11 +368,8 @@ xmlSecNssPKIKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlSecAssert2(ctxSrc != NULL, -1);
 
     if (xmlSecNSSPKIKeyDataCtxDup(ctxDst, ctxSrc) != 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                xmlSecErrorsSafeString(xmlSecKeyDataGetName(dst)),
-                "xmlSecNssPKIKeydataCtxDup",
-                XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecNssPKIKeydataCtxDup",
+                            xmlSecKeyDataGetName(dst));
         return(-1);
     }
 
@@ -640,12 +625,8 @@ xmlSecNssKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         goto done;
     }
     if(xmlSecNssNodeGetBigNumValue(arena, cur, &(pubkey->u.dsa.params.prime)) == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecNssNodeGetBigNumValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeDSAP));
+        xmlSecInternalError("xmlSecNssNodeGetBigNumValue(NodeDSAP)",
+                            xmlSecKeyDataKlassGetName(id));
         ret = -1;
         goto done;
     }
@@ -663,12 +644,8 @@ xmlSecNssKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         goto done;
     }
     if(xmlSecNssNodeGetBigNumValue(arena, cur, &(pubkey->u.dsa.params.subPrime)) == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecNssNodeGetBigNumValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeDSAQ));
+        xmlSecInternalError("xmlSecNssNodeGetBigNumValue(NodeDSAQ)",
+                            xmlSecKeyDataKlassGetName(id));
         ret = -1;
         goto done;
     }
@@ -686,12 +663,8 @@ xmlSecNssKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         goto done;
     }
     if(xmlSecNssNodeGetBigNumValue(arena, cur, &(pubkey->u.dsa.params.base)) == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecNssNodeGetBigNumValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeDSAG));
+        xmlSecInternalError("xmlSecNssNodeGetBigNumValue(NodeDSAG)",
+                            xmlSecKeyDataKlassGetName(id));
         ret = -1;
         goto done;
     }
@@ -716,11 +689,8 @@ xmlSecNssKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         goto done;
     }
     if(xmlSecNssNodeGetBigNumValue(arena, cur, &(pubkey->u.dsa.publicValue)) == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecNssNodeGetBigNumValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s", xmlSecErrorsSafeString(xmlSecNodeDSAY));
+        xmlSecInternalError("xmlSecNssNodeGetBigNumValue(NodeDSAY)",
+                            xmlSecKeyDataKlassGetName(id));
         ret = -1;
         goto done;
     }
@@ -764,33 +734,24 @@ xmlSecNssKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     data = xmlSecKeyDataCreate(id);
     if(data == NULL ) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecKeyDataCreate",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecKeyDataCreate",
+                            xmlSecKeyDataKlassGetName(id));
         ret = -1;
         goto done;
     }
 
     ret = xmlSecNssPKIKeyDataAdoptKey(data, NULL, pubkey);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                    "xmlSecNssPKIKeyDataAdoptKey",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecNssPKIKeyDataAdoptKey",
+                            xmlSecKeyDataGetName(data));
         goto done;
     }
     pubkey = NULL;
 
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                    "xmlSecKeySetValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecKeySetValue",
+                            xmlSecKeyDataGetName(data));
         goto done;
     }
     data = NULL;
@@ -837,66 +798,42 @@ xmlSecNssKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     /* first is P node */
     cur = xmlSecAddChild(node, xmlSecNodeDSAP, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeDSAP));
+        xmlSecInternalError("xmlSecAddChild(NodeDSAP)",
+                            xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
     ret = xmlSecNssNodeSetBigNumValue(cur, &(ctx->pubkey->u.dsa.params.prime), 1);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecNssNodeSetBigNumValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeDSAP));
+        xmlSecInternalError("xmlSecNssNodeSetBigNumValue(NodeDSAP)",
+                            xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
 
     /* next is Q node. */
     cur = xmlSecAddChild(node, xmlSecNodeDSAQ, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeDSAQ));
+        xmlSecInternalError("xmlSecAddChild(NodeDSAQ)",
+                            xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
     ret = xmlSecNssNodeSetBigNumValue(cur, &(ctx->pubkey->u.dsa.params.subPrime), 1);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecNssNodeSetBigNumValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeDSAQ));
+        xmlSecInternalError("xmlSecNssNodeSetBigNumValue(NodeDSAQ)",
+                            xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
 
     /* next is G node. */
     cur = xmlSecAddChild(node, xmlSecNodeDSAG, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeDSAG));
+        xmlSecInternalError("xmlSecAddChild(NodeDSAG)",
+                            xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
     ret = xmlSecNssNodeSetBigNumValue(cur, &(ctx->pubkey->u.dsa.params.base), 1);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecNssNodeSetBigNumValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeDSAG));
+        xmlSecInternalError("xmlSecNssNodeSetBigNumValue(NodeDSAG)",
+                            xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
 
@@ -905,25 +842,18 @@ xmlSecNssKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     /* next is Y node. */
     cur = xmlSecAddChild(node, xmlSecNodeDSAY, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeDSAY));
+        xmlSecInternalError("xmlSecAddChild(NodeDSAY)",
+                            xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
     ret = xmlSecNssNodeSetBigNumValue(cur, &(ctx->pubkey->u.dsa.publicValue), 1);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecNssNodeSetBigNumValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeDSAY));
+        xmlSecInternalError("xmlSecNssNodeSetBigNumValue(NodeDSAY)",
+                            xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
 
+    /* done */
     return(0);
 }
 
@@ -980,11 +910,8 @@ xmlSecNssKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKe
 
     ret = xmlSecNssPKIKeyDataAdoptKey(data, privkey, pubkey);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                    "xmlSecNssPKIKeyDataAdoptKey",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecNssPKIKeyDataAdoptKey",
+                            xmlSecKeyDataGetName(data));
         goto done;
     }
 
@@ -1276,12 +1203,8 @@ xmlSecNssKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         goto done;
     }
     if(xmlSecNssNodeGetBigNumValue(arena, cur, &(pubkey->u.rsa.modulus)) == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecNssNodeGetBigNumValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeRSAModulus));
+        xmlSecInternalError("xmlSecNssNodeGetBigNumValue(NodeRSAModulus)",
+                            xmlSecKeyDataKlassGetName(id));
         ret = -1;
         goto done;
     }
@@ -1299,12 +1222,8 @@ xmlSecNssKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         goto done;
     }
     if(xmlSecNssNodeGetBigNumValue(arena, cur, &(pubkey->u.rsa.publicExponent)) == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecNssNodeGetBigNumValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeRSAExponent));
+        xmlSecInternalError("xmlSecNssNodeGetBigNumValue(NodeRSAExponent)",
+                            xmlSecKeyDataKlassGetName(id));
         ret = -1;
         goto done;
     }
@@ -1328,22 +1247,16 @@ xmlSecNssKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     data = xmlSecKeyDataCreate(id);
     if(data == NULL ) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecKeyDataCreate",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecKeyDataCreate",
+                            xmlSecKeyDataKlassGetName(id));
         ret = -1;
         goto done;
     }
 
     ret = xmlSecNssPKIKeyDataAdoptKey(data, NULL, pubkey);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecNssPKIKeyDataAdoptKey",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecNssPKIKeyDataAdoptKey",
+                            xmlSecKeyDataKlassGetName(id));
         xmlSecKeyDataDestroy(data);
         goto done;
     }
@@ -1351,11 +1264,8 @@ xmlSecNssKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecKeySetValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecKeySetValue",
+                            xmlSecKeyDataKlassGetName(id));
         xmlSecKeyDataDestroy(data);
         goto done;
     }
@@ -1404,44 +1314,28 @@ xmlSecNssKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     /* first is Modulus node */
     cur = xmlSecAddChild(node, xmlSecNodeRSAModulus, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeRSAModulus));
+        xmlSecInternalError("xmlSecAddChild(NodeRSAModulus)",
+                            xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
     ret = xmlSecNssNodeSetBigNumValue(cur, &(ctx->pubkey->u.rsa.modulus), 1);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecNssNodeSetBigNumValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeRSAModulus));
+        xmlSecInternalError("xmlSecNssNodeSetBigNumValue(NodeRSAModulus)",
+                            xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
 
     /* next is Exponent node. */
     cur = xmlSecAddChild(node, xmlSecNodeRSAExponent, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeRSAExponent));
+        xmlSecInternalError("xmlSecAddChild(NodeRSAExponent)",
+                            xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
     ret = xmlSecNssNodeSetBigNumValue(cur, &(ctx->pubkey->u.rsa.publicExponent), 1);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecNssNodeSetBigNumValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeRSAExponent));
+        xmlSecInternalError("xmlSecNssNodeSetBigNumValue(NodeRSAExponent)",
+                            xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
 
@@ -1481,11 +1375,8 @@ xmlSecNssKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKe
 
     ret = xmlSecNssPKIKeyDataAdoptKey(data, privkey, pubkey);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                    "xmlSecNssPKIKeyDataAdoptKey",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecNssPKIKeyDataAdoptKey",
+                            xmlSecKeyDataGetName(data));
         goto done;
     }
 

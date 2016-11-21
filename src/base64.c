@@ -167,11 +167,7 @@ xmlSecBase64CtxCreate(int encode, int columns) {
 
     ret = xmlSecBase64CtxInitialize(ctx, encode, columns);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBase64CtxInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecBase64CtxInitialize", NULL);
         xmlSecBase64CtxDestroy(ctx);
         return(NULL);
     }
@@ -254,22 +250,14 @@ xmlSecBase64CtxUpdate(xmlSecBase64CtxPtr ctx,
         ret = xmlSecBase64CtxEncode(ctx, in, inSize, &inResSize,
                                     out, outSize, &outResSize);
         if((ret < 0) || (inResSize != inSize)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecBase64CtxEncode",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecBase64CtxEncode", NULL);
             return(-1);
         }
     } else {
         ret = xmlSecBase64CtxDecode(ctx, in, inSize, &inResSize,
                                     out, outSize, &outResSize);
         if((ret < 0) || (inResSize != inSize)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecBase64CtxDecode",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecBase64CtxDecode", NULL);
             return(-1);
         }
     }
@@ -302,20 +290,12 @@ xmlSecBase64CtxFinal(xmlSecBase64CtxPtr ctx,
     if(ctx->encode != 0) {
         ret = xmlSecBase64CtxEncodeFinal(ctx, out, outSize, &outResSize);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecBase64CtxEncodeFinal",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "outSize=%d", outSize);
+            xmlSecInternalError2("xmlSecBase64CtxEncodeFinal", NULL, "outSize=%d", outSize);
             return(-1);
         }
     } else {
         if(!xmlSecBase64CtxDecodeIsFinished(ctx)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecBase64CtxIsFinished",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecBase64CtxIsFinished", NULL);
             return(-1);
         }
     }
@@ -516,11 +496,7 @@ xmlSecBase64CtxEncode(xmlSecBase64CtxPtr ctx,
             case xmlSecBase64StatusNext:
             case xmlSecBase64StatusDone:
             case xmlSecBase64StatusFailed:
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "xmlSecBase64CtxEncodeByte",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "status=%d", status);
+                xmlSecInternalError2("xmlSecBase64CtxEncodeByte", NULL, "status=%d", status);
                 return(-1);
         }
     }
@@ -553,11 +529,7 @@ xmlSecBase64CtxEncodeFinal(xmlSecBase64CtxPtr ctx,
                 break;
             case xmlSecBase64StatusNext:
             case xmlSecBase64StatusFailed:
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "xmlSecBase64CtxEncodeByteFinal",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "status=%d", status);
+                xmlSecInternalError2("xmlSecBase64CtxEncodeByteFinal", NULL, "status=%d", status);
                 return(-1);
         }
     }
@@ -609,11 +581,7 @@ xmlSecBase64CtxDecode(xmlSecBase64CtxPtr ctx,
             case xmlSecBase64StatusDone:
                 break;
             case xmlSecBase64StatusFailed:
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "xmlSecBase64CtxDecodeByte",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "status=%d", status);
+                xmlSecInternalError2("xmlSecBase64CtxDecodeByte", NULL, "status=%d", status);
                 return(-1);
         }
     }
@@ -662,11 +630,7 @@ xmlSecBase64Encode(const xmlSecByte *buf, xmlSecSize len, int columns) {
 
     ret = xmlSecBase64CtxInitialize(&ctx, 1, columns);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBase64CtxInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecBase64CtxInitialize", NULL);
         return(NULL);
     }
 
@@ -688,11 +652,7 @@ xmlSecBase64Encode(const xmlSecByte *buf, xmlSecSize len, int columns) {
 
     ret = xmlSecBase64CtxUpdate(&ctx, buf, len, (xmlSecByte*)ptr, size);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBase64CtxUpdate",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "len=%d", len);
+        xmlSecInternalError2("xmlSecBase64CtxUpdate", NULL, "len=%d", len);
         xmlFree(ptr);
         xmlSecBase64CtxFinalize(&ctx);
         return(NULL);
@@ -701,11 +661,7 @@ xmlSecBase64Encode(const xmlSecByte *buf, xmlSecSize len, int columns) {
 
     ret = xmlSecBase64CtxFinal(&ctx, ((xmlSecByte*)ptr) + size_update, size - size_update);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBase64CtxFinal",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecBase64CtxFinal", NULL);
         xmlFree(ptr);
         xmlSecBase64CtxFinalize(&ctx);
         return(NULL);
@@ -741,21 +697,13 @@ xmlSecBase64Decode(const xmlChar* str, xmlSecByte *buf, xmlSecSize len) {
 
     ret = xmlSecBase64CtxInitialize(&ctx, 0, 0);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBase64CtxInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecBase64CtxInitialize", NULL);
         return(-1);
     }
 
     ret = xmlSecBase64CtxUpdate(&ctx, (const xmlSecByte*)str, xmlStrlen(str), buf, len);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBase64CtxUpdate",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecBase64CtxUpdate", NULL);
         xmlSecBase64CtxFinalize(&ctx);
         return(-1);
     }
@@ -763,11 +711,7 @@ xmlSecBase64Decode(const xmlChar* str, xmlSecByte *buf, xmlSecSize len) {
     size_update = ret;
     ret = xmlSecBase64CtxFinal(&ctx, buf + size_update, len - size_update);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBase64CtxFinal",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecBase64CtxFinal", NULL);
         xmlSecBase64CtxFinalize(&ctx);
         return(-1);
     }
@@ -873,11 +817,8 @@ xmlSecBase64Initialize(xmlSecTransformPtr transform) {
     transform->operation = xmlSecTransformOperationDecode;
     ret = xmlSecBase64CtxInitialize(ctx, 0, xmlSecBase64GetDefaultLineSize());
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlSecBase64CtxInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecBase64CtxInitialize",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -933,11 +874,9 @@ xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
                 }
                 ret = xmlSecBufferSetMaxSize(out, outSize + outLen);
                 if(ret < 0) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                                "xmlSecBufferSetMaxSize",
-                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                                "size=%d", outSize + outLen);
+                    xmlSecInternalError2("xmlSecBufferSetMaxSize",
+                                         xmlSecTransformGetName(transform),
+                                         "size=%d", outSize + outLen);
                     return(-1);
                 }
 
@@ -946,11 +885,8 @@ xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
                                             xmlSecBufferGetData(out) + outSize,
                                             outLen);
                 if(ret < 0) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                                "xmlSecBase64CtxUpdate",
-                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                                XMLSEC_ERRORS_NO_MESSAGE);
+                    xmlSecInternalError("xmlSecBase64CtxUpdate",
+                                        xmlSecTransformGetName(transform));
                     return(-1);
                 }
                 outLen = ret;
@@ -958,22 +894,18 @@ xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
                 /* set correct size */
                 ret = xmlSecBufferSetSize(out, outSize + outLen);
                 if(ret < 0) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                                "xmlSecBufferSetSize",
-                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                                "size=%d", outSize + outLen);
+                    xmlSecInternalError2("xmlSecBufferSetSize",
+                                         xmlSecTransformGetName(transform),
+                                         "size=%d", outSize + outLen);
                     return(-1);
                 }
 
                 /* remove chunk from input */
                 ret = xmlSecBufferRemoveHead(in, inSize);
                 if(ret < 0) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                                "xmlSecBufferRemoveHead",
-                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                                "size=%d", inSize);
+                    xmlSecInternalError2("xmlSecBufferRemoveHead",
+                                         xmlSecTransformGetName(transform),
+                                         "size=%d", inSize);
                     return(-1);
                 }
             }
@@ -983,22 +915,17 @@ xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
 
                 ret = xmlSecBufferSetMaxSize(out, outSize + 16);
                 if(ret < 0) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                                "xmlSecBufferSetMaxSize",
-                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                                "size=%d", outSize + 16);
+                    xmlSecInternalError2("xmlSecBufferSetMaxSize",
+                                         xmlSecTransformGetName(transform),
+                                         "size=%d", outSize + 16);
                     return(-1);
                 }
 
                 /* add from ctx buffer */
                 ret = xmlSecBase64CtxFinal(ctx, xmlSecBufferGetData(out) + outSize, 16);
                 if(ret < 0) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                                "xmlSecBase64CtxFinal",
-                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                                XMLSEC_ERRORS_NO_MESSAGE);
+                    xmlSecInternalError("xmlSecBase64CtxFinal",
+                                        xmlSecTransformGetName(transform));
                     return(-1);
                 }
                 outLen = ret;
@@ -1006,11 +933,9 @@ xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
                 /* set correct size */
                 ret = xmlSecBufferSetSize(out, outSize + outLen);
                 if(ret < 0) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                                "xmlSecBufferSetSize",
-                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                                "size=%d", outSize + outLen);
+                    xmlSecInternalError2("xmlSecBufferSetSize",
+                                         xmlSecTransformGetName(transform),
+                                         "size=%d", outSize + outLen);
                     return(-1);
                 }
                 transform->status = xmlSecTransformStatusFinished;

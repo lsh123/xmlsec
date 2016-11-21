@@ -316,11 +316,8 @@ xmlSecOpenSSLEvpSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
 
     pKey = xmlSecOpenSSLEvpKeyDataGetEvp(value);
     if(pKey == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlSecOpenSSLEvpKeyDataGetEvp",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecOpenSSLEvpKeyDataGetEvp",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -330,11 +327,8 @@ xmlSecOpenSSLEvpSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
 
     ctx->pKey = xmlSecOpenSSLEvpKeyDup(pKey);
     if(ctx->pKey == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlSecOpenSSLEvpKeyDup",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecOpenSSLEvpKeyDup",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -467,11 +461,8 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
 
         ret = xmlSecBufferRemoveHead(in, inSize);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlSecBufferRemoveHead",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecBufferRemoveHead",
+                                xmlSecTransformGetName(transform));
             return(-1);
         }
     }
@@ -485,11 +476,9 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
             signSize = EVP_PKEY_size(ctx->pKey);
             ret = xmlSecBufferSetMaxSize(out, signSize);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "xmlSecBufferSetMaxSize",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "size=%u", signSize);
+                xmlSecInternalError2("xmlSecBufferSetMaxSize",
+                                     xmlSecTransformGetName(transform),
+                                     "size=%u", signSize);
                 return(-1);
             }
 
@@ -501,11 +490,9 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
 
             ret = xmlSecBufferSetSize(out, signSize);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "xmlSecBufferSetSize",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "size=%u", signSize);
+                xmlSecInternalError2("xmlSecBufferSetSize",
+                                     xmlSecTransformGetName(transform),
+                                    "size=%u", signSize);
                 return(-1);
             }
         }

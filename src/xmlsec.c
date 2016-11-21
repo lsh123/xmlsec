@@ -38,30 +38,18 @@ xmlSecInit(void) {
 
 #ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
     if(xmlSecCryptoDLInit() < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecCryptoDLInit",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecCryptoDLInit", NULL);
         return(-1);
     }
 #endif /* XMLSEC_NO_CRYPTO_DYNAMIC_LOADING */
 
     if(xmlSecKeyDataIdsInit() < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeyDataIdsInit",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecKeyDataIdsInit", NULL);
         return(-1);
     }
 
     if(xmlSecTransformIdsInit() < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecTransformIdsInit",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecTransformIdsInit", NULL);
         return(-1);
     }
 
@@ -88,11 +76,7 @@ xmlSecShutdown(void) {
 
 #ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
     if(xmlSecCryptoDLShutdown() < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecCryptoDLShutdown",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecCryptoDLShutdown", NULL);
         res = -1;
     }
 #endif /* XMLSEC_NO_CRYPTO_DYNAMIC_LOADING */
@@ -132,7 +116,7 @@ xmlSecCheckVersionExt(int major, int minor, int subminor, xmlSecCheckVersionMode
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     NULL,
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_R_INVALID_VERSION,
                     "expected major version=%d;real major version=%d",
                     XMLSEC_VERSION_MAJOR, major);
         return(0);
@@ -144,7 +128,7 @@ xmlSecCheckVersionExt(int major, int minor, int subminor, xmlSecCheckVersionMode
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         NULL,
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_R_INVALID_VERSION,
                         "mode=exact;expected minor version=%d;real minor version=%d;expected subminor version=%d;real subminor version=%d",
                         XMLSEC_VERSION_MINOR, minor,
                         XMLSEC_VERSION_SUBMINOR, subminor);
@@ -158,7 +142,7 @@ xmlSecCheckVersionExt(int major, int minor, int subminor, xmlSecCheckVersionMode
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         NULL,
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_R_INVALID_VERSION,
                         "mode=abi compatible;expected minor version=%d;real minor version=%d;expected subminor version=%d;real subminor version=%d",
                         XMLSEC_VERSION_MINOR, minor,
                         XMLSEC_VERSION_SUBMINOR, subminor);

@@ -182,11 +182,8 @@ xmlSecMSCryptoKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
 
         ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx, NULL);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-                        "xmlSecKeyInfoCtxInitialize",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecKeyInfoCtxInitialize",
+                                xmlSecKeyStoreGetName(store));
             xmlSecKeyDestroy(key);
             xmlFreeDoc(doc);
             return(-1);
@@ -202,11 +199,8 @@ xmlSecMSCryptoKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
 
         ret = xmlSecKeyInfoNodeRead(cur, key, &keyInfoCtx);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-                        "xmlSecKeyInfoNodeRead",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecKeyInfoNodeRead",
+                                xmlSecKeyStoreGetName(store));
             xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
             xmlSecKeyDestroy(key);
             xmlFreeDoc(doc);
@@ -217,11 +211,8 @@ xmlSecMSCryptoKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
         if(xmlSecKeyIsValid(key)) {
             ret = xmlSecMSCryptoKeysStoreAdoptKey(store, key);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-                            "xmlSecMSCryptoKeysStoreAdoptKey",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError("xmlSecMSCryptoKeysStoreAdoptKey",
+                                    xmlSecKeyStoreGetName(store));
                 xmlSecKeyDestroy(key);
                 xmlFreeDoc(doc);
                 return(-1);
@@ -282,11 +273,8 @@ xmlSecMSCryptoKeysStoreInitialize(xmlSecKeyStorePtr store) {
 
     *ss = xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId);
     if(*ss == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-                    "xmlSecKeyStoreCreate",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "xmlSecSimpleKeysStoreId");
+        xmlSecInternalError("xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId)",
+                            xmlSecKeyStoreGetName(store));
         return(-1);
     }
 
@@ -336,11 +324,8 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
     /* convert name to unicode */
     wcName = xmlSecMSCryptoConvertUtf8ToTstr(name);
     if(wcName == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-                        "xmlSecMSCryptoConvertUtf8ToUnicode",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "wcName");
+        xmlSecInternalError("xmlSecMSCryptoConvertUtf8ToTstr(name)",
+                            xmlSecKeyStoreGetName(store));
         CertCloseStore(hStoreHandle, 0);
         return(NULL);
     }
@@ -478,12 +463,8 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         /* set cert in x509 data */
         x509Data = xmlSecKeyDataCreate(xmlSecMSCryptoKeyDataX509Id);
         if(x509Data == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeyDataCreate",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "data=%s",
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+            xmlSecInternalError("xmlSecKeyDataCreate",
+                                xmlSecKeyDataGetName(x509Data));
             goto done;
         }
 
@@ -500,12 +481,8 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 
         ret = xmlSecMSCryptoKeyDataX509AdoptCert(x509Data, pCertContext2);
         if (ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecMSCryptoKeyDataX509AdoptCert",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "data=%s",
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+            xmlSecInternalError("xmlSecMSCryptoKeyDataX509AdoptCert",
+                                xmlSecKeyDataGetName(x509Data));
             goto done;
         }
         pCertContext2 = NULL;
@@ -523,12 +500,8 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 
         ret = xmlSecMSCryptoKeyDataX509AdoptKeyCert(x509Data, pCertContext2);
         if (ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecMSCryptoKeyDataX509AdoptKeyCert",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "data=%s",
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+            xmlSecInternalError("xmlSecMSCryptoKeyDataX509AdoptKeyCert",
+                                xmlSecKeyDataGetName(x509Data));
             goto done;
         }
         pCertContext2 = NULL;
@@ -536,11 +509,7 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         /* set cert in key data */
         data = xmlSecMSCryptoCertAdopt(pCertContext, keyReq->keyType);
         if(data == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecMSCryptoCertAdopt",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecMSCryptoCertAdopt", NULL);
             goto done;
         }
         pCertContext = NULL;
@@ -548,34 +517,22 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         /* create key and add key data and x509 data to it */
         key = xmlSecKeyCreate();
         if (key == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeyCreate",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecKeyCreate", NULL);
             goto done;
         }
 
         ret = xmlSecKeySetValue(key, data);
         if (ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeySetValue",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "data=%s",
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)));
+            xmlSecInternalError("xmlSecKeySetValue",
+                                xmlSecKeyDataGetName(data));
             goto done;
         }
         data = NULL;
 
         ret = xmlSecKeyAdoptData(key, x509Data);
         if (ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeyAdoptData",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "data=%s",
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+            xmlSecInternalError("xmlSecKeyAdoptData",
+                                xmlSecKeyDataGetName(x509Data));
             goto done;
         }
         x509Data = NULL;
@@ -583,11 +540,8 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         /* Set the name of the key to the given name */
         ret = xmlSecKeySetName(key, name);
         if (ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-                        "xmlSecKeySetName",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecKeySetName",
+                                xmlSecKeyStoreGetName(store));
             goto done;
         }
 

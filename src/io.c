@@ -154,11 +154,7 @@ xmlSecIOInit(void) {
 
     ret = xmlSecPtrListInitialize(&xmlSecAllIOCallbacks, xmlSecIOCallbackPtrListId);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecPtrListPtrInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecPtrListPtrInitialize", NULL);
         return(-1);
     }
 
@@ -226,21 +222,13 @@ xmlSecIORegisterCallbacks(xmlInputMatchCallback matchFunc,
 
     callbacks = xmlSecIOCallbackCreate(matchFunc, openFunc, readFunc, closeFunc);
     if(callbacks == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecIOCallbackCreate",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecIOCallbackCreate", NULL);
         return(-1);
     }
 
     ret = xmlSecPtrListAdd(&xmlSecAllIOCallbacks, callbacks);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecPtrListAdd",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecPtrListAdd", NULL);
         xmlSecIOCallbackDestroy(callbacks);
         return(-1);
     }
@@ -263,11 +251,7 @@ xmlSecIORegisterDefaultCallbacks(void) {
     ret = xmlSecIORegisterCallbacks(xmlIOHTTPMatch, xmlIOHTTPOpen,
                               xmlIOHTTPRead, xmlIOHTTPClose);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecIORegisterCallbacks",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "http");
+        xmlSecInternalError("xmlSecIORegisterCallbacks(http)", NULL);
         return(-1);
     }
 #endif /* LIBXML_HTTP_ENABLED */
@@ -276,11 +260,7 @@ xmlSecIORegisterDefaultCallbacks(void) {
     ret = xmlSecIORegisterCallbacks(xmlIOFTPMatch, xmlIOFTPOpen,
                               xmlIOFTPRead, xmlIOFTPClose);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecIORegisterCallbacks",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "ftp");
+        xmlSecInternalError("xmlSecIORegisterCallbacks(ftp)", NULL);
         return(-1);
     }
 #endif /* LIBXML_FTP_ENABLED */
@@ -288,11 +268,7 @@ xmlSecIORegisterDefaultCallbacks(void) {
     ret = xmlSecIORegisterCallbacks(xmlFileMatch, xmlFileOpen,
                               xmlFileRead, xmlFileClose);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecIORegisterCallbacks",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "file");
+        xmlSecInternalError("xmlSecIORegisterCallbacks(file)", NULL);
         return(-1);
     }
 
@@ -487,11 +463,9 @@ xmlSecTransformInputURIFinalize(xmlSecTransformPtr transform) {
 
     ret = xmlSecTransformInputURIClose(transform);
     if(ret < 0) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-					xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-					"xmlSecTransformInputURIClose",
-					XMLSEC_ERRORS_R_XMLSEC_FAILED,
-					"ret=%d", ret);
+        xmlSecInternalError2("xmlSecTransformInputURIClose",
+                             xmlSecTransformGetName(transform),
+                             "ret=%d", ret);
 		/* ignore the error */
 		/* return; */
 	}

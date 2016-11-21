@@ -266,11 +266,9 @@ xmlSecGCryptDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 
             ret = xmlSecBufferRemoveHead(in, inSize);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "xmlSecBufferRemoveHead",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "size=%d", inSize);
+                xmlSecInternalError2("xmlSecBufferRemoveHead",
+                                     xmlSecTransformGetName(transform),
+                                     "size=%d", inSize);
                 return(-1);
             }
         }
@@ -299,11 +297,9 @@ xmlSecGCryptDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
             if(transform->operation == xmlSecTransformOperationSign) {
                 ret = xmlSecBufferAppend(out, ctx->dgst, ctx->dgstSize);
                 if(ret < 0) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                                "xmlSecBufferAppend",
-                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                                "size=%d", ctx->dgstSize);
+                    xmlSecInternalError2("xmlSecBufferAppend",
+                                         xmlSecTransformGetName(transform),
+                                         "size=%d", ctx->dgstSize);
                     return(-1);
                 }
             }

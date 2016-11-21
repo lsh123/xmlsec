@@ -65,11 +65,7 @@ Noteworthy changes in version 1.4.3 (2008-09-18)
 
     /* NOTE configure.in defines GCRYPT_MIN_VERSION */
     if (!gcry_check_version (GCRYPT_MIN_VERSION)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gcry_check_version",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("gcry_check_version", NULL);
         return(-1);
     }
 
@@ -113,11 +109,7 @@ xmlSecGCryptAppShutdown(void) {
 
     err = gcry_control(GCRYCTL_TERM_SECMEM);
     if (gcry_err_code(err)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gcry_control(GCRYCTL_TERM_SECMEM)",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("gcry_control(GCRYCTL_TERM_SECMEM)", NULL);
         return(-1);
     }
     return(0);
@@ -149,22 +141,14 @@ xmlSecGCryptAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
 
     ret = xmlSecBufferInitialize(&buffer, 4*1024);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBufferInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
         return(NULL);
     }
 
     ret = xmlSecBufferReadFile(&buffer, filename);
     if((ret < 0) || (xmlSecBufferGetData(&buffer) == NULL) || (xmlSecBufferGetSize(&buffer) <= 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBufferReadFile",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "filename=%s", 
-                    xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecBufferReadFile", NULL,
+                             "filename=%s", xmlSecErrorsSafeString(filename));
         xmlSecBufferFinalize(&buffer);
         return(NULL);
     }
@@ -173,12 +157,8 @@ xmlSecGCryptAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
                     xmlSecBufferGetSize(&buffer),
                     format, pwd, pwdCallback, pwdCallbackCtx);
     if(key == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGCryptAppKeyLoadMemory",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "filename=%s",
-                    xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecGCryptAppKeyLoadMemory", NULL,
+                             "filename=%s", xmlSecErrorsSafeString(filename));
         xmlSecBufferFinalize(&buffer);
         return(NULL);
     }
@@ -220,11 +200,7 @@ xmlSecGCryptAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     case xmlSecKeyDataFormatDer:
         key_data = xmlSecGCryptParseDer(data, dataSize, xmlSecGCryptDerKeyTypeAuto);
         if(key_data == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecGCryptParseDer",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecGCryptParseDer", NULL);
             return(NULL);
         }
         break;
@@ -257,23 +233,15 @@ xmlSecGCryptAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     xmlSecAssert2(key_data != NULL, NULL);
     key = xmlSecKeyCreate();
     if(key == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeyCreate",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecKeyCreate", NULL);
         xmlSecKeyDataDestroy(key_data);
         return(NULL);
     }
 
     ret = xmlSecKeySetValue(key, key_data);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeySetValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "data=%s",
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(key_data)));
+        xmlSecInternalError("xmlSecKeySetValue",
+                            xmlSecKeyDataGetName(key_data));
         xmlSecKeyDestroy(key);
         xmlSecKeyDataDestroy(key_data);
         return(NULL);
@@ -490,21 +458,13 @@ xmlSecGCryptAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 
         keysStore = xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId);
         if(keysStore == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeyStoreCreate",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "xmlSecSimpleKeysStoreId");
+            xmlSecInternalError("xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId)", NULL);
             return(-1);
         }
 
         ret = xmlSecKeysMngrAdoptKeysStore(mngr, keysStore);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeysMngrAdoptKeysStore",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecKeysMngrAdoptKeysStore", NULL);
             xmlSecKeyStoreDestroy(keysStore);
             return(-1);
         }
@@ -512,11 +472,7 @@ xmlSecGCryptAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 
     ret = xmlSecGCryptKeysMngrInit(mngr);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGCryptKeysMngrInit",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecGCryptKeysMngrInit", NULL);
         return(-1);
     }
 
@@ -545,21 +501,13 @@ xmlSecGCryptAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key)
 
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeysMngrGetKeysStore",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecKeysMngrGetKeysStore", NULL);
         return(-1);
     }
 
     ret = xmlSecSimpleKeysStoreAdoptKey(store, key);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecSimpleKeysStoreAdoptKey",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecSimpleKeysStoreAdoptKey", NULL);
         return(-1);
     }
 
@@ -586,21 +534,14 @@ xmlSecGCryptAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
 
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeysMngrGetKeysStore",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecKeysMngrGetKeysStore", NULL);
         return(-1);
     }
 
     ret = xmlSecSimpleKeysStoreLoad(store, uri, mngr);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecSimpleKeysStoreLoad",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "uri=%s", xmlSecErrorsSafeString(uri));
+        xmlSecInternalError2("xmlSecSimpleKeysStoreLoad", NULL,
+                             "uri=%s", xmlSecErrorsSafeString(uri));
         return(-1);
     }
 
@@ -627,22 +568,14 @@ xmlSecGCryptAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename,
 
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeysMngrGetKeysStore",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecKeysMngrGetKeysStore", NULL);
         return(-1);
     }
 
     ret = xmlSecSimpleKeysStoreSave(store, filename, type);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecSimpleKeysStoreSave",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "filename=%s",
-                    xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecSimpleKeysStoreSave", NULL,
+                             "filename=%s", xmlSecErrorsSafeString(filename));
         return(-1);
     }
 

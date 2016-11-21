@@ -271,11 +271,8 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
         for(ii = 0; ii < crl_list_length; ++ii) {
             crl_list[ii] = xmlSecPtrListGetItem(crls, ii);
             if(crl_list[ii] == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                            "xmlSecPtrListGetItem(crls)",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError("xmlSecPtrListGetItem(crls)",
+                                    xmlSecKeyDataStoreGetName(store));
                 goto done;
             }
         }
@@ -295,11 +292,8 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
         for(ii = 0; ii < ca_list_length; ++ii) {
             ca_list[ii] = xmlSecPtrListGetItem(&(ctx->certsTrusted), ii);
             if(ca_list[ii] == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                            "xmlSecPtrListGetItem(certsTrusted)",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError("xmlSecPtrListGetItem(certsTrusted)",
+                                    xmlSecKeyDataStoreGetName(store));
                 goto done;
             }
         }
@@ -325,11 +319,8 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
 
         cert = xmlSecPtrListGetItem(certs, ii);
         if(cert == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                        "xmlSecPtrListGetItem(certs)",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecPtrListGetItem(certs)",
+                                xmlSecKeyDataStoreGetName(store));
             goto done;
         }
 
@@ -437,21 +428,15 @@ xmlSecGnuTLSX509StoreAdoptCert(xmlSecKeyDataStorePtr store, gnutls_x509_crt_t ce
     if((type & xmlSecKeyDataTypeTrusted) != 0) {
         ret = xmlSecPtrListAdd(&(ctx->certsTrusted), cert);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                        "xmlSecPtrListAdd(trusted)",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecPtrListAdd(trusted)",
+                                xmlSecKeyDataStoreGetName(store));
             return(-1);
         }
     } else {
         ret = xmlSecPtrListAdd(&(ctx->certsUntrusted), cert);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                        "xmlSecPtrListAdd(untrusted)",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecPtrListAdd(untrusted)",
+                                xmlSecKeyDataStoreGetName(store));
             return(-1);
         }
     }
@@ -474,21 +459,15 @@ xmlSecGnuTLSX509StoreInitialize(xmlSecKeyDataStorePtr store) {
 
     ret = xmlSecPtrListInitialize(&(ctx->certsTrusted), xmlSecGnuTLSX509CrtListId);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                    "xmlSecPtrListInitialize(trusted)",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecPtrListInitialize(trusted)",
+                            xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
 
     ret = xmlSecPtrListInitialize(&(ctx->certsUntrusted), xmlSecGnuTLSX509CrtListId);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                    "xmlSecPtrListInitialize(untrusted)",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecPtrListInitialize(untrusted)",
+                            xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
 
@@ -538,21 +517,13 @@ xmlSecGnuTLSX509DnsEqual(const xmlChar * ll, const xmlChar * rr) {
     /* parse */
     ret = xmlSecGnuTLSDnAttrsParse(ll, ll_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGnuTLSDnAttrsParse(ll)",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecGnuTLSDnAttrsParse(ll)", NULL);
         goto done;
     }
 
     ret = xmlSecGnuTLSDnAttrsParse(rr, rr_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGnuTLSDnAttrsParse(rr)",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecGnuTLSDnAttrsParse(rr)", NULL);
         goto done;
     }
 
@@ -564,11 +535,7 @@ xmlSecGnuTLSX509DnsEqual(const xmlChar * ll, const xmlChar * rr) {
     } else if(ret == 0) {
         res = 0;
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGnuTLSDnAttrsEqual",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecGnuTLSDnAttrsEqual", NULL);
         goto done;
     }
 
@@ -593,11 +560,8 @@ xmlSecGnuTLSX509FindCert(xmlSecPtrListPtr certs,
     for(ii = 0; (ii < sz); ++ii) {
         gnutls_x509_crt_t cert = xmlSecPtrListGetItem(certs, ii);
         if(cert == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecPtrListGetItem",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "pos=%i", (int)ii);
+            xmlSecInternalError2("xmlSecPtrListGetItem", NULL,
+                                 "pos=%i", (int)ii);
             return(NULL);
         }
 
@@ -606,11 +570,8 @@ xmlSecGnuTLSX509FindCert(xmlSecPtrListPtr certs,
 
             tmp = xmlSecGnuTLSX509CertGetSubjectDN(cert);
             if(tmp == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "xmlSecGnuTLSX509CertGetSubjectDN",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "pos=%i", (int)ii);
+                xmlSecInternalError2("xmlSecGnuTLSX509CertGetSubjectDN", NULL,
+                                     "pos=%i", (int)ii);
                 return(NULL);
             }
 
@@ -625,21 +586,15 @@ xmlSecGnuTLSX509FindCert(xmlSecPtrListPtr certs,
 
             tmp1 = xmlSecGnuTLSX509CertGetIssuerDN(cert);
             if(tmp1 == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "xmlSecGnuTLSX509CertGetIssuerDN",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "pos=%i", (int)ii);
+                xmlSecInternalError2("xmlSecGnuTLSX509CertGetIssuerDN", NULL,
+                                     "pos=%i", (int)ii);
                 return(NULL);
             }
 
             tmp2 = xmlSecGnuTLSX509CertGetIssuerSerial(cert);
             if(tmp2 == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "xmlSecGnuTLSX509CertGetIssuerSerial",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "pos=%i", (int)ii);
+                xmlSecInternalError2("xmlSecGnuTLSX509CertGetIssuerSerial", NULL,
+                                     "pos=%i", (int)ii);
                 xmlFree(tmp1);
                 return(NULL);
             }
@@ -656,11 +611,8 @@ xmlSecGnuTLSX509FindCert(xmlSecPtrListPtr certs,
 
             tmp = xmlSecGnuTLSX509CertGetSKI(cert);
             if(tmp == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "xmlSecGnuTLSX509CertGetSKI",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "pos=%i", (int)ii);
+                xmlSecInternalError2("xmlSecGnuTLSX509CertGetSKI", NULL,
+                                     "pos=%i", (int)ii);
                 return(NULL);
             }
 
@@ -688,11 +640,7 @@ xmlSecGnuTLSX509FindSignedCert(xmlSecPtrListPtr certs, gnutls_x509_crt_t cert) {
     /* get subject */
     subject = xmlSecGnuTLSX509CertGetSubjectDN(cert);
     if(subject == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGnuTLSX509CertGetSubjectDN",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecGnuTLSX509CertGetSubjectDN", NULL);
         goto done;
     }
 
@@ -704,21 +652,15 @@ xmlSecGnuTLSX509FindSignedCert(xmlSecPtrListPtr certs, gnutls_x509_crt_t cert) {
 
         tmp = xmlSecPtrListGetItem(certs, ii);
         if(tmp == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecPtrListGetItem",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "pos=%i", (int)ii);
+            xmlSecInternalError2("xmlSecPtrListGetItem", NULL,
+                                 "pos=%i", (int)ii);
             goto done;
         }
 
         issuer = xmlSecGnuTLSX509CertGetIssuerDN(tmp);
         if(issuer == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecGnuTLSX509CertGetIssuerDN",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "pos=%i", (int)ii);
+            xmlSecInternalError2("xmlSecGnuTLSX509CertGetIssuerDN", NULL,
+                                 "pos=%i", (int)ii);
             goto done;
         }
 
@@ -749,11 +691,7 @@ xmlSecGnuTLSX509FindSignerCert(xmlSecPtrListPtr certs, gnutls_x509_crt_t cert) {
     /* get issuer */
     issuer = xmlSecGnuTLSX509CertGetIssuerDN(cert);
     if(issuer == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGnuTLSX509CertGetIssuerDN",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecGnuTLSX509CertGetIssuerDN", NULL);
         goto done;
     }
 
@@ -765,21 +703,15 @@ xmlSecGnuTLSX509FindSignerCert(xmlSecPtrListPtr certs, gnutls_x509_crt_t cert) {
 
         tmp = xmlSecPtrListGetItem(certs, ii);
         if(tmp == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecPtrListGetItem",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "pos=%i", (int)ii);
+            xmlSecInternalError2("xmlSecPtrListGetItem", NULL,
+                                 "pos=%i", (int)ii);
             goto done;
         }
 
         subject = xmlSecGnuTLSX509CertGetSubjectDN(tmp);
         if(subject == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecGnuTLSX509CertGetSubjectDN",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "pos=%i", (int)ii);
+            xmlSecInternalError2("xmlSecGnuTLSX509CertGetSubjectDN", NULL,
+                                 "pos=%i", (int)ii);
             goto done;
         }
 

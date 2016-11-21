@@ -202,12 +202,8 @@ xmlSecGCryptAsn1ParseIntegerSequence(xmlSecByte const **buffer, xmlSecSize *bufl
     memset(&ti, 0, sizeof(ti));
     ret = xmlSecGCryptAsn1ParseTag (&buf, &length, &ti);
     if((ret != 0)  || (ti.tag != TAG_SEQUENCE) || ti.class || !ti.cons || ti.ndef) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGCryptAsn1ParseTag",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "TAG_SEQUENCE is expected: tag=%d",
-                    (int)ti.tag);
+        xmlSecInternalError2("xmlSecGCryptAsn1ParseTag", NULL,
+                            "TAG_SEQUENCE is expected: tag=%d", (int)ti.tag);
         return(-1);
     }
 
@@ -217,12 +213,9 @@ xmlSecGCryptAsn1ParseIntegerSequence(xmlSecByte const **buffer, xmlSecSize *bufl
         ret = xmlSecGCryptAsn1ParseTag (&buf, &length, &ti);
         if((ret != 0) || (ti.tag != TAG_INTEGER) || ti.class || ti.cons || ti.ndef)
         {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecGCryptAsn1ParseTag",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "TAG_INTEGER is expected - index=%d, tag=%d",
-                        (int)idx, (int)ti.tag);
+            xmlSecInternalError3("xmlSecGCryptAsn1ParseTag", NULL,
+                                 "TAG_INTEGER is expected - index=%d, tag=%d",
+                                 (int)idx, (int)ti.tag);
             return(-1);
         }
 
@@ -241,12 +234,9 @@ xmlSecGCryptAsn1ParseIntegerSequence(xmlSecByte const **buffer, xmlSecSize *bufl
 
     /* did we parse everything? */
     if(length > 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGCryptAsn1ParseTag",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "too many params - cur=%d, expected=%d",
-                    (int)(idx - 1), (int)params_size);
+        xmlSecInternalError3("xmlSecGCryptAsn1ParseTag", NULL,
+                             "too many params - cur=%d, expected=%d",
+                             (int)(idx - 1), (int)params_size);
         return(-1);
     }
 
@@ -278,23 +268,15 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         keyparms,  sizeof(keyparms) / sizeof(keyparms[0])
     );
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGCryptAsn1ParseIntegerSequence",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecGCryptAsn1ParseIntegerSequence", NULL);
         goto done;
     }
     keyparms_num = ret;
 
     /* The value of the first integer should be 0. */
     if ((keyparms_num < 1) || (gcry_mpi_cmp_ui(keyparms[0], 0) != 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGCryptAsn1ParseTag",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "num=%d",
-                    (int)keyparms_num);
+        xmlSecInternalError2("xmlSecGCryptAsn1ParseTag", NULL,
+                             "num=%d", (int)keyparms_num);
         goto done;
     }
 
@@ -322,7 +304,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         "Unexpected number of parameters, unknown key type",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_R_INVALID_TYPE,
                         "keyparms_num=%d", (int)keyparms_num);
             goto done;
         }
@@ -337,7 +319,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         "Private DSA key: 6 parameters exepcted",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_R_INVALID_SIZE,
                         "parms_num=%d", (int)keyparms_num);
             goto done;
         }
@@ -378,21 +360,13 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         /* construct key and key data */
         key_data = xmlSecKeyDataCreate(xmlSecGCryptKeyDataDsaId);
         if(key_data == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeyDataCreate",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "xmlSecGCryptKeyDataDsaId");
+            xmlSecInternalError("xmlSecKeyDataCreate(xmlSecGCryptKeyDataDsaId)", NULL);
             goto done;
         }
 
         ret = xmlSecGCryptKeyDataDsaAdoptKeyPair(key_data, s_pub_key, s_priv_key);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecGCryptKeyDataDsaAdoptKey",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "xmlSecGCryptKeyDataDsaId");
+            xmlSecInternalError("xmlSecGCryptKeyDataDsaAdoptKey(xmlSecGCryptKeyDataDsaId)", NULL);
             xmlSecKeyDataDestroy(key_data);
             key_data = NULL;
             goto done;
@@ -407,7 +381,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         "Public DSA key: 5 parameters exepcted",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_R_INVALID_SIZE,
                         "parms_num=%d", (int)keyparms_num);
             goto done;
         }
@@ -429,21 +403,13 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         /* construct key and key data */
         key_data = xmlSecKeyDataCreate(xmlSecGCryptKeyDataDsaId);
         if(key_data == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeyDataCreate",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "xmlSecGCryptKeyDataDsaId");
+            xmlSecInternalError("xmlSecKeyDataCreate(xmlSecGCryptKeyDataDsaId)", NULL);
             goto done;
         }
 
         ret = xmlSecGCryptKeyDataDsaAdoptKeyPair(key_data, s_pub_key, NULL);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecGCryptKeyDataDsaAdoptKey",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "xmlSecGCryptKeyDataDsaId");
+            xmlSecInternalError("xmlSecGCryptKeyDataDsaAdoptKey(xmlSecGCryptKeyDataDsaId)", NULL);
             xmlSecKeyDataDestroy(key_data);
             key_data = NULL;
             goto done;
@@ -459,7 +425,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         "Private RSA key: 9 parameters exepcted",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_R_INVALID_SIZE,
                         "parms_num=%d", (int)keyparms_num);
             goto done;
         }
@@ -503,21 +469,13 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         /* construct key and key data */
         key_data = xmlSecKeyDataCreate(xmlSecGCryptKeyDataRsaId);
         if(key_data == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeyDataCreate",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "xmlSecGCryptKeyDataRsaId");
+            xmlSecInternalError("xmlSecKeyDataCreate(xmlSecGCryptKeyDataRsaId)", NULL);
             goto done;
         }
 
         ret = xmlSecGCryptKeyDataRsaAdoptKeyPair(key_data, s_pub_key, s_priv_key);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecGCryptKeyDataRsaAdoptKey",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "xmlSecGCryptKeyDataRsaId");
+            xmlSecInternalError("xmlSecGCryptKeyDataRsaAdoptKey(xmlSecGCryptKeyDataRsaId)", NULL);
             xmlSecKeyDataDestroy(key_data);
             key_data = NULL;
             goto done;
@@ -532,7 +490,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         "Public RSA key: 3 parameters exepcted",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_R_INVALID_SIZE,
                         "parms_num=%d", (int)keyparms_num);
             goto done;
         }
@@ -554,21 +512,13 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         /* construct key and key data */
         key_data = xmlSecKeyDataCreate(xmlSecGCryptKeyDataRsaId);
         if(key_data == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeyDataCreate",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "xmlSecGCryptKeyDataRsaId");
+            xmlSecInternalError("xmlSecKeyDataCreate(xmlSecGCryptKeyDataRsaId)", NULL);
             goto done;
         }
 
         ret = xmlSecGCryptKeyDataRsaAdoptKeyPair(key_data, s_pub_key, NULL);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecGCryptKeyDataRsaAdoptKey",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "xmlSecGCryptKeyDataRsaId");
+            xmlSecInternalError("xmlSecGCryptKeyDataRsaAdoptKey(xmlSecGCryptKeyDataRsaId)", NULL);
             xmlSecKeyDataDestroy(key_data);
             key_data = NULL;
             goto done;
@@ -581,7 +531,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "Unsupported key type",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_R_INVALID_TYPE,
                     "type=%d", (int)type);
         goto done;
         break;

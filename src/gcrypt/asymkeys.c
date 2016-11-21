@@ -109,11 +109,8 @@ xmlSecGCryptAsymKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     if(ctxSrc->pub_key != NULL) {
         ctxDst->pub_key = xmlSecGCryptAsymSExpDup(ctxSrc->pub_key);
         if(ctxDst->pub_key == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(dst)),
-                        "xmlSecGCryptAsymSExpDup(pub_key)",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecGCryptAsymSExpDup(pub_key)",
+                                xmlSecKeyDataGetName(dst));
             return(-1);
         }
     }
@@ -121,11 +118,8 @@ xmlSecGCryptAsymKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     if(ctxSrc->priv_key != NULL) {
         ctxDst->priv_key = xmlSecGCryptAsymSExpDup(ctxSrc->priv_key);
         if(ctxDst->priv_key == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(dst)),
-                        "xmlSecGCryptAsymSExpDup(priv_key)",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecGCryptAsymSExpDup(priv_key)",
+                                xmlSecKeyDataGetName(dst));
             return(-1);
         }
     }
@@ -181,11 +175,7 @@ xmlSecGCryptAsymKeyDataAdoptKey(xmlSecKeyDataPtr data, gcry_sexp_t key_pair) {
 
     /* assign */
     if(xmlSecGCryptAsymKeyDataAdoptKeyPair(data, pub_key, priv_key) < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGCryptAsymKeyDataAdoptKeyPair",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecGCryptAsymKeyDataAdoptKeyPair", NULL);
         goto done;
     }
     pub_key = NULL; /* data owns it now */
@@ -306,11 +296,7 @@ xmlSecGCryptAsymKeyDataGenerate(xmlSecKeyDataPtr data, const char * alg, xmlSecS
 
     ret = xmlSecGCryptAsymKeyDataAdoptKey(data, key_pair);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGCryptAsymKeyDataAdopt",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "ret=%d", (int)ret);
+        xmlSecInternalError("xmlSecGCryptAsymKeyDataAdopt", NULL);
         goto done;
     }
     key_pair = NULL; /* now owned by data */
@@ -446,21 +432,13 @@ xmlSecGCryptNodeGetMpiValue(const xmlNodePtr cur) {
 
     ret = xmlSecBufferInitialize(&buf, 128);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBufferInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
         return(NULL);
     }
 
     ret = xmlSecBufferBase64NodeContentRead(&buf, cur);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBufferBase64NodeContentRead",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecBufferBase64NodeContentRead", NULL);
         xmlSecBufferFinalize(&buf);
         return(NULL);
     }
@@ -523,11 +501,8 @@ xmlSecGCryptNodeSetMpiValue(xmlNodePtr cur, const gcry_mpi_t a, int addLineBreak
 
     ret = xmlSecBufferInitialize(&buf, written + 1);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBufferInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "size=%d", (int)written + 1);
+        xmlSecInternalError2("xmlSecBufferInitialize", NULL,
+                             "size=%d", (int)written + 1);
         return(-1);
     }
 
@@ -548,11 +523,8 @@ xmlSecGCryptNodeSetMpiValue(xmlNodePtr cur, const gcry_mpi_t a, int addLineBreak
 
     ret = xmlSecBufferSetSize(&buf, written);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBufferSetSize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "written=%d", (int)written);
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
+                             "size=%d", (int)written);
         xmlSecBufferFinalize(&buf);
         return(-1);
     }
@@ -565,11 +537,7 @@ xmlSecGCryptNodeSetMpiValue(xmlNodePtr cur, const gcry_mpi_t a, int addLineBreak
 
     ret = xmlSecBufferBase64NodeContentWrite(&buf, cur, xmlSecBase64GetDefaultLineSize());
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBufferBase64NodeContentWrite",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecBufferBase64NodeContentWrite", NULL);
         xmlSecBufferFinalize(&buf);
         return(-1);
     }
@@ -616,7 +584,7 @@ xmlSecGCryptNodeSetSExpTokValue(xmlNodePtr cur, const gcry_sexp_t sexp,
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "gcry_sexp_find_token",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     "tok=%s",
                     xmlSecErrorsSafeString(tok));
         goto done;
@@ -627,7 +595,7 @@ xmlSecGCryptNodeSetSExpTokValue(xmlNodePtr cur, const gcry_sexp_t sexp,
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "gcry_sexp_nth_mpi",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     "tok=%s",
                     xmlSecErrorsSafeString(tok));
         goto done;
@@ -967,12 +935,8 @@ xmlSecGCryptKeyDataDsaXmlRead(xmlSecKeyDataId id,
     }
     p = xmlSecGCryptNodeGetMpiValue(cur);
     if(p == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecGCryptNodeGetMpiValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeDSAP));
+        xmlSecInternalError("xmlSecGCryptNodeGetMpiValue(NodeDSAP)",
+                            xmlSecKeyDataKlassGetName(id));
         goto done;
     }
     cur = xmlSecGetNextElementNode(cur->next);
@@ -989,12 +953,8 @@ xmlSecGCryptKeyDataDsaXmlRead(xmlSecKeyDataId id,
     }
     q = xmlSecGCryptNodeGetMpiValue(cur);
     if(q == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecGCryptNodeGetMpiValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeDSAQ));
+        xmlSecInternalError("xmlSecGCryptNodeGetMpiValue(NodeDSAQ)",
+                            xmlSecKeyDataKlassGetName(id));
         goto done;
     }
     cur = xmlSecGetNextElementNode(cur->next);
@@ -1011,12 +971,8 @@ xmlSecGCryptKeyDataDsaXmlRead(xmlSecKeyDataId id,
     }
     g = xmlSecGCryptNodeGetMpiValue(cur);
     if(g == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecGCryptNodeGetMpiValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeDSAG));
+        xmlSecInternalError("xmlSecGCryptNodeGetMpiValue(NodeDSAG)",
+                            xmlSecKeyDataKlassGetName(id));
         goto done;
     }
     cur = xmlSecGetNextElementNode(cur->next);
@@ -1026,12 +982,8 @@ xmlSecGCryptKeyDataDsaXmlRead(xmlSecKeyDataId id,
          * we are not sure exactly what do we read */
         x = xmlSecGCryptNodeGetMpiValue(cur);
         if(x == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                        "xmlSecGCryptNodeGetMpiValue",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeDSAX));
+            xmlSecInternalError("xmlSecGCryptNodeGetMpiValue(NodeDSAX)",
+                                xmlSecKeyDataKlassGetName(id));
             goto done;
         }
         cur = xmlSecGetNextElementNode(cur->next);
@@ -1049,11 +1001,8 @@ xmlSecGCryptKeyDataDsaXmlRead(xmlSecKeyDataId id,
     }
     y = xmlSecGCryptNodeGetMpiValue(cur);
     if(y == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecGCryptNodeGetMpiValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s", xmlSecErrorsSafeString(xmlSecNodeDSAY));
+        xmlSecInternalError("xmlSecGCryptNodeGetMpiValue(NodeDSAY)",
+                            xmlSecKeyDataKlassGetName(id));
         goto done;
     }
     cur = xmlSecGetNextElementNode(cur->next);
@@ -1096,7 +1045,7 @@ xmlSecGCryptKeyDataDsaXmlRead(xmlSecKeyDataId id,
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
                     "gcry_sexp_build(public)",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_GCRYPT_REPORT_ERROR(err));
         goto done;
     }
@@ -1108,7 +1057,7 @@ xmlSecGCryptKeyDataDsaXmlRead(xmlSecKeyDataId id,
             xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
                         "gcry_sexp_build(private)",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         XMLSEC_GCRYPT_REPORT_ERROR(err));
             goto done;
         }
@@ -1117,21 +1066,15 @@ xmlSecGCryptKeyDataDsaXmlRead(xmlSecKeyDataId id,
     /* create key data */
     data = xmlSecKeyDataCreate(id);
     if(data == NULL ) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecKeyDataCreate",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecKeyDataCreate",
+                            xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
     ret = xmlSecGCryptKeyDataDsaAdoptKeyPair(data, pub_key, priv_key);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                    "xmlSecGCryptKeyDataDsaAdoptKeyPair",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecGCryptKeyDataDsaAdoptKeyPair",
+                            xmlSecKeyDataGetName(data));
         goto done;
     }
     pub_key = NULL; /* pub_key is owned by data now */
@@ -1140,11 +1083,8 @@ xmlSecGCryptKeyDataDsaXmlRead(xmlSecKeyDataId id,
     /* set key */
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                    "xmlSecKeySetValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecKeySetValue",
+                            xmlSecKeyDataGetName(data));
         goto done;
     }
     data = NULL; /* data is owned by key now */
@@ -1214,11 +1154,8 @@ xmlSecGCryptKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     if(pub_priv_key == NULL) {
         pub_priv_key = xmlSecGCryptKeyDataDsaGetPublicKey(xmlSecKeyGetValue(key));
         if(pub_priv_key == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                        "xmlSecGCryptKeyDataDsaGetPublicKey()",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecGCryptKeyDataDsaGetPublicKey()",
+                                xmlSecKeyDataKlassGetName(id));
             goto done;
         }
     } else {
@@ -1227,77 +1164,51 @@ xmlSecGCryptKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     dsa = gcry_sexp_find_token(pub_priv_key, "dsa", 0);
     if(dsa == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "gcry_sexp_find_token(dsa)",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        /* TODO: CRYPTO_FAILED */
+        xmlSecInternalError("gcry_sexp_find_token(dsa)",
+                            xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
     /* first is P node */
     cur = xmlSecAddChild(node, xmlSecNodeDSAP, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeDSAP));
+        xmlSecInternalError("xmlSecAddChild(NodeDSAP)",
+                             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
     ret = xmlSecGCryptNodeSetSExpTokValue(cur, dsa, "p", 1);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecGCryptNodeSetSExpTokValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeDSAP));
+        xmlSecInternalError("xmlSecGCryptNodeSetSExpTokValue(NodeDSAP)",
+                            xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
     /* next is Q node. */
     cur = xmlSecAddChild(node, xmlSecNodeDSAQ, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeDSAQ));
+        xmlSecInternalError("xmlSecAddChild(NodeDSAQ)",
+                            xmlSecKeyDataKlassGetName(id));
         goto done;
     }
     ret = xmlSecGCryptNodeSetSExpTokValue(cur, dsa, "q", 1);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecGCryptNodeSetSExpTokValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeDSAQ));
+        xmlSecInternalError("xmlSecGCryptNodeSetSExpTokValue(NodeDSAQ)",
+                            xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
     /* next is G node. */
     cur = xmlSecAddChild(node, xmlSecNodeDSAG, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeDSAG));
+        xmlSecInternalError("xmlSecAddChild(NodeDSAG)",
+                            xmlSecKeyDataKlassGetName(id));
         goto done;
     }
     ret = xmlSecGCryptNodeSetSExpTokValue(cur, dsa, "g", 1);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecGCryptNodeSetSExpTokValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeDSAG));
+        xmlSecInternalError("xmlSecGCryptNodeSetSExpTokValue(NodeDSAG)",
+                            xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
@@ -1305,22 +1216,14 @@ xmlSecGCryptKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     if(((keyInfoCtx->keyReq.keyType & xmlSecKeyDataTypePrivate) != 0) && (private != 0)) {
         cur = xmlSecAddChild(node, xmlSecNodeDSAX, xmlSecNs);
         if(cur == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                        "xmlSecAddChild",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeDSAX));
+            xmlSecInternalError("xmlSecAddChild(NodeDSAX)",
+                                xmlSecKeyDataKlassGetName(id));
             goto done;
         }
         ret = xmlSecGCryptNodeSetSExpTokValue(cur, dsa, "x", 1);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                        "xmlSecGCryptNodeSetSExpTokValue",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeDSAX));
+            xmlSecInternalError("xmlSecGCryptNodeSetSExpTokValue(NodeDSAX)",
+                                xmlSecKeyDataKlassGetName(id));
             goto done;
         }
     }
@@ -1328,22 +1231,14 @@ xmlSecGCryptKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     /* next is Y node. */
     cur = xmlSecAddChild(node, xmlSecNodeDSAY, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeDSAY));
+        xmlSecInternalError("xmlSecAddChild(NodeDSAY)",
+                            xmlSecKeyDataKlassGetName(id));
         goto done;
     }
     ret = xmlSecGCryptNodeSetSExpTokValue(cur, dsa, "y", 1);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecGCryptNodeSetSExpTokValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeDSAY));
+        xmlSecInternalError("xmlSecGCryptNodeSetSExpTokValue(NodeDSAY)",
+                            xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
@@ -1645,12 +1540,8 @@ xmlSecGCryptKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     }
     n = xmlSecGCryptNodeGetMpiValue(cur);
     if(n == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecGCryptNodeGetMpiValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeRSAModulus));
+        xmlSecInternalError("xmlSecGCryptNodeGetMpiValue(NodeRSAModulus)",
+                            xmlSecKeyDataKlassGetName(id));
         goto done;
     }
     cur = xmlSecGetNextElementNode(cur->next);
@@ -1667,12 +1558,8 @@ xmlSecGCryptKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     }
     e = xmlSecGCryptNodeGetMpiValue(cur);
     if(e == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecGCryptNodeGetMpiValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeRSAExponent));
+        xmlSecInternalError("xmlSecGCryptNodeGetMpiValue(NodeRSAExponent)",
+                            xmlSecKeyDataKlassGetName(id));
         goto done;
     }
     cur = xmlSecGetNextElementNode(cur->next);
@@ -1681,12 +1568,8 @@ xmlSecGCryptKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         /* next is PrivateExponent node. It is REQUIRED for private key */
         d = xmlSecGCryptNodeGetMpiValue(cur);
         if(d == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                        "xmlSecGCryptNodeGetMpiValue",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeRSAPrivateExponent));
+            xmlSecInternalError("xmlSecGCryptNodeGetMpiValue(NodeRSAPrivateExponent)",
+                                xmlSecKeyDataKlassGetName(id));
             goto done;
         }
         cur = xmlSecGetNextElementNode(cur->next);
@@ -1709,7 +1592,7 @@ xmlSecGCryptKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
                     "gcry_sexp_build(public)",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_GCRYPT_REPORT_ERROR(err));
         goto done;
     }
@@ -1721,7 +1604,7 @@ xmlSecGCryptKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
             xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
                         "gcry_sexp_build(private)",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         XMLSEC_GCRYPT_REPORT_ERROR(err));
             goto done;
         }
@@ -1731,21 +1614,15 @@ xmlSecGCryptKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     /* create key data */
     data = xmlSecKeyDataCreate(id);
     if(data == NULL ) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecKeyDataCreate",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecKeyDataCreate",
+                            xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
     ret = xmlSecGCryptKeyDataRsaAdoptKeyPair(data, pub_key, priv_key);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                    "xmlSecGCryptKeyDataRsaAdoptKeyPair",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecGCryptKeyDataRsaAdoptKeyPair",
+                            xmlSecKeyDataGetName(data));
         goto done;
     }
     pub_key = NULL; /* pub_key is owned by data now */
@@ -1754,11 +1631,8 @@ xmlSecGCryptKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     /* set key */
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                    "xmlSecKeySetValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecKeySetValue",
+                            xmlSecKeyDataGetName(data));
         goto done;
     }
     data = NULL; /* data is owned by key now */
@@ -1822,11 +1696,8 @@ xmlSecGCryptKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     if(pub_priv_key == NULL) {
         pub_priv_key = xmlSecGCryptKeyDataRsaGetPublicKey(xmlSecKeyGetValue(key));
         if(pub_priv_key == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                        "xmlSecGCryptKeyDataRsaGetPublicKey()",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecGCryptKeyDataRsaGetPublicKey()",
+                                xmlSecKeyDataKlassGetName(id));
             goto done;
         }
     } else {
@@ -1835,55 +1706,36 @@ xmlSecGCryptKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     rsa = gcry_sexp_find_token(pub_priv_key, "rsa", 0);
     if(rsa == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "gcry_sexp_find_token(rsa)",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("gcry_sexp_find_token(rsa)",
+                            xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
     /* first is Modulus node */
     cur = xmlSecAddChild(node, xmlSecNodeRSAModulus, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeRSAModulus));
+        xmlSecInternalError("xmlSecAddChild(NodeRSAModulus)",
+                            xmlSecKeyDataKlassGetName(id));
        goto done;
     }
     ret = xmlSecGCryptNodeSetSExpTokValue(cur, rsa, "n", 1);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecGCryptNodeSetSExpTokValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeRSAModulus));
+        xmlSecInternalError("xmlSecGCryptNodeSetSExpTokValue(NodeRSAModulus)",
+                            xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
     /* next is Exponent node. */
     cur = xmlSecAddChild(node, xmlSecNodeRSAExponent, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeRSAExponent));
+        xmlSecInternalError("xmlSecAddChild(NodeRSAExponent)",
+                            xmlSecKeyDataKlassGetName(id));
        goto done;
     }
     ret = xmlSecGCryptNodeSetSExpTokValue(cur, rsa, "e", 1);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecGCryptNodeSetSExpTokValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeRSAExponent));
+        xmlSecInternalError("xmlSecGCryptNodeSetSExpTokValue(NodeRSAExponent)",
+                            xmlSecKeyDataKlassGetName(id));
        goto done;
     }
 
@@ -1891,22 +1743,14 @@ xmlSecGCryptKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     if(((keyInfoCtx->keyReq.keyType & xmlSecKeyDataTypePrivate) != 0) && (private != 0)) {
         cur = xmlSecAddChild(node, xmlSecNodeRSAPrivateExponent, xmlSecNs);
         if(cur == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                        "xmlSecAddChild",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeRSAPrivateExponent));
+            xmlSecInternalError("xmlSecAddChild(NodeRSAPrivateExponent)",
+                                xmlSecKeyDataKlassGetName(id));
            goto done;
         }
         ret = xmlSecGCryptNodeSetSExpTokValue(cur, rsa, "d", 1);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                        "xmlSecGCryptNodeSetSExpTokValue",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeRSAPrivateExponent));
+            xmlSecInternalError("xmlSecGCryptNodeSetSExpTokValue(NodeRSAPrivateExponent)",
+                                xmlSecKeyDataKlassGetName(id));
            goto done;
         }
     }

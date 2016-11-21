@@ -95,7 +95,7 @@ Igor Zlatkovic get an exception for the send before commit rule.
     - Errors reporting (XMLSEC_ERRORS_R_XMLSEC_FAILED vs. XMLSEC_ERRORS_R_CRYPTO_FAILED)
     The correct usage rule is:
 	if the failed function starts with "xmlSec" then use
-    	    XMLSEC_ERRORS_R_XMLSEC_FAILED
+    	    xmlSecInternalError() aka XMLSEC_ERRORS_R_XMLSEC_FAILED
 	else if it is xmlMalloc/xmlFree/xmlStrdup/etc then use
             XMLSEC_ERRORS_R_MALLOC_FAILED
 	else if the function starts with "xml" or "xslt" (i.e. it comes 
@@ -105,7 +105,7 @@ Igor Zlatkovic get an exception for the send before commit rule.
 	    XMLSEC_ERRORS_R_IO_FAILED
 	else if the function could be used only from xmlsec-crypto (i.e. 
 	it is crypto engine related) then use
-	    XMLSEC_ERRORS_R_CRYPTO_FAILED
+	    xmlSecOpenSSLError/... aka XMLSEC_ERRORS_R_CRYPTO_FAILED
 	else if there is another reason (invalid data, invalid size, etc.)
 	    corresponding error reason should be used
 	else

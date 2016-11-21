@@ -175,11 +175,8 @@ xmlSecNssKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
 
         ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx, NULL);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-                        "xmlSecKeyInfoCtxInitialize",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecKeyInfoCtxInitialize",
+                                xmlSecKeyStoreGetName(store));
             xmlSecKeyDestroy(key);
             xmlFreeDoc(doc);
             return(-1);
@@ -195,11 +192,8 @@ xmlSecNssKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
 
         ret = xmlSecKeyInfoNodeRead(cur, key, &keyInfoCtx);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-                        "xmlSecKeyInfoNodeRead",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecKeyInfoNodeRead",
+                                xmlSecKeyStoreGetName(store));
             xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
             xmlSecKeyDestroy(key);
             xmlFreeDoc(doc);
@@ -210,11 +204,8 @@ xmlSecNssKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
         if(xmlSecKeyIsValid(key)) {
             ret = xmlSecNssKeysStoreAdoptKey(store, key);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-                            "xmlSecNssKeysStoreAdoptKey",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError("xmlSecNssKeysStoreAdoptKey",
+                                    xmlSecKeyStoreGetName(store));
                 xmlSecKeyDestroy(key);
                 xmlFreeDoc(doc);
                 return(-1);
@@ -275,11 +266,8 @@ xmlSecNssKeysStoreInitialize(xmlSecKeyStorePtr store) {
 
     *ss = xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId);
     if(*ss == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-                    "xmlSecKeyStoreCreate",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "xmlSecSimpleKeysStoreId");
+        xmlSecInternalError("xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId)",
+                            xmlSecKeyStoreGetName(store));
         return(-1);
     }
 
@@ -369,11 +357,7 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 
         data = xmlSecNssPKIAdoptKey(privkey, pubkey);
         if(data == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecNssPKIAdoptKey",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecNssPKIAdoptKey", NULL);
             goto done;
         }
         privkey = NULL;
@@ -381,33 +365,21 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 
         key = xmlSecKeyCreate();
         if (key == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeyCreate",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecKeyCreate", NULL);
             return (NULL);
         }
 
         x509Data = xmlSecKeyDataCreate(xmlSecNssKeyDataX509Id);
         if(x509Data == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeyDataCreate",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "transform=%s",
-                        xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecNssKeyDataX509Id)));
+            xmlSecInternalError("xmlSecKeyDataCreate",
+                                xmlSecTransformKlassGetName(xmlSecNssKeyDataX509Id));
             goto done;
         }
 
         ret = xmlSecNssKeyDataX509AdoptKeyCert(x509Data, cert);
         if (ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecNssKeyDataX509AdoptKeyCert",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "data=%s",
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+            xmlSecInternalError("xmlSecNssKeyDataX509AdoptKeyCert",
+                                xmlSecKeyDataGetName(x509Data));
             goto done;
         }
         cert = CERT_DupCertificate(cert);
@@ -423,36 +395,24 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 
         ret = xmlSecNssKeyDataX509AdoptCert(x509Data, cert);
         if (ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecNssKeyDataX509AdoptCert",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "data=%s",
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+            xmlSecInternalError("xmlSecNssKeyDataX509AdoptCert",
+                                xmlSecKeyDataGetName(x509Data));
             goto done;
         }
         cert = NULL;
 
         ret = xmlSecKeySetValue(key, data);
         if (ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeySetValue",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "data=%s",
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)));
+            xmlSecInternalError("xmlSecKeySetValue",
+				xmlSecKeyDataGetName(data));
             goto done;
         }
         data = NULL;
 
         ret = xmlSecKeyAdoptData(key, x509Data);
         if (ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecKeyAdoptData",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "data=%s",
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+            xmlSecInternalError("xmlSecKeyAdoptData",
+                                xmlSecKeyDataGetName(x509Data));
             goto done;
         }
         x509Data = NULL;

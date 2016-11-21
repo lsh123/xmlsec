@@ -48,6 +48,7 @@ static xmlSecErrorDescription xmlSecErrorsTable[XMLSEC_ERRORS_MAX_NUMBER + 1] = 
   { XMLSEC_ERRORS_R_INVALID_STATUS,             "invalid status" },
   { XMLSEC_ERRORS_R_INVALID_FORMAT,             "invalid format" },
   { XMLSEC_ERRORS_R_DATA_NOT_MATCH,             "data do not match" },
+  { XMLSEC_ERRORS_R_INVALID_VERSION,            "invalid version" },
   { XMLSEC_ERRORS_R_INVALID_NODE,               "invalid node" },
   { XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,       "invalid node content" },
   { XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,     "invalid node attribute" },

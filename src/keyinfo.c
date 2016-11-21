@@ -111,12 +111,10 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCtx
             /* read data node */
             ret = xmlSecKeyDataXmlRead(dataId, key, cur, keyInfoCtx);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
-                            "xmlSecKeyDataXmlRead",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "node=%s",
-                            xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+                xmlSecInternalError2("xmlSecKeyDataXmlRead",
+                                     xmlSecKeyDataKlassGetName(dataId),
+                                     "node=%s",
+                                     xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
                 return(-1);
             }
         } else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD) != 0) {
@@ -178,12 +176,10 @@ xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCt
         if(dataId != xmlSecKeyDataIdUnknown) {
             ret = xmlSecKeyDataXmlWrite(dataId, key, cur, keyInfoCtx);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
-                            "xmlSecKeyDataXmlWrite",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "node=%s",
-                            xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+                xmlSecInternalError2("xmlSecKeyDataXmlWrite",
+                                     xmlSecKeyDataKlassGetName(dataId),
+                                     "node=%s",
+                                     xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
                 return(-1);
             }
         } else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD) != 0) {
@@ -233,11 +229,7 @@ xmlSecKeyInfoCtxCreate(xmlSecKeysMngrPtr keysMngr) {
 
     ret = xmlSecKeyInfoCtxInitialize(keyInfoCtx, keysMngr);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeyInfoCtxInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecKeyInfoCtxInitialize", NULL);
         xmlSecKeyInfoCtxDestroy(keyInfoCtx);
         return(NULL);
     }
@@ -280,22 +272,14 @@ xmlSecKeyInfoCtxInitialize(xmlSecKeyInfoCtxPtr keyInfoCtx, xmlSecKeysMngrPtr key
     keyInfoCtx->base64LineSize = xmlSecBase64GetDefaultLineSize();
     ret = xmlSecPtrListInitialize(&(keyInfoCtx->enabledKeyData), xmlSecKeyDataIdListId);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecPtrListInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecPtrListInitialize", NULL);
         return(-1);
     }
 
     keyInfoCtx->maxRetrievalMethodLevel = 1;
     ret = xmlSecTransformCtxInitialize(&(keyInfoCtx->retrievalMethodCtx));
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecTransformCtxInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecTransformCtxInitialize", NULL);
         return(-1);
     }
 
@@ -309,11 +293,7 @@ xmlSecKeyInfoCtxInitialize(xmlSecKeyInfoCtxPtr keyInfoCtx, xmlSecKeysMngrPtr key
 
     ret = xmlSecKeyReqInitialize(&(keyInfoCtx->keyReq));
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeyReqInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecKeyReqInitialize", NULL);
         return(-1);
     }
 
@@ -388,11 +368,7 @@ xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     /* we have to use tmp variable to avoid a recursive loop */
     tmp = xmlSecEncCtxCreate(keyInfoCtx->keysMngr);
     if(tmp == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecEncCtxCreate",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecEncCtxCreate", NULL);
         return(-1);
     }
     tmp->mode = xmlEncCtxModeEncryptedKey;
@@ -402,11 +378,7 @@ xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
         case xmlSecKeyInfoModeRead:
             ret = xmlSecKeyInfoCtxCopyUserPref(&(tmp->keyInfoReadCtx), keyInfoCtx);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "xmlSecKeyInfoCtxCopyUserPref",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref", NULL);
                 xmlSecEncCtxDestroy(tmp);
                 return(-1);
             }
@@ -414,11 +386,7 @@ xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
         case xmlSecKeyInfoModeWrite:
             ret = xmlSecKeyInfoCtxCopyUserPref(&(tmp->keyInfoWriteCtx), keyInfoCtx);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "xmlSecKeyInfoCtxCopyUserPref",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref", NULL);
                 xmlSecEncCtxDestroy(tmp);
                 return(-1);
             }
@@ -462,11 +430,7 @@ xmlSecKeyInfoCtxCopyUserPref(xmlSecKeyInfoCtxPtr dst, xmlSecKeyInfoCtxPtr src) {
 
     ret = xmlSecPtrListCopy(&(dst->enabledKeyData), &(src->enabledKeyData));
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecPtrListCopy",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "enabledKeyData");
+        xmlSecInternalError("xmlSecPtrListCopy(enabledKeyData)", NULL);
         return(-1);
     }
 
@@ -475,11 +439,7 @@ xmlSecKeyInfoCtxCopyUserPref(xmlSecKeyInfoCtxPtr dst, xmlSecKeyInfoCtxPtr src) {
     ret = xmlSecTransformCtxCopyUserPref(&(dst->retrievalMethodCtx),
                                          &(src->retrievalMethodCtx));
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecTransformCtxCopyUserPref",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "enabledKeyData");
+        xmlSecInternalError("xmlSecTransformCtxCopyUserPref(enabledKeyData)", NULL);
         return(-1);
     }
 
@@ -489,22 +449,14 @@ xmlSecKeyInfoCtxCopyUserPref(xmlSecKeyInfoCtxPtr dst, xmlSecKeyInfoCtxPtr src) {
     if(src->encCtx != NULL) {
         dst->encCtx = xmlSecEncCtxCreate(dst->keysMngr);
         if(dst->encCtx == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecEncCtxCreate",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecEncCtxCreate", NULL);
             return(-1);
         }
 
         dst->encCtx->mode = xmlEncCtxModeEncryptedKey;
         ret = xmlSecEncCtxCopyUserPref(dst->encCtx, src->encCtx);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecEncCtxCopyUserPref",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecEncCtxCopyUserPref", NULL);
             return(-1);
         }
     }
@@ -746,11 +698,8 @@ xmlSecKeyDataNameXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, 
             /* and copy what we've found */
             ret = xmlSecKeyCopy(key, tmpKey);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                            "xmlSecKeyCopy",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError("xmlSecKeyCopy",
+                                    xmlSecKeyDataKlassGetName(id));
                 xmlSecKeyDestroy(tmpKey);
                 xmlFree(newName);
                 return(-1);
@@ -763,11 +712,8 @@ xmlSecKeyDataNameXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, 
     if(xmlSecKeyGetName(key) == NULL) {
         ret = xmlSecKeySetName(key, newName);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                        "xmlSecKeySetName",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecKeySetName",
+                                xmlSecKeyDataKlassGetName(id));
             xmlFree(newName);
             return(-1);
         }
@@ -896,12 +842,10 @@ xmlSecKeyDataValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node,
         /* read data node */
         ret = xmlSecKeyDataXmlRead(dataId, key, cur, keyInfoCtx);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                        "xmlSecKeyDataXmlRead",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+            xmlSecInternalError2("xmlSecKeyDataXmlRead",
+                                 xmlSecKeyDataKlassGetName(id),
+                                 "node=%s",
+                                 xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
             return(-1);
         }
     } else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_KEYVALUE_STOP_ON_UNKNOWN_CHILD) != 0) {
@@ -967,23 +911,19 @@ xmlSecKeyDataValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node
     /* create key node */
     cur = xmlSecAddChild(node, nodeName, nodeNs);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
+        xmlSecInternalError2("xmlSecAddChild",
+                             xmlSecKeyDataKlassGetName(id),
+                             "node=%s",
+                             xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
         return(-1);
     }
 
     ret = xmlSecKeyDataXmlWrite(key->value->id, key, cur, keyInfoCtx);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecKeyDataXmlWrite",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+        xmlSecInternalError2("xmlSecKeyDataXmlWrite",
+                             xmlSecKeyDataKlassGetName(id),
+                             "node=%s",
+                             xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
         return(-1);
     }
 
@@ -1134,12 +1074,9 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
     uri = xmlGetProp(node, xmlSecAttrURI);
     ret = xmlSecTransformCtxSetUri(&(keyInfoCtx->retrievalMethodCtx), uri, node);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecTransformCtxSetUri",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "uri=%s",
-                    xmlSecErrorsSafeString(uri));
+        xmlSecInternalError2("xmlSecTransformCtxSetUri",
+                             xmlSecKeyDataKlassGetName(id),
+                             "uri=%s", xmlSecErrorsSafeString(uri));
         goto done;
     }
 
@@ -1149,12 +1086,10 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
         ret = xmlSecTransformCtxNodesListRead(&(keyInfoCtx->retrievalMethodCtx),
                                             cur, xmlSecTransformUsageDSigTransform);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                        "xmlSecTransformCtxNodesListRead",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+            xmlSecInternalError2("xmlSecTransformCtxNodesListRead",
+                                 xmlSecKeyDataKlassGetName(id),
+                                 "node=%s",
+                                 xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
             goto done;
         }
         cur = xmlSecGetNextElementNode(cur->next);
@@ -1175,11 +1110,8 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
        (keyInfoCtx->retrievalMethodCtx.result == NULL) ||
        (xmlSecBufferGetData(keyInfoCtx->retrievalMethodCtx.result) == NULL)) {
 
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecTransformCtxExecute",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecTransformCtxExecute",
+                            xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
@@ -1193,11 +1125,8 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
                     xmlSecBufferGetSize(keyInfoCtx->retrievalMethodCtx.result),
                     keyInfoCtx);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                        "xmlSecKeyDataRetrievalMethodReadXmlResult",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecKeyDataRetrievalMethodReadXmlResult",
+                                xmlSecKeyDataKlassGetName(id));
             goto done;
         }
     } else {
@@ -1206,11 +1135,8 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
                     xmlSecBufferGetSize(keyInfoCtx->retrievalMethodCtx.result),
                     keyInfoCtx);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                        "xmlSecKeyDataBinRead",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecKeyDataBinRead",
+                                xmlSecKeyDataKlassGetName(id));
             goto done;
         }
     }
@@ -1316,12 +1242,10 @@ xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId, xmlSecKeyPtr k
     /* read data node */
     ret = xmlSecKeyDataXmlRead(dataId, key, cur, keyInfoCtx);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(typeId)),
-                    "xmlSecKeyDataXmlRead",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+        xmlSecInternalError2("xmlSecKeyDataXmlRead",
+                             xmlSecKeyDataKlassGetName(typeId),
+                             "node=%s",
+                             xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
         xmlFreeDoc(doc);
         return(-1);
     }
@@ -1437,11 +1361,8 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
     } else {
         ret = xmlSecKeyInfoCtxCreateEncCtx(keyInfoCtx);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                        "xmlSecKeyInfoCtxCreateEncCtx",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecKeyInfoCtxCreateEncCtx",
+                                xmlSecKeyDataKlassGetName(id));
             return(-1);
         }
     }
@@ -1454,11 +1375,8 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
          * correct enc key.
          */
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION) != 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                        "xmlSecEncCtxDecryptToBuffer",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecEncCtxDecryptToBuffer",
+                                xmlSecKeyDataKlassGetName(id));
             return(-1);
         }
         return(0);
@@ -1469,11 +1387,8 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
                            xmlSecBufferGetSize(result),
                            keyInfoCtx);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecKeyDataBinRead",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecKeyDataBinRead",
+                            xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
     --keyInfoCtx->curEncryptedKeyLevel;
@@ -1499,21 +1414,15 @@ xmlSecKeyDataEncryptedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodeP
     /* dump key to a binary buffer */
     ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx2, NULL);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecKeyInfoCtxInitialize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecKeyInfoCtxInitialize",
+                            xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
     ret = xmlSecKeyInfoCtxCopyUserPref(&keyInfoCtx2, keyInfoCtx);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecKeyInfoCtxCopyUserPref",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref",
+                            xmlSecKeyDataKlassGetName(id));
         xmlSecKeyInfoCtxFinalize(&keyInfoCtx2);
         goto done;
     }
@@ -1521,11 +1430,8 @@ xmlSecKeyDataEncryptedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodeP
     keyInfoCtx2.keyReq.keyType = xmlSecKeyDataTypeAny;
     ret = xmlSecKeyDataBinWrite(key->value->id, key, &keyBuf, &keySize, &keyInfoCtx2);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecKeyDataBinWrite",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecKeyDataBinWrite",
+                            xmlSecKeyDataKlassGetName(id));
         xmlSecKeyInfoCtxFinalize(&keyInfoCtx2);
         goto done;
     }
@@ -1537,11 +1443,8 @@ xmlSecKeyDataEncryptedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodeP
     } else {
         ret = xmlSecKeyInfoCtxCreateEncCtx(keyInfoCtx);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                        "xmlSecKeyInfoCtxCreateEncCtx",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecKeyInfoCtxCreateEncCtx",
+                                xmlSecKeyDataKlassGetName(id));
             goto done;
         }
     }
@@ -1549,11 +1452,8 @@ xmlSecKeyDataEncryptedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodeP
 
     ret = xmlSecEncCtxBinaryEncrypt(keyInfoCtx->encCtx, node, keyBuf, keySize);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecEncCtxBinaryEncrypt",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecEncCtxBinaryEncrypt",
+                            xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 

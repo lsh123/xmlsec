@@ -335,7 +335,8 @@ xmlSecOpenSSLSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     pKey = xmlSecOpenSSLEvpKeyDataGetEvp(value);
     if(pKey == NULL) {
-        xmlSecInternalError("xmlSecOpenSSLEvpKeyDataGetEvp", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecOpenSSLEvpKeyDataGetEvp",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -345,7 +346,8 @@ xmlSecOpenSSLSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     ctx->pKey = xmlSecOpenSSLEvpKeyDup(pKey);
     if(ctx->pKey == NULL) {
-        xmlSecInternalError("xmlSecOpenSSLEvpKeyDup", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecOpenSSLEvpKeyDup",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -398,7 +400,8 @@ xmlSecOpenSSLSignatureVerify(xmlSecTransformPtr transform,
 
     ret = (ctx->verifyCallback)(ctx, data, dataSize);
     if(ret < 0) {
-        xmlSecInternalError("verifyCallback", xmlSecTransformGetName(transform));
+        xmlSecInternalError("verifyCallback",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -464,7 +467,8 @@ xmlSecOpenSSLSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 
         ret = xmlSecBufferRemoveHead(in, inSize);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecBufferRemoveHead",
+                                xmlSecTransformGetName(transform));
             return(-1);
         }
     }
@@ -484,7 +488,8 @@ xmlSecOpenSSLSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTran
         if(transform->operation == xmlSecTransformOperationSign) {
             ret = (ctx->signCallback)(ctx, out);
             if(ret < 0) {
-                xmlSecInternalError("signCallback", xmlSecTransformGetName(transform));
+                xmlSecInternalError("signCallback",
+                                    xmlSecTransformGetName(transform));
                 return(-1);
             }
         }

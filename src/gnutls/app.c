@@ -372,7 +372,8 @@ xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
 
     ret = xmlSecKeySetValue(key, keyData);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyDataGetName(x509Data));
+        xmlSecInternalError("xmlSecKeySetValue",
+                            xmlSecKeyDataGetName(x509Data));
         goto done;
     }
     keyData = NULL; /* owned by key now */

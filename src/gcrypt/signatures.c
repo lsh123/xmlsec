@@ -327,7 +327,8 @@ xmlSecGCryptPkSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     ctx->key_data = xmlSecKeyDataDuplicate(key_data);
     if(ctx->key_data == NULL) {
-        xmlSecInternalError("xmlSecKeyDataDuplicate", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecKeyDataDuplicate",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -447,7 +448,8 @@ xmlSecGCryptPkSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 
             ret = xmlSecBufferRemoveHead(in, inSize);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform),
+                xmlSecInternalError2("xmlSecBufferRemoveHead",
+                                     xmlSecTransformGetName(transform),
                                      "size=%d", inSize);
                 return(-1);
             }
@@ -479,7 +481,8 @@ xmlSecGCryptPkSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             if(transform->operation == xmlSecTransformOperationSign) {
                 ret = ctx->sign(ctx->digest, ctx->key_data, ctx->dgst, ctx->dgstSize, out);
                 if(ret < 0) {
-                    xmlSecInternalError("ctx->sign", xmlSecTransformGetName(transform));
+                    xmlSecInternalError("ctx->sign",
+                                        xmlSecTransformGetName(transform));
                     return(-1);
                 }
             }

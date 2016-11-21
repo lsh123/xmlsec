@@ -204,7 +204,8 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         transform->outNodes = xmlSecNodeSetCreate(ctx->parserCtx->myDoc,
                                                   NULL, xmlSecNodeSetTree);
         if(transform->outNodes == NULL) {
-            xmlSecInternalError("xmlSecNodeSetCreate", xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecNodeSetCreate",
+                                xmlSecTransformGetName(transform));
             xmlFreeDoc(ctx->parserCtx->myDoc);
             ctx->parserCtx->myDoc = NULL;
             return(-1);
@@ -216,7 +217,8 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         if(transform->next != NULL) {
             ret = xmlSecTransformPushXml(transform->next, transform->outNodes, transformCtx);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecTransformPushXml", xmlSecTransformGetName(transform));
+                xmlSecInternalError("xmlSecTransformPushXml",
+                                    xmlSecTransformGetName(transform));
                 return(-1);
             }
         }
@@ -277,7 +279,8 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
 
     buf = xmlSecTransformCreateInputBuffer(transform->prev, transformCtx);
     if(buf == NULL) {
-        xmlSecInternalError("xmlSecTransformCreateInputBuffer", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecTransformCreateInputBuffer",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -344,7 +347,8 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
     /* return result to the caller */
     (*nodes) = xmlSecNodeSetCreate(doc, NULL, xmlSecNodeSetTree);
     if((*nodes) == NULL) {
-        xmlSecInternalError("xmlSecNodeSetCreate", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecNodeSetCreate",
+                            xmlSecTransformGetName(transform));
         xmlFreeDoc(doc);
         return(-1);
     }

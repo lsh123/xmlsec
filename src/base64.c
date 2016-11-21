@@ -817,7 +817,8 @@ xmlSecBase64Initialize(xmlSecTransformPtr transform) {
     transform->operation = xmlSecTransformOperationDecode;
     ret = xmlSecBase64CtxInitialize(ctx, 0, xmlSecBase64GetDefaultLineSize());
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBase64CtxInitialize", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecBase64CtxInitialize",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -884,7 +885,8 @@ xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
                                             xmlSecBufferGetData(out) + outSize,
                                             outLen);
                 if(ret < 0) {
-                    xmlSecInternalError("xmlSecBase64CtxUpdate", xmlSecTransformGetName(transform));
+                    xmlSecInternalError("xmlSecBase64CtxUpdate",
+                                        xmlSecTransformGetName(transform));
                     return(-1);
                 }
                 outLen = ret;
@@ -922,7 +924,8 @@ xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
                 /* add from ctx buffer */
                 ret = xmlSecBase64CtxFinal(ctx, xmlSecBufferGetData(out) + outSize, 16);
                 if(ret < 0) {
-                    xmlSecInternalError("xmlSecBase64CtxFinal", xmlSecTransformGetName(transform));
+                    xmlSecInternalError("xmlSecBase64CtxFinal",
+                                        xmlSecTransformGetName(transform));
                     return(-1);
                 }
                 outLen = ret;

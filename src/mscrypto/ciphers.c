@@ -515,7 +515,8 @@ xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
 
     ctx->cryptProvider = xmlSecMSCryptoFindProvider(ctx->providers, NULL, CRYPT_VERIFYCONTEXT, TRUE);
     if(ctx->cryptProvider == 0) {
-        xmlSecInternalError("xmlSecMSCryptoFindProvider", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecMSCryptoFindProvider",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -626,7 +627,8 @@ xmlSecMSCryptoBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
         TRUE,
         &(ctx->cryptKey)))  {
 
-        xmlSecInternalError("xmlSecMSCryptoImportPlainSessionBlob", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecMSCryptoImportPlainSessionBlob",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -664,7 +666,8 @@ xmlSecMSCryptoBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecT
                                                    transformCtx);
 
             if(ret < 0) {
-                xmlSecInternalError("xmlSecMSCryptoBlockCipherCtxInit", xmlSecTransformGetName(transform));
+                xmlSecInternalError("xmlSecMSCryptoBlockCipherCtxInit",
+                                    xmlSecTransformGetName(transform));
                 return(-1);
             }
         }
@@ -681,7 +684,8 @@ xmlSecMSCryptoBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecT
                 (transform->operation == xmlSecTransformOperationEncrypt) ? 1 : 0,
                 xmlSecTransformGetName(transform), transformCtx);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecMSCryptoBlockCipherCtxUpdate", xmlSecTransformGetName(transform));
+                xmlSecInternalError("xmlSecMSCryptoBlockCipherCtxUpdate",
+                                    xmlSecTransformGetName(transform));
                 return(-1);
             }
         }
@@ -692,7 +696,8 @@ xmlSecMSCryptoBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecT
                 xmlSecTransformGetName(transform), transformCtx);
 
             if(ret < 0) {
-                xmlSecInternalError("xmlSecMSCryptoBlockCipherCtxFinal", xmlSecTransformGetName(transform));
+                xmlSecInternalError("xmlSecMSCryptoBlockCipherCtxFinal",
+                                    xmlSecTransformGetName(transform));
                 return(-1);
             }
             transform->status = xmlSecTransformStatusFinished;

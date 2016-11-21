@@ -213,7 +213,8 @@ xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(xmlSecKeysMngrPtr mngr, const char* k
 
     key = xmlSecKeyReadBinaryFile(dataId, filename);
     if(key == NULL) {
-        xmlSecInternalError("xmlSecKeyReadBinaryFile", NULL);
+        xmlSecInternalError2("xmlSecKeyReadBinaryFile", NULL,
+                            "filename=%s", xmlSecErrorsSafeString(filename));
         return(-1);    
     }
     

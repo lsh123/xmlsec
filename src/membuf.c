@@ -115,7 +115,8 @@ xmlSecTransformMemBufInitialize(xmlSecTransformPtr transform) {
 
     ret = xmlSecBufferInitialize(buffer, 0);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecBufferInitialize",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }
     return(0);

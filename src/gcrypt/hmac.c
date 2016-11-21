@@ -472,7 +472,8 @@ xmlSecGCryptHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
 
             ret = xmlSecBufferRemoveHead(in, inSize);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform),
+                xmlSecInternalError2("xmlSecBufferRemoveHead",
+                                     xmlSecTransformGetName(transform),
                                      "size=%d", inSize);
                 return(-1);
             }
@@ -514,7 +515,8 @@ xmlSecGCryptHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
             if(transform->operation == xmlSecTransformOperationSign) {
                 ret = xmlSecBufferAppend(out, ctx->dgst, dgstSize);
                 if(ret < 0) {
-                    xmlSecInternalError2("xmlSecBufferAppend", xmlSecTransformGetName(transform),
+                    xmlSecInternalError2("xmlSecBufferAppend",
+                                         xmlSecTransformGetName(transform),
                                          "size=%d", dgstSize);
                     return(-1);
                 }

@@ -175,7 +175,8 @@ xmlSecNssKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
 
         ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx, NULL);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecKeyInfoCtxInitialize", xmlSecKeyStoreGetName(store));
+            xmlSecInternalError("xmlSecKeyInfoCtxInitialize",
+                                xmlSecKeyStoreGetName(store));
             xmlSecKeyDestroy(key);
             xmlFreeDoc(doc);
             return(-1);
@@ -191,7 +192,8 @@ xmlSecNssKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
 
         ret = xmlSecKeyInfoNodeRead(cur, key, &keyInfoCtx);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecKeyInfoNodeRead", xmlSecKeyStoreGetName(store));
+            xmlSecInternalError("xmlSecKeyInfoNodeRead",
+                                xmlSecKeyStoreGetName(store));
             xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
             xmlSecKeyDestroy(key);
             xmlFreeDoc(doc);
@@ -202,7 +204,8 @@ xmlSecNssKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
         if(xmlSecKeyIsValid(key)) {
             ret = xmlSecNssKeysStoreAdoptKey(store, key);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecNssKeysStoreAdoptKey", xmlSecKeyStoreGetName(store));
+                xmlSecInternalError("xmlSecNssKeysStoreAdoptKey",
+                                    xmlSecKeyStoreGetName(store));
                 xmlSecKeyDestroy(key);
                 xmlFreeDoc(doc);
                 return(-1);
@@ -368,7 +371,8 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 
         x509Data = xmlSecKeyDataCreate(xmlSecNssKeyDataX509Id);
         if(x509Data == NULL) {
-            xmlSecInternalError("xmlSecKeyDataCreate", xmlSecTransformKlassGetName(xmlSecNssKeyDataX509Id));
+            xmlSecInternalError("xmlSecKeyDataCreate",
+                                xmlSecTransformKlassGetName(xmlSecNssKeyDataX509Id));
             goto done;
         }
 

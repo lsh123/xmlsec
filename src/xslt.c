@@ -253,7 +253,8 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransfor
     doc = xmlSecParseMemory(xmlBufferContent(buffer),
                              xmlBufferLength(buffer), 1);
     if(doc == NULL) {
-        xmlSecInternalError("xmlSecParseMemory", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecParseMemory",
+                            xmlSecTransformGetName(transform));
         xmlBufferFree(buffer);
         return(-1);
     }
@@ -359,7 +360,8 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
 
         docOut = xmlSecXsApplyStylesheet(ctx, docIn);
         if(docOut == NULL) {
-            xmlSecInternalError("xmlSecXsApplyStylesheet", xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecXsApplyStylesheet",
+                                xmlSecTransformGetName(transform));
             xmlFreeDoc(docIn);
             return(-1);
         }
@@ -368,14 +370,16 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         if(transform->next != NULL) {
             output = xmlSecTransformCreateOutputBuffer(transform->next, transformCtx);
             if(output == NULL) {
-                xmlSecInternalError("xmlSecTransformCreateOutputBuffer", xmlSecTransformGetName(transform));
+                xmlSecInternalError("xmlSecTransformCreateOutputBuffer",
+                                    xmlSecTransformGetName(transform));
                 xmlFreeDoc(docOut);
                 return(-1);
             }
         } else {
             output = xmlSecBufferCreateOutputBuffer(&(transform->outBuf));
             if(output == NULL) {
-                xmlSecInternalError("xmlSecBufferCreateOutputBuffer", xmlSecTransformGetName(transform));
+                xmlSecInternalError("xmlSecBufferCreateOutputBuffer",
+                                    xmlSecTransformGetName(transform));
                 xmlFreeDoc(docOut);
                 return(-1);
             }
@@ -443,7 +447,8 @@ xmlSecXsltExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr 
 
         ret = xmlSecXslProcess(ctx, in, out);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecXslProcess", xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecXslProcess",
+                                xmlSecTransformGetName(transform));
             return(-1);
         }
 

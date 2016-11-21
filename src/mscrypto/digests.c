@@ -204,7 +204,8 @@ xmlSecMSCryptoDigestInitialize(xmlSecTransformPtr transform) {
 
     ctx->provider = xmlSecMSCryptoFindProvider(ctx->providers, NULL, CRYPT_VERIFYCONTEXT, TRUE);
     if(ctx->provider == 0) {
-        xmlSecInternalError("xmlSecMSCryptoFindProvider", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecMSCryptoFindProvider",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -335,7 +336,8 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
 
             ret = xmlSecBufferRemoveHead(in, inSize);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform),
+                xmlSecInternalError2("xmlSecBufferRemoveHead",
+                                     xmlSecTransformGetName(transform),
                                      "size=%d", inSize);
                 return(-1);
             }
@@ -354,7 +356,8 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
 
             if (ret == 0) {
                 /* Should be XMLSEC_ERRORS_R_CRYPTO_FAILED */
-                xmlSecInternalError2("CryptGetHashParam(HP_HASHVAL)", xmlSecTransformGetName(transform),
+                xmlSecInternalError2("CryptGetHashParam(HP_HASHVAL)",
+                                     xmlSecTransformGetName(transform),
                                      "size=%d", MSCRYPTO_MAX_HASH_SIZE);
                 return(-1);
             }
@@ -367,7 +370,8 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
             if(transform->operation == xmlSecTransformOperationSign) {
                 ret = xmlSecBufferAppend(out, ctx->dgst, ctx->dgstSize);
                 if(ret < 0) {
-                    xmlSecInternalError2("xmlSecBufferAppend", xmlSecTransformGetName(transform),
+                    xmlSecInternalError2("xmlSecBufferAppend",
+                                         xmlSecTransformGetName(transform),
                                          "size=%d", ctx->dgstSize);
                     return(-1);
                 }

@@ -249,7 +249,8 @@ static int xmlSecMSCryptoSignatureSetKey(xmlSecTransformPtr transform, xmlSecKey
 
     ctx->data = xmlSecKeyDataDuplicate(value);
     if(ctx->data == NULL) {
-        xmlSecInternalError("xmlSecKeyDataDuplicate", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecKeyDataDuplicate",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -303,7 +304,8 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
 
     ret = xmlSecBufferInitialize(&tmp, dataSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferInitialize", xmlSecTransformGetName(transform),
+        xmlSecInternalError2("xmlSecBufferInitialize",
+                             xmlSecTransformGetName(transform),
                              "dataSize=%d", dataSize);
         return(-1);
     }
@@ -372,7 +374,8 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
 
     hKey = xmlSecMSCryptoKeyDataGetKey(ctx->data, xmlSecKeyDataTypePublic);
     if (hKey == 0) {
-        xmlSecInternalError("xmlSecMSCryptoKeyDataGetKey", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecMSCryptoKeyDataGetKey",
+                            xmlSecTransformGetName(transform));
         xmlSecBufferFinalize(&tmp);
         return(-1);
     }
@@ -548,7 +551,8 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 
         ret = xmlSecBufferRemoveHead(in, inSize);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecBufferRemoveHead",
+                                xmlSecTransformGetName(transform));
             return(-1);
         }
     }
@@ -572,7 +576,8 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 
             ret = xmlSecBufferInitialize(&tmp, outSize);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferSetMaxSize", xmlSecTransformGetName(transform),
+                xmlSecInternalError2("xmlSecBufferSetMaxSize",
+                                     xmlSecTransformGetName(transform),
                                      "size=%d", outSize);
                 return(-1);
             }
@@ -592,7 +597,8 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 
             ret = xmlSecBufferSetSize(out, outSize);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform),
+                xmlSecInternalError2("xmlSecBufferSetSize",
+                                     xmlSecTransformGetName(transform),
                                      "size=%d", outSize);
                 xmlSecBufferFinalize(&tmp);
                 return(-1);

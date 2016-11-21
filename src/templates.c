@@ -1684,7 +1684,8 @@ xmlSecTmplTransformAddC14NInclNamespaces(xmlNodePtr transformNode,
 
     cur = xmlSecAddChild(transformNode, xmlSecNodeInclusiveNamespaces, xmlSecNsExcC14N);
     if(cur == NULL) {
-        xmlSecInternalError("xmlSecAddChild(xmlSecNodeInclusiveNamespaces)", xmlSecNodeGetName(transformNode));
+        xmlSecInternalError("xmlSecAddChild(xmlSecNodeInclusiveNamespaces)",
+                            xmlSecNodeGetName(transformNode));
         return(-1);
     }
 

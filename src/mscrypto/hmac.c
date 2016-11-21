@@ -231,7 +231,8 @@ xmlSecMSCryptoHmacInitialize(xmlSecTransformPtr transform) {
 
     ctx->provider = xmlSecMSCryptoFindProvider(ctx->providers, NULL, CRYPT_VERIFYCONTEXT, TRUE);
     if(ctx->provider == 0) {
-        xmlSecInternalError("xmlSecMSCryptoFindProvider", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecMSCryptoFindProvider",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -396,7 +397,8 @@ xmlSecMSCryptoHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         &(ctx->cryptKey)
         ) || (ctx->cryptKey == 0))  {
 
-        xmlSecInternalError("xmlSecMSCryptoImportPlainSessionBlob", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecMSCryptoImportPlainSessionBlob",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }   
 
@@ -546,7 +548,8 @@ xmlSecMSCryptoHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 
             ret = xmlSecBufferRemoveHead(in, inSize);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform),
+                xmlSecInternalError2("xmlSecBufferRemoveHead",
+                                     xmlSecTransformGetName(transform),
                                      "size=%d", inSize);
                 return(-1);
             }
@@ -565,7 +568,8 @@ xmlSecMSCryptoHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                 0);
 
             if (ret == 0) {
-                xmlSecInternalError2("CryptGetHashParam", xmlSecTransformGetName(transform),
+                xmlSecInternalError2("CryptGetHashParam",
+                                     xmlSecTransformGetName(transform),
                                      "size=%d", inSize);
                 return(-1);
             }
@@ -590,7 +594,8 @@ xmlSecMSCryptoHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
             if(transform->operation == xmlSecTransformOperationSign) {
                 ret = xmlSecBufferAppend(out, ctx->dgst, retLen);
                 if(ret < 0) {
-                    xmlSecInternalError2("xmlSecBufferAppend", xmlSecTransformGetName(transform),
+                    xmlSecInternalError2("xmlSecBufferAppend",
+                                         xmlSecTransformGetName(transform),
                                          "size=%d", ctx->dgstSize);
                     return(-1);
                 }

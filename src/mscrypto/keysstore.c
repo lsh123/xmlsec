@@ -182,7 +182,8 @@ xmlSecMSCryptoKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
 
         ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx, NULL);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecKeyInfoCtxInitialize", xmlSecKeyStoreGetName(store));
+            xmlSecInternalError("xmlSecKeyInfoCtxInitialize",
+                                xmlSecKeyStoreGetName(store));
             xmlSecKeyDestroy(key);
             xmlFreeDoc(doc);
             return(-1);
@@ -198,7 +199,8 @@ xmlSecMSCryptoKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
 
         ret = xmlSecKeyInfoNodeRead(cur, key, &keyInfoCtx);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecKeyInfoNodeRead", xmlSecKeyStoreGetName(store));
+            xmlSecInternalError("xmlSecKeyInfoNodeRead",
+                                xmlSecKeyStoreGetName(store));
             xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
             xmlSecKeyDestroy(key);
             xmlFreeDoc(doc);
@@ -209,7 +211,8 @@ xmlSecMSCryptoKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
         if(xmlSecKeyIsValid(key)) {
             ret = xmlSecMSCryptoKeysStoreAdoptKey(store, key);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecMSCryptoKeysStoreAdoptKey", xmlSecKeyStoreGetName(store));
+                xmlSecInternalError("xmlSecMSCryptoKeysStoreAdoptKey",
+                                    xmlSecKeyStoreGetName(store));
                 xmlSecKeyDestroy(key);
                 xmlFreeDoc(doc);
                 return(-1);
@@ -321,7 +324,8 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
     /* convert name to unicode */
     wcName = xmlSecMSCryptoConvertUtf8ToTstr(name);
     if(wcName == NULL) {
-        xmlSecInternalError("xmlSecMSCryptoConvertUtf8ToTstr(name)", xmlSecKeyStoreGetName(store));
+        xmlSecInternalError("xmlSecMSCryptoConvertUtf8ToTstr(name)",
+                            xmlSecKeyStoreGetName(store));
         CertCloseStore(hStoreHandle, 0);
         return(NULL);
     }
@@ -536,7 +540,8 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         /* Set the name of the key to the given name */
         ret = xmlSecKeySetName(key, name);
         if (ret < 0) {
-            xmlSecInternalError("xmlSecKeySetName", xmlSecKeyStoreGetName(store));
+            xmlSecInternalError("xmlSecKeySetName",
+                                xmlSecKeyStoreGetName(store));
             goto done;
         }
 

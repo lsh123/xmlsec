@@ -106,7 +106,8 @@ xmlSecMSCryptoRsaPkcs1OaepInitialize(xmlSecTransformPtr transform) {
 
     ret = xmlSecBufferInitialize(&(ctx->oaepParams), 0);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecBufferInitialize",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -190,7 +191,8 @@ xmlSecMSCryptoRsaPkcs1OaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key)
 
     ctx->data = xmlSecKeyDataDuplicate(xmlSecKeyGetValue(key));
     if(ctx->data == NULL) {
-        xmlSecInternalError("xmlSecKeyDataDuplicate", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecKeyDataDuplicate",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -219,7 +221,8 @@ xmlSecMSCryptoRsaPkcs1OaepExecute(xmlSecTransformPtr transform, int last, xmlSec
     } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
         ret = xmlSecMSCryptoRsaPkcs1OaepProcess(transform, transformCtx);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecMSCryptoRsaPkcs1OaepProcess", xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecMSCryptoRsaPkcs1OaepProcess",
+                                xmlSecTransformGetName(transform));
             return(-1);
         }
         transform->status = xmlSecTransformStatusFinished;
@@ -292,7 +295,8 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformC
     outSize = keySize;
     ret = xmlSecBufferSetMaxSize(out, outSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetMaxSize", xmlSecTransformGetName(transform),
+        xmlSecInternalError2("xmlSecBufferSetMaxSize",
+                             xmlSecTransformGetName(transform),
                              "size=%d", outSize);
         return(-1);
     }
@@ -310,7 +314,8 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformC
 
         ret = xmlSecBufferSetData(out, xmlSecBufferGetData(in), inSize);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferSetData", xmlSecTransformGetName(transform),
+            xmlSecInternalError2("xmlSecBufferSetData",
+                                 xmlSecTransformGetName(transform),
                                  "size=%d", inSize);
             return(-1);
         }
@@ -421,14 +426,16 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformC
 
     ret = xmlSecBufferSetSize(out, outSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform),
+        xmlSecInternalError2("xmlSecBufferSetSize",
+                             xmlSecTransformGetName(transform),
                              "size=%d", outSize);
         return(-1);
     }
 
     ret = xmlSecBufferRemoveHead(in, inSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform),
+        xmlSecInternalError2("xmlSecBufferRemoveHead",
+                             xmlSecTransformGetName(transform),
                              "size=%d", inSize);
         return(-1);
     }
@@ -553,7 +560,8 @@ xmlSecMSCryptoRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xml
         if(xmlSecCheckNodeName(cur,  xmlSecNodeRsaOAEPparams, xmlSecEncNs)) {
             ret = xmlSecBufferBase64NodeContentRead(&(ctx->oaepParams), cur);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecBufferBase64NodeContentRead", xmlSecTransformGetName(transform));
+                xmlSecInternalError("xmlSecBufferBase64NodeContentRead",
+                                    xmlSecTransformGetName(transform));
                 return(-1);
             }
         } else if(xmlSecCheckNodeName(cur,  xmlSecNodeDigestMethod, xmlSecDSigNs)) {

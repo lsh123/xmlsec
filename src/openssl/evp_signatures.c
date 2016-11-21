@@ -316,7 +316,8 @@ xmlSecOpenSSLEvpSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
 
     pKey = xmlSecOpenSSLEvpKeyDataGetEvp(value);
     if(pKey == NULL) {
-        xmlSecInternalError("xmlSecOpenSSLEvpKeyDataGetEvp", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecOpenSSLEvpKeyDataGetEvp",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -326,7 +327,8 @@ xmlSecOpenSSLEvpSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
 
     ctx->pKey = xmlSecOpenSSLEvpKeyDup(pKey);
     if(ctx->pKey == NULL) {
-        xmlSecInternalError("xmlSecOpenSSLEvpKeyDup", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecOpenSSLEvpKeyDup",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -459,7 +461,8 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
 
         ret = xmlSecBufferRemoveHead(in, inSize);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecBufferRemoveHead",
+                                xmlSecTransformGetName(transform));
             return(-1);
         }
     }
@@ -473,7 +476,8 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
             signSize = EVP_PKEY_size(ctx->pKey);
             ret = xmlSecBufferSetMaxSize(out, signSize);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferSetMaxSize", xmlSecTransformGetName(transform),
+                xmlSecInternalError2("xmlSecBufferSetMaxSize",
+                                     xmlSecTransformGetName(transform),
                                      "size=%u", signSize);
                 return(-1);
             }
@@ -486,7 +490,8 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
 
             ret = xmlSecBufferSetSize(out, signSize);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform),
+                xmlSecInternalError2("xmlSecBufferSetSize",
+                                     xmlSecTransformGetName(transform),
                                     "size=%u", signSize);
                 return(-1);
             }

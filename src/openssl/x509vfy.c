@@ -230,7 +230,8 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
             } else if(ret == 0) {
                 (void)sk_X509_CRL_delete(crls2, i);
             } else {
-                xmlSecInternalError("xmlSecOpenSSLX509VerifyCRL", xmlSecKeyDataStoreGetName(store));
+                xmlSecInternalError("xmlSecOpenSSLX509VerifyCRL",
+                                    xmlSecKeyDataStoreGetName(store));
                 goto done;
             }
         }
@@ -246,7 +247,8 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
                 (void)sk_X509_delete(certs2, i);
                 continue;
             } else if(ret != 1) {
-                xmlSecInternalError("xmlSecOpenSSLX509VerifyCertAgainstCrls", xmlSecKeyDataStoreGetName(store));
+                xmlSecInternalError("xmlSecOpenSSLX509VerifyCertAgainstCrls",
+                                    xmlSecKeyDataStoreGetName(store));
                 goto done;
             }
         }
@@ -257,7 +259,8 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
                 (void)sk_X509_delete(certs2, i);
                 continue;
             } else if(ret != 1) {
-                xmlSecInternalError("xmlSecOpenSSLX509VerifyCertAgainstCrls", xmlSecKeyDataStoreGetName(store));
+                xmlSecInternalError("xmlSecOpenSSLX509VerifyCertAgainstCrls",
+                                    xmlSecKeyDataStoreGetName(store));
                 goto done;
             }
         }

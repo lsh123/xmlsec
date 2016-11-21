@@ -687,7 +687,8 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xm
         dsigCtx->signMethod = xmlSecTransformCtxNodeRead(&(dsigCtx->transformCtx),
                                         cur, xmlSecTransformUsageSignatureMethod);
         if(dsigCtx->signMethod == NULL) {
-            xmlSecInternalError("xmlSecTransformCtxNodeRead", xmlSecNodeGetName(cur));
+            xmlSecInternalError("xmlSecTransformCtxNodeRead",
+                                xmlSecNodeGetName(cur));
             return(-1);
         }
     } else if(dsigCtx->defSignMethodId != xmlSecTransformIdUnknown) {
@@ -794,7 +795,8 @@ xmlSecDSigCtxProcessReferences(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr firstReferen
         /* process */
         ret = xmlSecDSigReferenceCtxProcessNode(dsigRefCtx, cur);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecDSigReferenceCtxProcessNode", xmlSecNodeGetName(cur));
+            xmlSecInternalError("xmlSecDSigReferenceCtxProcessNode",
+                                xmlSecNodeGetName(cur));
             return(-1);
         }
 
@@ -820,7 +822,8 @@ xmlSecDSigCtxProcessKeyInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     /* set key requirements */
     ret = xmlSecTransformSetKeyReq(dsigCtx->signMethod, &(dsigCtx->keyInfoReadCtx.keyReq));
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformSetKeyReq", xmlSecTransformGetName(dsigCtx->signMethod));
+        xmlSecInternalError("xmlSecTransformSetKeyReq",
+                            xmlSecTransformGetName(dsigCtx->signMethod));
         return(-1);
     }
 
@@ -844,7 +847,8 @@ xmlSecDSigCtxProcessKeyInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     /* set the key to the transform */
     ret = xmlSecTransformSetKey(dsigCtx->signMethod, dsigCtx->signKey);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformSetKey", xmlSecTransformGetName(dsigCtx->signMethod));
+        xmlSecInternalError("xmlSecTransformSetKey",
+                            xmlSecTransformGetName(dsigCtx->signMethod));
         return(-1);
     }
 
@@ -973,7 +977,8 @@ xmlSecDSigCtxProcessManifestNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
         /* process */
         ret = xmlSecDSigReferenceCtxProcessNode(dsigRefCtx, cur);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecDSigReferenceCtxProcessNode", xmlSecNodeGetName(cur));
+            xmlSecInternalError("xmlSecDSigReferenceCtxProcessNode",
+                                xmlSecNodeGetName(cur));
             return(-1);
         }
 
@@ -1363,7 +1368,8 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
     /* set start URI (and check that it is enabled!) */
     ret = xmlSecTransformCtxSetUri(transformCtx, dsigRefCtx->uri, node);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformCtxSetUri", dsigRefCtx->uri);
+        xmlSecInternalError2("xmlSecTransformCtxSetUri", NULL,
+                             "uri=%s", xmlSecErrorsSafeString(dsigRefCtx->uri));
         return(-1);
     }
 
@@ -1373,7 +1379,8 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
         ret = xmlSecTransformCtxNodesListRead(transformCtx,
                                         cur, xmlSecTransformUsageDSigTransform);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecTransformCtxNodesListRead", xmlSecNodeGetName(cur));
+            xmlSecInternalError2("xmlSecTransformCtxNodesListRead", NULL,
+                                 "node=%s", xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
             return(-1);
         }
 
@@ -1401,7 +1408,8 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
         dsigRefCtx->digestMethod = xmlSecTransformCtxNodeRead(&(dsigRefCtx->transformCtx),
                                         cur, xmlSecTransformUsageDigestMethod);
         if(dsigRefCtx->digestMethod == NULL) {
-            xmlSecInternalError("xmlSecTransformCtxNodeRead", xmlSecNodeGetName(cur));
+            xmlSecInternalError("xmlSecTransformCtxNodeRead",
+                                xmlSecNodeGetName(cur));
             return(-1);
         }
 

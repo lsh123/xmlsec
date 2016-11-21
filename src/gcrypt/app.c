@@ -240,7 +240,8 @@ xmlSecGCryptAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
 
     ret = xmlSecKeySetValue(key, key_data);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyDataGetName(key_data));
+        xmlSecInternalError("xmlSecKeySetValue",
+                            xmlSecKeyDataGetName(key_data));
         xmlSecKeyDestroy(key);
         xmlSecKeyDataDestroy(key_data);
         return(NULL);

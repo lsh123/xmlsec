@@ -500,7 +500,8 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
 
             ret = xmlSecBufferRemoveHead(in, inSize);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform),
+                xmlSecInternalError2("xmlSecBufferRemoveHead",
+                                     xmlSecTransformGetName(transform),
                                      "size=%d", inSize);
                 return(-1);
             }
@@ -531,7 +532,8 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
             if(transform->operation == xmlSecTransformOperationSign) {
                 ret = xmlSecBufferAppend(out, ctx->dgst, dgstSize);
                 if(ret < 0) {
-                    xmlSecInternalError2("xmlSecBufferAppend", xmlSecTransformGetName(transform),
+                    xmlSecInternalError2("xmlSecBufferAppend",
+                                         xmlSecTransformGetName(transform),
                                          "size=%d", dgstSize);
                     return(-1);
                 }

@@ -410,13 +410,15 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
         if((encCtx->flags & XMLSEC_ENC_RETURN_REPLACED_NODE) != 0) {
             ret = xmlSecReplaceNodeAndReturn(node, tmpl, &(encCtx->replacedNodeList));
             if(ret < 0) {
-                xmlSecInternalError("xmlSecReplaceNode", xmlSecNodeGetName(node));
+                xmlSecInternalError("xmlSecReplaceNode",
+                                    xmlSecNodeGetName(node));
                 return(-1);
             }
         } else {
             ret = xmlSecReplaceNode(node, tmpl);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecReplaceNode", xmlSecNodeGetName(node));
+                xmlSecInternalError("xmlSecReplaceNode",
+                                    xmlSecNodeGetName(node));
                 return(-1);
             }
         }
@@ -427,13 +429,15 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
         if((encCtx->flags & XMLSEC_ENC_RETURN_REPLACED_NODE) != 0) {
             ret = xmlSecReplaceContentAndReturn(node, tmpl, &(encCtx->replacedNodeList));
             if(ret < 0) {
-                xmlSecInternalError("xmlSecReplaceContentAndReturn", xmlSecNodeGetName(node));
+                xmlSecInternalError("xmlSecReplaceContentAndReturn",
+                                    xmlSecNodeGetName(node));
                 return(-1);
             }
         } else {
             ret = xmlSecReplaceContent(node, tmpl);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecReplaceContent", xmlSecNodeGetName(node));
+                xmlSecInternalError("xmlSecReplaceContent",
+                                    xmlSecNodeGetName(node));
                 return(-1);
             }
         }
@@ -479,7 +483,8 @@ xmlSecEncCtxUriEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, const xmlChar *u
     /* we need to add input uri transform first */
     ret = xmlSecTransformCtxSetUri(&(encCtx->transformCtx), uri, tmpl);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformCtxSetUri", uri);
+        xmlSecInternalError2("xmlSecTransformCtxSetUri", NULL,
+                             "uri=%s", xmlSecErrorsSafeString(uri));
         return(-1);
     }
 
@@ -539,13 +544,15 @@ xmlSecEncCtxDecrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
         if((encCtx->flags & XMLSEC_ENC_RETURN_REPLACED_NODE) != 0) {
                 ret = xmlSecReplaceNodeBufferAndReturn(node, xmlSecBufferGetData(buffer),  xmlSecBufferGetSize(buffer), &(encCtx->replacedNodeList));
                 if(ret < 0) {
-                    xmlSecInternalError("xmlSecReplaceNodeBufferAndReturn", xmlSecNodeGetName(node));
+                    xmlSecInternalError("xmlSecReplaceNodeBufferAndReturn",
+                                        xmlSecNodeGetName(node));
                     return(-1);
                 }
         } else {
                 ret = xmlSecReplaceNodeBuffer(node, xmlSecBufferGetData(buffer),  xmlSecBufferGetSize(buffer));
                 if(ret < 0) {
-                    xmlSecInternalError("xmlSecReplaceNodeBuffer", xmlSecNodeGetName(node));
+                    xmlSecInternalError("xmlSecReplaceNodeBuffer",
+                                        xmlSecNodeGetName(node));
                     return(-1);
                 }
         }
@@ -558,13 +565,15 @@ xmlSecEncCtxDecrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
         if((encCtx->flags & XMLSEC_ENC_RETURN_REPLACED_NODE) != 0) {
                 ret = xmlSecReplaceNodeBufferAndReturn(node, xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer), &(encCtx->replacedNodeList));
                 if(ret < 0) {
-                    xmlSecInternalError("xmlSecReplaceNodeBufferAndReturn", xmlSecNodeGetName(node));
+                    xmlSecInternalError("xmlSecReplaceNodeBufferAndReturn",
+                                        xmlSecNodeGetName(node));
                     return(-1);
                 }
         } else {
             ret = xmlSecReplaceNodeBuffer(node, xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer));
                 if(ret < 0) {
-                    xmlSecInternalError("xmlSecReplaceNodeBuffer", xmlSecNodeGetName(node));
+                    xmlSecInternalError("xmlSecReplaceNodeBuffer",
+                                        xmlSecNodeGetName(node));
                     return(-1);
                 }
         }
@@ -771,7 +780,8 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
         encCtx->encMethod = xmlSecTransformCtxNodeRead(&(encCtx->transformCtx), encCtx->encMethodNode,
                                                 xmlSecTransformUsageEncryptionMethod);
         if(encCtx->encMethod == NULL) {
-            xmlSecInternalError("xmlSecTransformCtxNodeRead", xmlSecNodeGetName(encCtx->encMethodNode));
+            xmlSecInternalError("xmlSecTransformCtxNodeRead",
+                                xmlSecNodeGetName(encCtx->encMethodNode));
             return(-1);
         }
     } else if(encCtx->defEncMethodId != xmlSecTransformIdUnknown) {
@@ -795,7 +805,8 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     /* we have encryption method, find key */
     ret = xmlSecTransformSetKeyReq(encCtx->encMethod, &(encCtx->keyInfoReadCtx.keyReq));
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformSetKeyReq", xmlSecTransformGetName(encCtx->encMethod));
+        xmlSecInternalError("xmlSecTransformSetKeyReq",
+                            xmlSecTransformGetName(encCtx->encMethod));
         return(-1);
     }
 
@@ -821,7 +832,8 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     /* set the key to the transform */
     ret = xmlSecTransformSetKey(encCtx->encMethod, encCtx->encKey);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformSetKey", xmlSecTransformGetName(encCtx->encMethod));
+        xmlSecInternalError("xmlSecTransformSetKey",
+                            xmlSecTransformGetName(encCtx->encMethod));
         return(-1);
     }
 
@@ -903,7 +915,8 @@ xmlSecEncCtxCipherDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
         if(encCtx->operation == xmlSecTransformOperationDecrypt) {
             ret = xmlSecEncCtxCipherReferenceNodeRead(encCtx, cur);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecEncCtxCipherReferenceNodeRead", xmlSecNodeGetName(cur));
+                xmlSecInternalError("xmlSecEncCtxCipherReferenceNodeRead",
+                                    xmlSecNodeGetName(cur));
                 return(-1);
             }
         }
@@ -934,7 +947,8 @@ xmlSecEncCtxCipherReferenceNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     uri = xmlGetProp(node, xmlSecAttrURI);
     ret = xmlSecTransformCtxSetUri(&(encCtx->transformCtx), uri, node);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformCtxSetUri", uri);
+        xmlSecInternalError2("xmlSecTransformCtxSetUri", NULL,
+                             "uri=%s", xmlSecErrorsSafeString(uri));
         xmlFree(uri);
         return(-1);
     }

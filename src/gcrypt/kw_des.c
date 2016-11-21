@@ -158,7 +158,8 @@ xmlSecGCryptKWDes3Initialize(xmlSecTransformPtr transform) {
 
     ret = xmlSecBufferInitialize(&(ctx->keyBuffer), 0);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecBufferInitialize",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -233,7 +234,8 @@ xmlSecGCryptKWDes3SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     ret = xmlSecBufferSetData(&(ctx->keyBuffer), xmlSecBufferGetData(buffer), XMLSEC_KW_DES3_KEY_LENGTH);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetData", xmlSecTransformGetName(transform),
+        xmlSecInternalError2("xmlSecBufferSetData",
+                             xmlSecTransformGetName(transform),
                              "size=%d", XMLSEC_KW_DES3_KEY_LENGTH);
         return(-1);
     }
@@ -294,7 +296,8 @@ xmlSecGCryptKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 
         ret = xmlSecBufferSetMaxSize(out, outSize);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferSetMaxSize", xmlSecTransformGetName(transform),
+            xmlSecInternalError2("xmlSecBufferSetMaxSize",
+                                 xmlSecTransformGetName(transform),
                                  "size=%d", outSize);
             return(-1);
         }
@@ -323,14 +326,16 @@ xmlSecGCryptKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 
         ret = xmlSecBufferSetSize(out, outSize);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform),
+            xmlSecInternalError2("xmlSecBufferSetSize",
+                                 xmlSecTransformGetName(transform),
                                  "size=%d", outSize);
             return(-1);
         }
 
         ret = xmlSecBufferRemoveHead(in, inSize);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform),
+            xmlSecInternalError2("xmlSecBufferRemoveHead",
+                                 xmlSecTransformGetName(transform),
                                  "size=%d", inSize);
             return(-1);
         }

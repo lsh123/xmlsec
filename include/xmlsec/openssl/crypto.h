@@ -751,17 +751,39 @@ XMLSEC_CRYPTO_EXPORT void       xmlSecOpenSSLErrorsDefaultCallback      (const c
 
 /**
  * xmlSecOpenSSLError:
+ * @errorFunction:      the failed function name.
  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
- * @errorSubject:       the error specific error subject (e.g. failed function name).
  *
  * Macro. The XMLSec library macro for reporting OpenSSL crypro errors.
  */
-#define xmlSecOpenSSLError(errorObject, errorSubject)   \
+#define xmlSecOpenSSLError(errorFunction, errorObject)  \
     xmlSecError(XMLSEC_ERRORS_HERE,                     \
                 (((errorObject) != NULL) ? xmlSecErrorsSafeString(errorObject) : NULL), \
-                (errorSubject),                         \
+                (errorFunction),                         \
                 XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
                 "openssl error: %lu: %s: %s %s",        \
+                ERR_peek_error(),                       \
+                xmlSecErrorsSafeString(ERR_lib_error_string(ERR_peek_error())),  \
+                xmlSecErrorsSafeString(ERR_func_error_string(ERR_peek_error())), \
+                xmlSecErrorsSafeString(ERR_reason_error_string(ERR_peek_error()))\
+    )
+
+/**
+ * xmlSecOpenSSLError2:
+ * @errorFunction:      the failed function name.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ * @msg:                the extra message.
+ * @param:              the extra message param.
+ *
+ * Macro. The XMLSec library macro for reporting OpenSSL crypro errors.
+ */
+#define xmlSecOpenSSLError2(errorFunction, errorObject, msg, param)  \
+    xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                (((errorObject) != NULL) ? xmlSecErrorsSafeString(errorObject) : NULL), \
+                (errorFunction),                         \
+                XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
+                msg "openssl error: %lu: %s: %s %s",    \
+                param,                                  \
                 ERR_peek_error(),                       \
                 xmlSecErrorsSafeString(ERR_lib_error_string(ERR_peek_error())),  \
                 xmlSecErrorsSafeString(ERR_func_error_string(ERR_peek_error())), \

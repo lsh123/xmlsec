@@ -93,7 +93,8 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         /* generate random iv */
         ret = RAND_bytes(ctx->iv, ivLen);
         if(ret != 1) {
-            xmlSecOpenSSLError(cipherName, "RAND_bytes");
+            xmlSecOpenSSLError2("RAND_bytes", cipherName,
+                                "size=%lu", (unsigned long)ivLen);
             return(-1);
         }
 
@@ -126,7 +127,7 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     /* set iv */
     ret = EVP_CipherInit(ctx->cipherCtx, ctx->cipher, ctx->key, ctx->iv, encrypt);
     if(ret != 1) {
-        xmlSecOpenSSLError(cipherName, "EVP_CipherIn");
+        xmlSecOpenSSLError("EVP_CipherIn", cipherName);
         return(-1);
     }
 
@@ -186,7 +187,7 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     /* encrypt/decrypt */
     ret = EVP_CipherUpdate(ctx->cipherCtx, outBuf, &outLen, in, inSize);
     if(ret != 1) {
-        xmlSecOpenSSLError(cipherName, "EVP_CipherUpdate");
+        xmlSecOpenSSLError("EVP_CipherUpdate", cipherName);
         return(-1);
     }
     xmlSecAssert2(outLen == inSize, -1);
@@ -197,7 +198,7 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 
         ret = EVP_CipherFinal(ctx->cipherCtx, outBuf + outLen, &outLen2);
         if(ret != 1) {
-            xmlSecOpenSSLError(cipherName, "EVP_CipherFinal");
+            xmlSecOpenSSLError("EVP_CipherFinal", cipherName);
             return(-1);
         }
 
@@ -334,7 +335,7 @@ xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         if(padLen > 1) {
             ret = RAND_bytes(ctx->pad + inSize, padLen - 1);
             if(ret != 1) {
-                xmlSecOpenSSLError(cipherName, "RAND_bytes");
+                xmlSecOpenSSLError("RAND_bytes", cipherName);
                 return(-1);
             }
         }
@@ -493,8 +494,8 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
     /* create cipher ctx */
     ctx->cipherCtx = EVP_CIPHER_CTX_new();
     if(ctx->cipherCtx == NULL) {
-        xmlSecOpenSSLError(xmlSecTransformGetName(transform),
-                           "EVP_CIPHER_CTX_new");
+        xmlSecOpenSSLError("EVP_CIPHER_CTX_new",
+                           xmlSecTransformGetName(transform));
         return(-1);
     }
 

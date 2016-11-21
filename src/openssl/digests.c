@@ -244,8 +244,8 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
     /* create digest CTX */
     ctx->digestCtx = EVP_MD_CTX_new();
     if(ctx->digestCtx == NULL) {
-        xmlSecOpenSSLError(xmlSecTransformGetName(transform),
-                           "EVP_MD_CTX_new");
+        xmlSecOpenSSLError("EVP_MD_CTX_new",
+                           xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -337,8 +337,8 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
     if(transform->status == xmlSecTransformStatusNone) {
         ret = EVP_DigestInit(ctx->digestCtx, ctx->digest);
         if(ret != 1) {
-            xmlSecOpenSSLError(xmlSecTransformGetName(transform),
-                               "EVP_DigestInit");
+            xmlSecOpenSSLError("EVP_DigestInit",
+                               xmlSecTransformGetName(transform));
             return(-1);
         }
         transform->status = xmlSecTransformStatusWorking;
@@ -351,8 +351,9 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
         if(inSize > 0) {
             ret = EVP_DigestUpdate(ctx->digestCtx, xmlSecBufferGetData(in), inSize);
             if(ret != 1) {
-                xmlSecOpenSSLError(xmlSecTransformGetName(transform),
-                                   "EVP_DigestUpdate");
+                xmlSecOpenSSLError2("EVP_DigestUpdate",
+                                    xmlSecTransformGetName(transform),
+                                    "size=%lu", (unsigned long)inSize);
                 return(-1);
             }
 
@@ -371,8 +372,8 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 
             ret = EVP_DigestFinal(ctx->digestCtx, ctx->dgst, &dgstSize);
             if(ret != 1) {
-                xmlSecOpenSSLError(xmlSecTransformGetName(transform),
-                                   "EVP_DigestFinal");
+                xmlSecOpenSSLError("EVP_DigestFinal",
+                                   xmlSecTransformGetName(transform));
                 return(-1);
             }
             xmlSecAssert2(dgstSize > 0, -1);

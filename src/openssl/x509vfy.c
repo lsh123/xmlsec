@@ -189,7 +189,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
 
     xsc = X509_STORE_CTX_new();
     if(xsc == NULL) {
-        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store), "X509_STORE_CTX_new");
+        xmlSec2OpenSSLError("X509_STORE_CTX_new", xmlSecKeyDataStoreGetName(store));
         goto done;
     }
 
@@ -200,7 +200,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
     /* dup certs */
     certs2 = sk_X509_dup(certs);
     if(certs2 == NULL) {
-        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store), "sk_X509_dup");
+        xmlSec2OpenSSLError("sk_X509_dup", xmlSecKeyDataStoreGetName(store));
         goto done;
     }
 
@@ -209,7 +209,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
         for(i = 0; i < sk_X509_num(ctx->untrusted); ++i) {
             ret = sk_X509_push(certs2, sk_X509_value(ctx->untrusted, i));
             if(ret < 1) {
-                xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store), "sk_X509_push");
+                xmlSec2OpenSSLError("sk_X509_push", xmlSecKeyDataStoreGetName(store));
                 goto done;
             }
         }
@@ -219,7 +219,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
     if(crls != NULL) {
         crls2 = sk_X509_CRL_dup(crls);
         if(crls2 == NULL) {
-            xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store), "sk_X509_CRL_dup");
+            xmlSec2OpenSSLError("sk_X509_CRL_dup", xmlSecKeyDataStoreGetName(store));
             goto done;
         }
 
@@ -274,7 +274,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
 
             ret = X509_STORE_CTX_init(xsc, ctx->xst, cert, certs2);
             if(ret != 1) {
-                xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                                    "X509_STORE_CTX_init");
+                xmlSec2OpenSSLError("X509_STORE_CTX_init", xmlSecKeyDataStoreGetName(store));
                 goto done;
             }
 
@@ -288,7 +288,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
 
                 vpm = X509_VERIFY_PARAM_new();
                 if(vpm == NULL) {
-                    xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                                        "X509_VERIFY_PARAM_new");
+                    xmlSec2OpenSSLError("X509_VERIFY_PARAM_new", xmlSecKeyDataStoreGetName(store));
                     goto done;
                 }
                 vpm_flags = X509_VERIFY_PARAM_get_flags(vpm);
@@ -431,7 +431,7 @@ xmlSecOpenSSLX509StoreAdoptCert(xmlSecKeyDataStorePtr store, X509* cert, xmlSecK
 
         ret = X509_STORE_add_cert(ctx->xst, cert);
         if(ret != 1) {
-            xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                                "X509_STORE_add_cert");
+            xmlSec2OpenSSLError("X509_STORE_add_cert", xmlSecKeyDataStoreGetName(store));
             return(-1);
         }
         /* add cert increments the reference */
@@ -441,7 +441,7 @@ xmlSecOpenSSLX509StoreAdoptCert(xmlSecKeyDataStorePtr store, X509* cert, xmlSecK
 
         ret = sk_X509_push(ctx->untrusted, cert);
         if(ret < 1) {
-            xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                                "sk_X509_push");
+            xmlSec2OpenSSLError("sk_X509_push", xmlSecKeyDataStoreGetName(store));
             return(-1);
         }
     }
@@ -471,7 +471,7 @@ xmlSecOpenSSLX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, X509_CRL* crl) {
 
         ret = sk_X509_CRL_push(ctx->crls, crl);
         if(ret < 1) {
-            xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                                "sk_X509_CRL_push");
+            xmlSec2OpenSSLError("sk_X509_CRL_push", xmlSecKeyDataStoreGetName(store));
             return(-1);
         }
 
@@ -502,11 +502,11 @@ xmlSecOpenSSLX509StoreAddCertsPath(xmlSecKeyDataStorePtr store, const char *path
 
     lookup = X509_STORE_add_lookup(ctx->xst, X509_LOOKUP_hash_dir());
     if(lookup == NULL) {
-        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                            "X509_STORE_add_lookup");
+        xmlSec2OpenSSLError("X509_STORE_add_lookup", xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
     if(!X509_LOOKUP_add_dir(lookup, path, X509_FILETYPE_PEM)) {
-        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                            "X509_LOOKUP_add_dir");
+        xmlSec2OpenSSLError("X509_LOOKUP_add_dir", xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
     return(0);
@@ -536,11 +536,11 @@ xmlSecOpenSSLX509StoreAddCertsFile(xmlSecKeyDataStorePtr store, const char *file
 
     lookup = X509_STORE_add_lookup(ctx->xst, X509_LOOKUP_file());
     if(lookup == NULL) {
-        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                            "X509_STORE_add_lookup");
+        xmlSec2OpenSSLError("X509_STORE_add_lookup", xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
     if(!X509_LOOKUP_load_file(lookup, file, X509_FILETYPE_PEM)) {
-        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                            "X509_LOOKUP_load_file");
+        xmlSec2OpenSSLError("X509_LOOKUP_load_file", xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
     return(0);
@@ -561,50 +561,50 @@ xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
 
     ctx->xst = X509_STORE_new();
     if(ctx->xst == NULL) {
-        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                            "X509_STORE_new");
+        xmlSec2OpenSSLError("X509_STORE_new", xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
 
     if(!X509_STORE_set_default_paths(ctx->xst)) {
-        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                            "X509_STORE_set_default_paths");
+        xmlSec2OpenSSLError("X509_STORE_set_default_paths", xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
 
 
     lookup = X509_STORE_add_lookup(ctx->xst, X509_LOOKUP_hash_dir());
     if(lookup == NULL) {
-        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                            "X509_STORE_add_lookup");
+        xmlSec2OpenSSLError("X509_STORE_add_lookup", xmlSecKeyDataStoreGetName(store));
          return(-1);
     }
 
     path = xmlSecOpenSSLGetDefaultTrustedCertsFolder();
     if(path != NULL) {
         if(!X509_LOOKUP_add_dir(lookup, (char*)path, X509_FILETYPE_PEM)) {
-            xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                                "X509_LOOKUP_add_dir");
+            xmlSec2OpenSSLError("X509_LOOKUP_add_dir", xmlSecKeyDataStoreGetName(store));
             return(-1);
         }
     } else {
         if(!X509_LOOKUP_add_dir(lookup, NULL, X509_FILETYPE_DEFAULT)) {
-            xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                                "X509_LOOKUP_add_dir");
+            xmlSec2OpenSSLError("X509_LOOKUP_add_dir", xmlSecKeyDataStoreGetName(store));
             return(-1);
         }
     }
 
     ctx->untrusted = sk_X509_new_null();
     if(ctx->untrusted == NULL) {
-        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                            "sk_X509_new_null");
+        xmlSec2OpenSSLError("sk_X509_new_null", xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
 
     ctx->crls = sk_X509_CRL_new_null();
     if(ctx->crls == NULL) {
-        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                            "sk_X509_CRL_new_null");
+        xmlSec2OpenSSLError("sk_X509_CRL_new_null", xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
 
     ctx->vpm = X509_VERIFY_PARAM_new();
     if(ctx->vpm == NULL) {
-        xmlSecOpenSSLError(xmlSecKeyDataStoreGetName(store),                            "X509_VERIFY_PARAM_new");
+        xmlSec2OpenSSLError("X509_VERIFY_PARAM_new", xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
     X509_VERIFY_PARAM_set_depth(ctx->vpm, 9); /* the default cert verification path in openssl */
@@ -657,35 +657,35 @@ xmlSecOpenSSLX509VerifyCRL(X509_STORE* xst, X509_CRL *crl ) {
 
     xsc = X509_STORE_CTX_new();
     if(xsc == NULL) {
-        xmlSecOpenSSLError(NULL, "X509_STORE_CTX_new");
+        xmlSec2OpenSSLError("X509_STORE_CTX_new", NULL);
         goto err;
     }
     xobj = X509_OBJECT_new();
     if(xobj == NULL) {
-        xmlSecOpenSSLError(NULL, "X509_OBJECT_new");
+        xmlSec2OpenSSLError("X509_OBJECT_new", NULL);
         goto err;
     }
 
     ret = X509_STORE_CTX_init(xsc, xst, NULL, NULL);
     if(ret != 1) {
-        xmlSecOpenSSLError(NULL, "X509_STORE_CTX_init");
+        xmlSec2OpenSSLError("X509_STORE_CTX_init", NULL);
         goto err;
     }
     ret = X509_STORE_CTX_get_by_subject(xsc, X509_LU_X509,
                                         X509_CRL_get_issuer(crl), xobj);
     if(ret <= 0) {
-        xmlSecOpenSSLError(NULL, "X509_STORE_CTX_get_by_subject");
+        xmlSec2OpenSSLError("X509_STORE_CTX_get_by_subject", NULL);
         goto err;
     }
     pkey = X509_get_pubkey(X509_OBJECT_get0_X509(xobj));
     if(pkey == NULL) {
-        xmlSecOpenSSLError(NULL, "X509_get_pubkey");
+        xmlSec2OpenSSLError("X509_get_pubkey", NULL);
         goto err;
     }
     ret = X509_CRL_verify(crl, pkey);
     EVP_PKEY_free(pkey);
     if(ret != 1) {
-        xmlSecOpenSSLError(NULL, "X509_CRL_verify");
+        xmlSec2OpenSSLError("X509_CRL_verify", NULL);
     }
     X509_STORE_CTX_free(xsc);
     X509_OBJECT_free(xobj);
@@ -742,12 +742,12 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
 
         bn = BN_new();
         if(bn == NULL) {
-            xmlSecOpenSSLError(NULL, "BN_new");
+            xmlSec2OpenSSLError("BN_new", NULL);
             X509_NAME_free(nm);
             return(NULL);
         }
         if(BN_dec2bn(&bn, (char*)issuerSerial) == 0) {
-            xmlSecOpenSSLError(NULL, "BN_dec2bn");
+            xmlSec2OpenSSLError("BN_dec2bn", NULL);
             BN_free(bn);
             X509_NAME_free(nm);
             return(NULL);
@@ -755,7 +755,7 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
 
         serial = BN_to_ASN1_INTEGER(bn, NULL);
         if(serial == NULL) {
-            xmlSecOpenSSLError(NULL, "BN_to_ASN1_INTEGER");
+            xmlSec2OpenSSLError("BN_to_ASN1_INTEGER", NULL);
             BN_free(bn);
             X509_NAME_free(nm);
             return(NULL);
@@ -899,7 +899,7 @@ xmlSecOpenSSLX509NameRead(xmlSecByte *str, int len) {
 
     nm = X509_NAME_new();
     if(nm == NULL) {
-        xmlSecOpenSSLError(NULL, "X509_NAME_new");
+        xmlSec2OpenSSLError("X509_NAME_new", NULL);
         return(NULL);
     }
 
@@ -1057,7 +1057,7 @@ xmlSecOpenSSLX509_NAME_ENTRIES_copy(X509_NAME * a) {
 
     res = sk_X509_NAME_ENTRY_new(xmlSecOpenSSLX509_NAME_ENTRY_cmp);
     if(res == NULL) {
-        xmlSecOpenSSLError(NULL, "sk_X509_NAME_ENTRY_new");
+        xmlSec2OpenSSLError("sk_X509_NAME_ENTRY_new", NULL);
         return(NULL);
     }
 

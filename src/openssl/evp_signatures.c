@@ -265,7 +265,7 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
     /* create digest CTX */
     ctx->digestCtx = EVP_MD_CTX_new();
     if(ctx->digestCtx == NULL) {
-        xmlSecOpenSSLError(xmlSecTransformGetName(transform), "EVP_MD_CTX_new");
+        xmlSec2OpenSSLError("EVP_MD_CTX_new", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -380,7 +380,7 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
 
     ret = EVP_VerifyFinal(ctx->digestCtx, (xmlSecByte*)data, dataSize, ctx->pKey);
     if(ret < 0) {
-        xmlSecOpenSSLError(xmlSecTransformGetName(transform), "EVP_VerifyFinal");
+        xmlSec2OpenSSLError("EVP_VerifyFinal", xmlSecTransformGetName(transform));
         return(-1);
     } else if(ret != 1) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -429,13 +429,13 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
         if(transform->operation == xmlSecTransformOperationSign) {
             ret = EVP_SignInit(ctx->digestCtx, ctx->digest);
             if(ret != 1) {
-                xmlSecOpenSSLError(xmlSecTransformGetName(transform), "EVP_SignInit");
+                xmlSec2OpenSSLError("EVP_SignInit", xmlSecTransformGetName(transform));
                 return(-1);
             }
         } else {
             ret = EVP_VerifyInit(ctx->digestCtx, ctx->digest);
             if(ret != 1) {
-                xmlSecOpenSSLError(xmlSecTransformGetName(transform), "EVP_VerifyInit");
+                xmlSec2OpenSSLError("EVP_VerifyInit", xmlSecTransformGetName(transform));
                 return(-1);
             }
         }
@@ -448,13 +448,13 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
         if(transform->operation == xmlSecTransformOperationSign) {
             ret = EVP_SignUpdate(ctx->digestCtx, xmlSecBufferGetData(in), inSize);
             if(ret != 1) {
-                xmlSecOpenSSLError(xmlSecTransformGetName(transform), "EVP_SignUpdate");
+                xmlSec2OpenSSLError("EVP_SignUpdate", xmlSecTransformGetName(transform));
                 return(-1);
             }
         } else {
             ret = EVP_VerifyUpdate(ctx->digestCtx, xmlSecBufferGetData(in), inSize);
             if(ret != 1) {
-                xmlSecOpenSSLError(xmlSecTransformGetName(transform), "EVP_VerifyUpdate");
+                xmlSec2OpenSSLError("EVP_VerifyUpdate", xmlSecTransformGetName(transform));
                 return(-1);
             }
         }
@@ -484,7 +484,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
 
             ret = EVP_SignFinal(ctx->digestCtx, xmlSecBufferGetData(out), &signSize, ctx->pKey);
             if(ret != 1) {
-                xmlSecOpenSSLError(xmlSecTransformGetName(transform), "EVP_SignFinal");
+                xmlSec2OpenSSLError("EVP_SignFinal", xmlSecTransformGetName(transform));
                 return(-1);
             }
 

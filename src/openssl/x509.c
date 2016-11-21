@@ -351,14 +351,14 @@ xmlSecOpenSSLKeyDataX509AdoptCert(xmlSecKeyDataPtr data, X509* cert) {
     if(ctx->certsList == NULL) {
         ctx->certsList = sk_X509_new_null();
         if(ctx->certsList == NULL) {
-            xmlSecOpenSSLError(xmlSecKeyDataGetName(data), "sk_X509_new_null");
+            xmlSec2OpenSSLError("sk_X509_new_null", xmlSecKeyDataGetName(data));
             return(-1);
         }
     }
 
     ret = sk_X509_push(ctx->certsList, cert);
     if(ret < 1) {
-        xmlSecOpenSSLError(xmlSecKeyDataGetName(data), "sk_X509_push");
+        xmlSec2OpenSSLError("sk_X509_push", xmlSecKeyDataGetName(data));
         return(-1);
     }
 
@@ -432,14 +432,14 @@ xmlSecOpenSSLKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, X509_CRL* crl) {
     if(ctx->crlsList == NULL) {
         ctx->crlsList = sk_X509_CRL_new_null();
         if(ctx->crlsList == NULL) {
-            xmlSecOpenSSLError(xmlSecKeyDataGetName(data), "sk_X509_CRL_new_null");
+            xmlSec2OpenSSLError("sk_X509_CRL_new_null", xmlSecKeyDataGetName(data));
             return(-1);
         }
     }
 
     ret = sk_X509_CRL_push(ctx->crlsList, crl);
     if(ret < 1) {
-        xmlSecOpenSSLError(xmlSecKeyDataGetName(data), "sk_X509_CRL_push");
+        xmlSec2OpenSSLError("sk_X509_CRL_push", xmlSecKeyDataGetName(data));
         return(-1);
     }
 
@@ -529,7 +529,7 @@ xmlSecOpenSSLKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
 
         certDst = X509_dup(certSrc);
         if(certDst == NULL) {
-            xmlSecOpenSSLError(xmlSecKeyDataGetName(dst), "X509_dup");
+            xmlSec2OpenSSLError("X509_dup", xmlSecKeyDataGetName(dst));
             return(-1);
         }
 
@@ -555,7 +555,7 @@ xmlSecOpenSSLKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
 
         crlDst = X509_CRL_dup(crlSrc);
         if(crlDst == NULL) {
-            xmlSecOpenSSLError(xmlSecKeyDataGetName(dst), "X509_CRL_dup");
+            xmlSec2OpenSSLError("X509_CRL_dup", xmlSecKeyDataGetName(dst));
             return(-1);
         }
 
@@ -573,7 +573,7 @@ xmlSecOpenSSLKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     if(certSrc != NULL) {
         certDst = X509_dup(certSrc);
         if(certDst == NULL) {
-            xmlSecOpenSSLError(xmlSecKeyDataGetName(dst), "X509_dup");
+            xmlSec2OpenSSLError("X509_dup", xmlSecKeyDataGetName(dst));
             return(-1);
         }
         ret = xmlSecOpenSSLKeyDataX509AdoptKeyCert(dst, certDst);
@@ -1032,7 +1032,7 @@ xmlSecOpenSSLX509SubjectNameNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xml
 
     cert2 = X509_dup(cert);
     if(cert2 == NULL) {
-        xmlSecOpenSSLError(xmlSecKeyDataGetName(data), "X509_dup");
+        xmlSec2OpenSSLError("X509_dup", xmlSecKeyDataGetName(data));
         xmlFree(subject);
         return(-1);
     }
@@ -1190,7 +1190,7 @@ xmlSecOpenSSLX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xm
 
     cert2 = X509_dup(cert);
     if(cert2 == NULL) {
-        xmlSecOpenSSLError(xmlSecKeyDataGetName(data), "X509_dup");
+        xmlSec2OpenSSLError("X509_dup", xmlSecKeyDataGetName(data));
         xmlFree(issuerSerial);
         xmlFree(issuerName);
         return(-1);
@@ -1316,7 +1316,7 @@ xmlSecOpenSSLX509SKINodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyIn
 
     cert2 = X509_dup(cert);
     if(cert2 == NULL) {
-        xmlSecOpenSSLError(xmlSecKeyDataGetName(data), "X509_dup");
+        xmlSec2OpenSSLError("X509_dup", xmlSecKeyDataGetName(data));
         xmlFree(ski);
         return(-1);
     }
@@ -1469,7 +1469,7 @@ xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr 
 
             ctx->keyCert = X509_dup(cert);
             if(ctx->keyCert == NULL) {
-                xmlSecOpenSSLError(xmlSecKeyDataGetName(data), "X509_dup");
+                xmlSec2OpenSSLError("X509_dup", xmlSecKeyDataGetName(data));
                 return(-1);
             }
 
@@ -1576,7 +1576,7 @@ xmlSecOpenSSLX509CertGetTime(const ASN1_TIME* t, time_t* res) {
 
     (*res) = 0;
     if(!ASN1_TIME_check(t)) {
-        xmlSecOpenSSLError(NULL, "ASN1_TIME_check");
+        xmlSec2OpenSSLError("ASN1_TIME_check", NULL);
         return(-1);
     }
 
@@ -1650,7 +1650,7 @@ xmlSecOpenSSLX509CertGetKey(X509* cert) {
 
     pKey = X509_get_pubkey(cert);
     if(pKey == NULL) {
-        xmlSecOpenSSLError(NULL, "X509_get_pubkey");
+        xmlSec2OpenSSLError("X509_get_pubkey", NULL);
         return(NULL);
     }
 
@@ -1691,20 +1691,20 @@ xmlSecOpenSSLX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
 
     mem = BIO_new(BIO_s_mem());
     if(mem == NULL) {
-        xmlSecOpenSSLError(NULL, "BIO_new");
+        xmlSec2OpenSSLError("BIO_new", NULL);
         return(NULL);
     }
 
     ret = BIO_write(mem, buf, size);
     if(ret <= 0) {
-        xmlSecOpenSSLError(NULL, "BIO_write");
+        xmlSec2OpenSSLError("BIO_write", NULL);
         BIO_free_all(mem);
         return(NULL);
     }
 
     cert = d2i_X509_bio(mem, NULL);
     if(cert == NULL) {
-        xmlSecOpenSSLError(NULL, "d2i_X509_bio");
+        xmlSec2OpenSSLError("d2i_X509_bio", NULL);
         BIO_free_all(mem);
         return(NULL);
     }
@@ -1724,7 +1724,7 @@ xmlSecOpenSSLX509CertBase64DerWrite(X509* cert, int base64LineWrap) {
 
     mem = BIO_new(BIO_s_mem());
     if(mem == NULL) {
-        xmlSecOpenSSLError(NULL, "BIO_new");
+        xmlSec2OpenSSLError("BIO_new", NULL);
         return(NULL);
     }
 
@@ -1734,7 +1734,7 @@ xmlSecOpenSSLX509CertBase64DerWrite(X509* cert, int base64LineWrap) {
 
     size = BIO_get_mem_data(mem, &p);
     if((size <= 0) || (p == NULL)){
-        xmlSecOpenSSLError(NULL, "BIO_get_mem_data");
+        xmlSec2OpenSSLError("BIO_get_mem_data", NULL);
         BIO_free_all(mem);
         return(NULL);
     }
@@ -1777,20 +1777,20 @@ xmlSecOpenSSLX509CrlDerRead(xmlSecByte* buf, xmlSecSize size) {
 
     mem = BIO_new(BIO_s_mem());
     if(mem == NULL) {
-        xmlSecOpenSSLError(NULL, "BIO_new");
+        xmlSec2OpenSSLError("BIO_new", NULL);
         return(NULL);
     }
 
     ret = BIO_write(mem, buf, size);
     if(ret <= 0) {
-        xmlSecOpenSSLError(NULL, "BIO_write");
+        xmlSec2OpenSSLError("BIO_write", NULL);
         BIO_free_all(mem);
         return(NULL);
     }
 
     crl = d2i_X509_CRL_bio(mem, NULL);
     if(crl == NULL) {
-        xmlSecOpenSSLError(NULL, "d2i_X509_CRL_bio");
+        xmlSec2OpenSSLError("d2i_X509_CRL_bio", NULL);
         BIO_free_all(mem);
         return(NULL);
     }
@@ -1810,7 +1810,7 @@ xmlSecOpenSSLX509CrlBase64DerWrite(X509_CRL* crl, int base64LineWrap) {
 
     mem = BIO_new(BIO_s_mem());
     if(mem == NULL) {
-        xmlSecOpenSSLError(NULL, "BIO_new");
+        xmlSec2OpenSSLError("BIO_new", NULL);
         return(NULL);
     }
 
@@ -1820,7 +1820,7 @@ xmlSecOpenSSLX509CrlBase64DerWrite(X509_CRL* crl, int base64LineWrap) {
 
     size = BIO_get_mem_data(mem, &p);
     if((size <= 0) || (p == NULL)){
-        xmlSecOpenSSLError(NULL, "BIO_get_mem_data");
+        xmlSec2OpenSSLError("BIO_get_mem_data", NULL);
         BIO_free_all(mem);
         return(NULL);
     }
@@ -1846,12 +1846,12 @@ xmlSecOpenSSLX509NameWrite(X509_NAME* nm) {
 
     mem = BIO_new(BIO_s_mem());
     if(mem == NULL) {
-        xmlSecOpenSSLError(NULL, "BIO_new");
+        xmlSec2OpenSSLError("BIO_new", NULL);
         return(NULL);
     }
 
     if (X509_NAME_print_ex(mem, nm, 0, XN_FLAG_RFC2253) <=0) {
-        xmlSecOpenSSLError(NULL, "X509_NAME_print_ex");
+        xmlSec2OpenSSLError("X509_NAME_print_ex", NULL);
         BIO_free_all(mem);
         return(NULL);
     }
@@ -1887,13 +1887,13 @@ xmlSecOpenSSLASN1IntegerWrite(ASN1_INTEGER *asni) {
 
     bn = ASN1_INTEGER_to_BN(asni, NULL);
     if(bn == NULL) {
-        xmlSecOpenSSLError(NULL, "ASN1_INTEGER_to_BN");
+        xmlSec2OpenSSLError("ASN1_INTEGER_to_BN", NULL);
         return(NULL);
     }
 
     p = BN_bn2dec(bn);
     if (p == NULL) {
-        xmlSecOpenSSLError(NULL, "BN_bn2dec");
+        xmlSec2OpenSSLError("BN_bn2dec", NULL);
         BN_free(bn);
         return(NULL);
     }
@@ -1930,19 +1930,19 @@ xmlSecOpenSSLX509SKIWrite(X509* cert) {
 
     index = X509_get_ext_by_NID(cert, NID_subject_key_identifier, -1);
     if (index < 0) {
-        xmlSecOpenSSLError(NULL, "X509_get_ext_by_NID(): Certificate without SubjectKeyIdentifier extension");
+        xmlSec2OpenSSLError("X509_get_ext_by_NID(): Certificate without SubjectKeyIdentifier extension", NULL);
         return(NULL);
     }
 
     ext = X509_get_ext(cert, index);
     if (ext == NULL) {
-        xmlSecOpenSSLError(NULL, "X509_get_ext");
+        xmlSec2OpenSSLError("X509_get_ext", NULL);
         return(NULL);
     }
 
     keyId = X509V3_EXT_d2i(ext);
     if (keyId == NULL) {
-        xmlSecOpenSSLError(NULL, "X509V3_EXT_d2i");
+        xmlSec2OpenSSLError("X509V3_EXT_d2i", NULL);
         ASN1_OCTET_STRING_free(keyId);
         return(NULL);
     }

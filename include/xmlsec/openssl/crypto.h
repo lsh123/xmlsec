@@ -758,8 +758,8 @@ XMLSEC_CRYPTO_EXPORT void       xmlSecOpenSSLErrorsDefaultCallback      (const c
  */
 #define xmlSecOpenSSLError(errorFunction, errorObject)  \
     xmlSecError(XMLSEC_ERRORS_HERE,                     \
-                (((errorObject) != NULL) ? xmlSecErrorsSafeString(errorObject) : NULL), \
-                (errorFunction),                         \
+                (const char*)(errorObject),             \
+                (errorFunction),                        \
                 XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
                 "openssl error: %lu: %s: %s %s",        \
                 ERR_peek_error(),                       \
@@ -779,10 +779,10 @@ XMLSEC_CRYPTO_EXPORT void       xmlSecOpenSSLErrorsDefaultCallback      (const c
  */
 #define xmlSecOpenSSLError2(errorFunction, errorObject, msg, param)  \
     xmlSecError(XMLSEC_ERRORS_HERE,                     \
-                (((errorObject) != NULL) ? xmlSecErrorsSafeString(errorObject) : NULL), \
-                (errorFunction),                         \
+                (const char*)(errorObject),             \
+                (errorFunction),                        \
                 XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
-                msg "openssl error: %lu: %s: %s %s",    \
+                msg "; openssl error: %lu: %s: %s %s",  \
                 param,                                  \
                 ERR_peek_error(),                       \
                 xmlSecErrorsSafeString(ERR_lib_error_string(ERR_peek_error())),  \

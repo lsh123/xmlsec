@@ -439,17 +439,17 @@ xmlSecBase64CtxDecodeByte(xmlSecBase64CtxPtr ctx, xmlSecByte inByte, xmlSecByte*
         ++ctx->inPos;
         return(xmlSecBase64StatusNext);
     } else if(ctx->inPos == 1) {
-        (*outByte) = xmlSecBase64Decode1(ctx->inByte, inByte);
+        (*outByte) = (xmlSecByte)xmlSecBase64Decode1(ctx->inByte, inByte);
         ctx->inByte = inByte;
         ++ctx->inPos;
         return(xmlSecBase64StatusConsumeAndNext);
     } else if(ctx->inPos == 2) {
-        (*outByte) = xmlSecBase64Decode2(ctx->inByte, inByte);
+        (*outByte) = (xmlSecByte)xmlSecBase64Decode2(ctx->inByte, inByte);
         ctx->inByte = inByte;
         ++ctx->inPos;
         return(xmlSecBase64StatusConsumeAndNext);
     } else if(ctx->inPos == 3) {
-        (*outByte) = xmlSecBase64Decode3(ctx->inByte, inByte);
+        (*outByte) = (xmlSecByte)xmlSecBase64Decode3(ctx->inByte, inByte);
         ctx->inByte = 0;
         ctx->inPos = 0;
         return(xmlSecBase64StatusConsumeAndNext);

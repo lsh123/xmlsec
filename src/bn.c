@@ -548,7 +548,7 @@ xmlSecBnDiv(xmlSecBnPtr bn, int divider, int* mod) {
         xmlSecAssert2(data != NULL, -1);
 
         over    = over * 256 + data[i];
-        data[i] = over / divider;
+        data[i] = (xmlSecByte)(over / divider);
         over    = over % divider;
     }
     (*mod) = over;
@@ -624,7 +624,7 @@ xmlSecBnAdd(xmlSecBnPtr bn, int delta) {
                 data[i] = 0;
                 over = (over - tmp) / 256;
             } else {
-                data[i] = tmp - over;
+                data[i] = (xmlSecByte)(tmp - over);
                 over = 0;
             }
         }

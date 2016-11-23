@@ -308,7 +308,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
                 return(-1);
             }
         }
-        inBuf[blockLen - 1] = blockLen - inSize;
+        inBuf[blockLen - 1] = (unsigned char)(blockLen - inSize);
         inSize = blockLen;
     } else {
         if(inSize != (size_t)blockLen) {

@@ -782,7 +782,7 @@ XMLSEC_CRYPTO_EXPORT void       xmlSecOpenSSLErrorsDefaultCallback      (const c
                 (const char*)(errorObject),             \
                 (errorFunction),                        \
                 XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
-                (msg) "; openssl error: %lu: %s: %s %s",\
+                msg "; openssl error: %lu: %s: %s %s",\
                 (param),                                \
                 ERR_peek_error(),                       \
                 xmlSecErrorsSafeString(ERR_lib_error_string(ERR_peek_error())),  \

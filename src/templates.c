@@ -1542,7 +1542,7 @@ xmlSecTmplX509DataAddCRL(xmlNodePtr x509DataNode) {
 int
 xmlSecTmplTransformAddHmacOutputLength(xmlNodePtr transformNode, xmlSecSize bitsLen) {
     xmlNodePtr cur;
-    char buf[32];
+    char buf[64];
 
     xmlSecAssert2(transformNode != NULL, -1);
     xmlSecAssert2(bitsLen > 0, -1);
@@ -1563,7 +1563,7 @@ xmlSecTmplTransformAddHmacOutputLength(xmlNodePtr transformNode, xmlSecSize bits
         return(-1);
     }
 
-    sprintf(buf, "%u", bitsLen);
+    sprintf(buf, "%lu", (unsigned long)bitsLen);
     xmlNodeSetContent(cur, BAD_CAST buf);
     return(0);
 }

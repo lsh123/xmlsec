@@ -761,7 +761,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
         nodeSetType = xmlSecNodeSetTreeWithoutComments;
         useVisa3DHack = 1;
     } else {
-        static const char tmpl[] = "xpointer(id(\'%s\'))";
+        static const xmlChar tmpl[] = "xpointer(id(\'%s\'))";
         xmlSecSize size;
 
         /* we need to add "xpointer(id('..')) because otherwise we have
@@ -772,7 +772,16 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
             xmlSecMallocError(size * sizeof(xmlChar), NULL);
             return(-1);
         }
-        sprintf((char*)buf, tmpl, xptr + 1);
+        ret = xmlStrPrintf(buf, size, tmpl, xptr + 1);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlStrPrintf",
+                        XMLSEC_ERRORS_R_XML_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+             xmlFree(buf);
+             return(-1);
+        }
         xptr = buf;
         nodeSetType = xmlSecNodeSetTreeWithoutComments;
     }

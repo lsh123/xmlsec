@@ -408,8 +408,11 @@ xmlSecMSCryptoErrorsDefaultCallback(const char* file, int line, const char* func
                                 const char* errorObject, const char* errorSubject,
                                 int reason, const char* msg) {
     DWORD dwError;
+#ifdef UNICODE
     TCHAR errorT[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE];
+#else /* UNICODE */
     WCHAR errorW[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE];
+#endif /* UNICODE */
     CHAR  errorUTF8[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE];
     xmlChar buf[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE];
     DWORD rc;
@@ -473,7 +476,7 @@ xmlSecMSCryptoConvertUtf8ToUnicode(const xmlChar* str) {
     xmlSecAssert2(str != NULL, NULL);
 
     /* call MultiByteToWideChar first to get the buffer size */
-    ret = MultiByteToWideChar(CP_UTF8, 0, str, -1, NULL, 0);
+    ret = MultiByteToWideChar(CP_UTF8, 0, (LPCCH)str, -1, NULL, 0);
     if(ret <= 0) {
         return(NULL);
     }
@@ -487,7 +490,7 @@ xmlSecMSCryptoConvertUtf8ToUnicode(const xmlChar* str) {
     }
 
     /* convert */
-    ret = MultiByteToWideChar(CP_UTF8, 0, str, -1, res, len);
+    ret = MultiByteToWideChar(CP_UTF8, 0, (LPCCH)str, -1, res, len);
     if(ret <= 0) {
         xmlFree(res);
         return(NULL);
@@ -528,7 +531,7 @@ xmlSecMSCryptoConvertUnicodeToUtf8(LPCWSTR str) {
     }
 
     /* convert */
-    ret = WideCharToMultiByte(CP_UTF8, 0, str, -1, res, len, NULL, NULL);
+    ret = WideCharToMultiByte(CP_UTF8, 0, str, -1, (LPSTR)res, len, NULL, NULL);
     if(ret <= 0) {
         xmlFree(res);
         return(NULL);
@@ -618,7 +621,7 @@ xmlSecMSCryptoConvertLocaleToUtf8(const char * str) {
     }
 
     /* convert */
-    ret = WideCharToMultiByte(CP_ACP, 0, strW, -1, res, len, NULL, NULL);
+    ret = WideCharToMultiByte(CP_ACP, 0, strW, -1, (LPSTR)res, len, NULL, NULL);
     if(ret <= 0) {
         xmlFree(strW);
         xmlFree(res);

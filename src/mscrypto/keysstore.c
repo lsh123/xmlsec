@@ -347,7 +347,12 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
         PCCERT_CONTEXT pCertCtxIter = NULL;
 
 
-        while (pCertCtxIter = CertEnumCertificatesInStore(hStoreHandle, pCertCtxIter)) {
+        while (1) {
+           pCertCtxIter = CertEnumCertificatesInStore(hStoreHandle, pCertCtxIter);
+            if(pCertCtxIter == NULL) {
+                break;
+            }
+
             if (TRUE != CertGetCertificateContextProperty(pCertCtxIter,
                                                       CERT_FRIENDLY_NAME_PROP_ID,
                                                       NULL,

@@ -895,7 +895,6 @@ xmlSecMSCryptoCertStrToName(DWORD dwCertEncodingType, LPTSTR pszX500, DWORD dwSt
     if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType,
                         NULL, NULL, len, &ppszError)) {
         /* this might not be an error, string might just not exist */
-        DWORD dw = GetLastError();
         return(NULL);
     }
 

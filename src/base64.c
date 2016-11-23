@@ -156,12 +156,7 @@ xmlSecBase64CtxCreate(int encode, int columns) {
      */
     ctx = (xmlSecBase64CtxPtr) xmlMalloc(sizeof(xmlSecBase64Ctx));
     if (ctx == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "sizeof(xmlSecBase64Ctx)=%d",
-                    (int)sizeof(xmlSecBase64Ctx));
+        xmlSecMallocError(sizeof(xmlSecBase64Ctx), NULL);
         return(NULL);
     }
 
@@ -444,17 +439,17 @@ xmlSecBase64CtxDecodeByte(xmlSecBase64CtxPtr ctx, xmlSecByte inByte, xmlSecByte*
         ++ctx->inPos;
         return(xmlSecBase64StatusNext);
     } else if(ctx->inPos == 1) {
-        (*outByte) = xmlSecBase64Decode1(ctx->inByte, inByte);
+        (*outByte) = (xmlSecByte)xmlSecBase64Decode1(ctx->inByte, inByte);
         ctx->inByte = inByte;
         ++ctx->inPos;
         return(xmlSecBase64StatusConsumeAndNext);
     } else if(ctx->inPos == 2) {
-        (*outByte) = xmlSecBase64Decode2(ctx->inByte, inByte);
+        (*outByte) = (xmlSecByte)xmlSecBase64Decode2(ctx->inByte, inByte);
         ctx->inByte = inByte;
         ++ctx->inPos;
         return(xmlSecBase64StatusConsumeAndNext);
     } else if(ctx->inPos == 3) {
-        (*outByte) = xmlSecBase64Decode3(ctx->inByte, inByte);
+        (*outByte) = (xmlSecByte)xmlSecBase64Decode3(ctx->inByte, inByte);
         ctx->inByte = 0;
         ctx->inPos = 0;
         return(xmlSecBase64StatusConsumeAndNext);
@@ -641,18 +636,16 @@ xmlSecBase64Encode(const xmlSecByte *buf, xmlSecSize len, int columns) {
     }
     ptr = (xmlChar*) xmlMalloc(size);
     if(ptr == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", size);
+        xmlSecMallocError(size, NULL);
         xmlSecBase64CtxFinalize(&ctx);
         return(NULL);
     }
 
     ret = xmlSecBase64CtxUpdate(&ctx, buf, len, (xmlSecByte*)ptr, size);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBase64CtxUpdate", NULL, "len=%d", len);
+        xmlSecInternalError3("xmlSecBase64CtxUpdate", NULL,
+                             "len=%lu;size=%lu",
+                             (unsigned long)len, (unsigned long)size);
         xmlFree(ptr);
         xmlSecBase64CtxFinalize(&ctx);
         return(NULL);

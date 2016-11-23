@@ -56,7 +56,7 @@ xmlSecInit(void) {
 
 
     /* we use rand() function to generate id attributes */
-    srand(time(NULL));
+    srand((unsigned int)time(NULL));
     return(0);
 }
 

@@ -211,11 +211,7 @@ xmlSecGnuTLSX509CertGetSubjectDN(gnutls_x509_crt_t cert) {
     /* allocate buffer */
     buf = (char *)xmlMalloc(bufSize + 1);
     if(buf == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlMalloc",
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", (int)bufSize);
+        xmlSecMallocError(bufSize + 1, NULL);
         return(NULL);
     }
 
@@ -257,11 +253,7 @@ xmlSecGnuTLSX509CertGetIssuerDN(gnutls_x509_crt_t cert) {
     /* allocate buffer */
     buf = (char *)xmlMalloc(bufSize + 1);
     if(buf == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlMalloc",
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", (int)bufSize);
+        xmlSecMallocError(bufSize + 1, NULL);
         return(NULL);
     }
 
@@ -304,11 +296,7 @@ xmlSecGnuTLSX509CertGetIssuerSerial(gnutls_x509_crt_t cert) {
     /* allocate buffer */
     buf = (unsigned char *)xmlMalloc(bufSize + 1);
     if(buf == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlMalloc",
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", (int)bufSize);
+        xmlSecMallocError(bufSize + 1, NULL);
         return(NULL);
     }
 
@@ -361,11 +349,7 @@ xmlSecGnuTLSX509CertGetSKI(gnutls_x509_crt_t cert) {
     /* allocate buffer */
     buf = (xmlSecByte *)xmlMalloc(bufSize + 1);
     if(buf == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlMalloc",
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", (int)bufSize);
+        xmlSecMallocError(bufSize + 1, NULL);
         return(NULL);
     }
 
@@ -490,11 +474,7 @@ xmlSecGnuTLSX509CertBase64DerWrite(gnutls_x509_crt_t cert, int base64LineWrap) {
     /* allocate buffer */
     buf = (xmlSecByte *)xmlMalloc(bufSize + 1);
     if(buf == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlMalloc",
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", (int)bufSize);
+        xmlSecMallocError(bufSize + 1, NULL);
         return(NULL);
     }
 
@@ -642,11 +622,7 @@ xmlSecGnuTLSX509CrlGetIssuerDN(gnutls_x509_crl_t crl) {
     /* allocate buffer */
     buf = (char *)xmlMalloc(bufSize + 1);
     if(buf == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlMalloc",
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", (int)bufSize);
+        xmlSecMallocError(bufSize + 1, NULL);
         return(NULL);
     }
 
@@ -761,11 +737,7 @@ xmlSecGnuTLSX509CrlBase64DerWrite(gnutls_x509_crl_t crl, int base64LineWrap) {
     /* allocate buffer */
     buf = (xmlSecByte *)xmlMalloc(bufSize + 1);
     if(buf == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlMalloc",
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", (int)bufSize);
+        xmlSecMallocError(bufSize + 1, NULL);
         return(NULL);
     }
 
@@ -849,11 +821,7 @@ xmlSecGnuTLSASN1IntegerWrite(const unsigned char * data, size_t len) {
 
     res = (xmlChar*)xmlMalloc(resLen + 1);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlMalloc",
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", (int)resLen);
+        xmlSecMallocError(resLen + 1, NULL);
         return (NULL);
     }
 
@@ -1429,11 +1397,7 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
     /* allocate buffer, we don't need more than string */
     tmp = (xmlChar *)xmlMalloc(xmlStrlen(dn) + 1);
     if(tmp == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlMalloc",
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", (int)(xmlStrlen(dn) + 1));
+        xmlSecMallocError(xmlStrlen(dn) + 1, NULL);
         goto done;
     }
 
@@ -1477,11 +1441,7 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
                 }
                 attrs[pos].key = xmlStrdup(tmp);
                 if(attrs[pos].key == NULL) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                NULL,
-                                "xmlStrdup",
-                                XMLSEC_ERRORS_R_MALLOC_FAILED,
-                                "size=%d", (int)(xmlStrlen(tmp) + 1));
+                    xmlSecStrdupError(tmp, NULL);
                     goto done;
                 }
 
@@ -1519,11 +1479,7 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
 
                 attrs[pos].value = xmlStrdup(tmp);
                 if(attrs[pos].value == NULL) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                NULL,
-                                "xmlStrdup",
-                                XMLSEC_ERRORS_R_MALLOC_FAILED,
-                                "size=%d", (int)(xmlStrlen(tmp) + 1));
+                    xmlSecStrdupError(tmp, NULL);
                     goto done;
                 }
                 state = xmlSecGnuTLSDnParseState_BeforeNameComponent;
@@ -1545,11 +1501,7 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
 
                 attrs[pos].value = xmlStrdup(tmp);
                 if(attrs[pos].value == NULL) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                NULL,
-                                "xmlStrdup",
-                                XMLSEC_ERRORS_R_MALLOC_FAILED,
-                                "size=%d", (int)(xmlStrlen(tmp) + 1));
+                    xmlSecStrdupError(tmp, NULL);
                     goto done;
                 }
                 state = xmlSecGnuTLSDnParseState_AfterQuotedString;

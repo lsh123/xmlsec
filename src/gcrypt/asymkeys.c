@@ -374,11 +374,7 @@ xmlSecGCryptAsymSExpDup(gcry_sexp_t pKey) {
 
     buf = (xmlSecByte *)xmlMalloc(size);
     if(buf == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlMalloc",
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", (int)size);
+        xmlSecMallocError(size, NULL);
         goto done;
     }
 

@@ -876,11 +876,7 @@ xmlSecGenerateID(const xmlChar* prefix, xmlSecSize len) {
         tmpLen = xmlStrlen(prefix) + xmlStrlen(res) + 1;
         tmp = xmlMalloc(tmpLen + 1);
         if(tmp == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlMalloc",
-                        XMLSEC_ERRORS_R_MALLOC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecMallocError(tmpLen + 1, NULL);
             xmlFree(res);
             return(NULL);
         }
@@ -1091,24 +1087,14 @@ xmlSecGetQName(xmlNodePtr node, const xmlChar* href, const xmlChar* local) {
         len = xmlStrlen(local) + xmlStrlen(ns->prefix) + 4;
         qname = xmlMalloc(len);
         if(qname == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlMalloc",
-                        XMLSEC_ERRORS_R_MALLOC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(node->name));
+            xmlSecMallocError(len, NULL);
             return(NULL);
         }
         xmlSecStrPrintf(qname, len, BAD_CAST "%s:%s", ns->prefix, local);
     } else {
         qname = xmlStrdup(local);
         if(qname == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlStrdup",
-                        XMLSEC_ERRORS_R_MALLOC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(node->name));
+            xmlSecStrdupError(local, NULL);
             return(NULL);
         }
     }
@@ -1210,13 +1196,7 @@ xmlSecQName2IntegerGetIntegerFromString(xmlSecQName2IntegerInfoConstPtr info,
     if(qnameLocalPart != NULL) {
         qnamePrefix = xmlStrndup(qname, qnameLocalPart - qname);
         if(qnamePrefix == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlStrndup",
-                        XMLSEC_ERRORS_R_MALLOC_FAILED,
-                        "node=%s,value=%s",
-                        xmlSecErrorsSafeString(node->name),
-                        xmlSecErrorsSafeString(qname));
+            xmlSecStrdupError(qname, NULL);
             return(-1);
         }
         qnameLocalPart++;
@@ -1634,13 +1614,7 @@ xmlSecQName2BitMaskGetBitMaskFromString(xmlSecQName2BitMaskInfoConstPtr info,
     if(qnameLocalPart != NULL) {
         qnamePrefix = xmlStrndup(qname, qnameLocalPart - qname);
         if(qnamePrefix == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlStrndup",
-                        XMLSEC_ERRORS_R_MALLOC_FAILED,
-                        "node=%s,value=%s",
-                        xmlSecErrorsSafeString(node->name),
-                        xmlSecErrorsSafeString(qname));
+            xmlSecStrdupError(qname, NULL);
             return(-1);
         }
         qnameLocalPart++;

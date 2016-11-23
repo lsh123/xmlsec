@@ -284,11 +284,7 @@ xmlSecTransformCtxCreate(void) {
     /* Allocate a new xmlSecTransform and fill the fields. */
     ctx = (xmlSecTransformCtxPtr)xmlMalloc(sizeof(xmlSecTransformCtx));
     if(ctx == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", (int)sizeof(xmlSecTransformCtx));
+        xmlSecMallocError(sizeof(xmlSecTransformCtx), NULL);
         return(NULL);
     }
 
@@ -728,11 +724,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
     if(xptr == NULL){
         ctx->uri = xmlStrdup(uri);
         if(ctx->uri == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_STRDUP_FAILED,
-                        "size=%d", xmlStrlen(uri));
+            xmlSecStrdupError(uri, NULL);
             return(-1);
         }
         /* we are done */
@@ -740,11 +732,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
     } else if(xmlStrcmp(uri, BAD_CAST "#xpointer(/)") == 0) {
         ctx->xptrExpr = xmlStrdup(uri);
         if(ctx->xptrExpr == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_STRDUP_FAILED,
-                        "size=%d", xmlStrlen(uri));
+            xmlSecStrdupError(uri, NULL);
             return(-1);
         }
         /* we are done */
@@ -753,21 +741,13 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
 
     ctx->uri = xmlStrndup(uri, xptr - uri);
     if(ctx->uri == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_STRDUP_FAILED,
-                    "size=%d", (int)(xptr - uri));
+        xmlSecStrdupError(uri, NULL);
         return(-1);
     }
 
     ctx->xptrExpr = xmlStrdup(xptr);
     if(ctx->xptrExpr == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_STRDUP_FAILED,
-                    "size=%d", xmlStrlen(xptr));
+        xmlSecStrdupError(xptr, NULL);
         return(-1);
     }
 
@@ -781,7 +761,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
         nodeSetType = xmlSecNodeSetTreeWithoutComments;
         useVisa3DHack = 1;
     } else {
-        static const char tmpl[] = "xpointer(id(\'%s\'))";
+        static const xmlChar tmpl[] = "xpointer(id(\'%s\'))";
         xmlSecSize size;
 
         /* we need to add "xpointer(id('..')) because otherwise we have
@@ -789,14 +769,19 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
         size = xmlStrlen(BAD_CAST tmpl) + xmlStrlen(xptr) + 2;
         buf = (xmlChar*)xmlMalloc(size * sizeof(xmlChar));
         if(buf == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_MALLOC_FAILED,
-                        "size=%d", size);
+            xmlSecMallocError(size * sizeof(xmlChar), NULL);
             return(-1);
         }
-        sprintf((char*)buf, tmpl, xptr + 1);
+        ret = xmlStrPrintf(buf, size, tmpl, xptr + 1);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlStrPrintf",
+                        XMLSEC_ERRORS_R_XML_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+             xmlFree(buf);
+             return(-1);
+        }
         xptr = buf;
         nodeSetType = xmlSecNodeSetTreeWithoutComments;
     }
@@ -1227,11 +1212,7 @@ xmlSecTransformCreate(xmlSecTransformId id) {
     /* Allocate a new xmlSecTransform and fill the fields. */
     transform = (xmlSecTransformPtr)xmlMalloc(id->objSize);
     if(transform == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", id->objSize);
+        xmlSecMallocError(id->objSize, NULL);
         return(NULL);
     }
     memset(transform, 0, id->objSize);
@@ -2530,11 +2511,7 @@ xmlSecTransformIOBufferCreate(xmlSecTransformIOBufferMode mode, xmlSecTransformP
 
     buffer = (xmlSecTransformIOBufferPtr)xmlMalloc(sizeof(xmlSecTransformIOBuffer));
     if(buffer == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", (int)sizeof(xmlSecTransformIOBuffer));
+        xmlSecMallocError(sizeof(xmlSecTransformIOBuffer), NULL);
         return(NULL);
     }
     memset(buffer, 0, sizeof(xmlSecTransformIOBuffer));

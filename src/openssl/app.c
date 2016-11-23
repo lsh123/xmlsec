@@ -1324,11 +1324,7 @@ xmlSecOpenSSLDefaultPasswordCallback(char *buf, int bufsize, int verify, void *u
 
         buf2 = (char*)xmlMalloc(bufsize);
         if(buf2 == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_MALLOC_FAILED,
-                        "size=%d", bufsize);
+            xmlSecMallocError(bufsize, NULL);
             return(-1);
         }
         ret = EVP_read_pw_string(buf2, bufsize, (char*)prompt, 0);

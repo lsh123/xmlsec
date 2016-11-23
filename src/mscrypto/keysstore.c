@@ -347,7 +347,12 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
         PCCERT_CONTEXT pCertCtxIter = NULL;
 
 
-        while (pCertCtxIter = CertEnumCertificatesInStore(hStoreHandle, pCertCtxIter)) {
+        while (1) {
+           pCertCtxIter = CertEnumCertificatesInStore(hStoreHandle, pCertCtxIter);
+            if(pCertCtxIter == NULL) {
+                break;
+            }
+
             if (TRUE != CertGetCertificateContextProperty(pCertCtxIter,
                                                       CERT_FRIENDLY_NAME_PROP_ID,
                                                       NULL,
@@ -357,11 +362,7 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
 
             pbFriendlyName = xmlMalloc(dwPropSize);
             if(pbFriendlyName == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-                            NULL,
-                            XMLSEC_ERRORS_R_MALLOC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecMallocError(dwPropSize, xmlSecKeyStoreGetName(store));
                 xmlFree(wcName);
                 CertCloseStore(hStoreHandle, 0);
                 return(NULL);

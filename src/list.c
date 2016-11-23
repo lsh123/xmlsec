@@ -60,12 +60,8 @@ xmlSecPtrListCreate(xmlSecPtrListId id) {
     /* Allocate a new xmlSecPtrList and fill the fields. */
     list = (xmlSecPtrListPtr)xmlMalloc(sizeof(xmlSecPtrList));
     if(list == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecPtrListKlassGetName(id)),
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "sizeof(xmlSecPtrList)=%d",
-                    (int)sizeof(xmlSecPtrList));
+        xmlSecMallocError(sizeof(xmlSecPtrList),
+                          xmlSecPtrListKlassGetName(id));
         return(NULL);
     }
 
@@ -458,12 +454,8 @@ xmlSecPtrListEnsureSize(xmlSecPtrListPtr list, xmlSecSize size) {
         newData = (xmlSecPtr*)xmlMalloc(sizeof(xmlSecPtr) * newSize);
     }
     if(newData == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecPtrListGetName(list)),
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "sizeof(xmlSecPtr)*%d=%d",
-                    newSize, (int)(sizeof(xmlSecPtr) * newSize));
+        xmlSecMallocError(sizeof(xmlSecPtr) * newSize,
+                          xmlSecPtrListGetName(list));
         return(-1);
     }
 

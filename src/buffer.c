@@ -63,11 +63,7 @@ xmlSecBufferCreate(xmlSecSize size) {
 
     buf = (xmlSecBufferPtr)xmlMalloc(sizeof(xmlSecBuffer));
     if(buf == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "sizeof(xmlSecBuffer)=%d", (int)sizeof(xmlSecBuffer));
+        xmlSecMallocError(sizeof(xmlSecBuffer), NULL);
         return(NULL);
     }
 
@@ -297,11 +293,7 @@ xmlSecBufferSetMaxSize(xmlSecBufferPtr buf, xmlSecSize size) {
         newData = (xmlSecByte*)xmlMalloc(newSize);
     }
     if(newData == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", newSize);
+        xmlSecMallocError(newSize, NULL);
         return(-1);
     }
 

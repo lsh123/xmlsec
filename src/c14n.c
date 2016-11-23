@@ -152,11 +152,7 @@ xmlSecTransformC14NNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSe
 
             tmp = xmlStrdup(p);
             if(tmp == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            NULL,
-                            XMLSEC_ERRORS_R_STRDUP_FAILED,
-                            "len=%d", xmlStrlen(p));
+                xmlSecStrdupError(p, xmlSecTransformGetName(transform));
                 xmlFree(list);
                 return(-1);
             }

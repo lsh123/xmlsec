@@ -107,12 +107,7 @@ xmlSecKeyUseWithCreate(const xmlChar* application, const xmlChar* identifier) {
     /* Allocate a new xmlSecKeyUseWith and fill the fields. */
     keyUseWith = (xmlSecKeyUseWithPtr)xmlMalloc(sizeof(xmlSecKeyUseWith));
     if(keyUseWith == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "sizeof(xmlSecKeyUseWith)=%d",
-                    (int)sizeof(xmlSecKeyUseWith));
+        xmlSecMallocError(sizeof(xmlSecKeyUseWith), NULL);
         return(NULL);
     }
     memset(keyUseWith, 0, sizeof(xmlSecKeyUseWith));
@@ -208,24 +203,14 @@ xmlSecKeyUseWithSet(xmlSecKeyUseWithPtr keyUseWith, const xmlChar* application, 
     if(application != NULL) {
         keyUseWith->application = xmlStrdup(application);
         if(keyUseWith->application == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_MALLOC_FAILED,
-                        "xmlStrlen(application)=%d",
-                        xmlStrlen(application));
+            xmlSecStrdupError(application, NULL);
             return(-1);
         }
     }
     if(identifier != NULL) {
         keyUseWith->identifier = xmlStrdup(identifier);
         if(keyUseWith->identifier == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_MALLOC_FAILED,
-                        "xmlStrlen(identifier)=%d",
-                        xmlStrlen(identifier));
+            xmlSecStrdupError(identifier, NULL);
             return(-1);
         }
     }
@@ -519,12 +504,7 @@ xmlSecKeyCreate(void)  {
     /* Allocate a new xmlSecKey and fill the fields. */
     key = (xmlSecKeyPtr)xmlMalloc(sizeof(xmlSecKey));
     if(key == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "sizeof(xmlSecKey)=%d",
-                    (int)sizeof(xmlSecKey));
+        xmlSecMallocError(sizeof(xmlSecKey), NULL);
         return(NULL);
     }
     memset(key, 0, sizeof(xmlSecKey));
@@ -590,11 +570,7 @@ xmlSecKeyCopy(xmlSecKeyPtr keyDst, xmlSecKeyPtr keySrc) {
     if(keySrc->name != NULL) {
         keyDst->name = xmlStrdup(keySrc->name);
         if(keyDst->name == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_STRDUP_FAILED,
-                        "len=%d", xmlStrlen(keySrc->name));
+            xmlSecStrdupError(keySrc->name, NULL);
             return(-1);
         }
     }
@@ -731,11 +707,7 @@ xmlSecKeySetName(xmlSecKeyPtr key, const xmlChar* name) {
     if(name != NULL) {
         key->name = xmlStrdup(name);
         if(key->name == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_STRDUP_FAILED,
-                        "len=%d", xmlStrlen(name));
+            xmlSecStrdupError(name, NULL);
             return(-1);
         }
     }

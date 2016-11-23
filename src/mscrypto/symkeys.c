@@ -258,11 +258,7 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
 
     keyBlob = (LPBYTE)xmlMalloc(sizeof(BYTE) * keyBlobLen);
     if(keyBlob == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMallocError(sizeof(BYTE) * keyBlobLen, NULL);
         goto done;
     }
 
@@ -530,11 +526,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
     /* allocate simple blob buffer */
     keyBlob = (LPBYTE)xmlMalloc(sizeof(BYTE) * keyBlobLen);
     if(keyBlob == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMallocError(sizeof(BYTE) * keyBlobLen, NULL);
         goto done;
     }
     memset(keyBlob, 0, keyBlobLen);

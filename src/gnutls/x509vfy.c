@@ -249,11 +249,8 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
     if(cert_list_length > 0) {
         cert_list = (gnutls_x509_crt_t *)xmlMalloc(sizeof(gnutls_x509_crt_t) * cert_list_length);
         if(cert_list == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                        "xmlMalloc",
-                        XMLSEC_ERRORS_R_MALLOC_FAILED,
-                        "size=%d", (int)(sizeof(gnutls_x509_crt_t) * cert_list_length));
+            xmlSecMallocError(sizeof(gnutls_x509_crt_t) * cert_list_length,
+                              xmlSecKeyDataStoreGetName(store));
             goto done;
         }
     }
@@ -261,11 +258,8 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
     if(crl_list_length > 0) {
         crl_list = (gnutls_x509_crl_t *)xmlMalloc(sizeof(gnutls_x509_crl_t) * crl_list_length);
         if(crl_list == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                        "xmlMalloc",
-                        XMLSEC_ERRORS_R_MALLOC_FAILED,
-                        "size=%d", (int)(sizeof(gnutls_x509_crl_t) * crl_list_length));
+            xmlSecMallocError(sizeof(gnutls_x509_crl_t) * crl_list_length,
+                              xmlSecKeyDataStoreGetName(store));
             goto done;
         }
         for(ii = 0; ii < crl_list_length; ++ii) {
@@ -282,11 +276,8 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
     if(ca_list_length > 0) {
         ca_list = (gnutls_x509_crt_t *)xmlMalloc(sizeof(gnutls_x509_crt_t) * ca_list_length);
         if(ca_list == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                        "xmlMalloc",
-                        XMLSEC_ERRORS_R_MALLOC_FAILED,
-                        "size=%d", (int)(sizeof(gnutls_x509_crt_t) * ca_list_length));
+            xmlSecMallocError(sizeof(gnutls_x509_crt_t) * ca_list_length,
+                              xmlSecKeyDataStoreGetName(store));
             goto done;
         }
         for(ii = 0; ii < ca_list_length; ++ii) {
@@ -495,6 +486,7 @@ xmlSecGnuTLSX509StoreFinalize(xmlSecKeyDataStorePtr store) {
  *
  *****************************************************************************/
 #define XMLSEC_GNUTLS_DN_ATTRS_SIZE             1024
+
 static int
 xmlSecGnuTLSX509DnsEqual(const xmlChar * ll, const xmlChar * rr) {
     xmlSecGnuTLSDnAttr ll_attrs[XMLSEC_GNUTLS_DN_ATTRS_SIZE];

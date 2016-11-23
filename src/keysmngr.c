@@ -48,12 +48,7 @@ xmlSecKeysMngrCreate(void) {
     /* Allocate a new xmlSecKeysMngr and fill the fields. */
     mngr = (xmlSecKeysMngrPtr)xmlMalloc(sizeof(xmlSecKeysMngr));
     if(mngr == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "sizeof(xmlSecKeysMngr)=%d",
-                    (int)sizeof(xmlSecKeysMngr));
+        xmlSecMallocError(sizeof(xmlSecKeysMngr), NULL);
         return(NULL);
     }
     memset(mngr, 0, sizeof(xmlSecKeysMngr));
@@ -237,11 +232,8 @@ xmlSecKeyStoreCreate(xmlSecKeyStoreId id)  {
     /* Allocate a new xmlSecKeyStore and fill the fields. */
     store = (xmlSecKeyStorePtr)xmlMalloc(id->objSize);
     if(store == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyStoreKlassGetName(id)),
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", id->objSize);
+        xmlSecMallocError(id->objSize,
+                          xmlSecKeyStoreKlassGetName(id));
         return(NULL);
     }
     memset(store, 0, id->objSize);

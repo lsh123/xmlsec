@@ -442,7 +442,7 @@ XMLSEC_EXPORT const char*       xmlSecErrorsGetMsg              (xmlSecSize pos)
  * Macro. Returns @str if it is not NULL or pointer to "NULL" otherwise.
  */
 #define xmlSecErrorsSafeString(str) \
-        (((str) != NULL) ? ((const char*)(str)) : (char*)"NULL")
+        (((str) != NULL) ? ((const char*)(str)) : (const char*)"NULL")
 
 /**
  * XMLSEC_ERRORS_NO_MESSAGE:
@@ -468,10 +468,10 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
  *
  * Macro. The XMLSec library macro for reporting internal XMLSec errors.
  */
-#define xmlSecInternalError(errorFunction, errorObject)  \
+#define xmlSecInternalError(errorFunction, errorObject) \
     xmlSecError(XMLSEC_ERRORS_HERE,                     \
-                (((errorObject) != NULL) ? xmlSecErrorsSafeString(errorObject) : NULL), \
-                (errorFunction),                         \
+                (const char*)(errorObject),             \
+                (errorFunction),                        \
                 XMLSEC_ERRORS_R_XMLSEC_FAILED,          \
                 XMLSEC_ERRORS_NO_MESSAGE                \
     )
@@ -485,12 +485,12 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
  *
  * Macro. The XMLSec library macro for reporting internal XMLSec errors.
  */
-#define xmlSecInternalError2(errorFunction, errorObject, msg, param)  \
+#define xmlSecInternalError2(errorFunction, errorObject, msg, param) \
     xmlSecError(XMLSEC_ERRORS_HERE,                     \
-                (((errorObject) != NULL) ? xmlSecErrorsSafeString(errorObject) : NULL), \
-                (errorFunction),                         \
+                (const char*)(errorObject),             \
+                (errorFunction),                        \
                 XMLSEC_ERRORS_R_XMLSEC_FAILED,          \
-                xmlSecErrorsSafeString(msg), (param)    \
+                (msg), (param)                          \
     )
 
 /**
@@ -503,12 +503,12 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
  *
  * Macro. The XMLSec library macro for reporting internal XMLSec errors.
  */
-#define xmlSecInternalError3(errorFunction, errorObject, msg, param1, param2)  \
-    xmlSecError(XMLSEC_ERRORS_HERE,                              \
-                (((errorObject) != NULL) ? xmlSecErrorsSafeString(errorObject) : NULL), \
-                (errorFunction),                                  \
-                XMLSEC_ERRORS_R_XMLSEC_FAILED,                   \
-                xmlSecErrorsSafeString(msg), (param1), (param2)  \
+#define xmlSecInternalError3(errorFunction, errorObject, msg, param1, param2) \
+    xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                (const char*)(errorObject),             \
+                (errorFunction),                        \
+                XMLSEC_ERRORS_R_XMLSEC_FAILED,          \
+                (msg), (param1), (param2)               \
     )
 
 /**
@@ -522,12 +522,42 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
  *
  * Macro. The XMLSec library macro for reporting internal XMLSec errors.
  */
-#define xmlSecInternalError4(errorFunction, errorObject, msg, param1, param2, param3)  \
-    xmlSecError(XMLSEC_ERRORS_HERE,                                      \
-                (((errorObject) != NULL) ? xmlSecErrorsSafeString(errorObject) : NULL), \
-                (errorFunction),                                           \
-                XMLSEC_ERRORS_R_XMLSEC_FAILED,                            \
-                xmlSecErrorsSafeString(msg), (param1), (param2), (param3) \
+#define xmlSecInternalError4(errorFunction, errorObject, msg, param1, param2, param3) \
+    xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                (const char*)(errorObject),             \
+                (errorFunction),                        \
+                XMLSEC_ERRORS_R_XMLSEC_FAILED,          \
+                (msg), (param1), (param2), (param3)     \
+    )
+
+/**
+ * xmlSecMallocError:
+ * @allocSize:          the failed allocation size.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting xmlMalloc() errors.
+ */
+#define xmlSecMallocError(allocSize, errorObject) \
+    xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                (const char*)(errorObject),             \
+                "xmlMalloc",                            \
+                XMLSEC_ERRORS_R_MALLOC_FAILED,          \
+                "size=%lu", (unsigned long)(allocSize)  \
+    )
+
+/**
+ * xmlSecStrdupError:
+ * @str:                the failed string.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting xmlStrdup() errors.
+ */
+#define xmlSecStrdupError(str, errorObject)  \
+    xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                (const char*)(errorObject),             \
+                "xmlStrdup",                            \
+                XMLSEC_ERRORS_R_STRDUP_FAILED,          \
+                "size=%lu", (unsigned long)xmlStrlen(str) \
     )
 
 /**********************************************************************

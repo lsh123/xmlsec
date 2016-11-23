@@ -172,11 +172,8 @@ xmlSecKeyDataCreate(xmlSecKeyDataId id)  {
     /* Allocate a new xmlSecKeyData and fill the fields. */
     data = (xmlSecKeyDataPtr)xmlMalloc(id->objSize);
     if(data == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", id->objSize);
+        xmlSecMallocError(id->objSize,
+                          xmlSecKeyDataKlassGetName(id));
         return(NULL);
     }
     memset(data, 0, id->objSize);
@@ -853,11 +850,8 @@ xmlSecKeyDataBinaryValueBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     (*bufSize) = xmlSecBufferGetSize(buffer);
     (*buf) = (xmlSecByte*) xmlMalloc((*bufSize));
     if((*buf) == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMallocError((*bufSize),
+                          xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
     memcpy((*buf), xmlSecBufferGetData(buffer), (*bufSize));
@@ -1241,11 +1235,8 @@ xmlSecKeyDataStoreCreate(xmlSecKeyDataStoreId id)  {
     /* Allocate a new xmlSecKeyDataStore and fill the fields. */
     store = (xmlSecKeyDataStorePtr)xmlMalloc(id->objSize);
     if(store == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataStoreKlassGetName(id)),
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", id->objSize);
+        xmlSecMallocError(id->objSize,
+                          xmlSecKeyDataStoreKlassGetName(id));
         return(NULL);
     }
     memset(store, 0, id->objSize);

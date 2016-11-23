@@ -364,12 +364,7 @@ xmlSecNssGetCertName(const xmlChar * name) {
      */
     name2 = xmlStrdup(name);
     if(name2 == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "xmlStrlen(name)=%d",
-                    xmlStrlen(name));
+        xmlSecStrdupError(name, NULL);
         return(NULL);
     }
     while( (p = (xmlChar*)xmlStrstr(name2, BAD_CAST "emailAddress=")) != NULL) {
@@ -597,7 +592,7 @@ xmlSecNssX509NameRead(xmlSecByte *str, int len) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "PORT_Alloc",
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(NULL);
     }

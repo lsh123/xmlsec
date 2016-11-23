@@ -395,7 +395,11 @@ xmlSecMSCryptoKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecAssert2(ctx->hMemStore != 0, NULL);
     xmlSecAssert2(ctx->numCerts > pos, NULL);
 
-    while ((pCert = CertEnumCertificatesInStore(ctx->hMemStore, pCert)) && (pos > 0)) {
+    while (pos > 0) {
+       pCert = CertEnumCertificatesInStore(ctx->hMemStore, pCert);
+       if(pCert == NULL) {
+            break;
+       }
         pos--;
     }
 
@@ -476,7 +480,11 @@ xmlSecMSCryptoKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecAssert2(ctx->hMemStore != 0, NULL);
     xmlSecAssert2(ctx->numCrls > pos, NULL);
 
-    while ((pCRL = CertEnumCRLsInStore(ctx->hMemStore, pCRL)) && (pos > 0)) {
+    while(pos > 0) {
+        pCRL = CertEnumCRLsInStore(ctx->hMemStore, pCRL);
+       if(pCRL == NULL) {
+            break;
+        }
         pos--;
     }
 
@@ -1743,11 +1751,7 @@ xmlSecMSCryptoX509NameWrite(PCERT_NAME_BLOB nm) {
 
     resT = (LPTSTR)xmlMalloc(sizeof(TCHAR) * (csz + 1));
     if (NULL == resT) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlMalloc",
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d", sizeof(WCHAR) * (csz + 1));
+        xmlSecMallocError(sizeof(TCHAR) * (csz + 1), NULL);
         return (NULL);
     }
 
@@ -1842,11 +1846,7 @@ xmlSecMSCryptoX509SKIWrite(PCCERT_CONTEXT cert) {
     }
     bSKI = xmlMalloc(dwSize);
     if (NULL == bSKI) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlMalloc",
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMallocError(dwSize, NULL);
         return (NULL);
     }
 

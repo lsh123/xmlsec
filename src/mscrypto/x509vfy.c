@@ -895,17 +895,12 @@ xmlSecMSCryptoCertStrToName(DWORD dwCertEncodingType, LPTSTR pszX500, DWORD dwSt
     if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType,
                         NULL, NULL, len, &ppszError)) {
         /* this might not be an error, string might just not exist */
-        DWORD dw = GetLastError();
         return(NULL);
     }
 
     str = (BYTE *)xmlMalloc(sizeof(TCHAR) * ((*len) + 1));
     if(str == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "len=%ld", (*len));
+        xmlSecMallocError(sizeof(TCHAR) * ((*len) + 1), NULL);
         return(NULL);
     }
     memset(str, 0, (*len) + 1);
@@ -1159,12 +1154,7 @@ xmlSecMSCryptoX509GetCertName(const xmlChar * name) {
      */
     name2 = xmlStrdup(name);
     if(name2 == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "xmlStrlen(name)=%d",
-                    xmlStrlen(name));
+        xmlSecStrdupError(name, NULL);
         return(NULL);
     }
     while( (p = (xmlChar*)xmlStrstr(name2, BAD_CAST "emailAddress=")) != NULL) {
@@ -1271,11 +1261,7 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store,
 
         binSki = xmlStrdup(ski);
         if(binSki == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlStrdup",
-                XMLSEC_ERRORS_R_MALLOC_FAILED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecStrdupError(ski, NULL);
             return (NULL);
         }
 
@@ -1335,11 +1321,7 @@ xmlSecMSCryptoX509GetNameString(PCCERT_CONTEXT pCertContext, DWORD dwType, DWORD
     /* allocate buffer */
     name = (LPTSTR)xmlMalloc(sizeof(TCHAR) * (dwSize + 1));
     if(name == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMallocError(sizeof(TCHAR) * (dwSize + 1), NULL);
         return (NULL);
     }
 

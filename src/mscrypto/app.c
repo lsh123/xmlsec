@@ -64,23 +64,14 @@ xmlSecMSCryptoAppInit(const char* config) {
 #ifdef UNICODE
         gXmlSecMSCryptoAppCertStoreName = xmlSecMSCryptoConvertLocaleToUnicode(config);
         if (gXmlSecMSCryptoAppCertStoreName == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        "xmlSecMSCryptoConvertLocaleToUnicode",
-                        NULL,
-                        XMLSEC_ERRORS_R_MALLOC_FAILED,
-                        "config=%s",
-                        xmlSecErrorsSafeString(config));
+            xmlSecInternalError2("xmlSecMSCryptoConvertLocaleToUnicode", NULL,
+                                 "config=%s", xmlSecErrorsSafeString(config));
             return (-1);
         }
 #else  /* UNICODE */
         gXmlSecMSCryptoAppCertStoreName = xmlStrdup(config);
         if (gXmlSecMSCryptoAppCertStoreName == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        "xmlStrdup",
-                        NULL,
-                        XMLSEC_ERRORS_R_MALLOC_FAILED,
-                        "config=%s",
-                        xmlSecErrorsSafeString(config));
+            xmlSecStrdupError(config, NULL);
             return (-1);
         }
 #endif /* UNICODE */
@@ -557,7 +548,11 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
         goto done;
     }
 
-    while (pCert = CertEnumCertificatesInStore(hCertStore, pCert)) {
+    while (1) {
+        pCert = CertEnumCertificatesInStore(hCertStore, pCert);
+        if(pCert != NULL) {
+            break;
+        }
         DWORD dwData = 0;
         DWORD dwDataLen = sizeof(DWORD);
 

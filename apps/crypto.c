@@ -274,12 +274,7 @@ xmlSecAppCryptoKeyGenerate(const char* keyKlassAndSize, const char* name, xmlSec
 
     buf = (char*) xmlStrdup(BAD_CAST keyKlassAndSize);
     if(buf == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_STRDUP_FAILED,
-                    "name=%s",
-                    xmlSecErrorsSafeString(name));
+        xmlSecStrdupError(BAD_CAST keyKlassAndSize, NULL);
         return(NULL);    
     }
         

@@ -86,12 +86,7 @@ xmlSecXPathDataCreate(xmlSecXPathDataType type) {
 
     data = (xmlSecXPathDataPtr) xmlMalloc(sizeof(xmlSecXPathData));
     if(data == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "sizeof(xmlSecXPathData)=%d",
-                    (int)sizeof(xmlSecXPathData));
+        xmlSecMallocError(sizeof(xmlSecXPathData), NULL);
         return(NULL);
     }
     memset(data, 0, sizeof(xmlSecXPathData));
@@ -154,11 +149,7 @@ xmlSecXPathDataSetExpr(xmlSecXPathDataPtr data, const xmlChar* expr) {
 
     data->expr = xmlStrdup(expr);
     if(data->expr == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_STRDUP_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecStrdupError(expr, NULL);
         return(-1);
     }
     return(0);
@@ -515,13 +506,14 @@ xmlSecTransformXPathGetKlass(void) {
     return(&xmlSecTransformXPathKlass);
 }
 
-static const char xpathPattern[] = "(//. | //@* | //namespace::*)[boolean(%s)]";
+static const xmlChar xpathPattern[] = "(//. | //@* | //namespace::*)[boolean(%s)]";
 static int
 xmlSecTransformXPathNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
     xmlSecPtrListPtr dataList;
     xmlSecXPathDataPtr data;
     xmlNodePtr cur;
     xmlChar* tmp;
+    int tmpSize;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXPathId), -1);
@@ -571,18 +563,23 @@ xmlSecTransformXPathNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
 
     /* create full XPath expression */
     xmlSecAssert2(data->expr != NULL, -1);
-    tmp = (xmlChar*) xmlMalloc(sizeof(xmlChar) * (xmlStrlen(data->expr) +
-                                                  strlen(xpathPattern) + 1));
+    tmpSize = xmlStrlen(data->expr) + xmlStrlen(xpathPattern) + 1;
+    tmp = (xmlChar*) xmlMalloc(sizeof(xmlChar) * tmpSize);
     if(tmp == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "size=%d",
-                    (int)(xmlStrlen(data->expr) + strlen(xpathPattern) + 1));
+        xmlSecMallocError(sizeof(xmlChar) * tmpSize,
+                          xmlSecTransformGetName(transform));
         return(-1);
     }
-    sprintf((char*)tmp, xpathPattern, (char*)data->expr);
+    ret = xmlStrPrintf(tmp, tmpSize, xpathPattern, (char*)data->expr);
+    if(ret < 0) {
+       xmlSecError(XMLSEC_ERRORS_HERE,
+                   xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                   "xmlStrPrintf",
+                   XMLSEC_ERRORS_R_XML_FAILED,
+                   XMLSEC_ERRORS_NO_MESSAGE);
+       xmlFree(tmp);
+       return(-1);
+    }
     xmlFree(data->expr);
     data->expr = tmp;
 
@@ -1009,11 +1006,7 @@ xmlSecTransformVisa3DHackSetID(xmlSecTransformPtr transform, const xmlChar* id) 
 
     (*idPtr) = xmlStrdup(id);
     if((*idPtr) == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlStrdup",
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecStrdupError(id, xmlSecTransformGetName(transform));
         return(-1);
     }
 

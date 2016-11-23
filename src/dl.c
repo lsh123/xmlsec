@@ -105,7 +105,7 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
 
     lib->name = xmlStrdup(name);
     if(lib->name == NULL) {
-	xmlSecStrdupError(name, NULL);
+        xmlSecStrdupError(name, NULL);
         xmlSecCryptoDLLibraryDestroy(lib);
         return(NULL);
     }

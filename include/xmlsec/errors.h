@@ -490,7 +490,7 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
                 (const char*)(errorObject),             \
                 (errorFunction),                        \
                 XMLSEC_ERRORS_R_XMLSEC_FAILED,          \
-                xmlSecErrorsSafeString(msg), (param)    \
+                (msg), (param)                          \
     )
 
 /**
@@ -508,7 +508,7 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
                 (const char*)(errorObject),             \
                 (errorFunction),                        \
                 XMLSEC_ERRORS_R_XMLSEC_FAILED,          \
-                xmlSecErrorsSafeString(msg), (param1), (param2)  \
+                (msg), (param1), (param2)               \
     )
 
 /**
@@ -527,7 +527,7 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
                 (const char*)(errorObject),             \
                 (errorFunction),                        \
                 XMLSEC_ERRORS_R_XMLSEC_FAILED,          \
-                xmlSecErrorsSafeString(msg), (param1), (param2), (param3) \
+                (msg), (param1), (param2), (param3)     \
     )
 
 /**

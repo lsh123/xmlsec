@@ -798,11 +798,7 @@ xmlSecBnGetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
     case xmlSecBnHex:
         content = xmlNodeGetContent(cur);
         if(content == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlNodeGetContent",
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecXmlError("xmlNodeGetContent", NULL);
             return(-1);
         }
         ret = xmlSecBnFromHexString(bn, content);
@@ -816,11 +812,7 @@ xmlSecBnGetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
     case xmlSecBnDec:
         content = xmlNodeGetContent(cur);
         if(content == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlNodeGetContent",
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecXmlError("xmlNodeGetContent", NULL);
             return(-1);
         }
         ret = xmlSecBnFromDecString(bn, content);

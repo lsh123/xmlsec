@@ -295,11 +295,9 @@ xmlSecTransformRelationshipProcessNode(xmlSecTransformPtr transform, xmlOutputBu
     if(xmlSecCheckNodeName(cur, xmlSecNodeRelationship, xmlSecRelationshipsNs)) {
         xmlChar* id = xmlGetProp(cur, xmlSecRelationshipAttrId);
         if(id == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlGetProp(xmlSecRelationshipAttrId)",
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        "name=Id");
+            xmlSecXmlError2("xmlGetProp(xmlSecRelationshipAttrId)",
+                            xmlSecTransformGetName(transform),
+                            "name=%s", xmlSecRelationshipAttrId);
             return(-1);
         }
 
@@ -624,11 +622,7 @@ xmlSecTransformRelationshipPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPt
 
     ret = xmlOutputBufferClose(buf);
     if(ret < 0) {
-       xmlSecError(XMLSEC_ERRORS_HERE,
-                   xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                   "xmlOutputBufferClose",
-                   XMLSEC_ERRORS_R_XML_FAILED,
-                   XMLSEC_ERRORS_NO_MESSAGE);
+       xmlSecXmlError("xmlOutputBufferClose", xmlSecTransformGetName(transform));
        return(-1);
     }
     transform->status = xmlSecTransformStatusFinished;
@@ -682,11 +676,7 @@ xmlSecTransformRelationshipPopBin(xmlSecTransformPtr transform, xmlSecByte* data
 
        ret = xmlOutputBufferClose(buf);
        if(ret < 0) {
-           xmlSecError(XMLSEC_ERRORS_HERE,
-                       xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                       "xmlOutputBufferClose",
-                       XMLSEC_ERRORS_R_XML_FAILED,
-                       XMLSEC_ERRORS_NO_MESSAGE);
+           xmlSecXmlError("xmlOutputBufferClose", xmlSecTransformGetName(transform));
            return(-1);
        }
        transform->status = xmlSecTransformStatusWorking;

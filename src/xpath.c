@@ -100,11 +100,7 @@ xmlSecXPathDataCreate(xmlSecXPathDataType type) {
     case xmlSecXPathDataTypeXPath2:
         data->ctx = xmlXPathNewContext(NULL); /* we'll set doc in the context later */
         if(data->ctx == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlXPathNewContext",
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecXmlError("xmlXPathNewContext", NULL);
             xmlSecXPathDataDestroy(data);
             return(NULL);
         }
@@ -112,11 +108,7 @@ xmlSecXPathDataCreate(xmlSecXPathDataType type) {
     case xmlSecXPathDataTypeXPointer:
         data->ctx = xmlXPtrNewContext(NULL, NULL, NULL); /* we'll set doc in the context later */
         if(data->ctx == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlXPtrNewContext",
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecXmlError("xmlXPtrNewContext", NULL);
             xmlSecXPathDataDestroy(data);
             return(NULL);
         }
@@ -173,13 +165,8 @@ xmlSecXPathDataRegisterNamespaces(xmlSecXPathDataPtr data, xmlNodePtr node) {
             if((ns->prefix != NULL) && (xmlXPathNsLookup(data->ctx, ns->prefix) == NULL)){
                 ret = xmlXPathRegisterNs(data->ctx, ns->prefix, ns->href);
                 if(ret != 0) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                NULL,
-                                "xmlXPathRegisterNs",
-                                XMLSEC_ERRORS_R_XML_FAILED,
-                                "href=%s;prefix=%s",
-                                xmlSecErrorsSafeString(ns->href),
-                                xmlSecErrorsSafeString(ns->prefix));
+                    xmlSecXmlError2("xmlXPathRegisterNs", NULL,
+                                    "prefix=%s", xmlSecErrorsSafeString(ns->prefix));
                     return(-1);
                 }
             }
@@ -245,24 +232,16 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
     case xmlSecXPathDataTypeXPath2:
         xpathObj = xmlXPathEvalExpression(data->expr, data->ctx);
         if(xpathObj == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlXPathEvalExpression",
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        "expr=%s",
-                        xmlSecErrorsSafeString(data->expr));
+            xmlSecXmlError2("xmlXPathEvalExpression", NULL,
+                            "expr=%s", xmlSecErrorsSafeString(data->expr));
             return(NULL);
         }
         break;
     case xmlSecXPathDataTypeXPointer:
         xpathObj = xmlXPtrEval(data->expr, data->ctx);
         if(xpathObj == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlXPtrEval",
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        "expr=%s",
-                        xmlSecErrorsSafeString(data->expr));
+            xmlSecXmlError2("xmlXPtrEval", NULL,
+                            "expr=%s", xmlSecErrorsSafeString(data->expr));
             return(NULL);
         }
         break;
@@ -275,12 +254,8 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
     	xpathObj->nodesetval = xmlXPathNodeSetCreate(NULL);
     	if(xpathObj->nodesetval == NULL) {
     		xmlXPathFreeObject(xpathObj);
-    		xmlSecError(XMLSEC_ERRORS_HERE,
-        				NULL,
-                        "xmlXPathNodeSetCreate",
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        "expr=%s",
-                        xmlSecErrorsSafeString(data->expr));
+            xmlSecXmlError2("xmlXPathNodeSetCreate", NULL,
+                            "expr=%s", xmlSecErrorsSafeString(data->expr));
     		return(NULL);
     	}
     }
@@ -572,11 +547,7 @@ xmlSecTransformXPathNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
     }
     ret = xmlStrPrintf(tmp, tmpSize, xpathPattern, (char*)data->expr);
     if(ret < 0) {
-       xmlSecError(XMLSEC_ERRORS_HERE,
-                   xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                   "xmlStrPrintf",
-                   XMLSEC_ERRORS_R_XML_FAILED,
-                   XMLSEC_ERRORS_NO_MESSAGE);
+       xmlSecXmlError("xmlStrPrintf", xmlSecTransformGetName(transform));
        xmlFree(tmp);
        return(-1);
     }
@@ -1057,23 +1028,15 @@ xmlSecTransformVisa3DHackExecute(xmlSecTransformPtr transform, int last,
 
     attr = xmlGetID(doc, (*idPtr));
     if((attr == NULL) || (attr->parent == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlGetID",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    "id=\"%s\"",
-                    xmlSecErrorsSafeString((*idPtr)));
+        xmlSecXmlError2("xmlGetID", xmlSecTransformGetName(transform),
+                        "id=\"%s\"", xmlSecErrorsSafeString(*idPtr));
         return(-1);
     }
 
     nodeSet = xmlXPathNodeSetCreate(attr->parent);
     if(nodeSet == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlXPathNodeSetCreate",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    "id=\"%s\"",
-                    xmlSecErrorsSafeString((*idPtr)));
+        xmlSecXmlError2("xmlXPathNodeSetCreate", xmlSecTransformGetName(transform),
+                        "id=\"%s\"", xmlSecErrorsSafeString(*idPtr));
         return(-1);
     }
 

@@ -1180,21 +1180,13 @@ xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId, xmlSecKeyPtr k
 
     doc = xmlRecoverMemory((const char*)buffer, bufferSize);
     if(doc == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(typeId)),
-                    "xmlRecoverMemory",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXmlError("xmlRecoverMemory", xmlSecKeyDataKlassGetName(typeId));
         return(-1);
     }
 
     cur = xmlDocGetRootElement(doc);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(typeId)),
-                    "xmlDocGetRootElement",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXmlError("xmlDocGetRootElement", xmlSecKeyDataKlassGetName(typeId));
         xmlFreeDoc(doc);
         return(-1);
     }

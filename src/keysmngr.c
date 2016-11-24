@@ -394,12 +394,8 @@ xmlSecSimpleKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
 
     doc = xmlParseFile(uri);
     if(doc == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-                    "xmlParseFile",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    "uri=%s",
-                    xmlSecErrorsSafeString(uri));
+        xmlSecXmlError2("xmlParseFile", xmlSecKeyStoreGetName(store),
+                        "uri=%s", xmlSecErrorsSafeString(uri));
         return(-1);
     }
 
@@ -607,12 +603,8 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecK
     /* now write result */
     ret = xmlSaveFormatFile(filename, doc, 1);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-                    "xmlSaveFormatFile",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    "filename=%s",
-                    xmlSecErrorsSafeString(filename));
+        xmlSecXmlError2("xmlSaveFormatFile", xmlSecKeyStoreGetName(store),
+                        "filename=%s", xmlSecErrorsSafeString(filename));
         xmlFreeDoc(doc);
         return(-1);
     }

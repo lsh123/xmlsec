@@ -236,11 +236,7 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransfor
     /* read content in the buffer */
     buffer = xmlBufferCreate();
     if(buffer == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlBufferCreate",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXmlError("xmlBufferCreate", xmlSecTransformGetName(transform));
         return(-1);
     }
     cur = node->children;
@@ -298,11 +294,7 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
 
         ctx->parserCtx = xmlCreatePushParserCtxt(NULL, NULL, NULL, 0, NULL);
         if(ctx->parserCtx == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlCreatePushParserCtxt",
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecXmlError("xmlCreatePushParserCtxt", xmlSecTransformGetName(transform));
             return(-1);
         }
 
@@ -328,11 +320,10 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
     if((data != NULL) && (dataSize > 0)) {
         ret = xmlParseChunk(ctx->parserCtx, (const char*)data, dataSize, 0);
         if(ret != 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlParseChunk",
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        "size=%d", dataSize);
+            xmlSecXmlParserError2("xmlParseChunk", ctx->parserCtx,
+                                  xmlSecTransformGetName(transform),
+                                  "size=%d", dataSize);
+
             return(-1);
         }
     }
@@ -346,11 +337,8 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         /* finalize */
         ret = xmlParseChunk(ctx->parserCtx, NULL, 0, 1);
         if((ret != 0) || (ctx->parserCtx->myDoc == NULL)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlParseChunk",
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecXmlParserError("xmlParseChunk", ctx->parserCtx,
+                                 xmlSecTransformGetName(transform));
             return(-1);
         }
 
@@ -398,11 +386,7 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         }
         ret = xmlOutputBufferClose(output);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlOutputBufferClose",
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecXmlError("xmlOutputBufferClose", xmlSecTransformGetName(transform));
             xmlFreeDoc(docOut);
             return(-1);
         }
@@ -519,11 +503,7 @@ xmlSecXslProcess(xmlSecXsltCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) 
     ret = xmlOutputBufferClose(output);
     output = NULL;
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlOutputBufferClose",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXmlError("xmlOutputBufferClose", NULL);
         return(-1);
     }
 

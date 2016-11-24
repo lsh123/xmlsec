@@ -103,23 +103,15 @@ xmlSecTmplSignatureCreateNsPref(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
     /* create Signature node itself */
     signNode = xmlNewDocNode(doc, NULL, xmlSecNodeSignature, NULL);
     if(signNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlNewDocNode",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeSignature));
+        xmlSecXmlError2("xmlNewDocNode", NULL,
+                        "node=%s", xmlSecErrorsSafeString(xmlSecNodeSignature));
         return(NULL);
     }
 
     ns = xmlNewNs(signNode, xmlSecDSigNs, nsPrefix);
     if(ns == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlNewNs",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    "ns=%s",
-                    xmlSecErrorsSafeString(xmlSecDSigNs));
+        xmlSecXmlError2("xmlNewNs", NULL,
+                        "ns=%s", xmlSecErrorsSafeString(xmlSecDSigNs));
         xmlFreeNode(signNode);
         return(NULL);
     }
@@ -153,13 +145,8 @@ xmlSecTmplSignatureCreateNsPref(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
         return(NULL);
     }
     if(xmlSetProp(cur, xmlSecAttrAlgorithm, c14nMethodId->href) == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSetProp",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    "name=%s,value=%s",
-                    xmlSecErrorsSafeString(xmlSecAttrAlgorithm),
-                    xmlSecErrorsSafeString(c14nMethodId->href));
+        xmlSecXmlError2("xmlSetProp", NULL,
+                        "name=%s", xmlSecErrorsSafeString(xmlSecAttrAlgorithm));
         xmlFreeNode(signNode);
         return(NULL);
     }
@@ -172,13 +159,8 @@ xmlSecTmplSignatureCreateNsPref(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
         return(NULL);
     }
     if(xmlSetProp(cur, xmlSecAttrAlgorithm, signMethodId->href) == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSetProp",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    "name=%s,value=%s",
-                    xmlSecErrorsSafeString(xmlSecAttrAlgorithm),
-                    xmlSecErrorsSafeString(signMethodId->href));
+        xmlSecXmlError2("xmlSetProp", NULL,
+                        "name=%s", xmlSecErrorsSafeString(xmlSecAttrAlgorithm));
         xmlFreeNode(signNode);
         return(NULL);
     }
@@ -303,13 +285,8 @@ xmlSecTmplAddReference(xmlNodePtr parentNode, xmlSecTransformId digestMethodId,
         return(NULL);
     }
     if(xmlSetProp(cur, xmlSecAttrAlgorithm, digestMethodId->href) == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSetProp",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    "name=%s,value=%s",
-                    xmlSecErrorsSafeString(xmlSecAttrAlgorithm),
-                    xmlSecErrorsSafeString(digestMethodId->href));
+        xmlSecXmlError2("xmlSetProp", NULL,
+                        "name=%s", xmlSecErrorsSafeString(xmlSecAttrAlgorithm));
         xmlUnlinkNode(res);
         xmlFreeNode(res);
         return(NULL);
@@ -458,13 +435,8 @@ xmlSecTmplReferenceAddTransform(xmlNodePtr referenceNode, xmlSecTransformId tran
     }
 
     if(xmlSetProp(res, xmlSecAttrAlgorithm, transformId->href) == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSetProp",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    "name=%s,value=%s",
-                    xmlSecErrorsSafeString(xmlSecAttrAlgorithm),
-                    xmlSecErrorsSafeString(transformId->href));
+        xmlSecXmlError2("xmlSetProp", NULL,
+                        "name=%s", xmlSecErrorsSafeString(xmlSecAttrAlgorithm));
         xmlUnlinkNode(res);
         xmlFreeNode(res);
         return(NULL);
@@ -582,23 +554,15 @@ xmlSecTmplEncDataCreate(xmlDocPtr doc, xmlSecTransformId encMethodId,
 
     encNode = xmlNewDocNode(doc, NULL, xmlSecNodeEncryptedData, NULL);
     if(encNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlNewDocNode",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeEncryptedData));
+        xmlSecXmlError2("xmlNewDocNode", NULL,
+                        "node=%s", xmlSecErrorsSafeString(xmlSecNodeEncryptedData));
         return(NULL);
     }
 
     ns = xmlNewNs(encNode, xmlSecEncNs, NULL);
     if(ns == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlNewNs",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    "ns=%s",
-                    xmlSecErrorsSafeString(xmlSecEncNs));
+        xmlSecXmlError2("xmlNewNs", NULL,
+                        "ns=%s", xmlSecErrorsSafeString(xmlSecEncNs));
         return(NULL);
     }
     xmlSetNs(encNode, ns);
@@ -638,13 +602,8 @@ xmlSecTmplPrepareEncData(xmlNodePtr parentNode, xmlSecTransformId encMethodId) {
             return(-1);
         }
         if(xmlSetProp(cur, xmlSecAttrAlgorithm, encMethodId->href) == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSetProp",
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        "name=%s,value=%s",
-                        xmlSecErrorsSafeString(xmlSecAttrAlgorithm),
-                        xmlSecErrorsSafeString(encMethodId->href));
+            xmlSecXmlError2("xmlSetProp", NULL,
+                            "name=%s", xmlSecErrorsSafeString(xmlSecAttrAlgorithm));
             return(-1);
         }
     }
@@ -933,13 +892,8 @@ xmlSecTmplCipherReferenceAddTransform(xmlNodePtr cipherReferenceNode,
     }
 
     if(xmlSetProp(res, xmlSecAttrAlgorithm, transformId->href) == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSetProp",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    "name=%s,value=%s",
-                    xmlSecErrorsSafeString(xmlSecAttrAlgorithm),
-                    xmlSecErrorsSafeString(transformId->href));
+        xmlSecXmlError2("xmlSetProp", NULL,
+                        "name=%s", xmlSecErrorsSafeString(xmlSecAttrAlgorithm));
         xmlUnlinkNode(res);
         xmlFreeNode(res);
         return(NULL);
@@ -988,13 +942,8 @@ xmlSecTmplReferenceListAddDataReference(xmlNodePtr encNode, const xmlChar *uri) 
 
     if(uri != NULL) {
         if(xmlSetProp(res, xmlSecAttrURI, uri) == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSetProp",
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        "name=%s,value=%s",
-                        xmlSecErrorsSafeString(xmlSecAttrURI),
-                        xmlSecErrorsSafeString(uri));
+            xmlSecXmlError2("xmlSetProp", NULL,
+                            "name=%s", xmlSecErrorsSafeString(xmlSecAttrURI));
             xmlUnlinkNode(res);
             xmlFreeNode(res);
             return(NULL);
@@ -1037,13 +986,8 @@ xmlSecTmplReferenceListAddKeyReference(xmlNodePtr encNode, const xmlChar *uri) {
 
     if(uri != NULL) {
         if(xmlSetProp(res, xmlSecAttrURI, uri) == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSetProp",
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        "name=%s,value=%s",
-                        xmlSecErrorsSafeString(xmlSecAttrURI),
-                        xmlSecErrorsSafeString(uri));
+            xmlSecXmlError2("xmlSetProp", NULL,
+                            "name=%s", xmlSecErrorsSafeString(xmlSecAttrURI));
             xmlUnlinkNode(res);
             xmlFreeNode(res);
             return(NULL);
@@ -1204,13 +1148,8 @@ xmlSecTmplRetrievalMethodAddTransform(xmlNodePtr retrMethodNode, xmlSecTransform
     }
 
     if(xmlSetProp(res, xmlSecAttrAlgorithm, transformId->href) == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSetProp",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    "name=%s,value=%s",
-                    xmlSecErrorsSafeString(xmlSecAttrAlgorithm),
-                    xmlSecErrorsSafeString(transformId->href));
+        xmlSecXmlError2("xmlSetProp", NULL,
+                        "name=%s", xmlSecErrorsSafeString(xmlSecAttrAlgorithm));
         xmlUnlinkNode(res);
         xmlFreeNode(res);
         return(NULL);
@@ -1634,11 +1573,7 @@ xmlSecTmplTransformAddXsltStylesheet(xmlNodePtr transformNode, const xmlChar *xs
 
     xsltDoc = xmlParseMemory((const char*)xslt, xmlStrlen(xslt));
     if(xsltDoc == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlParseMemory",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXmlError("xmlParseMemory", NULL);
         return(-1);
     }
 
@@ -1836,13 +1771,8 @@ xmlSecTmplNodeWriteNsList(xmlNodePtr parentNode, const xmlChar** nsList) {
 
         ns = xmlNewNs(parentNode, href, prefix);
         if(ns == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlNewNs",
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        "href=%s;prefix=%s",
-                        xmlSecErrorsSafeString(href),
-                        xmlSecErrorsSafeString(prefix));
+            xmlSecXmlError2("xmlNewNs", NULL,
+                            "prefix=%s", xmlSecErrorsSafeString(prefix));
             return(-1);
         }
     }

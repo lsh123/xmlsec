@@ -100,7 +100,7 @@ Igor Zlatkovic get an exception for the send before commit rule.
             xmlSecMallocError() aka XMLSEC_ERRORS_R_MALLOC_FAILED
 	else if the function starts with "xml" or "xslt" (i.e. it comes 
 	from libxml or libxslt) then use
-	    XMLSEC_ERRORS_R_XML_FAILED
+            xmlSecXmlError/xmlSecXmlParserError aka XMLSEC_ERRORS_R_XML_FAILED
 	else if it is related to IO (fopen, fread, fwrite, etc.) then use
 	    XMLSEC_ERRORS_R_IO_FAILED
 	else if the function could be used only from xmlsec-crypto (i.e. 

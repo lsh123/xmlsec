@@ -202,11 +202,7 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
         /* TODO: add indents */
         text = xmlNewText(xmlSecStringCR);
         if(text == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlNewText",
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecXmlError("xmlNewText", NULL);
             return(NULL);
         }
         xmlAddChild(parent, text);
@@ -214,11 +210,7 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
 
     cur = xmlNewChild(parent, NULL, name, NULL);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlNewChild",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXmlError("xmlNewChild", NULL);
         return(NULL);
     }
 
@@ -230,6 +222,10 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
         nsPtr = xmlSearchNsByHref(cur->doc, cur, ns);
         if((nsPtr == NULL) || (xmlSearchNs(cur->doc, cur, nsPtr->prefix) != nsPtr)) {
             nsPtr = xmlNewNs(cur, ns, NULL);
+            if(nsPtr == NULL) {
+                xmlSecXmlError("xmlNewNs", NULL);
+                return(NULL);
+            }
         }
         xmlSetNs(cur, nsPtr);
     }
@@ -237,11 +233,7 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
     /* TODO: add indents */
     text = xmlNewText(xmlSecStringCR);
     if(text == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlNewText",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXmlError("xmlNewText", NULL);
         return(NULL);
     }
     xmlAddChild(parent, text);
@@ -269,11 +261,7 @@ xmlSecAddChildNode(xmlNodePtr parent, xmlNodePtr child) {
         /* TODO: add indents */
         text = xmlNewText(xmlSecStringCR);
         if(text == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlNewText",
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecXmlError("xmlNewText", NULL);
             return(NULL);
         }
         xmlAddChild(parent, text);
@@ -284,11 +272,7 @@ xmlSecAddChildNode(xmlNodePtr parent, xmlNodePtr child) {
     /* TODO: add indents */
     text = xmlNewText(xmlSecStringCR);
     if(text == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlNewText",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXmlError("xmlNewText", NULL);
         return(NULL);
     }
     xmlAddChild(parent, text);
@@ -362,11 +346,7 @@ xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
 
     cur = xmlNewNode(NULL, name);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlNewNode",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXmlError("xmlNewNode", NULL);
         return(NULL);
     }
     xmlAddNextSibling(node, cur);
@@ -386,11 +366,7 @@ xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
     /* TODO: add indents */
     text = xmlNewText(xmlSecStringCR);
     if(text == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlNewText",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXmlError("xmlNewText", NULL);
         return(NULL);
     }
     xmlAddNextSibling(node, text);
@@ -418,11 +394,7 @@ xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
 
     cur = xmlNewNode(NULL, name);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlNewNode",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXmlError("xmlNewNode", NULL);
         return(NULL);
     }
     xmlAddPrevSibling(node, cur);
@@ -442,11 +414,7 @@ xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
     /* TODO: add indents */
     text = xmlNewText(xmlSecStringCR);
     if(text == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlNewText",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXmlError("xmlNewText", NULL);
         return(NULL);
     }
     xmlAddPrevSibling(node, text);
@@ -514,11 +482,7 @@ xmlSecReplaceNodeAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr* repl
 
     oldNode = xmlReplaceNode(node, newNode);
     if(oldNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlReplaceNode",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXmlError("xmlReplaceNode", NULL);
         return(-1);
     }
 
@@ -626,17 +590,15 @@ int
 xmlSecReplaceNodeBufferAndReturn(xmlNodePtr node, const xmlSecByte *buffer, xmlSecSize size, xmlNodePtr *replaced) {
     xmlNodePtr results = NULL;
     xmlNodePtr next = NULL;
+    int ret;
 
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(node->parent != NULL, -1);
 
     /* parse buffer in the context of node's parent */
-    if(xmlParseInNodeContext(node->parent, (const char*)buffer, size, XML_PARSE_NODICT, &results) != XML_ERR_OK) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlParseInNodeContext",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    "Failed to parse content");
+    ret = xmlParseInNodeContext(node->parent, (const char*)buffer, size, XML_PARSE_NODICT, &results);
+    if(ret != XML_ERR_OK) {
+        xmlSecXmlError("xmlParseInNodeContext", NULL);
         return(-1);
     }
 
@@ -680,11 +642,7 @@ xmlSecNodeEncodeAndSetContent(xmlNodePtr node, const xmlChar * buffer) {
 
         tmp = xmlEncodeSpecialChars(node->doc, buffer);
         if (tmp == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlEncodeSpecialChars",
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        "Failed to encode special characters");
+            xmlSecXmlError("xmlEncodeSpecialChars", NULL);
             return(-1);
         }
 
@@ -785,11 +743,7 @@ xmlSecGenerateAndAddID(xmlNodePtr node, const xmlChar* attrName, const xmlChar* 
         if((node->doc == NULL) || (xmlGetID(node->doc, id) == NULL)) {
             /* this is a unique ID in the document and we can use it */
             if(xmlSetProp(node, attrName, id) == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "xmlSetProp",
-                            XMLSEC_ERRORS_R_XML_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecXmlError("xmlSetProp", NULL);
                 xmlFree(id);
                 return(-1);
             }
@@ -916,22 +870,15 @@ xmlSecCreateTree(const xmlChar* rootNodeName, const xmlChar* rootNodeNs) {
     /* create doc */
     doc = xmlNewDoc(BAD_CAST "1.0");
     if(doc == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlNewDoc",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXmlError("xmlNewDoc", NULL);
         return(NULL);
     }
 
     /* create root node */
     root = xmlNewDocNode(doc, NULL, rootNodeName, NULL);
     if(root == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlNewDocNode",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    "node=Keys");
+        xmlSecXmlError2("xmlNewDocNode", NULL,
+                        "node=%s", rootNodeName);
         xmlFreeDoc(doc);
         return(NULL);
     }

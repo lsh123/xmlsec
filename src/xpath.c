@@ -100,11 +100,7 @@ xmlSecXPathDataCreate(xmlSecXPathDataType type) {
     case xmlSecXPathDataTypeXPath2:
         data->ctx = xmlXPathNewContext(NULL); /* we'll set doc in the context later */
         if(data->ctx == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlXPathNewContext",
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecXmlError("xmlXPathNewContext", NULL);
             xmlSecXPathDataDestroy(data);
             return(NULL);
         }
@@ -112,11 +108,7 @@ xmlSecXPathDataCreate(xmlSecXPathDataType type) {
     case xmlSecXPathDataTypeXPointer:
         data->ctx = xmlXPtrNewContext(NULL, NULL, NULL); /* we'll set doc in the context later */
         if(data->ctx == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlXPtrNewContext",
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecXmlError("xmlXPtrNewContext", NULL);
             xmlSecXPathDataDestroy(data);
             return(NULL);
         }
@@ -572,11 +564,7 @@ xmlSecTransformXPathNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
     }
     ret = xmlStrPrintf(tmp, tmpSize, xpathPattern, (char*)data->expr);
     if(ret < 0) {
-       xmlSecError(XMLSEC_ERRORS_HERE,
-                   xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                   "xmlStrPrintf",
-                   XMLSEC_ERRORS_R_XML_FAILED,
-                   XMLSEC_ERRORS_NO_MESSAGE);
+       xmlSecXmlError("xmlStrPrintf", xmlSecTransformGetName(transform));
        xmlFree(tmp);
        return(-1);
     }

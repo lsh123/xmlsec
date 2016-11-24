@@ -148,11 +148,7 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
 
         ctx->parserCtx = xmlCreatePushParserCtxt(NULL, NULL, NULL, 0, NULL);
         if(ctx->parserCtx == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlCreatePushParserCtxt",
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecXmlError("xmlCreatePushParserCtxt", xmlSecTransformGetName(transform));
             return(-1);
         }
 
@@ -179,11 +175,9 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
     if((data != NULL) && (dataSize > 0)) {
         ret = xmlParseChunk(ctx->parserCtx, (const char*)data, dataSize, 0);
         if(ret != 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlParseChunk",
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        "size=%d", dataSize);
+            xmlSecXmlParserError2("xmlParseChunk", ctx->parserCtx,
+                                  xmlSecTransformGetName(transform),
+                                  "size=%lu", (unsigned long)dataSize);
             return(-1);
         }
     }
@@ -192,11 +186,8 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
     if(final != 0) {
         ret = xmlParseChunk(ctx->parserCtx, NULL, 0, 1);
         if((ret != 0) || (ctx->parserCtx->myDoc == NULL)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlParseChunk",
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecXmlParserError("xmlParseChunk", ctx->parserCtx,
+                                 xmlSecTransformGetName(transform));
             return(-1);
         }
 
@@ -286,22 +277,16 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
 
     ctxt = xmlNewParserCtxt();
     if (ctxt == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlNewParserCtxt",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXmlError("xmlNewParserCtxt",
+                       xmlSecTransformGetName(transform));
         xmlFreeParserInputBuffer(buf);
         return(-1);
     }
 
     input = xmlNewIOInputStream(ctxt, buf, XML_CHAR_ENCODING_NONE);
     if(input == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlNewParserCtxt",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXmlParserError("xmlNewParserCtxt", ctxt,
+                             xmlSecTransformGetName(transform));
         xmlFreeParserCtxt(ctxt);
         xmlFreeParserInputBuffer(buf);
         return(-1);
@@ -309,11 +294,8 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
 
     ret = inputPush(ctxt, input);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "inputPush",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXmlParserError("inputPush", ctxt,
+                             xmlSecTransformGetName(transform));
         xmlFreeInputStream(input);
         xmlFreeParserCtxt(ctxt);
         return(-1);
@@ -326,11 +308,8 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
     /* finaly do the parsing */
     ret = xmlParseDocument(ctxt);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlParseDocument",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXmlParserError("xmlParseDocument", ctxt,
+                             xmlSecTransformGetName(transform));
         if(ctxt->myDoc != NULL) {
             xmlFreeDoc(ctxt->myDoc);
             ctxt->myDoc = NULL;
@@ -382,15 +361,18 @@ typedef struct _xmlSecExtMemoryParserCtx {
  */
 xmlDocPtr
 xmlSecParseFile(const char *filename) {
-    xmlDocPtr ret;
     xmlParserCtxtPtr ctxt;
+    xmlDocPtr res = NULL;
     char *directory = NULL;
+    int ret;
 
     xmlSecAssert2(filename != NULL, NULL);
 
     xmlInitParser();
     ctxt = xmlCreateFileParserCtxt(filename);
     if (ctxt == NULL) {
+        xmlSecXmlError2("xmlCreateFileParserCtxt", NULL,
+                        "filename=%s", xmlSecErrorsSafeString(filename));
         return(NULL);
     }
 
@@ -398,26 +380,49 @@ xmlSecParseFile(const char *filename) {
     /* crashes on x64 xmlCtxtUseOptions (ctxt, XML_PARSE_HUGE); */
 
     /* todo: set directories from current doc? */
-    if ((ctxt->directory == NULL) && (directory == NULL))
+    if ((ctxt->directory == NULL) && (directory == NULL)) {
         directory = xmlParserGetDirectory(filename);
-    if ((ctxt->directory == NULL) && (directory != NULL))
-        ctxt->directory = (char *) xmlStrdup((xmlChar *) directory);
+        if(directory == NULL) {
+            xmlSecXmlError2("xmlParserGetDirectory", NULL,
+                            "filename=%s", xmlSecErrorsSafeString(filename));
+            xmlFreeParserCtxt(ctxt);
+            return(NULL);
+        }
+    }
+    if ((ctxt->directory == NULL) && (directory != NULL)) {
+        ctxt->directory = (char *) xmlStrdup(BAD_CAST directory);
+        if(ctxt->directory == NULL) {
+            xmlSecStrdupError(BAD_CAST directory, NULL);
+            xmlFreeParserCtxt(ctxt);
+            return(NULL);
+        }
+    }
 
     /* required for c14n! */
     ctxt->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
     ctxt->replaceEntities = 1;
 
-    xmlParseDocument(ctxt);
+    ret = xmlParseDocument(ctxt);
+    if(ret < 0) {
+        xmlSecXmlParserError2("xmlParseDocument", ctxt, NULL,
+                              "filename=%s",
+                              xmlSecErrorsSafeString(filename));
+        xmlFreeParserCtxt(ctxt);
+        return(NULL);
+    }
 
-    if(ctxt->wellFormed) {
-        ret = ctxt->myDoc;
-    } else {
-       ret = NULL;
+    if(!ctxt->wellFormed) {
+       xmlSecInternalError("document is not well formed", NULL);
        xmlFreeDoc(ctxt->myDoc);
        ctxt->myDoc = NULL;
+       xmlFreeParserCtxt(ctxt);
+       return(NULL);
     }
+
+    /* done */
+    res = ctxt->myDoc;
     xmlFreeParserCtxt(ctxt);
-    return(ret);
+    return(res);
 
 }
 
@@ -445,11 +450,7 @@ xmlSecParseMemoryExt(const xmlSecByte *prefix, xmlSecSize prefixSize,
     /* create context */
     ctxt = xmlCreatePushParserCtxt(NULL, NULL, NULL, 0, NULL);
     if(ctxt == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlCreatePushParserCtxt",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXmlError("xmlCreatePushParserCtxt", NULL);
         goto done;
     }
 
@@ -461,11 +462,9 @@ xmlSecParseMemoryExt(const xmlSecByte *prefix, xmlSecSize prefixSize,
     if((prefix != NULL) && (prefixSize > 0)) {
         ret = xmlParseChunk(ctxt, (const char*)prefix, prefixSize, 0);
         if(ret != 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlParseChunk",
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        "prefixSize=%d", prefixSize);
+            xmlSecXmlParserError2("xmlParseChunk", ctxt, NULL,
+                                  "chunkSize=%d", prefixSize);
+
             goto done;
         }
     }
@@ -474,11 +473,9 @@ xmlSecParseMemoryExt(const xmlSecByte *prefix, xmlSecSize prefixSize,
     if((buffer != NULL) && (bufferSize > 0)) {
         ret = xmlParseChunk(ctxt, (const char*)buffer, bufferSize, 0);
         if(ret != 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlParseChunk",
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        "bufferSize=%d", bufferSize);
+            xmlSecXmlParserError2("xmlParseChunk", ctxt, NULL,
+                                  "chunkSize=%d", bufferSize);
+
             goto done;
         }
     }
@@ -487,11 +484,9 @@ xmlSecParseMemoryExt(const xmlSecByte *prefix, xmlSecSize prefixSize,
     if((postfix != NULL) && (postfixSize > 0)) {
         ret = xmlParseChunk(ctxt, (const char*)postfix, postfixSize, 0);
         if(ret != 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlParseChunk",
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        "postfixSize=%d", postfixSize);
+            xmlSecXmlParserError2("xmlParseChunk", ctxt, NULL,
+                                  "chunkSize=%d", postfixSize);
+
             goto done;
         }
     }
@@ -499,11 +494,7 @@ xmlSecParseMemoryExt(const xmlSecByte *prefix, xmlSecSize prefixSize,
     /* finishing */
     ret = xmlParseChunk(ctxt, NULL, 0, 1);
     if((ret != 0) || (ctxt->myDoc == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlParseChunk",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXmlParserError("xmlParseChunk", ctxt, NULL);
         goto done;
     }
     doc = ctxt->myDoc;
@@ -529,18 +520,15 @@ done:
  */
 xmlDocPtr
 xmlSecParseMemory(const xmlSecByte *buffer, xmlSecSize size, int recovery) {
-    xmlDocPtr ret;
     xmlParserCtxtPtr ctxt;
+    xmlDocPtr res = NULL;
+    int ret;
 
     xmlSecAssert2(buffer != NULL, NULL);
 
     ctxt = xmlCreateMemoryParserCtxt((char*)buffer, size);
     if (ctxt == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlCreateMemoryParserCtxt",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXmlError("xmlCreateMemoryParserCtxt", NULL);
         return(NULL);
     }
 
@@ -548,16 +536,24 @@ xmlSecParseMemory(const xmlSecByte *buffer, xmlSecSize size, int recovery) {
     ctxt->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
     ctxt->replaceEntities = 1;
 
-    xmlParseDocument(ctxt);
-
-    if((ctxt->wellFormed) || recovery) {
-        ret = ctxt->myDoc;
-    } else {
-       ret = NULL;
-       xmlFreeDoc(ctxt->myDoc);
-       ctxt->myDoc = NULL;
+    ret = xmlParseDocument(ctxt);
+    if(ret < 0) {
+        xmlSecXmlParserError("xmlParseDocument", ctxt, NULL);
+        xmlFreeParserCtxt(ctxt);
+        return(NULL);
     }
+
+    if(!(ctxt->wellFormed) && !recovery) {
+        xmlSecInternalError("document is not well formed", NULL);
+        xmlFreeDoc(ctxt->myDoc);
+        ctxt->myDoc = NULL;
+        xmlFreeParserCtxt(ctxt);
+        return(NULL);
+    }
+
+    /* done */
+    res = ctxt->myDoc;
     xmlFreeParserCtxt(ctxt);
-    return(ret);
+    return(res);
 }
 

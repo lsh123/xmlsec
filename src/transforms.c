@@ -774,11 +774,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
         }
         ret = xmlStrPrintf(buf, size, tmpl, xptr + 1);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlStrPrintf",
-                        XMLSEC_ERRORS_R_XML_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecXmlError("xmlStrPrintf", NULL);
              xmlFree(buf);
              return(-1);
         }
@@ -2436,11 +2432,7 @@ xmlSecTransformCreateOutputBuffer(xmlSecTransformPtr transform, xmlSecTransformC
                                      buffer,
                                      NULL);
     if(output == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlOutputBufferCreateIO",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXmlError("xmlOutputBufferCreateIO", xmlSecTransformGetName(transform));
         xmlSecTransformIOBufferDestroy(buffer);
         return(NULL);
     }
@@ -2489,11 +2481,7 @@ xmlSecTransformCreateInputBuffer(xmlSecTransformPtr transform, xmlSecTransformCt
                                      buffer,
                                      XML_CHAR_ENCODING_NONE);
     if(input == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlParserInputBufferCreateIO",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXmlError("xmlParserInputBufferCreateIO", xmlSecTransformGetName(transform));
         xmlSecTransformIOBufferDestroy(buffer);
         return(NULL);
     }

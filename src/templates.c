@@ -1634,11 +1634,7 @@ xmlSecTmplTransformAddXsltStylesheet(xmlNodePtr transformNode, const xmlChar *xs
 
     xsltDoc = xmlParseMemory((const char*)xslt, xmlStrlen(xslt));
     if(xsltDoc == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlParseMemory",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXmlError("xmlParseMemory", NULL);
         return(-1);
     }
 

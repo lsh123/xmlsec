@@ -464,11 +464,7 @@ xmlSecNodeSetGetChildren(xmlDocPtr doc, const xmlNodePtr parent, int withComment
 
     nodes = xmlXPathNodeSetCreate(parent);
     if(nodes == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlXPathNodeSetCreate",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXmlError("xmlXPathNodeSetCreate", NULL);
         return(NULL);
     }
 

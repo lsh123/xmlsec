@@ -374,7 +374,7 @@ extern "C" {
  *
  *******************************************************************/
 /**
- *  rrorsCallback:
+ * xmlSecErrorsCallback:
  * @file:               the error location file name (__FILE__ macro).
  * @line:               the error location line number (__LINE__ macro).
  * @func:               the error location function name (__func__ macro).

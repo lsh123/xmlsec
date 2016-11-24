@@ -146,12 +146,8 @@ xmlSecMSCryptoKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
 
     doc = xmlParseFile(uri);
     if(doc == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-                    "xmlParseFile",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    "uri=%s",
-                    xmlSecErrorsSafeString(uri));
+        xmlSecXmlError2("xmlParseFile", xmlSecKeyStoreGetName(store),
+                        "uri=%s", xmlSecErrorsSafeString(uri));
         return(-1);
     }
 

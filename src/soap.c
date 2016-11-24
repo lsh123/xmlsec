@@ -59,23 +59,15 @@ xmlSecSoap11CreateEnvelope(xmlDocPtr doc) {
     /* create Envelope node */
     envNode = xmlNewDocNode(doc, NULL, xmlSecNodeEnvelope, NULL);
     if(envNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlNewDocNode",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeEnvelope));
+        xmlSecXmlError2("xmlNewDocNode", NULL,
+                        "node=%s", xmlSecErrorsSafeString(xmlSecNodeEnvelope));
         return(NULL);
     }
 
     ns = xmlNewNs(envNode, xmlSecSoap11Ns, NULL) ;
     if(ns == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlNewNs",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    "ns=%s",
-                    xmlSecErrorsSafeString(xmlSecSoap11Ns));
+        xmlSecXmlError2("xmlNewNs", NULL,
+                        "ns=%s", xmlSecErrorsSafeString(xmlSecSoap11Ns));
         xmlFreeNode(envNode);
         return(NULL);
     }
@@ -253,12 +245,8 @@ xmlSecSoap11AddFaultEntry(xmlNodePtr envNode, const xmlChar* faultCodeHref,
     /* create qname for fault code */
     qname = xmlSecGetQName(cur, faultCodeHref, faultCodeLocalPart);
     if(qname == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGetQName",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(cur->name));
+        xmlSecXmlError2("xmlSecGetQName", NULL,
+                        "node=%s", xmlSecErrorsSafeString(cur->name));
         xmlUnlinkNode(faultNode);
         xmlFreeNode(faultNode);
         return(NULL);
@@ -536,23 +524,15 @@ xmlSecSoap12CreateEnvelope(xmlDocPtr doc) {
     /* create Envelope node */
     envNode = xmlNewDocNode(doc, NULL, xmlSecNodeEnvelope, NULL);
     if(envNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlNewDocNode",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeEnvelope));
+        xmlSecXmlError2("xmlNewDocNode", NULL,
+                        "node=%s", xmlSecErrorsSafeString(xmlSecNodeEnvelope));
         return(NULL);
     }
 
     ns = xmlNewNs(envNode, xmlSecSoap12Ns, NULL) ;
     if(ns == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlNewNs",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    "ns=%s",
-                    xmlSecErrorsSafeString(xmlSecSoap12Ns));
+        xmlSecXmlError2("xmlNewNs", NULL,
+                        "ns=%s", xmlSecErrorsSafeString(xmlSecSoap12Ns));
         xmlFreeNode(envNode);
         return(NULL);
     }
@@ -903,12 +883,8 @@ xmlSecSoap12AddFaultSubcode(xmlNodePtr faultNode, const xmlChar* subCodeHref, co
     /* create qname for fault code */
     qname = xmlSecGetQName(cur, subCodeHref, subCodeName);
     if(qname == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGetQName",
-                    XMLSEC_ERRORS_R_XML_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(cur->name));
+        xmlSecXmlError2("xmlSecGetQName", NULL,
+                        "node=%s", xmlSecErrorsSafeString(cur->name));
         xmlUnlinkNode(subcodeNode);
         xmlFreeNode(subcodeNode);
         return(NULL);

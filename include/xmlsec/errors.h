@@ -565,7 +565,7 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
  * @errorFunction:      the failed function.
  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
  *
- * Macro. The XMLSec library macro for reporting xmlStrdup() errors.
+ * Macro. The XMLSec library macro for reporting generic XML errors.
  */
 #define xmlSecXmlError(errorFunction, errorObject) \
     {                                                 \
@@ -589,7 +589,7 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
  * @msg:                the extra message.
  * @param:              the extra message param.
  *
- * Macro. The XMLSec library macro for reporting xmlStrdup() errors.
+ * Macro. The XMLSec library macro for reporting generic XML errors.
  */
 #define xmlSecXmlError2(errorFunction, errorObject, msg, param) \
     {                                                 \
@@ -613,7 +613,7 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
  * @ctxt:               the parser context.
  *
- * Macro. The XMLSec library macro for reporting xmlStrdup() errors.
+ * Macro. The XMLSec library macro for reporting XML parser errors.
  */
 #define xmlSecXmlParserError(errorFunction, ctxt, errorObject) \
     {                                                  \
@@ -638,7 +638,7 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
  * @msg:                the extra message.
  * @param:              the extra message param.
  *
- * Macro. The XMLSec library macro for reporting xmlStrdup() errors.
+ * Macro. The XMLSec library macro for reporting XML parser errors.
  */
 #define xmlSecXmlParserError2(errorFunction, ctxt, errorObject, msg, param) \
     {                                                  \
@@ -651,6 +651,29 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
                    XMLSEC_ERRORS_R_XML_FAILED,        \
                    msg "; xml error: %lu: %s",        \
                    (param),                           \
+                   (unsigned long)code,               \
+                   xmlSecErrorsSafeString(message)    \
+        );                                            \
+    }
+
+/**
+ * xmlSecXsltError:
+ * @errorFunction:      the failed function.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ * @ctxt:               the parser context.
+ *
+ * Macro. The XMLSec library macro for reporting XSLT errors.
+ */
+#define xmlSecXsltError(errorFunction, ctxt, errorObject) \
+    {                                                  \
+        xmlErrorPtr error = xmlGetLastError();         \
+        int code = (error != NULL) ? error->code : 0;  \
+        const char* message = (error != NULL) ? error->message : NULL; \
+        xmlSecError(XMLSEC_ERRORS_HERE,               \
+                   (const char*)(errorObject),        \
+                   (errorFunction),                   \
+                   XMLSEC_ERRORS_R_XSLT_FAILED,       \
+                   "xslt error: %lu: %s",             \
                    (unsigned long)code,               \
                    xmlSecErrorsSafeString(message)    \
         );                                            \

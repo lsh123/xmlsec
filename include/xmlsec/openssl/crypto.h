@@ -756,17 +756,23 @@ XMLSEC_CRYPTO_EXPORT void       xmlSecOpenSSLErrorsDefaultCallback      (const c
  *
  * Macro. The XMLSec library macro for reporting OpenSSL crypro errors.
  */
-#define xmlSecOpenSSLError(errorFunction, errorObject)  \
-    xmlSecError(XMLSEC_ERRORS_HERE,                     \
-                (const char*)(errorObject),             \
-                (errorFunction),                        \
-                XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
-                "openssl error: %lu: %s: %s %s",        \
-                ERR_peek_error(),                       \
-                xmlSecErrorsSafeString(ERR_lib_error_string(ERR_peek_error())),  \
-                xmlSecErrorsSafeString(ERR_func_error_string(ERR_peek_error())), \
-                xmlSecErrorsSafeString(ERR_reason_error_string(ERR_peek_error()))\
-    )
+#define xmlSecOpenSSLError(errorFunction, errorObject)      \
+    {                                                       \
+        unsigned long error_code = ERR_peek_error();        \
+        const char* lib = ERR_lib_error_string(error_code);       \
+        const char* func = ERR_func_error_string(error_code);     \
+        const char* reason = ERR_reason_error_string(error_code); \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    (errorFunction),                        \
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
+                    "openssl error: %lu: %s: %s %s",        \
+                    error_code,                             \
+                    xmlSecErrorsSafeString(lib),            \
+                    xmlSecErrorsSafeString(func),           \
+                    xmlSecErrorsSafeString(reason)          \
+        );                                                  \
+    }
 
 /**
  * xmlSecOpenSSLError2:
@@ -777,19 +783,24 @@ XMLSEC_CRYPTO_EXPORT void       xmlSecOpenSSLErrorsDefaultCallback      (const c
  *
  * Macro. The XMLSec library macro for reporting OpenSSL crypro errors.
  */
-#define xmlSecOpenSSLError2(errorFunction, errorObject, msg, param)  \
-    xmlSecError(XMLSEC_ERRORS_HERE,                     \
-                (const char*)(errorObject),             \
-                (errorFunction),                        \
-                XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
-                msg "; openssl error: %lu: %s: %s %s",\
-                (param),                                \
-                ERR_peek_error(),                       \
-                xmlSecErrorsSafeString(ERR_lib_error_string(ERR_peek_error())),  \
-                xmlSecErrorsSafeString(ERR_func_error_string(ERR_peek_error())), \
-                xmlSecErrorsSafeString(ERR_reason_error_string(ERR_peek_error()))\
-    )
-
+#define xmlSecOpenSSLError2(errorFunction, errorObject, msg, param) \
+    {                                                       \
+        unsigned long error_code = ERR_peek_error();        \
+        const char* lib = ERR_lib_error_string(error_code);       \
+        const char* func = ERR_func_error_string(error_code);     \
+        const char* reason = ERR_reason_error_string(error_code); \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    (errorFunction),                        \
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
+                    msg "; openssl error: %lu: %s: %s %s",  \
+                    (param),                                \
+                    error_code,                             \
+                    xmlSecErrorsSafeString(lib),            \
+                    xmlSecErrorsSafeString(func),           \
+                    xmlSecErrorsSafeString(reason)          \
+        );                                                  \
+    }
 
 #ifdef __cplusplus
 }

@@ -1300,12 +1300,8 @@ xmlSecTransformNodeRead(xmlNodePtr node, xmlSecTransformUsage usage, xmlSecTrans
 
     href = xmlGetProp(node, xmlSecAttrAlgorithm);
     if(href == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecAttrAlgorithm),
-                    XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
+        xmlSecInvalidNodeAttributeError(node, xmlSecAttrAlgorithm,
+                                        NULL, "empty");
         return(NULL);
     }
 

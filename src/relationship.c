@@ -212,12 +212,8 @@ xmlSecRelationshipReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSec
 
             sourceId = xmlGetProp(cur, xmlSecRelationshipAttrSourceId);
             if(sourceId == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            "xmlGetProp",
-                            xmlSecErrorsSafeString(xmlSecRelationshipAttrSourceId),
-                            XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
-                            "node=%s",
-                            xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
+                xmlSecInvalidNodeAttributeError(cur, xmlSecRelationshipAttrSourceId,
+                                                NULL, "empty");
                 return(-1);
             }
 

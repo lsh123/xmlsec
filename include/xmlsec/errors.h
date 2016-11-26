@@ -722,6 +722,29 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
     }
 
 /**
+ * xmlSecInvalidNodeAttributeError:
+ * @node:               the node.
+ * @attrName:           the attribute name.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ * @reason:             the reason why node content is invalid.
+ *
+ * Macro. The XMLSec library macro for reporting an invalid node content errors.
+ */
+#define xmlSecInvalidNodeAttributeError(node, attrName, errorObject, reason) \
+    {                                                 \
+        const char* nName = xmlSecNodeGetName(node);  \
+        xmlSecError(XMLSEC_ERRORS_HERE,               \
+                   (const char*)(errorObject),        \
+                   NULL,                              \
+                   XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE, \
+                   "node:%s;attribute:%s;reason:%s",  \
+                   xmlSecErrorsSafeString(nName),     \
+                   xmlSecErrorsSafeString(attrName),  \
+                   xmlSecErrorsSafeString(reason)     \
+        );                                            \
+    }
+
+/**
  * xmlSecNodeNotFoundError:
  * @errorFunction:      the failed function.
  * @startNode:          the search start node.

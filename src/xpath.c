@@ -654,12 +654,9 @@ xmlSecTransformXPath2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xml
         data->nodeSetType = xmlSecNodeSetTree;
         op = xmlGetProp(cur, xmlSecAttrFilter);
         if(op == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        xmlSecErrorsSafeString(xmlSecAttrFilter),
-                        XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+            xmlSecInvalidNodeAttributeError(cur, xmlSecAttrFilter,
+                                            xmlSecTransformGetName(transform),
+                                            "empty");
             return(-1);
         }
         if(xmlStrEqual(op, xmlSecXPath2FilterIntersect)) {
@@ -669,12 +666,9 @@ xmlSecTransformXPath2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xml
         } else if(xmlStrEqual(op, xmlSecXPath2FilterUnion)) {
             data->nodeSetOp = xmlSecNodeSetUnion;
         } else {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        xmlSecErrorsSafeString(xmlSecAttrFilter),
-                        XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
-                        "filter=%s",
-                        xmlSecErrorsSafeString(op));
+            xmlSecInvalidNodeAttributeError(cur, xmlSecAttrFilter,
+                                            xmlSecTransformGetName(transform),
+                                            "unknown");
             xmlFree(op);
             return(-1);
         }

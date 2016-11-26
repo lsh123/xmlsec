@@ -131,12 +131,9 @@ xmlSecTransformC14NNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSe
 
         list = xmlGetProp(cur, xmlSecAttrPrefixList);
         if(list == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        xmlSecErrorsSafeString(xmlSecAttrPrefixList),
-                        XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+            xmlSecInvalidNodeAttributeError(cur, xmlSecAttrPrefixList,
+                                            xmlSecTransformGetName(transform),
+                                            "empty");
             return(-1);
         }
 

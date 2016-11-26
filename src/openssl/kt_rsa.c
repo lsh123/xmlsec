@@ -489,12 +489,9 @@ xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
             /* Algorithm attribute is required */
             algorithm = xmlGetProp(cur, xmlSecAttrAlgorithm);
             if(algorithm == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            xmlSecErrorsSafeString(xmlSecAttrAlgorithm),
-                            XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
-                            "node=%s",
-                            xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+                xmlSecInvalidNodeAttributeError(cur, xmlSecAttrAlgorithm,
+                                                xmlSecTransformGetName(transform),
+                                                "empty");
                 return(-1);
             }
 

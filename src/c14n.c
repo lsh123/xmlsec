@@ -124,11 +124,8 @@ xmlSecTransformC14NNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSe
     cur = xmlSecGetNextElementNode(node->children);
     if(cur != NULL) {
         if(!xmlSecCheckNodeName(cur, xmlSecNodeInclusiveNamespaces, xmlSecNsExcC14N)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                        XMLSEC_ERRORS_R_INVALID_NODE,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInvalidNodeError(cur, xmlSecNodeInclusiveNamespaces,
+                                   xmlSecTransformGetName(transform));
             return(-1);
         }
 

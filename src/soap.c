@@ -842,12 +842,7 @@ xmlSecSoap12AddFaultSubcode(xmlNodePtr faultNode, const xmlChar* subCodeHref, co
     /* Code node is the first childern in Fault node */
     cur = xmlSecGetNextElementNode(faultNode->children);
     if((cur == NULL) || !xmlSecCheckNodeName(cur, xmlSecNodeCode, xmlSecSoap12Ns)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_NODE,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeCode));
+        xmlSecInvalidNodeError(cur, xmlSecNodeCode, NULL);
         return(NULL);
     }
 

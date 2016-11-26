@@ -287,8 +287,8 @@ xmlSecNssHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTrans
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_INVALID_NODE,
-                    "no nodes expected");
+                    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
+                    XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
     return(0);

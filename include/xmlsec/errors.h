@@ -151,28 +151,28 @@ extern "C" {
 /**
  * XMLSEC_ERRORS_R_INVALID_NODE:
  *
- * Invalid node (error subject is the node name).
+ * Invalid node.
  */
 #define XMLSEC_ERRORS_R_INVALID_NODE                    21
 
 /**
  * XMLSEC_ERRORS_R_INVALID_NODE_CONTENT:
  *
- * Invalid node content (error subject is the node name).
+ * Invalid node content.
  */
 #define XMLSEC_ERRORS_R_INVALID_NODE_CONTENT            22
 
 /**
  * XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE:
  *
- * Invalid node attribute (error subject is the node name).
+ * Invalid node attribute.
  */
 #define XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE          23
 
 /**
  * XMLSEC_ERRORS_R_MISSING_NODE_ATTRIBUTE:
  *
- * Missing node attribute (error subject is the node name).
+ * Missing node attribute.
  */
 #define XMLSEC_ERRORS_R_MISSING_NODE_ATTRIBUTE          25
 
@@ -186,14 +186,14 @@ extern "C" {
 /**
  * XMLSEC_ERRORS_R_UNEXPECTED_NODE:
  *
- * Unexpected node (error subject is the node name).
+ * Unexpected node.
  */
 #define XMLSEC_ERRORS_R_UNEXPECTED_NODE                 27
 
 /**
  * XMLSEC_ERRORS_R_NODE_NOT_FOUND:
  *
- * Node not found (error subject is the required node name).
+ * Node not found.
  */
 #define XMLSEC_ERRORS_R_NODE_NOT_FOUND                  28
 
@@ -242,7 +242,7 @@ extern "C" {
 /**
  * XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND:
  *
- * Data is not found (error subject is the data name).
+ * Data is not found.
  */
 #define XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND              42
 
@@ -469,12 +469,12 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
  * Macro. The XMLSec library macro for reporting internal XMLSec errors.
  */
 #define xmlSecInternalError(errorFunction, errorObject) \
-    xmlSecError(XMLSEC_ERRORS_HERE,                     \
-                (const char*)(errorObject),             \
-                (errorFunction),                        \
-                XMLSEC_ERRORS_R_XMLSEC_FAILED,          \
-                XMLSEC_ERRORS_NO_MESSAGE                \
-    )
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    (errorFunction),                        \
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,          \
+                    XMLSEC_ERRORS_NO_MESSAGE                \
+        )
 
 /**
  * xmlSecInternalError2:
@@ -486,12 +486,12 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
  * Macro. The XMLSec library macro for reporting internal XMLSec errors.
  */
 #define xmlSecInternalError2(errorFunction, errorObject, msg, param) \
-    xmlSecError(XMLSEC_ERRORS_HERE,                     \
-                (const char*)(errorObject),             \
-                (errorFunction),                        \
-                XMLSEC_ERRORS_R_XMLSEC_FAILED,          \
-                (msg), (param)                          \
-    )
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    (errorFunction),                        \
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,          \
+                    (msg), (param)                          \
+        )
 
 /**
  * xmlSecInternalError3:
@@ -504,12 +504,12 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
  * Macro. The XMLSec library macro for reporting internal XMLSec errors.
  */
 #define xmlSecInternalError3(errorFunction, errorObject, msg, param1, param2) \
-    xmlSecError(XMLSEC_ERRORS_HERE,                     \
-                (const char*)(errorObject),             \
-                (errorFunction),                        \
-                XMLSEC_ERRORS_R_XMLSEC_FAILED,          \
-                (msg), (param1), (param2)               \
-    )
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    (errorFunction),                        \
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,          \
+                    (msg), (param1), (param2)               \
+        )
 
 /**
  * xmlSecInternalError4:
@@ -523,12 +523,12 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
  * Macro. The XMLSec library macro for reporting internal XMLSec errors.
  */
 #define xmlSecInternalError4(errorFunction, errorObject, msg, param1, param2, param3) \
-    xmlSecError(XMLSEC_ERRORS_HERE,                     \
-                (const char*)(errorObject),             \
-                (errorFunction),                        \
-                XMLSEC_ERRORS_R_XMLSEC_FAILED,          \
-                (msg), (param1), (param2), (param3)     \
-    )
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    (errorFunction),                        \
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,          \
+                    (msg), (param1), (param2), (param3)     \
+        )
 
 /**
  * xmlSecMallocError:
@@ -538,12 +538,12 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
  * Macro. The XMLSec library macro for reporting xmlMalloc() errors.
  */
 #define xmlSecMallocError(allocSize, errorObject) \
-    xmlSecError(XMLSEC_ERRORS_HERE,                     \
-                (const char*)(errorObject),             \
-                "xmlMalloc",                            \
-                XMLSEC_ERRORS_R_MALLOC_FAILED,          \
-                "size=%lu", (unsigned long)(allocSize)  \
-    )
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    "xmlMalloc",                            \
+                    XMLSEC_ERRORS_R_MALLOC_FAILED,          \
+                    "size=%lu", (unsigned long)(allocSize)  \
+        )
 
 /**
  * xmlSecStrdupError:
@@ -553,12 +553,12 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
  * Macro. The XMLSec library macro for reporting xmlStrdup() errors.
  */
 #define xmlSecStrdupError(str, errorObject) \
-    xmlSecError(XMLSEC_ERRORS_HERE,                     \
-                (const char*)(errorObject),             \
-                "xmlStrdup",                            \
-                XMLSEC_ERRORS_R_STRDUP_FAILED,          \
-                "size=%lu", (unsigned long)xmlStrlen(str) \
-    )
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    "xmlStrdup",                            \
+                    XMLSEC_ERRORS_R_STRDUP_FAILED,          \
+                    "size=%lu", (unsigned long)xmlStrlen(str) \
+        )
 
 /**
  * xmlSecXmlError:
@@ -676,6 +676,27 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
                    "xslt error: %lu: %s",             \
                    (unsigned long)code,               \
                    xmlSecErrorsSafeString(message)    \
+        );                                            \
+    }
+
+/**
+ * xmlSecInvalidNodeError:
+ * @actualNode:         the expected node.
+ * @expectedNodeName:   the expected node name.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting an invalid node errors.
+ */
+#define xmlSecInvalidNodeError(actualNode, expectedNodeName, errorObject) \
+    {                                                 \
+        const char* actualNodeName = xmlSecNodeGetName(actualNode); \
+        xmlSecError(XMLSEC_ERRORS_HERE,               \
+                   (const char*)(errorObject),        \
+                   NULL,                              \
+                   XMLSEC_ERRORS_R_INVALID_NODE,      \
+                   "actual: %s; expected: %s",        \
+                   xmlSecErrorsSafeString(actualNodeName),  \
+                   xmlSecErrorsSafeString(expectedNodeName) \
         );                                            \
     }
 

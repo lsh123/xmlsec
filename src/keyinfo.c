@@ -123,7 +123,7 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCtx
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                        XMLSEC_ERRORS_R_INVALID_NODE,
+                        XMLSEC_ERRORS_R_UNEXPECTED_NODE,
                         XMLSEC_ERRORS_NO_MESSAGE);
             return(-1);
         }
@@ -187,7 +187,7 @@ xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCt
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                        XMLSEC_ERRORS_R_INVALID_NODE,
+                        XMLSEC_ERRORS_R_UNEXPECTED_NODE,
                         XMLSEC_ERRORS_NO_MESSAGE);
             return(-1);
         }
@@ -849,7 +849,7 @@ xmlSecKeyDataValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node,
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                     xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_INVALID_NODE,
+                    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
@@ -1210,7 +1210,7 @@ xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId, xmlSecKeyPtr k
             xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(typeId)),
                         xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                        XMLSEC_ERRORS_R_INVALID_NODE,
+                        XMLSEC_ERRORS_R_UNEXPECTED_NODE,
                         XMLSEC_ERRORS_NO_MESSAGE);
             return(-1);
         }

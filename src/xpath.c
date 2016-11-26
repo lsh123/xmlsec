@@ -502,12 +502,8 @@ xmlSecTransformXPathNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
     /* there is only one required node */
     cur = xmlSecGetNextElementNode(node->children);
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeXPath, xmlSecDSigNs))) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_INVALID_NODE,
-                    "expected=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeXPath));
+        xmlSecInvalidNodeError(cur, xmlSecNodeXPath,
+                               xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -841,12 +837,8 @@ xmlSecTransformXPointerNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, x
     /* there is only one required node */
     cur = xmlSecGetNextElementNode(node->children);
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeXPointer, xmlSecXPointerNs))) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_INVALID_NODE,
-                    "expected=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeXPath));
+        xmlSecInvalidNodeError(cur, xmlSecNodeXPointer,
+                               xmlSecTransformGetName(transform));
         return(-1);
     }
 

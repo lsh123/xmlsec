@@ -1426,6 +1426,21 @@ AM_CONDITIONAL(XMLSEC_DOCS, test "z$XMLSEC_DOCS" = "z1")
 AC_SUBST(XMLSEC_DOCS)
 
 dnl ==========================================================================
+dnl See if we need apps
+dnl ==========================================================================
+AC_MSG_CHECKING(for apps)
+AC_ARG_ENABLE(apps,   [  --enable-apps         enable applications (yes)])
+if test "z$enable_apps" = "zno" ; then
+    XMLSEC_APPS="0"
+    AC_MSG_RESULT(no)
+else
+    XMLSEC_APPS="1"
+    AC_MSG_RESULT(yes)
+fi
+AM_CONDITIONAL(XMLSEC_APPS, test "z$XMLSEC_APPS" = "z1")
+AC_SUBST(XMLSEC_APPS)
+
+dnl ==========================================================================
 dnl check if we need dynamic loading support
 dnl ==========================================================================
 XMLSEC_DL_INCLUDES=""

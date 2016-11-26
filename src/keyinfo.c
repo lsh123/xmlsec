@@ -649,14 +649,9 @@ xmlSecKeyDataNameXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, 
     oldName = xmlSecKeyGetName(key);
     newName = xmlNodeGetContent(node);
     if(newName == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(node)),
-                    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidNodeContentError(node, xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
-    /* TODO: do we need to decode the name? */
 
     /* compare name values */
     if((oldName != NULL) && !xmlStrEqual(oldName, newName)) {

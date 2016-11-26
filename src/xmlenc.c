@@ -608,11 +608,7 @@ xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 
         data = xmlNodeGetContent(encCtx->cipherValueNode);
         if(data == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        xmlSecErrorsSafeString(xmlSecNodeGetName(encCtx->cipherValueNode)),
-                        XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInvalidNodeContentError(encCtx->cipherValueNode, NULL);
             return(NULL);
         }
         dataSize = xmlStrlen(data);
@@ -727,12 +723,7 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
         if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeCarriedKeyName, xmlSecEncNs))) {
             encCtx->carriedKeyName = xmlNodeGetContent(cur);
             if(encCtx->carriedKeyName == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                            XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-                            "node=%s",
-                            xmlSecErrorsSafeString(xmlSecNodeCipherData));
+                xmlSecInvalidNodeContentError(cur, NULL);
                 return(-1);
             }
             /* TODO: decode the name? */

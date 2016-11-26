@@ -505,11 +505,7 @@ xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
 
     content = xmlNodeGetContent(node);
     if(content == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(node)),
-                    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidNodeContentError(node, NULL);
         return(-1);
     }
 

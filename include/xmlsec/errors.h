@@ -681,7 +681,7 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
 
 /**
  * xmlSecInvalidNodeError:
- * @actualNode:         the expected node.
+ * @actualNode:         the actual node.
  * @expectedNodeName:   the expected node name.
  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
  *
@@ -701,21 +701,40 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
     }
 
 /**
+ * xmlSecInvalidNodeContentError:
+ * @node:               the node.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting an invalid node content errors.
+ */
+#define xmlSecInvalidNodeContentError(node, errorObject) \
+    {                                                 \
+        const char* nName = xmlSecNodeGetName(node);  \
+        xmlSecError(XMLSEC_ERRORS_HERE,               \
+                   (const char*)(errorObject),        \
+                   NULL,                              \
+                   XMLSEC_ERRORS_R_INVALID_NODE_CONTENT, \
+                   "node:%s",                         \
+                   xmlSecErrorsSafeString(nName)      \
+        );                                            \
+    }
+
+/**
  * xmlSecUnexpectedNodeError:
- * @actualNode:         the expected node.
+ * @node:               the node.
  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
  *
  * Macro. The XMLSec library macro for reporting an invalid node errors.
  */
-#define xmlSecUnexpectedNodeError(actualNode, errorObject) \
+#define xmlSecUnexpectedNodeError(node, errorObject) \
     {                                                 \
-        const char* actualNodeName = xmlSecNodeGetName(actualNode); \
+        const char* nName = xmlSecNodeGetName(node);  \
         xmlSecError(XMLSEC_ERRORS_HERE,               \
                    (const char*)(errorObject),        \
                    NULL,                              \
                    XMLSEC_ERRORS_R_UNEXPECTED_NODE,   \
-                   "actual:%s",                       \
-                   xmlSecErrorsSafeString(actualNodeName) \
+                   "node:%s",                         \
+                   xmlSecErrorsSafeString(nName)      \
         );                                            \
     }
 

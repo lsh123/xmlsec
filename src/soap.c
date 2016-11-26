@@ -119,11 +119,7 @@ xmlSecSoap11EnsureHeader(xmlNodePtr envNode) {
 
     /* if the first element child is not Header then it is Body */
     if((cur == NULL) || !xmlSecCheckNodeName(cur, xmlSecNodeBody, xmlSecSoap11Ns)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeBody),
-                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidNodeError(cur, xmlSecNodeBody, NULL);
         return(NULL);
     }
 
@@ -302,11 +298,7 @@ xmlSecSoap11CheckEnvelope(xmlNodePtr envNode) {
 
     /* verify envNode itself */
     if(!xmlSecCheckNodeName(envNode, xmlSecNodeEnvelope, xmlSecSoap11Ns)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeEnvelope),
-                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidNodeError(cur, xmlSecNodeEnvelope, NULL);
         return(0);
     }
 
@@ -318,11 +310,7 @@ xmlSecSoap11CheckEnvelope(xmlNodePtr envNode) {
 
     /* required Body node is next */
     if((cur == NULL) || !xmlSecCheckNodeName(cur, xmlSecNodeBody, xmlSecSoap11Ns)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeBody),
-                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidNodeError(cur, xmlSecNodeBody, NULL);
         return(0);
     }
 
@@ -374,11 +362,7 @@ xmlSecSoap11GetBody(xmlNodePtr envNode) {
 
     /* Body node is next */
     if((cur == NULL) || !xmlSecCheckNodeName(cur, xmlSecNodeBody, xmlSecSoap11Ns)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeBody),
-                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidNodeError(cur, xmlSecNodeBody, NULL);
         return(NULL);
     }
 
@@ -584,11 +568,7 @@ xmlSecSoap12EnsureHeader(xmlNodePtr envNode) {
 
     /* if the first element child is not Header then it is Body */
     if((cur == NULL) || !xmlSecCheckNodeName(cur, xmlSecNodeBody, xmlSecSoap12Ns)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeBody),
-                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidNodeError(cur, xmlSecNodeBody, NULL);
         return(NULL);
     }
 
@@ -981,11 +961,7 @@ xmlSecSoap12CheckEnvelope(xmlNodePtr envNode) {
 
     /* verify envNode itself */
     if(!xmlSecCheckNodeName(envNode, xmlSecNodeEnvelope, xmlSecSoap12Ns)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeEnvelope),
-                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidNodeError(cur, xmlSecNodeEnvelope, NULL);
         return(0);
     }
 
@@ -997,11 +973,7 @@ xmlSecSoap12CheckEnvelope(xmlNodePtr envNode) {
 
     /* required Body node is next */
     if((cur == NULL) || !xmlSecCheckNodeName(cur, xmlSecNodeBody, xmlSecSoap12Ns)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeBody),
-                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidNodeError(cur, xmlSecNodeBody, NULL);
         return(0);
     }
 
@@ -1053,11 +1025,7 @@ xmlSecSoap12GetBody(xmlNodePtr envNode) {
 
     /* Body node is next */
     if((cur == NULL) || !xmlSecCheckNodeName(cur, xmlSecNodeBody, xmlSecSoap12Ns)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeBody),
-                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidNodeError(cur, xmlSecNodeBody, NULL);
         return(NULL);
     }
 

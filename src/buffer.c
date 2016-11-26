@@ -505,7 +505,7 @@ xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
 
     content = xmlNodeGetContent(node);
     if(content == NULL) {
-        xmlSecInvalidNodeContentError(node, NULL);
+        xmlSecInvalidNodeContentError(node, NULL, "empty");
         return(-1);
     }
 

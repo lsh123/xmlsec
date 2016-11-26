@@ -194,7 +194,7 @@ xmlSecXPathDataNodeRead(xmlSecXPathDataPtr data, xmlNodePtr node) {
     /* read node content and set expr */
     data->expr = xmlNodeGetContent(node);
     if(data->expr == NULL) {
-        xmlSecInvalidNodeContentError(node, NULL);
+        xmlSecInvalidNodeContentError(node, NULL, "empty");
         return(-1);
     }
 

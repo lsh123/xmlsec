@@ -564,7 +564,7 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     str = xmlNodeGetContent(node);
     if(str == NULL) {
-        xmlSecInvalidNodeContentError(node, xmlSecKeyDataKlassGetName(id));
+        xmlSecInvalidNodeContentError(node, xmlSecKeyDataKlassGetName(id), "empty");
         return(-1);
     }
 

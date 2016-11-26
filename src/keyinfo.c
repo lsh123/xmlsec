@@ -649,7 +649,7 @@ xmlSecKeyDataNameXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, 
     oldName = xmlSecKeyGetName(key);
     newName = xmlNodeGetContent(node);
     if(newName == NULL) {
-        xmlSecInvalidNodeContentError(node, xmlSecKeyDataKlassGetName(id));
+        xmlSecInvalidNodeContentError(node, xmlSecKeyDataKlassGetName(id), "empty");
         return(-1);
     }
 
@@ -1028,7 +1028,7 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
         }
     }
 
-    /* laxi schema validation but aplication can disable it */
+    /* laxi schema validation but application can disable it */
     if(dataId == xmlSecKeyDataIdUnknown) {
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_UNKNOWN_HREF) != 0) {
             xmlSecError(XMLSEC_ERRORS_HERE,

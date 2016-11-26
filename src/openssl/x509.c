@@ -917,7 +917,7 @@ xmlSecOpenSSLX509CertificateNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xml
             xmlFree(content);
         }
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
-            xmlSecInvalidNodeContentError(node, xmlSecKeyDataGetName(data));
+            xmlSecInvalidNodeContentError(node, xmlSecKeyDataGetName(data), "empty");
             return(-1);
         }
         return(0);
@@ -1001,7 +1001,7 @@ xmlSecOpenSSLX509SubjectNameNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xml
             xmlFree(subject);
         }
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
-            xmlSecInvalidNodeContentError(node, xmlSecKeyDataGetName(data));
+            xmlSecInvalidNodeContentError(node, xmlSecKeyDataGetName(data), "empty");
             return(-1);
         }
         return(0);
@@ -1110,7 +1110,7 @@ xmlSecOpenSSLX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xm
     }
     issuerName = xmlNodeGetContent(cur);
     if(issuerName == NULL) {
-        xmlSecInvalidNodeContentError(cur, xmlSecKeyDataGetName(data));
+        xmlSecInvalidNodeContentError(cur, xmlSecKeyDataGetName(data), "empty");
         return(-1);
     }
     cur = xmlSecGetNextElementNode(cur->next);
@@ -1123,7 +1123,7 @@ xmlSecOpenSSLX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xm
     }
     issuerSerial = xmlNodeGetContent(cur);
     if(issuerSerial == NULL) {
-        xmlSecInvalidNodeContentError(cur, xmlSecKeyDataGetName(data));
+        xmlSecInvalidNodeContentError(cur, xmlSecKeyDataGetName(data), "empty");
         xmlFree(issuerName);
         return(-1);
     }
@@ -1256,7 +1256,7 @@ xmlSecOpenSSLX509SKINodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyIn
             xmlFree(ski);
         }
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
-            xmlSecInvalidNodeContentError(node, xmlSecKeyDataGetName(data));
+            xmlSecInvalidNodeContentError(node, xmlSecKeyDataGetName(data), "empty");
             return(-1);
         }
         return(0);
@@ -1341,7 +1341,7 @@ xmlSecOpenSSLX509CRLNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyIn
             xmlFree(content);
         }
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
-            xmlSecInvalidNodeContentError(node, xmlSecKeyDataGetName(data));
+            xmlSecInvalidNodeContentError(node, xmlSecKeyDataGetName(data), "empty");
             return(-1);
         }
         return(0);

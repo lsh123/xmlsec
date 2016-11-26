@@ -704,18 +704,20 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
  * xmlSecInvalidNodeContentError:
  * @node:               the node.
  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ * @reason:             the reason why node content is invalid.
  *
  * Macro. The XMLSec library macro for reporting an invalid node content errors.
  */
-#define xmlSecInvalidNodeContentError(node, errorObject) \
+#define xmlSecInvalidNodeContentError(node, errorObject, reason) \
     {                                                 \
         const char* nName = xmlSecNodeGetName(node);  \
         xmlSecError(XMLSEC_ERRORS_HERE,               \
                    (const char*)(errorObject),        \
                    NULL,                              \
                    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT, \
-                   "node:%s",                         \
-                   xmlSecErrorsSafeString(nName)      \
+                   "node:%s;reason:%s",               \
+                   xmlSecErrorsSafeString(nName),     \
+                   xmlSecErrorsSafeString(reason)     \
         );                                            \
     }
 
@@ -734,7 +736,7 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
         xmlSecError(XMLSEC_ERRORS_HERE,               \
                    (const char*)(errorObject),        \
                    (errorFunction),                   \
-                   XMLSEC_ERRORS_R_INVALID_NODE,      \
+                   XMLSEC_ERRORS_R_NODE_NOT_FOUND,    \
                    "startNode:%s;target:%s",          \
                    xmlSecErrorsSafeString(startNodeName), \
                    xmlSecErrorsSafeString(targetNodeName) \

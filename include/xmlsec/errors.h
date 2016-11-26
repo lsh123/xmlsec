@@ -720,6 +720,28 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
     }
 
 /**
+ * xmlSecNodeNotFoundError:
+ * @errorFunction:      the failed function.
+ * @startNode:          the search start node.
+ * @targetNodeName:     the expected child node name.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting an invalid node errors.
+ */
+#define xmlSecNodeNotFoundError(errorFunction, startNode, targetNodeName, errorObject) \
+    {                                                 \
+        const char* startNodeName = xmlSecNodeGetName(startNode); \
+        xmlSecError(XMLSEC_ERRORS_HERE,               \
+                   (const char*)(errorObject),        \
+                   (errorFunction),                   \
+                   XMLSEC_ERRORS_R_INVALID_NODE,      \
+                   "startNode:%s;target:%s",          \
+                   xmlSecErrorsSafeString(startNodeName), \
+                   xmlSecErrorsSafeString(targetNodeName) \
+        );                                            \
+    }
+
+/**
  * xmlSecUnexpectedNodeError:
  * @node:               the node.
  * @errorObject:        the error specific error object (e.g. transform, key data, etc).

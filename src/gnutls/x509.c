@@ -1111,12 +1111,8 @@ xmlSecGnuTLSX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xml
     cur = xmlSecGetNextElementNode(node->children);
     if(cur == NULL) {
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                        xmlSecErrorsSafeString(xmlSecNodeX509IssuerName),
-                        XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+            xmlSecNodeNotFoundError("xmlSecGetNextElementNode", node, NULL,
+                                    xmlSecKeyDataGetName(data));
             return(-1);
         }
         return(0);

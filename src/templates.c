@@ -191,11 +191,8 @@ xmlSecTmplSignatureEnsureKeyInfo(xmlNodePtr signNode, const xmlChar *id) {
 
         signValueNode = xmlSecFindChild(signNode, xmlSecNodeSignatureValue, xmlSecDSigNs);
         if(signValueNode == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        xmlSecErrorsSafeString(xmlSecNodeSignatureValue),
-                        XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecNodeNotFoundError("xmlSecFindChild", signNode,
+                                    xmlSecNodeSignatureValue, NULL);
             return(NULL);
         }
 
@@ -237,11 +234,8 @@ xmlSecTmplSignatureAddReference(xmlNodePtr signNode, xmlSecTransformId digestMet
 
     signedInfoNode = xmlSecFindChild(signNode, xmlSecNodeSignedInfo, xmlSecDSigNs);
     if(signedInfoNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeSignedInfo),
-                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNodeNotFoundError("xmlSecFindChild", signNode,
+                                xmlSecNodeSignedInfo, NULL);
         return(NULL);
     }
 
@@ -356,11 +350,8 @@ xmlSecTmplSignatureGetSignMethodNode(xmlNodePtr signNode) {
 
     signedInfoNode = xmlSecFindChild(signNode, xmlSecNodeSignedInfo, xmlSecDSigNs);
     if(signedInfoNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeSignedInfo),
-                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNodeNotFoundError("xmlSecFindChild", signNode,
+                                xmlSecNodeSignedInfo, NULL);
         return(NULL);
     }
     return(xmlSecFindChild(signedInfoNode, xmlSecNodeSignatureMethod, xmlSecDSigNs));
@@ -382,11 +373,8 @@ xmlSecTmplSignatureGetC14NMethodNode(xmlNodePtr signNode) {
 
     signedInfoNode = xmlSecFindChild(signNode, xmlSecNodeSignedInfo, xmlSecDSigNs);
     if(signedInfoNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeSignedInfo),
-                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNodeNotFoundError("xmlSecFindChild", signNode,
+                                xmlSecNodeSignedInfo, NULL);
         return(NULL);
     }
     return(xmlSecFindChild(signedInfoNode, xmlSecNodeCanonicalizationMethod, xmlSecDSigNs));
@@ -641,11 +629,8 @@ xmlSecTmplEncDataEnsureKeyInfo(xmlNodePtr encNode, const xmlChar* id) {
 
         cipherDataNode = xmlSecFindChild(encNode, xmlSecNodeCipherData, xmlSecEncNs);
         if(cipherDataNode == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        xmlSecErrorsSafeString(xmlSecNodeCipherData),
-                        XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecNodeNotFoundError("xmlSecFindChild", encNode,
+                                    xmlSecNodeCipherData, NULL);
             return(NULL);
         }
 
@@ -753,11 +738,8 @@ xmlSecTmplEncDataEnsureCipherValue(xmlNodePtr encNode) {
 
     cipherDataNode = xmlSecFindChild(encNode, xmlSecNodeCipherData, xmlSecEncNs);
     if(cipherDataNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeCipherData),
-                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNodeNotFoundError("xmlSecFindChild", encNode,
+                                xmlSecNodeCipherData, NULL);
         return(NULL);
     }
 
@@ -804,11 +786,8 @@ xmlSecTmplEncDataEnsureCipherReference(xmlNodePtr encNode, const xmlChar *uri) {
 
     cipherDataNode = xmlSecFindChild(encNode, xmlSecNodeCipherData, xmlSecEncNs);
     if(cipherDataNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeCipherData),
-                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNodeNotFoundError("xmlSecFindChild", encNode,
+                                xmlSecNodeCipherData, NULL);
         return(NULL);
     }
 

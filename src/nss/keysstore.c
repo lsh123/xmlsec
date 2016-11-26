@@ -206,11 +206,7 @@ xmlSecNssKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
     }
 
     if(cur != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecUnexpectedNodeError(cur, xmlSecKeyStoreGetName(store));
         xmlFreeDoc(doc);
         return(-1);
     }

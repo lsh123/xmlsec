@@ -694,9 +694,28 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
                    (const char*)(errorObject),        \
                    NULL,                              \
                    XMLSEC_ERRORS_R_INVALID_NODE,      \
-                   "actual: %s; expected: %s",        \
+                   "actual:%s;expected:%s",           \
                    xmlSecErrorsSafeString(actualNodeName),  \
                    xmlSecErrorsSafeString(expectedNodeName) \
+        );                                            \
+    }
+
+/**
+ * xmlSecUnexpectedNodeError:
+ * @actualNode:         the expected node.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting an invalid node errors.
+ */
+#define xmlSecUnexpectedNodeError(actualNode, errorObject) \
+    {                                                 \
+        const char* actualNodeName = xmlSecNodeGetName(actualNode); \
+        xmlSecError(XMLSEC_ERRORS_HERE,               \
+                   (const char*)(errorObject),        \
+                   NULL,                              \
+                   XMLSEC_ERRORS_R_UNEXPECTED_NODE,   \
+                   "actual:%s",                       \
+                   xmlSecErrorsSafeString(actualNodeName) \
         );                                            \
     }
 

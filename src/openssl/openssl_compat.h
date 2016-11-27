@@ -12,6 +12,8 @@
 #if (OPENSSL_VERSION_NUMBER < 0x10100000)
 
 #define EVP_PKEY_up_ref(pKey)  CRYPTO_add(&((pKey)->references), 1, CRYPTO_LOCK_EVP_PKEY)
+#define EVP_PKEY_base_id(pKey) EVP_PKEY_type((pKey)->type)
+
 
 #ifndef XMLSEC_NO_X509
 #include <openssl/x509_vfy.h>

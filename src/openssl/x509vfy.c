@@ -36,7 +36,7 @@
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
 #include <xmlsec/openssl/x509.h>
-#include "openssl11_wrapper.h"
+#include "openssl_compat.h"
 
 /**************************************************************************
  *

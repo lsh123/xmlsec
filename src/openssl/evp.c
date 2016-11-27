@@ -23,7 +23,7 @@
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/bn.h>
 #include <xmlsec/openssl/evp.h>
-#include "openssl11_wrapper.h"
+#include "openssl_compat.h"
 
 /**************************************************************************
  *

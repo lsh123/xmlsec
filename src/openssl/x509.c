@@ -1050,6 +1050,7 @@ static int
 xmlSecOpenSSLX509SubjectNameNodeWrite(X509* cert, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx ATTRIBUTE_UNUSED) {
     xmlChar* buf = NULL;
     xmlNodePtr cur = NULL;
+    int ret;
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
@@ -1066,7 +1067,15 @@ xmlSecOpenSSLX509SubjectNameNodeWrite(X509* cert, xmlNodePtr node, xmlSecKeyInfo
         xmlFree(buf);
         return(-1);
     }
-    xmlSecNodeEncodeAndSetContent(cur, buf);
+
+    ret = xmlSecNodeEncodeAndSetContent(cur, buf);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNodeEncodeAndSetContent", NULL);
+        xmlFree(buf);
+        return(-1);
+    }
+
+    /* done */
     xmlFree(buf);
     return(0);
 }
@@ -1186,6 +1195,7 @@ xmlSecOpenSSLX509IssuerSerialNodeWrite(X509* cert, xmlNodePtr node, xmlSecKeyInf
     xmlNodePtr issuerNameNode;
     xmlNodePtr issuerNumberNode;
     xmlChar* buf;
+    int ret;
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
@@ -1215,7 +1225,13 @@ xmlSecOpenSSLX509IssuerSerialNodeWrite(X509* cert, xmlNodePtr node, xmlSecKeyInf
         xmlSecInternalError("xmlSecOpenSSLX509NameWrite(X509_get_issuer_name)", NULL);
         return(-1);
     }
-    xmlSecNodeEncodeAndSetContent(issuerNameNode, buf);
+
+    ret = xmlSecNodeEncodeAndSetContent(issuerNameNode, buf);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNodeEncodeAndSetContent(issuerNameNode)", NULL);
+        xmlFree(buf);
+        return(-1);
+    }
     xmlFree(buf);
 
     buf = xmlSecOpenSSLASN1IntegerWrite(X509_get_serialNumber(cert));
@@ -1223,9 +1239,16 @@ xmlSecOpenSSLX509IssuerSerialNodeWrite(X509* cert, xmlNodePtr node, xmlSecKeyInf
         xmlSecInternalError("xmlSecOpenSSLASN1IntegerWrite(X509_get_serialNumber)", NULL);
         return(-1);
     }
-    xmlSecNodeEncodeAndSetContent(issuerNumberNode, buf);
-    xmlFree(buf);
 
+    ret = xmlSecNodeEncodeAndSetContent(issuerNumberNode, buf);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNodeEncodeAndSetContent(issuerNumberNode)", NULL);
+        xmlFree(buf);
+        return(-1);
+    }
+
+    /* done */
+    xmlFree(buf);
     return(0);
 }
 
@@ -1303,6 +1326,7 @@ static int
 xmlSecOpenSSLX509SKINodeWrite(X509* cert, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx ATTRIBUTE_UNUSED) {
     xmlChar *buf = NULL;
     xmlNodePtr cur = NULL;
+    int ret;
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
@@ -1319,9 +1343,16 @@ xmlSecOpenSSLX509SKINodeWrite(X509* cert, xmlNodePtr node, xmlSecKeyInfoCtxPtr k
         xmlFree(buf);
         return(-1);
     }
-    xmlSecNodeEncodeAndSetContent(cur, buf);
-    xmlFree(buf);
 
+    ret = xmlSecNodeEncodeAndSetContent(cur, buf);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNodeEncodeAndSetContent", NULL);
+        xmlFree(buf);
+        return(-1);
+    }
+
+    /* done */
+    xmlFree(buf);
     return(0);
 }
 

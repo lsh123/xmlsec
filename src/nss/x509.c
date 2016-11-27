@@ -1110,6 +1110,7 @@ static int
 xmlSecNssX509SubjectNameNodeWrite(CERTCertificate* cert, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx ATTRIBUTE_UNUSED) {
     xmlChar* buf = NULL;
     xmlNodePtr cur = NULL;
+    int ret;
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
@@ -1126,7 +1127,15 @@ xmlSecNssX509SubjectNameNodeWrite(CERTCertificate* cert, xmlNodePtr node, xmlSec
         xmlFree(buf);
         return(-1);
     }
-    xmlSecNodeEncodeAndSetContent(cur, buf);
+
+    ret = xmlSecNodeEncodeAndSetContent(cur, buf);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNodeEncodeAndSetContent", NULL);
+        xmlFree(buf);
+        return(-1);
+    }
+
+    /* done */
     xmlFree(buf);
     return(0);
 }
@@ -1236,6 +1245,7 @@ xmlSecNssX509IssuerSerialNodeWrite(CERTCertificate* cert, xmlNodePtr node, xmlSe
     xmlNodePtr issuerNameNode;
     xmlNodePtr issuerNumberNode;
     xmlChar* buf;
+    int ret;
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
@@ -1265,7 +1275,13 @@ xmlSecNssX509IssuerSerialNodeWrite(CERTCertificate* cert, xmlNodePtr node, xmlSe
         xmlSecInternalError("xmlSecNssX509NameWrite(&(cert->issuer))", NULL);
         return(-1);
     }
-    xmlSecNodeEncodeAndSetContent(issuerNameNode, buf);
+
+    ret = xmlSecNodeEncodeAndSetContent(issuerNameNode, buf);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNodeEncodeAndSetContent(issuerNameNode)", NULL);
+        xmlFree(buf);
+        return(-1);
+    }
     xmlFree(buf);
 
     buf = xmlSecNssASN1IntegerWrite(&(cert->serialNumber));
@@ -1343,6 +1359,7 @@ static int
 xmlSecNssX509SKINodeWrite(CERTCertificate* cert, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx ATTRIBUTE_UNUSED) {
     xmlChar *buf = NULL;
     xmlNodePtr cur = NULL;
+    int ret;
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
@@ -1359,9 +1376,16 @@ xmlSecNssX509SKINodeWrite(CERTCertificate* cert, xmlNodePtr node, xmlSecKeyInfoC
         xmlFree(buf);
         return(-1);
     }
-    xmlSecNodeEncodeAndSetContent(cur, buf);
-    xmlFree(buf);
 
+    ret = xmlSecNodeEncodeAndSetContent(cur, buf);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNodeEncodeAndSetContent", NULL);
+        xmlFree(buf);
+        return(-1);
+    }
+
+    /* done */
+    xmlFree(buf);
     return(0);
 }
 

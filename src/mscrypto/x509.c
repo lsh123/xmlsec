@@ -1083,6 +1083,7 @@ static int
 xmlSecMSCryptoX509SubjectNameNodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx ATTRIBUTE_UNUSED) {
     xmlChar* buf = NULL;
     xmlNodePtr cur = NULL;
+    int ret;
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
@@ -1099,7 +1100,15 @@ xmlSecMSCryptoX509SubjectNameNodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node, xml
         xmlFree(buf);
         return(-1);
     }
-    xmlSecNodeEncodeAndSetContent(cur, buf);
+
+    ret = xmlSecNodeEncodeAndSetContent(cur, buf);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNodeEncodeAndSetContent", NULL);
+        xmlFree(buf);
+        return(-1);
+    }
+
+    /* done */
     xmlFree(buf);
     return(0);
 }
@@ -1241,7 +1250,14 @@ xmlSecMSCryptoX509IssuerSerialNodeWrite(PCCERT_CONTEXT cert,
         xmlSecInternalError("xmlSecMSCryptoX509NameWrite(&(cert->pCertInfo->Issuer))", NULL);
         return(-1);
     }
-    xmlSecNodeEncodeAndSetContent(issuerNameNode, buf);
+
+    ret = xmlSecNodeEncodeAndSetContent(issuerNameNode, buf);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNodeEncodeAndSetContent(issuerNameNode)", NULL);
+        xmlFree(buf);
+        return(-1);
+    }
+
     xmlFree(buf);
 
     ret = xmlSecMSCryptoASN1IntegerWrite(issuerNumberNode, &(cert->pCertInfo->SerialNumber));
@@ -1316,6 +1332,7 @@ static int
 xmlSecMSCryptoX509SKINodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx ATTRIBUTE_UNUSED) {
     xmlChar *buf = NULL;
     xmlNodePtr cur = NULL;
+    int ret;
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
@@ -1332,9 +1349,16 @@ xmlSecMSCryptoX509SKINodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node, xmlSecKeyIn
         xmlFree(buf);
         return(-1);
     }
-    xmlSecNodeEncodeAndSetContent(cur, buf);
-    xmlFree(buf);
 
+    ret = xmlSecNodeEncodeAndSetContent(cur, buf);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNodeEncodeAndSetContent", NULL);
+        xmlFree(buf);
+        return(-1);
+    }
+
+    /* done */
+    xmlFree(buf);
     return(0);
 }
 

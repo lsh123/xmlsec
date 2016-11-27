@@ -708,6 +708,7 @@ xmlSecKeyDataNameXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, 
 static int
 xmlSecKeyDataNameXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     const xmlChar* name;
+    int ret;
 
     xmlSecAssert2(id == xmlSecKeyDataNameId, -1);
     xmlSecAssert2(key != NULL, -1);
@@ -717,7 +718,11 @@ xmlSecKeyDataNameXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node,
 
     name = xmlSecKeyGetName(key);
     if(name != NULL) {
-            xmlSecNodeEncodeAndSetContent(node, name);
+        ret = xmlSecNodeEncodeAndSetContent(node, name);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecNodeEncodeAndSetContent", NULL);
+            return(-1);
+        }
     }
     return(0);
 }

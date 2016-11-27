@@ -417,32 +417,14 @@ elif test "z$with_openssl" != "z" ; then
     fi
     OPENSSL_FOUND="yes"
 elif test "z$PKGCONFIG_FOUND" = "zyes" ; then
-    if test "z$OPENSSL_VERSION" = "z" ; then
-        PKG_CHECK_MODULES(OPENSSL, openssl >= 1.1.0,
-            [OPENSSL_VERSION="1.1.0"],
-            [OPENSSL_VERSION=""])
-    fi
-
-    if test "z$OPENSSL_VERSION" = "z" ; then
-        PKG_CHECK_MODULES(OPENSSL, openssl >= 1.0.0,
-            [OPENSSL_VERSION="1.0.0"],
-            [OPENSSL_VERSION=""])
-    fi
-
-    if test "z$OPENSSL_VERSION" = "z" ; then
-        PKG_CHECK_MODULES(OPENSSL, openssl >= 0.9.8,
-    	    [OPENSSL_VERSION="0.9.8"],
-	    [OPENSSL_VERSION=""])
-    fi
+    dnl we cannot use pkg-config to detect >= 1.1.0 due to libressl reports
+    dnl version 2.x. So we need to rely on the compile tests below to detect
+    dnl the exact version number
 
     if test "z$OPENSSL_VERSION" = "z" ; then
         PKG_CHECK_MODULES(OPENSSL, openssl >= $OPENSSL_MIN_VERSION,
-	    [OPENSSL_VERSION="$OPENSSL_MIN_VERSION"],
-	    [OPENSSL_VERSION=""])
-    fi
-
-    if test "z$OPENSSL_VERSION" != "z" ; then
-        OPENSSL_FOUND="yes"
+	    [OPENSSL_FOUND="yes"],
+	    [OPENSSL_FOUND="no"])
     fi
 fi
 
@@ -482,7 +464,7 @@ if test "z$OPENSSL_FOUND" = "zno" ; then
     fi
 fi
 
-if test "z$OPENSSL_FOUND" = "zyes" -a "z$OPENSSL_VERSION" = "z" ; then
+if test "z$OPENSSL_FOUND" = "zyes" ; then
     AC_MSG_CHECKING(for openssl libraries >= $OPENSSL_MIN_VERSION) 
 
     dnl Check the OpenSSL version    

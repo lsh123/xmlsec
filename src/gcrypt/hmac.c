@@ -470,11 +470,8 @@ xmlSecGCryptHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
             gcry_md_final(ctx->digestCtx);
             dgst = gcry_md_read(ctx->digestCtx, ctx->digest);
             if(dgst == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "gcry_md_read",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecGCryptError("gcry_md_read", GPG_ERR_NO_ERROR,
+                                  xmlSecTransformGetName(transform));
                 return(-1);
             }
 

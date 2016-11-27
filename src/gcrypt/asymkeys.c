@@ -164,11 +164,8 @@ xmlSecGCryptAsymKeyDataAdoptKey(xmlSecKeyDataPtr data, gcry_sexp_t key_pair) {
        not be present */
     pub_key = gcry_sexp_find_token(key_pair, "public-key", 0);
     if(pub_key == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gcry_sexp_find_token(public-key)",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecGCryptError("gcry_sexp_find_token(public-key)",
+                          GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
     priv_key = gcry_sexp_find_token(key_pair, "private-key", 0);
@@ -356,11 +353,7 @@ xmlSecGCryptAsymSExpDup(gcry_sexp_t pKey) {
 
     size = gcry_sexp_sprint(pKey, GCRYSEXP_FMT_ADVANCED, NULL, 0);
     if(size == 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gcry_sexp_sprint",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecGCryptError("gcry_sexp_sprint", GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
 
@@ -372,11 +365,8 @@ xmlSecGCryptAsymSExpDup(gcry_sexp_t pKey) {
 
     size = gcry_sexp_sprint(pKey, GCRYSEXP_FMT_ADVANCED, buf, size);
     if(size == 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gcry_sexp_sprint",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "size=%d", (int)size);
+        xmlSecGCryptError2("gcry_sexp_sprint", GPG_ERR_NO_ERROR, NULL,
+                           "size=%lu", (unsigned long)size);
         goto done;
     }
 
@@ -553,23 +543,14 @@ xmlSecGCryptNodeSetSExpTokValue(xmlNodePtr cur, const gcry_sexp_t sexp,
 
     val = gcry_sexp_find_token(sexp, tok, 0);
     if(val == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gcry_sexp_find_token",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "tok=%s",
-                    xmlSecErrorsSafeString(tok));
+        xmlSecGCryptError2("gcry_sexp_find_token", GPG_ERR_NO_ERROR, NULL,
+                           "tok=%s", xmlSecErrorsSafeString(tok));
         goto done;
     }
 
     mpi = gcry_sexp_nth_mpi(val, 1, GCRYMPI_FMT_USG);
     if(mpi == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gcry_sexp_nth_mpi",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "tok=%s",
-                    xmlSecErrorsSafeString(tok));
+        xmlSecGCryptError("gcry_sexp_nth_mpi", GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
 
@@ -1106,9 +1087,8 @@ xmlSecGCryptKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     dsa = gcry_sexp_find_token(pub_priv_key, "dsa", 0);
     if(dsa == NULL) {
-        /* TODO: CRYPTO_FAILED */
-        xmlSecInternalError("gcry_sexp_find_token(dsa)",
-                            xmlSecKeyDataKlassGetName(id));
+        xmlSecGCryptError("gcry_sexp_find_token(dsa)", GPG_ERR_NO_ERROR,
+                          xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 

@@ -62,7 +62,7 @@
  */
 #define xmlSecGCryptError2(errorFunction, errCode, errorObject, msg, param) \
     {                                                       \
-        const char* source = cry_strsource((errCode));      \
+        const char* source = gcry_strsource((errCode));     \
         const char* message = gcry_strerror((errCode));     \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
                     (const char*)(errorObject),             \

@@ -396,11 +396,7 @@ xmlSecGCryptKWDes3Sha1(void * context,
 
     res = gcry_md_read(digestCtx, GCRY_MD_SHA1);
     if(res == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gcry_md_read(GCRY_MD_SHA1)",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecGCryptError("gcry_md_read", GPG_ERR_NO_ERROR, NULL);
         gcry_md_close(digestCtx);
         return(-1);
     }

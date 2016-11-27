@@ -21,7 +21,7 @@
 
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
-#include "openssl11_wrapper.h"
+#include "openssl_compat.h"
 
 /* new API from OpenSSL 1.1.0 (https://www.openssl.org/docs/manmaster/crypto/EVP_DigestInit.html):
  *

@@ -294,7 +294,7 @@ xmlSecSoap11CheckEnvelope(xmlNodePtr envNode) {
 
     /* verify envNode itself */
     if(!xmlSecCheckNodeName(envNode, xmlSecNodeEnvelope, xmlSecSoap11Ns)) {
-        xmlSecInvalidNodeError(cur, xmlSecNodeEnvelope, NULL);
+        xmlSecInvalidNodeError(envNode, xmlSecNodeEnvelope, NULL);
         return(0);
     }
 
@@ -953,7 +953,7 @@ xmlSecSoap12CheckEnvelope(xmlNodePtr envNode) {
 
     /* verify envNode itself */
     if(!xmlSecCheckNodeName(envNode, xmlSecNodeEnvelope, xmlSecSoap12Ns)) {
-        xmlSecInvalidNodeError(cur, xmlSecNodeEnvelope, NULL);
+        xmlSecInvalidNodeError(envNode, xmlSecNodeEnvelope, NULL);
         return(0);
     }
 

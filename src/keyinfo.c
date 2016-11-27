@@ -1036,7 +1036,7 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
     /* laxi schema validation but application can disable it */
     if(dataId == xmlSecKeyDataIdUnknown) {
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_UNKNOWN_HREF) != 0) {
-            xmlSecInvalidNodeAttributeError(cur, xmlSecAttrType,
+            xmlSecInvalidNodeAttributeError(node, xmlSecAttrType,
                                             xmlSecKeyDataKlassGetName(id),
                                             "retrieval type is unknown");
         } else {

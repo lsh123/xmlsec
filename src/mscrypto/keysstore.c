@@ -153,11 +153,7 @@ xmlSecMSCryptoKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
 
     root = xmlDocGetRootElement(doc);
     if(!xmlSecCheckNodeName(root, BAD_CAST "Keys", xmlSecNs)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(root)),
-                    XMLSEC_ERRORS_R_INVALID_NODE,
-                    "expected-node=<xmlsec:Keys>");
+        xmlSecInvalidNodeError(root, BAD_CAST "Keys", xmlSecKeyStoreGetName(store));
         xmlFreeDoc(doc);
         return(-1);
     }
@@ -166,12 +162,8 @@ xmlSecMSCryptoKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
     while((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeKeyInfo, xmlSecDSigNs)) {
         key = xmlSecKeyCreate();
         if(key == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-                        xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                        XMLSEC_ERRORS_R_INVALID_NODE,
-                        "expected-node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeKeyInfo));
+            xmlSecInternalError("xmlSecKeyCreate",
+                                xmlSecKeyStoreGetName(store));
             xmlFreeDoc(doc);
             return(-1);
         }
@@ -221,11 +213,7 @@ xmlSecMSCryptoKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
     }
 
     if(cur != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecUnexpectedNodeError(cur, xmlSecKeyStoreGetName(store));
         xmlFreeDoc(doc);
         return(-1);
     }

@@ -304,23 +304,16 @@ xmlSecMSCryptoHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSec
            small value
         */
         if((int)ctx->dgstSize < xmlSecMSCryptoHmacGetMinOutputLength()) {
-           xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
-                    "HMAC output length is too small");
-           return(-1);
+            xmlSecInvalidNodeContentError(cur, xmlSecTransformGetName(transform),
+                                          "HMAC output length is too small");
+            return(-1);
         }
 
         cur = xmlSecGetNextElementNode(cur->next);
     }
 
     if(cur != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecUnexpectedNodeError(cur, xmlSecTransformGetName(transform));
         return(-1);
     }
     return(0);

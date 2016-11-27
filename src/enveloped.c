@@ -117,11 +117,9 @@ xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last,
     /* find signature node and get all its children in the nodes set */
     node = xmlSecFindParent(transform->hereNode, xmlSecNodeSignature, xmlSecDSigNs);
     if(node == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    xmlSecErrorsSafeString(xmlSecNodeSignature),
-                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNodeNotFoundError("xmlSecFindParent", transform->hereNode,
+                                xmlSecNodeSignature,
+                                xmlSecTransformGetName(transform));
         return(-1);
     }
 

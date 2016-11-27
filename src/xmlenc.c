@@ -608,11 +608,7 @@ xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 
         data = xmlNodeGetContent(encCtx->cipherValueNode);
         if(data == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        xmlSecErrorsSafeString(xmlSecNodeGetName(encCtx->cipherValueNode)),
-                        XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInvalidNodeContentError(encCtx->cipherValueNode, NULL, "empty");
             return(NULL);
         }
         dataSize = xmlStrlen(data);
@@ -654,23 +650,13 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     switch(encCtx->mode) {
         case xmlEncCtxModeEncryptedData:
             if(!xmlSecCheckNodeName(node, xmlSecNodeEncryptedData, xmlSecEncNs)) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            xmlSecErrorsSafeString(xmlSecNodeGetName(node)),
-                            XMLSEC_ERRORS_R_INVALID_NODE,
-                            "expected=%s",
-                            xmlSecErrorsSafeString(xmlSecNodeEncryptedData));
+                xmlSecInvalidNodeError(node, xmlSecNodeEncryptedData, NULL);
                 return(-1);
             }
             break;
         case xmlEncCtxModeEncryptedKey:
             if(!xmlSecCheckNodeName(node, xmlSecNodeEncryptedKey, xmlSecEncNs)) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            xmlSecErrorsSafeString(xmlSecNodeGetName(node)),
-                            XMLSEC_ERRORS_R_INVALID_NODE,
-                            "expected=%s",
-                            xmlSecErrorsSafeString(xmlSecNodeEncryptedKey));
+                xmlSecInvalidNodeError(node, xmlSecNodeEncryptedKey, NULL);
                 return(-1);
             }
             break;
@@ -710,12 +696,7 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 
     /* next is required CipherData node */
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeCipherData, xmlSecEncNs))) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_INVALID_NODE,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeCipherData));
+        xmlSecInvalidNodeError(cur, xmlSecNodeCipherData, NULL);
         return(-1);
     }
 
@@ -742,12 +723,7 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
         if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeCarriedKeyName, xmlSecEncNs))) {
             encCtx->carriedKeyName = xmlNodeGetContent(cur);
             if(encCtx->carriedKeyName == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                            XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-                            "node=%s",
-                            xmlSecErrorsSafeString(xmlSecNodeCipherData));
+                xmlSecInvalidNodeContentError(cur, NULL, "empty");
                 return(-1);
             }
             /* TODO: decode the name? */
@@ -757,11 +733,7 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 
     /* if there is something left than it's an error */
     if(cur != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecUnexpectedNodeError(cur,  NULL);
         return(-1);
     }
 
@@ -915,11 +887,7 @@ xmlSecEncCtxCipherDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     }
 
     if(cur != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecUnexpectedNodeError(cur,  NULL);
         return(-1);
     }
     return(0);
@@ -961,11 +929,7 @@ xmlSecEncCtxCipherReferenceNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 
     /* if there is something left than it's an error */
     if(cur != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecUnexpectedNodeError(cur,  NULL);
         return(-1);
     }
     return(0);

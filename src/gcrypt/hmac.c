@@ -287,11 +287,8 @@ xmlSecGCryptHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTr
            small value
         */
         if((int)ctx->dgstSize < xmlSecGCryptHmacGetMinOutputLength()) {
-           xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
-                    "HMAC output length is too small");
+           xmlSecInvalidNodeContentError(cur, xmlSecTransformGetName(transform),
+                                         "HMAC output length is too small");
            return(-1);
         }
 
@@ -299,11 +296,7 @@ xmlSecGCryptHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTr
     }
 
     if(cur != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_INVALID_NODE,
-                    "no nodes expected");
+        xmlSecUnexpectedNodeError(cur, xmlSecTransformGetName(transform));
         return(-1);
     }
     return(0);

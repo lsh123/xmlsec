@@ -124,22 +124,16 @@ xmlSecTransformC14NNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSe
     cur = xmlSecGetNextElementNode(node->children);
     if(cur != NULL) {
         if(!xmlSecCheckNodeName(cur, xmlSecNodeInclusiveNamespaces, xmlSecNsExcC14N)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                        XMLSEC_ERRORS_R_INVALID_NODE,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInvalidNodeError(cur, xmlSecNodeInclusiveNamespaces,
+                                   xmlSecTransformGetName(transform));
             return(-1);
         }
 
         list = xmlGetProp(cur, xmlSecAttrPrefixList);
         if(list == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        xmlSecErrorsSafeString(xmlSecAttrPrefixList),
-                        XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+            xmlSecInvalidNodeAttributeError(cur, xmlSecAttrPrefixList,
+                                            xmlSecTransformGetName(transform),
+                                            "empty");
             return(-1);
         }
 
@@ -181,11 +175,7 @@ xmlSecTransformC14NNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSe
 
     /* check that we have nothing else */
     if(cur != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecUnexpectedNodeError(cur, NULL);
         return(-1);
     }
 

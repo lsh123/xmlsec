@@ -438,12 +438,7 @@ xmlSecDSigCtxProcessSignatureNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     xmlSecAssert2(node != NULL, -1);
 
     if(!xmlSecCheckNodeName(node, xmlSecNodeSignature, xmlSecDSigNs)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(node)),
-                    XMLSEC_ERRORS_R_INVALID_NODE,
-                    "expected=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeSignature));
+        xmlSecInvalidNodeError(cur, xmlSecNodeSignature, NULL);
         return(-1);
     }
 
@@ -454,12 +449,7 @@ xmlSecDSigCtxProcessSignatureNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     /* first node is required SignedInfo */
     cur = xmlSecGetNextElementNode(node->children);
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeSignedInfo, xmlSecDSigNs))) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_INVALID_NODE,
-                    "expected=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeSignedInfo));
+        xmlSecInvalidNodeError(cur, xmlSecNodeSignedInfo, NULL);
         return(-1);
     }
     signedInfoNode = cur;
@@ -467,12 +457,7 @@ xmlSecDSigCtxProcessSignatureNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
 
     /* next node is required SignatureValue */
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeSignatureValue, xmlSecDSigNs))) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_INVALID_NODE,
-                    "expected=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeSignatureValue));
+        xmlSecInvalidNodeError(cur, xmlSecNodeSignatureValue, NULL);
         return(-1);
     }
     dsigCtx->signValueNode = cur;
@@ -501,11 +486,7 @@ xmlSecDSigCtxProcessSignatureNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
 
     /* if there is something left than it's an error */
     if(cur != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecUnexpectedNodeError(cur,  NULL);
         return(-1);
     }
 
@@ -656,12 +637,10 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xm
             return(-1);
         }
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "CanonicalizationMethod",
-                    XMLSEC_ERRORS_R_INVALID_NODE,
-                    "expected=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeCanonicalizationMethod));
+        /* if c14n method is not specified in the template and not specified in
+         * the dsig context then it's an error.
+         */
+        xmlSecInvalidNodeError(cur, xmlSecNodeCanonicalizationMethod, NULL);
         return(-1);
     }
 
@@ -697,12 +676,10 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xm
             return(-1);
         }
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_INVALID_NODE,
-                    "expected=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeSignatureMethod));
+        /* if sign method is not specified in the template and not specified in
+         * the dsig context then it's an error.
+         */
+        xmlSecInvalidNodeError(cur, xmlSecNodeSignatureMethod, NULL);
         return(-1);
     }
     dsigCtx->signMethod->operation = dsigCtx->operation;
@@ -734,11 +711,7 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xm
 
     /* if there is something left than it's an error */
     if(cur != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecUnexpectedNodeError(cur,  NULL);
         return(-1);
     }
 
@@ -763,12 +736,7 @@ xmlSecDSigCtxProcessReferences(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr firstReferen
     for(cur = firstReferenceNode; (cur != NULL); cur = xmlSecGetNextElementNode(cur->next)) {
         /* already checked but we trust none */
         if(!xmlSecCheckNodeName(cur, xmlSecNodeReference, xmlSecDSigNs)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                        XMLSEC_ERRORS_R_INVALID_NODE,
-                        "expected=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeReference));
+            xmlSecInvalidNodeError(cur, xmlSecNodeReference, NULL);
             return(-1);
         }
 
@@ -984,11 +952,7 @@ xmlSecDSigCtxProcessManifestNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
 
     /* we should have nothing else here */
     if(cur != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecUnexpectedNodeError(cur,  NULL);
         return(-1);
     }
     return(0);
@@ -1415,12 +1379,10 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
             return(-1);
         }
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_INVALID_NODE,
-                    "expected=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeDigestMethod));
+        /* if digest method is not specified in the template and not specified in
+         * the dsig context then it's an error.
+         */
+        xmlSecInvalidNodeError(cur, xmlSecNodeDigestMethod, NULL);
         return(-1);
     }
     dsigRefCtx->digestMethod->operation = dsigRefCtx->dsigCtx->operation;
@@ -1430,23 +1392,13 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
         digestValueNode = cur;
         cur = xmlSecGetNextElementNode(cur->next);
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_NODE,
-                    "expected=%s;actual=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeDigestValue),
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+        xmlSecInvalidNodeError(cur, xmlSecNodeDigestValue, NULL);
         return(-1);
     }
 
     /* if we have something else then it's an error */
     if(cur != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecUnexpectedNodeError(cur,  NULL);
         return(-1);
     }
 

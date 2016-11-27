@@ -875,11 +875,7 @@ xmlSecGnuTLSX509DataNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyIn
             }
         } else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CHILD) != 0) {
             /* laxi schema validation: ignore unknown nodes */
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                        xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                        XMLSEC_ERRORS_R_UNEXPECTED_NODE,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecUnexpectedNodeError(cur, xmlSecKeyDataGetName(data));
             return(-1);
         }
     }
@@ -902,11 +898,7 @@ xmlSecGnuTLSX509CertificateNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlS
             xmlFree(content);
         }
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                        xmlSecErrorsSafeString(xmlSecNodeGetName(node)),
-                        XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInvalidNodeContentError(node, xmlSecKeyDataGetName(data), "empty");
             return(-1);
         }
         return(0);
@@ -1018,11 +1010,7 @@ xmlSecGnuTLSX509SubjectNameNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlS
             xmlFree(subject);
         }
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                        xmlSecErrorsSafeString(xmlSecNodeGetName(node)),
-                        XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInvalidNodeContentError(node, xmlSecKeyDataGetName(data), "empty");
             return(-1);
         }
         return(0);
@@ -1072,6 +1060,7 @@ static int
 xmlSecGnuTLSX509SubjectNameNodeWrite(gnutls_x509_crt_t cert, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx ATTRIBUTE_UNUSED) {
     xmlChar* buf = NULL;
     xmlNodePtr cur = NULL;
+    int ret;
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
@@ -1091,7 +1080,12 @@ xmlSecGnuTLSX509SubjectNameNodeWrite(gnutls_x509_crt_t cert, xmlNodePtr node, xm
     }
 
     /* set value */
-    xmlSecNodeEncodeAndSetContent(cur, buf);
+    ret = xmlSecNodeEncodeAndSetContent(cur, buf);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNodeEncodeAndSetContent", NULL);
+        xmlFree(buf);
+        return(-1);
+    }
 
     /* done */
     xmlFree(buf);
@@ -1123,12 +1117,8 @@ xmlSecGnuTLSX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xml
     cur = xmlSecGetNextElementNode(node->children);
     if(cur == NULL) {
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                        xmlSecErrorsSafeString(xmlSecNodeX509IssuerName),
-                        XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+            xmlSecNodeNotFoundError("xmlSecGetNextElementNode", node, NULL,
+                                    xmlSecKeyDataGetName(data));
             return(-1);
         }
         return(0);
@@ -1136,56 +1126,32 @@ xmlSecGnuTLSX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xml
 
     /* the first is required node X509IssuerName */
     if(!xmlSecCheckNodeName(cur, xmlSecNodeX509IssuerName, xmlSecDSigNs)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                    xmlSecErrorsSafeString(xmlSecNodeX509IssuerName),
-                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+        xmlSecInvalidNodeError(cur, xmlSecNodeX509IssuerName, xmlSecKeyDataGetName(data));
         return(-1);
     }
     issuerName = xmlNodeGetContent(cur);
     if(issuerName == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeX509IssuerName));
+        xmlSecInvalidNodeContentError(cur, xmlSecKeyDataGetName(data), "empty");
         return(-1);
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* next is required node X509SerialNumber */
     if((cur == NULL) || !xmlSecCheckNodeName(cur, xmlSecNodeX509SerialNumber, xmlSecDSigNs)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeX509SerialNumber));
+        xmlSecInvalidNodeError(cur, xmlSecNodeX509SerialNumber, xmlSecKeyDataGetName(data));
         xmlFree(issuerName);
         return(-1);
     }
     issuerSerial = xmlNodeGetContent(cur);
     if(issuerSerial == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                    xmlSecErrorsSafeString(xmlSecNodeX509SerialNumber),
-                    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+        xmlSecInvalidNodeContentError(cur, xmlSecKeyDataGetName(data), "empty");
         xmlFree(issuerName);
         return(-1);
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
     if(cur != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecUnexpectedNodeError(cur, xmlSecKeyDataGetName(data));
         xmlFree(issuerSerial);
         xmlFree(issuerName);
         return(-1);
@@ -1243,6 +1209,7 @@ xmlSecGnuTLSX509IssuerSerialNodeWrite(gnutls_x509_crt_t cert, xmlNodePtr node, x
     xmlNodePtr issuerNameNode;
     xmlNodePtr issuerNumberNode;
     xmlChar* buf;
+    int ret;
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
@@ -1272,7 +1239,13 @@ xmlSecGnuTLSX509IssuerSerialNodeWrite(gnutls_x509_crt_t cert, xmlNodePtr node, x
         xmlSecInternalError("xmlSecGnuTLSX509CertGetIssuerDN", NULL);
         return(-1);
     }
-    xmlSecNodeEncodeAndSetContent(issuerNameNode, buf);
+
+    ret = xmlSecNodeEncodeAndSetContent(issuerNameNode, buf);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNodeEncodeAndSetContent(issuerNameNode)", NULL);
+        xmlFree(buf);
+        return(-1);
+    }
     xmlFree(buf);
 
     buf = xmlSecGnuTLSX509CertGetIssuerSerial(cert);
@@ -1280,9 +1253,16 @@ xmlSecGnuTLSX509IssuerSerialNodeWrite(gnutls_x509_crt_t cert, xmlNodePtr node, x
         xmlSecInternalError("xmlSecGnuTLSX509CertGetIssuerSerial", NULL);
         return(-1);
     }
-    xmlSecNodeEncodeAndSetContent(issuerNumberNode, buf);
-    xmlFree(buf);
 
+    ret = xmlSecNodeEncodeAndSetContent(issuerNumberNode, buf);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNodeEncodeAndSetContent(issuerNumberNode)", NULL);
+        xmlFree(buf);
+        return(-1);
+    }
+
+    /* done */
+    xmlFree(buf);
     return(0);
 }
 
@@ -1313,12 +1293,7 @@ xmlSecGnuTLSX509SKINodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInf
             xmlFree(ski);
         }
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                        xmlSecErrorsSafeString(xmlSecNodeGetName(node)),
-                        XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeX509SKI));
+            xmlSecInvalidNodeContentError(node, xmlSecKeyDataGetName(data), "empty");
             return(-1);
         }
         return(0);
@@ -1366,6 +1341,7 @@ static int
 xmlSecGnuTLSX509SKINodeWrite(gnutls_x509_crt_t cert, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx ATTRIBUTE_UNUSED) {
     xmlChar *buf = NULL;
     xmlNodePtr cur = NULL;
+    int ret;
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
@@ -1384,9 +1360,15 @@ xmlSecGnuTLSX509SKINodeWrite(gnutls_x509_crt_t cert, xmlNodePtr node, xmlSecKeyI
         return(-1);
     }
 
-    xmlSecNodeEncodeAndSetContent(cur, buf);
-    xmlFree(buf);
+    ret = xmlSecNodeEncodeAndSetContent(cur, buf);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNodeEncodeAndSetContent", NULL);
+        xmlFree(buf);
+        return(-1);
+    }
 
+    /* done */
+    xmlFree(buf);
     return(0);
 }
 
@@ -1406,11 +1388,7 @@ xmlSecGnuTLSX509CRLNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInf
             xmlFree(content);
         }
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                        xmlSecErrorsSafeString(xmlSecNodeGetName(node)),
-                        XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInvalidNodeContentError(node, xmlSecKeyDataGetName(data), "empty");
             return(-1);
         }
         return(0);

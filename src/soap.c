@@ -119,11 +119,7 @@ xmlSecSoap11EnsureHeader(xmlNodePtr envNode) {
 
     /* if the first element child is not Header then it is Body */
     if((cur == NULL) || !xmlSecCheckNodeName(cur, xmlSecNodeBody, xmlSecSoap11Ns)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeBody),
-                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidNodeError(cur, xmlSecNodeBody, NULL);
         return(NULL);
     }
 
@@ -218,11 +214,7 @@ xmlSecSoap11AddFaultEntry(xmlNodePtr envNode, const xmlChar* faultCodeHref,
     /* check that we don't have Fault node already */
     faultNode = xmlSecFindChild(bodyNode, xmlSecNodeFault, xmlSecSoap11Ns);
     if(faultNode != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeBody),
-                    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNodeAlreadyPresentError(bodyNode, xmlSecNodeFault, NULL);
         return(NULL);
     }
 
@@ -302,11 +294,7 @@ xmlSecSoap11CheckEnvelope(xmlNodePtr envNode) {
 
     /* verify envNode itself */
     if(!xmlSecCheckNodeName(envNode, xmlSecNodeEnvelope, xmlSecSoap11Ns)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeEnvelope),
-                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidNodeError(envNode, xmlSecNodeEnvelope, NULL);
         return(0);
     }
 
@@ -318,11 +306,7 @@ xmlSecSoap11CheckEnvelope(xmlNodePtr envNode) {
 
     /* required Body node is next */
     if((cur == NULL) || !xmlSecCheckNodeName(cur, xmlSecNodeBody, xmlSecSoap11Ns)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeBody),
-                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidNodeError(cur, xmlSecNodeBody, NULL);
         return(0);
     }
 
@@ -374,11 +358,7 @@ xmlSecSoap11GetBody(xmlNodePtr envNode) {
 
     /* Body node is next */
     if((cur == NULL) || !xmlSecCheckNodeName(cur, xmlSecNodeBody, xmlSecSoap11Ns)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeBody),
-                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidNodeError(cur, xmlSecNodeBody, NULL);
         return(NULL);
     }
 
@@ -584,11 +564,7 @@ xmlSecSoap12EnsureHeader(xmlNodePtr envNode) {
 
     /* if the first element child is not Header then it is Body */
     if((cur == NULL) || !xmlSecCheckNodeName(cur, xmlSecNodeBody, xmlSecSoap12Ns)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeBody),
-                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidNodeError(cur, xmlSecNodeBody, NULL);
         return(NULL);
     }
 
@@ -738,11 +714,7 @@ xmlSecSoap12AddFaultEntry(xmlNodePtr envNode, xmlSecSoap12FaultCode faultCode,
     /* check that we don't have Fault node already */
     faultNode = xmlSecFindChild(bodyNode, xmlSecNodeFault, xmlSecSoap12Ns);
     if(faultNode != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeBody),
-                    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNodeAlreadyPresentError(bodyNode, xmlSecNodeFault, NULL);
         return(NULL);
     }
 
@@ -842,12 +814,7 @@ xmlSecSoap12AddFaultSubcode(xmlNodePtr faultNode, const xmlChar* subCodeHref, co
     /* Code node is the first childern in Fault node */
     cur = xmlSecGetNextElementNode(faultNode->children);
     if((cur == NULL) || !xmlSecCheckNodeName(cur, xmlSecNodeCode, xmlSecSoap12Ns)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_NODE,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeCode));
+        xmlSecInvalidNodeError(cur, xmlSecNodeCode, NULL);
         return(NULL);
     }
 
@@ -986,11 +953,7 @@ xmlSecSoap12CheckEnvelope(xmlNodePtr envNode) {
 
     /* verify envNode itself */
     if(!xmlSecCheckNodeName(envNode, xmlSecNodeEnvelope, xmlSecSoap12Ns)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeEnvelope),
-                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidNodeError(envNode, xmlSecNodeEnvelope, NULL);
         return(0);
     }
 
@@ -1002,11 +965,7 @@ xmlSecSoap12CheckEnvelope(xmlNodePtr envNode) {
 
     /* required Body node is next */
     if((cur == NULL) || !xmlSecCheckNodeName(cur, xmlSecNodeBody, xmlSecSoap12Ns)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeBody),
-                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidNodeError(cur, xmlSecNodeBody, NULL);
         return(0);
     }
 
@@ -1058,11 +1017,7 @@ xmlSecSoap12GetBody(xmlNodePtr envNode) {
 
     /* Body node is next */
     if((cur == NULL) || !xmlSecCheckNodeName(cur, xmlSecNodeBody, xmlSecSoap12Ns)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeBody),
-                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidNodeError(cur, xmlSecNodeBody, NULL);
         return(NULL);
     }
 

@@ -191,11 +191,8 @@ xmlSecTmplSignatureEnsureKeyInfo(xmlNodePtr signNode, const xmlChar *id) {
 
         signValueNode = xmlSecFindChild(signNode, xmlSecNodeSignatureValue, xmlSecDSigNs);
         if(signValueNode == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        xmlSecErrorsSafeString(xmlSecNodeSignatureValue),
-                        XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecNodeNotFoundError("xmlSecFindChild", signNode,
+                                    xmlSecNodeSignatureValue, NULL);
             return(NULL);
         }
 
@@ -237,11 +234,8 @@ xmlSecTmplSignatureAddReference(xmlNodePtr signNode, xmlSecTransformId digestMet
 
     signedInfoNode = xmlSecFindChild(signNode, xmlSecNodeSignedInfo, xmlSecDSigNs);
     if(signedInfoNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeSignedInfo),
-                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNodeNotFoundError("xmlSecFindChild", signNode,
+                                xmlSecNodeSignedInfo, NULL);
         return(NULL);
     }
 
@@ -356,11 +350,8 @@ xmlSecTmplSignatureGetSignMethodNode(xmlNodePtr signNode) {
 
     signedInfoNode = xmlSecFindChild(signNode, xmlSecNodeSignedInfo, xmlSecDSigNs);
     if(signedInfoNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeSignedInfo),
-                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNodeNotFoundError("xmlSecFindChild", signNode,
+                                xmlSecNodeSignedInfo, NULL);
         return(NULL);
     }
     return(xmlSecFindChild(signedInfoNode, xmlSecNodeSignatureMethod, xmlSecDSigNs));
@@ -382,11 +373,8 @@ xmlSecTmplSignatureGetC14NMethodNode(xmlNodePtr signNode) {
 
     signedInfoNode = xmlSecFindChild(signNode, xmlSecNodeSignedInfo, xmlSecDSigNs);
     if(signedInfoNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeSignedInfo),
-                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNodeNotFoundError("xmlSecFindChild", signNode,
+                                xmlSecNodeSignedInfo, NULL);
         return(NULL);
     }
     return(xmlSecFindChild(signedInfoNode, xmlSecNodeCanonicalizationMethod, xmlSecDSigNs));
@@ -641,11 +629,8 @@ xmlSecTmplEncDataEnsureKeyInfo(xmlNodePtr encNode, const xmlChar* id) {
 
         cipherDataNode = xmlSecFindChild(encNode, xmlSecNodeCipherData, xmlSecEncNs);
         if(cipherDataNode == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        xmlSecErrorsSafeString(xmlSecNodeCipherData),
-                        XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecNodeNotFoundError("xmlSecFindChild", encNode,
+                                    xmlSecNodeCipherData, NULL);
             return(NULL);
         }
 
@@ -753,22 +738,15 @@ xmlSecTmplEncDataEnsureCipherValue(xmlNodePtr encNode) {
 
     cipherDataNode = xmlSecFindChild(encNode, xmlSecNodeCipherData, xmlSecEncNs);
     if(cipherDataNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeCipherData),
-                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNodeNotFoundError("xmlSecFindChild", encNode,
+                                xmlSecNodeCipherData, NULL);
         return(NULL);
     }
 
     /* check that we don;t have CipherReference node */
     tmp = xmlSecFindChild(cipherDataNode, xmlSecNodeCipherReference, xmlSecEncNs);
     if(tmp != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeCipherReference),
-                    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNodeAlreadyPresentError(cipherDataNode, xmlSecNodeCipherReference, NULL);
         return(NULL);
     }
 
@@ -804,22 +782,15 @@ xmlSecTmplEncDataEnsureCipherReference(xmlNodePtr encNode, const xmlChar *uri) {
 
     cipherDataNode = xmlSecFindChild(encNode, xmlSecNodeCipherData, xmlSecEncNs);
     if(cipherDataNode == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeCipherData),
-                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNodeNotFoundError("xmlSecFindChild", encNode,
+                                xmlSecNodeCipherData, NULL);
         return(NULL);
     }
 
     /* check that we don;t have CipherValue node */
     tmp = xmlSecFindChild(cipherDataNode, xmlSecNodeCipherValue, xmlSecEncNs);
     if(tmp != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeCipherValue),
-                    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNodeAlreadyPresentError(cipherDataNode, xmlSecNodeCipherValue, NULL);
         return(NULL);
     }
 
@@ -1017,6 +988,7 @@ xmlSecTmplReferenceListAddKeyReference(xmlNodePtr encNode, const xmlChar *uri) {
 xmlNodePtr
 xmlSecTmplKeyInfoAddKeyName(xmlNodePtr keyInfoNode, const xmlChar* name) {
     xmlNodePtr res;
+    int ret;
 
     xmlSecAssert2(keyInfoNode != NULL, NULL);
 
@@ -1026,7 +998,11 @@ xmlSecTmplKeyInfoAddKeyName(xmlNodePtr keyInfoNode, const xmlChar* name) {
         return(NULL);
     }
     if(name != NULL) {
-        xmlSecNodeEncodeAndSetContent(res, name);
+        ret = xmlSecNodeEncodeAndSetContent(res, name);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecNodeEncodeAndSetContent", NULL);
+            return(NULL);
+        }
     }
     return(res);
 }
@@ -1228,11 +1204,7 @@ xmlSecTmplX509DataAddIssuerSerial(xmlNodePtr x509DataNode) {
 
     cur = xmlSecFindChild(x509DataNode, xmlSecNodeX509IssuerSerial, xmlSecDSigNs);
     if(cur != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeX509IssuerSerial),
-                    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNodeAlreadyPresentError(x509DataNode, xmlSecNodeX509IssuerSerial, NULL);
         return(NULL);
     }
 
@@ -1257,30 +1229,29 @@ xmlSecTmplX509DataAddIssuerSerial(xmlNodePtr x509DataNode) {
  */
 xmlNodePtr
 xmlSecTmplX509IssuerSerialAddIssuerName(xmlNodePtr x509IssuerSerialNode, const xmlChar* issuerName) {
-        xmlNodePtr res;
+    xmlNodePtr res;
+    int ret;
 
-        xmlSecAssert2(x509IssuerSerialNode != NULL, NULL);
-
-  if(xmlSecFindChild(x509IssuerSerialNode, xmlSecNodeX509IssuerName,
-                                xmlSecDSigNs) != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeX509IssuerName),
-                    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+    xmlSecAssert2(x509IssuerSerialNode != NULL, NULL);
+    if(xmlSecFindChild(x509IssuerSerialNode, xmlSecNodeX509IssuerName, xmlSecDSigNs) != NULL) {
+        xmlSecNodeAlreadyPresentError(x509IssuerSerialNode, xmlSecNodeX509IssuerName, NULL);
         return(NULL);
-        }
+    }
 
-        res = xmlSecAddChild(x509IssuerSerialNode, xmlSecNodeX509IssuerName, xmlSecDSigNs);
+    res = xmlSecAddChild(x509IssuerSerialNode, xmlSecNodeX509IssuerName, xmlSecDSigNs);
     if(res == NULL) {
         xmlSecInternalError("xmlSecAddChild(xmlSecNodeX509IssuerName)", NULL);
         return(NULL);
     }
 
-                if (issuerName != NULL) {
-                        xmlSecNodeEncodeAndSetContent(res, issuerName);
-                }
-                return(res);
+    if (issuerName != NULL) {
+        ret = xmlSecNodeEncodeAndSetContent(res, issuerName);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecNodeEncodeAndSetContent", NULL);
+            return(NULL);
+        }
+    }
+    return(res);
 }
 
 /**
@@ -1295,30 +1266,30 @@ xmlSecTmplX509IssuerSerialAddIssuerName(xmlNodePtr x509IssuerSerialNode, const x
  */
 xmlNodePtr
 xmlSecTmplX509IssuerSerialAddSerialNumber(xmlNodePtr x509IssuerSerialNode, const xmlChar* serial) {
-        xmlNodePtr res;
+    xmlNodePtr res;
+    int ret;
 
-        xmlSecAssert2(x509IssuerSerialNode != NULL, NULL);
+    xmlSecAssert2(x509IssuerSerialNode != NULL, NULL);
 
-        if(xmlSecFindChild(x509IssuerSerialNode, xmlSecNodeX509SerialNumber,
-                                xmlSecDSigNs) != NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                                NULL,
-                                xmlSecErrorsSafeString(xmlSecNodeX509SerialNumber),
-                                XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-                                XMLSEC_ERRORS_NO_MESSAGE);
-                return(NULL);
+    if(xmlSecFindChild(x509IssuerSerialNode, xmlSecNodeX509SerialNumber, xmlSecDSigNs) != NULL) {
+        xmlSecNodeAlreadyPresentError(x509IssuerSerialNode, xmlSecNodeX509SerialNumber, NULL);
+        return(NULL);
+    }
+
+    res = xmlSecAddChild(x509IssuerSerialNode, xmlSecNodeX509SerialNumber, xmlSecDSigNs);
+    if(res == NULL) {
+        xmlSecInternalError("xmlSecAddChild(xmlSecNodeX509SerialNumber)", NULL);
+        return(NULL);
+    }
+
+    if (serial != NULL) {
+        ret = xmlSecNodeEncodeAndSetContent(res, serial);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecNodeEncodeAndSetContent", NULL);
+            return(NULL);
         }
-
-        res = xmlSecAddChild(x509IssuerSerialNode, xmlSecNodeX509SerialNumber, xmlSecDSigNs);
-        if(res == NULL) {
-                xmlSecInternalError("xmlSecAddChild(xmlSecNodeX509SerialNumber)", NULL);
-                return(NULL);
-        }
-
-        if (serial != NULL) {
-                xmlSecNodeEncodeAndSetContent(res, serial);
-        }
-        return(res);
+    }
+    return(res);
 }
 
 /**
@@ -1339,11 +1310,7 @@ xmlSecTmplX509DataAddSubjectName(xmlNodePtr x509DataNode) {
 
     cur = xmlSecFindChild(x509DataNode, xmlSecNodeX509SubjectName, xmlSecDSigNs);
     if(cur != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeX509SubjectName),
-                    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNodeAlreadyPresentError(x509DataNode, xmlSecNodeX509SubjectName, NULL);
         return(NULL);
     }
 
@@ -1374,11 +1341,7 @@ xmlSecTmplX509DataAddSKI(xmlNodePtr x509DataNode) {
 
     cur = xmlSecFindChild(x509DataNode, xmlSecNodeX509SKI, xmlSecDSigNs);
     if(cur != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeX509SKI),
-                    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNodeAlreadyPresentError(x509DataNode, xmlSecNodeX509SKI, NULL);
         return(NULL);
     }
 
@@ -1410,11 +1373,7 @@ xmlSecTmplX509DataAddCertificate(xmlNodePtr x509DataNode) {
 
     cur = xmlSecFindChild(x509DataNode, xmlSecNodeX509Certificate, xmlSecDSigNs);
     if(cur != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeX509Certificate),
-                    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNodeAlreadyPresentError(x509DataNode, xmlSecNodeX509Certificate, NULL);
         return(NULL);
     }
 
@@ -1445,11 +1404,7 @@ xmlSecTmplX509DataAddCRL(xmlNodePtr x509DataNode) {
 
     cur = xmlSecFindChild(x509DataNode, xmlSecNodeX509CRL, xmlSecDSigNs);
     if(cur != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeX509CRL),
-                    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNodeAlreadyPresentError(x509DataNode, xmlSecNodeX509CRL, NULL);
         return(NULL);
     }
 
@@ -1488,11 +1443,7 @@ xmlSecTmplTransformAddHmacOutputLength(xmlNodePtr transformNode, xmlSecSize bits
 
     cur = xmlSecFindChild(transformNode, xmlSecNodeHMACOutputLength, xmlSecDSigNs);
     if(cur != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeHMACOutputLength),
-                    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNodeAlreadyPresentError(transformNode, xmlSecNodeHMACOutputLength, NULL);
         return(-1);
     }
 
@@ -1529,11 +1480,7 @@ xmlSecTmplTransformAddRsaOaepParam(xmlNodePtr transformNode,
 
     oaepParamNode = xmlSecFindChild(transformNode, xmlSecNodeRsaOAEPparams, xmlSecEncNs);
     if(oaepParamNode != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeRsaOAEPparams),
-                    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNodeAlreadyPresentError(transformNode, xmlSecNodeRsaOAEPparams, NULL);
         return(-1);
     }
 
@@ -1609,11 +1556,7 @@ xmlSecTmplTransformAddC14NInclNamespaces(xmlNodePtr transformNode,
 
     cur = xmlSecFindChild(transformNode, xmlSecNodeInclusiveNamespaces, xmlSecNsExcC14N);
     if(cur != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeInclusiveNamespaces),
-                    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNodeAlreadyPresentError(transformNode, xmlSecNodeInclusiveNamespaces, NULL);
         return(-1);
     }
 
@@ -1644,17 +1587,14 @@ int
 xmlSecTmplTransformAddXPath(xmlNodePtr transformNode, const xmlChar *expression,
                          const xmlChar **nsList) {
     xmlNodePtr xpathNode;
+    int ret;
 
     xmlSecAssert2(transformNode != NULL, -1);
     xmlSecAssert2(expression != NULL, -1);
 
     xpathNode = xmlSecFindChild(transformNode, xmlSecNodeXPath, xmlSecDSigNs);
     if(xpathNode != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeXPath),
-                    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNodeAlreadyPresentError(transformNode, xmlSecNodeXPath, NULL);
         return(-1);
     }
 
@@ -1664,7 +1604,12 @@ xmlSecTmplTransformAddXPath(xmlNodePtr transformNode, const xmlChar *expression,
         return(-1);
     }
 
-    xmlSecNodeEncodeAndSetContent(xpathNode, expression);
+    ret = xmlSecNodeEncodeAndSetContent(xpathNode, expression);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNodeEncodeAndSetContent", NULL);
+        return(-1);
+    }
+
     return((nsList != NULL) ? xmlSecTmplNodeWriteNsList(xpathNode, nsList) : 0);
 }
 
@@ -1685,6 +1630,7 @@ int
 xmlSecTmplTransformAddXPath2(xmlNodePtr transformNode, const xmlChar* type,
                         const xmlChar *expression, const xmlChar **nsList) {
     xmlNodePtr xpathNode;
+    int ret;
 
     xmlSecAssert2(transformNode != NULL, -1);
     xmlSecAssert2(type != NULL, -1);
@@ -1697,7 +1643,12 @@ xmlSecTmplTransformAddXPath2(xmlNodePtr transformNode, const xmlChar* type,
     }
     xmlSetProp(xpathNode, xmlSecAttrFilter, type);
 
-    xmlSecNodeEncodeAndSetContent(xpathNode, expression);
+    ret = xmlSecNodeEncodeAndSetContent(xpathNode, expression);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNodeEncodeAndSetContent", NULL);
+        return(-1);
+    }
+
     return((nsList != NULL) ? xmlSecTmplNodeWriteNsList(xpathNode, nsList) : 0);
 }
 
@@ -1717,17 +1668,14 @@ int
 xmlSecTmplTransformAddXPointer(xmlNodePtr transformNode, const xmlChar *expression,
                          const xmlChar **nsList) {
     xmlNodePtr xpointerNode;
+    int ret;
 
     xmlSecAssert2(expression != NULL, -1);
     xmlSecAssert2(transformNode != NULL, -1);
 
     xpointerNode = xmlSecFindChild(transformNode, xmlSecNodeXPointer, xmlSecXPointerNs);
     if(xpointerNode != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeXPointer),
-                    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNodeAlreadyPresentError(transformNode, xmlSecNodeXPointer, NULL);
         return(-1);
     }
 
@@ -1737,8 +1685,12 @@ xmlSecTmplTransformAddXPointer(xmlNodePtr transformNode, const xmlChar *expressi
         return(-1);
     }
 
+    ret = xmlSecNodeEncodeAndSetContent(xpointerNode, expression);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNodeEncodeAndSetContent", NULL);
+        return(-1);
+    }
 
-    xmlSecNodeEncodeAndSetContent(xpointerNode, expression);
     return((nsList != NULL) ? xmlSecTmplNodeWriteNsList(xpointerNode, nsList) : 0);
 }
 

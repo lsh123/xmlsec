@@ -22,4 +22,7 @@
 #define IN_XMLSEC
 #define XMLSEC_PRIVATE
 
+/* Include common error helper macros. */
+#include "errors_helpers.h"
+
 #endif /* __XMLSEC_GLOBALS_H__ */

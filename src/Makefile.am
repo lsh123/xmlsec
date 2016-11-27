@@ -14,6 +14,7 @@ AM_CFLAGS = \
 	$(NULL)
 
 EXTRA_DIST = \
+	errors_helpers.h \
 	globals.h \
 	kw_aes_des.h \
 	skeleton \

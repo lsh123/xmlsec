@@ -23,11 +23,11 @@
 int
 xmlSecAppCryptoInit(const char* config) {
     if(xmlSecCryptoAppInit(config) < 0) {
-        xmlSecInternalError("xmlSecCryptoAppInit", NULL);
+        fprintf(stderr, "Error: xmlSecCryptoAppInit failed\n");
         return(-1);
     }
     if(xmlSecCryptoInit() < 0) {
-        xmlSecInternalError("xmlSecCryptoInit", NULL);
+        fprintf(stderr, "Error: xmlSecCryptoInit failed\n");
         return(-1);
     }
     
@@ -37,12 +37,12 @@ xmlSecAppCryptoInit(const char* config) {
 int
 xmlSecAppCryptoShutdown(void) {
     if(xmlSecCryptoShutdown() < 0) {
-        xmlSecInternalError("xmlSecCryptoShutdown", NULL);
+        fprintf(stderr, "Error: xmlSecCryptoShutdown failed\n");
         return(-1);
     }
 
     if(xmlSecCryptoAppShutdown() < 0) {
-        xmlSecInternalError("xmlSecCryptoAppShutdown", NULL);
+        fprintf(stderr, "Error: xmlSecCryptoAppShutdown failed\n");
         return(-1);
     }
     return(0);
@@ -99,16 +99,16 @@ xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
     key = xmlSecCryptoAppKeyLoad(files, format, pwd, 
                 xmlSecCryptoAppGetDefaultPwdCallback(), (void*)files);
     if(key == NULL) {
-        xmlSecInternalError2("xmlSecCryptoAppKeyLoad", NULL,
-                             "files=%s", xmlSecErrorsSafeString(files));
+        fprintf(stderr, "Error: xmlSecCryptoAppKeyLoad failed: file=%s\n",
+                xmlSecErrorsSafeString(files));
         return(-1);
     }
     
     if(name != NULL) {
         ret = xmlSecKeySetName(key, BAD_CAST name);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecKeySetName", NULL,
-                                 "name=%s", xmlSecErrorsSafeString(name));
+            fprintf(stderr, "Error: xmlSecKeySetName failed: name=%s\n",
+                    xmlSecErrorsSafeString(name));
             xmlSecKeyDestroy(key);
             return(-1);
         }
@@ -118,8 +118,8 @@ xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
     for(files += strlen(files) + 1; (files[0] != '\0'); files += strlen(files) + 1) {
         ret = xmlSecCryptoAppKeyCertLoad(key, files, format);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecCryptoAppKeyCertLoad", NULL,
-                                "files=%s", xmlSecErrorsSafeString(files));
+            fprintf(stderr, "Error: xmlSecCryptoAppKeyCertLoad failed: file=%s\n",
+                    xmlSecErrorsSafeString(files));
             xmlSecKeyDestroy(key);
             return(-1);
         }
@@ -138,7 +138,7 @@ xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
 
     ret = xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecCryptoAppDefaultKeysMngrAdoptKey", NULL);
+        fprintf(stderr, "Error: xmlSecCryptoAppDefaultKeysMngrAdoptKey failed\n");
         xmlSecKeyDestroy(key);
         return(-1);
     }
@@ -159,16 +159,16 @@ xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *f
     key = xmlSecCryptoAppKeyLoad(filename, xmlSecKeyDataFormatPkcs12, pwd, 
                     xmlSecCryptoAppGetDefaultPwdCallback(), (void*)filename);
     if(key == NULL) {
-        xmlSecInternalError2("xmlSecCryptoAppKeyLoad", NULL,
-                             "filename=%s", xmlSecErrorsSafeString(filename));
+        fprintf(stderr, "Error: xmlSecCryptoAppKeyLoad failed: filename=%s\n",
+                xmlSecErrorsSafeString(filename));
         return(-1);
     }
         
     if(name != NULL) {
         ret = xmlSecKeySetName(key, BAD_CAST name);
         if(ret < 0) {   
-            xmlSecInternalError2("xmlSecKeySetName", NULL,
-                                 "name=%s", xmlSecErrorsSafeString(name));
+            fprintf(stderr, "Error: xmlSecKeySetName failed: name=%s\n",
+                    xmlSecErrorsSafeString(name));
             xmlSecKeyDestroy(key);
             return(-1);
         }
@@ -176,7 +176,7 @@ xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *f
     
     ret = xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecCryptoAppDefaultKeysMngrAdoptKey", NULL);
+        fprintf(stderr, "Error: xmlSecCryptoAppDefaultKeysMngrAdoptKey failed\n");
         xmlSecKeyDestroy(key);
         return(-1);
     }
@@ -206,22 +206,22 @@ xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(xmlSecKeysMngrPtr mngr, const char* k
     dataId = xmlSecKeyDataIdListFindByName(xmlSecKeyDataIdsGet(), BAD_CAST keyKlass, 
                                            xmlSecKeyDataUsageAny);
     if(dataId == xmlSecKeyDataIdUnknown) {
-        xmlSecInternalError2("xmlSecKeyDataIdListFindByName", NULL,
-                             "keyKlass=%s", xmlSecErrorsSafeString(keyKlass));
+        fprintf(stderr, "Error: xmlSecKeyDataIdListFindByName failed keyKlass=%s\n",
+                xmlSecErrorsSafeString(keyKlass));
         return(-1);
     }
 
     key = xmlSecKeyReadBinaryFile(dataId, filename);
     if(key == NULL) {
-        xmlSecInternalError2("xmlSecKeyReadBinaryFile", NULL,
-                            "filename=%s", xmlSecErrorsSafeString(filename));
+        fprintf(stderr, "Error: xmlSecKeyReadBinaryFile failed filename=%s\n",
+                xmlSecErrorsSafeString(filename));
         return(-1);    
     }
     
     ret = xmlSecKeySetName(key, BAD_CAST name);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecKeySetName", NULL,
-                             "name=%s", xmlSecErrorsSafeString(name));
+        fprintf(stderr, "Error: xmlSecKeySetName failed: name=%s\n",
+                xmlSecErrorsSafeString(name));
         xmlSecKeyDestroy(key);
         return(-1);    
     }
@@ -229,7 +229,7 @@ xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(xmlSecKeysMngrPtr mngr, const char* k
     /* finally add it to keys manager */    
     ret = xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecCryptoAppDefaultKeysMngrAdoptKey", NULL);
+        fprintf(stderr, "Error: xmlSecCryptoAppDefaultKeysMngrAdoptKey failed\n");
         xmlSecKeyDestroy(key);
         return(-1);
     }
@@ -248,14 +248,14 @@ xmlSecAppCryptoSimpleKeysMngrKeyGenerate(xmlSecKeysMngrPtr mngr, const char* key
     
     key = xmlSecAppCryptoKeyGenerate(keyKlassAndSize, name, xmlSecKeyDataTypePermanent);
     if(key == NULL) {
-        xmlSecInternalError2("xmlSecAppCryptoSimpleKeysMngrKeyGenerate", NULL,
-                             "name=%s", xmlSecErrorsSafeString(name));
+        fprintf(stderr, "Error: xmlSecAppCryptoSimpleKeysMngrKeyGenerate failed: name=%s\n",
+                xmlSecErrorsSafeString(name));
         return(-1);    
     }    
 
     ret = xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecCryptoAppDefaultKeysMngrAdoptKey", NULL);
+        fprintf(stderr, "Error: xmlSecCryptoAppDefaultKeysMngrAdoptKey failed\n");
         xmlSecKeyDestroy(key);
         return(-1);
     }
@@ -274,7 +274,7 @@ xmlSecAppCryptoKeyGenerate(const char* keyKlassAndSize, const char* name, xmlSec
 
     buf = (char*) xmlStrdup(BAD_CAST keyKlassAndSize);
     if(buf == NULL) {
-        xmlSecStrdupError(BAD_CAST keyKlassAndSize, NULL);
+        fprintf(stderr, "Error: xmlSecStrdupError(keyKlassAndSize) failed\n");
         return(NULL);    
     }
         
@@ -292,25 +292,24 @@ xmlSecAppCryptoKeyGenerate(const char* keyKlassAndSize, const char* name, xmlSec
     }
     *(p++) = '\0';
     size = atoi(p);
-    
+
     key = xmlSecKeyGenerateByName(BAD_CAST buf, size, type);
     if(key == NULL) {
-        xmlSecInternalError4("xmlSecKeyGenerate", NULL,
-                             "name=%s;size=%d;type=%d",
-                             xmlSecErrorsSafeString(buf), size, (int)type);
+        fprintf(stderr, "Error: xmlSecKeyGenerate failed: name=%s;size=%d;type=%d\n",
+                xmlSecErrorsSafeString(buf), size, (int)type);
         xmlFree(buf);
         return(NULL);   
     }
-    
+
     ret = xmlSecKeySetName(key, BAD_CAST name);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecKeySetName", NULL,
-                             "name=%s", xmlSecErrorsSafeString(name));
+        fprintf(stderr, "Error: xmlSecKeySetName failed: name=%s\n",
+                xmlSecErrorsSafeString(name));
         xmlSecKeyDestroy(key);
         xmlFree(buf);
         return(NULL);
     }
-    
+
     xmlFree(buf);
     return(key);
 }

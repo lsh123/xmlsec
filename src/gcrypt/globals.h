@@ -21,6 +21,8 @@
 #define IN_XMLSEC_CRYPTO
 #define XMLSEC_PRIVATE
 
+/* Include common error helper macros. */
+#include "../errors_helpers.h"
 
 #define XMLSEC_GCRYPT_MAX_DIGEST_SIZE           256
 #define XMLSEC_GCRYPT_REPORT_ERROR(err)         \

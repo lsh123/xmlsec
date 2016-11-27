@@ -21,6 +21,9 @@
 #define IN_XMLSEC_CRYPTO
 #define XMLSEC_PRIVATE
 
+/* Include common error helper macros. */
+#include "../errors_helpers.h"
+
 #define XMLSEC_GNUTLS_GCRYPT_REPORT_ERROR(err)  \
         "error code=%d; error message='%s'",    \
         (int)err, xmlSecErrorsSafeString(gcry_strerror((err)))

@@ -408,11 +408,8 @@ xmlSecMSCryptoErrorsDefaultCallback(const char* file, int line, const char* func
                                 const char* errorObject, const char* errorSubject,
                                 int reason, const char* msg) {
     DWORD dwError;
-#ifdef UNICODE
     TCHAR errorT[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE];
-#else /* UNICODE */
     WCHAR errorW[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE];
-#endif /* UNICODE */
     CHAR  errorUTF8[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE];
     xmlChar buf[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE];
     DWORD rc;

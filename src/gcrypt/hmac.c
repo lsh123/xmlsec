@@ -210,11 +210,8 @@ xmlSecGCryptHmacInitialize(xmlSecTransformPtr transform) {
     /* open context */
     err = gcry_md_open(&ctx->digestCtx, ctx->digest, GCRY_MD_FLAG_HMAC | GCRY_MD_FLAG_SECURE); /* we are paranoid */
     if(err != GPG_ERR_NO_ERROR) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "gcry_md_open",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GCRYPT_REPORT_ERROR(err));
+        xmlSecGCryptError("gcry_md_open", err,
+                          xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -360,11 +357,8 @@ xmlSecGCryptHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     err = gcry_md_setkey(ctx->digestCtx, xmlSecBufferGetData(buffer),
                         xmlSecBufferGetSize(buffer));
     if(err != GPG_ERR_NO_ERROR) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "gcry_md_setkey",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GCRYPT_REPORT_ERROR(err));
+        xmlSecGCryptError("gcry_md_setkey", err,
+                          xmlSecTransformGetName(transform));
         return(-1);
     }
     return(0);

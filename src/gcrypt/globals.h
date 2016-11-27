@@ -25,8 +25,56 @@
 #include "../errors_helpers.h"
 
 #define XMLSEC_GCRYPT_MAX_DIGEST_SIZE           256
-#define XMLSEC_GCRYPT_REPORT_ERROR(err)         \
-        "error code=%d; error message='%s'",    \
-        (int)err, xmlSecErrorsSafeString(gcry_strerror((err)))
+
+
+/**
+ * xmlSecGCryptError:
+ * @errorFunction:      the failed function name.
+ * @errCode:            the GCrypt error code.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting OpenSSL crypro errors.
+ */
+#define xmlSecGCryptError(errorFunction, errCode, errorObject)  \
+    {                                                       \
+        const char* source = gcry_strsource((errCode));     \
+        const char* message = gcry_strerror((errCode));     \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    (errorFunction),                        \
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
+                    "gcrypt error: %ld: %s: %s",            \
+                    (long)(errCode),                        \
+                    xmlSecErrorsSafeString(source),         \
+                    xmlSecErrorsSafeString(message)         \
+        );                                                  \
+    }
+
+/**
+ * xmlSecGCryptError2:
+ * @errorFunction:      the failed function name.
+ * @errCode:            the GCrypt error code.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ * @msg:                the extra message.
+ * @param:              the extra message param.
+ *
+ * Macro. The XMLSec library macro for reporting OpenSSL crypro errors.
+ */
+#define xmlSecGCryptError2(errorFunction, errCode, errorObject, msg, param) \
+    {                                                       \
+        const char* source = cry_strsource((errCode));      \
+        const char* message = gcry_strerror((errCode));     \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    (errorFunction),                        \
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
+                    msg "gcrypt error: %ld: %s:  %s",       \
+                    (param),                                \
+                    (long)(errCode),                        \
+                    xmlSecErrorsSafeString(source),         \
+                    xmlSecErrorsSafeString(message)         \
+        );                                                  \
+    }
+
 
 #endif /* ! __XMLSEC_GLOBALS_H__ */

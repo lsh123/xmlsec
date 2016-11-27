@@ -94,11 +94,8 @@ xmlSecGCryptBlockCipherCtxInit(xmlSecGCryptBlockCipherCtxPtr ctx,
         gcry_randomize(iv, blockLen, GCRY_STRONG_RANDOM);
         err = gcry_cipher_setiv(ctx->cipherCtx, iv, blockLen);
         if(err != GPG_ERR_NO_ERROR) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(cipherName),
-                        "gcry_cipher_setiv",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_GCRYPT_REPORT_ERROR(err));
+            xmlSecGCryptError("gcry_cipher_setiv", err,
+                              cipherName);
             return(-1);
         }
     } else {
@@ -112,11 +109,8 @@ xmlSecGCryptBlockCipherCtxInit(xmlSecGCryptBlockCipherCtxPtr ctx,
         /* set iv */
         err = gcry_cipher_setiv(ctx->cipherCtx, xmlSecBufferGetData(in), blockLen);
         if(err != GPG_ERR_NO_ERROR) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(cipherName),
-                        "gcry_cipher_setiv",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_GCRYPT_REPORT_ERROR(err));
+            xmlSecGCryptError("gcry_cipher_setiv", err,
+                              cipherName);
             return(-1);
         }
 
@@ -185,22 +179,16 @@ xmlSecGCryptBlockCipherCtxUpdate(xmlSecGCryptBlockCipherCtxPtr ctx,
         err = gcry_cipher_encrypt(ctx->cipherCtx, outBuf, inSize + blockLen,
                                 xmlSecBufferGetData(in), inSize);
         if(err != GPG_ERR_NO_ERROR) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(cipherName),
-                        "gcry_cipher_encrypt",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_GCRYPT_REPORT_ERROR(err));
+            xmlSecGCryptError("gcry_cipher_encrypt", err,
+                              cipherName);
             return(-1);
         }
     } else {
         err = gcry_cipher_decrypt(ctx->cipherCtx, outBuf, inSize + blockLen,
                                 xmlSecBufferGetData(in), inSize);
         if(err != GPG_ERR_NO_ERROR) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(cipherName),
-                        "gcry_cipher_decrypt",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_GCRYPT_REPORT_ERROR(err));
+            xmlSecGCryptError("gcry_cipher_decrypt", err,
+                              cipherName);
             return(-1);
         }
     }
@@ -294,22 +282,16 @@ xmlSecGCryptBlockCipherCtxFinal(xmlSecGCryptBlockCipherCtxPtr ctx,
         err = gcry_cipher_encrypt(ctx->cipherCtx, outBuf, inSize + blockLen,
                                 xmlSecBufferGetData(in), inSize);
         if(err != GPG_ERR_NO_ERROR) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(cipherName),
-                        "gcry_cipher_encrypt",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_GCRYPT_REPORT_ERROR(err));
+            xmlSecGCryptError("gcry_cipher_encrypt", err,
+                              cipherName);
             return(-1);
         }
     } else {
         err = gcry_cipher_decrypt(ctx->cipherCtx, outBuf, inSize + blockLen,
                                 xmlSecBufferGetData(in), inSize);
         if(err != GPG_ERR_NO_ERROR) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(cipherName),
-                        "gcry_cipher_decrypt",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_GCRYPT_REPORT_ERROR(err));
+            xmlSecGCryptError("gcry_cipher_decrypt", err,
+                              cipherName);
             return(-1);
         }
     }
@@ -460,11 +442,8 @@ xmlSecGCryptBlockCipherInitialize(xmlSecTransformPtr transform) {
 
     err = gcry_cipher_open(&ctx->cipherCtx, ctx->cipher, ctx->mode, GCRY_CIPHER_SECURE); /* we are paranoid */
     if(err != GPG_ERR_NO_ERROR) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "gcry_cipher_open",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GCRYPT_REPORT_ERROR(err));
+        xmlSecGCryptError("gcry_cipher_open", err,
+                          xmlSecTransformGetName(transform));
         return(-1);
     }
     return(0);
@@ -552,11 +531,8 @@ xmlSecGCryptBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(xmlSecBufferGetData(buffer) != NULL, -1);
     err = gcry_cipher_setkey(ctx->cipherCtx, xmlSecBufferGetData(buffer), keySize);
     if(err != GPG_ERR_NO_ERROR) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "gcry_cipher_setkey",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GCRYPT_REPORT_ERROR(err));
+        xmlSecGCryptError("gcry_cipher_setkey", err,
+                          xmlSecTransformGetName(transform));
         return(-1);
     }
 

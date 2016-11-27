@@ -221,11 +221,7 @@ xmlSecGCryptAsn1ParseIntegerSequence(xmlSecByte const **buffer, xmlSecSize *bufl
 
         err = gcry_mpi_scan(&(params[idx]), GCRYMPI_FMT_USG, buf, ti.length, NULL);
         if((err != GPG_ERR_NO_ERROR) || (params[idx] == NULL)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "gcry_mpi_scan",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_GCRYPT_REPORT_ERROR(err));
+            xmlSecGCryptError("gcry_mpi_scan", err, NULL);
             return(-1);
         }
         buf += ti.length;
@@ -336,11 +332,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
                 keyparms[1], keyparms[2], keyparms[3], keyparms[4], keyparms[5]
         );
         if((err != GPG_ERR_NO_ERROR) || (s_priv_key == NULL)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "gcry_sexp_build(private-key/dsa)",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_GCRYPT_REPORT_ERROR(err));
+            xmlSecGCryptError("gcry_sexp_build(private-key/dsa)", err, NULL);
             goto done;
         }
 
@@ -349,11 +341,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
                 keyparms[1], keyparms[2], keyparms[3], keyparms[5]
         );
         if((err != GPG_ERR_NO_ERROR) || (s_pub_key == NULL)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "gcry_sexp_build(public-key/dsa)",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_GCRYPT_REPORT_ERROR(err));
+            xmlSecGCryptError("gcry_sexp_build(public-key/dsa)", err, NULL);
             goto done;
         }
 
@@ -392,11 +380,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
                 keyparms[2], keyparms[3], keyparms[4], keyparms[1]
         );
         if((err != GPG_ERR_NO_ERROR) || (s_pub_key == NULL)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "gcry_sexp_build(public-key/dsa)",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_GCRYPT_REPORT_ERROR(err));
+            xmlSecGCryptError("gcry_sexp_build(public-key/dsa)", err, NULL);
             goto done;
         }
 
@@ -445,11 +429,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
                          keyparms[4], keyparms[5], keyparms[8]
         );
         if((err != GPG_ERR_NO_ERROR) || (s_priv_key == NULL)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "gcry_sexp_build(private-key/rsa)",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_GCRYPT_REPORT_ERROR(err));
+            xmlSecGCryptError("gcry_sexp_build(private-key/rsa)", err, NULL);
             goto done;
         }
 
@@ -458,11 +438,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
                          keyparms[1], keyparms[2]
         );
         if((err != GPG_ERR_NO_ERROR) || (s_pub_key == NULL)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "gcry_sexp_build(public-key/rsa)",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_GCRYPT_REPORT_ERROR(err));
+            xmlSecGCryptError("gcry_sexp_build(public-key/rsa)", err, NULL);
             goto done;
         }
 
@@ -501,11 +477,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
                          keyparms[1], keyparms[2]
         );
         if((err != GPG_ERR_NO_ERROR) || (s_pub_key == NULL)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "gcry_sexp_build(public-key/rsa)",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_GCRYPT_REPORT_ERROR(err));
+            xmlSecGCryptError("gcry_sexp_build(public-key/rsa)", err, NULL);
             goto done;
         }
 

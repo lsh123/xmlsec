@@ -464,11 +464,7 @@ xmlSecGCryptKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
 
     err = gcry_cipher_open(&cipherCtx, ctx->cipher, ctx->mode, ctx->flags); 
     if(err != GPG_ERR_NO_ERROR) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gcry_cipher_open",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GCRYPT_REPORT_ERROR(err));
+        xmlSecGCryptError("gcry_cipher_open", err, NULL);
         return(-1);
     }
 
@@ -476,32 +472,20 @@ xmlSecGCryptKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
                              xmlSecBufferGetData(&ctx->keyBuffer),
                              xmlSecBufferGetSize(&ctx->keyBuffer));
     if(err != GPG_ERR_NO_ERROR) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gcry_cipher_setkey",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GCRYPT_REPORT_ERROR(err));
+        xmlSecGCryptError("gcry_cipher_setkey", err, NULL);
         return(-1);
     }
 
     /* use zero IV and CBC mode to ensure we get result as-is */
     err = gcry_cipher_setiv(cipherCtx, g_zero_iv, sizeof(g_zero_iv));
     if(err != GPG_ERR_NO_ERROR) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gcry_cipher_setiv",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GCRYPT_REPORT_ERROR(err));
+        xmlSecGCryptError("gcry_cipher_setiv", err, NULL);
         return(-1);
     }
 
     err = gcry_cipher_encrypt(cipherCtx, out, outSize, in, inSize);
     if(err != GPG_ERR_NO_ERROR) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gcry_cipher_encrypt",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GCRYPT_REPORT_ERROR(err));
+        xmlSecGCryptError("gcry_cipher_encrypt", err, NULL);
         gcry_cipher_close(cipherCtx);
         return(-1);
     }
@@ -526,11 +510,7 @@ xmlSecGCryptKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
 
     err = gcry_cipher_open(&cipherCtx, ctx->cipher, ctx->mode, ctx->flags);
     if(err != GPG_ERR_NO_ERROR) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gcry_cipher_open",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GCRYPT_REPORT_ERROR(err));
+        xmlSecGCryptError("gcry_cipher_open", err, NULL);
         return(-1);
     }
 
@@ -538,32 +518,20 @@ xmlSecGCryptKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
                              xmlSecBufferGetData(&ctx->keyBuffer),
                              xmlSecBufferGetSize(&ctx->keyBuffer));
     if(err != GPG_ERR_NO_ERROR) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gcry_cipher_setkey",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GCRYPT_REPORT_ERROR(err));
+        xmlSecGCryptError("gcry_cipher_setkey", err, NULL);
         return(-1);
     }
 
     /* use zero IV and CBC mode to ensure we get result as-is */
     err = gcry_cipher_setiv(cipherCtx, g_zero_iv, sizeof(g_zero_iv));
     if(err != GPG_ERR_NO_ERROR) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gcry_cipher_setiv",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GCRYPT_REPORT_ERROR(err));
+        xmlSecGCryptError("gcry_cipher_setiv", err, NULL);
         return(-1);
     }
 
     err = gcry_cipher_decrypt(cipherCtx, out, outSize, in, inSize);
     if(err != GPG_ERR_NO_ERROR) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gcry_cipher_decrypt",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GCRYPT_REPORT_ERROR(err));
+        xmlSecGCryptError("gcry_cipher_decrypt", err, NULL);
         gcry_cipher_close(cipherCtx);
         return(-1);
     }

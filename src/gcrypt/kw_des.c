@@ -381,11 +381,7 @@ xmlSecGCryptKWDes3Sha1(void * context,
 
     err = gcry_md_open(&digestCtx, GCRY_MD_SHA1, GCRY_MD_FLAG_SECURE); /* we are paranoid */
     if(err != GPG_ERR_NO_ERROR) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gcry_md_open(GCRY_MD_SHA1)",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GCRYPT_REPORT_ERROR(err));
+        xmlSecGCryptError("gcry_md_open(GCRY_MD_SHA1)", err, NULL);
         return(-1);
     }
 
@@ -393,11 +389,7 @@ xmlSecGCryptKWDes3Sha1(void * context,
 
     err = gcry_md_final(digestCtx);
     if(err != GPG_ERR_NO_ERROR) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gcry_md_final",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GCRYPT_REPORT_ERROR(err));
+        xmlSecGCryptError("gcry_md_final", err, NULL);
         gcry_md_close(digestCtx);
         return(-1);
     }
@@ -518,53 +510,33 @@ xmlSecGCryptKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
 
     err = gcry_cipher_open(&cipherCtx, GCRY_CIPHER_3DES, GCRY_CIPHER_MODE_CBC, GCRY_CIPHER_SECURE); /* we are paranoid */
     if(err != GPG_ERR_NO_ERROR) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gcry_cipher_open(GCRY_CIPHER_3DES)",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GCRYPT_REPORT_ERROR(err));
+        xmlSecGCryptError("gcry_cipher_open(GCRY_CIPHER_3DES)", err, NULL);
         return(-1);
     }
 
     err = gcry_cipher_setkey(cipherCtx, key, keySize);
     if(err != GPG_ERR_NO_ERROR) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gcry_cipher_setkey",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GCRYPT_REPORT_ERROR(err));
+        xmlSecGCryptError("gcry_cipher_setkey", err, NULL);
         return(-1);
     }
 
     err = gcry_cipher_setiv(cipherCtx, iv, ivSize);
     if(err != GPG_ERR_NO_ERROR) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gcry_cipher_setiv",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GCRYPT_REPORT_ERROR(err));
+        xmlSecGCryptError("gcry_cipher_setiv", err, NULL);
         return(-1);
     }
 
     if(enc) {
         err = gcry_cipher_encrypt(cipherCtx, out, outSize, in, inSize);
         if(err != GPG_ERR_NO_ERROR) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "gcry_cipher_encrypt",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_GCRYPT_REPORT_ERROR(err));
+            xmlSecGCryptError("gcry_cipher_encrypt", err, NULL);
             gcry_cipher_close(cipherCtx);
             return(-1);
         }
     } else {
         err = gcry_cipher_decrypt(cipherCtx, out, outSize, in, inSize);
         if(err != GPG_ERR_NO_ERROR) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "gcry_cipher_decrypt",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_GCRYPT_REPORT_ERROR(err));
+            xmlSecGCryptError("gcry_cipher_decrypt", err, NULL);
             gcry_cipher_close(cipherCtx);
             return(-1);
         }

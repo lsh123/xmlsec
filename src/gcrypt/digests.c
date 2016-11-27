@@ -166,11 +166,8 @@ xmlSecGCryptDigestInitialize(xmlSecTransformPtr transform) {
     /* create digest ctx */
     err = gcry_md_open(&ctx->digestCtx, ctx->digest, GCRY_MD_FLAG_SECURE); /* we are paranoid */
     if(err != GPG_ERR_NO_ERROR) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "gcry_md_open",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GCRYPT_REPORT_ERROR(err));
+        xmlSecGCryptError("gcry_md_open", err,
+                          xmlSecTransformGetName(transform));
         return(-1);
     }
     return(0);

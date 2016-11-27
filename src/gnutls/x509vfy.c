@@ -346,11 +346,7 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
                 flags, /* flags */
                 &verify);
         if(err != GNUTLS_E_SUCCESS) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "gnutls_x509_crt_list_verify",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_GNUTLS_REPORT_ERROR(err));
+            xmlSecGnuTLSError("gnutls_x509_crt_list_verify", err, NULL);
             /* don't stop, continue! */
             continue;
         } else if(verify != 0){

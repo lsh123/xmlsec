@@ -200,11 +200,7 @@ xmlSecGnuTLSX509CertGetSubjectDN(gnutls_x509_crt_t cert) {
     /* get subject size */
     err = gnutls_x509_crt_get_dn(cert, NULL, &bufSize);
     if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSize <= 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gnutls_x509_crt_get_dn",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        xmlSecGnuTLSError("gnutls_x509_crt_get_dn", err, NULL);
         return(NULL);
     }
 
@@ -218,11 +214,7 @@ xmlSecGnuTLSX509CertGetSubjectDN(gnutls_x509_crt_t cert) {
     /* finally write it out */
     err = gnutls_x509_crt_get_dn(cert, buf, &bufSize);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gnutls_x509_crt_get_dn",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        xmlSecGnuTLSError("gnutls_x509_crt_get_dn", err, NULL);
         xmlFree(buf);
         return(NULL);
     }
@@ -242,11 +234,7 @@ xmlSecGnuTLSX509CertGetIssuerDN(gnutls_x509_crt_t cert) {
     /* get issuer size */
     err = gnutls_x509_crt_get_issuer_dn(cert, NULL, &bufSize);
     if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSize <= 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gnutls_x509_crt_get_issuer_dn",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        xmlSecGnuTLSError("gnutls_x509_crt_get_issuer_dn", err, NULL);
         return(NULL);
     }
 
@@ -260,11 +248,7 @@ xmlSecGnuTLSX509CertGetIssuerDN(gnutls_x509_crt_t cert) {
     /* finally write it out */
     err = gnutls_x509_crt_get_issuer_dn(cert, buf, &bufSize);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gnutls_x509_crt_get_issuer_dn",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        xmlSecGnuTLSError("gnutls_x509_crt_get_issuer_dn", err, NULL);
         xmlFree(buf);
         return(NULL);
     }
@@ -285,11 +269,7 @@ xmlSecGnuTLSX509CertGetIssuerSerial(gnutls_x509_crt_t cert) {
     /* get issuer serial size */
     err = gnutls_x509_crt_get_serial(cert, NULL, &bufSize);
     if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSize <= 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gnutls_x509_crt_get_serial",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        xmlSecGnuTLSError("gnutls_x509_crt_get_serial", err, NULL);
         return(NULL);
     }
 
@@ -303,11 +283,7 @@ xmlSecGnuTLSX509CertGetIssuerSerial(gnutls_x509_crt_t cert) {
     /* write it out */
     err = gnutls_x509_crt_get_serial(cert, buf, &bufSize);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gnutls_x509_crt_get_serial",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        xmlSecGnuTLSError("gnutls_x509_crt_get_serial", err, NULL);
         xmlFree(buf);
         return(NULL);
     }
@@ -338,11 +314,7 @@ xmlSecGnuTLSX509CertGetSKI(gnutls_x509_crt_t cert) {
     /* get ski size */
     err = gnutls_x509_crt_get_subject_key_id(cert, NULL, &bufSize, &critical);
     if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSize <= 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gnutls_x509_crt_get_subject_key_id",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        xmlSecGnuTLSError("gnutls_x509_crt_get_subject_key_id", err, NULL);
         return(NULL);
     }
 
@@ -356,11 +328,7 @@ xmlSecGnuTLSX509CertGetSKI(gnutls_x509_crt_t cert) {
     /* write it out */
     err = gnutls_x509_crt_get_subject_key_id(cert, buf, &bufSize, &critical);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gnutls_x509_crt_get_subject_key_id",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        xmlSecGnuTLSError("gnutls_x509_crt_get_subject_key_id", err, NULL);
         xmlFree(buf);
         return(NULL);
     }
@@ -427,11 +395,7 @@ xmlSecGnuTLSX509CertRead(const xmlSecByte* buf, xmlSecSize size, xmlSecKeyDataFo
     /* read cert */
     err = gnutls_x509_crt_init(&cert);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gnutls_x509_crt_init",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        xmlSecGnuTLSError("gnutls_x509_crt_init", err, NULL);
         return(NULL);
     }
 
@@ -439,11 +403,7 @@ xmlSecGnuTLSX509CertRead(const xmlSecByte* buf, xmlSecSize size, xmlSecKeyDataFo
     data.size = size;
     err = gnutls_x509_crt_import(cert, &data, fmt);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gnutls_x509_crt_import",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        xmlSecGnuTLSError("gnutls_x509_crt_import", err, NULL);
         gnutls_x509_crt_deinit(cert);
         return(NULL);
     }
@@ -463,11 +423,7 @@ xmlSecGnuTLSX509CertBase64DerWrite(gnutls_x509_crt_t cert, int base64LineWrap) {
     /* get size */
     err = gnutls_x509_crt_export(cert, GNUTLS_X509_FMT_DER, NULL, &bufSize);
     if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSize <= 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gnutls_x509_crt_export(GNUTLS_X509_FMT_DER)",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        xmlSecGnuTLSError("gnutls_x509_crt_export(GNUTLS_X509_FMT_DER)", err, NULL);
         return(NULL);
     }
 
@@ -481,11 +437,7 @@ xmlSecGnuTLSX509CertBase64DerWrite(gnutls_x509_crt_t cert, int base64LineWrap) {
     /* write it out */
     err = gnutls_x509_crt_export(cert, GNUTLS_X509_FMT_DER, buf, &bufSize);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gnutls_x509_crt_export(GNUTLS_X509_FMT_DER)",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        xmlSecGnuTLSError("gnutls_x509_crt_export(GNUTLS_X509_FMT_DER)", err, NULL);
         xmlFree(buf);
         return(NULL);
     }
@@ -611,11 +563,7 @@ xmlSecGnuTLSX509CrlGetIssuerDN(gnutls_x509_crl_t crl) {
     /* get issuer size */
     err = gnutls_x509_crl_get_issuer_dn(crl, NULL, &bufSize);
     if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSize <= 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gnutls_x509_crl_get_issuer_dn",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        xmlSecGnuTLSError("gnutls_x509_crl_get_issuer_dn", err, NULL);
         return(NULL);
     }
 
@@ -629,11 +577,7 @@ xmlSecGnuTLSX509CrlGetIssuerDN(gnutls_x509_crl_t crl) {
     /* finally write it out */
     err = gnutls_x509_crl_get_issuer_dn(crl, buf, &bufSize);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gnutls_x509_crl_get_issuer_dn",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        xmlSecGnuTLSError("gnutls_x509_crl_get_issuer_dn", err, NULL);
         xmlFree(buf);
         return(NULL);
     }
@@ -690,11 +634,7 @@ xmlSecGnuTLSX509CrlRead(const xmlSecByte* buf, xmlSecSize size, xmlSecKeyDataFor
     /* read crl */
     err = gnutls_x509_crl_init(&crl);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gnutls_x509_crl_init",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        xmlSecGnuTLSError("gnutls_x509_crl_init", err, NULL);
         return(NULL);
     }
 
@@ -702,11 +642,7 @@ xmlSecGnuTLSX509CrlRead(const xmlSecByte* buf, xmlSecSize size, xmlSecKeyDataFor
     data.size = size;
     err = gnutls_x509_crl_import(crl, &data, fmt);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gnutls_x509_crl_import",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        xmlSecGnuTLSError("gnutls_x509_crl_import", err, NULL);
         gnutls_x509_crl_deinit(crl);
         return(NULL);
     }
@@ -726,11 +662,7 @@ xmlSecGnuTLSX509CrlBase64DerWrite(gnutls_x509_crl_t crl, int base64LineWrap) {
     /* get size */
     err = gnutls_x509_crl_export(crl, GNUTLS_X509_FMT_DER, NULL, &bufSize);
     if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSize <= 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gnutls_x509_crl_export(GNUTLS_X509_FMT_DER)",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        xmlSecGnuTLSError("gnutls_x509_crl_export(GNUTLS_X509_FMT_DER)", err, NULL);
         return(NULL);
     }
 
@@ -744,11 +676,7 @@ xmlSecGnuTLSX509CrlBase64DerWrite(gnutls_x509_crl_t crl, int base64LineWrap) {
     /* write it out */
     err = gnutls_x509_crl_export(crl, GNUTLS_X509_FMT_DER, buf, &bufSize);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gnutls_x509_crl_export(GNUTLS_X509_FMT_DER)",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        xmlSecGnuTLSError("gnutls_x509_crl_export(GNUTLS_X509_FMT_DER)", err, NULL);
         xmlFree(buf);
         return(NULL);
     }
@@ -862,11 +790,7 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     /* read pkcs12 in internal structure */
     err = gnutls_pkcs12_init(&pkcs12);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gnutls_pkcs12_init",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        xmlSecGnuTLSError("gnutls_pkcs12_init", err, NULL);
         goto done;
     }
 
@@ -874,22 +798,14 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     datum.size = dataSize;
     err = gnutls_pkcs12_import(pkcs12, &datum, GNUTLS_X509_FMT_DER, 0);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gnutls_pkcs12_import",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        xmlSecGnuTLSError("gnutls_pkcs12_import", err, NULL);
         goto done;
     }
 
     /* verify */
     err = gnutls_pkcs12_verify_mac(pkcs12, pwd);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gnutls_pkcs12_verify_mac",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        xmlSecGnuTLSError("gnutls_pkcs12_verify_mac", err, NULL);
         goto done;
     }
 
@@ -901,11 +817,7 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
 
         err = gnutls_pkcs12_bag_init(&bag);
         if(err != GNUTLS_E_SUCCESS) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "gnutls_pkcs12_bag_init",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_GNUTLS_REPORT_ERROR(err));
+            xmlSecGnuTLSError("gnutls_pkcs12_bag_init", err, NULL);
             goto done;
         }
 
@@ -914,32 +826,20 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
             /* scanned the whole pkcs12, stop */
             break;
         } else if(err != GNUTLS_E_SUCCESS) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "gnutls_pkcs12_get_bag",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_GNUTLS_REPORT_ERROR(err));
+            xmlSecGnuTLSError("gnutls_pkcs12_get_bag", err, NULL);
             goto done;
         }
 
         /* check if we need to decrypt the bag */
         bag_type = gnutls_pkcs12_bag_get_type(bag, 0);
         if(bag_type < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "gnutls_pkcs12_bag_get_type",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_GNUTLS_REPORT_ERROR(bag_type));
+            xmlSecGnuTLSError("gnutls_pkcs12_bag_get_type", bag_type, NULL);
             goto done;
         }
         if(bag_type == GNUTLS_BAG_ENCRYPTED) {
             err = gnutls_pkcs12_bag_decrypt(bag, pwd);
             if(err != GNUTLS_E_SUCCESS) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "gnutls_pkcs12_bag_decrypt",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_GNUTLS_REPORT_ERROR(err));
+                xmlSecGnuTLSError("gnutls_pkcs12_bag_decrypt", err, NULL);
                 goto done;
             }
         }
@@ -947,31 +847,19 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
         /* scan elements in bag */
         elements_in_bag = gnutls_pkcs12_bag_get_count(bag);
         if(elements_in_bag < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "gnutls_pkcs12_bag_get_count",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_GNUTLS_REPORT_ERROR(bag_type));
+            xmlSecGnuTLSError("gnutls_pkcs12_bag_get_count", elements_in_bag, NULL);
             goto done;
         }
         for(ii = 0; ii < elements_in_bag; ++ii) {
             bag_type = gnutls_pkcs12_bag_get_type(bag, ii);
             if(bag_type < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "gnutls_pkcs12_bag_get_type",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_GNUTLS_REPORT_ERROR(bag_type));
+                xmlSecGnuTLSError("gnutls_pkcs12_bag_get_type", bag_type, NULL);
                 goto done;
             }
 
             err = gnutls_pkcs12_bag_get_data(bag, ii, &datum);
             if(err != GNUTLS_E_SUCCESS) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "gnutls_pkcs12_bag_get_data",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_GNUTLS_REPORT_ERROR(err));
+                xmlSecGnuTLSError("gnutls_pkcs12_bag_get_data", err, NULL);
                 goto done;
             }
 
@@ -982,11 +870,7 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
                 if((*priv_key) == NULL) {
                     err = gnutls_x509_privkey_init(priv_key);
                     if(err != GNUTLS_E_SUCCESS) {
-                        xmlSecError(XMLSEC_ERRORS_HERE,
-                                    NULL,
-                                    "gnutls_x509_privkey_init",
-                                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+                        xmlSecGnuTLSError("gnutls_x509_privkey_init", err, NULL);
                         goto done;
                     }
 
@@ -995,11 +879,7 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
                                 pwd,
                                 (bag_type == GNUTLS_BAG_PKCS8_KEY) ? GNUTLS_PKCS_PLAIN : 0);
                     if(err != GNUTLS_E_SUCCESS) {
-                        xmlSecError(XMLSEC_ERRORS_HERE,
-                                    NULL,
-                                    "gnutls_x509_privkey_import_pkcs8",
-                                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+                        xmlSecGnuTLSError("gnutls_x509_privkey_import_pkcs8", err, NULL);
                         goto done;
                     }
                 }
@@ -1007,21 +887,13 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
             case GNUTLS_BAG_CERTIFICATE:
                 err = gnutls_x509_crt_init(&cert);
                 if(err != GNUTLS_E_SUCCESS) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                NULL,
-                                "gnutls_x509_crt_init",
-                                XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                                XMLSEC_GNUTLS_REPORT_ERROR(err));
+                    xmlSecGnuTLSError("gnutls_x509_crt_init", err, NULL);
                     goto done;
                 }
 
                 err = gnutls_x509_crt_import(cert, &datum, GNUTLS_X509_FMT_DER);
                 if(err != GNUTLS_E_SUCCESS) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                NULL,
-                                "gnutls_x509_crt_import",
-                                XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                                XMLSEC_GNUTLS_REPORT_ERROR(err));
+                    xmlSecGnuTLSError("gnutls_x509_crt_import", err, NULL);
                     goto done;
                 }
 
@@ -1065,11 +937,7 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
         key_id_size = sizeof(key_id);
         err = gnutls_x509_privkey_get_key_id((*priv_key), 0, key_id, &key_id_size);
         if(err != GNUTLS_E_SUCCESS) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "gnutls_x509_privkey_get_key_id",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_GNUTLS_REPORT_ERROR(err));
+            xmlSecGnuTLSError("gnutls_x509_privkey_get_key_id", err, NULL);
             goto done;
         }
         for(ii = 0; ii < certsSize; ++ii) {
@@ -1083,11 +951,7 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
             cert_id_size = sizeof(cert_id);
             err = gnutls_x509_crt_get_key_id(tmp, 0, cert_id, &cert_id_size);
             if(err != GNUTLS_E_SUCCESS) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "gnutls_x509_crt_get_key_id",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_GNUTLS_REPORT_ERROR(err));
+                xmlSecGnuTLSError("gnutls_x509_crt_get_key_id", err, NULL);
                 goto done;
             }
 
@@ -1142,11 +1006,7 @@ xmlSecGnuTLSCreateKeyDataAndAdoptPrivKey(gnutls_x509_privkey_t priv_key) {
     /* create key value data */
     key_alg = gnutls_x509_privkey_get_pk_algorithm(priv_key);
     if(key_alg < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gnutls_x509_privkey_get_pk_algorithm",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GNUTLS_REPORT_ERROR(key_alg));
+        xmlSecGnuTLSError("gnutls_x509_privkey_get_pk_algorithm", key_alg < 0, NULL);
         return (NULL);
     }
     switch(key_alg) {

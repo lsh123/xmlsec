@@ -33,7 +33,7 @@
  * @errCode:            the GCrypt error code.
  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
  *
- * Macro. The XMLSec library macro for reporting OpenSSL crypro errors.
+ * Macro. The XMLSec library macro for reporting GCrypt crypro errors.
  */
 #define xmlSecGCryptError(errorFunction, errCode, errorObject)  \
     {                                                       \
@@ -58,7 +58,7 @@
  * @msg:                the extra message.
  * @param:              the extra message param.
  *
- * Macro. The XMLSec library macro for reporting OpenSSL crypro errors.
+ * Macro. The XMLSec library macro for reporting GCrypt crypro errors.
  */
 #define xmlSecGCryptError2(errorFunction, errCode, errorObject, msg, param) \
     {                                                       \

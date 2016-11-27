@@ -1557,11 +1557,7 @@ xmlSecGnuTLSX509CertGetKey(gnutls_x509_crt_t cert) {
 
     alg = gnutls_x509_crt_get_pk_algorithm(cert, &bits);
     if(alg < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gnutls_x509_crt_get_pk_algorithm",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GNUTLS_REPORT_ERROR(alg));
+        xmlSecGnuTLSError("gnutls_x509_crt_get_pk_algorithm", alg, NULL);
         return(NULL);
     }
 
@@ -1579,11 +1575,7 @@ xmlSecGnuTLSX509CertGetKey(gnutls_x509_crt_t cert) {
 
             err = gnutls_x509_crt_get_pk_rsa_raw(cert, &m, &e);
             if(err != GNUTLS_E_SUCCESS) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "gnutls_x509_crt_get_pk_rsa_raw",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_GNUTLS_REPORT_ERROR(err));
+                xmlSecGnuTLSError("gnutls_x509_crt_get_pk_rsa_raw", err, NULL);
                 return(NULL);
             }
 
@@ -1612,11 +1604,7 @@ xmlSecGnuTLSX509CertGetKey(gnutls_x509_crt_t cert) {
 
             err = gnutls_x509_crt_get_pk_dsa_raw(cert, &p, &q, &g, &y);
             if(err != GNUTLS_E_SUCCESS) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "gnutls_x509_crt_get_pk_dsa_raw",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_GNUTLS_REPORT_ERROR(err));
+                xmlSecGnuTLSError("gnutls_x509_crt_get_pk_dsa_raw", err, NULL);
                 return(NULL);
             }
 

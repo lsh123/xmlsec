@@ -51,11 +51,7 @@ xmlSecGnuTLSAppInit(const char* config) {
 
     err = gnutls_global_init();
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gnutls_global_init",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        xmlSecGnuTLSError("gnutls_global_init", err, NULL);
         return(-1);
     }
 

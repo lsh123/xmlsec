@@ -680,6 +680,21 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
     }
 
 /**
+ * xmlSecNotImplementedError:
+ * @details:           the additional details.
+ *
+ * Macro. The XMLSec library macro for reporting "not implemented" errors.
+ */
+#define xmlSecNotImplementedError(details) \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    NULL,                                   \
+                    NULL,                                   \
+                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,        \
+                    "details=%s",                           \
+                    xmlSecErrorsSafeString(details)         \
+        )
+
+/**
  * xmlSecInvalidNodeError:
  * @actualNode:         the actual node.
  * @expectedNodeName:   the expected node name.

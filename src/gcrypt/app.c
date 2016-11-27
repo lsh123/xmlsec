@@ -205,19 +205,11 @@ xmlSecGCryptAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
         }
         break;
     case xmlSecKeyDataFormatPem:
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGCryptAppKeyLoadMemory",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("xmlSecKeyDataFormatPem");
         return (NULL);
 #ifndef XMLSEC_NO_X509
     case xmlSecKeyDataFormatPkcs12:
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGCryptAppKeyLoadMemory",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("xmlSecKeyDataFormatPkcs12");
         return (NULL);
 #endif /* XMLSEC_NO_X509 */
     default:
@@ -272,11 +264,7 @@ xmlSecGCryptAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
     /* TODO */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecGCryptAppKeyCertLoad",
-                XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+    xmlSecNotImplementedError(NULL);
     return(-1);
 }
 
@@ -302,11 +290,7 @@ xmlSecGCryptAppKeyCertLoadMemory(xmlSecKeyPtr key,
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
     /* TODO */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecGCryptAppKeyCertLoadMemory",
-                XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+    xmlSecNotImplementedError(NULL);
     return(-1);
 }
 
@@ -332,11 +316,7 @@ xmlSecGCryptAppPkcs12Load(const char *filename,
     xmlSecAssert2(filename != NULL, NULL);
 
     /* TODO */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecGCryptAppPkcs12Load",
-                XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+    xmlSecNotImplementedError(NULL);
     return(NULL);
 }
 
@@ -363,11 +343,7 @@ xmlSecGCryptAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     xmlSecAssert2(dataSize > 0, NULL);
 
     /* TODO */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecGCryptAppPkcs12LoadMemory",
-                XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+    xmlSecNotImplementedError(NULL);
     return(NULL);
 }
 
@@ -394,11 +370,7 @@ xmlSecGCryptAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr,
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
     /* TODO */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecGCryptAppKeysMngrCertLoad",
-                XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+    xmlSecNotImplementedError(NULL);
     return(-1);
 }
 
@@ -427,11 +399,7 @@ xmlSecGCryptAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr,
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
     /* TODO */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecGCryptAppKeysMngrCertLoadMemory",
-                XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+    xmlSecNotImplementedError(NULL);
     return(-1);
 }
 

@@ -73,11 +73,7 @@ xmlSecSkeletonAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
     /* TODO: load key */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecSkeletonAppKeyLoad",
-                XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+    xmlSecNotImplementedError(NULL);
     return(NULL);
 }
 
@@ -101,11 +97,7 @@ xmlSecSkeletonAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlS
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
     /* TODO: load key */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecSkeletonAppKeyLoad",
-                XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+    xmlSecNotImplementedError(NULL);
     return(NULL);
 }
 
@@ -130,11 +122,7 @@ xmlSecSkeletonAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
     /* TODO */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecSkeletonAppKeyCertLoad",
-                XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+    xmlSecNotImplementedError(NULL);
     return(-1);
 }
 
@@ -157,11 +145,7 @@ xmlSecSkeletonAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xml
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
     /* TODO */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecSkeletonAppKeyCertLoadMemory",
-                XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+    xmlSecNotImplementedError(NULL);
     return(-1);
 }
 
@@ -188,11 +172,7 @@ xmlSecSkeletonAppPkcs12Load(const char *filename,
     xmlSecAssert2(filename != NULL, NULL);
 
     /* TODO: load pkcs12 file */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecSkeletonAppPkcs12Load",
-                XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+    xmlSecNotImplementedError(NULL);
     return(NULL);
 }
 
@@ -217,11 +197,7 @@ xmlSecSkeletonAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, c
     xmlSecAssert2(data != NULL, NULL);
 
     /* TODO: load pkcs12 file */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecSkeletonAppPkcs12Load",
-                XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+    xmlSecNotImplementedError(NULL);
     return(NULL);
 }
 
@@ -249,11 +225,7 @@ xmlSecSkeletonAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
     /* TODO: load cert and add to keys manager */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecSkeletonAppKeysMngrCertLoad",
-                XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+    xmlSecNotImplementedError(NULL);
     return(-1);
 }
 
@@ -279,11 +251,7 @@ xmlSecSkeletonAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
     /* TODO: load cert and add to keys manager */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecSkeletonAppKeysMngrCertLoad",
-                XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+    xmlSecNotImplementedError(NULL);
     return(-1);
 }
 

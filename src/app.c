@@ -45,11 +45,7 @@
 int
 xmlSecCryptoInit(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoInit == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "cryptoInit",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("cryptoInit");
         return(-1);
     }
 
@@ -66,11 +62,7 @@ xmlSecCryptoInit(void) {
 int
 xmlSecCryptoShutdown(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoShutdown == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "cryptoShutdown",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("cryptoShutdown");
         return(-1);
     }
 
@@ -88,11 +80,7 @@ xmlSecCryptoShutdown(void) {
 int
 xmlSecCryptoKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoKeysMngrInit == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "cryptoKeysMngrInit",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("cryptoKeysMngrInit");
         return(-1);
     }
 
@@ -116,11 +104,7 @@ xmlSecCryptoKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 xmlSecKeyDataId
 xmlSecKeyDataAesGetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataAesGetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "keyDataAesId",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("keyDataAesGetKlass");
         return(xmlSecKeyDataIdUnknown);
     }
 
@@ -139,11 +123,7 @@ xmlSecKeyDataAesGetKlass(void) {
 xmlSecKeyDataId
 xmlSecKeyDataDesGetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataDesGetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "keyDataDesId",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("keyDataDesId");
         return(xmlSecKeyDataIdUnknown);
     }
 
@@ -162,11 +142,7 @@ xmlSecKeyDataDesGetKlass(void) {
 xmlSecKeyDataId
 xmlSecKeyDataDsaGetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataDsaGetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "keyDataDsaId",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("keyDataDsaGetKlass");
         return(xmlSecKeyDataIdUnknown);
     }
 
@@ -185,11 +161,7 @@ xmlSecKeyDataDsaGetKlass(void) {
 xmlSecKeyDataId
 xmlSecKeyDataEcdsaGetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataEcdsaGetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "keyDataEcdsaId",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("keyDataEcdsaGetKlass");
         return(xmlSecKeyDataIdUnknown);
     }
 
@@ -208,11 +180,7 @@ xmlSecKeyDataEcdsaGetKlass(void) {
 xmlSecKeyDataId
 xmlSecKeyDataGost2001GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataGost2001GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "keyDataGost2001Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("keyDataGost2001GetKlass");
         return(xmlSecKeyDataIdUnknown);
     }
 
@@ -231,11 +199,7 @@ xmlSecKeyDataGost2001GetKlass(void) {
 xmlSecKeyDataId
 xmlSecKeyDataGostR3410_2012_256GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataGostR3410_2012_256GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "keyDataGostR3410_2012_256Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("keyDataGostR3410_2012_256GetKlass");
         return(xmlSecKeyDataIdUnknown);
     }
 
@@ -254,11 +218,7 @@ xmlSecKeyDataGostR3410_2012_256GetKlass(void) {
 xmlSecKeyDataId
 xmlSecKeyDataGostR3410_2012_512GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataGostR3410_2012_512GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "keyDataGostR3410_2012_512Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("keyDataGostR3410_2012_512GetKlass");
         return(xmlSecKeyDataIdUnknown);
     }
 
@@ -277,11 +237,7 @@ xmlSecKeyDataGostR3410_2012_512GetKlass(void) {
 xmlSecKeyDataId
 xmlSecKeyDataHmacGetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataHmacGetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "keyDataHmacId",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("keyDataHmacGetKlass");
         return(xmlSecKeyDataIdUnknown);
     }
 
@@ -300,11 +256,7 @@ xmlSecKeyDataHmacGetKlass(void) {
 xmlSecKeyDataId
 xmlSecKeyDataRsaGetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataRsaGetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "keyDataRsaId",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("keyDataRsaGetKlass");
         return(xmlSecKeyDataIdUnknown);
     }
 
@@ -323,11 +275,7 @@ xmlSecKeyDataRsaGetKlass(void) {
 xmlSecKeyDataId
 xmlSecKeyDataX509GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataX509GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "keyDataX509Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("keyDataX509GetKlass");
         return(xmlSecKeyDataIdUnknown);
     }
 
@@ -346,11 +294,7 @@ xmlSecKeyDataX509GetKlass(void) {
 xmlSecKeyDataId
 xmlSecKeyDataRawX509CertGetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataRawX509CertGetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "keyDataRawX509CertId",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("keyDataRawX509CertGetKlass");
         return(xmlSecKeyDataIdUnknown);
     }
 
@@ -374,11 +318,7 @@ xmlSecKeyDataRawX509CertGetKlass(void) {
 xmlSecKeyDataStoreId
 xmlSecX509StoreGetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->x509StoreGetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "x509StoreId",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("x509StoreGetKlass");
         return(xmlSecKeyStoreIdUnknown);
     }
 
@@ -402,11 +342,7 @@ xmlSecX509StoreGetKlass(void) {
 xmlSecTransformId
 xmlSecTransformAes128CbcGetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformAes128CbcGetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformAes128CbcId",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformAes128CbcGetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -425,11 +361,7 @@ xmlSecTransformAes128CbcGetKlass(void) {
 xmlSecTransformId
 xmlSecTransformAes192CbcGetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformAes192CbcGetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformAes192CbcId",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformAes192CbcGetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -448,11 +380,7 @@ xmlSecTransformAes192CbcGetKlass(void) {
 xmlSecTransformId
 xmlSecTransformAes256CbcGetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformAes256CbcGetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformAes256CbcId",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformAes256CbcGetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -471,11 +399,7 @@ xmlSecTransformAes256CbcGetKlass(void) {
 xmlSecTransformId
 xmlSecTransformKWAes128GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformKWAes128GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformKWAes128Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformKWAes128GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -494,11 +418,7 @@ xmlSecTransformKWAes128GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformKWAes192GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformKWAes192GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformKWAes192Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformKWAes192GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -517,11 +437,7 @@ xmlSecTransformKWAes192GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformKWAes256GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformKWAes256GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformKWAes256Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformKWAes256GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -540,11 +456,7 @@ xmlSecTransformKWAes256GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformDes3CbcGetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformDes3CbcGetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformDes3CbcId",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformDes3CbcGetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -563,11 +475,7 @@ xmlSecTransformDes3CbcGetKlass(void) {
 xmlSecTransformId
 xmlSecTransformKWDes3GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformKWDes3GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformKWDes3Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformKWDes3GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -586,11 +494,7 @@ xmlSecTransformKWDes3GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformDsaSha1GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformDsaSha1GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformDsaSha1Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformDsaSha1GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -609,11 +513,7 @@ xmlSecTransformDsaSha1GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformDsaSha256GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformDsaSha256GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformDsaSha256Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformDsaSha256GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -632,11 +532,7 @@ xmlSecTransformDsaSha256GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformEcdsaSha1GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformEcdsaSha1GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformEcdsaSha1Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformEcdsaSha1GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -655,11 +551,7 @@ xmlSecTransformEcdsaSha1GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformEcdsaSha224GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformEcdsaSha224GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformEcdsaSha224Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformEcdsaSha224GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -678,11 +570,7 @@ xmlSecTransformEcdsaSha224GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformEcdsaSha256GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformEcdsaSha256GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformEcdsaSha256Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformEcdsaSha256GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -701,11 +589,7 @@ xmlSecTransformEcdsaSha256GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformEcdsaSha384GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformEcdsaSha384GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformEcdsaSha384Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformEcdsaSha384GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -724,11 +608,7 @@ xmlSecTransformEcdsaSha384GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformEcdsaSha512GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformEcdsaSha512GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformEcdsaSha512Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformEcdsaSha512GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -747,11 +627,7 @@ xmlSecTransformEcdsaSha512GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformGost2001GostR3411_94GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformGost2001GostR3411_94GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformGost2001GostR3411_94Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformGost2001GostR3411_94GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -770,11 +646,7 @@ xmlSecTransformGost2001GostR3411_94GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformGostR3410_2012GostR3411_2012_256GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformGostR3410_2012GostR3411_2012_256GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformGostR3410_2012GostR3411_2012_256Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformGostR3410_2012GostR3411_2012_256GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -793,11 +665,7 @@ xmlSecTransformGostR3410_2012GostR3411_2012_256GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformGostR3410_2012GostR3411_2012_512GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformGostR3410_2012GostR3411_2012_512GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformGostR3410_2012GostR3411_2012_512Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformGostR3410_2012GostR3411_2012_512GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -816,11 +684,7 @@ xmlSecTransformGostR3410_2012GostR3411_2012_512GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformHmacMd5GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformHmacMd5GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformHmacMd5Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformHmacMd5GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -839,11 +703,7 @@ xmlSecTransformHmacMd5GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformHmacRipemd160GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformHmacRipemd160GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformHmacRipemd160Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformHmacRipemd160GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -862,11 +722,7 @@ xmlSecTransformHmacRipemd160GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformHmacSha1GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformHmacSha1GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformHmacSha1Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformHmacSha1GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -885,11 +741,7 @@ xmlSecTransformHmacSha1GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformHmacSha224GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformHmacSha224GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformHmacSha224Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformHmacSha224GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -908,11 +760,7 @@ xmlSecTransformHmacSha224GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformHmacSha256GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformHmacSha256GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformHmacSha256Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformHmacSha256GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -931,11 +779,7 @@ xmlSecTransformHmacSha256GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformHmacSha384GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformHmacSha384GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformHmacSha384Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformHmacSha384GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -954,11 +798,7 @@ xmlSecTransformHmacSha384GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformHmacSha512GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformHmacSha512GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformHmacSha512Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformHmacSha512GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -977,11 +817,7 @@ xmlSecTransformHmacSha512GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformMd5GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformMd5GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformMd5Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformMd5GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -1000,11 +836,7 @@ xmlSecTransformMd5GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformRipemd160GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformRipemd160GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformRipemd160Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformRipemd160GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -1023,11 +855,7 @@ xmlSecTransformRipemd160GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformRsaMd5GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformRsaMd5GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformRsaMd5Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformRsaMd5GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -1046,11 +874,7 @@ xmlSecTransformRsaMd5GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformRsaRipemd160GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformRsaRipemd160GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformRsaRipemd160Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformRsaRipemd160GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -1069,11 +893,7 @@ xmlSecTransformRsaRipemd160GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformRsaSha1GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformRsaSha1GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformRsaSha1Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformRsaSha1GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -1092,11 +912,7 @@ xmlSecTransformRsaSha1GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformRsaSha224GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformRsaSha224GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformRsaSha224Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformRsaSha224GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -1115,11 +931,7 @@ xmlSecTransformRsaSha224GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformRsaSha256GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformRsaSha256GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformRsaSha256Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformRsaSha256GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -1138,11 +950,7 @@ xmlSecTransformRsaSha256GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformRsaSha384GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformRsaSha384GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformRsaSha384Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformRsaSha384GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -1161,11 +969,7 @@ xmlSecTransformRsaSha384GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformRsaSha512GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformRsaSha512GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformRsaSha512Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformRsaSha512GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -1184,11 +988,7 @@ xmlSecTransformRsaSha512GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformRsaPkcs1GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformRsaPkcs1GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformRsaPkcs1Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformRsaPkcs1GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -1207,11 +1007,7 @@ xmlSecTransformRsaPkcs1GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformRsaOaepGetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformRsaOaepGetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformRsaOaepId",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformRsaOaepGetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -1230,11 +1026,7 @@ xmlSecTransformRsaOaepGetKlass(void) {
 xmlSecTransformId
 xmlSecTransformGostR3411_94GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformGostR3411_94GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformGostR3411_94Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformGostR3411_94GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -1254,11 +1046,7 @@ xmlSecTransformGostR3411_94GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformGostR3411_2012_256GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformGostR3411_2012_256GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformGostR3411_2012_256Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformGostR3411_2012_256GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -1277,11 +1065,7 @@ xmlSecTransformGostR3411_2012_256GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformGostR3411_2012_512GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformGostR3411_2012_512GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformGostR3411_2012_512Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformGostR3411_2012_512GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -1299,11 +1083,7 @@ xmlSecTransformGostR3411_2012_512GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformSha1GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformSha1GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformSha1Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformSha1GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -1322,11 +1102,7 @@ xmlSecTransformSha1GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformSha224GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformSha224GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformSha224Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformSha224GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -1345,11 +1121,7 @@ xmlSecTransformSha224GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformSha256GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformSha256GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformSha256Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformSha256GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -1368,11 +1140,7 @@ xmlSecTransformSha256GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformSha384GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformSha384GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformSha384Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformSha384GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -1391,11 +1159,7 @@ xmlSecTransformSha384GetKlass(void) {
 xmlSecTransformId
 xmlSecTransformSha512GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformSha512GetKlass == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "transformSha512Id",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("transformSha512GetKlass");
         return(xmlSecTransformIdUnknown);
     }
 
@@ -1420,11 +1184,7 @@ xmlSecTransformSha512GetKlass(void) {
 int
 xmlSecCryptoAppInit(const char* config) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppInit == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "cryptoAppInit",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("cryptoAppInit");
         return(-1);
     }
 
@@ -1444,11 +1204,7 @@ xmlSecCryptoAppInit(const char* config) {
 int
 xmlSecCryptoAppShutdown(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppShutdown == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "cryptoAppShutdown",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("cryptoAppShutdown");
         return(-1);
     }
 
@@ -1467,11 +1223,7 @@ xmlSecCryptoAppShutdown(void) {
 int
 xmlSecCryptoAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppDefaultKeysMngrInit == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "cryptoAppDefaultKeysMngrInit",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("cryptoAppDefaultKeysMngrInit");
         return(-1);
     }
 
@@ -1491,11 +1243,7 @@ xmlSecCryptoAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 int
 xmlSecCryptoAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppDefaultKeysMngrAdoptKey == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "cryptoAppDefaultKeysMngrAdoptKey",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("cryptoAppDefaultKeysMngrAdoptKey");
         return(-1);
     }
 
@@ -1515,11 +1263,7 @@ xmlSecCryptoAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key)
 int
 xmlSecCryptoAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppDefaultKeysMngrLoad == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "cryptoAppDefaultKeysMngrLoad",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("cryptoAppDefaultKeysMngrLoad");
         return(-1);
     }
 
@@ -1540,11 +1284,7 @@ int
 xmlSecCryptoAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename,
                                    xmlSecKeyDataType type) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppDefaultKeysMngrSave == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "cryptoAppDefaultKeysMngrSave",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("cryptoAppDefaultKeysMngrSave");
         return(-1);
     }
 
@@ -1568,11 +1308,7 @@ int
 xmlSecCryptoAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
                                 xmlSecKeyDataFormat format, xmlSecKeyDataType type) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppKeysMngrCertLoad == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "cryptoAppKeysMngrCertLoad",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("cryptoAppKeysMngrCertLoad");
         return(-1);
     }
 
@@ -1597,11 +1333,7 @@ xmlSecCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* 
                                     xmlSecSize dataSize, xmlSecKeyDataFormat format,
                                     xmlSecKeyDataType type) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppKeysMngrCertLoadMemory == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "cryptoAppKeysMngrCertLoadMemory",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("cryptoAppKeysMngrCertLoadMemory");
         return(-1);
     }
 
@@ -1624,11 +1356,7 @@ xmlSecKeyPtr
 xmlSecCryptoAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
                        const char *pwd, void* pwdCallback, void* pwdCallbackCtx) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppKeyLoad == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "cryptoAppKeyLoad",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("cryptoAppKeyLoad");
         return(NULL);
     }
 
@@ -1652,11 +1380,7 @@ xmlSecKeyPtr
 xmlSecCryptoAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format,
                        const char *pwd, void* pwdCallback, void* pwdCallbackCtx) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppKeyLoadMemory == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "cryptoAppKeyLoadMemory",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("cryptoAppKeyLoadMemory");
         return(NULL);
     }
 
@@ -1680,11 +1404,7 @@ xmlSecKeyPtr
 xmlSecCryptoAppPkcs12Load(const char* filename, const char* pwd, void* pwdCallback,
                           void* pwdCallbackCtx) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppPkcs12Load == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "cryptoAppPkcs12Load",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("cryptoAppPkcs12Load");
         return(NULL);
     }
 
@@ -1710,11 +1430,7 @@ xmlSecCryptoAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
                            const char *pwd, void* pwdCallback,
                            void* pwdCallbackCtx) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppPkcs12LoadMemory == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "cryptoAppPkcs12LoadMemory",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("cryptoAppPkcs12LoadMemory");
         return(NULL);
     }
 
@@ -1734,11 +1450,7 @@ xmlSecCryptoAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
 int
 xmlSecCryptoAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDataFormat format) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppKeyCertLoad == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "cryptoAppKeyCertLoad",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("cryptoAppKeyCertLoad");
         return(-1);
     }
 
@@ -1760,11 +1472,7 @@ int
 xmlSecCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSize dataSize,
                                 xmlSecKeyDataFormat format) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppKeyCertLoadMemory == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "cryptoAppKeyCertLoadMemory",
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("cryptoAppKeyCertLoadMemory");
         return(-1);
     }
 
@@ -1781,11 +1489,7 @@ xmlSecCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSe
 void*
 xmlSecCryptoAppGetDefaultPwdCallback(void) {
     if(xmlSecCryptoDLGetFunctions() == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError("cryptoAppDefaultPwdCallback");
         return(NULL);
     }
 

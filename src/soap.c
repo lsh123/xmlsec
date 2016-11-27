@@ -214,11 +214,7 @@ xmlSecSoap11AddFaultEntry(xmlNodePtr envNode, const xmlChar* faultCodeHref,
     /* check that we don't have Fault node already */
     faultNode = xmlSecFindChild(bodyNode, xmlSecNodeFault, xmlSecSoap11Ns);
     if(faultNode != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeBody),
-                    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNodeAlreadyPresentError(bodyNode, xmlSecNodeFault, NULL);
         return(NULL);
     }
 
@@ -718,11 +714,7 @@ xmlSecSoap12AddFaultEntry(xmlNodePtr envNode, xmlSecSoap12FaultCode faultCode,
     /* check that we don't have Fault node already */
     faultNode = xmlSecFindChild(bodyNode, xmlSecNodeFault, xmlSecSoap12Ns);
     if(faultNode != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecNodeBody),
-                    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNodeAlreadyPresentError(bodyNode, xmlSecNodeFault, NULL);
         return(NULL);
     }
 

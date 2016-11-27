@@ -728,7 +728,7 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
  * @reason:             the reason why node content is invalid.
  *
- * Macro. The XMLSec library macro for reporting an invalid node content errors.
+ * Macro. The XMLSec library macro for reporting an invalid node attribute errors.
  */
 #define xmlSecInvalidNodeAttributeError(node, attrName, errorObject, reason) \
     {                                                 \
@@ -745,13 +745,34 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
     }
 
 /**
+ * xmlSecNodeAlreadyPresentError:
+ * @parent:             the parent node.
+ * @nodeName:           the node name.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting node already present errors.
+ */
+#define xmlSecNodeAlreadyPresentError(parent, nodeName, errorObject) \
+    {                                                 \
+        const char* pName = xmlSecNodeGetName(parent);\
+        xmlSecError(XMLSEC_ERRORS_HERE,               \
+                   (const char*)(errorObject),        \
+                   NULL,                              \
+                   XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT, \
+                   "parent:%s;node:%s",               \
+                   xmlSecErrorsSafeString(pName),     \
+                   xmlSecErrorsSafeString(nodeName)   \
+        );                                            \
+    }
+
+/**
  * xmlSecNodeNotFoundError:
  * @errorFunction:      the failed function.
  * @startNode:          the search start node.
  * @targetNodeName:     the expected child node name.
  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
  *
- * Macro. The XMLSec library macro for reporting an invalid node errors.
+ * Macro. The XMLSec library macro for reporting node not found errors.
  */
 #define xmlSecNodeNotFoundError(errorFunction, startNode, targetNodeName, errorObject) \
     {                                                 \

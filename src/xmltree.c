@@ -638,20 +638,17 @@ xmlSecNodeEncodeAndSetContent(xmlNodePtr node, const xmlChar * buffer) {
     xmlSecAssert2(node->doc != NULL, -1);
 
     if(buffer != NULL) {
-            xmlChar * tmp;
-
+        xmlChar * tmp;
         tmp = xmlEncodeSpecialChars(node->doc, buffer);
         if (tmp == NULL) {
             xmlSecXmlError("xmlEncodeSpecialChars", NULL);
             return(-1);
         }
-
         xmlNodeSetContent(node, tmp);
         xmlFree(tmp);
     } else {
         xmlNodeSetContent(node, NULL);
     }
-
     return(0);
 }
 

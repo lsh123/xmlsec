@@ -1,19 +1,36 @@
-#ifndef __XMLSEC_OPENSSL_OPENSSL11_WRAPPER_H__
-#define __XMLSEC_OPENSSL_OPENSSL11_WRAPPER_H__
+#ifndef __XMLSEC_OPENSSL_OPENSSL_COMPAT_H__
+#define __XMLSEC_OPENSSL_OPENSSL_COMPAT_H__
 /**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * This file provides a compatibility layer for pre-OpenSSL 1.1.0 versions.
+ * This file provides a compatibility layer for pre-OpenSSL 1.0.0 and 1.1.0
+ * versions.
+ *
  * The functions here provide accessors for structs which were made opaque in
- * 1.1.0 so they an be accessed in earlier versions of the library using the
- * same syntax. This file won't be required once OpenSSL 1.1.0 is the minimum
- * suported version.
+ * 1.0.0 and 1.1.0 so they an be accessed in earlier versions of the library
+ * using the same syntax. This file won't be required once OpenSSL 1.1.0 is
+ * the minimum supported version.
  */
+
+/******************************************************************************
+ *
+ * OpenSSL 1.0.0 compatibility
+ *
+ *****************************************************************************/
+#if (OPENSSL_VERSION_NUMBER < 0x10000000)
+
+#define EVP_PKEY_base_id(pKey) EVP_PKEY_type((pKey)->type)
+
+#endif /* (OPENSSL_VERSION_NUMBER < 0x10000000) */
+
+/******************************************************************************
+ *
+ * OpenSSL 1.1.0 compatibility
+ *
+ *****************************************************************************/
 #if (OPENSSL_VERSION_NUMBER < 0x10100000)
 
 #define EVP_PKEY_up_ref(pKey)  CRYPTO_add(&((pKey)->references), 1, CRYPTO_LOCK_EVP_PKEY)
-#define EVP_PKEY_base_id(pKey) EVP_PKEY_type((pKey)->type)
-
 
 #ifndef XMLSEC_NO_X509
 #include <openssl/x509_vfy.h>
@@ -215,4 +232,5 @@ static inline int DSA_set0_key(DSA *d, BIGNUM *pub_key, BIGNUM *priv_key) {
 #endif /* XMLSEC_NO_DSA */
 
 #endif /* (OPENSSL_VERSION_NUMBER < 0x10100000) */
-#endif /* __XMLSEC_OPENSSL_OPENSSL11_WRAPPER_H__ */
+
+#endif /* __XMLSEC_OPENSSL_OPENSSL_COMPAT_H__ */

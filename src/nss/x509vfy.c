@@ -422,11 +422,7 @@ xmlSecNssX509FindCert(CERTCertList* certsList, const xmlChar *subjectName,
         if(arena == NULL) {
             arena = PORT_NewArena(DER_DEFAULT_CHUNKSIZE);
             if (arena == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "PORT_NewArena",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecNssError("PORT_NewArena", NULL);
                 goto done;
             }
         }
@@ -460,11 +456,7 @@ xmlSecNssX509FindCert(CERTCertList* certsList, const xmlChar *subjectName,
         if(arena == NULL) {
             arena = PORT_NewArena(DER_DEFAULT_CHUNKSIZE);
             if (arena == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "PORT_NewArena",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecNssError("PORT_NewArena", NULL);
                 goto done;
             }
         }
@@ -589,11 +581,8 @@ xmlSecNssX509NameRead(xmlSecByte *str, int len) {
     /* return string should be no longer than input string */
     retval = (xmlSecByte *)PORT_Alloc(len+1);
     if(retval == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "PORT_Alloc",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError2("PORT_Alloc", NULL,
+                        "size=%d", (len+1));
         return(NULL);
     }
     p = retval;

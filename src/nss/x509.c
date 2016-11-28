@@ -1776,11 +1776,7 @@ xmlSecNssX509NameWrite(CERTName* nm) {
 
     str = CERT_NameToAscii(nm);
     if (str == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "CERT_NameToAscii",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("CERT_NameToAscii", NULL);
         return(NULL);
     }
 
@@ -1836,11 +1832,7 @@ xmlSecNssX509SKIWrite(CERTCertificate* cert) {
 
     rv = CERT_FindSubjectKeyIDExtension(cert, &ski);
     if (rv != SECSuccess) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "CERT_FindSubjectKeyIDExtension",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("CERT_FindSubjectKeyIDExtension", NULL);
         SECITEM_FreeItem(&ski, PR_FALSE);
         return(NULL);
     }

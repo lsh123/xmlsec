@@ -337,11 +337,7 @@ xmlSecNssGetInternalKeySlot()
     if (PK11_NeedUserInit(slot)) {
         rv = PK11_InitPin(slot, NULL, NULL);
         if (rv != SECSuccess) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "PK11_Authenticate",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecNssError("PK11_Authenticate", NULL);
             return NULL;
         }
     }
@@ -349,11 +345,7 @@ xmlSecNssGetInternalKeySlot()
     if(PK11_IsLoggedIn(slot, NULL) != PR_TRUE) {
         rv = PK11_Authenticate(slot, PR_TRUE, NULL);
         if (rv != SECSuccess) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "PK11_Authenticate",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecNssError("PK11_Authenticate", NULL);
             return NULL;
         }
     }

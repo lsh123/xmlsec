@@ -65,10 +65,10 @@ static int      xmlSecNssBlockCipherCtxFinal            (xmlSecNssBlockCipherCtx
                                                          xmlSecTransformCtxPtr transformCtx);
 static int
 xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
-                                xmlSecBufferPtr in, xmlSecBufferPtr out,
-                                int encrypt,
-                                const xmlChar* cipherName,
-                                xmlSecTransformCtxPtr transformCtx) {
+                            xmlSecBufferPtr in, xmlSecBufferPtr out,
+                            int encrypt,
+                            const xmlChar* cipherName,
+                            xmlSecTransformCtxPtr transformCtx) {
     SECItem keyItem;
     SECItem ivItem;
     PK11SlotInfo* slot;

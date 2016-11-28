@@ -337,16 +337,14 @@ xmlSecTransformRelationshipProcessNodeList(xmlSecTransformPtr transform, xmlOutp
 
     list = xmlListCreate(NULL, (xmlListDataCompare)xmlSecTransformRelationshipCompare);
     if(list == NULL) {
-        xmlSecInternalError("xmlListCreate",
-                            xmlSecTransformGetName(transform));
+        xmlSecXmlError("xmlListCreate", xmlSecTransformGetName(transform));
         return(-1);
     }
 
     for(; cur; cur = cur->next) {
         if(xmlStrcmp(cur->name, xmlSecNodeRelationship) == 0) {
             if(xmlListInsert(list, cur) != 0) {
-                xmlSecInternalError("xmlListInsert",
-                                    xmlSecTransformGetName(transform));
+                xmlSecXmlError("xmlListInsert", xmlSecTransformGetName(transform));
                 return(-1);
             }
         } else {
@@ -391,30 +389,30 @@ xmlSecTransformRelationshipWriteProp(xmlOutputBufferPtr buf, const xmlChar * nam
 
     ret = xmlOutputBufferWriteString(buf, " ");
     if(ret < 0) {
-        xmlSecInternalError("xmlOutputBufferWriteString", NULL);
+        xmlSecXmlError("xmlOutputBufferWriteString", NULL);
         return(-1);
     }
 
     ret = xmlOutputBufferWriteString(buf, (const char*) name);
     if(ret < 0) {
-        xmlSecInternalError("xmlOutputBufferWriteString", NULL);
+        xmlSecXmlError("xmlOutputBufferWriteString", NULL);
         return(-1);
     }
 
     if(value != NULL) {
         ret = xmlOutputBufferWriteString(buf, "=\"");
         if(ret < 0) {
-            xmlSecInternalError("xmlOutputBufferWriteString", NULL);
+            xmlSecXmlError("xmlOutputBufferWriteString", NULL);
             return(-1);
         }
         ret = xmlOutputBufferWriteString(buf, (const char*) value);
         if(ret < 0) {
-            xmlSecInternalError("xmlOutputBufferWriteString", NULL);
+            xmlSecXmlError("xmlOutputBufferWriteString", NULL);
             return(-1);
         }
         ret = xmlOutputBufferWriteString(buf, "\"");
         if(ret < 0) {
-            xmlSecInternalError("xmlOutputBufferWriteString", NULL);
+            xmlSecXmlError("xmlOutputBufferWriteString", NULL);
             return(-1);
         }
     }
@@ -444,13 +442,13 @@ xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlO
     /* write open node */
     ret = xmlOutputBufferWriteString(buf, "<");
     if(ret < 0) {
-        xmlSecInternalError("xmlOutputBufferWriteString",
+        xmlSecXmlError("xmlOutputBufferWriteString",
                             xmlSecTransformGetName(transform));
         return(-1);
     }
     ret = xmlOutputBufferWriteString(buf, (const char *)cur->name);
     if(ret < 0) {
-        xmlSecInternalError("xmlOutputBufferWriteString",
+        xmlSecXmlError("xmlOutputBufferWriteString",
                             xmlSecTransformGetName(transform));
         return(-1);
     }
@@ -501,7 +499,7 @@ xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlO
     /* finish writing open node */
     ret = xmlOutputBufferWriteString(buf, ">");
     if(ret < 0) {
-        xmlSecInternalError("xmlOutputBufferWriteString",
+        xmlSecXmlError("xmlOutputBufferWriteString",
                             xmlSecTransformGetName(transform));
         return(-1);
     }
@@ -519,18 +517,18 @@ xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlO
     /* write closing node */
     ret = xmlOutputBufferWriteString(buf, "</");
     if(ret < 0) {
-        xmlSecInternalError("xmlOutputBufferWriteString",
+        xmlSecXmlError("xmlOutputBufferWriteString",
                             xmlSecTransformGetName(transform));
         return(-1);
     }
     ret = xmlOutputBufferWriteString(buf, (const char *)cur->name);
     if(ret < 0) {
-        xmlSecInternalError("xmlOutputBufferWriteString",
+        xmlSecXmlError("xmlOutputBufferWriteString",
                             xmlSecTransformGetName(transform));
         return(-1);
     }
     if(xmlOutputBufferWriteString(buf, ">") < 0) {
-        xmlSecInternalError("xmlOutputBufferWriteString",
+        xmlSecXmlError("xmlOutputBufferWriteString",
                             xmlSecTransformGetName(transform));
         return(-1);
     }
@@ -610,7 +608,7 @@ xmlSecTransformRelationshipPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPt
 
     ret = xmlSecTransformRelationshipExecute(transform, buf, nodes->doc);
     if(ret < 0) {
-       xmlSecInternalError("xmlC14NExecute",
+       xmlSecInternalError("xmlSecTransformRelationshipExecute",
                            xmlSecTransformGetName(transform));
        xmlOutputBufferClose(buf);
        return(-1);

@@ -1608,8 +1608,9 @@ xmlSecGCryptKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     rsa = gcry_sexp_find_token(pub_priv_key, "rsa", 0);
     if(rsa == NULL) {
-        xmlSecInternalError("gcry_sexp_find_token(rsa)",
-                            xmlSecKeyDataKlassGetName(id));
+        xmlSecGCryptError("gcry_sexp_find_token(rsa)",
+                          GPG_ERR_NO_ERROR,
+                          xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 

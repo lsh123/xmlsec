@@ -159,20 +159,18 @@ xmlSecGnuTLSX509CheckTime(const gnutls_x509_crt_t * cert_list,
         /* get expiration times */
         notValidBefore = gnutls_x509_crt_get_activation_time(cert);
         if(notValidBefore == (time_t)-1) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "gnutls_x509_crt_get_activation_time",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecGnuTLSError2("gnutls_x509_crt_get_activation_time", GNUTLS_E_SUCCESS,
+                               NULL,
+                               "cert activation time is invalid: %ld",
+                               (unsigned long)notValidBefore);
             return(-1);
         }
         notValidAfter = gnutls_x509_crt_get_expiration_time(cert);
         if(notValidAfter == (time_t)-1) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "gnutls_x509_crt_get_expiration_time",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecGnuTLSError2("gnutls_x509_crt_get_expiration_time", GNUTLS_E_SUCCESS,
+                               NULL,
+                               "cert expiration time is invalid: %ld",
+                               (unsigned long)notValidAfter);
             return(-1);
        }
 
@@ -353,7 +351,7 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         "gnutls_x509_crt_list_verify",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
                         "Verification failed: verify=%u", verify);
             /* don't stop, continue! */
             continue;
@@ -363,11 +361,7 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
            we have to do it ourselves */
         ret = xmlSecGnuTLSX509CheckTime(cert_list, cert_list_cur_length, verification_time);
         if(ret != 1) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "Time verification failed");
+            xmlSecInternalError("xmlSecGnuTLSX509CheckTime", NULL);
             /* don't stop, continue! */
             continue;
         }

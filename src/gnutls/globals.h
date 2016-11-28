@@ -47,7 +47,6 @@
         );                                                  \
     }
 
-
 /**
  * xmlSecGnuTLSError:
  * @errorFunction:      the failed function name.
@@ -69,4 +68,27 @@
         );                                                  \
     }
 
+/**
+ * xmlSecGnuTLSError2:
+ * @errorFunction:      the failed function name.
+ * @errCode:            the GnuTLS error code.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ * @msg:                the extra message.
+ * @param:              the extra message param.
+ *
+ * Macro. The XMLSec library macro for reporting GnuTLS errors.
+ */
+#define xmlSecGnuTLSError2(errorFunction, errCode, errorObject, msg, param)  \
+    {                                                       \
+        const char* message = gnutls_strerror((errCode));   \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    (errorFunction),                        \
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
+                    msg  "gnutls error: %ld: %s",           \
+                    (param),                                \
+                    (long)(errCode),                        \
+                    xmlSecErrorsSafeString(message)         \
+        );                                                  \
+    }
 #endif /* ! __XMLSEC_GLOBALS_H__ */

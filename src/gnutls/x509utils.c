@@ -1047,7 +1047,7 @@ xmlSecGnuTLSCreateKeyDataAndAdoptPrivKey(gnutls_x509_privkey_t priv_key) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "gnutls_x509_privkey_get_pk_algorithm",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_R_INVALID_TYPE,
                     "Unsupported algorithm %d", (int)key_alg);
         return(NULL);
     }

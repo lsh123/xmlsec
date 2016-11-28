@@ -1509,20 +1509,18 @@ xmlSecGnuTLSKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr k
             /* get expiration time */
             key->notValidBefore = gnutls_x509_crt_get_activation_time(ctx->keyCert);
             if(key->notValidBefore == (time_t)-1) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                            "gnutls_x509_crt_get_activation_time",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecGnuTLSError2("gnutls_x509_crt_get_activation_time", GNUTLS_E_SUCCESS,
+                                   xmlSecKeyDataGetName(data),
+                                   "cert activation time is invalid: %ld",
+                                   (unsigned long)key->notValidBefore);
                 return(-1);
             }
             key->notValidAfter = gnutls_x509_crt_get_expiration_time(ctx->keyCert);
             if(key->notValidAfter == (time_t)-1) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                            "gnutls_x509_crt_get_expiration_time",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecGnuTLSError2("gnutls_x509_crt_get_expiration_time", GNUTLS_E_SUCCESS,
+                                   xmlSecKeyDataGetName(data),
+                                   "cert expiration time is invalid: %ld",
+                                   (unsigned long)key->notValidAfter);
                 return(-1);
             }
         } else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT) != 0) {
@@ -1557,11 +1555,7 @@ xmlSecGnuTLSX509CertGetKey(gnutls_x509_crt_t cert) {
 
     alg = gnutls_x509_crt_get_pk_algorithm(cert, &bits);
     if(alg < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gnutls_x509_crt_get_pk_algorithm",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_GNUTLS_REPORT_ERROR(alg));
+        xmlSecGnuTLSError("gnutls_x509_crt_get_pk_algorithm", alg, NULL);
         return(NULL);
     }
 
@@ -1579,11 +1573,7 @@ xmlSecGnuTLSX509CertGetKey(gnutls_x509_crt_t cert) {
 
             err = gnutls_x509_crt_get_pk_rsa_raw(cert, &m, &e);
             if(err != GNUTLS_E_SUCCESS) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "gnutls_x509_crt_get_pk_rsa_raw",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_GNUTLS_REPORT_ERROR(err));
+                xmlSecGnuTLSError("gnutls_x509_crt_get_pk_rsa_raw", err, NULL);
                 return(NULL);
             }
 
@@ -1612,11 +1602,7 @@ xmlSecGnuTLSX509CertGetKey(gnutls_x509_crt_t cert) {
 
             err = gnutls_x509_crt_get_pk_dsa_raw(cert, &p, &q, &g, &y);
             if(err != GNUTLS_E_SUCCESS) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "gnutls_x509_crt_get_pk_dsa_raw",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_GNUTLS_REPORT_ERROR(err));
+                xmlSecGnuTLSError("gnutls_x509_crt_get_pk_dsa_raw", err, NULL);
                 return(NULL);
             }
 
@@ -1639,7 +1625,7 @@ xmlSecGnuTLSX509CertGetKey(gnutls_x509_crt_t cert) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         "gnutls_x509_crt_get_pk_algorithm",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        XMLSEC_ERRORS_R_INVALID_TYPE,
                         "Unsupported algorithm %d", (int)alg);
             return(NULL);
         }

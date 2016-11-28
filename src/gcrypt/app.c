@@ -34,6 +34,7 @@
  */
 int
 xmlSecGCryptAppInit(const char* config ATTRIBUTE_UNUSED) {
+    gcry_error_t err;
     /* Secure memory initialisation based on documentation from:
          http://www.gnupg.org/documentation/manuals/gcrypt/Initializing-the-library.html
        NOTE sample code don't check gcry_control(...) return code
@@ -65,14 +66,19 @@ Noteworthy changes in version 1.4.3 (2008-09-18)
 
     /* NOTE configure.in defines GCRYPT_MIN_VERSION */
     if (!gcry_check_version (GCRYPT_MIN_VERSION)) {
-        xmlSecInternalError("gcry_check_version", NULL);
+        xmlSecGCryptError2("gcry_check_version", GPG_ERR_NO_ERROR, NULL,
+                           "min_version=%d", (int)GCRYPT_MIN_VERSION);
         return(-1);
     }
 
     /* We don't want to see any warnings, e.g. because we have not yet
        parsed program options which might be used to suppress such
        warnings. */
-    gcry_control(GCRYCTL_SUSPEND_SECMEM_WARN);
+    err = gcry_control(GCRYCTL_SUSPEND_SECMEM_WARN);
+    if(err != GPG_ERR_NO_ERROR) {
+        xmlSecGCryptError("gcry_control(GCRYCTL_SUSPEND_SECMEM_WARN)", err, NULL);
+        return(-1);
+    }
 
     /* ... If required, other initialization goes here.  Note that the
        process might still be running with increased privileges and that
@@ -80,17 +86,30 @@ Noteworthy changes in version 1.4.3 (2008-09-18)
 
     /* Allocate a pool of 32k secure memory.  This make the secure memory
        available and also drops privileges where needed.  */
-    gcry_control(GCRYCTL_INIT_SECMEM, 32768, 0);
+    err = gcry_control(GCRYCTL_INIT_SECMEM, 32768, 0);
+    if(err != GPG_ERR_NO_ERROR) {
+        xmlSecGCryptError("gcry_control(GCRYCTL_INIT_SECMEM)", err, NULL);
+        return(-1);
+    }
 
     /* It is now okay to let Libgcrypt complain when there was/is
       a problem with the secure memory. */
-    gcry_control(GCRYCTL_RESUME_SECMEM_WARN);
+    err = gcry_control(GCRYCTL_RESUME_SECMEM_WARN);
+    if(err != GPG_ERR_NO_ERROR) {
+        xmlSecGCryptError("gcry_control(GCRYCTL_RESUME_SECMEM_WARN)", err, NULL);
+        return(-1);
+    }
 
     /* ... If required, other initialization goes here.  */
 
     /* Tell Libgcrypt that initialization has completed. */
-    gcry_control(GCRYCTL_INITIALIZATION_FINISHED, 0);
+    err = gcry_control(GCRYCTL_INITIALIZATION_FINISHED, 0);
+    if(err != GPG_ERR_NO_ERROR) {
+        xmlSecGCryptError("gcry_control(GCRYCTL_INITIALIZATION_FINISHED)", err, NULL);
+        return(-1);
+    }
 
+    /* done */
     return(0);
 }
 
@@ -108,10 +127,12 @@ xmlSecGCryptAppShutdown(void) {
     gcry_error_t err;
 
     err = gcry_control(GCRYCTL_TERM_SECMEM);
-    if (gcry_err_code(err)) {
-        xmlSecInternalError("gcry_control(GCRYCTL_TERM_SECMEM)", NULL);
+    if(err != GPG_ERR_NO_ERROR) {
+        xmlSecGCryptError("gcry_control(GCRYCTL_TERM_SECMEM)", err, NULL);
         return(-1);
     }
+
+    /* done */
     return(0);
 }
 

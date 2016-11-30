@@ -402,7 +402,9 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
             /* create key */
             aeskey = xmlSecNssMakeAesKey(xmlSecBufferGetData(&(ctx->keyBuffer)), keySize, 1); /* encrypt */
             if(aeskey == NULL) {
-                xmlSecNssError("xmlSecNssMakeAesKey", NULL);
+                xmlSecInternalError2("xmlSecNssMakeAesKey",
+                                     xmlSecTransformGetName(transform),
+                                     "keySize=%lu", (unsigned long)keySize);
                 return(-1);
             }
 
@@ -412,8 +414,11 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
                                     xmlSecBufferGetData(in), inSize,
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecKWAesEncode",
-                                    xmlSecTransformGetName(transform));
+                xmlSecInternalError3("xmlSecKWAesEncode",
+                                    xmlSecTransformGetName(transform),
+                                    "inSize=%lu; outSize=%lu",
+                                    (unsigned long)inSize,
+                                    (unsigned long)outSize);
                 PK11_FreeSymKey(aeskey);
                 return(-1);
             }
@@ -426,7 +431,9 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
             /* create key */
             aeskey = xmlSecNssMakeAesKey(xmlSecBufferGetData(&(ctx->keyBuffer)), keySize, 0); /* decrypt */
             if(aeskey == NULL) {
-                xmlSecNssError("xmlSecNssMakeAesKey", NULL);
+                xmlSecInternalError2("xmlSecNssMakeAesKey",
+                                     xmlSecTransformGetName(transform),
+                                     "keySize=%lu", (unsigned long)keySize);
                 return(-1);
             }
 
@@ -435,8 +442,11 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
                                     xmlSecBufferGetData(in), inSize,
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecKWAesDecode",
-                                    xmlSecTransformGetName(transform));
+                xmlSecInternalError3("xmlSecKWAesDecode",
+                                     xmlSecTransformGetName(transform),
+                                     "inSize=%lu; outSize=%lu",
+                                     (unsigned long)inSize,
+                                     (unsigned long)outSize);
                 PK11_FreeSymKey(aeskey);
                 return(-1);
             }

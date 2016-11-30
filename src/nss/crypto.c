@@ -326,18 +326,14 @@ xmlSecNssGetInternalKeySlot()
 
     slot = PK11_GetInternalKeySlot();
     if (slot == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "PK11_GetInternalKeySlot",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                "error code=%d", PORT_GetError());
+        xmlSecNssError("PK11_GetInternalKeySlot", NULL);
         return NULL;
     }
 
     if (PK11_NeedUserInit(slot)) {
         rv = PK11_InitPin(slot, NULL, NULL);
         if (rv != SECSuccess) {
-            xmlSecNssError("PK11_Authenticate", NULL);
+            xmlSecNssError("PK11_InitPin", NULL);
             return NULL;
         }
     }

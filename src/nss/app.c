@@ -404,7 +404,7 @@ xmlSecNssAppDerKeyLoadSECItem(SECItem* secItem) {
      */
     slot = xmlSecNssGetInternalKeySlot();
     if (slot == NULL) {
-        xmlSecNssError("xmlSecNssGetInternalKeySlot", NULL);
+        xmlSecInternalError("xmlSecNssGetInternalKeySlot", NULL);
         goto done;
     }
 

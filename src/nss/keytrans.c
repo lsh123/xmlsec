@@ -44,12 +44,12 @@ typedef struct _xmlSecNssKeyTransportCtx*                   xmlSecNssKeyTranspor
         ((xmlSecNssKeyTransportCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
 
 struct _xmlSecNssKeyTransportCtx {
-        CK_MECHANISM_TYPE               cipher ;
-        SECKEYPublicKey*                pubkey ;
-        SECKEYPrivateKey*               prikey ;
-        xmlSecKeyDataId                 keyId ;
-        xmlSecBufferPtr                 material ; /* to be encrypted/decrypted material */
-} ;
+        CK_MECHANISM_TYPE               cipher;
+        SECKEYPublicKey*                pubkey;
+        SECKEYPrivateKey*               prikey;
+        xmlSecKeyDataId                 keyId;
+        xmlSecBufferPtr                 material; /* to be encrypted/decrypted material */
+};
 
 static int      xmlSecNssKeyTransportInitialize         (xmlSecTransformPtr transform);
 static void     xmlSecNssKeyTransportFinalize           (xmlSecTransformPtr transform);
@@ -89,7 +89,7 @@ xmlSecNssKeyTransportCheckId(xmlSecTransformPtr transform) {
 
 static int
 xmlSecNssKeyTransportInitialize(xmlSecTransformPtr transform) {
-    xmlSecNssKeyTransportCtxPtr context ;
+    xmlSecNssKeyTransportCtxPtr context;
     xmlSecAssert2(xmlSecNssKeyTransportCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKeyTransportSize), -1);
 
@@ -122,11 +122,7 @@ xmlSecNssKeyTransportInitialize(xmlSecTransformPtr transform) {
 
     /* not found */
     {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNotImplementedError(xmlSecErrorsSafeString(xmlSecTransformGetName(transform)));
         return(-1);
     }
 
@@ -135,7 +131,7 @@ xmlSecNssKeyTransportInitialize(xmlSecTransformPtr transform) {
 
 static void
 xmlSecNssKeyTransportFinalize(xmlSecTransformPtr transform) {
-    xmlSecNssKeyTransportCtxPtr context ;
+    xmlSecNssKeyTransportCtxPtr context;
 
     xmlSecAssert(xmlSecNssKeyTransportCheckId(transform));
     xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecNssKeyTransportSize));
@@ -145,23 +141,23 @@ xmlSecNssKeyTransportFinalize(xmlSecTransformPtr transform) {
 
     if(context->pubkey != NULL) {
         SECKEY_DestroyPublicKey(context->pubkey);
-        context->pubkey = NULL ;
+        context->pubkey = NULL;
     }
 
     if(context->prikey != NULL) {
         SECKEY_DestroyPrivateKey(context->prikey);
-        context->prikey = NULL ;
+        context->prikey = NULL;
     }
 
     if(context->material != NULL) {
         xmlSecBufferDestroy(context->material);
-        context->material = NULL ;
+        context->material = NULL;
     }
 }
 
 static int
 xmlSecNssKeyTransportSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
-    xmlSecNssKeyTransportCtxPtr context ;
+    xmlSecNssKeyTransportCtxPtr context;
 
     xmlSecAssert2(xmlSecNssKeyTransportCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKeyTransportSize), -1);
@@ -171,7 +167,7 @@ xmlSecNssKeyTransportSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr ke
     context = xmlSecNssKeyTransportGetCtx(transform);
     xmlSecAssert2(context != NULL, -1);
 
-    keyReq->keyId        = context->keyId;
+    keyReq->keyId = context->keyId;
     if(transform->operation == xmlSecTransformOperationEncrypt) {
         keyReq->keyUsage = xmlSecKeyUsageEncrypt;
         keyReq->keyType  = xmlSecKeyDataTypePublic;
@@ -185,10 +181,10 @@ xmlSecNssKeyTransportSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr ke
 
 static int
 xmlSecNssKeyTransportSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
-    xmlSecNssKeyTransportCtxPtr context = NULL ;
-    xmlSecKeyDataPtr        keyData = NULL ;
-    SECKEYPublicKey*        pubkey = NULL ;
-    SECKEYPrivateKey*       prikey = NULL ;
+    xmlSecNssKeyTransportCtxPtr context = NULL;
+    xmlSecKeyDataPtr  keyData = NULL;
+    SECKEYPublicKey*  pubkey = NULL;
+    SECKEYPrivateKey* prikey = NULL;
 
     xmlSecAssert2(xmlSecNssKeyTransportCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKeyTransportSize), -1);
@@ -214,14 +210,14 @@ xmlSecNssKeyTransportSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
             xmlSecInternalError("xmlSecNssPKIKeyDataGetPubKey", xmlSecKeyDataGetName(keyData));
             return(-1);
         }
-        context->pubkey = pubkey ;
+        context->pubkey = pubkey;
     } else {
         prikey = xmlSecNssPKIKeyDataGetPrivKey(keyData);
         if(prikey == NULL) {
             xmlSecInternalError("xmlSecNssPKIKeyDataGetPrivKey", xmlSecKeyDataGetName(keyData));
             return(-1);
         }
-        context->prikey = prikey ;
+        context->prikey = prikey;
     }
 
     /* done */
@@ -229,14 +225,9 @@ xmlSecNssKeyTransportSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 }
 
 static int
-xmlSecNssKeyTransportCtxInit(
-        xmlSecNssKeyTransportCtxPtr             ctx,
-        xmlSecBufferPtr                         in,
-        xmlSecBufferPtr                         out,
-        int                                             encrypt,
-        xmlSecTransformCtxPtr           transformCtx
-) {
-    int                     blockSize ;
+xmlSecNssKeyTransportCtxInit(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out,
+                             int encrypt, xmlSecTransformCtxPtr transformCtx) {
+    int blockSize;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->cipher != CKM_INVALID_MECHANISM, -1);
@@ -248,7 +239,7 @@ xmlSecNssKeyTransportCtxInit(
 
     if(ctx->material != NULL) {
         xmlSecBufferDestroy(ctx->material);
-        ctx->material = NULL ;
+        ctx->material = NULL;
     }
 
     if(ctx->pubkey != NULL) {
@@ -267,8 +258,8 @@ xmlSecNssKeyTransportCtxInit(
         xmlSecError(XMLSEC_ERRORS_HERE,
                 NULL,
                 NULL,
-                XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                "unknown block size");
+                XMLSEC_ERRORS_R_KEY_NOT_FOUND,
+                "neither public or private keys are set");
         return(-1);
     }
 
@@ -296,13 +287,8 @@ xmlSecNssKeyTransportCtxInit(
 }
 
 static int
-xmlSecNssKeyTransportCtxUpdate(
-        xmlSecNssKeyTransportCtxPtr             ctx,
-        xmlSecBufferPtr                         in,
-        xmlSecBufferPtr                         out,
-        int                                             encrypt,
-        xmlSecTransformCtxPtr           transformCtx
-) {
+xmlSecNssKeyTransportCtxUpdate(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr  in, xmlSecBufferPtr out,
+                               int encrypt, xmlSecTransformCtxPtr transformCtx) {
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->cipher != CKM_INVALID_MECHANISM, -1);
     xmlSecAssert2((ctx->pubkey != NULL && encrypt) || (ctx->prikey != NULL && !encrypt), -1);
@@ -328,13 +314,13 @@ xmlSecNssKeyTransportCtxUpdate(
 }
 
 static int
-xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx,  xmlSecBufferPtr in,  xmlSecBufferPtr out,
+xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out,
                               int encrypt, xmlSecTransformCtxPtr transformCtx) {
-    PK11SymKey*                     symKey ;
-    PK11SlotInfo*           slot ;
-    SECItem                         oriskv ;
-    int                     blockSize ;
-    xmlSecBufferPtr         result ;
+    PK11SymKey*  symKey;
+    PK11SlotInfo* slot;
+    SECItem oriskv;
+    int blockSize;
+    xmlSecBufferPtr result;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->cipher != CKM_INVALID_MECHANISM, -1);
@@ -376,8 +362,8 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx,  xmlSecBufferPtr 
         xmlSecError(XMLSEC_ERRORS_HERE,
                 NULL,
                 NULL,
-                XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                "unknown block size");
+                XMLSEC_ERRORS_R_KEY_NOT_FOUND,
+                "neither public or private keys are set");
         return(-1);
     }
 
@@ -387,13 +373,13 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx,  xmlSecBufferPtr 
         return(-1);
     }
 
-    oriskv.type = siBuffer ;
+    oriskv.type = siBuffer;
     oriskv.data = xmlSecBufferGetData(ctx->material);
     oriskv.len = xmlSecBufferGetSize(ctx->material);
 
     if(encrypt != 0) {
-        CK_OBJECT_HANDLE        id ;
-        SECItem                         wrpskv ;
+        CK_OBJECT_HANDLE id;
+        SECItem wrpskv;
 
         /* Create template symmetric key from material */
         slot = ctx->pubkey->pkcs11Slot;
@@ -423,7 +409,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx,  xmlSecBufferPtr 
             return(-1);
         }
 
-        wrpskv.type = siBuffer ;
+        wrpskv.type = siBuffer;
         wrpskv.data = xmlSecBufferGetData(result);
         wrpskv.len = xmlSecBufferGetMaxSize(result);
 
@@ -446,7 +432,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx,  xmlSecBufferPtr 
         PK11_FreeSymKey(symKey);
         PK11_FreeSlot(slot);
     } else {
-        SECItem*                        keyItem ;
+        SECItem*                        keyItem;
 
         /* pay attention to mechanism */
         symKey = PK11_PubUnwrapSymKey(ctx->prikey, &oriskv, ctx->cipher, CKA_UNWRAP, 0);
@@ -497,10 +483,10 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx,  xmlSecBufferPtr 
 
 static int
 xmlSecNssKeyTransportExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
-    xmlSecNssKeyTransportCtxPtr     context = NULL ;
-    xmlSecBufferPtr                 inBuf, outBuf ;
-    int                                             operation ;
-    int                                             rtv ;
+    xmlSecNssKeyTransportCtxPtr context = NULL;
+    xmlSecBufferPtr  inBuf, outBuf;
+    int operation;
+    int rtv;
 
     xmlSecAssert2(xmlSecNssKeyTransportCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKeyTransportSize), -1);
@@ -518,10 +504,10 @@ xmlSecNssKeyTransportExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
     outBuf = &(transform->outBuf);
 
     if(transform->status == xmlSecTransformStatusNone) {
-        transform->status = xmlSecTransformStatusWorking ;
+        transform->status = xmlSecTransformStatusWorking;
     }
 
-    operation = (transform->operation == xmlSecTransformOperationEncrypt) ? 1 : 0 ;
+    operation = (transform->operation == xmlSecTransformOperationEncrypt) ? 1 : 0;
     if(transform->status == xmlSecTransformStatusWorking) {
         if(context->material == NULL) {
             rtv = xmlSecNssKeyTransportCtxInit(context, inBuf, outBuf, operation, transformCtx);
@@ -557,7 +543,7 @@ xmlSecNssKeyTransportExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
                                     xmlSecTransformGetName(transform));
                 return(-1);
             }
-            transform->status = xmlSecTransformStatusFinished ;
+            transform->status = xmlSecTransformStatusFinished;
         }
     } else if(transform->status == xmlSecTransformStatusFinished) {
         if(xmlSecBufferGetSize(inBuf) != 0) {

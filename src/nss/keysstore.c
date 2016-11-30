@@ -360,12 +360,8 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         }
         cert = CERT_DupCertificate(cert);
         if (cert == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "CERT_DupCertificate",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "data=%s",
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+            xmlSecNssError("CERT_DupCertificate",
+                           xmlSecKeyDataGetName(x509Data));
             goto done;
         }
 

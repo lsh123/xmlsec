@@ -375,11 +375,8 @@ xmlSecNssGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
     /* get random data */
     rv = PK11_GenerateRandom((xmlSecByte*)xmlSecBufferGetData(buffer), size);
     if(rv != SECSuccess) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "PK11_GenerateRandom",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "size=%d", size);
+        xmlSecNssError2("PK11_GenerateRandom", NULL,
+                        "size=%lu", (unsigned long)size);
         return(-1);
     }
     return(0);

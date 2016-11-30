@@ -152,21 +152,13 @@ xmlSecNssDigestInitialize(xmlSecTransformPtr transform) {
     }
 
     if(ctx->digest == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "SECOID_FindOIDByTag",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "error code=%d", PORT_GetError());
+        xmlSecNssError("SECOID_FindOIDByTag", xmlSecTransformGetName(transform));
         return(-1);
     }
 
     ctx->digestCtx = PK11_CreateDigestContext(ctx->digest->offset);
     if(ctx->digestCtx == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "PK11_CreateDigestContext",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "error code=%d", PORT_GetError());
+        xmlSecNssError("PK11_CreateDigestContext", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -253,11 +245,7 @@ xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
     if(transform->status == xmlSecTransformStatusNone) {
         rv = PK11_DigestBegin(ctx->digestCtx);
         if(rv != SECSuccess) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "PK11_DigestBegin",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "error code=%d", PORT_GetError());
+            xmlSecNssError("PK11_DigestBegin", xmlSecTransformGetName(transform));
             return(-1);
         }
         transform->status = xmlSecTransformStatusWorking;
@@ -270,11 +258,7 @@ xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
         if(inSize > 0) {
             rv = PK11_DigestOp(ctx->digestCtx, xmlSecBufferGetData(in), inSize);
             if (rv != SECSuccess) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "PK11_DigestOp",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            "error code=%d", PORT_GetError());
+                xmlSecNssError("PK11_DigestOp", xmlSecTransformGetName(transform));
                 return(-1);
             }
 
@@ -291,11 +275,7 @@ xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
 
             rv = PK11_DigestFinal(ctx->digestCtx, ctx->dgst, &dgstSize, sizeof(ctx->dgst));
             if(rv != SECSuccess) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "PK11_DigestFinal",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            "error code=%d", PORT_GetError());
+                xmlSecNssError("PK11_DigestFinal", xmlSecTransformGetName(transform));
                 return(-1);
             }
             xmlSecAssert2(dgstSize > 0, -1);

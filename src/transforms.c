@@ -701,12 +701,8 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
 
     /* check uri */
     if(xmlSecTransformUriTypeCheck(ctx->enabledUris, uri) != 1) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_URI_TYPE,
-                    "uri=%s",
-                    xmlSecErrorsSafeString(uri));
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_URI_TYPE, NULL,
+                          "uri=%s", xmlSecErrorsSafeString(uri));
         return(-1);
     }
 
@@ -1316,12 +1312,9 @@ xmlSecTransformNodeRead(xmlNodePtr node, xmlSecTransformUsage usage, xmlSecTrans
     /* check with enabled transforms list */
     if((xmlSecPtrListGetSize(&(transformCtx->enabledTransforms)) > 0) &&
        (xmlSecTransformIdListFind(&(transformCtx->enabledTransforms), id) != 1)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(id)),
-                    XMLSEC_ERRORS_R_TRANSFORM_DISABLED,
-                    "href=%s",
-                    xmlSecErrorsSafeString(href));
+        xmlSecOtherError2(XMLSEC_ERRORS_R_TRANSFORM_DISABLED,
+                          xmlSecTransformKlassGetName(id),
+                          "href=%s", xmlSecErrorsSafeString(href));
         xmlFree(href);
         return(NULL);
     }
@@ -1415,11 +1408,9 @@ xmlSecTransformPump(xmlSecTransformPtr left, xmlSecTransformPtr right, xmlSecTra
             }
         } while(final == 0);
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(left)),
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(right)),
-                    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-                    "transforms input/output data formats do not match");
+        xmlSecInvalidTransfromError2(left,
+                    "transforms input/output data formats do not match, right transform=\"%s\"",
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(right)));
     }
     return(0);
 }
@@ -1779,12 +1770,9 @@ xmlSecTransformConnect(xmlSecTransformPtr left, xmlSecTransformPtr right,
             middleId = xmlSecTransformInclC14NId;
         }
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(left)),
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(right)),
-                    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-                    "leftType=%d;rightType=%d",
-                    leftType, rightType);
+        xmlSecInvalidTransfromError2(left,
+                    "transforms types do not match, right transform=\"%s\"",
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(right)));
         return(-1);
     }
 
@@ -2404,11 +2392,9 @@ xmlSecTransformCreateOutputBuffer(xmlSecTransformPtr transform, xmlSecTransformC
     /* check that we have binary push method for this transform */
     type = xmlSecTransformDefaultGetDataType(transform, xmlSecTransformModePush, transformCtx);
     if((type & xmlSecTransformDataTypeBin) == 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-                    "push binary data not supported");
+        xmlSecInvalidTransfromError2(transform,
+                            "push binary data not supported, type=\"%d\"",
+                            (int)type);
         return(NULL);
     }
 
@@ -2453,11 +2439,9 @@ xmlSecTransformCreateInputBuffer(xmlSecTransformPtr transform, xmlSecTransformCt
     /* check that we have binary pop method for this transform */
     type = xmlSecTransformDefaultGetDataType(transform, xmlSecTransformModePop, transformCtx);
     if((type & xmlSecTransformDataTypeBin) == 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-                    "pop binary data not supported");
+        xmlSecInvalidTransfromError2(transform,
+                            "pop binary data not supported, type=\"%d\"",
+                            (int)type);
         return(NULL);
     }
 

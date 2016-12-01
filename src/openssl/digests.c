@@ -194,11 +194,7 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGostR3411_94Id)) {
         ctx->digest = EVP_get_digestbyname("md_gost94");
 		if (!ctx->digest) {
-			xmlSecError(XMLSEC_ERRORS_HERE,
-					xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-					NULL,
-					XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-					XMLSEC_ERRORS_NO_MESSAGE);
+			xmlSecInvalidTransfromError(transform)
 			return(-1);
 		}
     } else
@@ -209,11 +205,7 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
         ctx->digest = EVP_get_digestbyname("md_gost12_256");
 				if (!ctx->digest)
 				{
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidTransfromError(transform)
         return(-1);
 				}
     } else
@@ -222,22 +214,14 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
         ctx->digest = EVP_get_digestbyname("md_gost12_512");
 				if (!ctx->digest)
 				{
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidTransfromError(transform)
         return(-1);
 				}
     } else
 #endif /* XMLSEC_NO_GOST2012 */
 
     {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidTransfromError(transform)
         return(-1);
     }
 
@@ -395,11 +379,7 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_STATUS,
-                    "status=%d", transform->status);
+        xmlSecInvalidTransfromStatusError(transform);
         return(-1);
     }
 

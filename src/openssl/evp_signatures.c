@@ -215,11 +215,7 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->keyId  = xmlSecOpenSSLKeyDataGost2001Id;
         ctx->digest = EVP_get_digestbyname("md_gost94");
         if (!ctx->digest) {
-        	xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        	xmlSecInvalidTransfromError(transform)
         	return(-1);
         }
     } else
@@ -230,11 +226,7 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->keyId  = xmlSecOpenSSLKeyDataGostR3410_2012_256Id;
         ctx->digest = EVP_get_digestbyname("md_gost12_256");
 		if (!ctx->digest) {
-			xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+			xmlSecInvalidTransfromError(transform)
 			return(-1);
 		}
     } else
@@ -243,22 +235,14 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->keyId  = xmlSecOpenSSLKeyDataGostR3410_2012_512Id;
         ctx->digest = EVP_get_digestbyname("md_gost12_512");
 		if (!ctx->digest) {
-			xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+			xmlSecInvalidTransfromError(transform)
 			return(-1);
 		}
     } else
 #endif /* XMLSEC_NO_GOST2012 */
 
     if(1) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidTransfromError(transform)
         return(-1);
     }
 
@@ -385,11 +369,9 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
                            xmlSecTransformGetName(transform));
         return(-1);
     } else if(ret != 1) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "EVP_VerifyFinal",
-                    XMLSEC_ERRORS_R_DATA_NOT_MATCH,
-                    "signature do not match");
+        xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
+                         xmlSecTransformGetName(transform),
+                         "EVP_VerifyFinal: signature does not verify");
         transform->status = xmlSecTransformStatusFail;
         return(0);
     }
@@ -510,11 +492,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_STATUS,
-                    "status=%d", transform->status);
+        xmlSecInvalidTransfromStatusError(transform);
         return(-1);
     }
 

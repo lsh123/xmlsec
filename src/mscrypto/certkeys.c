@@ -1142,11 +1142,9 @@ xmlSecMSCryptoKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     if(xmlSecKeyGetValue(key) != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_KEY_DATA,
-                    "key already has a value");
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_KEY_DATA,
+                         xmlSecKeyDataKlassGetName(id),
+                         "key already has a value");
         return(-1);
     }
 
@@ -1777,11 +1775,9 @@ xmlSecMSCryptoKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     if(xmlSecKeyGetValue(key) != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_KEY_DATA,
-                    "key already has a value");
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_KEY_DATA,
+                         xmlSecKeyDataKlassGetName(id),
+                         "key already has a value");
         return(-1);
     }
 

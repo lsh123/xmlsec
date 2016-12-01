@@ -231,11 +231,7 @@ xmlSecOpenSSLRsaPkcs1Execute(xmlSecTransformPtr transform, int last, xmlSecTrans
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_STATUS,
-                    "status=%d", transform->status);
+        xmlSecInvalidTransfromStatusError(transform);
         return(-1);
     }
     return(0);
@@ -497,11 +493,9 @@ xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
 
             /* for now we support only sha1 */
             if(xmlStrcmp(algorithm, xmlSecHrefSha1) != 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            xmlSecErrorsSafeString(algorithm),
-                            XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-                            "digest algorithm is not supported for rsa/oaep");
+                xmlSecInvalidTransfromError2(transform,
+                                "digest algorithm=\"%s\" is not supported for rsa/oaep",
+                                xmlSecErrorsSafeString(algorithm));
                 xmlFree(algorithm);
                 return(-1);
             }
@@ -611,11 +605,7 @@ xmlSecOpenSSLRsaOaepExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_STATUS,
-                    "status=%d", transform->status);
+        xmlSecInvalidTransfromStatusError(transform);
         return(-1);
     }
     return(0);

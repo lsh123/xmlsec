@@ -199,11 +199,7 @@ xmlSecGCryptHmacInitialize(xmlSecTransformPtr transform) {
 
     /* not found */
     {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidTransfromError(transform)
         return(-1);
     }
 
@@ -402,22 +398,18 @@ xmlSecGCryptHmacVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(dataSize > 0, -1);
     mask = last_byte_masks[ctx->dgstSize % 8];
     if((ctx->dgst[dataSize - 1] & mask) != (data[dataSize - 1]  & mask)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_DATA_NOT_MATCH,
-                    "data and digest do not match (last byte)");
+        xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
+                         xmlSecTransformGetName(transform),
+                         "data and digest do not match (last byte)");
         transform->status = xmlSecTransformStatusFail;
         return(0);
     }
 
     /* now check the rest of the digest */
     if((dataSize > 1) && (memcmp(ctx->dgst, data, dataSize - 1) != 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_DATA_NOT_MATCH,
-                    "data and digest do not match");
+        xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
+                         xmlSecTransformGetName(transform),
+                         "data and digest do not match");
         transform->status = xmlSecTransformStatusFail;
         return(0);
     }
@@ -511,11 +503,7 @@ xmlSecGCryptHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_STATUS,
-                    "size=%d", transform->status);
+        xmlSecInvalidTransfromStatusError(transform);
         return(-1);
     }
 

@@ -432,11 +432,7 @@ xmlSecGCryptBlockCipherInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_AES */
 
     if(1) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidTransfromError(transform)
         return(-1);
     }
 
@@ -609,11 +605,7 @@ xmlSecGCryptBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTra
         /* the only way we can get here is if there is no enough data in the input */
         xmlSecAssert2(last == 0, -1);
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_STATUS,
-                    "status=%d", transform->status);
+        xmlSecInvalidTransfromStatusError(transform);
         return(-1);
     }
 

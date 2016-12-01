@@ -163,23 +163,15 @@ xmlSecNssAppReadSECItem(SECItem *contents, const char *fn) {
 
     file = PR_Open(fn, PR_RDONLY, 00660);
     if (file == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "PR_Open",
-                    XMLSEC_ERRORS_R_IO_FAILED,
-                    "filename=%s",
-                    xmlSecErrorsSafeString(fn));
+        xmlSecNssError2("PR_Open", NULL,
+                        "filename=%s", xmlSecErrorsSafeString(fn));
         goto done;
     }
 
     prStatus = PR_GetOpenFileInfo(file, &info);
     if (prStatus != PR_SUCCESS) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "PR_GetOpenFileInfo",
-                    XMLSEC_ERRORS_R_IO_FAILED,
-                    "filename=%s",
-                    xmlSecErrorsSafeString(fn));
+        xmlSecNssError2("PR_GetOpenFileInfo", NULL,
+                        "filename=%s", xmlSecErrorsSafeString(fn));
         goto done;
     }
 
@@ -370,12 +362,9 @@ xmlSecNssAppKeyLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format,
         }
         break;
     default:
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecNssAppKeyLoad",
-                    XMLSEC_ERRORS_R_INVALID_FORMAT,
-                    "format=%d", format);
-            return(NULL);
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
+                         "format=%d", (int)format);
+        return(NULL);
     }
 
     return(key);
@@ -594,11 +583,8 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
         }
         break;
     default:
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_FORMAT,
-                    "format=%d", (int)format);
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
+                         "format=%d", (int)format);
         return(-1);
     }
 
@@ -960,11 +946,8 @@ xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format)
         }
         break;
     default:
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_FORMAT,
-                    "format=%d", (int)format);
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
+                         "format=%d", (int)format);
         return(NULL);
     }
 
@@ -1142,11 +1125,8 @@ xmlSecNssAppKeysMngrCertLoadSECItem(xmlSecKeysMngrPtr mngr, SECItem* secItem,
         }
         break;
     default:
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_FORMAT,
-                    "format=%d", (int)format);
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
+                         "format=%d", (int)format);
         return(-1);
     }
 

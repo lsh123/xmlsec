@@ -180,11 +180,7 @@ xmlSecNssSignatureInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_RSA */
 
     if(1) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidTransfromError(transform)
         return(-1);
     }
 
@@ -338,11 +334,9 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
 
     if (status != SECSuccess) {
         if (PORT_GetError() == SEC_ERROR_PKCS7_BAD_SIGNATURE) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "VFY_EndWithSignature",
-                        XMLSEC_ERRORS_R_DATA_NOT_MATCH,
-                        "signature does not verify");
+            xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
+                             xmlSecTransformGetName(transform),
+                             "VFY_EndWithSignature: signature does not verify");
             transform->status = xmlSecTransformStatusFail;
         } else {
             xmlSecNssError("VFY_EndWithSignature",
@@ -491,11 +485,7 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
             /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_STATUS,
-                    "status=%d", transform->status);
+        xmlSecInvalidTransfromStatusError(transform);
         return(-1);
     }
 

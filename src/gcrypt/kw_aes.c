@@ -111,11 +111,7 @@ xmlSecGCryptKWAesInitialize(xmlSecTransformPtr transform) {
         ctx->cipher             = GCRY_CIPHER_AES256;
         ctx->keyExpectedSize    = XMLSEC_KW_AES256_KEY_SIZE;
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidTransfromError(transform)
         return(-1);
     }
     ctx->mode           = GCRY_CIPHER_MODE_CBC;
@@ -312,11 +308,7 @@ xmlSecGCryptKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_STATUS,
-                    "status=%d", transform->status);
+        xmlSecInvalidTransfromStatusError(transform);
         return(-1);
     }
     return(0);

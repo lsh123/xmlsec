@@ -384,11 +384,8 @@ xmlSecGnuTLSX509CertRead(const xmlSecByte* buf, xmlSecSize size, xmlSecKeyDataFo
         fmt = GNUTLS_X509_FMT_DER;
         break;
     default:
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_FORMAT,
-                    "format=%d", format);
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
+                         "format=%d", (int)format);
         return(NULL);
     }
 
@@ -623,11 +620,8 @@ xmlSecGnuTLSX509CrlRead(const xmlSecByte* buf, xmlSecSize size, xmlSecKeyDataFor
         fmt = GNUTLS_X509_FMT_DER;
         break;
     default:
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_FORMAT,
-                    "format=%d", format);
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
+                         "format=%d", (int)format);
         return(NULL);
     }
 
@@ -917,11 +911,8 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
 
     /* check we have private key */
     if((*priv_key) == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_KEY_NOT_FOUND,
-                    "Private key was not found in pkcs12 object");
+        xmlSecOtherError(XMLSEC_ERRORS_R_KEY_NOT_FOUND, NULL,
+                         "Private key was not found in pkcs12 object");
         goto done;
     }
 
@@ -969,11 +960,8 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
 
         /* check we have key cert */
         if((*key_cert) == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_CERT_NOT_FOUND,
-                        "Certificate for the private key was not found in pkcs12 object");
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_FOUND, NULL,
+                             "Certificate for the private key was not found in pkcs12 object");
             goto done;
         }
     }

@@ -265,11 +265,7 @@ xmlSecOpenSSLSignatureInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_ECDSA */
 
     if(1) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidTransfromError(transform)
         return(-1);
     }
 
@@ -409,11 +405,9 @@ xmlSecOpenSSLSignatureVerify(xmlSecTransformPtr transform,
     if(ret == 1) {
         transform->status = xmlSecTransformStatusOk;
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "verifyCallback",
-                    XMLSEC_ERRORS_R_DATA_NOT_MATCH,
-                    "signature do not match");
+        xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
+                         xmlSecTransformGetName(transform),
+                         "ctx->verifyCallback: signature does not verify");
         transform->status = xmlSecTransformStatusFail;
     }
 
@@ -502,11 +496,7 @@ xmlSecOpenSSLSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTran
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_STATUS,
-                    "status=%d", transform->status);
+        xmlSecInvalidTransfromStatusError(transform);
         return(-1);
     }
 

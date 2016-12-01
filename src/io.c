@@ -12,7 +12,6 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <errno.h>
 
 #include <libxml/uri.h>
 #include <libxml/tree.h>
@@ -391,13 +390,8 @@ xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
     }
 
     if((ctx->clbks == NULL) || (ctx->clbksCtx == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "opencallback",
-                    XMLSEC_ERRORS_R_IO_FAILED,
-                    "uri=%s;errno=%d",
-                    xmlSecErrorsSafeString(uri),
-                    errno);
+        xmlSecInternalError2("ctx->clbks->opencallback", xmlSecTransformGetName(transform),
+                            "uri=%s", xmlSecErrorsSafeString(uri));
         return(-1);
     }
 
@@ -488,11 +482,7 @@ xmlSecTransformInputURIPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
     if((ctx->clbksCtx != NULL) && (ctx->clbks != NULL) && (ctx->clbks->readcallback != NULL)) {
         ret = (ctx->clbks->readcallback)(ctx->clbksCtx, (char*)data, (int)maxDataSize);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "readcallback",
-                        XMLSEC_ERRORS_R_IO_FAILED,
-                        "errno=%d", errno);
+            xmlSecInternalError("ctx->clbks->readcallback", xmlSecTransformGetName(transform));
             return(-1);
         }
         (*dataSize) = ret;

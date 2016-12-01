@@ -234,11 +234,8 @@ xmlSecGCryptAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
         return (NULL);
 #endif /* XMLSEC_NO_X509 */
     default:
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_FORMAT,
-                    "format=%d", format);
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
+                         "format=%d", (int)format);
         return(NULL);
     }
 

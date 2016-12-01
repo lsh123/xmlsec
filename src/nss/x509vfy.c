@@ -168,6 +168,7 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs,
     SECStatus status = SECFailure;
     int64 timeboundary;
     int64 tmp1, tmp2;
+    PRErrorCode err;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecNssX509StoreId), NULL);
     xmlSecAssert2(certs != NULL, NULL);
@@ -224,44 +225,34 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs,
         return (cert);
     }
 
-    switch(PORT_GetError()) {
+    err = PORT_GetError();
+    switch(err) {
         case SEC_ERROR_EXPIRED_ISSUER_CERTIFICATE:
         case SEC_ERROR_CA_CERT_INVALID:
         case SEC_ERROR_UNKNOWN_SIGNER:
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                        NULL,
-                        XMLSEC_ERRORS_R_CERT_ISSUER_FAILED,
-                        "cert with subject name %s could not be verified because the issuer's cert is expired/invalid or not found",
-                        (cert != NULL) ? cert->subjectName : "(NULL)"
-            );
+            xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_ISSUER_FAILED,
+                              xmlSecKeyDataStoreGetName(store),
+                              "subject=\"%s\"; reason=the issuer's cert is expired/invalid or not found",
+                              xmlSecErrorsSafeString(cert->subjectName));
             break;
         case SEC_ERROR_EXPIRED_CERTIFICATE:
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                        NULL,
-                        XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
-                        "cert with subject name %s has expired",
-                        (cert != NULL) ? cert->subjectName : "(NULL)"
-            );
+            xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
+                              xmlSecKeyDataStoreGetName(store),
+                              "subject=\"%s\"; reason=expired",
+                              xmlSecErrorsSafeString(cert->subjectName));
             break;
         case SEC_ERROR_REVOKED_CERTIFICATE:
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                        NULL,
-                        XMLSEC_ERRORS_R_CERT_REVOKED,
-                        "cert with subject name %s has been revoked",
-                        (cert != NULL) ? cert->subjectName : "(NULL)"
-            );
+            xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_REVOKED,
+                              xmlSecKeyDataStoreGetName(store),
+                              "subject=\"%s\"; reason=revoked",
+                              xmlSecErrorsSafeString(cert->subjectName));
             break;
         default:
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                        NULL,
-                        XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-                        "cert with subject name %s could not be verified, errcode %d",
-                        (cert != NULL) ? cert->subjectName : "(NULL)",
-                        PORT_GetError());
+            xmlSecOtherError3(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+                              xmlSecKeyDataStoreGetName(store),
+                              "subject=\"%s\"; reason=%d",
+                              xmlSecErrorsSafeString(cert->subjectName),
+                              (int)err);
             break;
     }
 

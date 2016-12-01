@@ -121,11 +121,7 @@ xmlSecMSCryptoRsaPkcs1OaepInitialize(xmlSecTransformPtr transform) {
 
     /* not found */
     {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidTransfromError(transform)
         return(-1);
     }
 
@@ -230,11 +226,7 @@ xmlSecMSCryptoRsaPkcs1OaepExecute(xmlSecTransformPtr transform, int last, xmlSec
                 /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_STATUS,
-                    "status=%d", transform->status);
+        xmlSecInvalidTransfromStatusError(transform);
         return(-1);
     }
     return(0);
@@ -578,11 +570,9 @@ xmlSecMSCryptoRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xml
 
             /* for now we support only sha1 */
             if(xmlStrcmp(algorithm, xmlSecHrefSha1) != 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            xmlSecErrorsSafeString(algorithm),
-                            XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-                            "digest algorithm is not supported for rsa/oaep");
+                xmlSecInvalidTransfromError2(transform,
+                                "digest algorithm=\"%s\" is not supported for rsa/oaep",
+                                xmlSecErrorsSafeString(algorithm));
                 xmlFree(algorithm);
                 return(-1);
             }

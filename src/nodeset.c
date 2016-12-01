@@ -241,11 +241,8 @@ xmlSecNodeSetContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent)
             }
             break;
         default:
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_INVALID_OPERATION,
-                        "operation=%d", cur->op);
+            xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_OPERATION, NULL,
+                              "node set operation=%d", (int)cur->op);
             return(-1);
         }
         cur = cur->next;

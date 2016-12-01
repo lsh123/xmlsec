@@ -203,11 +203,7 @@ xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
     case xmlSecTransformStatusFinished:
         return(0);
     default:
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_STATUS,
-                    "status=%d", transform->status);
+        xmlSecInvalidTransfromStatusError(transform);
         return(-1);
     }
     xmlSecAssert2(transform->status == xmlSecTransformStatusWorking, -1);
@@ -344,11 +340,7 @@ xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
         xmlSecAssert2(xmlSecBufferGetSize(out) == 0, -1);
         (*dataSize) = 0;
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_STATUS,
-                    "status=%d", transform->status);
+        xmlSecInvalidTransfromStatusError(transform);
         return(-1);
     }
 
@@ -394,11 +386,8 @@ xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlChar
         ret = xmlSecNodeSetDumpTextNodes(nodes, buf);
     } else {
         /* shoudn't be possible to come here, actually */
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(id)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+                         xmlSecTransformKlassGetName(id), NULL);
         return(-1);
     }
 

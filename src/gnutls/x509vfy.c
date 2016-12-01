@@ -176,19 +176,11 @@ xmlSecGnuTLSX509CheckTime(const gnutls_x509_crt_t * cert_list,
 
         /* check */
         if(ts < notValidBefore) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_CERT_NOT_YET_VALID,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_YET_VALID, NULL, NULL);
             return(0);
         }
         if(ts > notValidAfter) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_HAS_EXPIRED, NULL, NULL);
             return(0);
         }
     }

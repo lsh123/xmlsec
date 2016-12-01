@@ -1185,11 +1185,9 @@ xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId, xmlSecKeyPtr k
     } else if((typeId != xmlSecKeyDataIdUnknown) && (typeId != dataId) &&
               ((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_MISMATCH_HREF) != 0)) {
 
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(typeId)),
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
-                    XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOtherError2(XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH,
+                          xmlSecKeyDataKlassGetName(dataId),
+                          "typeId=%s", xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(typeId)));
         xmlFreeDoc(doc);
         return(-1);
     }

@@ -350,40 +350,32 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
         switch (err) {
         case X509_V_ERR_UNABLE_TO_GET_ISSUER_CERT:
             X509_NAME_oneline(X509_get_issuer_name(err_cert), buf, sizeof buf);
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                        NULL,
-                        XMLSEC_ERRORS_R_CERT_ISSUER_FAILED,
-                        "err=%d;msg=%s;issuer=%s",
-                        err,
-                        xmlSecErrorsSafeString(err_msg),
-                        xmlSecErrorsSafeString(buf));
+            xmlSecOtherError4(XMLSEC_ERRORS_R_CERT_ISSUER_FAILED,
+                              xmlSecKeyDataStoreGetName(store),
+                              "issuer=%s;err=%d;msg=%s",
+                              xmlSecErrorsSafeString(buf),
+                              err, xmlSecErrorsSafeString(err_msg));
             break;
         case X509_V_ERR_CERT_NOT_YET_VALID:
         case X509_V_ERR_ERROR_IN_CERT_NOT_BEFORE_FIELD:
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                        NULL,
-                        XMLSEC_ERRORS_R_CERT_NOT_YET_VALID,
-                        "err=%d;msg=%s", err,
-                        xmlSecErrorsSafeString(err_msg));
+            xmlSecOtherError3(XMLSEC_ERRORS_R_CERT_NOT_YET_VALID,
+                              xmlSecKeyDataStoreGetName(store),
+                              "err=%d;msg=%s",
+                              err, xmlSecErrorsSafeString(err_msg));
             break;
         case X509_V_ERR_CERT_HAS_EXPIRED:
         case X509_V_ERR_ERROR_IN_CERT_NOT_AFTER_FIELD:
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                        NULL,
-                        XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
-                        "err=%d;msg=%s", err,
-                        xmlSecErrorsSafeString(err_msg));
+            xmlSecOtherError3(XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
+                              xmlSecKeyDataStoreGetName(store),
+                              "err=%d;msg=%s",
+                              err, xmlSecErrorsSafeString(err_msg));
             break;
         default:
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                        NULL,
-                        XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-                        "err=%d;msg=%s", err,
-                        xmlSecErrorsSafeString(err_msg));
+            xmlSecOtherError3(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+                              xmlSecKeyDataStoreGetName(store),
+                              "err=%d;msg=%s",
+                              err, xmlSecErrorsSafeString(err_msg));
+            break;
         }
     }
 

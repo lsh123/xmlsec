@@ -960,11 +960,8 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
 
         /* check we have key cert */
         if((*key_cert) == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_CERT_NOT_FOUND,
-                        "Certificate for the private key was not found in pkcs12 object");
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_FOUND, NULL,
+                             "Certificate for the private key was not found in pkcs12 object");
             goto done;
         }
     }

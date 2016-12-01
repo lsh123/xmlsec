@@ -693,11 +693,7 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xm
 
     /* check that we have at least one Reference */
     if(refNodesCount == 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_DSIG_NO_REFERENCES,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOtherError(XMLSEC_ERRORS_R_DSIG_NO_REFERENCES, NULL, NULL);
         return(-1);
     }
 

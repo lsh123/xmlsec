@@ -1021,12 +1021,8 @@ xmlSecGnuTLSX509SubjectNameNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlS
     if(cert == NULL){
 
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT) != 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                        NULL,
-                        XMLSEC_ERRORS_R_CERT_NOT_FOUND,
-                        "subject=%s",
-                        xmlSecErrorsSafeString(subject));
+            xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data),
+                              "subject=%s", xmlSecErrorsSafeString(subject));
             xmlFree(subject);
             return(-1);
         }
@@ -1163,13 +1159,10 @@ xmlSecGnuTLSX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xml
     if(cert == NULL){
 
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT) != 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                        NULL,
-                        XMLSEC_ERRORS_R_CERT_NOT_FOUND,
-                        "issuerName=%s;issuerSerial=%s",
-                        xmlSecErrorsSafeString(issuerName),
-                        xmlSecErrorsSafeString(issuerSerial));
+            xmlSecOtherError3(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data),
+                              "issuerName=%s;issuerSerial=%s",
+                              xmlSecErrorsSafeString(issuerName),
+                              xmlSecErrorsSafeString(issuerSerial));
             xmlFree(issuerSerial);
             xmlFree(issuerName);
             return(-1);
@@ -1305,12 +1298,9 @@ xmlSecGnuTLSX509SKINodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInf
         xmlFree(ski);
 
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT) != 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                        NULL,
-                        XMLSEC_ERRORS_R_CERT_NOT_FOUND,
-                        "ski=%s",
-                        xmlSecErrorsSafeString(ski));
+            xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data),
+                              "ski=%s",
+                              xmlSecErrorsSafeString(ski));
             return(-1);
         }
         return(0);
@@ -1524,11 +1514,7 @@ xmlSecGnuTLSKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr k
                 return(-1);
             }
         } else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT) != 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                        NULL,
-                        XMLSEC_ERRORS_R_CERT_NOT_FOUND,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data), NULL);
             return(-1);
         }
     }

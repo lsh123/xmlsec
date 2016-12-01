@@ -214,11 +214,10 @@ xmlSecMSCryptoX509StoreCertError(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT cer
                           "signature failed, subject=%s",
                           xmlSecErrorsSafeString(subject));
     } else if (flags & CERT_STORE_TIME_VALIDITY_FLAG) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                xmlSecErrorsSafeString(subject),
-                XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
+                          xmlSecKeyDataStoreGetName(store),
+                          "subject=%s",
+                          xmlSecErrorsSafeString(subject));
     } else if (flags & CERT_STORE_REVOCATION_FLAG) {
         if (flags & CERT_STORE_NO_CRL_FLAG) {
             xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_REVOKED,

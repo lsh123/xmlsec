@@ -260,11 +260,7 @@ xmlSecGCryptPkSignatureInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_RSA */
 
     if(1) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidTransfromError(transform)
         return(-1);
     }
 
@@ -388,11 +384,9 @@ xmlSecGCryptPkSignatureVerify(xmlSecTransformPtr transform,
     if(ret == 1) {
         transform->status = xmlSecTransformStatusOk;
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "ctx->verify",
-                    XMLSEC_ERRORS_R_DATA_NOT_MATCH,
-                    "signature do not match");
+        xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
+                         xmlSecTransformGetName(transform),
+                         "ctx->verify: signature does not verify");
         transform->status = xmlSecTransformStatusFail;
     }
 

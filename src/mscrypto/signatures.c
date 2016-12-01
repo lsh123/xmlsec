@@ -197,11 +197,7 @@ static int xmlSecMSCryptoSignatureInitialize(xmlSecTransformPtr transform) {
 
     /* not found */
     {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidTransfromError(transform)
         return(-1);
     }
 
@@ -387,11 +383,9 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
                               0)) {
         dwError = GetLastError();
         if (NTE_BAD_SIGNATURE == dwError) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "CryptVerifySignature",
-                        XMLSEC_ERRORS_R_DATA_NOT_MATCH,
-                        "signature do not match");
+            xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
+                             xmlSecTransformGetName(transform),
+                             "CryptVerifySignature: signature does not verify");
             transform->status = xmlSecTransformStatusFail;
             xmlSecBufferFinalize(&tmp);
             return(0);

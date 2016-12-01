@@ -187,11 +187,7 @@ xmlSecMSCryptoKWDes3Initialize(xmlSecTransformPtr transform) {
         ctx->keyId                   = xmlSecMSCryptoKeyDataDesId;
         ctx->keySize                 = XMLSEC_KW_DES3_KEY_LENGTH;
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-            NULL,
-            XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-            XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidTransfromError(transform)
         return(-1);
     }
 

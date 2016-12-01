@@ -394,11 +394,8 @@ xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlChar
         ret = xmlSecNodeSetDumpTextNodes(nodes, buf);
     } else {
         /* shoudn't be possible to come here, actually */
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(id)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+                         xmlSecTransformKlassGetName(id), NULL);
         return(-1);
     }
 

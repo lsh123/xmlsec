@@ -260,11 +260,9 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
 
     /* prepare parser context */
     if(transform->prev == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-                    "prev transform is null");
+        xmlSecInvalidTransfromError2(transform,
+                                     "prev transform=\"%s\"",
+                                     xmlSecErrorsSafeString(transform->prev));
         return(-1);
     }
 

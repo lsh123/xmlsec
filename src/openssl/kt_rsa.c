@@ -497,11 +497,9 @@ xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
 
             /* for now we support only sha1 */
             if(xmlStrcmp(algorithm, xmlSecHrefSha1) != 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            xmlSecErrorsSafeString(algorithm),
-                            XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-                            "digest algorithm is not supported for rsa/oaep");
+                xmlSecInvalidTransfromError2(transform,
+                                "digest algorithm=\"%s\" is not supported for rsa/oaep",
+                                xmlSecErrorsSafeString(algorithm));
                 xmlFree(algorithm);
                 return(-1);
             }

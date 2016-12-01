@@ -368,6 +368,25 @@ extern "C" {
     }
 
 /**
+ * xmlSecUnexpectedNodeError:
+ * @node:               the node.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting an invalid node errors.
+ */
+#define xmlSecUnexpectedNodeError(node, errorObject) \
+    {                                                 \
+        const char* nName = xmlSecNodeGetName(node);  \
+        xmlSecError(XMLSEC_ERRORS_HERE,               \
+                   (const char*)(errorObject),        \
+                   NULL,                              \
+                   XMLSEC_ERRORS_R_UNEXPECTED_NODE,   \
+                   "node=%s",                         \
+                   xmlSecErrorsSafeString(nName)      \
+        );                                            \
+    }
+
+/**
  * xmlSecNodeNotFoundError:
  * @errorFunction:      the failed function.
  * @startNode:          the search start node.
@@ -390,21 +409,37 @@ extern "C" {
     }
 
 /**
- * xmlSecUnexpectedNodeError:
- * @node:               the node.
- * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ * xmlSecInvalidTransfromError:
+ * @transform:          the transform.
  *
- * Macro. The XMLSec library macro for reporting an invalid node errors.
+ * Macro. The XMLSec library macro for reporting an invalid transform errors.
  */
-#define xmlSecUnexpectedNodeError(node, errorObject) \
+#define xmlSecInvalidTransfromError(transform) \
     {                                                 \
-        const char* nName = xmlSecNodeGetName(node);  \
         xmlSecError(XMLSEC_ERRORS_HERE,               \
-                   (const char*)(errorObject),        \
+                   (const char*)xmlSecTransformGetName(transform), \
                    NULL,                              \
-                   XMLSEC_ERRORS_R_UNEXPECTED_NODE,   \
-                   "node=%s",                         \
-                   xmlSecErrorsSafeString(nName)      \
+                   XMLSEC_ERRORS_R_INVALID_TRANSFORM, \
+                   XMLSEC_ERRORS_NO_MESSAGE           \
+        );                                            \
+    }
+
+/**
+ * xmlSecInvalidTransfromError2:
+ * @transform:          the transform.
+ * @msg:                the extra message.
+ * @param:              the extra message param.
+ *
+ *
+ * Macro. The XMLSec library macro for reporting an invalid transform errors.
+ */
+#define xmlSecInvalidTransfromError2(transform, msg, param) \
+    {                                                 \
+        xmlSecError(XMLSEC_ERRORS_HERE,               \
+                   (const char*)xmlSecTransformGetName(transform), \
+                   NULL,                              \
+                   XMLSEC_ERRORS_R_INVALID_TRANSFORM, \
+                   (msg), (param)                     \
         );                                            \
     }
 

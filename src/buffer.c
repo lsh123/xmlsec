@@ -13,7 +13,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include <errno.h>
 
 #include <libxml/tree.h>
 
@@ -446,13 +445,7 @@ xmlSecBufferReadFile(xmlSecBufferPtr buf, const char* filename) {
 
     f = fopen(filename, "rb");
     if(f == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "fopen",
-                    XMLSEC_ERRORS_R_IO_FAILED,
-                    "filename=%s;errno=%d",
-                    xmlSecErrorsSafeString(filename),
-                    errno);
+        xmlSecIOError("fopen", filename, NULL);
         return(-1);
     }
 
@@ -461,13 +454,7 @@ xmlSecBufferReadFile(xmlSecBufferPtr buf, const char* filename) {
         if(len == 0) {
             break;
         }else if(len < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "fread",
-                        XMLSEC_ERRORS_R_IO_FAILED,
-                        "filename=%s;errno=%d",
-                        xmlSecErrorsSafeString(filename),
-                        errno);
+            xmlSecIOError("fread", filename, NULL);
             fclose(f);
             return(-1);
         }

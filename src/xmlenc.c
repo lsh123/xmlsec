@@ -784,11 +784,9 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     if((encCtx->encKey == NULL) ||
        (!xmlSecKeyMatch(encCtx->encKey, NULL, &(encCtx->keyInfoReadCtx.keyReq)))) {
 
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(encCtx->encMethod)),
-                    NULL,
-                    XMLSEC_ERRORS_R_KEY_NOT_FOUND,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOtherError2(XMLSEC_ERRORS_R_KEY_NOT_FOUND, NULL,
+                          "encMethod=%s",
+                          xmlSecErrorsSafeString(xmlSecTransformGetName(encCtx->encMethod)));
         return(-1);
     }
 

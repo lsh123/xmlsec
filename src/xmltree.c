@@ -13,7 +13,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include <errno.h>
 
 #include <libxml/tree.h>
 #include <libxml/valid.h>
@@ -972,12 +971,7 @@ xmlSecPrintXmlString(FILE * fd, const xmlChar * str) {
     }
 
     if(res < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "fprintf",
-                    XMLSEC_ERRORS_R_IO_FAILED,
-                    "res=%d,errno=%d",
-                    res, errno);
+        xmlSecIOError("fprintf", NULL, NULL);
         return(-1);
     }
     return(res);

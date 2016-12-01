@@ -216,7 +216,7 @@ xmlSecMSCryptoAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlS
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "CertCreateCertificateContext",
-                    XMLSEC_ERRORS_R_IO_FAILED,
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         goto done;
     }

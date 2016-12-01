@@ -16,6 +16,8 @@
 #error "private.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
 #endif /* XMLSEC_PRIVATE */
 
+#include <errno.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -175,15 +177,15 @@ extern "C" {
 /**
  * xmlSecXmlParserError:
  * @errorFunction:      the failed function.
- * @errorObject:        the error specific error object (e.g. transform, key data, etc).
  * @ctxt:               the parser context.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
  *
  * Macro. The XMLSec library macro for reporting XML parser errors.
  */
 #define xmlSecXmlParserError(errorFunction, ctxt, errorObject) \
-    {                                                  \
-        xmlErrorPtr error = xmlCtxtGetLastError(ctxt); \
-        int code = (error != NULL) ? error->code : 0;  \
+    {                                                 \
+        xmlErrorPtr error = xmlCtxtGetLastError(ctxt);\
+        int code = (error != NULL) ? error->code : 0; \
         const char* message = (error != NULL) ? error->message : NULL; \
         xmlSecError(XMLSEC_ERRORS_HERE,               \
                    (const char*)(errorObject),        \
@@ -198,17 +200,17 @@ extern "C" {
 /**
  * xmlSecXmlParserError2:
  * @errorFunction:      the failed function.
- * @errorObject:        the error specific error object (e.g. transform, key data, etc).
  * @ctxt:               the parser context.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
  * @msg:                the extra message.
  * @param:              the extra message param.
  *
  * Macro. The XMLSec library macro for reporting XML parser errors.
  */
 #define xmlSecXmlParserError2(errorFunction, ctxt, errorObject, msg, param) \
-    {                                                  \
-        xmlErrorPtr error = xmlCtxtGetLastError(ctxt); \
-        int code = (error != NULL) ? error->code : 0;  \
+    {                                                 \
+        xmlErrorPtr error = xmlCtxtGetLastError(ctxt);\
+        int code = (error != NULL) ? error->code : 0; \
         const char* message = (error != NULL) ? error->message : NULL; \
         xmlSecError(XMLSEC_ERRORS_HERE,               \
                    (const char*)(errorObject),        \
@@ -224,15 +226,15 @@ extern "C" {
 /**
  * xmlSecXsltError:
  * @errorFunction:      the failed function.
- * @errorObject:        the error specific error object (e.g. transform, key data, etc).
  * @ctxt:               the parser context.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
  *
  * Macro. The XMLSec library macro for reporting XSLT errors.
  */
 #define xmlSecXsltError(errorFunction, ctxt, errorObject) \
-    {                                                  \
-        xmlErrorPtr error = xmlGetLastError();         \
-        int code = (error != NULL) ? error->code : 0;  \
+    {                                                 \
+        xmlErrorPtr error = xmlGetLastError();        \
+        int code = (error != NULL) ? error->code : 0; \
         const char* message = (error != NULL) ? error->message : NULL; \
         xmlSecError(XMLSEC_ERRORS_HERE,               \
                    (const char*)(errorObject),        \
@@ -241,6 +243,26 @@ extern "C" {
                    "xslt error: %lu: %s",             \
                    (unsigned long)code,               \
                    xmlSecErrorsSafeString(message)    \
+        );                                            \
+    }
+
+/**
+ * xmlSecIOError:
+ * @errorFunction:      the failed function.
+ * @name:               the filename, function name, uri, etc.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting IO errors.
+ */
+#define xmlSecIOError(errorFunction, name, errorObject) \
+    {                                                 \
+        xmlSecError(XMLSEC_ERRORS_HERE,               \
+                   (const char*)(errorObject),        \
+                   (errorFunction),                   \
+                   XMLSEC_ERRORS_R_IO_FAILED,         \
+                   "name=\"%s\"; errno=%d",           \
+                   xmlSecErrorsSafeString(name),      \
+                   errno                              \
         );                                            \
     }
 
@@ -274,7 +296,7 @@ extern "C" {
                    (const char*)(errorObject),        \
                    NULL,                              \
                    XMLSEC_ERRORS_R_INVALID_NODE,      \
-                   "actual:%s;expected:%s",           \
+                   "actual=%s; expected=%s",          \
                    xmlSecErrorsSafeString(actualNodeName),  \
                    xmlSecErrorsSafeString(expectedNodeName) \
         );                                            \
@@ -295,7 +317,7 @@ extern "C" {
                    (const char*)(errorObject),        \
                    NULL,                              \
                    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT, \
-                   "node:%s;reason:%s",               \
+                   "node=%s; reason=%s",              \
                    xmlSecErrorsSafeString(nName),     \
                    xmlSecErrorsSafeString(reason)     \
         );                                            \
@@ -317,7 +339,7 @@ extern "C" {
                    (const char*)(errorObject),        \
                    NULL,                              \
                    XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE, \
-                   "node:%s;attribute:%s;reason:%s",  \
+                   "node=%s; attribute=%s; reason=%s",\
                    xmlSecErrorsSafeString(nName),     \
                    xmlSecErrorsSafeString(attrName),  \
                    xmlSecErrorsSafeString(reason)     \
@@ -339,7 +361,7 @@ extern "C" {
                    (const char*)(errorObject),        \
                    NULL,                              \
                    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT, \
-                   "parent:%s;node:%s",               \
+                   "parent=%s; node=%s",              \
                    xmlSecErrorsSafeString(pName),     \
                    xmlSecErrorsSafeString(nodeName)   \
         );                                            \
@@ -361,7 +383,7 @@ extern "C" {
                    (const char*)(errorObject),        \
                    (errorFunction),                   \
                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,    \
-                   "startNode:%s;target:%s",          \
+                   "startNode=%s; target=%s",         \
                    xmlSecErrorsSafeString(startNodeName), \
                    xmlSecErrorsSafeString(targetNodeName) \
         );                                            \
@@ -381,10 +403,62 @@ extern "C" {
                    (const char*)(errorObject),        \
                    NULL,                              \
                    XMLSEC_ERRORS_R_UNEXPECTED_NODE,   \
-                   "node:%s",                         \
+                   "node=%s",                         \
                    xmlSecErrorsSafeString(nName)      \
         );                                            \
     }
+
+/**
+ * xmlSecOtherError:
+ * @code:               the error code.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ * @details:            the error message.
+ *
+ * Macro. The XMLSec library macro for reporting other XMLSec errors.
+ */
+#define xmlSecOtherError(code, errorObject, details) \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    NULL,                                   \
+                    (code),                                 \
+                    "details=%s",                           \
+                    xmlSecErrorsSafeString(details)         \
+        )
+
+/**
+ * xmlSecOtherError2:
+ * @code:               the error code.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ * @msg:                the extra message.
+ * @param:              the extra message param.
+ *
+ * Macro. The XMLSec library macro for reporting other XMLSec errors.
+ */
+#define xmlSecOtherError2(code, errorObject, msg, param) \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    NULL,                                   \
+                    (code),                                 \
+                    (msg), (param)                          \
+        )
+
+/**
+ * xmlSecOtherError3:
+ * @code:               the error code.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ * @msg:                the extra message.
+ * @param1:             the extra message param.
+ * @param2:             the extra message param.
+ *
+ * Macro. The XMLSec library macro for reporting other XMLSec errors.
+ */
+#define xmlSecOtherError3(code, errorObject, msg, param1, param2) \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    NULL,                                   \
+                    (code),                                 \
+                    (msg), (param1), (param2)               \
+        )
 
 #ifdef __cplusplus
 }

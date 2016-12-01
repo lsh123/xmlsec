@@ -255,11 +255,8 @@ xmlSecNssKeyTransportCtxInit(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr in
             return(-1);
         }
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                NULL,
-                XMLSEC_ERRORS_R_KEY_NOT_FOUND,
-                "neither public or private keys are set");
+        xmlSecOtherError(XMLSEC_ERRORS_R_KEY_NOT_FOUND, NULL,
+                         "neither public or private keys are set");
         return(-1);
     }
 
@@ -359,11 +356,8 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
             return(-1);
         }
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                NULL,
-                XMLSEC_ERRORS_R_KEY_NOT_FOUND,
-                "neither public or private keys are set");
+        xmlSecOtherError(XMLSEC_ERRORS_R_KEY_NOT_FOUND, NULL,
+                         "neither public or private keys are set");
         return(-1);
     }
 

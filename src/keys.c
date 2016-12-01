@@ -1041,11 +1041,7 @@ xmlSecKeyGenerateByName(const xmlChar* name, xmlSecSize sizeBits, xmlSecKeyDataT
 
     dataId = xmlSecKeyDataIdListFindByName(xmlSecKeyDataIdsGet(), name, xmlSecKeyDataUsageAny);
     if(dataId == xmlSecKeyDataIdUnknown) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(name),
-                    XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOtherError(XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND, name, NULL);
         return(NULL);
     }
 
@@ -1256,11 +1252,7 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
         xmlSecKeyDestroy(key);
     }
 
-    xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                NULL,
-                XMLSEC_ERRORS_R_KEY_NOT_FOUND,
-                XMLSEC_ERRORS_NO_MESSAGE);
+    xmlSecOtherError(XMLSEC_ERRORS_R_KEY_NOT_FOUND, NULL, NULL);
     return(NULL);
 }
 

@@ -384,11 +384,8 @@ xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
 
     return(0);
 #else /* XMLSEC_NO_XMLENC */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xml encryption",
-                XMLSEC_ERRORS_R_DISABLED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+
+    xmlSecOtherError(XMLSEC_ERRORS_R_DISABLED, NULL, "xml encryption");
     return(-1);
 #endif /* XMLSEC_NO_XMLENC */
 }
@@ -655,11 +652,9 @@ xmlSecKeyDataNameXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, 
 
     /* compare name values */
     if((oldName != NULL) && !xmlStrEqual(oldName, newName)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "key name is already specified",
-                    XMLSEC_ERRORS_R_INVALID_KEY_DATA,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_KEY_DATA,
+                         xmlSecKeyDataKlassGetName(id),
+                         "key name is already specified");
         xmlFree(newName);
         return(-1);
     }
@@ -1010,13 +1005,11 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
 
     /* check retrieval level */
     if(keyInfoCtx->curRetrievalMethodLevel >= keyInfoCtx->maxRetrievalMethodLevel) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    NULL,
-                    XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL,
-                    "cur=%d;max=%d",
-                    keyInfoCtx->curRetrievalMethodLevel,
-                    keyInfoCtx->maxRetrievalMethodLevel);
+        xmlSecOtherError3(XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL,
+                          xmlSecKeyDataKlassGetName(id),
+                          "cur=%d;max=%d",
+                          keyInfoCtx->curRetrievalMethodLevel,
+                          keyInfoCtx->maxRetrievalMethodLevel);
         goto done;
     }
     ++keyInfoCtx->curRetrievalMethodLevel;

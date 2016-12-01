@@ -584,32 +584,28 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         xmlSecBufferPtr buffer;
 
         if(!xmlSecKeyDataCheckId(data, id)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                        XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecOtherError2(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
+                              xmlSecKeyDataGetName(data),
+                              "id=%s",
+                              xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)));
             xmlFree(str);
             return(-1);
         }
 
         buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
-        if((buffer != NULL) && ((xmlSecSize)xmlSecBufferGetSize(buffer) != len)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                        XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
-                        "cur-data-size=%d;new-data-size=%d",
-                        xmlSecBufferGetSize(buffer), len);
+        if((buffer != NULL) && (xmlSecBufferGetSize(buffer) != len)) {
+            xmlSecOtherError3(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
+                              xmlSecKeyDataGetName(data),
+                              "cur-data-size=%lu;new-data-size=%lu",
+                              (unsigned long)xmlSecBufferGetSize(buffer),
+                              (unsigned long)len);
             xmlFree(str);
             return(-1);
         }
         if((buffer != NULL) && (len > 0) && (memcmp(xmlSecBufferGetData(buffer), str, len) != 0)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                        XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
-                        "key already has a different value");
+            xmlSecOtherError(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
+                             xmlSecKeyDataGetName(data),
+                             "key already has a different value");
             xmlFree(str);
             return(-1);
         }
@@ -739,30 +735,26 @@ xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         xmlSecBufferPtr buffer;
 
         if(!xmlSecKeyDataCheckId(data, id)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                        XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecOtherError2(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
+                              xmlSecKeyDataGetName(data),
+                              "id=%s",
+                              xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)));
             return(-1);
         }
 
         buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
-        if((buffer != NULL) && ((xmlSecSize)xmlSecBufferGetSize(buffer) != bufSize)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                        XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
-                        "cur-data-size=%d;new-data-size=%d",
-                        xmlSecBufferGetSize(buffer), bufSize);
+        if((buffer != NULL) && (xmlSecBufferGetSize(buffer) != bufSize)) {
+            xmlSecOtherError3(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
+                              xmlSecKeyDataGetName(data),
+                              "cur-data-size=%lu;new-data-size=%lu",
+                              (unsigned long)xmlSecBufferGetSize(buffer),
+                              (unsigned long)bufSize);
             return(-1);
         }
         if((buffer != NULL) && (bufSize > 0) && (memcmp(xmlSecBufferGetData(buffer), buf, bufSize) != 0)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                        XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
-                        "key already has a different value");
+            xmlSecOtherError(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
+                             xmlSecKeyDataGetName(data),
+                             "key already has a different value");
             return(-1);
         }
         if(buffer != NULL) {

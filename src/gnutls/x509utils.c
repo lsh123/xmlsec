@@ -917,11 +917,8 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
 
     /* check we have private key */
     if((*priv_key) == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_KEY_NOT_FOUND,
-                    "Private key was not found in pkcs12 object");
+        xmlSecOtherError(XMLSEC_ERRORS_R_KEY_NOT_FOUND, NULL,
+                         "Private key was not found in pkcs12 object");
         goto done;
     }
 

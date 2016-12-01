@@ -701,12 +701,8 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
 
     /* check uri */
     if(xmlSecTransformUriTypeCheck(ctx->enabledUris, uri) != 1) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_URI_TYPE,
-                    "uri=%s",
-                    xmlSecErrorsSafeString(uri));
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_URI_TYPE, NULL,
+                          "uri=%s", xmlSecErrorsSafeString(uri));
         return(-1);
     }
 
@@ -1316,12 +1312,9 @@ xmlSecTransformNodeRead(xmlNodePtr node, xmlSecTransformUsage usage, xmlSecTrans
     /* check with enabled transforms list */
     if((xmlSecPtrListGetSize(&(transformCtx->enabledTransforms)) > 0) &&
        (xmlSecTransformIdListFind(&(transformCtx->enabledTransforms), id) != 1)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(id)),
-                    XMLSEC_ERRORS_R_TRANSFORM_DISABLED,
-                    "href=%s",
-                    xmlSecErrorsSafeString(href));
+        xmlSecOtherError2(XMLSEC_ERRORS_R_TRANSFORM_DISABLED,
+                          xmlSecTransformKlassGetName(id),
+                          "href=%s", xmlSecErrorsSafeString(href));
         xmlFree(href);
         return(NULL);
     }

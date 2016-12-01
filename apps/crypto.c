@@ -127,11 +127,7 @@ xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
 #else /* XMLSEC_NO_X509 */
     files += strlen(files) + 1;
     if(files[0] != '\0') {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "x509",
-                    XMLSEC_ERRORS_R_DISABLED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        fprintf(stderr, "Error: X509 support is disabled\n");
         return(-1);
     }
 #endif /* XMLSEC_NO_X509 */        
@@ -183,11 +179,7 @@ xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *f
     
     return(0);
 #else /* XMLSEC_NO_X509 */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "x509",
-                XMLSEC_ERRORS_R_DISABLED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+    fprintf(stderr, "Error: X509 support is disabled\n");
     return(-1);
 #endif /* XMLSEC_NO_X509 */
 }
@@ -281,11 +273,7 @@ xmlSecAppCryptoKeyGenerate(const char* keyKlassAndSize, const char* name, xmlSec
     /* separate key klass and size */
     p = strchr(buf, '-');
     if(p == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_DATA,
-                    "key size is not specified %s", 
+        fprintf(stderr, "Error: key size is not specified in the key definition \"%s\"\n",
                     xmlSecErrorsSafeString(buf));
         xmlFree(buf);
         return(NULL);
@@ -295,7 +283,7 @@ xmlSecAppCryptoKeyGenerate(const char* keyKlassAndSize, const char* name, xmlSec
 
     key = xmlSecKeyGenerateByName(BAD_CAST buf, size, type);
     if(key == NULL) {
-        fprintf(stderr, "Error: xmlSecKeyGenerate failed: name=%s;size=%d;type=%d\n",
+        fprintf(stderr, "Error: xmlSecKeyGenerateByName() failed: name=%s;size=%d;type=%d\n",
                 xmlSecErrorsSafeString(buf), size, (int)type);
         xmlFree(buf);
         return(NULL);   

@@ -127,12 +127,7 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
 #ifdef XMLSEC_DL_LIBLTDL
     lib->handle = lt_dlopenext((char*)lib->filename);
     if(lib->handle == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    "lt_dlopenext",
-                    NULL,
-                    XMLSEC_ERRORS_R_IO_FAILED,
-                    "filename=%s",
-                    xmlSecErrorsSafeString(lib->filename));
+        xmlSecIOError("lt_dlopenext", lib->filename, NULL);
         xmlSecCryptoDLLibraryDestroy(lib);
         return(NULL);
     }
@@ -141,12 +136,7 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
                         lt_dlsym(lib->handle, (char*)lib->getFunctionsName)
                     );
     if(getFunctions == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    "lt_dlsym",
-                    NULL,
-                    XMLSEC_ERRORS_R_IO_FAILED,
-                    "function=%s",
-                    xmlSecErrorsSafeString(lib->getFunctionsName));
+        xmlSecIOError("lt_dlsym", lib->getFunctionsName, NULL);
         xmlSecCryptoDLLibraryDestroy(lib);
         return(NULL);
     }
@@ -155,12 +145,7 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
 #ifdef XMLSEC_DL_WIN32
     lib->handle = LoadLibraryA((char*)lib->filename);
     if(lib->handle == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    "LoadLibraryA",
-                    NULL,
-                    XMLSEC_ERRORS_R_IO_FAILED,
-                    "filename=%s",
-                    xmlSecErrorsSafeString(lib->filename));
+        xmlSecIOError("LoadLibraryA", lib->filename, NULL);
         xmlSecCryptoDLLibraryDestroy(lib);
         return(NULL);
     }
@@ -172,12 +157,7 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
                         )
                     );
     if(getFunctions == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    "GetProcAddressA",
-                    NULL,
-                    XMLSEC_ERRORS_R_IO_FAILED,
-                    "function=%s",
-                    xmlSecErrorsSafeString(lib->getFunctionsName));
+        xmlSecIOError("GetProcAddressA", lib->getFunctionsName, NULL);
         xmlSecCryptoDLLibraryDestroy(lib);
         return(NULL);
     }
@@ -223,11 +203,7 @@ xmlSecCryptoDLLibraryDestroy(xmlSecCryptoDLLibraryPtr lib) {
 
         ret = lt_dlclose(lib->handle);
         if(ret != 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        "lt_dlclose",
-                        NULL,
-                        XMLSEC_ERRORS_R_IO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecIOError("lt_dlclose", NULL, NULL);
         }
     }
 #endif /* XMLSEC_DL_LIBLTDL */
@@ -238,11 +214,7 @@ xmlSecCryptoDLLibraryDestroy(xmlSecCryptoDLLibraryPtr lib) {
 
         res = FreeLibrary(lib->handle);
         if(!res) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        "FreeLibrary",
-                        NULL,
-                        XMLSEC_ERRORS_R_IO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecIOError("FreeLibrary", NULL, NULL);
         }
         }
 #endif /* XMLSEC_DL_WIN32*/
@@ -352,11 +324,7 @@ xmlSecCryptoDLInit(void) {
 #ifdef XMLSEC_DL_LIBLTDL
     ret = lt_dlinit ();
     if(ret != 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "lt_dlinit",
-                    XMLSEC_ERRORS_R_IO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecIOError("lt_dlinit", NULL, NULL);
         return(-1);
     }
 #endif /* XMLSEC_DL_LIBLTDL */
@@ -382,11 +350,7 @@ xmlSecCryptoDLShutdown(void) {
 #ifdef XMLSEC_DL_LIBLTDL
     ret = lt_dlexit ();
     if(ret != 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "lt_dlexit",
-                    XMLSEC_ERRORS_R_IO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecIOError("lt_dlexit", NULL, NULL);
     }
 #endif /* XMLSEC_DL_LIBLTDL */
 

@@ -200,7 +200,7 @@ extern "C" {
 /**
  * XMLSEC_ERRORS_R_INVALID_TRANSFORM:
  *
- * This transform is invlaid here.
+ * This transform is invalid.
  */
 #define XMLSEC_ERRORS_R_INVALID_TRANSFORM               31
 

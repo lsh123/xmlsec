@@ -347,12 +347,10 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
             xmlSecGnuTLSError("gnutls_x509_crt_list_verify", err, NULL);
             /* don't stop, continue! */
             continue;
-        } else if(verify != 0){
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "gnutls_x509_crt_list_verify",
-                        XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-                        "Verification failed: verify=%u", verify);
+        } else if(verify != 0) {
+            xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL,
+                              "gnutls_x509_crt_list_verify: verification failed: status=%du",
+                              verify);
             /* don't stop, continue! */
             continue;
         }

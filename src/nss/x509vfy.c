@@ -246,22 +246,14 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs,
             );
             break;
         case SEC_ERROR_REVOKED_CERTIFICATE:
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                        NULL,
-                        XMLSEC_ERRORS_R_CERT_REVOKED,
-                        "cert with subject name %s has been revoked",
-                        (cert != NULL) ? cert->subjectName : "(NULL)"
-            );
+            xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_REVOKED, xmlSecKeyDataStoreGetName(store),
+                              "revoked, subject=%s", xmlSecErrorsSafeString(cert->subjectName));
             break;
         default:
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                        NULL,
-                        XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-                        "cert with subject name %s could not be verified, errcode %d",
-                        (cert != NULL) ? cert->subjectName : "(NULL)",
-                        PORT_GetError());
+            xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+                              xmlSecKeyDataStoreGetName(store),
+                              "subject=%s",
+                              xmlSecErrorsSafeString(cert->subjectName));
             break;
     }
 

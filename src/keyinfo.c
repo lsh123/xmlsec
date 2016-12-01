@@ -1299,13 +1299,11 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
 
     /* check the enc level */
     if(keyInfoCtx->curEncryptedKeyLevel >= keyInfoCtx->maxEncryptedKeyLevel) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    NULL,
-                    XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL,
-                    "cur=%d;max=%d",
-                    keyInfoCtx->curEncryptedKeyLevel,
-                    keyInfoCtx->maxEncryptedKeyLevel);
+        xmlSecOtherError3(XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL,
+                          xmlSecKeyDataKlassGetName(id),
+                          "cur=%d;max=%d",
+                          (int)keyInfoCtx->curEncryptedKeyLevel,
+                          (int)keyInfoCtx->maxEncryptedKeyLevel);
         return(-1);
     }
     ++keyInfoCtx->curEncryptedKeyLevel;

@@ -321,19 +321,8 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
                 res = cert;
                 goto done;
             } else if(ret < 0) {
-                const char* err_msg;
-
-                buf[0] = '\0';
-                X509_NAME_oneline(X509_get_subject_name(err_cert), buf, sizeof buf);
-                err_msg = X509_verify_cert_error_string(err);
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                            "X509_verify_cert",
-                            XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-                            "subj=%s;err=%d;msg=%s",
-                            xmlSecErrorsSafeString(buf),
-                            err,
-                            xmlSecErrorsSafeString(err_msg));
+                /* real error */
+                xmlSecOpenSSLError("X509_verify_cert", xmlSecKeyDataStoreGetName(store));
                 goto done;
             } else if(ret == 0) {
                 const char* err_msg;
@@ -341,14 +330,14 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
                 buf[0] = '\0';
                 X509_NAME_oneline(X509_get_subject_name(err_cert), buf, sizeof buf);
                 err_msg = X509_verify_cert_error_string(err);
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                            "X509_verify_cert",
-                            XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-                            "subj=%s;err=%d;msg=%s",
-                            xmlSecErrorsSafeString(buf),
-                            err,
-                            xmlSecErrorsSafeString(err_msg));
+
+                xmlSecOtherError4(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+                                  xmlSecKeyDataStoreGetName(store),
+                                  "X509_verify_cert: subject=%s; err=%d; msg=%s",
+                                  xmlSecErrorsSafeString(buf),
+                                  err,
+                                  xmlSecErrorsSafeString(err_msg));
+
             }
         }
     }
@@ -903,11 +892,7 @@ xmlSecOpenSSLX509VerifyCertAgainstCrls(STACK_OF(X509_CRL) *crls, X509* cert) {
     for (i = 0; i < n; i++) {
         revoked = sk_X509_REVOKED_value(X509_CRL_get_REVOKED(crl), i);
         if (ASN1_INTEGER_cmp(X509_REVOKED_get0_serialNumber(revoked), X509_get_serialNumber(cert)) == 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_CERT_REVOKED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_REVOKED, NULL, NULL);
             return(0);
         }
     }

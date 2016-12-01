@@ -182,11 +182,8 @@ xmlSecMSCryptoCheckRevocation(HCERTSTORE hStore, PCCERT_CONTEXT pCert) {
 
     while((pCrl = CertEnumCRLsInStore(hStore, pCrl)) != NULL) {
         if (CertFindCertificateInCRL(pCert, pCrl, 0, NULL, &pCrlEntry) && (pCrlEntry != NULL)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "CertFindCertificateInCRL",
-                XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-                "cert found in crl list");
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL,
+                             "CertFindCertificateInCRL: cert found in crl list");
             return(FALSE);
         }
     }
@@ -212,11 +209,10 @@ xmlSecMSCryptoX509StoreCertError(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT cer
 
     /* print error */
     if (flags & CERT_STORE_SIGNATURE_FLAG) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                xmlSecErrorsSafeString(subject),
-                XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-                "signature");
+        xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+                          xmlSecKeyDataStoreGetName(store),
+                          "signature failed, subject=%s",
+                          xmlSecErrorsSafeString(subject));
     } else if (flags & CERT_STORE_TIME_VALIDITY_FLAG) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                 xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
@@ -225,24 +221,21 @@ xmlSecMSCryptoX509StoreCertError(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT cer
                 XMLSEC_ERRORS_NO_MESSAGE);
     } else if (flags & CERT_STORE_REVOCATION_FLAG) {
         if (flags & CERT_STORE_NO_CRL_FLAG) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                xmlSecErrorsSafeString(subject),
-                XMLSEC_ERRORS_R_CERT_REVOKED,
-                "no crl");
+            xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_REVOKED,
+                              xmlSecKeyDataStoreGetName(store),
+                              "no crl, subject=%s",
+                              xmlSecErrorsSafeString(subject));
         } else {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                xmlSecErrorsSafeString(subject),
-                XMLSEC_ERRORS_R_CERT_REVOKED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_REVOKED,
+                              xmlSecKeyDataStoreGetName(store),
+                              "subject=%s",
+                              xmlSecErrorsSafeString(subject));
         }
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                xmlSecErrorsSafeString(subject),
-                XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+                          xmlSecKeyDataStoreGetName(store),
+                          "subject=%s",
+                          xmlSecErrorsSafeString(subject));
     }
 
     xmlFree(subject);

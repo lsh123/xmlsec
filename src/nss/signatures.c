@@ -247,11 +247,8 @@ xmlSecNssSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
         ctx->u.sig.sigctx = SGN_NewContext(ctx->alg, ctx->u.sig.privkey);
         if (ctx->u.sig.sigctx == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "SGN_NewContext",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "error code=%d", PORT_GetError());
+            xmlSecNssError("SGN_NewContext",
+                           xmlSecTransformGetName(transform));
             return(-1);
         }
     } else {
@@ -267,11 +264,8 @@ xmlSecNssSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         ctx->u.vfy.vfyctx = VFY_CreateContext(ctx->u.vfy.pubkey, NULL,
                                               ctx->alg, NULL);
         if (ctx->u.vfy.vfyctx == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "VFY_CreateContext",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "error code=%d", PORT_GetError());
+            xmlSecNssError("VFY_CreateContext",
+                           xmlSecTransformGetName(transform));
             return(-1);
         }
     }
@@ -332,12 +326,8 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
 
         statusDer = DSAU_EncodeDerSig(&signatureDer, &signature);
         if(statusDer != SECSuccess) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "DSAU_EncodeDerSig",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "error code=%d", 
-                    PORT_GetError());
+            xmlSecNssError("DSAU_EncodeDerSig",
+                           xmlSecTransformGetName(transform));
             return(-1);
         }
         status = VFY_EndWithSignature(ctx->u.vfy.vfyctx, &signatureDer);
@@ -347,13 +337,6 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
     }
 
     if (status != SECSuccess) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "VFY_EndWithSignature",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "error code=%d", 
-                    PORT_GetError());
-
         if (PORT_GetError() == SEC_ERROR_PKCS7_BAD_SIGNATURE) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -361,6 +344,9 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
                         XMLSEC_ERRORS_R_DATA_NOT_MATCH,
                         "signature does not verify");
             transform->status = xmlSecTransformStatusFail;
+        } else {
+            xmlSecNssError("VFY_EndWithSignature",
+                           xmlSecTransformGetName(transform));
         }
         return(-1);
     }
@@ -407,21 +393,15 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
         if(transform->operation == xmlSecTransformOperationSign) {
             status = SGN_Begin(ctx->u.sig.sigctx);
             if(status != SECSuccess) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "SGN_Begin",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            "error code=%d", PORT_GetError());
+                xmlSecNssError("SGN_Begin",
+                               xmlSecTransformGetName(transform));
                 return(-1);
             }
         } else {
             status = VFY_Begin(ctx->u.vfy.vfyctx);
             if(status != SECSuccess) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "VFY_Begin",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            "error code=%d", PORT_GetError());
+                xmlSecNssError("VFY_Begin",
+                               xmlSecTransformGetName(transform));
                 return(-1);
             }
         }
@@ -434,21 +414,15 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
         if(transform->operation == xmlSecTransformOperationSign) {
             status = SGN_Update(ctx->u.sig.sigctx, xmlSecBufferGetData(in), inSize);
             if(status != SECSuccess) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "SGN_Update",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            "error code=%d", PORT_GetError());
+                xmlSecNssError("SGN_Update",
+                               xmlSecTransformGetName(transform));
                 return(-1);
             }
         } else {
             status = VFY_Update(ctx->u.vfy.vfyctx, xmlSecBufferGetData(in), inSize);
             if(status != SECSuccess) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "VFY_Update",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            "error code=%d", PORT_GetError());
+                xmlSecNssError("VFY_Update",
+                               xmlSecTransformGetName(transform));
                 return(-1);
             }
         }
@@ -467,11 +441,8 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
             memset(&signature, 0, sizeof(signature));
             status = SGN_End(ctx->u.sig.sigctx, &signature);
             if(status != SECSuccess) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "SGN_End",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            "error code=%d", PORT_GetError());
+                xmlSecNssError("SGN_End",
+                               xmlSecTransformGetName(transform));
                 return(-1);
             }
 
@@ -481,12 +452,8 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 
                 signatureClr = DSAU_DecodeDerSig(&signature);
                 if(signatureClr == NULL) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "DSAU_EncodeDerSig",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "error code=%d", 
-                        PORT_GetError());
+                    xmlSecNssError("DSAU_DecodeDerSig",
+                                   xmlSecTransformGetName(transform));
                     SECITEM_FreeItem(&signature, PR_FALSE);
                     return(-1);
                 }

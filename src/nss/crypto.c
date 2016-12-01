@@ -341,7 +341,8 @@ xmlSecNssGetInternalKeySlot()
     if(PK11_IsLoggedIn(slot, NULL) != PR_TRUE) {
         rv = PK11_Authenticate(slot, PR_TRUE, NULL);
         if (rv != SECSuccess) {
-            xmlSecNssError("PK11_Authenticate", NULL);
+            xmlSecNssError2("PK11_Authenticate", NULL,
+                            "token=%s", xmlSecErrorsSafeString(PK11_GetTokenName(slot)));
             return NULL;
         }
     }

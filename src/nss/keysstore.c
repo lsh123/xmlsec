@@ -318,11 +318,7 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         if (keyReq->keyType & xmlSecKeyDataTypePublic) {
             pubkey = CERT_ExtractPublicKey(cert);
             if (pubkey == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "CERT_ExtractPublicKey",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecNssError("CERT_ExtractPublicKey", NULL);
                 goto done;
             }
         }
@@ -330,11 +326,7 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         if (keyReq->keyType & xmlSecKeyDataTypePrivate) {
             privkey = PK11_FindKeyByAnyCert(cert, NULL);
             if (privkey == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "PK11_FindKeyByAnyCert",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecNssError("PK11_FindKeyByAnyCert", NULL);
                 goto done;
             }
         }
@@ -368,12 +360,8 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         }
         cert = CERT_DupCertificate(cert);
         if (cert == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "CERT_DupCertificate",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "data=%s",
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+            xmlSecNssError("CERT_DupCertificate",
+                           xmlSecKeyDataGetName(x509Data));
             goto done;
         }
 

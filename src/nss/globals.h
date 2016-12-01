@@ -24,4 +24,45 @@
 /* Include common error helper macros. */
 #include "../errors_helpers.h"
 
+/**
+ * xmlSecNssError:
+ * @errorFunction:      the failed function name.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting NSS crypro errors.
+ */
+#define xmlSecNssError(errorFunction, errorObject) \
+    {                                                       \
+        PRInt32 error_code = PR_GetError();                 \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    (errorFunction),                        \
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
+                    "NSS error: %ld",                       \
+                    (long int)error_code                    \
+        );                                                  \
+    }
+
+/**
+ * xmlSecNssError2:
+ * @errorFunction:      the failed function name.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ * @msg:                the extra message.
+ * @param:              the extra message param.
+ *
+ * Macro. The XMLSec library macro for reporting NSS crypro errors.
+ */
+#define xmlSecNssError2(errorFunction, errorObject, msg, param) \
+    {                                                       \
+        PRInt32 error_code = PR_GetError();                 \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    (errorFunction),                        \
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
+                    msg "; NSS error: %ld",                 \
+                    (param),                                \
+                    (long int)error_code                    \
+        );                                                  \
+    }
+
 #endif /* ! __XMLSEC_GLOBALS_H__ */

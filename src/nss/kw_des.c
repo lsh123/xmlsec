@@ -382,43 +382,27 @@ xmlSecNssKWDes3Sha1(void * context,
     /* Create a pk11ctx for hashing (digesting) */
     pk11ctx = PK11_CreateDigestContext(SEC_OID_SHA1);
     if (pk11ctx == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "PK11_CreateDigestContext",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("PK11_CreateDigestContext", NULL);
         return(-1);
     }
 
     status = PK11_DigestBegin(pk11ctx);
     if (status != SECSuccess) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "PK11_DigestBegin",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("PK11_DigestBegin", NULL);
         PK11_DestroyContext(pk11ctx, PR_TRUE);
         return(-1);
     }
 
     status = PK11_DigestOp(pk11ctx, in, inSize);
     if (status != SECSuccess) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "PK11_DigestOp",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("PK11_DigestOp", NULL);
         PK11_DestroyContext(pk11ctx, PR_TRUE);
         return(-1);
     }
 
     status = PK11_DigestFinal(pk11ctx, out, &outLen, outSize);
     if (status != SECSuccess) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "PK11_DigestFinal",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("PK11_DigestFinal", NULL);
         PK11_DestroyContext(pk11ctx, PR_TRUE);
         return(-1);
     }
@@ -441,11 +425,7 @@ xmlSecNssKWDes3GenerateRandom(void * context,
 
     status = PK11_GenerateRandom(out, outSize);
     if(status != SECSuccess) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "PK11_GenerateRandom",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("PK11_GenerateRandom", NULL);
         return(-1);
     }
 
@@ -545,11 +525,7 @@ xmlSecNssKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
     cipherMech = CKM_DES3_CBC;
     slot = PK11_GetBestSlot(cipherMech, NULL);
     if (slot == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "PK11_GetBestSlot",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("PK11_GetBestSlot", NULL);
         goto done;
     }
 
@@ -558,11 +534,7 @@ xmlSecNssKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
     symKey = PK11_ImportSymKey(slot, cipherMech, PK11_OriginUnwrap,
                                enc ? CKA_ENCRYPT : CKA_DECRYPT, &keyItem, NULL);
     if (symKey == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "PK11_ImportSymKey",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("PK11_ImportSymKey", NULL);
         goto done;
     }
 
@@ -571,11 +543,7 @@ xmlSecNssKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
 
     param = PK11_ParamFromIV(cipherMech, &ivItem);
     if (param == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "PK11_ParamFromIV",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("PK11_ParamFromIV", NULL);
         goto done;
     }
 
@@ -583,11 +551,7 @@ xmlSecNssKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
                                             enc ? CKA_ENCRYPT : CKA_DECRYPT,
                                             symKey, param);
     if (pk11ctx == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "PK11_CreateContextBySymKey",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("PK11_CreateContextBySymKey", NULL);
         goto done;
     }
 
@@ -595,22 +559,14 @@ xmlSecNssKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
     status = PK11_CipherOp(pk11ctx, out, &tmp1_outlen, outSize,
                        (unsigned char *)in, inSize);
     if (status != SECSuccess) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "PK11_CipherOp",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("PK11_CipherOp", NULL);
         goto done;
     }
 
     status = PK11_DigestFinal(pk11ctx, out+tmp1_outlen,
                           &tmp2_outlen, outSize-tmp1_outlen);
     if (status != SECSuccess) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "PK11_DigestFinal",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("PK11_DigestFinal", NULL);
         goto done;
     }
 

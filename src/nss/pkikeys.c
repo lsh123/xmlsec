@@ -118,11 +118,7 @@ xmlSecNSSPKIKeyDataCtxDup(xmlSecNssPKIKeyDataCtxPtr ctxDst,
     if (ctxSrc->privkey != NULL) {
         ctxDst->privkey = SECKEY_CopyPrivateKey(ctxSrc->privkey);
         if(ctxDst->privkey == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "SECKEY_CopyPrivateKey",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                                "error code=%d", PORT_GetError());
+            xmlSecNssError("SECKEY_CopyPrivateKey", NULL);
             return(-1);
         }
     }
@@ -130,11 +126,7 @@ xmlSecNSSPKIKeyDataCtxDup(xmlSecNssPKIKeyDataCtxPtr ctxDst,
     if (ctxSrc->pubkey != NULL) {
         ctxDst->pubkey = SECKEY_CopyPublicKey(ctxSrc->pubkey);
         if(ctxDst->pubkey == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "SECKEY_CopyPublicKey",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                                "error code=%d", PORT_GetError());
+            xmlSecNssError("SECKEY_CopyPublicKey", NULL);
             return(-1);
         }
     }
@@ -147,30 +139,30 @@ xmlSecNssPKIKeyDataAdoptKey(xmlSecKeyDataPtr data,
                             SECKEYPublicKey  *pubkey)
 {
     xmlSecNssPKIKeyDataCtxPtr ctx;
-        KeyType                                 pubType = nullKey ;
-        KeyType                                 priType = nullKey ;
+    KeyType pubType = nullKey;
+    KeyType priType = nullKey;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
     xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecNssPKIKeyDataSize), -1);
 
-        if( privkey != NULL ) {
-                priType = SECKEY_GetPrivateKeyType( privkey ) ;
-        }
+    if(privkey != NULL) {
+        priType = SECKEY_GetPrivateKeyType(privkey);
+    }
 
-        if( pubkey != NULL ) {
-                pubType = SECKEY_GetPublicKeyType( pubkey ) ;
-        }
+    if(pubkey != NULL) {
+        pubType = SECKEY_GetPublicKeyType(pubkey);
+    }
 
-        if( priType != nullKey && pubType != nullKey ) {
-                if( pubType != priType ) {
-                        xmlSecError( XMLSEC_ERRORS_HERE ,
-                                NULL ,
-                                NULL ,
-                                XMLSEC_ERRORS_R_CRYPTO_FAILED ,
-                                "different type of private and public key" ) ;
-                        return -1 ;
-                }
+    if(priType != nullKey && pubType != nullKey) {
+        if(pubType != priType) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    NULL,
+                    XMLSEC_ERRORS_R_INVALID_TYPE,
+                    "different type of private and public key");
+            return -1;
         }
+    }
 
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
@@ -204,29 +196,29 @@ xmlSecNssPKIAdoptKey(SECKEYPrivateKey *privkey,
 {
     xmlSecKeyDataPtr data = NULL;
     int ret;
-        KeyType                                 pubType = nullKey ;
-        KeyType                                 priType = nullKey ;
+    KeyType pubType = nullKey;
+    KeyType priType = nullKey;
 
-        if( privkey != NULL ) {
-                priType = SECKEY_GetPrivateKeyType( privkey ) ;
+    if(privkey != NULL) {
+        priType = SECKEY_GetPrivateKeyType(privkey);
+    }
+
+    if(pubkey != NULL) {
+        pubType = SECKEY_GetPublicKeyType(pubkey);
+    }
+
+    if(priType != nullKey && pubType != nullKey) {
+        if(pubType != priType) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    NULL,
+                    XMLSEC_ERRORS_R_INVALID_TYPE,
+                    "different type of private and public key");
+            return(NULL);
         }
+    }
 
-        if( pubkey != NULL ) {
-                pubType = SECKEY_GetPublicKeyType( pubkey ) ;
-        }
-
-        if( priType != nullKey && pubType != nullKey ) {
-                if( pubType != priType ) {
-                        xmlSecError( XMLSEC_ERRORS_HERE ,
-                                NULL ,
-                                NULL ,
-                                XMLSEC_ERRORS_R_CRYPTO_FAILED ,
-                                "different type of private and public key" ) ;
-                        return( NULL ) ;
-                }
-        }
-
-        pubType = priType != nullKey ? priType : pubType ;
+    pubType = (priType != nullKey) ? priType : pubType;
     switch(pubType) {
 #ifndef XMLSEC_NO_RSA
     case rsaKey:
@@ -575,34 +567,22 @@ xmlSecNssKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     slot = PK11_GetBestSlot(CKM_DSA, NULL);
     if(slot == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "PK11_GetBestSlot",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("PK11_GetBestSlot", xmlSecKeyDataKlassGetName(id));
         ret = -1;
         goto done;
     }
 
     arena = PORT_NewArena(DER_DEFAULT_CHUNKSIZE);
     if(arena == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "PORT_NewArena",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "error code=%d", PORT_GetError());
+        xmlSecNssError("PORT_NewArena", xmlSecKeyDataKlassGetName(id));
         ret = -1;
         goto done;
     }
 
-    pubkey = (SECKEYPublicKey *)PORT_ArenaZAlloc(arena,
-                                                 sizeof(SECKEYPublicKey));
-    if(pubkey == NULL ) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "PORT_ArenaZAlloc",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "error code=%d", PORT_GetError());
+    pubkey = (SECKEYPublicKey *)PORT_ArenaZAlloc(arena, sizeof(SECKEYPublicKey));
+    if(pubkey == NULL) {
+        xmlSecNssError2("PORT_ArenaZAlloc", xmlSecKeyDataKlassGetName(id),
+                        "size=%lu", (unsigned long)sizeof(SECKEYPublicKey));
         PORT_FreeArena(arena, PR_FALSE);
         ret = -1;
         goto done;
@@ -699,17 +679,14 @@ xmlSecNssKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     handle = PK11_ImportPublicKey(slot, pubkey, PR_FALSE);
     if(handle == CK_INVALID_HANDLE) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "PK11_ImportPublicKey",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("PK11_ImportPublicKey",
+                       xmlSecKeyDataKlassGetName(id));
         ret = -1;
         goto done;
     }
 
     data = xmlSecKeyDataCreate(id);
-    if(data == NULL ) {
+    if(data == NULL) {
         xmlSecInternalError("xmlSecKeyDataCreate",
                             xmlSecKeyDataKlassGetName(id));
         ret = -1;
@@ -851,36 +828,36 @@ xmlSecNssKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKe
     j = PQG_PBITS_TO_INDEX(sizeBits);
     rv = PK11_PQG_ParamGen(j, &pqgParams, &pqgVerify);
     if (rv != SECSuccess) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                    "PK11_PQG_ParamGen",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "size=%d", sizeBits);
+        xmlSecNssError2("PK11_PQG_ParamGen", xmlSecKeyDataGetName(data),
+                        "size=%lu", (unsigned long)sizeBits);
         goto done;
     }
 
     rv = PK11_PQG_VerifyParams(pqgParams, pqgVerify, &res);
     if (rv != SECSuccess || res != SECSuccess) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                    "PK11_PQG_VerifyParams",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "size=%d", sizeBits);
+        xmlSecNssError2("PK11_PQG_VerifyParams", xmlSecKeyDataGetName(data),
+                        "size=%lu", (unsigned long)sizeBits);
         goto done;
     }
 
     slot = PK11_GetBestSlot(CKM_DSA_KEY_PAIR_GEN, NULL);
-    PK11_Authenticate(slot, PR_TRUE, NULL /* default pwd callback */);
+    if(slot == NULL) {
+        xmlSecNssError("PK11_GetBestSlot", xmlSecKeyDataGetName(data));
+        goto done;
+    }
+
+    rv = PK11_Authenticate(slot, PR_TRUE, NULL /* default pwd callback */);
+    if (rv != SECSuccess) {
+        xmlSecNssError2("PK11_Authenticate", xmlSecKeyDataGetName(data),
+                        "token=%s", xmlSecErrorsSafeString(PK11_GetTokenName(slot)));
+        goto done;
+    }
+
     privkey = PK11_GenerateKeyPair(slot, CKM_DSA_KEY_PAIR_GEN, pqgParams,
                                    &pubkey, PR_FALSE, PR_TRUE, NULL);
 
     if((privkey == NULL) || (pubkey == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                    "PK11_GenerateKeyPair",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
-
+        xmlSecNssError("PK11_GenerateKeyPair", xmlSecKeyDataGetName(data));
         goto done;
     }
 
@@ -1130,34 +1107,22 @@ xmlSecNssKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     slot = PK11_GetBestSlot(CKM_RSA_PKCS, NULL);
     if(slot == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "PK11_GetBestSlot",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("PK11_GetBestSlot", xmlSecKeyDataKlassGetName(id));
         ret = -1;
         goto done;
     }
 
     arena = PORT_NewArena(DER_DEFAULT_CHUNKSIZE);
     if(arena == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "PORT_NewArena",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "error code=%d", PORT_GetError());
+        xmlSecNssError("PORT_NewArena", xmlSecKeyDataKlassGetName(id));
         ret = -1;
         goto done;
     }
 
     pubkey = (SECKEYPublicKey *)PORT_ArenaZAlloc(arena,
                                                  sizeof(SECKEYPublicKey));
-    if(pubkey == NULL ) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "PORT_ArenaZAlloc",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "error code=%d", PORT_GetError());
+    if(pubkey == NULL) {
+        xmlSecNssError("PORT_ArenaZAlloc", xmlSecKeyDataKlassGetName(id));
         PORT_FreeArena(arena, PR_FALSE);
         ret = -1;
         goto done;
@@ -1208,7 +1173,7 @@ xmlSecNssKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     }
 
     data = xmlSecKeyDataCreate(id);
-    if(data == NULL ) {
+    if(data == NULL) {
         xmlSecInternalError("xmlSecKeyDataCreate",
                             xmlSecKeyDataKlassGetName(id));
         ret = -1;
@@ -1312,7 +1277,8 @@ xmlSecNssKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKe
     PK11SlotInfo *slot = NULL;
     SECKEYPrivateKey *privkey = NULL;
     SECKEYPublicKey  *pubkey = NULL;
-    int               ret = -1;
+    SECStatus rv;
+    int  ret = -1;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataRsaId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
@@ -1321,17 +1287,22 @@ xmlSecNssKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKe
     params.pe = 65537;
 
     slot = PK11_GetBestSlot(CKM_RSA_PKCS_KEY_PAIR_GEN, NULL);
-    PK11_Authenticate(slot, PR_TRUE, NULL /* default pwd callback */);
+    if(slot == NULL) {
+        xmlSecNssError("PK11_GetBestSlot", xmlSecKeyDataGetName(data));
+        goto done;
+    }
+
+    rv = PK11_Authenticate(slot, PR_TRUE, NULL /* default pwd callback */);
+    if (rv != SECSuccess) {
+        xmlSecNssError2("PK11_Authenticate", xmlSecKeyDataGetName(data),
+                        "token=%s", xmlSecErrorsSafeString(PK11_GetTokenName(slot)));
+        goto done;
+    }
+
     privkey = PK11_GenerateKeyPair(slot, CKM_RSA_PKCS_KEY_PAIR_GEN, &params,
                                    &pubkey, PR_FALSE, PR_TRUE, NULL);
-
     if(privkey == NULL || pubkey == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                    "PK11_GenerateKeyPair",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "error code=%d", PORT_GetError());
-
+        xmlSecNssError("PK11_GenerateKeyPair", xmlSecKeyDataGetName(data));
         goto done;
     }
 

@@ -65,10 +65,10 @@ static int      xmlSecNssBlockCipherCtxFinal            (xmlSecNssBlockCipherCtx
                                                          xmlSecTransformCtxPtr transformCtx);
 static int
 xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
-                                xmlSecBufferPtr in, xmlSecBufferPtr out,
-                                int encrypt,
-                                const xmlChar* cipherName,
-                                xmlSecTransformCtxPtr transformCtx) {
+                            xmlSecBufferPtr in, xmlSecBufferPtr out,
+                            int encrypt,
+                            const xmlChar* cipherName,
+                            xmlSecTransformCtxPtr transformCtx) {
     SECItem keyItem;
     SECItem ivItem;
     PK11SlotInfo* slot;
@@ -94,18 +94,16 @@ xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
         /* generate random iv */
         rv = PK11_GenerateRandom(ctx->iv, ivLen);
         if(rv != SECSuccess) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(cipherName),
-                        "PK11_GenerateRandom",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "size=%d", ivLen);
+            xmlSecNssError2("PK11_GenerateRandom", cipherName,
+                            "size=%d", ivLen);
             return(-1);
         }
 
         /* write iv to the output */
         ret = xmlSecBufferAppend(out, ctx->iv, ivLen);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferAppend", cipherName, "size=%d", ivLen);
+            xmlSecInternalError2("xmlSecBufferAppend", cipherName,
+                                 "size=%d", ivLen);
             return(-1);
         }
 
@@ -123,7 +121,8 @@ xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
         /* and remove from input */
         ret = xmlSecBufferRemoveHead(in, ivLen);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName, "size=%d", ivLen);
+            xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName,
+                                 "size=%d", ivLen);
             return(-1);
         }
     }
@@ -137,22 +136,14 @@ xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
 
     slot = PK11_GetBestSlot(ctx->cipher, NULL);
     if(slot == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(cipherName),
-                    "PK11_GetBestSlot",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("PK11_GetBestSlot", cipherName);
         return(-1);
     }
 
     symKey = PK11_ImportSymKey(slot, ctx->cipher, PK11_OriginDerive,
                                CKA_SIGN, &keyItem, NULL);
     if(symKey == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(cipherName),
-                    "PK11_ImportSymKey",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("PK11_ImportSymKey", cipherName);
         PK11_FreeSlot(slot);
         return(-1);
     }
@@ -161,11 +152,7 @@ xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
                         (encrypt) ? CKA_ENCRYPT : CKA_DECRYPT,
                         symKey, &ivItem);
     if(ctx->cipherCtx == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(cipherName),
-                    "PK11_CreateContextBySymKey",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("PK11_CreateContextBySymKey", cipherName);
         PK11_FreeSymKey(symKey);
         PK11_FreeSlot(slot);
         return(-1);
@@ -229,11 +216,7 @@ xmlSecNssBlockCipherCtxUpdate(xmlSecNssBlockCipherCtxPtr ctx,
     rv = PK11_CipherOp(ctx->cipherCtx, outBuf, &outLen, inSize + blockLen,
                         xmlSecBufferGetData(in), inSize);
     if(rv != SECSuccess) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(cipherName),
-                    "PK11_CipherOp",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("PK11_CipherOp", cipherName);
         return(-1);
     }
     xmlSecAssert2((xmlSecSize)outLen == inSize, -1);
@@ -300,11 +283,8 @@ xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
         if((xmlSecSize)blockLen > (inSize + 1)) {
             rv = PK11_GenerateRandom(inBuf + inSize, blockLen - inSize - 1);
             if(rv != SECSuccess) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(cipherName),
-                            "PK11_GenerateRandom",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            "size=%d", blockLen - inSize - 1);
+                xmlSecNssError2("PK11_GenerateRandom", cipherName,
+                                "size=%d", ((int)blockLen - inSize - 1));
                 return(-1);
             }
         }
@@ -333,11 +313,7 @@ xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
     rv = PK11_CipherOp(ctx->cipherCtx, outBuf, &outLen, 2 * blockLen,
                         xmlSecBufferGetData(in), inSize);
     if(rv != SECSuccess) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(cipherName),
-                    "PK11_CipherOp",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("PK11_CipherOp", cipherName);
         return(-1);
     }
     xmlSecAssert2((xmlSecSize)outLen == inSize, -1);

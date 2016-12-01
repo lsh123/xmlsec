@@ -73,22 +73,15 @@ xmlSecNssAppInit(const char* config) {
     if(config) {
         rv = NSS_InitReadWrite(config);
         if(rv != SECSuccess) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "NSS_InitReadWrite",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "config=%s",
-                        xmlSecErrorsSafeString(config));
+            xmlSecNssError2("NSS_InitReadWrite", NULL,
+                            "config=%s",
+                            xmlSecErrorsSafeString(config));
             return(-1);
         }
     } else {
         rv = NSS_NoDB_Init(NULL);
         if(rv != SECSuccess) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "NSS_NoDB_Init",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecNssError("NSS_NoDB_Init", NULL);
             return(-1);
         }
     }
@@ -131,11 +124,7 @@ xmlSecNssAppShutdown(void) {
     PK11_LogoutAll();
     rv = NSS_Shutdown();
     if(rv != SECSuccess) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "NSS_Shutdown",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("NSS_Shutdown", NULL);
         return(-1);
     }
     return(0);
@@ -149,11 +138,7 @@ xmlSecNssAppCreateSECItem(SECItem *contents, const xmlSecByte* data, xmlSecSize 
 
     contents->data = 0;
     if (!SECITEM_AllocItem(NULL, contents, dataSize)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "SECITEM_AllocItem",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("SECITEM_AllocItem", NULL);
         return(-1);
     }
 
@@ -200,11 +185,7 @@ xmlSecNssAppReadSECItem(SECItem *contents, const char *fn) {
 
     contents->data = 0;
     if (!SECITEM_AllocItem(NULL, contents, info.size)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "SECITEM_AllocItem",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("SECITEM_AllocItem", NULL);
         goto done;
     }
 
@@ -420,11 +401,7 @@ xmlSecNssAppDerKeyLoadSECItem(SECItem* secItem) {
      */
     slot = xmlSecNssGetInternalKeySlot();
     if (slot == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecNssGetInternalKeySlot",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInternalError("xmlSecNssGetInternalKeySlot", NULL);
         goto done;
     }
 
@@ -444,20 +421,12 @@ xmlSecNssAppDerKeyLoadSECItem(SECItem* secItem) {
         /* TRY PUBLIC KEY */
         spki = SECKEY_DecodeDERSubjectPublicKeyInfo(secItem);
         if (spki == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "SECKEY_DecodeDERSubjectPublicKeyInfo",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecNssError("SECKEY_DecodeDERSubjectPublicKeyInfo", NULL);
         }
 
         pubkey = SECKEY_ExtractPublicKey(spki);
         if (pubkey == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "SECKEY_ExtractPublicKey",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecNssError("SECKEY_ExtractPublicKey", NULL);
             goto done;
         }
     }
@@ -619,11 +588,8 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
         cert = __CERT_NewTempCertificate(CERT_GetDefaultCertDB(),
                                          secItem, NULL, PR_FALSE, PR_TRUE);
         if(cert == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "__CERT_NewTempCertificate",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "format=%d", format);
+            xmlSecNssError2("__CERT_NewTempCertificate", NULL,
+                            "format=%d", (int)format);
             return(-1);
         }
         break;
@@ -632,7 +598,7 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
                     NULL,
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_FORMAT,
-                    "format=%d", format);
+                    "format=%d", (int)format);
         return(-1);
     }
 
@@ -786,83 +752,51 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
     pwditem.data = (unsigned char *)pwd;
     pwditem.len = strlen(pwd)+1;
     if (!SECITEM_AllocItem(NULL, &uc2_pwditem, 2*pwditem.len)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "SECITEM_AllocItem",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("SECITEM_AllocItem", NULL);
         goto done;
     }
 
     if (PORT_UCS2_ASCIIConversion(PR_TRUE, pwditem.data, pwditem.len,
                               uc2_pwditem.data, 2*pwditem.len,
                               &(uc2_pwditem.len), 0) == PR_FALSE) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "PORT_UCS2_ASCIIConversion",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("PORT_UCS2_ASCIIConversion", NULL);
         goto done;
     }
 
     p12ctx = SEC_PKCS12DecoderStart(&uc2_pwditem, slot, NULL,
                                     NULL, NULL, NULL, NULL, NULL);
     if (p12ctx == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "SEC_PKCS12DecoderStart",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("SEC_PKCS12DecoderStart", NULL);
         goto done;
     }
 
     rv = SEC_PKCS12DecoderUpdate(p12ctx, secItem->data, secItem->len);
     if (rv != SECSuccess) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "SEC_PKCS12DecoderUpdate",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("SEC_PKCS12DecoderUpdate", NULL);
         goto done;
     }
 
     rv = SEC_PKCS12DecoderVerify(p12ctx);
     if (rv != SECSuccess) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "SEC_PKCS12DecoderVerify",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("SEC_PKCS12DecoderVerify", NULL);
         goto done;
     }
 
     rv = SEC_PKCS12DecoderValidateBags(p12ctx, xmlSecNssAppNicknameCollisionCallback);
     if (rv != SECSuccess) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "SEC_PKCS12DecoderValidateBags",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("SEC_PKCS12DecoderValidateBags", NULL);
         goto done;
     }
 
     rv = SEC_PKCS12DecoderImportBags(p12ctx);
     if (rv != SECSuccess) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "SEC_PKCS12DecoderImportBags",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("SEC_PKCS12DecoderImportBags", NULL);
         goto done;
     }
 
     certlist = SEC_PKCS12DecoderGetCerts(p12ctx);
     if (certlist == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "SEC_PKCS12DecoderGetCerts",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("SEC_PKCS12DecoderGetCerts", NULL);
         goto done;
     }
 
@@ -873,9 +807,7 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
         goto done;
     }
 
-    for (head = CERT_LIST_HEAD(certlist);
-         !CERT_LIST_END(head, certlist);
-         head = CERT_LIST_NEXT(head)) {
+    for (head = CERT_LIST_HEAD(certlist); !CERT_LIST_END(head, certlist); head = CERT_LIST_NEXT(head)) {
         cert = head->cert;
         privkey = PK11_FindKeyByAnyCert(cert, NULL);
 
@@ -889,16 +821,14 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
             } else {
                 pubkey = CERT_ExtractPublicKey(cert);
                 if (pubkey == NULL) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                NULL,
-                                "CERT_ExtractPublicKey",
-                                XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                                XMLSEC_ERRORS_NO_MESSAGE);
+                    xmlSecNssError("CERT_ExtractPublicKey",
+                                   xmlSecKeyDataGetName(x509Data));
                     goto done;
                 }
                 data = xmlSecNssPKIAdoptKey(privkey, pubkey);
                 if(data == NULL) {
-                    xmlSecInternalError("xmlSecNssPKIAdoptKey", NULL);
+                    xmlSecInternalError("xmlSecNssPKIAdoptKey",
+                                        xmlSecKeyDataGetName(x509Data));
                     goto done;
                 }
 
@@ -907,12 +837,8 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
 
                 tmpcert = CERT_DupCertificate(cert);
                 if(tmpcert == NULL) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                NULL,
-                                "CERT_DupCertificate",
-                                XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                                "data=%s",
-                                xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+                    xmlSecNssError("CERT_DupCertificate",
+                                   xmlSecKeyDataGetName(x509Data));
                     goto done;
                 }
 
@@ -929,12 +855,8 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
 
         tmpcert = CERT_DupCertificate(cert);
         if(tmpcert == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "CERT_DupCertificate",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "data=%s",
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+            xmlSecNssError("CERT_DupCertificate",
+                           xmlSecKeyDataGetName(x509Data));
             goto done;
         }
         ret = xmlSecNssKeyDataX509AdoptCert(x509Data, tmpcert);
@@ -1032,11 +954,8 @@ xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format)
         cert = __CERT_NewTempCertificate(CERT_GetDefaultCertDB(),
                                          secItem, NULL, PR_FALSE, PR_TRUE);
         if(cert == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "__CERT_NewTempCertificate",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "format=%d", format);
+            xmlSecNssError2("__CERT_NewTempCertificate", NULL,
+                            "format=%d", (int)format);
             return(NULL);
         }
         break;
@@ -1045,7 +964,7 @@ xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format)
                     NULL,
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_FORMAT,
-                    "format=%d", format);
+                    "format=%d", (int)format);
         return(NULL);
     }
 
@@ -1217,11 +1136,8 @@ xmlSecNssAppKeysMngrCertLoadSECItem(xmlSecKeysMngrPtr mngr, SECItem* secItem,
         cert = __CERT_NewTempCertificate(CERT_GetDefaultCertDB(),
                                          secItem, NULL, PR_FALSE, PR_TRUE);
         if(cert == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "__CERT_NewTempCertificate",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "format=%d", format);
+            xmlSecNssError2("__CERT_NewTempCertificate", NULL,
+                            "format=%d", (int)format);
             return(-1);
         }
         break;
@@ -1230,7 +1146,7 @@ xmlSecNssAppKeysMngrCertLoadSECItem(xmlSecKeysMngrPtr mngr, SECItem* secItem,
                     NULL,
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_FORMAT,
-                    "format=%d", format);
+                    "format=%d", (int)format);
         return(-1);
     }
 

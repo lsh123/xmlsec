@@ -402,11 +402,9 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
             /* create key */
             aeskey = xmlSecNssMakeAesKey(xmlSecBufferGetData(&(ctx->keyBuffer)), keySize, 1); /* encrypt */
             if(aeskey == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecNssMakeAesKey",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError2("xmlSecNssMakeAesKey",
+                                     xmlSecTransformGetName(transform),
+                                     "keySize=%lu", (unsigned long)keySize);
                 return(-1);
             }
 
@@ -416,8 +414,11 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
                                     xmlSecBufferGetData(in), inSize,
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecKWAesEncode",
-                                    xmlSecTransformGetName(transform));
+                xmlSecInternalError3("xmlSecKWAesEncode",
+                                    xmlSecTransformGetName(transform),
+                                    "inSize=%lu; outSize=%lu",
+                                    (unsigned long)inSize,
+                                    (unsigned long)outSize);
                 PK11_FreeSymKey(aeskey);
                 return(-1);
             }
@@ -430,11 +431,9 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
             /* create key */
             aeskey = xmlSecNssMakeAesKey(xmlSecBufferGetData(&(ctx->keyBuffer)), keySize, 0); /* decrypt */
             if(aeskey == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecNssMakeAesKey",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecInternalError2("xmlSecNssMakeAesKey",
+                                     xmlSecTransformGetName(transform),
+                                     "keySize=%lu", (unsigned long)keySize);
                 return(-1);
             }
 
@@ -443,8 +442,11 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
                                     xmlSecBufferGetData(in), inSize,
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecKWAesDecode",
-                                    xmlSecTransformGetName(transform));
+                xmlSecInternalError3("xmlSecKWAesDecode",
+                                     xmlSecTransformGetName(transform),
+                                     "inSize=%lu; outSize=%lu",
+                                     (unsigned long)inSize,
+                                     (unsigned long)outSize);
                 PK11_FreeSymKey(aeskey);
                 return(-1);
             }
@@ -546,11 +548,7 @@ xmlSecNssMakeAesKey(const xmlSecByte *key, xmlSecSize keySize, int enc) {
     cipherMech = CKM_AES_ECB;
     slot = PK11_GetBestSlot(cipherMech, NULL);
     if (slot == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "PK11_GetBestSlot",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("PK11_GetBestSlot", NULL);
         goto done;
     }
 
@@ -559,11 +557,7 @@ xmlSecNssMakeAesKey(const xmlSecByte *key, xmlSecSize keySize, int enc) {
     aeskey = PK11_ImportSymKey(slot, cipherMech, PK11_OriginUnwrap,
                                enc ? CKA_ENCRYPT : CKA_DECRYPT, &keyItem, NULL);
     if (aeskey == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "PK11_ImportSymKey",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("PK11_ImportSymKey", NULL);
         goto done;
     }
 
@@ -593,11 +587,7 @@ xmlSecNssAesOp(PK11SymKey *aeskey, const xmlSecByte *in, xmlSecByte *out, int en
     cipherMech = CKM_AES_ECB;
     SecParam = PK11_ParamFromIV(cipherMech, NULL);
     if (SecParam == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "PK11_ParamFromIV",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("PK11_ParamFromIV", NULL);
         goto done;
     }
 
@@ -605,11 +595,7 @@ xmlSecNssAesOp(PK11SymKey *aeskey, const xmlSecByte *in, xmlSecByte *out, int en
                                             enc ? CKA_ENCRYPT : CKA_DECRYPT,
                                             aeskey, SecParam);
     if (EncContext == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "PK11_CreateContextBySymKey",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("PK11_CreateContextBySymKey", NULL);
         goto done;
     }
 
@@ -618,22 +604,14 @@ xmlSecNssAesOp(PK11SymKey *aeskey, const xmlSecByte *in, xmlSecByte *out, int en
                        XMLSEC_KW_AES_BLOCK_SIZE, (unsigned char *)in,
                        XMLSEC_KW_AES_BLOCK_SIZE);
     if (rv != SECSuccess) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "PK11_CipherOp",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("PK11_CipherOp", NULL);
         goto done;
     }
 
     rv = PK11_DigestFinal(EncContext, out+tmp1_outlen,
                           &tmp2_outlen, XMLSEC_KW_AES_BLOCK_SIZE-tmp1_outlen);
     if (rv != SECSuccess) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "PK11_DigestFinal",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("PK11_DigestFinal", NULL);
         goto done;
     }
 

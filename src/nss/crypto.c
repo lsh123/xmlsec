@@ -326,22 +326,14 @@ xmlSecNssGetInternalKeySlot()
 
     slot = PK11_GetInternalKeySlot();
     if (slot == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "PK11_GetInternalKeySlot",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                "error code=%d", PORT_GetError());
+        xmlSecNssError("PK11_GetInternalKeySlot", NULL);
         return NULL;
     }
 
     if (PK11_NeedUserInit(slot)) {
         rv = PK11_InitPin(slot, NULL, NULL);
         if (rv != SECSuccess) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "PK11_Authenticate",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecNssError("PK11_InitPin", NULL);
             return NULL;
         }
     }
@@ -349,11 +341,8 @@ xmlSecNssGetInternalKeySlot()
     if(PK11_IsLoggedIn(slot, NULL) != PR_TRUE) {
         rv = PK11_Authenticate(slot, PR_TRUE, NULL);
         if (rv != SECSuccess) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "PK11_Authenticate",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecNssError2("PK11_Authenticate", NULL,
+                            "token=%s", xmlSecErrorsSafeString(PK11_GetTokenName(slot)));
             return NULL;
         }
     }
@@ -387,11 +376,8 @@ xmlSecNssGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
     /* get random data */
     rv = PK11_GenerateRandom((xmlSecByte*)xmlSecBufferGetData(buffer), size);
     if(rv != SECSuccess) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "PK11_GenerateRandom",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "size=%d", size);
+        xmlSecNssError2("PK11_GenerateRandom", NULL,
+                        "size=%lu", (unsigned long)size);
         return(-1);
     }
     return(0);

@@ -353,33 +353,21 @@ xmlSecNssHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     slot = PK11_GetBestSlot(ctx->digestType, NULL);
     if(slot == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "PK11_GetBestSlot",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNssError("PK11_GetBestSlot", xmlSecTransformGetName(transform));
         return(-1);
     }
 
     symKey = PK11_ImportSymKey(slot, ctx->digestType, PK11_OriginDerive,
                                CKA_SIGN, &keyItem, NULL);
     if(symKey == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "PK11_ImportSymKey",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "error code=%d", PORT_GetError());
+        xmlSecNssError("PK11_ImportSymKey", xmlSecTransformGetName(transform));
         PK11_FreeSlot(slot);
         return(-1);
     }
 
     ctx->digestCtx = PK11_CreateContextBySymKey(ctx->digestType, CKA_SIGN, symKey, &ignore);
     if(ctx->digestCtx == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "PK11_CreateContextBySymKey",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "error code=%d", PORT_GetError());
+        xmlSecNssError("PK11_CreateContextBySymKey", xmlSecTransformGetName(transform));
         PK11_FreeSymKey(symKey);
         PK11_FreeSlot(slot);
         return(-1);
@@ -474,11 +462,7 @@ xmlSecNssHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxP
     if(transform->status == xmlSecTransformStatusNone) {
         rv = PK11_DigestBegin(ctx->digestCtx);
         if(rv != SECSuccess) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "PK11_DigestBegin",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "error code=%d", PORT_GetError());
+            xmlSecNssError("PK11_DigestBegin", xmlSecTransformGetName(transform));
             return(-1);
         }
         transform->status = xmlSecTransformStatusWorking;
@@ -491,11 +475,7 @@ xmlSecNssHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxP
         if(inSize > 0) {
             rv = PK11_DigestOp(ctx->digestCtx, xmlSecBufferGetData(in), inSize);
             if (rv != SECSuccess) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "PK11_DigestOp",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            "error code=%d", PORT_GetError());
+                xmlSecNssError("PK11_DigestOp", xmlSecTransformGetName(transform));
                 return(-1);
             }
 
@@ -512,11 +492,7 @@ xmlSecNssHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxP
 
             rv = PK11_DigestFinal(ctx->digestCtx, ctx->dgst, &dgstSize, sizeof(ctx->dgst));
             if(rv != SECSuccess) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "PK11_DigestFinal",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            "error code=%d", PORT_GetError());
+                xmlSecNssError("PK11_DigestFinal", xmlSecTransformGetName(transform));
                 return(-1);
             }
             xmlSecAssert2(dgstSize > 0, -1);

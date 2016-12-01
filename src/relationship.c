@@ -580,11 +580,7 @@ xmlSecTransformRelationshipPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPt
     case xmlSecTransformStatusFinished:
        return(0);
     default:
-       xmlSecError(XMLSEC_ERRORS_HERE,
-                   xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                   NULL,
-                   XMLSEC_ERRORS_R_INVALID_STATUS,
-                   "status=%d", transform->status);
+       xmlSecInvalidTransfromStatusError(transform);
        return(-1);
     }
     xmlSecAssert2(transform->status == xmlSecTransformStatusWorking, -1);
@@ -707,11 +703,7 @@ xmlSecTransformRelationshipPopBin(xmlSecTransformPtr transform, xmlSecByte* data
        xmlSecAssert2(xmlSecBufferGetSize(out) == 0, -1);
        (*dataSize) = 0;
     } else {
-       xmlSecError(XMLSEC_ERRORS_HERE,
-                   xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                   NULL,
-                   XMLSEC_ERRORS_R_INVALID_STATUS,
-                   "status=%d", transform->status);
+       xmlSecInvalidTransfromStatusError(transform);
        return(-1);
     }
 

@@ -444,6 +444,23 @@ extern "C" {
     }
 
 /**
+ * xmlSecInvalidTransfromStatusError:
+ * @transform:          the transform.
+ *
+ * Macro. The XMLSec library macro for reporting an invalid transform status errors.
+ */
+#define xmlSecInvalidTransfromStatusError(transform) \
+    {                                                 \
+        xmlSecError(XMLSEC_ERRORS_HERE,               \
+                   (const char*)xmlSecTransformGetName(transform), \
+                   NULL,                              \
+                   XMLSEC_ERRORS_R_INVALID_STATUS,    \
+                   "transformStatus=%d",              \
+                   (int)((transform)->status)         \
+        );                                            \
+    }
+
+/**
  * xmlSecOtherError:
  * @code:               the error code.
  * @errorObject:        the error specific error object (e.g. transform, key data, etc).

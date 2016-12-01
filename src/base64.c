@@ -939,11 +939,7 @@ xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
             xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
             break;
         default:
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        NULL,
-                        XMLSEC_ERRORS_R_INVALID_STATUS,
-                        "status=%d", transform->status);
+            xmlSecInvalidTransfromStatusError(transform);
             return(-1);
     }
     return(0);

@@ -541,19 +541,11 @@ xmlSecNssKeyTransportExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
         }
     } else if(transform->status == xmlSecTransformStatusFinished) {
         if(xmlSecBufferGetSize(inBuf) != 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        NULL,
-                        XMLSEC_ERRORS_R_INVALID_STATUS,
-                        "status=%d", transform->status);
+            xmlSecInvalidTransfromStatusError(transform);
             return(-1);
         }
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_STATUS,
-                    "status=%d", transform->status);
+        xmlSecInvalidTransfromStatusError(transform);
         return(-1);
     }
 

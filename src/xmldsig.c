@@ -297,11 +297,7 @@ xmlSecDSigCtxSign(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr tmpl) {
     /* check what we've got */
     dsigCtx->result = dsigCtx->transformCtx.result;
     if((dsigCtx->result == NULL) || (xmlSecBufferGetData(dsigCtx->result) == NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_RESULT,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_RESULT, NULL, NULL);
         return(-1);
     }
 

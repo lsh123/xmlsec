@@ -212,9 +212,11 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs,
             continue;
         }
 
+        /* it's important to set the usage here, otherwise no real verification
+         * is performed. */
         status = CERT_VerifyCertificate(CERT_GetDefaultCertDB(),
                                         cert, PR_FALSE,
-                                        (SECCertificateUsage)0,
+                                        certificateUsageEmailSigner,
                                         timeboundary , NULL, NULL, NULL);
         if (status == SECSuccess) {
             break;
@@ -270,7 +272,7 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs,
  * Returns: 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecNssX509StoreAdoptCert(xmlSecKeyDataStorePtr store, CERTCertificate* cert, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+xmlSecNssX509StoreAdoptCert(xmlSecKeyDataStorePtr store, CERTCertificate* cert, xmlSecKeyDataType type) {
     xmlSecNssX509StoreCtxPtr ctx;
     int ret;
 
@@ -292,6 +294,23 @@ xmlSecNssX509StoreAdoptCert(xmlSecKeyDataStorePtr store, CERTCertificate* cert, 
     if(ret != SECSuccess) {
         xmlSecNssError("CERT_AddCertToListTail", xmlSecKeyDataStoreGetName(store));
         return(-1);
+    }
+
+    if(type == xmlSecKeyDataTypeTrusted) {
+        SECStatus status;
+
+        /* if requested, mark the certificate as trusted */
+        CERTCertTrust trust;
+        status = CERT_DecodeTrustString(&trust, "TCu,Cu,Tu");
+        if(status != SECSuccess) {
+            xmlSecNssError("CERT_DecodeTrustString", xmlSecKeyDataStoreGetName(store));
+            return(-1);
+        }
+        CERT_ChangeCertTrust(CERT_GetDefaultCertDB(), cert, &trust);
+        if(status != SECSuccess) {
+            xmlSecNssError("CERT_ChangeCertTrust", xmlSecKeyDataStoreGetName(store));
+            return(-1);
+        }
     }
 
     return(0);

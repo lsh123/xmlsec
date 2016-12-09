@@ -922,6 +922,15 @@ execDSigTest $res_fail \
     "rsa x509" \
     "--trusted-$cert_format certs/rsa-ca-cert.$cert_format"
 
+# 'Verify existing signature' MUST fail here, as --trusted-... is not passed.
+# If this passes, that's a bug.
+execDSigTest $res_fail \
+    "aleksey-xmldsig-01" \
+    "enveloping-sha256-rsa-sha256-verify" \
+    "sha256 rsa-sha256" \
+    "rsa x509" \
+    "--enabled-key-data x509"
+
 ##########################################################################
 ##########################################################################
 ##########################################################################

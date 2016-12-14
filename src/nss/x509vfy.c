@@ -177,19 +177,20 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs,
     ctx = xmlSecNssX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, NULL);
 
+    if(keyInfoCtx->certsVerificationTime > 0) {
+	    /* convert the time since epoch in seconds to microseconds */
+        LL_UI2L(timeboundary, keyInfoCtx->certsVerificationTime);
+        tmp1 = (int64)PR_USEC_PER_SEC;
+        tmp2 = timeboundary;
+        LL_MUL(timeboundary, tmp1, tmp2);
+    } else {
+        timeboundary = PR_Now();
+    }
+
     for (head = CERT_LIST_HEAD(certs);
          !CERT_LIST_END(head, certs);
          head = CERT_LIST_NEXT(head)) {
         cert = head->cert;
-        if(keyInfoCtx->certsVerificationTime > 0) {
-            /* convert the time since epoch in seconds to microseconds */
-            LL_UI2L(timeboundary, keyInfoCtx->certsVerificationTime);
-            tmp1 = (int64)PR_USEC_PER_SEC;
-            tmp2 = timeboundary;
-            LL_MUL(timeboundary, tmp1, tmp2);
-        } else {
-            timeboundary = PR_Now();
-        }
 
         /* if cert is the issuer of any other cert in the list, then it is
          * to be skipped */
@@ -216,9 +217,9 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs,
          * is performed. */
         status = CERT_VerifyCertificate(CERT_GetDefaultCertDB(),
                                         cert, PR_FALSE,
-                                        certificateUsageEmailSigner,
+                                        certificateUsageEmailSigner, 
                                         timeboundary , NULL, NULL, NULL);
-        if (status == SECSuccess) {
+	    if (status == SECSuccess) {
             break;
         }
     }

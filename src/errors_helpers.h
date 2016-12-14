@@ -512,7 +512,6 @@ extern "C" {
                     (msg), (param1), (param2)               \
         )
 
-
 /**
  * xmlSecOtherError4:
  * @code:               the error code.
@@ -531,6 +530,27 @@ extern "C" {
                     (code),                                 \
                     (msg), (param1), (param2), (param3)     \
         )
+
+/**
+ * xmlSecOtherError5:
+ * @code:               the error code.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ * @msg:                the extra message.
+ * @param1:             the extra message param.
+ * @param2:             the extra message param.
+ * @param3:             the extra message param.
+ * @param4:             the extra message param.
+ *
+ * Macro. The XMLSec library macro for reporting other XMLSec errors.
+ */
+#define xmlSecOtherError5(code, errorObject, msg, param1, param2, param3, param4) \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    NULL,                                   \
+                    (code),                                 \
+                    (msg), (param1), (param2), (param3), (param4) \
+        )
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

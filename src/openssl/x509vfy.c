@@ -178,7 +178,6 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
     X509 * cert;
     X509 * err_cert = NULL;
     X509_STORE_CTX *xsc;
-    char buf[256];
     int err = 0;
     int i;
     int ret;
@@ -326,18 +325,16 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
                 goto done;
             } else if(ret == 0) {
                 const char* err_msg;
+                char subject[256], issuer[256];
 
-                buf[0] = '\0';
-                X509_NAME_oneline(X509_get_subject_name(err_cert), buf, sizeof buf);
+                X509_NAME_oneline(X509_get_subject_name(err_cert), subject, sizeof(subject));
+                X509_NAME_oneline(X509_get_issuer_name(err_cert), issuer, sizeof(issuer));
                 err_msg = X509_verify_cert_error_string(err);
 
-                xmlSecOtherError4(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+                xmlSecOtherError5(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
                                   xmlSecKeyDataStoreGetName(store),
-                                  "X509_verify_cert: subject=%s; err=%d; msg=%s",
-                                  xmlSecErrorsSafeString(buf),
-                                  err,
-                                  xmlSecErrorsSafeString(err_msg));
-
+                                  "X509_verify_cert: subject=%s; issuer=%s; err=%d; msg=%s",
+                                  subject, issuer, err, xmlSecErrorsSafeString(err_msg));
             }
         }
     }
@@ -345,36 +342,38 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
     /* if we came here then we found nothing. do we have any error? */
     if((err != 0) && (err_cert != NULL)) {
         const char* err_msg;
+        char subject[256], issuer[256];
 
+        X509_NAME_oneline(X509_get_subject_name(err_cert), subject, sizeof(subject));
+        X509_NAME_oneline(X509_get_issuer_name(err_cert), issuer, sizeof(issuer));
         err_msg = X509_verify_cert_error_string(err);
+
         switch (err) {
         case X509_V_ERR_UNABLE_TO_GET_ISSUER_CERT:
-            X509_NAME_oneline(X509_get_issuer_name(err_cert), buf, sizeof buf);
-            xmlSecOtherError4(XMLSEC_ERRORS_R_CERT_ISSUER_FAILED,
+            xmlSecOtherError5(XMLSEC_ERRORS_R_CERT_ISSUER_FAILED,
                               xmlSecKeyDataStoreGetName(store),
-                              "issuer=%s;err=%d;msg=%s",
-                              xmlSecErrorsSafeString(buf),
-                              err, xmlSecErrorsSafeString(err_msg));
+                              "subject=%s; issuer=%s; err=%d; msg=%s",
+                              subject, issuer, err, xmlSecErrorsSafeString(err_msg));
             break;
         case X509_V_ERR_CERT_NOT_YET_VALID:
         case X509_V_ERR_ERROR_IN_CERT_NOT_BEFORE_FIELD:
-            xmlSecOtherError3(XMLSEC_ERRORS_R_CERT_NOT_YET_VALID,
+            xmlSecOtherError5(XMLSEC_ERRORS_R_CERT_NOT_YET_VALID,
                               xmlSecKeyDataStoreGetName(store),
-                              "err=%d;msg=%s",
-                              err, xmlSecErrorsSafeString(err_msg));
+                              "subject=%s; issuer=%s; err=%d; msg=%s",
+                              subject, issuer, err, xmlSecErrorsSafeString(err_msg));
             break;
         case X509_V_ERR_CERT_HAS_EXPIRED:
         case X509_V_ERR_ERROR_IN_CERT_NOT_AFTER_FIELD:
-            xmlSecOtherError3(XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
+            xmlSecOtherError5(XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
                               xmlSecKeyDataStoreGetName(store),
-                              "err=%d;msg=%s",
-                              err, xmlSecErrorsSafeString(err_msg));
+                              "subject=%s; issuer=%s; err=%d; msg=%s",
+                              subject, issuer, err, xmlSecErrorsSafeString(err_msg));
             break;
         default:
-            xmlSecOtherError3(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+            xmlSecOtherError5(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
                               xmlSecKeyDataStoreGetName(store),
-                              "err=%d;msg=%s",
-                              err, xmlSecErrorsSafeString(err_msg));
+                              "subject=%s; issuer=%s; err=%d; msg=%s",
+                              subject, issuer, err, xmlSecErrorsSafeString(err_msg));
             break;
         }
     }

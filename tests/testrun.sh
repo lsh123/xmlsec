@@ -106,6 +106,9 @@ else
     diff_param=-u
 fi
 
+NSS_TEST_CERT_NICKNAME="NSS Certificate DB:Aleksey Sanin - XML Security Library (http://www.aleksey.com/xmlsec)"
+
+
 #
 # Check the command result and print it to stdout
 #

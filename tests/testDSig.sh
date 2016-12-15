@@ -923,7 +923,17 @@ execDSigTest $res_fail \
     "--trusted-$cert_format certs/rsa-ca-cert.$cert_format"
 
 # 'Verify existing signature' MUST fail here, as --trusted-... is not passed.
-# If this passes, that's a bug.
+# If this passes, that's a bug. Note that we need to cleanup NSS certs DB
+# since it automaticall stores trusted certs
+if [ "z$crypto" = "znss" ] ;
+then
+    certutil  -D -n "$NSS_TEST_CERT_NICKNAME" -d "$crypto_config"
+    if [ $? -ne 0 ]; then
+        echo "--- FAILED TO DELETE TRUSTED TEST CERTIFICATE FROM NSS CERT DB. THE NEXT TEST MIGHT FAIL" >> $logfile
+        echo "--- FAILED TO DELETE TRUSTED TEST CERTIFICATE FROM NSS CERT DB. THE NEXT TEST MIGHT FAIL"
+    fi
+fi
+
 execDSigTest $res_fail \
     "aleksey-xmldsig-01" \
     "enveloping-sha256-rsa-sha256-verify" \

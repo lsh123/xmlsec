@@ -222,12 +222,8 @@ xmlSecMSCryptoAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlS
 
     tmpcert = CertDuplicateCertificateContext(pCert);
     if(tmpcert == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "CertDuplicateCertificateContext",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "data=%s",
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+        xmlSecMSCryptoError("CertDuplicateCertificateContext",
+                            xmlSecKeyDataGetName(x509Data));
         goto done;
     }
 
@@ -242,14 +238,16 @@ xmlSecMSCryptoAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlS
 
     keyData = xmlSecMSCryptoCertAdopt(pCert, xmlSecKeyDataTypePublic);
     if(keyData == NULL) {
-        xmlSecInternalError("xmlSecMSCryptoCertAdopt", NULL);
+        xmlSecInternalError("xmlSecMSCryptoCertAdopt",
+                            xmlSecKeyDataGetName(x509Data));
         goto done;
     }
     pCert = NULL;
 
     key = xmlSecKeyCreate();
     if(key == NULL) {
-        xmlSecInternalError("xmlSecKeyCreate", NULL);
+        xmlSecInternalError("xmlSecKeyCreate",
+                            xmlSecKeyDataGetName(x509Data));
         goto done;
     }
 
@@ -498,12 +496,8 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
     pfx.cbData = dataSize;
 
     if(FALSE == PFXIsPFXBlob(&pfx)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "PFXIsPFXBlob",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "size=%ld",
-                    pfx.cbData);
+        xmlSecMSCryptoError2("PFXIsPFXBlob", NULL,
+                             "size=%ld", (long int)pfx.cbData);
         goto done;
     }
 
@@ -542,30 +536,23 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
         if((TRUE == CertGetCertificateContextProperty(pCert, CERT_KEY_SPEC_PROP_ID, &dwData, &dwDataLen)) && (dwData > 0)) {
             tmpcert = CertDuplicateCertificateContext(pCert);
             if(tmpcert == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "CertDuplicateCertificateContext",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            "data=%s",
-                            xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+                xmlSecMSCryptoError("CertDuplicateCertificateContext",
+                                    xmlSecKeyDataGetName(x509Data));
                 goto done;
             }
 
             keyData = xmlSecMSCryptoCertAdopt(tmpcert, xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
             if(keyData == NULL) {
-                xmlSecInternalError("xmlSecMSCryptoCertAdopt", NULL);
+                xmlSecInternalError("xmlSecMSCryptoCertAdopt",
+                                    xmlSecKeyDataGetName(x509Data));
                 goto done;
             }
         tmpcert = NULL;
 
             tmpcert = CertDuplicateCertificateContext(pCert);
             if(tmpcert == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "CertDuplicateCertificateContext",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            "data=%s",
-                            xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+                xmlSecMSCryptoError("CertDuplicateCertificateContext",
+                                    xmlSecKeyDataGetName(x509Data));
                 goto done;
             }
 
@@ -581,12 +568,8 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
         /* load certificate in the x509 key data */
         tmpcert = CertDuplicateCertificateContext(pCert);
         if(tmpcert == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "CertDuplicateCertificateContext",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "data=%s",
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+            xmlSecMSCryptoError("CertDuplicateCertificateContext",
+                                xmlSecKeyDataGetName(x509Data));
             goto done;
         }
 
@@ -601,13 +584,15 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
 
     if (keyData == NULL) {
         /* private key not found in PKCS12 file */
-        xmlSecInternalError("xmlSecMSCryptoAppPkcs12Load", NULL);
+        xmlSecInternalError("xmlSecMSCryptoAppPkcs12Load",
+                            xmlSecKeyDataGetName(x509Data));
         goto done;
     }
 
     key = xmlSecKeyCreate();
     if(key == NULL) {
-        xmlSecInternalError("xmlSecKeyCreate", NULL);
+        xmlSecInternalError("xmlSecKeyCreate",
+                            xmlSecKeyDataGetName(x509Data));
         goto done;
     }
 

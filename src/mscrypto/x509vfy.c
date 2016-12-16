@@ -598,11 +598,8 @@ xmlSecMSCryptoX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCe
     */
     xmlSecAssert2(certStore != NULL, -1);
     if (!CertAddCertificateContextToStore(certStore, pCert, CERT_STORE_ADD_ALWAYS, NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                "CertAddCertificateContextToStore",
-                XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CertAddCertificateContextToStore",
+                            xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
 
@@ -631,11 +628,8 @@ xmlSecMSCryptoX509StoreAdoptKeyStore (xmlSecKeyDataStorePtr store, HCERTSTORE ke
     xmlSecAssert2(ctx->trusted != NULL, -1);
 
     if(!CertAddStoreToCollection ( ctx->trusted , keyStore , CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG , 2)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-            xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-            "CertAddStoreToCollection",
-            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-            XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CertAddStoreToCollection",
+                            xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
 
@@ -663,11 +657,8 @@ xmlSecMSCryptoX509StoreAdoptTrustedStore (xmlSecKeyDataStorePtr store, HCERTSTOR
     xmlSecAssert2(ctx->trusted != NULL, -1);
 
     if( !CertAddStoreToCollection ( ctx->trusted , trustedStore , CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG , 3 ) ) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-            xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-            "CertAddStoreToCollection",
-            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-            XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CertAddStoreToCollection",
+                            xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
 
@@ -695,11 +686,8 @@ xmlSecMSCryptoX509StoreAdoptUntrustedStore (xmlSecKeyDataStorePtr store, HCERTST
     xmlSecAssert2(ctx->untrusted != NULL, -1);
 
     if( !CertAddStoreToCollection ( ctx->untrusted , untrustedStore , CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG , 2 ) ) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-            xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-            "CertAddStoreToCollection",
-            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-            XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CertAddStoreToCollection",
+                            xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
 
@@ -747,11 +735,8 @@ xmlSecMSCryptoX509StoreInitialize(xmlSecKeyDataStorePtr store) {
                    0,
                    NULL);
     if(ctx->trusted == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                "CertOpenStore",
-                XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CertOpenStore",
+                            xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
 
@@ -762,11 +747,8 @@ xmlSecMSCryptoX509StoreInitialize(xmlSecKeyDataStorePtr store) {
                    CERT_STORE_CREATE_NEW_FLAG,
                    NULL);
     if(hTrustedMemStore == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                "CertOpenStore",
-                XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CertOpenStore",
+                            xmlSecKeyDataStoreGetName(store));
         CertCloseStore(ctx->trusted, CERT_CLOSE_STORE_FORCE_FLAG);
         ctx->trusted = NULL ;
         return(-1);
@@ -774,11 +756,8 @@ xmlSecMSCryptoX509StoreInitialize(xmlSecKeyDataStorePtr store) {
 
     /* add the memory trusted certs store to trusted certs store collection */
     if( !CertAddStoreToCollection( ctx->trusted, hTrustedMemStore, CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG, 1 ) ) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                "CertAddStoreToCollection",
-                XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CertAddStoreToCollection",
+                            xmlSecKeyDataStoreGetName(store));
         CertCloseStore(ctx->trusted, CERT_CLOSE_STORE_FORCE_FLAG);
         CertCloseStore(hTrustedMemStore, CERT_CLOSE_STORE_CHECK_FLAG);
         ctx->trusted = NULL ;
@@ -793,11 +772,8 @@ xmlSecMSCryptoX509StoreInitialize(xmlSecKeyDataStorePtr store) {
                    0,
                    NULL);
     if(ctx->untrusted == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                "CertOpenStore",
-                XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CertOpenStore",
+                            xmlSecKeyDataStoreGetName(store));
         CertCloseStore(ctx->trusted, CERT_CLOSE_STORE_FORCE_FLAG);
         ctx->trusted = NULL ;
         return(-1);
@@ -810,11 +786,8 @@ xmlSecMSCryptoX509StoreInitialize(xmlSecKeyDataStorePtr store) {
                    CERT_STORE_CREATE_NEW_FLAG,
                    NULL);
     if(hUntrustedMemStore == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                "CertOpenStore",
-                XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CertOpenStore",
+                            xmlSecKeyDataStoreGetName(store));
         CertCloseStore(ctx->trusted, CERT_CLOSE_STORE_FORCE_FLAG);
         CertCloseStore(ctx->untrusted, CERT_CLOSE_STORE_FORCE_FLAG);
         ctx->trusted = NULL ;
@@ -824,11 +797,8 @@ xmlSecMSCryptoX509StoreInitialize(xmlSecKeyDataStorePtr store) {
 
     /* add the memory trusted certs store to untrusted certs store collection */
     if( !CertAddStoreToCollection( ctx->untrusted, hUntrustedMemStore, CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG, 1 ) ) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                "CertAddStoreToCollection",
-                XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CertAddStoreToCollection",
+                            xmlSecKeyDataStoreGetName(store));
         CertCloseStore(ctx->untrusted, CERT_CLOSE_STORE_FORCE_FLAG);
         CertCloseStore(ctx->trusted, CERT_CLOSE_STORE_FORCE_FLAG);
         CertCloseStore(hUntrustedMemStore, CERT_CLOSE_STORE_CHECK_FLAG);

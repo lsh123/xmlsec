@@ -390,11 +390,8 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
             xmlSecBufferFinalize(&tmp);
             return(0);
         } else {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "CryptVerifySignature",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecMSCryptoError("CryptVerifySignature",
+                                xmlSecTransformGetName(transform));
             xmlSecBufferFinalize(&tmp);
             return (-1);
         }
@@ -441,11 +438,8 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
         xmlSecAssert2(outSize == 0, -1);
 
         if (0 == (hProv = xmlSecMSCryptoKeyDataGetMSCryptoProvider(ctx->data))) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlSecMSCryptoKeyDataGetMSCryptoProvider",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecMSCryptoError("xmlSecMSCryptoKeyDataGetMSCryptoProvider",
+                                xmlSecTransformGetName(transform));
             return (-1);
         }
 
@@ -472,8 +466,9 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
                 pProviderInfo->pwszProvName,
                 pProviderInfo->dwProvType,
                 0)) {
-                                       xmlSecMSCryptoError("CryptAcquireContext", NULL);
-                                       return(-1);
+
+                xmlSecMSCryptoError("CryptAcquireContext", NULL);
+                return(-1);
             }
 
             bOk = CryptCreateHash(hProv, ctx->digestAlgId, 0, 0, &(ctx->mscHash));

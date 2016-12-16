@@ -300,11 +300,7 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
             &(ctx->mscHash));
 
         if((ret == 0) || (ctx->mscHash == 0)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "CryptCreateHash",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecMSCryptoError("CryptCreateHash", xmlSecTransformGetName(transform));
             return(-1);
         }
 

@@ -215,12 +215,8 @@ xmlSecMSCryptoKWDes3Initialize(xmlSecTransformPtr transform) {
 
     /* Create dummy key to be able to import plain session keys */
     if (!xmlSecMSCryptoCreatePrivateExponentOneKey(ctx->desCryptProvider, &(ctx->pubPrivKey))) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlSecMSCryptoCreatePrivateExponentOneKey",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
-
+        xmlSecMSCryptoError("xmlSecMSCryptoCreatePrivateExponentOneKey",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }
 

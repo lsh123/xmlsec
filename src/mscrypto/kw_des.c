@@ -461,11 +461,8 @@ xmlSecMSCryptoKWDes3Sha1(void * context,
         inSize,
         0);
     if(ret == 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "CryptHashData",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "size=%d", inSize);
+        xmlSecMSCryptoError2("CryptHashData", NULL,
+                             "size=%d", inSize);
         CryptDestroyHash(mscHash);
         return(-1);
     }
@@ -478,8 +475,7 @@ xmlSecMSCryptoKWDes3Sha1(void * context,
         &retLen,
         0);
     if (ret == 0) {
-        /* TODO: XMLSEC_ERRORS_R_CRYPTO_FAILED */
-        xmlSecInternalError2("CryptGetHashParam(HP_HASHVAL)", NULL,
+        xmlSecMSCryptoError2("CryptGetHashParam(HP_HASHVAL)", NULL,
                              "size=%d", outSize);
         CryptDestroyHash(mscHash);
         return(-1);
@@ -503,11 +499,8 @@ xmlSecMSCryptoKWDes3GenerateRandom(void * context,
     xmlSecAssert2(outSize > 0, -1);
 
     if(!CryptGenRandom(ctx->desCryptProvider, outSize, out)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "CryptGenRandom",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "len=%d", outSize);
+        xmlSecMSCryptoError2("CryptGenRandom", NULL,
+                             "len=%d", outSize);
         return(-1);
     }
 
@@ -558,13 +551,19 @@ xmlSecMSCryptoKWDes3BlockEncrypt(void * context,
     }
 
     /* set IV */
-    if((ivSize < dwBlockLen / 8) || (!CryptSetKeyParam(cryptKey, KP_IV, iv, 0))) {
+    if(ivSize < dwBlockLen / 8) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
-                    "CryptSetKeyParam",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "ivSize=%d, dwBlockLen=%d", 
-                    ivSize, dwBlockLen / 8);
+                    NULL,
+                    XMLSEC_ERRORS_R_INVALID_SIZE,
+                    "ivSize=%d, dwBlockLen=%d",
+                    ivSize, dwBlockLen);
+        CryptDestroyKey(cryptKey);
+        return(-1);
+    }
+
+    if(!CryptSetKeyParam(cryptKey, KP_IV, iv, 0)) {
+        xmlSecMSCryptoError("CryptSetKeyParam", NULL);
         CryptDestroyKey(cryptKey);
         return(-1);
     }
@@ -630,13 +629,18 @@ xmlSecMSCryptoKWDes3BlockDecrypt(void * context,
     }
 
     /* set IV */
-    if((ivSize < dwBlockLen / 8) || (!CryptSetKeyParam(cryptKey, KP_IV, iv, 0))) {
+    if(ivSize < dwBlockLen / 8) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
-                    "CryptSetKeyParam",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "ivSize=%d, dwBlockLen=%d", 
-                    ivSize, dwBlockLen / 8);
+                    NULL,
+                    XMLSEC_ERRORS_R_INVALID_SIZE,
+                    "ivSize=%d, dwBlockLen=%d",
+                    ivSize, dwBlockLen);
+        CryptDestroyKey(cryptKey);
+        return(-1);
+    }
+    if(!CryptSetKeyParam(cryptKey, KP_IV, iv, 0)) {
+        xmlSecMSCryptoError("CryptSetKeyParam", NULL);
         CryptDestroyKey(cryptKey);
         return(-1);
     }

@@ -94,11 +94,8 @@ xmlSecMSCryptoBlockCipherCtxInit(xmlSecMSCryptoBlockCipherCtxPtr ctx,
 
         /* generate and use random iv */
         if(!CryptGenRandom(ctx->cryptProvider, blockLen, iv)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(cipherName),
-                        "CryptGenRandom",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "len=%d", blockLen);
+            xmlSecMSCryptoError2("CryptGenRandom", cipherName,
+                                 "len=%d", blockLen);
             return(-1);
         }
 

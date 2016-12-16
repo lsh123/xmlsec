@@ -514,11 +514,9 @@ xmlSecMSCryptoHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                 0);
 
             if(ret == 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "CryptHashData",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            "size=%d", inSize);
+                xmlSecMSCryptoError2("CryptHashData",
+                                    xmlSecTransformGetName(transform),
+                                    "size=%d", inSize);
                 return(-1);
             }
 

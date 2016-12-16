@@ -238,21 +238,13 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
 
     /* Generate the private key */
     if(!CryptGenKey(hProv, AT_KEYEXCHANGE, CRYPT_EXPORTABLE, &hKey)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "CryptGenKey",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CryptGenKey", NULL);
         goto done;
     }
 
     /* Export the private key, we'll convert it to a private exponent of one key */
     if(!CryptExportKey(hKey, 0, PRIVATEKEYBLOB, 0, NULL, &keyBlobLen)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "CryptExportKey",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CryptExportKey", NULL);
         goto done;
     }
 
@@ -263,11 +255,7 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
     }
 
     if(!CryptExportKey(hKey, 0, PRIVATEKEYBLOB, 0, keyBlob, &keyBlobLen)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "CryptExportKey",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CryptExportKey", NULL);
         goto done;
     }
     CryptDestroyKey(hKey);
@@ -370,11 +358,7 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
 
     /* Import the exponent-of-one private key. */
     if (!CryptImportKey(hProv, keyBlob, keyBlobLen, 0, 0, &hKey)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "CryptImportKey",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CryptImportKey", NULL);
         goto done;
     }
     (*hPrivateKey) = hKey;

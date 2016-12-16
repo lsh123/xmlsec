@@ -138,11 +138,7 @@ xmlSecMSCryptoKeyDataCtxDuplicateProvider(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xm
 
     if(ctxSrc->hProv != 0) {
         if(!CryptContextAddRef(ctxSrc->hProv, NULL, 0)) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "CryptContextAddRef",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecMSCryptoError("CryptContextAddRef", NULL);
             return(-1);
         }
 
@@ -191,11 +187,7 @@ xmlSecMSCryptoKeyDataCtxDuplicateKey(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xmlSecM
     xmlSecMSCryptoKeyDataCtxDestroyKey(ctxDst);
     if (ctxSrc->hKey != 0) {
             if (!CryptDuplicateKey(ctxSrc->hKey, NULL, 0, &(ctxDst->hKey))) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "CryptDuplicateKey",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecMSCryptoError("CryptDuplicateKey", NULL);
                 return(-1);
             }
     }
@@ -454,11 +446,7 @@ xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlS
                     &hProv,
                     &(ctx->dwKeySpec),
                     &fCallerFreeProv)) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "CryptAcquireCertificatePrivateKey",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecMSCryptoError("CryptAcquireCertificatePrivateKey", NULL);
                 return(-1);
         }
         ret = xmlSecMSCryptoKeyDataCtxSetProvider(ctx, hProv, fCallerFreeProv);
@@ -500,11 +488,7 @@ xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlS
                 X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
                 &(pCert->pCertInfo->SubjectPublicKeyInfo),
                 &hKey)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "CryptImportPublicKeyInfo",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecMSCryptoError("CryptImportPublicKeyInfo", NULL);
             return(-1);
     }
 
@@ -605,11 +589,7 @@ xmlSecMSCryptoKeyDataGetDecryptKey(xmlSecKeyDataPtr data) {
         xmlSecAssert2(ctx != NULL, 0);
 
         if( !CryptGetUserKey(xmlSecMSCryptoKeyDataCtxGetProvider(ctx), AT_KEYEXCHANGE, &(hKey))) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "CryptGetUserKey",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecMSCryptoError("CryptGetUserKey", NULL);
                 return(0);
         }
         return (hKey);
@@ -700,11 +680,7 @@ xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo(xmlSecKeyDataPtr data) {
     xmlSecAssert2(ctx->pCert != NULL, NULL);
 
     if(!CertGetCertificateContextProperty(ctx->pCert, CERT_KEY_PROV_INFO_PROP_ID, NULL, &dwInfoDataLength)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "CertGetCertificateContextProperty",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CertGetCertificateContextProperty", NULL);
         return NULL;
     }
 
@@ -712,11 +688,7 @@ xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo(xmlSecKeyDataPtr data) {
         pInfoData = malloc(dwInfoDataLength * sizeof(BYTE));
 
         if(!CertGetCertificateContextProperty(ctx->pCert, CERT_KEY_PROV_INFO_PROP_ID, pInfoData, &dwInfoDataLength)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "CertGetCertificateContextProperty",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecMSCryptoError("CertGetCertificateContextProperty", NULL);
             free(pInfoData);
             return NULL;
         }
@@ -829,11 +801,7 @@ xmlSecMSCryptoKeyDataGetSize(xmlSecKeyDataPtr data) {
             DWORD lenlen = sizeof(DWORD);
 
         if (!CryptGetKeyParam(xmlSecMSCryptoKeyDataCtxGetKey(ctx), KP_KEYLEN, (BYTE *)&length, &lenlen, 0)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "CertDuplicateCertificateContext",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecMSCryptoError("CertDuplicateCertificateContext", NULL);
             return(0);
         }
         return(length);
@@ -876,11 +844,7 @@ PCCERT_CONTEXT xmlSecMSCryptoCertDup(PCCERT_CONTEXT pCert) {
 
     ret = CertDuplicateCertificateContext(pCert);
     if(ret == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "CertDuplicateCertificateContext",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CertDuplicateCertificateContext", NULL);
         return(NULL);
     }
 

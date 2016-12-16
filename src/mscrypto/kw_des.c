@@ -455,11 +455,7 @@ xmlSecMSCryptoKWDes3Sha1(void * context,
         0,
         &mscHash);
     if((ret == 0) || (mscHash == 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "CryptCreateHash",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CryptCreateHash", NULL);
         return(-1);
     }
 
@@ -560,11 +556,7 @@ xmlSecMSCryptoKWDes3BlockEncrypt(void * context,
     /* iv len == block len */
     dwBlockLenLen = sizeof(DWORD);
     if (!CryptGetKeyParam(cryptKey, KP_BLOCKLEN, (BYTE *)&dwBlockLen, &dwBlockLenLen, 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "CryptGetKeyParam",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CryptGetKeyParam", NULL);
         CryptDestroyKey(cryptKey);
         return(-1);
     }
@@ -588,11 +580,7 @@ xmlSecMSCryptoKWDes3BlockEncrypt(void * context,
     }
     dwCLen = inSize;
     if(!CryptEncrypt(cryptKey, 0, FALSE, 0, out, &dwCLen, outSize)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "CryptEncrypt",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CryptEncrypt", NULL);
         CryptDestroyKey(cryptKey);
         return(-1);
     }
@@ -640,11 +628,7 @@ xmlSecMSCryptoKWDes3BlockDecrypt(void * context,
     /* iv len == block len */
     dwBlockLenLen = sizeof(DWORD);
     if (!CryptGetKeyParam(cryptKey, KP_BLOCKLEN, (BYTE *)&dwBlockLen, &dwBlockLenLen, 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "CryptGetKeyParam",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CryptGetKeyParam", NULL);
         CryptDestroyKey(cryptKey);
         return(-1);
     }
@@ -668,11 +652,7 @@ xmlSecMSCryptoKWDes3BlockDecrypt(void * context,
     }
     dwCLen = inSize;
     if(!CryptDecrypt(cryptKey, 0, FALSE, 0, out, &dwCLen)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "CryptEncrypt",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CryptEncrypt", NULL);
         CryptDestroyKey(cryptKey);
         return(-1);
     }

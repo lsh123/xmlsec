@@ -210,11 +210,7 @@ xmlSecMSCryptoAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlS
 
     pCert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, data, dataSize);
     if (NULL == pCert) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "CertCreateCertificateContext",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CertCreateCertificateContext", NULL);
         goto done;
     }
 
@@ -518,21 +514,13 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
     }
 
     if (FALSE == PFXVerifyPassword(&pfx, wcPwd, 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "PFXVerifyPassword",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("PFXVerifyPassword", NULL);
         goto done;
     }
 
     hCertStore = PFXImportCertStore(&pfx, wcPwd, CRYPT_EXPORTABLE | PKCS12_NO_PERSIST_KEY);
     if (NULL == hCertStore) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "PFXImportCertStore",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("PFXImportCertStore", NULL);
         goto done;
     }
 
@@ -752,11 +740,7 @@ xmlSecMSCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte
             pCert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
                                                  data, dataSize);
             if (NULL == pCert) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "CertCreateCertificateContext",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecMSCryptoError("CertCreateCertificateContext", NULL);
                 return (-1);
             }
             break;

@@ -315,11 +315,8 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformC
         dwInLen = inSize;
         dwBufLen = outSize;
         if (0 == (hKey = xmlSecMSCryptoKeyDataGetKey(ctx->data, xmlSecKeyDataTypePublic))) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecMSCryptoKeyDataGetKey",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecInternalError("xmlSecMSCryptoKeyDataGetKey",
+                                xmlSecTransformGetName(transform));
             return (-1);
         }
 
@@ -339,22 +336,16 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformC
             oaepParams.cbData = xmlSecBufferGetSize(&(ctx->oaepParams));
 
             if (!CryptSetKeyParam(hKey, KP_OAEP_PARAMS, (const BYTE*)&oaepParams, 0)) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "CryptSetKeyParam",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecMSCryptoError("CryptSetKeyParam",
+                                    xmlSecTransformGetName(transform));
                 return (-1);
             }
         }
 
         /* encrypt */
         if (!CryptEncrypt(hKey, 0, TRUE, ctx->dwFlags, outBuf, &dwInLen, dwBufLen)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "CryptEncrypt",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecMSCryptoError("CryptEncrypt",
+                                xmlSecTransformGetName(transform));
             return (-1);
         }
 
@@ -372,12 +363,10 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformC
         outBuf  = xmlSecBufferGetData(out);
         ConvertEndian(inBuf, outBuf, inSize);
 
-        if (0 == (hKey = xmlSecMSCryptoKeyDataGetDecryptKey(ctx->data))) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecMSCryptoKeyDataGetKey",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+        hKey = xmlSecMSCryptoKeyDataGetDecryptKey(ctx->data);
+        if (0 == hKey) {
+            xmlSecInternalError("xmlSecMSCryptoKeyDataGetKey",
+                                xmlSecTransformGetName(transform));
             return (-1);
         }
 
@@ -394,11 +383,8 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformC
             oaepParams.cbData = xmlSecBufferGetSize(&(ctx->oaepParams));
 
             if (!CryptSetKeyParam(hKey, KP_OAEP_PARAMS, (const BYTE*)&oaepParams, 0)) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "CryptSetKeyParam",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecMSCryptoError("CryptSetKeyParam",
+                                    xmlSecTransformGetName(transform));
                 return (-1);
             }
         }

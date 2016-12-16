@@ -462,11 +462,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             }
 
             if(!CryptReleaseContext(hProv, 0)) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "CryptReleaseContext",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecMSCryptoError("CryptReleaseContext", NULL);
                 return(-1);
             }
             hProv = (HCRYPTPROV)0;
@@ -476,11 +472,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
                 pProviderInfo->pwszProvName,
                 pProviderInfo->dwProvType,
                 0)) {
-                                       xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "CryptAcquireContext",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                                       xmlSecMSCryptoError("CryptAcquireContext", NULL);
                                        return(-1);
             }
 
@@ -490,11 +482,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
         //Last try it with PROV_RSA_AES provider type.
         if(!bOk) {
             if (!CryptReleaseContext(hProv, 0)) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "CryptReleaseContext",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecMSCryptoError("CryptReleaseContext", NULL);
                 return(-1);
             }
             hProv = (HCRYPTPROV)0;
@@ -504,11 +492,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
                 NULL,
                 PROV_RSA_AES,
                 0)) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "CryptAcquireContext",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecMSCryptoError("CryptAcquireContext", NULL);
                 return(-1);
             }
 
@@ -520,11 +504,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
         }
 
         if(!bOk) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "CryptCreateHash",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecMSCryptoError("CryptCreateHash", NULL);
             return(-1);
         }
 
@@ -535,11 +515,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
         xmlSecAssert2(outSize == 0, -1);
 
         if (!CryptHashData(ctx->mscHash, xmlSecBufferGetData(in), inSize, 0)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "CryptHashData",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecMSCryptoError("CryptHashData", NULL);
             return(-1);
         }
 
@@ -559,11 +535,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
         if(transform->operation == xmlSecTransformOperationSign) {
             dwKeySpec = xmlSecMSCryptoKeyDataGetMSCryptoKeySpec(ctx->data);
             if (!CryptSignHash(ctx->mscHash, dwKeySpec, NULL, 0, NULL, &dwSigLen)) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "CryptSignHash",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecMSCryptoError("CryptSignHash", NULL);
                 return(-1);
             }
             outSize = (xmlSecSize)dwSigLen;
@@ -579,11 +551,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             xmlSecAssert2(tmpBuf != NULL, -1);
 
             if (!CryptSignHash(ctx->mscHash, dwKeySpec, NULL, 0, tmpBuf, &dwSigLen)) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "CryptSignHash",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecMSCryptoError("CryptSignHash", NULL);
                 xmlSecBufferFinalize(&tmp);
                 return(-1);
             }

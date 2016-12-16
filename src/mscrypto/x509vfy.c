@@ -899,11 +899,7 @@ xmlSecMSCryptoCertStrToName(DWORD dwCertEncodingType, LPTSTR pszX500, DWORD dwSt
 
     if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType,
                         NULL, str, len, NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "CertStrToName",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CertStrToName", NULL);
         xmlFree(str);
         return(NULL);
     }

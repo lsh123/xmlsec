@@ -1502,7 +1502,8 @@ xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr
                     return(-1);
             }
         } else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT) != 0) {
-            xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data), NULL);
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_FOUND,
+            				 xmlSecKeyDataGetName(data), NULL);
             return(-1);
         }
     }

@@ -1258,7 +1258,7 @@ xmlSecMSCryptoX509GetNameString(PCCERT_CONTEXT pCertContext, DWORD dwType, DWORD
     /* actually get the name */
     dwSize = CertGetNameString(pCertContext, dwType, dwFlags, pvTypePara, name, dwSize);
     if(dwSize <= 0) {
-        xmlSecMSCryptoError("CertGetNameString", NULL;
+        xmlSecMSCryptoError("CertGetNameString", NULL);
         xmlFree(name);
         return (NULL);
     }

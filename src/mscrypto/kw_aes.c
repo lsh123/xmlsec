@@ -417,7 +417,7 @@ xmlSecMSCryptoKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
         memcpy(out, in, inSize);
     }
     dwCLen = inSize;
-    if(!CryptEncrypt(cryptKey, 0, FALSE, 0, out, &dwCL  en, outSize)) {
+    if(!CryptEncrypt(cryptKey, 0, FALSE, 0, out, &dwCLen, outSize)) {
         xmlSecMSCryptoError("CryptEncrypt", NULL);
         CryptDestroyKey(cryptKey);    
         return(-1);

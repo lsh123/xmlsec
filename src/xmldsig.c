@@ -434,7 +434,7 @@ xmlSecDSigCtxProcessSignatureNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     xmlSecAssert2(node != NULL, -1);
 
     if(!xmlSecCheckNodeName(node, xmlSecNodeSignature, xmlSecDSigNs)) {
-        xmlSecInvalidNodeError(cur, xmlSecNodeSignature, NULL);
+        xmlSecInvalidNodeError(node, xmlSecNodeSignature, NULL);
         return(-1);
     }
 

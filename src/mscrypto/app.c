@@ -52,12 +52,9 @@ xmlSecMSCryptoAppInit(const char* config) {
     if (NULL != config && strlen(config) > 0) {
         if (gXmlSecMSCryptoAppCertStoreName != NULL) {
             /* This should not happen, initialize twice */
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "config=%s, config already set",
-                        xmlSecErrorsSafeString(config));
+            xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_CONFIG, NULL,
+                              "config=%s, config already set",
+                              xmlSecErrorsSafeString(config));
             return (-1);
         }
 

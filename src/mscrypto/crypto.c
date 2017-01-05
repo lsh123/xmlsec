@@ -25,36 +25,14 @@
 #include <xmlsec/mscrypto/x509.h>
 #include "private.h"
 
-#if defined(__MINGW32__)
-/* NOTE mingw.org project don't define any xxx_s function and may
- * be never will define them.
- *
- * In this file is save to use non _s function as into destination
- * buffer program code copy empty string and the size of source buffer
- * (XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE=4096) is enough for any
- * encoding. Also program code don't check result of _s functions.
- */
-
-static int
-strcpy_s(char *dest, size_t n, const char *src) {
-    strcpy(dest, src);
-    return(0);
-}
-
-static int
-wcscpy_s(wchar_t *dest, size_t n, const wchar_t *src) {
-    wcscpy(dest, src);
-    return(0);
-}
-#endif
 
 #define XMLSEC_CONTAINER_NAME_A "xmlsec-key-container"
 #define XMLSEC_CONTAINER_NAME_W L"xmlsec-key-container"
 #ifdef UNICODE
 #define XMLSEC_CONTAINER_NAME XMLSEC_CONTAINER_NAME_W
-#else
+#else /* UNICODE */
 #define XMLSEC_CONTAINER_NAME XMLSEC_CONTAINER_NAME_A
-#endif
+#endif /* UNICODE */
 
 
 static xmlSecCryptoDLFunctionsPtr gXmlSecMSCryptoFunctions = NULL;
@@ -338,7 +316,6 @@ xmlSecMSCryptoKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     return(0);
 }
 
-
 static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Random[] = {
     { MS_STRONG_PROV,               PROV_RSA_FULL },
     { MS_ENHANCED_PROV,             PROV_RSA_FULL },
@@ -405,7 +382,7 @@ xmlSecMSCryptoGetErrorMessage(DWORD dwError, xmlChar * out, xmlSecSize outSize) 
     xmlSecAssert(outSize > 0);
 
     /* Use system message tables to retrieve error text, allocate buffer on local
-       heap for error text, don't use any inserts/paramters (!!!) */
+       heap for error text, don't use any inserts/parameters */
     ret = FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM
                       | FORMAT_MESSAGE_ALLOCATE_BUFFER
                       | FORMAT_MESSAGE_IGNORE_INSERTS,

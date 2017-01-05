@@ -383,13 +383,10 @@ xmlSecGCryptHmacVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(ctx->dgstSize > 0, -1);
 
     /* compare the digest size in bytes */
-    if(dataSize != ((ctx->dgstSize + 7) / 8)){
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "data=%d;dgst=%d",
-                    dataSize, ((ctx->dgstSize + 7) / 8));
+    if(dataSize != ((ctx->dgstSize + 7) / 8)) {
+        xmlSecInvalidSizeError("HMAC digest size",
+                              dataSize, ((ctx->dgstSize + 7) / 8),
+                              xmlSecTransformGetName(transform));
         transform->status = xmlSecTransformStatusFail;
         return(0);
     }
@@ -479,12 +476,9 @@ xmlSecGCryptHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
             } else if(ctx->dgstSize <= 8 * dgstSize) {
                 dgstSize = ((ctx->dgstSize + 7) / 8); /* we need to truncate result digest */
             } else {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            NULL,
-                            XMLSEC_ERRORS_R_INVALID_SIZE,
-                            "result-bits=%d;required-bits=%d",
-                            8 * dgstSize, ctx->dgstSize);
+                xmlSecInvalidSizeLessThanError("HMAC digest (bits)",
+                                        8 * dgstSize, ctx->dgstSize,
+                                        xmlSecTransformGetName(transform));
                 return(-1);
             }
 

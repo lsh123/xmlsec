@@ -280,6 +280,68 @@ extern "C" {
                     "details=%s",                           \
                     xmlSecErrorsSafeString(details)         \
         )
+/**
+ * xmlSecInvalidSizeError:
+ * @name:               the name of the variable, parameter, etc.
+ * @actual:             the actual value.
+ * @expected:           the expected value.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting "invalid size" errors when
+ * we expect exact match.
+ */
+#define xmlSecInvalidSizeError(name, actual, expected, errorObject) \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    NULL,                                   \
+                    NULL,                                   \
+                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,        \
+                    "invalid size for '%s': actual=%lu is not equal to expected=%lu", \
+                    xmlSecErrorsSafeString(name),           \
+                    (unsigned long)(actual),                \
+                    (unsigned long)(expected)               \
+        )
+
+/**
+ * xmlSecInvalidSizeLessThanError:
+ * @name:               the name of the variable, parameter, etc.
+ * @actual:             the actual value.
+ * @expected:           the expected value.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting "invalid size" errors when
+ * we expect at least the expected size.
+ */
+#define xmlSecInvalidSizeLessThanError(name, actual, expected, errorObject) \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    NULL,                                   \
+                    NULL,                                   \
+                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,        \
+                    "invalid size for '%s': actual=%lu is less than expected=%lu", \
+                    xmlSecErrorsSafeString(name),           \
+                    (unsigned long)(actual),                \
+                    (unsigned long)(expected)               \
+        )
+
+/**
+ * xmlSecInvalidSizeMoreThanError:
+ * @name:               the name of the variable, parameter, etc.
+ * @actual:             the actual value.
+ * @expected:           the expected value.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting "invalid size" errors when
+ * we expect at most the expected size.
+ */
+#define xmlSecInvalidSizeMoreThanError(name, actual, expected, errorObject) \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    NULL,                                   \
+                    NULL,                                   \
+                    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,        \
+                    "invalid size for '%s': actual=%lu is more than expected=%lu", \
+                    xmlSecErrorsSafeString(name),           \
+                    (unsigned long)(actual),                \
+                    (unsigned long)(expected)               \
+        )
 
 /**
  * xmlSecInvalidNodeError:

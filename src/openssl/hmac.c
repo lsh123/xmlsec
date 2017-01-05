@@ -413,20 +413,9 @@ xmlSecOpenSSLHmacVerify(xmlSecTransformPtr transform,
 
     /* compare the digest size in bytes */
     if(dataSize != ((ctx->dgstSize + 7) / 8)){
-        /* NO COMMIT */
-        xmlChar* a;
-        mask = last_byte_masks[ctx->dgstSize % 8];
-        ctx->dgst[dataSize - 1] &= mask;
-        a = xmlSecBase64Encode(ctx->dgst, (ctx->dgstSize + 7) / 8, -1);
-        fprintf(stderr, "%s\n", a);
-        xmlFree(a);
-
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "data=%d;dgst=%d",
-                    dataSize, ((ctx->dgstSize + 7) / 8));
+        xmlSecInvalidSizeError("HMAC digest",
+                               dataSize, ((ctx->dgstSize + 7) / 8),
+                               xmlSecTransformGetName(transform));
         transform->status = xmlSecTransformStatusFail;
         return(0);
     }
@@ -507,12 +496,9 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
             } else if(ctx->dgstSize <= XMLSEC_SIZE_BAD_CAST(8 * dgstSize)) {
                 dgstSize = ((ctx->dgstSize + 7) / 8); /* we need to truncate result digest */
             } else {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            NULL,
-                            XMLSEC_ERRORS_R_INVALID_SIZE,
-                            "result-bits=%d;required-bits=%d",
-                            8 * dgstSize, ctx->dgstSize);
+                xmlSecInvalidSizeLessThanError("HMAC digest (bits)",
+                                        8 * dgstSize, ctx->dgstSize,
+                                        xmlSecTransformGetName(transform));
                 return(-1);
             }
 

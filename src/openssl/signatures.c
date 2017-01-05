@@ -557,21 +557,13 @@ xmlSecOpenSSLSignatureDsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr 
     /* signature size = r + s + 8 bytes, we just need r+s */
     dsaSignSize = DSA_size(dsaKey);
     if(dsaSignSize < 8) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "DSA_size",
-                    XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "dsaSignSize=%d", (int)dsaSignSize);
+        xmlSecInvalidSizeLessThanError("DSA signature", dsaSignSize, 8, NULL);
         goto done;
     }
 
     signHalfSize = (dsaSignSize - 8) /  2;
     if(signHalfSize < 4) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "signHalfSize",
-                    XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "signHalfSize=%d", (int)signHalfSize);
+        xmlSecInvalidSizeLessThanError("DSA signature (half)", signHalfSize, 4, NULL);
         goto done;
     }
 
@@ -590,22 +582,14 @@ xmlSecOpenSSLSignatureDsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr 
     }
     rSize = BN_num_bytes(rr);
     if(rSize > signHalfSize) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "rSize=%d > %d",
-                    rSize, signHalfSize);
+        xmlSecInvalidSizeMoreThanError("DSA signature r",
+                                       rSize, signHalfSize, NULL);
         goto done;
     }
     sSize = BN_num_bytes(ss);
     if(sSize > signHalfSize) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "sSize=%d > %d",
-                    sSize, signHalfSize);
+        xmlSecInvalidSizeMoreThanError("DSA signature s",
+                                       sSize, signHalfSize, NULL);
         goto done;
     }
 
@@ -665,32 +649,22 @@ xmlSecOpenSSLSignatureDsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSecBy
     /* signature size = r + s + 8 bytes, we just need r+s */
     dsaSignSize = DSA_size(dsaKey);
     if(dsaSignSize < 8) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "DSA_size",
-                    XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "dsaSignSize=%d", (int)dsaSignSize);
+        xmlSecInvalidSizeLessThanError("DSA signatue",
+                                       dsaSignSize, 8, NULL);
         goto done;
     }
 
     signHalfSize = (dsaSignSize - 8) /  2;
     if(signHalfSize < 4) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "signHalfSize",
-                    XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "signHalfSize=%d", (int)signHalfSize);
+        xmlSecInvalidSizeLessThanError("DSA signatue (half size)",
+                                       signHalfSize, 4, NULL);
         goto done;
     }
 
     /* check size */
     if(signSize != 2 * signHalfSize) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "invalid length %d (%d expected)",
-                    (int)signSize, (int)(2 * signHalfSize));
+        xmlSecInvalidSizeError("DSA signature", signSize, 2 * signHalfSize,
+                               NULL);
         goto done;
     }
 
@@ -949,23 +923,15 @@ xmlSecOpenSSLSignatureEcdsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPt
     /* check sizes */
     rSize = BN_num_bytes(rr);
     if(rSize > signHalfSize) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "rSize=%d > %d",
-                    (int)rSize, (int)signHalfSize);
+        xmlSecInvalidSizeMoreThanError("ECDSA signatue r",
+                                       rSize, signHalfSize, NULL);
         goto done;
     }
 
     sSize = BN_num_bytes(ss);
     if(sSize > signHalfSize) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "sSize=%d > %d",
-                    (int)sSize, (int)signHalfSize);
+        xmlSecInvalidSizeMoreThanError("ECDSA signatue s",
+                                       sSize, signHalfSize, NULL);
         goto done;
     }
 
@@ -1032,12 +998,8 @@ xmlSecOpenSSLSignatureEcdsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSec
 
     /* check size */
     if(signSize != 2 * signHalfSize) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "invalid length %d (%d expected)",
-                    (int)signSize, (int)(2 * signHalfSize));
+        xmlSecInvalidSizeError("Ecdsa signature", signSize, 2 * signHalfSize,
+                               NULL);
         goto done;
     }
 

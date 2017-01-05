@@ -312,11 +312,8 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
     case xmlSecGCryptDerKeyTypePrivateDsa:
         /* check we have enough params */
         if(keyparms_num != 6) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "Private DSA key: 6 parameters exepcted",
-                        XMLSEC_ERRORS_R_INVALID_SIZE,
-                        "parms_num=%d", (int)keyparms_num);
+            xmlSecInvalidSizeError("Private DSA key params",
+                                   keyparms_num, 6, NULL);
             goto done;
         }
 
@@ -366,11 +363,8 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
     case xmlSecGCryptDerKeyTypePublicDsa:
         /* check we have enough params */
         if(keyparms_num != 5) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "Public DSA key: 5 parameters exepcted",
-                        XMLSEC_ERRORS_R_INVALID_SIZE,
-                        "parms_num=%d", (int)keyparms_num);
+            xmlSecInvalidSizeError("Public DSA key params",
+                                   keyparms_num, 5, NULL);
             goto done;
         }
 
@@ -406,11 +400,8 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
     case xmlSecGCryptDerKeyTypePrivateRsa:
         /* check we have enough params */
         if(keyparms_num != 9) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "Private RSA key: 9 parameters exepcted",
-                        XMLSEC_ERRORS_R_INVALID_SIZE,
-                        "parms_num=%d", (int)keyparms_num);
+            xmlSecInvalidSizeError("Private RSA key params",
+                                   keyparms_num, 9, NULL);
             goto done;
         }
 
@@ -463,11 +454,8 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
     case xmlSecGCryptDerKeyTypePublicRsa:
         /* check we have enough params */
         if(keyparms_num != 3) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "Public RSA key: 3 parameters exepcted",
-                        XMLSEC_ERRORS_R_INVALID_SIZE,
-                        "parms_num=%d", (int)keyparms_num);
+            xmlSecInvalidSizeError("Public RSA key params",
+                                   keyparms_num, 3, NULL);
             goto done;
         }
 

@@ -465,12 +465,9 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
 
         /* yell if key is too big */
         if ((dwKeyMaterial * 8) > dwProvSessionKeySize) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_INVALID_SIZE,
-                        "dwKeyMaterial=%ld;dwProvSessionKeySize=%ld",
-                        dwKeyMaterial, dwProvSessionKeySize);
+            xmlSecInvalidSizeMoreThanError("Key value (bits)",
+                                           (dwKeyMaterial * 8), dwProvSessionKeySize,
+                                           NULL);
             goto done;
         }
     } else {
@@ -501,12 +498,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
 
     /* 3 is for the first reserved byte after the key material and the 2 reserved bytes at the end. */
     if(dwPublicKeySize / 8 < dwKeyMaterial + 3) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "dwKeyMaterial=%ld;dwPublicKeySize=%ld",
-                    dwKeyMaterial, dwPublicKeySize);
+        xmlSecInvalidSizeLessThanError("Key value", dwPublicKeySize / 8, dwKeyMaterial + 3, NULL);
         goto done;
     }
     rndBlobSize = dwPublicKeySize / 8 - (dwKeyMaterial + 3);

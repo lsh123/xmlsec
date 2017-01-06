@@ -348,12 +348,9 @@ xmlSecMSCryptoKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransf
         /* just do nothing */
     } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
         if((inSize % XMLSEC_KW_DES3_BLOCK_LENGTH) != 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        NULL,
-                        XMLSEC_ERRORS_R_INVALID_SIZE,
-                        "%d bytes - not %d bytes aligned",
-                        inSize, XMLSEC_KW_DES3_BLOCK_LENGTH);
+            xmlSecInvalidSizeNotMultipleOfError("Input data",
+                    inSize, XMLSEC_KW_DES3_BLOCK_LENGTH,
+                    xmlSecTransformGetName(transform));
             return(-1);
         }
 

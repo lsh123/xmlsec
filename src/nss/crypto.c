@@ -393,18 +393,11 @@ xmlSecNssGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
  * @reason:             the error code.
  * @msg:                the additional error message.
  *
- * The default errors reporting callback function.
+ * The errors reporting callback function. Just a pass through to the default callback.
  */
 void
 xmlSecNssErrorsDefaultCallback(const char* file, int line, const char* func,
                                 const char* errorObject, const char* errorSubject,
                                 int reason, const char* msg) {
-    xmlChar buf[500];
-    int err;
-
-    err = PORT_GetError();
-    xmlSecStrPrintf(buf, sizeof(buf), BAD_CAST "%s;last nss error=%d (0x%08X)", msg, err, err);
-    xmlSecErrorsDefaultCallback(file, line, func,
-                errorObject, errorSubject,
-                reason, (char*)buf);
+    xmlSecErrorsDefaultCallback(file, line, func, errorObject, errorSubject, reason, msg);
 }

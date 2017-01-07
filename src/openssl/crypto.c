@@ -427,13 +427,12 @@ xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
  * @reason:             the error code.
  * @msg:                the additional error message.
  *
- * The default OpenSSL errors reporting callback function.
+ * The errors reporting callback function.
  */
 void
 xmlSecOpenSSLErrorsDefaultCallback(const char* file, int line, const char* func,
                                 const char* errorObject, const char* errorSubject,
                                 int reason, const char* msg) {
-
     ERR_put_error(XMLSEC_OPENSSL_ERRORS_LIB,
                 XMLSEC_OPENSSL_ERRORS_FUNCTION,
                 reason, file, line);

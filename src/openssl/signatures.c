@@ -998,7 +998,7 @@ xmlSecOpenSSLSignatureEcdsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSec
 
     /* check size */
     if(signSize != 2 * signHalfSize) {
-        xmlSecInvalidSizeError("Ecdsa signature", signSize, 2 * signHalfSize,
+        xmlSecInvalidSizeError("ECDSA signature", signSize, 2 * signHalfSize,
                                NULL);
         goto done;
     }

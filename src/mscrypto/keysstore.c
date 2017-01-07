@@ -296,12 +296,10 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
 
     hStoreHandle = CertOpenSystemStore(0, storeName);
     if (NULL == hStoreHandle) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "CertOpenSystemStore",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "storeName=%s",
-                    xmlSecErrorsSafeString(storeName));
+        xmlSecMSCryptoError2("CertOpenSystemStore",
+                             xmlSecKeyStoreGetName(store),
+                             "storeName=%s",
+                             xmlSecErrorsSafeString(storeName));
         return(NULL);
     }
 
@@ -455,12 +453,8 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 
         pCertContext2 = CertDuplicateCertificateContext(pCertContext);
         if (NULL == pCertContext2) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "CertDuplicateCertificateContext",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "data=%s",
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+            xmlSecMSCryptoError("CertDuplicateCertificateContext",
+                                xmlSecKeyDataGetName(x509Data));
             goto done;
         }
 
@@ -474,12 +468,8 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 
         pCertContext2 = CertDuplicateCertificateContext(pCertContext);
         if (NULL == pCertContext2) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "CertDuplicateCertificateContext",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "data=%s",
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+            xmlSecMSCryptoError("CertDuplicateCertificateContext",
+                                xmlSecKeyDataGetName(x509Data));
             goto done;
         }
 

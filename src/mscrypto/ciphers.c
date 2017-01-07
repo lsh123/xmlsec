@@ -72,11 +72,7 @@ xmlSecMSCryptoBlockCipherCtxInit(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     /* iv len == block len */
     dwBlockLenLen = sizeof(DWORD);
     if (!CryptGetKeyParam(ctx->cryptKey, KP_BLOCKLEN, (BYTE *)&dwBlockLen, &dwBlockLenLen, 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(cipherName),
-                    "CryptGetKeyParam",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CryptGetKeyParam", cipherName);
         return(-1);
     }
 
@@ -98,20 +94,13 @@ xmlSecMSCryptoBlockCipherCtxInit(xmlSecMSCryptoBlockCipherCtxPtr ctx,
 
         /* generate and use random iv */
         if(!CryptGenRandom(ctx->cryptProvider, blockLen, iv)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(cipherName),
-                        "CryptGenRandom",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "len=%d", blockLen);
+            xmlSecMSCryptoError2("CryptGenRandom", cipherName,
+                                 "len=%d", blockLen);
             return(-1);
         }
 
         if(!CryptSetKeyParam(ctx->cryptKey, KP_IV, iv, 0)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(cipherName),
-                        "CryptSetKeyParam",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecMSCryptoError("CryptSetKeyParam", cipherName);
             return(-1);
         }
     } else {
@@ -124,11 +113,7 @@ xmlSecMSCryptoBlockCipherCtxInit(xmlSecMSCryptoBlockCipherCtxPtr ctx,
 
         /* set iv */
         if (!CryptSetKeyParam(ctx->cryptKey, KP_IV, xmlSecBufferGetData(in), 0)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(cipherName),
-                        "CryptSetKeyParam",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecMSCryptoError("CryptSetKeyParam", cipherName);
             return(-1);
         }
 
@@ -167,11 +152,7 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
 
     dwBlockLenLen = sizeof(DWORD);
     if (!CryptGetKeyParam(ctx->cryptKey, KP_BLOCKLEN, (BYTE *)&dwBlockLen, &dwBlockLenLen, 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(cipherName),
-                    "CryptSetKeyParam",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CryptSetKeyParam", cipherName);
         return(-1);
     }
     blockLen = dwBlockLen / 8;
@@ -208,20 +189,12 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     dwCLen = inSize;
     if(encrypt) {
         if(!CryptEncrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen, inSize + blockLen)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(cipherName),
-                        "CryptEncrypt",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecMSCryptoError("CryptEncrypt", cipherName);
             return(-1);
         }
     } else {
         if (!CryptDecrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(cipherName),
-                        "CryptSetKeyDecrypt",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecMSCryptoError("CryptSetKeyDecrypt", cipherName);
             return(-1);
         }
     }
@@ -272,11 +245,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
 
     dwBlockLenLen = sizeof(DWORD);
     if (!CryptGetKeyParam(ctx->cryptKey, KP_BLOCKLEN, (BYTE *)&dwBlockLen, &dwBlockLenLen, 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(cipherName),
-                    "CryptGetKeyParam",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CryptGetKeyParam", cipherName);
         return(-1);
     }
     blockLen = dwBlockLen / 8;
@@ -300,11 +269,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
         /* create random padding */
         if((size_t)blockLen > (inSize + 1)) {
             if (!CryptGenRandom(ctx->cryptProvider, blockLen - inSize - 1, inBuf + inSize)) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(cipherName),
-                            "CryptGenRandom",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlSecMSCryptoError("CryptGenRandom", cipherName);
                 return(-1);
             }
         }
@@ -337,20 +302,12 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
         /* Set process last block to false, since we handle padding ourselves, and MSCrypto padding
          * can be skipped. I hope this will work .... */
         if(!CryptEncrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen, inSize + blockLen)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(cipherName),
-                        "CryptEncrypt",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecMSCryptoError("CryptEncrypt", cipherName);
             return(-1);
         }
     } else {
         if (!CryptDecrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(cipherName),
-                        "CryptDecrypt",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecMSCryptoError("CryptDecrypt", cipherName);
             return(-1);
         }
     }
@@ -518,12 +475,8 @@ xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
 
     /* Create dummy key to be able to import plain session keys */
     if (!xmlSecMSCryptoCreatePrivateExponentOneKey(ctx->cryptProvider, &(ctx->pubPrivKey))) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlSecMSCryptoCreatePrivateExponentOneKey",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
-
+        xmlSecMSCryptoError("xmlSecMSCryptoCreatePrivateExponentOneKey",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }
 

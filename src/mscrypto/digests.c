@@ -296,11 +296,7 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
             &(ctx->mscHash));
 
         if((ret == 0) || (ctx->mscHash == 0)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "CryptCreateHash",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecMSCryptoError("CryptCreateHash", xmlSecTransformGetName(transform));
             return(-1);
         }
 
@@ -318,11 +314,9 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
                 0);
 
             if(ret == 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "CryptHashData",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            "size=%d", inSize);
+                xmlSecMSCryptoError2("CryptHashData",
+                                     xmlSecTransformGetName(transform),
+                                     "size=%d", inSize);
                 return(-1);
             }
 
@@ -341,14 +335,12 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
             retLen = MSCRYPTO_MAX_HASH_SIZE;
 
             ret = CryptGetHashParam(ctx->mscHash,
-                HP_HASHVAL,
-                ctx->dgst,
-                &retLen,
-                0);
-
+                                    HP_HASHVAL,
+                                    ctx->dgst,
+                                    &retLen,
+                                    0);
             if (ret == 0) {
-                /* Should be XMLSEC_ERRORS_R_CRYPTO_FAILED */
-                xmlSecInternalError2("CryptGetHashParam(HP_HASHVAL)",
+                xmlSecMSCryptoError2("CryptGetHashParam(HP_HASHVAL)",
                                      xmlSecTransformGetName(transform),
                                      "size=%d", MSCRYPTO_MAX_HASH_SIZE);
                 return(-1);

@@ -99,7 +99,7 @@ function usage()
 	txt += "either 'yes' or 'no'.\n\n";
 	txt += "XmlSec Library options, default value given in parentheses:\n\n";
 	txt += "  crypto:     Crypto engines list, first is default: \"openssl\",\n";
-	txt += "              \"openssl=096\", \"openssl=097\", \"openssl=098\", \n";
+	txt += "              \"openssl=098\", \"openssl=100\", \"openssl=110\", \n";
 	txt += "              \"nss\", \"mscrypto\" (\"" + withCrypto + "\");\n"
  	txt += "  xslt:       LibXSLT is used (" + (withLibXSLT? "yes" : "no")  + ")\n";	
  	txt += "  iconv:      Use the iconv library (" + (withIconv? "yes" : "no")  + ")\n";	

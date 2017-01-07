@@ -234,11 +234,8 @@ xmlSecMSCryptoHmacInitialize(xmlSecTransformPtr transform) {
 
     /* Create dummy key to be able to import plain session keys */
     if (!xmlSecMSCryptoCreatePrivateExponentOneKey(ctx->provider, &(ctx->pubPrivKey))) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlSecMSCryptoCreatePrivateExponentOneKey",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("xmlSecMSCryptoCreatePrivateExponentOneKey",
+                            xmlSecTransformGetName(transform));
 
         return(-1);
     }
@@ -398,11 +395,8 @@ xmlSecMSCryptoHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         0,
         &(ctx->mscHash));
     if((ret == 0) || (ctx->mscHash == 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "CryptCreateHash",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CryptCreateHash",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -411,11 +405,8 @@ xmlSecMSCryptoHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     hmacInfo.HashAlgid = ctx->alg_id;
     ret = CryptSetHashParam(ctx->mscHash, HP_HMAC_INFO, (BYTE*)&hmacInfo, 0);
     if(ret == 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "CryptSetHashParam",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CryptSetHashParam",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -512,11 +503,9 @@ xmlSecMSCryptoHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                 0);
 
             if(ret == 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "CryptHashData",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            "size=%d", inSize);
+                xmlSecMSCryptoError2("CryptHashData",
+                                    xmlSecTransformGetName(transform),
+                                    "size=%d", inSize);
                 return(-1);
             }
 

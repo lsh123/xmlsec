@@ -23,7 +23,7 @@ extern "C" {
 /**
  * XMLSEC_ERRORS_R_XMLSEC_FAILED:
  *
- * An XMLSec function failed (error subject is the failed function).
+ * An XMLSec function failed.
  */
 #define XMLSEC_ERRORS_R_XMLSEC_FAILED                   1
 
@@ -44,21 +44,21 @@ extern "C" {
 /**
  * XMLSEC_ERRORS_R_CRYPTO_FAILED:
  *
- * Crypto (OpenSSL) function failed (error subject is the failed function).
+ * Crypto (e.g. OpenSSL) function failed.
  */
 #define XMLSEC_ERRORS_R_CRYPTO_FAILED                   4
 
 /**
  * XMLSEC_ERRORS_R_XML_FAILED:
  *
- * LibXML function failed (error subject is the failed function).
+ * LibXML function failed.
  */
 #define XMLSEC_ERRORS_R_XML_FAILED                      5
 
 /**
  * XMLSEC_ERRORS_R_XSLT_FAILED:
  *
- * LibXSLT function failed (error subject is the failed function).
+ * LibXSLT function failed.
  */
 #define XMLSEC_ERRORS_R_XSLT_FAILED                     6
 
@@ -84,6 +84,13 @@ extern "C" {
  * Feature is not implemented.
  */
 #define XMLSEC_ERRORS_R_NOT_IMPLEMENTED                 9
+
+/**
+ * XMLSEC_ERRORS_R_INVALID_CONFIG:
+ *
+ * The configuration is invalid.
+ */
+#define XMLSEC_ERRORS_R_INVALID_CONFIG                  10
 
 /**
  * XMLSEC_ERRORS_R_INVALID_SIZE:

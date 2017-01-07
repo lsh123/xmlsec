@@ -415,11 +415,7 @@ xmlSecMSCryptoKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
     }
     dwCLen = inSize;
     if(!CryptEncrypt(cryptKey, 0, FALSE, 0, out, &dwCLen, outSize)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "CryptEncrypt",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CryptEncrypt", NULL);
         CryptDestroyKey(cryptKey);    
         return(-1);
     }
@@ -467,11 +463,7 @@ xmlSecMSCryptoKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
     }
     dwCLen = inSize;
     if(!CryptDecrypt(cryptKey, 0, FALSE, 0, out, &dwCLen)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "CryptEncrypt",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecMSCryptoError("CryptDecrypt", NULL);
         CryptDestroyKey(cryptKey);
         return(-1);
     }

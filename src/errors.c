@@ -40,6 +40,7 @@ static xmlSecErrorDescription xmlSecErrorsTable[XMLSEC_ERRORS_MAX_NUMBER + 1] = 
   { XMLSEC_ERRORS_R_IO_FAILED,                  "io function failed" },
   { XMLSEC_ERRORS_R_DISABLED,                   "feature is disabled" },
   { XMLSEC_ERRORS_R_NOT_IMPLEMENTED,            "feature is not implemented" },
+  { XMLSEC_ERRORS_R_INVALID_CONFIG,             "invalid configuration" },
   { XMLSEC_ERRORS_R_INVALID_SIZE,               "invalid size" },
   { XMLSEC_ERRORS_R_INVALID_DATA,               "invalid data" },
   { XMLSEC_ERRORS_R_INVALID_RESULT,             "invalid result" },

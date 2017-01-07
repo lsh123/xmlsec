@@ -544,7 +544,7 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
                                     xmlSecKeyDataGetName(x509Data));
                 goto done;
             }
-        tmpcert = NULL;
+            tmpcert = NULL;
 
             tmpcert = CertDuplicateCertificateContext(pCert);
             if(tmpcert == NULL) {
@@ -581,8 +581,9 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
 
     if (keyData == NULL) {
         /* private key not found in PKCS12 file */
-        xmlSecInternalError("xmlSecMSCryptoAppPkcs12Load",
-                            xmlSecKeyDataGetName(x509Data));
+        xmlSecInternalError2("xmlSecMSCryptoAppPkcs12Load",
+                            xmlSecKeyDataGetName(x509Data),
+                            "private key not found in PKCS12 file", NULL);
         goto done;
     }
 

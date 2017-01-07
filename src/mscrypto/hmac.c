@@ -447,20 +447,9 @@ xmlSecMSCryptoHmacVerify(xmlSecTransformPtr transform,
 
     /* compare the digest size in bytes */
     if(dataSize != ((ctx->dgstSize + 7) / 8)){
-        /* NO COMMIT */
-        xmlChar* a;
-        mask = last_byte_masks[ctx->dgstSize % 8];
-        ctx->dgst[dataSize - 1] &= mask;
-        a = xmlSecBase64Encode(ctx->dgst, (ctx->dgstSize + 7) / 8, -1);
-        fprintf(stderr, "%s\n", a);
-        xmlFree(a);
-
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "data=%d;dgst=%d",
-                    dataSize, ((ctx->dgstSize + 7) / 8));
+        xmlSecInvalidSizeError("HMAC digest",
+                               dataSize, ((ctx->dgstSize + 7) / 8),
+                               xmlSecTransformGetName(transform));
         transform->status = xmlSecTransformStatusFail;
         return(0);
     }
@@ -566,12 +555,9 @@ xmlSecMSCryptoHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
             } else if(ctx->dgstSize <= 8 * retLen) {
                 retLen = ((ctx->dgstSize + 7) / 8); /* we need to truncate result digest */
             } else {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            NULL,
-                            XMLSEC_ERRORS_R_INVALID_SIZE,
-                            "result-bits=%d;required-bits=%d",
-                            8 * retLen, ctx->dgstSize);
+                xmlSecInvalidSizeLessThanError("HMAC digest (bits)",
+                                        8 * retLen, ctx->dgstSize,
+                                        xmlSecTransformGetName(transform));
                 return(-1);
             }
 

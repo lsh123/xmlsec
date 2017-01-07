@@ -1280,11 +1280,8 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
 
                 /* insert into the attrs */
                 if(pos >= attrsSize) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                NULL,
-                                "",
-                                XMLSEC_ERRORS_R_INVALID_SIZE,
-                                "Not enough space: size=%d", (int)attrsSize);
+                    xmlSecInvalidSizeLessThanError("Attributes",
+                                                   attrsSize, pos, NULL);
                     goto done;
                 }
                 attrs[pos].key = xmlStrdup(tmp);

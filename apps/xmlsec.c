@@ -968,8 +968,8 @@ int main(int argc, const char **argv) {
         xmlsec_crypto = tmp;
     }
 #else /* !defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING) */
-    if((tmp != NULL) && (xmlStrcmp(BAD_CAST tmp, xmlSecGetDefaultCrypto()) != 0)) {
-        fprintf(stderr, "Error: dynaimc crypto libraries loading is disabled and the only available crypto library is '%s'\n", xmlSecGetDefaultCrypto());
+    if((tmp != NULL) && (xmlStrcmp(BAD_CAST tmp, xmlSecGetDefaultCrypto()) != 0) && (xmlStrcmp(BAD_CAST tmp, BAD_CAST "default") != 0)) {
+        fprintf(stderr, "Error: dynamic xmlsec-crypto library loading is disabled and the only available crypto library is '%s'\n", xmlSecGetDefaultCrypto());
         xmlSecAppPrintUsage();
         goto fail;
     }

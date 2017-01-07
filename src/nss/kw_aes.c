@@ -368,11 +368,9 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
         /* just do nothing */
     } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
         if((inSize % 8) != 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        NULL,
-                        XMLSEC_ERRORS_R_INVALID_SIZE,
-                        "size=%d(not 8 bytes aligned)", inSize);
+            xmlSecInvalidSizeNotMultipleOfError("Input data",
+                                inSize, 8,
+                                xmlSecTransformGetName(transform));
             return(-1);
         }
 

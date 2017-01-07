@@ -1896,11 +1896,8 @@ xmlSecMSCryptoKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     /* set q */
     if(xmlSecBnGetSize(&q) > 0x14) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "q",
-                    XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "size=%d > 0x14", xmlSecBnGetSize(&q));
+        xmlSecInvalidSizeLessThanError("DSA key q",
+                                       xmlSecBnGetSize(&q), 0x14, NULL);
         goto done;
     }
     xmlSecAssert2(xmlSecBnGetData(&q) != NULL, -1);
@@ -1914,13 +1911,10 @@ xmlSecMSCryptoKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     /* set generator */
     if(xmlSecBnGetSize(&g) > xmlSecBnGetSize(&p)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "g",
-                    XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "size=%d > %d",
-                    xmlSecBnGetSize(&g),
-                    xmlSecBnGetSize(&p));
+        xmlSecInvalidSizeMoreThanError("DSA key g",
+                                       xmlSecBnGetSize(&g),
+                                       xmlSecBnGetSize(&p),
+                                       NULL);
         goto done;
     }
     xmlSecAssert2(xmlSecBnGetData(&g) != NULL, -1);
@@ -1933,13 +1927,10 @@ xmlSecMSCryptoKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     /* Public key */
     if(xmlSecBnGetSize(&y) > xmlSecBnGetSize(&p)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "y",
-                    XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "size=%d > %d",
-                    xmlSecBnGetSize(&y),
-                    xmlSecBnGetSize(&p));
+        xmlSecInvalidSizeMoreThanError("DSA key y",
+                                       xmlSecBnGetSize(&y),
+                                       xmlSecBnGetSize(&p),
+                                       NULL);
         goto done;
     }
     xmlSecAssert2(xmlSecBnGetData(&y) != NULL, -1);

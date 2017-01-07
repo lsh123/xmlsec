@@ -269,18 +269,12 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformC
     /* the encoded size is equal to the keys size so we could not
      * process more than that */
     if((transform->operation == xmlSecTransformOperationEncrypt) && (inSize >= keySize)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "%d when expected less than %d", inSize, keySize);
+        xmlSecInvalidSizeLessThanError("Input data", inSize, keySize,
+                                       xmlSecTransformGetName(transform));
         return(-1);
     } else if((transform->operation == xmlSecTransformOperationDecrypt) && (inSize != keySize)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "%d when expected %d", inSize, keySize);
+        xmlSecInvalidSizeError("Input data", inSize, keySize,
+                               xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -295,12 +289,8 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformC
 
     if(transform->operation == xmlSecTransformOperationEncrypt) {
         if(inSize > outSize) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        NULL,
-                        XMLSEC_ERRORS_R_INVALID_SIZE,
-                        "inSize=%d;outSize=%d",
-                        inSize, outSize);
+            xmlSecInvalidSizeLessThanError("Output data", outSize, inSize,
+                                          xmlSecTransformGetName(transform));
             return(-1);
         }
 

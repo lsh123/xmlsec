@@ -246,12 +246,8 @@ xmlSecMSCryptoDigestVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(ctx->dgstSize > 0, -1);
 
     if(dataSize != ctx->dgstSize) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "data_size=%d;dgst_size=%d",
-                    dataSize, ctx->dgstSize);
+        xmlSecInvalidSizeError("Digest", dataSize, ctx->dgstSize,
+                              xmlSecTransformGetName(transform));
         transform->status = xmlSecTransformStatusFail;
         return(0);
     }

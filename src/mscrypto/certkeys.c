@@ -1322,11 +1322,8 @@ xmlSecMSCryptoKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
         return(-1);
     }
     if (dwBlobLen < sizeof(PUBLICKEYSTRUC)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_DATA,
-                    "blobLen=%ld", dwBlobLen);
+        xmlSecInvalidSizeLessThanError("Key blob", dwBlobLen, sizeof(PUBLICKEYSTRUC),
+                xmlSecKeyDataKlassGetName(id));
         xmlSecBufferFinalize(&buf);
         return(-1);
     }
@@ -1363,12 +1360,9 @@ xmlSecMSCryptoKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     modulusLen      = pubKey->bitlen / 8;
 
     if (dwBlobLen < sizeof(PUBLICKEYSTRUC) + sizeof(RSAPUBKEY) + modulusLen) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_DATA,
-                    "blobLen=%ld; modulusLen=%d",
-                    dwBlobLen, modulusLen);
+        xmlSecInvalidSizeLessThanError("Key blob",
+                dwBlobLen, sizeof(PUBLICKEYSTRUC) + sizeof(RSAPUBKEY) + modulusLen,
+                xmlSecKeyDataKlassGetName(id));
         xmlSecBufferFinalize(&buf);
         return(-1);
     }
@@ -2053,11 +2047,8 @@ xmlSecMSCryptoKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
         return(-1);
     }
     if (dwBlobLen < sizeof(PUBLICKEYSTRUC)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_DATA,
-                    "blobLen=%ld", dwBlobLen);
+        xmlSecInvalidSizeLessThanError("Key blob", dwBlobLen, sizeof(PUBLICKEYSTRUC),
+                xmlSecKeyDataKlassGetName(id));
         xmlSecBufferFinalize(&buf);
         return(-1);
     }
@@ -2095,12 +2086,9 @@ xmlSecMSCryptoKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     /* we assume that sizeof(q) < 0x14, sizeof(g) <= sizeof(p) and sizeof(y) <= sizeof(p) */
     if (dwBlobLen < sizeof(PUBLICKEYSTRUC) + sizeof(DSSPUBKEY) + 3 * keyLen + 0x14 + sizeof(DSSSEED)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_DATA,
-                    "blobLen=%ld; keyLen=%d",
-                    dwBlobLen, keyLen);
+        xmlSecInvalidSizeLessThanError("Key blob",
+                dwBlobLen, sizeof(PUBLICKEYSTRUC) + sizeof(DSSPUBKEY) + 3 * keyLen + 0x14 + sizeof(DSSSEED),
+                xmlSecKeyDataKlassGetName(id));
         xmlSecBufferFinalize(&buf);
         return(-1);
     }

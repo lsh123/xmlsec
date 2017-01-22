@@ -292,11 +292,7 @@ xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
         inSize = blockLen;
     } else {
         if(inSize != (xmlSecSize)blockLen) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(cipherName),
-                        NULL,
-                        XMLSEC_ERRORS_R_INVALID_DATA,
-                        "data=%d;block=%d", inSize, blockLen);
+            xmlSecInvalidSizeError("Input data", inSize, blockLen, cipherName);
             return(-1);
         }
     }
@@ -321,12 +317,8 @@ xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
     if(encrypt == 0) {
         /* check padding */
         if(outLen < outBuf[blockLen - 1]) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(cipherName),
-                        NULL,
-                        XMLSEC_ERRORS_R_INVALID_DATA,
-                        "padding=%d;buffer=%d",
-                        outBuf[blockLen - 1], outLen);
+            xmlSecInvalidSizeLessThanError("Input data padding",
+                    inSize, outBuf[blockLen - 1], cipherName);
             return(-1);
         }
         outLen -= outBuf[blockLen - 1];

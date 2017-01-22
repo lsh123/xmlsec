@@ -941,6 +941,16 @@ execDSigTest $res_fail \
     "rsa x509" \
     "--enabled-key-data x509"
 
+# This is the same, but due to --insecure it must pass.
+# If this fails, that means avoiding the certificate verification doesn't
+# happen correctly.
+execDSigTest $res_success \
+    "aleksey-xmldsig-01" \
+    "enveloping-sha256-rsa-sha256-verify" \
+    "sha256 rsa-sha256" \
+    "rsa x509" \
+    "--enabled-key-data x509 --insecure"
+
 ##########################################################################
 ##########################################################################
 ##########################################################################

@@ -742,6 +742,17 @@ static xmlSecAppCmdLineParam X509SkipStrictChecksParam = {
     xmlSecAppCmdLineParamFlagNone,
     NULL
 };
+
+static xmlSecAppCmdLineParam X509DontVerifyCerts = {
+    xmlSecAppCmdLineTopicDSigCommon,
+    "--insecure",
+    NULL,
+    "--insecure"
+    "\n\tdo not verify certificates",
+    xmlSecAppCmdLineParamTypeFlag,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};
 #endif /* XMLSEC_NO_X509 */    
 
 static xmlSecAppCmdLineParamPtr parameters[] = {
@@ -804,6 +815,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &verificationTimeParam,
     &depthParam,    
     &X509SkipStrictChecksParam,    
+    &X509DontVerifyCerts,
 #endif /* XMLSEC_NO_X509 */    
     
     /* General configuration params */
@@ -1821,6 +1833,9 @@ xmlSecAppPrepareKeyInfoReadCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     }
     if(xmlSecAppCmdLineParamIsSet(&X509SkipStrictChecksParam)) {
         keyInfoCtx->flags |= XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS;
+    }
+    if(xmlSecAppCmdLineParamIsSet(&X509DontVerifyCerts)) {
+        keyInfoCtx->flags |= XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS;
     }
 #endif /* XMLSEC_NO_X509 */
 

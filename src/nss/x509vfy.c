@@ -213,13 +213,18 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs,
             continue;
         }
 
-        /* it's important to set the usage here, otherwise no real verification
-         * is performed. */
-        status = CERT_VerifyCertificate(CERT_GetDefaultCertDB(),
-                                        cert, PR_FALSE,
-                                        certificateUsageEmailSigner, 
-                                        timeboundary , NULL, NULL, NULL);
-	    if (status == SECSuccess) {
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) == 0) {
+            /* it's important to set the usage here, otherwise no real verification
+             * is performed. */
+            status = CERT_VerifyCertificate(CERT_GetDefaultCertDB(),
+                                            cert, PR_FALSE,
+                                            certificateUsageEmailSigner,
+                                            timeboundary , NULL, NULL, NULL);
+            if(status == SECSuccess) {
+                break;
+            }
+        } else {
+            status = SECSuccess;
             break;
         }
     }

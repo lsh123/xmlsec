@@ -524,8 +524,11 @@ xmlSecMSCryptoX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs,
             CertFreeCertificateContext(nextCert);
         }
 
-        if((selected == 1) && xmlSecMSCryptoX509StoreConstructCertsChain(store, cert, certs, keyInfoCtx)) {
-            return(cert);
+        if(selected == 1) {
+	    if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) != 0
+               || xmlSecMSCryptoX509StoreConstructCertsChain(store, cert, certs, keyInfoCtx)) {
+                return(cert);
+            }
         }
     }
 

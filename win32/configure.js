@@ -30,6 +30,10 @@ var versionFile = ".\\configure.txt";
 var optsFileIn = baseDir + "\\config.h.in";
 var optsFile = baseDir + "\\config.h";
 
+/* Input and output files regarding the xmlsec version. */
+var versionHeaderIn = baseDir + "\\include\\xmlsec\\version.h.in";
+var versionHeader = baseDir + "\\include\\xmlsec\\version.h";
+
 /* Version strings for the binary distribution. Will be filled later 
    in the code. */
 var verMajorXmlSec;
@@ -206,6 +210,43 @@ function configureXmlSec()
 	of.Close();
 }
 
+/* This one will generate version.h from version.h.in. */
+function configureXmlSecVersion()
+{
+	var fso, ofi, of, ln, s;
+	fso = new ActiveXObject("Scripting.FileSystemObject");
+	if (fso.FileExists(versionHeader)) {
+		// version.h is already generated, nothing to do.
+		return;
+	}
+
+	ofi = fso.OpenTextFile(versionHeaderIn, 1);
+	of = fso.CreateTextFile(versionHeader, true);
+	while (ofi.AtEndOfStream != true) {
+		ln = ofi.ReadLine();
+		s = new String(ln);
+		if (s.search(/\@XMLSEC_VERSION_MAJOR\@/) != -1) {
+			of.WriteLine(s.replace(/\@XMLSEC_VERSION_MAJOR\@/,
+				verMajorXmlSec));
+		} else if (s.search(/\@XMLSEC_VERSION_MINOR\@/) != -1) {
+			of.WriteLine(s.replace(/\@XMLSEC_VERSION_MINOR\@/,
+				verMinorXmlSec));
+		} else if (s.search(/\@XMLSEC_VERSION_SUBMINOR\@/) != -1) {
+			of.WriteLine(s.replace(/\@XMLSEC_VERSION_SUBMINOR\@/,
+				verMicroXmlSec));
+		} else if (s.search(/\@XMLSEC_VERSION\@/) != -1) {
+			of.WriteLine(s.replace(/\@XMLSEC_VERSION\@/,
+				verMajorXmlSec + "." + verMinorXmlSec + "." + verMicroXmlSec));
+		} else if (s.search(/\@XMLSEC_VERSION_INFO\@/) != -1) {
+			of.WriteLine(s.replace(/\@XMLSEC_VERSION_INFO\@/,
+				(parseInt(verMajorXmlSec) + parseInt(verMinorXmlSec)) + ":" + verMicroXmlSec + ":" + verMinorXmlSec));
+		} else
+			of.WriteLine(ln);
+	}
+	ofi.Close();
+	of.Close();
+}
+
 /* Creates the readme file for the binary distribution of 'bname', for the
    version 'ver' in the file 'file'. This one is called from the Makefile when
    generating a binary distribution. The parameters are passed by make. */
@@ -358,6 +399,8 @@ WScript.Echo(baseName + " version: " + verMajorXmlSec + "." + verMinorXmlSec + "
 
 // Configure libxmlsec.
 configureXmlSec();
+// Generate version.h.
+configureXmlSecVersion();
 if (error != 0) {
 	WScript.Echo("Configuration failed, aborting.");
 	WScript.Quit(error);

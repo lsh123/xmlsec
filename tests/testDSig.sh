@@ -353,7 +353,7 @@ execDSigTest $res_success \
     "sha1 ecdsa-sha1" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/ecdsa-secp256k1-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -362,7 +362,7 @@ execDSigTest $res_success \
     "sha256 ecdsa-sha256" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/ecdsa-secp256k1-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -371,7 +371,7 @@ execDSigTest $res_success \
     "sha512 ecdsa-sha512" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/ecdsa-secp256k1-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 #

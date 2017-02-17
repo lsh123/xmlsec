@@ -238,6 +238,15 @@ xmlSecNssPKIAdoptKey(SECKEYPrivateKey *privkey,
         }
         break;
 #endif /* XMLSEC_NO_DSA */
+#ifndef XMLSEC_NO_ECDSA
+    case ecKey:
+        data = xmlSecKeyDataCreate(xmlSecNssKeyDataEcdsaId);
+        if(data == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate", NULL);
+            return(NULL);
+        }
+        break;
+#endif /* XMLSEC_NO_ECDSA */
     default:
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
@@ -1379,5 +1388,133 @@ xmlSecNssKeyDataRsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 
 #endif /* XMLSEC_NO_RSA */
 
+#ifndef XMLSEC_NO_ECDSA
+static int xmlSecNssKeyDataEcdsaInitialize(xmlSecKeyDataPtr data);
+static int xmlSecNssKeyDataEcdsaDuplicate(xmlSecKeyDataPtr dst,
+                                          xmlSecKeyDataPtr src);
+static void xmlSecNssKeyDataEcdsaFinalize(xmlSecKeyDataPtr data);
 
+static xmlSecKeyDataType xmlSecNssKeyDataEcdsaGetType(xmlSecKeyDataPtr data);
+static xmlSecSize xmlSecNssKeyDataEcdsaGetSize(xmlSecKeyDataPtr data);
+static void xmlSecNssKeyDataEcdsaDebugDump(xmlSecKeyDataPtr data,
+                                           FILE* output);
+static void xmlSecNssKeyDataEcdsaDebugXmlDump(xmlSecKeyDataPtr data,
+                                              FILE* output);
 
+static xmlSecKeyDataKlass xmlSecNssKeyDataEcdsaKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    xmlSecNssPKIKeyDataSize,
+
+    /* data */
+    xmlSecNameECDSAKeyValue,
+    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+                                                /* xmlSecKeyDataUsage usage; */
+    xmlSecHrefECDSAKeyValue,                    /* const xmlChar* href; */
+    xmlSecNodeECDSAKeyValue,                    /* const xmlChar* dataNodeName; */
+    xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecNssKeyDataEcdsaInitialize,            /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecNssKeyDataEcdsaDuplicate,             /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecNssKeyDataEcdsaFinalize,              /* xmlSecKeyDataFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    xmlSecNssKeyDataEcdsaGetType,               /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecNssKeyDataEcdsaGetSize,               /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    NULL,                                       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecNssKeyDataEcdsaDebugDump,             /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecNssKeyDataEcdsaDebugXmlDump,          /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecNssKeyDataEcdsaGetKlass:
+ *
+ * The ECDSA key data klass.
+ *
+ * Returns: pointer to ECDSA key data klass.
+ */
+xmlSecKeyDataId
+xmlSecNssKeyDataEcdsaGetKlass(void) {
+    return(&xmlSecNssKeyDataEcdsaKlass);
+}
+
+static int
+xmlSecNssKeyDataEcdsaInitialize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataEcdsaId), -1);
+
+    return(xmlSecNssPKIKeyDataInitialize(data));
+}
+
+static int
+xmlSecNssKeyDataEcdsaDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecNssKeyDataEcdsaId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecNssKeyDataEcdsaId), -1);
+
+    return(xmlSecNssPKIKeyDataDuplicate(dst, src));
+}
+
+static void
+xmlSecNssKeyDataEcdsaFinalize(xmlSecKeyDataPtr data) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataEcdsaId));
+
+    xmlSecNssPKIKeyDataFinalize(data);
+}
+
+static xmlSecKeyDataType
+xmlSecNssKeyDataEcdsaGetType(xmlSecKeyDataPtr data) {
+    xmlSecNssPKIKeyDataCtxPtr ctx;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataEcdsaId), xmlSecKeyDataTypeUnknown);
+    ctx = xmlSecNssPKIKeyDataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(SECKEY_GetPublicKeyType(ctx->pubkey) == ecKey, -1);
+    if (ctx->privkey != NULL) {
+        return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
+    } else {
+        return(xmlSecKeyDataTypePublic);
+    }
+}
+
+static xmlSecSize
+xmlSecNssKeyDataEcdsaGetSize(xmlSecKeyDataPtr data) {
+    xmlSecNssPKIKeyDataCtxPtr ctx;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataEcdsaId), 0);
+    ctx = xmlSecNssPKIKeyDataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(SECKEY_GetPublicKeyType(ctx->pubkey) == ecKey, -1);
+
+    return(SECKEY_SignatureLen(ctx->pubkey));
+}
+
+static void
+xmlSecNssKeyDataEcdsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataEcdsaId));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "=== ecdsa key: size = %d\n",
+            xmlSecNssKeyDataEcdsaGetSize(data));
+}
+
+static void
+xmlSecNssKeyDataEcdsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataEcdsaId));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "<ECDSAKeyValue size=\"%d\" />\n",
+            xmlSecNssKeyDataEcdsaGetSize(data));
+}
+#endif /* XMLSEC_NO_ECDSA */

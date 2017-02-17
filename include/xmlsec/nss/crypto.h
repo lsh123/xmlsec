@@ -189,6 +189,36 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformDsaSha1GetKlass(void);
 
 /********************************************************************
  *
+ * ECDSA transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_ECDSA
+
+/**
+ * xmlSecNssKeyDataEcdsaId:
+ *
+ * The ECDSA key klass.
+ */
+#define xmlSecNssKeyDataEcdsaId xmlSecNssKeyDataEcdsaGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecNssKeyDataEcdsaGetKlass(void);
+
+#ifndef XMLSEC_NO_SHA256
+
+/**
+ * xmlSecNssTransformEcdsaSha256Id:
+ *
+ * The ECDSA SHA256 signature transform klass.
+ */
+#define xmlSecNssTransformEcdsaSha256Id xmlSecNssTransformEcdsaSha256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEcdsaSha256GetKlass(void);
+
+#endif /* XMLSEC_NO_SHA256 */
+
+#endif /* XMLSEC_NO_ECDSA */
+
+
+/********************************************************************
+ *
  * HMAC transforms
  *
  *******************************************************************/

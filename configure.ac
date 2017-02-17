@@ -598,7 +598,7 @@ dnl ==========================================================================
 XMLSEC_NO_NSS="1"
 SEAMONKEY_MIN_VERSION="1.0"
 MOZILLA_MIN_VERSION="1.4"
-NSS_MIN_VERSION="3.9"
+NSS_MIN_VERSION="3.11.1"
 NSPR_MIN_VERSION="4.4.1"
 NSS_CFLAGS=""
 NSS_LIBS=""

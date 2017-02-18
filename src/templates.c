@@ -1578,7 +1578,7 @@ xmlSecTmplTransformAddC14NInclNamespaces(xmlNodePtr transformNode,
  * @nsList:             the NULL terminated list of namespace prefix/href pairs
  *                      (optional).
  *
- * Writes XPath transform infromation to the <dsig:Transform/> node
+ * Writes XPath transform information to the <dsig:Transform/> node
  * @node.
  *
  * Returns: 0 for success or a negative value otherwise.
@@ -1621,7 +1621,7 @@ xmlSecTmplTransformAddXPath(xmlNodePtr transformNode, const xmlChar *expression,
  * @nsList:             the NULL terminated list of namespace prefix/href pairs.
  *                      (optional).
  *
- * Writes XPath2 transform infromation to the <dsig:Transform/> node
+ * Writes XPath2 transform information to the <dsig:Transform/> node
  * @node.
  *
  * Returns: 0 for success or a negative value otherwise.
@@ -1659,7 +1659,7 @@ xmlSecTmplTransformAddXPath2(xmlNodePtr transformNode, const xmlChar* type,
  * @nsList:             the NULL terminated list of namespace prefix/href pairs.
  *                      (optional).
  *
- * Writes XPoniter transform infromation to the <dsig:Transform/> node
+ * Writes XPointer transform information to the <dsig:Transform/> node
  * @node.
  *
  * Returns: 0 for success or a negative value otherwise.

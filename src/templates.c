@@ -1704,14 +1704,18 @@ xmlSecTmplNodeWriteNsList(xmlNodePtr parentNode, const xmlChar** nsList) {
     xmlSecAssert2(parentNode != NULL, -1);
     xmlSecAssert2(nsList != NULL, -1);
 
+    /* nsList contains pairs of prefix/href with NULL at the end. We use special
+    "#default" prefix instead of NULL prefix */
     ptr = nsList;
     while((*ptr) != NULL) {
+        /* get next prefix/href pair */
         if(xmlStrEqual(BAD_CAST "#default", (*ptr))) {
             prefix = NULL;
         } else {
             prefix = (*ptr);
         }
-        if((++ptr) == NULL) {
+        href = *(++ptr);
+        if(href == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         NULL,
@@ -1719,14 +1723,17 @@ xmlSecTmplNodeWriteNsList(xmlNodePtr parentNode, const xmlChar** nsList) {
                         "unexpected end of ns list");
             return(-1);
         }
-        href = *(ptr++);
 
+        /* create namespace node */
         ns = xmlNewNs(parentNode, href, prefix);
         if(ns == NULL) {
             xmlSecXmlError2("xmlNewNs", NULL,
                             "prefix=%s", xmlSecErrorsSafeString(prefix));
             return(-1);
         }
+
+        /* next pair */
+        ++ptr;
     }
     return(0);
 }

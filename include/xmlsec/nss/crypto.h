@@ -202,6 +202,18 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformDsaSha1GetKlass(void);
 #define xmlSecNssKeyDataEcdsaId xmlSecNssKeyDataEcdsaGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecNssKeyDataEcdsaGetKlass(void);
 
+#ifndef XMLSEC_NO_SHA1
+
+/**
+ * xmlSecNssTransformEcdsaSha1Id:
+ *
+ * The ECDSA SHA1 signature transform klass.
+ */
+#define xmlSecNssTransformEcdsaSha1Id xmlSecNssTransformEcdsaSha1GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEcdsaSha1GetKlass(void);
+
+#endif /* XMLSEC_NO_SHA1 */
+
 #ifndef XMLSEC_NO_SHA256
 
 /**

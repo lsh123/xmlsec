@@ -84,6 +84,11 @@ xmlSecNssSignatureCheckId(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_SHA1
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformEcdsaSha1Id)) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_SHA1 */
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformEcdsaSha256Id)) {
         return(1);
@@ -148,6 +153,13 @@ xmlSecNssSignatureInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_SHA1
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformEcdsaSha1Id)) {
+        ctx->keyId = xmlSecNssKeyDataEcdsaId;
+        /* This creates a signature which is ASN1 encoded */
+        ctx->alg = SEC_OID_ANSIX962_ECDSA_SHA1_SIGNATURE;
+    } else
+#endif /* XMLSEC_NO_SHA1 */
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformEcdsaSha256Id)) {
         ctx->keyId = xmlSecNssKeyDataEcdsaId;
@@ -311,6 +323,22 @@ xmlSecNssSignatureSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyRe
     return(0);
 }
 
+/**
+ * xmlSecNssSignatureAlgorithmEncoded:
+ *
+ * Determines if the given algorithm requires a signature which is ASN1 encoded.
+ */
+static int
+xmlSecNssSignatureAlgorithmEncoded(SECOidTag alg) {
+    switch(alg) {
+    case SEC_OID_ANSIX9_DSA_SIGNATURE_WITH_SHA1_DIGEST:
+    case SEC_OID_ANSIX962_ECDSA_SHA1_SIGNATURE:
+    case SEC_OID_ANSIX962_ECDSA_SHA256_SIGNATURE:
+        return(1);
+    }
+
+    return(0);
+}
 
 static int
 xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
@@ -333,7 +361,7 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
     signature.data = (unsigned char *)data;
     signature.len = dataSize;
 
-    if(ctx->alg == SEC_OID_ANSIX9_DSA_SIGNATURE_WITH_SHA1_DIGEST || ctx->alg == SEC_OID_ANSIX962_ECDSA_SHA256_SIGNATURE) {
+    if(xmlSecNssSignatureAlgorithmEncoded(ctx->alg)) {
         /* This creates a signature which is ASN1 encoded */
         SECItem   signatureDer;
         SECStatus statusDer;
@@ -458,7 +486,7 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                 return(-1);
             }
 
-            if(ctx->alg == SEC_OID_ANSIX9_DSA_SIGNATURE_WITH_SHA1_DIGEST || ctx->alg == SEC_OID_ANSIX962_ECDSA_SHA256_SIGNATURE) {
+            if(xmlSecNssSignatureAlgorithmEncoded(ctx->alg)) {
                 /* This creates a signature which is ASN1 encoded */
                 SECItem * signatureClr;
 
@@ -579,6 +607,53 @@ xmlSecNssTransformDsaSha1GetKlass(void) {
 #endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_SHA1
+/****************************************************************************
+ *
+ * ECDSA-SHA1 signature transform
+ *
+ ***************************************************************************/
+
+static xmlSecTransformKlass xmlSecNssEcdsaSha1Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecNssSignatureSize,                     /* xmlSecSize objSize */
+
+    xmlSecNameEcdsaSha1,                        /* const xmlChar* name; */
+    xmlSecHrefEcdsaSha1,                        /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecNssSignatureInitialize,               /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecNssSignatureFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecNssSignatureSetKeyReq,                /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecNssSignatureSetKey,                   /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecNssSignatureVerify,                   /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecNssSignatureExecute,                  /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecNssTransformEcdsaSha1GetKlass:
+ *
+ * The ECDSA-SHA1 signature transform klass.
+ *
+ * Returns: ECDSA-SHA1 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecNssTransformEcdsaSha1GetKlass(void) {
+    return(&xmlSecNssEcdsaSha1Klass);
+}
+
+#endif /* XMLSEC_NO_SHA1 */
 #ifndef XMLSEC_NO_SHA256
 /****************************************************************************
  *

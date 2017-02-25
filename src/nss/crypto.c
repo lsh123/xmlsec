@@ -124,6 +124,13 @@ xmlSecCryptoGetFunctions_nss(void) {
     gXmlSecNssFunctions->transformDsaSha1GetKlass       = xmlSecNssTransformDsaSha1GetKlass;
 #endif /* XMLSEC_NO_DSA */
 
+    /******************************* ECDSA ******************************/
+#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_SHA256
+    gXmlSecNssFunctions->transformEcdsaSha256GetKlass = xmlSecNssTransformEcdsaSha256GetKlass;
+#endif /* XMLSEC_NO_SHA256 */
+#endif /* XMLSEC_NO_ECDSA */
+
     /******************************* HMAC ********************************/
 #ifndef XMLSEC_NO_HMAC
 

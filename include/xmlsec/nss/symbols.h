@@ -67,6 +67,7 @@ extern "C" {
 #define xmlSecTransformDsaSha1Id                xmlSecNssTransformDsaSha1Id
 #define xmlSecTransformEcdsaSha1Id              xmlSecNssTransformEcdsaSha1Id
 #define xmlSecTransformEcdsaSha256Id            xmlSecNssTransformEcdsaSha256Id
+#define xmlSecTransformEcdsaSha512Id            xmlSecNssTransformEcdsaSha512Id
 #define xmlSecTransformHmacMd5Id                xmlSecNssTransformHmacMd5Id
 #define xmlSecTransformHmacRipemd160Id          xmlSecNssTransformHmacRipemd160Id
 #define xmlSecTransformHmacSha1Id               xmlSecNssTransformHmacSha1Id

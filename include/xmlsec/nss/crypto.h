@@ -226,6 +226,18 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEcdsaSha256GetKlass(voi
 
 #endif /* XMLSEC_NO_SHA256 */
 
+#ifndef XMLSEC_NO_SHA512
+
+/**
+ * xmlSecNssTransformEcdsaSha512Id:
+ *
+ * The ECDSA SHA512 signature transform klass.
+ */
+#define xmlSecNssTransformEcdsaSha512Id xmlSecNssTransformEcdsaSha512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEcdsaSha512GetKlass(void);
+
+#endif /* XMLSEC_NO_SHA512 */
+
 #endif /* XMLSEC_NO_ECDSA */
 
 

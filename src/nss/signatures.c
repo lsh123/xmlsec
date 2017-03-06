@@ -379,6 +379,7 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
         SECItem   signatureDer;
         SECStatus statusDer;
 
+        memset(&signatureDer, 0, sizeof(signatureDer));
         statusDer = DSAU_EncodeDerSigWithLen(&signatureDer, &signature, signature.len);
         if(statusDer != SECSuccess) {
             xmlSecNssError("DSAU_EncodeDerSigWithLen",

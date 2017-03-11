@@ -310,7 +310,11 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
             }
 
 
-            ret         = X509_verify_cert(xsc);
+            if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) == 0) {
+                ret         = X509_verify_cert(xsc);
+            } else {
+                ret = 1;
+            }
             err_cert    = X509_STORE_CTX_get_current_cert(xsc);
             err         = X509_STORE_CTX_get_error(xsc);
 

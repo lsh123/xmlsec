@@ -640,13 +640,11 @@ xmlSecOpenSSLKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         return(-1);
     }
 
-    if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) == 0) {
-        ret = xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(data, key, keyInfoCtx);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecOpenSSLKeyDataX509VerifyAndExtractKey",
-                                xmlSecKeyDataKlassGetName(id));
-            return(-1);
-        }
+    ret = xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(data, key, keyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLKeyDataX509VerifyAndExtractKey",
+                            xmlSecKeyDataKlassGetName(id));
+        return(-1);
     }
     return(0);
 }

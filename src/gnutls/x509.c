@@ -573,13 +573,11 @@ xmlSecGnuTLSKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         return(-1);
     }
 
-    if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) == 0) {
-        ret = xmlSecGnuTLSKeyDataX509VerifyAndExtractKey(data, key, keyInfoCtx);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecGnuTLSKeyDataX509VerifyAndExtractKey",
-                                xmlSecKeyDataKlassGetName(id));
-            return(-1);
-        }
+    ret = xmlSecGnuTLSKeyDataX509VerifyAndExtractKey(data, key, keyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSKeyDataX509VerifyAndExtractKey",
+                            xmlSecKeyDataKlassGetName(id));
+        return(-1);
     }
     return(0);
 }

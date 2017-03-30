@@ -86,6 +86,7 @@ typedef struct _xmlSecEncCtx                    xmlSecEncCtx, *xmlSecEncCtxPtr;
 XMLSEC_EXPORT int                               xmlSecInit              (void);
 XMLSEC_EXPORT int                               xmlSecShutdown          (void);
 XMLSEC_EXPORT const xmlChar *                   xmlSecGetDefaultCrypto  (void);
+XMLSEC_EXPORT void                              xmlSecSetExternalEntityLoader (xmlExternalEntityLoader);
 
 /**
  * XMLSEC_CRYPTO:

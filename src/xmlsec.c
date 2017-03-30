@@ -27,21 +27,37 @@
  * Custom external entity handler, denies all files except the initial
  * document we're parsing (input_id == 1)
  */
-/* default external entity loader, pointer saved at ctxt initialisation */
-static xmlExternalEntityLoader xmlDefaultExternalEntityLoader = NULL;
+/* default external entity loader, pointer saved during xmlInit */
+static xmlExternalEntityLoader
+xmlSecDefaultExternalEntityLoader = NULL;
 
-xmlParserInputPtr
-xmlNoXxeExternalEntityLoader(const char *URL, const char *ID,
+/*
+ * loader that prevents any external entities being loaded
+ */
+static xmlParserInputPtr
+xmlSecNoXxeExternalEntityLoader(const char *URL, const char *ID,
                           xmlParserCtxtPtr ctxt) {
     if (ctxt == NULL) {
         return(NULL);
     }
     if (ctxt->input_id == 1) {
-        return xmlDefaultExternalEntityLoader((const char *) URL, ID, ctxt);
+        return xmlSecDefaultExternalEntityLoader((const char *) URL, ID, ctxt);
     }
-    xmlSecXmlError2("xmlNoXxeExternalEntityLoader", NULL,
+    xmlSecXmlError2("xmlSecNoXxeExternalEntityLoader", NULL,
                     "illegal external entity='%s'", xmlSecErrorsSafeString(URL));
     return(NULL);
+}
+
+/*
+ * Wrapper for xmlSetExternalEntityLoader:  provide NULL to restore
+ * libxml's default handler
+ */
+void
+xmlSecSetExternalEntityLoader(xmlExternalEntityLoader f) {
+    if (f == NULL) {
+        f = xmlSecDefaultExternalEntityLoader;
+    }
+    xmlSetExternalEntityLoader(f);
 }
 
 
@@ -76,9 +92,9 @@ xmlSecInit(void) {
     }
 
     /* initialise safe external entity loader */
-    if (!xmlDefaultExternalEntityLoader)
-        xmlDefaultExternalEntityLoader = xmlGetExternalEntityLoader();
-    xmlSetExternalEntityLoader(xmlNoXxeExternalEntityLoader);
+    if (!xmlSecDefaultExternalEntityLoader)
+        xmlSecDefaultExternalEntityLoader = xmlGetExternalEntityLoader();
+    xmlSetExternalEntityLoader(xmlSecNoXxeExternalEntityLoader);
 
 
     /* we use rand() function to generate id attributes */

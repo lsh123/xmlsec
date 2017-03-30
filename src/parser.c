@@ -87,27 +87,6 @@ static xmlSecTransformKlass xmlSecParserKlass = {
     NULL,                                       /* void* reserved1; */
 };
 
-/**
- * Custom external entity handler, denies all files except the initial
- * document we're parsing (input_id == 1)
- */
-/* default external entity loader, pointer saved at ctxt initialisation */
-static xmlExternalEntityLoader xmlDefaultExternalEntityLoader = NULL;
-
-xmlParserInputPtr
-xmlNoXxeExternalEntityLoader(const char *URL, const char *ID,
-                          xmlParserCtxtPtr ctxt) {
-    if (ctxt == NULL) {
-        return(NULL);
-    }
-    if (ctxt->input_id == 1) {
-        return xmlDefaultExternalEntityLoader((const char *) URL, ID, ctxt);
-    }
-    xmlSecXmlError2("xmlNoXxeExternalEntityLoader", NULL,
-                    "illegal external entity='%s'", xmlSecErrorsSafeString(URL));
-    return(NULL);
-}
-
 
 /**
  * xmlSecTransformXmlParserGetKlass:
@@ -295,11 +274,6 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
         return(-1);
     }
 
-    /* initialise safe external entity loader */
-    if (!xmlDefaultExternalEntityLoader)
-        xmlDefaultExternalEntityLoader = xmlGetExternalEntityLoader();
-    xmlSetExternalEntityLoader(xmlNoXxeExternalEntityLoader);
-
     input = xmlNewIOInputStream(ctxt, buf, XML_CHAR_ENCODING_NONE);
     if(input == NULL) {
         xmlSecXmlParserError("xmlNewParserCtxt", ctxt,
@@ -393,11 +367,6 @@ xmlSecParseFile(const char *filename) {
         return(NULL);
     }
 
-    /* initialise safe external entity loader */
-    if (!xmlDefaultExternalEntityLoader)
-        xmlDefaultExternalEntityLoader = xmlGetExternalEntityLoader();
-    xmlSetExternalEntityLoader(xmlNoXxeExternalEntityLoader);
-
     /* enable parsing of XML documents with large text nodes */
     /* crashes on x64 xmlCtxtUseOptions (ctxt, XML_PARSE_HUGE); */
 
@@ -476,11 +445,6 @@ xmlSecParseMemoryExt(const xmlSecByte *prefix, xmlSecSize prefixSize,
         goto done;
     }
 
-    /* initialise safe external entity loader */
-    if (!xmlDefaultExternalEntityLoader)
-        xmlDefaultExternalEntityLoader = xmlGetExternalEntityLoader();
-    xmlSetExternalEntityLoader(xmlNoXxeExternalEntityLoader);
-
     /* required for c14n! */
     ctxt->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
     ctxt->replaceEntities = 1;
@@ -558,11 +522,6 @@ xmlSecParseMemory(const xmlSecByte *buffer, xmlSecSize size, int recovery) {
         xmlSecXmlError("xmlCreateMemoryParserCtxt", NULL);
         return(NULL);
     }
-
-    /* initialise safe external entity loader */
-    if (!xmlDefaultExternalEntityLoader)
-        xmlDefaultExternalEntityLoader = xmlGetExternalEntityLoader();
-    xmlSetExternalEntityLoader(xmlNoXxeExternalEntityLoader);
 
     /* required for c14n! */
     ctxt->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS;

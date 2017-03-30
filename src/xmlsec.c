@@ -24,6 +24,28 @@
 #include <xmlsec/errors.h>
 
 /**
+ * Custom external entity handler, denies all files except the initial
+ * document we're parsing (input_id == 1)
+ */
+/* default external entity loader, pointer saved at ctxt initialisation */
+static xmlExternalEntityLoader xmlDefaultExternalEntityLoader = NULL;
+
+xmlParserInputPtr
+xmlNoXxeExternalEntityLoader(const char *URL, const char *ID,
+                          xmlParserCtxtPtr ctxt) {
+    if (ctxt == NULL) {
+        return(NULL);
+    }
+    if (ctxt->input_id == 1) {
+        return xmlDefaultExternalEntityLoader((const char *) URL, ID, ctxt);
+    }
+    xmlSecXmlError2("xmlNoXxeExternalEntityLoader", NULL,
+                    "illegal external entity='%s'", xmlSecErrorsSafeString(URL));
+    return(NULL);
+}
+
+
+/**
  * xmlSecInit:
  *
  * Initializes XML Security Library. The depended libraries
@@ -53,6 +75,10 @@ xmlSecInit(void) {
         return(-1);
     }
 
+    /* initialise safe external entity loader */
+    if (!xmlDefaultExternalEntityLoader)
+        xmlDefaultExternalEntityLoader = xmlGetExternalEntityLoader();
+    xmlSetExternalEntityLoader(xmlNoXxeExternalEntityLoader);
 
 
     /* we use rand() function to generate id attributes */

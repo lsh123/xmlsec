@@ -900,7 +900,6 @@ xmlSecNssX509DataNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoC
         cur != NULL;
         cur = xmlSecGetNextElementNode(cur->next)) {
 
-        ret = 0;
         if(xmlSecCheckNodeName(cur, xmlSecNodeX509Certificate, xmlSecDSigNs)) {
             ret = xmlSecNssX509CertificateNodeRead(data, cur, keyInfoCtx);
             if(ret < 0) {

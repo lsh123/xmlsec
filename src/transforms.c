@@ -1915,8 +1915,6 @@ xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, const xmlSecByte* da
         }
 
         /* process data */
-        inSize = xmlSecBufferGetSize(&(transform->inBuf));
-        outSize = xmlSecBufferGetSize(&(transform->outBuf));
         finalData = (((dataSize == 0) && (final != 0)) ? 1 : 0);
         ret = xmlSecTransformExecute(transform, finalData, transformCtx);
         if(ret < 0) {

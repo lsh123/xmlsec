@@ -32,7 +32,13 @@ static xmlExternalEntityLoader
 xmlSecDefaultExternalEntityLoader = NULL;
 
 /*
- * loader that prevents any external entities being loaded
+ * xmlSecNoXxeExternalEntityLoader:
+ * @URL:        the URL for the entity to load
+ * @ID:         public ID for the entity to load
+ * @ctxt:       XML parser context, or NULL
+ *
+ * See libxml2's xmlLoadExternalEntity and xmlNoNetExternalEntityLoader.
+ * This function prevents any external (file or network) entities from being loaded.
  */
 static xmlParserInputPtr
 xmlSecNoXxeExternalEntityLoader(const char *URL, const char *ID,
@@ -49,15 +55,18 @@ xmlSecNoXxeExternalEntityLoader(const char *URL, const char *ID,
 }
 
 /*
- * Wrapper for xmlSetExternalEntityLoader:  provide NULL to restore
- * libxml's default handler
+ * xmlSecSetExternalEntityLoader:
+ * @entityLoader:       the new entity resolver function, or NULL to restore 
+ *                      libxml2's default handler
+ *
+ * Wrapper for xmlSetExternalEntityLoader.
  */
 void
-xmlSecSetExternalEntityLoader(xmlExternalEntityLoader f) {
-    if (f == NULL) {
-        f = xmlSecDefaultExternalEntityLoader;
+xmlSecSetExternalEntityLoader(xmlExternalEntityLoader entityLoader) {
+    if (entityLoader == NULL) {
+        entityLoader = xmlSecDefaultExternalEntityLoader;
     }
-    xmlSetExternalEntityLoader(f);
+    xmlSetExternalEntityLoader(entityLoader);
 }
 
 
@@ -92,8 +101,9 @@ xmlSecInit(void) {
     }
 
     /* initialise safe external entity loader */
-    if (!xmlSecDefaultExternalEntityLoader)
+    if (!xmlSecDefaultExternalEntityLoader) {
         xmlSecDefaultExternalEntityLoader = xmlGetExternalEntityLoader();
+    }
     xmlSetExternalEntityLoader(xmlSecNoXxeExternalEntityLoader);
 
 

@@ -87,6 +87,7 @@ static xmlSecTransformKlass xmlSecParserKlass = {
     NULL,                                       /* void* reserved1; */
 };
 
+
 /**
  * xmlSecTransformXmlParserGetKlass:
  *

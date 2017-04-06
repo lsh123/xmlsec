@@ -512,6 +512,19 @@ static xmlSecAppCmdLineParam idAttrParam = {
     NULL
 };    
 
+static xmlSecAppCmdLineParam xxeParam = { 
+    xmlSecAppCmdLineTopicAll,
+    "--xxe",
+    NULL,   
+    "--xxe"
+    "\n\tenable External Entity resolution."
+    "\n\tWARNING: this may allow the reading of arbitrary files and URLs,"
+    "\n\tcontrolled by the input XML document.  Use with caution!",
+    xmlSecAppCmdLineParamTypeFlag,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};    
+
 
 /****************************************************************
  *
@@ -825,6 +838,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &disableErrorMsgsParam,
     &printCryptoErrorMsgsParam,
     &helpParam,
+    &xxeParam,
         
     /* MUST be the last one */
     NULL
@@ -1000,6 +1014,11 @@ int main(int argc, const char **argv) {
         goto fail;
     }
     
+    /* enable XXE? */
+    if(xmlSecAppCmdLineParamIsSet(&xxeParam)) {
+        xmlSecSetExternalEntityLoader( NULL );     // reset to libxml2's default handler
+    }
+
     /* get the "repeats" number */
     if(xmlSecAppCmdLineParamIsSet(&repeatParam) && 
        (xmlSecAppCmdLineParamGetInt(&repeatParam, 1) > 0)) {

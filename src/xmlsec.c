@@ -24,6 +24,53 @@
 #include <xmlsec/errors.h>
 
 /**
+ * Custom external entity handler, denies all files except the initial
+ * document we're parsing (input_id == 1)
+ */
+/* default external entity loader, pointer saved during xmlInit */
+static xmlExternalEntityLoader
+xmlSecDefaultExternalEntityLoader = NULL;
+
+/*
+ * xmlSecNoXxeExternalEntityLoader:
+ * @URL:        the URL for the entity to load
+ * @ID:         public ID for the entity to load
+ * @ctxt:       XML parser context, or NULL
+ *
+ * See libxml2's xmlLoadExternalEntity and xmlNoNetExternalEntityLoader.
+ * This function prevents any external (file or network) entities from being loaded.
+ */
+static xmlParserInputPtr
+xmlSecNoXxeExternalEntityLoader(const char *URL, const char *ID,
+                          xmlParserCtxtPtr ctxt) {
+    if (ctxt == NULL) {
+        return(NULL);
+    }
+    if (ctxt->input_id == 1) {
+        return xmlSecDefaultExternalEntityLoader((const char *) URL, ID, ctxt);
+    }
+    xmlSecXmlError2("xmlSecNoXxeExternalEntityLoader", NULL,
+                    "illegal external entity='%s'", xmlSecErrorsSafeString(URL));
+    return(NULL);
+}
+
+/*
+ * xmlSecSetExternalEntityLoader:
+ * @entityLoader:       the new entity resolver function, or NULL to restore 
+ *                      libxml2's default handler
+ *
+ * Wrapper for xmlSetExternalEntityLoader.
+ */
+void
+xmlSecSetExternalEntityLoader(xmlExternalEntityLoader entityLoader) {
+    if (entityLoader == NULL) {
+        entityLoader = xmlSecDefaultExternalEntityLoader;
+    }
+    xmlSetExternalEntityLoader(entityLoader);
+}
+
+
+/**
  * xmlSecInit:
  *
  * Initializes XML Security Library. The depended libraries
@@ -53,6 +100,11 @@ xmlSecInit(void) {
         return(-1);
     }
 
+    /* initialise safe external entity loader */
+    if (!xmlSecDefaultExternalEntityLoader) {
+        xmlSecDefaultExternalEntityLoader = xmlGetExternalEntityLoader();
+    }
+    xmlSetExternalEntityLoader(xmlSecNoXxeExternalEntityLoader);
 
 
     /* we use rand() function to generate id attributes */

@@ -230,15 +230,14 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
             positive = 1;
             --i; /* make sure that we will look at this character in next loop */
             break;
-        } else {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_DATA,
-                    "char=%c;base=%d",
-                    ch, base);
-            return (-1);
         }
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                NULL,
+                NULL,
+                XMLSEC_ERRORS_R_INVALID_DATA,
+                "char=%c;base=%d",
+                ch, base);
+        return (-1);
     }
 
     /* now parse the number itself */

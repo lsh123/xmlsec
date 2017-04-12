@@ -492,13 +492,19 @@ static int
 xmlSecNodeSetDumpTextNodesWalkCallback(xmlSecNodeSetPtr nset, xmlNodePtr cur,
                                    xmlNodePtr parent ATTRIBUTE_UNUSED,
                                    void* data) {
+    int ret;
     xmlSecAssert2(nset != NULL, -1);
     xmlSecAssert2(cur != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
 
-    if(cur->type == XML_TEXT_NODE) {
-        xmlOutputBufferWriteString((xmlOutputBufferPtr)data,
-                                    (char*)(cur->content));
+    if(cur->type != XML_TEXT_NODE) {
+        return(0);
+    }
+    ret = xmlOutputBufferWriteString((xmlOutputBufferPtr)data,
+            (char*)(cur->content));
+    if(ret < 0) {
+        xmlSecXmlError("xmlOutputBufferWriteString", NULL);
+        return(-1);
     }
     return(0);
 }

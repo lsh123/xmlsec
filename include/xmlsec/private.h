@@ -491,22 +491,6 @@ struct _xmlSecCryptoDLFunctions {
     void*                                        cryptoAppDefaultPwdCallback;
 };
 
-#include <libxml/xmlstring.h>
-
-/**
- * xmlSecStrPrintf:
- *
- * Prints a string (see @xmlStrPrintf).
- */
-#define xmlSecStrPrintf         xmlStrPrintf
-
-/**
- * xmlSecStrVPrintf:
- *
- * Prints a string (see @xmlStrVPrintf).
- */
-#define xmlSecStrVPrintf        xmlStrVPrintf
-
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

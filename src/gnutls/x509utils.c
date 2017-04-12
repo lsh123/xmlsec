@@ -732,6 +732,7 @@ xmlSecGnuTLSASN1IntegerWrite(const unsigned char * data, size_t len) {
     unsigned long long int val = 0;
     size_t ii = 0;
     int shift = 0;
+    int ret;
 
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(len <= 9, NULL);
@@ -744,10 +745,16 @@ xmlSecGnuTLSASN1IntegerWrite(const unsigned char * data, size_t len) {
     res = (xmlChar*)xmlMalloc(resLen + 1);
     if(res == NULL) {
         xmlSecMallocError(resLen + 1, NULL);
-        return (NULL);
+        return(NULL);
     }
 
-    xmlSecStrPrintf(res, resLen, BAD_CAST "%llu", val);
+    ret = xmlStrPrintf(res, resLen, "%llu", val);
+    if(ret < 0) {
+        xmlSecXmlError("xmlStrPrintf", NULL);
+        xmlFree(res);
+        return(NULL);
+    }
+
     return(res);
 }
 

@@ -348,9 +348,9 @@ xmlSecNssSignatureAlgorithmEncoded(SECOidTag alg) {
     case SEC_OID_ANSIX962_ECDSA_SHA256_SIGNATURE:
     case SEC_OID_ANSIX962_ECDSA_SHA512_SIGNATURE:
         return(1);
+    default:
+        return(0);
     }
-
-    return(0);
 }
 
 static int

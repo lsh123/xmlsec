@@ -233,39 +233,53 @@ xmlSecCryptoDLLibraryDuplicate(xmlSecCryptoDLLibraryPtr lib) {
 
 static xmlChar*
 xmlSecCryptoDLLibraryConstructFilename(const xmlChar* name) {
-    static xmlChar tmpl[] = "lib%s-%s";
+    static char tmpl[] = "lib%s-%s";
     xmlChar* res;
     int len;
+    int ret;
 
     xmlSecAssert2(name != NULL, NULL);
 
     /* TODO */
-    len = xmlStrlen(BAD_CAST PACKAGE) + xmlStrlen(name) + xmlStrlen(tmpl) + 1;
+    len = xmlStrlen(BAD_CAST PACKAGE) + xmlStrlen(name) + strlen(tmpl) + 1;
     res = (xmlChar*)xmlMalloc(len + 1);
     if(res == NULL) {
         xmlSecMallocError(len + 1, NULL);
         return(NULL);
     }
-    xmlSecStrPrintf(res, len, tmpl, PACKAGE, name);
+
+    ret = xmlStrPrintf(res, len, tmpl, PACKAGE, name);
+    if(ret < 0) {
+        xmlSecXmlError("xmlStrPrintf", NULL);
+        xmlFree(res);
+        return(NULL);
+    }
 
     return(res);
 }
 
 static xmlChar*
 xmlSecCryptoDLLibraryConstructGetFunctionsName(const xmlChar* name) {
-    static xmlChar tmpl[] = "xmlSecCryptoGetFunctions_%s";
+    static char tmpl[] = "xmlSecCryptoGetFunctions_%s";
     xmlChar* res;
     int len;
+    int ret;
 
     xmlSecAssert2(name != NULL, NULL);
 
-    len = xmlStrlen(name) + xmlStrlen(tmpl) + 1;
+    len = xmlStrlen(name) + strlen(tmpl) + 1;
     res = (xmlChar*)xmlMalloc(len + 1);
     if(res == NULL) {
         xmlSecMallocError(len + 1, NULL);
         return(NULL);
     }
-    xmlSecStrPrintf(res, len, tmpl, name);
+
+    ret = xmlStrPrintf(res, len, tmpl, name);
+    if(ret < 0) {
+        xmlSecXmlError("xmlStrPrintf", NULL);
+        xmlFree(res);
+        return(NULL);
+    }
 
     return(res);
 }

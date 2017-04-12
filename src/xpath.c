@@ -477,7 +477,7 @@ xmlSecTransformXPathGetKlass(void) {
     return(&xmlSecTransformXPathKlass);
 }
 
-static const xmlChar xpathPattern[] = "(//. | //@* | //namespace::*)[boolean(%s)]";
+static const char xpathPattern[] = "(//. | //@* | //namespace::*)[boolean(%s)]";
 static int
 xmlSecTransformXPathNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
     xmlSecPtrListPtr dataList;
@@ -530,7 +530,7 @@ xmlSecTransformXPathNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
 
     /* create full XPath expression */
     xmlSecAssert2(data->expr != NULL, -1);
-    tmpSize = xmlStrlen(data->expr) + xmlStrlen(xpathPattern) + 1;
+    tmpSize = xmlStrlen(data->expr) + strlen(xpathPattern) + 1;
     tmp = (xmlChar*) xmlMalloc(sizeof(xmlChar) * tmpSize);
     if(tmp == NULL) {
         xmlSecMallocError(sizeof(xmlChar) * tmpSize,

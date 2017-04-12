@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <time.h>
+#include <string.h>
 
 #include <libxml/tree.h>
 
@@ -22,7 +23,11 @@
 #include <xmlsec/private.h>
 #include <xmlsec/errors.h>
 
+/* Must be bigger than fatal_error */
 #define XMLSEC_ERRORS_BUFFER_SIZE       1024
+
+/* Must fit into xmlChar[XMLSEC_ERRORS_BUFFER_SIZE] */
+static const xmlChar fatal_error[] = "Can not format error message";
 
 typedef struct _xmlSecErrorDescription                  xmlSecErrorDescription, *xmlSecErrorDescriptionPtr;
 struct _xmlSecErrorDescription {
@@ -225,16 +230,20 @@ void
 xmlSecError(const char* file, int line, const char* func,
             const char* errorObject, const char* errorSubject,
             int reason, const char* msg, ...) {
-
     if(xmlSecErrorsClbk != NULL) {
         xmlChar error_msg[XMLSEC_ERRORS_BUFFER_SIZE];
+        int ret;
 
         if(msg != NULL) {
             va_list va;
 
             va_start(va, msg);
-            xmlSecStrVPrintf(error_msg, sizeof(error_msg), BAD_CAST msg, va);
-            error_msg[sizeof(error_msg) - 1] = '\0';
+            ret = xmlStrVPrintf(error_msg, sizeof(error_msg), msg, va);
+            if(ret < 0) {
+                /* Can't really report an error from an error callback */
+                memcpy(error_msg, fatal_error, sizeof(fatal_error));
+            }
+            error_msg[sizeof(error_msg) - 1] = '\0'; /* just in case */
             va_end(va);
         } else {
             error_msg[0] = '\0';

@@ -473,7 +473,17 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
 
         inSize = xmlSecBufferGetSize(in);
         if(inSize > 0) {
+            /* No return values before 1.0.0 (https://www.openssl.org/docs/man1.1.0/crypto/HMAC_Update.html) */
+#if (OPENSSL_VERSION_NUMBER >= 0x10000000)
+            ret = HMAC_Update(ctx->hmacCtx, xmlSecBufferGetData(in), inSize);
+            if(ret != 1) {
+                xmlSecOpenSSLError("HMAC_Update",
+                                   xmlSecTransformGetName(transform));
+                return(-1);
+            }
+#else  /* (OPENSSL_VERSION_NUMBER < 0x10000000) */
             HMAC_Update(ctx->hmacCtx, xmlSecBufferGetData(in), inSize);
+#endif /* (OPENSSL_VERSION_NUMBER < 0x10000000) */
 
             ret = xmlSecBufferRemoveHead(in, inSize);
             if(ret < 0) {
@@ -485,9 +495,20 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
         }
 
         if(last) {
-            unsigned int dgstSize;
+            unsigned int dgstSize = 0;
 
+            /* No return values before 1.0.0 (https://www.openssl.org/docs/man1.1.0/crypto/HMAC_Update.html) */
+#if (OPENSSL_VERSION_NUMBER >= 0x10000000)
+            ret = HMAC_Final(ctx->hmacCtx, ctx->dgst, &dgstSize);
+            if(ret != 1) {
+                xmlSecOpenSSLError("HMAC_Final",
+                                   xmlSecTransformGetName(transform));
+                return(-1);
+            }
+#else  /* (OPENSSL_VERSION_NUMBER < 0x10000000) */
             HMAC_Final(ctx->hmacCtx, ctx->dgst, &dgstSize);
+#endif /* (OPENSSL_VERSION_NUMBER < 0x10000000) */
+
             xmlSecAssert2(dgstSize > 0, -1);
 
             /* check/set the result digest size */

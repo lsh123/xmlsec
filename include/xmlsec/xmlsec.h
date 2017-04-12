@@ -98,6 +98,19 @@ XMLSEC_EXPORT void                              xmlSecSetExternalEntityLoader (x
  */
 #define XMLSEC_CRYPTO                          (xmlSecGetDefaultCrypto())
 
+/**
+ * XMLSEC_DEPRECATED function definition
+ */
+#ifdef __GNUC__
+#define XMLSEC_DEPRECATED __attribute__((deprecated))
+#elif defined(_MSC_VER)
+#define XMLSEC_DEPRECATED __declspec(deprecated)
+#else /* defined(_MSC_VER) */
+#pragma message("WARNING: You need to implement DEPRECATED for this compiler")
+#define XMLSEC_DEPRECATED
+#endif /* defined(_MSC_VER) */
+
+
 /***********************************************************************
  *
  * Version checking

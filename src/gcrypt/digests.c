@@ -203,12 +203,8 @@ xmlSecGCryptDigestVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(ctx->dgstSize > 0, -1);
 
     if(dataSize != ctx->dgstSize) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_DATA,
-                    "data and digest sizes are different (data=%d, dgst=%d)",
-                    dataSize, ctx->dgstSize);
+        xmlSecInvalidSizeError("Input data",
+                dataSize, ctx->dgstSize, xmlSecTransformGetName(transform));
         transform->status = xmlSecTransformStatusFail;
         return(0);
     }

@@ -1295,10 +1295,15 @@ xmlSecOpenSSLDefaultPasswordCallback(char *buf, int bufsize, int verify, void *u
     /* try 3 times */
     for(i = 0; i < 3; i++) {
         if(filename != NULL) {
-            xmlSecStrPrintf(prompt, sizeof(prompt), BAD_CAST "Enter password for \"%s\" file: ", filename);
+            ret = xmlStrPrintf(prompt, sizeof(prompt), "Enter password for \"%s\" file: ", filename);
         } else {
-            xmlSecStrPrintf(prompt, sizeof(prompt), BAD_CAST "Enter password: ");
+            ret = xmlStrPrintf(prompt, sizeof(prompt), "Enter password: ");
         }
+        if(ret < 0) {
+            xmlSecXmlError("xmlStrPrintf", NULL);
+            return(-1);
+        }
+
         ret = EVP_read_pw_string(buf, bufsize, (char*)prompt, 0);
         if(ret != 0) {
             xmlSecOpenSSLError("EVP_read_pw_string", NULL);
@@ -1311,9 +1316,13 @@ xmlSecOpenSSLDefaultPasswordCallback(char *buf, int bufsize, int verify, void *u
         }
 
         if(filename != NULL) {
-            xmlSecStrPrintf(prompt, sizeof(prompt), BAD_CAST "Enter password for \"%s\" file again: ", filename);
+            ret = xmlStrPrintf(prompt, sizeof(prompt), "Enter password for \"%s\" file again: ", filename);
         } else {
-            xmlSecStrPrintf(prompt, sizeof(prompt), BAD_CAST "Enter password again: ");
+            ret = xmlStrPrintf(prompt, sizeof(prompt), "Enter password again: ");
+        }
+        if(ret < 0) {
+            xmlSecXmlError("xmlStrPrintf", NULL);
+            return(-1);
         }
 
         buf2 = (char*)xmlMalloc(bufsize);

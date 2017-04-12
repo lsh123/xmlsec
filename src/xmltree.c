@@ -715,6 +715,8 @@ xmlSecAddIDs(xmlDocPtr doc, xmlNodePtr cur, const xmlChar** ids) {
  * @prefix:                     the prefix to add to the generated ID (can be NULL).
  * @len:                        the length of ID.
  *
+ * Deprecated and will be removed in the future releases, do not use.
+ *
  * Generates a unique ID in the format <@prefix>base64-encoded(@len random bytes)
  * and puts it in the attribute @attrName.
  *
@@ -757,6 +759,8 @@ xmlSecGenerateAndAddID(xmlNodePtr node, const xmlChar* attrName, const xmlChar* 
  * xmlSecGenerateID:
  * @prefix:                     the prefix to add to the generated ID (can be NULL).
  * @len:                        the length of ID.
+ *
+ * Deprecated and will be removed in the future releases, do not use.
  *
  * Generates a unique ID in the format <@prefix>base64-encoded(@len random bytes).
  * The caller is responsible for freeing returned string using @xmlFree function.
@@ -831,7 +835,14 @@ xmlSecGenerateID(const xmlChar* prefix, xmlSecSize len) {
             return(NULL);
         }
 
-        xmlSecStrPrintf(tmp, tmpLen, BAD_CAST "%s%s", prefix, res);
+        ret = xmlStrPrintf(tmp, tmpLen, "%s%s", prefix, res);
+        if(ret < 0) {
+            xmlSecXmlError("xmlStrPrintf", NULL);
+            xmlFree(res);
+            xmlFree(tmp);
+            return(NULL);
+        }
+
         xmlFree(res);
         res = tmp;
     } else {
@@ -993,6 +1004,7 @@ xmlChar*
 xmlSecGetQName(xmlNodePtr node, const xmlChar* href, const xmlChar* local) {
     xmlChar* qname;
     xmlNsPtr ns;
+    int ret;
 
     xmlSecAssert2(node != NULL, NULL);
     xmlSecAssert2(local != NULL, NULL);
@@ -1015,7 +1027,13 @@ xmlSecGetQName(xmlNodePtr node, const xmlChar* href, const xmlChar* local) {
             xmlSecMallocError(len, NULL);
             return(NULL);
         }
-        xmlSecStrPrintf(qname, len, BAD_CAST "%s:%s", ns->prefix, local);
+
+        ret = xmlStrPrintf(qname, len, "%s:%s", ns->prefix, local);
+        if(ret < 0) {
+            xmlSecXmlError("xmlStrPrintf", NULL);
+            xmlFree(qname);
+            return(NULL);
+        }
     } else {
         qname = xmlStrdup(local);
         if(qname == NULL) {

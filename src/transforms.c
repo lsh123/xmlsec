@@ -753,7 +753,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
         nodeSetType = xmlSecNodeSetTreeWithoutComments;
         useVisa3DHack = 1;
     } else {
-        static const xmlChar tmpl[] = "xpointer(id(\'%s\'))";
+        static const char tmpl[] = "xpointer(id(\'%s\'))";
         xmlSecSize size;
 
         /* we need to add "xpointer(id('..')) because otherwise we have

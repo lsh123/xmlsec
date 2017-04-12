@@ -106,7 +106,7 @@ XMLSEC_EXPORT void                              xmlSecSetExternalEntityLoader (x
 #elif defined(_MSC_VER)
 #define XMLSEC_DEPRECATED __declspec(deprecated)
 #else /* defined(_MSC_VER) */
-#pragma message("WARNING: You need to implement DEPRECATED for this compiler")
+#pragma message("WARNING: You need to implement XMLSEC_DEPRECATED for this compiler")
 #define XMLSEC_DEPRECATED
 #endif /* defined(_MSC_VER) */
 

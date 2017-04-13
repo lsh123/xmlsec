@@ -24,10 +24,10 @@
  *
  * EVP_MD_CTX_create() and EVP_MD_CTX_destroy() were renamed to EVP_MD_CTX_new() and EVP_MD_CTX_free() in OpenSSL 1.1.
  */
-#if !defined(XMLSEC_OPENSSL_110)
+#if !defined(XMLSEC_OPENSSL_API_110)
 #define EVP_MD_CTX_new()   EVP_MD_CTX_create()
 #define EVP_MD_CTX_free(x) EVP_MD_CTX_destroy((x))
-#endif /* !defined(XMLSEC_OPENSSL_110) */
+#endif /* !defined(XMLSEC_OPENSSL_API_110) */
 
 
 /**************************************************************************

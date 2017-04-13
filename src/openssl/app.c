@@ -62,11 +62,7 @@ XMLSEC_FUNC_TO_PTR_IMPL(pem_password_cb)
 int
 xmlSecOpenSSLAppInit(const char* config) {
     
-#if (OPENSSL_VERSION_NUMBER < 0x10100000)
-    ERR_load_crypto_strings();
-    OPENSSL_config(NULL);
-    OpenSSL_add_all_algorithms();
-#else /* OPENSSL_VERSION_NUMBER < 0x10100000 */
+#if defined(XMLSEC_OPENSSL_API_110)
     int ret;
     
     ret = OPENSSL_init_crypto(OPENSSL_INIT_LOAD_CRYPTO_STRINGS | 
@@ -80,7 +76,11 @@ xmlSecOpenSSLAppInit(const char* config) {
         xmlSecOpenSSLError("OPENSSL_init_crypto", NULL);
         return(-1);
     }
-#endif /* OPENSSL_VERSION_NUMBER < 0x10100000 */
+#else /* defined(XMLSEC_OPENSSL_API_110) */
+    ERR_load_crypto_strings();
+    OPENSSL_config(NULL);
+    OpenSSL_add_all_algorithms();
+#endif /* defined(XMLSEC_OPENSSL_API_110) */
 
     if((RAND_status() != 1) && (xmlSecOpenSSLAppLoadRANDFile(NULL) != 1)) {
         xmlSecInternalError("xmlSecOpenSSLAppLoadRANDFile", NULL);
@@ -108,28 +108,28 @@ int
 xmlSecOpenSSLAppShutdown(void) {
     xmlSecOpenSSLAppSaveRANDFile(NULL);
 
-#if (OPENSSL_VERSION_NUMBER < 0x10100000)
-    RAND_cleanup();
-    EVP_cleanup();
+    /* OpenSSL 1.1.0+ does not require explicit cleanup */
+#if !defined(XMLSEC_OPENSSL_API_110)
 
 #ifndef XMLSEC_NO_X509
     X509_TRUST_cleanup();
 #endif /* XMLSEC_NO_X509 */
 
+    RAND_cleanup();
+    EVP_cleanup();
+
     ENGINE_cleanup();
     CONF_modules_unload(1);
-
     CRYPTO_cleanup_all_ex_data();
 
-    /* finally cleanup errors */
-#if (defined(XMLSEC_OPENSSL_100) || defined(XMLSEC_OPENSSL_110))
+#if defined(XMLSEC_OPENSSL_API_100)
     ERR_remove_thread_state(NULL);
-#else
+#else /* defined(XMLSEC_OPENSSL_API_100) */
     ERR_remove_state(0);
-#endif /* defined(XMLSEC_OPENSSL_100) || defined(XMLSEC_OPENSSL_110) */
+#endif /* defined(XMLSEC_OPENSSL_API_100) */
 
     ERR_free_strings();
-#endif /* (OPENSSL_VERSION_NUMBER < 0x10100000) */
+#endif /* !defined(XMLSEC_OPENSSL_API_110) */
 
     /* done */
     return(0);

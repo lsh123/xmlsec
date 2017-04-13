@@ -127,7 +127,7 @@ you need to add one of the following global defines:
     #define XMLSEC_CRYPTO_NSS
 
 Also you'll need to define all configuration parameters used during XML Security
-Library compilation (XMLSEC_OPENSSL_100, XMLSEC_NO_AES, XMLSEC_NO_X509,...).
+Library compilation (XMLSEC_NO_AES, XMLSEC_NO_X509,...).
 
   2.1 Additional Global Defines for static linking.
   ---------------------------------------------

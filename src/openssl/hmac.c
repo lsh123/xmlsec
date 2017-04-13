@@ -37,10 +37,10 @@
  *
  * HMAC_CTX_new() and HMAC_CTX_free() are new in OpenSSL version 1.1.
  */
-#if !defined(XMLSEC_OPENSSL_110)
+#if !defined(XMLSEC_OPENSSL_API_110)
 #define HMAC_CTX_new()   ((HMAC_CTX*)calloc(1, sizeof(HMAC_CTX)))
 #define HMAC_CTX_free(x) { HMAC_CTX_cleanup((x)); free((x)); }
-#endif /* !defined(XMLSEC_OPENSSL_110) */
+#endif /* !defined(XMLSEC_OPENSSL_API_110) */
 
 
 /* sizes in bits */
@@ -364,27 +364,25 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     xmlSecAssert2(xmlSecBufferGetData(buffer) != NULL, -1);
 
-#if (defined(XMLSEC_OPENSSL_098))
-    /* no return value in 0.9.8 */
-    HMAC_Init_ex(ctx->hmacCtx,
-                    xmlSecBufferGetData(buffer),
-                    xmlSecBufferGetSize(buffer),
-                    ctx->hmacDgst,
-                    NULL);
-    ret = 1;
-#else  /* (defined(XMLSEC_OPENSSL_098)) */
+    /* No return values before 1.0.0 (https://www.openssl.org/docs/man1.1.0/crypto/HMAC_Update.html) */
+#if defined(XMLSEC_OPENSSL_API_110)
     ret = HMAC_Init_ex(ctx->hmacCtx,
                 xmlSecBufferGetData(buffer),
                 xmlSecBufferGetSize(buffer),
                 ctx->hmacDgst,
                 NULL);
-#endif /* (defined(XMLSEC_OPENSSL_098)) */
-
     if(ret != 1) {
         xmlSecOpenSSLError("HMAC_Init_ex",
                            xmlSecTransformGetName(transform));
         return(-1);
     }
+#else  /* defined(XMLSEC_OPENSSL_API_110) */
+    HMAC_Init_ex(ctx->hmacCtx,
+                    xmlSecBufferGetData(buffer),
+                    xmlSecBufferGetSize(buffer),
+                    ctx->hmacDgst,
+                    NULL);
+#endif /* defined(XMLSEC_OPENSSL_API_110) */
 
     ctx->ctxInitialized = 1;
     return(0);
@@ -474,16 +472,16 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
         inSize = xmlSecBufferGetSize(in);
         if(inSize > 0) {
             /* No return values before 1.0.0 (https://www.openssl.org/docs/man1.1.0/crypto/HMAC_Update.html) */
-#if (OPENSSL_VERSION_NUMBER >= 0x10000000)
+#if defined(XMLSEC_OPENSSL_API_110)
             ret = HMAC_Update(ctx->hmacCtx, xmlSecBufferGetData(in), inSize);
             if(ret != 1) {
                 xmlSecOpenSSLError("HMAC_Update",
                                    xmlSecTransformGetName(transform));
                 return(-1);
             }
-#else  /* (OPENSSL_VERSION_NUMBER < 0x10000000) */
+#else  /* defined(XMLSEC_OPENSSL_API_110) */
             HMAC_Update(ctx->hmacCtx, xmlSecBufferGetData(in), inSize);
-#endif /* (OPENSSL_VERSION_NUMBER < 0x10000000) */
+#endif /* defined(XMLSEC_OPENSSL_API_110) */
 
             ret = xmlSecBufferRemoveHead(in, inSize);
             if(ret < 0) {
@@ -498,16 +496,16 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
             unsigned int dgstSize = 0;
 
             /* No return values before 1.0.0 (https://www.openssl.org/docs/man1.1.0/crypto/HMAC_Update.html) */
-#if (OPENSSL_VERSION_NUMBER >= 0x10000000)
+#if defined(XMLSEC_OPENSSL_API_110)
             ret = HMAC_Final(ctx->hmacCtx, ctx->dgst, &dgstSize);
             if(ret != 1) {
                 xmlSecOpenSSLError("HMAC_Final",
                                    xmlSecTransformGetName(transform));
                 return(-1);
             }
-#else  /* (OPENSSL_VERSION_NUMBER < 0x10000000) */
+#else  /* defined(XMLSEC_OPENSSL_API_110) */
             HMAC_Final(ctx->hmacCtx, ctx->dgst, &dgstSize);
-#endif /* (OPENSSL_VERSION_NUMBER < 0x10000000) */
+#endif /* defined(XMLSEC_OPENSSL_API_110) */
 
             xmlSecAssert2(dgstSize > 0, -1);
 

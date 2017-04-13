@@ -22,9 +22,9 @@
 #include <xmlsec/openssl/evp.h>
 
 /* new API from OpenSSL 1.1.0 */
-#if !defined(XMLSEC_OPENSSL_110)
+#if !defined(XMLSEC_OPENSSL_API_110)
 #define EVP_CIPHER_CTX_encrypting(x) ((x)->encrypt)
-#endif /* !defined(XMLSEC_OPENSSL_110) */
+#endif /* !defined(XMLSEC_OPENSSL_API_110) */
 
 
 /**************************************************************************

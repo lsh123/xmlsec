@@ -14,21 +14,19 @@
 
 /******************************************************************************
  *
- * OpenSSL 1.0.0 compatibility (also see XMLSEC_OPENSSL_100)
+ * OpenSSL 1.0.0 compatibility
  *
  *****************************************************************************/
-#if (OPENSSL_VERSION_NUMBER < 0x10000000)
-
+#if defined(XMLSEC_OPENSSL_API_098)
 #define EVP_PKEY_base_id(pKey) EVP_PKEY_type((pKey)->type)
-
-#endif /* (OPENSSL_VERSION_NUMBER < 0x10000000) */
+#endif /* defined(XMLSEC_OPENSSL_API_098) */
 
 /******************************************************************************
  *
  * OpenSSL 1.1.0 compatibility
  *
  *****************************************************************************/
-#if (OPENSSL_VERSION_NUMBER < 0x10100000)
+#if !defined(XMLSEC_OPENSSL_API_110)
 
 #define EVP_PKEY_up_ref(pKey)  CRYPTO_add(&((pKey)->references), 1, CRYPTO_LOCK_EVP_PKEY)
 
@@ -231,6 +229,6 @@ static inline int DSA_set0_key(DSA *d, BIGNUM *pub_key, BIGNUM *priv_key) {
 }
 #endif /* XMLSEC_NO_DSA */
 
-#endif /* (OPENSSL_VERSION_NUMBER < 0x10100000) */
+#endif /* !defined(XMLSEC_OPENSSL_API_110) */
 
 #endif /* __XMLSEC_OPENSSL_OPENSSL_COMPAT_H__ */

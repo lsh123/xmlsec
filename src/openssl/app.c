@@ -46,6 +46,7 @@ static int      xmlSecOpenSSLDummyPasswordCallback      (char *buf,
 
 /* conversion from ptr to func "the right way" */
 XMLSEC_PTR_TO_FUNC_IMPL(pem_password_cb)
+XMLSEC_FUNC_TO_PTR_IMPL(pem_password_cb)
 
 
 /**

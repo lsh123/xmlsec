@@ -1,0 +1,23 @@
+--- testDSig started for xmlsec-default library (20170415_160813)
+--- LD_LIBRARY_PATH=
+Test: xmldsig2ed-tests/defCan-1 in folder  /cygdrive/z/xmlsec/tests/xmldsig2ed-tests  (success)
+/cygdrive/z/xmlsec/win32/binaries/xmlsec.exe check-transforms  --crypto default --crypto-config win32/tmp/xmlsec-crypto-config c14n11 sha1 hmac-sha1
+./tests/testrun.sh: line 237: /cygdrive/z/xmlsec/win32/binaries/xmlsec.exe: Permission denied
+Test: xmldsig2ed-tests/defCan-2 in folder  /cygdrive/z/xmlsec/tests/xmldsig2ed-tests  (success)
+/cygdrive/z/xmlsec/win32/binaries/xmlsec.exe check-transforms  --crypto default --crypto-config win32/tmp/xmlsec-crypto-config c14n11 xslt xpath sha1 hmac-sha1
+./tests/testrun.sh: line 237: /cygdrive/z/xmlsec/win32/binaries/xmlsec.exe: Permission denied
+Test: xmldsig2ed-tests/xpointer-1-SUN in folder  /cygdrive/z/xmlsec/tests/xmldsig2ed-tests  (success)
+/cygdrive/z/xmlsec/win32/binaries/xmlsec.exe check-transforms  --crypto default --crypto-config win32/tmp/xmlsec-crypto-config c14n11 xpointer sha1 hmac-sha1
+./tests/testrun.sh: line 237: /cygdrive/z/xmlsec/win32/binaries/xmlsec.exe: Permission denied
+Test: xmldsig2ed-tests/xpointer-2-SUN in folder  /cygdrive/z/xmlsec/tests/xmldsig2ed-tests  (success)
+/cygdrive/z/xmlsec/win32/binaries/xmlsec.exe check-transforms  --crypto default --crypto-config win32/tmp/xmlsec-crypto-config c14n11 xpointer sha1 hmac-sha1
+./tests/testrun.sh: line 237: /cygdrive/z/xmlsec/win32/binaries/xmlsec.exe: Permission denied
+Test: xmldsig2ed-tests/xpointer-3-SUN in folder  /cygdrive/z/xmlsec/tests/xmldsig2ed-tests  (success)
+/cygdrive/z/xmlsec/win32/binaries/xmlsec.exe check-transforms  --crypto default --crypto-config win32/tmp/xmlsec-crypto-config c14n11 xpointer sha1 hmac-sha1
+./tests/testrun.sh: line 237: /cygdrive/z/xmlsec/win32/binaries/xmlsec.exe: Permission denied
+Test: xmldsig2ed-tests/xpointer-4-SUN in folder  /cygdrive/z/xmlsec/tests/xmldsig2ed-tests  (success)
+/cygdrive/z/xmlsec/win32/binaries/xmlsec.exe check-transforms  --crypto default --crypto-config win32/tmp/xmlsec-crypto-config c14n11 xpointer sha1 hmac-sha1
+./tests/testrun.sh: line 237: /cygdrive/z/xmlsec/win32/binaries/xmlsec.exe: Permission denied
+Test: xmldsig2ed-tests/xpointer-5-SUN in folder  /cygdrive/z/xmlsec/tests/xmldsig2ed-tests  (success)
+/cygdrive/z/xmlsec/win32/binaries/xmlsec.exe check-transforms  --crypto default --crypto-config win32/tmp/xmlsec-crypto-config c14n11 xpointer sha1 hmac-sha1
+./tests/testrun.sh: line 237: /cygdrive/z/xmlsec/win32/binaries/xmlsec.exe: Permission denied

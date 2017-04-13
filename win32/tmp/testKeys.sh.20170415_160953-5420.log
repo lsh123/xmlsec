@@ -1,0 +1,5 @@
+--- testKeys started for xmlsec-default library (20170415_160953) ---
+--- LD_LIBRARY_PATH=
+/cygdrive/z/xmlsec/win32/binaries/xmlsec.exe check-key-data  --crypto default --crypto-config win32/tmp/xmlsec-crypto-config hmac
+/cygdrive/z/xmlsec/win32/binaries/xmlsec.exe check-key-data  --crypto default --crypto-config win32/tmp/xmlsec-crypto-config rsa 
+/cygdrive/z/xmlsec/win32/binaries/xmlsec.exe check-key-data  --crypto default --crypto-config win32/tmp/xmlsec-crypto-config dsa 

@@ -88,6 +88,7 @@ static inline int DSA_SIG_set0(DSA_SIG *sig, BIGNUM *r, BIGNUM *s) {
 
 #endif /* !defined(XMLSEC_OPENSSL_API_110) */
 
+
 /**************************************************************************
  *
  * Internal OpenSSL signatures ctx: forward declarations

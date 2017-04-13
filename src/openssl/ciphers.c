@@ -21,6 +21,10 @@
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
 #include "openssl_compat.h"
+<<<<<<< db35d0bb7423166f8f228b15146847bf4af44169
+=======
+
+>>>>>>> better handling for OpenSSL apis
 
 /**************************************************************************
  *

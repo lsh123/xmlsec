@@ -32,16 +32,7 @@
 #include <xmlsec/errors.h>
 
 #include <xmlsec/openssl/crypto.h>
-
-/* new API from OpenSSL 1.1.0 (https://www.openssl.org/docs/manmaster/crypto/hmac.html):
- *
- * HMAC_CTX_new() and HMAC_CTX_free() are new in OpenSSL version 1.1.
- */
-#if !defined(XMLSEC_OPENSSL_API_110)
-#define HMAC_CTX_new()   ((HMAC_CTX*)calloc(1, sizeof(HMAC_CTX)))
-#define HMAC_CTX_free(x) { HMAC_CTX_cleanup((x)); free((x)); }
-#endif /* !defined(XMLSEC_OPENSSL_API_110) */
-
+#include "openssl_compat.h"
 
 /* sizes in bits */
 #define XMLSEC_OPENSSL_MIN_HMAC_SIZE            80

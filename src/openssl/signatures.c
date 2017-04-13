@@ -23,15 +23,71 @@
 #include <xmlsec/openssl/evp.h>
 #include "openssl_compat.h"
 
-/* new API from OpenSSL 1.1.0 (https://www.openssl.org/docs/manmaster/crypto/EVP_DigestInit.html):
+/******************************************************************************
  *
- * EVP_MD_CTX_create() and EVP_MD_CTX_destroy() were renamed to EVP_MD_CTX_new() and EVP_MD_CTX_free() in OpenSSL 1.1.
- */
+ * OpenSSL 1.1.0 compatibility
+ *
+ *****************************************************************************/
 #if !defined(XMLSEC_OPENSSL_API_110)
-#define EVP_MD_CTX_new()       EVP_MD_CTX_create()
-#define EVP_MD_CTX_free(x)     EVP_MD_CTX_destroy((x))
-#define EVP_MD_CTX_md_data(x)  ((x)->md_data)
+
+#ifndef XMLSEC_NO_ECDSA
+
+static inline void ECDSA_SIG_get0(const ECDSA_SIG *sig, const BIGNUM **pr, const BIGNUM **ps) {
+    xmlSecAssert(sig != NULL);
+
+    if(pr != NULL) {
+        (*pr) = sig->r;
+    }
+    if(ps != NULL) {
+        (*ps) = sig->s;
+    }
+}
+
+static inline int ECDSA_SIG_set0(ECDSA_SIG *sig, BIGNUM *r, BIGNUM *s) {
+    xmlSecAssert2(sig != NULL, 0);
+
+    if((r == NULL) || (s == NULL)) {
+        return(0);
+    }
+    BN_clear_free(sig->r);
+    BN_clear_free(sig->s);
+    sig->r = r;
+    sig->s = s;
+    return(1);
+}
+#endif /* XMLSEC_NO_ECDSA */
+
+#ifndef XMLSEC_NO_DSA
+
+static inline void DSA_SIG_get0(const DSA_SIG *sig, const BIGNUM **pr, const BIGNUM **ps) {
+    xmlSecAssert(sig != NULL);
+
+    if(pr != NULL) {
+        (*pr) = sig->r;
+    }
+    if(ps != NULL) {
+        (*ps) = sig->s;
+    }
+}
+
+static inline int DSA_SIG_set0(DSA_SIG *sig, BIGNUM *r, BIGNUM *s) {
+    xmlSecAssert2(sig != NULL, 0);
+
+    if(r == NULL || s == NULL) {
+        return(0);
+    }
+    BN_clear_free(sig->r);
+    BN_clear_free(sig->s);
+
+    sig->r = r;
+    sig->s = s;
+    return(1);
+}
+
+#endif /* XMLSEC_NO_DSA */
+
 #endif /* !defined(XMLSEC_OPENSSL_API_110) */
+
 
 /**************************************************************************
  *

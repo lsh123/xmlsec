@@ -20,11 +20,7 @@
 
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
-
-/* new API from OpenSSL 1.1.0 */
-#if !defined(XMLSEC_OPENSSL_110)
-#define EVP_CIPHER_CTX_encrypting(x) ((x)->encrypt)
-#endif /* !defined(XMLSEC_OPENSSL_110) */
+#include "openssl_compat.h"
 
 
 /**************************************************************************

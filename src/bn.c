@@ -247,7 +247,6 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
             continue;
         }
 
-        xmlSecAssert2(ch <= sizeof(xmlSecBnLookupTable), -1);
         nn = xmlSecBnLookupTable[ch];
         if((nn < 0) || ((xmlSecSize)nn > base)) {
             xmlSecError(XMLSEC_ERRORS_HERE,

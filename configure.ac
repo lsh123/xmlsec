@@ -485,14 +485,28 @@ fi
 if test "z$OPENSSL_FOUND" = "zyes" -a "z$OPENSSL_VERSION" = "z" ; then
     AC_MSG_CHECKING(for openssl libraries >= $OPENSSL_MIN_VERSION) 
 
-    dnl Check the OpenSSL version    
+    dnl Check the OpenSSL version; if you change this code then you probably
+    dnl want to change include/openssl/crypto.h as well.
     OLD_CPPFLAGS=$CPPFLAGS
     CPPFLAGS="$OPENSSL_CFLAGS"
 
     if test "z$OPENSSL_VERSION" = "z" ; then
         AC_EGREP_CPP(yes,[
             #include <openssl/opensslv.h>
-        #if OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined(LIBRESSL_VERSION_NUMBER)
+        #if OPENSSL_VERSION_NUMBER == 0x20000000L && defined(LIBRESSL_VERSION_NUMBER)
+        yes
+        #endif
+    ],[
+        OPENSSL_VERSION="1.0.0 (libressl)"
+    ],[
+        OPENSSL_VERSION=""
+    ])
+    fi
+
+    if test "z$OPENSSL_VERSION" = "z" ; then
+        AC_EGREP_CPP(yes,[
+            #include <openssl/opensslv.h>
+        #if OPENSSL_VERSION_NUMBER >= 0x10100000L
         yes
         #endif
     ],[
@@ -538,32 +552,7 @@ if test "z$OPENSSL_FOUND" = "zyes" -a "z$OPENSSL_VERSION" = "z" ; then
 fi    
 
 if test "z$OPENSSL_FOUND" = "zyes" ; then
-    dnl Check availability of ECDSA
-    OLD_CPPFLAGS=$CPPFLAGS
-    CPPFLAGS="$OPENSSL_CFLAGS"
-
-    AC_EGREP_CPP(yes,[
-	#include <openssl/opensslconf.h>
-	#ifdef OPENSSL_NO_ECDSA
-	    yes
-	#endif
-    ],[
-	OPENSSL_CFLAGS="$OPENSSL_CFLAGS -DXMLSEC_NO_ECDSA=1"
-    ]) 
-    CPPFLAGS=$OLD_CPPFLAGS
-fi
-
-if test "z$OPENSSL_FOUND" = "zyes" ; then
     XMLSEC_NO_OPENSSL="0"
-    if test "z$OPENSSL_VERSION" = "z0.9.8" ; then
-	OPENSSL_CFLAGS="$OPENSSL_CFLAGS -DXMLSEC_OPENSSL_098=1 -DXMLSEC_NO_ECDSA=1 -DXMLSEC_NO_SHA256=1"
-    fi
-    if test "z$OPENSSL_VERSION" = "z1.0.0" ; then
-	OPENSSL_CFLAGS="$OPENSSL_CFLAGS -DXMLSEC_OPENSSL_100=1"
-    fi    
-    if test "z$OPENSSL_VERSION" = "z1.1.0" ; then
-    	OPENSSL_CFLAGS="$OPENSSL_CFLAGS -DXMLSEC_OPENSSL_110=1"
-    fi    
     OPENSSL_CFLAGS="$OPENSSL_CFLAGS -DXMLSEC_CRYPTO_OPENSSL=1"
     XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST openssl"
 else

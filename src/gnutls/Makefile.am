@@ -36,10 +36,6 @@ libxmlsec1_gnutls_la_SOURCES =\
 	globals.h \
 	$(NULL)
 
-if SHAREDLIB_HACK
-libxmlsec1_gnutls_la_SOURCES += ../strings.c
-endif
-
 # xmlsec-gnutls library requires xmlsec-gcrypt
 libxmlsec1_gnutls_la_LIBADD = \
 	$(GNUTLS_LIBS) \

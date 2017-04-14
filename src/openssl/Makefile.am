@@ -38,10 +38,6 @@ libxmlsec1_openssl_la_SOURCES =\
 	openssl_compat.h \
 	$(NULL)
 
-if SHAREDLIB_HACK
-libxmlsec1_openssl_la_SOURCES += ../strings.c
-endif
-
 libxmlsec1_openssl_la_LIBADD = \
 	$(OPENSSL_LIBS) \
 	$(LIBXSLT_LIBS) \

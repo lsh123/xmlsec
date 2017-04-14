@@ -35,10 +35,6 @@ libxmlsec1_gcrypt_la_SOURCES =\
 	globals.h \
 	$(NULL)
 
-if SHAREDLIB_HACK
-libxmlsec1_gcrypt_la_SOURCES += ../strings.c
-endif
-
 libxmlsec1_gcrypt_la_LIBADD = \
 	$(GCRYPT_LIBS) \
 	$(LIBXSLT_LIBS) \

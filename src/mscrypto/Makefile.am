@@ -41,10 +41,6 @@ libxmlsec1_mscrypto_la_SOURCES =\
 	xmlsec-mingw.h \
 	$(NULL)
 
-if SHAREDLIB_HACK
-libxmlsec1_mscrypto_la_SOURCES += ../strings.c
-endif
-
 libxmlsec1_mscrypto_la_LIBADD = \
 	$(MSCRYPTO_LIBS) \
 	$(LIBXSLT_LIBS) \

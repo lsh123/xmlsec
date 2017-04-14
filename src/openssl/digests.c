@@ -270,11 +270,8 @@ xmlSecOpenSSLEvpDigestVerify(xmlSecTransformPtr transform,
     }
 
     if(memcmp(ctx->dgst, data, ctx->dgstSize) != 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_DATA,
-                    "data and digest do not match");
+        xmlSecInvalidDataError("data and digest do not match",
+                xmlSecTransformGetName(transform));
         transform->status = xmlSecTransformStatusFail;
         return(0);
     }

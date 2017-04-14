@@ -292,7 +292,7 @@ extern "C" {
  */
 #define xmlSecInvalidSizeError(name, actual, expected, errorObject) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
-                    NULL,                                   \
+                    (const char*)(errorObject),             \
                     NULL,                                   \
                     XMLSEC_ERRORS_R_INVALID_SIZE,           \
                     "invalid size for '%s': actual=%lu is not equal to expected=%lu", \
@@ -313,7 +313,7 @@ extern "C" {
  */
 #define xmlSecInvalidSizeLessThanError(name, actual, expected, errorObject) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
-                    NULL,                                   \
+                    (const char*)(errorObject),             \
                     NULL,                                   \
                     XMLSEC_ERRORS_R_INVALID_SIZE,           \
                     "invalid size for '%s': actual=%lu is less than expected=%lu", \
@@ -334,7 +334,7 @@ extern "C" {
  */
 #define xmlSecInvalidSizeMoreThanError(name, actual, expected, errorObject) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
-                    NULL,                                   \
+                    (const char*)(errorObject),             \
                     NULL,                                   \
                     XMLSEC_ERRORS_R_NOT_IMPLEMENTED,        \
                     "invalid size for '%s': actual=%lu is more than expected=%lu", \
@@ -355,13 +355,93 @@ extern "C" {
  */
 #define xmlSecInvalidSizeNotMultipleOfError(name, actual, divider, errorObject) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
-                    NULL,                                   \
+                    (const char*)(errorObject),             \
                     NULL,                                   \
                     XMLSEC_ERRORS_R_NOT_IMPLEMENTED,        \
                     "invalid size for '%s': actual=%lu is not a multiple of %lu", \
                     xmlSecErrorsSafeString(name),           \
                     (unsigned long)(actual),                \
                     (unsigned long)(divider)               \
+        )
+
+/**
+ * xmlSecInvalidDataError:
+ * @msg:                the msg with explanation.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting "invalid data" errors.
+ */
+#define xmlSecInvalidDataError(msg, errorObject) \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    NULL,                                   \
+                    XMLSEC_ERRORS_R_INVALID_DATA,           \
+                    "%s",                                   \
+                    xmlSecErrorsSafeString(msg)             \
+        )
+
+/**
+ * xmlSecInvalidStringDataError:
+ * @name:               the name of the variable, parameter, etc.
+ * @actual:             the actual value as a string.
+ * @expected:           the expected value(s) as a string.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting "invalid data" errors for string.
+ */
+#define xmlSecInvalidStringDataError(name, actual, expected, errorObject) \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    NULL,                                   \
+                    XMLSEC_ERRORS_R_INVALID_DATA,           \
+                    "invalid data for '%s': actual='%s' and expected %s", \
+                    xmlSecErrorsSafeString(name),           \
+                    xmlSecErrorsSafeString(actual),         \
+                    (expected)                              \
+        )
+
+/**
+ * xmlSecInvalidIntegerDataError:
+ * @name:               the name of the variable, parameter, etc.
+ * @actual:             the actual value as an integer.
+ * @expected:           the expected value(s) as a string.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting "invalid data" errors for integers.
+ */
+#define xmlSecInvalidIntegerDataError(name, actual, expected, errorObject) \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    NULL,                                   \
+                    XMLSEC_ERRORS_R_INVALID_DATA,           \
+                    "invalid data for '%s': actual=%ld and expected %s", \
+                    xmlSecErrorsSafeString(name),           \
+                    (unsigned long)(actual),                \
+                    (expected)                              \
+        )
+
+/**
+ * xmlSecInvalidIntegerDataError2:
+ * @name1:              the name of the first variable, parameter, etc.
+ * @actual1:            the actual first value as an integer.
+ * @name2:              the name of the second variable, parameter, etc.
+ * @actual2:            the actual second value as an integer.
+ * @expected:           the expected value(s) as a string.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting "invalid data" errors for integers.
+ */
+#define xmlSecInvalidIntegerDataError2(name1, actual1, name2, actual2, expected, errorObject) \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    NULL,                                   \
+                    XMLSEC_ERRORS_R_INVALID_DATA,           \
+                    "invalid data: actual value '%s'=%ld, actual value '%s'=%ld and expected %s", \
+                    xmlSecErrorsSafeString(name1),          \
+                    (unsigned long)(actual1),               \
+                    xmlSecErrorsSafeString(name2),          \
+                    (unsigned long)(actual2),               \
+                    (expected)                              \
         )
 
 /**

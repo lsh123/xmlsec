@@ -434,11 +434,7 @@ xmlSecMSCryptoAppPkcs12Load(const char *filename,
         return (NULL);
     }
     if(xmlSecBufferGetData(&buffer) == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_DATA,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecInvalidDataError("data buffer is empty", NULL);
         xmlSecBufferFinalize(&buffer);
         return(NULL);
     }

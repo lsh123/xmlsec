@@ -1854,11 +1854,9 @@ xmlSecTransformDefaultGetDataType(xmlSecTransformPtr transform, xmlSecTransformM
             }
             break;
         default:
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        NULL,
-                        XMLSEC_ERRORS_R_INVALID_DATA,
-                        "mode=%d", mode);
+            xmlSecInvalidIntegerDataError("mode", mode,
+                    "xmlSecTransformModePush,xmlSecTransformModePop",
+                    xmlSecTransformGetName(transform));
             return(xmlSecTransformDataTypeUnknown);
     }
 

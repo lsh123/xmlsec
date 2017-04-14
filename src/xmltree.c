@@ -682,12 +682,7 @@ xmlSecAddIDs(xmlDocPtr doc, xmlNodePtr cur, const xmlChar** ids) {
                         if(tmp == NULL) {
                             xmlAddID(NULL, doc, name, attr);
                         } else if(tmp != attr) {
-                            xmlSecError(XMLSEC_ERRORS_HERE,
-                                        NULL,
-                                        NULL,
-                                        XMLSEC_ERRORS_R_INVALID_DATA,
-                                        "id=%s already defined",
-                                        xmlSecErrorsSafeString(name));
+                            xmlSecInvalidStringDataError("id", name, "unique id (id already defined)", NULL);
                         }
                         xmlFree(name);
                     }

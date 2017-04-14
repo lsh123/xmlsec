@@ -561,11 +561,8 @@ xmlSecGCryptBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             }
         }
         if((ctx->ctxInitialized == 0) && (last != 0)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        NULL,
-                        XMLSEC_ERRORS_R_INVALID_DATA,
-                        "not enough data to initialize transform");
+            xmlSecInvalidDataError("not enough data to initialize transform",
+                                    xmlSecTransformGetName(transform));
             return(-1);
         }
         if(ctx->ctxInitialized != 0) {

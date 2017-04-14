@@ -214,11 +214,7 @@ xmlSecKWDes3Decode(xmlSecKWDes3Id kwDes3Id, void *context,
     /* check sha1 */
     xmlSecAssert2(XMLSEC_KW_DES3_BLOCK_LENGTH <= sizeof(sha1), -1);
     if(memcmp(sha1, out + s, XMLSEC_KW_DES3_BLOCK_LENGTH) != 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_DATA,
-                    "SHA1 does not match");
+        xmlSecInvalidDataError("SHA1 does not match", NULL);
         xmlSecBufferDestroy(tmp);
         return(-1);
     }
@@ -438,11 +434,7 @@ xmlSecKWAesDecode(xmlSecKWAesId kwAesId, void *context,
 
     /* check the output */
     if(memcmp(xmlSecKWAesMagicBlock, out, XMLSEC_KW_AES_MAGIC_BLOCK_SIZE) != 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_DATA,
-                    "bad magic block");
+        xmlSecInvalidDataError("bad magic block", NULL);
         return(-1);
     }
 

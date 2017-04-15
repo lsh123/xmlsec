@@ -369,12 +369,8 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
             xmlNodeDumpOutput(output, node->doc, cur, 0, 0, NULL);
         }
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TYPE,
-                    "type=%s",
-                    xmlSecErrorsSafeString(encCtx->type));
+        xmlSecInvalidStringTypeError("encryption type", encCtx->type,
+                "supported encryption type", NULL);
         xmlOutputBufferClose(output);
         return(-1);
     }
@@ -435,13 +431,9 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
 
         encCtx->resultReplaced = 1;
     } else {
-        /* we should've catached this error before */
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TYPE,
-                    "type=%s",
-                    xmlSecErrorsSafeString(encCtx->type));
+        /* we should've caught this error before */
+        xmlSecInvalidStringTypeError("encryption type", encCtx->type,
+                "supported encryption type", NULL);
         return(-1);
     }
     /* done */

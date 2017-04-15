@@ -1606,11 +1606,7 @@ xmlSecGnuTLSX509CertGetKey(gnutls_x509_crt_t cert) {
 
     default:
         {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "gnutls_x509_crt_get_pk_algorithm",
-                        XMLSEC_ERRORS_R_INVALID_TYPE,
-                        "Unsupported algorithm %d", (int)alg);
+            xmlSecInvalidIntegerTypeError("key_alg", alg, "supported algorithm", NULL);
             return(NULL);
         }
     }

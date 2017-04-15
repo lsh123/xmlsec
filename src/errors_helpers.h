@@ -445,6 +445,86 @@ extern "C" {
         )
 
 /**
+ * xmlSecInvalidTypeError:
+ * @msg:                the msg with explanation.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting "invalid type" errors.
+ */
+#define xmlSecInvalidTypeError(msg, errorObject) \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    NULL,                                   \
+                    XMLSEC_ERRORS_R_INVALID_TYPE,           \
+                    "%s",                                   \
+                    xmlSecErrorsSafeString(msg)             \
+        )
+
+/**
+ * xmlSecInvalidStringTypeError:
+ * @name:               the name of the variable, parameter, etc.
+ * @actual:             the actual value as a string.
+ * @expected:           the expected value(s) as a string.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting "invalid type" errors for string.
+ */
+#define xmlSecInvalidStringTypeError(name, actual, expected, errorObject) \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    NULL,                                   \
+                    XMLSEC_ERRORS_R_INVALID_TYPE,           \
+                    "invalid type for '%s': actual='%s' and expected %s", \
+                    xmlSecErrorsSafeString(name),           \
+                    xmlSecErrorsSafeString(actual),         \
+                    (expected)                              \
+        )
+
+/**
+ * xmlSecInvalidIntegerTypeError:
+ * @name:               the name of the variable, parameter, etc.
+ * @actual:             the actual value as an integer.
+ * @expected:           the expected value(s) as a string.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting "invalid type" errors for integers.
+ */
+#define xmlSecInvalidIntegerTypeError(name, actual, expected, errorObject) \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    NULL,                                   \
+                    XMLSEC_ERRORS_R_INVALID_TYPE,           \
+                    "invalid type for '%s': actual=%ld and expected %s", \
+                    xmlSecErrorsSafeString(name),           \
+                    (unsigned long)(actual),                \
+                    (expected)                              \
+        )
+
+/**
+ * xmlSecInvalidIntegerTypeError2:
+ * @name1:              the name of the first variable, parameter, etc.
+ * @actual1:            the actual first value as an integer.
+ * @name2:              the name of the second variable, parameter, etc.
+ * @actual2:            the actual second value as an integer.
+ * @expected:           the expected value(s) as a string.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting "invalid type" errors for integers.
+ */
+#define xmlSecInvalidIntegerTypeError2(name1, actual1, name2, actual2, expected, errorObject) \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    NULL,                                   \
+                    XMLSEC_ERRORS_R_INVALID_TYPE,           \
+                    "invalid type: actual value '%s'=%ld, actual value '%s'=%ld and expected %s", \
+                    xmlSecErrorsSafeString(name1),          \
+                    (unsigned long)(actual1),               \
+                    xmlSecErrorsSafeString(name2),          \
+                    (unsigned long)(actual2),               \
+                    (expected)                              \
+        )
+
+/**
  * xmlSecInvalidNodeError:
  * @actualNode:         the actual node.
  * @expectedNodeName:   the expected node name.

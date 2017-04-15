@@ -359,11 +359,7 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
 #endif /* XMLSEC_NO_GOST*/
 
     {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TYPE,
-                    "Invalid algo");
+        xmlSecInvalidTypeError("Invalid signature algorithm", xmlSecTransformGetName(transform));
         xmlSecBufferFinalize(&tmp);
         return(-1);
     }
@@ -614,11 +610,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 
             {
                 /* We shouldn't get at this place */
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            NULL,
-                            XMLSEC_ERRORS_R_INVALID_TYPE,
-                            "Invalid algo");
+                xmlSecInvalidTypeError("Invalid signature algorithm", xmlSecTransformGetName(transform));
                 xmlSecBufferFinalize(&tmp);
                 return(-1);
             }

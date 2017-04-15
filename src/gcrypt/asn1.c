@@ -297,11 +297,8 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
             break;
         default:
             /* unknown */
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "Unexpected number of parameters, unknown key type",
-                        XMLSEC_ERRORS_R_INVALID_TYPE,
-                        "keyparms_num=%d", (int)keyparms_num);
+            xmlSecInvalidIntegerDataError("keyparms_num", keyparms_num,
+                    "the number of parameters matching key type", NULL);
             goto done;
         }
     }
@@ -488,11 +485,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
 #endif /* XMLSEC_NO_RSA */
 
     default:
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "Unsupported key type",
-                    XMLSEC_ERRORS_R_INVALID_TYPE,
-                    "type=%d", (int)type);
+        xmlSecInvalidIntegerTypeError("key_type", type, "supported key type", NULL);
         goto done;
         break;
     }

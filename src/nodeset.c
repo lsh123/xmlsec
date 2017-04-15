@@ -188,11 +188,8 @@ xmlSecNodeSetOneContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr pare
         }
         return(1);
     default:
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TYPE,
-                    "type=%d", nset->type);
+        xmlSecInvalidIntegerTypeError("node set type", nset->type,
+                "supported nodeset type", NULL);
     }
 
     return(0);
@@ -569,11 +566,8 @@ xmlSecNodeSetDebugDump(xmlSecNodeSetPtr nset, FILE *output) {
         return;
     default:
         fprintf(output, "(unknown=%d)\n", nset->type);
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TYPE,
-                    "type=%d", nset->type);
+        xmlSecInvalidIntegerTypeError("node set type", nset->type,
+                "supported nodeset type", NULL);
     }
 
     l = xmlXPathNodeSetGetLength(nset->nodes);

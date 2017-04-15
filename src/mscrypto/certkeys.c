@@ -469,11 +469,7 @@ xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlS
         }
         ctx->dwKeySpec = 0;
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TYPE,
-                    "Unsupported keytype");
+        xmlSecInvalidIntegerTypeError("keytype", type, "supported keytype", NULL);
         return(-1);
     }
 
@@ -903,11 +899,9 @@ xmlSecMSCryptoCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
 #endif /* XMLSEC_NO_GOST*/
 
     if (NULL == data) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TYPE,
-                    "PCCERT_CONTEXT key type %s not supported", pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId);
+        xmlSecInvalidIntegerTypeError("PCCERT_CONTEXT key type",
+                pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId,
+                "supported keytype", NULL);
         return(NULL);
     }
 
@@ -1202,13 +1196,9 @@ xmlSecMSCryptoKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     pubKey->bitlen          = xmlSecBnGetSize(&modulus) * 8;    /* Number of bits in prime modulus */
     pubKey->pubexp          = 0;
     if(sizeof(pubKey->pubexp) < xmlSecBnGetSize(&exponent)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "sizeof(pubKey->pubexp) < exponent size=%d",
-                    sizeof(pubKey->pubexp),
-                    xmlSecBnGetSize(&exponent));
+        xmlSecInvalidSizeLessThanError("exponent size",
+                sizeof(pubKey->pubexp), xmlSecBnGetSize(&exponent),
+                NULL);
         goto done;
     }
     xmlSecAssert2(xmlSecBnGetData(&exponent) != NULL, -1);

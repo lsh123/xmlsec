@@ -338,11 +338,7 @@ xmlSecBase64CtxEncodeByte(xmlSecBase64CtxPtr ctx, xmlSecByte inByte, xmlSecByte*
         return(xmlSecBase64StatusConsumeAndNext);
     }
 
-    xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                NULL,
-                XMLSEC_ERRORS_R_INVALID_DATA,
-                "ctx->inPos=%d", ctx->inPos);
+    xmlSecInvalidIntegerDataError("ctx->inPos", ctx->inPos, "0,1,2,3", NULL);
     return(xmlSecBase64StatusFailed);
 }
 
@@ -372,11 +368,7 @@ xmlSecBase64CtxEncodeByteFinal(xmlSecBase64CtxPtr ctx, xmlSecByte* outByte) {
         return(xmlSecBase64StatusConsumeAndRepeat);
     }
 
-    xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                NULL,
-                XMLSEC_ERRORS_R_INVALID_DATA,
-                "ctx->inPos=%d", ctx->inPos);
+    xmlSecInvalidIntegerDataError("ctx->inPos", ctx->inPos, "0,1,2,3", NULL);
     return(xmlSecBase64StatusFailed);
 }
 
@@ -389,35 +381,20 @@ xmlSecBase64CtxDecodeByte(xmlSecBase64CtxPtr ctx, xmlSecByte inByte, xmlSecByte*
         return(xmlSecBase64StatusDone);
     } if(inByte == '=') {
         ctx->finished = 1;
-        if(ctx->inPos < 2) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_INVALID_DATA,
-                        "ctx->inPos=%d", ctx->inPos);
-            return(xmlSecBase64StatusFailed);
-        } else if(ctx->inPos == 2) {
+        if(ctx->inPos == 2) {
             ++ctx->inPos;
             return(xmlSecBase64StatusNext);
         } else if(ctx->inPos == 3) {
             ctx->inPos = 0;
             return(xmlSecBase64StatusNext);
         } else {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_INVALID_DATA,
-                        "ctx->inPos=%d", ctx->inPos);
+            xmlSecInvalidIntegerDataError("ctx->inPos", ctx->inPos, "2,3", NULL);
             return(xmlSecBase64StatusFailed);
         }
     } else if(xmlSecIsBase64Space(inByte)) {
         return(xmlSecBase64StatusNext);
     } else if(!xmlSecIsBase64Char(inByte) || (ctx->finished != 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_DATA,
-                    "inByte=0x%02x", inByte);
+        xmlSecInvalidIntegerDataError("inByte", inByte, "base64 character", NULL);
         return(xmlSecBase64StatusFailed);
     }
 
@@ -455,11 +432,7 @@ xmlSecBase64CtxDecodeByte(xmlSecBase64CtxPtr ctx, xmlSecByte inByte, xmlSecByte*
         return(xmlSecBase64StatusConsumeAndNext);
     }
 
-    xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                NULL,
-                XMLSEC_ERRORS_R_INVALID_DATA,
-                "ctx->inPos=%d", ctx->inPos);
+    xmlSecInvalidIntegerDataError("ctx->inPos", ctx->inPos, "0,1,2,3", NULL);
     return(xmlSecBase64StatusFailed);
 }
 
@@ -530,11 +503,7 @@ xmlSecBase64CtxEncodeFinal(xmlSecBase64CtxPtr ctx,
     }
 
     if(status != xmlSecBase64StatusDone) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "outBufSize=%d", outBufSize);
+        xmlSecInvalidSizeOtherError("invalid base64 buffer size", NULL);
         return(-1);
     }
     if(outPos < outBufSize) {

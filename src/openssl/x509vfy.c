@@ -937,12 +937,7 @@ xmlSecOpenSSLX509NameRead(xmlSecByte *str, int len) {
 
                 /* skip quote */
                 if((len <= 0) || ((*str) != '\"')) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                NULL,
-                                NULL,
-                                XMLSEC_ERRORS_R_INVALID_DATA,
-                                "quote is expected:%s",
-                                xmlSecErrorsSafeString(str));
+                    xmlSecInvalidIntegerDataError("char", (*str), "quote '\"'", NULL);
                     X509_NAME_free(nm);
                     return(NULL);
                 }
@@ -953,12 +948,7 @@ xmlSecOpenSSLX509NameRead(xmlSecByte *str, int len) {
                     ++str; --len;
                 }
                 if((len > 0) && ((*str) != ',')) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                NULL,
-                                NULL,
-                                XMLSEC_ERRORS_R_INVALID_DATA,
-                                "comma is expected:%s",
-                                xmlSecErrorsSafeString(str));
+                    xmlSecInvalidIntegerDataError("char", (*str), "comma ','", NULL);
                     X509_NAME_free(nm);
                     return(NULL);
                 }
@@ -968,11 +958,7 @@ xmlSecOpenSSLX509NameRead(xmlSecByte *str, int len) {
                 type = MBSTRING_ASC;
             } else if((*str) == '#') {
                 /* TODO: read octect values */
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            NULL,
-                            XMLSEC_ERRORS_R_INVALID_DATA,
-                            "reading octect values is not implemented yet");
+                xmlSecNotImplementedError("reading octect values is not implemented yet");
                 X509_NAME_free(nm);
                 return(NULL);
             } else {
@@ -1019,22 +1005,14 @@ xmlSecOpenSSLX509NameStringRead(xmlSecByte **str, int *strLen,
             nonSpace = q;
             if(xmlSecIsHex((*p))) {
                 if((p - (*str) + 1) >= (*strLen)) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                NULL,
-                                NULL,
-                                XMLSEC_ERRORS_R_INVALID_DATA,
-                                "two hex digits expected");
+                    xmlSecInvalidDataError("two hex digits expected", NULL);
                     return(-1);
                 }
                 *(q++) = xmlSecGetHex(p[0]) * 16 + xmlSecGetHex(p[1]);
                 p += 2;
             } else {
                 if(((++p) - (*str)) >= (*strLen)) {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                NULL,
-                                NULL,
-                                XMLSEC_ERRORS_R_INVALID_DATA,
-                                "escaped symbol missed");
+                    xmlSecInvalidDataError("escaped symbol missed", NULL);
                     return(-1);
                 }
                 *(q++) = *(p++);
@@ -1042,11 +1020,7 @@ xmlSecOpenSSLX509NameStringRead(xmlSecByte **str, int *strLen,
         }
     }
     if(((p - (*str)) < (*strLen)) && ((*p) != delim)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "buffer is too small");
+        xmlSecInvalidSizeOtherError("buffer is too small", NULL);
         return(-1);
     }
     (*strLen) -= (p - (*str));

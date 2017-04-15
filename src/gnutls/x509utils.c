@@ -1039,11 +1039,7 @@ xmlSecGnuTLSCreateKeyDataAndAdoptPrivKey(gnutls_x509_privkey_t priv_key) {
         break;
 #endif /* XMLSEC_NO_DSA */
     default:
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gnutls_x509_privkey_get_pk_algorithm",
-                    XMLSEC_ERRORS_R_INVALID_TYPE,
-                    "Unsupported algorithm %d", (int)key_alg);
+        mlSecInvalidIntegerTypeError("key_alg", key_alg, "supported algorithm");
         return(NULL);
     }
 
@@ -1368,12 +1364,7 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
                 if((ch == ',') || (ch == ';') || (ch == '\0')) {
                     state = xmlSecGnuTLSDnParseState_BeforeNameComponent;
                 } else {
-                    xmlSecError(XMLSEC_ERRORS_HERE,
-                                NULL,
-                                "",
-                                XMLSEC_ERRORS_R_INVALID_DATA,
-                                "Unexpected character %c (expected space or ',' or ';')",
-                                ch);
+                    xmlSecInvalidIntegerDataError("ch", ch, "space,',',';','\\0'", NULL);
                     goto done;
                 }
             } else {
@@ -1390,12 +1381,7 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
 
     /* check end state */
     if(state != xmlSecGnuTLSDnParseState_BeforeNameComponent) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "",
-                    XMLSEC_ERRORS_R_INVALID_DATA,
-                    "Unexpected state %d at the end of parsing",
-                    (int)state);
+        xmlSecInvalidIntegerDataError("state", state, "xmlSecGnuTLSDnParseState_BeforeNameComponent", NULL);
         goto done;
     }
 

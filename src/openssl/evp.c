@@ -388,11 +388,8 @@ xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
 #endif /* XMLSEC_NO_GOST2012 */
 
     default:
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TYPE,
-                    "evp key type %d not supported", EVP_PKEY_base_id(pKey));
+        xmlSecInvalidIntegerTypeError("evp key type", EVP_PKEY_base_id(pKey),
+                "supported evp key type", NULL);
         return(NULL);
     }
 

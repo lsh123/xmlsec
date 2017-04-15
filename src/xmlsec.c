@@ -165,39 +165,27 @@ int
 xmlSecCheckVersionExt(int major, int minor, int subminor, xmlSecCheckVersionMode mode) {
     /* we always want to have a match for major version number */
     if(major != XMLSEC_VERSION_MAJOR) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_VERSION,
-                    "expected major version=%d;real major version=%d",
-                    XMLSEC_VERSION_MAJOR, major);
+        xmlSecOtherError3(XMLSEC_ERRORS_R_INVALID_VERSION, NULL,
+                "expected major version=%d;real major version=%d",
+                XMLSEC_VERSION_MAJOR, major);
         return(0);
     }
 
     switch(mode) {
     case xmlSecCheckVersionExactMatch:
         if((minor != XMLSEC_VERSION_MINOR) || (subminor != XMLSEC_VERSION_SUBMINOR)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_INVALID_VERSION,
-                        "mode=exact;expected minor version=%d;real minor version=%d;expected subminor version=%d;real subminor version=%d",
-                        XMLSEC_VERSION_MINOR, minor,
-                        XMLSEC_VERSION_SUBMINOR, subminor);
+            xmlSecOtherError5(XMLSEC_ERRORS_R_INVALID_VERSION, NULL,
+                    "mode=exact;expected minor version=%d;real minor version=%d;expected subminor version=%d;real subminor version=%d",
+                    XMLSEC_VERSION_MINOR, minor, XMLSEC_VERSION_SUBMINOR, subminor);
             return(0);
         }
         break;
     case xmlSecCheckVersionABICompatible:
-        if((minor > XMLSEC_VERSION_MINOR) ||
-           ((minor == XMLSEC_VERSION_MINOR) &&
-            (subminor > XMLSEC_VERSION_SUBMINOR))) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_INVALID_VERSION,
-                        "mode=abi compatible;expected minor version=%d;real minor version=%d;expected subminor version=%d;real subminor version=%d",
-                        XMLSEC_VERSION_MINOR, minor,
-                        XMLSEC_VERSION_SUBMINOR, subminor);
+        if((minor > XMLSEC_VERSION_MINOR) || ((minor == XMLSEC_VERSION_MINOR) &&
+                (subminor > XMLSEC_VERSION_SUBMINOR))) {
+            xmlSecOtherError5(XMLSEC_ERRORS_R_INVALID_VERSION, NULL,
+                    "mode=abi compatible;expected minor version=%d;real minor version=%d;expected subminor version=%d;real subminor version=%d",
+                    XMLSEC_VERSION_MINOR, minor, XMLSEC_VERSION_SUBMINOR, subminor);
             return(0);
         }
         break;

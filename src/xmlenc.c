@@ -369,12 +369,8 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
             xmlNodeDumpOutput(output, node->doc, cur, 0, 0, NULL);
         }
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TYPE,
-                    "type=%s",
-                    xmlSecErrorsSafeString(encCtx->type));
+        xmlSecInvalidStringTypeError("encryption type", encCtx->type,
+                "supported encryption type", NULL);
         xmlOutputBufferClose(output);
         return(-1);
     }
@@ -435,13 +431,9 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
 
         encCtx->resultReplaced = 1;
     } else {
-        /* we should've catached this error before */
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_TYPE,
-                    "type=%s",
-                    xmlSecErrorsSafeString(encCtx->type));
+        /* we should've caught this error before */
+        xmlSecInvalidStringTypeError("encryption type", encCtx->type,
+                "supported encryption type", NULL);
         return(-1);
     }
     /* done */
@@ -752,15 +744,11 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
                                                               encCtx->defEncMethodId);
         if(encCtx->encMethod == NULL) {
             xmlSecInternalError("xmlSecTransformCtxCreateAndAppend",
-                                xmlSecTransformKlassGetName(encCtx->defEncMethodId));
+                    xmlSecTransformKlassGetName(encCtx->defEncMethodId));
             return(-1);
         }
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_DATA,
-                    "encryption method not specified");
+        xmlSecInvalidDataError("encryption method not specified", NULL);
         return(-1);
     }
     encCtx->encMethod->operation = encCtx->operation;
@@ -769,7 +757,7 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     ret = xmlSecTransformSetKeyReq(encCtx->encMethod, &(encCtx->keyInfoReadCtx.keyReq));
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformSetKeyReq",
-                            xmlSecTransformGetName(encCtx->encMethod));
+                xmlSecTransformGetName(encCtx->encMethod));
         return(-1);
     }
 

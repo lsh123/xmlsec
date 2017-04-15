@@ -1716,11 +1716,7 @@ xmlSecTmplNodeWriteNsList(xmlNodePtr parentNode, const xmlChar** nsList) {
         }
         href = *(++ptr);
         if(href == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_INVALID_DATA,
-                        "unexpected end of ns list");
+            xmlSecInvalidDataError("unexpected end of ns list", NULL);
             return(-1);
         }
 

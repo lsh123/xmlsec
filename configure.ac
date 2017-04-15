@@ -136,7 +136,6 @@ XMLSEC_CRYPTO_EXTRA_LDFLAGS=
 dnl should separate extra LDFLAGS for xmlsec and crypto libs ?
 dnl should --enable-runtime-pseudo-reloc for mingw and cygwin ?
 
-xmlsec_sharedlib_hack="no"
 if test -n "$shrext"; then
   XMLSEC_SHLIBSFX="$shrext"
 else
@@ -154,7 +153,13 @@ case "${host}" in
 	XMLSEC_EXTRA_LDFLAGS="-no-undefined -avoid-version"
 	XMLSEC_CRYPTO_EXTRA_LDFLAGS="-no-undefined -avoid-version"
 	XMLSEC_SHLIBSFX=".dll.a"
-	xmlsec_sharedlib_hack="yes"
+        # To avoid problem with loading of a shared library (dlopen or
+        # equivalent) at run time on some platforms we need to link
+        # everything statically (it works without hack on 9x and under
+        # emulation; on nt 5.x (w2k,xp) the error is 998: "Invalid
+        # access to memory location").
+        enable_static_linking="yes"
+        enable_crypto_dl="no"
 	;;
  *-*-cygwin*)
 	XMLSEC_EXTRA_LDFLAGS="-no-undefined"
@@ -164,12 +169,6 @@ case "${host}" in
         XMLSEC_SHLIBSFX=".dylib"
         ;;
 esac
-
-# To avoid problem with loading of a shared library (dlopen or equivalent)
-# at run time on some platforms we need to link crypto modules with extra
-# source. It's work without hack on 9x and under emulation.
-# On nt 5.x (w2k,xp) the error is 998("Invalid access to memory location").
-AM_CONDITIONAL(SHAREDLIB_HACK, [test "z$xmlsec_sharedlib_hack" = "zyes"])
 
 dnl ==========================================================================
 dnl Hack for autoconf version mismatch

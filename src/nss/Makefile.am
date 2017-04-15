@@ -37,10 +37,6 @@ libxmlsec1_nss_la_SOURCES =\
 	globals.h \
 	$(NULL)
 
-if SHAREDLIB_HACK
-libxmlsec1_nss_la_SOURCES += ../strings.c
-endif
-
 libxmlsec1_nss_la_LIBADD = \
 	$(NSS_LIBS) \
 	$(LIBXSLT_LIBS) \

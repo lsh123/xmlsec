@@ -195,23 +195,16 @@ xmlSecNssDigestVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(ctx->dgstSize > 0, -1);
 
     if(dataSize != ctx->dgstSize) {
-
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_DATA,
-                    "data and digest sizes are different (data=%d, dgst=%d)",
-                    dataSize, ctx->dgstSize);
+        xmlSecInvalidIntegerDataError2("dataSize", dataSize,
+                "dgstSize", ctx->dgstSize, "dataSize == dgstSize",
+                xmlSecTransformGetName(transform));
         transform->status = xmlSecTransformStatusFail;
         return(0);
     }
 
     if(memcmp(ctx->dgst, data, dataSize) != 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_DATA,
-                    "data and digest do not match");
+        xmlSecInvalidDataError("data and digest do not match",
+                xmlSecTransformGetName(transform));
         transform->status = xmlSecTransformStatusFail;
         return(0);
     }

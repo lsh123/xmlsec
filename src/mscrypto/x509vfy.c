@@ -563,11 +563,9 @@ xmlSecMSCryptoX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCe
     } else if(type == xmlSecKeyDataTypeNone) {
         certStore = ctx->untrusted;
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                NULL,
-                XMLSEC_ERRORS_R_INVALID_TYPE,
-                "type=%d", type);
+        xmlSecInvalidIntegerTypeError("type", type,
+                "xmlSecKeyDataTypeTrusted, xmlSecKeyDataTypeNone",
+                xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
 

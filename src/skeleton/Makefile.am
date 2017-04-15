@@ -25,10 +25,6 @@ libxmlsec1_skeleton_la_SOURCES =\
 	globals.h \
 	$(NULL)
 
-if SHAREDLIB_HACK
-libxmlsec1_skeleton_la_SOURCES += ../strings.c
-endif
-
 libxmlsec1_skeleton_la_LIBADD = \
 	$(SKELETON_LIBS) \
 	$(LIBXSLT_LIBS) \

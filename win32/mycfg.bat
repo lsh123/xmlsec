@@ -8,16 +8,16 @@ REM
 REM Aleksey Sanin <aleksey@aleksey.com>
 REM 
 
-SET PREFIX=C:\cygwin\home\local
-SET XMLSEC_INCLUDE=%PREFIX%\include;%PREFIX%\include\mozilla;%PREFIX%\include\mozilla\nspr;%PREFIX%\include\mozilla\nss;%MSSDK_INCLUDE%
+SET PREFIX=C:\Users\Aleksey\dev\local
+SET XMLSEC_CRYPTO=mscrypto
+SET XMLSEC_INCLUDE=%PREFIX%\include;%MSSDK_INCLUDE%
 SET XMLSEC_LIB=%PREFIX%\lib;%MSSDK_LIB%
-SET XMLSEC_OPTIONS=static=no iconv=no debug=yes xslt=yes crypto=mscrypto,openssl unicode=yes
+SET XMLSEC_OPTIONS=static=yes iconv=no debug=yes xslt=yes crypto=%XMLSEC_CRYPTO% unicode=yes
 
 del /F Makefile configure.txt
-cscript configure.js prefix=%PREFIX% %XMLSEC_OPTIONS% include=%XMLSEC_INCLUDE% lib=%XMLSEC_LIB% 
+cscript configure.js prefix=%PREFIX% %XMLSEC_OPTIONS% include=%XMLSEC_INCLUDE% lib=%XMLSEC_LIB%
 
 mkdir binaries
 copy %PREFIX%\bin\*.dll binaries
 copy %PREFIX%\lib\*.dll binaries
 
-REM cscript configure.js crypto=mscrypto prefix=c:\Users\Aleksey\dev\local include=c:\Users\Aleksey\dev\local\include lib=c:\Users\Aleksey\dev\local\lib

@@ -1196,7 +1196,7 @@ xmlSecMSCryptoKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     pubKey->bitlen          = xmlSecBnGetSize(&modulus) * 8;    /* Number of bits in prime modulus */
     pubKey->pubexp          = 0;
     if(sizeof(pubKey->pubexp) < xmlSecBnGetSize(&exponent)) {
-        xmlSecInvalidSizeMoreThanError("exponent size",
+        xmlSecInvalidSizeLessThanError("exponent size",
                 sizeof(pubKey->pubexp), xmlSecBnGetSize(&exponent),
                 NULL);
         goto done;

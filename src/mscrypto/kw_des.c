@@ -545,12 +545,7 @@ xmlSecMSCryptoKWDes3BlockEncrypt(void * context,
 
     /* set IV */
     if(ivSize < dwBlockLen / 8) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "ivSize=%d, dwBlockLen=%d",
-                    ivSize, dwBlockLen);
+        xmlSecInvalidSizeLessThanError("ivSize", ivSize, dwBlockLen / 8, NULL);
         CryptDestroyKey(cryptKey);
         return(-1);
     }
@@ -623,12 +618,7 @@ xmlSecMSCryptoKWDes3BlockDecrypt(void * context,
 
     /* set IV */
     if(ivSize < dwBlockLen / 8) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "ivSize=%d, dwBlockLen=%d",
-                    ivSize, dwBlockLen);
+        xmlSecInvalidSizeLessThanError("ivSize", ivSize, dwBlockLen / 8, NULL);
         CryptDestroyKey(cryptKey);
         return(-1);
     }

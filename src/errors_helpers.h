@@ -365,6 +365,23 @@ extern "C" {
         )
 
 /**
+ * xmlSecInvalidSizeOtherError:
+ * @msg:                the message about the error.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting "invalid size" errors when
+ * we expect exact match.
+ */
+#define xmlSecInvalidSizeOtherError(msg, errorObject) \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    NULL,                                   \
+                    XMLSEC_ERRORS_R_INVALID_SIZE,           \
+                    "invalid size: %s",                     \
+                    xmlSecErrorsSafeString(msg)             \
+        )
+
+/**
  * xmlSecInvalidDataError:
  * @msg:                the msg with explanation.
  * @errorObject:        the error specific error object (e.g. transform, key data, etc).

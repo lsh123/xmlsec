@@ -1020,11 +1020,7 @@ xmlSecOpenSSLX509NameStringRead(xmlSecByte **str, int *strLen,
         }
     }
     if(((p - (*str)) < (*strLen)) && ((*p) != delim)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "buffer is too small");
+        xmlSecInvalidSizeOtherError("buffer is too small", NULL);
         return(-1);
     }
     (*strLen) -= (p - (*str));

@@ -503,11 +503,7 @@ xmlSecBase64CtxEncodeFinal(xmlSecBase64CtxPtr ctx,
     }
 
     if(status != xmlSecBase64StatusDone) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "outBufSize=%d", outBufSize);
+        xmlSecInvalidSizeOtherError("invalid base64 buffer size", NULL);
         return(-1);
     }
     if(outPos < outBufSize) {

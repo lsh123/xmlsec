@@ -507,12 +507,8 @@ xmlSecGCryptBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(buffer != NULL, -1);
 
     if(xmlSecBufferGetSize(buffer) < keySize) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE,
-                    "keySize=%d;expected=%d",
-                    xmlSecBufferGetSize(buffer), keySize);
+        xmlSecInvalidKeyDataSizeError(xmlSecBufferGetSize(buffer), keySize,
+                xmlSecTransformGetName(transform));
         return(-1);
     }
 

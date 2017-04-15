@@ -225,12 +225,8 @@ xmlSecNssKWDes3SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     keySize = xmlSecBufferGetSize(buffer);
     if(keySize < XMLSEC_KW_DES3_KEY_LENGTH) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE,
-                    "key length %d is not enough (%d expected)",
-                    keySize, XMLSEC_KW_DES3_KEY_LENGTH);
+        xmlSecInvalidKeyDataSizeError(keySize, XMLSEC_KW_DES3_KEY_LENGTH,
+                xmlSecTransformGetName(transform));
         return(-1);
     }
 

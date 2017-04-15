@@ -704,6 +704,41 @@ extern "C" {
     }
 
 /**
+ * xmlSecInvalidKeyDataSizeError:
+ * @name:               the name of the variable, parameter, etc.
+ * @actual:             the actual value.
+ * @expected:           the expected value(s).
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting "invalid keydata size" errors.
+ */
+#define xmlSecInvalidKeyDataSizeError(actual, expected, errorObject) \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    NULL,                                   \
+                    XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE,  \
+                    "invalid key data size: actual=%ld and expected=%ld", \
+                    (unsigned long)(actual),                \
+                    (unsigned long)(expected)               \
+        )
+
+/**
+ * xmlSecInvalidZeroKeyDataSizeError:
+ * @name:               the name of the variable, parameter, etc.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting "invalid keydata size" errors.
+ */
+#define xmlSecInvalidZeroKeyDataSizeError(errorObject) \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    NULL,                                   \
+                    XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE,  \
+                    "invalid zero key data size"            \
+        )
+
+
+/**
  * xmlSecOtherError:
  * @code:               the error code.
  * @errorObject:        the error specific error object (e.g. transform, key data, etc).

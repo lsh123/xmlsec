@@ -765,25 +765,23 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
                                            paramsSize);
         if(ret < 0) {
             xmlSecOpenSSLError("RSA_padding_check_PKCS1_OAEP",
-                               xmlSecTransformGetName(transform));
+                    xmlSecTransformGetName(transform));
             return(-1);
         }
         outSize = ret;
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "",
-                    XMLSEC_ERRORS_R_INVALID_OPERATION,
-                    "Unexpected transform operation: %d; paramsSize: %d",
-                    (int)transform->operation, (int)paramsSize);
+        xmlSecOtherError3(XMLSEC_ERRORS_R_INVALID_OPERATION,
+                xmlSecTransformGetName(transform),
+                "Unexpected transform operation: %ld; paramsSize: %ld",
+                (long int)transform->operation, (long int)paramsSize);
         return(-1);
     }
 
     ret = xmlSecBufferSetSize(out, outSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize",
-                             xmlSecTransformGetName(transform),
-                             "size=%d", outSize);
+                xmlSecTransformGetName(transform),
+                "size=%d", outSize);
         return(-1);
     }
 

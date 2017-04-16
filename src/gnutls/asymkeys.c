@@ -60,6 +60,7 @@ static int xmlSecGnuTLSConvertParamsToMpis(gnutls_datum_t * params, xmlSecSize p
     xmlSecAssert2(paramsNum == mpisNum, -1);
 
     for(ii = 0; ii < paramsNum; ++ii) {
+        mpis[ii] = NULL;
         rc = gcry_mpi_scan(&(mpis[ii]), GCRYMPI_FMT_USG, params[ii].data, params[ii].size, NULL);
         if((rc != GPG_ERR_NO_ERROR) || (mpis[ii] == NULL)) {
             xmlSecGnuTLSGCryptError("gcry_mpi_scan", rc, NULL);

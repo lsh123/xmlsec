@@ -1,4 +1,4 @@
-/**
+/*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * General functions.
@@ -23,7 +23,7 @@
 #include <xmlsec/io.h>
 #include <xmlsec/errors.h>
 
-/**
+/*
  * Custom external entity handler, denies all files except the initial
  * document we're parsing (input_id == 1)
  */

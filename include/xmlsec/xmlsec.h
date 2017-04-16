@@ -1,4 +1,4 @@
-/**
+/*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * General functions and forward declarations.
@@ -98,7 +98,7 @@ XMLSEC_EXPORT void                              xmlSecSetExternalEntityLoader (x
  */
 #define XMLSEC_CRYPTO                          (xmlSecGetDefaultCrypto())
 
-/**
+/*
  * XMLSEC_DEPRECATED function definition
  */
 #ifdef __GNUC__

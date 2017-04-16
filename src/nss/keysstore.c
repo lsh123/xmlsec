@@ -1,5 +1,5 @@
-/**
- * XMLSec library
+/*
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * Nss keys store that uses Simple Keys Store under the hood. Uses the
  * Nss DB as a backing store for the finding keys, but the NSS DB is

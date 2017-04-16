@@ -1,4 +1,4 @@
-/**
+/*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * Relationship transform
@@ -273,7 +273,7 @@ done:
     return ret;
 }
 
-/**
+/*
  * This is step 2, point 4: if the input sourceId list doesn't contain the Id attribute of the current node,
  * then exclude it from the output, instead of processing it.
  */
@@ -322,7 +322,7 @@ xmlSecTransformRelationshipProcessNode(xmlSecTransformPtr transform, xmlOutputBu
     return(0);
 }
 
-/**
+/*
  * This is step 2, point 3: sort elements by Id: we process other elements as-is, but for elements we collect them in a list,
  * then sort, and finally process them (process the head of the list, then pop the head, till the list becomes empty).
  */
@@ -463,7 +463,7 @@ xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlO
         }
     }
 
-    /**
+    /*
      *  write attributes:
      *
      *  This is step 3, point 6: add default value of TargetMode if there is no such attribute.

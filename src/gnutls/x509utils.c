@@ -1039,7 +1039,7 @@ xmlSecGnuTLSCreateKeyDataAndAdoptPrivKey(gnutls_x509_privkey_t priv_key) {
         break;
 #endif /* XMLSEC_NO_DSA */
     default:
-        xmlSecInvalidIntegerTypeError("key_alg", key_alg, "supported algorithm");
+        xmlSecInvalidIntegerTypeError("key_alg", key_alg, "supported algorithm", NULL);
         return(NULL);
     }
 

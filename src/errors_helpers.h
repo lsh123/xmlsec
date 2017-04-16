@@ -721,6 +721,25 @@ extern "C" {
     }
 
 /**
+ * xmlSecInvalidTransfromStatusError2:
+ * @transform:          the transform.
+ * @msg:                the extra message.
+ *
+ * Macro. The XMLSec library macro for reporting an invalid transform status errors.
+ */
+#define xmlSecInvalidTransfromStatusError2(transform, msg) \
+    {                                                 \
+        xmlSecError(XMLSEC_ERRORS_HERE,               \
+                   (const char*)xmlSecTransformGetName(transform), \
+                   NULL,                              \
+                   XMLSEC_ERRORS_R_INVALID_STATUS,    \
+                   "transformStatus=%ld, msg=%s",     \
+                   (long int)((transform)->status),   \
+                   msg                                \
+        );                                            \
+    }
+
+/**
  * xmlSecInvalidKeyDataSizeError:
  * @name:               the name of the variable, parameter, etc.
  * @actual:             the actual value.

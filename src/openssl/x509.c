@@ -41,6 +41,15 @@
 #include <xmlsec/openssl/x509.h>
 #include "openssl_compat.h"
 
+/* The ASN1_TIME_check() function was changed from ASN1_TIME * to
+ * const ASN1_TIME * in 1.1.0. To avoid compiler warnings, we use this hack.
+ */
+#if !defined(XMLSEC_OPENSSL_API_110)
+typedef ASN1_TIME XMLSEC_CONST_ASN1_TIME;
+#else  /* !defined(XMLSEC_OPENSSL_API_110) */
+typedef const ASN1_TIME XMLSEC_CONST_ASN1_TIME;
+#endif /* !defined(XMLSEC_OPENSSL_API_110) */
+
 /*************************************************************************
  *
  * X509 utility functions
@@ -99,7 +108,7 @@ static void             xmlSecOpenSSLX509CertDebugDump          (X509* cert,
                                                                  FILE* output);
 static void             xmlSecOpenSSLX509CertDebugXmlDump       (X509* cert,
                                                                  FILE* output);
-static int              xmlSecOpenSSLX509CertGetTime            (const ASN1_TIME* t,
+static int              xmlSecOpenSSLX509CertGetTime            (XMLSEC_CONST_ASN1_TIME * t,
                                                                  time_t* res);
 
 /*************************************************************************
@@ -1543,7 +1552,7 @@ my_timegm(struct tm *t) {
 #endif /* HAVE_TIMEGM */
 
 static int
-xmlSecOpenSSLX509CertGetTime(const ASN1_TIME* t, time_t* res) {
+xmlSecOpenSSLX509CertGetTime(XMLSEC_CONST_ASN1_TIME * t, time_t* res) {
     struct tm tm;
     int offset;
 

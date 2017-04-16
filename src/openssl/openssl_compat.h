@@ -52,7 +52,7 @@
 #define X509_get0_notBefore(x509)          X509_get_notBefore((x509))
 #define X509_get0_notAfter(x509)           X509_get_notAfter((x509))
 #define X509_STORE_CTX_get_by_subject      X509_STORE_get_by_subject
-#define X509_REVOKED_get0_serialNumber(r)  (((r) != NULL) ? ((r)->serialNumber) : (const ASN1_INTEGER *)NULL)
+#define X509_REVOKED_get0_serialNumber(r)  (((r) != NULL) ? ((r)->serialNumber) : (ASN1_INTEGER *)NULL)
 #define X509_OBJECT_new()                  (calloc(1, sizeof(X509_OBJECT)))
 #define X509_OBJECT_free(x)                { X509_OBJECT_free_contents(x); free(x); }
 #define X509_OBJECT_get0_X509(x)           (((x) != NULL) ? ((x)->data.x509) : (X509 *)NULL)

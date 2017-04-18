@@ -258,6 +258,10 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </dt>
 <dd> <dd>skip strict checking of X509 data </dd>
 </dd>
+<dt> <b>--insecure</b> <dt></dt>
+</dt>
+<dd> <dd>do not verify certificates </dd>
+</dd>
 <dt> <b>--crypto</b> &lt;name&gt; <dt></dt>
 </dt>
 <dd> <dd>the name of the crypto engine to use from the following list: openssl, mscrypto, nss, gnutls, gcrypt (if no crypto engine is specified then the default one is used) </dd>
@@ -281,6 +285,10 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <dt> <b>--help</b> <dt></dt>
 </dt>
 <dd> <dd>print help information about the command </dd>
+</dd>
+<dt> <b>--xxe</b> <dt></dt>
+</dt>
+<dd> <dd>enable External Entity resolution. WARNING: this may allow the reading of arbitrary files and URLs, controlled by the input XML document.  Use with caution! </dd>
 </dd>
 </dl>
 <a name="lbAF"> </a><h2>AUTHOR</h2>

@@ -1,41 +1,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Signing a template file.</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="Examples." href="xmlsec-examples.html">
-<link rel="PREVIOUS" title="Examples." href="xmlsec-examples.html">
-<link rel="NEXT" title="Signing a dynamicaly created template." href="xmlsec-examples-sign-dynamimc-template.html">
-<style type="text/css">.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-    padding: 0.5em;
-}
-.programlisting {
-    background: #eeeeff;
-    border: solid 1px #aaaaff;
-    padding: 0.5em;
-}
-.variablelist {
-    padding: 4px;
-    margin-left: 3em;
-}
-.navigation {
-    background: #ffeeee;
-    border: solid 1px #ffaaaa;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-.navigation a {
-    color: #770000;
-}
-.navigation a:visited {
-    color: #550000;
-}
-.navigation .title {
-    font-size: 200%;
-}</style>
+<title>Signing a template file.: XML Security Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="XML Security Library Reference Manual">
+<link rel="up" href="xmlsec-examples.html" title="Examples.">
+<link rel="prev" href="xmlsec-examples.html" title="Examples.">
+<link rel="next" href="xmlsec-examples-sign-dynamimc-template.html" title="Signing a dynamicaly created template.">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
 <style type="text/css">
 table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     width: 20em;
@@ -100,21 +73,21 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-examples.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-examples.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="u" href="xmlsec-examples.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="xmlsec-examples.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="xmlsec-examples-sign-dynamimc-template.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
-<br clear="all"><div class="SECT1">
-<h1 class="SECT1"><a name="XMLSEC-EXAMPLES-SIGN-TEMPLATE-FILE">Signing a template file.</a></h1>
-<br clear="all"><div class="SECT2">
-<h2 class="SECT2"><a name="XMLSEC-EXAMPLE-SIGN1">sign1.c</a></h2>
-<p></p>
-<div class="INFORMALEXAMPLE">
-<p></p>
-<a name="AEN641"></a><pre class="PROGRAMLISTING">/** 
+<div class="sect1">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="xmlsec-examples-sign-template-file"></a>Signing a template file.</h2></div></div></div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="xmlsec-example-sign1"></a>sign1.c</h3></div></div></div>
+<div class="informalexample"><pre class="programlisting">
+/** 
  * XML Security Library example: Signing a template file.
  * 
  * Signs a template file using a key from PEM file
@@ -324,16 +297,15 @@ done:
         xmlFreeDoc(doc); 
     }
     return(res);
-}</pre>
-<p></p>
+}
+
+</pre></div>
 </div>
-</div>
-<br clear="all"><div class="SECT2">
-<h2 class="SECT2"><a name="XMLSEC-EXAMPLE-SIGN1-TMPL">sign1-tmpl.xml</a></h2>
-<p></p>
-<div class="INFORMALEXAMPLE">
-<p></p>
-<a name="AEN646"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="xmlsec-example-sign1-tmpl"></a>sign1-tmpl.xml</h3></div></div></div>
+<div class="informalexample"><pre class="programlisting">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: Simple signature template file for sign1 example. 
 --&gt;
@@ -358,16 +330,15 @@ XML Security Library example: Simple signature template file for sign1 example.
 	&lt;KeyName/&gt;
     &lt;/KeyInfo&gt;
   &lt;/Signature&gt;
-&lt;/Envelope&gt;</pre>
-<p></p>
+&lt;/Envelope&gt;
+
+</pre></div>
 </div>
-</div>
-<br clear="all"><div class="SECT2">
-<h2 class="SECT2"><a name="XMLSEC-EXAMPLE-SIGN1-RES">sign1-res.xml</a></h2>
-<p></p>
-<div class="INFORMALEXAMPLE">
-<p></p>
-<a name="AEN651"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="xmlsec-example-sign1-res"></a>sign1-res.xml</h3></div></div></div>
+<div class="informalexample"><pre class="programlisting">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: Simple signature template file for sign1 example. 
 --&gt;
@@ -393,15 +364,12 @@ elOnt4fo2gPK1a3IVEhMGg==&lt;/SignatureValue&gt;
 	&lt;KeyName&gt;rsakey.pem&lt;/KeyName&gt;
     &lt;/KeyInfo&gt;
   &lt;/Signature&gt;
-&lt;/Envelope&gt;</pre>
-<p></p>
+&lt;/Envelope&gt;
+</pre></div>
 </div>
 </div>
-</div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-examples.html"><b>&lt;&lt;&lt; Examples.</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-examples-sign-dynamimc-template.html"><b>Signing a dynamicaly created template. &gt;&gt;&gt;</b></a></td>
-</tr></table>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
 </td></tr></table></td>
 </tr></table></body>
 </html>

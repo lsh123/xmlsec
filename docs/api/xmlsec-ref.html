@@ -1,41 +1,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>XML Security Core Library API Reference.</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="XML Security Library API Reference." href="xmlsec-reference.html">
-<link rel="PREVIOUS" title="XML Security Library API Reference." href="xmlsec-reference.html">
-<link rel="NEXT" title="app" href="xmlsec-app.html">
-<style type="text/css">.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-    padding: 0.5em;
-}
-.programlisting {
-    background: #eeeeff;
-    border: solid 1px #aaaaff;
-    padding: 0.5em;
-}
-.variablelist {
-    padding: 4px;
-    margin-left: 3em;
-}
-.navigation {
-    background: #ffeeee;
-    border: solid 1px #ffaaaa;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-.navigation a {
-    color: #770000;
-}
-.navigation a:visited {
-    color: #550000;
-}
-.navigation .title {
-    font-size: 200%;
-}</style>
+<title>XML Security Core Library API Reference.: XML Security Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="XML Security Library Reference Manual">
+<link rel="up" href="xmlsec-reference.html" title="Part II. XML Security Library API Reference.">
+<link rel="prev" href="xmlsec-reference.html" title="Part II. XML Security Library API Reference.">
+<link rel="next" href="xmlsec-app.html" title="app">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
 <style type="text/css">
 table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     width: 20em;
@@ -100,73 +73,93 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-reference.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-reference.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="u" href="xmlsec-reference.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="xmlsec-reference.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="xmlsec-app.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
-<div class="CHAPTER">
-<h1>
-<a name="XMLSEC-REF"></a>XML Security Core Library API Reference.</h1>
-<div class="TOC"><dl>
-<dt><b>Table of Contents</b></dt>
+<div class="chapter">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="xmlsec-ref"></a>XML Security Core Library API Reference.</h2></div></div></div>
+<div class="toc"><dl class="toc">
 <dt>
-<a href="xmlsec-app.html">app</a> -- Crypto-engine independent application support function.</dt>
+<span class="refentrytitle"><a href="xmlsec-app.html">app</a></span><span class="refpurpose"> &#8212; Crypto-engine independent application support function.</span>
+</dt>
 <dt>
-<a href="xmlsec-base64.html">base64</a> -- Base64 encoding/decoding functions.</dt>
+<span class="refentrytitle"><a href="xmlsec-base64.html">base64</a></span><span class="refpurpose"> &#8212; Base64 encoding/decoding functions.</span>
+</dt>
 <dt>
-<a href="xmlsec-bn.html">bn</a> -- Big numbers support functions.</dt>
+<span class="refentrytitle"><a href="xmlsec-bn.html">bn</a></span><span class="refpurpose"> &#8212; Big numbers support functions.</span>
+</dt>
 <dt>
-<a href="xmlsec-buffer.html">buffer</a> -- Binary buffer implementation.</dt>
+<span class="refentrytitle"><a href="xmlsec-buffer.html">buffer</a></span><span class="refpurpose"> &#8212; Binary buffer implementation.</span>
+</dt>
 <dt>
-<a href="xmlsec-dl.html">dl</a> -- Dynamic crypto-engine library loading support.</dt>
+<span class="refentrytitle"><a href="xmlsec-dl.html">dl</a></span><span class="refpurpose"> &#8212; Dynamic crypto-engine library loading support.</span>
+</dt>
 <dt>
-<a href="xmlsec-errors.html">errors</a> -- Error/log messages support.</dt>
+<span class="refentrytitle"><a href="xmlsec-errors.html">errors</a></span><span class="refpurpose"> &#8212; Error/log messages support.</span>
+</dt>
 <dt>
-<a href="xmlsec-io.html">io</a> -- Input/output support.</dt>
+<span class="refentrytitle"><a href="xmlsec-io.html">io</a></span><span class="refpurpose"> &#8212; Input/output support.</span>
+</dt>
 <dt>
-<a href="xmlsec-keyinfo.html">keyinfo</a> -- <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node parser.</dt>
+<span class="refentrytitle"><a href="xmlsec-keyinfo.html">keyinfo</a></span><span class="refpurpose"> &#8212; &lt;dsig:KeyInfo/&gt; node parser.</span>
+</dt>
 <dt>
-<a href="xmlsec-keysdata.html">keysdata</a> -- Crypto key data object definition.</dt>
+<span class="refentrytitle"><a href="xmlsec-keysdata.html">keysdata</a></span><span class="refpurpose"> &#8212; Crypto key data object definition.</span>
+</dt>
 <dt>
-<a href="xmlsec-keys.html">keys</a> -- Crypto key object definition.</dt>
+<span class="refentrytitle"><a href="xmlsec-keys.html">keys</a></span><span class="refpurpose"> &#8212; Crypto key object definition.</span>
+</dt>
 <dt>
-<a href="xmlsec-keysmngr.html">keysmngr</a> -- Keys manager object support.</dt>
+<span class="refentrytitle"><a href="xmlsec-keysmngr.html">keysmngr</a></span><span class="refpurpose"> &#8212; Keys manager object support.</span>
+</dt>
 <dt>
-<a href="xmlsec-list.html">list</a> -- Generic list structure implementation.</dt>
+<span class="refentrytitle"><a href="xmlsec-list.html">list</a></span><span class="refpurpose"> &#8212; Generic list structure implementation.</span>
+</dt>
 <dt>
-<a href="xmlsec-membuf.html">membuf</a> -- Memory buffer transform implementation.</dt>
+<span class="refentrytitle"><a href="xmlsec-membuf.html">membuf</a></span><span class="refpurpose"> &#8212; Memory buffer transform implementation.</span>
+</dt>
 <dt>
-<a href="xmlsec-nodeset.html">nodeset</a> -- Nodeset object implementation.</dt>
+<span class="refentrytitle"><a href="xmlsec-nodeset.html">nodeset</a></span><span class="refpurpose"> &#8212; Nodeset object implementation.</span>
+</dt>
 <dt>
-<a href="xmlsec-parser.html">parser</a> -- Parser transform implementation.</dt>
+<span class="refentrytitle"><a href="xmlsec-parser.html">parser</a></span><span class="refpurpose"> &#8212; Parser transform implementation.</span>
+</dt>
 <dt>
-<a href="xmlsec-templates.html">templates</a> -- Dynamic templates creation functions.</dt>
+<span class="refentrytitle"><a href="xmlsec-templates.html">templates</a></span><span class="refpurpose"> &#8212; Dynamic templates creation functions.</span>
+</dt>
 <dt>
-<a href="xmlsec-transforms.html">transforms</a> -- Transform object definition.</dt>
+<span class="refentrytitle"><a href="xmlsec-transforms.html">transforms</a></span><span class="refpurpose"> &#8212; Transform object definition.</span>
+</dt>
 <dt>
-<a href="xmlsec-version.html">version</a> -- Version macros.</dt>
+<span class="refentrytitle"><a href="xmlsec-version.html">version</a></span><span class="refpurpose"> &#8212; Version macros.</span>
+</dt>
 <dt>
-<a href="xmlsec-xmldsig.html">xmldsig</a> -- XML Digital Signature support.</dt>
+<span class="refentrytitle"><a href="xmlsec-xmldsig.html">xmldsig</a></span><span class="refpurpose"> &#8212; XML Digital Signature support.</span>
+</dt>
 <dt>
-<a href="xmlsec-xmlenc.html">xmlenc</a> -- XML Encryption support.</dt>
+<span class="refentrytitle"><a href="xmlsec-xmlenc.html">xmlenc</a></span><span class="refpurpose"> &#8212; XML Encryption support.</span>
+</dt>
 <dt>
-<a href="xmlsec-xmlsec.html">xmlsec</a> -- Utility functions.</dt>
+<span class="refentrytitle"><a href="xmlsec-xmlsec.html">xmlsec</a></span><span class="refpurpose"> &#8212; Utility functions.</span>
+</dt>
 <dt>
-<a href="xmlsec-xmltree.html">xmltree</a> -- XML tree operations.</dt>
+<span class="refentrytitle"><a href="xmlsec-xmltree.html">xmltree</a></span><span class="refpurpose"> &#8212; XML tree operations.</span>
+</dt>
 <dt>
-<a href="xmlsec-x509.html">x509</a> -- <a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate" target="_top">&lt;dsig:X509Certificate/&gt;</a> node parser.</dt>
+<span class="refentrytitle"><a href="xmlsec-x509.html">x509</a></span><span class="refpurpose"> &#8212; &lt;dsig:X509Certificate/&gt; node parser.</span>
+</dt>
 </dl></div>
 <p>This section contains the API reference for xmlsec. All
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </p>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-reference.html"><b>&lt;&lt;&lt; XML Security Library API Reference.</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-app.html"><b>app &gt;&gt;&gt;</b></a></td>
-</tr></table>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
 </td></tr></table></td>
 </tr></table></body>
 </html>

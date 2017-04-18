@@ -272,17 +272,44 @@ Private header for building xmlsec-crypto-engine libraries.
 @cryptoAppKeyCertLoadMemory: 
 @cryptoAppDefaultPwdCallback: 
 
-<!-- ##### MACRO xmlSecStrPrintf ##### -->
+<!-- ##### MACRO ATTRIBUTE_UNUSED ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### MACRO xmlSecStrVPrintf ##### -->
+<!-- ##### MACRO XMLSEC_PTR_TO_FUNC_IMPL ##### -->
 <para>
 
 </para>
 
+@func_type: 
+
+
+<!-- ##### MACRO XMLSEC_PTR_TO_FUNC ##### -->
+<para>
+
+</para>
+
+@func_type: 
+@ptr: 
+
+
+<!-- ##### MACRO XMLSEC_FUNC_TO_PTR_IMPL ##### -->
+<para>
+
+</para>
+
+@func_type: 
+
+
+<!-- ##### MACRO XMLSEC_FUNC_TO_PTR ##### -->
+<para>
+
+</para>
+
+@func_type: 
+@func: 
 
 

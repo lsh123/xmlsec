@@ -240,28 +240,6 @@ XML tree operations.
 @ids: 
 
 
-<!-- ##### FUNCTION xmlSecGenerateAndAddID ##### -->
-<para>
-
-</para>
-
-@node: 
-@attrName: 
-@prefix: 
-@len: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecGenerateID ##### -->
-<para>
-
-</para>
-
-@prefix: 
-@len: 
-@Returns: 
-
-
 <!-- ##### FUNCTION xmlSecCreateTree ##### -->
 <para>
 

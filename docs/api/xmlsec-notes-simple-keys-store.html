@@ -1,41 +1,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Simple keys store.</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="Keys manager." href="xmlsec-notes-keysmngr.html">
-<link rel="PREVIOUS" title="Keys manager." href="xmlsec-notes-keysmngr.html">
-<link rel="NEXT" title="Using keys manager for signatures/encryption." href="xmlsec-notes-keys-manager-sign-enc.html">
-<style type="text/css">.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-    padding: 0.5em;
-}
-.programlisting {
-    background: #eeeeff;
-    border: solid 1px #aaaaff;
-    padding: 0.5em;
-}
-.variablelist {
-    padding: 4px;
-    margin-left: 3em;
-}
-.navigation {
-    background: #ffeeee;
-    border: solid 1px #ffaaaa;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-.navigation a {
-    color: #770000;
-}
-.navigation a:visited {
-    color: #550000;
-}
-.navigation .title {
-    font-size: 200%;
-}</style>
+<title>Simple keys store.: XML Security Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="XML Security Library Reference Manual">
+<link rel="up" href="xmlsec-notes-keysmngr.html" title="Keys manager.">
+<link rel="prev" href="xmlsec-notes-keysmngr.html" title="Keys manager.">
+<link rel="next" href="xmlsec-notes-keys-manager-sign-enc.html" title="Using keys manager for signatures/encryption.">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
 <style type="text/css">
 table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     width: 20em;
@@ -100,26 +73,31 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-notes-keysmngr.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-notes-keysmngr.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="u" href="xmlsec-notes-keysmngr.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="xmlsec-notes-keysmngr.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="xmlsec-notes-keys-manager-sign-enc.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
-<br clear="all"><div class="SECT1">
-<h1 class="SECT1"><a name="XMLSEC-NOTES-SIMPLE-KEYS-STORE">Simple keys store.</a></h1>
-<p>	XML Security Library has a built-in simple keys store 
+<div class="sect1">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="xmlsec-notes-simple-keys-store"></a>Simple keys store.</h2></div></div></div>
+<p>
+	XML Security Library has a built-in simple keys store 
 	implemented using a keys list. You can use it in your application
 	if you have a small number of keys. However, this might be not a 
 	best option from performance point of view if you have a lot of keys.
 	In this case, you probably should implement your own keys store
 	using an SQL database or some other keys storage.
 	</p>
-<p>	     </p>
-<div class="EXAMPLE">
-<a name="AEN363"></a><p><b>Example 1. Initializing keys manager and loading keys from PEM files.</b></p>
-<pre class="PROGRAMLISTING">/**
+<p>
+	     </p>
+<div class="example">
+<a name="id-1.2.10.3.3.1"></a><p class="title"><b>Example 16. Initializing keys manager and loading keys from PEM files.</b></p>
+<div class="example-contents">
+<pre class="programlisting">
+/**
  * load_keys:
  * @files:		the list of filenames.
  * @files_size:		the number of filenames in #files.
@@ -188,13 +166,14 @@ load_keys(char** files, int files_size) {
     return(mngr);
 }
 		</pre>
-<p><a href="xmlsec-verify-with-keys-mngr.html#XMLSEC-EXAMPLE-VERIFY2">Full program listing</a></p>
+<p><a class="link" href="xmlsec-verify-with-keys-mngr.html#xmlsec-example-verify2" title="verify2.c">Full program listing</a></p>
 </div>
-	</div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-notes-keysmngr.html"><b>&lt;&lt;&lt; Keys manager.</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-notes-keys-manager-sign-enc.html"><b>Using keys manager for signatures/encryption. &gt;&gt;&gt;</b></a></td>
-</tr></table>
+</div>
+<p><br class="example-break">
+	</p>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
 </td></tr></table></td>
 </tr></table></body>
 </html>

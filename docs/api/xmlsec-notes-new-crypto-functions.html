@@ -1,41 +1,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>xmlSecCryptoApp* functions.</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="Adding support for new cryptographic library." href="xmlsec-notes-new-crypto.html">
-<link rel="PREVIOUS" title="Creating a framework from the skeleton." href="xmlsec-notes-new-crypto-skeleton.html">
-<link rel="NEXT" title="Klasses and objects." href="xmlsec-notes-new-crypto-klasses.html">
-<style type="text/css">.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-    padding: 0.5em;
-}
-.programlisting {
-    background: #eeeeff;
-    border: solid 1px #aaaaff;
-    padding: 0.5em;
-}
-.variablelist {
-    padding: 4px;
-    margin-left: 3em;
-}
-.navigation {
-    background: #ffeeee;
-    border: solid 1px #ffaaaa;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-.navigation a {
-    color: #770000;
-}
-.navigation a:visited {
-    color: #550000;
-}
-.navigation .title {
-    font-size: 200%;
-}</style>
+<title>xmlSecCryptoApp* functions.: XML Security Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="XML Security Library Reference Manual">
+<link rel="up" href="xmlsec-notes-new-crypto.html" title="Adding support for new cryptographic library.">
+<link rel="prev" href="xmlsec-notes-new-crypto-skeleton.html" title="Creating a framework from the skeleton.">
+<link rel="next" href="xmlsec-notes-new-crypto-klasses.html" title="Klasses and objects.">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
 <style type="text/css">
 table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     width: 20em;
@@ -100,16 +73,18 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-notes-new-crypto-skeleton.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-notes-new-crypto.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="u" href="xmlsec-notes-new-crypto.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="xmlsec-notes-new-crypto-skeleton.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="xmlsec-notes-new-crypto-klasses.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
-<br clear="all"><div class="SECT1">
-<h1 class="SECT1"><a name="XMLSEC-NOTES-NEW-CRYPTO-FUNCTIONS">xmlSecCryptoApp* functions.</a></h1>
-<p>	The XML Security Library allows application to load multiple
+<div class="sect1">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="xmlsec-notes-new-crypto-functions"></a>xmlSecCryptoApp* functions.</h2></div></div></div>
+<p>
+	The XML Security Library allows application to load multiple
 	"xmlsec-&lt;crypto&gt; libraries. To prevent symbol conflicts, 
 	all "xmlsec-mycrypto" library names MUST start with "xmlSecMyCrypto". 
 	However, in some applications (for example, the xmlsec command line
@@ -119,7 +94,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 	include files do the magic by mapping "xmlSecMyCrypto*" to 
 	"xmlSecCrypto*" names using "XMLSEC_CRYPTO_*" defines.
 	</p>
-<p>	In order to build xmlsec command line utility, the 
+<p>
+	In order to build xmlsec command line utility, the 
 	"xmlsec-&lt;crypto&gt;" library must implement several functions.
 	The stubs for all these functions are provided in the "skeleton"
 	we've created. While these functions are not required to be
@@ -127,14 +103,17 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 	doing so (if possible) to simplify testing (thru xmlsec command line
 	utility) and application development.
 	</p>
-<p>	In adition to xmlSecCryptoApp* functions, the xmlsec-&lt;crypto&gt;
+<p>
+	In adition to xmlSecCryptoApp* functions, the xmlsec-&lt;crypto&gt;
 	library MUST implement following xmlSecCrypto* functions:
 	</p>
-<div class="TABLE">
-<a name="AEN540"></a><p><b>Table 1. xmlSecCrypto* functions.</b></p>
-<table border="1" class="CALSTABLE">
+<div class="table">
+<a name="id-1.2.14.4.4.1"></a><p class="title"><b>Table 1. xmlSecCrypto* functions.</b></p>
+<div class="table-contents"><table class="table" summary="xmlSecCrypto* functions." border="1">
+<colgroup>
 <col>
 <col>
+</colgroup>
 <tbody>
 <tr>
 <td>xmlSecCryptoInit()</td>
@@ -162,13 +141,13 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 	</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-	</div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-notes-new-crypto-skeleton.html"><b>&lt;&lt;&lt; Creating a framework from the skeleton.</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-notes-new-crypto-klasses.html"><b>Klasses and objects. &gt;&gt;&gt;</b></a></td>
-</tr></table>
+<p><br class="table-break">
+	</p>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
 </td></tr></table></td>
 </tr></table></body>
 </html>

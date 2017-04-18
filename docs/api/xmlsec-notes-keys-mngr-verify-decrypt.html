@@ -1,41 +1,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Using keys manager for verification/decryption.</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="Keys manager." href="xmlsec-notes-keysmngr.html">
-<link rel="PREVIOUS" title="Using keys manager for signatures/encryption." href="xmlsec-notes-keys-manager-sign-enc.html">
-<link rel="NEXT" title="Implementing a custom keys store." href="xmlsec-notes-custom-keys-store.html">
-<style type="text/css">.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-    padding: 0.5em;
-}
-.programlisting {
-    background: #eeeeff;
-    border: solid 1px #aaaaff;
-    padding: 0.5em;
-}
-.variablelist {
-    padding: 4px;
-    margin-left: 3em;
-}
-.navigation {
-    background: #ffeeee;
-    border: solid 1px #ffaaaa;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-.navigation a {
-    color: #770000;
-}
-.navigation a:visited {
-    color: #550000;
-}
-.navigation .title {
-    font-size: 200%;
-}</style>
+<title>Using keys manager for verification/decryption.: XML Security Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="XML Security Library Reference Manual">
+<link rel="up" href="xmlsec-notes-keysmngr.html" title="Keys manager.">
+<link rel="prev" href="xmlsec-notes-keys-manager-sign-enc.html" title="Using keys manager for signatures/encryption.">
+<link rel="next" href="xmlsec-notes-custom-keys-store.html" title="Implementing a custom keys store.">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
 <style type="text/css">
 table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     width: 20em;
@@ -100,28 +73,32 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-notes-keys-manager-sign-enc.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-notes-keysmngr.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="u" href="xmlsec-notes-keysmngr.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="xmlsec-notes-keys-manager-sign-enc.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="xmlsec-notes-custom-keys-store.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
-<br clear="all"><div class="SECT1">
-<h1 class="SECT1"><a name="XMLSEC-NOTES-KEYS-MNGR-VERIFY-DECRYPT">Using keys manager for verification/decryption.</a></h1>
+<div class="sect1">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="xmlsec-notes-keys-mngr-verify-decrypt"></a>Using keys manager for verification/decryption.</h2></div></div></div>
 <p>If more than one key could be used for signature or encryption,
-	then using <code class="STRUCTFIELD">signKey</code> member of 
-	<a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a> structure or 
-	<code class="STRUCTFIELD">encKey</code> member of 
-	<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a> structure 
+	then using <em class="structfield"><code>signKey</code></em> member of 
+	<a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtx" title="struct xmlSecDSigCtx">xmlSecDSigCtx</a> structure or 
+	<em class="structfield"><code>encKey</code></em> member of 
+	<a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtx" title="struct xmlSecEncCtx">xmlSecEncCtx</a> structure 
 	is not possible. Instead, the application should load known keys in 
 	the keys manager and use &lt;dsig:KeyName/&gt; element to specify 
 	the key name.
 	</p>
-<p>	     </p>
-<div class="EXAMPLE">
-<a name="AEN391"></a><p><b>Example 3. Initializing keys manager and loading DES keys from binary files.</b></p>
-<pre class="PROGRAMLISTING">/**
+<p>
+	     </p>
+<div class="example">
+<a name="id-1.2.10.5.3.1"></a><p class="title"><b>Example 18. Initializing keys manager and loading DES keys from binary files.</b></p>
+<div class="example-contents">
+<pre class="programlisting">
+/**
  * load_des_keys:
  * @files:		the list of filenames.
  * @files_size:		the number of filenames in #files.
@@ -190,13 +167,14 @@ load_des_keys(char** files, int files_size) {
     return(mngr);
 }
 		</pre>
-<p><a href="xmlsec-decrypt-with-keys-mngr.html#XMLSEC-EXAMPLE-DECRYPT2">Full program listing</a></p>
+<p><a class="link" href="xmlsec-decrypt-with-keys-mngr.html#xmlsec-example-decrypt2" title="decrypt2.c">Full program listing</a></p>
 </div>
-	</div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-notes-keys-manager-sign-enc.html"><b>&lt;&lt;&lt; Using keys manager for signatures/encryption.</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-notes-custom-keys-store.html"><b>Implementing a custom keys store. &gt;&gt;&gt;</b></a></td>
-</tr></table>
+</div>
+<p><br class="example-break">
+	</p>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
 </td></tr></table></td>
 </tr></table></body>
 </html>

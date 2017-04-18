@@ -1,41 +1,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Compiling and linking on Unix.</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="Building the application with XML Security Library." href="xmlsec-notes-compiling.html">
-<link rel="PREVIOUS" title="Include files." href="xmlsec-notes-include-files.html">
-<link rel="NEXT" title="Compiling and linking on Windows." href="xmlsec-notes-compiling-windows.html">
-<style type="text/css">.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-    padding: 0.5em;
-}
-.programlisting {
-    background: #eeeeff;
-    border: solid 1px #aaaaff;
-    padding: 0.5em;
-}
-.variablelist {
-    padding: 4px;
-    margin-left: 3em;
-}
-.navigation {
-    background: #ffeeee;
-    border: solid 1px #ffaaaa;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-.navigation a {
-    color: #770000;
-}
-.navigation a:visited {
-    color: #550000;
-}
-.navigation .title {
-    font-size: 200%;
-}</style>
+<title>Compiling and linking on Unix.: XML Security Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="XML Security Library Reference Manual">
+<link rel="up" href="xmlsec-notes-compiling.html" title="Building the application with XML Security Library.">
+<link rel="prev" href="xmlsec-notes-include-files.html" title="Include files.">
+<link rel="next" href="xmlsec-notes-compiling-windows.html" title="Compiling and linking on Windows.">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
 <style type="text/css">
 table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     width: 20em;
@@ -100,60 +73,67 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-notes-include-files.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-notes-compiling.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="u" href="xmlsec-notes-compiling.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="xmlsec-notes-include-files.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="xmlsec-notes-compiling-windows.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
-<br clear="all"><div class="SECT1">
-<h1 class="SECT1"><a name="XMLSEC-NOTES-COMPILING-UNIX">Compiling and linking on Unix.</a></h1>
+<div class="sect1">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="xmlsec-notes-compiling-unix"></a>Compiling and linking on Unix.</h2></div></div></div>
 <p>There are several ways to get necessary compilation
 	and linking information on Unix and application can use
 	any of these methods to do crypto engine selection either
 	at linking or run time.
 	
 	</p>
-<p></p>
-<ul>
-<li>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
 <p>PKG_CHECK_MODULES() macro
 		</p>
-<div class="EXAMPLE">
-<a name="AEN70"></a><p><b>Example 2. Using PKG_CHECK_MODULES() macro in a configure.in file
+<div class="example">
+<a name="id-1.2.4.4.2.1.1.1.1"></a><p class="title"><b>Example 2. Using PKG_CHECK_MODULES() macro in a configure.in file
 		    to select crypto engine (openssl) at linking time.</b></p>
-<pre class="PROGRAMLISTING">dnl 
+<div class="example-contents"><pre class="programlisting">
+dnl 
 dnl Check for xmlsec and friends
 dnl
 PKG_CHECK_MODULES(XMLSEC, xmlsec1-openssl &gt;= 1.0.0 xml2 libxslt,,exit)
 CFLAGS="$CFLAGS $XMLSEC_CFLAGS"
 CPPFLAGS="$CPPFLAGS $XMLSEC_CFLAGS"
 LDFLAGS="$LDFLAGS $XMLSEC_LIBS"
-		    </pre>
+		    </pre></div>
 </div>
+<p><br class="example-break">
 
-		<div class="EXAMPLE">
-<a name="AEN73"></a><p><b>Example 3. Using PKG_CHECK_MODULES() macro in a configure.in file
+		</p>
+<div class="example">
+<a name="id-1.2.4.4.2.1.1.1.2"></a><p class="title"><b>Example 3. Using PKG_CHECK_MODULES() macro in a configure.in file
 		    to enable dynamical loading of xmlsec-crypto library.</b></p>
-<pre class="PROGRAMLISTING">dnl 
+<div class="example-contents"><pre class="programlisting">
+dnl 
 dnl Check for xmlsec and friends
 dnl
 PKG_CHECK_MODULES(XMLSEC, xmlsec1 &gt;= 1.0.0 xml2 libxslt,,exit)
 CFLAGS="$CFLAGS $XMLSEC_CFLAGS"
 CPPFLAGS="$CPPFLAGS $XMLSEC_CFLAGS"
 LDFLAGS="$LDFLAGS $XMLSEC_LIBS"
-		    </pre>
+		    </pre></div>
 </div>
+<p><br class="example-break">
 
-	    </li>
-<li>
+	    </p>
+</li>
+<li class="listitem">
 <p>pkg-config script
 		</p>
-<div class="EXAMPLE">
-<a name="AEN78"></a><p><b>Example 4. Using pkg-config script in a Makefile
+<div class="example">
+<a name="id-1.2.4.4.2.1.2.1.1"></a><p class="title"><b>Example 4. Using pkg-config script in a Makefile
 		    to select crypto engine (nss) at linking time.</b></p>
-<pre class="PROGRAMLISTING">PROGRAM = test
+<div class="example-contents"><pre class="programlisting">
+PROGRAM = test
 PROGRAM_FILES = test.c
 
 CFLAGS	+= -g $(shell pkg-config --cflags xmlsec1-nss)
@@ -167,14 +147,17 @@ all: $(PROGRAM)
 
 clean:
 	@rm -rf $(PROGRAM)
-		    </pre>
+		    </pre></div>
 </div>
+<p><br class="example-break">
 
 
-		<div class="EXAMPLE">
-<a name="AEN81"></a><p><b>Example 5. Using pkg-config script in a Makefile
+		</p>
+<div class="example">
+<a name="id-1.2.4.4.2.1.2.1.2"></a><p class="title"><b>Example 5. Using pkg-config script in a Makefile
 		    to enable dynamical loading of xmlsec-crypto library.</b></p>
-<pre class="PROGRAMLISTING">PROGRAM = test
+<div class="example-contents"><pre class="programlisting">
+PROGRAM = test
 PROGRAM_FILES = test.c
 
 CFLAGS	+= -g $(shell pkg-config --cflags xmlsec1)
@@ -188,17 +171,20 @@ all: $(PROGRAM)
 
 clean:
 	@rm -rf $(PROGRAM)
-		    </pre>
+		    </pre></div>
 </div>
+<p><br class="example-break">
 
-	    </li>
-<li>
+	    </p>
+</li>
+<li class="listitem">
 <p>xmlsec1-config script
 		</p>
-<div class="EXAMPLE">
-<a name="AEN86"></a><p><b>Example 6. Using xmlsec1-config script in a Makefile
+<div class="example">
+<a name="id-1.2.4.4.2.1.3.1.1"></a><p class="title"><b>Example 6. Using xmlsec1-config script in a Makefile
 		    to select crypto engine (e.g. gnutls) at linking time.</b></p>
-<pre class="PROGRAMLISTING">PROGRAM = test
+<div class="example-contents"><pre class="programlisting">
+PROGRAM = test
 PROGRAM_FILES = test.c
 
 CFLAGS	+= -g $(shell xmlsec1-config --crypto gnutls --cflags)
@@ -212,13 +198,16 @@ all: $(PROGRAM)
 
 clean:
 	@rm -rf $(PROGRAM)
-		    </pre>
+		    </pre></div>
 </div>
+<p><br class="example-break">
 
-		<div class="EXAMPLE">
-<a name="AEN89"></a><p><b>Example 7. Using xmlsec1-config script in a Makefile
+		</p>
+<div class="example">
+<a name="id-1.2.4.4.2.1.3.1.2"></a><p class="title"><b>Example 7. Using xmlsec1-config script in a Makefile
 		    to enable dynamical loading of xmlsec-crypto library.</b></p>
-<pre class="PROGRAMLISTING">PROGRAM = test
+<div class="example-contents"><pre class="programlisting">
+PROGRAM = test
 PROGRAM_FILES = test.c
 
 CFLAGS	+= -g $(shell xmlsec1-config --cflags)
@@ -232,15 +221,17 @@ all: $(PROGRAM)
 
 clean:
 	@rm -rf $(PROGRAM)
-		    </pre>
+		    </pre></div>
 </div>
-		</li>
-</ul>
-	</div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-notes-include-files.html"><b>&lt;&lt;&lt; Include files.</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-notes-compiling-windows.html"><b>Compiling and linking on Windows. &gt;&gt;&gt;</b></a></td>
-</tr></table>
+<p><br class="example-break">
+		</p>
+</li>
+</ul></div>
+<p>
+	</p>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
 </td></tr></table></td>
 </tr></table></body>
 </html>

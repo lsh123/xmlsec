@@ -1,41 +1,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Decrypting an encrypted document</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="Verifing and decrypting documents." href="xmlsec-notes-verify-decrypt.html">
-<link rel="PREVIOUS" title="Verifying a signed document" href="xmlsec-notes-verify.html">
-<link rel="NEXT" title="Keys." href="xmlsec-notes-keys.html">
-<style type="text/css">.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-    padding: 0.5em;
-}
-.programlisting {
-    background: #eeeeff;
-    border: solid 1px #aaaaff;
-    padding: 0.5em;
-}
-.variablelist {
-    padding: 4px;
-    margin-left: 3em;
-}
-.navigation {
-    background: #ffeeee;
-    border: solid 1px #ffaaaa;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-.navigation a {
-    color: #770000;
-}
-.navigation a:visited {
-    color: #550000;
-}
-.navigation .title {
-    font-size: 200%;
-}</style>
+<title>Decrypting an encrypted document: XML Security Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="XML Security Library Reference Manual">
+<link rel="up" href="xmlsec-notes-verify-decrypt.html" title="Verifing and decrypting documents.">
+<link rel="prev" href="xmlsec-notes-verify.html" title="Verifying a signed document">
+<link rel="next" href="xmlsec-notes-keys.html" title="Keys.">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
 <style type="text/css">
 table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     width: 20em;
@@ -100,43 +73,54 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-notes-verify.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-notes-verify-decrypt.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="u" href="xmlsec-notes-verify-decrypt.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="xmlsec-notes-verify.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="xmlsec-notes-keys.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
-<br clear="all"><div class="SECT1">
-<h1 class="SECT1"><a name="XMLSEC-NOTES-DECRYPT">Decrypting an encrypted document</a></h1>
+<div class="sect1">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="xmlsec-notes-decrypt"></a>Decrypting an encrypted document</h2></div></div></div>
 <p>The typical decryption process includes following steps:
 	  </p>
-<p></p>
-<ul>
-<li><p>		Load keys, X509 certificates, etc. in the <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">keys manager</a> .
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem"><p>
+		Load keys, X509 certificates, etc. in the <a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr">keys manager</a> .
 	    </p></li>
-<li><p>		Create encryption context <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a>
-		using <a href="xmlsec-xmlenc.html#XMLSECENCCTXCREATE">xmlSecEncCtxCreate</a> or
-		<a href="xmlsec-xmlenc.html#XMLSECENCCTXINITIALIZE">xmlSecEncCtxInitialize</a>
+<li class="listitem"><p>
+		Create encryption context <a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtx" title="struct xmlSecEncCtx">xmlSecEncCtx</a>
+		using <a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtxCreate" title="xmlSecEncCtxCreate ()">xmlSecEncCtxCreate</a> or
+		<a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtxInitialize" title="xmlSecEncCtxInitialize ()">xmlSecEncCtxInitialize</a>
 		functions.
 	    </p></li>
-<li><p>		Select start decryption &lt;enc:EncryptedData&gt; node.
+<li class="listitem"><p>
+		Select start decryption &lt;enc:EncryptedData&gt; node.
 	    </p></li>
-<li><p>		Decrypt by calling <a href="xmlsec-xmlenc.html#XMLSECENCCTXDECRYPT">xmlSecencCtxDecrypt</a> 
+<li class="listitem"><p>
+		Decrypt by calling <a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtxDecrypt" title="xmlSecEncCtxDecrypt ()">xmlSecencCtxDecrypt</a> 
 		function.
 	    </p></li>
-<li><p>		Check returned value and if necessary consume encrypted data.
+<li class="listitem"><p>
+		Check returned value and if necessary consume encrypted data.
 	    </p></li>
-<li><p>		Destroy encryption context <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a>
-		using <a href="xmlsec-xmlenc.html#XMLSECENCCTXDESTROY">xmlSecEncCtxDestroy</a> or
-		<a href="xmlsec-xmlenc.html#XMLSECENCCTXFINALIZE">xmlSecEncCtxFinalize</a>
+<li class="listitem"><p>
+		Destroy encryption context <a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtx" title="struct xmlSecEncCtx">xmlSecEncCtx</a>
+		using <a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtxDestroy" title="xmlSecEncCtxDestroy ()">xmlSecEncCtxDestroy</a> or
+		<a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtxFinalize" title="xmlSecEncCtxFinalize ()">xmlSecEncCtxFinalize</a>
 		functions.
 	    </p></li>
-</ul>
-	<p>	     </p>
-<div class="EXAMPLE">
-<a name="AEN333"></a><p><b>Example 2. Decrypting a document.</b></p>
-<pre class="PROGRAMLISTING">int 
+</ul></div>
+<p>
+	</p>
+<p>
+	     </p>
+<div class="example">
+<a name="id-1.2.8.4.3.1"></a><p class="title"><b>Example 15. Decrypting a document.</b></p>
+<div class="example-contents">
+<pre class="programlisting">
+int 
 decrypt_file(const char* enc_file, const char* key_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
@@ -216,13 +200,14 @@ done:
     return(res);
 }
 		</pre>
-<p><a href="xmlsec-decrypt-with-signle-key.html#XMLSEC-EXAMPLE-DECRYPT1">Full Program Listing</a></p>
+<p><a class="link" href="xmlsec-decrypt-with-signle-key.html#xmlsec-example-decrypt1" title="decrypt1.c">Full Program Listing</a></p>
 </div>
-	</div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-notes-verify.html"><b>&lt;&lt;&lt; Verifying a signed document</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-notes-keys.html"><b>Keys. &gt;&gt;&gt;</b></a></td>
-</tr></table>
+</div>
+<p><br class="example-break">
+	</p>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
 </td></tr></table></td>
 </tr></table></body>
 </html>

@@ -92,6 +92,38 @@ xkms
 </para>
 
 
+<!-- ##### FUNCTION xmlSecGenerateAndAddID ##### -->
+<para>
+
+</para>
+
+@node: 
+@attrName: 
+@prefix: 
+@len: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecGenerateID ##### -->
+<para>
+
+</para>
+
+@prefix: 
+@len: 
+@Returns: 
+
+<!-- ##### MACRO xmlSecStrPrintf ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO xmlSecStrVPrintf ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### MACRO xmlSecTransformCheckType ##### -->
 <para>
 

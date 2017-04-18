@@ -1,41 +1,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Keys manager.</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="XML Security Library Tutorial" href="xmlsec-notes.html">
-<link rel="PREVIOUS" title="Keys." href="xmlsec-notes-keys.html">
-<link rel="NEXT" title="Simple keys store." href="xmlsec-notes-simple-keys-store.html">
-<style type="text/css">.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-    padding: 0.5em;
-}
-.programlisting {
-    background: #eeeeff;
-    border: solid 1px #aaaaff;
-    padding: 0.5em;
-}
-.variablelist {
-    padding: 4px;
-    margin-left: 3em;
-}
-.navigation {
-    background: #ffeeee;
-    border: solid 1px #ffaaaa;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-.navigation a {
-    color: #770000;
-}
-.navigation a:visited {
-    color: #550000;
-}
-.navigation .title {
-    font-size: 200%;
-}</style>
+<title>Keys manager.: XML Security Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="XML Security Library Reference Manual">
+<link rel="up" href="xmlsec-notes.html" title="Part I. XML Security Library Tutorial">
+<link rel="prev" href="xmlsec-notes-keys.html" title="Keys.">
+<link rel="next" href="xmlsec-notes-simple-keys-store.html" title="Simple keys store.">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
 <style type="text/css">
 table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     width: 20em;
@@ -100,26 +73,26 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-notes-keys.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-notes.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="u" href="xmlsec-notes.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="xmlsec-notes-keys.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="xmlsec-notes-simple-keys-store.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
-<div class="CHAPTER">
-<h1>
-<a name="XMLSEC-NOTES-KEYSMNGR"></a>Keys manager.</h1>
-<div class="TOC"><dl>
-<dt><b>Table of Contents</b></dt>
-<dt><a href="xmlsec-notes-keysmngr.html#XMLSEC-NOTES-KEYSMNGR-OVERVIEW">Overview.</a></dt>
-<dt><a href="xmlsec-notes-simple-keys-store.html">Simple keys store.</a></dt>
-<dt><a href="xmlsec-notes-keys-manager-sign-enc.html">Using keys manager for signatures/encryption.</a></dt>
-<dt><a href="xmlsec-notes-keys-mngr-verify-decrypt.html">Using keys manager for verification/decryption.</a></dt>
-<dt><a href="xmlsec-notes-custom-keys-store.html">Implementing a custom keys store.</a></dt>
+<div class="chapter">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="xmlsec-notes-keysmngr"></a>Keys manager.</h2></div></div></div>
+<div class="toc"><dl class="toc">
+<dt><span class="sect1"><a href="xmlsec-notes-keysmngr.html#xmlsec-notes-keysmngr-overview">Overview.</a></span></dt>
+<dt><span class="sect1"><a href="xmlsec-notes-simple-keys-store.html">Simple keys store.</a></span></dt>
+<dt><span class="sect1"><a href="xmlsec-notes-keys-manager-sign-enc.html">Using keys manager for signatures/encryption.</a></span></dt>
+<dt><span class="sect1"><a href="xmlsec-notes-keys-mngr-verify-decrypt.html">Using keys manager for verification/decryption.</a></span></dt>
+<dt><span class="sect1"><a href="xmlsec-notes-custom-keys-store.html">Implementing a custom keys store.</a></span></dt>
 </dl></div>
-<br clear="all"><div class="SECT1">
-<h1 class="SECT1"><a name="XMLSEC-NOTES-KEYSMNGR-OVERVIEW">Overview.</a></h1>
+<div class="sect1">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="xmlsec-notes-keysmngr-overview"></a>Overview.</h2></div></div></div>
 <p>Processing some of the key data objects require additional 
 	information which is global across the application (or in the 
 	particular area of the application). For example, X509 certificates 
@@ -128,15 +101,15 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 	for key data processing in a a collection of key data stores called 
 	"keys manager".
         </p>
-<div class="FIGURE">
-<a name="AEN353"></a><p><b>Figure 1. The keys manager structure.</b></p>
-<p><img src="images/keysmngr.png" align="CENTER"></p>
+<div class="figure">
+<a name="id-1.2.10.2.3"></a><p class="title"><b>Figure 7. The keys manager structure.</b></p>
+<div class="figure-contents"><div align="center"><img src="images/keysmngr.png" align="middle" alt="The keys manager structure."></div></div>
 </div>
-<p>Keys manager has a special "keys store" which lists the keys 
+<br class="figure-break"><p>Keys manager has a special "keys store" which lists the keys 
 	known to the application. This "keys store" is used by XML Security 
 	Library to lookup keys by name, type and crypto algorithm (for example,
 	during 
-    	<a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top">&lt;dsig:KeyName/&gt;</a>
+    	<a class="ulink" href="" target="_top">&lt;dsig:KeyName/&gt;</a>
 	processing). The XML Security Library 
 	provides default simple "flat list" based implementation of a default keys 
 	store. The application can replace it with any other keys store 
@@ -154,10 +127,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 	</p>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-notes-keys.html"><b>&lt;&lt;&lt; Keys.</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-notes-simple-keys-store.html"><b>Simple keys store. &gt;&gt;&gt;</b></a></td>
-</tr></table>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
 </td></tr></table></td>
 </tr></table></body>
 </html>

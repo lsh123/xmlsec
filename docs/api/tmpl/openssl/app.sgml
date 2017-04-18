@@ -131,7 +131,7 @@ Application functions implementation for OpenSSL.
 </para>
 
 @mngr: 
-@file: 
+@filename: 
 @Returns: 
 
 

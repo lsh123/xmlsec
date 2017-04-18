@@ -152,9 +152,12 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
         <li>Disabled external entities loading by xmlsec utility app by default to prevent XXE attacks (d-hat).</li>
         <li>Improved OpenSSL version and features detection.</li>
         <li>Cleaned up, simplified, and standardized internal error reporting.</li>
+        <li>Marked as deprecated all the functions in xmlsec/soap.h file and a couple other functions no longer
+        required by xmlsec. These functions will be removed in the future releases.</li>
         <li>Fixed a few Coverity-discovered bugs (<a href="https://scan.coverity.com/projects/xmlsec">report</a>).</li>
         <li>Several other small fixes (<a href="https://github.com/lsh123/xmlsec/commits/master">more details</a>).</li>
         </ul>
+        Please note that OpenSSL 0.9.8 support will be remmoved in the next release of XMLSec library.
 </li>
 <br>
 <li>October 16 2016<br>

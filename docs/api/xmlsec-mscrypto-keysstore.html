@@ -96,8 +96,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="xmlsec-mscrypto-keysstore.functions"></a><h2>Functions</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
+<col width="150px" class="functions_return">
+<col class="functions_name">
 </colgroup>
 <tbody>
 <tr>
@@ -139,8 +139,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="xmlsec-mscrypto-keysstore.other"></a><h2>Types and Values</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
+<col width="150px" class="name">
+<col class="description">
 </colgroup>
 <tbody><tr>
 <td class="define_keyword">#define</td>
@@ -150,7 +150,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </div>
 <div class="refsect1">
 <a name="xmlsec-mscrypto-keysstore.description"></a><h2>Description</h2>
-<p>Keys store implementation for MS Crypto.
+<p>
+Keys store implementation for MS Crypto.
 </p>
 </div>
 <div class="refsect1">
@@ -169,8 +170,8 @@ xmlSecMSCryptoKeysStoreGetKlass (<em class="parameter"><code><span class="type">
 <div class="refsect2">
 <a name="xmlSecMSCryptoKeysStoreAdoptKey"></a><h3>xmlSecMSCryptoKeysStoreAdoptKey ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecMSCryptoKeysStoreAdoptKey (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeyStore" title="struct xmlSecKeyStore"><span class="type">xmlSecKeyStorePtr</span></a> store</code></em>,
-                                 <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>);</pre>
+xmlSecMSCryptoKeysStoreAdoptKey (<em class="parameter"><code><font><span class="type">xmlSecKeyStorePtr</span></font> store</code></em>,
+                                 <em class="parameter"><code><font><span class="type">xmlSecKeyPtr</span></font> key</code></em>);</pre>
 <p>Adds <em class="parameter"><code>key</code></em>
  to the <em class="parameter"><code>store</code></em>
 .</p>
@@ -178,9 +179,9 @@ xmlSecMSCryptoKeysStoreAdoptKey (<em class="parameter"><code><a class="link" hre
 <a name="xmlSecMSCryptoKeysStoreAdoptKey.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -205,17 +206,17 @@ xmlSecMSCryptoKeysStoreAdoptKey (<em class="parameter"><code><a class="link" hre
 <div class="refsect2">
 <a name="xmlSecMSCryptoKeysStoreLoad"></a><h3>xmlSecMSCryptoKeysStoreLoad ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecMSCryptoKeysStoreLoad (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeyStore" title="struct xmlSecKeyStore"><span class="type">xmlSecKeyStorePtr</span></a> store</code></em>,
+xmlSecMSCryptoKeysStoreLoad (<em class="parameter"><code><font><span class="type">xmlSecKeyStorePtr</span></font> store</code></em>,
                              <em class="parameter"><code>const <font><span class="type">char</span></font> *uri</code></em>,
-                             <em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> keysMngr</code></em>);</pre>
+                             <em class="parameter"><code><font><span class="type">xmlSecKeysMngrPtr</span></font> keysMngr</code></em>);</pre>
 <p>Reads keys from an XML file.</p>
 <div class="refsect3">
 <a name="xmlSecMSCryptoKeysStoreLoad.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -245,7 +246,7 @@ xmlSecMSCryptoKeysStoreLoad (<em class="parameter"><code><a class="link" href="x
 <div class="refsect2">
 <a name="xmlSecMSCryptoKeysStoreSave"></a><h3>xmlSecMSCryptoKeysStoreSave ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecMSCryptoKeysStoreSave (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeyStore" title="struct xmlSecKeyStore"><span class="type">xmlSecKeyStorePtr</span></a> store</code></em>,
+xmlSecMSCryptoKeysStoreSave (<em class="parameter"><code><font><span class="type">xmlSecKeyStorePtr</span></font> store</code></em>,
                              <em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
                              <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="type">xmlSecKeyDataType</span></a> type</code></em>);</pre>
 <p>Writes keys from <em class="parameter"><code>store</code></em>
@@ -254,9 +255,9 @@ xmlSecMSCryptoKeysStoreSave (<em class="parameter"><code><a class="link" href="x
 <a name="xmlSecMSCryptoKeysStoreSave.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>

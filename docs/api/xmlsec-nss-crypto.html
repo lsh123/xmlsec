@@ -96,8 +96,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="xmlsec-nss-crypto.functions"></a><h2>Functions</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
+<col width="150px" class="functions_return">
+<col class="functions_name">
 </colgroup>
 <tbody>
 <tr>
@@ -491,8 +491,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="xmlsec-nss-crypto.other"></a><h2>Types and Values</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
+<col width="150px" class="name">
+<col class="description">
 </colgroup>
 <tbody>
 <tr>
@@ -644,7 +644,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </div>
 <div class="refsect1">
 <a name="xmlsec-nss-crypto.description"></a><h2>Description</h2>
-<p>Crypto transforms implementation for NSS.
+<p>
+Crypto transforms implementation for NSS.
 </p>
 </div>
 <div class="refsect1">
@@ -685,15 +686,15 @@ xmlSecNssShutdown (<em class="parameter"><code><span class="type">void</span></c
 <div class="refsect2">
 <a name="xmlSecNssKeysMngrInit"></a><h3>xmlSecNssKeysMngrInit ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecNssKeysMngrInit (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>);</pre>
+xmlSecNssKeysMngrInit (<em class="parameter"><code><font><span class="type">xmlSecKeysMngrPtr</span></font> mngr</code></em>);</pre>
 <p>Adds NSS specific key data stores in keys manager.</p>
 <div class="refsect3">
 <a name="xmlSecNssKeysMngrInit.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>mngr</p></td>
@@ -711,7 +712,7 @@ xmlSecNssKeysMngrInit (<em class="parameter"><code><a class="link" href="xmlsec-
 <div class="refsect2">
 <a name="xmlSecNssGenerateRandom"></a><h3>xmlSecNssGenerateRandom ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecNssGenerateRandom (<em class="parameter"><code><a class="link" href="xmlsec-buffer.html#xmlSecBuffer" title="struct xmlSecBuffer"><span class="type">xmlSecBufferPtr</span></a> buffer</code></em>,
+xmlSecNssGenerateRandom (<em class="parameter"><code><font><span class="type">xmlSecBufferPtr</span></font> buffer</code></em>,
                          <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> size</code></em>);</pre>
 <p>Generates <em class="parameter"><code>size</code></em>
  random bytes and puts result in <em class="parameter"><code>buffer</code></em>
@@ -720,9 +721,9 @@ xmlSecNssGenerateRandom (<em class="parameter"><code><a class="link" href="xmlse
 <a name="xmlSecNssGenerateRandom.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -759,9 +760,9 @@ xmlSecNssErrorsDefaultCallback (<em class="parameter"><code>const <font><span cl
 <a name="xmlSecNssErrorsDefaultCallback.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -829,7 +830,7 @@ xmlSecNssKeyDataAesGetKlass (<em class="parameter"><code><span class="type">void
 <div class="refsect2">
 <a name="xmlSecNssKeyDataAesSet"></a><h3>xmlSecNssKeyDataAesSet ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecNssKeyDataAesSet (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
+xmlSecNssKeyDataAesSet (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
                         <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *buf</code></em>,
                         <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> bufSize</code></em>);</pre>
 <p>Sets the value of AES key data.</p>
@@ -837,9 +838,9 @@ xmlSecNssKeyDataAesSet (<em class="parameter"><code><a class="link" href="xmlsec
 <a name="xmlSecNssKeyDataAesSet.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -946,7 +947,7 @@ xmlSecNssKeyDataDesGetKlass (<em class="parameter"><code><span class="type">void
 <div class="refsect2">
 <a name="xmlSecNssKeyDataDesSet"></a><h3>xmlSecNssKeyDataDesSet ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecNssKeyDataDesSet (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
+xmlSecNssKeyDataDesSet (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
                         <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *buf</code></em>,
                         <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> bufSize</code></em>);</pre>
 <p>Sets the value of DES key data.</p>
@@ -954,9 +955,9 @@ xmlSecNssKeyDataDesSet (<em class="parameter"><code><a class="link" href="xmlsec
 <a name="xmlSecNssKeyDataDesSet.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1091,9 +1092,9 @@ xmlSecNssHmacSetMinOutputLength (<em class="parameter"><code><font><span class="
 <a name="xmlSecNssHmacSetMinOutputLength.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>min_length</p></td>
@@ -1118,7 +1119,7 @@ xmlSecNssKeyDataHmacGetKlass (<em class="parameter"><code><span class="type">voi
 <div class="refsect2">
 <a name="xmlSecNssKeyDataHmacSet"></a><h3>xmlSecNssKeyDataHmacSet ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecNssKeyDataHmacSet (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
+xmlSecNssKeyDataHmacSet (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
                          <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *buf</code></em>,
                          <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> bufSize</code></em>);</pre>
 <p>Sets the value of HMAC key data.</p>
@@ -1126,9 +1127,9 @@ xmlSecNssKeyDataHmacSet (<em class="parameter"><code><a class="link" href="xmlse
 <a name="xmlSecNssKeyDataHmacSet.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>

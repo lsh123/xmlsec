@@ -96,8 +96,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="xmlsec-openssl-crypto.functions"></a><h2>Functions</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
+<col width="150px" class="functions_return">
+<col class="functions_name">
 </colgroup>
 <tbody>
 <tr>
@@ -730,8 +730,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="xmlsec-openssl-crypto.other"></a><h2>Types and Values</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
+<col width="150px" class="name">
+<col class="description">
 </colgroup>
 <tbody>
 <tr>
@@ -1027,7 +1027,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </div>
 <div class="refsect1">
 <a name="xmlsec-openssl-crypto.description"></a><h2>Description</h2>
-<p>Crypto transforms implementation for OpenSSL.
+<p>
+Crypto transforms implementation for OpenSSL.
 </p>
 </div>
 <div class="refsect1">
@@ -1068,15 +1069,15 @@ xmlSecOpenSSLShutdown (<em class="parameter"><code><span class="type">void</span
 <div class="refsect2">
 <a name="xmlSecOpenSSLKeysMngrInit"></a><h3>xmlSecOpenSSLKeysMngrInit ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecOpenSSLKeysMngrInit (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>);</pre>
+xmlSecOpenSSLKeysMngrInit (<em class="parameter"><code><font><span class="type">xmlSecKeysMngrPtr</span></font> mngr</code></em>);</pre>
 <p>Adds OpenSSL specific key data stores in keys manager.</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLKeysMngrInit.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>mngr</p></td>
@@ -1094,7 +1095,7 @@ xmlSecOpenSSLKeysMngrInit (<em class="parameter"><code><a class="link" href="xml
 <div class="refsect2">
 <a name="xmlSecOpenSSLGenerateRandom"></a><h3>xmlSecOpenSSLGenerateRandom ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecOpenSSLGenerateRandom (<em class="parameter"><code><a class="link" href="xmlsec-buffer.html#xmlSecBuffer" title="struct xmlSecBuffer"><span class="type">xmlSecBufferPtr</span></a> buffer</code></em>,
+xmlSecOpenSSLGenerateRandom (<em class="parameter"><code><font><span class="type">xmlSecBufferPtr</span></font> buffer</code></em>,
                              <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> size</code></em>);</pre>
 <p>Generates <em class="parameter"><code>size</code></em>
  random bytes and puts result in <em class="parameter"><code>buffer</code></em>
@@ -1103,9 +1104,9 @@ xmlSecOpenSSLGenerateRandom (<em class="parameter"><code><a class="link" href="x
 <a name="xmlSecOpenSSLGenerateRandom.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1137,9 +1138,9 @@ xmlSecOpenSSLSetDefaultTrustedCertsFolder
 <a name="xmlSecOpenSSLSetDefaultTrustedCertsFolder.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>path</p></td>
@@ -1180,7 +1181,7 @@ xmlSecOpenSSLKeyDataAesGetKlass (<em class="parameter"><code><span class="type">
 <div class="refsect2">
 <a name="xmlSecOpenSSLKeyDataAesSet"></a><h3>xmlSecOpenSSLKeyDataAesSet ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecOpenSSLKeyDataAesSet (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
+xmlSecOpenSSLKeyDataAesSet (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
                             <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *buf</code></em>,
                             <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> bufSize</code></em>);</pre>
 <p>Sets the value of AES key data.</p>
@@ -1188,9 +1189,9 @@ xmlSecOpenSSLKeyDataAesSet (<em class="parameter"><code><a class="link" href="xm
 <a name="xmlSecOpenSSLKeyDataAesSet.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1303,7 +1304,7 @@ xmlSecOpenSSLKeyDataDesGetKlass (<em class="parameter"><code><span class="type">
 <div class="refsect2">
 <a name="xmlSecOpenSSLKeyDataDesSet"></a><h3>xmlSecOpenSSLKeyDataDesSet ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecOpenSSLKeyDataDesSet (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
+xmlSecOpenSSLKeyDataDesSet (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
                             <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *buf</code></em>,
                             <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> bufSize</code></em>);</pre>
 <p>Sets the value of DES key data.</p>
@@ -1311,9 +1312,9 @@ xmlSecOpenSSLKeyDataDesSet (<em class="parameter"><code><a class="link" href="xm
 <a name="xmlSecOpenSSLKeyDataDesSet.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1376,16 +1377,16 @@ xmlSecOpenSSLKeyDataDsaGetKlass (<em class="parameter"><code><span class="type">
 <div class="refsect2">
 <a name="xmlSecOpenSSLKeyDataDsaAdoptDsa"></a><h3>xmlSecOpenSSLKeyDataDsaAdoptDsa ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecOpenSSLKeyDataDsaAdoptDsa (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
+xmlSecOpenSSLKeyDataDsaAdoptDsa (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
                                  <em class="parameter"><code><font><span class="type">DSA</span></font> *dsa</code></em>);</pre>
 <p>Sets the value of DSA key data.</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLKeyDataDsaAdoptDsa.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1410,15 +1411,15 @@ xmlSecOpenSSLKeyDataDsaAdoptDsa (<em class="parameter"><code><a class="link" hre
 <div class="refsect2">
 <a name="xmlSecOpenSSLKeyDataDsaGetDsa"></a><h3>xmlSecOpenSSLKeyDataDsaGetDsa ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">DSA</span></font> *
-xmlSecOpenSSLKeyDataDsaGetDsa (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+xmlSecOpenSSLKeyDataDsaGetDsa (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
 <p>Gets the OpenSSL DSA key from DSA key data.</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLKeyDataDsaGetDsa.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -1436,16 +1437,16 @@ xmlSecOpenSSLKeyDataDsaGetDsa (<em class="parameter"><code><a class="link" href=
 <div class="refsect2">
 <a name="xmlSecOpenSSLKeyDataDsaAdoptEvp"></a><h3>xmlSecOpenSSLKeyDataDsaAdoptEvp ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecOpenSSLKeyDataDsaAdoptEvp (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
+xmlSecOpenSSLKeyDataDsaAdoptEvp (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
                                  <em class="parameter"><code><font><span class="type">EVP_PKEY</span></font> *pKey</code></em>);</pre>
 <p>Sets the DSA key data value to OpenSSL EVP key.</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLKeyDataDsaAdoptEvp.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1470,15 +1471,15 @@ xmlSecOpenSSLKeyDataDsaAdoptEvp (<em class="parameter"><code><a class="link" hre
 <div class="refsect2">
 <a name="xmlSecOpenSSLKeyDataDsaGetEvp"></a><h3>xmlSecOpenSSLKeyDataDsaGetEvp ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">EVP_PKEY</span></font> *
-xmlSecOpenSSLKeyDataDsaGetEvp (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+xmlSecOpenSSLKeyDataDsaGetEvp (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
 <p>Gets the OpenSSL EVP key from DSA key data.</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLKeyDataDsaGetEvp.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -1530,16 +1531,16 @@ xmlSecOpenSSLKeyDataEcdsaGetKlass (<em class="parameter"><code><span class="type
 <div class="refsect2">
 <a name="xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa"></a><h3>xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
+xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
                                      <em class="parameter"><code><font><span class="type">EC_KEY</span></font> *ecdsa</code></em>);</pre>
 <p>Sets the value of ECDSA key data.</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1564,15 +1565,15 @@ xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa (<em class="parameter"><code><a class="link"
 <div class="refsect2">
 <a name="xmlSecOpenSSLKeyDataEcdsaGetEcdsa"></a><h3>xmlSecOpenSSLKeyDataEcdsaGetEcdsa ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">EC_KEY</span></font> *
-xmlSecOpenSSLKeyDataEcdsaGetEcdsa (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+xmlSecOpenSSLKeyDataEcdsaGetEcdsa (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
 <p>Gets the OpenSSL ECDSA key from ECDSA key data.</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLKeyDataEcdsaGetEcdsa.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -1590,16 +1591,16 @@ xmlSecOpenSSLKeyDataEcdsaGetEcdsa (<em class="parameter"><code><a class="link" h
 <div class="refsect2">
 <a name="xmlSecOpenSSLKeyDataEcdsaAdoptEvp"></a><h3>xmlSecOpenSSLKeyDataEcdsaAdoptEvp ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecOpenSSLKeyDataEcdsaAdoptEvp (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
+xmlSecOpenSSLKeyDataEcdsaAdoptEvp (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
                                    <em class="parameter"><code><font><span class="type">EVP_PKEY</span></font> *pKey</code></em>);</pre>
 <p>Sets the ECDSA key data value to OpenSSL EVP key.</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLKeyDataEcdsaAdoptEvp.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1624,15 +1625,15 @@ xmlSecOpenSSLKeyDataEcdsaAdoptEvp (<em class="parameter"><code><a class="link" h
 <div class="refsect2">
 <a name="xmlSecOpenSSLKeyDataEcdsaGetEvp"></a><h3>xmlSecOpenSSLKeyDataEcdsaGetEvp ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">EVP_PKEY</span></font> *
-xmlSecOpenSSLKeyDataEcdsaGetEvp (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+xmlSecOpenSSLKeyDataEcdsaGetEvp (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
 <p>Gets the OpenSSL EVP key from ECDSA key data.</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLKeyDataEcdsaGetEvp.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -1771,7 +1772,8 @@ xmlSecOpenSSLKeyDataGostR3410_2012_512GetKlass
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_256GetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p></p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1779,7 +1781,8 @@ xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_256GetKlass
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_512GetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p></p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1826,9 +1829,9 @@ xmlSecOpenSSLHmacSetMinOutputLength (<em class="parameter"><code><font><span cla
 <a name="xmlSecOpenSSLHmacSetMinOutputLength.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>min_length</p></td>
@@ -1853,7 +1856,7 @@ xmlSecOpenSSLKeyDataHmacGetKlass (<em class="parameter"><code><span class="type"
 <div class="refsect2">
 <a name="xmlSecOpenSSLKeyDataHmacSet"></a><h3>xmlSecOpenSSLKeyDataHmacSet ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecOpenSSLKeyDataHmacSet (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
+xmlSecOpenSSLKeyDataHmacSet (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
                              <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *buf</code></em>,
                              <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> bufSize</code></em>);</pre>
 <p>Sets the value of HMAC key data.</p>
@@ -1861,9 +1864,9 @@ xmlSecOpenSSLKeyDataHmacSet (<em class="parameter"><code><a class="link" href="x
 <a name="xmlSecOpenSSLKeyDataHmacSet.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2010,16 +2013,16 @@ xmlSecOpenSSLKeyDataRsaGetKlass (<em class="parameter"><code><span class="type">
 <div class="refsect2">
 <a name="xmlSecOpenSSLKeyDataRsaAdoptRsa"></a><h3>xmlSecOpenSSLKeyDataRsaAdoptRsa ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecOpenSSLKeyDataRsaAdoptRsa (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
+xmlSecOpenSSLKeyDataRsaAdoptRsa (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
                                  <em class="parameter"><code><font><span class="type">RSA</span></font> *rsa</code></em>);</pre>
 <p>Sets the value of RSA key data.</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLKeyDataRsaAdoptRsa.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2044,15 +2047,15 @@ xmlSecOpenSSLKeyDataRsaAdoptRsa (<em class="parameter"><code><a class="link" hre
 <div class="refsect2">
 <a name="xmlSecOpenSSLKeyDataRsaGetRsa"></a><h3>xmlSecOpenSSLKeyDataRsaGetRsa ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">RSA</span></font> *
-xmlSecOpenSSLKeyDataRsaGetRsa (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+xmlSecOpenSSLKeyDataRsaGetRsa (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
 <p>Gets the OpenSSL RSA key from RSA key data.</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLKeyDataRsaGetRsa.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -2070,16 +2073,16 @@ xmlSecOpenSSLKeyDataRsaGetRsa (<em class="parameter"><code><a class="link" href=
 <div class="refsect2">
 <a name="xmlSecOpenSSLKeyDataRsaAdoptEvp"></a><h3>xmlSecOpenSSLKeyDataRsaAdoptEvp ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecOpenSSLKeyDataRsaAdoptEvp (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
+xmlSecOpenSSLKeyDataRsaAdoptEvp (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
                                  <em class="parameter"><code><font><span class="type">EVP_PKEY</span></font> *pKey</code></em>);</pre>
 <p>Sets the RSA key data value to OpenSSL EVP key.</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLKeyDataRsaAdoptEvp.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2104,15 +2107,15 @@ xmlSecOpenSSLKeyDataRsaAdoptEvp (<em class="parameter"><code><a class="link" hre
 <div class="refsect2">
 <a name="xmlSecOpenSSLKeyDataRsaGetEvp"></a><h3>xmlSecOpenSSLKeyDataRsaGetEvp ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">EVP_PKEY</span></font> *
-xmlSecOpenSSLKeyDataRsaGetEvp (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+xmlSecOpenSSLKeyDataRsaGetEvp (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
 <p>Gets the OpenSSL EVP key from RSA key data.</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLKeyDataRsaGetEvp.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -2302,9 +2305,9 @@ xmlSecOpenSSLErrorsDefaultCallback (<em class="parameter"><code>const <font><spa
 <a name="xmlSecOpenSSLErrorsDefaultCallback.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2353,133 +2356,152 @@ xmlSecOpenSSLErrorsDefaultCallback (<em class="parameter"><code>const <font><spa
 <a name="XMLSEC-OPENSSL-API-100:CAPS"></a><h3>XMLSEC_OPENSSL_API_100</h3>
 <pre class="programlisting">#define XMLSEC_OPENSSL_API_100      1
 </pre>
-<p></p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-OPENSSL-API-110:CAPS"></a><h3>XMLSEC_OPENSSL_API_110</h3>
 <pre class="programlisting">#define XMLSEC_OPENSSL_API_110      1
 </pre>
-<p></p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-OPENSSL-API-098:CAPS"></a><h3>XMLSEC_OPENSSL_API_098</h3>
 <pre class="programlisting">#define XMLSEC_OPENSSL_API_098      1
 </pre>
-<p></p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-ECDSA:CAPS"></a><h3>XMLSEC_NO_ECDSA</h3>
 <pre class="programlisting">#define XMLSEC_NO_ECDSA     1
 </pre>
-<p></p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-SHA224:CAPS"></a><h3>XMLSEC_NO_SHA224</h3>
 <pre class="programlisting">#define XMLSEC_NO_SHA224    1
 </pre>
-<p></p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-SHA256:CAPS"></a><h3>XMLSEC_NO_SHA256</h3>
 <pre class="programlisting">#define XMLSEC_NO_SHA256    1
 </pre>
-<p></p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-SHA384:CAPS"></a><h3>XMLSEC_NO_SHA384</h3>
 <pre class="programlisting">#define XMLSEC_NO_SHA384    1
 </pre>
-<p></p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-SHA512:CAPS"></a><h3>XMLSEC_NO_SHA512</h3>
 <pre class="programlisting">#define XMLSEC_NO_SHA512    1
 </pre>
-<p></p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-AES:CAPS"></a><h3>XMLSEC_NO_AES</h3>
 <pre class="programlisting">#define XMLSEC_NO_AES       1
 </pre>
-<p></p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-DES:CAPS"></a><h3>XMLSEC_NO_DES</h3>
 <pre class="programlisting">#define XMLSEC_NO_DES       1
 </pre>
-<p></p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-DSA:CAPS"></a><h3>XMLSEC_NO_DSA</h3>
 <pre class="programlisting">#define XMLSEC_NO_DSA       1
 </pre>
-<p></p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-GOST:CAPS"></a><h3>XMLSEC_NO_GOST</h3>
 <pre class="programlisting">#define XMLSEC_NO_GOST      1
 </pre>
-<p></p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-GOST2012:CAPS"></a><h3>XMLSEC_NO_GOST2012</h3>
 <pre class="programlisting">#define XMLSEC_NO_GOST2012  1
 </pre>
-<p></p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-HMAC:CAPS"></a><h3>XMLSEC_NO_HMAC</h3>
 <pre class="programlisting">#define XMLSEC_NO_HMAC      1
 </pre>
-<p></p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-MD5:CAPS"></a><h3>XMLSEC_NO_MD5</h3>
 <pre class="programlisting">#define XMLSEC_NO_MD5       1
 </pre>
-<p></p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-RIPEMD160:CAPS"></a><h3>XMLSEC_NO_RIPEMD160</h3>
 <pre class="programlisting">#define XMLSEC_NO_RIPEMD160 1
 </pre>
-<p></p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-RSA:CAPS"></a><h3>XMLSEC_NO_RSA</h3>
 <pre class="programlisting">#define XMLSEC_NO_RSA       1
 </pre>
-<p></p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-SHA1:CAPS"></a><h3>XMLSEC_NO_SHA1</h3>
 <pre class="programlisting">#define XMLSEC_NO_SHA1      1
 </pre>
-<p></p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-X509:CAPS"></a><h3>XMLSEC_NO_X509</h3>
 <pre class="programlisting">#define XMLSEC_NO_X509      1
 </pre>
-<p></p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -2617,13 +2639,15 @@ xmlSecOpenSSLErrorsDefaultCallback (<em class="parameter"><code>const <font><spa
 <div class="refsect2">
 <a name="xmlSecOpenSSLKeyDataGostR3410-2012-256Id"></a><h3>xmlSecOpenSSLKeyDataGostR3410_2012_256Id</h3>
 <pre class="programlisting">#define             xmlSecOpenSSLKeyDataGostR3410_2012_256Id</pre>
-<p></p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecOpenSSLKeyDataGostR3410-2012-512Id"></a><h3>xmlSecOpenSSLKeyDataGostR3410_2012_512Id</h3>
 <pre class="programlisting">#define             xmlSecOpenSSLKeyDataGostR3410_2012_512Id</pre>
-<p></p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">

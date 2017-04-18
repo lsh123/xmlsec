@@ -96,13 +96,13 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="xmlsec-transforms.functions"></a><h2>Functions</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
+<col width="150px" class="functions_return">
+<col class="functions_name">
 </colgroup>
 <tbody>
 <tr>
 <td class="function_type">
-<a class="link" href="xmlsec-list.html#xmlSecPtrList" title="struct xmlSecPtrList"><span class="returnvalue">xmlSecPtrListPtr</span></a>
+<font><span class="returnvalue">xmlSecPtrListPtr</span></font>
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-transforms.html#xmlSecTransformIdsGet" title="xmlSecTransformIdsGet ()">xmlSecTransformIdsGet</a> <span class="c_punctuation">()</span>
@@ -158,7 +158,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </tr>
 <tr>
 <td class="function_type">
-<a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="returnvalue">xmlSecTransformCtxPtr</span></a>
+<font><span class="returnvalue">xmlSecTransformCtxPtr</span></font>
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-transforms.html#xmlSecTransformCtxCreate" title="xmlSecTransformCtxCreate ()">xmlSecTransformCtxCreate</a> <span class="c_punctuation">()</span>
@@ -230,7 +230,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </tr>
 <tr>
 <td class="function_type">
-<a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="returnvalue">xmlSecTransformPtr</span></a>
+<font><span class="returnvalue">xmlSecTransformPtr</span></font>
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-transforms.html#xmlSecTransformCtxCreateAndAppend" title="xmlSecTransformCtxCreateAndAppend ()">xmlSecTransformCtxCreateAndAppend</a> <span class="c_punctuation">()</span>
@@ -238,7 +238,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </tr>
 <tr>
 <td class="function_type">
-<a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="returnvalue">xmlSecTransformPtr</span></a>
+<font><span class="returnvalue">xmlSecTransformPtr</span></font>
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-transforms.html#xmlSecTransformCtxCreateAndPrepend" title="xmlSecTransformCtxCreateAndPrepend ()">xmlSecTransformCtxCreateAndPrepend</a> <span class="c_punctuation">()</span>
@@ -246,7 +246,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </tr>
 <tr>
 <td class="function_type">
-<a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="returnvalue">xmlSecTransformPtr</span></a>
+<font><span class="returnvalue">xmlSecTransformPtr</span></font>
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-transforms.html#xmlSecTransformCtxNodeRead" title="xmlSecTransformCtxNodeRead ()">xmlSecTransformCtxNodeRead</a> <span class="c_punctuation">()</span>
@@ -318,7 +318,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </tr>
 <tr>
 <td class="function_type">
-<a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="returnvalue">xmlSecTransformPtr</span></a>
+<font><span class="returnvalue">xmlSecTransformPtr</span></font>
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-transforms.html#xmlSecTransformCreate" title="xmlSecTransformCreate ()">xmlSecTransformCreate</a> <span class="c_punctuation">()</span>
@@ -334,7 +334,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </tr>
 <tr>
 <td class="function_type">
-<a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="returnvalue">xmlSecTransformPtr</span></a>
+<font><span class="returnvalue">xmlSecTransformPtr</span></font>
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-transforms.html#xmlSecTransformNodeRead" title="xmlSecTransformNodeRead ()">xmlSecTransformNodeRead</a> <span class="c_punctuation">()</span>
@@ -857,8 +857,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="xmlsec-transforms.other"></a><h2>Types and Values</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
+<col width="150px" class="name">
+<col class="description">
 </colgroup>
 <tbody>
 <tr>
@@ -1042,14 +1042,15 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </div>
 <div class="refsect1">
 <a name="xmlsec-transforms.description"></a><h2>Description</h2>
-<p>Transform object definition.
+<p>
+Transform object definition.
 </p>
 </div>
 <div class="refsect1">
 <a name="xmlsec-transforms.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="xmlSecTransformIdsGet"></a><h3>xmlSecTransformIdsGet ()</h3>
-<pre class="programlisting"><a class="link" href="xmlsec-list.html#xmlSecPtrList" title="struct xmlSecPtrList"><span class="returnvalue">xmlSecPtrListPtr</span></a>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecPtrListPtr</span></font>
 xmlSecTransformIdsGet (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Gets global registered transform klasses list.</p>
 <div class="refsect3">
@@ -1100,9 +1101,9 @@ xmlSecTransformIdsRegister (<em class="parameter"><code><font><span class="type"
 <a name="xmlSecTransformIdsRegister.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>id</p></td>
@@ -1129,9 +1130,9 @@ xmlSecTransformUriTypeCheck (<em class="parameter"><code><a class="link" href="x
 <a name="xmlSecTransformUriTypeCheck.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1160,7 +1161,7 @@ if an error occurs.</p>
 <a name="xmlSecTransformCtxPreExecuteCallback"></a><h3>xmlSecTransformCtxPreExecuteCallback ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 <span class="c_punctuation">(</span>*xmlSecTransformCtxPreExecuteCallback<span class="c_punctuation">)</span>
-                               (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> transformCtx</code></em>);</pre>
+                               (<em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> transformCtx</code></em>);</pre>
 <p>The callback called after creating transforms chain but before
 starting data processing. Application can use this callback to
 do additional transforms chain verification or modification and
@@ -1169,9 +1170,9 @@ aborting transforms execution (if necessary).</p>
 <a name="xmlSecTransformCtxPreExecuteCallback.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>transformCtx</p></td>
@@ -1189,7 +1190,7 @@ transforms chain will not be executed and xmlsec processing stops).</p>
 <hr>
 <div class="refsect2">
 <a name="xmlSecTransformCtxCreate"></a><h3>xmlSecTransformCtxCreate ()</h3>
-<pre class="programlisting"><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="returnvalue">xmlSecTransformCtxPtr</span></a>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformCtxPtr</span></font>
 xmlSecTransformCtxCreate (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Creates transforms chain processing context.
 The caller is responsible for destroying returned object by calling
@@ -1204,15 +1205,15 @@ occurs.</p>
 <div class="refsect2">
 <a name="xmlSecTransformCtxDestroy"></a><h3>xmlSecTransformCtxDestroy ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
-xmlSecTransformCtxDestroy (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> ctx</code></em>);</pre>
+xmlSecTransformCtxDestroy (<em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> ctx</code></em>);</pre>
 <p>Destroy context object created with <a class="link" href="xmlsec-transforms.html#xmlSecTransformCtxCreate" title="xmlSecTransformCtxCreate ()"><span class="type">xmlSecTransformCtxCreate</span></a> function.</p>
 <div class="refsect3">
 <a name="xmlSecTransformCtxDestroy.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>ctx</p></td>
@@ -1226,7 +1227,7 @@ xmlSecTransformCtxDestroy (<em class="parameter"><code><a class="link" href="xml
 <div class="refsect2">
 <a name="xmlSecTransformCtxInitialize"></a><h3>xmlSecTransformCtxInitialize ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecTransformCtxInitialize (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> ctx</code></em>);</pre>
+xmlSecTransformCtxInitialize (<em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> ctx</code></em>);</pre>
 <p>Initializes transforms chain processing context.
 The caller is responsible for cleaning up returned object by calling
 <a class="link" href="xmlsec-transforms.html#xmlSecTransformCtxFinalize" title="xmlSecTransformCtxFinalize ()"><span class="type">xmlSecTransformCtxFinalize</span></a> function.</p>
@@ -1234,9 +1235,9 @@ The caller is responsible for cleaning up returned object by calling
 <a name="xmlSecTransformCtxInitialize.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>ctx</p></td>
@@ -1254,16 +1255,16 @@ The caller is responsible for cleaning up returned object by calling
 <div class="refsect2">
 <a name="xmlSecTransformCtxFinalize"></a><h3>xmlSecTransformCtxFinalize ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
-xmlSecTransformCtxFinalize (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> ctx</code></em>);</pre>
+xmlSecTransformCtxFinalize (<em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> ctx</code></em>);</pre>
 <p>Cleans up <em class="parameter"><code>ctx</code></em>
  object initialized with <a class="link" href="xmlsec-transforms.html#xmlSecTransformCtxInitialize" title="xmlSecTransformCtxInitialize ()"><span class="type">xmlSecTransformCtxInitialize</span></a> function.</p>
 <div class="refsect3">
 <a name="xmlSecTransformCtxFinalize.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>ctx</p></td>
@@ -1277,15 +1278,15 @@ xmlSecTransformCtxFinalize (<em class="parameter"><code><a class="link" href="xm
 <div class="refsect2">
 <a name="xmlSecTransformCtxReset"></a><h3>xmlSecTransformCtxReset ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
-xmlSecTransformCtxReset (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> ctx</code></em>);</pre>
+xmlSecTransformCtxReset (<em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> ctx</code></em>);</pre>
 <p>Resets transfroms context for new processing.</p>
 <div class="refsect3">
 <a name="xmlSecTransformCtxReset.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>ctx</p></td>
@@ -1299,8 +1300,8 @@ xmlSecTransformCtxReset (<em class="parameter"><code><a class="link" href="xmlse
 <div class="refsect2">
 <a name="xmlSecTransformCtxCopyUserPref"></a><h3>xmlSecTransformCtxCopyUserPref ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecTransformCtxCopyUserPref (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> dst</code></em>,
-                                <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> src</code></em>);</pre>
+xmlSecTransformCtxCopyUserPref (<em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> dst</code></em>,
+                                <em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> src</code></em>);</pre>
 <p>Copies user settings from <em class="parameter"><code>src</code></em>
  context to <em class="parameter"><code>dst</code></em>
 .</p>
@@ -1308,9 +1309,9 @@ xmlSecTransformCtxCopyUserPref (<em class="parameter"><code><a class="link" href
 <a name="xmlSecTransformCtxCopyUserPref.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1335,7 +1336,7 @@ xmlSecTransformCtxCopyUserPref (<em class="parameter"><code><a class="link" href
 <div class="refsect2">
 <a name="xmlSecTransformCtxSetUri"></a><h3>xmlSecTransformCtxSetUri ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecTransformCtxSetUri (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> ctx</code></em>,
+xmlSecTransformCtxSetUri (<em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> ctx</code></em>,
                           <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *uri</code></em>,
                           <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> hereNode</code></em>);</pre>
 <p>Parses uri and adds xpointer transforms if required.</p>
@@ -1367,9 +1368,9 @@ all descendents including namespaces and attributes -- but not comments.</p></li
 <a name="xmlSecTransformCtxSetUri.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1400,8 +1401,8 @@ XML transforms (may be NULL).</p></td>
 <div class="refsect2">
 <a name="xmlSecTransformCtxAppend"></a><h3>xmlSecTransformCtxAppend ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecTransformCtxAppend (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> ctx</code></em>,
-                          <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>);</pre>
+xmlSecTransformCtxAppend (<em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> ctx</code></em>,
+                          <em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>);</pre>
 <p>Connects the <em class="parameter"><code>transform</code></em>
  to the end of the chain of transforms in the <em class="parameter"><code>ctx</code></em>
 
@@ -1410,9 +1411,9 @@ xmlSecTransformCtxAppend (<em class="parameter"><code><a class="link" href="xmls
 <a name="xmlSecTransformCtxAppend.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1437,8 +1438,8 @@ xmlSecTransformCtxAppend (<em class="parameter"><code><a class="link" href="xmls
 <div class="refsect2">
 <a name="xmlSecTransformCtxPrepend"></a><h3>xmlSecTransformCtxPrepend ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecTransformCtxPrepend (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> ctx</code></em>,
-                           <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>);</pre>
+xmlSecTransformCtxPrepend (<em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> ctx</code></em>,
+                           <em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>);</pre>
 <p>Connects the <em class="parameter"><code>transform</code></em>
  to the beggining of the chain of transforms in the <em class="parameter"><code>ctx</code></em>
 
@@ -1447,9 +1448,9 @@ xmlSecTransformCtxPrepend (<em class="parameter"><code><a class="link" href="xml
 <a name="xmlSecTransformCtxPrepend.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1473,8 +1474,8 @@ xmlSecTransformCtxPrepend (<em class="parameter"><code><a class="link" href="xml
 <hr>
 <div class="refsect2">
 <a name="xmlSecTransformCtxCreateAndAppend"></a><h3>xmlSecTransformCtxCreateAndAppend ()</h3>
-<pre class="programlisting"><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="returnvalue">xmlSecTransformPtr</span></a>
-xmlSecTransformCtxCreateAndAppend (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> ctx</code></em>,
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformPtr</span></font>
+xmlSecTransformCtxCreateAndAppend (<em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> ctx</code></em>,
                                    <em class="parameter"><code><font><span class="type">xmlSecTransformId</span></font> id</code></em>);</pre>
 <p>Creaeates new transform and connects it to the end of the chain of
 transforms in the <em class="parameter"><code>ctx</code></em>
@@ -1483,9 +1484,9 @@ transforms in the <em class="parameter"><code>ctx</code></em>
 <a name="xmlSecTransformCtxCreateAndAppend.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1509,8 +1510,8 @@ transforms in the <em class="parameter"><code>ctx</code></em>
 <hr>
 <div class="refsect2">
 <a name="xmlSecTransformCtxCreateAndPrepend"></a><h3>xmlSecTransformCtxCreateAndPrepend ()</h3>
-<pre class="programlisting"><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="returnvalue">xmlSecTransformPtr</span></a>
-xmlSecTransformCtxCreateAndPrepend (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> ctx</code></em>,
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformPtr</span></font>
+xmlSecTransformCtxCreateAndPrepend (<em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> ctx</code></em>,
                                     <em class="parameter"><code><font><span class="type">xmlSecTransformId</span></font> id</code></em>);</pre>
 <p>Creaeates new transform and connects it to the end of the chain of
 transforms in the <em class="parameter"><code>ctx</code></em>
@@ -1519,9 +1520,9 @@ transforms in the <em class="parameter"><code>ctx</code></em>
 <a name="xmlSecTransformCtxCreateAndPrepend.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1545,8 +1546,8 @@ transforms in the <em class="parameter"><code>ctx</code></em>
 <hr>
 <div class="refsect2">
 <a name="xmlSecTransformCtxNodeRead"></a><h3>xmlSecTransformCtxNodeRead ()</h3>
-<pre class="programlisting"><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="returnvalue">xmlSecTransformPtr</span></a>
-xmlSecTransformCtxNodeRead (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> ctx</code></em>,
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformPtr</span></font>
+xmlSecTransformCtxNodeRead (<em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> ctx</code></em>,
                             <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
                             <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformUsage" title="xmlSecTransformUsage"><span class="type">xmlSecTransformUsage</span></a> usage</code></em>);</pre>
 <p>Reads the transform from the <em class="parameter"><code>node</code></em>
@@ -1557,9 +1558,9 @@ of transforms in <em class="parameter"><code>ctx</code></em>
 <a name="xmlSecTransformCtxNodeRead.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1589,10 +1590,10 @@ of transforms in <em class="parameter"><code>ctx</code></em>
 <div class="refsect2">
 <a name="xmlSecTransformCtxNodesListRead"></a><h3>xmlSecTransformCtxNodesListRead ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecTransformCtxNodesListRead (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> ctx</code></em>,
+xmlSecTransformCtxNodesListRead (<em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> ctx</code></em>,
                                  <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
                                  <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformUsage" title="xmlSecTransformUsage"><span class="type">xmlSecTransformUsage</span></a> usage</code></em>);</pre>
-<p>Reads transforms from the <a class="ulink" href="" target="_top">&lt;dsig:Transform/&gt;</a> children of the <em class="parameter"><code>node</code></em>
+<p>Reads transforms from the &lt;dsig:Transform/&gt; children of the <em class="parameter"><code>node</code></em>
  and
 appends them to the current transforms chain in <em class="parameter"><code>ctx</code></em>
  object.</p>
@@ -1600,9 +1601,9 @@ appends them to the current transforms chain in <em class="parameter"><code>ctx<
 <a name="xmlSecTransformCtxNodesListRead.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1612,7 +1613,7 @@ appends them to the current transforms chain in <em class="parameter"><code>ctx<
 </tr>
 <tr>
 <td class="parameter_name"><p>node</p></td>
-<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:Transform/&gt;</a> nodes parent node.</p></td>
+<td class="parameter_description"><p>the pointer to &lt;dsig:Transform/&gt; nodes parent node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1632,7 +1633,7 @@ appends them to the current transforms chain in <em class="parameter"><code>ctx<
 <div class="refsect2">
 <a name="xmlSecTransformCtxPrepare"></a><h3>xmlSecTransformCtxPrepare ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecTransformCtxPrepare (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> ctx</code></em>,
+xmlSecTransformCtxPrepare (<em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> ctx</code></em>,
                            <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformDataType" title="xmlSecTransformDataType"><span class="type">xmlSecTransformDataType</span></a> inputDataType</code></em>);</pre>
 <p>Prepares the transform context for processing data of <em class="parameter"><code>inputDataType</code></em>
 .</p>
@@ -1640,9 +1641,9 @@ xmlSecTransformCtxPrepare (<em class="parameter"><code><a class="link" href="xml
 <a name="xmlSecTransformCtxPrepare.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1667,7 +1668,7 @@ xmlSecTransformCtxPrepare (<em class="parameter"><code><a class="link" href="xml
 <div class="refsect2">
 <a name="xmlSecTransformCtxBinaryExecute"></a><h3>xmlSecTransformCtxBinaryExecute ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecTransformCtxBinaryExecute (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> ctx</code></em>,
+xmlSecTransformCtxBinaryExecute (<em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> ctx</code></em>,
                                  <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
                                  <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> dataSize</code></em>);</pre>
 <p>Processes binary data using transforms chain in the <em class="parameter"><code>ctx</code></em>
@@ -1676,9 +1677,9 @@ xmlSecTransformCtxBinaryExecute (<em class="parameter"><code><a class="link" hre
 <a name="xmlSecTransformCtxBinaryExecute.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1708,7 +1709,7 @@ xmlSecTransformCtxBinaryExecute (<em class="parameter"><code><a class="link" hre
 <div class="refsect2">
 <a name="xmlSecTransformCtxUriExecute"></a><h3>xmlSecTransformCtxUriExecute ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecTransformCtxUriExecute (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> ctx</code></em>,
+xmlSecTransformCtxUriExecute (<em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> ctx</code></em>,
                               <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *uri</code></em>);</pre>
 <p>Process binary data from the URI using transforms chain in <em class="parameter"><code>ctx</code></em>
 .</p>
@@ -1716,9 +1717,9 @@ xmlSecTransformCtxUriExecute (<em class="parameter"><code><a class="link" href="
 <a name="xmlSecTransformCtxUriExecute.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1743,8 +1744,8 @@ xmlSecTransformCtxUriExecute (<em class="parameter"><code><a class="link" href="
 <div class="refsect2">
 <a name="xmlSecTransformCtxXmlExecute"></a><h3>xmlSecTransformCtxXmlExecute ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecTransformCtxXmlExecute (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> ctx</code></em>,
-                              <em class="parameter"><code><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> nodes</code></em>);</pre>
+xmlSecTransformCtxXmlExecute (<em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> ctx</code></em>,
+                              <em class="parameter"><code><font><span class="type">xmlSecNodeSetPtr</span></font> nodes</code></em>);</pre>
 <p>Process <em class="parameter"><code>nodes</code></em>
  using transforms in the transforms chain in <em class="parameter"><code>ctx</code></em>
 .</p>
@@ -1752,9 +1753,9 @@ xmlSecTransformCtxXmlExecute (<em class="parameter"><code><a class="link" href="
 <a name="xmlSecTransformCtxXmlExecute.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1779,7 +1780,7 @@ xmlSecTransformCtxXmlExecute (<em class="parameter"><code><a class="link" href="
 <div class="refsect2">
 <a name="xmlSecTransformCtxExecute"></a><h3>xmlSecTransformCtxExecute ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecTransformCtxExecute (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> ctx</code></em>,
+xmlSecTransformCtxExecute (<em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> ctx</code></em>,
                            <em class="parameter"><code><font><span class="type">xmlDocPtr</span></font> doc</code></em>);</pre>
 <p>Executes transforms chain in <em class="parameter"><code>ctx</code></em>
 .</p>
@@ -1787,9 +1788,9 @@ xmlSecTransformCtxExecute (<em class="parameter"><code><a class="link" href="xml
 <a name="xmlSecTransformCtxExecute.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1814,7 +1815,7 @@ xmlSecTransformCtxExecute (<em class="parameter"><code><a class="link" href="xml
 <div class="refsect2">
 <a name="xmlSecTransformCtxDebugDump"></a><h3>xmlSecTransformCtxDebugDump ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
-xmlSecTransformCtxDebugDump (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> ctx</code></em>,
+xmlSecTransformCtxDebugDump (<em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> ctx</code></em>,
                              <em class="parameter"><code><font><span class="type">FILE</span></font> *output</code></em>);</pre>
 <p>Prints transforms context debug information to <em class="parameter"><code>output</code></em>
 .</p>
@@ -1822,9 +1823,9 @@ xmlSecTransformCtxDebugDump (<em class="parameter"><code><a class="link" href="x
 <a name="xmlSecTransformCtxDebugDump.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1845,7 +1846,7 @@ xmlSecTransformCtxDebugDump (<em class="parameter"><code><a class="link" href="x
 <div class="refsect2">
 <a name="xmlSecTransformCtxDebugXmlDump"></a><h3>xmlSecTransformCtxDebugXmlDump ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
-xmlSecTransformCtxDebugXmlDump (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> ctx</code></em>,
+xmlSecTransformCtxDebugXmlDump (<em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> ctx</code></em>,
                                 <em class="parameter"><code><font><span class="type">FILE</span></font> *output</code></em>);</pre>
 <p>Prints transforms context debug information to <em class="parameter"><code>output</code></em>
  in XML format.</p>
@@ -1853,9 +1854,9 @@ xmlSecTransformCtxDebugXmlDump (<em class="parameter"><code><a class="link" href
 <a name="xmlSecTransformCtxDebugXmlDump.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1875,7 +1876,7 @@ xmlSecTransformCtxDebugXmlDump (<em class="parameter"><code><a class="link" href
 <hr>
 <div class="refsect2">
 <a name="xmlSecTransformCreate"></a><h3>xmlSecTransformCreate ()</h3>
-<pre class="programlisting"><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="returnvalue">xmlSecTransformPtr</span></a>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformPtr</span></font>
 xmlSecTransformCreate (<em class="parameter"><code><font><span class="type">xmlSecTransformId</span></font> id</code></em>);</pre>
 <p>Creates new transform of the <em class="parameter"><code>id</code></em>
  klass. The caller is responsible for
@@ -1884,9 +1885,9 @@ destroying returned tansform using <a class="link" href="xmlsec-transforms.html#
 <a name="xmlSecTransformCreate.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>id</p></td>
@@ -1904,15 +1905,15 @@ destroying returned tansform using <a class="link" href="xmlsec-transforms.html#
 <div class="refsect2">
 <a name="xmlSecTransformDestroy"></a><h3>xmlSecTransformDestroy ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
-xmlSecTransformDestroy (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>);</pre>
+xmlSecTransformDestroy (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>);</pre>
 <p>Destroys transform created with <a class="link" href="xmlsec-transforms.html#xmlSecTransformCreate" title="xmlSecTransformCreate ()"><span class="type">xmlSecTransformCreate</span></a> function.</p>
 <div class="refsect3">
 <a name="xmlSecTransformDestroy.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>transform</p></td>
@@ -1925,10 +1926,10 @@ xmlSecTransformDestroy (<em class="parameter"><code><a class="link" href="xmlsec
 <hr>
 <div class="refsect2">
 <a name="xmlSecTransformNodeRead"></a><h3>xmlSecTransformNodeRead ()</h3>
-<pre class="programlisting"><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="returnvalue">xmlSecTransformPtr</span></a>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformPtr</span></font>
 xmlSecTransformNodeRead (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
                          <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformUsage" title="xmlSecTransformUsage"><span class="type">xmlSecTransformUsage</span></a> usage</code></em>,
-                         <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> transformCtx</code></em>);</pre>
+                         <em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> transformCtx</code></em>);</pre>
 <p>Reads transform from the <em class="parameter"><code>node</code></em>
  as follows:</p>
 <p>   1) reads "Algorithm" attribute;</p>
@@ -1939,9 +1940,9 @@ xmlSecTransformNodeRead (<em class="parameter"><code><font><span class="type">xm
 <a name="xmlSecTransformNodeRead.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1971,9 +1972,9 @@ xmlSecTransformNodeRead (<em class="parameter"><code><font><span class="type">xm
 <div class="refsect2">
 <a name="xmlSecTransformPump"></a><h3>xmlSecTransformPump ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecTransformPump (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> left</code></em>,
-                     <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> right</code></em>,
-                     <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> transformCtx</code></em>);</pre>
+xmlSecTransformPump (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> left</code></em>,
+                     <em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> right</code></em>,
+                     <em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> transformCtx</code></em>);</pre>
 <p>Pops data from <em class="parameter"><code>left</code></em>
  transform and pushes to <em class="parameter"><code>right</code></em>
  transform until
@@ -1982,9 +1983,9 @@ no more data is available.</p>
 <a name="xmlSecTransformPump.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2014,16 +2015,16 @@ no more data is available.</p>
 <div class="refsect2">
 <a name="xmlSecTransformSetKey"></a><h3>xmlSecTransformSetKey ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecTransformSetKey (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
-                       <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>);</pre>
+xmlSecTransformSetKey (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
+                       <em class="parameter"><code><font><span class="type">xmlSecKeyPtr</span></font> key</code></em>);</pre>
 <p>Sets the transform's key.</p>
 <div class="refsect3">
 <a name="xmlSecTransformSetKey.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2048,8 +2049,8 @@ xmlSecTransformSetKey (<em class="parameter"><code><a class="link" href="xmlsec-
 <div class="refsect2">
 <a name="xmlSecTransformSetKeyReq"></a><h3>xmlSecTransformSetKeyReq ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecTransformSetKeyReq (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
-                          <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKeyReq" title="struct xmlSecKeyReq"><span class="type">xmlSecKeyReqPtr</span></a> keyReq</code></em>);</pre>
+xmlSecTransformSetKeyReq (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
+                          <em class="parameter"><code><font><span class="type">xmlSecKeyReqPtr</span></font> keyReq</code></em>);</pre>
 <p>Sets the key requirements for <em class="parameter"><code>transform</code></em>
  in the <em class="parameter"><code>keyReq</code></em>
 .</p>
@@ -2057,9 +2058,9 @@ xmlSecTransformSetKeyReq (<em class="parameter"><code><a class="link" href="xmls
 <a name="xmlSecTransformSetKeyReq.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2084,10 +2085,10 @@ xmlSecTransformSetKeyReq (<em class="parameter"><code><a class="link" href="xmls
 <div class="refsect2">
 <a name="xmlSecTransformVerify"></a><h3>xmlSecTransformVerify ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecTransformVerify (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
+xmlSecTransformVerify (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
                        <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
                        <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> dataSize</code></em>,
-                       <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> transformCtx</code></em>);</pre>
+                       <em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> transformCtx</code></em>);</pre>
 <p>Verifies the data with transform's processing results
 (for digest, HMAC and signature transforms). The verification
 result is stored in the <font><span class="type">status</span></font> member of <a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransform</span></a> object.</p>
@@ -2095,9 +2096,9 @@ result is stored in the <font><span class="type">status</span></font> member of 
 <a name="xmlSecTransformVerify.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2132,9 +2133,9 @@ result is stored in the <font><span class="type">status</span></font> member of 
 <div class="refsect2">
 <a name="xmlSecTransformVerifyNodeContent"></a><h3>xmlSecTransformVerifyNodeContent ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecTransformVerifyNodeContent (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
+xmlSecTransformVerifyNodeContent (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
                                   <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
-                                  <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> transformCtx</code></em>);</pre>
+                                  <em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> transformCtx</code></em>);</pre>
 <p>Gets the <em class="parameter"><code>node</code></em>
  content, base64 decodes it and calls <a class="link" href="xmlsec-transforms.html#xmlSecTransformVerify" title="xmlSecTransformVerify ()"><span class="type">xmlSecTransformVerify</span></a>
 function to verify binary results.</p>
@@ -2142,9 +2143,9 @@ function to verify binary results.</p>
 <a name="xmlSecTransformVerifyNodeContent.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2174,9 +2175,9 @@ function to verify binary results.</p>
 <div class="refsect2">
 <a name="xmlSecTransformGetDataType"></a><h3>xmlSecTransformGetDataType ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-transforms.html#xmlSecTransformDataType" title="xmlSecTransformDataType"><span class="returnvalue">xmlSecTransformDataType</span></a>
-xmlSecTransformGetDataType (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
+xmlSecTransformGetDataType (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
                             <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformMode" title="enum xmlSecTransformMode"><span class="type">xmlSecTransformMode</span></a> mode</code></em>,
-                            <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> transformCtx</code></em>);</pre>
+                            <em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> transformCtx</code></em>);</pre>
 <p>Gets transform input (<em class="parameter"><code>mode</code></em>
  is "push") or output (<em class="parameter"><code>mode</code></em>
  is "pop") data
@@ -2185,9 +2186,9 @@ type (binary or XML).</p>
 <a name="xmlSecTransformGetDataType.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2218,20 +2219,20 @@ operation.</p>
 <div class="refsect2">
 <a name="xmlSecTransformPushBin"></a><h3>xmlSecTransformPushBin ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecTransformPushBin (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
+xmlSecTransformPushBin (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
                         <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
                         <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> dataSize</code></em>,
                         <em class="parameter"><code><font><span class="type">int</span></font> final</code></em>,
-                        <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> transformCtx</code></em>);</pre>
+                        <em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> transformCtx</code></em>);</pre>
 <p>Process binary <em class="parameter"><code>data</code></em>
  and pushes results to next transform.</p>
 <div class="refsect3">
 <a name="xmlSecTransformPushBin.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2272,11 +2273,11 @@ data chunk.</p></td>
 <div class="refsect2">
 <a name="xmlSecTransformPopBin"></a><h3>xmlSecTransformPopBin ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecTransformPopBin (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
+xmlSecTransformPopBin (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
                        <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
                        <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> maxDataSize</code></em>,
                        <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> *dataSize</code></em>,
-                       <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> transformCtx</code></em>);</pre>
+                       <em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> transformCtx</code></em>);</pre>
 <p>Pops data from previous transform in the chain, processes data and
 returns result in the <em class="parameter"><code>data</code></em>
  buffer. The size of returned data is
@@ -2286,9 +2287,9 @@ placed in the <em class="parameter"><code>dataSize</code></em>
 <a name="xmlSecTransformPopBin.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2328,18 +2329,18 @@ placed in the <em class="parameter"><code>dataSize</code></em>
 <div class="refsect2">
 <a name="xmlSecTransformPushXml"></a><h3>xmlSecTransformPushXml ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecTransformPushXml (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
-                        <em class="parameter"><code><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> nodes</code></em>,
-                        <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> transformCtx</code></em>);</pre>
+xmlSecTransformPushXml (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
+                        <em class="parameter"><code><font><span class="type">xmlSecNodeSetPtr</span></font> nodes</code></em>,
+                        <em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> transformCtx</code></em>);</pre>
 <p>Processes <em class="parameter"><code>nodes</code></em>
  and pushes result to the next transform in the chain.</p>
 <div class="refsect3">
 <a name="xmlSecTransformPushXml.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2369,9 +2370,9 @@ xmlSecTransformPushXml (<em class="parameter"><code><a class="link" href="xmlsec
 <div class="refsect2">
 <a name="xmlSecTransformPopXml"></a><h3>xmlSecTransformPopXml ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecTransformPopXml (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
-                       <em class="parameter"><code><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> *nodes</code></em>,
-                       <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> transformCtx</code></em>);</pre>
+xmlSecTransformPopXml (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
+                       <em class="parameter"><code><font><span class="type">xmlSecNodeSetPtr</span></font> *nodes</code></em>,
+                       <em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> transformCtx</code></em>);</pre>
 <p>Pops data from previous transform in the chain, processes the data and
 returns result in <em class="parameter"><code>nodes</code></em>
 .</p>
@@ -2379,9 +2380,9 @@ returns result in <em class="parameter"><code>nodes</code></em>
 <a name="xmlSecTransformPopXml.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2411,17 +2412,17 @@ returns result in <em class="parameter"><code>nodes</code></em>
 <div class="refsect2">
 <a name="xmlSecTransformExecute"></a><h3>xmlSecTransformExecute ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecTransformExecute (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
+xmlSecTransformExecute (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
                         <em class="parameter"><code><font><span class="type">int</span></font> last</code></em>,
-                        <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> transformCtx</code></em>);</pre>
+                        <em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> transformCtx</code></em>);</pre>
 <p>Executes transform (used by default popBin/pushBin/popXml/pushXml methods).</p>
 <div class="refsect3">
 <a name="xmlSecTransformExecute.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2451,7 +2452,7 @@ xmlSecTransformExecute (<em class="parameter"><code><a class="link" href="xmlsec
 <div class="refsect2">
 <a name="xmlSecTransformDebugDump"></a><h3>xmlSecTransformDebugDump ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
-xmlSecTransformDebugDump (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
+xmlSecTransformDebugDump (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
                           <em class="parameter"><code><font><span class="type">FILE</span></font> *output</code></em>);</pre>
 <p>Prints transform's debug information to <em class="parameter"><code>output</code></em>
 .</p>
@@ -2459,9 +2460,9 @@ xmlSecTransformDebugDump (<em class="parameter"><code><a class="link" href="xmls
 <a name="xmlSecTransformDebugDump.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2482,7 +2483,7 @@ xmlSecTransformDebugDump (<em class="parameter"><code><a class="link" href="xmls
 <div class="refsect2">
 <a name="xmlSecTransformDebugXmlDump"></a><h3>xmlSecTransformDebugXmlDump ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
-xmlSecTransformDebugXmlDump (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
+xmlSecTransformDebugXmlDump (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
                              <em class="parameter"><code><font><span class="type">FILE</span></font> *output</code></em>);</pre>
 <p>Prints transform's debug information to <em class="parameter"><code>output</code></em>
  in XML format.</p>
@@ -2490,9 +2491,9 @@ xmlSecTransformDebugXmlDump (<em class="parameter"><code><a class="link" href="x
 <a name="xmlSecTransformDebugXmlDump.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2518,9 +2519,9 @@ xmlSecTransformDebugXmlDump (<em class="parameter"><code><a class="link" href="x
 <a name="xmlSecTransformGetName.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>transform</p></td>
@@ -2540,9 +2541,9 @@ xmlSecTransformDebugXmlDump (<em class="parameter"><code><a class="link" href="x
 <a name="xmlSecTransformIsValid.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>transform</p></td>
@@ -2564,9 +2565,9 @@ or 0 otherwise.</p>
 <a name="xmlSecTransformCheckId.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2595,9 +2596,9 @@ bytes or 0 otherwise.</p>
 <a name="xmlSecTransformCheckSize.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2618,9 +2619,9 @@ bytes or 0 otherwise.</p>
 <div class="refsect2">
 <a name="xmlSecTransformConnect"></a><h3>xmlSecTransformConnect ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecTransformConnect (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> left</code></em>,
-                        <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> right</code></em>,
-                        <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> transformCtx</code></em>);</pre>
+xmlSecTransformConnect (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> left</code></em>,
+                        <em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> right</code></em>,
+                        <em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> transformCtx</code></em>);</pre>
 <p>If the data object is a node-set and the next transform requires octets,
 the signature application MUST attempt to convert the node-set to an octet
 stream using Canonical XML [XML-C14N].</p>
@@ -2640,9 +2641,9 @@ processing instructions. The output of this transform is an octet stream.</p>
 <a name="xmlSecTransformConnect.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2672,16 +2673,16 @@ processing instructions. The output of this transform is an octet stream.</p>
 <div class="refsect2">
 <a name="xmlSecTransformRemove"></a><h3>xmlSecTransformRemove ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
-xmlSecTransformRemove (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>);</pre>
+xmlSecTransformRemove (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>);</pre>
 <p>Removes <em class="parameter"><code>transform</code></em>
  from the chain.</p>
 <div class="refsect3">
 <a name="xmlSecTransformRemove.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>transform</p></td>
@@ -2695,9 +2696,9 @@ xmlSecTransformRemove (<em class="parameter"><code><a class="link" href="xmlsec-
 <div class="refsect2">
 <a name="xmlSecTransformDefaultGetDataType"></a><h3>xmlSecTransformDefaultGetDataType ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-transforms.html#xmlSecTransformDataType" title="xmlSecTransformDataType"><span class="returnvalue">xmlSecTransformDataType</span></a>
-xmlSecTransformDefaultGetDataType (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
+xmlSecTransformDefaultGetDataType (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
                                    <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformMode" title="enum xmlSecTransformMode"><span class="type">xmlSecTransformMode</span></a> mode</code></em>,
-                                   <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> transformCtx</code></em>);</pre>
+                                   <em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> transformCtx</code></em>);</pre>
 <p>Gets transform input (<em class="parameter"><code>mode</code></em>
  is "push") or output (<em class="parameter"><code>mode</code></em>
  is "pop") data
@@ -2707,9 +2708,9 @@ methods.</p>
 <a name="xmlSecTransformDefaultGetDataType.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2740,11 +2741,11 @@ operation.</p>
 <div class="refsect2">
 <a name="xmlSecTransformDefaultPushBin"></a><h3>xmlSecTransformDefaultPushBin ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecTransformDefaultPushBin (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
+xmlSecTransformDefaultPushBin (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
                                <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
                                <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> dataSize</code></em>,
                                <em class="parameter"><code><font><span class="type">int</span></font> final</code></em>,
-                               <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> transformCtx</code></em>);</pre>
+                               <em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> transformCtx</code></em>);</pre>
 <p>Process binary <em class="parameter"><code>data</code></em>
  by calling transform's execute method and pushes
 results to next transform.</p>
@@ -2752,9 +2753,9 @@ results to next transform.</p>
 <a name="xmlSecTransformDefaultPushBin.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2795,11 +2796,11 @@ data chunk.</p></td>
 <div class="refsect2">
 <a name="xmlSecTransformDefaultPopBin"></a><h3>xmlSecTransformDefaultPopBin ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecTransformDefaultPopBin (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
+xmlSecTransformDefaultPopBin (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
                               <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
                               <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> maxDataSize</code></em>,
                               <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> *dataSize</code></em>,
-                              <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> transformCtx</code></em>);</pre>
+                              <em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> transformCtx</code></em>);</pre>
 <p>Pops data from previous transform in the chain, processes data by calling
 transform's execute method and returns result in the <em class="parameter"><code>data</code></em>
  buffer. The
@@ -2809,9 +2810,9 @@ size of returned data is placed in the <em class="parameter"><code>dataSize</cod
 <a name="xmlSecTransformDefaultPopBin.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2851,9 +2852,9 @@ size of returned data is placed in the <em class="parameter"><code>dataSize</cod
 <div class="refsect2">
 <a name="xmlSecTransformDefaultPushXml"></a><h3>xmlSecTransformDefaultPushXml ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecTransformDefaultPushXml (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
-                               <em class="parameter"><code><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> nodes</code></em>,
-                               <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> transformCtx</code></em>);</pre>
+xmlSecTransformDefaultPushXml (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
+                               <em class="parameter"><code><font><span class="type">xmlSecNodeSetPtr</span></font> nodes</code></em>,
+                               <em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> transformCtx</code></em>);</pre>
 <p>Processes <em class="parameter"><code>nodes</code></em>
  by calling transform's execute method and pushes
 result to the next transform in the chain.</p>
@@ -2861,9 +2862,9 @@ result to the next transform in the chain.</p>
 <a name="xmlSecTransformDefaultPushXml.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2893,9 +2894,9 @@ result to the next transform in the chain.</p>
 <div class="refsect2">
 <a name="xmlSecTransformDefaultPopXml"></a><h3>xmlSecTransformDefaultPopXml ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecTransformDefaultPopXml (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
-                              <em class="parameter"><code><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> *nodes</code></em>,
-                              <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> transformCtx</code></em>);</pre>
+xmlSecTransformDefaultPopXml (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
+                              <em class="parameter"><code><font><span class="type">xmlSecNodeSetPtr</span></font> *nodes</code></em>,
+                              <em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> transformCtx</code></em>);</pre>
 <p>Pops data from previous transform in the chain, processes the data
 by calling transform's execute method and returns result in <em class="parameter"><code>nodes</code></em>
 .</p>
@@ -2903,9 +2904,9 @@ by calling transform's execute method and returns result in <em class="parameter
 <a name="xmlSecTransformDefaultPopXml.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2935,17 +2936,17 @@ by calling transform's execute method and returns result in <em class="parameter
 <div class="refsect2">
 <a name="xmlSecTransformCreateOutputBuffer"></a><h3>xmlSecTransformCreateOutputBuffer ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlOutputBufferPtr</span></font>
-xmlSecTransformCreateOutputBuffer (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
-                                   <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> transformCtx</code></em>);</pre>
+xmlSecTransformCreateOutputBuffer (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
+                                   <em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> transformCtx</code></em>);</pre>
 <p>Creates output buffer to write data to <em class="parameter"><code>transform</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecTransformCreateOutputBuffer.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2970,17 +2971,17 @@ xmlSecTransformCreateOutputBuffer (<em class="parameter"><code><a class="link" h
 <div class="refsect2">
 <a name="xmlSecTransformCreateInputBuffer"></a><h3>xmlSecTransformCreateInputBuffer ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlParserInputBufferPtr</span></font>
-xmlSecTransformCreateInputBuffer (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
-                                  <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> transformCtx</code></em>);</pre>
+xmlSecTransformCreateInputBuffer (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
+                                  <em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> transformCtx</code></em>);</pre>
 <p>Creates input buffer to read data from <em class="parameter"><code>transform</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecTransformCreateInputBuffer.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -3005,15 +3006,15 @@ xmlSecTransformCreateInputBuffer (<em class="parameter"><code><a class="link" hr
 <div class="refsect2">
 <a name="xmlSecTransformInitializeMethod"></a><h3>xmlSecTransformInitializeMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-<span class="c_punctuation">(</span>*xmlSecTransformInitializeMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>);</pre>
+<span class="c_punctuation">(</span>*xmlSecTransformInitializeMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>);</pre>
 <p>The transform specific initialization method.</p>
 <div class="refsect3">
 <a name="xmlSecTransformInitializeMethod.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>transform</p></td>
@@ -3031,15 +3032,15 @@ xmlSecTransformCreateInputBuffer (<em class="parameter"><code><a class="link" hr
 <div class="refsect2">
 <a name="xmlSecTransformFinalizeMethod"></a><h3>xmlSecTransformFinalizeMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
-<span class="c_punctuation">(</span>*xmlSecTransformFinalizeMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>);</pre>
+<span class="c_punctuation">(</span>*xmlSecTransformFinalizeMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>);</pre>
 <p>The transform specific destroy method.</p>
 <div class="refsect3">
 <a name="xmlSecTransformFinalizeMethod.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>transform</p></td>
@@ -3053,9 +3054,9 @@ xmlSecTransformCreateInputBuffer (<em class="parameter"><code><a class="link" hr
 <div class="refsect2">
 <a name="xmlSecTransformGetDataTypeMethod"></a><h3>xmlSecTransformGetDataTypeMethod ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-transforms.html#xmlSecTransformDataType" title="xmlSecTransformDataType"><span class="returnvalue">xmlSecTransformDataType</span></a>
-<span class="c_punctuation">(</span>*xmlSecTransformGetDataTypeMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
+<span class="c_punctuation">(</span>*xmlSecTransformGetDataTypeMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
                                      <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformMode" title="enum xmlSecTransformMode"><span class="type">xmlSecTransformMode</span></a> mode</code></em>,
-                                     <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> transformCtx</code></em>);</pre>
+                                     <em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> transformCtx</code></em>);</pre>
 <p>The transform specific method to query information about transform
 data type in specified mode <em class="parameter"><code>mode</code></em>
 .</p>
@@ -3063,9 +3064,9 @@ data type in specified mode <em class="parameter"><code>mode</code></em>
 <a name="xmlSecTransformGetDataTypeMethod.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -3095,9 +3096,9 @@ data type in specified mode <em class="parameter"><code>mode</code></em>
 <div class="refsect2">
 <a name="xmlSecTransformNodeReadMethod"></a><h3>xmlSecTransformNodeReadMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-<span class="c_punctuation">(</span>*xmlSecTransformNodeReadMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
+<span class="c_punctuation">(</span>*xmlSecTransformNodeReadMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
                                   <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
-                                  <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> transformCtx</code></em>);</pre>
+                                  <em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> transformCtx</code></em>);</pre>
 <p>The transform specific method to read the transform data from
 the <em class="parameter"><code>node</code></em>
 .</p>
@@ -3105,9 +3106,9 @@ the <em class="parameter"><code>node</code></em>
 <a name="xmlSecTransformNodeReadMethod.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -3117,7 +3118,7 @@ the <em class="parameter"><code>node</code></em>
 </tr>
 <tr>
 <td class="parameter_name"><p>node</p></td>
-<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:Transform/&gt;</a> node.</p></td>
+<td class="parameter_description"><p>the pointer to &lt;dsig:Transform/&gt; node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -3137,18 +3138,18 @@ the <em class="parameter"><code>node</code></em>
 <div class="refsect2">
 <a name="xmlSecTransformNodeWriteMethod"></a><h3>xmlSecTransformNodeWriteMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-<span class="c_punctuation">(</span>*xmlSecTransformNodeWriteMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
+<span class="c_punctuation">(</span>*xmlSecTransformNodeWriteMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
                                    <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
-                                   <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> transformCtx</code></em>);</pre>
+                                   <em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> transformCtx</code></em>);</pre>
 <p>The transform specific method to write transform information to an XML node <em class="parameter"><code>node</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecTransformNodeWriteMethod.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -3158,7 +3159,7 @@ the <em class="parameter"><code>node</code></em>
 </tr>
 <tr>
 <td class="parameter_name"><p>node</p></td>
-<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:Transform/&gt;</a> node.</p></td>
+<td class="parameter_description"><p>the pointer to &lt;dsig:Transform/&gt; node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -3179,16 +3180,16 @@ the <em class="parameter"><code>node</code></em>
 <a name="xmlSecTransformSetKeyRequirementsMethod"></a><h3>xmlSecTransformSetKeyRequirementsMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 <span class="c_punctuation">(</span>*xmlSecTransformSetKeyRequirementsMethod<span class="c_punctuation">)</span>
-                               (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
-                                <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKeyReq" title="struct xmlSecKeyReq"><span class="type">xmlSecKeyReqPtr</span></a> keyReq</code></em>);</pre>
+                               (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
+                                <em class="parameter"><code><font><span class="type">xmlSecKeyReqPtr</span></font> keyReq</code></em>);</pre>
 <p>Transform specific method to set transform's key requirements.</p>
 <div class="refsect3">
 <a name="xmlSecTransformSetKeyRequirementsMethod.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -3213,16 +3214,16 @@ the <em class="parameter"><code>node</code></em>
 <div class="refsect2">
 <a name="xmlSecTransformSetKeyMethod"></a><h3>xmlSecTransformSetKeyMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-<span class="c_punctuation">(</span>*xmlSecTransformSetKeyMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
-                                <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>);</pre>
+<span class="c_punctuation">(</span>*xmlSecTransformSetKeyMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
+                                <em class="parameter"><code><font><span class="type">xmlSecKeyPtr</span></font> key</code></em>);</pre>
 <p>The transform specific method to set the key for use.</p>
 <div class="refsect3">
 <a name="xmlSecTransformSetKeyMethod.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -3247,10 +3248,10 @@ the <em class="parameter"><code>node</code></em>
 <div class="refsect2">
 <a name="xmlSecTransformVerifyMethod"></a><h3>xmlSecTransformVerifyMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-<span class="c_punctuation">(</span>*xmlSecTransformVerifyMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
+<span class="c_punctuation">(</span>*xmlSecTransformVerifyMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
                                 <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
                                 <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> dataSize</code></em>,
-                                <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> transformCtx</code></em>);</pre>
+                                <em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> transformCtx</code></em>);</pre>
 <p>The transform specific method to verify transform processing results
 (used by digest and signature transforms). This method sets <em class="parameter"><code>status</code></em>
 
@@ -3260,9 +3261,9 @@ if verification succeeded or <a class="link" href="xmlsec-transforms.html#xmlSec
 <a name="xmlSecTransformVerifyMethod.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -3298,11 +3299,11 @@ if verification succeeded or <a class="link" href="xmlsec-transforms.html#xmlSec
 <div class="refsect2">
 <a name="xmlSecTransformPushBinMethod"></a><h3>xmlSecTransformPushBinMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-<span class="c_punctuation">(</span>*xmlSecTransformPushBinMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
+<span class="c_punctuation">(</span>*xmlSecTransformPushBinMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
                                  <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
                                  <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> dataSize</code></em>,
                                  <em class="parameter"><code><font><span class="type">int</span></font> final</code></em>,
-                                 <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> transformCtx</code></em>);</pre>
+                                 <em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> transformCtx</code></em>);</pre>
 <p>The transform specific method to process data from <em class="parameter"><code>data</code></em>
  and push
 result to the next transform in the chain.</p>
@@ -3310,9 +3311,9 @@ result to the next transform in the chain.</p>
 <a name="xmlSecTransformPushBinMethod.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -3353,11 +3354,11 @@ data chunk.</p></td>
 <div class="refsect2">
 <a name="xmlSecTransformPopBinMethod"></a><h3>xmlSecTransformPopBinMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-<span class="c_punctuation">(</span>*xmlSecTransformPopBinMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
+<span class="c_punctuation">(</span>*xmlSecTransformPopBinMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
                                 <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
                                 <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> maxDataSize</code></em>,
                                 <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> *dataSize</code></em>,
-                                <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> transformCtx</code></em>);</pre>
+                                <em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> transformCtx</code></em>);</pre>
 <p>The transform specific method to pop data from previous transform
 in the chain and return result in the <em class="parameter"><code>data</code></em>
  buffer. The size of returned
@@ -3367,9 +3368,9 @@ data is placed in the <em class="parameter"><code>dataSize</code></em>
 <a name="xmlSecTransformPopBinMethod.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -3410,9 +3411,9 @@ data is placed in the <em class="parameter"><code>dataSize</code></em>
 <div class="refsect2">
 <a name="xmlSecTransformPushXmlMethod"></a><h3>xmlSecTransformPushXmlMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-<span class="c_punctuation">(</span>*xmlSecTransformPushXmlMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
-                                 <em class="parameter"><code><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> nodes</code></em>,
-                                 <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> transformCtx</code></em>);</pre>
+<span class="c_punctuation">(</span>*xmlSecTransformPushXmlMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
+                                 <em class="parameter"><code><font><span class="type">xmlSecNodeSetPtr</span></font> nodes</code></em>,
+                                 <em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> transformCtx</code></em>);</pre>
 <p>The transform specific method to process <em class="parameter"><code>nodes</code></em>
  and push result to the next
 transform in the chain.</p>
@@ -3420,9 +3421,9 @@ transform in the chain.</p>
 <a name="xmlSecTransformPushXmlMethod.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -3452,9 +3453,9 @@ transform in the chain.</p>
 <div class="refsect2">
 <a name="xmlSecTransformPopXmlMethod"></a><h3>xmlSecTransformPopXmlMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-<span class="c_punctuation">(</span>*xmlSecTransformPopXmlMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
-                                <em class="parameter"><code><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> *nodes</code></em>,
-                                <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> transformCtx</code></em>);</pre>
+<span class="c_punctuation">(</span>*xmlSecTransformPopXmlMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
+                                <em class="parameter"><code><font><span class="type">xmlSecNodeSetPtr</span></font> *nodes</code></em>,
+                                <em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> transformCtx</code></em>);</pre>
 <p>The transform specific method to pop data from previous transform in the chain,
 process the data and return result in <em class="parameter"><code>nodes</code></em>
 .</p>
@@ -3462,9 +3463,9 @@ process the data and return result in <em class="parameter"><code>nodes</code></
 <a name="xmlSecTransformPopXmlMethod.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -3494,17 +3495,17 @@ process the data and return result in <em class="parameter"><code>nodes</code></
 <div class="refsect2">
 <a name="xmlSecTransformExecuteMethod"></a><h3>xmlSecTransformExecuteMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-<span class="c_punctuation">(</span>*xmlSecTransformExecuteMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
+<span class="c_punctuation">(</span>*xmlSecTransformExecuteMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
                                  <em class="parameter"><code><font><span class="type">int</span></font> last</code></em>,
-                                 <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtxPtr</span></a> transformCtx</code></em>);</pre>
+                                 <em class="parameter"><code><font><span class="type">xmlSecTransformCtxPtr</span></font> transformCtx</code></em>);</pre>
 <p>Transform specific method to process a chunk of data.</p>
 <div class="refsect3">
 <a name="xmlSecTransformExecuteMethod.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -3539,9 +3540,9 @@ process the data and return result in <em class="parameter"><code>nodes</code></
 <a name="xmlSecTransformKlassGetName.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>klass</p></td>
@@ -3566,7 +3567,7 @@ xmlSecTransformIdListGetKlass (<em class="parameter"><code><span class="type">vo
 <div class="refsect2">
 <a name="xmlSecTransformIdListFind"></a><h3>xmlSecTransformIdListFind ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecTransformIdListFind (<em class="parameter"><code><a class="link" href="xmlsec-list.html#xmlSecPtrList" title="struct xmlSecPtrList"><span class="type">xmlSecPtrListPtr</span></a> list</code></em>,
+xmlSecTransformIdListFind (<em class="parameter"><code><font><span class="type">xmlSecPtrListPtr</span></font> list</code></em>,
                            <em class="parameter"><code><font><span class="type">xmlSecTransformId</span></font> transformId</code></em>);</pre>
 <p>Lookups <em class="parameter"><code>dataId</code></em>
  in <em class="parameter"><code>list</code></em>
@@ -3575,9 +3576,9 @@ xmlSecTransformIdListFind (<em class="parameter"><code><a class="link" href="xml
 <a name="xmlSecTransformIdListFind.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -3605,7 +3606,7 @@ value if an error occurs.</p>
 <div class="refsect2">
 <a name="xmlSecTransformIdListFindByHref"></a><h3>xmlSecTransformIdListFindByHref ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
-xmlSecTransformIdListFindByHref (<em class="parameter"><code><a class="link" href="xmlsec-list.html#xmlSecPtrList" title="struct xmlSecPtrList"><span class="type">xmlSecPtrListPtr</span></a> list</code></em>,
+xmlSecTransformIdListFindByHref (<em class="parameter"><code><font><span class="type">xmlSecPtrListPtr</span></font> list</code></em>,
                                  <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *href</code></em>,
                                  <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformUsage" title="xmlSecTransformUsage"><span class="type">xmlSecTransformUsage</span></a> usage</code></em>);</pre>
 <p>Lookups data klass in the list with given <em class="parameter"><code>href</code></em>
@@ -3616,9 +3617,9 @@ xmlSecTransformIdListFindByHref (<em class="parameter"><code><a class="link" hre
 <a name="xmlSecTransformIdListFindByHref.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -3648,7 +3649,7 @@ xmlSecTransformIdListFindByHref (<em class="parameter"><code><a class="link" hre
 <div class="refsect2">
 <a name="xmlSecTransformIdListFindByName"></a><h3>xmlSecTransformIdListFindByName ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
-xmlSecTransformIdListFindByName (<em class="parameter"><code><a class="link" href="xmlsec-list.html#xmlSecPtrList" title="struct xmlSecPtrList"><span class="type">xmlSecPtrListPtr</span></a> list</code></em>,
+xmlSecTransformIdListFindByName (<em class="parameter"><code><font><span class="type">xmlSecPtrListPtr</span></font> list</code></em>,
                                  <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *name</code></em>,
                                  <em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransformUsage" title="xmlSecTransformUsage"><span class="type">xmlSecTransformUsage</span></a> usage</code></em>);</pre>
 <p>Lookups data klass in the list with given <em class="parameter"><code>name</code></em>
@@ -3659,9 +3660,9 @@ xmlSecTransformIdListFindByName (<em class="parameter"><code><a class="link" hre
 <a name="xmlSecTransformIdListFindByName.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -3691,7 +3692,7 @@ xmlSecTransformIdListFindByName (<em class="parameter"><code><a class="link" hre
 <div class="refsect2">
 <a name="xmlSecTransformIdListDebugDump"></a><h3>xmlSecTransformIdListDebugDump ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
-xmlSecTransformIdListDebugDump (<em class="parameter"><code><a class="link" href="xmlsec-list.html#xmlSecPtrList" title="struct xmlSecPtrList"><span class="type">xmlSecPtrListPtr</span></a> list</code></em>,
+xmlSecTransformIdListDebugDump (<em class="parameter"><code><font><span class="type">xmlSecPtrListPtr</span></font> list</code></em>,
                                 <em class="parameter"><code><font><span class="type">FILE</span></font> *output</code></em>);</pre>
 <p>Prints binary transform debug information to <em class="parameter"><code>output</code></em>
 .</p>
@@ -3699,9 +3700,9 @@ xmlSecTransformIdListDebugDump (<em class="parameter"><code><a class="link" href
 <a name="xmlSecTransformIdListDebugDump.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -3722,7 +3723,7 @@ xmlSecTransformIdListDebugDump (<em class="parameter"><code><a class="link" href
 <div class="refsect2">
 <a name="xmlSecTransformIdListDebugXmlDump"></a><h3>xmlSecTransformIdListDebugXmlDump ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
-xmlSecTransformIdListDebugXmlDump (<em class="parameter"><code><a class="link" href="xmlsec-list.html#xmlSecPtrList" title="struct xmlSecPtrList"><span class="type">xmlSecPtrListPtr</span></a> list</code></em>,
+xmlSecTransformIdListDebugXmlDump (<em class="parameter"><code><font><span class="type">xmlSecPtrListPtr</span></font> list</code></em>,
                                    <em class="parameter"><code><font><span class="type">FILE</span></font> *output</code></em>);</pre>
 <p>Prints binary transform debug information to <em class="parameter"><code>output</code></em>
  in XML format.</p>
@@ -3730,9 +3731,9 @@ xmlSecTransformIdListDebugXmlDump (<em class="parameter"><code><a class="link" h
 <a name="xmlSecTransformIdListDebugXmlDump.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -3769,7 +3770,7 @@ the encoded content of an element.</p>
 <div class="refsect2">
 <a name="xmlSecTransformBase64SetLineSize"></a><h3>xmlSecTransformBase64SetLineSize ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
-xmlSecTransformBase64SetLineSize (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
+xmlSecTransformBase64SetLineSize (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
                                   <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> lineSize</code></em>);</pre>
 <p>Sets the max line size to <em class="parameter"><code>lineSize</code></em>
 .</p>
@@ -3777,9 +3778,9 @@ xmlSecTransformBase64SetLineSize (<em class="parameter"><code><a class="link" hr
 <a name="xmlSecTransformBase64SetLineSize.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -3884,11 +3885,12 @@ to match the Signature with the XML production element is removed.
 The output of the transform is equivalent to the output that would
 result from replacing T with an XPath transform containing the following
 XPath parameter element:</p>
-<span style="color: red">&lt;XPath&gt;
+<p>  &lt;XPath xmlns:dsig="..."&gt;
     count(ancestor-or-self::dsig:Signature |
     <font><code class="function">here()</code></font>/ancestor::dsig:Signature[1]) &gt;
     count(ancestor-or-self::dsig:Signature)
-  &lt;/XPath&gt;</span><p>The input and output requirements of this transform are identical to
+  &lt;/XPath&gt;</p>
+<p>The input and output requirements of this transform are identical to
 those of the XPath transform, but may only be applied to a node-set from
 its parent XML document. Note that it is not necessary to use an XPath
 expression evaluator to create this transform. However, this transform
@@ -3939,7 +3941,7 @@ xmlSecTransformXPointerGetKlass (<em class="parameter"><code><span class="type">
 <div class="refsect2">
 <a name="xmlSecTransformXPointerSetExpr"></a><h3>xmlSecTransformXPointerSetExpr ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecTransformXPointerSetExpr (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
+xmlSecTransformXPointerSetExpr (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
                                 <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *expr</code></em>,
                                 <em class="parameter"><code><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetType" title="enum xmlSecNodeSetType"><span class="type">xmlSecNodeSetType</span></a> nodeSetType</code></em>,
                                 <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> hereNode</code></em>);</pre>
@@ -3949,9 +3951,9 @@ xmlSecTransformXPointerSetExpr (<em class="parameter"><code><a class="link" href
 <a name="xmlSecTransformXPointerSetExpr.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -3987,7 +3989,8 @@ xmlSecTransformXPointerSetExpr (<em class="parameter"><code><a class="link" href
 <a name="xmlSecTransformRelationshipGetKlass"></a><h3>xmlSecTransformRelationshipGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformRelationshipGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p></p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -4034,9 +4037,9 @@ to disable everything.</p>
 <a name="xmlSecTransformXsltSetDefaultSecurityPrefs.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>sec</p></td>
@@ -4086,7 +4089,7 @@ such expressions thru XPath/XPointer engine, we need to have this hack here.</p>
 <div class="refsect2">
 <a name="xmlSecTransformVisa3DHackSetID"></a><h3>xmlSecTransformVisa3DHackSetID ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecTransformVisa3DHackSetID (<em class="parameter"><code><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> transform</code></em>,
+xmlSecTransformVisa3DHackSetID (<em class="parameter"><code><font><span class="type">xmlSecTransformPtr</span></font> transform</code></em>,
                                 <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *id</code></em>);</pre>
 <p>Sets the ID value for an Visa3DHack <em class="parameter"><code>transform</code></em>
 .</p>
@@ -4094,9 +4097,9 @@ xmlSecTransformVisa3DHackSetID (<em class="parameter"><code><a class="link" href
 <a name="xmlSecTransformVisa3DHackSetID.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -4135,34 +4138,44 @@ at a time. Changing this impacts xmlsec memory usage and performance.</p>
 <a name="xmlSecTransformStatus.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformStatusNone"></a>xmlSecTransformStatusNone</p></td>
-<td class="enum_member_description"><p>the status unknown.</p></td>
+<td class="enum_member_description">
+<p>the status unknown.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformStatusWorking"></a>xmlSecTransformStatusWorking</p></td>
-<td class="enum_member_description"><p>the transform is executed.</p></td>
+<td class="enum_member_description">
+<p>the transform is executed.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformStatusFinished"></a>xmlSecTransformStatusFinished</p></td>
-<td class="enum_member_description"><p>the transform finished</p></td>
+<td class="enum_member_description">
+<p>the transform finished</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformStatusOk"></a>xmlSecTransformStatusOk</p></td>
-<td class="enum_member_description"><p>the transform succeeded.</p></td>
+<td class="enum_member_description">
+<p>the transform succeeded.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformStatusFail"></a>xmlSecTransformStatusFail</p></td>
-<td class="enum_member_description"><p>the transform failed (an error occur).</p></td>
+<td class="enum_member_description">
+<p>the transform failed (an error occur).</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
@@ -4177,24 +4190,30 @@ at a time. Changing this impacts xmlsec memory usage and performance.</p>
 <a name="xmlSecTransformMode.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformModeNone"></a>xmlSecTransformModeNone</p></td>
-<td class="enum_member_description"><p>the mode is unknown.</p></td>
+<td class="enum_member_description">
+<p>the mode is unknown.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformModePush"></a>xmlSecTransformModePush</p></td>
-<td class="enum_member_description"><p>pushing data thru transform.</p></td>
+<td class="enum_member_description">
+<p>pushing data thru transform.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformModePop"></a>xmlSecTransformModePop</p></td>
-<td class="enum_member_description"><p>popping data from transform.</p></td>
+<td class="enum_member_description">
+<p>popping data from transform.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
@@ -4209,44 +4228,58 @@ at a time. Changing this impacts xmlsec memory usage and performance.</p>
 <a name="xmlSecTransformOperation.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformOperationNone"></a>xmlSecTransformOperationNone</p></td>
-<td class="enum_member_description"><p>the operation is unknown.</p></td>
+<td class="enum_member_description">
+<p>the operation is unknown.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformOperationEncode"></a>xmlSecTransformOperationEncode</p></td>
-<td class="enum_member_description"><p>the encode operation (for base64 transform).</p></td>
+<td class="enum_member_description">
+<p>the encode operation (for base64 transform).</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformOperationDecode"></a>xmlSecTransformOperationDecode</p></td>
-<td class="enum_member_description"><p>the decode operation (for base64 transform).</p></td>
+<td class="enum_member_description">
+<p>the decode operation (for base64 transform).</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformOperationSign"></a>xmlSecTransformOperationSign</p></td>
-<td class="enum_member_description"><p>the sign or digest operation.</p></td>
+<td class="enum_member_description">
+<p>the sign or digest operation.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformOperationVerify"></a>xmlSecTransformOperationVerify</p></td>
-<td class="enum_member_description"><p>the verification of signature or digest operation.</p></td>
+<td class="enum_member_description">
+<p>the verification of signature or digest operation.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformOperationEncrypt"></a>xmlSecTransformOperationEncrypt</p></td>
-<td class="enum_member_description"><p>the encryption operation.</p></td>
+<td class="enum_member_description">
+<p>the encryption operation.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformOperationDecrypt"></a>xmlSecTransformOperationDecrypt</p></td>
-<td class="enum_member_description"><p>the decryption operation.</p></td>
+<td class="enum_member_description">
+<p>the decryption operation.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
@@ -4349,35 +4382,35 @@ at a time. Changing this impacts xmlsec memory usage and performance.</p>
 <a name="xmlSecTransformUsageDSigTransform"></a><h3>xmlSecTransformUsageDSigTransform</h3>
 <pre class="programlisting">#define xmlSecTransformUsageDSigTransform       0x0001
 </pre>
-<p>Transform could be used in <a class="ulink" href="" target="_top">&lt;dsig:Transform/&gt;</a>.</p>
+<p>Transform could be used in &lt;dsig:Transform&gt;.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecTransformUsageC14NMethod"></a><h3>xmlSecTransformUsageC14NMethod</h3>
 <pre class="programlisting">#define xmlSecTransformUsageC14NMethod          0x0002
 </pre>
-<p>Transform could be used in <a class="ulink" href="" target="_top">&lt;dsig:CanonicalizationMethod/&gt;</a>.</p>
+<p>Transform could be used in &lt;dsig:CanonicalizationMethod&gt;.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecTransformUsageDigestMethod"></a><h3>xmlSecTransformUsageDigestMethod</h3>
 <pre class="programlisting">#define xmlSecTransformUsageDigestMethod        0x0004
 </pre>
-<p>Transform could be used in <a class="ulink" href="" target="_top">&lt;dsig:DigestMethod/&gt;</a>.</p>
+<p>Transform could be used in &lt;dsig:DigestMethod&gt;.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecTransformUsageSignatureMethod"></a><h3>xmlSecTransformUsageSignatureMethod</h3>
 <pre class="programlisting">#define xmlSecTransformUsageSignatureMethod     0x0008
 </pre>
-<p>Transform could be used in <a class="ulink" href="" target="_top">&lt;dsig:SignatureMethod/&gt;</a>.</p>
+<p>Transform could be used in &lt;dsig:SignatureMethod&gt;.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecTransformUsageEncryptionMethod"></a><h3>xmlSecTransformUsageEncryptionMethod</h3>
 <pre class="programlisting">#define xmlSecTransformUsageEncryptionMethod    0x0010
 </pre>
-<p>Transform could be used in <a class="ulink" href="" target="_top">&lt;enc:EncryptionMethod/&gt;</a>.</p>
+<p>Transform could be used in &lt;enc:EncryptionMethod&gt;.</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -4425,9 +4458,9 @@ documents that don't follow XML, XPointer and XML DSig specifications.</p>
 <a name="xmlSecTransformCtx.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="300px" class="struct_members_name">
+<col class="struct_members_description">
+<col width="200px" class="struct_members_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -4470,7 +4503,7 @@ if needed).</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-buffer.html#xmlSecBuffer" title="struct xmlSecBuffer"><span class="type">xmlSecBufferPtr</span></a> <em class="structfield"><code><a name="xmlSecTransformCtx.result"></a>result</code></em>;</p></td>
+<td class="struct_member_name"><p><font><span class="type">xmlSecBufferPtr</span></font> <em class="structfield"><code><a name="xmlSecTransformCtx.result"></a>result</code></em>;</p></td>
 <td class="struct_member_description"><p>the pointer to transforms result buffer.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
@@ -4490,12 +4523,12 @@ if needed).</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> <em class="structfield"><code><a name="xmlSecTransformCtx.first"></a>first</code></em>;</p></td>
+<td class="struct_member_name"><p><font><span class="type">xmlSecTransformPtr</span></font> <em class="structfield"><code><a name="xmlSecTransformCtx.first"></a>first</code></em>;</p></td>
 <td class="struct_member_description"><p>the first transform in the chain.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> <em class="structfield"><code><a name="xmlSecTransformCtx.last"></a>last</code></em>;</p></td>
+<td class="struct_member_name"><p><font><span class="type">xmlSecTransformPtr</span></font> <em class="structfield"><code><a name="xmlSecTransformCtx.last"></a>last</code></em>;</p></td>
 <td class="struct_member_description"><p>the last transform in the chain.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
@@ -4544,9 +4577,9 @@ if needed).</p></td>
 <a name="xmlSecTransform.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="300px" class="struct_members_name">
+<col class="struct_members_description">
+<col width="200px" class="struct_members_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -4566,16 +4599,16 @@ if needed).</p></td>
 </tr>
 <tr>
 <td class="struct_member_name"><p><font><span class="type">xmlNodePtr</span></font> <em class="structfield"><code><a name="xmlSecTransform.hereNode"></a>hereNode</code></em>;</p></td>
-<td class="struct_member_description"><p>the pointer to transform's <a class="ulink" href="" target="_top">&lt;dsig:Transform /&gt;</a> node.</p></td>
+<td class="struct_member_description"><p>the pointer to transform's &lt;dsig:Transform /&gt; node.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> <em class="structfield"><code><a name="xmlSecTransform.next"></a>next</code></em>;</p></td>
+<td class="struct_member_name"><p><font><span class="type">xmlSecTransformPtr</span></font> <em class="structfield"><code><a name="xmlSecTransform.next"></a>next</code></em>;</p></td>
 <td class="struct_member_description"><p>the pointer to next transform in the chain.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> <em class="structfield"><code><a name="xmlSecTransform.prev"></a>prev</code></em>;</p></td>
+<td class="struct_member_name"><p><font><span class="type">xmlSecTransformPtr</span></font> <em class="structfield"><code><a name="xmlSecTransform.prev"></a>prev</code></em>;</p></td>
 <td class="struct_member_description"><p>the pointer to previous transform in the chain.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
@@ -4590,12 +4623,12 @@ if needed).</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> <em class="structfield"><code><a name="xmlSecTransform.inNodes"></a>inNodes</code></em>;</p></td>
+<td class="struct_member_name"><p><font><span class="type">xmlSecNodeSetPtr</span></font> <em class="structfield"><code><a name="xmlSecTransform.inNodes"></a>inNodes</code></em>;</p></td>
 <td class="struct_member_description"><p>the input XML nodes.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> <em class="structfield"><code><a name="xmlSecTransform.outNodes"></a>outNodes</code></em>;</p></td>
+<td class="struct_member_name"><p><font><span class="type">xmlSecNodeSetPtr</span></font> <em class="structfield"><code><a name="xmlSecTransform.outNodes"></a>outNodes</code></em>;</p></td>
 <td class="struct_member_description"><p>the output XML nodes.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
@@ -4654,9 +4687,9 @@ if needed).</p></td>
 <a name="xmlSecTransformKlass.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="300px" class="struct_members_name">
+<col class="struct_members_description">
+<col width="200px" class="struct_members_annotations">
 </colgroup>
 <tbody>
 <tr>

@@ -96,13 +96,13 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="xmlsec-nss-pkikeys.functions"></a><h2>Functions</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
+<col width="150px" class="functions_return">
+<col class="functions_name">
 </colgroup>
 <tbody>
 <tr>
 <td class="function_type">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="returnvalue">xmlSecKeyDataPtr</span></a>
+<font><span class="returnvalue">xmlSecKeyDataPtr</span></font>
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-nss-pkikeys.html#xmlSecNssPKIAdoptKey" title="xmlSecNssPKIAdoptKey ()">xmlSecNssPKIAdoptKey</a> <span class="c_punctuation">()</span>
@@ -145,14 +145,15 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </div>
 <div class="refsect1">
 <a name="xmlsec-nss-pkikeys.description"></a><h2>Description</h2>
-<p>PKI keys data implementation.
+<p>
+PKI keys data implementation.
 </p>
 </div>
 <div class="refsect1">
 <a name="xmlsec-nss-pkikeys.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="xmlSecNssPKIAdoptKey"></a><h3>xmlSecNssPKIAdoptKey ()</h3>
-<pre class="programlisting"><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="returnvalue">xmlSecKeyDataPtr</span></a>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataPtr</span></font>
 xmlSecNssPKIAdoptKey (<em class="parameter"><code><font><span class="type">SECKEYPrivateKey</span></font> *privkey</code></em>,
                       <em class="parameter"><code><font><span class="type">SECKEYPublicKey</span></font> *pubkey</code></em>);</pre>
 <p>Build a KeyData object from the given Private Key and Public
@@ -161,9 +162,9 @@ Key handles.</p>
 <a name="xmlSecNssPKIAdoptKey.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -188,15 +189,15 @@ Key handles.</p>
 <div class="refsect2">
 <a name="xmlSecNssPKIKeyDataGetPubKey"></a><h3>xmlSecNssPKIKeyDataGetPubKey ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">SECKEYPublicKey</span></font> *
-xmlSecNssPKIKeyDataGetPubKey (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+xmlSecNssPKIKeyDataGetPubKey (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
 <p>Gets the Public Key from the key data.</p>
 <div class="refsect3">
 <a name="xmlSecNssPKIKeyDataGetPubKey.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -215,15 +216,15 @@ Caller is responsible for freeing the key when done</p>
 <div class="refsect2">
 <a name="xmlSecNssPKIKeyDataGetPrivKey"></a><h3>xmlSecNssPKIKeyDataGetPrivKey ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">SECKEYPrivateKey</span></font> *
-xmlSecNssPKIKeyDataGetPrivKey (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+xmlSecNssPKIKeyDataGetPrivKey (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
 <p>Gets the Private Key from the key data.</p>
 <div class="refsect3">
 <a name="xmlSecNssPKIKeyDataGetPrivKey.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -242,15 +243,15 @@ Caller is responsible for freeing the key when done</p>
 <div class="refsect2">
 <a name="xmlSecNssPKIKeyDataGetKeyType"></a><h3>xmlSecNssPKIKeyDataGetKeyType ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">KeyType</span></font>
-xmlSecNssPKIKeyDataGetKeyType (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+xmlSecNssPKIKeyDataGetKeyType (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
 <p>Gets the Key Type from the key data.</p>
 <div class="refsect3">
 <a name="xmlSecNssPKIKeyDataGetKeyType.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -268,16 +269,16 @@ xmlSecNssPKIKeyDataGetKeyType (<em class="parameter"><code><a class="link" href=
 <div class="refsect2">
 <a name="xmlSecNssPKIKeyDataDuplicate"></a><h3>xmlSecNssPKIKeyDataDuplicate ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecNssPKIKeyDataDuplicate (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> dst</code></em>,
-                              <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> src</code></em>);</pre>
+xmlSecNssPKIKeyDataDuplicate (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> dst</code></em>,
+                              <em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> src</code></em>);</pre>
 <p>Duplicates the keydata from src to dst</p>
 <div class="refsect3">
 <a name="xmlSecNssPKIKeyDataDuplicate.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -301,7 +302,6 @@ xmlSecNssPKIKeyDataDuplicate (<em class="parameter"><code><a class="link" href="
 </div>
 <div class="refsect1">
 <a name="xmlsec-nss-pkikeys.other_details"></a><h2>Types and Values</h2>
-<p></p>
 </div>
 </div>
 <div class="footer">

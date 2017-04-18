@@ -88,7 +88,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="xmlsec-x509.top_of_page"></a>x509</span></h2>
-<p>x509 &#8212; <a class="ulink" href="" target="_top">&lt;dsig:X509Certificate/&gt;</a> node parser.</p>
+<p>x509 &#8212; &lt;dsig:X509Certificate/&gt; node parser.</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -96,8 +96,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="xmlsec-x509.functions"></a><h2>Functions</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
+<col width="150px" class="functions_return">
+<col class="functions_name">
 </colgroup>
 <tbody><tr>
 <td class="function_type">
@@ -113,8 +113,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="xmlsec-x509.other"></a><h2>Types and Values</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
+<col width="150px" class="name">
+<col class="description">
 </colgroup>
 <tbody>
 <tr>
@@ -146,7 +146,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </div>
 <div class="refsect1">
 <a name="xmlsec-x509.description"></a><h2>Description</h2>
-<p><a class="ulink" href="" target="_top">&lt;dsig:X509Certificate/&gt;</a> node parser.
+<p>
+&lt;dsig:X509Certificate/&gt; node parser.
 </p>
 </div>
 <div class="refsect1">
@@ -155,26 +156,26 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="xmlSecX509DataGetNodeContent"></a><h3>xmlSecX509DataGetNodeContent ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecX509DataGetNodeContent (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
-                              <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
-<p>Reads the contents of <a class="ulink" href="" target="_top">&lt;dsig:X509Data/&gt;</a> node and returns it as
+                              <em class="parameter"><code><font><span class="type">xmlSecKeyInfoCtxPtr</span></font> keyInfoCtx</code></em>);</pre>
+<p>Reads the contents of &lt;dsig:X509Data/&gt; node and returns it as
 a bits mask.</p>
 <div class="refsect3">
 <a name="xmlSecX509DataGetNodeContent.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
 <td class="parameter_name"><p>node</p></td>
-<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:X509Data/&gt;</a> node.</p></td>
+<td class="parameter_description"><p>the pointer to &lt;dsig:X509Data/&gt; node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>keyInfoCtx</p></td>
-<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node processing context.</p></td>
+<td class="parameter_description"><p>the pointer to &lt;dsig:KeyInfo/&gt; node processing context.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -182,7 +183,7 @@ a bits mask.</p>
 </div>
 <div class="refsect3">
 <a name="xmlSecX509DataGetNodeContent.returns"></a><h4>Returns</h4>
-<p> the bit mask representing the <a class="ulink" href="" target="_top">&lt;dsig:X509Data/&gt;</a> node content
+<p> the bit mask representing the &lt;dsig:X509Data/&gt; node content
 or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -193,42 +194,42 @@ or a negative value if an error occurs.</p>
 <a name="XMLSEC-X509DATA-CERTIFICATE-NODE:CAPS"></a><h3>XMLSEC_X509DATA_CERTIFICATE_NODE</h3>
 <pre class="programlisting">#define XMLSEC_X509DATA_CERTIFICATE_NODE                        0x00000001
 </pre>
-<a class="ulink" href="" target="_top">&lt;dsig:X509Certificate/&gt;</a> node found or would be written back.
+<p>&lt;dsig:X509Certificate/&gt; node found or would be written back.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-X509DATA-SUBJECTNAME-NODE:CAPS"></a><h3>XMLSEC_X509DATA_SUBJECTNAME_NODE</h3>
 <pre class="programlisting">#define XMLSEC_X509DATA_SUBJECTNAME_NODE                        0x00000002
 </pre>
-<a class="ulink" href="" target="_top">&lt;dsig:X509SubjectName/&gt;</a> node found or would be written back.
+<p>&lt;dsig:X509SubjectName/&gt; node found or would be written back.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-X509DATA-ISSUERSERIAL-NODE:CAPS"></a><h3>XMLSEC_X509DATA_ISSUERSERIAL_NODE</h3>
 <pre class="programlisting">#define XMLSEC_X509DATA_ISSUERSERIAL_NODE                       0x00000004
 </pre>
-<a class="ulink" href="" target="_top">&lt;dsig:X509IssuerSerial/&gt;</a> node found or would be written back.
+<p>&lt;dsig:X509IssuerSerial/&gt; node found or would be written back.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-X509DATA-SKI-NODE:CAPS"></a><h3>XMLSEC_X509DATA_SKI_NODE</h3>
 <pre class="programlisting">#define XMLSEC_X509DATA_SKI_NODE                                0x00000008
 </pre>
-<a class="ulink" href="" target="_top">&lt;dsig:X509SKI/&gt;</a> node found or would be written back.
+<p>&lt;dsig:X509SKI/&gt; node found or would be written back.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-X509DATA-CRL-NODE:CAPS"></a><h3>XMLSEC_X509DATA_CRL_NODE</h3>
 <pre class="programlisting">#define XMLSEC_X509DATA_CRL_NODE                                0x00000010
 </pre>
-<a class="ulink" href="" target="_top">&lt;dsig:X509CRL/&gt;</a> node found or would be written back.
+<p>&lt;dsig:X509CRL/&gt; node found or would be written back.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-X509DATA-DEFAULT:CAPS"></a><h3>XMLSEC_X509DATA_DEFAULT</h3>
 <pre class="programlisting">#define             XMLSEC_X509DATA_DEFAULT</pre>
-<p>Default set of nodes to write in case of empty</p>
-<a class="ulink" href="" target="_top">&lt;dsig:X509Data/&gt;</a> node template.
+<p>Default set of nodes to write in case of empty
+&lt;dsig:X509Data/&gt; node template.</p>
 </div>
 </div>
 </div>

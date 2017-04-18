@@ -91,7 +91,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
  * XML Security Library example: Decrypting an encrypted file using a custom keys manager.
  * 
  * Decrypts encrypted XML file using a custom files based keys manager.
- * We assume that key's name in &lt;dsig:KeyName/&gt; element is just 
+ * We assume that key's name in <a class="ulink" href="" target="_top">&lt;dsig:KeyName/&gt;</a> element is just 
  * key's file name in the current folder.
  * 
  * Usage: 
@@ -364,7 +364,7 @@ create_files_keys_mngr(void) {
 /****************************************************************************
  *
  * Files Keys Store: we assume that key's name (content of the 
- * &lt;dsig:KeyName/&gt; element is a name of the file with a key (in the 
+ * <a class="ulink" href="" target="_top">&lt;dsig:KeyName/&gt;</a> element is a name of the file with a key (in the 
  * current folder).
  * Attention: this probably not a good solution for high traffic systems.
  * 
@@ -402,7 +402,7 @@ files_keys_store_get_klass(void) {
  * files_keys_store_find_key:
  * @store:              the pointer to simple keys store.
  * @name:               the desired key name.
- * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; node processing context.
+ * @keyInfoCtx:         the pointer to <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node processing context.
  *  
  * Lookups key in the @store. The caller is responsible for destroying
  * returned key with #xmlSecKeyDestroy function.

@@ -340,20 +340,20 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
         goto done;   
     }
 
-    /* we want to put encrypted data in the &lt;enc:CipherValue/&gt; node */
+    /* we want to put encrypted data in the <a class="ulink" href="" target="_top">&lt;enc:CipherValue/&gt;</a> node */
     if(xmlSecTmplEncDataEnsureCipherValue(encDataNode) == NULL) {
         fprintf(stderr, "Error: failed to add CipherValue node\n");
         goto done;   
     }
 
-    /* add &lt;dsig:KeyInfo/&gt; */
+    /* add <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> */
     keyInfoNode = xmlSecTmplEncDataEnsureKeyInfo(encDataNode, NULL);
     if(keyInfoNode == NULL) {
         fprintf(stderr, "Error: failed to add key info\n");
         goto done;              
     }
 
-    /* add &lt;enc:EncryptedKey/&gt; to store the encrypted session key */
+    /* add <a class="ulink" href="" target="_top">&lt;enc:EncryptedKey/&gt;</a> to store the encrypted session key */
     encKeyNode = xmlSecTmplKeyInfoAddEncryptedKey(keyInfoNode, 
                                     xmlSecTransformRsaPkcs1Id, 
                                     NULL, NULL, NULL);
@@ -362,13 +362,13 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
         goto done;              
     }
 
-    /* we want to put encrypted key in the &lt;enc:CipherValue/&gt; node */
+    /* we want to put encrypted key in the <a class="ulink" href="" target="_top">&lt;enc:CipherValue/&gt;</a> node */
     if(xmlSecTmplEncDataEnsureCipherValue(encKeyNode) == NULL) {
         fprintf(stderr, "Error: failed to add CipherValue node\n");
         goto done;   
     }
 
-    /* add &lt;dsig:KeyInfo/&gt; and &lt;dsig:KeyName/&gt; nodes to &lt;enc:EncryptedKey/&gt; */
+    /* add <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> and <a class="ulink" href="" target="_top">&lt;dsig:KeyName/&gt;</a> nodes to <a class="ulink" href="" target="_top">&lt;enc:EncryptedKey/&gt;</a> */
     keyInfoNode2 = xmlSecTmplEncDataEnsureKeyInfo(encKeyNode, NULL);
     if(keyInfoNode2 == NULL) {
         fprintf(stderr, "Error: failed to add key info\n");

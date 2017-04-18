@@ -96,13 +96,13 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="xmlsec-keysdata.functions"></a><h2>Functions</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
+<col width="150px" class="functions_return">
+<col class="functions_name">
 </colgroup>
 <tbody>
 <tr>
 <td class="function_type">
-<a class="link" href="xmlsec-list.html#xmlSecPtrList" title="struct xmlSecPtrList"><span class="returnvalue">xmlSecPtrListPtr</span></a>
+<font><span class="returnvalue">xmlSecPtrListPtr</span></font>
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdsGet" title="xmlSecKeyDataIdsGet ()">xmlSecKeyDataIdsGet</a> <span class="c_punctuation">()</span>
@@ -142,7 +142,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </tr>
 <tr>
 <td class="function_type">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="returnvalue">xmlSecKeyDataPtr</span></a>
+<font><span class="returnvalue">xmlSecKeyDataPtr</span></font>
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataCreate" title="xmlSecKeyDataCreate ()">xmlSecKeyDataCreate</a> <span class="c_punctuation">()</span>
@@ -150,7 +150,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </tr>
 <tr>
 <td class="function_type">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="returnvalue">xmlSecKeyDataPtr</span></a>
+<font><span class="returnvalue">xmlSecKeyDataPtr</span></font>
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataDuplicate" title="xmlSecKeyDataDuplicate ()">xmlSecKeyDataDuplicate</a> <span class="c_punctuation">()</span>
@@ -520,7 +520,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </tr>
 <tr>
 <td class="function_type">
-<a class="link" href="xmlsec-buffer.html#xmlSecBuffer" title="struct xmlSecBuffer"><span class="returnvalue">xmlSecBufferPtr</span></a>
+<font><span class="returnvalue">xmlSecBufferPtr</span></font>
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueGetBuffer" title="xmlSecKeyDataBinaryValueGetBuffer ()">xmlSecKeyDataBinaryValueGetBuffer</a> <span class="c_punctuation">()</span>
@@ -536,7 +536,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </tr>
 <tr>
 <td class="function_type">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStore" title="struct xmlSecKeyDataStore"><span class="returnvalue">xmlSecKeyDataStorePtr</span></a>
+<font><span class="returnvalue">xmlSecKeyDataStorePtr</span></font>
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStoreCreate" title="xmlSecKeyDataStoreCreate ()">xmlSecKeyDataStoreCreate</a> <span class="c_punctuation">()</span>
@@ -611,8 +611,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="xmlsec-keysdata.other"></a><h2>Types and Values</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
+<col width="150px" class="name">
+<col class="description">
 </colgroup>
 <tbody>
 <tr>
@@ -752,14 +752,15 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </div>
 <div class="refsect1">
 <a name="xmlsec-keysdata.description"></a><h2>Description</h2>
-<p>Crypto key data object definition.
+<p>
+Crypto key data object definition.
 </p>
 </div>
 <div class="refsect1">
 <a name="xmlsec-keysdata.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="xmlSecKeyDataIdsGet"></a><h3>xmlSecKeyDataIdsGet ()</h3>
-<pre class="programlisting"><a class="link" href="xmlsec-list.html#xmlSecPtrList" title="struct xmlSecPtrList"><span class="returnvalue">xmlSecPtrListPtr</span></a>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecPtrListPtr</span></font>
 xmlSecKeyDataIdsGet (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Gets global registered key data klasses list.</p>
 <div class="refsect3">
@@ -793,8 +794,8 @@ xmlSecKeyDataIdsShutdown (<em class="parameter"><code><span class="type">void</s
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecKeyDataIdsRegisterDefault (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Registers default (implemented by XML Security Library)
-key data klasses: <a class="ulink" href="" target="_top">&lt;dsig:KeyName/&gt;</a> element processing klass,</p>
-<a class="ulink" href="" target="_top">&lt;dsig:KeyValue/&gt;</a> element processing klass, ...
+key data klasses: &lt;dsig:KeyName/&gt; element processing klass,
+&lt;dsig:KeyValue/&gt; element processing klass, ...</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataIdsRegisterDefault.returns"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
@@ -811,9 +812,9 @@ xmlSecKeyDataIdsRegister (<em class="parameter"><code><font><span class="type">x
 <a name="xmlSecKeyDataIdsRegister.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>id</p></td>
@@ -830,7 +831,7 @@ xmlSecKeyDataIdsRegister (<em class="parameter"><code><font><span class="type">x
 <hr>
 <div class="refsect2">
 <a name="xmlSecKeyDataCreate"></a><h3>xmlSecKeyDataCreate ()</h3>
-<pre class="programlisting"><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="returnvalue">xmlSecKeyDataPtr</span></a>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataPtr</span></font>
 xmlSecKeyDataCreate (<em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> id</code></em>);</pre>
 <p>Allocates and initializes new key data of the specified type <em class="parameter"><code>id</code></em>
 .
@@ -840,9 +841,9 @@ Caller is responsible for destroying returned object with
 <a name="xmlSecKeyDataCreate.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>id</p></td>
@@ -860,8 +861,8 @@ or NULL if an error occurs.</p>
 <hr>
 <div class="refsect2">
 <a name="xmlSecKeyDataDuplicate"></a><h3>xmlSecKeyDataDuplicate ()</h3>
-<pre class="programlisting"><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="returnvalue">xmlSecKeyDataPtr</span></a>
-xmlSecKeyDataDuplicate (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataPtr</span></font>
+xmlSecKeyDataDuplicate (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
 <p>Creates a duplicate of the given <em class="parameter"><code>data</code></em>
 . Caller is responsible for
 destroying returned object with <a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataDestroy" title="xmlSecKeyDataDestroy ()"><span class="type">xmlSecKeyDataDestroy</span></a> function.</p>
@@ -869,9 +870,9 @@ destroying returned object with <a class="link" href="xmlsec-keysdata.html#xmlSe
 <a name="xmlSecKeyDataDuplicate.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -890,15 +891,15 @@ or NULL if an error occurs.</p>
 <div class="refsect2">
 <a name="xmlSecKeyDataDestroy"></a><h3>xmlSecKeyDataDestroy ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
-xmlSecKeyDataDestroy (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+xmlSecKeyDataDestroy (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
 <p>Destroys the data and frees all allocated memory.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataDestroy.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -912,7 +913,7 @@ xmlSecKeyDataDestroy (<em class="parameter"><code><a class="link" href="xmlsec-k
 <div class="refsect2">
 <a name="xmlSecKeyDataGenerate"></a><h3>xmlSecKeyDataGenerate ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecKeyDataGenerate (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
+xmlSecKeyDataGenerate (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
                        <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> sizeBits</code></em>,
                        <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="type">xmlSecKeyDataType</span></a> type</code></em>);</pre>
 <p>Generates new key data of given size and type.</p>
@@ -920,9 +921,9 @@ xmlSecKeyDataGenerate (<em class="parameter"><code><a class="link" href="xmlsec-
 <a name="xmlSecKeyDataGenerate.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -952,15 +953,15 @@ xmlSecKeyDataGenerate (<em class="parameter"><code><a class="link" href="xmlsec-
 <div class="refsect2">
 <a name="xmlSecKeyDataGetType"></a><h3>xmlSecKeyDataGetType ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="returnvalue">xmlSecKeyDataType</span></a>
-xmlSecKeyDataGetType (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+xmlSecKeyDataGetType (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
 <p>Gets key data type.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataGetType.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -978,15 +979,15 @@ xmlSecKeyDataGetType (<em class="parameter"><code><a class="link" href="xmlsec-k
 <div class="refsect2">
 <a name="xmlSecKeyDataGetSize"></a><h3>xmlSecKeyDataGetSize ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
-xmlSecKeyDataGetSize (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+xmlSecKeyDataGetSize (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
 <p>Gets key data size.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataGetSize.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -1004,15 +1005,15 @@ xmlSecKeyDataGetSize (<em class="parameter"><code><a class="link" href="xmlsec-k
 <div class="refsect2">
 <a name="xmlSecKeyDataGetIdentifier"></a><h3>xmlSecKeyDataGetIdentifier ()</h3>
 <pre class="programlisting">const <font><span class="returnvalue">xmlChar</span></font> *
-xmlSecKeyDataGetIdentifier (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+xmlSecKeyDataGetIdentifier (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
 <p>Gets key data identifier string.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataGetIdentifier.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -1030,16 +1031,16 @@ xmlSecKeyDataGetIdentifier (<em class="parameter"><code><a class="link" href="xm
 <div class="refsect2">
 <a name="xmlSecKeyDataDebugDump"></a><h3>xmlSecKeyDataDebugDump ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
-xmlSecKeyDataDebugDump (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
+xmlSecKeyDataDebugDump (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
                         <em class="parameter"><code><font><span class="type">FILE</span></font> *output</code></em>);</pre>
 <p>Prints key data debug info.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataDebugDump.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1060,16 +1061,16 @@ xmlSecKeyDataDebugDump (<em class="parameter"><code><a class="link" href="xmlsec
 <div class="refsect2">
 <a name="xmlSecKeyDataDebugXmlDump"></a><h3>xmlSecKeyDataDebugXmlDump ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
-xmlSecKeyDataDebugXmlDump (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
+xmlSecKeyDataDebugXmlDump (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
                            <em class="parameter"><code><font><span class="type">FILE</span></font> *output</code></em>);</pre>
 <p>Prints key data debug info in XML format.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataDebugXmlDump.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1091,9 +1092,9 @@ xmlSecKeyDataDebugXmlDump (<em class="parameter"><code><a class="link" href="xml
 <a name="xmlSecKeyDataXmlRead"></a><h3>xmlSecKeyDataXmlRead ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecKeyDataXmlRead (<em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> id</code></em>,
-                      <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
+                      <em class="parameter"><code><font><span class="type">xmlSecKeyPtr</span></font> key</code></em>,
                       <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
-                      <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
+                      <em class="parameter"><code><font><span class="type">xmlSecKeyInfoCtxPtr</span></font> keyInfoCtx</code></em>);</pre>
 <p>Reads the key data of klass <em class="parameter"><code>id</code></em>
  from XML <em class="parameter"><code>node</code></em>
  and adds them to <em class="parameter"><code>key</code></em>
@@ -1102,9 +1103,9 @@ xmlSecKeyDataXmlRead (<em class="parameter"><code><font><span class="type">xmlSe
 <a name="xmlSecKeyDataXmlRead.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1124,7 +1125,7 @@ xmlSecKeyDataXmlRead (<em class="parameter"><code><font><span class="type">xmlSe
 </tr>
 <tr>
 <td class="parameter_name"><p>keyInfoCtx</p></td>
-<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> element processing context.</p></td>
+<td class="parameter_description"><p>the pointer to &lt;dsig:KeyInfo/&gt; element processing context.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -1140,9 +1141,9 @@ xmlSecKeyDataXmlRead (<em class="parameter"><code><font><span class="type">xmlSe
 <a name="xmlSecKeyDataXmlWrite"></a><h3>xmlSecKeyDataXmlWrite ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecKeyDataXmlWrite (<em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> id</code></em>,
-                       <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
+                       <em class="parameter"><code><font><span class="type">xmlSecKeyPtr</span></font> key</code></em>,
                        <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
-                       <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
+                       <em class="parameter"><code><font><span class="type">xmlSecKeyInfoCtxPtr</span></font> keyInfoCtx</code></em>);</pre>
 <p>Writes the key data of klass <em class="parameter"><code>id</code></em>
  from <em class="parameter"><code>key</code></em>
  to an XML <em class="parameter"><code>node</code></em>
@@ -1151,9 +1152,9 @@ xmlSecKeyDataXmlWrite (<em class="parameter"><code><font><span class="type">xmlS
 <a name="xmlSecKeyDataXmlWrite.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1173,7 +1174,7 @@ xmlSecKeyDataXmlWrite (<em class="parameter"><code><font><span class="type">xmlS
 </tr>
 <tr>
 <td class="parameter_name"><p>keyInfoCtx</p></td>
-<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> element processing context.</p></td>
+<td class="parameter_description"><p>the pointer to &lt;dsig:KeyInfo/&gt; element processing context.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -1189,10 +1190,10 @@ xmlSecKeyDataXmlWrite (<em class="parameter"><code><font><span class="type">xmlS
 <a name="xmlSecKeyDataBinRead"></a><h3>xmlSecKeyDataBinRead ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecKeyDataBinRead (<em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> id</code></em>,
-                      <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
+                      <em class="parameter"><code><font><span class="type">xmlSecKeyPtr</span></font> key</code></em>,
                       <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *buf</code></em>,
                       <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> bufSize</code></em>,
-                      <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
+                      <em class="parameter"><code><font><span class="type">xmlSecKeyInfoCtxPtr</span></font> keyInfoCtx</code></em>);</pre>
 <p>Reads the key data of klass <em class="parameter"><code>id</code></em>
  from binary buffer <em class="parameter"><code>buf</code></em>
  to <em class="parameter"><code>key</code></em>
@@ -1201,9 +1202,9 @@ xmlSecKeyDataBinRead (<em class="parameter"><code><font><span class="type">xmlSe
 <a name="xmlSecKeyDataBinRead.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1228,7 +1229,7 @@ xmlSecKeyDataBinRead (<em class="parameter"><code><font><span class="type">xmlSe
 </tr>
 <tr>
 <td class="parameter_name"><p>keyInfoCtx</p></td>
-<td class="parameter_description"><p>the <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node processing context.</p></td>
+<td class="parameter_description"><p>the &lt;dsig:KeyInfo/&gt; node processing context.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -1244,10 +1245,10 @@ xmlSecKeyDataBinRead (<em class="parameter"><code><font><span class="type">xmlSe
 <a name="xmlSecKeyDataBinWrite"></a><h3>xmlSecKeyDataBinWrite ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecKeyDataBinWrite (<em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> id</code></em>,
-                       <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
+                       <em class="parameter"><code><font><span class="type">xmlSecKeyPtr</span></font> key</code></em>,
                        <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> **buf</code></em>,
                        <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> *bufSize</code></em>,
-                       <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
+                       <em class="parameter"><code><font><span class="type">xmlSecKeyInfoCtxPtr</span></font> keyInfoCtx</code></em>);</pre>
 <p>Writes the key data of klass <em class="parameter"><code>id</code></em>
  from the <em class="parameter"><code>key</code></em>
  to a binary buffer <em class="parameter"><code>buf</code></em>
@@ -1256,9 +1257,9 @@ xmlSecKeyDataBinWrite (<em class="parameter"><code><font><span class="type">xmlS
 <a name="xmlSecKeyDataBinWrite.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1283,7 +1284,7 @@ xmlSecKeyDataBinWrite (<em class="parameter"><code><font><span class="type">xmlS
 </tr>
 <tr>
 <td class="parameter_name"><p>keyInfoCtx</p></td>
-<td class="parameter_description"><p>the <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node processing context.</p></td>
+<td class="parameter_description"><p>the &lt;dsig:KeyInfo/&gt; node processing context.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -1303,9 +1304,9 @@ xmlSecKeyDataBinWrite (<em class="parameter"><code><font><span class="type">xmlS
 <a name="xmlSecKeyDataGetName.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -1327,9 +1328,9 @@ or 0 otherwise.</p>
 <a name="xmlSecKeyDataIsValid.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -1351,9 +1352,9 @@ or 0 otherwise.</p>
 <a name="xmlSecKeyDataCheckId.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1381,9 +1382,9 @@ or 0 otherwise.</p>
 <a name="xmlSecKeyDataCheckUsage.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1412,9 +1413,9 @@ or 0 otherwise.</p>
 <a name="xmlSecKeyDataCheckSize.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1435,15 +1436,15 @@ or 0 otherwise.</p>
 <div class="refsect2">
 <a name="xmlSecKeyDataInitMethod"></a><h3>xmlSecKeyDataInitMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-<span class="c_punctuation">(</span>*xmlSecKeyDataInitMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+<span class="c_punctuation">(</span>*xmlSecKeyDataInitMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
 <p>Key data specific initialization method.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataInitMethod.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -1461,16 +1462,16 @@ or 0 otherwise.</p>
 <div class="refsect2">
 <a name="xmlSecKeyDataDuplicateMethod"></a><h3>xmlSecKeyDataDuplicateMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-<span class="c_punctuation">(</span>*xmlSecKeyDataDuplicateMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> dst</code></em>,
-                                 <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> src</code></em>);</pre>
+<span class="c_punctuation">(</span>*xmlSecKeyDataDuplicateMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> dst</code></em>,
+                                 <em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> src</code></em>);</pre>
 <p>Key data specific duplication (copy) method.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataDuplicateMethod.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1495,16 +1496,16 @@ or 0 otherwise.</p>
 <div class="refsect2">
 <a name="xmlSecKeyDataFinalizeMethod"></a><h3>xmlSecKeyDataFinalizeMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
-<span class="c_punctuation">(</span>*xmlSecKeyDataFinalizeMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+<span class="c_punctuation">(</span>*xmlSecKeyDataFinalizeMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
 <p>Key data specific finalization method. All the objects and resources allocated
 by the key data object must be freed inside this method.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataFinalizeMethod.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -1519,17 +1520,17 @@ by the key data object must be freed inside this method.</p>
 <a name="xmlSecKeyDataXmlReadMethod"></a><h3>xmlSecKeyDataXmlReadMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 <span class="c_punctuation">(</span>*xmlSecKeyDataXmlReadMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> id</code></em>,
-                               <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
+                               <em class="parameter"><code><font><span class="type">xmlSecKeyPtr</span></font> key</code></em>,
                                <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
-                               <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
+                               <em class="parameter"><code><font><span class="type">xmlSecKeyInfoCtxPtr</span></font> keyInfoCtx</code></em>);</pre>
 <p>Key data specific method for reading XML node.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataXmlReadMethod.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1549,7 +1550,7 @@ by the key data object must be freed inside this method.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>keyInfoCtx</p></td>
-<td class="parameter_description"><p>the <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node processing context.</p></td>
+<td class="parameter_description"><p>the &lt;dsig:KeyInfo/&gt; node processing context.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -1565,17 +1566,17 @@ by the key data object must be freed inside this method.</p>
 <a name="xmlSecKeyDataXmlWriteMethod"></a><h3>xmlSecKeyDataXmlWriteMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 <span class="c_punctuation">(</span>*xmlSecKeyDataXmlWriteMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> id</code></em>,
-                                <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
+                                <em class="parameter"><code><font><span class="type">xmlSecKeyPtr</span></font> key</code></em>,
                                 <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
-                                <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
+                                <em class="parameter"><code><font><span class="type">xmlSecKeyInfoCtxPtr</span></font> keyInfoCtx</code></em>);</pre>
 <p>Key data specific method for writing XML node.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataXmlWriteMethod.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1595,7 +1596,7 @@ by the key data object must be freed inside this method.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>keyInfoCtx</p></td>
-<td class="parameter_description"><p>the <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node processing context.</p></td>
+<td class="parameter_description"><p>the &lt;dsig:KeyInfo&gt; node processing context.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -1611,18 +1612,18 @@ by the key data object must be freed inside this method.</p>
 <a name="xmlSecKeyDataBinReadMethod"></a><h3>xmlSecKeyDataBinReadMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 <span class="c_punctuation">(</span>*xmlSecKeyDataBinReadMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> id</code></em>,
-                               <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
+                               <em class="parameter"><code><font><span class="type">xmlSecKeyPtr</span></font> key</code></em>,
                                <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *buf</code></em>,
                                <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> bufSize</code></em>,
-                               <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
+                               <em class="parameter"><code><font><span class="type">xmlSecKeyInfoCtxPtr</span></font> keyInfoCtx</code></em>);</pre>
 <p>Key data specific method for reading binary buffer.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataBinReadMethod.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1647,7 +1648,7 @@ by the key data object must be freed inside this method.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>keyInfoCtx</p></td>
-<td class="parameter_description"><p>the <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node processing context.</p></td>
+<td class="parameter_description"><p>the &lt;dsig:KeyInfo/&gt; node processing context.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -1663,18 +1664,18 @@ by the key data object must be freed inside this method.</p>
 <a name="xmlSecKeyDataBinWriteMethod"></a><h3>xmlSecKeyDataBinWriteMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 <span class="c_punctuation">(</span>*xmlSecKeyDataBinWriteMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> id</code></em>,
-                                <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
+                                <em class="parameter"><code><font><span class="type">xmlSecKeyPtr</span></font> key</code></em>,
                                 <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> **buf</code></em>,
                                 <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> *bufSize</code></em>,
-                                <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
+                                <em class="parameter"><code><font><span class="type">xmlSecKeyInfoCtxPtr</span></font> keyInfoCtx</code></em>);</pre>
 <p>Key data specific method for reading binary buffer.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataBinWriteMethod.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1699,7 +1700,7 @@ by the key data object must be freed inside this method.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>keyInfoCtx</p></td>
-<td class="parameter_description"><p>the <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node processing context.</p></td>
+<td class="parameter_description"><p>the &lt;dsig:KeyInfo/&gt; node processing context.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -1714,7 +1715,7 @@ by the key data object must be freed inside this method.</p>
 <div class="refsect2">
 <a name="xmlSecKeyDataGenerateMethod"></a><h3>xmlSecKeyDataGenerateMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-<span class="c_punctuation">(</span>*xmlSecKeyDataGenerateMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
+<span class="c_punctuation">(</span>*xmlSecKeyDataGenerateMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
                                 <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> sizeBits</code></em>,
                                 <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="type">xmlSecKeyDataType</span></a> type</code></em>);</pre>
 <p>Key data specific method for generating new key data.</p>
@@ -1722,9 +1723,9 @@ by the key data object must be freed inside this method.</p>
 <a name="xmlSecKeyDataGenerateMethod.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1754,15 +1755,15 @@ by the key data object must be freed inside this method.</p>
 <div class="refsect2">
 <a name="xmlSecKeyDataGetTypeMethod"></a><h3>xmlSecKeyDataGetTypeMethod ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="returnvalue">xmlSecKeyDataType</span></a>
-<span class="c_punctuation">(</span>*xmlSecKeyDataGetTypeMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+<span class="c_punctuation">(</span>*xmlSecKeyDataGetTypeMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
 <p>Key data specific method to get the key type.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataGetTypeMethod.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -1780,15 +1781,15 @@ by the key data object must be freed inside this method.</p>
 <div class="refsect2">
 <a name="xmlSecKeyDataGetSizeMethod"></a><h3>xmlSecKeyDataGetSizeMethod ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
-<span class="c_punctuation">(</span>*xmlSecKeyDataGetSizeMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+<span class="c_punctuation">(</span>*xmlSecKeyDataGetSizeMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
 <p>Key data specific method to get the key size.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataGetSizeMethod.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -1806,16 +1807,16 @@ by the key data object must be freed inside this method.</p>
 <div class="refsect2">
 <a name="xmlSecKeyDataGetIdentifierMethod"></a><h3>xmlSecKeyDataGetIdentifierMethod ()</h3>
 <pre class="programlisting">const <font><span class="returnvalue">xmlChar</span></font> *
-<span class="c_punctuation">(</span>*xmlSecKeyDataGetIdentifierMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+<span class="c_punctuation">(</span>*xmlSecKeyDataGetIdentifierMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
 <p>Key data specific method to get the key data identifier string (for example,
 X509 data identifier is the subject of the verified cert).</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataGetIdentifierMethod.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -1833,16 +1834,16 @@ X509 data identifier is the subject of the verified cert).</p>
 <div class="refsect2">
 <a name="xmlSecKeyDataDebugDumpMethod"></a><h3>xmlSecKeyDataDebugDumpMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
-<span class="c_punctuation">(</span>*xmlSecKeyDataDebugDumpMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
+<span class="c_punctuation">(</span>*xmlSecKeyDataDebugDumpMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
                                  <em class="parameter"><code><font><span class="type">FILE</span></font> *output</code></em>);</pre>
 <p>Key data specific method for printing debug info.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataDebugDumpMethod.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1868,9 +1869,9 @@ X509 data identifier is the subject of the verified cert).</p>
 <a name="xmlSecKeyDataKlassGetName.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>klass</p></td>
@@ -1906,7 +1907,7 @@ xmlSecKeyDataIdListGetKlass (<em class="parameter"><code><span class="type">void
 <div class="refsect2">
 <a name="xmlSecKeyDataIdListFind"></a><h3>xmlSecKeyDataIdListFind ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecKeyDataIdListFind (<em class="parameter"><code><a class="link" href="xmlsec-list.html#xmlSecPtrList" title="struct xmlSecPtrList"><span class="type">xmlSecPtrListPtr</span></a> list</code></em>,
+xmlSecKeyDataIdListFind (<em class="parameter"><code><font><span class="type">xmlSecPtrListPtr</span></font> list</code></em>,
                          <em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> dataId</code></em>);</pre>
 <p>Lookups <em class="parameter"><code>dataId</code></em>
  in <em class="parameter"><code>list</code></em>
@@ -1915,9 +1916,9 @@ xmlSecKeyDataIdListFind (<em class="parameter"><code><a class="link" href="xmlse
 <a name="xmlSecKeyDataIdListFind.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1945,7 +1946,7 @@ value if an error occurs.</p>
 <div class="refsect2">
 <a name="xmlSecKeyDataIdListFindByNode"></a><h3>xmlSecKeyDataIdListFindByNode ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
-xmlSecKeyDataIdListFindByNode (<em class="parameter"><code><a class="link" href="xmlsec-list.html#xmlSecPtrList" title="struct xmlSecPtrList"><span class="type">xmlSecPtrListPtr</span></a> list</code></em>,
+xmlSecKeyDataIdListFindByNode (<em class="parameter"><code><font><span class="type">xmlSecPtrListPtr</span></font> list</code></em>,
                                <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *nodeName</code></em>,
                                <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *nodeNs</code></em>,
                                <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataUsage" title="xmlSecKeyDataUsage"><span class="type">xmlSecKeyDataUsage</span></a> usage</code></em>);</pre>
@@ -1959,9 +1960,9 @@ xmlSecKeyDataIdListFindByNode (<em class="parameter"><code><a class="link" href=
 <a name="xmlSecKeyDataIdListFindByNode.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -1996,7 +1997,7 @@ xmlSecKeyDataIdListFindByNode (<em class="parameter"><code><a class="link" href=
 <div class="refsect2">
 <a name="xmlSecKeyDataIdListFindByHref"></a><h3>xmlSecKeyDataIdListFindByHref ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
-xmlSecKeyDataIdListFindByHref (<em class="parameter"><code><a class="link" href="xmlsec-list.html#xmlSecPtrList" title="struct xmlSecPtrList"><span class="type">xmlSecPtrListPtr</span></a> list</code></em>,
+xmlSecKeyDataIdListFindByHref (<em class="parameter"><code><font><span class="type">xmlSecPtrListPtr</span></font> list</code></em>,
                                <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *href</code></em>,
                                <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataUsage" title="xmlSecKeyDataUsage"><span class="type">xmlSecKeyDataUsage</span></a> usage</code></em>);</pre>
 <p>Lookups data klass in the list with given <em class="parameter"><code>href</code></em>
@@ -2007,9 +2008,9 @@ xmlSecKeyDataIdListFindByHref (<em class="parameter"><code><a class="link" href=
 <a name="xmlSecKeyDataIdListFindByHref.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2039,7 +2040,7 @@ xmlSecKeyDataIdListFindByHref (<em class="parameter"><code><a class="link" href=
 <div class="refsect2">
 <a name="xmlSecKeyDataIdListFindByName"></a><h3>xmlSecKeyDataIdListFindByName ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
-xmlSecKeyDataIdListFindByName (<em class="parameter"><code><a class="link" href="xmlsec-list.html#xmlSecPtrList" title="struct xmlSecPtrList"><span class="type">xmlSecPtrListPtr</span></a> list</code></em>,
+xmlSecKeyDataIdListFindByName (<em class="parameter"><code><font><span class="type">xmlSecPtrListPtr</span></font> list</code></em>,
                                <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *name</code></em>,
                                <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataUsage" title="xmlSecKeyDataUsage"><span class="type">xmlSecKeyDataUsage</span></a> usage</code></em>);</pre>
 <p>Lookups data klass in the list with given <em class="parameter"><code>name</code></em>
@@ -2050,9 +2051,9 @@ xmlSecKeyDataIdListFindByName (<em class="parameter"><code><a class="link" href=
 <a name="xmlSecKeyDataIdListFindByName.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2082,7 +2083,7 @@ xmlSecKeyDataIdListFindByName (<em class="parameter"><code><a class="link" href=
 <div class="refsect2">
 <a name="xmlSecKeyDataIdListDebugDump"></a><h3>xmlSecKeyDataIdListDebugDump ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
-xmlSecKeyDataIdListDebugDump (<em class="parameter"><code><a class="link" href="xmlsec-list.html#xmlSecPtrList" title="struct xmlSecPtrList"><span class="type">xmlSecPtrListPtr</span></a> list</code></em>,
+xmlSecKeyDataIdListDebugDump (<em class="parameter"><code><font><span class="type">xmlSecPtrListPtr</span></font> list</code></em>,
                               <em class="parameter"><code><font><span class="type">FILE</span></font> *output</code></em>);</pre>
 <p>Prints binary key data debug information to <em class="parameter"><code>output</code></em>
 .</p>
@@ -2090,9 +2091,9 @@ xmlSecKeyDataIdListDebugDump (<em class="parameter"><code><a class="link" href="
 <a name="xmlSecKeyDataIdListDebugDump.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2113,7 +2114,7 @@ xmlSecKeyDataIdListDebugDump (<em class="parameter"><code><a class="link" href="
 <div class="refsect2">
 <a name="xmlSecKeyDataIdListDebugXmlDump"></a><h3>xmlSecKeyDataIdListDebugXmlDump ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
-xmlSecKeyDataIdListDebugXmlDump (<em class="parameter"><code><a class="link" href="xmlsec-list.html#xmlSecPtrList" title="struct xmlSecPtrList"><span class="type">xmlSecPtrListPtr</span></a> list</code></em>,
+xmlSecKeyDataIdListDebugXmlDump (<em class="parameter"><code><font><span class="type">xmlSecPtrListPtr</span></font> list</code></em>,
                                  <em class="parameter"><code><font><span class="type">FILE</span></font> *output</code></em>);</pre>
 <p>Prints binary key data debug information to <em class="parameter"><code>output</code></em>
  in XML format.</p>
@@ -2121,9 +2122,9 @@ xmlSecKeyDataIdListDebugXmlDump (<em class="parameter"><code><a class="link" hre
 <a name="xmlSecKeyDataIdListDebugXmlDump.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2144,15 +2145,15 @@ xmlSecKeyDataIdListDebugXmlDump (<em class="parameter"><code><a class="link" hre
 <div class="refsect2">
 <a name="xmlSecKeyDataBinaryValueInitialize"></a><h3>xmlSecKeyDataBinaryValueInitialize ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecKeyDataBinaryValueInitialize (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+xmlSecKeyDataBinaryValueInitialize (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
 <p>Initializes key data.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataBinaryValueInitialize.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -2170,8 +2171,8 @@ xmlSecKeyDataBinaryValueInitialize (<em class="parameter"><code><a class="link" 
 <div class="refsect2">
 <a name="xmlSecKeyDataBinaryValueDuplicate"></a><h3>xmlSecKeyDataBinaryValueDuplicate ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecKeyDataBinaryValueDuplicate (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> dst</code></em>,
-                                   <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> src</code></em>);</pre>
+xmlSecKeyDataBinaryValueDuplicate (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> dst</code></em>,
+                                   <em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> src</code></em>);</pre>
 <p>Copies binary key data from <em class="parameter"><code>src</code></em>
  to <em class="parameter"><code>dst</code></em>
 .</p>
@@ -2179,9 +2180,9 @@ xmlSecKeyDataBinaryValueDuplicate (<em class="parameter"><code><a class="link" h
 <a name="xmlSecKeyDataBinaryValueDuplicate.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2206,15 +2207,15 @@ xmlSecKeyDataBinaryValueDuplicate (<em class="parameter"><code><a class="link" h
 <div class="refsect2">
 <a name="xmlSecKeyDataBinaryValueFinalize"></a><h3>xmlSecKeyDataBinaryValueFinalize ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
-xmlSecKeyDataBinaryValueFinalize (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+xmlSecKeyDataBinaryValueFinalize (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
 <p>Cleans up binary key data.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataBinaryValueFinalize.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -2229,9 +2230,9 @@ xmlSecKeyDataBinaryValueFinalize (<em class="parameter"><code><a class="link" hr
 <a name="xmlSecKeyDataBinaryValueXmlRead"></a><h3>xmlSecKeyDataBinaryValueXmlRead ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecKeyDataBinaryValueXmlRead (<em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> id</code></em>,
-                                 <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
+                                 <em class="parameter"><code><font><span class="type">xmlSecKeyPtr</span></font> key</code></em>,
                                  <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
-                                 <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
+                                 <em class="parameter"><code><font><span class="type">xmlSecKeyInfoCtxPtr</span></font> keyInfoCtx</code></em>);</pre>
 <p>Reads binary key data from <em class="parameter"><code>node</code></em>
  to the key by base64 decoding the <em class="parameter"><code>node</code></em>
  content.</p>
@@ -2239,9 +2240,9 @@ xmlSecKeyDataBinaryValueXmlRead (<em class="parameter"><code><font><span class="
 <a name="xmlSecKeyDataBinaryValueXmlRead.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2261,7 +2262,7 @@ xmlSecKeyDataBinaryValueXmlRead (<em class="parameter"><code><font><span class="
 </tr>
 <tr>
 <td class="parameter_name"><p>keyInfoCtx</p></td>
-<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> element processing context.</p></td>
+<td class="parameter_description"><p>the pointer to &lt;dsig:KeyInfo/&gt; element processing context.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -2277,9 +2278,9 @@ xmlSecKeyDataBinaryValueXmlRead (<em class="parameter"><code><font><span class="
 <a name="xmlSecKeyDataBinaryValueXmlWrite"></a><h3>xmlSecKeyDataBinaryValueXmlWrite ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecKeyDataBinaryValueXmlWrite (<em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> id</code></em>,
-                                  <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
+                                  <em class="parameter"><code><font><span class="type">xmlSecKeyPtr</span></font> key</code></em>,
                                   <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
-                                  <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
+                                  <em class="parameter"><code><font><span class="type">xmlSecKeyInfoCtxPtr</span></font> keyInfoCtx</code></em>);</pre>
 <p>Base64 encodes binary key data of klass <em class="parameter"><code>id</code></em>
  from the <em class="parameter"><code>key</code></em>
  and
@@ -2289,9 +2290,9 @@ sets to the <em class="parameter"><code>node</code></em>
 <a name="xmlSecKeyDataBinaryValueXmlWrite.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2311,7 +2312,7 @@ sets to the <em class="parameter"><code>node</code></em>
 </tr>
 <tr>
 <td class="parameter_name"><p>keyInfoCtx</p></td>
-<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> element processing context.</p></td>
+<td class="parameter_description"><p>the pointer to &lt;dsig:KeyInfo/&gt; element processing context.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -2327,10 +2328,10 @@ sets to the <em class="parameter"><code>node</code></em>
 <a name="xmlSecKeyDataBinaryValueBinRead"></a><h3>xmlSecKeyDataBinaryValueBinRead ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecKeyDataBinaryValueBinRead (<em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> id</code></em>,
-                                 <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
+                                 <em class="parameter"><code><font><span class="type">xmlSecKeyPtr</span></font> key</code></em>,
                                  <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *buf</code></em>,
                                  <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> bufSize</code></em>,
-                                 <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
+                                 <em class="parameter"><code><font><span class="type">xmlSecKeyInfoCtxPtr</span></font> keyInfoCtx</code></em>);</pre>
 <p>Reads binary key data of the klass <em class="parameter"><code>id</code></em>
  from <em class="parameter"><code>buf</code></em>
  to the <em class="parameter"><code>key</code></em>
@@ -2339,9 +2340,9 @@ xmlSecKeyDataBinaryValueBinRead (<em class="parameter"><code><font><span class="
 <a name="xmlSecKeyDataBinaryValueBinRead.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2366,7 +2367,7 @@ xmlSecKeyDataBinaryValueBinRead (<em class="parameter"><code><font><span class="
 </tr>
 <tr>
 <td class="parameter_name"><p>keyInfoCtx</p></td>
-<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> element processing context.</p></td>
+<td class="parameter_description"><p>the pointer to &lt;dsig:KeyInfo/&gt; element processing context.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -2382,10 +2383,10 @@ xmlSecKeyDataBinaryValueBinRead (<em class="parameter"><code><font><span class="
 <a name="xmlSecKeyDataBinaryValueBinWrite"></a><h3>xmlSecKeyDataBinaryValueBinWrite ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecKeyDataBinaryValueBinWrite (<em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> id</code></em>,
-                                  <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
+                                  <em class="parameter"><code><font><span class="type">xmlSecKeyPtr</span></font> key</code></em>,
                                   <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> **buf</code></em>,
                                   <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> *bufSize</code></em>,
-                                  <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
+                                  <em class="parameter"><code><font><span class="type">xmlSecKeyInfoCtxPtr</span></font> keyInfoCtx</code></em>);</pre>
 <p>Writes binary key data of klass <em class="parameter"><code>id</code></em>
  from the <em class="parameter"><code>key</code></em>
  to <em class="parameter"><code>buf</code></em>
@@ -2394,9 +2395,9 @@ xmlSecKeyDataBinaryValueBinWrite (<em class="parameter"><code><font><span class=
 <a name="xmlSecKeyDataBinaryValueBinWrite.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2421,7 +2422,7 @@ xmlSecKeyDataBinaryValueBinWrite (<em class="parameter"><code><font><span class=
 </tr>
 <tr>
 <td class="parameter_name"><p>keyInfoCtx</p></td>
-<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> element processing context.</p></td>
+<td class="parameter_description"><p>the pointer to &lt;dsig:KeyInfo/&gt; element processing context.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -2436,7 +2437,7 @@ xmlSecKeyDataBinaryValueBinWrite (<em class="parameter"><code><font><span class=
 <div class="refsect2">
 <a name="xmlSecKeyDataBinaryValueDebugDump"></a><h3>xmlSecKeyDataBinaryValueDebugDump ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
-xmlSecKeyDataBinaryValueDebugDump (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
+xmlSecKeyDataBinaryValueDebugDump (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
                                    <em class="parameter"><code><font><span class="type">FILE</span></font> *output</code></em>);</pre>
 <p>Prints binary key data debug information to <em class="parameter"><code>output</code></em>
 .</p>
@@ -2444,9 +2445,9 @@ xmlSecKeyDataBinaryValueDebugDump (<em class="parameter"><code><a class="link" h
 <a name="xmlSecKeyDataBinaryValueDebugDump.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2467,7 +2468,7 @@ xmlSecKeyDataBinaryValueDebugDump (<em class="parameter"><code><a class="link" h
 <div class="refsect2">
 <a name="xmlSecKeyDataBinaryValueDebugXmlDump"></a><h3>xmlSecKeyDataBinaryValueDebugXmlDump ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
-xmlSecKeyDataBinaryValueDebugXmlDump (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
+xmlSecKeyDataBinaryValueDebugXmlDump (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
                                       <em class="parameter"><code><font><span class="type">FILE</span></font> *output</code></em>);</pre>
 <p>Prints binary key data debug information to <em class="parameter"><code>output</code></em>
  in XML format.</p>
@@ -2475,9 +2476,9 @@ xmlSecKeyDataBinaryValueDebugXmlDump (<em class="parameter"><code><a class="link
 <a name="xmlSecKeyDataBinaryValueDebugXmlDump.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2498,15 +2499,15 @@ xmlSecKeyDataBinaryValueDebugXmlDump (<em class="parameter"><code><a class="link
 <div class="refsect2">
 <a name="xmlSecKeyDataBinaryValueGetSize"></a><h3>xmlSecKeyDataBinaryValueGetSize ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
-xmlSecKeyDataBinaryValueGetSize (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+xmlSecKeyDataBinaryValueGetSize (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
 <p>Gets the binary key data size.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataBinaryValueGetSize.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -2523,16 +2524,16 @@ xmlSecKeyDataBinaryValueGetSize (<em class="parameter"><code><a class="link" hre
 <hr>
 <div class="refsect2">
 <a name="xmlSecKeyDataBinaryValueGetBuffer"></a><h3>xmlSecKeyDataBinaryValueGetBuffer ()</h3>
-<pre class="programlisting"><a class="link" href="xmlsec-buffer.html#xmlSecBuffer" title="struct xmlSecBuffer"><span class="returnvalue">xmlSecBufferPtr</span></a>
-xmlSecKeyDataBinaryValueGetBuffer (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecBufferPtr</span></font>
+xmlSecKeyDataBinaryValueGetBuffer (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
 <p>Gets the binary key data buffer.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataBinaryValueGetBuffer.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -2550,7 +2551,7 @@ xmlSecKeyDataBinaryValueGetBuffer (<em class="parameter"><code><a class="link" h
 <div class="refsect2">
 <a name="xmlSecKeyDataBinaryValueSetBuffer"></a><h3>xmlSecKeyDataBinaryValueSetBuffer ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecKeyDataBinaryValueSetBuffer (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
+xmlSecKeyDataBinaryValueSetBuffer (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
                                    <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *buf</code></em>,
                                    <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> bufSize</code></em>);</pre>
 <p>Sets the value of <em class="parameter"><code>data</code></em>
@@ -2560,9 +2561,9 @@ xmlSecKeyDataBinaryValueSetBuffer (<em class="parameter"><code><a class="link" h
 <a name="xmlSecKeyDataBinaryValueSetBuffer.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2591,7 +2592,7 @@ xmlSecKeyDataBinaryValueSetBuffer (<em class="parameter"><code><a class="link" h
 <hr>
 <div class="refsect2">
 <a name="xmlSecKeyDataStoreCreate"></a><h3>xmlSecKeyDataStoreCreate ()</h3>
-<pre class="programlisting"><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStore" title="struct xmlSecKeyDataStore"><span class="returnvalue">xmlSecKeyDataStorePtr</span></a>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataStorePtr</span></font>
 xmlSecKeyDataStoreCreate (<em class="parameter"><code><font><span class="type">xmlSecKeyDataStoreId</span></font> id</code></em>);</pre>
 <p>Creates new key data store of the specified klass <em class="parameter"><code>id</code></em>
 . Caller is responsible
@@ -2600,9 +2601,9 @@ for freeing returned object with <a class="link" href="xmlsec-keysdata.html#xmlS
 <a name="xmlSecKeyDataStoreCreate.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>id</p></td>
@@ -2621,16 +2622,16 @@ or NULL if an error occurs.</p>
 <div class="refsect2">
 <a name="xmlSecKeyDataStoreDestroy"></a><h3>xmlSecKeyDataStoreDestroy ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
-xmlSecKeyDataStoreDestroy (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStore" title="struct xmlSecKeyDataStore"><span class="type">xmlSecKeyDataStorePtr</span></a> store</code></em>);</pre>
+xmlSecKeyDataStoreDestroy (<em class="parameter"><code><font><span class="type">xmlSecKeyDataStorePtr</span></font> store</code></em>);</pre>
 <p>Destroys the key data store created with <a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStoreCreate" title="xmlSecKeyDataStoreCreate ()"><span class="type">xmlSecKeyDataStoreCreate</span></a>
 function.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataStoreDestroy.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>store</p></td>
@@ -2649,9 +2650,9 @@ function.</p>
 <a name="xmlSecKeyDataStoreGetName.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>store</p></td>
@@ -2673,9 +2674,9 @@ or 0 otherwise.</p>
 <a name="xmlSecKeyDataStoreIsValid.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>store</p></td>
@@ -2697,9 +2698,9 @@ or 0 otherwise.</p>
 <a name="xmlSecKeyDataStoreCheckId.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2728,9 +2729,9 @@ or 0 otherwise.</p>
 <a name="xmlSecKeyDataStoreCheckSize.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -2751,15 +2752,15 @@ or 0 otherwise.</p>
 <div class="refsect2">
 <a name="xmlSecKeyDataStoreInitializeMethod"></a><h3>xmlSecKeyDataStoreInitializeMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-<span class="c_punctuation">(</span>*xmlSecKeyDataStoreInitializeMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStore" title="struct xmlSecKeyDataStore"><span class="type">xmlSecKeyDataStorePtr</span></a> store</code></em>);</pre>
+<span class="c_punctuation">(</span>*xmlSecKeyDataStoreInitializeMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecKeyDataStorePtr</span></font> store</code></em>);</pre>
 <p>Key data store specific initialization method.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataStoreInitializeMethod.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>store</p></td>
@@ -2777,15 +2778,15 @@ or 0 otherwise.</p>
 <div class="refsect2">
 <a name="xmlSecKeyDataStoreFinalizeMethod"></a><h3>xmlSecKeyDataStoreFinalizeMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
-<span class="c_punctuation">(</span>*xmlSecKeyDataStoreFinalizeMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStore" title="struct xmlSecKeyDataStore"><span class="type">xmlSecKeyDataStorePtr</span></a> store</code></em>);</pre>
+<span class="c_punctuation">(</span>*xmlSecKeyDataStoreFinalizeMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecKeyDataStorePtr</span></font> store</code></em>);</pre>
 <p>Key data store specific finalization (destroy) method.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataStoreFinalizeMethod.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>store</p></td>
@@ -2804,9 +2805,9 @@ or 0 otherwise.</p>
 <a name="xmlSecKeyDataStoreKlassGetName.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>klass</p></td>
@@ -2848,35 +2849,35 @@ xmlSecKeyDataStorePtrListGetKlass (<em class="parameter"><code><span class="type
 <a name="xmlSecKeyDataUsageKeyInfoNodeRead"></a><h3>xmlSecKeyDataUsageKeyInfoNodeRead</h3>
 <pre class="programlisting">#define xmlSecKeyDataUsageKeyInfoNodeRead               0x00001
 </pre>
-<p>The key data could be read from a <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> child.</p>
+<p>The key data could be read from a &lt;dsig:KeyInfo/&gt; child.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecKeyDataUsageKeyInfoNodeWrite"></a><h3>xmlSecKeyDataUsageKeyInfoNodeWrite</h3>
 <pre class="programlisting">#define xmlSecKeyDataUsageKeyInfoNodeWrite              0x00002
 </pre>
-<p>The key data could be written to a <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo /&gt;</a> child.</p>
+<p>The key data could be written to a &lt;dsig:KeyInfo /&gt; child.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecKeyDataUsageKeyValueNodeRead"></a><h3>xmlSecKeyDataUsageKeyValueNodeRead</h3>
 <pre class="programlisting">#define xmlSecKeyDataUsageKeyValueNodeRead              0x00004
 </pre>
-<p>The key data could be read from a <a class="ulink" href="" target="_top">&lt;dsig:KeyValue /&gt;</a> child.</p>
+<p>The key data could be read from a &lt;dsig:KeyValue /&gt; child.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecKeyDataUsageKeyValueNodeWrite"></a><h3>xmlSecKeyDataUsageKeyValueNodeWrite</h3>
 <pre class="programlisting">#define xmlSecKeyDataUsageKeyValueNodeWrite             0x00008
 </pre>
-<p>The key data could be written to a <a class="ulink" href="" target="_top">&lt;dsig:KeyValue /&gt;</a> child.</p>
+<p>The key data could be written to a &lt;dsig:KeyValue /&gt; child.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecKeyDataUsageRetrievalMethodNodeXml"></a><h3>xmlSecKeyDataUsageRetrievalMethodNodeXml</h3>
 <pre class="programlisting">#define xmlSecKeyDataUsageRetrievalMethodNodeXml        0x00010
 </pre>
-<p>The key data could be retrieved using <a class="ulink" href="" target="_top">&lt;dsig:RetrievalMethod /&gt;</a> node
+<p>The key data could be retrieved using &lt;dsig:RetrievalMethod /&gt; node
 in XML format.</p>
 </div>
 <hr>
@@ -2884,7 +2885,7 @@ in XML format.</p>
 <a name="xmlSecKeyDataUsageRetrievalMethodNodeBin"></a><h3>xmlSecKeyDataUsageRetrievalMethodNodeBin</h3>
 <pre class="programlisting">#define xmlSecKeyDataUsageRetrievalMethodNodeBin        0x00020
 </pre>
-<p>The key data could be retrieved using <a class="ulink" href="" target="_top">&lt;dsig:RetrievalMethod /&gt;</a> node
+<p>The key data could be retrieved using &lt;dsig:RetrievalMethod /&gt; node
 in binary format.</p>
 </div>
 <hr>
@@ -2898,19 +2899,19 @@ in binary format.</p>
 <div class="refsect2">
 <a name="xmlSecKeyDataUsageKeyInfoNode"></a><h3>xmlSecKeyDataUsageKeyInfoNode</h3>
 <pre class="programlisting">#define             xmlSecKeyDataUsageKeyInfoNode</pre>
-<p>The key data could be read and written from/to a <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo /&gt;</a> child.</p>
+<p>The key data could be read and written from/to a &lt;dsig:KeyInfo /&gt; child.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecKeyDataUsageKeyValueNode"></a><h3>xmlSecKeyDataUsageKeyValueNode</h3>
 <pre class="programlisting">#define             xmlSecKeyDataUsageKeyValueNode</pre>
-<p>The key data could be read and written from/to a <a class="ulink" href="" target="_top">&lt;dsig:KeyValue /&gt;</a> child.</p>
+<p>The key data could be read and written from/to a &lt;dsig:KeyValue /&gt; child.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecKeyDataUsageRetrievalMethodNode"></a><h3>xmlSecKeyDataUsageRetrievalMethodNode</h3>
 <pre class="programlisting">#define             xmlSecKeyDataUsageRetrievalMethodNode</pre>
-<p>The key data could be retrieved using <a class="ulink" href="" target="_top">&lt;dsig:RetrievalMethod /&gt;</a> node
+<p>The key data could be retrieved using &lt;dsig:RetrievalMethod /&gt; node
 in any format.</p>
 </div>
 <hr>
@@ -2991,54 +2992,72 @@ in any format.</p>
 <a name="xmlSecKeyDataFormat.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatUnknown"></a>xmlSecKeyDataFormatUnknown</p></td>
-<td class="enum_member_description"><p>the key data format is unknown.</p></td>
+<td class="enum_member_description">
+<p>the key data format is unknown.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatBinary"></a>xmlSecKeyDataFormatBinary</p></td>
-<td class="enum_member_description"><p>the binary key data.</p></td>
+<td class="enum_member_description">
+<p>the binary key data.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatPem"></a>xmlSecKeyDataFormatPem</p></td>
-<td class="enum_member_description"><p>the PEM key data (cert or public/private key).</p></td>
+<td class="enum_member_description">
+<p>the PEM key data (cert or public/private key).</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatDer"></a>xmlSecKeyDataFormatDer</p></td>
-<td class="enum_member_description"><p>the DER key data (cert or public/private key).</p></td>
+<td class="enum_member_description">
+<p>the DER key data (cert or public/private key).</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatPkcs8Pem"></a>xmlSecKeyDataFormatPkcs8Pem</p></td>
-<td class="enum_member_description"><p>the PKCS8 PEM private key.</p></td>
+<td class="enum_member_description">
+<p>the PKCS8 PEM private key.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatPkcs8Der"></a>xmlSecKeyDataFormatPkcs8Der</p></td>
-<td class="enum_member_description"><p>the PKCS8 DER private key.</p></td>
+<td class="enum_member_description">
+<p>the PKCS8 DER private key.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatPkcs12"></a>xmlSecKeyDataFormatPkcs12</p></td>
-<td class="enum_member_description"><p>the PKCS12 format (bag of keys and certs)</p></td>
+<td class="enum_member_description">
+<p>the PKCS12 format (bag of keys and certs)</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatCertPem"></a>xmlSecKeyDataFormatCertPem</p></td>
-<td class="enum_member_description"><p>the PEM cert.</p></td>
+<td class="enum_member_description">
+<p>the PEM cert.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatCertDer"></a>xmlSecKeyDataFormatCertDer</p></td>
-<td class="enum_member_description"><p>the DER cert.</p></td>
+<td class="enum_member_description">
+<p>the DER cert.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
@@ -3059,9 +3078,9 @@ in any format.</p>
 <a name="xmlSecKeyData.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="300px" class="struct_members_name">
+<col class="struct_members_description">
+<col width="200px" class="struct_members_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -3135,9 +3154,9 @@ in any format.</p>
 <a name="xmlSecKeyDataKlass.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="300px" class="struct_members_name">
+<col class="struct_members_description">
+<col width="200px" class="struct_members_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -3292,9 +3311,9 @@ information about trusted (root) certificates.</p>
 <a name="xmlSecKeyDataStore.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="300px" class="struct_members_name">
+<col class="struct_members_description">
+<col width="200px" class="struct_members_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -3347,9 +3366,9 @@ information about trusted (root) certificates.</p>
 <a name="xmlSecKeyDataStoreKlass.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="300px" class="struct_members_name">
+<col class="struct_members_description">
+<col width="200px" class="struct_members_annotations">
 </colgroup>
 <tbody>
 <tr>

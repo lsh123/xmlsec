@@ -96,8 +96,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="xmlsec-openssl-evp.functions"></a><h2>Functions</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
+<col width="150px" class="functions_return">
+<col class="functions_name">
 </colgroup>
 <tbody>
 <tr>
@@ -126,7 +126,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </tr>
 <tr>
 <td class="function_type">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="returnvalue">xmlSecKeyDataPtr</span></a>
+<font><span class="returnvalue">xmlSecKeyDataPtr</span></font>
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-openssl-evp.html#xmlSecOpenSSLEvpKeyAdopt" title="xmlSecOpenSSLEvpKeyAdopt ()">xmlSecOpenSSLEvpKeyAdopt</a> <span class="c_punctuation">()</span>
@@ -137,7 +137,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </div>
 <div class="refsect1">
 <a name="xmlsec-openssl-evp.description"></a><h2>Description</h2>
-<p>EVP keys data implementation.
+<p>
+EVP keys data implementation.
 </p>
 </div>
 <div class="refsect1">
@@ -145,16 +146,16 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <div class="refsect2">
 <a name="xmlSecOpenSSLEvpKeyDataAdoptEvp"></a><h3>xmlSecOpenSSLEvpKeyDataAdoptEvp ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecOpenSSLEvpKeyDataAdoptEvp (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
+xmlSecOpenSSLEvpKeyDataAdoptEvp (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
                                  <em class="parameter"><code><font><span class="type">EVP_PKEY</span></font> *pKey</code></em>);</pre>
 <p>Sets the value of key data.</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLEvpKeyDataAdoptEvp.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -179,15 +180,15 @@ xmlSecOpenSSLEvpKeyDataAdoptEvp (<em class="parameter"><code><a class="link" hre
 <div class="refsect2">
 <a name="xmlSecOpenSSLEvpKeyDataGetEvp"></a><h3>xmlSecOpenSSLEvpKeyDataGetEvp ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">EVP_PKEY</span></font> *
-xmlSecOpenSSLEvpKeyDataGetEvp (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+xmlSecOpenSSLEvpKeyDataGetEvp (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
 <p>Gets the EVP_PKEY from the key data.</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLEvpKeyDataGetEvp.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -212,9 +213,9 @@ xmlSecOpenSSLEvpKeyDup (<em class="parameter"><code><font><span class="type">EVP
 <a name="xmlSecOpenSSLEvpKeyDup.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>pKey</p></td>
@@ -231,16 +232,16 @@ xmlSecOpenSSLEvpKeyDup (<em class="parameter"><code><font><span class="type">EVP
 <hr>
 <div class="refsect2">
 <a name="xmlSecOpenSSLEvpKeyAdopt"></a><h3>xmlSecOpenSSLEvpKeyAdopt ()</h3>
-<pre class="programlisting"><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="returnvalue">xmlSecKeyDataPtr</span></a>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataPtr</span></font>
 xmlSecOpenSSLEvpKeyAdopt (<em class="parameter"><code><font><span class="type">EVP_PKEY</span></font> *pKey</code></em>);</pre>
 <p>Creates xmlsec key object from OpenSSL key object.</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLEvpKeyAdopt.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>pKey</p></td>
@@ -257,7 +258,6 @@ xmlSecOpenSSLEvpKeyAdopt (<em class="parameter"><code><font><span class="type">E
 </div>
 <div class="refsect1">
 <a name="xmlsec-openssl-evp.other_details"></a><h2>Types and Values</h2>
-<p></p>
 </div>
 </div>
 <div class="footer">

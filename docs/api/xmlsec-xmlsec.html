@@ -96,8 +96,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="xmlsec-xmlsec.functions"></a><h2>Functions</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
+<col width="150px" class="functions_return">
+<col class="functions_name">
 </colgroup>
 <tbody>
 <tr>
@@ -160,13 +160,13 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="xmlsec-xmlsec.other"></a><h2>Types and Values</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
+<col width="150px" class="name">
+<col class="description">
 </colgroup>
 <tbody>
 <tr>
 <td class="typedef_keyword">typedef</td>
-<td class="function_name"><font>xmlSecPtr</font></td>
+<td class="function_name"><a class="link" href="xmlsec-xmlsec.html#xmlSecPtr" title="xmlSecPtr">xmlSecPtr</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -193,7 +193,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </div>
 <div class="refsect1">
 <a name="xmlsec-xmlsec.description"></a><h2>Description</h2>
-<p>Utility functions.
+<p>
+Utility functions.
 </p>
 </div>
 <div class="refsect1">
@@ -207,9 +208,9 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="XMLSEC-SIZE-BAD-CAST.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>val</p></td>
@@ -247,14 +248,16 @@ xmlSecShutdown (<em class="parameter"><code><span class="type">void</span></code
 <a name="xmlSecGetDefaultCrypto"></a><h3>xmlSecGetDefaultCrypto ()</h3>
 <pre class="programlisting">const <font><span class="returnvalue">xmlChar</span></font> *
 xmlSecGetDefaultCrypto (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p></p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecSetExternalEntityLoader"></a><h3>xmlSecSetExternalEntityLoader ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
 xmlSecSetExternalEntityLoader (<em class="parameter"><code><font><span class="type">xmlExternalEntityLoader</span></font> Param1</code></em>);</pre>
-<p></p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -285,9 +288,9 @@ xmlSecCheckVersionExt (<em class="parameter"><code><font><span class="type">int<
 <a name="xmlSecCheckVersionExt.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
@@ -358,7 +361,8 @@ in your code and use <a class="link" href="xmlsec-xmlsec.html#xmlSecGetDefaultCr
 <a name="XMLSEC-DEPRECATED:CAPS"></a><h3>XMLSEC_DEPRECATED</h3>
 <pre class="programlisting">#define XMLSEC_DEPRECATED __attribute__((deprecated))
 </pre>
-<p></p>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -368,19 +372,23 @@ in your code and use <a class="link" href="xmlsec-xmlsec.html#xmlSecGetDefaultCr
 <a name="xmlSecCheckVersionMode.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col>
-<col>
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecCheckVersionExactMatch"></a>xmlSecCheckVersionExactMatch</p></td>
-<td class="enum_member_description"><p>the version should match exactly.</p></td>
+<td class="enum_member_description">
+<p>the version should match exactly.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecCheckVersionABICompatible"></a>xmlSecCheckVersionABICompatible</p></td>
-<td class="enum_member_description"><p>the version should be ABI compatible.</p></td>
+<td class="enum_member_description">
+<p>the version should be ABI compatible.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 </tbody>

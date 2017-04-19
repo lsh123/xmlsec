@@ -1,41 +1,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>parser</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="XML Security Core Library API Reference." href="xmlsec-ref.html">
-<link rel="PREVIOUS" title="nodeset" href="xmlsec-nodeset.html">
-<link rel="NEXT" title="templates" href="xmlsec-templates.html">
-<style type="text/css">.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-    padding: 0.5em;
-}
-.programlisting {
-    background: #eeeeff;
-    border: solid 1px #aaaaff;
-    padding: 0.5em;
-}
-.variablelist {
-    padding: 4px;
-    margin-left: 3em;
-}
-.navigation {
-    background: #ffeeee;
-    border: solid 1px #ffaaaa;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-.navigation a {
-    color: #770000;
-}
-.navigation a:visited {
-    color: #550000;
-}
-.navigation .title {
-    font-size: 200%;
-}</style>
+<title>parser: XML Security Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="XML Security Library Reference Manual">
+<link rel="up" href="xmlsec-ref.html" title="XML Security Core Library API Reference.">
+<link rel="prev" href="xmlsec-nodeset.html" title="nodeset">
+<link rel="next" href="xmlsec-templates.html" title="templates">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
 <style type="text/css">
 table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     width: 20em;
@@ -100,234 +73,241 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-nodeset.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-ref.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#xmlsec-parser.description" class="shortcut">Description</a></span>
+</td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="u" href="xmlsec-ref.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="xmlsec-nodeset.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="xmlsec-templates.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
-<h1>
-<a name="XMLSEC-PARSER"></a>parser</h1>
-<div class="REFNAMEDIV">
-<a name="AEN16683"></a><h2>Name</h2>parser -- Parser transform implementation.</div>
-<div class="REFSECT1">
-<a name="XMLSEC-PARSER.FUNCTIONS"></a><h2>Functions</h2>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN16688"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
+<div class="refentry">
+<a name="xmlsec-parser"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="xmlsec-parser.top_of_page"></a>parser</span></h2>
+<p>parser &#8212; Parser transform implementation.</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="xmlsec-parser.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
 <tbody>
 <tr>
-<td><font><span class="RETURNVALUE">xmlDocPtr</span></font></td>
-<td>
-<a href="xmlsec-parser.html#XMLSECPARSEFILE">xmlSecParseFile</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+<td class="function_type">
+<font><span class="returnvalue">xmlDocPtr</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-parser.html#xmlSecParseFile" title="xmlSecParseFile ()">xmlSecParseFile</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
-<td><font><span class="RETURNVALUE">xmlDocPtr</span></font></td>
-<td>
-<a href="xmlsec-parser.html#XMLSECPARSEMEMORY">xmlSecParseMemory</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+<td class="function_type">
+<font><span class="returnvalue">xmlDocPtr</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-parser.html#xmlSecParseMemory" title="xmlSecParseMemory ()">xmlSecParseMemory</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
-<td><font><span class="RETURNVALUE">xmlDocPtr</span></font></td>
-<td>
-<a href="xmlsec-parser.html#XMLSECPARSEMEMORYEXT">xmlSecParseMemoryExt</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+<td class="function_type">
+<font><span class="returnvalue">xmlDocPtr</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-parser.html#xmlSecParseMemoryExt" title="xmlSecParseMemoryExt ()">xmlSecParseMemoryExt</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
-<td><font><span class="RETURNVALUE">xmlSecTransformId</span></font></td>
-<td>
-<a href="xmlsec-parser.html#XMLSECTRANSFORMXMLPARSERGETKLASS">xmlSecTransformXmlParserGetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-parser.html#xmlSecTransformXmlParserGetKlass" title="xmlSecTransformXmlParserGetKlass ()">xmlSecTransformXmlParserGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 </tbody>
-</table>
-<p></p>
+</table></div>
 </div>
-</div>
-<div class="REFSECT1">
-<a name="XMLSEC-PARSER.OTHER"></a><h2>Types and Values</h2>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN16721"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
+<div class="refsect1">
+<a name="xmlsec-parser.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
 <tbody><tr>
-<td>#define</td>
-<td><a href="xmlsec-parser.html#XMLSECTRANSFORMXMLPARSERID">xmlSecTransformXmlParserId</a></td>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-parser.html#xmlSecTransformXmlParserId" title="xmlSecTransformXmlParserId">xmlSecTransformXmlParserId</a></td>
 </tr></tbody>
-</table>
-<p></p>
+</table></div>
 </div>
+<div class="refsect1">
+<a name="xmlsec-parser.description"></a><h2>Description</h2>
+<p>
+Parser transform implementation.
+</p>
 </div>
-<div class="REFSECT1">
-<a name="XMLSEC-PARSER.DESCRIPTION"></a><h2>Description</h2>
-<p>Parser transform implementation.</p>
-</div>
-<div class="REFSECT1">
-<a name="XMLSEC-PARSER.FUNCTIONS_DETAILS"></a><h2>Functions</h2>
-<div class="REFSECT2">
-<a name="XMLSECPARSEFILE"></a><h3>xmlSecParseFile ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlDocPtr</span></font>
-xmlSecParseFile (<code class="PARAMETER">const <font><span class="TYPE">char</span></font> *filename</code>);</pre>
-<p>Loads XML Doc from file <code class="PARAMETER">filename</code>
+<div class="refsect1">
+<a name="xmlsec-parser.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="xmlSecParseFile"></a><h3>xmlSecParseFile ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlDocPtr</span></font>
+xmlSecParseFile (<em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>);</pre>
+<p>Loads XML Doc from file <em class="parameter"><code>filename</code></em>
 . We need a special version because of
-c14n issue. The code is copied from <font><code class="FUNCTION">xmlSAXParseFileWithData()</code></font> function.</p>
-<div class="REFSECT3">
-<a name="AEN16747"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN16749"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
+c14n issue. The code is copied from <font><code class="function">xmlSAXParseFileWithData()</code></font> function.</p>
+<div class="refsect3">
+<a name="xmlSecParseFile.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
 <tbody><tr>
-<td><p>filename</p></td>
-<td><p>the filename.</p></td>
-<td> </td>
+<td class="parameter_name"><p>filename</p></td>
+<td class="parameter_description"><p>the filename.</p></td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
-</table>
-<p></p>
+</table></div>
 </div>
-</div>
-<div class="REFSECT3">
-<a name="AEN16758"></a><h4>Returns</h4>
+<div class="refsect3">
+<a name="xmlSecParseFile.returns"></a><h4>Returns</h4>
 <p> pointer to the loaded XML document or NULL if an error occurs.</p>
 </div>
 </div>
 <hr>
-<div class="REFSECT2">
-<a name="XMLSECPARSEMEMORY"></a><h3>xmlSecParseMemory ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlDocPtr</span></font>
-xmlSecParseMemory (<code class="PARAMETER">const <a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *buffer</code>,
-                   <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> size</code>,
-                   <code class="PARAMETER"><font><span class="TYPE">int</span></font> recovery</code>);</pre>
+<div class="refsect2">
+<a name="xmlSecParseMemory"></a><h3>xmlSecParseMemory ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlDocPtr</span></font>
+xmlSecParseMemory (<em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *buffer</code></em>,
+                   <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> size</code></em>,
+                   <em class="parameter"><code><font><span class="type">int</span></font> recovery</code></em>);</pre>
 <p>Loads XML Doc from memory. We need a special version because of
-c14n issue. The code is copied from <font><code class="FUNCTION">xmlSAXParseMemory()</code></font> function.</p>
-<div class="REFSECT3">
-<a name="AEN16780"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN16782"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
+c14n issue. The code is copied from <font><code class="function">xmlSAXParseMemory()</code></font> function.</p>
+<div class="refsect3">
+<a name="xmlSecParseMemory.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
 <tbody>
 <tr>
-<td><p>buffer</p></td>
-<td><p>the input buffer.</p></td>
-<td> </td>
+<td class="parameter_name"><p>buffer</p></td>
+<td class="parameter_description"><p>the input buffer.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p>size</p></td>
-<td><p>the input buffer size.</p></td>
-<td> </td>
+<td class="parameter_name"><p>size</p></td>
+<td class="parameter_description"><p>the input buffer size.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p>recovery</p></td>
-<td><p>the flag.</p></td>
-<td> </td>
+<td class="parameter_name"><p>recovery</p></td>
+<td class="parameter_description"><p>the flag.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
-</table>
-<p></p>
+</table></div>
 </div>
-</div>
-<div class="REFSECT3">
-<a name="AEN16803"></a><h4>Returns</h4>
+<div class="refsect3">
+<a name="xmlSecParseMemory.returns"></a><h4>Returns</h4>
 <p> pointer to the loaded XML document or NULL if an error occurs.</p>
 </div>
 </div>
 <hr>
-<div class="REFSECT2">
-<a name="XMLSECPARSEMEMORYEXT"></a><h3>xmlSecParseMemoryExt ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlDocPtr</span></font>
-xmlSecParseMemoryExt (<code class="PARAMETER">const <a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *prefix</code>,
-                      <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> prefixSize</code>,
-                      <code class="PARAMETER">const <a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *buffer</code>,
-                      <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> bufferSize</code>,
-                      <code class="PARAMETER">const <a href="xmlsec-xmlsec.html#XMLSECBYTE"><span class="TYPE">xmlSecByte</span></a> *postfix</code>,
-                      <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> postfixSize</code>);</pre>
-<p>Loads XML Doc from 3 chunks of memory: <code class="PARAMETER">prefix</code>
-, <code class="PARAMETER">buffer</code>
- and <code class="PARAMETER">postfix</code>
+<div class="refsect2">
+<a name="xmlSecParseMemoryExt"></a><h3>xmlSecParseMemoryExt ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlDocPtr</span></font>
+xmlSecParseMemoryExt (<em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *prefix</code></em>,
+                      <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> prefixSize</code></em>,
+                      <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *buffer</code></em>,
+                      <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> bufferSize</code></em>,
+                      <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *postfix</code></em>,
+                      <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> postfixSize</code></em>);</pre>
+<p>Loads XML Doc from 3 chunks of memory: <em class="parameter"><code>prefix</code></em>
+, <em class="parameter"><code>buffer</code></em>
+ and <em class="parameter"><code>postfix</code></em>
 .</p>
-<div class="REFSECT3">
-<a name="AEN16835"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN16837"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
+<div class="refsect3">
+<a name="xmlSecParseMemoryExt.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
 <tbody>
 <tr>
-<td><p>prefix</p></td>
-<td><p>the first part of the input.</p></td>
-<td> </td>
+<td class="parameter_name"><p>prefix</p></td>
+<td class="parameter_description"><p>the first part of the input.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p>prefixSize</p></td>
-<td><p>the size of the first part of the input.</p></td>
-<td> </td>
+<td class="parameter_name"><p>prefixSize</p></td>
+<td class="parameter_description"><p>the size of the first part of the input.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p>buffer</p></td>
-<td><p>the second part of the input.</p></td>
-<td> </td>
+<td class="parameter_name"><p>buffer</p></td>
+<td class="parameter_description"><p>the second part of the input.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p>bufferSize</p></td>
-<td><p>the size of the second part of the input.</p></td>
-<td> </td>
+<td class="parameter_name"><p>bufferSize</p></td>
+<td class="parameter_description"><p>the size of the second part of the input.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p>postfix</p></td>
-<td><p>the third part of the input.</p></td>
-<td> </td>
+<td class="parameter_name"><p>postfix</p></td>
+<td class="parameter_description"><p>the third part of the input.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p>postfixSize</p></td>
-<td><p>the size of the third part of the input.</p></td>
-<td> </td>
+<td class="parameter_name"><p>postfixSize</p></td>
+<td class="parameter_description"><p>the size of the third part of the input.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
-</table>
-<p></p>
+</table></div>
 </div>
-</div>
-<div class="REFSECT3">
-<a name="AEN16876"></a><h4>Returns</h4>
+<div class="refsect3">
+<a name="xmlSecParseMemoryExt.returns"></a><h4>Returns</h4>
 <p> pointer to the loaded XML document or NULL if an error occurs.</p>
 </div>
 </div>
 <hr>
-<div class="REFSECT2">
-<a name="XMLSECTRANSFORMXMLPARSERGETKLASS"></a><h3>xmlSecTransformXmlParserGetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecTransformId</span></font>
-xmlSecTransformXmlParserGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<div class="refsect2">
+<a name="xmlSecTransformXmlParserGetKlass"></a><h3>xmlSecTransformXmlParserGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecTransformXmlParserGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The XML parser transform.</p>
-<div class="REFSECT3">
-<a name="AEN16889"></a><h4>Returns</h4>
+<div class="refsect3">
+<a name="xmlSecTransformXmlParserGetKlass.returns"></a><h4>Returns</h4>
 <p> XML parser transform klass.</p>
 </div>
 </div>
 </div>
-<div class="REFSECT1">
-<a name="XMLSEC-PARSER.OTHER_DETAILS"></a><h2>Types and Values</h2>
-<div class="REFSECT2">
-<a name="XMLSECTRANSFORMXMLPARSERID"></a><h3>xmlSecTransformXmlParserId</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecTransformXmlParserId</pre>
+<div class="refsect1">
+<a name="xmlsec-parser.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="xmlSecTransformXmlParserId"></a><h3>xmlSecTransformXmlParserId</h3>
+<pre class="programlisting">#define             xmlSecTransformXmlParserId</pre>
 <p>The XML Parser transform klass.</p>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-nodeset.html"><b>&lt;&lt;&lt; nodeset</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-templates.html"><b>templates &gt;&gt;&gt;</b></a></td>
-</tr></table>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
 </td></tr></table></td>
 </tr></table></body>
 </html>

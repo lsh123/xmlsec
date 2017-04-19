@@ -1,4 +1,4 @@
-/**
+/*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * Simple SOAP messages parsing/creation.
@@ -6,7 +6,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
+ * Copyright (C) 2002-2017 Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef __XMLSEC_SOAP_H__
 #define __XMLSEC_SOAP_H__
@@ -26,22 +26,22 @@ extern "C" {
  * SOAP 1.1
  *
  **********************************************************************/
-XMLSEC_EXPORT xmlNodePtr        xmlSecSoap11CreateEnvelope      (xmlDocPtr doc);
-XMLSEC_EXPORT xmlNodePtr        xmlSecSoap11EnsureHeader        (xmlNodePtr envNode);
-XMLSEC_EXPORT xmlNodePtr        xmlSecSoap11AddBodyEntry        (xmlNodePtr envNode,
+XMLSEC_DEPRECATED XMLSEC_EXPORT xmlNodePtr        xmlSecSoap11CreateEnvelope      (xmlDocPtr doc);
+XMLSEC_DEPRECATED XMLSEC_EXPORT xmlNodePtr        xmlSecSoap11EnsureHeader        (xmlNodePtr envNode);
+XMLSEC_DEPRECATED XMLSEC_EXPORT xmlNodePtr        xmlSecSoap11AddBodyEntry        (xmlNodePtr envNode,
                                                                  xmlNodePtr entryNode);
-XMLSEC_EXPORT xmlNodePtr        xmlSecSoap11AddFaultEntry       (xmlNodePtr envNode,
+XMLSEC_DEPRECATED XMLSEC_EXPORT xmlNodePtr        xmlSecSoap11AddFaultEntry       (xmlNodePtr envNode,
                                                                  const xmlChar* faultCodeHref,
                                                                  const xmlChar* faultCodeLocalPart,
                                                                  const xmlChar* faultString,
                                                                  const xmlChar* faultActor);
-XMLSEC_EXPORT int               xmlSecSoap11CheckEnvelope       (xmlNodePtr envNode);
-XMLSEC_EXPORT xmlNodePtr        xmlSecSoap11GetHeader           (xmlNodePtr envNode);
-XMLSEC_EXPORT xmlNodePtr        xmlSecSoap11GetBody             (xmlNodePtr envNode);
-XMLSEC_EXPORT xmlSecSize        xmlSecSoap11GetBodyEntriesNumber(xmlNodePtr envNode);
-XMLSEC_EXPORT xmlNodePtr        xmlSecSoap11GetBodyEntry        (xmlNodePtr envNode,
+XMLSEC_DEPRECATED XMLSEC_EXPORT int               xmlSecSoap11CheckEnvelope       (xmlNodePtr envNode);
+XMLSEC_DEPRECATED XMLSEC_EXPORT xmlNodePtr        xmlSecSoap11GetHeader           (xmlNodePtr envNode);
+XMLSEC_DEPRECATED XMLSEC_EXPORT xmlNodePtr        xmlSecSoap11GetBody             (xmlNodePtr envNode);
+XMLSEC_DEPRECATED XMLSEC_EXPORT xmlSecSize        xmlSecSoap11GetBodyEntriesNumber(xmlNodePtr envNode);
+XMLSEC_DEPRECATED XMLSEC_EXPORT xmlNodePtr        xmlSecSoap11GetBodyEntry        (xmlNodePtr envNode,
                                                                  xmlSecSize pos);
-XMLSEC_EXPORT xmlNodePtr        xmlSecSoap11GetFaultEntry       (xmlNodePtr envNode);
+XMLSEC_DEPRECATED XMLSEC_EXPORT xmlNodePtr        xmlSecSoap11GetFaultEntry       (xmlNodePtr envNode);
 
 
 /***********************************************************************
@@ -92,31 +92,31 @@ typedef enum {
     xmlSecSoap12FaultCodeReceiver
 } xmlSecSoap12FaultCode;
 
-XMLSEC_EXPORT xmlNodePtr        xmlSecSoap12CreateEnvelope      (xmlDocPtr doc);
-XMLSEC_EXPORT xmlNodePtr        xmlSecSoap12EnsureHeader        (xmlNodePtr envNode);
-XMLSEC_EXPORT xmlNodePtr        xmlSecSoap12AddBodyEntry        (xmlNodePtr envNode,
+XMLSEC_DEPRECATED XMLSEC_EXPORT xmlNodePtr        xmlSecSoap12CreateEnvelope      (xmlDocPtr doc);
+XMLSEC_DEPRECATED XMLSEC_EXPORT xmlNodePtr        xmlSecSoap12EnsureHeader        (xmlNodePtr envNode);
+XMLSEC_DEPRECATED XMLSEC_EXPORT xmlNodePtr        xmlSecSoap12AddBodyEntry        (xmlNodePtr envNode,
                                                                  xmlNodePtr entryNode);
-XMLSEC_EXPORT xmlNodePtr        xmlSecSoap12AddFaultEntry       (xmlNodePtr envNode,
+XMLSEC_DEPRECATED XMLSEC_EXPORT xmlNodePtr        xmlSecSoap12AddFaultEntry       (xmlNodePtr envNode,
                                                                  xmlSecSoap12FaultCode faultCode,
                                                                  const xmlChar* faultReasonText,
                                                                  const xmlChar* faultReasonLang,
                                                                  const xmlChar* faultNodeURI,
                                                                  const xmlChar* faultRole);
-XMLSEC_EXPORT xmlNodePtr        xmlSecSoap12AddFaultSubcode     (xmlNodePtr faultNode,
+XMLSEC_DEPRECATED XMLSEC_EXPORT xmlNodePtr        xmlSecSoap12AddFaultSubcode     (xmlNodePtr faultNode,
                                                                  const xmlChar* subCodeHref,
                                                                  const xmlChar* subCodeName);
-XMLSEC_EXPORT xmlNodePtr        xmlSecSoap12AddFaultReasonText  (xmlNodePtr faultNode,
+XMLSEC_DEPRECATED XMLSEC_EXPORT xmlNodePtr        xmlSecSoap12AddFaultReasonText  (xmlNodePtr faultNode,
                                                                  const xmlChar* faultReasonText,
                                                                  const xmlChar* faultReasonLang);
-XMLSEC_EXPORT xmlNodePtr        xmlSecSoap12AddFaultDetailEntry (xmlNodePtr faultNode,
+XMLSEC_DEPRECATED XMLSEC_EXPORT xmlNodePtr        xmlSecSoap12AddFaultDetailEntry (xmlNodePtr faultNode,
                                                                  xmlNodePtr detailEntryNode);
-XMLSEC_EXPORT int               xmlSecSoap12CheckEnvelope       (xmlNodePtr envNode);
-XMLSEC_EXPORT xmlNodePtr        xmlSecSoap12GetHeader           (xmlNodePtr envNode);
-XMLSEC_EXPORT xmlNodePtr        xmlSecSoap12GetBody             (xmlNodePtr envNode);
-XMLSEC_EXPORT xmlSecSize        xmlSecSoap12GetBodyEntriesNumber(xmlNodePtr envNode);
-XMLSEC_EXPORT xmlNodePtr        xmlSecSoap12GetBodyEntry        (xmlNodePtr envNode,
+XMLSEC_DEPRECATED XMLSEC_EXPORT int               xmlSecSoap12CheckEnvelope       (xmlNodePtr envNode);
+XMLSEC_DEPRECATED XMLSEC_EXPORT xmlNodePtr        xmlSecSoap12GetHeader           (xmlNodePtr envNode);
+XMLSEC_DEPRECATED XMLSEC_EXPORT xmlNodePtr        xmlSecSoap12GetBody             (xmlNodePtr envNode);
+XMLSEC_DEPRECATED XMLSEC_EXPORT xmlSecSize        xmlSecSoap12GetBodyEntriesNumber(xmlNodePtr envNode);
+XMLSEC_DEPRECATED XMLSEC_EXPORT xmlNodePtr        xmlSecSoap12GetBodyEntry        (xmlNodePtr envNode,
                                                                  xmlSecSize pos);
-XMLSEC_EXPORT xmlNodePtr        xmlSecSoap12GetFaultEntry       (xmlNodePtr envNode);
+XMLSEC_DEPRECATED XMLSEC_EXPORT xmlNodePtr        xmlSecSoap12GetFaultEntry       (xmlNodePtr envNode);
 
 
 #endif /* XMLSEC_NO_SOAP */

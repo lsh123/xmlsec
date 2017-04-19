@@ -1,41 +1,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Creating dynamic encryption templates.</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="Creating dynamic templates." href="xmlsec-notes-templates.html">
-<link rel="PREVIOUS" title="Creating dynamic signature templates." href="xmlsec-notes-dynamic-signature-templates.html">
-<link rel="NEXT" title="Verifing and decrypting documents." href="xmlsec-notes-verify-decrypt.html">
-<style type="text/css">.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-    padding: 0.5em;
-}
-.programlisting {
-    background: #eeeeff;
-    border: solid 1px #aaaaff;
-    padding: 0.5em;
-}
-.variablelist {
-    padding: 4px;
-    margin-left: 3em;
-}
-.navigation {
-    background: #ffeeee;
-    border: solid 1px #ffaaaa;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-.navigation a {
-    color: #770000;
-}
-.navigation a:visited {
-    color: #550000;
-}
-.navigation .title {
-    font-size: 200%;
-}</style>
+<title>Creating dynamic encryption templates.: XML Security Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="XML Security Library Reference Manual">
+<link rel="up" href="xmlsec-notes-templates.html" title="Creating dynamic templates.">
+<link rel="prev" href="xmlsec-notes-dynamic-signature-templates.html" title="Creating dynamic signature templates.">
+<link rel="next" href="xmlsec-notes-verify-decrypt.html" title="Verifing and decrypting documents.">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
 <style type="text/css">
 table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     width: 20em;
@@ -100,26 +73,28 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-notes-dynamic-signature-templates.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-notes-templates.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="u" href="xmlsec-notes-templates.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="xmlsec-notes-dynamic-signature-templates.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="xmlsec-notes-verify-decrypt.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
-<br clear="all"><div class="SECT1">
-<h1 class="SECT1"><a name="XMLSEC-NOTES-DYNAMIC-ENCRYPTION-TEMPLATES">Creating dynamic encryption templates.</a></h1>
+<div class="sect1">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="xmlsec-notes-dynamic-encryption-templates"></a>Creating dynamic encryption templates.</h2></div></div></div>
 <p>The encryption template has structure similar 
 	to the XML Encryption structure as it is described in 
-	<a href="http://www.w3.org/TR/xmlenc-core" target="_top">specification</a>.
+	<a class="ulink" href="" target="_top">specification</a>.
 	The only difference is that some nodes (for example,
 	&lt;enc:CipherValue/&gt;)
 	are empty. The XML Security Library sets the content of these
 	nodes after doing necessary calculations.
 	</p>
-<div class="FIGURE">
-<a name="AEN256"></a><p><b>Figure 2. XML Encryption structure</b></p>
-<pre class="PROGRAMLISTING">&lt;enc:EncryptedData Id? Type? MimeType? Encoding?&gt;
+<div class="figure">
+<a name="id-1.2.7.4.3"></a><p class="title"><b>Figure 4. XML Encryption structure</b></p>
+<div class="figure-contents"><pre class="programlisting">
+&lt;enc:EncryptedData Id? Type? MimeType? Encoding?&gt;
     &lt;enc:EncryptionMethod Algorithm /&gt;?
     (&lt;dsig:KeyInfo&gt;
 	&lt;dsig:KeyName&gt;?
@@ -139,12 +114,15 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     &lt;/enc:CipherData&gt;
     &lt;enc:EncryptionProperties&gt;?
 &lt;/enc:EncryptedData&gt;	
-	    </pre>
+	    </pre></div>
 </div>
-<p>	     </p>
-<div class="EXAMPLE">
-<a name="AEN260"></a><p><b>Example 2. Creating dynamic encrytion template.</b></p>
-<pre class="PROGRAMLISTING">/**
+<br class="figure-break"><p>
+	     </p>
+<div class="example">
+<a name="id-1.2.7.4.4.1"></a><p class="title"><b>Example 13. Creating dynamic encrytion template.</b></p>
+<div class="example-contents">
+<pre class="programlisting">
+/**
  * encrypt_file:
  * @xml_file:		the encryption template file name.
  * @key_file:		the Triple DES key file.
@@ -251,13 +229,14 @@ done:
     return(res);
 }
 		</pre>
-<p><a href="xmlsec-encrypt-dynamic-template.html#XMLSEC-EXAMPLE-ENCRYPT2">Full program listing</a></p>
+<p><a class="link" href="xmlsec-encrypt-dynamic-template.html#xmlsec-example-encrypt2" title="encrypt2.c">Full program listing</a></p>
 </div>
-	</div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-notes-dynamic-signature-templates.html"><b>&lt;&lt;&lt; Creating dynamic signature templates.</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-notes-verify-decrypt.html"><b>Verifing and decrypting documents. &gt;&gt;&gt;</b></a></td>
-</tr></table>
+</div>
+<p><br class="example-break">
+	</p>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
 </td></tr></table></td>
 </tr></table></body>
 </html>

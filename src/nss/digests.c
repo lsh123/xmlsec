@@ -1,5 +1,5 @@
-/**
- * XMLSec library
+/*
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.

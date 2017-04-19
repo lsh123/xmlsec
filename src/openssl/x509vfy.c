@@ -1,5 +1,5 @@
-/**
- * XMLSec library
+/*
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * X509 support
  *
@@ -1028,7 +1028,7 @@ xmlSecOpenSSLX509NameStringRead(xmlSecByte **str, int *strLen,
     return((ingoreTrailingSpaces) ? nonSpace - res + 1 : q - res);
 }
 
-/**
+/*
  * This function DOES NOT create duplicates for X509_NAME_ENTRY objects!
  */
 static STACK_OF(X509_NAME_ENTRY)*

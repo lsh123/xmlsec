@@ -1,41 +1,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Encrypting data with a session key.</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="Examples." href="xmlsec-examples.html">
-<link rel="PREVIOUS" title="Encrypting data with a dynamicaly created template." href="xmlsec-encrypt-dynamic-template.html">
-<link rel="NEXT" title="Decrypting data with a single key." href="xmlsec-decrypt-with-signle-key.html">
-<style type="text/css">.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-    padding: 0.5em;
-}
-.programlisting {
-    background: #eeeeff;
-    border: solid 1px #aaaaff;
-    padding: 0.5em;
-}
-.variablelist {
-    padding: 4px;
-    margin-left: 3em;
-}
-.navigation {
-    background: #ffeeee;
-    border: solid 1px #ffaaaa;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-.navigation a {
-    color: #770000;
-}
-.navigation a:visited {
-    color: #550000;
-}
-.navigation .title {
-    font-size: 200%;
-}</style>
+<title>Encrypting data with a session key.: XML Security Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="XML Security Library Reference Manual">
+<link rel="up" href="xmlsec-examples.html" title="Examples.">
+<link rel="prev" href="xmlsec-encrypt-dynamic-template.html" title="Encrypting data with a dynamicaly created template.">
+<link rel="next" href="xmlsec-decrypt-with-signle-key.html" title="Decrypting data with a single key.">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
 <style type="text/css">
 table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     width: 20em;
@@ -100,21 +73,21 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-encrypt-dynamic-template.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-examples.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="u" href="xmlsec-examples.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="xmlsec-encrypt-dynamic-template.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="xmlsec-decrypt-with-signle-key.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
-<br clear="all"><div class="SECT1">
-<h1 class="SECT1"><a name="XMLSEC-ENCRYPT-WITH-SESSION-KEY">Encrypting data with a session key.</a></h1>
-<br clear="all"><div class="SECT2">
-<h2 class="SECT2"><a name="XMLSEC-EXAMPLE-ENCRYPT3">encrypt3.c</a></h2>
-<p></p>
-<div class="INFORMALEXAMPLE">
-<p></p>
-<a name="AEN794"></a><pre class="PROGRAMLISTING">/** 
+<div class="sect1">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="xmlsec-encrypt-with-session-key"></a>Encrypting data with a session key.</h2></div></div></div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="xmlsec-example-encrypt3"></a>encrypt3.c</h3></div></div></div>
+<div class="informalexample"><pre class="programlisting">
+/** 
  * XML Security Library example: Encrypting XML file with a session key and dynamicaly created template.
  * 
  * Encrypts XML file using a dynamicaly created template file and a session 
@@ -367,20 +340,20 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
         goto done;   
     }
 
-    /* we want to put encrypted data in the <a href="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue" target="_top">&lt;enc:CipherValue/&gt;</a> node */
+    /* we want to put encrypted data in the <a class="ulink" href="" target="_top">&lt;enc:CipherValue/&gt;</a> node */
     if(xmlSecTmplEncDataEnsureCipherValue(encDataNode) == NULL) {
         fprintf(stderr, "Error: failed to add CipherValue node\n");
         goto done;   
     }
 
-    /* add <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> */
+    /* add <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> */
     keyInfoNode = xmlSecTmplEncDataEnsureKeyInfo(encDataNode, NULL);
     if(keyInfoNode == NULL) {
         fprintf(stderr, "Error: failed to add key info\n");
         goto done;              
     }
 
-    /* add <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> to store the encrypted session key */
+    /* add <a class="ulink" href="" target="_top">&lt;enc:EncryptedKey/&gt;</a> to store the encrypted session key */
     encKeyNode = xmlSecTmplKeyInfoAddEncryptedKey(keyInfoNode, 
                                     xmlSecTransformRsaPkcs1Id, 
                                     NULL, NULL, NULL);
@@ -389,13 +362,13 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
         goto done;              
     }
 
-    /* we want to put encrypted key in the <a href="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue" target="_top">&lt;enc:CipherValue/&gt;</a> node */
+    /* we want to put encrypted key in the <a class="ulink" href="" target="_top">&lt;enc:CipherValue/&gt;</a> node */
     if(xmlSecTmplEncDataEnsureCipherValue(encKeyNode) == NULL) {
         fprintf(stderr, "Error: failed to add CipherValue node\n");
         goto done;   
     }
 
-    /* add <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> and <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top">&lt;dsig:KeyName/&gt;</a> nodes to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> */
+    /* add <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> and <a class="ulink" href="" target="_top">&lt;dsig:KeyName/&gt;</a> nodes to <a class="ulink" href="" target="_top">&lt;enc:EncryptedKey/&gt;</a> */
     keyInfoNode2 = xmlSecTmplEncDataEnsureKeyInfo(encKeyNode, NULL);
     if(keyInfoNode2 == NULL) {
         fprintf(stderr, "Error: failed to add key info\n");
@@ -452,16 +425,15 @@ done:
         xmlFreeDoc(doc); 
     }
     return(res);
-}</pre>
-<p></p>
+}
+
+</pre></div>
 </div>
-</div>
-<br clear="all"><div class="SECT2">
-<h2 class="SECT2"><a name="XMLSEC-EXAMPLE-ENCRYPT3-DOC">encrypt3-doc.xml</a></h2>
-<p></p>
-<div class="INFORMALEXAMPLE">
-<p></p>
-<a name="AEN806"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="xmlsec-example-encrypt3-doc"></a>encrypt3-doc.xml</h3></div></div></div>
+<div class="informalexample"><pre class="programlisting">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: Original XML doc file before encryption (encrypt3 example). 
 --&gt;
@@ -469,16 +441,14 @@ XML Security Library example: Original XML doc file before encryption (encrypt3 
   &lt;Data&gt;
 	Hello, World!
   &lt;/Data&gt;
-&lt;/Envelope&gt;</pre>
-<p></p>
+&lt;/Envelope&gt;
+</pre></div>
 </div>
-</div>
-<br clear="all"><div class="SECT2">
-<h2 class="SECT2"><a name="XMLSEC-EXAMPLE-ENCRYPT3-RES">encrypt3-res.xml</a></h2>
-<p></p>
-<div class="INFORMALEXAMPLE">
-<p></p>
-<a name="AEN811"></a><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="xmlsec-example-encrypt3-res"></a>encrypt3-res.xml</h3></div></div></div>
+<div class="informalexample"><pre class="programlisting">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: Original XML doc file before encryption (encrypt3 example). 
 --&gt;
@@ -500,15 +470,12 @@ MLOtSy26mWrQ+XqfPGuyaA==&lt;/CipherValue&gt;
 &lt;CipherValue&gt;+UiDv73SE8K8KwXuOmHLHK7N2hNWDakTAEu6NprbCdULC1w/LXT9FLtNRJetmwwO
 XpBqTY56AAMeMgpxPWN3SPO0ETeQw7pR+bp0IjUvcGlFSXz6yE1qgQ==&lt;/CipherValue&gt;
 &lt;/CipherData&gt;
-&lt;/EncryptedData&gt;</pre>
-<p></p>
+&lt;/EncryptedData&gt;
+</pre></div>
 </div>
 </div>
-</div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-encrypt-dynamic-template.html"><b>&lt;&lt;&lt; Encrypting data with a dynamicaly created template.</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-decrypt-with-signle-key.html"><b>Decrypting data with a single key. &gt;&gt;&gt;</b></a></td>
-</tr></table>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
 </td></tr></table></td>
 </tr></table></body>
 </html>

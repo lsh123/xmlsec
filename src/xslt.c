@@ -1,4 +1,4 @@
-/**
+/*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * XSLT Transform (http://www.w3.org/TR/xmldsig-core/#sec-XSLT)

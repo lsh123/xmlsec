@@ -1,7 +1,9 @@
-<!doctype book PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN" "
+http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
 <!ENTITY chapter-compiling-and-linking 	SYSTEM "chapters/compiling-and-linking.sgml">
-<!ENTITY chapter-init-and-shutdown 	    SYSTEM "chapters/init-and-shutdown.sgml">
-<!ENTITY chapter-sign-and-encrypt 	    SYSTEM "chapters/sign-and-encrypt.sgml">
+<!ENTITY chapter-init-and-shutdown 	SYSTEM "chapters/init-and-shutdown.sgml">
+<!ENTITY chapter-sign-and-encrypt 	SYSTEM "chapters/sign-and-encrypt.sgml">
 <!ENTITY chapter-verify-and-decrypt 	SYSTEM "chapters/verify-and-decrypt.sgml">
 <!ENTITY chapter-creating-templates 	SYSTEM "chapters/creating-templates.sgml">
 <!ENTITY chapter-using-keys		SYSTEM "chapters/using-keys.sgml">
@@ -14,55 +16,55 @@
 
 <!ENTITY xmlsec-index 			SYSTEM "xmlsec-index.sgml">
 
-<!ENTITY xmlsec-app 			SYSTEM "app.sgml">
-<!ENTITY xmlsec-base64 			SYSTEM "base64.sgml">
-<!ENTITY xmlsec-bn 			    SYSTEM "bn.sgml">
-<!ENTITY xmlsec-buffer 			SYSTEM "buffer.sgml">
-<!ENTITY xmlsec-dl 			    SYSTEM "dl.sgml">
-<!ENTITY xmlsec-errors 			SYSTEM "errors.sgml">
-<!ENTITY xmlsec-io 			    SYSTEM "io.sgml">
-<!ENTITY xmlsec-keyinfo 		SYSTEM "keyinfo.sgml">
-<!ENTITY xmlsec-keysdata 		SYSTEM "keysdata.sgml">
-<!ENTITY xmlsec-keys 			SYSTEM "keys.sgml">
-<!ENTITY xmlsec-keysmngr 		SYSTEM "keysmngr.sgml">
-<!ENTITY xmlsec-list 			SYSTEM "list.sgml">
-<!ENTITY xmlsec-membuf 			SYSTEM "membuf.sgml">
-<!ENTITY xmlsec-nodeset 		SYSTEM "nodeset.sgml">
-<!ENTITY xmlsec-parser 			SYSTEM "parser.sgml">
-<!ENTITY xmlsec-templates 		SYSTEM "templates.sgml">
-<!ENTITY xmlsec-transforms 		SYSTEM "transforms.sgml">
-<!ENTITY xmlsec-version 		SYSTEM "version.sgml">
-<!ENTITY xmlsec-xmldsig 		SYSTEM "xmldsig.sgml">
-<!ENTITY xmlsec-xmlenc 			SYSTEM "xmlenc.sgml">
-<!ENTITY xmlsec-xmlsec 			SYSTEM "xmlsec.sgml">
-<!ENTITY xmlsec-xmltree 		SYSTEM "xmltree.sgml">
-<!ENTITY xmlsec-x509 			SYSTEM "x509.sgml">
+<!ENTITY xmlsec-app 			"app.xml">
+<!ENTITY xmlsec-base64 			"base64.xml">
+<!ENTITY xmlsec-bn 			"bn.xml">
+<!ENTITY xmlsec-buffer 			"buffer.xml">
+<!ENTITY xmlsec-dl 			"dl.xml">
+<!ENTITY xmlsec-errors 			"errors.xml">
+<!ENTITY xmlsec-io 			"io.xml">
+<!ENTITY xmlsec-keyinfo 		"keyinfo.xml">
+<!ENTITY xmlsec-keysdata 		"keysdata.xml">
+<!ENTITY xmlsec-keys 			"keys.xml">
+<!ENTITY xmlsec-keysmngr 		"keysmngr.xml">
+<!ENTITY xmlsec-list 			"list.xml">
+<!ENTITY xmlsec-membuf 			"membuf.xml">
+<!ENTITY xmlsec-nodeset 		"nodeset.xml">
+<!ENTITY xmlsec-parser 			"parser.xml">
+<!ENTITY xmlsec-templates 		"templates.xml">
+<!ENTITY xmlsec-transforms 		"transforms.xml">
+<!ENTITY xmlsec-version 		"version.xml">
+<!ENTITY xmlsec-x509                    "x509.xml">
+<!ENTITY xmlsec-xmldsig 		"xmldsig.xml">
+<!ENTITY xmlsec-xmlenc 			"xmlenc.xml">
+<!ENTITY xmlsec-xmlsec 			"xmlsec.xml">
+<!ENTITY xmlsec-xmltree 		"xmltree.xml">
 
-<!ENTITY xmlsec-openssl-app 		SYSTEM "openssl/app.sgml">
-<!ENTITY xmlsec-openssl-bn 		    SYSTEM "openssl/bn.sgml">
-<!ENTITY xmlsec-openssl-ciphers		SYSTEM "openssl/ciphers.sgml">
-<!ENTITY xmlsec-openssl-crypto		SYSTEM "openssl/crypto.sgml">
-<!ENTITY xmlsec-openssl-evp 		SYSTEM "openssl/evp.sgml">
-<!ENTITY xmlsec-openssl-x509 		SYSTEM "openssl/x509.sgml">
+<!ENTITY xmlsec-openssl-app 		"openssl/app.xml">
+<!ENTITY xmlsec-openssl-bn 		"openssl/bn.xml">
+<!ENTITY xmlsec-openssl-crypto		"openssl/crypto.xml">
+<!ENTITY xmlsec-openssl-evp 		"openssl/evp.xml">
+<!ENTITY xmlsec-openssl-x509 		"openssl/x509.xml">
 
-<!ENTITY xmlsec-gnutls-app 		    SYSTEM "gnutls/app.sgml">
-<!ENTITY xmlsec-gnutls-crypto 		SYSTEM "gnutls/crypto.sgml">
+<!ENTITY xmlsec-gnutls-app 		"gnutls/app.xml">
+<!ENTITY xmlsec-gnutls-crypto 		"gnutls/crypto.xml">
+<!ENTITY xmlsec-gnutls-x509 		"gnutls/x509.xml">
 
-<!ENTITY xmlsec-gcrypt-app 		    SYSTEM "gcrypt/app.sgml">
-<!ENTITY xmlsec-gcrypt-crypto 		SYSTEM "gcrypt/crypto.sgml">
+<!ENTITY xmlsec-gcrypt-app 		"gcrypt/app.xml">
+<!ENTITY xmlsec-gcrypt-crypto 		"gcrypt/crypto.xml">
 
-<!ENTITY xmlsec-nss-app 		SYSTEM "nss/app.sgml">
-<!ENTITY xmlsec-nss-bignum		SYSTEM "nss/bignum.sgml">
-<!ENTITY xmlsec-nss-crypto 		SYSTEM "nss/crypto.sgml">
-<!ENTITY xmlsec-nss-keysstore		SYSTEM "nss/keysstore.sgml">
-<!ENTITY xmlsec-nss-pkikeys		SYSTEM "nss/pkikeys.sgml">
-<!ENTITY xmlsec-nss-x509		SYSTEM "nss/x509.sgml">
+<!ENTITY xmlsec-nss-app 		"nss/app.xml">
+<!ENTITY xmlsec-nss-bignum		"nss/bignum.xml">
+<!ENTITY xmlsec-nss-crypto 		"nss/crypto.xml">
+<!ENTITY xmlsec-nss-keysstore		"nss/keysstore.xml">
+<!ENTITY xmlsec-nss-pkikeys		"nss/pkikeys.xml">
+<!ENTITY xmlsec-nss-x509		"nss/x509.xml">
 
-<!ENTITY xmlsec-mscrypto-app 		SYSTEM "mscrypto/app.sgml">
-<!ENTITY xmlsec-mscrypto-certkeys	SYSTEM "mscrypto/certkeys.sgml">
-<!ENTITY xmlsec-mscrypto-crypto 	SYSTEM "mscrypto/crypto.sgml">
-<!ENTITY xmlsec-mscrypto-keysstore	SYSTEM "mscrypto/keysstore.sgml">
-<!ENTITY xmlsec-mscrypto-x509		SYSTEM "mscrypto/x509.sgml">
+<!ENTITY xmlsec-mscrypto-app 		"mscrypto/app.xml">
+<!ENTITY xmlsec-mscrypto-certkeys	"mscrypto/certkeys.xml">
+<!ENTITY xmlsec-mscrypto-crypto 	"mscrypto/crypto.xml">
+<!ENTITY xmlsec-mscrypto-keysstore	"mscrypto/keysstore.xml">
+<!ENTITY xmlsec-mscrypto-x509		"mscrypto/x509.xml">
 
 <!ENTITY xmlsec-example-sign1 		SYSTEM "examples/sign1.sgml">
 <!ENTITY xmlsec-example-sign2 		SYSTEM "examples/sign2.sgml">
@@ -114,7 +116,7 @@
       </author>
     </authorgroup>
     <copyright>
-      <year>2002-2003</year>
+      <year>2002-2017</year>
       <holder>Aleksey Sanin</holder>
     </copyright>	
     <legalnotice>
@@ -210,29 +212,29 @@
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </para>
 
-    &xmlsec-app;
-    &xmlsec-base64;
-    &xmlsec-bn;
-    &xmlsec-buffer;
-    &xmlsec-dl;
-    &xmlsec-errors;
-    &xmlsec-io;
-    &xmlsec-keyinfo;
-    &xmlsec-keysdata;
-    &xmlsec-keys;
-    &xmlsec-keysmngr;
-    &xmlsec-list;
-    &xmlsec-membuf;
-    &xmlsec-nodeset;
-    &xmlsec-parser;
-    &xmlsec-templates;
-    &xmlsec-transforms;
-    &xmlsec-version;
-    &xmlsec-xmldsig;
-    &xmlsec-xmlenc;
-    &xmlsec-xmlsec;
-    &xmlsec-xmltree;
-    &xmlsec-x509;
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-app;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-base64;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-bn;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-buffer;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-dl;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-errors;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-io;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-keyinfo;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-keysdata;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-keys;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-keysmngr;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-list;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-membuf;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-nodeset;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-parser;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-templates;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-transforms;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-version;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-xmldsig;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-xmlenc;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-xmlsec;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-xmltree;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-x509;"/>
     </chapter>
 
     <chapter id="xmlsec-openssl-ref">
@@ -241,11 +243,11 @@
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </para>
 
-    &xmlsec-openssl-app;
-    &xmlsec-openssl-bn;
-    &xmlsec-openssl-crypto;
-    &xmlsec-openssl-evp;
-    &xmlsec-openssl-x509;
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-openssl-app;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-openssl-bn;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-openssl-crypto;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-openssl-evp;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-openssl-x509;"/>
     </chapter>
 
     <chapter id="xmlsec-gnutls-ref">
@@ -254,8 +256,9 @@
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </para>
 
-    &xmlsec-gnutls-app;
-    &xmlsec-gnutls-crypto;
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-gnutls-app;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-gnutls-crypto;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-gnutls-x509;"/>
     </chapter>
 
     <chapter id="xmlsec-gcrypt-ref">
@@ -264,8 +267,8 @@
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </para>
 
-    &xmlsec-gcrypt-app;
-    &xmlsec-gcrypt-crypto;
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-gcrypt-app;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-gcrypt-crypto;"/>
     </chapter>
 
     <chapter id="xmlsec-nss-ref">
@@ -274,12 +277,12 @@
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </para>
 
-    &xmlsec-nss-app;
-    &xmlsec-nss-bignum;
-    &xmlsec-nss-crypto;
-    &xmlsec-nss-keysstore;
-    &xmlsec-nss-pkikeys;
-    &xmlsec-nss-x509;
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-nss-app;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-nss-bignum;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-nss-crypto;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-nss-keysstore;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-nss-pkikeys;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-nss-x509;"/>
     </chapter>
 
     <chapter id="xmlsec-mscrypto-ref">
@@ -288,18 +291,18 @@
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </para>
 
-    &xmlsec-mscrypto-app;
-    &xmlsec-mscrypto-certkeys;
-    &xmlsec-mscrypto-crypto;
-    &xmlsec-mscrypto-keysstore;
-    &xmlsec-mscrypto-x509;
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-mscrypto-app;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-mscrypto-certkeys;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-mscrypto-crypto;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-mscrypto-keysstore;"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-mscrypto-x509;"/>
     </chapter>
     
     <chapter id="xmlsec-index">
     <title>XML Security Library Reference Index</title>
     <para>
 	<itemizedlist>
-	&xmlsec-index;
+        &xmlsec-index;
 	</itemizedlist>
     </para>	
     </chapter>

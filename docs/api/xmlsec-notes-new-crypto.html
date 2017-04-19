@@ -1,41 +1,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Adding support for new cryptographic library.</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="XML Security Library Tutorial" href="xmlsec-notes.html">
-<link rel="PREVIOUS" title="Using context objects." href="xmlsec-notes-contexts.html">
-<link rel="NEXT" title="Creating a framework from the skeleton." href="xmlsec-notes-new-crypto-skeleton.html">
-<style type="text/css">.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-    padding: 0.5em;
-}
-.programlisting {
-    background: #eeeeff;
-    border: solid 1px #aaaaff;
-    padding: 0.5em;
-}
-.variablelist {
-    padding: 4px;
-    margin-left: 3em;
-}
-.navigation {
-    background: #ffeeee;
-    border: solid 1px #ffaaaa;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-.navigation a {
-    color: #770000;
-}
-.navigation a:visited {
-    color: #550000;
-}
-.navigation .title {
-    font-size: 200%;
-}</style>
+<title>Adding support for new cryptographic library.: XML Security Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="XML Security Library Reference Manual">
+<link rel="up" href="xmlsec-notes.html" title="Part I. XML Security Library Tutorial">
+<link rel="prev" href="xmlsec-notes-contexts.html" title="Using context objects.">
+<link rel="next" href="xmlsec-notes-new-crypto-skeleton.html" title="Creating a framework from the skeleton.">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
 <style type="text/css">
 table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     width: 20em;
@@ -100,29 +73,29 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-notes-contexts.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-notes.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="u" href="xmlsec-notes.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="xmlsec-notes-contexts.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="xmlsec-notes-new-crypto-skeleton.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
-<div class="CHAPTER">
-<h1>
-<a name="XMLSEC-NOTES-NEW-CRYPTO"></a>Adding support for new cryptographic library.</h1>
-<div class="TOC"><dl>
-<dt><b>Table of Contents</b></dt>
-<dt><a href="xmlsec-notes-new-crypto.html#XMLSEC-NOTES-NEW-CRYPTO-OVERVIEW">Overview.</a></dt>
-<dt><a href="xmlsec-notes-new-crypto-skeleton.html">Creating a framework from the skeleton.</a></dt>
-<dt><a href="xmlsec-notes-new-crypto-functions.html">xmlSecCryptoApp* functions.</a></dt>
-<dt><a href="xmlsec-notes-new-crypto-klasses.html">Klasses and objects.</a></dt>
-<dt><a href="xmlsec-notes-new-crypto-transforms.html">Cryptographic transforms.</a></dt>
-<dt><a href="xmlsec-notes-new-crypto-keys.html">Keys data and keys data stores.</a></dt>
-<dt><a href="xmlsec-notes-new-crypto-simple-keys-mngr.html">Default keys manager.</a></dt>
-<dt><a href="xmlsec-notes-new-crypto-sharing-results.html">Sharing the results.</a></dt>
+<div class="chapter">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="xmlsec-notes-new-crypto"></a>Adding support for new cryptographic library.</h2></div></div></div>
+<div class="toc"><dl class="toc">
+<dt><span class="sect1"><a href="xmlsec-notes-new-crypto.html#xmlsec-notes-new-crypto-overview">Overview.</a></span></dt>
+<dt><span class="sect1"><a href="xmlsec-notes-new-crypto-skeleton.html">Creating a framework from the skeleton.</a></span></dt>
+<dt><span class="sect1"><a href="xmlsec-notes-new-crypto-functions.html">xmlSecCryptoApp* functions.</a></span></dt>
+<dt><span class="sect1"><a href="xmlsec-notes-new-crypto-klasses.html">Klasses and objects.</a></span></dt>
+<dt><span class="sect1"><a href="xmlsec-notes-new-crypto-transforms.html">Cryptographic transforms.</a></span></dt>
+<dt><span class="sect1"><a href="xmlsec-notes-new-crypto-keys.html">Keys data and keys data stores.</a></span></dt>
+<dt><span class="sect1"><a href="xmlsec-notes-new-crypto-simple-keys-mngr.html">Default keys manager.</a></span></dt>
+<dt><span class="sect1"><a href="xmlsec-notes-new-crypto-sharing-results.html">Sharing the results.</a></span></dt>
 </dl></div>
-<br clear="all"><div class="SECT1">
-<h1 class="SECT1"><a name="XMLSEC-NOTES-NEW-CRYPTO-OVERVIEW">Overview.</a></h1>
+<div class="sect1">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="xmlsec-notes-new-crypto-overview"></a>Overview.</h2></div></div></div>
 <p>XML Security Library can support practicaly any cryptographic
     library. Currently, it has "out-of-the-box" support for OpenSSL,
     MSCrypto, NSS, GnuTLS and GCrypt. If your favorite library is not supported yet then
@@ -130,30 +103,33 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     (university, ...) are willing to share the results of your work I would 
     be happy to add support for new libraries to the main XML Security 
     Library distribution.</p>
-<p>    The XML Security Library 
-    <a href="xmlsec-notes-structure.html">separates</a> 
+<p>
+    The XML Security Library 
+    <a class="link" href="xmlsec-notes-structure.html" title="XML Security Library Structure.">separates</a> 
     the cryptographic library (engine) 
     specific code in an "xmlsec-&lt;crypto&gt;" library (where "&lt;crypto&gt;" is 
     "openssl", "mscrypt", "gnutls", "gcrypt", "nss", etc.) which includes following items:
     </p>
-<p></p>
-<ul>
-<li><p>    xmlSecCryptoApp* functions.
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem"><p>
+    xmlSecCryptoApp* functions.
     </p></li>
-<li><p>    Cryptographic transforms and keys data implementation.
+<li class="listitem"><p>
+    Cryptographic transforms and keys data implementation.
     </p></li>
-<li><p>    Keys store support (X509, PGP, etc.).
+<li class="listitem"><p>
+    Keys store support (X509, PGP, etc.).
     </p></li>
-</ul>    
+</ul></div>
+<p>    
     In this chapter, we will discuss
     a task of creating "xmlsec-mycrypto" library that provides support
     for your favorite "MyCrypto" cryptographic library. 
-    </div>
+    </p>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-notes-contexts.html"><b>&lt;&lt;&lt; Using context objects.</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-notes-new-crypto-skeleton.html"><b>Creating a framework from the skeleton. &gt;&gt;&gt;</b></a></td>
-</tr></table>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
 </td></tr></table></td>
 </tr></table></body>
 </html>

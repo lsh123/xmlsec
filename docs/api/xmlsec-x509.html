@@ -1,41 +1,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>x509</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="XML Security Core Library API Reference." href="xmlsec-ref.html">
-<link rel="PREVIOUS" title="xmltree" href="xmlsec-xmltree.html">
-<link rel="NEXT" title="XML Security Library for OpenSLL API Reference." href="xmlsec-openssl-ref.html">
-<style type="text/css">.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-    padding: 0.5em;
-}
-.programlisting {
-    background: #eeeeff;
-    border: solid 1px #aaaaff;
-    padding: 0.5em;
-}
-.variablelist {
-    padding: 4px;
-    margin-left: 3em;
-}
-.navigation {
-    background: #ffeeee;
-    border: solid 1px #ffaaaa;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-.navigation a {
-    color: #770000;
-}
-.navigation a:visited {
-    color: #550000;
-}
-.navigation .title {
-    font-size: 200%;
-}</style>
+<title>x509: XML Security Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="XML Security Library Reference Manual">
+<link rel="up" href="xmlsec-ref.html" title="XML Security Core Library API Reference.">
+<link rel="prev" href="xmlsec-xmltree.html" title="xmltree">
+<link rel="next" href="xmlsec-openssl-ref.html" title="XML Security Library for OpenSLL API Reference.">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
 <style type="text/css">
 table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     width: 20em;
@@ -100,158 +73,168 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-xmltree.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-ref.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#xmlsec-x509.description" class="shortcut">Description</a></span>
+</td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="u" href="xmlsec-ref.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="xmlsec-xmltree.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="xmlsec-openssl-ref.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
-<h1>
-<a name="XMLSEC-X509"></a>x509</h1>
-<div class="REFNAMEDIV">
-<a name="AEN28797"></a><h2>Name</h2>x509 -- <a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate" target="_top">&lt;dsig:X509Certificate/&gt;</a> node parser.</div>
-<div class="REFSECT1">
-<a name="XMLSEC-X509.FUNCTIONS"></a><h2>Functions</h2>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN28803"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
+<div class="refentry">
+<a name="xmlsec-x509"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="xmlsec-x509.top_of_page"></a>x509</span></h2>
+<p>x509 &#8212; &lt;dsig:X509Certificate/&gt; node parser.</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="xmlsec-x509.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
 <tbody><tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-x509.html#XMLSECX509DATAGETNODECONTENT">xmlSecX509DataGetNodeContent</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-x509.html#xmlSecX509DataGetNodeContent" title="xmlSecX509DataGetNodeContent ()">xmlSecX509DataGetNodeContent</a> <span class="c_punctuation">()</span>
 </td>
 </tr></tbody>
-</table>
-<p></p>
+</table></div>
 </div>
-</div>
-<div class="REFSECT1">
-<a name="XMLSEC-X509.OTHER"></a><h2>Types and Values</h2>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN28815"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
+<div class="refsect1">
+<a name="xmlsec-x509.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
 <tbody>
 <tr>
-<td>#define</td>
-<td><a href="xmlsec-x509.html#XMLSEC-X509DATA-CERTIFICATE-NODE:CAPS">XMLSEC_X509DATA_CERTIFICATE_NODE</a></td>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-x509.html#XMLSEC-X509DATA-CERTIFICATE-NODE:CAPS" title="XMLSEC_X509DATA_CERTIFICATE_NODE">XMLSEC_X509DATA_CERTIFICATE_NODE</a></td>
 </tr>
 <tr>
-<td>#define</td>
-<td><a href="xmlsec-x509.html#XMLSEC-X509DATA-SUBJECTNAME-NODE:CAPS">XMLSEC_X509DATA_SUBJECTNAME_NODE</a></td>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-x509.html#XMLSEC-X509DATA-SUBJECTNAME-NODE:CAPS" title="XMLSEC_X509DATA_SUBJECTNAME_NODE">XMLSEC_X509DATA_SUBJECTNAME_NODE</a></td>
 </tr>
 <tr>
-<td>#define</td>
-<td><a href="xmlsec-x509.html#XMLSEC-X509DATA-ISSUERSERIAL-NODE:CAPS">XMLSEC_X509DATA_ISSUERSERIAL_NODE</a></td>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-x509.html#XMLSEC-X509DATA-ISSUERSERIAL-NODE:CAPS" title="XMLSEC_X509DATA_ISSUERSERIAL_NODE">XMLSEC_X509DATA_ISSUERSERIAL_NODE</a></td>
 </tr>
 <tr>
-<td>#define</td>
-<td><a href="xmlsec-x509.html#XMLSEC-X509DATA-SKI-NODE:CAPS">XMLSEC_X509DATA_SKI_NODE</a></td>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-x509.html#XMLSEC-X509DATA-SKI-NODE:CAPS" title="XMLSEC_X509DATA_SKI_NODE">XMLSEC_X509DATA_SKI_NODE</a></td>
 </tr>
 <tr>
-<td>#define</td>
-<td><a href="xmlsec-x509.html#XMLSEC-X509DATA-CRL-NODE:CAPS">XMLSEC_X509DATA_CRL_NODE</a></td>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-x509.html#XMLSEC-X509DATA-CRL-NODE:CAPS" title="XMLSEC_X509DATA_CRL_NODE">XMLSEC_X509DATA_CRL_NODE</a></td>
 </tr>
 <tr>
-<td>#define</td>
-<td><a href="xmlsec-x509.html#XMLSEC-X509DATA-DEFAULT:CAPS">XMLSEC_X509DATA_DEFAULT</a></td>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-x509.html#XMLSEC-X509DATA-DEFAULT:CAPS" title="XMLSEC_X509DATA_DEFAULT">XMLSEC_X509DATA_DEFAULT</a></td>
 </tr>
 </tbody>
-</table>
-<p></p>
+</table></div>
 </div>
+<div class="refsect1">
+<a name="xmlsec-x509.description"></a><h2>Description</h2>
+<p>
+&lt;dsig:X509Certificate/&gt; node parser.
+</p>
 </div>
-<div class="REFSECT1">
-<a name="XMLSEC-X509.DESCRIPTION"></a><h2>Description</h2>
-<p><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate" target="_top">&lt;dsig:X509Certificate/&gt;</a> node parser.</p>
-</div>
-<div class="REFSECT1">
-<a name="XMLSEC-X509.FUNCTIONS_DETAILS"></a><h2>Functions</h2>
-<div class="REFSECT2">
-<a name="XMLSECX509DATAGETNODECONTENT"></a><h3>xmlSecX509DataGetNodeContent ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
-xmlSecX509DataGetNodeContent (<code class="PARAMETER"><font><span class="TYPE">xmlNodePtr</span></font> node</code>,
-                              <code class="PARAMETER"><a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"><span class="TYPE">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code>);</pre>
+<div class="refsect1">
+<a name="xmlsec-x509.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="xmlSecX509DataGetNodeContent"></a><h3>xmlSecX509DataGetNodeContent ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecX509DataGetNodeContent (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
+                              <em class="parameter"><code><font><span class="type">xmlSecKeyInfoCtxPtr</span></font> keyInfoCtx</code></em>);</pre>
 <p>Reads the contents of &lt;dsig:X509Data/&gt; node and returns it as
 a bits mask.</p>
-<div class="REFSECT3">
-<a name="AEN28862"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN28864"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
+<div class="refsect3">
+<a name="xmlSecX509DataGetNodeContent.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
 <tbody>
 <tr>
-<td><p>node</p></td>
-<td><p>the pointer to &lt;dsig:X509Data/&gt; node.</p></td>
-<td> </td>
+<td class="parameter_name"><p>node</p></td>
+<td class="parameter_description"><p>the pointer to &lt;dsig:X509Data/&gt; node.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p>keyInfoCtx</p></td>
-<td><p>the pointer to &lt;dsig:KeyInfo/&gt; node processing context.</p></td>
-<td> </td>
+<td class="parameter_name"><p>keyInfoCtx</p></td>
+<td class="parameter_description"><p>the pointer to &lt;dsig:KeyInfo/&gt; node processing context.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
-</table>
-<p></p>
+</table></div>
 </div>
-</div>
-<div class="REFSECT3">
-<a name="AEN28879"></a><h4>Returns</h4>
+<div class="refsect3">
+<a name="xmlSecX509DataGetNodeContent.returns"></a><h4>Returns</h4>
 <p> the bit mask representing the &lt;dsig:X509Data/&gt; node content
 or a negative value if an error occurs.</p>
 </div>
 </div>
 </div>
-<div class="REFSECT1">
-<a name="XMLSEC-X509.OTHER_DETAILS"></a><h2>Types and Values</h2>
-<div class="REFSECT2">
+<div class="refsect1">
+<a name="xmlsec-x509.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
 <a name="XMLSEC-X509DATA-CERTIFICATE-NODE:CAPS"></a><h3>XMLSEC_X509DATA_CERTIFICATE_NODE</h3>
-<pre class="PROGRAMLISTING">#define XMLSEC_X509DATA_CERTIFICATE_NODE                        0x00000001</pre>
+<pre class="programlisting">#define XMLSEC_X509DATA_CERTIFICATE_NODE                        0x00000001
+</pre>
 <p>&lt;dsig:X509Certificate/&gt; node found or would be written back.</p>
 </div>
 <hr>
-<div class="REFSECT2">
+<div class="refsect2">
 <a name="XMLSEC-X509DATA-SUBJECTNAME-NODE:CAPS"></a><h3>XMLSEC_X509DATA_SUBJECTNAME_NODE</h3>
-<pre class="PROGRAMLISTING">#define XMLSEC_X509DATA_SUBJECTNAME_NODE                        0x00000002</pre>
+<pre class="programlisting">#define XMLSEC_X509DATA_SUBJECTNAME_NODE                        0x00000002
+</pre>
 <p>&lt;dsig:X509SubjectName/&gt; node found or would be written back.</p>
 </div>
 <hr>
-<div class="REFSECT2">
+<div class="refsect2">
 <a name="XMLSEC-X509DATA-ISSUERSERIAL-NODE:CAPS"></a><h3>XMLSEC_X509DATA_ISSUERSERIAL_NODE</h3>
-<pre class="PROGRAMLISTING">#define XMLSEC_X509DATA_ISSUERSERIAL_NODE                       0x00000004</pre>
+<pre class="programlisting">#define XMLSEC_X509DATA_ISSUERSERIAL_NODE                       0x00000004
+</pre>
 <p>&lt;dsig:X509IssuerSerial/&gt; node found or would be written back.</p>
 </div>
 <hr>
-<div class="REFSECT2">
+<div class="refsect2">
 <a name="XMLSEC-X509DATA-SKI-NODE:CAPS"></a><h3>XMLSEC_X509DATA_SKI_NODE</h3>
-<pre class="PROGRAMLISTING">#define XMLSEC_X509DATA_SKI_NODE                                0x00000008</pre>
+<pre class="programlisting">#define XMLSEC_X509DATA_SKI_NODE                                0x00000008
+</pre>
 <p>&lt;dsig:X509SKI/&gt; node found or would be written back.</p>
 </div>
 <hr>
-<div class="REFSECT2">
+<div class="refsect2">
 <a name="XMLSEC-X509DATA-CRL-NODE:CAPS"></a><h3>XMLSEC_X509DATA_CRL_NODE</h3>
-<pre class="PROGRAMLISTING">#define XMLSEC_X509DATA_CRL_NODE                                0x00000010</pre>
+<pre class="programlisting">#define XMLSEC_X509DATA_CRL_NODE                                0x00000010
+</pre>
 <p>&lt;dsig:X509CRL/&gt; node found or would be written back.</p>
 </div>
 <hr>
-<div class="REFSECT2">
+<div class="refsect2">
 <a name="XMLSEC-X509DATA-DEFAULT:CAPS"></a><h3>XMLSEC_X509DATA_DEFAULT</h3>
-<pre class="PROGRAMLISTING">#define             XMLSEC_X509DATA_DEFAULT</pre>
+<pre class="programlisting">#define             XMLSEC_X509DATA_DEFAULT</pre>
 <p>Default set of nodes to write in case of empty
 &lt;dsig:X509Data/&gt; node template.</p>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-xmltree.html"><b>&lt;&lt;&lt; xmltree</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-openssl-ref.html"><b>XML Security Library for OpenSLL API Reference. &gt;&gt;&gt;</b></a></td>
-</tr></table>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
 </td></tr></table></td>
 </tr></table></body>
 </html>

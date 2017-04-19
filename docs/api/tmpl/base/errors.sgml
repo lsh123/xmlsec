@@ -83,6 +83,13 @@ Error/log messages support.
 
 
 
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_CONFIG ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_SIZE ##### -->
 <para>
 
@@ -133,6 +140,13 @@ Error/log messages support.
 
 
 <!-- ##### MACRO XMLSEC_ERRORS_R_DATA_NOT_MATCH ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_VERSION ##### -->
 <para>
 
 </para>

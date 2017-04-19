@@ -1,41 +1,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Writing a custom keys manager.</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="Examples." href="xmlsec-examples.html">
-<link rel="PREVIOUS" title="Decrypting data with keys manager." href="xmlsec-decrypt-with-keys-mngr.html">
-<link rel="NEXT" title="APPENDIX A. XML Security Library Signature Klasses." href="xmlsec-signature-klasses.html">
-<style type="text/css">.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-    padding: 0.5em;
-}
-.programlisting {
-    background: #eeeeff;
-    border: solid 1px #aaaaff;
-    padding: 0.5em;
-}
-.variablelist {
-    padding: 4px;
-    margin-left: 3em;
-}
-.navigation {
-    background: #ffeeee;
-    border: solid 1px #ffaaaa;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-.navigation a {
-    color: #770000;
-}
-.navigation a:visited {
-    color: #550000;
-}
-.navigation .title {
-    font-size: 200%;
-}</style>
+<title>Writing a custom keys manager.: XML Security Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="XML Security Library Reference Manual">
+<link rel="up" href="xmlsec-examples.html" title="Examples.">
+<link rel="prev" href="xmlsec-decrypt-with-keys-mngr.html" title="Decrypting data with keys manager.">
+<link rel="next" href="xmlsec-signature-klasses.html" title="APPENDIX A. XML Security Library Signature Klasses.">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
 <style type="text/css">
 table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     width: 20em;
@@ -100,25 +73,25 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-decrypt-with-keys-mngr.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-examples.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="u" href="xmlsec-examples.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="xmlsec-decrypt-with-keys-mngr.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="xmlsec-signature-klasses.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
-<br clear="all"><div class="SECT1">
-<h1 class="SECT1"><a name="XMLSEC-CUSTOM-KEYS-MANAGER">Writing a custom keys manager.</a></h1>
-<br clear="all"><div class="SECT2">
-<h2 class="SECT2"><a name="XMLSEC-EXAMPLE-DECRYPT3">decrypt3.c</a></h2>
-<p></p>
-<div class="INFORMALEXAMPLE">
-<p></p>
-<a name="AEN832"></a><pre class="PROGRAMLISTING">/** 
+<div class="sect1">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="xmlsec-custom-keys-manager"></a>Writing a custom keys manager.</h2></div></div></div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="xmlsec-example-decrypt3"></a>decrypt3.c</h3></div></div></div>
+<div class="informalexample"><pre class="programlisting">
+/** 
  * XML Security Library example: Decrypting an encrypted file using a custom keys manager.
  * 
  * Decrypts encrypted XML file using a custom files based keys manager.
- * We assume that key's name in <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top">&lt;dsig:KeyName/&gt;</a> element is just 
+ * We assume that key's name in <a class="ulink" href="" target="_top">&lt;dsig:KeyName/&gt;</a> element is just 
  * key's file name in the current folder.
  * 
  * Usage: 
@@ -391,7 +364,7 @@ create_files_keys_mngr(void) {
 /****************************************************************************
  *
  * Files Keys Store: we assume that key's name (content of the 
- * <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top">&lt;dsig:KeyName/&gt;</a> element is a name of the file with a key (in the 
+ * <a class="ulink" href="" target="_top">&lt;dsig:KeyName/&gt;</a> element is a name of the file with a key (in the 
  * current folder).
  * Attention: this probably not a good solution for high traffic systems.
  * 
@@ -429,7 +402,7 @@ files_keys_store_get_klass(void) {
  * files_keys_store_find_key:
  * @store:              the pointer to simple keys store.
  * @name:               the desired key name.
- * @keyInfoCtx:         the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node processing context.
+ * @keyInfoCtx:         the pointer to <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node processing context.
  *  
  * Lookups key in the @store. The caller is responsible for destroying
  * returned key with #xmlSecKeyDestroy function.
@@ -484,15 +457,13 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
     }
 
     return(key);
-}</pre>
-<p></p>
+}
+
+</pre></div>
 </div>
 </div>
-</div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-decrypt-with-keys-mngr.html"><b>&lt;&lt;&lt; Decrypting data with keys manager.</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-signature-klasses.html"><b>APPENDIX A. XML Security Library Signature Klasses. &gt;&gt;&gt;</b></a></td>
-</tr></table>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
 </td></tr></table></td>
 </tr></table></body>
 </html>

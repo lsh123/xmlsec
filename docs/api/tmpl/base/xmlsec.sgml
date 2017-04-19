@@ -75,7 +75,22 @@ Utility functions.
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecSetExternalEntityLoader ##### -->
+<para>
+
+</para>
+
+@Param1: 
+
+
 <!-- ##### MACRO XMLSEC_CRYPTO ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_DEPRECATED ##### -->
 <para>
 
 </para>
@@ -114,38 +129,5 @@ Utility functions.
 @subminor: 
 @mode: 
 @Returns: 
-
-
-<!-- ##### MACRO ATTRIBUTE_UNUSED ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_PTR_TO_FUNC_IMPL ##### -->
-<para>
-
-</para>
-
-@func_type: 
-
-
-<!-- ##### MACRO XMLSEC_PTR_TO_FUNC ##### -->
-<para>
-
-</para>
-
-@func_type: 
-@ptr: 
-
-
-<!-- ##### MACRO XMLSEC_FUNC_TO_PTR ##### -->
-<para>
-
-</para>
-
-@func_type: 
-@func: 
 
 

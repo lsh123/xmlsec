@@ -1,41 +1,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>keysstore</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="XML Security Library for NSS API Reference." href="xmlsec-nss-ref.html">
-<link rel="PREVIOUS" title="crypto" href="xmlsec-nss-crypto.html">
-<link rel="NEXT" title="pkikeys" href="xmlsec-nss-pkikeys.html">
-<style type="text/css">.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-    padding: 0.5em;
-}
-.programlisting {
-    background: #eeeeff;
-    border: solid 1px #aaaaff;
-    padding: 0.5em;
-}
-.variablelist {
-    padding: 4px;
-    margin-left: 3em;
-}
-.navigation {
-    background: #ffeeee;
-    border: solid 1px #ffaaaa;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-.navigation a {
-    color: #770000;
-}
-.navigation a:visited {
-    color: #550000;
-}
-.navigation .title {
-    font-size: 200%;
-}</style>
+<title>keysstore: XML Security Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="XML Security Library Reference Manual">
+<link rel="up" href="xmlsec-nss-ref.html" title="XML Security Library for NSS API Reference.">
+<link rel="prev" href="xmlsec-nss-crypto.html" title="crypto">
+<link rel="next" href="xmlsec-nss-pkikeys.html" title="pkikeys">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
 <style type="text/css">
 table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     width: 20em;
@@ -100,221 +73,229 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-nss-crypto.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-nss-ref.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#xmlsec-nss-keysstore.description" class="shortcut">Description</a></span>
+</td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="u" href="xmlsec-nss-ref.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="xmlsec-nss-crypto.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="xmlsec-nss-pkikeys.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
-<h1>
-<a name="XMLSEC-NSS-KEYSSTORE"></a>keysstore</h1>
-<div class="REFNAMEDIV">
-<a name="AEN41026"></a><h2>Name</h2>keysstore -- Keys store implementation for NSS.</div>
-<div class="REFSECT1">
-<a name="XMLSEC-NSS-KEYSSTORE.FUNCTIONS"></a><h2>Functions</h2>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN41031"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
+<div class="refentry">
+<a name="xmlsec-nss-keysstore"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="xmlsec-nss-keysstore.top_of_page"></a>keysstore</span></h2>
+<p>keysstore &#8212; Keys store implementation for NSS.</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="xmlsec-nss-keysstore.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
 <tbody>
 <tr>
-<td><font><span class="RETURNVALUE">xmlSecKeyStoreId</span></font></td>
-<td>
-<a href="xmlsec-nss-keysstore.html#XMLSECNSSKEYSSTOREGETKLASS">xmlSecNssKeysStoreGetKlass</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecKeyStoreId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-nss-keysstore.html#xmlSecNssKeysStoreGetKlass" title="xmlSecNssKeysStoreGetKlass ()">xmlSecNssKeysStoreGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-nss-keysstore.html#XMLSECNSSKEYSSTOREADOPTKEY">xmlSecNssKeysStoreAdoptKey</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-nss-keysstore.html#xmlSecNssKeysStoreAdoptKey" title="xmlSecNssKeysStoreAdoptKey ()">xmlSecNssKeysStoreAdoptKey</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-nss-keysstore.html#XMLSECNSSKEYSSTORELOAD">xmlSecNssKeysStoreLoad</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-nss-keysstore.html#xmlSecNssKeysStoreLoad" title="xmlSecNssKeysStoreLoad ()">xmlSecNssKeysStoreLoad</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-nss-keysstore.html#XMLSECNSSKEYSSTORESAVE">xmlSecNssKeysStoreSave</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-nss-keysstore.html#xmlSecNssKeysStoreSave" title="xmlSecNssKeysStoreSave ()">xmlSecNssKeysStoreSave</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 </tbody>
-</table>
-<p></p>
+</table></div>
 </div>
-</div>
-<div class="REFSECT1">
-<a name="XMLSEC-NSS-KEYSSTORE.OTHER"></a><h2>Types and Values</h2>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN41064"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
+<div class="refsect1">
+<a name="xmlsec-nss-keysstore.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
 <tbody><tr>
-<td>#define</td>
-<td><a href="xmlsec-nss-keysstore.html#XMLSECNSSKEYSSTOREID">xmlSecNssKeysStoreId</a></td>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-nss-keysstore.html#xmlSecNssKeysStoreId" title="xmlSecNssKeysStoreId">xmlSecNssKeysStoreId</a></td>
 </tr></tbody>
-</table>
-<p></p>
+</table></div>
 </div>
+<div class="refsect1">
+<a name="xmlsec-nss-keysstore.description"></a><h2>Description</h2>
+<p>
+Keys store implementation for NSS.
+</p>
 </div>
-<div class="REFSECT1">
-<a name="XMLSEC-NSS-KEYSSTORE.DESCRIPTION"></a><h2>Description</h2>
-<p>Keys store implementation for NSS.</p>
-</div>
-<div class="REFSECT1">
-<a name="XMLSEC-NSS-KEYSSTORE.FUNCTIONS_DETAILS"></a><h2>Functions</h2>
-<div class="REFSECT2">
-<a name="XMLSECNSSKEYSSTOREGETKLASS"></a><h3>xmlSecNssKeysStoreGetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">xmlSecKeyStoreId</span></font>
-xmlSecNssKeysStoreGetKlass (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<div class="refsect1">
+<a name="xmlsec-nss-keysstore.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="xmlSecNssKeysStoreGetKlass"></a><h3>xmlSecNssKeysStoreGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyStoreId</span></font>
+xmlSecNssKeysStoreGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The Nss list based keys store klass.</p>
-<div class="REFSECT3">
-<a name="AEN41086"></a><h4>Returns</h4>
+<div class="refsect3">
+<a name="xmlSecNssKeysStoreGetKlass.returns"></a><h4>Returns</h4>
 <p> Nss list based keys store klass.</p>
 </div>
 </div>
 <hr>
-<div class="REFSECT2">
-<a name="XMLSECNSSKEYSSTOREADOPTKEY"></a><h3>xmlSecNssKeysStoreAdoptKey ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
-xmlSecNssKeysStoreAdoptKey (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>,
-                            <code class="PARAMETER"><a href="xmlsec-keys.html#XMLSECKEY"><span class="TYPE">xmlSecKeyPtr</span></a> key</code>);</pre>
-<p>Adds <code class="PARAMETER">key</code>
- to the <code class="PARAMETER">store</code>
+<div class="refsect2">
+<a name="xmlSecNssKeysStoreAdoptKey"></a><h3>xmlSecNssKeysStoreAdoptKey ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecNssKeysStoreAdoptKey (<em class="parameter"><code><font><span class="type">xmlSecKeyStorePtr</span></font> store</code></em>,
+                            <em class="parameter"><code><font><span class="type">xmlSecKeyPtr</span></font> key</code></em>);</pre>
+<p>Adds <em class="parameter"><code>key</code></em>
+ to the <em class="parameter"><code>store</code></em>
 .</p>
-<div class="REFSECT3">
-<a name="AEN41105"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN41107"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
+<div class="refsect3">
+<a name="xmlSecNssKeysStoreAdoptKey.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
 <tbody>
 <tr>
-<td><p>store</p></td>
-<td><p>the pointer to Nss keys store.</p></td>
-<td> </td>
+<td class="parameter_name"><p>store</p></td>
+<td class="parameter_description"><p>the pointer to Nss keys store.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p>key</p></td>
-<td><p>the pointer to key.</p></td>
-<td> </td>
+<td class="parameter_name"><p>key</p></td>
+<td class="parameter_description"><p>the pointer to key.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
-</table>
-<p></p>
+</table></div>
 </div>
-</div>
-<div class="REFSECT3">
-<a name="AEN41122"></a><h4>Returns</h4>
+<div class="refsect3">
+<a name="xmlSecNssKeysStoreAdoptKey.returns"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
 <hr>
-<div class="REFSECT2">
-<a name="XMLSECNSSKEYSSTORELOAD"></a><h3>xmlSecNssKeysStoreLoad ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
-xmlSecNssKeysStoreLoad (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>,
-                        <code class="PARAMETER">const <font><span class="TYPE">char</span></font> *uri</code>,
-                        <code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="TYPE">xmlSecKeysMngrPtr</span></a> keysMngr</code>);</pre>
+<div class="refsect2">
+<a name="xmlSecNssKeysStoreLoad"></a><h3>xmlSecNssKeysStoreLoad ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecNssKeysStoreLoad (<em class="parameter"><code><font><span class="type">xmlSecKeyStorePtr</span></font> store</code></em>,
+                        <em class="parameter"><code>const <font><span class="type">char</span></font> *uri</code></em>,
+                        <em class="parameter"><code><font><span class="type">xmlSecKeysMngrPtr</span></font> keysMngr</code></em>);</pre>
 <p>Reads keys from an XML file.</p>
-<div class="REFSECT3">
-<a name="AEN41142"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN41144"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
+<div class="refsect3">
+<a name="xmlSecNssKeysStoreLoad.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
 <tbody>
 <tr>
-<td><p>store</p></td>
-<td><p>the pointer to Nss keys store.</p></td>
-<td> </td>
+<td class="parameter_name"><p>store</p></td>
+<td class="parameter_description"><p>the pointer to Nss keys store.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p>uri</p></td>
-<td><p>the filename.</p></td>
-<td> </td>
+<td class="parameter_name"><p>uri</p></td>
+<td class="parameter_description"><p>the filename.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p>keysMngr</p></td>
-<td><p>the pointer to associated keys manager.</p></td>
-<td> </td>
+<td class="parameter_name"><p>keysMngr</p></td>
+<td class="parameter_description"><p>the pointer to associated keys manager.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
-</table>
-<p></p>
+</table></div>
 </div>
-</div>
-<div class="REFSECT3">
-<a name="AEN41165"></a><h4>Returns</h4>
+<div class="refsect3">
+<a name="xmlSecNssKeysStoreLoad.returns"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
 <hr>
-<div class="REFSECT2">
-<a name="XMLSECNSSKEYSSTORESAVE"></a><h3>xmlSecNssKeysStoreSave ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
-xmlSecNssKeysStoreSave (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>,
-                        <code class="PARAMETER">const <font><span class="TYPE">char</span></font> *filename</code>,
-                        <code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE"><span class="TYPE">xmlSecKeyDataType</span></a> type</code>);</pre>
-<p>Writes keys from <code class="PARAMETER">store</code>
+<div class="refsect2">
+<a name="xmlSecNssKeysStoreSave"></a><h3>xmlSecNssKeysStoreSave ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecNssKeysStoreSave (<em class="parameter"><code><font><span class="type">xmlSecKeyStorePtr</span></font> store</code></em>,
+                        <em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
+                        <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="type">xmlSecKeyDataType</span></a> type</code></em>);</pre>
+<p>Writes keys from <em class="parameter"><code>store</code></em>
  to an XML file.</p>
-<div class="REFSECT3">
-<a name="AEN41186"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN41188"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
+<div class="refsect3">
+<a name="xmlSecNssKeysStoreSave.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
 <tbody>
 <tr>
-<td><p>store</p></td>
-<td><p>the pointer to Nss keys store.</p></td>
-<td> </td>
+<td class="parameter_name"><p>store</p></td>
+<td class="parameter_description"><p>the pointer to Nss keys store.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p>filename</p></td>
-<td><p>the filename.</p></td>
-<td> </td>
+<td class="parameter_name"><p>filename</p></td>
+<td class="parameter_description"><p>the filename.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p>type</p></td>
-<td><p>the saved keys type (public, private, ...).</p></td>
-<td> </td>
+<td class="parameter_name"><p>type</p></td>
+<td class="parameter_description"><p>the saved keys type (public, private, ...).</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
-</table>
-<p></p>
+</table></div>
 </div>
-</div>
-<div class="REFSECT3">
-<a name="AEN41209"></a><h4>Returns</h4>
+<div class="refsect3">
+<a name="xmlSecNssKeysStoreSave.returns"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
 </div>
-<div class="REFSECT1">
-<a name="XMLSEC-NSS-KEYSSTORE.OTHER_DETAILS"></a><h2>Types and Values</h2>
-<div class="REFSECT2">
-<a name="XMLSECNSSKEYSSTOREID"></a><h3>xmlSecNssKeysStoreId</h3>
-<pre class="PROGRAMLISTING">#define xmlSecNssKeysStoreId            xmlSecNssKeysStoreGetKlass()</pre>
+<div class="refsect1">
+<a name="xmlsec-nss-keysstore.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="xmlSecNssKeysStoreId"></a><h3>xmlSecNssKeysStoreId</h3>
+<pre class="programlisting">#define xmlSecNssKeysStoreId            xmlSecNssKeysStoreGetKlass()
+</pre>
 <p>A Nss keys store klass id.</p>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-nss-crypto.html"><b>&lt;&lt;&lt; crypto</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-nss-pkikeys.html"><b>pkikeys &gt;&gt;&gt;</b></a></td>
-</tr></table>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
 </td></tr></table></td>
 </tr></table></body>
 </html>

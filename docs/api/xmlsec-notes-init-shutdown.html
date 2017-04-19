@@ -1,41 +1,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Initialization and shutdown.</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="XML Security Library Tutorial" href="xmlsec-notes.html">
-<link rel="PREVIOUS" title="Compiling and linking on other systems." href="xmlsec-notes-compiling-others.html">
-<link rel="NEXT" title="Signing and encrypting documents." href="xmlsec-notes-sign-encrypt.html">
-<style type="text/css">.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-    padding: 0.5em;
-}
-.programlisting {
-    background: #eeeeff;
-    border: solid 1px #aaaaff;
-    padding: 0.5em;
-}
-.variablelist {
-    padding: 4px;
-    margin-left: 3em;
-}
-.navigation {
-    background: #ffeeee;
-    border: solid 1px #ffaaaa;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-.navigation a {
-    color: #770000;
-}
-.navigation a:visited {
-    color: #550000;
-}
-.navigation .title {
-    font-size: 200%;
-}</style>
+<title>Initialization and shutdown.: XML Security Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="XML Security Library Reference Manual">
+<link rel="up" href="xmlsec-notes.html" title="Part I. XML Security Library Tutorial">
+<link rel="prev" href="xmlsec-notes-compiling-others.html" title="Compiling and linking on other systems.">
+<link rel="next" href="xmlsec-notes-sign-encrypt.html" title="Signing and encrypting documents.">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
 <style type="text/css">
 table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     width: 20em;
@@ -100,47 +73,50 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-notes-compiling-others.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-notes.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="u" href="xmlsec-notes.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="xmlsec-notes-compiling-others.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="xmlsec-notes-sign-encrypt.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
-<div class="CHAPTER">
-<h1>
-<a name="XMLSEC-NOTES-INIT-SHUTDOWN"></a>Initialization and shutdown.</h1>
+<div class="chapter">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="xmlsec-notes-init-shutdown"></a>Initialization and shutdown.</h2></div></div></div>
 <p>XML Security Library initialization/shutdown 
 	process includes initialization and shutdown of the
 	dependent libraries:
 	</p>
-<p></p>
-<ul>
-<li><p>libxml library;</p></li>
-<li><p>libxslt library;</p></li>
-<li><p>crypto library (OpenSSL, GnuTLS, GCrypt, NSS, ...);</p></li>
-<li><p>xmlsec library 
-		(<a href="xmlsec-xmlsec.html#XMLSECINIT">xmlSecInit</a> 
-		and <a href="xmlsec-xmlsec.html#XMLSECSHUTDOWN">xmlSecShutdown</a> 
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem"><p>libxml library;</p></li>
+<li class="listitem"><p>libxslt library;</p></li>
+<li class="listitem"><p>crypto library (OpenSSL, GnuTLS, GCrypt, NSS, ...);</p></li>
+<li class="listitem"><p>xmlsec library 
+		(<a class="link" href="xmlsec-xmlsec.html#xmlSecInit" title="xmlSecInit ()">xmlSecInit</a> 
+		and <a class="link" href="xmlsec-xmlsec.html#xmlSecShutdown" title="xmlSecShutdown ()">xmlSecShutdown</a> 
 		functions);
 	    </p></li>
-<li><p>xmlsec-crypto library
-		(<a href="xmlsec-dl.html#XMLSECCRYPTODLLOADLIBRARY">xmlSecCryptoDLLoadLibrary</a> 
+<li class="listitem"><p>xmlsec-crypto library
+		(<a class="link" href="xmlsec-dl.html#xmlSecCryptoDLLoadLibrary" title="xmlSecCryptoDLLoadLibrary ()">xmlSecCryptoDLLoadLibrary</a> 
 		to load xmlsec-crypto library dynamicaly if needed, 
-		<a href="xmlsec-app.html#XMLSECCRYPTOINIT">xmlSecCryptoInit</a> 
-		and <a href="xmlsec-app.html#XMLSECCRYPTOSHUTDOWN">xmlSecCryptoShutdown</a> 
+		<a class="link" href="xmlsec-app.html#xmlSecCryptoInit" title="xmlSecCryptoInit ()">xmlSecCryptoInit</a> 
+		and <a class="link" href="xmlsec-app.html#xmlSecCryptoShutdown" title="xmlSecCryptoShutdown ()">xmlSecCryptoShutdown</a> 
 		functions);
 	    </p></li>
-</ul>
+</ul></div>
+<p>
 	xmlsec-crypto library also provides a convinient functions 
 	<font>xmlSecAppCryptoInit</font> 
 	and <font>xmlSecAppCryptoShutdown</font> 
 	to initialize the crypto library itself but application can do it 
 	by itself.
-	<p>	     </p>
-<div class="EXAMPLE">
-<a name="AEN137"></a><p><b>Example 1. Initializing application.</b></p>
-<pre class="PROGRAMLISTING">    /* Init libxml and libxslt libraries */
+	</p>
+<p>
+	     </p>
+<div class="example">
+<a name="id-1.2.5.3.1"></a><p class="title"><b>Example 8. Initializing application.</b></p>
+<div class="example-contents"><pre class="programlisting">
+    /* Init libxml and libxslt libraries */
     xmlInitParser();
     LIBXML_TEST_VERSION
     xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
@@ -186,12 +162,16 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 	fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
 	return(-1);
     }
-		</pre>
+		</pre></div>
 </div>
-	<p>	     </p>
-<div class="EXAMPLE">
-<a name="AEN141"></a><p><b>Example 2. Shutting down application.</b></p>
-<pre class="PROGRAMLISTING">    /* Shutdown xmlsec-crypto library */
+<p><br class="example-break">
+	</p>
+<p>
+	     </p>
+<div class="example">
+<a name="id-1.2.5.4.1"></a><p class="title"><b>Example 9. Shutting down application.</b></p>
+<div class="example-contents"><pre class="programlisting">
+    /* Shutdown xmlsec-crypto library */
     xmlSecCryptoShutdown();
     
     /* Shutdown crypto library */
@@ -205,13 +185,13 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     xsltCleanupGlobals();            
 #endif /* XMLSEC_NO_XSLT */
     xmlCleanupParser();		
-		</pre>
+		</pre></div>
 </div>
-    </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-notes-compiling-others.html"><b>&lt;&lt;&lt; Compiling and linking on other systems.</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-notes-sign-encrypt.html"><b>Signing and encrypting documents. &gt;&gt;&gt;</b></a></td>
-</tr></table>
+<p><br class="example-break">
+    </p>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
 </td></tr></table></td>
 </tr></table></body>
 </html>

@@ -1,0 +1,751 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>x509: XML Security Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="XML Security Library Reference Manual">
+<link rel="up" href="xmlsec-gnutls-ref.html" title="XML Security Library for GnuTLS API Reference.">
+<link rel="prev" href="xmlsec-gnutls-crypto.html" title="crypto">
+<link rel="next" href="xmlsec-gcrypt-ref.html" title="XML Security Library for GCrypt API Reference.">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
+</head>
+<body><table width="100%" valign="top"><tr valign="top">
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<ul>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
+<li><a href="../api/xmlsec-reference.html">API reference</a></li>
+<li><a href="../api/xmlsec-examples.html">Examples</a></li>
+</ul>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul><li><a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a></li></ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+<li><a href="../authors.html">Authors</a></li>
+</ul>
+<table width="100%">
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
+</tr>
+<!--Links - start--><!--Links - end-->
+</table>
+</td>
+<td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#xmlsec-gnutls-x509.description" class="shortcut">Description</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="xmlsec-gnutls-ref.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="xmlsec-gnutls-crypto.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="xmlsec-gcrypt-ref.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="xmlsec-gnutls-x509"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="xmlsec-gnutls-x509.top_of_page"></a>x509</span></h2>
+<p>x509 &#8212; X509 certificates support implementation for GnuTLS.</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="xmlsec-gnutls-x509.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecKeyDataId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-gnutls-x509.html#xmlSecGnuTLSKeyDataX509GetKlass" title="xmlSecGnuTLSKeyDataX509GetKlass ()">xmlSecGnuTLSKeyDataX509GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">gnutls_x509_crt_t</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-gnutls-x509.html#xmlSecGnuTLSKeyDataX509GetKeyCert" title="xmlSecGnuTLSKeyDataX509GetKeyCert ()">xmlSecGnuTLSKeyDataX509GetKeyCert</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-gnutls-x509.html#xmlSecGnuTLSKeyDataX509AdoptKeyCert" title="xmlSecGnuTLSKeyDataX509AdoptKeyCert ()">xmlSecGnuTLSKeyDataX509AdoptKeyCert</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-gnutls-x509.html#xmlSecGnuTLSKeyDataX509AdoptCert" title="xmlSecGnuTLSKeyDataX509AdoptCert ()">xmlSecGnuTLSKeyDataX509AdoptCert</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">gnutls_x509_crt_t</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-gnutls-x509.html#xmlSecGnuTLSKeyDataX509GetCert" title="xmlSecGnuTLSKeyDataX509GetCert ()">xmlSecGnuTLSKeyDataX509GetCert</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-gnutls-x509.html#xmlSecGnuTLSKeyDataX509GetCertsSize" title="xmlSecGnuTLSKeyDataX509GetCertsSize ()">xmlSecGnuTLSKeyDataX509GetCertsSize</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-gnutls-x509.html#xmlSecGnuTLSKeyDataX509AdoptCrl" title="xmlSecGnuTLSKeyDataX509AdoptCrl ()">xmlSecGnuTLSKeyDataX509AdoptCrl</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">gnutls_x509_crl_t</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-gnutls-x509.html#xmlSecGnuTLSKeyDataX509GetCrl" title="xmlSecGnuTLSKeyDataX509GetCrl ()">xmlSecGnuTLSKeyDataX509GetCrl</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-gnutls-x509.html#xmlSecGnuTLSKeyDataX509GetCrlsSize" title="xmlSecGnuTLSKeyDataX509GetCrlsSize ()">xmlSecGnuTLSKeyDataX509GetCrlsSize</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecKeyDataPtr</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-gnutls-x509.html#xmlSecGnuTLSX509CertGetKey" title="xmlSecGnuTLSX509CertGetKey ()">xmlSecGnuTLSX509CertGetKey</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecKeyDataId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-gnutls-x509.html#xmlSecGnuTLSKeyDataRawX509CertGetKlass" title="xmlSecGnuTLSKeyDataRawX509CertGetKlass ()">xmlSecGnuTLSKeyDataRawX509CertGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecKeyDataStoreId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-gnutls-x509.html#xmlSecGnuTLSX509StoreGetKlass" title="xmlSecGnuTLSX509StoreGetKlass ()">xmlSecGnuTLSX509StoreGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">gnutls_x509_crt_t</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-gnutls-x509.html#xmlSecGnuTLSX509StoreFindCert" title="xmlSecGnuTLSX509StoreFindCert ()">xmlSecGnuTLSX509StoreFindCert</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">gnutls_x509_crt_t</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-gnutls-x509.html#xmlSecGnuTLSX509StoreVerify" title="xmlSecGnuTLSX509StoreVerify ()">xmlSecGnuTLSX509StoreVerify</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-gnutls-x509.html#xmlSecGnuTLSX509StoreAdoptCert" title="xmlSecGnuTLSX509StoreAdoptCert ()">xmlSecGnuTLSX509StoreAdoptCert</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="xmlsec-gnutls-x509.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-gnutls-x509.html#xmlSecGnuTLSKeyDataX509Id" title="xmlSecGnuTLSKeyDataX509Id">xmlSecGnuTLSKeyDataX509Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-gnutls-x509.html#xmlSecGnuTLSKeyDataRawX509CertId" title="xmlSecGnuTLSKeyDataRawX509CertId">xmlSecGnuTLSKeyDataRawX509CertId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-gnutls-x509.html#xmlSecGnuTLSX509StoreId" title="xmlSecGnuTLSX509StoreId">xmlSecGnuTLSX509StoreId</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="xmlsec-gnutls-x509.description"></a><h2>Description</h2>
+<p>
+X509 certificates support implementation for GnuTLS.
+</p>
+</div>
+<div class="refsect1">
+<a name="xmlsec-gnutls-x509.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="xmlSecGnuTLSKeyDataX509GetKlass"></a><h3>xmlSecGnuTLSKeyDataX509GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
+xmlSecGnuTLSKeyDataX509GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The GnuTLS X509 key data klass (http://www.w3.org/TR/xmldsig-core/<font><span class="type">sec-X509Data</span></font>).</p>
+<div class="refsect3">
+<a name="xmlSecGnuTLSKeyDataX509GetKlass.returns"></a><h4>Returns</h4>
+<p> the X509 data klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecGnuTLSKeyDataX509GetKeyCert"></a><h3>xmlSecGnuTLSKeyDataX509GetKeyCert ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">gnutls_x509_crt_t</span></font>
+xmlSecGnuTLSKeyDataX509GetKeyCert (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
+<p>Gets the certificate from which the key was extracted.</p>
+<div class="refsect3">
+<a name="xmlSecGnuTLSKeyDataX509GetKeyCert.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>the pointer to X509 key data.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecGnuTLSKeyDataX509GetKeyCert.returns"></a><h4>Returns</h4>
+<p> the key's certificate or NULL if key data was not used for key
+extraction or an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecGnuTLSKeyDataX509AdoptKeyCert"></a><h3>xmlSecGnuTLSKeyDataX509AdoptKeyCert ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecGnuTLSKeyDataX509AdoptKeyCert (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
+                                     <em class="parameter"><code><font><span class="type">gnutls_x509_crt_t</span></font> cert</code></em>);</pre>
+<p>Sets the key's certificate in <em class="parameter"><code>data</code></em>
+.</p>
+<div class="refsect3">
+<a name="xmlSecGnuTLSKeyDataX509AdoptKeyCert.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>the pointer to X509 key data.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>cert</p></td>
+<td class="parameter_description"><p>the pointer to GnuTLS X509 certificate.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecGnuTLSKeyDataX509AdoptKeyCert.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecGnuTLSKeyDataX509AdoptCert"></a><h3>xmlSecGnuTLSKeyDataX509AdoptCert ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecGnuTLSKeyDataX509AdoptCert (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
+                                  <em class="parameter"><code><font><span class="type">gnutls_x509_crt_t</span></font> cert</code></em>);</pre>
+<p>Adds certificate to the X509 key data.</p>
+<div class="refsect3">
+<a name="xmlSecGnuTLSKeyDataX509AdoptCert.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>the pointer to X509 key data.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>cert</p></td>
+<td class="parameter_description"><p>the pointer to GnuTLS X509 certificate.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecGnuTLSKeyDataX509AdoptCert.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecGnuTLSKeyDataX509GetCert"></a><h3>xmlSecGnuTLSKeyDataX509GetCert ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">gnutls_x509_crt_t</span></font>
+xmlSecGnuTLSKeyDataX509GetCert (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
+                                <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> pos</code></em>);</pre>
+<p>Gets a certificate from X509 key data.</p>
+<div class="refsect3">
+<a name="xmlSecGnuTLSKeyDataX509GetCert.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>the pointer to X509 key data.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>pos</p></td>
+<td class="parameter_description"><p>the desired certificate position.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecGnuTLSKeyDataX509GetCert.returns"></a><h4>Returns</h4>
+<p> the pointer to certificate or NULL if <em class="parameter"><code>pos</code></em>
+is larger than the
+number of certificates in <em class="parameter"><code>data</code></em>
+or an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecGnuTLSKeyDataX509GetCertsSize"></a><h3>xmlSecGnuTLSKeyDataX509GetCertsSize ()</h3>
+<pre class="programlisting"><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
+xmlSecGnuTLSKeyDataX509GetCertsSize (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
+<p>Gets the number of certificates in <em class="parameter"><code>data</code></em>
+.</p>
+<div class="refsect3">
+<a name="xmlSecGnuTLSKeyDataX509GetCertsSize.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>the pointer to X509 key data.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecGnuTLSKeyDataX509GetCertsSize.returns"></a><h4>Returns</h4>
+<p> te number of certificates in <em class="parameter"><code>data</code></em>
+.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecGnuTLSKeyDataX509AdoptCrl"></a><h3>xmlSecGnuTLSKeyDataX509AdoptCrl ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecGnuTLSKeyDataX509AdoptCrl (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
+                                 <em class="parameter"><code><font><span class="type">gnutls_x509_crl_t</span></font> crl</code></em>);</pre>
+<p>Adds crl to the X509 key data.</p>
+<div class="refsect3">
+<a name="xmlSecGnuTLSKeyDataX509AdoptCrl.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>the pointer to X509 key data.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>crl</p></td>
+<td class="parameter_description"><p>the pointer to GnuTLS X509 crl.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecGnuTLSKeyDataX509AdoptCrl.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecGnuTLSKeyDataX509GetCrl"></a><h3>xmlSecGnuTLSKeyDataX509GetCrl ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">gnutls_x509_crl_t</span></font>
+xmlSecGnuTLSKeyDataX509GetCrl (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
+                               <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> pos</code></em>);</pre>
+<p>Gets a crl from X509 key data.</p>
+<div class="refsect3">
+<a name="xmlSecGnuTLSKeyDataX509GetCrl.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>the pointer to X509 key data.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>pos</p></td>
+<td class="parameter_description"><p>the desired crl position.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecGnuTLSKeyDataX509GetCrl.returns"></a><h4>Returns</h4>
+<p> the pointer to crl or NULL if <em class="parameter"><code>pos</code></em>
+is larger than the
+number of crls in <em class="parameter"><code>data</code></em>
+or an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecGnuTLSKeyDataX509GetCrlsSize"></a><h3>xmlSecGnuTLSKeyDataX509GetCrlsSize ()</h3>
+<pre class="programlisting"><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
+xmlSecGnuTLSKeyDataX509GetCrlsSize (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
+<p>Gets the number of crls in <em class="parameter"><code>data</code></em>
+.</p>
+<div class="refsect3">
+<a name="xmlSecGnuTLSKeyDataX509GetCrlsSize.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>the pointer to X509 key data.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecGnuTLSKeyDataX509GetCrlsSize.returns"></a><h4>Returns</h4>
+<p> te number of crls in <em class="parameter"><code>data</code></em>
+.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecGnuTLSX509CertGetKey"></a><h3>xmlSecGnuTLSX509CertGetKey ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataPtr</span></font>
+xmlSecGnuTLSX509CertGetKey (<em class="parameter"><code><font><span class="type">gnutls_x509_crt_t</span></font> cert</code></em>);</pre>
+<p>Extracts public key from the <em class="parameter"><code>cert</code></em>
+.</p>
+<div class="refsect3">
+<a name="xmlSecGnuTLSX509CertGetKey.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>cert</p></td>
+<td class="parameter_description"><p>the certificate.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecGnuTLSX509CertGetKey.returns"></a><h4>Returns</h4>
+<p> public key value or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecGnuTLSKeyDataRawX509CertGetKlass"></a><h3>xmlSecGnuTLSKeyDataRawX509CertGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
+xmlSecGnuTLSKeyDataRawX509CertGetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The raw X509 certificates key data klass.</p>
+<div class="refsect3">
+<a name="xmlSecGnuTLSKeyDataRawX509CertGetKlass.returns"></a><h4>Returns</h4>
+<p> raw X509 certificates key data klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecGnuTLSX509StoreGetKlass"></a><h3>xmlSecGnuTLSX509StoreGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataStoreId</span></font>
+xmlSecGnuTLSX509StoreGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The GnuTLS X509 certificates key data store klass.</p>
+<div class="refsect3">
+<a name="xmlSecGnuTLSX509StoreGetKlass.returns"></a><h4>Returns</h4>
+<p> pointer to GnuTLS X509 certificates key data store klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecGnuTLSX509StoreFindCert"></a><h3>xmlSecGnuTLSX509StoreFindCert ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">gnutls_x509_crt_t</span></font>
+xmlSecGnuTLSX509StoreFindCert (<em class="parameter"><code>const <font><span class="type">xmlSecKeyDataStorePtr</span></font> store</code></em>,
+                               <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *subjectName</code></em>,
+                               <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *issuerName</code></em>,
+                               <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *issuerSerial</code></em>,
+                               <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *ski</code></em>,
+                               <em class="parameter"><code>const <a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtx</span></a> *keyInfoCtx</code></em>);</pre>
+<p>Searches <em class="parameter"><code>store</code></em>
+ for a certificate that matches given criteria.</p>
+<div class="refsect3">
+<a name="xmlSecGnuTLSX509StoreFindCert.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>store</p></td>
+<td class="parameter_description"><p>the pointer to X509 key data store klass.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>subjectName</p></td>
+<td class="parameter_description"><p>the desired certificate name.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>issuerName</p></td>
+<td class="parameter_description"><p>the desired certificate issuer name.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>issuerSerial</p></td>
+<td class="parameter_description"><p>the desired certificate issuer serial number.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>ski</p></td>
+<td class="parameter_description"><p>the desired certificate SKI.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>keyInfoCtx</p></td>
+<td class="parameter_description"><p>the pointer to &lt;dsig:KeyInfo/&gt; element processing context.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecGnuTLSX509StoreFindCert.returns"></a><h4>Returns</h4>
+<p> pointer to found certificate or NULL if certificate is not found
+or an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecGnuTLSX509StoreVerify"></a><h3>xmlSecGnuTLSX509StoreVerify ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">gnutls_x509_crt_t</span></font>
+xmlSecGnuTLSX509StoreVerify (<em class="parameter"><code><font><span class="type">xmlSecKeyDataStorePtr</span></font> store</code></em>,
+                             <em class="parameter"><code><font><span class="type">xmlSecPtrListPtr</span></font> certs</code></em>,
+                             <em class="parameter"><code><font><span class="type">xmlSecPtrListPtr</span></font> crls</code></em>,
+                             <em class="parameter"><code>const <a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtx</span></a> *keyInfoCtx</code></em>);</pre>
+<p>Verifies <em class="parameter"><code>certs</code></em>
+ list.</p>
+<div class="refsect3">
+<a name="xmlSecGnuTLSX509StoreVerify.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>store</p></td>
+<td class="parameter_description"><p>the pointer to X509 key data store klass.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>certs</p></td>
+<td class="parameter_description"><p>the untrusted certificates.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>crls</p></td>
+<td class="parameter_description"><p>the crls.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>keyInfoCtx</p></td>
+<td class="parameter_description"><p>the pointer to &lt;dsig:KeyInfo/&gt; element processing context.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecGnuTLSX509StoreVerify.returns"></a><h4>Returns</h4>
+<p> pointer to the first verified certificate from <em class="parameter"><code>certs</code></em>
+.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecGnuTLSX509StoreAdoptCert"></a><h3>xmlSecGnuTLSX509StoreAdoptCert ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecGnuTLSX509StoreAdoptCert (<em class="parameter"><code><font><span class="type">xmlSecKeyDataStorePtr</span></font> store</code></em>,
+                                <em class="parameter"><code><font><span class="type">gnutls_x509_crt_t</span></font> cert</code></em>,
+                                <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="type">xmlSecKeyDataType</span></a> type</code></em>);</pre>
+<p>Adds trusted (root) or untrusted certificate to the store.</p>
+<div class="refsect3">
+<a name="xmlSecGnuTLSX509StoreAdoptCert.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>store</p></td>
+<td class="parameter_description"><p>the pointer to X509 key data store klass.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>cert</p></td>
+<td class="parameter_description"><p>the pointer to GnuTLS X509 certificate.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>type</p></td>
+<td class="parameter_description"><p>the certificate type (trusted/untrusted).</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecGnuTLSX509StoreAdoptCert.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="xmlsec-gnutls-x509.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="xmlSecGnuTLSKeyDataX509Id"></a><h3>xmlSecGnuTLSKeyDataX509Id</h3>
+<pre class="programlisting">#define             xmlSecGnuTLSKeyDataX509Id</pre>
+<p>The GnuTLS X509 data klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecGnuTLSKeyDataRawX509CertId"></a><h3>xmlSecGnuTLSKeyDataRawX509CertId</h3>
+<pre class="programlisting">#define             xmlSecGnuTLSKeyDataRawX509CertId</pre>
+<p>The GnuTLS raw X509 certificate klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecGnuTLSX509StoreId"></a><h3>xmlSecGnuTLSX509StoreId</h3>
+<pre class="programlisting">#define             xmlSecGnuTLSX509StoreId</pre>
+<p>The GnuTLS X509 store klass.</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
+</td></tr></table></td>
+</tr></table></body>
+</html>

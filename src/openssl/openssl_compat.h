@@ -1,6 +1,6 @@
 #ifndef __XMLSEC_OPENSSL_OPENSSL_COMPAT_H__
 #define __XMLSEC_OPENSSL_OPENSSL_COMPAT_H__
-/**
+/*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * This file provides a compatibility layer for pre-OpenSSL 1.0.0 and 1.1.0

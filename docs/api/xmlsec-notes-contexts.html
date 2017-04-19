@@ -1,41 +1,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Using context objects.</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="XML Security Library Tutorial" href="xmlsec-notes.html">
-<link rel="PREVIOUS" title="Transforms and transforms chain." href="xmlsec-notes-transforms.html">
-<link rel="NEXT" title="Adding support for new cryptographic library." href="xmlsec-notes-new-crypto.html">
-<style type="text/css">.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-    padding: 0.5em;
-}
-.programlisting {
-    background: #eeeeff;
-    border: solid 1px #aaaaff;
-    padding: 0.5em;
-}
-.variablelist {
-    padding: 4px;
-    margin-left: 3em;
-}
-.navigation {
-    background: #ffeeee;
-    border: solid 1px #ffaaaa;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-.navigation a {
-    color: #770000;
-}
-.navigation a:visited {
-    color: #550000;
-}
-.navigation .title {
-    font-size: 200%;
-}</style>
+<title>Using context objects.: XML Security Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="XML Security Library Reference Manual">
+<link rel="up" href="xmlsec-notes.html" title="Part I. XML Security Library Tutorial">
+<link rel="prev" href="xmlsec-notes-transforms.html" title="Transforms and transforms chain.">
+<link rel="next" href="xmlsec-notes-new-crypto.html" title="Adding support for new cryptographic library.">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
 <style type="text/css">
 table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     width: 20em;
@@ -100,16 +73,16 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-notes-transforms.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-notes.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="u" href="xmlsec-notes.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="xmlsec-notes-transforms.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="xmlsec-notes-new-crypto.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
-<div class="CHAPTER">
-<h1>
-<a name="XMLSEC-NOTES-CONTEXTS"></a>Using context objects.</h1>
+<div class="chapter">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="xmlsec-notes-contexts"></a>Using context objects.</h2></div></div></div>
 <p>The great flexibility of XML Digital Signature and XML Encryption
     specification is one of the most interesting and in the same time,
     most dangerouse feature for an application developer.
@@ -125,19 +98,21 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     enable or disable particular features, return the result
     data and the information collected during the processing.
     Also all the context objects defined in XML Security library have 
-    a special <code class="STRUCTFIELD">userData</code> member which could 
+    a special <em class="structfield"><code>userData</code></em> member which could 
     be used by application to pass application specific data around.
     XML Security Library never use this field.
     The application creates a new 
-    <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a>
-    or <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a> object for each 
+    <a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtx" title="struct xmlSecDSigCtx">xmlSecDSigCtx</a>
+    or <a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtx" title="struct xmlSecEncCtx">xmlSecEncCtx</a> object for each 
     operation, sets necessary options and consumes result returned
     in the context after signature, verification, encryption or decryption.
     </p>
-<p>	</p>
-<div class="EXAMPLE">
-<a name="AEN489"></a><p><b>Example 1. SAML signature validation.</b></p>
-<pre class="PROGRAMLISTING">/** 
+<p>
+	</p>
+<div class="example">
+<a name="id-1.2.13.3.1"></a><p class="title"><b>Example 24. SAML signature validation.</b></p>
+<div class="example-contents"><pre class="programlisting">
+/** 
  * verify_file:
  * @mngr:		the pointer to keys manager.
  * @xml_file:		the signed XML file name.
@@ -240,13 +215,13 @@ done:
     return(res);
 }
 
-	    </pre>
+	    </pre></div>
 </div>
-    </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-notes-transforms.html"><b>&lt;&lt;&lt; Transforms and transforms chain.</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-notes-new-crypto.html"><b>Adding support for new cryptographic library. &gt;&gt;&gt;</b></a></td>
-</tr></table>
+<p><br class="example-break">
+    </p>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
 </td></tr></table></td>
 </tr></table></body>
 </html>

@@ -1,41 +1,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Examples.</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="XML Security Library Tutorial" href="xmlsec-notes.html">
-<link rel="PREVIOUS" title="Sharing the results." href="xmlsec-notes-new-crypto-sharing-results.html">
-<link rel="NEXT" title="Signing a template file." href="xmlsec-examples-sign-template-file.html">
-<style type="text/css">.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-    padding: 0.5em;
-}
-.programlisting {
-    background: #eeeeff;
-    border: solid 1px #aaaaff;
-    padding: 0.5em;
-}
-.variablelist {
-    padding: 4px;
-    margin-left: 3em;
-}
-.navigation {
-    background: #ffeeee;
-    border: solid 1px #ffaaaa;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-.navigation a {
-    color: #770000;
-}
-.navigation a:visited {
-    color: #550000;
-}
-.navigation .title {
-    font-size: 200%;
-}</style>
+<title>Examples.: XML Security Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="XML Security Library Reference Manual">
+<link rel="up" href="xmlsec-notes.html" title="Part I. XML Security Library Tutorial">
+<link rel="prev" href="xmlsec-notes-new-crypto-sharing-results.html" title="Sharing the results.">
+<link rel="next" href="xmlsec-examples-sign-template-file.html" title="Signing a template file.">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
 <style type="text/css">
 table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     width: 20em;
@@ -100,43 +73,84 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-notes-new-crypto-sharing-results.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-notes.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="u" href="xmlsec-notes.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="xmlsec-notes-new-crypto-sharing-results.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="xmlsec-examples-sign-template-file.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
-<div class="CHAPTER">
-<h1>
-<a name="XMLSEC-EXAMPLES"></a>Examples.</h1>
-<div class="TOC"><dl>
-<dt><b>Table of Contents</b></dt>
-<dt><a href="xmlsec-examples.html#XMLSEC-EXAMPLES-OVERVIEW">XML Security Library Examples.</a></dt>
-<dt><a href="xmlsec-examples-sign-template-file.html">Signing a template file.</a></dt>
-<dt><a href="xmlsec-examples-sign-dynamimc-template.html">Signing a dynamicaly created template.</a></dt>
-<dt><a href="xmlsec-examples-sign-x509.html">Signing with X509 certificate.</a></dt>
-<dt><a href="xmlsec-verify-with-key.html">Verifying a signature with a single key.</a></dt>
-<dt><a href="xmlsec-verify-with-keys-mngr.html">Verifying a signature with keys manager.</a></dt>
-<dt><a href="xmlsec-verify-with-x509.html">Verifying a signature with X509 certificates.</a></dt>
-<dt><a href="xmlsec-verify-with-restrictions.html">Verifying a signature with additional restrictions.</a></dt>
-<dt><a href="xmlsec-encrypt-template-file.html">Encrypting data with a template file.</a></dt>
-<dt><a href="xmlsec-encrypt-dynamic-template.html">Encrypting data with a dynamicaly created template.</a></dt>
-<dt><a href="xmlsec-encrypt-with-session-key.html">Encrypting data with a session key.</a></dt>
-<dt><a href="xmlsec-decrypt-with-signle-key.html">Decrypting data with a single key.</a></dt>
-<dt><a href="xmlsec-decrypt-with-keys-mngr.html">Decrypting data with keys manager.</a></dt>
-<dt><a href="xmlsec-custom-keys-manager.html">Writing a custom keys manager.</a></dt>
+<div class="chapter">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="xmlsec-examples"></a>Examples.</h2></div></div></div>
+<div class="toc"><dl class="toc">
+<dt><span class="sect1"><a href="xmlsec-examples.html#xmlsec-examples-overview">XML Security Library Examples.</a></span></dt>
+<dt><span class="sect1"><a href="xmlsec-examples-sign-template-file.html">Signing a template file.</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="xmlsec-examples-sign-template-file.html#xmlsec-example-sign1">sign1.c</a></span></dt>
+<dt><span class="sect2"><a href="xmlsec-examples-sign-template-file.html#xmlsec-example-sign1-tmpl">sign1-tmpl.xml</a></span></dt>
+<dt><span class="sect2"><a href="xmlsec-examples-sign-template-file.html#xmlsec-example-sign1-res">sign1-res.xml</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="xmlsec-examples-sign-dynamimc-template.html">Signing a dynamicaly created template.</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="xmlsec-examples-sign-dynamimc-template.html#xmlsec-example-sign2">sign2.c</a></span></dt>
+<dt><span class="sect2"><a href="xmlsec-examples-sign-dynamimc-template.html#xmlsec-example-sign2-doc">sign2-doc.xml</a></span></dt>
+<dt><span class="sect2"><a href="xmlsec-examples-sign-dynamimc-template.html#xmlsec-example-sign2-res">sign2-res.xml</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="xmlsec-examples-sign-x509.html">Signing with X509 certificate.</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="xmlsec-examples-sign-x509.html#xmlsec-example-sign3">sign3.c</a></span></dt>
+<dt><span class="sect2"><a href="xmlsec-examples-sign-x509.html#xmlsec-example-sign3-doc">sign3-doc.xml</a></span></dt>
+<dt><span class="sect2"><a href="xmlsec-examples-sign-x509.html#xmlsec-example-sign3-res">sign3-res.xml</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="xmlsec-verify-with-key.html">Verifying a signature with a single key.</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="xmlsec-verify-with-key.html#xmlsec-example-verify1">verify1.c</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="xmlsec-verify-with-keys-mngr.html">Verifying a signature with keys manager.</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="xmlsec-verify-with-keys-mngr.html#xmlsec-example-verify2">verify2.c</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="xmlsec-verify-with-x509.html">Verifying a signature with X509 certificates.</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="xmlsec-verify-with-x509.html#xmlsec-example-verify3">verify3.c</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="xmlsec-verify-with-restrictions.html">Verifying a signature with additional restrictions.</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="xmlsec-verify-with-restrictions.html#xmlsec-example-verify4">verify4.c</a></span></dt>
+<dt><span class="sect2"><a href="xmlsec-verify-with-restrictions.html#xmlsec-example-verify4-tmpl">verify4-tmpl.xml</a></span></dt>
+<dt><span class="sect2"><a href="xmlsec-verify-with-restrictions.html#xmlsec-example-verify4-res">verify4-res.xml</a></span></dt>
+<dt><span class="sect2"><a href="xmlsec-verify-with-restrictions.html#xmlsec-example-verify4-bad-tmpl">verify4-bad-tmpl.xml</a></span></dt>
+<dt><span class="sect2"><a href="xmlsec-verify-with-restrictions.html#xmlsec-example-verify4-bad-res">verify4-bad-res.xml</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="xmlsec-encrypt-template-file.html">Encrypting data with a template file.</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="xmlsec-encrypt-template-file.html#xmlsec-example-encrypt1">encrypt1.c</a></span></dt>
+<dt><span class="sect2"><a href="xmlsec-encrypt-template-file.html#xmlsec-example-encrypt1-tmpl">encrypt1-tmpl.xml</a></span></dt>
+<dt><span class="sect2"><a href="xmlsec-encrypt-template-file.html#xmlsec-example-encrypt1-res">encrypt1-res.xml</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="xmlsec-encrypt-dynamic-template.html">Encrypting data with a dynamicaly created template.</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="xmlsec-encrypt-dynamic-template.html#xmlsec-example-encrypt2">encrypt2.c</a></span></dt>
+<dt><span class="sect2"><a href="xmlsec-encrypt-dynamic-template.html#xmlsec-example-encrypt2-doc">encrypt2-doc.xml</a></span></dt>
+<dt><span class="sect2"><a href="xmlsec-encrypt-dynamic-template.html#xmlsec-example-encrypt2-res">encrypt2-res.xml</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="xmlsec-encrypt-with-session-key.html">Encrypting data with a session key.</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="xmlsec-encrypt-with-session-key.html#xmlsec-example-encrypt3">encrypt3.c</a></span></dt>
+<dt><span class="sect2"><a href="xmlsec-encrypt-with-session-key.html#xmlsec-example-encrypt3-doc">encrypt3-doc.xml</a></span></dt>
+<dt><span class="sect2"><a href="xmlsec-encrypt-with-session-key.html#xmlsec-example-encrypt3-res">encrypt3-res.xml</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="xmlsec-decrypt-with-signle-key.html">Decrypting data with a single key.</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="xmlsec-decrypt-with-signle-key.html#xmlsec-example-decrypt1">decrypt1.c</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="xmlsec-decrypt-with-keys-mngr.html">Decrypting data with keys manager.</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="xmlsec-decrypt-with-keys-mngr.html#xmlsec-example-decrypt2">decrypt2.c</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="xmlsec-custom-keys-manager.html">Writing a custom keys manager.</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="xmlsec-custom-keys-manager.html#xmlsec-example-decrypt3">decrypt3.c</a></span></dt></dl></dd>
 </dl></div>
-<br clear="all"><div class="SECT1">
-<h1 class="SECT1"><a name="XMLSEC-EXAMPLES-OVERVIEW">XML Security Library Examples.</a></h1>
+<div class="sect1">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="xmlsec-examples-overview"></a>XML Security Library Examples.</h2></div></div></div>
 <p>This section contains several examples of using XML Security Library
 	to sign, veiryf, encrypt or decrypt XML documents.</p>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-notes-new-crypto-sharing-results.html"><b>&lt;&lt;&lt; Sharing the results.</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-examples-sign-template-file.html"><b>Signing a template file. &gt;&gt;&gt;</b></a></td>
-</tr></table>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
 </td></tr></table></td>
 </tr></table></body>
 </html>

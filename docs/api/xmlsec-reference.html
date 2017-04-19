@@ -1,40 +1,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>XML Security Library API Reference.</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="PREVIOUS" title="APPENDIX B. XML Security Library Encryption Klasses." href="xmlsec-encryption-klasses.html">
-<link rel="NEXT" title="XML Security Core Library API Reference." href="xmlsec-ref.html">
-<style type="text/css">.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-    padding: 0.5em;
-}
-.programlisting {
-    background: #eeeeff;
-    border: solid 1px #aaaaff;
-    padding: 0.5em;
-}
-.variablelist {
-    padding: 4px;
-    margin-left: 3em;
-}
-.navigation {
-    background: #ffeeee;
-    border: solid 1px #ffaaaa;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-.navigation a {
-    color: #770000;
-}
-.navigation a:visited {
-    color: #550000;
-}
-.navigation .title {
-    font-size: 200%;
-}</style>
+<title>Part II. XML Security Library API Reference.: XML Security Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="XML Security Library Reference Manual">
+<link rel="up" href="index.html" title="XML Security Library Reference Manual">
+<link rel="prev" href="xmlsec-encryption-klasses.html" title="APPENDIX B. XML Security Library Encryption Klasses.">
+<link rel="next" href="xmlsec-ref.html" title="XML Security Core Library API Reference.">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
 <style type="text/css">
 table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     width: 20em;
@@ -99,31 +73,175 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-encryption-klasses.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><img src="up-insensitive.png" width="16" height="16" border="0"></td>
+<td><a accesskey="p" href="xmlsec-encryption-klasses.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="xmlsec-ref.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
-<div class="PART">
-<a name="XMLSEC-REFERENCE"></a><div class="TITLEPAGE">
-<h1 class="TITLE">II. XML Security Library API Reference.</h1>
-<div class="TOC"><dl>
-<dt><b>Table of Contents</b></dt>
-<dt><a href="xmlsec-ref.html">XML Security Core Library API Reference.</a></dt>
-<dt><a href="xmlsec-openssl-ref.html">XML Security Library for OpenSLL API Reference.</a></dt>
-<dt><a href="xmlsec-gnutls-ref.html">XML Security Library for GnuTLS API Reference.</a></dt>
-<dt><a href="xmlsec-gcrypt-ref.html">XML Security Library for GCrypt API Reference.</a></dt>
-<dt><a href="xmlsec-nss-ref.html">XML Security Library for NSS API Reference.</a></dt>
-<dt><a href="xmlsec-mscrypto-ref.html">XML Security Library for MSCrypto API Reference.</a></dt>
-<dt><a href="xmlsec-index.html">XML Security Library Reference Index</a></dt>
-</dl></div>
+<div class="part">
+<div class="titlepage"><div><div><h1 class="title">
+<a name="xmlsec-reference"></a>Part II. XML Security Library API Reference.</h1></div></div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl class="toc">
+<dt><span class="chapter"><a href="xmlsec-ref.html">XML Security Core Library API Reference.</a></span></dt>
+<dd><dl>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-app.html">app</a></span><span class="refpurpose"> &#8212; Crypto-engine independent application support function.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-base64.html">base64</a></span><span class="refpurpose"> &#8212; Base64 encoding/decoding functions.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-bn.html">bn</a></span><span class="refpurpose"> &#8212; Big numbers support functions.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-buffer.html">buffer</a></span><span class="refpurpose"> &#8212; Binary buffer implementation.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-dl.html">dl</a></span><span class="refpurpose"> &#8212; Dynamic crypto-engine library loading support.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-errors.html">errors</a></span><span class="refpurpose"> &#8212; Error/log messages support.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-io.html">io</a></span><span class="refpurpose"> &#8212; Input/output support.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-keyinfo.html">keyinfo</a></span><span class="refpurpose"> &#8212; &lt;dsig:KeyInfo/&gt; node parser.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-keysdata.html">keysdata</a></span><span class="refpurpose"> &#8212; Crypto key data object definition.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-keys.html">keys</a></span><span class="refpurpose"> &#8212; Crypto key object definition.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-keysmngr.html">keysmngr</a></span><span class="refpurpose"> &#8212; Keys manager object support.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-list.html">list</a></span><span class="refpurpose"> &#8212; Generic list structure implementation.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-membuf.html">membuf</a></span><span class="refpurpose"> &#8212; Memory buffer transform implementation.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-nodeset.html">nodeset</a></span><span class="refpurpose"> &#8212; Nodeset object implementation.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-parser.html">parser</a></span><span class="refpurpose"> &#8212; Parser transform implementation.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-templates.html">templates</a></span><span class="refpurpose"> &#8212; Dynamic templates creation functions.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-transforms.html">transforms</a></span><span class="refpurpose"> &#8212; Transform object definition.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-version.html">version</a></span><span class="refpurpose"> &#8212; Version macros.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-xmldsig.html">xmldsig</a></span><span class="refpurpose"> &#8212; XML Digital Signature support.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-xmlenc.html">xmlenc</a></span><span class="refpurpose"> &#8212; XML Encryption support.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-xmlsec.html">xmlsec</a></span><span class="refpurpose"> &#8212; Utility functions.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-xmltree.html">xmltree</a></span><span class="refpurpose"> &#8212; XML tree operations.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-x509.html">x509</a></span><span class="refpurpose"> &#8212; &lt;dsig:X509Certificate/&gt; node parser.</span>
+</dt>
+</dl></dd>
+<dt><span class="chapter"><a href="xmlsec-openssl-ref.html">XML Security Library for OpenSLL API Reference.</a></span></dt>
+<dd><dl>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-openssl-app.html">app</a></span><span class="refpurpose"> &#8212; Application functions implementation for OpenSSL.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-openssl-bn.html">bn</a></span><span class="refpurpose"> &#8212; Big numbers helper functions.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-openssl-crypto.html">crypto</a></span><span class="refpurpose"> &#8212; Crypto transforms implementation for OpenSSL.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-openssl-evp.html">evp</a></span><span class="refpurpose"> &#8212; EVP keys data implementation.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-openssl-x509.html">x509</a></span><span class="refpurpose"> &#8212; X509 certificates support implementation for OpenSSL.</span>
+</dt>
+</dl></dd>
+<dt><span class="chapter"><a href="xmlsec-gnutls-ref.html">XML Security Library for GnuTLS API Reference.</a></span></dt>
+<dd><dl>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-gnutls-app.html">app</a></span><span class="refpurpose"> &#8212; Application functions implementation for GnuTLS.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-gnutls-crypto.html">crypto</a></span><span class="refpurpose"> &#8212; Crypto transforms implementation for GnuTLS.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-gnutls-x509.html">x509</a></span><span class="refpurpose"> &#8212; X509 certificates support implementation for GnuTLS.</span>
+</dt>
+</dl></dd>
+<dt><span class="chapter"><a href="xmlsec-gcrypt-ref.html">XML Security Library for GCrypt API Reference.</a></span></dt>
+<dd><dl>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-gcrypt-app.html">app</a></span><span class="refpurpose"> &#8212; Application functions implementation for GnuTLS.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-gcrypt-crypto.html">crypto</a></span><span class="refpurpose"> &#8212; Crypto transforms implementation for GCrypt.</span>
+</dt>
+</dl></dd>
+<dt><span class="chapter"><a href="xmlsec-nss-ref.html">XML Security Library for NSS API Reference.</a></span></dt>
+<dd><dl>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-nss-app.html">app</a></span><span class="refpurpose"> &#8212; Application functions implementation for NSS.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-nss-bignum.html">bignum</a></span><span class="refpurpose"> &#8212; Big numbers helper functions.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-nss-crypto.html">crypto</a></span><span class="refpurpose"> &#8212; Crypto transforms implementation for NSS.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-nss-keysstore.html">keysstore</a></span><span class="refpurpose"> &#8212; Keys store implementation for NSS.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-nss-pkikeys.html">pkikeys</a></span><span class="refpurpose"> &#8212; PKI keys data implementation.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-nss-x509.html">x509</a></span><span class="refpurpose"> &#8212; X509 certificates support implementation for NSS.</span>
+</dt>
+</dl></dd>
+<dt><span class="chapter"><a href="xmlsec-mscrypto-ref.html">XML Security Library for MSCrypto API Reference.</a></span></dt>
+<dd><dl>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-mscrypto-app.html">app</a></span><span class="refpurpose"> &#8212; Application functions implementation for MS Crypto.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-mscrypto-certkeys.html">certkeys</a></span><span class="refpurpose"> &#8212; MS Crypto certificates helper functions.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-mscrypto-crypto.html">crypto</a></span><span class="refpurpose"> &#8212; Crypto transforms implementation for MS Crypto.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-mscrypto-keysstore.html">keysstore</a></span><span class="refpurpose"> &#8212; Keys store implementation for MS Crypto.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xmlsec-mscrypto-x509.html">x509</a></span><span class="refpurpose"> &#8212; X509 certificates support implementation for MS Crypto.</span>
+</dt>
+</dl></dd>
+<dt><span class="chapter"><a href="xmlsec-index.html">XML Security Library Reference Index</a></span></dt>
+</dl>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-encryption-klasses.html"><b>&lt;&lt;&lt; APPENDIX B. XML Security Library Encryption Klasses.</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-ref.html"><b>XML Security Core Library API Reference. &gt;&gt;&gt;</b></a></td>
-</tr></table>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
 </td></tr></table></td>
 </tr></table></body>
 </html>

@@ -103,7 +103,7 @@ $(MAIN_SGML_FILE): $(MAIN_SGML_SRC_FILE)
 # We also fix a bunch of stupid errors from gtkdoc 
 #
 sgml: sgml-base
-	(for i in `find $(SGML_DIR) -name "*.sgml" -print` ; do \
+	(for i in `find $(SGML_DIR) -name "*.sgml" -or -name "*.xml" -print` ; do \
 			echo "Fixing up '$$i'" ; \
 	        cat $$i | \
 	          sed 's!\(<dsig:\)\([^/]*\)\(\/>\)!\&lt;dsig:\2\/\&gt;!g' | \
@@ -116,6 +116,7 @@ sgml: sgml-base
 	          sed 's!linkend=\"\(.*\)Ptr\"!linkend=\"\1\"!g' | \
 	          sed 's!<colspec [^/]*\/>!!g' | \
 	          sed 's!<programlisting language="C"!<programlisting!g' | \
+	          sed 's!\%gtkdocentities;!!g' | \
 	          $(PERL) -pe 's!title>\n!title>!g' | \
 	          $(PERL) -pe 's!title>\n!title>!g' | \
 	          $(PERL) -pe 's!<\/title><\/refsect1>\n!<\/title><para><\/para><\/refsect1>!g' | \
@@ -126,41 +127,47 @@ sgml: sgml-base
 
 sgml-base: templates $(SGML_DIR)/.sentinel
 	$(GTKDOC_MKDB) --module=xmlsec \
-			--main-sgml-file=$(SGML_DIR)/xmlsec-base.sgml \
-			--output-dir=$(SGML_DIR)/ \
-		    --tmpl-dir=$(TMPL_DIR)/base \
-		    --source-dir=$(SOURCE_CODE_DIR)/src/base \
-		    --source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/base
+		--xml-mode \
+		--main-sgml-file=$(SGML_DIR)/xmlsec-base.sgml \
+		--output-dir=$(SGML_DIR)/ \
+		--tmpl-dir=$(TMPL_DIR)/base \
+		--source-dir=$(SOURCE_CODE_DIR)/src/base \
+		--source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/base
 	$(GTKDOC_MKDB) --module=xmlsec-openssl \
-		    --main-sgml-file=$(SGML_DIR)/xmlsec-openssl.sgml \
-		    --tmpl-dir=$(TMPL_DIR)/openssl \
-		    --output-dir=$(SGML_DIR)/openssl \
-		    --source-dir=$(SOURCE_CODE_DIR)/src/openssl \
-		    --source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/openssl
+		--xml-mode \
+		--main-sgml-file=$(SGML_DIR)/xmlsec-openssl.sgml \
+		--tmpl-dir=$(TMPL_DIR)/openssl \
+		--output-dir=$(SGML_DIR)/openssl \
+		--source-dir=$(SOURCE_CODE_DIR)/src/openssl \
+		--source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/openssl
 	$(GTKDOC_MKDB) --module=xmlsec-gnutls \
-		    --main-sgml-file=$(SGML_DIR)/xmlsec-gnutls.sgml \
-		    --tmpl-dir=$(TMPL_DIR)/gnutls \
-		    --output-dir=$(SGML_DIR)/gnutls \
-		    --source-dir=$(SOURCE_CODE_DIR)/src/gnutls \
-		    --source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/gnutls
+		--xml-mode \
+		--main-sgml-file=$(SGML_DIR)/xmlsec-gnutls.sgml \
+		--tmpl-dir=$(TMPL_DIR)/gnutls \
+		--output-dir=$(SGML_DIR)/gnutls \
+		--source-dir=$(SOURCE_CODE_DIR)/src/gnutls \
+		--source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/gnutls
 	$(GTKDOC_MKDB) --module=xmlsec-gcrypt \
-		    --main-sgml-file=$(SGML_DIR)/xmlsec-gcrypt.sgml \
-		    --tmpl-dir=$(TMPL_DIR)/gcrypt \
-		    --output-dir=$(SGML_DIR)/gcrypt \
-		    --source-dir=$(SOURCE_CODE_DIR)/src/gcrypt \
-		    --source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/gcrypt
+		--xml-mode \
+		--main-sgml-file=$(SGML_DIR)/xmlsec-gcrypt.sgml \
+		--tmpl-dir=$(TMPL_DIR)/gcrypt \
+		--output-dir=$(SGML_DIR)/gcrypt \
+		--source-dir=$(SOURCE_CODE_DIR)/src/gcrypt \
+		--source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/gcrypt
 	$(GTKDOC_MKDB) --module=xmlsec-nss \
-		    --main-sgml-file=$(SGML_DIR)/xmlsec-nss.sgml \
-		    --tmpl-dir=$(TMPL_DIR)/nss \
-		    --output-dir=$(SGML_DIR)/nss \
-		    --source-dir=$(SOURCE_CODE_DIR)/src/nss \
-		    --source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/nss
+		--xml-mode \
+		--main-sgml-file=$(SGML_DIR)/xmlsec-nss.sgml \
+		--tmpl-dir=$(TMPL_DIR)/nss \
+		--output-dir=$(SGML_DIR)/nss \
+		--source-dir=$(SOURCE_CODE_DIR)/src/nss \
+		--source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/nss
 	$(GTKDOC_MKDB) --module=xmlsec-mscrypto \
-		    --main-sgml-file=$(SGML_DIR)/xmlsec-mscrypto.sgml \
-		    --tmpl-dir=$(TMPL_DIR)/mscrypto \
-		    --output-dir=$(SGML_DIR)/mscrypto \
-		    --source-dir=$(SOURCE_CODE_DIR)/src/mscrypto \
-		    --source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/mscrypto
+		--xml-mode \
+		--main-sgml-file=$(SGML_DIR)/xmlsec-mscrypto.sgml \
+		--tmpl-dir=$(TMPL_DIR)/mscrypto \
+		--output-dir=$(SGML_DIR)/mscrypto \
+		--source-dir=$(SOURCE_CODE_DIR)/src/mscrypto \
+		--source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/mscrypto
 
 templates: scan templates-copy
 	$(GTKDOC_MKTMPL) --module=xmlsec \

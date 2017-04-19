@@ -1,41 +1,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Encrypting data.</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="Signing and encrypting documents." href="xmlsec-notes-sign-encrypt.html">
-<link rel="PREVIOUS" title="Signing a document." href="xmlsec-notes-sign.html">
-<link rel="NEXT" title="Creating dynamic templates." href="xmlsec-notes-templates.html">
-<style type="text/css">.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-    padding: 0.5em;
-}
-.programlisting {
-    background: #eeeeff;
-    border: solid 1px #aaaaff;
-    padding: 0.5em;
-}
-.variablelist {
-    padding: 4px;
-    margin-left: 3em;
-}
-.navigation {
-    background: #ffeeee;
-    border: solid 1px #ffaaaa;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-.navigation a {
-    color: #770000;
-}
-.navigation a:visited {
-    color: #550000;
-}
-.navigation .title {
-    font-size: 200%;
-}</style>
+<title>Encrypting data.: XML Security Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="XML Security Library Reference Manual">
+<link rel="up" href="xmlsec-notes-sign-encrypt.html" title="Signing and encrypting documents.">
+<link rel="prev" href="xmlsec-notes-sign.html" title="Signing a document.">
+<link rel="next" href="xmlsec-notes-templates.html" title="Creating dynamic templates.">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
 <style type="text/css">
 table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     width: 20em;
@@ -100,59 +73,75 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-notes-sign.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-notes-sign-encrypt.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="u" href="xmlsec-notes-sign-encrypt.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="xmlsec-notes-sign.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="xmlsec-notes-templates.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
-<br clear="all"><div class="SECT1">
-<h1 class="SECT1"><a name="XMLSEC-NOTES-ENCRYPT">Encrypting data.</a></h1>
+<div class="sect1">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="xmlsec-notes-encrypt"></a>Encrypting data.</h2></div></div></div>
 <p>The typical encryption process includes following steps:
 	  </p>
-<p></p>
-<ul>
-<li><p>		Prepare data for encryption.
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem"><p>
+		Prepare data for encryption.
 	    </p></li>
-<li><p>		Create or load encryption template and select start
+<li class="listitem"><p>
+		Create or load encryption template and select start
 		&lt;enc:EncryptedData/&gt; node.
 	    </p></li>
-<li><p>		Create encryption context <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a>
-		using <a href="xmlsec-xmlenc.html#XMLSECENCCTXCREATE">xmlSecEncCtxCreate</a> or
-		<a href="xmlsec-xmlenc.html#XMLSECENCCTXINITIALIZE">xmlSecEncCtxInitialize</a>
+<li class="listitem"><p>
+		Create encryption context <a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtx" title="struct xmlSecEncCtx">xmlSecEncCtx</a>
+		using <a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtxCreate" title="xmlSecEncCtxCreate ()">xmlSecEncCtxCreate</a> or
+		<a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtxInitialize" title="xmlSecEncCtxInitialize ()">xmlSecEncCtxInitialize</a>
 		functions.
 	    </p></li>
-<li><p>		Load encryption key in <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">keys manager</a> 
+<li class="listitem"><p>
+		Load encryption key in <a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr">keys manager</a> 
 		or generate a session key and set it in the encryption context
-		(<code class="STRUCTFIELD">encKey</code> member of 
-		<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a> structure).
+		(<em class="structfield"><code>encKey</code></em> member of 
+		<a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtx" title="struct xmlSecEncCtx">xmlSecEncCtx</a> structure).
 	    </p></li>
-<li>
-<p>		Encrypt data by calling one of the following functions:
+<li class="listitem">
+<p>
+		Encrypt data by calling one of the following functions:
 		</p>
-<p></p>
-<ul>
-<li><p>			<a href="xmlsec-xmlenc.html#XMLSECENCCTXBINARYENCRYPT">xmlSecEncCtxBinaryEncrypt</a>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; ">
+<li class="listitem"><p>
+			<a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtxBinaryEncrypt" title="xmlSecEncCtxBinaryEncrypt ()">xmlSecEncCtxBinaryEncrypt</a>
 		    </p></li>
-<li><p>			<a href="xmlsec-xmlenc.html#XMLSECENCCTXXMLENCRYPT">xmlSecEncCtxXmlEncrypt</a>
+<li class="listitem"><p>
+			<a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtxXmlEncrypt" title="xmlSecEncCtxXmlEncrypt ()">xmlSecEncCtxXmlEncrypt</a>
 		    </p></li>
-<li><p>			<a href="xmlsec-xmlenc.html#XMLSECENCCTXURIENCRYPT">xmlSecEncCtxUriEncrypt</a>
+<li class="listitem"><p>
+			<a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtxUriEncrypt" title="xmlSecEncCtxUriEncrypt ()">xmlSecEncCtxUriEncrypt</a>
 		    </p></li>
-</ul>
-	    </li>
-<li><p>		Check returned value and if necessary consume encrypted data.
+</ul></div>
+<p>
+	    </p>
+</li>
+<li class="listitem"><p>
+		Check returned value and if necessary consume encrypted data.
 	    </p></li>
-<li><p>		Destroy encryption context <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a>
-		using <a href="xmlsec-xmlenc.html#XMLSECENCCTXDESTROY">xmlSecEncCtxDestroy</a> or
-		<a href="xmlsec-xmlenc.html#XMLSECENCCTXFINALIZE">xmlSecEncCtxFinalize</a>
+<li class="listitem"><p>
+		Destroy encryption context <a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtx" title="struct xmlSecEncCtx">xmlSecEncCtx</a>
+		using <a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtxDestroy" title="xmlSecEncCtxDestroy ()">xmlSecEncCtxDestroy</a> or
+		<a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtxFinalize" title="xmlSecEncCtxFinalize ()">xmlSecEncCtxFinalize</a>
 		functions.
 	    </p></li>
-</ul>
-	<p>	     </p>
-<div class="EXAMPLE">
-<a name="AEN227"></a><p><b>Example 2. Encrypting binary data with a template.</b></p>
-<pre class="PROGRAMLISTING">/**
+</ul></div>
+<p>
+	</p>
+<p>
+	     </p>
+<div class="example">
+<a name="id-1.2.6.4.3.1"></a><p class="title"><b>Example 11. Encrypting binary data with a template.</b></p>
+<div class="example-contents">
+<pre class="programlisting">
+/**
  * encrypt_file:
  * @tmpl_file:		the encryption template file name.
  * @key_file:		the Triple DES key file.
@@ -233,14 +222,15 @@ done:
     return(res);
 }
 		</pre>
-<p><a href="xmlsec-encrypt-template-file.html#XMLSEC-EXAMPLE-ENCRYPT1">Full program listing</a></p>
-<p><a href="xmlsec-encrypt-template-file.html#XMLSEC-EXAMPLE-ENCRYPT1-TMPL">Simple encryption template file</a></p>
+<p><a class="link" href="xmlsec-encrypt-template-file.html#xmlsec-example-encrypt1" title="encrypt1.c">Full program listing</a></p>
+<p><a class="link" href="xmlsec-encrypt-template-file.html#xmlsec-example-encrypt1-tmpl" title="encrypt1-tmpl.xml">Simple encryption template file</a></p>
 </div>
-	</div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-notes-sign.html"><b>&lt;&lt;&lt; Signing a document.</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-notes-templates.html"><b>Creating dynamic templates. &gt;&gt;&gt;</b></a></td>
-</tr></table>
+</div>
+<p><br class="example-break">
+	</p>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
 </td></tr></table></td>
 </tr></table></body>
 </html>

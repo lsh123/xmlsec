@@ -1,41 +1,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Transforms and transforms chain.</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="XML Security Library Tutorial" href="xmlsec-notes.html">
-<link rel="PREVIOUS" title="Verifing document signed with X509 certificates." href="xmlsec-notes-verify-x509.html">
-<link rel="NEXT" title="Using context objects." href="xmlsec-notes-contexts.html">
-<style type="text/css">.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-    padding: 0.5em;
-}
-.programlisting {
-    background: #eeeeff;
-    border: solid 1px #aaaaff;
-    padding: 0.5em;
-}
-.variablelist {
-    padding: 4px;
-    margin-left: 3em;
-}
-.navigation {
-    background: #ffeeee;
-    border: solid 1px #ffaaaa;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-.navigation a {
-    color: #770000;
-}
-.navigation a:visited {
-    color: #550000;
-}
-.navigation .title {
-    font-size: 200%;
-}</style>
+<title>Transforms and transforms chain.: XML Security Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="XML Security Library Reference Manual">
+<link rel="up" href="xmlsec-notes.html" title="Part I. XML Security Library Tutorial">
+<link rel="prev" href="xmlsec-notes-verify-x509.html" title="Verifing document signed with X509 certificates.">
+<link rel="next" href="xmlsec-notes-contexts.html" title="Using context objects.">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
 <style type="text/css">
 table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     width: 20em;
@@ -100,16 +73,16 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-notes-verify-x509.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-notes.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="u" href="xmlsec-notes.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="xmlsec-notes-verify-x509.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="xmlsec-notes-contexts.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
-<div class="CHAPTER">
-<h1>
-<a name="XMLSEC-NOTES-TRANSFORMS"></a>Transforms and transforms chain.</h1>
+<div class="chapter">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="xmlsec-notes-transforms"></a>Transforms and transforms chain.</h2></div></div></div>
 <p>XML Digital Signature and XML Encryption standards are 
 	very flexible and provide an XML developer many different ways to 
 	sign or encrypt any part (or even parts) of an XML document. 
@@ -121,18 +94,23 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 	calculation digest, encrypting or decrypting. Each XML Security Library
 	transform provides at least one of the following callbacks: 
 	    </p>
-<p></p>
-<ul>
-<li><p>		    <a href="xmlsec-transforms.html#XMLSECTRANSFORMPUSHBINMETHOD">push binary data</a>;
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem"><p>
+		    <a class="link" href="xmlsec-transforms.html#xmlSecTransformPushBinMethod" title="xmlSecTransformPushBinMethod ()">push binary data</a>;
 		</p></li>
-<li><p>		    <a href="xmlsec-transforms.html#XMLSECTRANSFORMPUSHXMLMETHOD">push xml data</a>;
+<li class="listitem"><p>
+		    <a class="link" href="xmlsec-transforms.html#xmlSecTransformPushXmlMethod" title="xmlSecTransformPushXmlMethod ()">push xml data</a>;
 		</p></li>
-<li><p>		    <a href="xmlsec-transforms.html#XMLSECTRANSFORMPOPBINMETHOD">pop binary data</a>;
+<li class="listitem"><p>
+		    <a class="link" href="xmlsec-transforms.html#xmlSecTransformPopBinMethod" title="xmlSecTransformPopBinMethod ()">pop binary data</a>;
 		</p></li>
-<li><p>		    <a href="xmlsec-transforms.html#XMLSECTRANSFORMPOPXMLMETHOD">pop xml data</a>.
+<li class="listitem"><p>
+		    <a class="link" href="xmlsec-transforms.html#xmlSecTransformPopXmlMethod" title="xmlSecTransformPopXmlMethod ()">pop xml data</a>.
     		</p></li>
-</ul>
-    <p>One additional <a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEMETHOD">execute</a>
+</ul></div>
+<p>
+    </p>
+<p>One additional <a class="link" href="xmlsec-transforms.html#xmlSecTransformExecuteMethod" title="xmlSecTransformExecuteMethod ()">execute</a>
 	callback was added to simplify the development and reduce code size. 
 	This callback is used by default
 	implementations of the four external callbacks from the list above.
@@ -141,11 +119,11 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 	binary data callbacks. However, in some cases using push/pop callbacks 
 	directly is more efficient.
     </p>
-<div class="FIGURE">
-<a name="AEN470"></a><p><b>Figure 1. The XML Security Library transform.</b></p>
-<p><img src="images/transform.png" align="CENTER"></p>
+<div class="figure">
+<a name="id-1.2.12.4"></a><p class="title"><b>Figure 9. The XML Security Library transform.</b></p>
+<div class="figure-contents"><div align="center"><img src="images/transform.png" align="middle" alt="The XML Security Library transform."></div></div>
 </div>
-<p>XML Security Library constructs transforms chain according to the 
+<br class="figure-break"><p>XML Security Library constructs transforms chain according to the 
 	signature/encryption template or signed/encrypted document. 
 	If necessary, XML Security Library inserts XML parser or defaul
 	canonicalization to ensure that the output data type (binary or XML) 
@@ -157,21 +135,23 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 	processes this chunk and pushes the result to the next transform 
 	in the chain. 
     </p>
-<div class="FIGURE">
-<a name="AEN475"></a><p><b>Figure 2. Transforms chain created for &lt;dsig:Reference/&gt; element processing.</b></p>
-<p><img src="images/transforms-chain.png" align="CENTER"></p>
+<div class="figure">
+<a name="id-1.2.12.7"></a><p class="title"><b>Figure 10. Transforms chain created for &lt;dsig:Reference/&gt; element processing.</b></p>
+<div class="figure-contents"><div align="center"><img src="images/transforms-chain.png" align="middle" alt="Transforms chain created for &lt;dsig:Reference/&gt; element processing."></div></div>
 </div>
-<p>	</p>
-<div class="EXAMPLE">
-<a name="AEN479"></a><p><b>Example 1. Walking through transforms chain.</b></p>
-<pre class="PROGRAMLISTING">TODO
-	    </pre>
+<br class="figure-break"><p>
+	</p>
+<div class="example">
+<a name="id-1.2.12.8.1"></a><p class="title"><b>Example 23. Walking through transforms chain.</b></p>
+<div class="example-contents"><pre class="programlisting">
+TODO
+	    </pre></div>
 </div>
-    </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-notes-verify-x509.html"><b>&lt;&lt;&lt; Verifing document signed with X509 certificates.</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-notes-contexts.html"><b>Using context objects. &gt;&gt;&gt;</b></a></td>
-</tr></table>
+<p><br class="example-break">
+    </p>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
 </td></tr></table></td>
 </tr></table></body>
 </html>

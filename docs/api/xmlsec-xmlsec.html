@@ -1,41 +1,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>xmlsec</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="XML Security Core Library API Reference." href="xmlsec-ref.html">
-<link rel="PREVIOUS" title="xmlenc" href="xmlsec-xmlenc.html">
-<link rel="NEXT" title="xmltree" href="xmlsec-xmltree.html">
-<style type="text/css">.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-    padding: 0.5em;
-}
-.programlisting {
-    background: #eeeeff;
-    border: solid 1px #aaaaff;
-    padding: 0.5em;
-}
-.variablelist {
-    padding: 4px;
-    margin-left: 3em;
-}
-.navigation {
-    background: #ffeeee;
-    border: solid 1px #ffaaaa;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-.navigation a {
-    color: #770000;
-}
-.navigation a:visited {
-    color: #550000;
-}
-.navigation .title {
-    font-size: 200%;
-}</style>
+<title>xmlsec: XML Security Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="XML Security Library Reference Manual">
+<link rel="up" href="xmlsec-ref.html" title="XML Security Core Library API Reference.">
+<link rel="prev" href="xmlsec-xmlenc.html" title="xmlenc">
+<link rel="next" href="xmlsec-xmltree.html" title="xmltree">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
 <style type="text/css">
 table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     width: 20em;
@@ -100,400 +73,332 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-xmlenc.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-ref.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#xmlsec-xmlsec.description" class="shortcut">Description</a></span>
+</td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="u" href="xmlsec-ref.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="xmlsec-xmlenc.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="xmlsec-xmltree.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
-<h1>
-<a name="XMLSEC-XMLSEC"></a>xmlsec</h1>
-<div class="REFNAMEDIV">
-<a name="AEN25903"></a><h2>Name</h2>xmlsec -- Utility functions.</div>
-<div class="REFSECT1">
-<a name="XMLSEC-XMLSEC.FUNCTIONS"></a><h2>Functions</h2>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN25908"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
+<div class="refentry">
+<a name="xmlsec-xmlsec"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="xmlsec-xmlsec.top_of_page"></a>xmlsec</span></h2>
+<p>xmlsec &#8212; Utility functions.</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="xmlsec-xmlsec.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
 <tbody>
 <tr>
-<td>#define</td>
-<td>
-<a href="xmlsec-xmlsec.html#XMLSEC-SIZE-BAD-CAST:CAPS">XMLSEC_SIZE_BAD_CAST</a><span class="c_punctuation"><span class="PHRASE">()</span></span>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmlsec.html#XMLSEC-SIZE-BAD-CAST:CAPS" title="XMLSEC_SIZE_BAD_CAST()">XMLSEC_SIZE_BAD_CAST</a><span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-xmlsec.html#XMLSECINIT">xmlSecInit</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmlsec.html#xmlSecInit" title="xmlSecInit ()">xmlSecInit</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-xmlsec.html#XMLSECSHUTDOWN">xmlSecShutdown</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmlsec.html#xmlSecShutdown" title="xmlSecShutdown ()">xmlSecShutdown</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
-<td>const <font><span class="RETURNVALUE">xmlChar</span></font> *</td>
-<td>
-<a href="xmlsec-xmlsec.html#XMLSECGETDEFAULTCRYPTO">xmlSecGetDefaultCrypto</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+<td class="function_type">const <font><span class="returnvalue">xmlChar</span></font> *
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmlsec.html#xmlSecGetDefaultCrypto" title="xmlSecGetDefaultCrypto ()">xmlSecGetDefaultCrypto</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
-<td>#define</td>
-<td><a href="xmlsec-xmlsec.html#XMLSEC-CRYPTO:CAPS">XMLSEC_CRYPTO</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-xmlsec.html#XMLSECCHECKVERSIONEXACT">xmlSecCheckVersionExact</a></td>
-</tr>
-<tr>
-<td>#define</td>
-<td><a href="xmlsec-xmlsec.html#XMLSECCHECKVERSION">xmlSecCheckVersion</a></td>
-</tr>
-<tr>
-<td><font><span class="RETURNVALUE">int</span></font></td>
-<td>
-<a href="xmlsec-xmlsec.html#XMLSECCHECKVERSIONEXT">xmlSecCheckVersionExt</a> <span class="c_punctuation"><span class="PHRASE">()</span></span>
+<td class="function_type">
+<font><span class="returnvalue">void</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmlsec.html#xmlSecSetExternalEntityLoader" title="xmlSecSetExternalEntityLoader ()">xmlSecSetExternalEntityLoader</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
-<td>#define</td>
-<td>
-<a href="xmlsec-xmlsec.html#XMLSEC-PTR-TO-FUNC-IMPL:CAPS">XMLSEC_PTR_TO_FUNC_IMPL</a><span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-xmlsec.html#xmlSecCheckVersionExact" title="xmlSecCheckVersionExact">xmlSecCheckVersionExact</a></td>
 </tr>
 <tr>
-<td>#define</td>
-<td>
-<a href="xmlsec-xmlsec.html#XMLSEC-PTR-TO-FUNC:CAPS">XMLSEC_PTR_TO_FUNC</a><span class="c_punctuation"><span class="PHRASE">()</span></span>
-</td>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-xmlsec.html#xmlSecCheckVersion" title="xmlSecCheckVersion">xmlSecCheckVersion</a></td>
 </tr>
 <tr>
-<td>#define</td>
-<td>
-<a href="xmlsec-xmlsec.html#XMLSEC-FUNC-TO-PTR:CAPS">XMLSEC_FUNC_TO_PTR</a><span class="c_punctuation"><span class="PHRASE">()</span></span>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmlsec.html#xmlSecCheckVersionExt" title="xmlSecCheckVersionExt ()">xmlSecCheckVersionExt</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 </tbody>
-</table>
-<p></p>
+</table></div>
 </div>
-</div>
-<div class="REFSECT1">
-<a name="XMLSEC-XMLSEC.OTHER"></a><h2>Types and Values</h2>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN25973"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
+<div class="refsect1">
+<a name="xmlsec-xmlsec.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
 <tbody>
 <tr>
-<td>typedef</td>
-<td><font>xmlSecPtr</font></td>
+<td class="typedef_keyword">typedef</td>
+<td class="function_name"><a class="link" href="xmlsec-xmlsec.html#xmlSecPtr" title="xmlSecPtr">xmlSecPtr</a></td>
 </tr>
 <tr>
-<td>#define</td>
-<td><a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a></td>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize">xmlSecSize</a></td>
 </tr>
 <tr>
-<td>#define</td>
-<td><a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a></td>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte">xmlSecByte</a></td>
 </tr>
 <tr>
-<td>enum</td>
-<td><a href="xmlsec-xmlsec.html#XMLSECCHECKVERSIONMODE">xmlSecCheckVersionMode</a></td>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-xmlsec.html#XMLSEC-CRYPTO:CAPS" title="XMLSEC_CRYPTO">XMLSEC_CRYPTO</a></td>
 </tr>
 <tr>
-<td>#define</td>
-<td><a href="xmlsec-xmlsec.html#ATTRIBUTE-UNUSED:CAPS">ATTRIBUTE_UNUSED</a></td>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-xmlsec.html#XMLSEC-DEPRECATED:CAPS" title="XMLSEC_DEPRECATED">XMLSEC_DEPRECATED</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="xmlsec-xmlsec.html#xmlSecCheckVersionMode" title="enum xmlSecCheckVersionMode">xmlSecCheckVersionMode</a></td>
 </tr>
 </tbody>
-</table>
-<p></p>
+</table></div>
 </div>
+<div class="refsect1">
+<a name="xmlsec-xmlsec.description"></a><h2>Description</h2>
+<p>
+Utility functions.
+</p>
 </div>
-<div class="REFSECT1">
-<a name="XMLSEC-XMLSEC.DESCRIPTION"></a><h2>Description</h2>
-<p>Utility functions.</p>
-</div>
-<div class="REFSECT1">
-<a name="XMLSEC-XMLSEC.FUNCTIONS_DETAILS"></a><h2>Functions</h2>
-<div class="REFSECT2">
+<div class="refsect1">
+<a name="xmlsec-xmlsec.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
 <a name="XMLSEC-SIZE-BAD-CAST:CAPS"></a><h3>XMLSEC_SIZE_BAD_CAST()</h3>
-<pre class="PROGRAMLISTING">#define XMLSEC_SIZE_BAD_CAST(val)               ((xmlSecSize)(val))</pre>
+<pre class="programlisting">#define XMLSEC_SIZE_BAD_CAST(val)               ((xmlSecSize)(val))
+</pre>
 <p>Bad cast to xmlSecSize</p>
-<div class="REFSECT3">
-<a name="AEN26007"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN26009"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
+<div class="refsect3">
+<a name="XMLSEC-SIZE-BAD-CAST.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
 <tbody><tr>
-<td><p>val</p></td>
-<td><p>the value to cast</p></td>
-<td> </td>
+<td class="parameter_name"><p>val</p></td>
+<td class="parameter_description"><p>the value to cast</p></td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
-</table>
-<p></p>
-</div>
+</table></div>
 </div>
 </div>
 <hr>
-<div class="REFSECT2">
-<a name="XMLSECINIT"></a><h3>xmlSecInit ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
-xmlSecInit (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<div class="refsect2">
+<a name="xmlSecInit"></a><h3>xmlSecInit ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecInit (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Initializes XML Security Library. The depended libraries
 (LibXML and LibXSLT) must be initialized before.</p>
-<div class="REFSECT3">
-<a name="AEN26028"></a><h4>Returns</h4>
+<div class="refsect3">
+<a name="xmlSecInit.returns"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
 <hr>
-<div class="REFSECT2">
-<a name="XMLSECSHUTDOWN"></a><h3>xmlSecShutdown ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
-xmlSecShutdown (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
+<div class="refsect2">
+<a name="xmlSecShutdown"></a><h3>xmlSecShutdown ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecShutdown (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Gets the default crypto engine ("openssl", "nss", etc.) for the XML Security Library.</p>
-<div class="REFSECT3">
-<a name="AEN26041"></a><h4>Returns</h4>
+<div class="refsect3">
+<a name="xmlSecShutdown.returns"></a><h4>Returns</h4>
 <p> the default crypto engine ("openssl", "nss", etc.).</p>
 </div>
 </div>
 <hr>
-<div class="REFSECT2">
-<a name="XMLSECGETDEFAULTCRYPTO"></a><h3>xmlSecGetDefaultCrypto ()</h3>
-<pre class="PROGRAMLISTING">const <font><span class="RETURNVALUE">xmlChar</span></font> *
-xmlSecGetDefaultCrypto (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
-<p></p>
+<div class="refsect2">
+<a name="xmlSecGetDefaultCrypto"></a><h3>xmlSecGetDefaultCrypto ()</h3>
+<pre class="programlisting">const <font><span class="returnvalue">xmlChar</span></font> *
+xmlSecGetDefaultCrypto (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
-<div class="REFSECT2">
-<a name="XMLSEC-CRYPTO:CAPS"></a><h3>XMLSEC_CRYPTO</h3>
-<pre class="PROGRAMLISTING">#define XMLSEC_CRYPTO                          (xmlSecGetDefaultCrypto())</pre>
-<p>Macro. Deprecated. Defined for backward compatibility only. Do not use
-in your code and use <a href="xmlsec-xmlsec.html#XMLSECGETDEFAULTCRYPTO"><code class="FUNCTION">xmlSecGetDefaultCrypto()</code></a> function instead.</p>
-<p>Returns the default crypto engine.</p>
+<div class="refsect2">
+<a name="xmlSecSetExternalEntityLoader"></a><h3>xmlSecSetExternalEntityLoader ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">void</span></font>
+xmlSecSetExternalEntityLoader (<em class="parameter"><code><font><span class="type">xmlExternalEntityLoader</span></font> Param1</code></em>);</pre>
+<p>
+</p>
 </div>
 <hr>
-<div class="REFSECT2">
-<a name="XMLSECCHECKVERSIONEXACT"></a><h3>xmlSecCheckVersionExact</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecCheckVersionExact()</pre>
+<div class="refsect2">
+<a name="xmlSecCheckVersionExact"></a><h3>xmlSecCheckVersionExact</h3>
+<pre class="programlisting">#define             xmlSecCheckVersionExact()</pre>
 <p>Macro. Returns 1 if the loaded xmlsec library version exactly matches
 the one used to compile the caller, 0 if it does not or a negative
 value if an error occurs.</p>
 </div>
 <hr>
-<div class="REFSECT2">
-<a name="XMLSECCHECKVERSION"></a><h3>xmlSecCheckVersion</h3>
-<pre class="PROGRAMLISTING">#define             xmlSecCheckVersion()</pre>
+<div class="refsect2">
+<a name="xmlSecCheckVersion"></a><h3>xmlSecCheckVersion</h3>
+<pre class="programlisting">#define             xmlSecCheckVersion()</pre>
 <p>Macro. Returns 1 if the loaded xmlsec library version ABI compatible with
 the one used to compile the caller, 0 if it does not or a negative
 value if an error occurs.</p>
 </div>
 <hr>
-<div class="REFSECT2">
-<a name="XMLSECCHECKVERSIONEXT"></a><h3>xmlSecCheckVersionExt ()</h3>
-<pre class="PROGRAMLISTING"><font><span class="RETURNVALUE">int</span></font>
-xmlSecCheckVersionExt (<code class="PARAMETER"><font><span class="TYPE">int</span></font> major</code>,
-                       <code class="PARAMETER"><font><span class="TYPE">int</span></font> minor</code>,
-                       <code class="PARAMETER"><font><span class="TYPE">int</span></font> subminor</code>,
-                       <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECCHECKVERSIONMODE"><span class="TYPE">xmlSecCheckVersionMode</span></a> mode</code>);</pre>
+<div class="refsect2">
+<a name="xmlSecCheckVersionExt"></a><h3>xmlSecCheckVersionExt ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecCheckVersionExt (<em class="parameter"><code><font><span class="type">int</span></font> major</code></em>,
+                       <em class="parameter"><code><font><span class="type">int</span></font> minor</code></em>,
+                       <em class="parameter"><code><font><span class="type">int</span></font> subminor</code></em>,
+                       <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecCheckVersionMode" title="enum xmlSecCheckVersionMode"><span class="type">xmlSecCheckVersionMode</span></a> mode</code></em>);</pre>
 <p>Checks if the loaded version of xmlsec library could be used.</p>
-<div class="REFSECT3">
-<a name="AEN26095"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN26097"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
+<div class="refsect3">
+<a name="xmlSecCheckVersionExt.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
 <tbody>
 <tr>
-<td><p>major</p></td>
-<td><p>the major version number.</p></td>
-<td> </td>
+<td class="parameter_name"><p>major</p></td>
+<td class="parameter_description"><p>the major version number.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p>minor</p></td>
-<td><p>the minor version number.</p></td>
-<td> </td>
+<td class="parameter_name"><p>minor</p></td>
+<td class="parameter_description"><p>the minor version number.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p>subminor</p></td>
-<td><p>the subminor version number.</p></td>
-<td> </td>
+<td class="parameter_name"><p>subminor</p></td>
+<td class="parameter_description"><p>the subminor version number.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p>mode</p></td>
-<td><p>the version check mode.</p></td>
-<td> </td>
+<td class="parameter_name"><p>mode</p></td>
+<td class="parameter_description"><p>the version check mode.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
-</table>
-<p></p>
+</table></div>
 </div>
-</div>
-<div class="REFSECT3">
-<a name="AEN26124"></a><h4>Returns</h4>
+<div class="refsect3">
+<a name="xmlSecCheckVersionExt.returns"></a><h4>Returns</h4>
 <p> 1 if the loaded xmlsec library version is OK to use
 0 if it is not or a negative value if an error occurs.</p>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSEC-PTR-TO-FUNC-IMPL:CAPS"></a><h3>XMLSEC_PTR_TO_FUNC_IMPL()</h3>
-<pre class="PROGRAMLISTING">#define             XMLSEC_PTR_TO_FUNC_IMPL(func_type)</pre>
-<p>Macro declares helper functions to convert between "void *" pointer and
-function pointer.</p>
-<div class="REFSECT3">
-<a name="AEN26133"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN26135"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody><tr>
-<td><p>func_type</p></td>
-<td><p>the function type.</p></td>
-<td> </td>
-</tr></tbody>
-</table>
-<p></p>
 </div>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSEC-PTR-TO-FUNC:CAPS"></a><h3>XMLSEC_PTR_TO_FUNC()</h3>
-<pre class="PROGRAMLISTING">#define             XMLSEC_PTR_TO_FUNC(func_type, ptr)</pre>
-<p>Macro converts from "void*" pointer to "func_type" function pointer.</p>
-<div class="REFSECT3">
-<a name="AEN26150"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN26152"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody>
-<tr>
-<td><p>func_type</p></td>
-<td><p>the function type.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>ptr</p></td>
-<td><p>the "void*" pointer to be converted.</p></td>
-<td> </td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSEC-FUNC-TO-PTR:CAPS"></a><h3>XMLSEC_FUNC_TO_PTR()</h3>
-<pre class="PROGRAMLISTING">#define             XMLSEC_FUNC_TO_PTR(func_type, func)</pre>
-<p>Macro converts from "func_type" function pointer to "void*" pointer.</p>
-<div class="REFSECT3">
-<a name="AEN26173"></a><h4>Parameters</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN26175"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody>
-<tr>
-<td><p>func_type</p></td>
-<td><p>the function type.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>func</p></td>
-<td><p>the "func_type" function pointer to be converted.</p></td>
-<td> </td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
-</div>
-</div>
-<div class="REFSECT1">
-<a name="XMLSEC-XMLSEC.OTHER_DETAILS"></a><h2>Types and Values</h2>
-<div class="REFSECT2">
-<a name="XMLSECPTR"></a><h3>xmlSecPtr</h3>
-<pre class="PROGRAMLISTING">typedef void*                                   xmlSecPtr;</pre>
+<div class="refsect1">
+<a name="xmlsec-xmlsec.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="xmlSecPtr"></a><h3>xmlSecPtr</h3>
+<pre class="programlisting">typedef void*                                   xmlSecPtr;
+</pre>
 <p>Void pointer.</p>
 </div>
 <hr>
-<div class="REFSECT2">
-<a name="XMLSECSIZE"></a><h3>xmlSecSize</h3>
-<pre class="PROGRAMLISTING">#define xmlSecSize                              unsigned int</pre>
+<div class="refsect2">
+<a name="xmlSecSize"></a><h3>xmlSecSize</h3>
+<pre class="programlisting">#define xmlSecSize                              unsigned int
+</pre>
 <p>Size of something. Should be typedef instead of define
 but it will break ABI (todo).</p>
 </div>
 <hr>
-<div class="REFSECT2">
-<a name="XMLSECBYTE"></a><h3>xmlSecByte</h3>
-<pre class="PROGRAMLISTING">#define xmlSecByte                              unsigned char</pre>
+<div class="refsect2">
+<a name="xmlSecByte"></a><h3>xmlSecByte</h3>
+<pre class="programlisting">#define xmlSecByte                              unsigned char
+</pre>
 <p>One byte. Should be typedef instead of define
 but it will break ABI (todo).</p>
 </div>
 <hr>
-<div class="REFSECT2">
-<a name="XMLSECCHECKVERSIONMODE"></a><h3>enum xmlSecCheckVersionMode</h3>
-<p>The xmlsec library version mode.</p>
-<div class="REFSECT3">
-<a name="AEN26215"></a><h4>Members</h4>
-<div class="INFORMALTABLE">
-<p></p>
-<a name="AEN26217"></a><table border="0" frame="void" width="100%" class="CALSTABLE">
-<col>
-<col>
-<col>
-<tbody>
-<tr>
-<td><p>xmlSecCheckVersionExactMatch</p></td>
-<td><p>the version should match exactly.</p></td>
-<td> </td>
-</tr>
-<tr>
-<td><p>xmlSecCheckVersionABICompatible</p></td>
-<td><p>the version should be ABI compatible.</p></td>
-<td> </td>
-</tr>
-</tbody>
-</table>
-<p></p>
-</div>
-</div>
+<div class="refsect2">
+<a name="XMLSEC-CRYPTO:CAPS"></a><h3>XMLSEC_CRYPTO</h3>
+<pre class="programlisting">#define XMLSEC_CRYPTO                          (xmlSecGetDefaultCrypto())
+</pre>
+<p>Macro. Deprecated. Defined for backward compatibility only. Do not use
+in your code and use <a class="link" href="xmlsec-xmlsec.html#xmlSecGetDefaultCrypto" title="xmlSecGetDefaultCrypto ()"><code class="function">xmlSecGetDefaultCrypto()</code></a> function instead.</p>
+<p>Returns the default crypto engine.</p>
 </div>
 <hr>
-<div class="REFSECT2">
-<a name="ATTRIBUTE-UNUSED:CAPS"></a><h3>ATTRIBUTE_UNUSED</h3>
-<pre class="PROGRAMLISTING">#define ATTRIBUTE_UNUSED</pre>
-<p>Macro used to signal to GCC unused function parameters</p>
+<div class="refsect2">
+<a name="XMLSEC-DEPRECATED:CAPS"></a><h3>XMLSEC_DEPRECATED</h3>
+<pre class="programlisting">#define XMLSEC_DEPRECATED __attribute__((deprecated))
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecCheckVersionMode"></a><h3>enum xmlSecCheckVersionMode</h3>
+<p>The xmlsec library version mode.</p>
+<div class="refsect3">
+<a name="xmlSecCheckVersionMode.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="xmlSecCheckVersionExactMatch"></a>xmlSecCheckVersionExactMatch</p></td>
+<td class="enum_member_description">
+<p>the version should match exactly.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="xmlSecCheckVersionABICompatible"></a>xmlSecCheckVersionABICompatible</p></td>
+<td class="enum_member_description">
+<p>the version should be ABI compatible.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-xmlenc.html"><b>&lt;&lt;&lt; xmlenc</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-xmltree.html"><b>xmltree &gt;&gt;&gt;</b></a></td>
-</tr></table>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
 </td></tr></table></td>
 </tr></table></body>
 </html>

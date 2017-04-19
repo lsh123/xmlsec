@@ -1,6 +1,5 @@
-/**
- *
- * XMLSec library
+/*
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * AES Algorithm support
  *

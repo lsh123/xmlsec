@@ -84,6 +84,139 @@ Crypto transforms implementation for OpenSSL.
 @Returns: 
 
 
+<!-- ##### MACRO XMLSEC_OPENSSL_API_100 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_OPENSSL_API_110 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_OPENSSL_API_098 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_NO_ECDSA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_NO_SHA224 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_NO_SHA256 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_NO_SHA384 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_NO_SHA512 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_NO_AES ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_NO_DES ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_NO_DSA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_NO_GOST ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_NO_GOST2012 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_NO_HMAC ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_NO_MD5 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_NO_RIPEMD160 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_NO_RSA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_NO_SHA1 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_NO_X509 ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### MACRO xmlSecOpenSSLKeyDataAesId ##### -->
 <para>
 
@@ -1094,20 +1227,6 @@ Crypto transforms implementation for OpenSSL.
 
 @void: 
 @Returns: 
-
-
-<!-- ##### MACRO XMLSEC_OPENSSL_ERRORS_LIB ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_OPENSSL_ERRORS_FUNCTION ##### -->
-<para>
-
-</para>
-
 
 
 <!-- ##### FUNCTION xmlSecOpenSSLErrorsDefaultCallback ##### -->

@@ -92,6 +92,240 @@ xkms
 </para>
 
 
+<!-- ##### FUNCTION xmlSecGenerateAndAddID ##### -->
+<para>
+
+</para>
+
+@node: 
+@attrName: 
+@prefix: 
+@len: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecGenerateID ##### -->
+<para>
+
+</para>
+
+@prefix: 
+@len: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSoap11AddBodyEntry ##### -->
+<para>
+
+</para>
+
+@envNode: 
+@entryNode: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSoap11AddFaultEntry ##### -->
+<para>
+
+</para>
+
+@envNode: 
+@faultCodeHref: 
+@faultCodeLocalPart: 
+@faultString: 
+@faultActor: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSoap11CheckEnvelope ##### -->
+<para>
+
+</para>
+
+@envNode: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSoap11CreateEnvelope ##### -->
+<para>
+
+</para>
+
+@doc: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSoap11EnsureHeader ##### -->
+<para>
+
+</para>
+
+@envNode: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSoap11GetBody ##### -->
+<para>
+
+</para>
+
+@envNode: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSoap11GetBodyEntriesNumber ##### -->
+<para>
+
+</para>
+
+@envNode: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSoap11GetBodyEntry ##### -->
+<para>
+
+</para>
+
+@envNode: 
+@pos: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSoap11GetFaultEntry ##### -->
+<para>
+
+</para>
+
+@envNode: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSoap11GetHeader ##### -->
+<para>
+
+</para>
+
+@envNode: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSoap12AddBodyEntry ##### -->
+<para>
+
+</para>
+
+@envNode: 
+@entryNode: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSoap12AddFaultDetailEntry ##### -->
+<para>
+
+</para>
+
+@faultNode: 
+@detailEntryNode: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSoap12AddFaultEntry ##### -->
+<para>
+
+</para>
+
+@envNode: 
+@faultCode: 
+@faultReasonText: 
+@faultReasonLang: 
+@faultNodeURI: 
+@faultRole: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSoap12AddFaultReasonText ##### -->
+<para>
+
+</para>
+
+@faultNode: 
+@faultReasonText: 
+@faultReasonLang: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSoap12AddFaultSubcode ##### -->
+<para>
+
+</para>
+
+@faultNode: 
+@subCodeHref: 
+@subCodeName: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSoap12CheckEnvelope ##### -->
+<para>
+
+</para>
+
+@envNode: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSoap12CreateEnvelope ##### -->
+<para>
+
+</para>
+
+@doc: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSoap12EnsureHeader ##### -->
+<para>
+
+</para>
+
+@envNode: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSoap12GetBody ##### -->
+<para>
+
+</para>
+
+@envNode: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSoap12GetBodyEntriesNumber ##### -->
+<para>
+
+</para>
+
+@envNode: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSoap12GetBodyEntry ##### -->
+<para>
+
+</para>
+
+@envNode: 
+@pos: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSoap12GetFaultEntry ##### -->
+<para>
+
+</para>
+
+@envNode: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSoap12GetHeader ##### -->
+<para>
+
+</para>
+
+@envNode: 
+@Returns: 
+
+<!-- ##### MACRO xmlSecStrPrintf ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO xmlSecStrVPrintf ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### MACRO xmlSecTransformCheckType ##### -->
 <para>
 

@@ -1,4 +1,4 @@
-/**
+/*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * "XML Digital Signature" implementation
@@ -316,7 +316,7 @@ xmlSecDSigCtxSign(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr tmpl) {
  * @dsigCtx:            the pointer to <dsig:Signature/> processing context.
  * @node:               the pointer with <dsig:Signature/> node.
  *
- * Vaidates signature in the @node. The verification result is returned
+ * Validates signature in the @node. The verification result is returned
  * in #status member of the @dsigCtx object.
  *
  * Returns: 0 on success (check #status member of @dsigCtx to get

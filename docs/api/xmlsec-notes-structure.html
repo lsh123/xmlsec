@@ -1,41 +1,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>XML Security Library Structure.</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="XML Security Library Tutorial" href="xmlsec-notes.html">
-<link rel="PREVIOUS" title="Overview." href="xmlsec-notes-overview.html">
-<link rel="NEXT" title="Building the application with XML Security Library." href="xmlsec-notes-compiling.html">
-<style type="text/css">.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-    padding: 0.5em;
-}
-.programlisting {
-    background: #eeeeff;
-    border: solid 1px #aaaaff;
-    padding: 0.5em;
-}
-.variablelist {
-    padding: 4px;
-    margin-left: 3em;
-}
-.navigation {
-    background: #ffeeee;
-    border: solid 1px #ffaaaa;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-.navigation a {
-    color: #770000;
-}
-.navigation a:visited {
-    color: #550000;
-}
-.navigation .title {
-    font-size: 200%;
-}</style>
+<title>XML Security Library Structure.: XML Security Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="XML Security Library Reference Manual">
+<link rel="up" href="xmlsec-notes.html" title="Part I. XML Security Library Tutorial">
+<link rel="prev" href="xmlsec-notes-overview.html" title="Overview.">
+<link rel="next" href="xmlsec-notes-compiling.html" title="Building the application with XML Security Library.">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
 <style type="text/css">
 table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     width: 20em;
@@ -100,26 +73,28 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-notes-overview.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-notes.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="u" href="xmlsec-notes.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="xmlsec-notes-overview.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="xmlsec-notes-compiling.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
-<div class="CHAPTER">
-<h1>
-<a name="XMLSEC-NOTES-STRUCTURE"></a>XML Security Library Structure.</h1>
+<div class="chapter">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="xmlsec-notes-structure"></a>XML Security Library Structure.</h2></div></div></div>
 <p>In order to provide the an ability to use different crypto engines, 
 	the XML Security Library is splitted in two parts: core library (xmlsec)
 	and crypto library (xmlsec-openssl, xmlsec-mscrypt, xmlsec-gnutls, 
 	xmlsec-gcrypt, xmlsec-nss, ...).
 	</p>
-<div class="FIGURE">
-<a name="AEN28"></a><p><b>Figure 1. The library structure and dependencies.</b></p>
-<p><img src="images/structure.png" align="CENTER"></p>
-</div>	 
-	<p>The core library has no dependency on any crypto library and provides 
+<div class="figure">
+<a name="id-1.2.3.2.1"></a><p class="title"><b>Figure 1. The library structure and dependencies.</b></p>
+<div class="figure-contents"><div align="center"><img src="images/structure.png" align="middle" alt="The library structure and dependencies."></div></div>
+</div>
+<p><br class="figure-break">	 
+	</p>
+<p>The core library has no dependency on any crypto library and provides 
 	implementation of all the engines as well as support for all the non 
 	crypto transforms (xml parser, c14n transforms, xpath and xslt 
 	transforms,...). The XML Security Crypto library provides 
@@ -129,10 +104,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 	code might be general enough so switching crypto engine would be 
 	a matter of changing several #include directives.</p>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-notes-overview.html"><b>&lt;&lt;&lt; Overview.</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-notes-compiling.html"><b>Building the application with XML Security Library. &gt;&gt;&gt;</b></a></td>
-</tr></table>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
 </td></tr></table></td>
 </tr></table></body>
 </html>

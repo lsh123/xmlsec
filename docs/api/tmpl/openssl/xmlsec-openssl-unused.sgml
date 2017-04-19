@@ -22,31 +22,13 @@ app
 
 
 
-<!-- ##### MACRO XMLSEC_NO_AES ##### -->
+<!-- ##### MACRO XMLSEC_OPENSSL_ERRORS_FUNCTION ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### MACRO XMLSEC_NO_SHA224 ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### MACRO XMLSEC_NO_SHA256 ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### MACRO XMLSEC_NO_SHA384 ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### MACRO XMLSEC_NO_SHA512 ##### -->
+<!-- ##### MACRO XMLSEC_OPENSSL_ERRORS_LIB ##### -->
 <para>
 
 </para>

@@ -1,41 +1,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Cryptographic transforms.</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="Adding support for new cryptographic library." href="xmlsec-notes-new-crypto.html">
-<link rel="PREVIOUS" title="Klasses and objects." href="xmlsec-notes-new-crypto-klasses.html">
-<link rel="NEXT" title="Keys data and keys data stores." href="xmlsec-notes-new-crypto-keys.html">
-<style type="text/css">.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-    padding: 0.5em;
-}
-.programlisting {
-    background: #eeeeff;
-    border: solid 1px #aaaaff;
-    padding: 0.5em;
-}
-.variablelist {
-    padding: 4px;
-    margin-left: 3em;
-}
-.navigation {
-    background: #ffeeee;
-    border: solid 1px #ffaaaa;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-.navigation a {
-    color: #770000;
-}
-.navigation a:visited {
-    color: #550000;
-}
-.navigation .title {
-    font-size: 200%;
-}</style>
+<title>Cryptographic transforms.: XML Security Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="XML Security Library Reference Manual">
+<link rel="up" href="xmlsec-notes-new-crypto.html" title="Adding support for new cryptographic library.">
+<link rel="prev" href="xmlsec-notes-new-crypto-klasses.html" title="Klasses and objects.">
+<link rel="next" href="xmlsec-notes-new-crypto-keys.html" title="Keys data and keys data stores.">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
 <style type="text/css">
 table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     width: 20em;
@@ -100,52 +73,55 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xmlsec-notes-new-crypto-klasses.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="xmlsec-notes-new-crypto.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="u" href="xmlsec-notes-new-crypto.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="xmlsec-notes-new-crypto-klasses.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="xmlsec-notes-new-crypto-keys.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
-<br clear="all"><div class="SECT1">
-<h1 class="SECT1"><a name="XMLSEC-NOTES-NEW-CRYPTO-TRANSFORMS">Cryptographic transforms.</a></h1>
+<div class="sect1">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="xmlsec-notes-new-crypto-transforms"></a>Cryptographic transforms.</h2></div></div></div>
 <p>The cryptographic transforms (digests, signatures and encryption)
 	implementation is the main goal of "xmlsec-&lt;crypto&gt;" library.
-	Most of the cryptographic <a href="xmlsec-notes-transforms.html">transforms</a> 
-	use default <code class="STRUCTFIELD">pushBin</code> and <code class="STRUCTFIELD">popBin</code> 
-	methods and provide custom <a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEMETHOD">execute</a> method. 
-	The binary transform <a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEMETHOD">execute</a> method 
+	Most of the cryptographic <a class="link" href="xmlsec-notes-transforms.html" title="Transforms and transforms chain.">transforms</a> 
+	use default <em class="structfield"><code>pushBin</code></em> and <em class="structfield"><code>popBin</code></em> 
+	methods and provide custom <a class="link" href="xmlsec-transforms.html#xmlSecTransformExecuteMethod" title="xmlSecTransformExecuteMethod ()">execute</a> method. 
+	The binary transform <a class="link" href="xmlsec-transforms.html#xmlSecTransformExecuteMethod" title="xmlSecTransformExecuteMethod ()">execute</a> method 
 	processes data from the input buffer
-	<code class="STRUCTFIELD">inBuf</code> and pushes results to
-	<code class="STRUCTFIELD">outBuf</code>. The transform should try to
-	consume and remove data from <code class="STRUCTFIELD">inBuf</code> buffer
+	<em class="structfield"><code>inBuf</code></em> and pushes results to
+	<em class="structfield"><code>outBuf</code></em>. The transform should try to
+	consume and remove data from <em class="structfield"><code>inBuf</code></em> buffer
 	as soon as the data became available. However, it might happen
 	that current data size in the input buffer is not enough (for example,
 	RSA-PKCS1 algorithm requires that all the data are available in 
 	one buffer). In this case, transform might keep the data in the 
 	input buffer till the next call to 
-	<a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEMETHOD">execute</a>
+	<a class="link" href="xmlsec-transforms.html#xmlSecTransformExecuteMethod" title="xmlSecTransformExecuteMethod ()">execute</a>
 	method. The "last" parameter of the 
-	<a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEMETHOD">execute</a>
+	<a class="link" href="xmlsec-transforms.html#xmlSecTransformExecuteMethod" title="xmlSecTransformExecuteMethod ()">execute</a>
 	indicates that transform MUST process all the data in the input buffer
 	and return as much as possible in the output buffer. The 
-	<a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEMETHOD">execute</a> method 
+	<a class="link" href="xmlsec-transforms.html#xmlSecTransformExecuteMethod" title="xmlSecTransformExecuteMethod ()">execute</a> method 
 	might be called multiple times with non-zero "last" parameter until 
 	the transforms returns nothing
 	in the output buffer. In addition, the transform implementation is 
-	responsible for managing the transform <code class="STRUCTFIELD">status</code> 
+	responsible for managing the transform <em class="structfield"><code>status</code></em> 
 	variable.
 	</p>
-<div class="TABLE">
-<a name="AEN590"></a><p><b>Table 2. Typical transform status managing.</b></p>
-<table border="1" class="CALSTABLE">
+<div class="table">
+<a name="id-1.2.14.6.2.13"></a><p class="title"><b>Table 2. Typical transform status managing.</b></p>
+<div class="table-contents"><table class="table" summary="Typical transform status managing." border="1">
+<colgroup>
 <col>
 <col>
+</colgroup>
 <tbody>
 <tr>
 <td>xmlSecTransformStatusNone</td>
 <td>Transform initializes itself (for example, cipher transform 
-	generates or reads IV) and sets <code class="STRUCTFIELD">status</code> 
+	generates or reads IV) and sets <em class="structfield"><code>status</code></em> 
 	variable to xmlSecTransformStatusWorking.</td>
 </tr>
 <tr>
@@ -153,7 +129,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <td>Transform process the next (if "last" parameter is zero) or
 	last block of data (if "last" parameter is non-zero).
 	When transform returns all the data, it sets the 
-	<code class="STRUCTFIELD">status</code> variable to 
+	<em class="structfield"><code>status</code></em> variable to 
 	xmlSecTransformStatusFinished.</td>
 </tr>
 <tr>
@@ -162,32 +138,32 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 	processing.</td>
 </tr>
 </tbody>
-</table>
-</div>	
-	<p>In adition to <a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEMETHOD">execute</a>
+</table></div>
+</div>
+<p><br class="table-break">	
+	</p>
+<p>In adition to <a class="link" href="xmlsec-transforms.html#xmlSecTransformExecuteMethod" title="xmlSecTransformExecuteMethod ()">execute</a>
 	methods, signature, hmac or digest transforms 
-	MUST implement <a href="xmlsec-transforms.html#XMLSECTRANSFORMVERIFYMETHOD">verify</a> method. 
-	The <a href="xmlsec-transforms.html#XMLSECTRANSFORMVERIFYMETHOD">verify</a> method is called
+	MUST implement <a class="link" href="xmlsec-transforms.html#xmlSecTransformVerifyMethod" title="xmlSecTransformVerifyMethod ()">verify</a> method. 
+	The <a class="link" href="xmlsec-transforms.html#xmlSecTransformVerifyMethod" title="xmlSecTransformVerifyMethod ()">verify</a> method is called
 	after transform execution is finished. The 
-	<a href="xmlsec-transforms.html#XMLSECTRANSFORMVERIFYMETHOD">verify</a> method implementation 
-	must set the "status" member to <a href="xmlsec-transforms.html#XMLSECTRANSFORMSTATUSOK">xmlSecTransformStatusOk</a>
+	<a class="link" href="xmlsec-transforms.html#xmlSecTransformVerifyMethod" title="xmlSecTransformVerifyMethod ()">verify</a> method implementation 
+	must set the "status" member to <a class="link" href="xmlsec-transforms.html#xmlSecTransformStatusOk">xmlSecTransformStatusOk</a>
 	if signature, hmac or digest is successfuly verified or to
-	<a href="xmlsec-transforms.html#XMLSECTRANSFORMSTATUSFAIL">xmlSecTransformStatusFail</a>
+	<a class="link" href="xmlsec-transforms.html#xmlSecTransformStatusFail">xmlSecTransformStatusFail</a>
 	otherwise.
 	</p>
 <p>The transforms that require a key (signature or encryption 
 	transforms, for example) MUST imlpement 
-	<a href="xmlsec-transforms.html#XMLSECTRANSFORMSETKEYREQUIREMENTSMETHOD">setKeyReq</a> 
-	(prepares the <a href="xmlsec-keys.html#XMLSECKEYREQ">key requirements</a>
+	<a class="link" href="xmlsec-transforms.html#xmlSecTransformSetKeyRequirementsMethod" title="xmlSecTransformSetKeyRequirementsMethod ()">setKeyReq</a> 
+	(prepares the <a class="link" href="xmlsec-keys.html#xmlSecKeyReq" title="struct xmlSecKeyReq">key requirements</a>
 	for key search) and
-	<a href="xmlsec-transforms.html#XMLSECTRANSFORMSETKEYMETHOD">setKey</a> 
+	<a class="link" href="xmlsec-transforms.html#xmlSecTransformSetKeyMethod" title="xmlSecTransformSetKeyMethod ()">setKey</a> 
 	(sets the key in the transform) methods. 
 	</p>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-notes-new-crypto-klasses.html"><b>&lt;&lt;&lt; Klasses and objects.</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-notes-new-crypto-keys.html"><b>Keys data and keys data stores. &gt;&gt;&gt;</b></a></td>
-</tr></table>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
 </td></tr></table></td>
 </tr></table></body>
 </html>

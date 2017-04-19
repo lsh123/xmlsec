@@ -1,6 +1,5 @@
-/**
- *
- * XMLSec library
+/*
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * HMAC Algorithm support (http://www.w3.org/TR/xmldsig-core/#sec-HMAC):
  * The HMAC algorithm (RFC2104 [HMAC]) takes the truncation length in bits

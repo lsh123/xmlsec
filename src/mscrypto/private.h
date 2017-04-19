@@ -1,5 +1,5 @@
-/**
- * XMLSec library
+/*
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * THIS IS A PRIVATE XMLSEC HEADER FILE
  * DON'T USE IT IN YOUR APPLICATION

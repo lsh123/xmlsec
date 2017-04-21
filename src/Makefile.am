@@ -47,7 +47,6 @@ libxmlsec1_la_SOURCES = \
 	nodeset.c \
 	parser.c \
 	relationship.c \
-	soap.c \
 	strings.c \
 	templates.c \
 	transforms.c \
@@ -59,6 +58,10 @@ libxmlsec1_la_SOURCES = \
 	xpath.c \
 	xslt.c \
 	$(NULL)
+
+if XMLSEC_ENABLE_SOAP
+libxmlsec1_la_SOURCES += soap.c
+endif
 
 libxmlsec1_la_LIBADD = \
 	$(LIBXSLT_LIBS) \

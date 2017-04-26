@@ -1399,6 +1399,20 @@ AM_CONDITIONAL(XMLSEC_NO_XMLENC, test "z$XMLSEC_NO_XMLENC" = "z1")
 AC_SUBST(XMLSEC_NO_XMLENC)
 
 dnl ==========================================================================
+dnl See do we need soap support (deprecated)
+dnl ==========================================================================
+AC_MSG_CHECKING(for soap support)
+AC_ARG_ENABLE(soap,     [  --enable-soap           enable soap support (no)])
+if test "z$enable_soap" = "zyes" ; then
+    XMLSEC_ENABLE_SOAP="1"
+    AC_MSG_RESULT(yes)
+else
+    XMLSEC_ENABLE_SOAP="0"
+    AC_MSG_RESULT(no)
+fi    
+AM_CONDITIONAL(XMLSEC_ENABLE_SOAP, test "z$XMLSEC_ENABLE_SOAP" = "z1")
+
+dnl ==========================================================================
 dnl See do we need docs
 dnl ==========================================================================
 AC_MSG_CHECKING(for docs)

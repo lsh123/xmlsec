@@ -3,7 +3,7 @@
 # config
 version=$1
 cur_pwd=`pwd`
-today=`date +%F-%T`
+today=`date +%F-%H-%M-%S`
 
 git_uri=git@github.com:lsh123/xmlsec.git
 rpm_root=/usr/src/redhat

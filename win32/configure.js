@@ -102,7 +102,7 @@ function usage()
 	txt += "either 'yes' or 'no'.\n\n";
 	txt += "XmlSec Library options, default value given in parentheses:\n\n";
 	txt += "  crypto:     Crypto engines list, first is default: \"openssl\",\n";
-	txt += "              \"openssl=098\", \"openssl=100\", \"openssl=110\", \n";
+	txt += "              \"openssl=100\", \"openssl=110\", \n";
 	txt += "              \"nss\", \"mscrypto\" (\"" + withCrypto + "\");\n"
  	txt += "  xslt:       LibXSLT is used (" + (withLibXSLT? "yes" : "no")  + ")\n";	
  	txt += "  iconv:      Use the iconv library (" + (withIconv? "yes" : "no")  + ")\n";	
@@ -353,9 +353,6 @@ withCrypto = "";
 withDefaultCrypto = "";
 for (j = 0; j < crlist.length; j++) {		
 	if (crlist[j] == "openssl") {
-		curcrypto="openssl";
-		withOpenSSL = 1;
-	} else if (crlist[j] == "openssl=098") {
 		curcrypto="openssl";
 		withOpenSSL = 1;
 	} else if (crlist[j] == "openssl=100") {

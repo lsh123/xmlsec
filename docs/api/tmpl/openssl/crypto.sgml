@@ -98,13 +98,6 @@ Crypto transforms implementation for OpenSSL.
 
 
 
-<!-- ##### MACRO XMLSEC_OPENSSL_API_098 ##### -->
-<para>
-
-</para>
-
-
-
 <!-- ##### MACRO XMLSEC_NO_ECDSA ##### -->
 <para>
 

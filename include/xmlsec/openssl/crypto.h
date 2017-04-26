@@ -52,8 +52,6 @@ XMLSEC_CRYPTO_EXPORT const xmlChar*     xmlSecOpenSSLGetDefaultTrustedCertsFolde
 #define XMLSEC_OPENSSL_API_110      1
 #elif OPENSSL_VERSION_NUMBER >= 0x10000000L
 #define XMLSEC_OPENSSL_API_100      1
-#elif OPENSSL_VERSION_NUMBER >= 0x00908000L
-#define XMLSEC_OPENSSL_API_098      1
 #else  /* OPENSSL_VERSION_NUMBER */
 #error "This version of OpenSSL library is not supported"
 #endif /* OPENSSL_VERSION_NUMBER */
@@ -63,14 +61,6 @@ XMLSEC_CRYPTO_EXPORT const xmlChar*     xmlSecOpenSSLGetDefaultTrustedCertsFolde
  * What is supported by the openssl?
  *
  *******************************************************************/
-#if defined(XMLSEC_OPENSSL_API_098)
-#define XMLSEC_NO_ECDSA     1
-#define XMLSEC_NO_SHA224    1
-#define XMLSEC_NO_SHA256    1
-#define XMLSEC_NO_SHA384    1
-#define XMLSEC_NO_SHA512    1
-#endif /* defined(XMLSEC_OPENSSL_API_098) */
-
 #ifdef OPENSSL_NO_AES
 #define XMLSEC_NO_AES       1
 #endif /* OPENSSL_NO_AES */

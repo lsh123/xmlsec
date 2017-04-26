@@ -61,10 +61,15 @@ XMLSEC_FUNC_TO_PTR_IMPL(pem_password_cb)
  */
 int
 xmlSecOpenSSLAppInit(const char* config) {
-    
-#if defined(XMLSEC_OPENSSL_API_110)
+#if !defined(XMLSEC_OPENSSL_API_110)
+
+    ERR_load_crypto_strings();
+    OPENSSL_config(NULL);
+    OpenSSL_add_all_algorithms();
+
+#else /* !defined(XMLSEC_OPENSSL_API_110) */
     int ret;
-    
+
     ret = OPENSSL_init_crypto(OPENSSL_INIT_LOAD_CRYPTO_STRINGS | 
                               OPENSSL_INIT_ADD_ALL_CIPHERS |
                               OPENSSL_INIT_ADD_ALL_DIGESTS |
@@ -76,11 +81,7 @@ xmlSecOpenSSLAppInit(const char* config) {
         xmlSecOpenSSLError("OPENSSL_init_crypto", NULL);
         return(-1);
     }
-#else /* defined(XMLSEC_OPENSSL_API_110) */
-    ERR_load_crypto_strings();
-    OPENSSL_config(NULL);
-    OpenSSL_add_all_algorithms();
-#endif /* defined(XMLSEC_OPENSSL_API_110) */
+#endif /* !defined(XMLSEC_OPENSSL_API_110) */
 
     if((RAND_status() != 1) && (xmlSecOpenSSLAppLoadRANDFile(NULL) != 1)) {
         xmlSecInternalError("xmlSecOpenSSLAppLoadRANDFile", NULL);
@@ -121,13 +122,7 @@ xmlSecOpenSSLAppShutdown(void) {
     ENGINE_cleanup();
     CONF_modules_unload(1);
     CRYPTO_cleanup_all_ex_data();
-
-#if defined(XMLSEC_OPENSSL_API_100)
     ERR_remove_thread_state(NULL);
-#else /* defined(XMLSEC_OPENSSL_API_100) */
-    ERR_remove_state(0);
-#endif /* defined(XMLSEC_OPENSSL_API_100) */
-
     ERR_free_strings();
 #endif /* !defined(XMLSEC_OPENSSL_API_110) */
 

@@ -350,8 +350,6 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     xmlSecAssert2(xmlSecBufferGetData(buffer) != NULL, -1);
 
-    /* No return values before 1.0.0 (https://www.openssl.org/docs/man1.1.0/crypto/HMAC_Update.html) */
-#if !defined(XMLSEC_OPENSSL_API_098)
     ret = HMAC_Init_ex(ctx->hmacCtx,
                 xmlSecBufferGetData(buffer),
                 xmlSecBufferGetSize(buffer),
@@ -362,13 +360,6 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
                            xmlSecTransformGetName(transform));
         return(-1);
     }
-#else  /* !defined(XMLSEC_OPENSSL_API_098) */
-    HMAC_Init_ex(ctx->hmacCtx,
-                    xmlSecBufferGetData(buffer),
-                    xmlSecBufferGetSize(buffer),
-                    ctx->hmacDgst,
-                    NULL);
-#endif /* !defined(XMLSEC_OPENSSL_API_098) */
 
     ctx->ctxInitialized = 1;
     return(0);
@@ -457,17 +448,12 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
 
         inSize = xmlSecBufferGetSize(in);
         if(inSize > 0) {
-            /* No return values before 1.0.0 (https://www.openssl.org/docs/man1.1.0/crypto/HMAC_Update.html) */
-#if !defined(XMLSEC_OPENSSL_API_098)
             ret = HMAC_Update(ctx->hmacCtx, xmlSecBufferGetData(in), inSize);
             if(ret != 1) {
                 xmlSecOpenSSLError("HMAC_Update",
                                    xmlSecTransformGetName(transform));
                 return(-1);
             }
-#else  /* !defined(XMLSEC_OPENSSL_API_098) */
-            HMAC_Update(ctx->hmacCtx, xmlSecBufferGetData(in), inSize);
-#endif /* !defined(XMLSEC_OPENSSL_API_098) */
 
             ret = xmlSecBufferRemoveHead(in, inSize);
             if(ret < 0) {
@@ -481,18 +467,12 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
         if(last) {
             unsigned int dgstSize = 0;
 
-            /* No return values before 1.0.0 (https://www.openssl.org/docs/man1.1.0/crypto/HMAC_Update.html) */
-#if !defined(XMLSEC_OPENSSL_API_098)
             ret = HMAC_Final(ctx->hmacCtx, ctx->dgst, &dgstSize);
             if(ret != 1) {
                 xmlSecOpenSSLError("HMAC_Final",
                                    xmlSecTransformGetName(transform));
                 return(-1);
             }
-#else  /* !defined(XMLSEC_OPENSSL_API_098) */
-            HMAC_Final(ctx->hmacCtx, ctx->dgst, &dgstSize);
-#endif /* !defined(XMLSEC_OPENSSL_API_098) */
-
             xmlSecAssert2(dgstSize > 0, -1);
 
             /* check/set the result digest size */

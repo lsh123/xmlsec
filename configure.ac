@@ -388,7 +388,7 @@ ac_openssl_lib_dir="/usr/local/lib /usr/lib /usr/lib64 /usr/local /usr/local/ssl
 ac_openssl_inc_dir="/usr/local/include /usr/include /usr/local /usr/local/ssl /usr/pkg /usr/local/ssl/include"
 
 XMLSEC_NO_OPENSSL="1"
-OPENSSL_MIN_VERSION="0.9.8"
+OPENSSL_MIN_VERSION="1.0.0"
 OPENSSL_VERSION=""
 OPENSSL_CFLAGS=""
 OPENSSL_LIBS=""
@@ -426,12 +426,6 @@ elif test "z$PKGCONFIG_FOUND" = "zyes" ; then
         PKG_CHECK_MODULES(OPENSSL, openssl >= 1.0.0,
             [OPENSSL_VERSION="1.0.0"],
             [OPENSSL_VERSION=""])
-    fi
-
-    if test "z$OPENSSL_VERSION" = "z" ; then
-        PKG_CHECK_MODULES(OPENSSL, openssl >= 0.9.8,
-    	    [OPENSSL_VERSION="0.9.8"],
-	    [OPENSSL_VERSION=""])
     fi
 
     if test "z$OPENSSL_VERSION" = "z" ; then
@@ -523,19 +517,6 @@ if test "z$OPENSSL_FOUND" = "zyes" -a "z$OPENSSL_VERSION" = "z" ; then
 	    #endif
 	],[
 	    OPENSSL_VERSION="1.0.0"
-	],[
-	    OPENSSL_VERSION=""
-	])
-    fi
-
-    if test "z$OPENSSL_VERSION" = "z" ; then
-        AC_EGREP_CPP(yes,[
-    	    #include <openssl/opensslv.h>
-	    #if OPENSSL_VERSION_NUMBER >= 0x00908000L
-		yes
-	    #endif
-	],[
-	    OPENSSL_VERSION="0.9.8"
 	],[
 	    OPENSSL_VERSION=""
 	])

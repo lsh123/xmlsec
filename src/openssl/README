@@ -1,6 +1,6 @@
 WHAT VERSION OF OPENSSL?
 ------------------------------------------------------------------------
-OpenSSL 0.9.8 or later is required
+OpenSSL 1.0.0 or later is required
 
 KEYS MANAGER
 ------------------------------------------------------------------------

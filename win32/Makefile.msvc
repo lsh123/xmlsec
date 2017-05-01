@@ -35,6 +35,7 @@ AUTOCONF = .\configure.txt
 #WITH_CRYPTO=openssl
 #WITH_DEFAULT_CRYPTO=openssl
 #WITH_OPENSSL=1
+#WITH_OPENSSL_VERSION=
 #WITH_NSS=0
 #WITH_MSCRYPTO=0
 #WITH_LIBXSLT=1
@@ -390,8 +391,13 @@ APP_LIBS  		= $(SOLIBS) $(XMLSEC_CRYPTO_SOLIBS)
 !else
 !endif
 
+!if "$(WITH_OPENSSL_VERSION)" == "XMLSEC_OPENSSL_110"
 XMLSEC_OPENSSL_SOLIBS   = libcrypto.lib wsock32.lib kernel32.lib user32.lib gdi32.lib crypt32.lib advapi32.lib ws2_32.lib
 XMLSEC_OPENSSL_ALIBS    = libcrypto.lib wsock32.lib kernel32.lib user32.lib gdi32.lib crypt32.lib advapi32.lib ws2_32.lib
+!else
+XMLSEC_OPENSSL_SOLIBS   = libeay32.lib wsock32.lib kernel32.lib user32.lib gdi32.lib crypt32.lib advapi32.lib
+XMLSEC_OPENSSL_ALIBS    = libeay32.lib wsock32.lib kernel32.lib user32.lib gdi32.lib crypt32.lib advapi32.lib
+!endif
 
 XMLSEC_NSS_SOLIBS       = smime3.lib ssl3.lib nss3.lib libnspr4.lib libplds4.lib libplc4.lib kernel32.lib user32.lib gdi32.lib
 XMLSEC_NSS_ALIBS        = smime3.lib ssl3.lib nss3.lib libnspr4_s.lib libplds4_s.lib libplc4_s.lib kernel32.lib user32.lib gdi32.lib

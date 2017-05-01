@@ -44,6 +44,7 @@ var verMicroXmlSec;
 var withCrypto = "openssl";
 var withDefaultCrypto = "openssl";
 var withOpenSSL = 0;
+var withOpenSSLVersion = "";
 var withNss = 0;
 var withMSCrypto = 0;
 var withLibXSLT = 1;
@@ -164,6 +165,7 @@ function discoverVersion()
 	vf.WriteLine("WITH_CRYPTO=" + withCrypto);	
 	vf.WriteLine("WITH_DEFAULT_CRYPTO=" + withDefaultCrypto);	
 	vf.WriteLine("WITH_OPENSSL=" + withOpenSSL);	
+	vf.WriteLine("WITH_OPENSSL_VERSION=XMLSEC_OPENSSL_" + withOpenSSLVersion);
 	vf.WriteLine("WITH_NSS=" + withNss);	
 	vf.WriteLine("WITH_MSCRYPTO=" + withMSCrypto);	
 	vf.WriteLine("WITH_LIBXSLT=" + (withLibXSLT ? "1" : "0"));
@@ -355,12 +357,15 @@ for (j = 0; j < crlist.length; j++) {
 	if (crlist[j] == "openssl") {
 		curcrypto="openssl";
 		withOpenSSL = 1;
+		withOpenSSLVersion = "110"; /* default */
 	} else if (crlist[j] == "openssl=100") {
 		curcrypto="openssl";
 		withOpenSSL = 1;
+		withOpenSSLVersion = "100";
 	} else if (crlist[j] == "openssl=110") {
 		curcrypto="openssl";
 		withOpenSSL = 1;
+		withOpenSSLVersion = "110";
 	} else if (crlist[j] == "nss") {
 		curcrypto="nss";
 		withNss = 1;
@@ -409,6 +414,7 @@ txtOut += "----------------------------\n";
 txtOut += "         Use Crypto: " + withCrypto + "\n";
 txtOut += " Use Default Crypto: " + withDefaultCrypto + "\n";
 txtOut += "        Use OpenSSL: " + boolToStr(withOpenSSL) + "\n";
+txtOut += "Use OpenSSL Version: " + withOpenSSLVersion + "\n";
 txtOut += "            Use NSS: " + boolToStr(withNss) + "\n";
 txtOut += "       Use MSCrypto: " + boolToStr(withMSCrypto) + "\n";
 txtOut += "        Use LibXSLT: " + boolToStr(withLibXSLT) + "\n";

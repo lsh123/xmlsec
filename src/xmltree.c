@@ -26,6 +26,33 @@
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
 
+static const xmlChar*	g_xmlsec_xmltree_default_linefeed = XMLSEC_XMLTREE_LINEFEED;
+
+/**
+ * xmlSecGetDefaultLineFeed:
+ *
+ * Gets the current default linefeed.
+ *
+ * Returns: the current default linefeed.
+ */
+const xmlChar*
+xmlSecGetDefaultLineFeed(void)
+{
+    return g_xmlsec_xmltree_default_linefeed;
+}
+
+/**
+ * xmlSecSetDefaultLineFeed:
+ * @linefeed: default linefeed 
+ *
+ * Sets the current default linefeed.
+ */
+void
+xmlSecSetDefaultLineFeed(const xmlChar *linefeed)
+{
+    g_xmlsec_xmltree_default_linefeed = linefeed;
+}
+
 /**
  * xmlSecFindSibling:
  * @cur:                the pointer to XML node.
@@ -199,7 +226,7 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
 
     if(parent->children == NULL) {
         /* TODO: add indents */
-        text = xmlNewText(xmlSecStringCR);
+        text = xmlNewText(xmlSecGetDefaultLineFeed());
         if(text == NULL) {
             xmlSecXmlError("xmlNewText", NULL);
             return(NULL);
@@ -230,7 +257,7 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
     }
 
     /* TODO: add indents */
-    text = xmlNewText(xmlSecStringCR);
+    text = xmlNewText(xmlSecGetDefaultLineFeed());
     if(text == NULL) {
         xmlSecXmlError("xmlNewText", NULL);
         return(NULL);
@@ -258,7 +285,7 @@ xmlSecAddChildNode(xmlNodePtr parent, xmlNodePtr child) {
 
     if(parent->children == NULL) {
         /* TODO: add indents */
-        text = xmlNewText(xmlSecStringCR);
+        text = xmlNewText(xmlSecGetDefaultLineFeed());
         if(text == NULL) {
             xmlSecXmlError("xmlNewText", NULL);
             return(NULL);
@@ -269,7 +296,7 @@ xmlSecAddChildNode(xmlNodePtr parent, xmlNodePtr child) {
     xmlAddChild(parent, child);
 
     /* TODO: add indents */
-    text = xmlNewText(xmlSecStringCR);
+    text = xmlNewText(xmlSecGetDefaultLineFeed());
     if(text == NULL) {
         xmlSecXmlError("xmlNewText", NULL);
         return(NULL);
@@ -363,7 +390,7 @@ xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
     }
 
     /* TODO: add indents */
-    text = xmlNewText(xmlSecStringCR);
+    text = xmlNewText(xmlSecGetDefaultLineFeed());
     if(text == NULL) {
         xmlSecXmlError("xmlNewText", NULL);
         return(NULL);
@@ -411,7 +438,7 @@ xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
     }
 
     /* TODO: add indents */
-    text = xmlNewText(xmlSecStringCR);
+    text = xmlNewText(xmlSecGetDefaultLineFeed());
     if(text == NULL) {
         xmlSecXmlError("xmlNewText", NULL);
         return(NULL);

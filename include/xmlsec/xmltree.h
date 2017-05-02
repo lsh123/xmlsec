@@ -30,13 +30,6 @@ extern "C" {
 #define xmlSecNodeGetName(node) \
     (((node)) ? ((const char*)((node)->name)) : NULL)
 
-/**
- * XMLSEC_XMLTREE_LINEFEED
- *
- * The default xmlnode linefeed
- */
-#define	XMLSEC_XMLTREE_LINEFEED			xmlSecStringCR
-
 XMLSEC_EXPORT const xmlChar*	xmlSecGetDefaultLineFeed(void);
 XMLSEC_EXPORT void		xmlSecSetDefaultLineFeed(const xmlChar *linefeed);
 

@@ -26,7 +26,7 @@
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
 
-static const xmlChar*	g_xmlsec_xmltree_default_linefeed = XMLSEC_XMLTREE_LINEFEED;
+static const xmlChar*	g_xmlsec_xmltree_default_linefeed = xmlSecStringCR;
 
 /**
  * xmlSecGetDefaultLineFeed:

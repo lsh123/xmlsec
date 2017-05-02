@@ -993,7 +993,7 @@ xmlSecMSCryptoX509CertificateNodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node,
 
     /* todo: add \n around base64 data - from context */
     /* todo: add errors check */
-    xmlNodeSetContent(cur, xmlSecStringCR);
+    xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
     xmlNodeSetContent(cur, buf);
     xmlFree(buf);
     return(0);
@@ -1396,7 +1396,7 @@ xmlSecMSCryptoX509CRLNodeWrite(PCCRL_CONTEXT crl, xmlNodePtr node, xmlSecKeyInfo
     }
     /* todo: add \n around base64 data - from context */
     /* todo: add errors check */
-    xmlNodeSetContent(cur, xmlSecStringCR);
+    xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
     xmlNodeSetContent(cur, buf);
     xmlFree(buf);
 

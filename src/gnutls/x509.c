@@ -948,7 +948,7 @@ xmlSecGnuTLSX509CertificateNodeWrite(gnutls_x509_crt_t cert, xmlNodePtr node, xm
 
     /* todo: add \n around base64 data - from context */
     /* todo: add errors check */
-    xmlNodeSetContent(cur, xmlSecStringCR);
+    xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
     xmlNodeSetContent(cur, buf);
     xmlFree(buf);
     return(0);
@@ -1427,7 +1427,7 @@ xmlSecGnuTLSX509CRLNodeWrite(gnutls_x509_crl_t crl, xmlNodePtr node, xmlSecKeyIn
     }
     /* todo: add \n around base64 data - from context */
     /* todo: add errors check */
-    xmlNodeSetContent(cur, xmlSecStringCR);
+    xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
     xmlNodeSetContent(cur, buf);
     xmlFree(buf);
 

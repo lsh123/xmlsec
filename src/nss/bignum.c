@@ -19,6 +19,7 @@
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/xmltree.h>
 #include <xmlsec/buffer.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
@@ -121,7 +122,7 @@ xmlSecNssNodeSetBigNumValue(xmlNodePtr cur, const SECItem *a, int addLineBreaks)
     }
 
     if(addLineBreaks) {
-        xmlNodeSetContent(cur, xmlSecStringCR);
+        xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
     } else {
         xmlNodeSetContent(cur, xmlSecStringEmpty);
     }
@@ -134,7 +135,7 @@ xmlSecNssNodeSetBigNumValue(xmlNodePtr cur, const SECItem *a, int addLineBreaks)
     }
 
     if(addLineBreaks) {
-        xmlNodeAddContent(cur, xmlSecStringCR);
+        xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
     }
 
     xmlSecBufferFinalize(&buf);

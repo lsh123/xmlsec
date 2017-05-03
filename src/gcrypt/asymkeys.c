@@ -492,7 +492,7 @@ xmlSecGCryptNodeSetMpiValue(xmlNodePtr cur, const gcry_mpi_t a, int addLineBreak
     }
 
     if(addLineBreaks) {
-        xmlNodeSetContent(cur, xmlSecStringCR);
+        xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
     } else {
         xmlNodeSetContent(cur, xmlSecStringEmpty);
     }
@@ -505,7 +505,7 @@ xmlSecGCryptNodeSetMpiValue(xmlNodePtr cur, const gcry_mpi_t a, int addLineBreak
     }
 
     if(addLineBreaks) {
-        xmlNodeAddContent(cur, xmlSecStringCR);
+        xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
     }
 
     xmlSecBufferFinalize(&buf);

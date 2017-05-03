@@ -845,7 +845,7 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
     }
 
     if(addLineBreaks) {
-        xmlNodeAddContent(cur, xmlSecStringCR);
+        xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
     }
 
     switch(format) {
@@ -879,7 +879,7 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
     }
 
     if(addLineBreaks) {
-        xmlNodeAddContent(cur, xmlSecStringCR);
+        xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
     }
 
     return(0);

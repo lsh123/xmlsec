@@ -43,9 +43,10 @@ xmlSecGetDefaultLineFeed(void)
 
 /**
  * xmlSecSetDefaultLineFeed:
- * @linefeed: default linefeed 
+ * @linefeed: default linefeed.
  *
- * Sets the current default linefeed.
+ * Sets the current default linefeed. The caller must ensure that the linefeed
+ * string exists for the lifetime of the program or until the new linefeed is set.
  */
 void
 xmlSecSetDefaultLineFeed(const xmlChar *linefeed)

@@ -392,12 +392,8 @@ xmlSecMSCryptoKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecAssert2(ctx->hMemStore != 0, NULL);
     xmlSecAssert2(ctx->numCerts > pos, NULL);
 
-    while (pos > 0) {
-       pCert = CertEnumCertificatesInStore(ctx->hMemStore, pCert);
-       if(pCert == NULL) {
-            break;
-       }
-        pos--;
+    while ((pCert = CertEnumCertificatesInStore(ctx->hMemStore, pCert)) && (pos > 0)) {
+      pos--;
     }
 
     return(pCert);
@@ -474,12 +470,8 @@ xmlSecMSCryptoKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecAssert2(ctx->hMemStore != 0, NULL);
     xmlSecAssert2(ctx->numCrls > pos, NULL);
 
-    while(pos > 0) {
-        pCRL = CertEnumCRLsInStore(ctx->hMemStore, pCRL);
-       if(pCRL == NULL) {
-            break;
-        }
-        pos--;
+    while ((pCRL = CertEnumCRLsInStore(ctx->hMemStore, pCRL)) && (pos > 0)) {
+      pos--;
     }
 
     return(pCRL);

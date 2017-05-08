@@ -501,12 +501,14 @@ xmlSecGCryptKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
     err = gcry_cipher_setkey(cipherCtx, key, keySize);
     if(err != GPG_ERR_NO_ERROR) {
         xmlSecGCryptError("gcry_cipher_setkey", err, NULL);
+        gcry_cipher_close(cipherCtx);
         return(-1);
     }
 
     err = gcry_cipher_setiv(cipherCtx, iv, ivSize);
     if(err != GPG_ERR_NO_ERROR) {
         xmlSecGCryptError("gcry_cipher_setiv", err, NULL);
+        gcry_cipher_close(cipherCtx);
         return(-1);
     }
 

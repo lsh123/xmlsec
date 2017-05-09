@@ -968,30 +968,8 @@ xmlSecOpenSSLSignatureEcdsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPt
         goto done;
     }
 
-    /* get signature components */
-    ECDSA_SIG_get0(sig, &rr, &ss);
-    if((rr == NULL) || (ss == NULL)) {
-        xmlSecOpenSSLError("ECDSA_SIG_get0", NULL);
-        goto done;
-    }
-
-    /* check sizes */
-    rSize = BN_num_bytes(rr);
-    if(rSize > signHalfSize) {
-        xmlSecInvalidSizeMoreThanError("ECDSA signatue r",
-                                       rSize, signHalfSize, NULL);
-        goto done;
-    }
-
-    sSize = BN_num_bytes(ss);
-    if(sSize > signHalfSize) {
-        xmlSecInvalidSizeMoreThanError("ECDSA signatue s",
-                                       sSize, signHalfSize, NULL);
-        goto done;
-    }
-
     /* allocate buffer */
-    ret = xmlSecBufferSetSize(out, 2 * signHalfSize);
+    ret = xmlSecBufferSetSize(out, ECDSA_size(ecKey));
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL,
                              "size=%d", (int)(2 * signHalfSize));
@@ -1000,11 +978,12 @@ xmlSecOpenSSLSignatureEcdsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPt
     outData = xmlSecBufferGetData(out);
     xmlSecAssert2(outData != NULL, -1);
 
-    /* write components */
-    xmlSecAssert2((rSize + sSize) <= 2 * signHalfSize, -1);
-    memset(outData, 0, 2 * signHalfSize);
-    BN_bn2bin(rr, outData + signHalfSize - rSize);
-    BN_bn2bin(ss, outData + 2 * signHalfSize - sSize);
+    /* write signature */
+    ret = i2d_ECDSA_SIG(sig, &outData);
+    if(ret < 0) {
+        xmlSecOpenSSLError("i2d_ECDSA_SIG", NULL);
+        goto done;
+    }
 
     /* success */
     res = 0;
@@ -1051,38 +1030,12 @@ xmlSecOpenSSLSignatureEcdsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSec
         goto done;
     }
 
-    /* check size */
-    if(signSize != 2 * signHalfSize) {
-        xmlSecInvalidSizeError("ECDSA signature", signSize, 2 * signHalfSize,
-                               NULL);
-        goto done;
-    }
-
-    /* create/read signature */
-    sig = ECDSA_SIG_new();
+    /* read signature */
+    sig = d2i_ECDSA_SIG(NULL, &signData, signSize);
     if (sig == NULL) {
-        xmlSecOpenSSLError("DSA_SIG_new", NULL);
+        xmlSecOpenSSLError("d2i_ECDSA_SIG", NULL);
         goto done;
     }
-
-    rr = BN_bin2bn(signData, signHalfSize, NULL);
-    if(rr == NULL) {
-        xmlSecOpenSSLError("BN_bin2bn(sig->r)", NULL);
-        goto done;
-    }
-    ss = BN_bin2bn(signData + signHalfSize, signHalfSize, NULL);
-    if(ss == NULL) {
-        xmlSecOpenSSLError("BN_bin2bn(sig->s)", NULL);
-        goto done;
-    }
-
-    ret = ECDSA_SIG_set0(sig, rr, ss);
-    if(ret == 0) {
-        xmlSecOpenSSLError("ECDSA_SIG_set0()", NULL);
-        goto done;
-    }
-    rr = NULL;
-    ss = NULL;
 
     /* verify signature */
     ret = ECDSA_do_verify(ctx->dgst, ctx->dgstSize, sig, ecKey);

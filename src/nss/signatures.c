@@ -344,9 +344,6 @@ static int
 xmlSecNssSignatureAlgorithmEncoded(SECOidTag alg) {
     switch(alg) {
     case SEC_OID_ANSIX9_DSA_SIGNATURE_WITH_SHA1_DIGEST:
-    case SEC_OID_ANSIX962_ECDSA_SHA1_SIGNATURE:
-    case SEC_OID_ANSIX962_ECDSA_SHA256_SIGNATURE:
-    case SEC_OID_ANSIX962_ECDSA_SHA512_SIGNATURE:
         return(1);
     default:
         return(0);

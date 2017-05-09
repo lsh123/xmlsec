@@ -22,7 +22,6 @@
 #include <xmlsec/openssl/evp.h>
 #include "openssl_compat.h"
 
-
 /**************************************************************************
  *
  * Internal OpenSSL Block cipher CTX

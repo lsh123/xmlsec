@@ -1,0 +1,17 @@
+--- testKeys started for xmlsec-default library (20170415_160808) ---
+--- LD_LIBRARY_PATH=
+/cygdrive/z/xmlsec/win32/binaries/xmlsec.exe check-key-data  --crypto default --crypto-config win32/tmp/xmlsec-crypto-config hmac
+./tests/testrun.sh: line 170: /cygdrive/z/xmlsec/win32/binaries/xmlsec.exe: Permission denied
+/cygdrive/z/xmlsec/win32/binaries/xmlsec.exe check-key-data  --crypto default --crypto-config win32/tmp/xmlsec-crypto-config rsa 
+./tests/testrun.sh: line 170: /cygdrive/z/xmlsec/win32/binaries/xmlsec.exe: Permission denied
+/cygdrive/z/xmlsec/win32/binaries/xmlsec.exe check-key-data  --crypto default --crypto-config win32/tmp/xmlsec-crypto-config dsa 
+./tests/testrun.sh: line 170: /cygdrive/z/xmlsec/win32/binaries/xmlsec.exe: Permission denied
+/cygdrive/z/xmlsec/win32/binaries/xmlsec.exe check-key-data  --crypto default --crypto-config win32/tmp/xmlsec-crypto-config des 
+./tests/testrun.sh: line 170: /cygdrive/z/xmlsec/win32/binaries/xmlsec.exe: Permission denied
+/cygdrive/z/xmlsec/win32/binaries/xmlsec.exe check-key-data  --crypto default --crypto-config win32/tmp/xmlsec-crypto-config aes 
+./tests/testrun.sh: line 170: /cygdrive/z/xmlsec/win32/binaries/xmlsec.exe: Permission denied
+/cygdrive/z/xmlsec/win32/binaries/xmlsec.exe check-key-data  --crypto default --crypto-config win32/tmp/xmlsec-crypto-config aes 
+./tests/testrun.sh: line 170: /cygdrive/z/xmlsec/win32/binaries/xmlsec.exe: Permission denied
+/cygdrive/z/xmlsec/win32/binaries/xmlsec.exe check-key-data  --crypto default --crypto-config win32/tmp/xmlsec-crypto-config aes 
+./tests/testrun.sh: line 170: /cygdrive/z/xmlsec/win32/binaries/xmlsec.exe: Permission denied
+--- testKeys finished ---

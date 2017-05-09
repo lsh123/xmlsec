@@ -1,0 +1,30 @@
+# .\configure.txt
+# This file is generated automatically by configure.js.
+
+XMLSEC_VERSION_MAJOR=1
+XMLSEC_VERSION_MINOR=2
+XMLSEC_VERSION_SUBMINOR=23
+BASEDIR=..
+XMLSEC_SRCDIR=..\src
+APPS_SRCDIR=..\apps
+BINDIR=binaries
+WITH_CRYPTO=mscrypto
+WITH_DEFAULT_CRYPTO=mscrypto
+WITH_OPENSSL=0
+WITH_NSS=0
+WITH_MSCRYPTO=1
+WITH_LIBXSLT=1
+WITH_ICONV=0
+WITH_NT4=1
+UNICODE=1
+DEBUG=1
+STATIC=1
+WITH_DL=1
+PREFIX=C:\Users\Aleksey\dev\local
+BINPREFIX=$(PREFIX)\bin
+INCPREFIX=$(PREFIX)\include
+LIBPREFIX=$(PREFIX)\lib
+SOPREFIX=$(PREFIX)\lib
+INCLUDE=$(INCLUDE);C:\Users\Aleksey\dev\local\include;
+LIB=$(LIB);C:\Users\Aleksey\dev\local\lib;
+CRUNTIME=/MD

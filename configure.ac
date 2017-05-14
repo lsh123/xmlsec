@@ -153,13 +153,6 @@ case "${host}" in
 	XMLSEC_EXTRA_LDFLAGS="-no-undefined -avoid-version"
 	XMLSEC_CRYPTO_EXTRA_LDFLAGS="-no-undefined -avoid-version"
 	XMLSEC_SHLIBSFX=".dll.a"
-        # To avoid problem with loading of a shared library (dlopen or
-        # equivalent) at run time on some platforms we need to link
-        # everything statically (it works without hack on 9x and under
-        # emulation; on nt 5.x (w2k,xp) the error is 998: "Invalid
-        # access to memory location").
-        enable_static_linking="yes"
-        enable_crypto_dl="no"
 	;;
  *-*-cygwin*)
 	XMLSEC_EXTRA_LDFLAGS="-no-undefined"
@@ -1567,6 +1560,7 @@ AC_MSG_CHECKING(for static linking)
 AC_ARG_ENABLE(static_linking,   [  --enable-static-linking enable static linking (no)])
 if test "z$enable_static_linking" = "zyes" ; then
     XMLSEC_STATIC_BINARIES="-static"
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_STATIC=1"
     AC_MSG_RESULT(yes)
 else
     AC_MSG_RESULT(no)

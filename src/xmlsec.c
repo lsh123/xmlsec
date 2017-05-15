@@ -46,7 +46,10 @@ xmlSecNoXxeExternalEntityLoader(const char *URL, const char *ID,
     if (ctxt == NULL) {
         return(NULL);
     }
-    if (ctxt->input_id == 1) {
+#if LIBXML_VERSION >= 20800
+    if (ctxt->input_id == 1)
+#endif
+    {
         return xmlSecDefaultExternalEntityLoader((const char *) URL, ID, ctxt);
     }
     xmlSecXmlError2("xmlSecNoXxeExternalEntityLoader", NULL,

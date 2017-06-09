@@ -83,7 +83,10 @@ if test "z$OS_ARCH" = "zCygwin" || test "z$OS_ARCH" = "zMsys" ; then
     # Samples:
     #   Cygwin	: CYGWIN_NT-5.1
     #   Msys	: MINGW32_NT-5.1
-    if expr "$OS_KERNEL" : '.*_NT-5\.1' > /dev/null; then
+    if expr "$OS_KERNEL" : 'MINGW*' > /dev/null; then
+        # No special handling is needed on MINGW32/MINGW64
+        priv_key_suffix=""
+    elif expr "$OS_KERNEL" : '.*_NT-5\.1' > /dev/null; then
         priv_key_suffix="-winxp"
     else
         priv_key_suffix="-win"

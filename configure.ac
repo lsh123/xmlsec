@@ -975,15 +975,18 @@ if test "z$MSCRYPTO_ENABLE" = "zyes" ; then
     XMLSEC_NO_MSCRYPTO="0"
 
     MSCRYPTO_CFLAGS="$MSCRYPTO_CFLAGS -DXMLSEC_CRYPTO_MSCRYPTO=1"
-    case $host in
-	*-*-mingw*)
-		dnl since mingw crypt32 library is limited
-		dnl we use own def-file
-		MSCRYPTO_LIBS='-Wl,$(srcdir)/mingw-crypt32.def';;
-	*)
-		MSCRYPTO_LIBS="-lcrypt32";;
-    esac
-
+    if test "x$GCC" = "xyes"; then
+        MSCRYPTO_LIBS="-lcrypt32"
+    else
+        case $host in
+        *-*-mingw*)
+            dnl since mingw crypt32 library is limited
+            dnl we use own def-file
+            MSCRYPTO_LIBS='-Wl,$(srcdir)/mingw-crypt32.def';;
+        *)
+            MSCRYPTO_LIBS="-lcrypt32";;
+        esac
+    fi
     XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST mscrypto"
 else
     XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST mscrypto"

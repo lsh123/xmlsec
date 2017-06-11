@@ -1430,6 +1430,22 @@ AM_CONDITIONAL(XMLSEC_APPS, test "z$XMLSEC_APPS" = "z1")
 AC_SUBST(XMLSEC_APPS)
 
 dnl ==========================================================================
+dnl Static linking (implies enable_crypto_dl="no")
+dnl ==========================================================================
+XMLSEC_STATIC_BINARIES=""
+AC_MSG_CHECKING(for static linking) 
+AC_ARG_ENABLE(static_linking,   [  --enable-static-linking enable static linking (no)])
+if test "z$enable_static_linking" = "zyes" ; then
+    XMLSEC_STATIC_BINARIES="-static"
+    XMLSEC_APP_DEFINES="$XMLSEC_APP_DEFINES -DXMLSEC_STATIC=1"
+    enable_crypto_dl="no"
+    AC_MSG_RESULT(yes)
+else
+    AC_MSG_RESULT(no)
+fi    
+AC_SUBST(XMLSEC_STATIC_BINARIES)
+
+dnl ==========================================================================
 dnl check if we need dynamic loading support
 dnl ==========================================================================
 XMLSEC_DL_INCLUDES=""
@@ -1563,22 +1579,7 @@ if test "z$enable_pedantic" = "zyes" ; then
     AC_MSG_RESULT(yes)
 else
     AC_MSG_RESULT(no)
-fi    
-
-dnl ==========================================================================
-dnl Static linking
-dnl ==========================================================================
-XMLSEC_STATIC_BINARIES=""
-AC_MSG_CHECKING(for static linking) 
-AC_ARG_ENABLE(static_linking,   [  --enable-static-linking enable static linking (no)])
-if test "z$enable_static_linking" = "zyes" ; then
-    XMLSEC_STATIC_BINARIES="-static"
-    XMLSEC_APP_DEFINES="$XMLSEC_APP_DEFINES -DXMLSEC_STATIC=1"
-    AC_MSG_RESULT(yes)
-else
-    AC_MSG_RESULT(no)
-fi    
-AC_SUBST(XMLSEC_STATIC_BINARIES)
+fi
 
 dnl ==========================================================================
 dnl Final steps: xmlsec config

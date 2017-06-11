@@ -899,9 +899,9 @@ xmlSecMSCryptoCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
 #endif /* XMLSEC_NO_GOST*/
 
     if (NULL == data) {
-        xmlSecInvalidIntegerTypeError("PCCERT_CONTEXT key type",
+        xmlSecInvalidStringTypeError("PCCERT_CONTEXT key type",
                 pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId,
-                "supported keytype", NULL);
+                "unsupported keytype", NULL);
         return(NULL);
     }
 

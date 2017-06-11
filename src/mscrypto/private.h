@@ -16,7 +16,7 @@
 #error "private.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
 #endif /* XMLSEC_PRIVATE */
 
-#if defined(__MINGW32__)
+#if defined(__MINGW32__) && defined(XMLSEC_CUSTOM_CRYPT32)
 #  include "xmlsec-mingw.h"
 #endif
 

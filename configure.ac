@@ -986,9 +986,12 @@ if test "z$MSCRYPTO_ENABLE" = "zyes" ; then
 
     MSCRYPTO_CFLAGS="$MSCRYPTO_CFLAGS -DXMLSEC_CRYPTO_MSCRYPTO=1"
     case $host in
+	*-w64-mingw*)
+		MSCRYPTO_LIBS="-lcrypt32";;
 	*-*-mingw*)
-		dnl since mingw crypt32 library is limited
-		dnl we use own def-file
+		dnl use own def-file and header as mingw.org crypt32
+		dnl is limited (library and header)
+    		XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_CUSTOM_CRYPT32=1"
 		MSCRYPTO_LIBS='-Wl,$(srcdir)/mingw-crypt32.def';;
 	*)
 		MSCRYPTO_LIBS="-lcrypt32";;

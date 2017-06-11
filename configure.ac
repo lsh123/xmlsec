@@ -153,13 +153,6 @@ case "${host}" in
 	XMLSEC_EXTRA_LDFLAGS="-no-undefined -avoid-version"
 	XMLSEC_CRYPTO_EXTRA_LDFLAGS="-no-undefined -avoid-version"
 	XMLSEC_SHLIBSFX=".dll.a"
-        # To avoid problem with loading of a shared library (dlopen or
-        # equivalent) at run time on some platforms we need to link
-        # everything statically (it works without hack on 9x and under
-        # emulation; on nt 5.x (w2k,xp) the error is 998: "Invalid
-        # access to memory location").
-        enable_static_linking="yes"
-        enable_crypto_dl="no"
 	;;
  *-*-cygwin*)
 	XMLSEC_EXTRA_LDFLAGS="-no-undefined"

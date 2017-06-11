@@ -1570,6 +1570,7 @@ AC_MSG_CHECKING(for static linking)
 AC_ARG_ENABLE(static_linking,   [  --enable-static-linking enable static linking (no)])
 if test "z$enable_static_linking" = "zyes" ; then
     XMLSEC_STATIC_BINARIES="-static"
+    XMLSEC_APP_DEFINES="$XMLSEC_APP_DEFINES -DXMLSEC_STATIC=1"
     AC_MSG_RESULT(yes)
 else
     AC_MSG_RESULT(no)

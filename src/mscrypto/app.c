@@ -26,6 +26,10 @@
 #include <xmlsec/mscrypto/x509.h>
 #include "private.h"
 
+#ifndef PKCS12_NO_PERSIST_KEY
+/* Windows Server 2003 and Windows XP:  This value is not supported. */
+#  define PKCS12_NO_PERSIST_KEY	0x00008000
+#endif
 
 /* I don't see any other way then to use a global var to get the
  * config info to the mscrypto keysstore :(  WK

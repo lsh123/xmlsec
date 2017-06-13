@@ -7,9 +7,11 @@
 ##########################################################################
 ##########################################################################
 echo "--- testDSig started for xmlsec-$crypto library ($timestamp)"
+echo "--- LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
 echo "--- LTDL_LIBRARY_PATH=$LTDL_LIBRARY_PATH"
 echo "--- log file is $logfile"
 echo "--- testDSig started for xmlsec-$crypto library ($timestamp)" >> $logfile
+echo "--- LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $logfile
 echo "--- LTDL_LIBRARY_PATH=$LTDL_LIBRARY_PATH" >> $logfile
 
 ##########################################################################

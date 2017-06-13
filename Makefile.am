@@ -72,7 +72,7 @@ PRECHECK_COMMANDS = \
 	$(NULL)
 else
 PRECHECK_COMMANDS= \
-	export LTDL_LIBRARY_PATH="$(ABS_BUILDDIR)/src/.libs:$$LTDL_LIBRARY_PATH" ; \
+	export LD_LIBRARY_PATH="$(ABS_BUILDDIR)/src/.libs:$$LD_LIBRARY_PATH" ; \
 	for i in $(XMLSEC_CRYPTO_LIST) ; do \
 	    export LTDL_LIBRARY_PATH="$(ABS_BUILDDIR)/src/$$i/.libs:$$LTDL_LIBRARY_PATH" ; \
 	done && \

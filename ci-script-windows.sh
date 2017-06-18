@@ -49,7 +49,8 @@ build_xmlsec() {
      --prefix="$(cygpath ${APPVEYOR_BUILD_FOLDER})\install"      \
      --build="x86_64-w64-mingw32" \
      --host="x86_64-w64-mingw32" \
-     --enable-mscrypto
+     --enable-mscrypto \
+     --enable-static-linking=$STATIC
 
     make
 }

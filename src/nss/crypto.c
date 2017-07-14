@@ -129,6 +129,9 @@ xmlSecCryptoGetFunctions_nss(void) {
 #ifndef XMLSEC_NO_SHA1
     gXmlSecNssFunctions->transformEcdsaSha1GetKlass = xmlSecNssTransformEcdsaSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
+#ifndef XMLSEC_NO_SHA224
+    gXmlSecNssFunctions->transformEcdsaSha224GetKlass = xmlSecNssTransformEcdsaSha224GetKlass;
+#endif /* XMLSEC_NO_SHA224 */
 #ifndef XMLSEC_NO_SHA256
     gXmlSecNssFunctions->transformEcdsaSha256GetKlass = xmlSecNssTransformEcdsaSha256GetKlass;
 #endif /* XMLSEC_NO_SHA256 */
@@ -151,6 +154,10 @@ xmlSecCryptoGetFunctions_nss(void) {
 #ifndef XMLSEC_NO_SHA1
     gXmlSecNssFunctions->transformHmacSha1GetKlass      = xmlSecNssTransformHmacSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+    gXmlSecNssFunctions->transformHmacSha224GetKlass    = xmlSecNssTransformHmacSha224GetKlass;
+#endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
     gXmlSecNssFunctions->transformHmacSha256GetKlass    = xmlSecNssTransformHmacSha256GetKlass;
@@ -176,6 +183,10 @@ xmlSecCryptoGetFunctions_nss(void) {
 #ifndef XMLSEC_NO_SHA1
     gXmlSecNssFunctions->transformRsaSha1GetKlass       = xmlSecNssTransformRsaSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+    gXmlSecNssFunctions->transformRsaSha224GetKlass     = xmlSecNssTransformRsaSha224GetKlass;
+#endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
     gXmlSecNssFunctions->transformRsaSha256GetKlass     = xmlSecNssTransformRsaSha256GetKlass;
@@ -206,6 +217,9 @@ xmlSecCryptoGetFunctions_nss(void) {
 #ifndef XMLSEC_NO_SHA1
     gXmlSecNssFunctions->transformSha1GetKlass          = xmlSecNssTransformSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
+#ifndef XMLSEC_NO_SHA224
+    gXmlSecNssFunctions->transformSha224GetKlass        = xmlSecNssTransformSha224GetKlass;
+#endif /* XMLSEC_NO_SHA224 */
 #ifndef XMLSEC_NO_SHA256
     gXmlSecNssFunctions->transformSha256GetKlass        = xmlSecNssTransformSha256GetKlass;
 #endif /* XMLSEC_NO_SHA256 */

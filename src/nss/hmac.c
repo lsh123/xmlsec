@@ -125,6 +125,12 @@ xmlSecNssHmacCheckId(xmlSecTransformPtr transform) {
     }
 #endif /* XMLSEC_NO_SHA1 */
 
+#ifndef XMLSEC_NO_SHA224
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformHmacSha224Id)) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_SHA224 */
+
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformHmacSha256Id)) {
         return(1);
@@ -175,6 +181,12 @@ xmlSecNssHmacInitialize(xmlSecTransformPtr transform) {
         ctx->digestType = CKM_SHA_1_HMAC;
     } else
 #endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformHmacSha224Id)) {
+        ctx->digestType = CKM_SHA224_HMAC;
+    } else
+#endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformHmacSha256Id)) {
@@ -654,6 +666,52 @@ xmlSecNssTransformHmacSha1GetKlass(void) {
     return(&xmlSecNssHmacSha1Klass);
 }
 #endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+/******************************************************************************
+ *
+ * HMAC SHA224
+ *
+ ******************************************************************************/
+static xmlSecTransformKlass xmlSecNssHmacSha224Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecNssHmacSize,                          /* xmlSecSize objSize */
+
+    xmlSecNameHmacSha224,                       /* const xmlChar* name; */
+    xmlSecHrefHmacSha224,                       /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecNssHmacInitialize,                    /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecNssHmacFinalize,                      /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecNssHmacNodeRead,                      /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecNssHmacSetKeyReq,                     /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecNssHmacSetKey,                        /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecNssHmacVerify,                        /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecNssHmacExecute,                       /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecNssTransformHmacSha224GetKlass:
+ *
+ * The HMAC-SHA224 transform klass.
+ *
+ * Returns: the HMAC-SHA224 transform klass.
+ */
+xmlSecTransformId
+xmlSecNssTransformHmacSha224GetKlass(void) {
+    return(&xmlSecNssHmacSha224Klass);
+}
+#endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
 /******************************************************************************

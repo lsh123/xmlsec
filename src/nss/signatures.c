@@ -89,6 +89,11 @@ xmlSecNssSignatureCheckId(xmlSecTransformPtr transform) {
         return(1);
     }
 #endif /* XMLSEC_NO_SHA1 */
+#ifndef XMLSEC_NO_SHA224
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformEcdsaSha224Id)) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_SHA224 */
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformEcdsaSha256Id)) {
         return(1);
@@ -114,6 +119,12 @@ xmlSecNssSignatureCheckId(xmlSecTransformPtr transform) {
         return(1);
     }
 #endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformRsaSha224Id)) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformRsaSha256Id)) {
@@ -165,6 +176,13 @@ xmlSecNssSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->alg = SEC_OID_ANSIX962_ECDSA_SHA1_SIGNATURE;
     } else
 #endif /* XMLSEC_NO_SHA1 */
+#ifndef XMLSEC_NO_SHA224
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformEcdsaSha224Id)) {
+        ctx->keyId = xmlSecNssKeyDataEcdsaId;
+        /* This creates a signature which is ASN1 encoded */
+        ctx->alg = SEC_OID_ANSIX962_ECDSA_SHA224_SIGNATURE;
+    } else
+#endif /* XMLSEC_NO_SHA24 */
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformEcdsaSha256Id)) {
         ctx->keyId = xmlSecNssKeyDataEcdsaId;
@@ -197,6 +215,13 @@ xmlSecNssSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->alg        = SEC_OID_PKCS1_SHA1_WITH_RSA_ENCRYPTION;
     } else
 #endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformRsaSha224Id)) {
+        ctx->keyId      = xmlSecNssKeyDataRsaId;
+        ctx->alg        = SEC_OID_PKCS1_SHA224_WITH_RSA_ENCRYPTION;
+    } else
+#endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformRsaSha256Id)) {
@@ -345,6 +370,7 @@ xmlSecNssSignatureAlgorithmEncoded(SECOidTag alg) {
     switch(alg) {
     case SEC_OID_ANSIX9_DSA_SIGNATURE_WITH_SHA1_DIGEST:
     case SEC_OID_ANSIX962_ECDSA_SHA1_SIGNATURE:
+    case SEC_OID_ANSIX962_ECDSA_SHA224_SIGNATURE:
     case SEC_OID_ANSIX962_ECDSA_SHA256_SIGNATURE:
     case SEC_OID_ANSIX962_ECDSA_SHA512_SIGNATURE:
         return(1);
@@ -668,6 +694,53 @@ xmlSecNssTransformEcdsaSha1GetKlass(void) {
 }
 
 #endif /* XMLSEC_NO_SHA1 */
+#ifndef XMLSEC_NO_SHA224
+/****************************************************************************
+ *
+ * ECDSA-SHA224 signature transform
+ *
+ ***************************************************************************/
+
+static xmlSecTransformKlass xmlSecNssEcdsaSha224Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecNssSignatureSize,                     /* xmlSecSize objSize */
+
+    xmlSecNameEcdsaSha224,                      /* const xmlChar* name; */
+    xmlSecHrefEcdsaSha224,                      /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecNssSignatureInitialize,               /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecNssSignatureFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecNssSignatureSetKeyReq,                /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecNssSignatureSetKey,                   /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecNssSignatureVerify,                   /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecNssSignatureExecute,                  /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecNssTransformEcdsaSha224GetKlass:
+ *
+ * The ECDSA-SHA224 signature transform klass.
+ *
+ * Returns: ECDSA-SHA224 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecNssTransformEcdsaSha224GetKlass(void) {
+    return(&xmlSecNssEcdsaSha224Klass);
+}
+
+#endif /* XMLSEC_NO_SHA224 */
 #ifndef XMLSEC_NO_SHA256
 /****************************************************************************
  *
@@ -861,6 +934,52 @@ xmlSecNssTransformRsaSha1GetKlass(void) {
 
 #endif /* XMLSEC_NO_SHA1 */
 
+#ifndef XMLSEC_NO_SHA224
+/****************************************************************************
+ *
+ * RSA-SHA224 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecNssRsaSha224Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecNssSignatureSize,                     /* xmlSecSize objSize */
+
+    xmlSecNameRsaSha224,                        /* const xmlChar* name; */
+    xmlSecHrefRsaSha224,                        /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecNssSignatureInitialize,               /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecNssSignatureFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecNssSignatureSetKeyReq,                /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecNssSignatureSetKey,                   /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecNssSignatureVerify,                   /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecNssSignatureExecute,                  /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecNssTransformRsaSha224GetKlass:
+ *
+ * The RSA-SHA224 signature transform klass.
+ *
+ * Returns: RSA-SHA224 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecNssTransformRsaSha224GetKlass(void) {
+    return(&xmlSecNssRsaSha224Klass);
+}
+
+#endif /* XMLSEC_NO_SHA224 */
 #ifndef XMLSEC_NO_SHA256
 /****************************************************************************
  *

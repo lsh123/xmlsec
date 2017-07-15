@@ -214,6 +214,18 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEcdsaSha1GetKlass(void)
 
 #endif /* XMLSEC_NO_SHA1 */
 
+#ifndef XMLSEC_NO_SHA224
+
+/**
+ * xmlSecNssTransformEcdsaSha224Id:
+ *
+ * The ECDSA SHA224 signature transform klass.
+ */
+#define xmlSecNssTransformEcdsaSha224Id xmlSecNssTransformEcdsaSha224GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEcdsaSha224GetKlass(void);
+
+#endif /* XMLSEC_NO_SHA224 */
+
 #ifndef XMLSEC_NO_SHA256
 
 /**
@@ -295,6 +307,17 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHmacRipemd160GetKlass(v
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHmacSha1GetKlass(void);
 #endif /* XMLSEC_NO_SHA1 */
 
+#ifndef XMLSEC_NO_SHA224
+/**
+ * xmlSecNssTransformHmacSha224Id:
+ *
+ * The HMAC with SHA224 signature transform klass.
+ */
+#define xmlSecNssTransformHmacSha224Id \
+        xmlSecNssTransformHmacSha224GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHmacSha224GetKlass(void);
+#endif /* XMLSEC_NO_SHA224 */
+
 #ifndef XMLSEC_NO_SHA256
 /**
  * xmlSecNssTransformHmacSha256Id:
@@ -369,6 +392,17 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaMd5GetKlass(void);
         xmlSecNssTransformRsaSha1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaSha1GetKlass(void);
 #endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+/**
+ * xmlSecNssTransformRsaSha224Id:
+ *
+ * The RSA-SHA224 signature transform klass.
+ */
+#define xmlSecNssTransformRsaSha224Id       \
+        xmlSecNssTransformRsaSha224GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaSha224GetKlass(void);
+#endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
 /**
@@ -446,6 +480,22 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaOaepGetKlass(void);
         xmlSecNssTransformSha1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha1GetKlass   (void);
 #endif /* XMLSEC_NO_SHA1 */
+
+/********************************************************************
+ *
+ * SHA224 transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_SHA224
+/**
+ * xmlSecNssTransformSha224Id:
+ *
+ * The SHA224 digest transform klass.
+ */
+#define xmlSecNssTransformSha224Id \
+        xmlSecNssTransformSha224GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha224GetKlass(void);
+#endif /* XMLSEC_NO_SHA224 */
 
 /********************************************************************
  *

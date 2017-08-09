@@ -303,7 +303,7 @@ CPPFLAGS 		= /nologo
 # The compiler and its options.
 #
 CC 				= cl.exe
-CFLAGS 			= /nologo /D "WIN32" /D "_WINDOWS" 
+CFLAGS 			= /nologo /D "WIN32" /D "_WINDOWS" /D inline=__inline
 CFLAGS 			= $(CFLAGS) /D "_MBCS" /D "_REENTRANT"  /W1  
 CFLAGS 			= $(CFLAGS) /I$(BASEDIR) /I$(BASEDIR)\include
 CFLAGS 			= $(CFLAGS) /I$(INCPREFIX)

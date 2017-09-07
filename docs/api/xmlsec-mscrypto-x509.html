@@ -96,8 +96,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="xmlsec-mscrypto-x509.functions"></a><h2>Functions</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="functions_return">
-<col class="functions_name">
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -235,8 +235,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="xmlsec-mscrypto-x509.other"></a><h2>Types and Values</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="name">
-<col class="description">
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -256,8 +256,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </div>
 <div class="refsect1">
 <a name="xmlsec-mscrypto-x509.description"></a><h2>Description</h2>
-<p>
-X509 certificates support implementation for MS Crypto.
+<p>X509 certificates support implementation for MS Crypto.
 </p>
 </div>
 <div class="refsect1">
@@ -276,15 +275,15 @@ xmlSecMSCryptoKeyDataX509GetKlass (<em class="parameter"><code><span class="type
 <div class="refsect2">
 <a name="xmlSecMSCryptoKeyDataX509GetKeyCert"></a><h3>xmlSecMSCryptoKeyDataX509GetKeyCert ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">PCCERT_CONTEXT</span></font>
-xmlSecMSCryptoKeyDataX509GetKeyCert (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
+xmlSecMSCryptoKeyDataX509GetKeyCert (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
 <p>Gets the certificate from which the key was extracted.</p>
 <div class="refsect3">
 <a name="xmlSecMSCryptoKeyDataX509GetKeyCert.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -303,7 +302,7 @@ extraction or an error occurs.</p>
 <div class="refsect2">
 <a name="xmlSecMSCryptoKeyDataX509AdoptKeyCert"></a><h3>xmlSecMSCryptoKeyDataX509AdoptKeyCert ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecMSCryptoKeyDataX509AdoptKeyCert (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
+xmlSecMSCryptoKeyDataX509AdoptKeyCert (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                                        <em class="parameter"><code><font><span class="type">PCCERT_CONTEXT</span></font> cert</code></em>);</pre>
 <p>Sets the key's certificate in <em class="parameter"><code>data</code></em>
 .</p>
@@ -311,9 +310,9 @@ xmlSecMSCryptoKeyDataX509AdoptKeyCert (<em class="parameter"><code><font><span c
 <a name="xmlSecMSCryptoKeyDataX509AdoptKeyCert.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -338,16 +337,16 @@ xmlSecMSCryptoKeyDataX509AdoptKeyCert (<em class="parameter"><code><font><span c
 <div class="refsect2">
 <a name="xmlSecMSCryptoKeyDataX509AdoptCert"></a><h3>xmlSecMSCryptoKeyDataX509AdoptCert ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecMSCryptoKeyDataX509AdoptCert (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
+xmlSecMSCryptoKeyDataX509AdoptCert (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                                     <em class="parameter"><code><font><span class="type">PCCERT_CONTEXT</span></font> cert</code></em>);</pre>
 <p>Adds certificate to the X509 key data.</p>
 <div class="refsect3">
 <a name="xmlSecMSCryptoKeyDataX509AdoptCert.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -372,16 +371,16 @@ xmlSecMSCryptoKeyDataX509AdoptCert (<em class="parameter"><code><font><span clas
 <div class="refsect2">
 <a name="xmlSecMSCryptoKeyDataX509GetCert"></a><h3>xmlSecMSCryptoKeyDataX509GetCert ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">PCCERT_CONTEXT</span></font>
-xmlSecMSCryptoKeyDataX509GetCert (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
+xmlSecMSCryptoKeyDataX509GetCert (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                                   <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> pos</code></em>);</pre>
 <p>Gets a certificate from X509 key data.</p>
 <div class="refsect3">
 <a name="xmlSecMSCryptoKeyDataX509GetCert.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -409,16 +408,16 @@ or an error occurs.</p>
 <div class="refsect2">
 <a name="xmlSecMSCryptoKeyDataX509GetCertsSize"></a><h3>xmlSecMSCryptoKeyDataX509GetCertsSize ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
-xmlSecMSCryptoKeyDataX509GetCertsSize (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
+xmlSecMSCryptoKeyDataX509GetCertsSize (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
 <p>Gets the number of certificates in <em class="parameter"><code>data</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecMSCryptoKeyDataX509GetCertsSize.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -437,16 +436,16 @@ xmlSecMSCryptoKeyDataX509GetCertsSize (<em class="parameter"><code><font><span c
 <div class="refsect2">
 <a name="xmlSecMSCryptoKeyDataX509AdoptCrl"></a><h3>xmlSecMSCryptoKeyDataX509AdoptCrl ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecMSCryptoKeyDataX509AdoptCrl (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
+xmlSecMSCryptoKeyDataX509AdoptCrl (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                                    <em class="parameter"><code><font><span class="type">PCCRL_CONTEXT</span></font> crl</code></em>);</pre>
 <p>Adds CRL to the X509 key data.</p>
 <div class="refsect3">
 <a name="xmlSecMSCryptoKeyDataX509AdoptCrl.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -471,16 +470,16 @@ xmlSecMSCryptoKeyDataX509AdoptCrl (<em class="parameter"><code><font><span class
 <div class="refsect2">
 <a name="xmlSecMSCryptoKeyDataX509GetCrl"></a><h3>xmlSecMSCryptoKeyDataX509GetCrl ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">PCCRL_CONTEXT</span></font>
-xmlSecMSCryptoKeyDataX509GetCrl (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
+xmlSecMSCryptoKeyDataX509GetCrl (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                                  <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> pos</code></em>);</pre>
 <p>Gets a CRL from X509 key data.</p>
 <div class="refsect3">
 <a name="xmlSecMSCryptoKeyDataX509GetCrl.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -508,16 +507,16 @@ or an error occurs.</p>
 <div class="refsect2">
 <a name="xmlSecMSCryptoKeyDataX509GetCrlsSize"></a><h3>xmlSecMSCryptoKeyDataX509GetCrlsSize ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
-xmlSecMSCryptoKeyDataX509GetCrlsSize (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
+xmlSecMSCryptoKeyDataX509GetCrlsSize (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
 <p>Gets the number of CRLs in <em class="parameter"><code>data</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecMSCryptoKeyDataX509GetCrlsSize.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -559,7 +558,7 @@ xmlSecMSCryptoX509StoreGetKlass (<em class="parameter"><code><span class="type">
 <div class="refsect2">
 <a name="xmlSecMSCryptoX509StoreAdoptCert"></a><h3>xmlSecMSCryptoX509StoreAdoptCert ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecMSCryptoX509StoreAdoptCert (<em class="parameter"><code><font><span class="type">xmlSecKeyDataStorePtr</span></font> store</code></em>,
+xmlSecMSCryptoX509StoreAdoptCert (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStore" title="struct xmlSecKeyDataStore"><span class="type">xmlSecKeyDataStorePtr</span></a> store</code></em>,
                                   <em class="parameter"><code><font><span class="type">PCCERT_CONTEXT</span></font> cert</code></em>,
                                   <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="type">xmlSecKeyDataType</span></a> type</code></em>);</pre>
 <p>Adds trusted (root) or untrusted certificate to the store.</p>
@@ -567,9 +566,9 @@ xmlSecMSCryptoX509StoreAdoptCert (<em class="parameter"><code><font><span class=
 <a name="xmlSecMSCryptoX509StoreAdoptCert.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -599,7 +598,7 @@ xmlSecMSCryptoX509StoreAdoptCert (<em class="parameter"><code><font><span class=
 <div class="refsect2">
 <a name="xmlSecMSCryptoX509StoreAdoptKeyStore"></a><h3>xmlSecMSCryptoX509StoreAdoptKeyStore ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecMSCryptoX509StoreAdoptKeyStore (<em class="parameter"><code><font><span class="type">xmlSecKeyDataStorePtr</span></font> store</code></em>,
+xmlSecMSCryptoX509StoreAdoptKeyStore (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStore" title="struct xmlSecKeyDataStore"><span class="type">xmlSecKeyDataStorePtr</span></a> store</code></em>,
                                       <em class="parameter"><code><font><span class="type">HCERTSTORE</span></font> keyStore</code></em>);</pre>
 <p>Adds <em class="parameter"><code>keyStore</code></em>
  to the list of key stores.</p>
@@ -607,9 +606,9 @@ xmlSecMSCryptoX509StoreAdoptKeyStore (<em class="parameter"><code><font><span cl
 <a name="xmlSecMSCryptoX509StoreAdoptKeyStore.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -635,7 +634,7 @@ xmlSecMSCryptoX509StoreAdoptKeyStore (<em class="parameter"><code><font><span cl
 <a name="xmlSecMSCryptoX509StoreAdoptTrustedStore"></a><h3>xmlSecMSCryptoX509StoreAdoptTrustedStore ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecMSCryptoX509StoreAdoptTrustedStore
-                               (<em class="parameter"><code><font><span class="type">xmlSecKeyDataStorePtr</span></font> store</code></em>,
+                               (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStore" title="struct xmlSecKeyDataStore"><span class="type">xmlSecKeyDataStorePtr</span></a> store</code></em>,
                                 <em class="parameter"><code><font><span class="type">HCERTSTORE</span></font> trustedStore</code></em>);</pre>
 <p>Adds <em class="parameter"><code>trustedStore</code></em>
  to the list of trusted certs stores.</p>
@@ -643,9 +642,9 @@ xmlSecMSCryptoX509StoreAdoptTrustedStore
 <a name="xmlSecMSCryptoX509StoreAdoptTrustedStore.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -671,7 +670,7 @@ xmlSecMSCryptoX509StoreAdoptTrustedStore
 <a name="xmlSecMSCryptoX509StoreAdoptUntrustedStore"></a><h3>xmlSecMSCryptoX509StoreAdoptUntrustedStore ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecMSCryptoX509StoreAdoptUntrustedStore
-                               (<em class="parameter"><code><font><span class="type">xmlSecKeyDataStorePtr</span></font> store</code></em>,
+                               (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStore" title="struct xmlSecKeyDataStore"><span class="type">xmlSecKeyDataStorePtr</span></a> store</code></em>,
                                 <em class="parameter"><code><font><span class="type">HCERTSTORE</span></font> untrustedStore</code></em>);</pre>
 <p>Adds <em class="parameter"><code>trustedStore</code></em>
  to the list of un-trusted certs stores.</p>
@@ -679,9 +678,9 @@ xmlSecMSCryptoX509StoreAdoptUntrustedStore
 <a name="xmlSecMSCryptoX509StoreAdoptUntrustedStore.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -707,16 +706,16 @@ xmlSecMSCryptoX509StoreAdoptUntrustedStore
 <a name="xmlSecMSCryptoX509StoreEnableSystemTrustedCerts"></a><h3>xmlSecMSCryptoX509StoreEnableSystemTrustedCerts ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
 xmlSecMSCryptoX509StoreEnableSystemTrustedCerts
-                               (<em class="parameter"><code><font><span class="type">xmlSecKeyDataStorePtr</span></font> store</code></em>,
+                               (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStore" title="struct xmlSecKeyDataStore"><span class="type">xmlSecKeyDataStorePtr</span></a> store</code></em>,
                                 <em class="parameter"><code><font><span class="type">int</span></font> val</code></em>);</pre>
 <p>Enables/disables the system trusted certs.</p>
 <div class="refsect3">
 <a name="xmlSecMSCryptoX509StoreEnableSystemTrustedCerts.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>

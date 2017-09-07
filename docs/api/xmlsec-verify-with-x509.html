@@ -87,7 +87,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <div class="titlepage"><div><div><h3 class="title">
 <a name="xmlsec-example-verify3"></a>verify3.c</h3></div></div></div>
 <div class="informalexample"><pre class="programlisting">
-/** 
+4/** 
  * XML Security Library example: Verifying a file signed with X509 certificate
  *
  * Verifies a file signed with X509 certificate. 
@@ -184,7 +184,7 @@ main(int argc, char **argv) {
     if(xmlSecCryptoDLLoadLibrary(NULL) &lt; 0) {
         fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
                         "that you have it installed and check shared libraries path\n"
-                        "(LD_LIBRARY_PATH) envornment variable.\n");
+                        "(LD_LIBRARY_PATH and/or LTDL_LIBRARY_PATH) envornment variables.\n");
         return(-1);     
     }
 #endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */

@@ -96,8 +96,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="xmlsec-nss-x509.functions"></a><h2>Functions</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="functions_return">
-<col class="functions_name">
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -174,7 +174,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </tr>
 <tr>
 <td class="function_type">
-<font><span class="returnvalue">xmlSecKeyDataPtr</span></font>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="returnvalue">xmlSecKeyDataPtr</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-nss-x509.html#xmlSecNssX509CertGetKey" title="xmlSecNssX509CertGetKey ()">xmlSecNssX509CertGetKey</a> <span class="c_punctuation">()</span>
@@ -227,8 +227,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="xmlsec-nss-x509.other"></a><h2>Types and Values</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="name">
-<col class="description">
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -248,8 +248,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </div>
 <div class="refsect1">
 <a name="xmlsec-nss-x509.description"></a><h2>Description</h2>
-<p>
-X509 certificates support implementation for NSS.
+<p>X509 certificates support implementation for NSS.
 </p>
 </div>
 <div class="refsect1">
@@ -268,15 +267,15 @@ xmlSecNssKeyDataX509GetKlass (<em class="parameter"><code><span class="type">voi
 <div class="refsect2">
 <a name="xmlSecNssKeyDataX509GetKeyCert"></a><h3>xmlSecNssKeyDataX509GetKeyCert ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">CERTCertificate</span></font> *
-xmlSecNssKeyDataX509GetKeyCert (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
+xmlSecNssKeyDataX509GetKeyCert (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
 <p>Gets the certificate from which the key was extracted.</p>
 <div class="refsect3">
 <a name="xmlSecNssKeyDataX509GetKeyCert.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -295,7 +294,7 @@ extraction or an error occurs.</p>
 <div class="refsect2">
 <a name="xmlSecNssKeyDataX509AdoptKeyCert"></a><h3>xmlSecNssKeyDataX509AdoptKeyCert ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecNssKeyDataX509AdoptKeyCert (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
+xmlSecNssKeyDataX509AdoptKeyCert (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                                   <em class="parameter"><code><font><span class="type">CERTCertificate</span></font> *cert</code></em>);</pre>
 <p>Sets the key's certificate in <em class="parameter"><code>data</code></em>
 .</p>
@@ -303,9 +302,9 @@ xmlSecNssKeyDataX509AdoptKeyCert (<em class="parameter"><code><font><span class=
 <a name="xmlSecNssKeyDataX509AdoptKeyCert.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -330,16 +329,16 @@ xmlSecNssKeyDataX509AdoptKeyCert (<em class="parameter"><code><font><span class=
 <div class="refsect2">
 <a name="xmlSecNssKeyDataX509AdoptCert"></a><h3>xmlSecNssKeyDataX509AdoptCert ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecNssKeyDataX509AdoptCert (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
+xmlSecNssKeyDataX509AdoptCert (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                                <em class="parameter"><code><font><span class="type">CERTCertificate</span></font> *cert</code></em>);</pre>
 <p>Adds certificate to the X509 key data.</p>
 <div class="refsect3">
 <a name="xmlSecNssKeyDataX509AdoptCert.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -364,16 +363,16 @@ xmlSecNssKeyDataX509AdoptCert (<em class="parameter"><code><font><span class="ty
 <div class="refsect2">
 <a name="xmlSecNssKeyDataX509GetCert"></a><h3>xmlSecNssKeyDataX509GetCert ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">CERTCertificate</span></font> *
-xmlSecNssKeyDataX509GetCert (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
+xmlSecNssKeyDataX509GetCert (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                              <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> pos</code></em>);</pre>
 <p>Gets a certificate from X509 key data.</p>
 <div class="refsect3">
 <a name="xmlSecNssKeyDataX509GetCert.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -401,16 +400,16 @@ or an error occurs.</p>
 <div class="refsect2">
 <a name="xmlSecNssKeyDataX509GetCertsSize"></a><h3>xmlSecNssKeyDataX509GetCertsSize ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
-xmlSecNssKeyDataX509GetCertsSize (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
+xmlSecNssKeyDataX509GetCertsSize (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
 <p>Gets the number of certificates in <em class="parameter"><code>data</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecNssKeyDataX509GetCertsSize.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -429,16 +428,16 @@ xmlSecNssKeyDataX509GetCertsSize (<em class="parameter"><code><font><span class=
 <div class="refsect2">
 <a name="xmlSecNssKeyDataX509AdoptCrl"></a><h3>xmlSecNssKeyDataX509AdoptCrl ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecNssKeyDataX509AdoptCrl (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
+xmlSecNssKeyDataX509AdoptCrl (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                               <em class="parameter"><code><font><span class="type">CERTSignedCrl</span></font> *crl</code></em>);</pre>
 <p>Adds CRL to the X509 key data.</p>
 <div class="refsect3">
 <a name="xmlSecNssKeyDataX509AdoptCrl.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -463,16 +462,16 @@ xmlSecNssKeyDataX509AdoptCrl (<em class="parameter"><code><font><span class="typ
 <div class="refsect2">
 <a name="xmlSecNssKeyDataX509GetCrl"></a><h3>xmlSecNssKeyDataX509GetCrl ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">CERTSignedCrl</span></font> *
-xmlSecNssKeyDataX509GetCrl (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
+xmlSecNssKeyDataX509GetCrl (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                             <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> pos</code></em>);</pre>
 <p>Gets a CRL from X509 key data.</p>
 <div class="refsect3">
 <a name="xmlSecNssKeyDataX509GetCrl.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -500,16 +499,16 @@ or an error occurs.</p>
 <div class="refsect2">
 <a name="xmlSecNssKeyDataX509GetCrlsSize"></a><h3>xmlSecNssKeyDataX509GetCrlsSize ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
-xmlSecNssKeyDataX509GetCrlsSize (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>);</pre>
+xmlSecNssKeyDataX509GetCrlsSize (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
 <p>Gets the number of CRLs in <em class="parameter"><code>data</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecNssKeyDataX509GetCrlsSize.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
@@ -527,7 +526,7 @@ xmlSecNssKeyDataX509GetCrlsSize (<em class="parameter"><code><font><span class="
 <hr>
 <div class="refsect2">
 <a name="xmlSecNssX509CertGetKey"></a><h3>xmlSecNssX509CertGetKey ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataPtr</span></font>
+<pre class="programlisting"><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="returnvalue">xmlSecKeyDataPtr</span></a>
 xmlSecNssX509CertGetKey (<em class="parameter"><code><font><span class="type">CERTCertificate</span></font> *cert</code></em>);</pre>
 <p>Extracts public key from the <em class="parameter"><code>cert</code></em>
 .</p>
@@ -535,9 +534,9 @@ xmlSecNssX509CertGetKey (<em class="parameter"><code><font><span class="type">CE
 <a name="xmlSecNssX509CertGetKey.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>cert</p></td>
@@ -577,7 +576,7 @@ xmlSecNssX509StoreGetKlass (<em class="parameter"><code><span class="type">void<
 <div class="refsect2">
 <a name="xmlSecNssX509StoreFindCert"></a><h3>xmlSecNssX509StoreFindCert ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">CERTCertificate</span></font> *
-xmlSecNssX509StoreFindCert (<em class="parameter"><code><font><span class="type">xmlSecKeyDataStorePtr</span></font> store</code></em>,
+xmlSecNssX509StoreFindCert (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStore" title="struct xmlSecKeyDataStore"><span class="type">xmlSecKeyDataStorePtr</span></a> store</code></em>,
                             <em class="parameter"><code><font><span class="type">xmlChar</span></font> *subjectName</code></em>,
                             <em class="parameter"><code><font><span class="type">xmlChar</span></font> *issuerName</code></em>,
                             <em class="parameter"><code><font><span class="type">xmlChar</span></font> *issuerSerial</code></em>,
@@ -589,9 +588,9 @@ xmlSecNssX509StoreFindCert (<em class="parameter"><code><font><span class="type"
 <a name="xmlSecNssX509StoreFindCert.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -621,7 +620,7 @@ xmlSecNssX509StoreFindCert (<em class="parameter"><code><font><span class="type"
 </tr>
 <tr>
 <td class="parameter_name"><p>keyInfoCtx</p></td>
-<td class="parameter_description"><p>the pointer to &lt;dsig:KeyInfo/&gt; element processing context.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> element processing context.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -637,7 +636,7 @@ or an error occurs.</p>
 <div class="refsect2">
 <a name="xmlSecNssX509StoreVerify"></a><h3>xmlSecNssX509StoreVerify ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">CERTCertificate</span></font> *
-xmlSecNssX509StoreVerify (<em class="parameter"><code><font><span class="type">xmlSecKeyDataStorePtr</span></font> store</code></em>,
+xmlSecNssX509StoreVerify (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStore" title="struct xmlSecKeyDataStore"><span class="type">xmlSecKeyDataStorePtr</span></a> store</code></em>,
                           <em class="parameter"><code><font><span class="type">CERTCertList</span></font> *certs</code></em>,
                           <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtx</span></a> *keyInfoCtx</code></em>);</pre>
 <p>Verifies <em class="parameter"><code>certs</code></em>
@@ -646,9 +645,9 @@ xmlSecNssX509StoreVerify (<em class="parameter"><code><font><span class="type">x
 <a name="xmlSecNssX509StoreVerify.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -663,7 +662,7 @@ xmlSecNssX509StoreVerify (<em class="parameter"><code><font><span class="type">x
 </tr>
 <tr>
 <td class="parameter_name"><p>keyInfoCtx</p></td>
-<td class="parameter_description"><p>the pointer to &lt;dsig:KeyInfo/&gt; element processing context.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> element processing context.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -679,7 +678,7 @@ xmlSecNssX509StoreVerify (<em class="parameter"><code><font><span class="type">x
 <div class="refsect2">
 <a name="xmlSecNssX509StoreAdoptCert"></a><h3>xmlSecNssX509StoreAdoptCert ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecNssX509StoreAdoptCert (<em class="parameter"><code><font><span class="type">xmlSecKeyDataStorePtr</span></font> store</code></em>,
+xmlSecNssX509StoreAdoptCert (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStore" title="struct xmlSecKeyDataStore"><span class="type">xmlSecKeyDataStorePtr</span></a> store</code></em>,
                              <em class="parameter"><code><font><span class="type">CERTCertificate</span></font> *cert</code></em>,
                              <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="type">xmlSecKeyDataType</span></a> type</code></em>);</pre>
 <p>Adds trusted (root) or untrusted certificate to the store.</p>
@@ -687,9 +686,9 @@ xmlSecNssX509StoreAdoptCert (<em class="parameter"><code><font><span class="type
 <a name="xmlSecNssX509StoreAdoptCert.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>

@@ -28,6 +28,23 @@ XML tree operations.
 @node: 
 
 
+<!-- ##### FUNCTION xmlSecGetDefaultLineFeed ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSetDefaultLineFeed ##### -->
+<para>
+
+</para>
+
+@linefeed: 
+
+
 <!-- ##### FUNCTION xmlSecGetNodeNsHref ##### -->
 <para>
 

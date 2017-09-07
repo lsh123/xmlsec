@@ -96,8 +96,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="xmlsec-templates.functions"></a><h2>Functions</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="functions_return">
-<col class="functions_name">
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -433,8 +433,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </div>
 <div class="refsect1">
 <a name="xmlsec-templates.description"></a><h2>Description</h2>
-<p>
-Dynamic templates creation functions.
+<p>Dynamic templates creation functions.
 </p>
 </div>
 <div class="refsect1">
@@ -446,18 +445,18 @@ xmlSecTmplSignatureCreate (<em class="parameter"><code><font><span class="type">
                            <em class="parameter"><code><font><span class="type">xmlSecTransformId</span></font> c14nMethodId</code></em>,
                            <em class="parameter"><code><font><span class="type">xmlSecTransformId</span></font> signMethodId</code></em>,
                            <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *id</code></em>);</pre>
-<p>Creates new &lt;dsig:Signature/&gt; node with the mandatory &lt;dsig:SignedInfo/&gt;,
-&lt;dsig:CanonicalizationMethod/&gt;, &lt;dsig:SignatureMethod/&gt; and
-&lt;dsig:SignatureValue/&gt; children and sub-children.
+<p>Creates new <a class="ulink" href="" target="_top">&lt;dsig:Signature/&gt;</a> node with the mandatory <a class="ulink" href="" target="_top">&lt;dsig:SignedInfo/&gt;</a>,</p>
+<a class="ulink" href="" target="_top">&lt;dsig:CanonicalizationMethod/&gt;</a>, <a class="ulink" href="" target="_top">&lt;dsig:SignatureMethod/&gt;</a> and
+<a class="ulink" href="" target="_top">&lt;dsig:SignatureValue/&gt;</a> children and sub-children.
 The application is responsible for inserting the returned node
-in the XML document.</p>
+in the XML document.
 <div class="refsect3">
 <a name="xmlSecTmplSignatureCreate.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -488,7 +487,7 @@ pointer to XML document.</p></td>
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplSignatureCreate.returns"></a><h4>Returns</h4>
-<p> the pointer to newly created &lt;dsig:Signature/&gt; node or NULL if an
+<p> the pointer to newly created <a class="ulink" href="" target="_top">&lt;dsig:Signature/&gt;</a> node or NULL if an
 error occurs.</p>
 </div>
 </div>
@@ -501,21 +500,21 @@ xmlSecTmplSignatureCreateNsPref (<em class="parameter"><code><font><span class="
                                  <em class="parameter"><code><font><span class="type">xmlSecTransformId</span></font> signMethodId</code></em>,
                                  <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *id</code></em>,
                                  <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *nsPrefix</code></em>);</pre>
-<p>Creates new &lt;dsig:Signature/&gt; node with the mandatory
-&lt;dsig:SignedInfo/&gt;, &lt;dsig:CanonicalizationMethod/&gt;,
-&lt;dsig:SignatureMethod/&gt; and &lt;dsig:SignatureValue/&gt; children and
+<p>Creates new <a class="ulink" href="" target="_top">&lt;dsig:Signature/&gt;</a> node with the mandatory</p>
+<a class="ulink" href="" target="_top">&lt;dsig:SignedInfo/&gt;</a>, <a class="ulink" href="" target="_top">&lt;dsig:CanonicalizationMethod/&gt;</a>,
+<a class="ulink" href="" target="_top">&lt;dsig:SignatureMethod/&gt;</a> and <a class="ulink" href="" target="_top">&lt;dsig:SignatureValue/&gt;</a> children and
 sub-children. This method differs from xmlSecTmplSignatureCreate in
 that it will define the http://www.w3.org/2000/09/xmldsig#
 namespace with the given prefix that will be used for all of the
 appropriate child nodes.  The application is responsible for
-inserting the returned node in the XML document.</p>
+inserting the returned node in the XML document.
 <div class="refsect3">
 <a name="xmlSecTmplSignatureCreateNsPref.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -551,7 +550,7 @@ pointer to XML document.</p></td>
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplSignatureCreateNsPref.returns"></a><h4>Returns</h4>
-<p> the pointer to newly created &lt;dsig:Signature/&gt; node or NULL if an
+<p> the pointer to newly created <a class="ulink" href="" target="_top">&lt;dsig:Signature/&gt;</a> node or NULL if an
 error occurs.</p>
 </div>
 </div>
@@ -561,21 +560,21 @@ error occurs.</p>
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecTmplSignatureEnsureKeyInfo (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> signNode</code></em>,
                                   <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *id</code></em>);</pre>
-<p>Adds (if necessary) &lt;dsig:KeyInfo/&gt; node to the &lt;dsig:Signature/&gt;
+<p>Adds (if necessary) <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node to the <a class="ulink" href="" target="_top">&lt;dsig:Signature/&gt;</a>
 node <em class="parameter"><code>signNode</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecTmplSignatureEnsureKeyInfo.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
 <td class="parameter_name"><p>signNode</p></td>
-<td class="parameter_description"><p>the  pointer to &lt;dsig:Signature/&gt; node.</p></td>
+<td class="parameter_description"><p>the  pointer to <a class="ulink" href="" target="_top">&lt;dsig:Signature/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -588,7 +587,7 @@ node <em class="parameter"><code>signNode</code></em>
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplSignatureEnsureKeyInfo.returns"></a><h4>Returns</h4>
-<p> the pointer to newly created &lt;dsig:KeyInfo/&gt; node or NULL if an
+<p> the pointer to newly created <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node or NULL if an
 error occurs.</p>
 </div>
 </div>
@@ -601,25 +600,24 @@ xmlSecTmplSignatureAddReference (<em class="parameter"><code><font><span class="
                                  <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *id</code></em>,
                                  <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *uri</code></em>,
                                  <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *type</code></em>);</pre>
-<p>Adds &lt;dsig:Reference/&gt; node with given URI (<em class="parameter"><code>uri</code></em>
+<p>Adds <a class="ulink" href="" target="_top">&lt;dsig:Reference/&gt;</a> node with given URI (<em class="parameter"><code>uri</code></em>
 ), Id (<em class="parameter"><code>id</code></em>
 ) and
 Type (<em class="parameter"><code>type</code></em>
-) attributes and the required children &lt;dsig:DigestMethod/&gt; and
-&lt;dsig:DigestValue/&gt; to the &lt;dsig:SignedInfo/&gt; child of <em class="parameter"><code>signNode</code></em>
-.</p>
+) attributes and the required children <a class="ulink" href="" target="_top">&lt;dsig:DigestMethod/&gt;</a> and</p>
+<a class="ulink" href="" target="_top">&lt;dsig:DigestValue/&gt;</a> to the <a class="ulink" href="" target="_top">&lt;dsig:SignedInfo/&gt;</a> child of <em class="parameter"><code>signNode</code></em>.
 <div class="refsect3">
 <a name="xmlSecTmplSignatureAddReference.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
 <td class="parameter_name"><p>signNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;dsig:Signature/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:Signature/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -647,7 +645,7 @@ Type (<em class="parameter"><code>type</code></em>
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplSignatureAddReference.returns"></a><h4>Returns</h4>
-<p> the pointer to newly created &lt;dsig:Reference/&gt; node or NULL
+<p> the pointer to newly created <a class="ulink" href="" target="_top">&lt;dsig:Reference/&gt;</a> node or NULL
 if an error occurs.</p>
 </div>
 </div>
@@ -659,20 +657,20 @@ xmlSecTmplSignatureAddObject (<em class="parameter"><code><font><span class="typ
                               <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *id</code></em>,
                               <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *mimeType</code></em>,
                               <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *encoding</code></em>);</pre>
-<p>Adds &lt;dsig:Object/&gt; node to the &lt;dsig:Signature/&gt; node <em class="parameter"><code>signNode</code></em>
+<p>Adds <a class="ulink" href="" target="_top">&lt;dsig:Object/&gt;</a> node to the <a class="ulink" href="" target="_top">&lt;dsig:Signature/&gt;</a> node <em class="parameter"><code>signNode</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecTmplSignatureAddObject.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
 <td class="parameter_name"><p>signNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;dsig:Signature/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:Signature/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -695,7 +693,7 @@ xmlSecTmplSignatureAddObject (<em class="parameter"><code><font><span class="typ
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplSignatureAddObject.returns"></a><h4>Returns</h4>
-<p> the pointer to newly created &lt;dsig:Object/&gt; node or NULL
+<p> the pointer to newly created <a class="ulink" href="" target="_top">&lt;dsig:Object/&gt;</a> node or NULL
 if an error occurs.</p>
 </div>
 </div>
@@ -704,25 +702,25 @@ if an error occurs.</p>
 <a name="xmlSecTmplSignatureGetSignMethodNode"></a><h3>xmlSecTmplSignatureGetSignMethodNode ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecTmplSignatureGetSignMethodNode (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> signNode</code></em>);</pre>
-<p>Gets pointer to &lt;dsig:SignatureMethod/&gt; child of &lt;dsig:KeyInfo/&gt; node.</p>
+<p>Gets pointer to <a class="ulink" href="" target="_top">&lt;dsig:SignatureMethod/&gt;</a> child of <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node.</p>
 <div class="refsect3">
 <a name="xmlSecTmplSignatureGetSignMethodNode.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>signNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;dsig:Signature /&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:Signature /&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplSignatureGetSignMethodNode.returns"></a><h4>Returns</h4>
-<p> pointer to &lt;dsig:SignatureMethod /&gt; node or NULL if an error occurs.</p>
+<p> pointer to <a class="ulink" href="" target="_top">&lt;dsig:SignatureMethod /&gt;</a> node or NULL if an error occurs.</p>
 </div>
 </div>
 <hr>
@@ -730,25 +728,25 @@ xmlSecTmplSignatureGetSignMethodNode (<em class="parameter"><code><font><span cl
 <a name="xmlSecTmplSignatureGetC14NMethodNode"></a><h3>xmlSecTmplSignatureGetC14NMethodNode ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecTmplSignatureGetC14NMethodNode (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> signNode</code></em>);</pre>
-<p>Gets pointer to &lt;dsig:CanonicalizationMethod/&gt; child of &lt;dsig:KeyInfo/&gt; node.</p>
+<p>Gets pointer to <a class="ulink" href="" target="_top">&lt;dsig:CanonicalizationMethod/&gt;</a> child of <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node.</p>
 <div class="refsect3">
 <a name="xmlSecTmplSignatureGetC14NMethodNode.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>signNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;dsig:Signature /&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:Signature /&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplSignatureGetC14NMethodNode.returns"></a><h4>Returns</h4>
-<p> pointer to &lt;dsig:CanonicalizationMethod /&gt; node or NULL if an error occurs.</p>
+<p> pointer to <a class="ulink" href="" target="_top">&lt;dsig:CanonicalizationMethod /&gt;</a> node or NULL if an error occurs.</p>
 </div>
 </div>
 <hr>
@@ -757,20 +755,20 @@ xmlSecTmplSignatureGetC14NMethodNode (<em class="parameter"><code><font><span cl
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecTmplReferenceAddTransform (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> referenceNode</code></em>,
                                  <em class="parameter"><code><font><span class="type">xmlSecTransformId</span></font> transformId</code></em>);</pre>
-<p>Adds &lt;dsig:Transform/&gt; node to the &lt;dsig:Reference/&gt; node <em class="parameter"><code>referenceNode</code></em>
+<p>Adds <a class="ulink" href="" target="_top">&lt;dsig:Transform/&gt;</a> node to the <a class="ulink" href="" target="_top">&lt;dsig:Reference/&gt;</a> node <em class="parameter"><code>referenceNode</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecTmplReferenceAddTransform.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
 <td class="parameter_name"><p>referenceNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;dsig:Reference/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:Reference/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -783,7 +781,7 @@ xmlSecTmplReferenceAddTransform (<em class="parameter"><code><font><span class="
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplReferenceAddTransform.returns"></a><h4>Returns</h4>
-<p> the pointer to newly created &lt;dsig:Transform/&gt; node or NULL if an
+<p> the pointer to newly created <a class="ulink" href="" target="_top">&lt;dsig:Transform/&gt;</a> node or NULL if an
 error occurs.</p>
 </div>
 </div>
@@ -794,20 +792,20 @@ error occurs.</p>
 xmlSecTmplObjectAddSignProperties (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> objectNode</code></em>,
                                    <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *id</code></em>,
                                    <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *target</code></em>);</pre>
-<p>Adds &lt;dsig:SignatureProperties/&gt; node to the &lt;dsig:Object/&gt; node <em class="parameter"><code>objectNode</code></em>
+<p>Adds <a class="ulink" href="" target="_top">&lt;dsig:SignatureProperties/&gt;</a> node to the <a class="ulink" href="" target="_top">&lt;dsig:Object/&gt;</a> node <em class="parameter"><code>objectNode</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecTmplObjectAddSignProperties.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
 <td class="parameter_name"><p>objectNode</p></td>
-<td class="parameter_description"><p>the  pointer to &lt;dsig:Object/&gt; node.</p></td>
+<td class="parameter_description"><p>the  pointer to <a class="ulink" href="" target="_top">&lt;dsig:Object/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -825,7 +823,7 @@ xmlSecTmplObjectAddSignProperties (<em class="parameter"><code><font><span class
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplObjectAddSignProperties.returns"></a><h4>Returns</h4>
-<p> the pointer to newly created &lt;dsig:SignatureProperties/&gt; node or NULL
+<p> the pointer to newly created <a class="ulink" href="" target="_top">&lt;dsig:SignatureProperties/&gt;</a> node or NULL
 if an error occurs.</p>
 </div>
 </div>
@@ -835,20 +833,20 @@ if an error occurs.</p>
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecTmplObjectAddManifest (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> objectNode</code></em>,
                              <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *id</code></em>);</pre>
-<p>Adds &lt;dsig:Manifest/&gt; node to the &lt;dsig:Object/&gt; node <em class="parameter"><code>objectNode</code></em>
+<p>Adds <a class="ulink" href="" target="_top">&lt;dsig:Manifest/&gt;</a> node to the <a class="ulink" href="" target="_top">&lt;dsig:Object/&gt;</a> node <em class="parameter"><code>objectNode</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecTmplObjectAddManifest.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
 <td class="parameter_name"><p>objectNode</p></td>
-<td class="parameter_description"><p>the  pointer to &lt;dsig:Object/&gt; node.</p></td>
+<td class="parameter_description"><p>the  pointer to <a class="ulink" href="" target="_top">&lt;dsig:Object/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -861,7 +859,7 @@ xmlSecTmplObjectAddManifest (<em class="parameter"><code><font><span class="type
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplObjectAddManifest.returns"></a><h4>Returns</h4>
-<p> the pointer to newly created &lt;dsig:Manifest/&gt; node or NULL
+<p> the pointer to newly created <a class="ulink" href="" target="_top">&lt;dsig:Manifest/&gt;</a> node or NULL
 if an error occurs.</p>
 </div>
 </div>
@@ -874,25 +872,24 @@ xmlSecTmplManifestAddReference (<em class="parameter"><code><font><span class="t
                                 <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *id</code></em>,
                                 <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *uri</code></em>,
                                 <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *type</code></em>);</pre>
-<p>Adds &lt;dsig:Reference/&gt; node with specified URI (<em class="parameter"><code>uri</code></em>
+<p>Adds <a class="ulink" href="" target="_top">&lt;dsig:Reference/&gt;</a> node with specified URI (<em class="parameter"><code>uri</code></em>
 ), Id (<em class="parameter"><code>id</code></em>
 ) and
 Type (<em class="parameter"><code>type</code></em>
-) attributes and the required children &lt;dsig:DigestMethod/&gt; and
-&lt;dsig:DigestValue/&gt; to the &lt;dsig:Manifest/&gt; node <em class="parameter"><code>manifestNode</code></em>
-.</p>
+) attributes and the required children <a class="ulink" href="" target="_top">&lt;dsig:DigestMethod/&gt;</a> and</p>
+<a class="ulink" href="" target="_top">&lt;dsig:DigestValue/&gt;</a> to the <a class="ulink" href="" target="_top">&lt;dsig:Manifest/&gt;</a> node <em class="parameter"><code>manifestNode</code></em>.
 <div class="refsect3">
 <a name="xmlSecTmplManifestAddReference.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
 <td class="parameter_name"><p>manifestNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;dsig:Manifest/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:Manifest/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -920,7 +917,7 @@ Type (<em class="parameter"><code>type</code></em>
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplManifestAddReference.returns"></a><h4>Returns</h4>
-<p> the pointer to newly created &lt;dsig:Reference/&gt; node or NULL
+<p> the pointer to newly created <a class="ulink" href="" target="_top">&lt;dsig:Reference/&gt;</a> node or NULL
 if an error occurs.</p>
 </div>
 </div>
@@ -934,14 +931,14 @@ xmlSecTmplEncDataCreate (<em class="parameter"><code><font><span class="type">xm
                          <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *type</code></em>,
                          <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *mimeType</code></em>,
                          <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *encoding</code></em>);</pre>
-<p>Creates new &lt;enc:EncryptedData /&gt; node for encryption template.</p>
+<p>Creates new <a class="ulink" href="" target="_top">&lt;enc:EncryptedData /&gt;</a> node for encryption template.</p>
 <div class="refsect3">
 <a name="xmlSecTmplEncDataCreate.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -982,7 +979,7 @@ that all the children nodes have correct pointer to XML document.</p></td>
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplEncDataCreate.returns"></a><h4>Returns</h4>
-<p> the pointer newly created  &lt;enc:EncryptedData/&gt; node or NULL
+<p> the pointer newly created  <a class="ulink" href="" target="_top">&lt;enc:EncryptedData/&gt;</a> node or NULL
 if an error occurs.</p>
 </div>
 </div>
@@ -992,20 +989,20 @@ if an error occurs.</p>
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecTmplEncDataEnsureKeyInfo (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> encNode</code></em>,
                                 <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *id</code></em>);</pre>
-<p>Adds &lt;dsig:KeyInfo/&gt; to the  &lt;enc:EncryptedData/&gt; node <em class="parameter"><code>encNode</code></em>
+<p>Adds <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> to the  <a class="ulink" href="" target="_top">&lt;enc:EncryptedData/&gt;</a> node <em class="parameter"><code>encNode</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecTmplEncDataEnsureKeyInfo.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
 <td class="parameter_name"><p>encNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;enc:EncryptedData/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;enc:EncryptedData/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1018,7 +1015,7 @@ xmlSecTmplEncDataEnsureKeyInfo (<em class="parameter"><code><font><span class="t
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplEncDataEnsureKeyInfo.returns"></a><h4>Returns</h4>
-<p> the pointer to newly created &lt;dsig:KeyInfo/&gt; node or
+<p> the pointer to newly created <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node or
 NULL if an error occurs.</p>
 </div>
 </div>
@@ -1028,21 +1025,21 @@ NULL if an error occurs.</p>
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecTmplEncDataEnsureEncProperties (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> encNode</code></em>,
                                       <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *id</code></em>);</pre>
-<p>Adds &lt;enc:EncryptionProperties/&gt; node to the &lt;enc:EncryptedData/&gt;
+<p>Adds <a class="ulink" href="" target="_top">&lt;enc:EncryptionProperties/&gt;</a> node to the <a class="ulink" href="" target="_top">&lt;enc:EncryptedData/&gt;</a>
 node <em class="parameter"><code>encNode</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecTmplEncDataEnsureEncProperties.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
 <td class="parameter_name"><p>encNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;enc:EncryptedData/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;enc:EncryptedData/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1055,7 +1052,7 @@ node <em class="parameter"><code>encNode</code></em>
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplEncDataEnsureEncProperties.returns"></a><h4>Returns</h4>
-<p> the pointer to newly created &lt;enc:EncryptionProperties/&gt; node or
+<p> the pointer to newly created <a class="ulink" href="" target="_top">&lt;enc:EncryptionProperties/&gt;</a> node or
 NULL if an error occurs.</p>
 </div>
 </div>
@@ -1066,22 +1063,21 @@ NULL if an error occurs.</p>
 xmlSecTmplEncDataAddEncProperty (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> encNode</code></em>,
                                  <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *id</code></em>,
                                  <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *target</code></em>);</pre>
-<p>Adds &lt;enc:EncryptionProperty/&gt; node (and the parent
-&lt;enc:EncryptionProperties/&gt; node if required) to the
-&lt;enc:EncryptedData/&gt; node <em class="parameter"><code>encNode</code></em>
-.</p>
+<p>Adds <a class="ulink" href="" target="_top">&lt;enc:EncryptionProperty/&gt;</a> node (and the parent</p>
+<a class="ulink" href="" target="_top">&lt;enc:EncryptionProperties/&gt;</a> node if required) to the
+<a class="ulink" href="" target="_top">&lt;enc:EncryptedData/&gt;</a> node <em class="parameter"><code>encNode</code></em>.
 <div class="refsect3">
 <a name="xmlSecTmplEncDataAddEncProperty.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
 <td class="parameter_name"><p>encNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;enc:EncryptedData/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;enc:EncryptedData/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1099,7 +1095,7 @@ xmlSecTmplEncDataAddEncProperty (<em class="parameter"><code><font><span class="
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplEncDataAddEncProperty.returns"></a><h4>Returns</h4>
-<p> the pointer to newly created &lt;enc:EncryptionProperty/&gt; node or
+<p> the pointer to newly created <a class="ulink" href="" target="_top">&lt;enc:EncryptionProperty/&gt;</a> node or
 NULL if an error occurs.</p>
 </div>
 </div>
@@ -1108,26 +1104,26 @@ NULL if an error occurs.</p>
 <a name="xmlSecTmplEncDataEnsureCipherValue"></a><h3>xmlSecTmplEncDataEnsureCipherValue ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecTmplEncDataEnsureCipherValue (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> encNode</code></em>);</pre>
-<p>Adds &lt;enc:CipherValue/&gt; to the &lt;enc:EncryptedData/&gt; node <em class="parameter"><code>encNode</code></em>
+<p>Adds <a class="ulink" href="" target="_top">&lt;enc:CipherValue/&gt;</a> to the <a class="ulink" href="" target="_top">&lt;enc:EncryptedData/&gt;</a> node <em class="parameter"><code>encNode</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecTmplEncDataEnsureCipherValue.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>encNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;enc:EncryptedData/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;enc:EncryptedData/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplEncDataEnsureCipherValue.returns"></a><h4>Returns</h4>
-<p> the pointer to newly created &lt;enc:CipherValue/&gt; node or
+<p> the pointer to newly created <a class="ulink" href="" target="_top">&lt;enc:CipherValue/&gt;</a> node or
 NULL if an error occurs.</p>
 </div>
 </div>
@@ -1138,22 +1134,22 @@ NULL if an error occurs.</p>
 xmlSecTmplEncDataEnsureCipherReference
                                (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> encNode</code></em>,
                                 <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *uri</code></em>);</pre>
-<p>Adds &lt;enc:CipherReference/&gt; node with specified URI attribute <em class="parameter"><code>uri</code></em>
+<p>Adds <a class="ulink" href="" target="_top">&lt;enc:CipherReference/&gt;</a> node with specified URI attribute <em class="parameter"><code>uri</code></em>
 
-to the &lt;enc:EncryptedData/&gt; node <em class="parameter"><code>encNode</code></em>
+to the <a class="ulink" href="" target="_top">&lt;enc:EncryptedData/&gt;</a> node <em class="parameter"><code>encNode</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecTmplEncDataEnsureCipherReference.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
 <td class="parameter_name"><p>encNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;enc:EncryptedData/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;enc:EncryptedData/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1166,7 +1162,7 @@ to the &lt;enc:EncryptedData/&gt; node <em class="parameter"><code>encNode</code
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplEncDataEnsureCipherReference.returns"></a><h4>Returns</h4>
-<p> the pointer to newly created &lt;enc:CipherReference/&gt; node or
+<p> the pointer to newly created <a class="ulink" href="" target="_top">&lt;enc:CipherReference/&gt;</a> node or
 NULL if an error occurs.</p>
 </div>
 </div>
@@ -1175,25 +1171,25 @@ NULL if an error occurs.</p>
 <a name="xmlSecTmplEncDataGetEncMethodNode"></a><h3>xmlSecTmplEncDataGetEncMethodNode ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecTmplEncDataGetEncMethodNode (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> encNode</code></em>);</pre>
-<p>Gets pointer to &lt;enc:EncrytpionMethod/&gt; node.</p>
+<p>Gets pointer to <a class="ulink" href="" target="_top">&lt;enc:EncrytpionMethod/&gt;</a> node.</p>
 <div class="refsect3">
 <a name="xmlSecTmplEncDataGetEncMethodNode.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>encNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;enc:EcnryptedData /&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;enc:EcnryptedData /&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplEncDataGetEncMethodNode.returns"></a><h4>Returns</h4>
-<p> pointer to &lt;enc:EncryptionMethod /&gt; node or NULL if an error occurs.</p>
+<p> pointer to <a class="ulink" href="" target="_top">&lt;enc:EncryptionMethod /&gt;</a> node or NULL if an error occurs.</p>
 </div>
 </div>
 <hr>
@@ -1202,23 +1198,23 @@ xmlSecTmplEncDataGetEncMethodNode (<em class="parameter"><code><font><span class
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecTmplCipherReferenceAddTransform (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> cipherReferenceNode</code></em>,
                                        <em class="parameter"><code><font><span class="type">xmlSecTransformId</span></font> transformId</code></em>);</pre>
-<p>Adds &lt;dsig:Transform/&gt; node (and the parent &lt;dsig:Transforms/&gt; node)
+<p>Adds <a class="ulink" href="" target="_top">&lt;dsig:Transform/&gt;</a> node (and the parent <a class="ulink" href="" target="_top">&lt;dsig:Transforms/&gt;</a> node)
 with specified transform methods <em class="parameter"><code>transform</code></em>
- to the &lt;enc:CipherReference/&gt;
-child node of the &lt;enc:EncryptedData/&gt; node <em class="parameter"><code>encNode</code></em>
+ to the <a class="ulink" href="" target="_top">&lt;enc:CipherReference/&gt;</a>
+child node of the <a class="ulink" href="" target="_top">&lt;enc:EncryptedData/&gt;</a> node <em class="parameter"><code>encNode</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecTmplCipherReferenceAddTransform.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
 <td class="parameter_name"><p>cipherReferenceNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;enc:CipherReference/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;enc:CipherReference/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1231,7 +1227,7 @@ child node of the &lt;enc:EncryptedData/&gt; node <em class="parameter"><code>en
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplCipherReferenceAddTransform.returns"></a><h4>Returns</h4>
-<p> the pointer to newly created &lt;dsig:Transform/&gt; node or
+<p> the pointer to newly created <a class="ulink" href="" target="_top">&lt;dsig:Transform/&gt;</a> node or
 NULL if an error occurs.</p>
 </div>
 </div>
@@ -1242,19 +1238,19 @@ NULL if an error occurs.</p>
 xmlSecTmplReferenceListAddDataReference
                                (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> encNode</code></em>,
                                 <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *uri</code></em>);</pre>
-<p>Adds &lt;enc:DataReference/&gt; and the parent &lt;enc:ReferenceList/&gt; node (if needed).</p>
+<p>Adds <a class="ulink" href="" target="_top">&lt;enc:DataReference/&gt;</a> and the parent <a class="ulink" href="" target="_top">&lt;enc:ReferenceList/&gt;</a> node (if needed).</p>
 <div class="refsect3">
 <a name="xmlSecTmplReferenceListAddDataReference.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
 <td class="parameter_name"><p>encNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;enc:EncryptedKey/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;enc:EncryptedKey/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1267,7 +1263,7 @@ xmlSecTmplReferenceListAddDataReference
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplReferenceListAddDataReference.returns"></a><h4>Returns</h4>
-<p> the pointer to newly created &lt;enc:DataReference/&gt; node or
+<p> the pointer to newly created <a class="ulink" href="" target="_top">&lt;enc:DataReference/&gt;</a> node or
 NULL if an error occurs.</p>
 </div>
 </div>
@@ -1278,19 +1274,19 @@ NULL if an error occurs.</p>
 xmlSecTmplReferenceListAddKeyReference
                                (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> encNode</code></em>,
                                 <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *uri</code></em>);</pre>
-<p>Adds &lt;enc:KeyReference/&gt; and the parent &lt;enc:ReferenceList/&gt; node (if needed).</p>
+<p>Adds <a class="ulink" href="" target="_top">&lt;enc:KeyReference/&gt;</a> and the parent <a class="ulink" href="" target="_top">&lt;enc:ReferenceList/&gt;</a> node (if needed).</p>
 <div class="refsect3">
 <a name="xmlSecTmplReferenceListAddKeyReference.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
 <td class="parameter_name"><p>encNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;enc:EncryptedKey/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;enc:EncryptedKey/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1303,7 +1299,7 @@ xmlSecTmplReferenceListAddKeyReference
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplReferenceListAddKeyReference.returns"></a><h4>Returns</h4>
-<p> the pointer to newly created &lt;enc:KeyReference/&gt; node or
+<p> the pointer to newly created <a class="ulink" href="" target="_top">&lt;enc:KeyReference/&gt;</a> node or
 NULL if an error occurs.</p>
 </div>
 </div>
@@ -1313,20 +1309,20 @@ NULL if an error occurs.</p>
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecTmplKeyInfoAddKeyName (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> keyInfoNode</code></em>,
                              <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *name</code></em>);</pre>
-<p>Adds &lt;dsig:KeyName/&gt; node to the &lt;dsig:KeyInfo/&gt; node <em class="parameter"><code>keyInfoNode</code></em>
+<p>Adds <a class="ulink" href="" target="_top">&lt;dsig:KeyName/&gt;</a> node to the <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node <em class="parameter"><code>keyInfoNode</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecTmplKeyInfoAddKeyName.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
 <td class="parameter_name"><p>keyInfoNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;dsig:KeyInfo/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1339,7 +1335,7 @@ xmlSecTmplKeyInfoAddKeyName (<em class="parameter"><code><font><span class="type
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplKeyInfoAddKeyName.returns"></a><h4>Returns</h4>
-<p> the pointer to the newly created &lt;dsig:KeyName/&gt; node or
+<p> the pointer to the newly created <a class="ulink" href="" target="_top">&lt;dsig:KeyName/&gt;</a> node or
 NULL if an error occurs.</p>
 </div>
 </div>
@@ -1348,26 +1344,26 @@ NULL if an error occurs.</p>
 <a name="xmlSecTmplKeyInfoAddKeyValue"></a><h3>xmlSecTmplKeyInfoAddKeyValue ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecTmplKeyInfoAddKeyValue (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> keyInfoNode</code></em>);</pre>
-<p>Adds &lt;dsig:KeyValue/&gt; node to the &lt;dsig:KeyInfo/&gt; node <em class="parameter"><code>keyInfoNode</code></em>
+<p>Adds <a class="ulink" href="" target="_top">&lt;dsig:KeyValue/&gt;</a> node to the <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node <em class="parameter"><code>keyInfoNode</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecTmplKeyInfoAddKeyValue.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>keyInfoNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;dsig:KeyInfo/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplKeyInfoAddKeyValue.returns"></a><h4>Returns</h4>
-<p> the pointer to the newly created &lt;dsig:KeyValue/&gt; node or
+<p> the pointer to the newly created <a class="ulink" href="" target="_top">&lt;dsig:KeyValue/&gt;</a> node or
 NULL if an error occurs.</p>
 </div>
 </div>
@@ -1376,26 +1372,26 @@ NULL if an error occurs.</p>
 <a name="xmlSecTmplKeyInfoAddX509Data"></a><h3>xmlSecTmplKeyInfoAddX509Data ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecTmplKeyInfoAddX509Data (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> keyInfoNode</code></em>);</pre>
-<p>Adds &lt;dsig:X509Data/&gt; node to the &lt;dsig:KeyInfo/&gt; node <em class="parameter"><code>keyInfoNode</code></em>
+<p>Adds <a class="ulink" href="" target="_top">&lt;dsig:X509Data/&gt;</a> node to the <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node <em class="parameter"><code>keyInfoNode</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecTmplKeyInfoAddX509Data.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>keyInfoNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;dsig:KeyInfo/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplKeyInfoAddX509Data.returns"></a><h4>Returns</h4>
-<p> the pointer to the newly created &lt;dsig:X509Data/&gt; node or
+<p> the pointer to the newly created <a class="ulink" href="" target="_top">&lt;dsig:X509Data/&gt;</a> node or
 NULL if an error occurs.</p>
 </div>
 </div>
@@ -1406,20 +1402,20 @@ NULL if an error occurs.</p>
 xmlSecTmplKeyInfoAddRetrievalMethod (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> keyInfoNode</code></em>,
                                      <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *uri</code></em>,
                                      <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *type</code></em>);</pre>
-<p>Adds &lt;dsig:RetrievalMethod/&gt; node to the &lt;dsig:KeyInfo/&gt; node <em class="parameter"><code>keyInfoNode</code></em>
+<p>Adds <a class="ulink" href="" target="_top">&lt;dsig:RetrievalMethod/&gt;</a> node to the <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node <em class="parameter"><code>keyInfoNode</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecTmplKeyInfoAddRetrievalMethod.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
 <td class="parameter_name"><p>keyInfoNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;dsig:KeyInfo/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1437,7 +1433,7 @@ xmlSecTmplKeyInfoAddRetrievalMethod (<em class="parameter"><code><font><span cla
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplKeyInfoAddRetrievalMethod.returns"></a><h4>Returns</h4>
-<p> the pointer to the newly created &lt;dsig:RetrievalMethod/&gt; node or
+<p> the pointer to the newly created <a class="ulink" href="" target="_top">&lt;dsig:RetrievalMethod/&gt;</a> node or
 NULL if an error occurs.</p>
 </div>
 </div>
@@ -1447,21 +1443,21 @@ NULL if an error occurs.</p>
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecTmplRetrievalMethodAddTransform (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> retrMethodNode</code></em>,
                                        <em class="parameter"><code><font><span class="type">xmlSecTransformId</span></font> transformId</code></em>);</pre>
-<p>Adds &lt;dsig:Transform/&gt; node (and the parent &lt;dsig:Transforms/&gt; node
-if required) to the &lt;dsig:RetrievalMethod/&gt; node <em class="parameter"><code>retrMethod</code></em>
+<p>Adds <a class="ulink" href="" target="_top">&lt;dsig:Transform/&gt;</a> node (and the parent <a class="ulink" href="" target="_top">&lt;dsig:Transforms/&gt;</a> node
+if required) to the <a class="ulink" href="" target="_top">&lt;dsig:RetrievalMethod/&gt;</a> node <em class="parameter"><code>retrMethod</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecTmplRetrievalMethodAddTransform.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
 <td class="parameter_name"><p>retrMethodNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;dsig:RetrievalMethod/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:RetrievalMethod/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1474,7 +1470,7 @@ if required) to the &lt;dsig:RetrievalMethod/&gt; node <em class="parameter"><co
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplRetrievalMethodAddTransform.returns"></a><h4>Returns</h4>
-<p> the pointer to the newly created &lt;dsig:Transforms/&gt; node or
+<p> the pointer to the newly created <a class="ulink" href="" target="_top">&lt;dsig:Transforms/&gt;</a> node or
 NULL if an error occurs.</p>
 </div>
 </div>
@@ -1487,21 +1483,21 @@ xmlSecTmplKeyInfoAddEncryptedKey (<em class="parameter"><code><font><span class=
                                   <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *id</code></em>,
                                   <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *type</code></em>,
                                   <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *recipient</code></em>);</pre>
-<p>Adds &lt;enc:EncryptedKey/&gt; node with given attributes to
-the &lt;dsig:KeyInfo/&gt; node <em class="parameter"><code>keyInfoNode</code></em>
+<p>Adds <a class="ulink" href="" target="_top">&lt;enc:EncryptedKey/&gt;</a> node with given attributes to
+the <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node <em class="parameter"><code>keyInfoNode</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecTmplKeyInfoAddEncryptedKey.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
 <td class="parameter_name"><p>keyInfoNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;dsig:KeyInfo/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1529,7 +1525,7 @@ the &lt;dsig:KeyInfo/&gt; node <em class="parameter"><code>keyInfoNode</code></e
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplKeyInfoAddEncryptedKey.returns"></a><h4>Returns</h4>
-<p> the pointer to the newly created &lt;enc:EncryptedKey/&gt; node or
+<p> the pointer to the newly created <a class="ulink" href="" target="_top">&lt;enc:EncryptedKey/&gt;</a> node or
 NULL if an error occurs.</p>
 </div>
 </div>
@@ -1538,25 +1534,25 @@ NULL if an error occurs.</p>
 <a name="xmlSecTmplX509DataAddIssuerSerial"></a><h3>xmlSecTmplX509DataAddIssuerSerial ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecTmplX509DataAddIssuerSerial (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> x509DataNode</code></em>);</pre>
-<p>Adds &lt;dsig:X509IssuerSerial/&gt; node to the given &lt;dsig:X509Data/&gt; node.</p>
+<p>Adds <a class="ulink" href="" target="_top">&lt;dsig:X509IssuerSerial/&gt;</a> node to the given <a class="ulink" href="" target="_top">&lt;dsig:X509Data/&gt;</a> node.</p>
 <div class="refsect3">
 <a name="xmlSecTmplX509DataAddIssuerSerial.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>x509DataNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;dsig:X509Data/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:X509Data/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplX509DataAddIssuerSerial.returns"></a><h4>Returns</h4>
-<p> the pointer to the newly created &lt;dsig:X509IssuerSerial/&gt; node or
+<p> the pointer to the newly created <a class="ulink" href="" target="_top">&lt;dsig:X509IssuerSerial/&gt;</a> node or
 NULL if an error occurs.</p>
 </div>
 </div>
@@ -1567,20 +1563,20 @@ NULL if an error occurs.</p>
 xmlSecTmplX509IssuerSerialAddIssuerName
                                (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> x509IssuerSerialNode</code></em>,
                                 <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *issuerName</code></em>);</pre>
-<p>Adds &lt;dsig:X509IssuerName/&gt; node to the &lt;dsig:X509IssuerSerial/&gt; node <em class="parameter"><code>x509IssuerSerialNode</code></em>
+<p>Adds <a class="ulink" href="" target="_top">&lt;dsig:X509IssuerName/&gt;</a> node to the <a class="ulink" href="" target="_top">&lt;dsig:X509IssuerSerial/&gt;</a> node <em class="parameter"><code>x509IssuerSerialNode</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecTmplX509IssuerSerialAddIssuerName.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
 <td class="parameter_name"><p>x509IssuerSerialNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;dsig:X509IssuerSerial/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:X509IssuerSerial/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1593,7 +1589,7 @@ xmlSecTmplX509IssuerSerialAddIssuerName
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplX509IssuerSerialAddIssuerName.returns"></a><h4>Returns</h4>
-<p> the pointer to the newly created &lt;dsig:X509IssuerName/&gt; node or
+<p> the pointer to the newly created <a class="ulink" href="" target="_top">&lt;dsig:X509IssuerName/&gt;</a> node or
 NULL if an error occurs.</p>
 </div>
 </div>
@@ -1604,20 +1600,20 @@ NULL if an error occurs.</p>
 xmlSecTmplX509IssuerSerialAddSerialNumber
                                (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> x509IssuerSerialNode</code></em>,
                                 <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *serial</code></em>);</pre>
-<p>Adds &lt;dsig:X509SerialNumber/&gt; node to the &lt;dsig:X509IssuerSerial/&gt; node <em class="parameter"><code>x509IssuerSerialNode</code></em>
+<p>Adds <a class="ulink" href="" target="_top">&lt;dsig:X509SerialNumber/&gt;</a> node to the <a class="ulink" href="" target="_top">&lt;dsig:X509IssuerSerial/&gt;</a> node <em class="parameter"><code>x509IssuerSerialNode</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecTmplX509IssuerSerialAddSerialNumber.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
 <td class="parameter_name"><p>x509IssuerSerialNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;dsig:X509IssuerSerial/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:X509IssuerSerial/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1630,7 +1626,7 @@ xmlSecTmplX509IssuerSerialAddSerialNumber
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplX509IssuerSerialAddSerialNumber.returns"></a><h4>Returns</h4>
-<p> the pointer to the newly created &lt;dsig:X509SerialNumber/&gt; node or
+<p> the pointer to the newly created <a class="ulink" href="" target="_top">&lt;dsig:X509SerialNumber/&gt;</a> node or
 NULL if an error occurs.</p>
 </div>
 </div>
@@ -1639,25 +1635,25 @@ NULL if an error occurs.</p>
 <a name="xmlSecTmplX509DataAddSubjectName"></a><h3>xmlSecTmplX509DataAddSubjectName ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecTmplX509DataAddSubjectName (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> x509DataNode</code></em>);</pre>
-<p>Adds &lt;dsig:X509SubjectName/&gt; node to the given &lt;dsig:X509Data/&gt; node.</p>
+<p>Adds <a class="ulink" href="" target="_top">&lt;dsig:X509SubjectName/&gt;</a> node to the given <a class="ulink" href="" target="_top">&lt;dsig:X509Data/&gt;</a> node.</p>
 <div class="refsect3">
 <a name="xmlSecTmplX509DataAddSubjectName.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>x509DataNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;dsig:X509Data/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:X509Data/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplX509DataAddSubjectName.returns"></a><h4>Returns</h4>
-<p> the pointer to the newly created &lt;dsig:X509SubjectName/&gt; node or
+<p> the pointer to the newly created <a class="ulink" href="" target="_top">&lt;dsig:X509SubjectName/&gt;</a> node or
 NULL if an error occurs.</p>
 </div>
 </div>
@@ -1666,25 +1662,25 @@ NULL if an error occurs.</p>
 <a name="xmlSecTmplX509DataAddSKI"></a><h3>xmlSecTmplX509DataAddSKI ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecTmplX509DataAddSKI (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> x509DataNode</code></em>);</pre>
-<p>Adds &lt;dsig:X509SKI/&gt; node to the given &lt;dsig:X509Data/&gt; node.</p>
+<p>Adds <a class="ulink" href="" target="_top">&lt;dsig:X509SKI/&gt;</a> node to the given <a class="ulink" href="" target="_top">&lt;dsig:X509Data/&gt;</a> node.</p>
 <div class="refsect3">
 <a name="xmlSecTmplX509DataAddSKI.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>x509DataNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;dsig:X509Data/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:X509Data/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplX509DataAddSKI.returns"></a><h4>Returns</h4>
-<p> the pointer to the newly created &lt;dsig:X509SKI/&gt; node or
+<p> the pointer to the newly created <a class="ulink" href="" target="_top">&lt;dsig:X509SKI/&gt;</a> node or
 NULL if an error occurs.</p>
 </div>
 </div>
@@ -1693,25 +1689,25 @@ NULL if an error occurs.</p>
 <a name="xmlSecTmplX509DataAddCertificate"></a><h3>xmlSecTmplX509DataAddCertificate ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecTmplX509DataAddCertificate (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> x509DataNode</code></em>);</pre>
-<p>Adds &lt;dsig:X509Certificate/&gt; node to the given &lt;dsig:X509Data/&gt; node.</p>
+<p>Adds <a class="ulink" href="" target="_top">&lt;dsig:X509Certificate/&gt;</a> node to the given <a class="ulink" href="" target="_top">&lt;dsig:X509Data/&gt;</a> node.</p>
 <div class="refsect3">
 <a name="xmlSecTmplX509DataAddCertificate.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>x509DataNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;dsig:X509Data/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:X509Data/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplX509DataAddCertificate.returns"></a><h4>Returns</h4>
-<p> the pointer to the newly created &lt;dsig:X509Certificate/&gt; node or
+<p> the pointer to the newly created <a class="ulink" href="" target="_top">&lt;dsig:X509Certificate/&gt;</a> node or
 NULL if an error occurs.</p>
 </div>
 </div>
@@ -1720,25 +1716,25 @@ NULL if an error occurs.</p>
 <a name="xmlSecTmplX509DataAddCRL"></a><h3>xmlSecTmplX509DataAddCRL ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecTmplX509DataAddCRL (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> x509DataNode</code></em>);</pre>
-<p>Adds &lt;dsig:X509CRL/&gt; node to the given &lt;dsig:X509Data/&gt; node.</p>
+<p>Adds <a class="ulink" href="" target="_top">&lt;dsig:X509CRL/&gt;</a> node to the given <a class="ulink" href="" target="_top">&lt;dsig:X509Data/&gt;</a> node.</p>
 <div class="refsect3">
 <a name="xmlSecTmplX509DataAddCRL.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>x509DataNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;dsig:X509Data/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:X509Data/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
 <div class="refsect3">
 <a name="xmlSecTmplX509DataAddCRL.returns"></a><h4>Returns</h4>
-<p> the pointer to the newly created &lt;dsig:X509CRL/&gt; node or
+<p> the pointer to the newly created <a class="ulink" href="" target="_top">&lt;dsig:X509CRL/&gt;</a> node or
 NULL if an error occurs.</p>
 </div>
 </div>
@@ -1749,21 +1745,21 @@ NULL if an error occurs.</p>
 xmlSecTmplTransformAddHmacOutputLength
                                (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> transformNode</code></em>,
                                 <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> bitsLen</code></em>);</pre>
-<p>Creates &lt;dsig:HMACOutputLength/&gt; child for the HMAC transform
+<p>Creates <a class="ulink" href="" target="_top">&lt;dsig:HMACOutputLength/&gt;</a> child for the HMAC transform
 node <em class="parameter"><code>node</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecTmplTransformAddHmacOutputLength.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
 <td class="parameter_name"><p>transformNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;dsig:Transform/&gt; node</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:Transform/&gt;</a> node</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1786,20 +1782,20 @@ node <em class="parameter"><code>node</code></em>
 xmlSecTmplTransformAddRsaOaepParam (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> transformNode</code></em>,
                                     <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *buf</code></em>,
                                     <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> size</code></em>);</pre>
-<p>Creates &lt;enc:OAEPParam/&gt; child node in the <em class="parameter"><code>node</code></em>
+<p>Creates <a class="ulink" href="" target="_top">&lt;enc:OAEPParam/&gt;</a> child node in the <em class="parameter"><code>node</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecTmplTransformAddRsaOaepParam.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
 <td class="parameter_name"><p>transformNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;dsig:Transform/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:Transform/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1832,14 +1828,14 @@ xmlSecTmplTransformAddXsltStylesheet (<em class="parameter"><code><font><span cl
 <a name="xmlSecTmplTransformAddXsltStylesheet.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
 <td class="parameter_name"><p>transformNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;dsig:Transform/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:Transform/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1868,14 +1864,14 @@ xmlSecTmplTransformAddC14NInclNamespaces
 <a name="xmlSecTmplTransformAddC14NInclNamespaces.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
 <td class="parameter_name"><p>transformNode</p></td>
-<td class="parameter_description"><p>the pointer to &lt;dsig:Transform/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:Transform/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1900,21 +1896,21 @@ where "<font><span class="type">default</span></font>" indicates the default nam
 xmlSecTmplTransformAddXPath (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> transformNode</code></em>,
                              <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *expression</code></em>,
                              <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> **nsList</code></em>);</pre>
-<p>Writes XPath transform information to the &lt;dsig:Transform/&gt; node
+<p>Writes XPath transform information to the <a class="ulink" href="" target="_top">&lt;dsig:Transform/&gt;</a> node
 <em class="parameter"><code>node</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecTmplTransformAddXPath.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
 <td class="parameter_name"><p>transformNode</p></td>
-<td class="parameter_description"><p>the pointer to the &lt;dsig:Transform/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to the <a class="ulink" href="" target="_top">&lt;dsig:Transform/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1944,21 +1940,21 @@ xmlSecTmplTransformAddXPath2 (<em class="parameter"><code><font><span class="typ
                               <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *type</code></em>,
                               <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *expression</code></em>,
                               <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> **nsList</code></em>);</pre>
-<p>Writes XPath2 transform information to the &lt;dsig:Transform/&gt; node
+<p>Writes XPath2 transform information to the <a class="ulink" href="" target="_top">&lt;dsig:Transform/&gt;</a> node
 <em class="parameter"><code>node</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecTmplTransformAddXPath2.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
 <td class="parameter_name"><p>transformNode</p></td>
-<td class="parameter_description"><p>the pointer to the &lt;dsig:Transform/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to the <a class="ulink" href="" target="_top">&lt;dsig:Transform/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1992,21 +1988,21 @@ xmlSecTmplTransformAddXPath2 (<em class="parameter"><code><font><span class="typ
 xmlSecTmplTransformAddXPointer (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> transformNode</code></em>,
                                 <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *expression</code></em>,
                                 <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> **nsList</code></em>);</pre>
-<p>Writes XPointer transform information to the &lt;dsig:Transform/&gt; node
+<p>Writes XPointer transform information to the <a class="ulink" href="" target="_top">&lt;dsig:Transform/&gt;</a> node
 <em class="parameter"><code>node</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecTmplTransformAddXPointer.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
 <td class="parameter_name"><p>transformNode</p></td>
-<td class="parameter_description"><p>the pointer to the &lt;dsig:Transform/&gt; node.</p></td>
+<td class="parameter_description"><p>the pointer to the <a class="ulink" href="" target="_top">&lt;dsig:Transform/&gt;</a> node.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -2031,6 +2027,7 @@ xmlSecTmplTransformAddXPointer (<em class="parameter"><code><font><span class="t
 </div>
 <div class="refsect1">
 <a name="xmlsec-templates.other_details"></a><h2>Types and Values</h2>
+<p></p>
 </div>
 </div>
 <div class="footer">

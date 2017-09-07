@@ -96,8 +96,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="xmlsec-gnutls-crypto.functions"></a><h2>Functions</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="functions_return">
-<col class="functions_name">
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -475,8 +475,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="xmlsec-gnutls-crypto.other"></a><h2>Types and Values</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="name">
-<col class="description">
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -612,8 +612,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </div>
 <div class="refsect1">
 <a name="xmlsec-gnutls-crypto.description"></a><h2>Description</h2>
-<p>
-Crypto transforms implementation for GnuTLS.
+<p>Crypto transforms implementation for GnuTLS.
 </p>
 </div>
 <div class="refsect1">
@@ -654,15 +653,15 @@ xmlSecGnuTLSShutdown (<em class="parameter"><code><span class="type">void</span>
 <div class="refsect2">
 <a name="xmlSecGnuTLSKeysMngrInit"></a><h3>xmlSecGnuTLSKeysMngrInit ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecGnuTLSKeysMngrInit (<em class="parameter"><code><font><span class="type">xmlSecKeysMngrPtr</span></font> mngr</code></em>);</pre>
+xmlSecGnuTLSKeysMngrInit (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>);</pre>
 <p>Adds GnuTLS specific key data stores in keys manager.</p>
 <div class="refsect3">
 <a name="xmlSecGnuTLSKeysMngrInit.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>mngr</p></td>
@@ -680,7 +679,7 @@ xmlSecGnuTLSKeysMngrInit (<em class="parameter"><code><font><span class="type">x
 <div class="refsect2">
 <a name="xmlSecGnuTLSGenerateRandom"></a><h3>xmlSecGnuTLSGenerateRandom ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecGnuTLSGenerateRandom (<em class="parameter"><code><font><span class="type">xmlSecBufferPtr</span></font> buffer</code></em>,
+xmlSecGnuTLSGenerateRandom (<em class="parameter"><code><a class="link" href="xmlsec-buffer.html#xmlSecBuffer" title="struct xmlSecBuffer"><span class="type">xmlSecBufferPtr</span></a> buffer</code></em>,
                             <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> size</code></em>);</pre>
 <p>Generates <em class="parameter"><code>size</code></em>
  random bytes and puts result in <em class="parameter"><code>buffer</code></em>
@@ -689,9 +688,9 @@ xmlSecGnuTLSGenerateRandom (<em class="parameter"><code><font><span class="type"
 <a name="xmlSecGnuTLSGenerateRandom.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -727,7 +726,7 @@ xmlSecGnuTLSKeyDataAesGetKlass (<em class="parameter"><code><span class="type">v
 <div class="refsect2">
 <a name="xmlSecGnuTLSKeyDataAesSet"></a><h3>xmlSecGnuTLSKeyDataAesSet ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecGnuTLSKeyDataAesSet (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
+xmlSecGnuTLSKeyDataAesSet (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                            <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *buf</code></em>,
                            <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> bufSize</code></em>);</pre>
 <p>Sets the value of AES key data.</p>
@@ -735,9 +734,9 @@ xmlSecGnuTLSKeyDataAesSet (<em class="parameter"><code><font><span class="type">
 <a name="xmlSecGnuTLSKeyDataAesSet.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -847,7 +846,7 @@ xmlSecGnuTLSKeyDataDesGetKlass (<em class="parameter"><code><span class="type">v
 <div class="refsect2">
 <a name="xmlSecGnuTLSKeyDataDesSet"></a><h3>xmlSecGnuTLSKeyDataDesSet ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecGnuTLSKeyDataDesSet (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
+xmlSecGnuTLSKeyDataDesSet (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                            <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *buf</code></em>,
                            <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> bufSize</code></em>);</pre>
 <p>Sets the value of DES key data.</p>
@@ -855,9 +854,9 @@ xmlSecGnuTLSKeyDataDesSet (<em class="parameter"><code><font><span class="type">
 <a name="xmlSecGnuTLSKeyDataDesSet.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -920,16 +919,16 @@ xmlSecGnuTLSKeyDataDsaGetKlass (<em class="parameter"><code><span class="type">v
 <div class="refsect2">
 <a name="xmlSecGnuTLSKeyDataDsaAdoptPrivateKey"></a><h3>xmlSecGnuTLSKeyDataDsaAdoptPrivateKey ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecGnuTLSKeyDataDsaAdoptPrivateKey (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
+xmlSecGnuTLSKeyDataDsaAdoptPrivateKey (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                                        <em class="parameter"><code><font><span class="type">gnutls_x509_privkey_t</span></font> dsa_key</code></em>);</pre>
 <p>Sets the value of DSA key data.</p>
 <div class="refsect3">
 <a name="xmlSecGnuTLSKeyDataDsaAdoptPrivateKey.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -954,7 +953,7 @@ xmlSecGnuTLSKeyDataDsaAdoptPrivateKey (<em class="parameter"><code><font><span c
 <div class="refsect2">
 <a name="xmlSecGnuTLSKeyDataDsaAdoptPublicKey"></a><h3>xmlSecGnuTLSKeyDataDsaAdoptPublicKey ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecGnuTLSKeyDataDsaAdoptPublicKey (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
+xmlSecGnuTLSKeyDataDsaAdoptPublicKey (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                                       <em class="parameter"><code><font><span class="type">gnutls_datum_t</span></font> *p</code></em>,
                                       <em class="parameter"><code><font><span class="type">gnutls_datum_t</span></font> *q</code></em>,
                                       <em class="parameter"><code><font><span class="type">gnutls_datum_t</span></font> *g</code></em>,
@@ -964,9 +963,9 @@ xmlSecGnuTLSKeyDataDsaAdoptPublicKey (<em class="parameter"><code><font><span cl
 <a name="xmlSecGnuTLSKeyDataDsaAdoptPublicKey.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -1034,9 +1033,9 @@ xmlSecGnuTLSHmacSetMinOutputLength (<em class="parameter"><code><font><span clas
 <a name="xmlSecGnuTLSHmacSetMinOutputLength.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>min_length</p></td>
@@ -1061,7 +1060,7 @@ xmlSecGnuTLSKeyDataHmacGetKlass (<em class="parameter"><code><span class="type">
 <div class="refsect2">
 <a name="xmlSecGnuTLSKeyDataHmacSet"></a><h3>xmlSecGnuTLSKeyDataHmacSet ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecGnuTLSKeyDataHmacSet (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
+xmlSecGnuTLSKeyDataHmacSet (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                             <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *buf</code></em>,
                             <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> bufSize</code></em>);</pre>
 <p>Sets the value of HMAC key data.</p>
@@ -1069,9 +1068,9 @@ xmlSecGnuTLSKeyDataHmacSet (<em class="parameter"><code><font><span class="type"
 <a name="xmlSecGnuTLSKeyDataHmacSet.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -1182,16 +1181,16 @@ xmlSecGnuTLSKeyDataRsaGetKlass (<em class="parameter"><code><span class="type">v
 <div class="refsect2">
 <a name="xmlSecGnuTLSKeyDataRsaAdoptPrivateKey"></a><h3>xmlSecGnuTLSKeyDataRsaAdoptPrivateKey ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecGnuTLSKeyDataRsaAdoptPrivateKey (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
+xmlSecGnuTLSKeyDataRsaAdoptPrivateKey (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                                        <em class="parameter"><code><font><span class="type">gnutls_x509_privkey_t</span></font> rsa_key</code></em>);</pre>
 <p>Sets the value of RSA key data.</p>
 <div class="refsect3">
 <a name="xmlSecGnuTLSKeyDataRsaAdoptPrivateKey.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -1216,7 +1215,7 @@ xmlSecGnuTLSKeyDataRsaAdoptPrivateKey (<em class="parameter"><code><font><span c
 <div class="refsect2">
 <a name="xmlSecGnuTLSKeyDataRsaAdoptPublicKey"></a><h3>xmlSecGnuTLSKeyDataRsaAdoptPublicKey ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecGnuTLSKeyDataRsaAdoptPublicKey (<em class="parameter"><code><font><span class="type">xmlSecKeyDataPtr</span></font> data</code></em>,
+xmlSecGnuTLSKeyDataRsaAdoptPublicKey (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                                       <em class="parameter"><code><font><span class="type">gnutls_datum_t</span></font> *m</code></em>,
                                       <em class="parameter"><code><font><span class="type">gnutls_datum_t</span></font> *e</code></em>);</pre>
 <p>Sets the value of RSA key data.</p>
@@ -1224,9 +1223,9 @@ xmlSecGnuTLSKeyDataRsaAdoptPublicKey (<em class="parameter"><code><font><span cl
 <a name="xmlSecGnuTLSKeyDataRsaAdoptPublicKey.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>

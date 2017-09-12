@@ -335,6 +335,22 @@ Crypto transforms implementation for NSS.
 @Returns: 
 
 
+<!-- ##### MACRO xmlSecNssTransformEcdsaSha224Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecNssTransformEcdsaSha224GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
 <!-- ##### MACRO xmlSecNssTransformEcdsaSha256Id ##### -->
 <para>
 
@@ -459,6 +475,22 @@ Crypto transforms implementation for NSS.
 @Returns: 
 
 
+<!-- ##### MACRO xmlSecNssTransformHmacSha224Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecNssTransformHmacSha224GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
 <!-- ##### MACRO xmlSecNssTransformHmacSha256Id ##### -->
 <para>
 
@@ -555,6 +587,22 @@ Crypto transforms implementation for NSS.
 @Returns: 
 
 
+<!-- ##### MACRO xmlSecNssTransformRsaSha224Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecNssTransformRsaSha224GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
 <!-- ##### MACRO xmlSecNssTransformRsaSha256Id ##### -->
 <para>
 
@@ -643,6 +691,22 @@ Crypto transforms implementation for NSS.
 
 
 <!-- ##### FUNCTION xmlSecNssTransformSha1GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecNssTransformSha224Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecNssTransformSha224GetKlass ##### -->
 <para>
 
 </para>

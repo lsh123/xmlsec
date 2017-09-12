@@ -92,8 +92,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
  * 
  * Signs a file using a dynamicaly created template, key from PEM file and
  * an X509 certificate. The signature has one reference with one enveloped 
- * transform to sign the whole document except the <a class="ulink" href="" target="_top">&lt;dsig:Signature/&gt;</a> node 
- * itself. The key certificate is written in the <a class="ulink" href="" target="_top">&lt;dsig:X509Data/&gt;</a> node.
+ * transform to sign the whole document except the &lt;dsig:Signature/&gt; node 
+ * itself. The key certificate is written in the &lt;dsig:X509Data/&gt; node.
  * 
  * This example was developed and tested with OpenSSL crypto library. The 
  * certificates management policies for another crypto library may break it.
@@ -189,7 +189,7 @@ main(int argc, char **argv) {
     if(xmlSecCryptoDLLoadLibrary(NULL) &lt; 0) {
         fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
                         "that you have it installed and check shared libraries path\n"
-                        "(LD_LIBRARY_PATH) envornment variable.\n");
+                        "(LD_LIBRARY_PATH and/or LTDL_LIBRARY_PATH) envornment variables.\n");
         return(-1);     
     }
 #endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
@@ -237,7 +237,7 @@ main(int argc, char **argv) {
  *
  * Signs the @xml_file using private key from @key_file and dynamicaly
  * created enveloped signature template. The certificate from @cert_file
- * is placed in the <a class="ulink" href="" target="_top">&lt;dsig:X509Data/&gt;</a> node.
+ * is placed in the &lt;dsig:X509Data/&gt; node.
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
@@ -270,7 +270,7 @@ sign_file(const char* xml_file, const char* key_file, const char* cert_file) {
         goto done;              
     }
 
-    /* add <a class="ulink" href="" target="_top">&lt;dsig:Signature/&gt;</a> node to the doc */
+    /* add &lt;dsig:Signature/&gt; node to the doc */
     xmlAddChild(xmlDocGetRootElement(doc), signNode);
     
     /* add reference */
@@ -287,7 +287,7 @@ sign_file(const char* xml_file, const char* key_file, const char* cert_file) {
         goto done;              
     }
     
-    /* add <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> and <a class="ulink" href="" target="_top">&lt;dsig:X509Data/&gt;</a> */
+    /* add &lt;dsig:KeyInfo/&gt; and &lt;dsig:X509Data/&gt; */
     keyInfoNode = xmlSecTmplSignatureEnsureKeyInfo(signNode, NULL);
     if(keyInfoNode == NULL) {
         fprintf(stderr, "Error: failed to add key info\n");

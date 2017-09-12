@@ -92,7 +92,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
  * 
  * Signs a file using a dynamicaly created template and key from PEM file.
  * The signature has one reference with one enveloped transform to sign
- * the whole document except the <a class="ulink" href="" target="_top">&lt;dsig:Signature/&gt;</a> node itself.
+ * the whole document except the &lt;dsig:Signature/&gt; node itself.
  * 
  * Usage: 
  *      sign2 &lt;xml-doc&gt; &lt;pem-key&gt; 
@@ -185,7 +185,7 @@ main(int argc, char **argv) {
     if(xmlSecCryptoDLLoadLibrary(NULL) &lt; 0) {
         fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
                         "that you have it installed and check shared libraries path\n"
-                        "(LD_LIBRARY_PATH) envornment variable.\n");
+                        "(LD_LIBRARY_PATH and/or LTDL_LIBRARY_PATH) envornment variables.\n");
         return(-1);     
     }
 #endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
@@ -262,7 +262,7 @@ sign_file(const char* xml_file, const char* key_file) {
         goto done;              
     }
 
-    /* add <a class="ulink" href="" target="_top">&lt;dsig:Signature/&gt;</a> node to the doc */
+    /* add &lt;dsig:Signature/&gt; node to the doc */
     xmlAddChild(xmlDocGetRootElement(doc), signNode);
     
     /* add reference */
@@ -279,7 +279,7 @@ sign_file(const char* xml_file, const char* key_file) {
         goto done;              
     }
     
-    /* add <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> and <a class="ulink" href="" target="_top">&lt;dsig:KeyName/&gt;</a> nodes to put key name in the signed document */
+    /* add &lt;dsig:KeyInfo/&gt; and &lt;dsig:KeyName/&gt; nodes to put key name in the signed document */
     keyInfoNode = xmlSecTmplSignatureEnsureKeyInfo(signNode, NULL);
     if(keyInfoNode == NULL) {
         fprintf(stderr, "Error: failed to add key info\n");

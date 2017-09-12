@@ -96,8 +96,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="xmlsec-app.functions"></a><h2>Functions</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="functions_return">
-<col class="functions_name">
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -638,7 +638,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </tr>
 <tr>
 <td class="function_type">
-<font><span class="returnvalue">xmlSecKeyPtr</span></font>
+<a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-app.html#xmlSecCryptoAppKeyLoad" title="xmlSecCryptoAppKeyLoad ()">xmlSecCryptoAppKeyLoad</a> <span class="c_punctuation">()</span>
@@ -646,7 +646,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </tr>
 <tr>
 <td class="function_type">
-<font><span class="returnvalue">xmlSecKeyPtr</span></font>
+<a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-app.html#xmlSecCryptoAppKeyLoadMemory" title="xmlSecCryptoAppKeyLoadMemory ()">xmlSecCryptoAppKeyLoadMemory</a> <span class="c_punctuation">()</span>
@@ -654,7 +654,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </tr>
 <tr>
 <td class="function_type">
-<font><span class="returnvalue">xmlSecKeyPtr</span></font>
+<a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-app.html#xmlSecCryptoAppPkcs12Load" title="xmlSecCryptoAppPkcs12Load ()">xmlSecCryptoAppPkcs12Load</a> <span class="c_punctuation">()</span>
@@ -662,7 +662,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </tr>
 <tr>
 <td class="function_type">
-<font><span class="returnvalue">xmlSecKeyPtr</span></font>
+<a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-app.html#xmlSecCryptoAppPkcs12LoadMemory" title="xmlSecCryptoAppPkcs12LoadMemory ()">xmlSecCryptoAppPkcs12LoadMemory</a> <span class="c_punctuation">()</span>
@@ -699,8 +699,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="xmlsec-app.other"></a><h2>Types and Values</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="name">
-<col class="description">
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -932,8 +932,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </div>
 <div class="refsect1">
 <a name="xmlsec-app.description"></a><h2>Description</h2>
-<p>
-Crypto-engine application support function used by xmlsec command line utility.
+<p>Crypto-engine application support function used by xmlsec command line utility.
 </p>
 </div>
 <div class="refsect1">
@@ -963,15 +962,15 @@ xmlSecCryptoShutdown (<em class="parameter"><code><span class="type">void</span>
 <div class="refsect2">
 <a name="xmlSecCryptoKeysMngrInit"></a><h3>xmlSecCryptoKeysMngrInit ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecCryptoKeysMngrInit (<em class="parameter"><code><font><span class="type">xmlSecKeysMngrPtr</span></font> mngr</code></em>);</pre>
+xmlSecCryptoKeysMngrInit (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>);</pre>
 <p>Adds crypto specific key data stores in keys manager.</p>
 <div class="refsect3">
 <a name="xmlSecCryptoKeysMngrInit.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>mngr</p></td>
@@ -1733,9 +1732,9 @@ by XMLSec command line utility and called before
 <a name="xmlSecCryptoAppInit.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>config</p></td>
@@ -1767,7 +1766,7 @@ by XMLSec command line utility and called after
 <div class="refsect2">
 <a name="xmlSecCryptoAppDefaultKeysMngrInit"></a><h3>xmlSecCryptoAppDefaultKeysMngrInit ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecCryptoAppDefaultKeysMngrInit (<em class="parameter"><code><font><span class="type">xmlSecKeysMngrPtr</span></font> mngr</code></em>);</pre>
+xmlSecCryptoAppDefaultKeysMngrInit (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>);</pre>
 <p>Initializes <em class="parameter"><code>mngr</code></em>
  with simple keys store <a class="link" href="xmlsec-keysmngr.html#xmlSecSimpleKeysStoreId" title="xmlSecSimpleKeysStoreId"><span class="type">xmlSecSimpleKeysStoreId</span></a>
 and a default crypto key data stores.</p>
@@ -1775,9 +1774,9 @@ and a default crypto key data stores.</p>
 <a name="xmlSecCryptoAppDefaultKeysMngrInit.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>mngr</p></td>
@@ -1796,8 +1795,8 @@ and a default crypto key data stores.</p>
 <a name="xmlSecCryptoAppDefaultKeysMngrAdoptKey"></a><h3>xmlSecCryptoAppDefaultKeysMngrAdoptKey ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecCryptoAppDefaultKeysMngrAdoptKey
-                               (<em class="parameter"><code><font><span class="type">xmlSecKeysMngrPtr</span></font> mngr</code></em>,
-                                <em class="parameter"><code><font><span class="type">xmlSecKeyPtr</span></font> key</code></em>);</pre>
+                               (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
+                                <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>);</pre>
 <p>Adds <em class="parameter"><code>key</code></em>
  to the keys manager <em class="parameter"><code>mngr</code></em>
  created with <a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrInit" title="xmlSecCryptoAppDefaultKeysMngrInit ()"><span class="type">xmlSecCryptoAppDefaultKeysMngrInit</span></a>
@@ -1806,9 +1805,9 @@ function.</p>
 <a name="xmlSecCryptoAppDefaultKeysMngrAdoptKey.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -1833,7 +1832,7 @@ function.</p>
 <div class="refsect2">
 <a name="xmlSecCryptoAppDefaultKeysMngrLoad"></a><h3>xmlSecCryptoAppDefaultKeysMngrLoad ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecCryptoAppDefaultKeysMngrLoad (<em class="parameter"><code><font><span class="type">xmlSecKeysMngrPtr</span></font> mngr</code></em>,
+xmlSecCryptoAppDefaultKeysMngrLoad (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
                                     <em class="parameter"><code>const <font><span class="type">char</span></font> *uri</code></em>);</pre>
 <p>Loads XML keys file from <em class="parameter"><code>uri</code></em>
  to the keys manager <em class="parameter"><code>mngr</code></em>
@@ -1843,9 +1842,9 @@ with <a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrInit" t
 <a name="xmlSecCryptoAppDefaultKeysMngrLoad.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -1870,7 +1869,7 @@ with <a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrInit" t
 <div class="refsect2">
 <a name="xmlSecCryptoAppDefaultKeysMngrSave"></a><h3>xmlSecCryptoAppDefaultKeysMngrSave ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecCryptoAppDefaultKeysMngrSave (<em class="parameter"><code><font><span class="type">xmlSecKeysMngrPtr</span></font> mngr</code></em>,
+xmlSecCryptoAppDefaultKeysMngrSave (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
                                     <em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
                                     <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="type">xmlSecKeyDataType</span></a> type</code></em>);</pre>
 <p>Saves keys from <em class="parameter"><code>mngr</code></em>
@@ -1879,9 +1878,9 @@ xmlSecCryptoAppDefaultKeysMngrSave (<em class="parameter"><code><font><span clas
 <a name="xmlSecCryptoAppDefaultKeysMngrSave.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -1911,7 +1910,7 @@ xmlSecCryptoAppDefaultKeysMngrSave (<em class="parameter"><code><font><span clas
 <div class="refsect2">
 <a name="xmlSecCryptoAppKeysMngrCertLoad"></a><h3>xmlSecCryptoAppKeysMngrCertLoad ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecCryptoAppKeysMngrCertLoad (<em class="parameter"><code><font><span class="type">xmlSecKeysMngrPtr</span></font> mngr</code></em>,
+xmlSecCryptoAppKeysMngrCertLoad (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
                                  <em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
                                  <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>,
                                  <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="type">xmlSecKeyDataType</span></a> type</code></em>);</pre>
@@ -1923,9 +1922,9 @@ untrusted certs in <em class="parameter"><code>store</code></em>
 <a name="xmlSecCryptoAppKeysMngrCertLoad.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -1961,7 +1960,7 @@ trusted or not.</p></td>
 <div class="refsect2">
 <a name="xmlSecCryptoAppKeysMngrCertLoadMemory"></a><h3>xmlSecCryptoAppKeysMngrCertLoadMemory ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecCryptoAppKeysMngrCertLoadMemory (<em class="parameter"><code><font><span class="type">xmlSecKeysMngrPtr</span></font> mngr</code></em>,
+xmlSecCryptoAppKeysMngrCertLoadMemory (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
                                        <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
                                        <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> dataSize</code></em>,
                                        <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>,
@@ -1974,9 +1973,9 @@ untrusted certs in <em class="parameter"><code>store</code></em>
 <a name="xmlSecCryptoAppKeysMngrCertLoadMemory.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -2015,7 +2014,7 @@ untrusted certs in <em class="parameter"><code>store</code></em>
 <hr>
 <div class="refsect2">
 <a name="xmlSecCryptoAppKeyLoad"></a><h3>xmlSecCryptoAppKeyLoad ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyPtr</span></font>
+<pre class="programlisting"><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
 xmlSecCryptoAppKeyLoad (<em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
                         <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>,
                         <em class="parameter"><code>const <font><span class="type">char</span></font> *pwd</code></em>,
@@ -2026,9 +2025,9 @@ xmlSecCryptoAppKeyLoad (<em class="parameter"><code>const <font><span class="typ
 <a name="xmlSecCryptoAppKeyLoad.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -2067,7 +2066,7 @@ xmlSecCryptoAppKeyLoad (<em class="parameter"><code>const <font><span class="typ
 <hr>
 <div class="refsect2">
 <a name="xmlSecCryptoAppKeyLoadMemory"></a><h3>xmlSecCryptoAppKeyLoadMemory ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyPtr</span></font>
+<pre class="programlisting"><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
 xmlSecCryptoAppKeyLoadMemory (<em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
                               <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> dataSize</code></em>,
                               <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>,
@@ -2079,9 +2078,9 @@ xmlSecCryptoAppKeyLoadMemory (<em class="parameter"><code>const <a class="link" 
 <a name="xmlSecCryptoAppKeyLoadMemory.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -2125,7 +2124,7 @@ xmlSecCryptoAppKeyLoadMemory (<em class="parameter"><code>const <a class="link" 
 <hr>
 <div class="refsect2">
 <a name="xmlSecCryptoAppPkcs12Load"></a><h3>xmlSecCryptoAppPkcs12Load ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyPtr</span></font>
+<pre class="programlisting"><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
 xmlSecCryptoAppPkcs12Load (<em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
                            <em class="parameter"><code>const <font><span class="type">char</span></font> *pwd</code></em>,
                            <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallback</code></em>,
@@ -2137,9 +2136,9 @@ in format=xmlSecKeyDataFormatPkcs12.</p>
 <a name="xmlSecCryptoAppPkcs12Load.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -2173,7 +2172,7 @@ in format=xmlSecKeyDataFormatPkcs12.</p>
 <hr>
 <div class="refsect2">
 <a name="xmlSecCryptoAppPkcs12LoadMemory"></a><h3>xmlSecCryptoAppPkcs12LoadMemory ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyPtr</span></font>
+<pre class="programlisting"><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
 xmlSecCryptoAppPkcs12LoadMemory (<em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
                                  <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> dataSize</code></em>,
                                  <em class="parameter"><code>const <font><span class="type">char</span></font> *pwd</code></em>,
@@ -2186,9 +2185,9 @@ in format=xmlSecKeyDataFormatPkcs12.</p>
 <a name="xmlSecCryptoAppPkcs12LoadMemory.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -2228,7 +2227,7 @@ in format=xmlSecKeyDataFormatPkcs12.</p>
 <div class="refsect2">
 <a name="xmlSecCryptoAppKeyCertLoad"></a><h3>xmlSecCryptoAppKeyCertLoad ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecCryptoAppKeyCertLoad (<em class="parameter"><code><font><span class="type">xmlSecKeyPtr</span></font> key</code></em>,
+xmlSecCryptoAppKeyCertLoad (<em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
                             <em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
                             <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>);</pre>
 <p>Reads the certificate from $<em class="parameter"><code>filename</code></em>
@@ -2237,9 +2236,9 @@ xmlSecCryptoAppKeyCertLoad (<em class="parameter"><code><font><span class="type"
 <a name="xmlSecCryptoAppKeyCertLoad.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>
@@ -2269,7 +2268,7 @@ xmlSecCryptoAppKeyCertLoad (<em class="parameter"><code><font><span class="type"
 <div class="refsect2">
 <a name="xmlSecCryptoAppKeyCertLoadMemory"></a><h3>xmlSecCryptoAppKeyCertLoadMemory ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecCryptoAppKeyCertLoadMemory (<em class="parameter"><code><font><span class="type">xmlSecKeyPtr</span></font> key</code></em>,
+xmlSecCryptoAppKeyCertLoadMemory (<em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
                                   <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
                                   <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> dataSize</code></em>,
                                   <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>);</pre>
@@ -2278,9 +2277,9 @@ xmlSecCryptoAppKeyCertLoadMemory (<em class="parameter"><code><font><span class=
 <a name="xmlSecCryptoAppKeyCertLoadMemory.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
+<col>
+<col>
+<col>
 </colgroup>
 <tbody>
 <tr>

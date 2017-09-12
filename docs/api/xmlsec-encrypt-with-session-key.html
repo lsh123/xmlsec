@@ -186,7 +186,7 @@ main(int argc, char **argv) {
     if(xmlSecCryptoDLLoadLibrary(NULL) &lt; 0) {
         fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
                         "that you have it installed and check shared libraries path\n"
-                        "(LD_LIBRARY_PATH) envornment variable.\n");
+                        "(LD_LIBRARY_PATH and/or LTDL_LIBRARY_PATH) envornment variables.\n");
         return(-1);     
     }
 #endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
@@ -340,20 +340,20 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
         goto done;   
     }
 
-    /* we want to put encrypted data in the <a class="ulink" href="" target="_top">&lt;enc:CipherValue/&gt;</a> node */
+    /* we want to put encrypted data in the &lt;enc:CipherValue/&gt; node */
     if(xmlSecTmplEncDataEnsureCipherValue(encDataNode) == NULL) {
         fprintf(stderr, "Error: failed to add CipherValue node\n");
         goto done;   
     }
 
-    /* add <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> */
+    /* add &lt;dsig:KeyInfo/&gt; */
     keyInfoNode = xmlSecTmplEncDataEnsureKeyInfo(encDataNode, NULL);
     if(keyInfoNode == NULL) {
         fprintf(stderr, "Error: failed to add key info\n");
         goto done;              
     }
 
-    /* add <a class="ulink" href="" target="_top">&lt;enc:EncryptedKey/&gt;</a> to store the encrypted session key */
+    /* add &lt;enc:EncryptedKey/&gt; to store the encrypted session key */
     encKeyNode = xmlSecTmplKeyInfoAddEncryptedKey(keyInfoNode, 
                                     xmlSecTransformRsaPkcs1Id, 
                                     NULL, NULL, NULL);
@@ -362,13 +362,13 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
         goto done;              
     }
 
-    /* we want to put encrypted key in the <a class="ulink" href="" target="_top">&lt;enc:CipherValue/&gt;</a> node */
+    /* we want to put encrypted key in the &lt;enc:CipherValue/&gt; node */
     if(xmlSecTmplEncDataEnsureCipherValue(encKeyNode) == NULL) {
         fprintf(stderr, "Error: failed to add CipherValue node\n");
         goto done;   
     }
 
-    /* add <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> and <a class="ulink" href="" target="_top">&lt;dsig:KeyName/&gt;</a> nodes to <a class="ulink" href="" target="_top">&lt;enc:EncryptedKey/&gt;</a> */
+    /* add &lt;dsig:KeyInfo/&gt; and &lt;dsig:KeyName/&gt; nodes to &lt;enc:EncryptedKey/&gt; */
     keyInfoNode2 = xmlSecTmplEncDataEnsureKeyInfo(encKeyNode, NULL);
     if(keyInfoNode2 == NULL) {
         fprintf(stderr, "Error: failed to add key info\n");

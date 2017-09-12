@@ -98,41 +98,6 @@ Crypto transforms implementation for OpenSSL.
 
 
 
-<!-- ##### MACRO XMLSEC_NO_ECDSA ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_NO_SHA224 ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_NO_SHA256 ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_NO_SHA384 ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_NO_SHA512 ##### -->
-<para>
-
-</para>
-
-
-
 <!-- ##### MACRO XMLSEC_NO_AES ##### -->
 <para>
 
@@ -148,6 +113,13 @@ Crypto transforms implementation for OpenSSL.
 
 
 <!-- ##### MACRO XMLSEC_NO_DSA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_NO_ECDSA ##### -->
 <para>
 
 </para>
@@ -197,6 +169,34 @@ Crypto transforms implementation for OpenSSL.
 
 
 <!-- ##### MACRO XMLSEC_NO_SHA1 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_NO_SHA256 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_NO_SHA224 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_NO_SHA384 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_NO_SHA512 ##### -->
 <para>
 
 </para>

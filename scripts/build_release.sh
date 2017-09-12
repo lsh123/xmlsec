@@ -10,6 +10,7 @@ rpm_root=/usr/src/redhat
 build_root="/tmp/xmlsec-build-area-$today"
 tar_file="xmlsec1-$version.tar.gz"
 sig_file="xmlsec1-$version.sig"
+git_release_branch="xmlsec-$version-release"
 git_version_tag=`echo $version | sed 's/\./_/g'`
 
 if [ x"$version" = x ]; then
@@ -25,6 +26,7 @@ cd "$build_root"
 echo "============== Checking out the module '$git_url'"
 git clone $git_uri
 cd xmlsec
+#git checkout $git_release_branch
 find . -name ".git" | xargs rm -r
 
 echo "============== Building xmlsec1-$version"

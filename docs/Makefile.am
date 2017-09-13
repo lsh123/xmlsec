@@ -9,6 +9,7 @@ EXTRA_DIST=\
 	$(builddir)/*.html     \
 	$(builddir)/*.ico      \
 	$(builddir)/xmlsec.xsl \
+	$(builddir)/xmlsec-ga.xsl \
 	$(NULL)
 
 XMLSEC1_MAN=$(top_builddir)/man/xmlsec1.1
@@ -69,6 +70,19 @@ docs-format:
 	    echo Cleaning $$i ; \
 	    sed 's/\xA0/ /g' $$i > $$i.tmp ; \
 	    mv $$i.tmp $$i ; \
+	done)
+docs-format-ga:
+	@(echo "Formatting html documents to add Google Analytics"; \
+	for i in `find $(builddir) -name "*.html" -print`; \
+	do \
+	    echo "Processing $$i"; \
+	    $(XSLTPROC) --html --output $$i.tmp $(srcdir)/xmlsec-ga.xsl $$i; \
+	    if [ $$? != 0 ]; \
+	    then \
+			echo "ERROR: processing file $$i"; \
+			exit 1; \
+	    fi; \
+	    mv $$i.tmp $$i; \
 	done)
 else
 # do nothing

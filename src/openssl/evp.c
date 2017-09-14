@@ -1850,7 +1850,7 @@ xmlSecOpenSSLKeyDataRsaGetType(xmlSecKeyDataPtr data) {
     if(n != NULL && e != NULL) {
         if(d != NULL) {
             return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
-        } else if(RSA_test_flags(rsa, (RSA_FLAG_EXT_PKEY | RSA_FLAG_CACHE_PRIVATE)) != 0) {
+        } else if(RSA_test_flags(rsa, (RSA_FLAG_EXT_PKEY)) != 0) {
             /*
              * !!! HACK !!! Also see DSA key
              * We assume here that engine *always* has private key.

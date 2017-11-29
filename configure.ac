@@ -390,35 +390,40 @@ dnl ==========================================================================
 ac_openssl_lib_dir="/usr/local/lib /usr/lib /usr/lib64 /usr/local /usr/local/ssl /usr/local/ssl/lib /usr/pkg"
 ac_openssl_inc_dir="/usr/local/include /usr/include /usr/local /usr/local/ssl /usr/pkg /usr/local/ssl/include"
 
+case $host in
+    *-*-mingw*)   ac_openssl_exlibs=;;
+    *-*-osf5*)    ac_openssl_exlibs=;;
+    *-*-openbsd*) ac_openssl_exlibs=;;
+    *-*-netbsd*)  ac_openssl_exlibs=;;
+    #FIXME: check if lib "dl" is required
+    *)            ac_openssl_exlibs=-ldl;;
+esac
+
 XMLSEC_NO_OPENSSL="1"
 OPENSSL_MIN_VERSION="1.0.0"
 OPENSSL_VERSION=""
-OPENSSL_CFLAGS=""
-OPENSSL_LIBS=""
 OPENSSL_CRYPTO_LIB="$XMLSEC_PACKAGE-openssl"
 OPENSSL_FOUND=no
-AC_ARG_WITH(openssl, [  --with-openssl=[PFX]      openssl location])
+AC_ARG_WITH(openssl, [  --with-openssl[=PFX]      openssl location])
+
+dnl Priority 0: Check if openssl is not needed
 if test "z$with_openssl" = "zno" ; then
     OPENSSL_FOUND=without
-    AC_MSG_CHECKING(for openssl libraries >= $OPENSSL_MIN_VERSION) 
-    AC_MSG_RESULT(no)
-elif test "z$with_openssl" != "z" ; then
-    case $host in
-	*-*-mingw*) openssl_exlibs=;;
-	*-*-osf5*) openssl_exlibs=;;
-	*-*-openbsd*) openssl_exlibs=;;
-	*-*-netbsd*) openssl_exlibs=;;
-	#FIXME: check if lib "dl" is required
-	*)          openssl_exlibs=-ldl;;
-    esac
+fi
+
+dnl Priority 1: User specifies the path
+if test "z$OPENSSL_FOUND" = "zno" -a "z$with_openssl" != "z" ; then
     OPENSSL_CFLAGS="$OPENSSL_CFLAGS -I$with_openssl/include"
     if test -f "$with_openssl/lib/libcrypto${XMLSEC_SHLIBSFX}" ; then
-	OPENSSL_LIBS="-L$with_openssl/lib -lcrypto $openssl_exlibs"
+        OPENSSL_LIBS="$OPENSSL_LIBS -L$with_openssl/lib -lcrypto $ac_openssl_exlibs"
     else
-	OPENSSL_LIBS="$with_openssl/lib/libcrypto.a $openssl_exlibs"
+        OPENSSL_LIBS="$OPENSSL_LIBS $with_openssl/lib/libcrypto.a $ac_openssl_exlibs"
     fi
     OPENSSL_FOUND="yes"
-elif test "z$PKGCONFIG_FOUND" = "zyes" ; then
+fi
+
+dnl Priority 2: pkg_config specifies the flags
+if test "z$OPENSSL_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
     if test "z$OPENSSL_VERSION" = "z" ; then
         PKG_CHECK_MODULES(OPENSSL, openssl >= 1.1.0,
             [OPENSSL_VERSION="1.1.0"],
@@ -433,8 +438,8 @@ elif test "z$PKGCONFIG_FOUND" = "zyes" ; then
 
     if test "z$OPENSSL_VERSION" = "z" ; then
         PKG_CHECK_MODULES(OPENSSL, openssl >= $OPENSSL_MIN_VERSION,
-	    [OPENSSL_VERSION="$OPENSSL_MIN_VERSION"],
-	    [OPENSSL_VERSION=""])
+            [OPENSSL_VERSION="$OPENSSL_MIN_VERSION"],
+            [OPENSSL_VERSION=""])
     fi
 
     if test "z$OPENSSL_VERSION" != "z" ; then
@@ -442,104 +447,93 @@ elif test "z$PKGCONFIG_FOUND" = "zyes" ; then
     fi
 fi
 
+dnl Priority 3: Guess work (if user set $OPENSSL_CFLAGS and/or $OPENSSL_LIBS then
+dnl we assume nothing else needs to be done).
 if test "z$OPENSSL_FOUND" = "zno" ; then
-    OPENSSL_INCLUDES_FOUND="no"
-    OPENSSL_LIBS_FOUND="no"
-    
-    for dir in $ac_openssl_inc_dir ; do
-	if test -f $dir/openssl/ssl.h ; then
-	    dnl do not add -I/usr/include because compiler does it anyway
-	    if test "z$dir" = "z/usr/include" ; then
-		OPENSSL_CFLAGS="$OPENSSL_CFLAGS "
-	    else
-		OPENSSL_CFLAGS="$OPENSSL_CFLAGS -I$dir"
-	    fi
-	    OPENSSL_INCLUDES_FOUND="yes"
-	    break
-	fi
-    done
+    if test "z$OPENSSL_CFLAGS" = "z" ; then
+        for dir in $ac_openssl_inc_dir ; do
+            if test -f $dir/openssl/ssl.h ; then
+                OPENSSL_CFLAGS="$OPENSSL_CFLAGS -I$dir"
+                break
+            fi
+        done
+    fi
 
-    for dir in $ac_openssl_lib_dir ; do
-	if test -f $dir/libcrypto.a ; then
-	    dnl do not add -L/usr/lib because compiler does it anyway
-	    if test "z$dir" = "z/usr/lib" ; then
-		OPENSSL_LIBS="-lcrypto -ldl"
-	    else
-		OPENSSL_LIBS="-L$dir -lcrypto -ldl"
-	    fi
-	    OPENSSL_LIBS_FOUND="yes"
-	    ac_found_openssl_lib_dir=$dir
-	    break;
-	fi
-    done
-    
-    if test "z$OPENSSL_INCLUDES_FOUND" = "zyes" -a "z$OPENSSL_LIBS_FOUND" = "zyes" ; then
-	OPENSSL_FOUND="yes"
+    if test "z$OPENSSL_LIBS" = "z" ; then
+        for dir in $ac_openssl_lib_dir ; do
+            if test -f "$dir/libcrypto${XMLSEC_SHLIBSFX}" ; then
+                OPENSSL_LIBS="$OPENSSL_LIBS -L$dir -lcrypto $ac_openssl_exlibs"
+                break
+            elif test -f $dir/libcrypto.a ; then
+                OPENSSL_LIBS="$OPENSSL_LIBS $dir/libcrypto.a $ac_openssl_exlibs"
+                break
+            fi
+        done
+    fi
+
+    if test "z$OPENSSL_CFLAGS" != "z" -a "z$OPENSSL_LIBS" != "z" ; then
+        OPENSSL_FOUND="yes"
     fi
 fi
 
+dnl Check the OpenSSL version (if not yet found); if you change this code then you probably
+dnl want to change include/openssl/crypto.h as well.
 if test "z$OPENSSL_FOUND" = "zyes" -a "z$OPENSSL_VERSION" = "z" ; then
-    AC_MSG_CHECKING(for openssl libraries >= $OPENSSL_MIN_VERSION) 
-
-    dnl Check the OpenSSL version; if you change this code then you probably
-    dnl want to change include/openssl/crypto.h as well.
     OLD_CPPFLAGS=$CPPFLAGS
     CPPFLAGS="$OPENSSL_CFLAGS"
 
     if test "z$OPENSSL_VERSION" = "z" ; then
         AC_EGREP_CPP(yes,[
             #include <openssl/opensslv.h>
-        #if OPENSSL_VERSION_NUMBER == 0x20000000L && defined(LIBRESSL_VERSION_NUMBER)
-        yes
-        #endif
-    ],[
-        OPENSSL_VERSION="1.0.0 (libressl)"
-    ],[
-        OPENSSL_VERSION=""
-    ])
+            #if OPENSSL_VERSION_NUMBER == 0x20000000L && defined(LIBRESSL_VERSION_NUMBER)
+            yes
+            #endif
+        ],[
+            OPENSSL_VERSION="1.0.0 (libressl)"
+        ],[
+            OPENSSL_VERSION=""
+        ])
     fi
 
     if test "z$OPENSSL_VERSION" = "z" ; then
         AC_EGREP_CPP(yes,[
             #include <openssl/opensslv.h>
-        #if OPENSSL_VERSION_NUMBER >= 0x10100000L
-        yes
-        #endif
-    ],[
-        OPENSSL_VERSION="1.1.0"
-    ],[
-        OPENSSL_VERSION=""
-    ])
+            #if OPENSSL_VERSION_NUMBER >= 0x10100000L
+            yes
+            #endif
+        ],[
+            OPENSSL_VERSION="1.1.0"
+        ],[
+            OPENSSL_VERSION=""
+        ])
     fi
 
     if test "z$OPENSSL_VERSION" = "z" ; then
         AC_EGREP_CPP(yes,[
-    	    #include <openssl/opensslv.h>
-	    #if OPENSSL_VERSION_NUMBER >= 0x10000000L
-		yes
-	    #endif
-	],[
-	    OPENSSL_VERSION="1.0.0"
-	],[
-	    OPENSSL_VERSION=""
-	])
+            #include <openssl/opensslv.h>
+            #if OPENSSL_VERSION_NUMBER >= 0x10000000L
+            yes
+            #endif
+        ],[
+            OPENSSL_VERSION="1.0.0"
+        ],[
+            OPENSSL_VERSION=""
+        ])
     fi
 
-    if test "z$OPENSSL_VERSION" = "z" ; then
-        AC_MSG_RESULT(no)
-    else
-        AC_MSG_RESULT([yes ('$OPENSSL_VERSION')])
-    fi
-    
     CPPFLAGS=$OLD_CPPFLAGS
-fi    
+fi
 
-if test "z$OPENSSL_FOUND" = "zyes" ; then
+dnl Finally set all the flags and report results to the user
+AC_MSG_CHECKING(for openssl libraries >= $OPENSSL_MIN_VERSION) 
+if test "z$OPENSSL_FOUND" = "zyes" -a "z$OPENSSL_VERSION" != "z" ; then
     XMLSEC_NO_OPENSSL="0"
     OPENSSL_CFLAGS="$OPENSSL_CFLAGS -DXMLSEC_CRYPTO_OPENSSL=1"
     XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST openssl"
+    AC_MSG_RESULT([yes ('$OPENSSL_VERSION')])
 else
     XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST openssl"
+    AC_MSG_RESULT(no)
 fi
 
 AM_CONDITIONAL(XMLSEC_NO_OPENSSL, test "z$XMLSEC_NO_OPENSSL" == "z1")

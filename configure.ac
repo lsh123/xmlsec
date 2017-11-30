@@ -215,6 +215,18 @@ else
 fi
 
 dnl ==========================================================================
+dnl Common installation locations
+dnl ==========================================================================
+ac_common_inc_dir="/usr/include /usr/local/include"
+ac_common_lib_dir="/usr/lib /usr/lib64 /usr/local/lib"
+case $host in
+    i*86-*-linux-gnu)   ac_common_lib_dir="$ac_common_lib_dir /usr/lib/i386-linux-gnu" ;;
+    x86_64-*-linux-gnu) ac_common_lib_dir="$ac_common_lib_dir /usr/lib/x86_64-linux-gnu" ;;
+    *)                  ac_common_lib_dir="$ac_common_lib_dir /usr/lib/$host" ;;
+esac
+
+
+dnl ==========================================================================
 dnl find libxml
 dnl ==========================================================================
 LIBXML_MIN_VERSION="2.8.0"
@@ -356,7 +368,7 @@ if test "z$LIBXSLT_FOUND" = "zno" -a "z$with_libxslt_src" != "z" ; then
     fi
 fi
 
-dnl Priority 2: User specified path to installation
+dnl Priority 2: User specifies path to installation
 if test "z$LIBXSLT_FOUND" = "zno" -a "z$with_libxslt" != "z" ; then
     AC_MSG_CHECKING(for libxslt library installation in "$with_libxslt" folder)
     if test -f "$with_libxslt/bin/$LIBXSLT_CONFIG" ; then
@@ -491,11 +503,11 @@ if test "z$OPENSSL_FOUND" = "zno" -a "z$with_openssl" != "z" ; then
         OPENSSL_FOUND="yes"
         AC_MSG_RESULT([yes])
     else
-        AC_MSG_ERROR([libxslt openssl not found: "$with_openssl/include" folder, and "$with_openssl/lib/libcrypto${XMLSEC_SHLIBSFX}" or "$with_openssl/lib/libcrypto.a" files don't exist), typo?])
+        AC_MSG_ERROR([openssl not found: "$with_openssl/include" folder, and "$with_openssl/lib/libcrypto${XMLSEC_SHLIBSFX}" or "$with_openssl/lib/libcrypto.a" files don't exist), typo?])
     fi
 fi
 
-dnl Priority 3: User sets both CFLAGS and LIBS flags
+dnl Priority 2: User sets both CFLAGS and LIBS flags
 if test "z$OPENSSL_FOUND" = "zno" -a  "z$OPENSSL_CFLAGS" != "z" -a "z$OPENSSL_LIBS" != "z" ; then
     OPENSSL_FOUND="yes"
 fi
@@ -507,7 +519,7 @@ if test "z$OPENSSL_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
         [OPENSSL_FOUND=no])
 fi
 
-dnl Priority 4: Guess work using a list of folders (we respect CFLAGS/LIBS flags).
+dnl Priority 4: Guess using a list of folders (do not overwrite CFLAGS/LIBS flags).
 if test "z$OPENSSL_FOUND" = "zno" ; then
     if test "z$OPENSSL_CFLAGS" = "z" ; then
         for dir in $ac_openssl_inc_dir ; do
@@ -533,8 +545,8 @@ if test "z$OPENSSL_FOUND" = "zno" ; then
     fi
 fi
 
-dnl Check the OpenSSL version (if not yet found); if you change this code then you probably
-dnl want to change include/openssl/crypto.h as well.
+dnl Check the OpenSSL version; if you change this code then you probably want to
+dnl change include/openssl/crypto.h as well.
 if test "z$OPENSSL_FOUND" = "zyes" ; then
     OLD_CPPFLAGS=$CPPFLAGS
     CPPFLAGS="$OPENSSL_CFLAGS"
@@ -623,221 +635,246 @@ SEAMONKEY_MIN_VERSION="1.0"
 MOZILLA_MIN_VERSION="1.4"
 NSS_MIN_VERSION="3.11.1"
 NSPR_MIN_VERSION="4.4.1"
-NSS_CFLAGS=""
-NSS_LIBS=""
-NSS_LIBS_LIST="-lnss3 -lsmime3"
-NSPR_LIBS_LIST="-lnspr4 -lplds4 -lplc4"
 NSS_CRYPTO_LIB="$XMLSEC_PACKAGE-nss"
 NSS_FOUND="no"
+NSPR_FOUND="no"
+NSS_INCLUDE_PATH=
+NSS_LIB_PATH=
+NSPR_INCLUDE_PATH=
+NSPR_LIB_PATH=
 NSPR_PACKAGE=mozilla-nspr
 NSS_PACKAGE=mozilla-nss
-
-
-dnl if nss is disabled, bail out early
-AC_ARG_WITH(nss,     [  --with-nss=[PFX]          nss location])
-AC_ARG_WITH(nspr,    [  --with-nspr=[PFX]         nspr location (needed for NSS)])
-AC_ARG_WITH(seamonkey_ver, [  --with-seamonkey-ver=[VER]  mozilla version (alt to --with-nss, --with-nspr)])
-AC_ARG_WITH(mozilla_ver, [  --with-mozilla-ver=[VER]  mozilla version (alt to --with-nss, --with-nspr)])
+AC_ARG_WITH(nss,
+    [  --with-nss=[PFX]          nss location])
+AC_ARG_WITH(nspr,
+    [  --with-nspr=[PFX]         nspr location (needed for NSS)])
+AC_ARG_WITH(seamonkey_ver,
+    [  --with-seamonkey-ver=[VER]  mozilla version (alt to --with-nss, --with-nspr)])
+AC_ARG_WITH(mozilla_ver,
+    [  --with-mozilla-ver=[VER]  mozilla version (alt to --with-nss, --with-nspr)])
+    
+dnl Priority 0: Check if library is not needed
 if test "z$with_nss" = "zno" -o "z$with_nspr" = "zno" ; then
     AC_MSG_CHECKING(for NSS library) 
     AC_MSG_RESULT(no)
     NSS_FOUND="without"
-elif test "z$with_nss" = "z" -a "z$with_nspr" = "z" -a "z$with_mozilla_ver" = "z" -a "z$with_seamonkey_ver" = "z" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
-    dnl
-    dnl Mozilla's NSS/NSPR are distributed under different names
-    dnl in different distribution:
-    dnl         seamonkey-nspr and seamonkey-nss
-    dnl 	mozilla-nspr and mozilla-nss
-    dnl		xulrunner-nspr and xulrunner-nss
-    dnl		nspr and nss
-    dnl We are going to try all options
-    dnl
-    if test "z$NSS_FOUND" = "zno" ; then
-        PKG_CHECK_MODULES(NSS, seamonkey-nspr >= $NSPR_MIN_VERSION seamonkey-nss >= $SEAMONKEY_MIN_VERSION,
-    	    [NSS_FOUND=yes NSPR_PACKAGE=seamonkey-nspr NSS_PACKAGE=seamonkey-nss],
-	    [NSS_FOUND=no])
+    NSPR_FOUND="without"
+fi
+
+dnl Priority 1: User specifies the path to installation
+if test "z$NSPR_FOUND" = "zno" -a "z$with_nspr" != "z" ; then
+    AC_MSG_CHECKING(for nspr library installation in "$with_nspr" folder)
+    if test -f "$with_nspr/include/nspr/nspr.h" -a -f "$with_nspr/lib/libnspr4$shrext" ; then
+        NSPR_INCLUDE_PATH="$with_nspr/include"
+        NSPR_LIB_PATH="$with_nspr/lib"
+        NSPR_FOUND="yes"
+        AC_MSG_RESULT([yes])
+    else
+        AC_MSG_ERROR([nspr not found: "$with_nspr/include/nspr/nspr.h" and/or "$with_nspr/lib/libnspr4$shrext" files don't exist), typo?])
     fi
-    if test "z$NSS_FOUND" = "zno" ; then
-        PKG_CHECK_MODULES(NSS, mozilla-nspr >= $MOZILLA_MIN_VERSION mozilla-nss >= $MOZILLA_MIN_VERSION,
-    	    [NSS_FOUND=yes NSPR_PACKAGE=mozilla-nspr NSS_PACKAGE=mozilla-nss],
-	    [NSS_FOUND=no])
-    fi
-    if test "z$NSS_FOUND" = "zno" ; then
-        PKG_CHECK_MODULES(NSS, xulrunner-nspr >= $NSPR_MIN_VERSION xulrunner-nss >= $NSS_MIN_VERSION,
-    	    [NSS_FOUND=yes NSPR_PACKAGE=xulrunner-nspr NSS_PACKAGE=xulrunner-nss],
-	    [NSS_FOUND=no])
-    fi
-    if test "z$NSS_FOUND" = "zno" ; then
-        PKG_CHECK_MODULES(NSS, nspr >= $NSPR_MIN_VERSION nss >= $NSS_MIN_VERSION,
-    	    [NSS_FOUND=yes NSPR_PACKAGE=nspr NSS_PACKAGE=nss],
-	    [NSS_FOUND=no])
+fi
+if test "z$NSS_FOUND" = "zno" -a "z$with_nss" != "z" ; then
+    AC_MSG_CHECKING(for nss library installation in "$with_nss" folder)
+    if test -f "$with_nss/include/nss/nss.h" -a -f "$with_nss/lib/libnss3$shrext" ; then
+        NSS_INCLUDE_PATH="$with_nss/include"
+        NSS_LIB_PATH="$with_nss/lib"
+        NSS_FOUND="yes"
+        AC_MSG_RESULT([yes])
+    else
+        AC_MSG_ERROR([nss not found: "$with_nss/include/nss/nss.h" and/or "$with_nss/lib/libnss3$shrext" files don't exist), typo?])
     fi
 fi
 
-if test "z$NSS_FOUND" = "zno" ; then 
-    dnl process the mozilla options if any
-    if test "z$with_seamonkey_ver" != "z" ; then
-        ac_mozilla_name=seamonkey-$with_seamonkey_ver
-    elif test "z$with_mozilla_ver" != "z" ; then
-        ac_mozilla_name=mozilla-$with_mozilla_ver
-    else
-        ac_mozilla_name=mozilla-$MOZILLA_MIN_VERSION
+dnl Priority 2: User sets both CFLAGS and LIBS flags
+if test "z$NSPR_FOUND" = "zno" -a  "z$NSPR_CFLAGS" != "z" -a "z$NSPR_LIBS" != "z" ; then
+    NSPR_FOUND="yes"
+fi
+if test "z$NSS_FOUND" = "zno" -a  "z$NSS_CFLAGS" != "z" -a "z$NSS_LIBS" != "z" ; then
+    NSS_FOUND="yes"
+fi
+
+dnl Priority 3: Guess with pkg_config
+dnl
+dnl Mozilla's NSS/NSPR are distributed under different names in different distribution,
+dnl we are going to try all options:
+dnl     seamonkey-nspr and seamonkey-nss
+dnl     mozilla-nspr and mozilla-nss
+dnl     xulrunner-nspr and xulrunner-nss
+dnl     nspr and nss
+if test "z$NSPR_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" -a "z$with_mozilla_ver" = "z" -a "z$with_seamonkey_ver" ; then
+    if test "z$NSPR_FOUND" = "zno" ; then
+        PKG_CHECK_MODULES(NSPR, seamonkey-nspr >= $NSPR_MIN_VERSION,
+           [NSPR_FOUND=yes NSPR_PACKAGE=seamonkey-nspr],
+           [NSPR_FOUND=no])
     fi
+    if test "z$NSPR_FOUND" = "zno" ; then
+        PKG_CHECK_MODULES(NSPR, mozilla-nspr >= $MOZILLA_MIN_VERSION,
+           [NSPR_FOUND=yes NSPR_PACKAGE=mozilla-nspr],
+           [NSPR_FOUND=no])
+    fi
+    if test "z$NSPR_FOUND" = "zno" ; then
+        PKG_CHECK_MODULES(NSPR, xulrunner-nspr >= $NSPR_MIN_VERSION,
+           [NSPR_FOUND=yes NSPR_PACKAGE=xulrunner-nspr],
+           [NSPR_FOUND=no])
+    fi
+    if test "z$NSPR_FOUND" = "zno" ; then
+        PKG_CHECK_MODULES(NSPR, nspr >= $NSPR_MIN_VERSION,
+           [NSPR_FOUND=yes NSPR_PACKAGE=nspr],
+           [NSPR_FOUND=no])
+    fi
+fi
+if test "z$NSS_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" -a "z$with_mozilla_ver" = "z" -a "z$with_seamonkey_ver" ; then
+    if test "z$NSS_FOUND" = "zno" ; then
+        PKG_CHECK_MODULES(NSS, seamonkey-nss >= $SEAMONKEY_MIN_VERSION,
+    	   [NSS_FOUND=yes NSS_PACKAGE=seamonkey-nss],
+	       [NSS_FOUND=no])
+    fi
+    if test "z$NSS_FOUND" = "zno" ; then
+        PKG_CHECK_MODULES(NSS, mozilla-nss >= $MOZILLA_MIN_VERSION,
+    	   [NSS_FOUND=yes NSS_PACKAGE=mozilla-nss],
+	       [NSS_FOUND=no])
+    fi
+    if test "z$NSS_FOUND" = "zno" ; then
+        PKG_CHECK_MODULES(NSS, xulrunner-nss >= $NSS_MIN_VERSION,
+    	   [NSS_FOUND=yes NSS_PACKAGE=xulrunner-nss],
+	       [NSS_FOUND=no])
+    fi
+    if test "z$NSS_FOUND" = "zno" ; then
+        PKG_CHECK_MODULES(NSS, nss >= $NSS_MIN_VERSION,
+    	   [NSS_FOUND=yes NSS_PACKAGE=nss],
+	       [NSS_FOUND=no])
+    fi
+fi
 
-    ac_nss_lib_dir="/usr/lib /usr/lib64 /usr/local/lib /usr/lib/$ac_mozilla_name /usr/local/lib/$ac_mozilla_name"
-    ac_nss_inc_dir="/usr/include /usr/include/mozilla /usr/local/include /usr/local/include/mozilla /usr/include/$ac_mozilla_name /usr/local/include/$ac_mozilla_name"
+dnl Priority 4: Guess using a list of folders using mozilla/seamonkey version hints (if any)
+if test "z$with_seamonkey_ver" != "z" ; then
+    ac_mozilla_name=seamonkey-$with_seamonkey_ver
+elif test "z$with_mozilla_ver" != "z" ; then
+    ac_mozilla_name=mozilla-$with_mozilla_ver
+else
+    ac_mozilla_name=mozilla-$MOZILLA_MIN_VERSION
+fi
+ac_nss_inc_dir="$ac_common_inc_dir /usr/include/mozilla /usr/local/include/mozilla /usr/include/$ac_mozilla_name /usr/local/include/$ac_mozilla_name"
+ac_nss_lib_dir="$ac_common_lib_dir /usr/lib/$ac_mozilla_name /usr/local/lib/$ac_mozilla_name"
+if test "z$NSPR_FOUND" = "zno"   ; then
+    AC_MSG_CHECKING(for nspr library installation in usual folders")
+    if test "z$NSPR_INCLUDE_PATH" = "z" ; then 
+        for dir in $ac_nss_inc_dir ; do
+            if test -f "$dir/nspr/nspr.h" ; then
+                NSPR_INCLUDE_PATH="$dir"
+                break;
+            fi
+        done
+    fi
+    if test "z$NSPR_LIB_PATH" = "z" ; then 
+        for dir in $ac_nss_lib_dir ; do
+            if test -f "$dir/libnspr4$shrext" ; then
+                NSPR_LIB_PATH="$dir"
+                break;
+            fi
+        done
+    fi
+    if test "z$NSPR_INCLUDE_PATH" != "z" -a "z$NSPR_LIB_PATH" != "z" ; then
+        NSPR_FOUND=yes
+        AC_MSG_RESULT([yes])
+    else
+        AC_MSG_RESULT([nspr not found])
+    fi
+fi
+if test "z$NSS_FOUND" = "zno"  ; then
+    AC_MSG_CHECKING(for nss library installation in usual folders)
+    if test "z$NSS_INCLUDE_PATH" = "z" ; then 
+        for dir in $ac_nss_inc_dir ; do
+            if test -f "$dir/nss/nss.h" ; then
+                NSS_INCLUDE_PATH="$dir"
+                break;
+            fi
+        done
+    fi
+    if test "z$NSS_LIB_PATH" = "z" ; then 
+        for dir in $ac_nss_lib_dir ; do
+            if test -f "$dir/libnss3$shrext" ; then
+                NSS_LIB_PATH="$dir"
+                break;
+            fi
+        done
+    fi
+    if test "z$NSS_INCLUDE_PATH" != "z" -a "z$NSS_LIB_PATH" != "z" ; then
+        NSS_FOUND=yes
+        AC_MSG_RESULT([yes])
+    else
+        AC_MSG_RESULT([nss not found])
+    fi
+fi
 
+dnl Set flags if INCLUDE_PATH or LIB_PATH are set
+if test "z$NSPR_FOUND" = "zyes" -a "z$NSPR_INCLUDE_PATH" != "z" ; then 
+    NSPR_CFLAGS="$NSPR_CFLAGS -I$NSPR_INCLUDE_PATH -I$NSPR_INCLUDE_PATH/nspr"
+fi
+if test "z$NSPR_FOUND" = "zyes" -a "z$NSPR_LIB_PATH" != "z" ; then
+    if test "z$with_gnu_ld" = "zyes" ; then
+        NSPR_LIBS="$NSPR_LIBS -Wl,-rpath-link -Wl,$NSPR_LIB_PATH"
+    fi
+    NSPR_LIBS="$NSPR_LIBS -L$NSPR_LIB_PATH/lib -lnspr4 -lplds4 -lplc4"
+fi
+if test "z$NSS_FOUND" = "zyes" -a "z$NSS_INCLUDE_PATH" != "z" ; then 
+    NSS_CFLAGS="$NSS_CFLAGS -I$NSS_INCLUDE_PATH -I$NSS_INCLUDE_PATH/nss"
+fi
+if test "z$NSS_FOUND" = "zyes" -a "z$NSS_LIB_PATH" != "z" ; then
+    if test "z$with_gnu_ld" = "zyes" ; then
+        NSS_LIBS="$NSS_LIBS -Wl,-rpath-link -Wl,$NSS_LIB_PATH"
+    fi
+    NSS_LIBS="$NSS_LIBS -L$NSS_LIB_PATH/lib -lnss3 -lsmime3"
+fi
+
+dnl Check versions
+if test "z$NSPR_FOUND" = "zyes" ; then
     AC_MSG_CHECKING(for nspr library >= $NSPR_MIN_VERSION)
-    NSPR_INCLUDES_FOUND="no"
-    NSPR_LIBS_FOUND="no"
-    NSPR_FOUND="no"
-    NSPR_PRINIT_H=""
-
-    if test "z$with_nspr" != "z" ; then
-	NSPR_PREFIX="$with_nspr"
-	NSPR_CFLAGS="-I$with_nspr/include -I$with_nspr/include/nspr"
-	if test "z$with_gnu_ld" = "zyes" ; then
-	    NSPR_LIBS="-Wl,-rpath-link -Wl,$with_nspr/lib -L$with_nspr/lib $NSPR_LIBS_LIST"
-	else
-	    NSPR_LIBS="-L$with_nspr/lib $NSPR_LIBS_LIST"
-	fi
-	NSPR_INCLUDES_FOUND="yes"
-	NSPR_LIBS_FOUND="yes"
-	NSPR_PRINIT_H="$with_nspr/include/prinit.h"
-    else
-	for dir in $ac_nss_inc_dir ; do
-    	    if test -f $dir/nspr/prinit.h ; then
-    		dnl do not add -I/usr/include because compiler does it anyway
-        	if test "z$dir" = "z/usr/include" ; then
-    		    NSPR_CFLAGS=""
-    		else
-    		    NSPR_CFLAGS="-I$dir/nspr"
-    		fi
-		NSPR_INCLUDES_FOUND="yes"
-		NSPR_PRINIT_H="$dir/nspr/prinit.h"
-    		break
-    	    fi
-	done
-	
-	for dir in $ac_nss_lib_dir ; do
-    	    if test -f $dir/libnspr4$shrext ; then
-		dnl do not add -L/usr/lib because compiler does it anyway
-        	if test "z$dir" = "z/usr/lib" ; then
-            	    NSPR_LIBS="$NSPR_LIBS_LIST"
-    		else
-    		    if test "z$with_gnu_ld" = "zyes" ; then
-    			NSPR_LIBS="-Wl,-rpath-link -Wl,$dir -L$dir $NSPR_LIBS_LIST"
-    		    else
-    			NSPR_LIBS="-L$dir $NSPR_LIBS_LIST"
-		    fi
-		fi
-		NSPR_LIBS_FOUND="yes"
-		break
-	    fi
-	done
-    fi
-
-    if test "z$NSPR_INCLUDES_FOUND" = "zyes" -a "z$NSPR_LIBS_FOUND" = "zyes" ; then
+    minvers=`echo $NSPR_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 100 + $2) * 100 + $3;}'`
 	OLD_CPPFLAGS=$CPPFLAGS
 	CPPFLAGS="$NSPR_CFLAGS"
 	AC_EGREP_CPP(yes,[
-    	    #include <prinit.h>
-            #if PR_VMAJOR >= 4
-               yes
-            #endif
-	],[
-	    NSPR_FOUND=yes
-    	],[
-	    NSPR_FOUND=no
-        ]) 
+        #include <prinit.h>
+        #if ((PR_VMAJOR * 100 + PR_VMINOR) * 100 + PR_VPATCH) >= $minvers
+        yes
+        #endif
+    ],[
+	   NSPR_FOUND=yes
+	   AC_MSG_RESULT(yes)  
+    ],[
+	   NSPR_FOUND=no
+	   AC_MSG_RESULT(no)
+    ]) 
 	CPPFLAGS="$OLD_CPPFLAGS"
-    fi
-    
-    if test "z$NSPR_FOUND" = "zyes" ; then    
-	AC_MSG_RESULT(yes)	
-    else
-	AC_MSG_RESULT(no)
-    fi
+fi
 
-    dnl look for nss
+if test "z$NSS_FOUND" = "zyes" ; then 
     AC_MSG_CHECKING(for nss library >= $NSS_MIN_VERSION)
-    NSS_INCLUDES_FOUND="no"
-    NSS_LIBS_FOUND="no"
-    NSS_NSS_H=""
+    minvers=`echo $NSS_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 100 + $2) * 100 + $3;}'`
+    OLD_CPPFLAGS=$CPPFLAGS
+    CPPFLAGS="$NSPR_CFLAGS $NSS_CFLAGS"
+    AC_EGREP_CPP(yes,[
+        #include <nss.h>
+        #if ((NSS_VMAJOR * 100 + NSS_VMINOR) * 100 + NSS_VPATCH) >= $minvers
+        yes
+        #endif
+    ],[
+        NSS_FOUND=yes
+        AC_MSG_RESULT(yes)
+    ],[
+        NSS_FOUND=no
+        AC_MSG_RESULT(no)
+    ]) 
+    CPPFLAGS="$OLD_CPPFLAGS"
+fi
 
-    if test "z$with_nss" != "z" ; then
-	NSS_CFLAGS="$NSS_CFLAGS -I$with_nss/include -I$with_nss/include/nss"
-	if test "z$with_gnu_ld" = "zyes" ; then
-	    NSS_LIBS="$NSS_LIBS -Wl,-rpath-link -Wl,$with_nss/lib -L$with_nss/lib $NSS_LIBS_LIST"
-        else
-	    NSS_LIBS="$NSS_LIBS -L$with_nss/lib $NSS_LIBS_LIST"
-        fi
-	NSS_INCLUDES_FOUND="yes"
-	NSS_LIBS_FOUND="yes"
-	NSS_NSS_H="$with_nss/include/nss.h"
-    else
-	for dir in $ac_nss_inc_dir ; do
-	    if test -f $dir/nss/nss.h ; then
-        	dnl do not add -I/usr/include because compiler does it anyway
-    		if test "z$dir" = "z/usr/include" ; then
-        	    NSS_CFLAGS="$NSS_CFLAGS"
-		else
-            	    NSS_CFLAGS="$NSS_CFLAGS -I$dir/nss"
-		fi
-    		NSS_INCLUDES_FOUND="yes"
-    		NSS_NSS_H="$dir/nss/nss.h"
-    		break
-    	    fi
-        done
-       
-        for dir in $ac_nss_lib_dir ; do
-    	    if test -f $dir/libnss3$shrext ; then
-        	dnl do not add -L/usr/lib because compiler does it anyway
-    		if test "z$dir" = "z/usr/lib" ; then
-        	    NSS_LIBS="$NSS_LIBS_LIST"
-                else
-            	    if test "z$with_gnu_ld" = "zyes" ; then
-    			NSS_LIBS="-Wl,-rpath-link -Wl,$dir -L$dir $NSS_LIBS_LIST"
-            	    else
-        		NSS_LIBS="-L$dir $NSS_LIBS_LIST"
-		    fi
-		fi
-    		NSS_LIBS_FOUND="yes"
-    		break
-	    fi
-	done
-    fi
-
-    if test "z$NSS_INCLUDES_FOUND" = "zyes" -a "z$NSS_LIBS_FOUND" = "zyes" ; then
-       OLD_CPPFLAGS=$CPPFLAGS
-       CPPFLAGS="$NSPR_CFLAGS $NSS_CFLAGS"
-       AC_EGREP_CPP(yes,[
-          #include <nss.h>
-          #if NSS_VMAJOR >= 3 && NSS_VMINOR >= 2
-             yes
-          #endif
-	],[
-	    NSS_FOUND=yes
-    	],[
-	    NSS_FOUND=no
-        ]) 
-	CPPFLAGS="$OLD_CPPFLAGS"
-    fi
-    
-    if test "z$NSS_FOUND" = "zyes" ; then    
-	AC_MSG_RESULT(yes)	
-    else
-	AC_MSG_RESULT(no)
-    fi
-
-    dnl check that we have found both NSS and NSPR
-    if test "z$NSPR_FOUND" = "zyes" -a "z$NSS_FOUND" = "zyes" ; then
-	NSS_CFLAGS="$NSS_CFLAGS $NSPR_CFLAGS"
+dnl check that we have found both NSS and NSPR
+if test "z$NSPR_FOUND" = "zyes" -a "z$NSS_FOUND" = "zyes" ; then
+    NSS_CFLAGS="$NSS_CFLAGS $NSPR_CFLAGS"
 	NSS_LIBS="$NSS_LIBS $NSPR_LIBS"
-    elif test "z$NSPR_FOUND" != "zyes" -a "z$NSS_FOUND" = "zyes" ; then    
+elif test "z$NSPR_FOUND" != "zyes" -a "z$NSS_FOUND" = "zyes" ; then    
 	NSS_FOUND="no"
 	AC_MSG_RESULT(NSPR library is required for NSS, ignoring NSS library we have found)
-    fi
 fi
 
 if test "z$NSS_FOUND" = "zyes" ; then
@@ -858,7 +895,6 @@ AC_SUBST(NSS_CRYPTO_LIB)
 AC_SUBST(NSS_MIN_VERSION)
 AC_SUBST(NSPR_MIN_VERSION)
 AC_SUBST(MOZILLA_MIN_VERSION)
-
 
 dnl ==========================================================================
 dnl See if we can find GCrypt

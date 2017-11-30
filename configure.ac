@@ -219,6 +219,7 @@ dnl find libxml
 dnl ==========================================================================
 LIBXML_MIN_VERSION="2.8.0"
 LIBXML_CONFIG="xml2-config"
+LIBXML_CONFIG_PATH=
 LIBXML_FOUND="no"
 AC_ARG_WITH(libxml, 
     [  --with-libxml=[PFX]       libxml2 location]
@@ -227,66 +228,89 @@ AC_ARG_WITH(libxml-src,
     [  --with-libxml-src=[PFX]   not installed yet libxml2 location]
 )
 
-if test "z$LIBXML_CFLAGS" = "z" -o "z$LIBXML_LIBS" = "z"; then
-    if test "z$with_libxml" = "zno" -o "z$with_libxml_src" = "zno"; then 
-        AC_MSG_CHECKING(for libxml2 libraries >= $LIBXML_MIN_VERSION) 
-        AC_MSG_ERROR(libxml2 >= $LIBXML_MIN_VERSION is required for $XMLSEC_PACKAGE)
-    elif test "z$with_libxml_src" != "z" ; then
-        AC_MSG_CHECKING(for libxml2 libraries >= $LIBXML_MIN_VERSION) 
-        CWD=`pwd`
-        if cd "$with_libxml_src" ; then 
-            SRC_DIR=`pwd`
-            LIBXML_CONFIG=${SRC_DIR}/xml2-config
-            LIBXML_LIBS="-L${SRC_DIR}/.libs -lxml2"
-            LIBXML_CFLAGS="-I${SRC_DIR}/include"
-            LIBXML_FOUND="yes"
-            cd $CWD
-            AC_MSG_RESULT([yes (source)])    
-        else 
-            AC_MSG_ERROR([libxml source dir not found (${with_libxml_src}), typo?])
-        fi 	
-    elif test "z$with_libxml" = "z" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
-        PKG_CHECK_MODULES(LIBXML, libxml-2.0 >= $LIBXML_MIN_VERSION,
-            [LIBXML_FOUND=yes],
-            [LIBXML_FOUND=no])
-    fi
-    if test "z$LIBXML_FOUND" = "zno" ; then
-        if test "z$with_libxml" != "zyes" ; then
-            if test "z$with_libxml" != "z" ; then
-                AC_PATH_PROG([LIBXML_CONFIG], [$LIBXML_CONFIG], [],
-                         [$with_libxml/bin:$PATH])
-            else
-                AC_PATH_PROG([LIBXML_CONFIG], [$LIBXML_CONFIG], [],
-                         [$PATH])
-            fi
-        fi
-        AC_MSG_CHECKING([libxml2 $LIBXML_CONFIG ])
-        if ! LIBXML_VERSION=`$LIBXML_CONFIG --version 2>/dev/null`; then
-            AC_MSG_ERROR(Could not find libxml2 anywhere.)
-        fi
-        vers=`echo $LIBXML_VERSION | awk -F. '{ printf "%d", ($1 * 1000 + $2) * 1000 + $3;}'`
-	minvers=`echo $LIBXML_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 1000 + $2) * 1000 + $3;}'`
-        if test "$vers" -ge "$minvers" ; then
-            LIBXML_LIBS="`$LIBXML_CONFIG --libs`"
-            LIBXML_CFLAGS="`$LIBXML_CONFIG --cflags`"
-            LIBXML_FOUND="yes"
-            AC_MSG_RESULT([yes ('$LIBXML_VERSION')])
-        else
-            AC_MSG_ERROR(You need at least libxml2 $LIBXML_MIN_VERSION for this version of $XMLSEC_PACKAGE)
-        fi
-    fi
-else
-    AC_MSG_CHECKING(for libxml2 libraries >= $LIBXML_MIN_VERSION)
-    minvers=`echo $LIBXML_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 100 + $2) * 100 + $3;}'`
-    __save_CFLAGS="${CFLAGS}"
-    CFLAGS="${CFLAGS} ${LIBXML_CFLAGS}"
-    AC_COMPILE_IFELSE([AC_LANG_SOURCE([[#include <libxml/xmlversion.h>
-#if LIBXML_VERSION < $minvers
-#error "libxml2 is too old"
-#endif]])],AC_MSG_RESULT([OK]),AC_MSG_ERROR([You need at least libxml2 $LIBXML_MIN_VERSION for this version of $XMLSEC_PACKAGE]))
-    CFLAGS="${__save_CFLAGS}"
+dnl Priority 0: LibXML2 is disabled: hard error.
+if test "z$with_libxml" = "zno" -o "z$with_libxml_src" = "zno"; then 
+    AC_MSG_CHECKING(for libxml2 libraries >= $LIBXML_MIN_VERSION) 
+    AC_MSG_ERROR(libxml2 >= $LIBXML_MIN_VERSION is required for $XMLSEC_PACKAGE)
 fi
 
+dnl Priority 1: User specifies the path to source code
+if test "z$LIBXML_FOUND" = "zno" -a "z$with_libxml_src" != "z" ; then
+    AC_MSG_CHECKING(for libxml2 library source tree in "$with_libxml_src" folder) 
+    if test -d "$with_libxml_src/include/libxml" -a -d "$with_libxml_src/.libs" ; then
+        LIBXML_CFLAGS="$LIBXML_CFLAGS -I$with_libxml_src/include"
+        LIBXML_LIBS="$LIBXML_LIBS -L$with_libxml_src/.libs -lxml2"
+        LIBXML_FOUND="yes"
+        AC_MSG_RESULT([yes])
+    else 
+        AC_MSG_ERROR([libxml2 source tree not found: "$with_libxml_src/include/libxml" or "$with_libxml_src/.libs" folders don't exist), typo?])
+    fi
+fi
+
+dnl Priority 2: User specified path to libxml2 installation
+if test "z$LIBXML_FOUND" = "zno" -a "z$with_libxml" != "z" ; then
+    AC_MSG_CHECKING(for libxml2 library installation in "$with_libxml" folder)
+    if test -f "$with_libxml/bin/$LIBXML_CONFIG" ; then
+        LIBXML_CONFIG_PATH="$with_libxml/bin/$LIBXML_CONFIG"
+        LIBXML_FOUND="yes"
+        AC_MSG_RESULT([yes]) 
+    elif test -d "$with_libxml/include/libxml2/libxml" -a -d "$with_libxml/lib" ; then
+        LIBXML_CFLAGS="$LIBXML_CFLAGS -I$with_libxml/include/libxml2"
+        LIBXML_LIBS="$LIBXML_LIBS -L$with_libxml/lib -lxml2"
+        LIBXML_FOUND="yes"
+        AC_MSG_RESULT([yes])
+    else
+        AC_MSG_ERROR([libxml2 installation not found: "$with_libxml/bin/$LIBXML_CONFIG" tool, or "$with_libxml/include/libxml2/libxml" or "$with_libxml/lib" folders don't exist), typo?])
+    fi
+fi
+
+dnl Priority 3: pkg_config specifies the flags
+if test "z$LIBXML_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
+    PKG_CHECK_MODULES(LIBXML, libxml-2.0 >= $LIBXML_MIN_VERSION,
+        [LIBXML_FOUND=yes],
+        [LIBXML_FOUND=no])
+fi
+
+dnl Priority 4: Try to find the config tool
+if test "z$LIBXML_FOUND" = "zno" ; then
+    AC_PATH_PROG(LIBXML_CONFIG_PATH, [$LIBXML_CONFIG], [], [$PATH])
+    if test "z$LIBXML_CONFIG_PATH" != "z" ; then
+        LIBXML_FOUND="yes"
+    fi
+fi
+
+dnl Get the values using config tool
+if test "z$LIBXML_CONFIG_PATH" != "z" ; then
+    if test "z$LIBXML_CFLAGS" = "z" ; then
+        LIBXML_CFLAGS="`$LIBXML_CONFIG_PATH --cflags`"
+    fi
+    if test "z$LIBXML_LIBS" = "z"; then
+        LIBXML_LIBS="`$LIBXML_CONFIG_PATH --libs`"
+    fi
+    LIBXML_CONFIG=$LIBXML_CONFIG_PATH
+fi
+
+dnl Verify the version
+AC_MSG_CHECKING(for libxml2 libraries >= $LIBXML_MIN_VERSION)
+OLD_CPPFLAGS=$CPPFLAGS
+CPPFLAGS="$LIBXML_CFLAGS"
+minvers=`echo $LIBXML_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 100 + $2) * 100 + $3;}'`
+AC_EGREP_CPP(yes, [
+    #include <libxml/xmlversion.h>
+    #if LIBXML_VERSION >= $minvers
+    yes
+    #endif
+    ],[
+        LIBXML_FOUND=yes
+        AC_MSG_RESULT([yes])
+    ], [
+        LIBXML_FOUND=no
+        AC_MSG_ERROR(You need at least libxml2 $LIBXML_MIN_VERSION for this version of $XMLSEC_PACKAGE)
+    ]
+)
+CPPFLAGS=$OLD_CPPFLAGS
+
+dnl Finally set variables
 AC_SUBST(LIBXML_CFLAGS)
 AC_SUBST(LIBXML_LIBS)
 AC_SUBST(LIBXML_CONFIG)

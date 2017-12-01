@@ -382,23 +382,28 @@ fi
 
 dnl Verify the version: failure is fatal
 AC_MSG_CHECKING(for libxml2 library >= $LIBXML_MIN_VERSION)
-OLD_CPPFLAGS=$CPPFLAGS
-CPPFLAGS="$LIBXML_CFLAGS"
-minvers=`echo $LIBXML_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 100 + $2) * 100 + $3;}'`
-AC_EGREP_CPP(yes, [
-    #include <libxml/xmlversion.h>
-    #if LIBXML_VERSION >= $minvers
-    yes
-    #endif
+if test "z$LIBXML_FOUND" = "zyes" ; then
+    OLD_CPPFLAGS=$CPPFLAGS
+    CPPFLAGS="$LIBXML_CFLAGS"
+    minvers=`echo $LIBXML_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 100 + $2) * 100 + $3;}'`
+    AC_EGREP_CPP(yes, [
+        #include <libxml/xmlversion.h>
+        #if LIBXML_VERSION >= $minvers
+        yes
+        #endif
     ],[
         LIBXML_FOUND=yes
         AC_MSG_RESULT([yes])
     ], [
         LIBXML_FOUND=no
-        AC_MSG_ERROR(You need at least libxml2 $LIBXML_MIN_VERSION for this version of $XMLSEC_PACKAGE)
-    ]
-)
-CPPFLAGS=$OLD_CPPFLAGS
+        AC_MSG_RESULT([no])
+        AC_MSG_ERROR([libxml2 library >= $LIBXML_MIN_VERSION is required for this version of $XMLSEC_PACKAGE])
+    ])
+    CPPFLAGS=$OLD_CPPFLAGS
+else
+    AC_MSG_RESULT([no])
+    AC_MSG_ERROR([libxml2 library >= $LIBXML_MIN_VERSION is required for this version of $XMLSEC_PACKAGE])
+fi
 
 dnl Finally set variables
 AC_SUBST(LIBXML_CFLAGS)
@@ -529,8 +534,8 @@ if test "z$LIBXSLT_FOUND" = "zyes" ; then
 fi
 
 dnl Verify the version
-if test "z$LIBXSLT_FOUND" != "zwithout" ; then
-    AC_MSG_CHECKING(for libxslt library >= $LIBXSLT_MIN_VERSION)
+AC_MSG_CHECKING(for libxslt library >= $LIBXSLT_MIN_VERSION)
+if test "z$LIBXSLT_FOUND" = "zyes" ; then
     OLD_CPPFLAGS=$CPPFLAGS
     CPPFLAGS="$LIBXSLT_CFLAGS"
     minvers=`echo $LIBXSLT_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 100 + $2) * 100 + $3;}'`
@@ -544,10 +549,12 @@ if test "z$LIBXSLT_FOUND" != "zwithout" ; then
             AC_MSG_RESULT([yes])
         ], [
             LIBXSLT_FOUND=no
-            AC_MSG_RESULT([no: you need at least libxslt $LIBXSLT_MIN_VERSION for this version of $XMLSEC_PACKAGE])
+            AC_MSG_RESULT([no])
         ]
     )
     CPPFLAGS=$OLD_CPPFLAGS
+else
+    AC_MSG_RESULT([no])
 fi
 
 dnl Finally set variables
@@ -672,8 +679,8 @@ fi
 
 dnl Check the OpenSSL version; if you change this code then you probably want to
 dnl change include/openssl/crypto.h as well.
-if test "z$OPENSSL_FOUND" != "zwithout" ; then
-    AC_MSG_CHECKING(for openssl library >= $OPENSSL_MIN_VERSION)
+AC_MSG_CHECKING(for openssl library >= $OPENSSL_MIN_VERSION)
+if test "z$OPENSSL_FOUND" = "zyes" ; then
     OLD_CPPFLAGS=$CPPFLAGS
     CPPFLAGS="$OPENSSL_CFLAGS"
     if test "z$OPENSSL_VERSION" = "z" ; then
@@ -718,11 +725,13 @@ if test "z$OPENSSL_FOUND" != "zwithout" ; then
     
     if test "z$OPENSSL_VERSION" != "z" ; then
         OPENSSL_FOUND=yes
-        AC_MSG_RESULT([yes ('$OPENSSL_VERSION')])
+        AC_MSG_RESULT([yes (openssl version '$OPENSSL_VERSION')])
     else
         OPENSSL_FOUND=no
-        AC_MSG_RESULT(no)
+        AC_MSG_RESULT([no])
     fi
+else
+    AC_MSG_RESULT([no])
 fi
 
 dnl Finally set all the flags and report results to the user
@@ -941,28 +950,30 @@ if test "z$NSS_FOUND" = "zyes" -a "z$NSS_LIB_PATH" != "z" ; then
 fi
 
 dnl Check NSS and NSPR versions
-if test "z$NSPR_FOUND" != "zwithout" ; then
-    AC_MSG_CHECKING(for nspr library >= $NSPR_MIN_VERSION)
+AC_MSG_CHECKING(for nspr library >= $NSPR_MIN_VERSION)
+if test "z$NSPR_FOUND" = "zyes" ; then
     minvers=`echo $NSPR_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 100 + $2) * 100 + $3;}'`
-	OLD_CPPFLAGS=$CPPFLAGS
-	CPPFLAGS="$NSPR_CFLAGS"
-	AC_EGREP_CPP(yes,[
+    OLD_CPPFLAGS=$CPPFLAGS
+    CPPFLAGS="$NSPR_CFLAGS"
+    AC_EGREP_CPP(yes,[
         #include <prinit.h>
         #if ((PR_VMAJOR * 100 + PR_VMINOR) * 100 + PR_VPATCH) >= $minvers
         yes
         #endif
     ],[
-	   NSPR_FOUND=yes
-	   AC_MSG_RESULT(yes)  
+        NSPR_FOUND=yes
+        AC_MSG_RESULT([yes])
     ],[
-	   NSPR_FOUND=no
-	   AC_MSG_RESULT(no)
-    ]) 
-	CPPFLAGS="$OLD_CPPFLAGS"
+        NSPR_FOUND=no
+        AC_MSG_RESULT([no])
+    ])
+    CPPFLAGS="$OLD_CPPFLAGS"
+else
+    AC_MSG_RESULT([no])
 fi
 
-if test "z$NSS_FOUND" != "zwithout" ; then 
-    AC_MSG_CHECKING(for nss library >= $NSS_MIN_VERSION)
+AC_MSG_CHECKING(for nss library >= $NSS_MIN_VERSION)
+if test "z$NSS_FOUND" = "zyes" ; then 
     minvers=`echo $NSS_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 100 + $2) * 100 + $3;}'`
     OLD_CPPFLAGS=$CPPFLAGS
     CPPFLAGS="$NSPR_CFLAGS $NSS_CFLAGS"
@@ -973,21 +984,23 @@ if test "z$NSS_FOUND" != "zwithout" ; then
         #endif
     ],[
         NSS_FOUND=yes
-        AC_MSG_RESULT(yes)
+        AC_MSG_RESULT([yes])
     ],[
         NSS_FOUND=no
-        AC_MSG_RESULT(no)
+        AC_MSG_RESULT([no])
     ]) 
     CPPFLAGS="$OLD_CPPFLAGS"
+else
+    AC_MSG_RESULT([no])
 fi
 
 dnl Check that we have found both NSS and NSPR
 if test "z$NSPR_FOUND" = "zyes" -a "z$NSS_FOUND" = "zyes" ; then
     NSS_CFLAGS="$NSS_CFLAGS $NSPR_CFLAGS"
-	NSS_LIBS="$NSS_LIBS $NSPR_LIBS"
+    NSS_LIBS="$NSS_LIBS $NSPR_LIBS"
 elif test "z$NSPR_FOUND" != "zyes" -a "z$NSS_FOUND" = "zyes" ; then    
-	NSS_FOUND="no"
-	AC_MSG_RESULT(NSPR library is required for NSS, ignoring NSS library we have found)
+    NSS_FOUND="no"
+    AC_MSG_RESULT(NSPR library is required for NSS, ignoring NSS library we have found)
 fi
 
 dnl Finally set all the flags and report results to the user

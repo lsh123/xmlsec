@@ -1319,7 +1319,7 @@ AC_ARG_ENABLE(md5,   [  --enable-md5            enable MD5 support (yes)])
 if test "z$enable_md5" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_MD5=1"
     XMLSEC_NO_MD5="1"
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 else
     XMLSEC_NO_MD5="0"
     AC_MSG_RESULT(yes)
@@ -1335,7 +1335,7 @@ AC_ARG_ENABLE(ripemd160,   [  --enable-ripemd160      enable RIPEMD-160 support 
 if test "z$enable_ripemd160" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_RIPEMD160=1"
     XMLSEC_NO_RIPEMD160="1"
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 else
     XMLSEC_NO_RIPEMD160="0"
     AC_MSG_RESULT(yes)
@@ -1351,7 +1351,7 @@ AC_ARG_ENABLE(sha1,   [  --enable-sha1           enable SHA1 support (yes)])
 if test "z$enable_sha1" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_SHA1=1"
     XMLSEC_NO_SHA1="1"
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 else
     XMLSEC_NO_SHA1="0"
     AC_MSG_RESULT(yes)
@@ -1367,7 +1367,7 @@ AC_ARG_ENABLE(sha224,   [  --enable-sha224         enable SHA224 support (yes)])
 if test "z$enable_sha224" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_SHA224=1"
     XMLSEC_NO_SHA224="1"
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 else
     XMLSEC_NO_SHA224="0"
     AC_MSG_RESULT(yes)
@@ -1383,7 +1383,7 @@ AC_ARG_ENABLE(sha256,   [  --enable-sha256         enable SHA256 support (yes)])
 if test "z$enable_sha256" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_SHA256=1"
     XMLSEC_NO_SHA256="1"
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 else
     XMLSEC_NO_SHA256="0"
     AC_MSG_RESULT(yes)
@@ -1399,7 +1399,7 @@ AC_ARG_ENABLE(sha384,   [  --enable-sha384         enable SHA384 support (yes)])
 if test "z$enable_sha384" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_SHA384=1"
     XMLSEC_NO_SHA384="1"
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 else
     XMLSEC_NO_SHA384="0"
     AC_MSG_RESULT(yes)
@@ -1415,7 +1415,7 @@ AC_ARG_ENABLE(sha512,   [  --enable-sha512         enable SHA512 support (yes)])
 if test "z$enable_sha512" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_SHA512=1"
     XMLSEC_NO_SHA512="1"
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 else
     XMLSEC_NO_SHA512="0"
     AC_MSG_RESULT(yes)
@@ -1432,7 +1432,7 @@ AC_ARG_ENABLE(hmac,   [  --enable-hmac           enable HMAC support (yes)])
 if test "z$enable_hmac" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_HMAC=1"
     XMLSEC_NO_HMAC="1"
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 else
     XMLSEC_NO_HMAC="0"
     AC_MSG_RESULT(yes)
@@ -1448,7 +1448,7 @@ AC_ARG_ENABLE(dsa,   [  --enable-dsa            enable DSA support (yes)])
 if test "z$enable_dsa" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_DSA=1"
     XMLSEC_NO_DSA="1"
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 else
     XMLSEC_NO_DSA="0"
     AC_MSG_RESULT(yes)
@@ -1464,7 +1464,7 @@ AC_ARG_ENABLE(rsa,   [  --enable-rsa            enable RSA support (yes)])
 if test "z$enable_rsa" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_RSA=1"
     XMLSEC_NO_RSA="1"
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 else
     XMLSEC_NO_RSA="0"
     AC_MSG_RESULT(yes)
@@ -1480,7 +1480,7 @@ AC_ARG_ENABLE(x509,   [  --enable-x509           enable x509 support (yes)])
 if test "z$enable_x509" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_X509=1"
     XMLSEC_NO_X509="1"
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 else
     XMLSEC_NO_X509="0"
     AC_MSG_RESULT(yes)
@@ -1496,7 +1496,7 @@ AC_ARG_ENABLE(des,   [  --enable-des            enable DES support (yes)])
 if test "z$enable_des" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_DES=1"
     XMLSEC_NO_DES="1"
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 else
     XMLSEC_NO_DES="0"
     AC_MSG_RESULT(yes)
@@ -1512,7 +1512,7 @@ AC_ARG_ENABLE(aes,   [  --enable-aes            enable AES support])
 if test "z$enable_aes" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_AES=1"
     XMLSEC_NO_AES="1"
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 else
     XMLSEC_NO_AES="0"
     AC_MSG_RESULT(yes)
@@ -1528,7 +1528,7 @@ AC_ARG_ENABLE(gost,   [  --enable-gost           enable GOST support (no)])
 if test "z$enable_gost" != "zyes" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_GOST=1"
     XMLSEC_NO_GOST="1"
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 else
     XMLSEC_NO_GOST="0"
     AC_MSG_RESULT(yes)
@@ -1545,7 +1545,7 @@ AC_ARG_ENABLE(gost,   [  --enable-gost2012       enable EXPERMIENTAL GOST2012 su
 if test "z$enable_gost2012" != "zyes" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_GOST2012=1"
     XMLSEC_NO_GOST2012="1"
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 else
     XMLSEC_NO_GOST2012="0"
     AC_MSG_RESULT(yes)
@@ -1562,7 +1562,7 @@ AC_ARG_ENABLE(xmldsig,   [  --enable-xmldsig        enable XMLDSig support (yes)
 if test "z$enable_xmldsig" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_XMLDSIG=1"
     XMLSEC_NO_XMLDSIG="1"
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 else
     XMLSEC_NO_XMLDSIG="0"
     AC_MSG_RESULT(yes)
@@ -1578,7 +1578,7 @@ AC_ARG_ENABLE(xmlenc,   [  --enable-xmlenc         enable XMLEnc support (yes)])
 if test "z$enable_xmlenc" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_XMLENC=1"
     XMLSEC_NO_XMLENC="1"
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 else
     XMLSEC_NO_XMLENC="0"
     AC_MSG_RESULT(yes)
@@ -1596,7 +1596,7 @@ if test "z$enable_soap" = "zyes" ; then
     AC_MSG_RESULT(yes)
 else
     XMLSEC_ENABLE_SOAP="0"
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 fi    
 AM_CONDITIONAL(XMLSEC_ENABLE_SOAP, test "z$XMLSEC_ENABLE_SOAP" = "z1")
 
@@ -1607,7 +1607,7 @@ AC_MSG_CHECKING(for docs)
 AC_ARG_ENABLE(docs,   [  --enable-docs         enable documentation (yes)])
 if test "z$enable_docs" = "zno" ; then
     XMLSEC_DOCS="0"
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 else
     XMLSEC_DOCS="1"
     AC_MSG_RESULT(yes)
@@ -1622,7 +1622,7 @@ AC_MSG_CHECKING(for apps)
 AC_ARG_ENABLE(apps,   [  --enable-apps         enable applications (yes)])
 if test "z$enable_apps" = "zno" ; then
     XMLSEC_APPS="0"
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 else
     XMLSEC_APPS="1"
     AC_MSG_RESULT(yes)

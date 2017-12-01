@@ -996,7 +996,7 @@ if test "z$NSPR_FOUND" = "zyes" -a "z$NSS_FOUND" = "zyes" ; then
     NSS_LIBS="$NSS_LIBS $NSPR_LIBS"
 elif test "z$NSPR_FOUND" != "zyes" -a "z$NSS_FOUND" = "zyes" ; then    
     NSS_FOUND="no"
-    AC_MSG_RESULT(NSPR library is required for NSS, ignoring NSS library we have found)
+    AC_MSG_RESULT([NSPR library is required for NSS, ignoring NSS library we have found])
 fi
 
 dnl Finally set all the flags and report results to the user
@@ -1031,9 +1031,9 @@ GCRYPT_LIB_MARKER="libgcrypt$shrext"
 GCRYPT_CRYPTO_LIB="$XMLSEC_PACKAGE-gcrypt"
 
 XMLSEC_NO_GCRYPT="1"
-GCRYPT_VERSION=""
-GCRYPT_CFLAGS=""
-GCRYPT_LIBS=""
+GCRYPT_VERSION=
+GCRYPT_INCLUDE_PATH=
+GCRYPT_LIB_PATH=
 GCRYPT_FOUND="no"
 AC_ARG_WITH(gcrypt,
     [  --with-gcrypt=[PFX]       gcrypt location])
@@ -1089,7 +1089,7 @@ if test "z$GCRYPT_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
     fi
 fi
 
-dnl Priority 5: Guess the config tool location
+dnl Priority 4: Guess the config tool location
 if test "z$GCRYPT_FOUND" = "zno" -a "z$ENABLE_CUSTOM_CONFIGS" = "zyes" ; then
     AC_PATH_PROG(GCRYPT_CONFIG_PATH, [$GCRYPT_CONFIG], [], [$PATH])
     if test "z$GCRYPT_CONFIG_PATH" != "z" ; then
@@ -1097,7 +1097,7 @@ if test "z$GCRYPT_FOUND" = "zno" -a "z$ENABLE_CUSTOM_CONFIGS" = "zyes" ; then
     fi
 fi
 
-dnl Priority 6: Guess using a list of folders.
+dnl Priority 5: Guess using a list of folders.
 if test "z$GCRYPT_FOUND" = "zno" -a "z$ENABLE_FOLDERS_SEARCH" = "zyes" ; then
     AC_MSG_CHECKING(for libgcrypt library installation in the typical folders)
     if test "z$GCRYPT_INCLUDE_PATH" = "z" ; then
@@ -1184,60 +1184,127 @@ AC_SUBST(GCRYPT_MIN_VERSION)
 dnl ==========================================================================
 dnl See if we can find GnuTLS
 dnl ==========================================================================
-XMLSEC_NO_GNUTLS="1"
 GNUTLS_MIN_VERSION="2.8.0"
-GNUTLS_VERSION=""
-GNUTLS_CFLAGS=""
-GNUTLS_LIBS=""
+GNUTLS_INCLUDE_DIR="$COMMON_INCLUDE_DIR /usr/local/gnutls/include"
+GNUTLS_LIB_DIR="$COMMON_LIB_DIR /usr/local/gnutls/lib"
+GNUTLS_INCLUDE_MARKER="gnutls/gnutls.h"
+GNUTLS_LIB_MARKER="libgnutls$shrext"
 GNUTLS_CRYPTO_LIB="$XMLSEC_PACKAGE-gnutls"
+
+XMLSEC_NO_GNUTLS="1"
+GNUTLS_VERSION=""
+GNUTLS_INCLUDE_PATH=
+GNUTLS_LIB_PATH=
 GNUTLS_FOUND="no"
-AC_ARG_WITH(gnutls, [  --with-gnutls=[PFX]       gnutls location])
+AC_ARG_WITH(gnutls,
+    [  --with-gnutls=[PFX]       gnutls location])
+
+dnl Priority 0: Check if library is not needed
 if test "z$with_gnutls" = "zno" ; then
     GNUTLS_FOUND="disabled"
-elif test "z$with_gnutls" = "z" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
-    PKG_CHECK_MODULES(GNUTLS, gnutls >= $GNUTLS_MIN_VERSION,
-	[GNUTLS_FOUND=yes],
-	[GNUTLS_FOUND=no])
+fi
+
+dnl Priority 1: User specifies the path to installation
+if test "z$GNUTLS_FOUND" = "zno" -a "z$with_gnutls" != "z" ; then
+    AC_MSG_CHECKING(for libgnutls library installation in "$with_gnutls" folder)
+    if test -f "$with_gnutls/include/$GNUTLS_INCLUDE_MARKER" -a -f "$with_gnutls/lib/$GNUTLS_LIB_MARKER" ; then
+        GNUTLS_INCLUDE_PATH="$with_gnutls/include"
+        GNUTLS_LIB_PATH="$with_gnutls/lib"
+        GNUTLS_FOUND="yes"
+        AC_MSG_RESULT([yes])
+    else
+        AC_MSG_ERROR([not found: "$with_gnutls/bin/$GNUTLS_CONFIG" tool, or "$with_gnutls/include/$GNUTLS_INCLUDE_MARKER" and/or "$with_gnutls/lib/$GNUTLS_LIB_MARKER" files don't exist), typo?])
+    fi
+fi
+
+dnl Priority 2: User sets both CFLAGS and LIBS flags
+if test "z$GNUTLS_FOUND" = "zno" -a  "z$GNUTLS_CFLAGS" != "z" -a "z$GNUTLS_LIBS" != "z" ; then
+    GNUTLS_FOUND="yes"
+fi
+
+dnl Priority 3: Guess with pkg_config
+if test "z$GNUTLS_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
+    if test "z$GNUTLS_FOUND" = "zno" ; then 
+        PKG_CHECK_MODULES(GNUTLS, gnutls >= $GNUTLS_MIN_VERSION,
+            [GNUTLS_FOUND=yes],
+            [GNUTLS_FOUND=no])
+    fi
     if test "z$GNUTLS_FOUND" = "zno" ; then 
         PKG_CHECK_MODULES(GNUTLS, libgnutls >= $GNUTLS_MIN_VERSION,
-	    [GNUTLS_FOUND=yes],
-	    [GNUTLS_FOUND=no])
+            [GNUTLS_FOUND=yes],
+            [GNUTLS_FOUND=no])
     fi
 fi
 
-if test "z$GNUTLS_FOUND" = "zno" ; then
-    SAVE_CFLAGS="$CFLAGS"
-    SAVE_LDFLAGS="$LDFLAGS"
-    if test "z$with_gnutls" != "z" -a "z$with_gnutls" != "zno" ; then
-        GNUTLS_CFLAGS="-I$with_gnutls/include"
-        GNUTLS_LIBS="-L$with_gnutls/lib -lgnutls"
-        CFLAGS="$GNUTLS_CFLAGS $CFLAGS"
-        LDFLAGS="$GNUTLS_LIBS $LDFLAGS"
+dnl Priority 4: Guess using a list of folders.
+if test "z$GNUTLS_FOUND" = "zno" -a "z$ENABLE_FOLDERS_SEARCH" = "zyes" ; then
+    AC_MSG_CHECKING(for libgnutls library installation in the typical folders)
+    if test "z$GNUTLS_INCLUDE_PATH" = "z" ; then
+        AX_FIND_FOLDER(GNUTLS_INCLUDE_PATH, $GNUTLS_INCLUDE_MARKER, $GNUTLS_INCLUDE_DIR)        
     fi
-    AC_CHECK_HEADERS([gnutls/gnutls.h],[
-        AC_CHECK_LIB([gnutls], [gnutls_check_version], [ GNUTLS_FOUND=yes ])
-    ], [], [AC_INCLUDES_DEFAULT])
-    if test "z$with_gnutls" != "z" -a "z$with_gnutls" != "zno" -a "z$GNUTLS_FOUND" != "zyes" ; then
-        AC_MSG_ERROR([can't find usable libgnutls at specified location "$with_gnutls"])
+    if test "z$GNUTLS_LIB_PATH" = "z" ; then
+        AX_FIND_FOLDER(GNUTLS_LIB_PATH, $GNUTLS_LIB_MARKER, $GNUTLS_LIB_DIR)
     fi
-    CFLAGS="$SAVE_CFLAGS"
-    LDFLAGS="$SAVE_LDFLAGS"
+    if test "z$GNUTLS_INCLUDE_PATH" != "z" -a "z$GNUTLS_LIB_PATH" != "z" ; then
+        GNUTLS_FOUND="yes"
+        AC_MSG_RESULT([yes ("-I$GNUTLS_INCLUDE_PATH -L$GNUTLS_LIB_PATH")])
+    else
+        AC_MSG_RESULT([not found])
+    fi
 fi
 
-AC_MSG_CHECKING(for gnutls library >= $GNUTLS_MIN_VERSION)
+dnl Set CFLAGS/LIBS flags
+if test "z$GNUTLS_FOUND" = "zyes" ; then
+    dnl Set flags if INCLUDE_PATH or LIB_PATH are set (do NOT overwrite CFLAGS/LIBS!)
+    if test "z$GNUTLS_INCLUDE_PATH" != "z" ; then 
+        GNUTLS_CFLAGS="$GNUTLS_CFLAGS -I$GNUTLS_INCLUDE_PATH"
+    fi
+    if test "z$GNUTLS_LIB_PATH" != "z" ; then
+        if test "z$with_gnu_ld" = "zyes" ; then
+            GNUTLS_LIBS="$GNUTLS_LIBS -Wl,-rpath-link -Wl,$GNUTLS_LIB_PATH"
+        fi
+        GNUTLS_LIBS="$GNUTLS_LIBS -L$GNUTLS_LIB_PATH -lgnutls"
+    fi
+fi
+
+dnl Verify the version
+AC_MSG_CHECKING(for libgnutls library >= $GNUTLS_MIN_VERSION)
+if test "z$GNUTLS_FOUND" = "zyes" ; then
+    OLD_CPPFLAGS=$CPPFLAGS
+    CPPFLAGS="$GNUTLS_CFLAGS"
+    dnl gnutls uses hex digits for version number
+    minvers=`echo $GNUTLS_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 256 + $2) * 256 + $3;}'`
+    AC_EGREP_CPP(yes, [
+        #include <gnutls/gnutls.h>
+        #if GNUTLS_VERSION_NUMBER >= $minvers
+        yes
+        #endif
+        ],[
+            GNUTLS_FOUND=yes
+            AC_MSG_RESULT([yes])
+        ], [
+            GNUTLS_FOUND=no
+            AC_MSG_RESULT([no])
+        ]
+    )
+    CPPFLAGS=$OLD_CPPFLAGS
+else
+    AC_MSG_RESULT([$GNUTLS_FOUND])
+fi
+
+dnl Check that we have found gcrypt
+if test "z$GNUTLS_FOUND" = "zyes" -a "z$GCRYPT_FOUND" != "zyes" ; then    
+    GNUTLS_FOUND="no"
+    AC_MSG_RESULT([xmlsec-gnutls library requires xmlsec-gcrypt library which is disabled or missing, ignoring libgnutls library we have found])
+fi
+
+dnl Finally set all the flags and report results to the user
 if test "z$GNUTLS_FOUND" = "zyes" ; then 
     XMLSEC_NO_GNUTLS="0"
     GNUTLS_CFLAGS="$GNUTLS_CFLAGS -DXMLSEC_CRYPTO_GNUTLS=1"
     XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST gnutls"
-
-    dnl xmlsec-gnutls is using xmlsec-gcrypt
-    if test "z$GCRYPT_FOUND" != "zyes" ; then
-        AC_MSG_ERROR(xmlsec-gnutls library requires xmlsec-gcrypt library which is disabled or missing)
-    fi
-    AC_MSG_RESULT(yes)
 else
     XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST gnutls"
-    AC_MSG_RESULT(no)
 fi
 
 AM_CONDITIONAL(XMLSEC_NO_GNUTLS, test "z$XMLSEC_NO_GNUTLS" = "z1")

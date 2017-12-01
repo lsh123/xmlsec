@@ -85,7 +85,7 @@ if test "z$enable_development" = "zyes" ; then
     enable_crypto_dl="no"
     AC_MSG_RESULT(yes)
 else
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 fi
 
 dnl ==========================================================================
@@ -98,7 +98,7 @@ if test "z$enable_manpages_build" = "zyes" ; then
 
     AC_MSG_RESULT(yes)
 else
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 fi
 
 AM_CONDITIONAL(HAS_HELP2MAN, [test x"$HELP2MAN" != x])
@@ -119,7 +119,7 @@ if test "z$enable_docs_build" = "zyes" ; then
 
     AC_MSG_RESULT(yes)
 else
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 fi
 
 AM_CONDITIONAL(HAS_MAN2HTML, [test x"$MAN2HTML" != x])
@@ -202,7 +202,7 @@ if test "$ac_cv_sizeof_size_t" -ne "4" ; then
 fi
 
 dnl ==========================================================================
-dnl Check if pkg-config enabled and installed
+dnl Check if pkg-config is enabled and installed
 dnl ==========================================================================
 PKGCONFIG_FOUND="no"
 AC_ARG_ENABLE(pkgconfig,
@@ -212,6 +212,30 @@ if test "z$enable_pkgconfig" != "zno" ; then
     PKGCONFIG_FOUND="yes"
 else
     PKGCONFIG_FOUND="no"
+fi
+
+dnl ==========================================================================
+dnl Check if packages custom config scripts are enabled
+dnl ==========================================================================
+ENABLE_CUSTOM_CONFIGS="no"
+AC_ARG_ENABLE(custom-configs,
+    [  --enable-custom-configs   enable package-specific custom scripts for configuration (yes)])
+if test "z$enable_custom_configs" != "zno" ; then
+    ENABLE_CUSTOM_CONFIGS="yes"
+else
+    ENABLE_CUSTOM_CONFIGS="no"
+fi
+
+dnl ==========================================================================
+dnl Check searching for typical packages folders is enabled
+dnl ==========================================================================
+ENABLE_FOLDERS_SEARCH="no"
+AC_ARG_ENABLE(folders-search,
+    [  --enable-folders-search   enable searching for package installation in typical folders (yes)])
+if test "z$enable_folders_search" != "zno" ; then
+    ENABLE_FOLDERS_SEARCH="yes"
+else
+    ENABLE_FOLDERS_SEARCH="no"
 fi
 
 dnl ==========================================================================
@@ -225,12 +249,29 @@ case $host in
     *)                  ac_common_lib_dir="$ac_common_lib_dir /usr/lib/$host" ;;
 esac
 
+dnl Macro to help find the folder that contains marker file.
+dnl Usage: AX_FIND_FOLDER(RESULT_VARIABLE, MARKER_FILE, FOLDERS_LIST)
+AC_DEFUN([AX_FIND_FOLDER],[
+    for dir in $3 ; do
+        if test -f "$dir/$2" ; then
+            $1="$dir"
+            break;
+        fi
+    done
+])
 
 dnl ==========================================================================
 dnl find libxml
 dnl ==========================================================================
+ac_libxml_inc_dir="$ac_common_inc_dir /usr/include/libxml2 /usr/local/include/libxml2 /usr/local/libxml2/include"
+ac_libxml_lib_dir="$ac_common_lib_dir /usr/local/libxml2/lib"
+
 LIBXML_MIN_VERSION="2.8.0"
 LIBXML_CONFIG="xml2-config"
+LIBXML_INCLUDE_MARKER="libxml/xmlversion.h"
+LIBXML_LIB_MARKER="libxml2$shrext"
+LIBXML_INCLUDE_PATH=
+LIBXML_LIB_PATH=
 LIBXML_CONFIG_PATH=
 LIBXML_FOUND="no"
 AC_ARG_WITH(libxml, 
@@ -249,30 +290,30 @@ fi
 dnl Priority 1: User specifies the path to source code
 if test "z$LIBXML_FOUND" = "zno" -a "z$with_libxml_src" != "z" ; then
     AC_MSG_CHECKING(for libxml2 library source tree in "$with_libxml_src" folder) 
-    if test -d "$with_libxml_src/include/libxml" -a -d "$with_libxml_src/.libs" ; then
-        LIBXML_CFLAGS="$LIBXML_CFLAGS -I$with_libxml_src/include"
-        LIBXML_LIBS="$LIBXML_LIBS -L$with_libxml_src/.libs -lxml2"
+    if test -f "$with_libxml_src/include/$LIBXML_INCLUDE_MARKER" -a -f "$with_libxml_src/.libs/$LIBXML_LIB_MARKER" ; then
+        LIBXML_INCLUDE_PATH="$with_libxml_src/include"
+        LIBXML_LIB_PATH="$with_libxml_src/.libs"
         LIBXML_FOUND="yes"
         AC_MSG_RESULT([yes])
     else 
-        AC_MSG_ERROR([libxml2 source tree not found: "$with_libxml_src/include/libxml" or "$with_libxml_src/.libs" folders don't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_libxml_src/include/$LIBXML_INCLUDE_MARKER" or "$with_libxml_src/.libs/$LIBXML_LIB_MARKER" files don't exist), typo?])
     fi
 fi
 
 dnl Priority 2: User specifies path to installation
 if test "z$LIBXML_FOUND" = "zno" -a "z$with_libxml" != "z" ; then
     AC_MSG_CHECKING(for libxml2 library installation in "$with_libxml" folder)
-    if test -f "$with_libxml/bin/$LIBXML_CONFIG" ; then
+    if test "z$ENABLE_CUSTOM_CONFIGS" = "zyes" -a -f "$with_libxml/bin/$LIBXML_CONFIG" ; then
         LIBXML_CONFIG_PATH="$with_libxml/bin/$LIBXML_CONFIG"
         LIBXML_FOUND="yes"
         AC_MSG_RESULT([yes]) 
-    elif test -d "$with_libxml/include/libxml2/libxml" -a -d "$with_libxml/lib" ; then
-        LIBXML_CFLAGS="$LIBXML_CFLAGS -I$with_libxml/include/libxml2"
-        LIBXML_LIBS="$LIBXML_LIBS -L$with_libxml/lib -lxml2"
+    elif test -f "$with_libxml/include/libxml2/$LIBXML_INCLUDE_MARKER" -a -f "$with_libxml/lib/$LIBXML_LIB_MARKER" ; then
+        LIBXML_INCLUDE_PATH="$with_libxml/include/libxml2"
+        LIBXSLT_LIB_PATH="$with_libxml/lib"
         LIBXML_FOUND="yes"
         AC_MSG_RESULT([yes])
     else
-        AC_MSG_ERROR([libxml2 installation not found: "$with_libxml/bin/$LIBXML_CONFIG" tool, or "$with_libxml/include/libxml2/libxml" or "$with_libxml/lib" folders don't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_libxml/bin/$LIBXML_CONFIG" tool, or "$with_libxml/include/libxml2/$LIBXML_INCLUDE_MARKER" and/or "$with_libxml/lib/$LIBXML_LIB_MARKER" files don't exist), typo?])
     fi
 fi
 
@@ -289,25 +330,57 @@ if test "z$LIBXML_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
 fi
 
 dnl Priority 5: Guess the config tool location
-if test "z$LIBXML_FOUND" = "zno" ; then
+if test "z$LIBXML_FOUND" = "zno" -a "z$ENABLE_CUSTOM_CONFIGS" = "zyes" ; then
     AC_PATH_PROG(LIBXML_CONFIG_PATH, [$LIBXML_CONFIG], [], [$PATH])
     if test "z$LIBXML_CONFIG_PATH" != "z" ; then
         LIBXML_FOUND="yes"
     fi
 fi
 
-dnl Get the values using config tool
-if test "z$LIBXML_FOUND" != "zwithout" -a "z$LIBXML_CONFIG_PATH" != "z" ; then
-    if test "z$LIBXML_CFLAGS" = "z" ; then
-        LIBXML_CFLAGS="`$LIBXML_CONFIG_PATH --cflags`"
+dnl Priority 6: Guess using a list of folders.
+if test "z$LIBXML_FOUND" = "zno" -a "z$ENABLE_FOLDERS_SEARCH" = "zyes" ; then
+    AC_MSG_CHECKING(for libxml2 library installation in the typical folders)
+    if test "z$LIBXML_INCLUDE_PATH" = "z" ; then
+        AX_FIND_FOLDER(LIBXML_INCLUDE_PATH, $LIBXML_INCLUDE_MARKER, $ac_libxml_inc_dir)        
     fi
-    if test "z$LIBXML_LIBS" = "z"; then
-        LIBXML_LIBS="`$LIBXML_CONFIG_PATH --libs`"
+    if test "z$LIBXML_LIB_PATH" = "z" ; then
+        AX_FIND_FOLDER(LIBXML_LIB_PATH, $LIBXML_LIB_MARKER, $ac_libxml_lib_dir)
     fi
-    LIBXML_CONFIG=$LIBXML_CONFIG_PATH
+    if test "z$LIBXML_INCLUDE_PATH" != "z" -a "z$LIBXML_LIB_PATH" != "z" ; then
+        LIBXML_FOUND="yes"
+        AC_MSG_RESULT([yes ("-I$LIBXML_INCLUDE_PATH -L$LIBXML_LIB_PATH")])
+    else
+        AC_MSG_RESULT([not found])
+    fi
 fi
 
-dnl Verify the version: failure is fatal but we hope for the best even if we didn't find LibXML2 yet.
+dnl Set CFLAGS/LIBS flags
+if test "z$LIBXML_FOUND" = "zyes" ; then
+    if test "z$LIBXML_CONFIG_PATH" != "z" -a "z$ENABLE_CUSTOM_CONFIGS" = "zyes" ; then
+        dnl Get the values using config tool (overwrite CFLAGS/LIBS!)
+        if test "z$LIBXML_CFLAGS" = "z" ; then
+            LIBXML_CFLAGS="`$LIBXML_CONFIG_PATH --cflags`"
+        fi
+        if test "z$LIBXML_LIBS" = "z"; then
+            LIBXML_LIBS="`$LIBXML_CONFIG_PATH --libs`"
+        fi
+        LIBXML_CONFIG=$LIBXML_CONFIG_PATH
+        LIBXML_FOUND="yes"
+    else
+        dnl Set flags if INCLUDE_PATH or LIB_PATH are set (do NOT overwrite CFLAGS/LIBS!)
+        if test "z$LIBXML_INCLUDE_PATH" != "z" ; then 
+            LIBXML_CFLAGS="$LIBXML_CFLAGS -I$LIBXML_INCLUDE_PATH"
+        fi
+        if test "z$LIBXML_LIB_PATH" != "z" ; then
+            if test "z$with_gnu_ld" = "zyes" ; then
+                LIBXML_LIBS="$LIBXML_LIBS -Wl,-rpath-link -Wl,$LIBXML_LIB_PATH"
+            fi
+            LIBXML_LIBS="$LIBXML_LIBS -L$LIBXML_LIB_PATH -lxml2"
+        fi
+    fi
+fi
+
+dnl Verify the version: failure is fatal
 AC_MSG_CHECKING(for libxml2 library >= $LIBXML_MIN_VERSION)
 OLD_CPPFLAGS=$CPPFLAGS
 CPPFLAGS="$LIBXML_CFLAGS"
@@ -336,12 +409,19 @@ AC_SUBST(LIBXML_MIN_VERSION)
 dnl ==========================================================================
 dnl find libxslt
 dnl ==========================================================================
+ac_libxslt_inc_dir="$ac_common_inc_dir /usr/local/libxslt/include"
+ac_libxslt_lib_dir="$ac_common_lib_dir /usr/local/libxslt/lib"
+
 XMLSEC_NO_LIBXSLT="1"
 LIBXSLT_MIN_VERSION=1.0.20
 LIBXSLT_CONFIG="xslt-config"
+LIBXSLT_INCLUDE_MARKER="libxslt/xsltconfig.h"
+LIBXSLT_LIB_MARKER="libxslt$shrext"
+LIBXSLT_INCLUDE_PATH=
+LIBXSLT_LIB_PATH=
 LIBXSLT_CONFIG_PATH=
 LIBXSLT_FOUND="no"
-AC_ARG_WITH(libxslt, 
+AC_ARG_WITH(libxslt,
     [  --with-libxslt=[PFX]      libxslt location]
 )
 AC_ARG_WITH(libxslt-src, 
@@ -358,30 +438,30 @@ fi
 dnl Priority 1: User specifies the path to source code
 if test "z$LIBXSLT_FOUND" = "zno" -a "z$with_libxslt_src" != "z" ; then
     AC_MSG_CHECKING(for libxslt library source tree in "$with_libxslt_src" folder) 
-    if test -d "$with_libxslt_src/libxslt" -a -d "$with_libxslt_src/libxslt/.libs" ; then
-        LIBXSLT_CFLAGS="$LIBXSLT_CFLAGS -I$with_libxslt_src"
-        LIBXSLT_LIBS="$LIBXSLT_LIBS -L$with_libxslt_src/libxslt/.libs -lxslt"
+    if test -f "$with_libxslt_src/$LIBXSLT_INCLUDE_MARKER" -a -f "$with_libxslt_src/libxslt/.libs/$LIBXSLT_LIB_MARKER" ; then
+        LIBXSLT_INCLUDE_PATH="$with_libxslt_src"
+        LIBXSLT_LIB_PATH="$with_libxslt_src/libxslt/.libs"
         LIBXSLT_FOUND="yes"
         AC_MSG_RESULT([yes])
     else 
-        AC_MSG_ERROR([libxslt source tree not found: "$with_libxslt_src/libxslt" or "$with_libxslt_src/libxslt/.libs" folders don't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_libxslt_src/$LIBXSLT_INCLUDE_MARKER" and/or "$with_libxslt_src/libxslt/.libs/$LIBXSLT_LIB_MARKER" files don't exist), typo?])
     fi
 fi
 
 dnl Priority 2: User specifies path to installation
 if test "z$LIBXSLT_FOUND" = "zno" -a "z$with_libxslt" != "z" ; then
     AC_MSG_CHECKING(for libxslt library installation in "$with_libxslt" folder)
-    if test -f "$with_libxslt/bin/$LIBXSLT_CONFIG" ; then
+    if test "z$ENABLE_CUSTOM_CONFIGS" = "zyes" -a -f "$with_libxslt/bin/$LIBXSLT_CONFIG" ; then
         LIBXSLT_CONFIG_PATH="$with_libxslt/bin/$LIBXSLT_CONFIG"
         LIBXSLT_FOUND="yes"
         AC_MSG_RESULT([yes]) 
-    elif test -d "$with_libxslt/include/libxslt" -a -d "$with_libxslt/lib" ; then
-        LIBXSLT_CFLAGS="$LIBXSLT_CFLAGS -I$with_libxslt/include"
-        LIBXSLT_LIBS="$LIBXSLT_LIBS -L$with_libxslt/lib -lxslt"
+    elif test -f "$with_libxslt/include/$LIBXSLT_INCLUDE_MARKER" -a -f "$with_libxslt/lib/$LIBXSLT_LIB_MARKER" ; then
+        LIBXSLT_INCLUDE_PATH="$with_libxslt/include"
+        LIBXSLT_LIB_PATH="$with_libxslt/lib"
         LIBXSLT_FOUND="yes"
         AC_MSG_RESULT([yes])
     else
-        AC_MSG_ERROR([libxslt installation not found: "$with_libxslt/bin/$LIBXSLT_CONFIG" tool, or "$with_libxslt/include/libxslt" or "$with_libxslt/lib" folders don't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_libxslt/bin/$LIBXSLT_CONFIG" tool, or "$with_libxslt/include/$LIBXSLT_INCLUDE_MARKER" and/or "$with_libxslt/lib/$LIBXSLT_LIB_MARKER" files don't exist), typo?])
     fi
 fi
 
@@ -398,27 +478,58 @@ if test "z$LIBXSLT_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
 fi
 
 dnl Priority 5: Guess the config tool location
-if test "z$LIBXSLT_FOUND" = "zno" ; then
+if test "z$LIBXSLT_FOUND" = "zno" -a "z$ENABLE_CUSTOM_CONFIGS" = "zyes" ; then
     AC_PATH_PROG(LIBXSLT_CONFIG_PATH, [$LIBXSLT_CONFIG], [], [$PATH])
     if test "z$LIBXSLT_CONFIG_PATH" != "z" ; then
         LIBXSLT_FOUND="yes"
     fi
 fi
 
-dnl Get the values using config tool
-if test "z$LIBXSLT_FOUND" != "zwithout" -a "z$LIBXSLT_CONFIG_PATH" != "z" ; then
-    if test "z$LIBXSLT_CFLAGS" = "z" ; then
-        LIBXSLT_CFLAGS="`$LIBXSLT_CONFIG_PATH --cflags`"
+dnl Priority 6: Guess using a list of folders.
+if test "z$LIBXSLT_FOUND" = "zno" -a "z$ENABLE_FOLDERS_SEARCH" = "zyes" ; then
+    AC_MSG_CHECKING(for libxslt library installation in the typical folders)
+    if test "z$LIBXSLT_INCLUDE_PATH" = "z" ; then
+        AX_FIND_FOLDER(LIBXSLT_INCLUDE_PATH, $LIBXSLT_INCLUDE_MARKER, $ac_libxslt_inc_dir)        
     fi
-    if test "z$LIBXSLT_LIBS" = "z"; then
-        LIBXSLT_LIBS="`$LIBXSLT_CONFIG_PATH --libs`"
+    if test "z$LIBXSLT_LIB_PATH" = "z" ; then
+        AX_FIND_FOLDER(LIBXSLT_LIB_PATH, $LIBXSLT_LIB_MARKER, $ac_libxslt_lib_dir)
     fi
-    LIBXSLT_CONFIG=$LIBXSLT_CONFIG_PATH
-    LIBXSLT_FOUND="yes"
+    if test "z$LIBXSLT_INCLUDE_PATH" != "z" -a "z$LIBXSLT_LIB_PATH" != "z" ; then
+        LIBXSLT_FOUND="yes"
+        AC_MSG_RESULT([yes ("-I$LIBXSLT_INCLUDE_PATH -L$LIBXSLT_LIB_PATH")])
+    else
+        AC_MSG_RESULT([not found])
+    fi
 fi
 
-dnl Verify the version: failure is fatal!
+dnl Set CFLAGS/LIBS flags
 if test "z$LIBXSLT_FOUND" = "zyes" ; then
+    if test "z$LIBXSLT_CONFIG_PATH" != "z" -a "z$ENABLE_CUSTOM_CONFIGS" = "zyes" ; then
+        dnl Get the values using config tool (overwrite CFLAGS/LIBS!)
+        if test "z$LIBXSLT_CFLAGS" = "z" ; then
+            LIBXSLT_CFLAGS="`$LIBXSLT_CONFIG_PATH --cflags`"
+        fi
+        if test "z$LIBXSLT_LIBS" = "z"; then
+            LIBXSLT_LIBS="`$LIBXSLT_CONFIG_PATH --libs`"
+        fi
+        LIBXSLT_CONFIG=$LIBXSLT_CONFIG_PATH
+        LIBXSLT_FOUND="yes"
+    else
+        dnl Set flags if INCLUDE_PATH or LIB_PATH are set (do NOT overwrite CFLAGS/LIBS!)
+        if test "z$LIBXSLT_INCLUDE_PATH" != "z" ; then 
+            LIBXSLT_CFLAGS="$LIBXSLT_CFLAGS -I$LIBXSLT_INCLUDE_PATH"
+        fi
+        if test "z$LIBXSLT_LIB_PATH" != "z" ; then
+            if test "z$with_gnu_ld" = "zyes" ; then
+                LIBXSLT_LIBS="$LIBXSLT_LIBS -Wl,-rpath-link -Wl,$LIBXSLT_LIB_PATH"
+            fi
+            LIBXSLT_LIBS="$LIBXSLT_LIBS -L$LIBXSLT_LIB_PATH -lxslt"
+        fi
+    fi
+fi
+
+dnl Verify the version
+if test "z$LIBXSLT_FOUND" != "zwithout" ; then
     AC_MSG_CHECKING(for libxslt library >= $LIBXSLT_MIN_VERSION)
     OLD_CPPFLAGS=$CPPFLAGS
     CPPFLAGS="$LIBXSLT_CFLAGS"
@@ -433,7 +544,7 @@ if test "z$LIBXSLT_FOUND" = "zyes" ; then
             AC_MSG_RESULT([yes])
         ], [
             LIBXSLT_FOUND=no
-            AC_MSG_ERROR(You need at least libxslt $LIBXSLT_MIN_VERSION for this version of $XMLSEC_PACKAGE)
+            AC_MSG_RESULT([no: you need at least libxslt $LIBXSLT_MIN_VERSION for this version of $XMLSEC_PACKAGE])
         ]
     )
     CPPFLAGS=$OLD_CPPFLAGS
@@ -464,9 +575,8 @@ XMLSEC_CRYPTO_DISABLED_LIST=""
 dnl ==========================================================================
 dnl OpenSSL
 dnl ==========================================================================
-ac_openssl_lib_dir="/usr/local/lib /usr/lib /usr/lib64 /usr/local /usr/local/ssl /usr/local/ssl/lib /usr/pkg"
-ac_openssl_inc_dir="/usr/local/include /usr/include /usr/local /usr/local/ssl /usr/pkg /usr/local/ssl/include"
-
+ac_openssl_inc_dir="$ac_common_inc_dir /usr/local/ssl/include"
+ac_openssl_lib_dir="$ac_common_lib_dir /usr/local/ssl/lib"
 case $host in
     *-*-mingw*)   ac_openssl_exlibs=;;
     *-*-osf5*)    ac_openssl_exlibs=;;
@@ -480,6 +590,11 @@ XMLSEC_NO_OPENSSL="1"
 OPENSSL_MIN_VERSION="1.0.0"
 OPENSSL_VERSION=""
 OPENSSL_CRYPTO_LIB="$XMLSEC_PACKAGE-openssl"
+OPENSSL_INCLUDE_MARKER="openssl/opensslv.h"
+OPENSSL_LIB_SHARED_MARKER="libcrypto$shrext"
+OPENSSL_LIB_STATIC_MARKER="libcrypto.a"
+OPENSSL_INCLUDE_PATH=
+OPENSSL_LIB_PATH=
 OPENSSL_FOUND=no
 AC_ARG_WITH(openssl,
     [  --with-openssl[=PFX]      openssl location])
@@ -492,18 +607,18 @@ fi
 dnl Priority 1: User specifies the path to installation
 if test "z$OPENSSL_FOUND" = "zno" -a "z$with_openssl" != "z" ; then
     AC_MSG_CHECKING(for openssl library installation in "$with_openssl" folder)
-    if test -d "$with_openssl/include" -a -f "$with_openssl/lib/libcrypto${XMLSEC_SHLIBSFX}" ; then
-        OPENSSL_CFLAGS="$OPENSSL_CFLAGS -I$with_openssl/include"
-        OPENSSL_LIBS="$OPENSSL_LIBS -L$with_openssl/lib -lcrypto $ac_openssl_exlibs"
+    if test -f "$with_openssl/include/$OPENSSL_INCLUDE_MARKER" -a -f "$with_openssl/lib/$OPENSSL_LIB_SHARED_MARKER" ; then
+        OPENSSL_INCLUDE_PATH="$with_openssl/include"
+        OPENSSL_LIB_PATH="$with_openssl/lib"
         OPENSSL_FOUND="yes"
         AC_MSG_RESULT([yes]) 
-    elif test -d "$with_openssl/include" -a -f "$with_openssl/lib/ibcrypto.a" ; then
-        OPENSSL_CFLAGS="$OPENSSL_CFLAGS -I$with_openssl/include"
-        OPENSSL_LIBS="$OPENSSL_LIBS $with_openssl/lib/libcrypto.a $ac_openssl_exlibs"
+    elif test -f "$with_openssl/include/$OPENSSL_INCLUDE_MARKER" -a -f "$with_openssl/lib/$OPENSSL_LIB_STATIC_MARKER" ; then
+        OPENSSL_INCLUDE_PATH="$with_openssl/include"
+        OPENSSL_LIB_PATH="$with_openssl/lib"
         OPENSSL_FOUND="yes"
         AC_MSG_RESULT([yes])
     else
-        AC_MSG_ERROR([openssl not found: "$with_openssl/include" folder, and "$with_openssl/lib/libcrypto${XMLSEC_SHLIBSFX}" or "$with_openssl/lib/libcrypto.a" files don't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_openssl/include/$OPENSSL_INCLUDE_MARKER" or "$with_openssl/lib/$OPENSSL_LIB_SHARED_MARKER" or "$with_openssl/lib/$OPENSSL_LIB_STATIC_MARKER" files don't exist), typo?])
     fi
 fi
 
@@ -520,37 +635,47 @@ if test "z$OPENSSL_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
 fi
 
 dnl Priority 4: Guess using a list of folders (do not overwrite CFLAGS/LIBS flags).
-if test "z$OPENSSL_FOUND" = "zno" ; then
-    if test "z$OPENSSL_CFLAGS" = "z" ; then
-        for dir in $ac_openssl_inc_dir ; do
-            if test -f $dir/openssl/ssl.h ; then
-                OPENSSL_CFLAGS="$OPENSSL_CFLAGS -I$dir"
-                break
-            fi
-        done
+if test "z$OPENSSL_FOUND" = "zno" -a "z$ENABLE_FOLDERS_SEARCH" = "zyes" ; then
+    AC_MSG_CHECKING(for openssl library installation in the typical folders)
+    if test "z$OPENSSL_INCLUDE_PATH" = "z" ; then
+        AX_FIND_FOLDER(OPENSSL_INCLUDE_PATH, $OPENSSL_INCLUDE_MARKER, $ac_openssl_inc_dir)        
     fi
-    if test "z$OPENSSL_LIBS" = "z" ; then
-        for dir in $ac_openssl_lib_dir ; do
-            if test -f "$dir/libcrypto${XMLSEC_SHLIBSFX}" ; then
-                OPENSSL_LIBS="$OPENSSL_LIBS -L$dir -lcrypto $ac_openssl_exlibs"
-                break
-            elif test -f $dir/libcrypto.a ; then
-                OPENSSL_LIBS="$OPENSSL_LIBS $dir/libcrypto.a $ac_openssl_exlibs"
-                break
-            fi
-        done
+    if test "z$OPENSSL_LIB_PATH" = "z" ; then
+        AX_FIND_FOLDER(OPENSSL_LIB_PATH, $OPENSSL_LIB_SHARED_MARKER, $ac_openssl_lib_dir)
     fi
-    if test "z$OPENSSL_CFLAGS" != "z" -a "z$OPENSSL_LIBS" != "z" ; then
+    if test "z$OPENSSL_LIB_PATH" = "z" ; then
+        AX_FIND_FOLDER(OPENSSL_LIB_PATH, $OPENSSL_LIB_STATIC_MARKER, $ac_openssl_lib_dir)
+    fi
+    if test "z$OPENSSL_INCLUDE_PATH" != "z" -a "z$OPENSSL_LIB_PATH" != "z" ; then
         OPENSSL_FOUND="yes"
+        AC_MSG_RESULT([yes ("-I$OPENSSL_INCLUDE_PATH -L$OPENSSL_LIB_PATH")])
+    else
+        AC_MSG_RESULT([not found])
     fi
+fi
+
+dnl Set flags if INCLUDE_PATH or LIB_PATH are set
+if test "z$OPENSSL_FOUND" = "zyes" -a "z$OPENSSL_INCLUDE_PATH" != "z" ; then 
+    OPENSSL_CFLAGS="$OPENSSL_CFLAGS -I$OPENSSL_INCLUDE_PATH -I$OPENSSL_INCLUDE_PATH/openssl"
+fi
+if test "z$OPENSSL_FOUND" = "zyes" -a "z$OPENSSL_LIB_PATH" != "z" ; then
+    if test -f "$OPENSSL_LIB_PATH/$OPENSSL_LIB_SHARED_MARKER" ; then
+        if test "z$with_gnu_ld" = "zyes" ; then
+            OPENSSL_LIBS="$OPENSSL_LIBS -Wl,-rpath-link -Wl,$OPENSSL_LIB_PATH"
+        fi
+        OPENSSL_LIBS="$OPENSSL_LIBS -L$OPENSSL_LIB_PATH -lcrypto"        
+    elif test -f $OPENSSL_LIB_PATH/$OPENSSL_LIB_STATIC_MARKER ; then
+        OPENSSL_LIBS="$OPENSSL_LIBS $OPENSSL_LIB_PATH/libcrypto.a"
+    fi
+    OPENSSL_LIBS="$OPENSSL_LIBS $ac_openssl_exlibs"
 fi
 
 dnl Check the OpenSSL version; if you change this code then you probably want to
 dnl change include/openssl/crypto.h as well.
-if test "z$OPENSSL_FOUND" = "zyes" ; then
+if test "z$OPENSSL_FOUND" != "zwithout" ; then
+    AC_MSG_CHECKING(for openssl library >= $OPENSSL_MIN_VERSION)
     OLD_CPPFLAGS=$CPPFLAGS
     CPPFLAGS="$OPENSSL_CFLAGS"
-
     if test "z$OPENSSL_VERSION" = "z" ; then
         AC_EGREP_CPP(yes,[
             #include <openssl/opensslv.h>
@@ -589,20 +714,24 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
             OPENSSL_VERSION=""
         ])
     fi
-
     CPPFLAGS=$OLD_CPPFLAGS
+    
+    if test "z$OPENSSL_VERSION" != "z" ; then
+        OPENSSL_FOUND=yes
+        AC_MSG_RESULT([yes ('$OPENSSL_VERSION')])
+    else
+        OPENSSL_FOUND=no
+        AC_MSG_RESULT(no)
+    fi
 fi
 
 dnl Finally set all the flags and report results to the user
-AC_MSG_CHECKING(for openssl library >= $OPENSSL_MIN_VERSION) 
-if test "z$OPENSSL_FOUND" = "zyes" -a "z$OPENSSL_VERSION" != "z" ; then
+if test "z$OPENSSL_FOUND" = "zyes" ; then
     XMLSEC_NO_OPENSSL="0"
     OPENSSL_CFLAGS="$OPENSSL_CFLAGS -DXMLSEC_CRYPTO_OPENSSL=1"
-    XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST openssl"
-    AC_MSG_RESULT([yes ('$OPENSSL_VERSION')])
+    XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST openssl"    
 else
-    XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST openssl"
-    AC_MSG_RESULT(no)
+    XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST openssl"    
 fi
 
 AM_CONDITIONAL(XMLSEC_NO_OPENSSL, test "z$XMLSEC_NO_OPENSSL" == "z1")
@@ -636,14 +765,18 @@ MOZILLA_MIN_VERSION="1.4"
 NSS_MIN_VERSION="3.11.1"
 NSPR_MIN_VERSION="4.4.1"
 NSS_CRYPTO_LIB="$XMLSEC_PACKAGE-nss"
-NSS_FOUND="no"
-NSPR_FOUND="no"
-NSS_INCLUDE_PATH=
-NSS_LIB_PATH=
-NSPR_INCLUDE_PATH=
-NSPR_LIB_PATH=
 NSPR_PACKAGE=mozilla-nspr
 NSS_PACKAGE=mozilla-nss
+NSPR_INCLUDE_MARKER="nspr/nspr.h"
+NSPR_LIB_MARKER="libnspr4$shrext"
+NSS_INCLUDE_MARKER="nss/nss.h"
+NSS_LIB_MARKER="libnss3$shrext"
+NSPR_INCLUDE_PATH=
+NSPR_LIB_PATH=
+NSS_INCLUDE_PATH=
+NSS_LIB_PATH=
+NSS_FOUND="no"
+NSPR_FOUND="no"
 AC_ARG_WITH(nss,
     [  --with-nss=[PFX]          nss location])
 AC_ARG_WITH(nspr,
@@ -656,7 +789,7 @@ AC_ARG_WITH(mozilla_ver,
 dnl Priority 0: Check if library is not needed
 if test "z$with_nss" = "zno" -o "z$with_nspr" = "zno" ; then
     AC_MSG_CHECKING(for NSS library) 
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
     NSS_FOUND="without"
     NSPR_FOUND="without"
 fi
@@ -664,24 +797,24 @@ fi
 dnl Priority 1: User specifies the path to installation
 if test "z$NSPR_FOUND" = "zno" -a "z$with_nspr" != "z" ; then
     AC_MSG_CHECKING(for nspr library installation in "$with_nspr" folder)
-    if test -f "$with_nspr/include/nspr/nspr.h" -a -f "$with_nspr/lib/libnspr4$shrext" ; then
+    if test -f "$with_nspr/include/$NSPR_INCLUDE_MARKER" -a -f "$with_nspr/lib/$NSPR_LIB_MARKER" ; then
         NSPR_INCLUDE_PATH="$with_nspr/include"
         NSPR_LIB_PATH="$with_nspr/lib"
         NSPR_FOUND="yes"
         AC_MSG_RESULT([yes])
     else
-        AC_MSG_ERROR([nspr not found: "$with_nspr/include/nspr/nspr.h" and/or "$with_nspr/lib/libnspr4$shrext" files don't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_nspr/include/$NSPR_INCLUDE_MARKER" and/or "$with_nspr/lib/$NSPR_LIB_MARKER" files don't exist), typo?])
     fi
 fi
 if test "z$NSS_FOUND" = "zno" -a "z$with_nss" != "z" ; then
     AC_MSG_CHECKING(for nss library installation in "$with_nss" folder)
-    if test -f "$with_nss/include/nss/nss.h" -a -f "$with_nss/lib/libnss3$shrext" ; then
+    if test -f "$with_nss/include/$NSS_INCLUDE_MARKER" -a -f "$with_nss/lib/$NSS_LIB_MARKER" ; then
         NSS_INCLUDE_PATH="$with_nss/include"
         NSS_LIB_PATH="$with_nss/lib"
         NSS_FOUND="yes"
         AC_MSG_RESULT([yes])
     else
-        AC_MSG_ERROR([nss not found: "$with_nss/include/nss/nss.h" and/or "$with_nss/lib/libnss3$shrext" files don't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_nss/include/$NSS_INCLUDE_MARKER" and/or "$with_nss/lib/$NSS_LIB_MARKER" files don't exist), typo?])
     fi
 fi
 
@@ -756,54 +889,34 @@ else
 fi
 ac_nss_inc_dir="$ac_common_inc_dir /usr/include/mozilla /usr/local/include/mozilla /usr/include/$ac_mozilla_name /usr/local/include/$ac_mozilla_name"
 ac_nss_lib_dir="$ac_common_lib_dir /usr/lib/$ac_mozilla_name /usr/local/lib/$ac_mozilla_name"
-if test "z$NSPR_FOUND" = "zno"   ; then
-    AC_MSG_CHECKING(for nspr library installation in usual folders")
-    if test "z$NSPR_INCLUDE_PATH" = "z" ; then 
-        for dir in $ac_nss_inc_dir ; do
-            if test -f "$dir/nspr/nspr.h" ; then
-                NSPR_INCLUDE_PATH="$dir"
-                break;
-            fi
-        done
+if test "z$NSPR_FOUND" = "zno" -a "z$ENABLE_FOLDERS_SEARCH" = "zyes" ; then
+    AC_MSG_CHECKING(for nspr library installation in the typical folders)
+    if test "z$NSPR_INCLUDE_PATH" = "z" ; then
+        AX_FIND_FOLDER(NSPR_INCLUDE_PATH, $NSPR_INCLUDE_MARKER, $ac_nss_inc_dir)
     fi
-    if test "z$NSPR_LIB_PATH" = "z" ; then 
-        for dir in $ac_nss_lib_dir ; do
-            if test -f "$dir/libnspr4$shrext" ; then
-                NSPR_LIB_PATH="$dir"
-                break;
-            fi
-        done
+    if test "z$NSPR_LIB_PATH" = "z" ; then
+        AX_FIND_FOLDER(NSPR_LIB_PATH, $NSPR_LIB_MARKER, $ac_nss_lib_dir)
     fi
     if test "z$NSPR_INCLUDE_PATH" != "z" -a "z$NSPR_LIB_PATH" != "z" ; then
         NSPR_FOUND=yes
-        AC_MSG_RESULT([yes])
+        AC_MSG_RESULT([yes ("-I$NSPR_INCLUDE_PATH -L$NSPR_LIB_PATH")])
     else
-        AC_MSG_RESULT([nspr not found])
+        AC_MSG_RESULT([not found])
     fi
 fi
-if test "z$NSS_FOUND" = "zno"  ; then
-    AC_MSG_CHECKING(for nss library installation in usual folders)
-    if test "z$NSS_INCLUDE_PATH" = "z" ; then 
-        for dir in $ac_nss_inc_dir ; do
-            if test -f "$dir/nss/nss.h" ; then
-                NSS_INCLUDE_PATH="$dir"
-                break;
-            fi
-        done
+if test "z$NSS_FOUND" = "zno" -a "z$ENABLE_FOLDERS_SEARCH" = "zyes" ; then
+    AC_MSG_CHECKING(for nss library installation in the typical folders)
+    if test "z$NSS_INCLUDE_PATH" = "z" ; then
+        AX_FIND_FOLDER(NSS_INCLUDE_PATH, $NSS_INCLUDE_MARKER, $ac_nss_inc_dir)        
     fi
-    if test "z$NSS_LIB_PATH" = "z" ; then 
-        for dir in $ac_nss_lib_dir ; do
-            if test -f "$dir/libnss3$shrext" ; then
-                NSS_LIB_PATH="$dir"
-                break;
-            fi
-        done
+    if test "z$NSS_LIB_PATH" = "z" ; then
+        AX_FIND_FOLDER(NSS_LIB_PATH, $NSS_LIB_MARKER, $ac_nss_lib_dir) 
     fi
     if test "z$NSS_INCLUDE_PATH" != "z" -a "z$NSS_LIB_PATH" != "z" ; then
         NSS_FOUND=yes
-        AC_MSG_RESULT([yes])
+        AC_MSG_RESULT([yes ("-I$NSS_INCLUDE_PATH -L$NSS_LIB_PATH")])
     else
-        AC_MSG_RESULT([nss not found])
+        AC_MSG_RESULT([not found])
     fi
 fi
 
@@ -827,8 +940,8 @@ if test "z$NSS_FOUND" = "zyes" -a "z$NSS_LIB_PATH" != "z" ; then
     NSS_LIBS="$NSS_LIBS -L$NSS_LIB_PATH/lib -lnss3 -lsmime3"
 fi
 
-dnl Check versions
-if test "z$NSPR_FOUND" = "zyes" ; then
+dnl Check NSS and NSPR versions
+if test "z$NSPR_FOUND" != "zwithout" ; then
     AC_MSG_CHECKING(for nspr library >= $NSPR_MIN_VERSION)
     minvers=`echo $NSPR_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 100 + $2) * 100 + $3;}'`
 	OLD_CPPFLAGS=$CPPFLAGS
@@ -848,7 +961,7 @@ if test "z$NSPR_FOUND" = "zyes" ; then
 	CPPFLAGS="$OLD_CPPFLAGS"
 fi
 
-if test "z$NSS_FOUND" = "zyes" ; then 
+if test "z$NSS_FOUND" != "zwithout" ; then 
     AC_MSG_CHECKING(for nss library >= $NSS_MIN_VERSION)
     minvers=`echo $NSS_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 100 + $2) * 100 + $3;}'`
     OLD_CPPFLAGS=$CPPFLAGS
@@ -868,7 +981,7 @@ if test "z$NSS_FOUND" = "zyes" ; then
     CPPFLAGS="$OLD_CPPFLAGS"
 fi
 
-dnl check that we have found both NSS and NSPR
+dnl Check that we have found both NSS and NSPR
 if test "z$NSPR_FOUND" = "zyes" -a "z$NSS_FOUND" = "zyes" ; then
     NSS_CFLAGS="$NSS_CFLAGS $NSPR_CFLAGS"
 	NSS_LIBS="$NSS_LIBS $NSPR_LIBS"
@@ -877,6 +990,7 @@ elif test "z$NSPR_FOUND" != "zyes" -a "z$NSS_FOUND" = "zyes" ; then
 	AC_MSG_RESULT(NSPR library is required for NSS, ignoring NSS library we have found)
 fi
 
+dnl Finally set all the flags and report results to the user
 if test "z$NSS_FOUND" = "zyes" ; then
     XMLSEC_NO_NSS="0"
     NSS_CFLAGS="$NSS_CFLAGS -DXMLSEC_CRYPTO_NSS=1"
@@ -1528,7 +1642,7 @@ if test "z$enable_static_linking" = "zyes" ; then
     enable_crypto_dl="no"
     AC_MSG_RESULT(yes)
 else
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 fi    
 AC_SUBST(XMLSEC_STATIC_BINARIES)
 
@@ -1537,32 +1651,33 @@ dnl check if we need dynamic loading support
 dnl ==========================================================================
 XMLSEC_DL_INCLUDES=""
 XMLSEC_DL_LIBS=""
-AC_MSG_CHECKING(for xmlsec-crypto dynamic loading support) 
 AC_ARG_ENABLE(crypto_dl,   [  --enable-crypto-dl      enable dynamic loading support for xmlsec-crypto libraries (yes)])
 if test "z$enable_crypto_dl" = "zno" ; then
+    AC_MSG_CHECKING(for xmlsec-crypto dynamic loading support) 
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_CRYPTO_DYNAMIC_LOADING=1"
     XMLSEC_NO_CRYPTO_DYNAMIC_LOADING="1"
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 else
-    AC_CHECK_HEADER([ltdl.h], 
-	[
-	XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_DL_LIBLTDL=1"
-	AC_CHECK_LIB(
-	    [ltdl],
-	    [lt_dlopenext],
-	    [LIBLTDL=-lltdl],
-	    [LIBLTDL=]
-	)],
-	[LIBLTDL=]
-    )
+    AC_CHECK_HEADER([ltdl.h], [
+       XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_DL_LIBLTDL=1"
+       AC_CHECK_LIB(
+    	    [ltdl],
+    	    [lt_dlopenext],
+    	    [LIBLTDL=-lltdl],
+    	    [LIBLTDL=]
+        )
+    ], [
+        LIBLTDL=
+    ])
 
+    AC_MSG_CHECKING(for xmlsec-crypto dynamic loading support)     
     if test "z$LIBLTDL" != "z" ; then
-        XMLSEC_DL_INCLUDES="$INCLTDL"
-        XMLSEC_DL_LIBS="$LIBLTDL"
-        XMLSEC_NO_CRYPTO_DYNAMIC_LOADING="0"
-	AC_MSG_RESULT(yes)
+       XMLSEC_DL_INCLUDES="$INCLTDL"
+       XMLSEC_DL_LIBS="$LIBLTDL"
+       XMLSEC_NO_CRYPTO_DYNAMIC_LOADING="0"
+	   AC_MSG_RESULT(yes)
     else
-	AC_MSG_ERROR([libltdl is required for xmlsec-crypto dynamic loading])
+	   AC_MSG_ERROR([libltdl is required for xmlsec-crypto dynamic loading])
     fi
 fi
 AM_CONDITIONAL(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING, test "z$XMLSEC_NO_CRYPTO_DYNAMIC_LOADING" = "z1")
@@ -1580,9 +1695,9 @@ if test "z$enable_apps_crypto_dl" = "z" ; then
 fi
 if test "z$enable_apps_crypto_dl" = "zno" ; then
     XMLSEC_NO_APPS_CRYPTO_DYNAMIC_LOADING="1"
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 elif test "z$enable_crypto_dl" = "zno" ; then
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
     AC_MSG_ERROR(xmlsec-crypto libraries dynamic loading support in xmlsec command line tool is requested but no dynamic loading in xmlsec itself is disabled)
 else
     XMLSEC_APP_DEFINES="$XMLSEC_APP_DEFINES -DXMLSEC_CRYPTO_DYNAMIC_LOADING=1"
@@ -1614,7 +1729,7 @@ AC_MSG_CHECKING(for Simple Keys Manager testing)
 AC_ARG_ENABLE(skm,   [  --enable-skm            enable Simple Keys Manager testing (yes)])
 if test "z$enable_skm" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_SKM_TEST=1"
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 else
     AC_MSG_RESULT(yes)
 fi
@@ -1626,7 +1741,7 @@ AC_MSG_CHECKING(for templates testing)
 AC_ARG_ENABLE(tmpl_tests,   [  --enable-tmpl-tests     enable templates testing in xmlsec utility (yes)])
 if test "z$enable_tmpl_tests" = "zyes" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_TMPL_TEST=1"
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 else
     AC_MSG_RESULT(yes)
 fi    
@@ -1640,7 +1755,7 @@ if test "z$enable_debugging" = "zyes" ; then
     CFLAGS="$CFLAGS -g"
     AC_MSG_RESULT(yes)
 else
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 fi    
 
 dnl ==========================================================================
@@ -1652,7 +1767,7 @@ if test "z$enable_profiling" = "zyes" ; then
     CFLAGS="$CFLAGS -pg"
     AC_MSG_RESULT(yes)
 else
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 fi 
 
 dnl ==========================================================================
@@ -1665,7 +1780,7 @@ if test "z$enable_pedantic" = "zyes" ; then
     CFLAGS="$CFLAGS -O -pedantic -Wall -std=c99 -fno-inline -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wmissing-prototypes -Wnested-externs -Wredundant-decls"
     AC_MSG_RESULT(yes)
 else
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(disabled)
 fi
 
 dnl ==========================================================================

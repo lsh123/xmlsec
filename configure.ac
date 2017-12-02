@@ -269,6 +269,7 @@ LIBXML_INCLUDE_DIR="$COMMON_INCLUDE_DIR /usr/include/libxml2 /usr/local/include/
 LIBXML_LIB_DIR="$COMMON_LIB_DIR /usr/local/libxml2/lib"
 LIBXML_INCLUDE_MARKER="libxml/xmlversion.h"
 LIBXML_LIB_MARKER="libxml2$shrext"
+LIBXML_LIBS_LIST="-lxml2"
 LIBXML_CONFIG="xml2-config"
 
 LIBXML_INCLUDE_PATH=
@@ -354,6 +355,31 @@ if test "z$LIBXML_FOUND" = "zno" -a "z$ENABLE_FOLDERS_SEARCH" = "zyes" ; then
     fi
 fi
 
+dnl Priority 7: Just try to compile/link and hope for the best
+if test "z$LIBXML_FOUND" = "zno" ; then
+    AC_MSG_CHECKING(for libxml2 library installation)
+    OLD_CPPFLAGS=$CPPFLAGS
+    CPPFLAGS="$CPPFLAGS $LIBXML_CFLAGS"
+    OLD_LIBS=$LIBS
+    LIBS="$LIBS $LIBXML_LIBS $LIBXML_LIBS_LIST"
+    AC_LINK_IFELSE([
+        AC_LANG_PROGRAM([[
+            #include <libxml/xmlversion.h>
+        ]],[[
+            int main () { xmlCheckVersion(0);; return(0); }
+        ]])
+    ],[
+        LIBXML_FOUND=yes
+        LIBXML_LIBS="$LIBXML_LIBS $LIBXML_LIBS_LIST"
+        AC_MSG_RESULT([yes])
+    ],[
+        LIBXML_FOUND=no
+        AC_MSG_RESULT([not found])
+    ])
+    CPPFLAGS=$OLD_CPPFLAGS
+    LIBS=$OLD_LIBS
+fi
+
 dnl Set CFLAGS/LIBS flags
 if test "z$LIBXML_FOUND" = "zyes" ; then
     if test "z$LIBXML_CONFIG_PATH" != "z" -a "z$ENABLE_CUSTOM_CONFIGS" = "zyes" ; then
@@ -375,7 +401,7 @@ if test "z$LIBXML_FOUND" = "zyes" ; then
             if test "z$with_gnu_ld" = "zyes" ; then
                 LIBXML_LIBS="$LIBXML_LIBS -Wl,-rpath-link -Wl,$LIBXML_LIB_PATH"
             fi
-            LIBXML_LIBS="$LIBXML_LIBS -L$LIBXML_LIB_PATH -lxml2"
+            LIBXML_LIBS="$LIBXML_LIBS -L$LIBXML_LIB_PATH $LIBXML_LIBS_LIST"
         fi
     fi
 fi
@@ -423,6 +449,7 @@ LIBXSLT_LIB_DIR="$COMMON_LIB_DIR /usr/local/libxslt/lib"
 LIBXSLT_CONFIG="xslt-config"
 LIBXSLT_INCLUDE_MARKER="libxslt/xsltconfig.h"
 LIBXSLT_LIB_MARKER="libxslt$shrext"
+LIBXSLT_LIBS_LIST="-lxslt"
 
 XMLSEC_NO_LIBXSLT="1"
 LIBXSLT_INCLUDE_PATH=
@@ -508,6 +535,31 @@ if test "z$LIBXSLT_FOUND" = "zno" -a "z$ENABLE_FOLDERS_SEARCH" = "zyes" ; then
     fi
 fi
 
+dnl Priority 7: Just try to compile/link and hope for the best
+if test "z$LIBXSLT_FOUND" = "zno" ; then
+    AC_MSG_CHECKING(for libxslt library installation)
+    OLD_CPPFLAGS=$CPPFLAGS
+    CPPFLAGS="$CPPFLAGS $LIBXML_CFLAGS $LIBXSLT_CFLAGS"
+    OLD_LIBS=$LIBS
+    LIBS="$LIBS $LIBXML_LIBS $LIBXSLT_LIBS $LIBXSLT_LIBS_LIST"
+    AC_LINK_IFELSE([
+        AC_LANG_PROGRAM([[
+            #include <libxslt/xslt.h>
+        ]],[[
+            int main () { xsltInit(); return(0); }
+        ]])
+    ],[
+        LIBXSLT_FOUND=yes
+        LIBXSLT_LIBS="$LIBXSLT_LIBS $LIBXSLT_LIBS_LIST"
+        AC_MSG_RESULT([yes])
+    ],[
+        LIBXSLT_FOUND=no
+        AC_MSG_RESULT([not found])
+    ])
+    CPPFLAGS=$OLD_CPPFLAGS
+    LIBS=$OLD_LIBS
+fi
+
 dnl Set CFLAGS/LIBS flags
 if test "z$LIBXSLT_FOUND" = "zyes" ; then
     if test "z$LIBXSLT_CONFIG_PATH" != "z" -a "z$ENABLE_CUSTOM_CONFIGS" = "zyes" ; then
@@ -529,7 +581,7 @@ if test "z$LIBXSLT_FOUND" = "zyes" ; then
             if test "z$with_gnu_ld" = "zyes" ; then
                 LIBXSLT_LIBS="$LIBXSLT_LIBS -Wl,-rpath-link -Wl,$LIBXSLT_LIB_PATH"
             fi
-            LIBXSLT_LIBS="$LIBXSLT_LIBS -L$LIBXSLT_LIB_PATH -lxslt"
+            LIBXSLT_LIBS="$LIBXSLT_LIBS -L$LIBXSLT_LIB_PATH $LIBXSLT_LIBS_LIST"
         fi
     fi
 fi
@@ -589,6 +641,7 @@ OPENSSL_CRYPTO_LIB="$XMLSEC_PACKAGE-openssl"
 OPENSSL_INCLUDE_MARKER="openssl/opensslv.h"
 OPENSSL_LIB_SHARED_MARKER="libcrypto$shrext"
 OPENSSL_LIB_STATIC_MARKER="libcrypto.a"
+OPENSSL_LIBS_LIST="-lcrypto"
 case $host in
     *-*-mingw*)   OPENSSL_EXTRA_LIBS=;;
     *-*-osf5*)    OPENSSL_EXTRA_LIBS=;;
@@ -661,6 +714,38 @@ if test "z$OPENSSL_FOUND" = "zno" -a "z$ENABLE_FOLDERS_SEARCH" = "zyes" ; then
     fi
 fi
 
+dnl Priority 5: Just try to compile/link and hope for the best
+if test "z$OPENSSL_FOUND" = "zno" ; then
+    AC_MSG_CHECKING(for openssl library installation)
+    OLD_CPPFLAGS=$CPPFLAGS
+    CPPFLAGS="$CPPFLAGS $OPENSSL_CFLAGS"
+    OLD_LIBS=$LIBS
+    LIBS="$LIBS $OPENSSL_LIBS $OPENSSL_LIBS_LIST"
+    AC_LINK_IFELSE([
+        AC_LANG_PROGRAM([[
+            #include <openssl/opensslv.h>
+        ]],[[
+            int main () {
+                #if OPENSSL_VERSION_NUMBER < 0x10100000L
+                SSL_library_init();
+                #else
+                OPENSSL_init_ssl(0, NULL);
+                #endif
+                return(0);
+            }
+        ]])
+    ],[
+        OPENSSL_FOUND=yes
+        OPENSSL_LIBS="$OPENSSL_LIBS $OPENSSL_LIBS_LIST"
+        AC_MSG_RESULT([yes])
+    ],[
+        OPENSSL_FOUND=no
+        AC_MSG_RESULT([not found])
+    ])
+    CPPFLAGS=$OLD_CPPFLAGS
+    LIBS=$OLD_LIBS
+fi
+
 dnl Set flags if INCLUDE_PATH or LIB_PATH are set
 if test "z$OPENSSL_FOUND" = "zyes" -a "z$OPENSSL_INCLUDE_PATH" != "z" ; then
     OPENSSL_CFLAGS="$OPENSSL_CFLAGS -I$OPENSSL_INCLUDE_PATH -I$OPENSSL_INCLUDE_PATH/openssl"
@@ -670,7 +755,7 @@ if test "z$OPENSSL_FOUND" = "zyes" -a "z$OPENSSL_LIB_PATH" != "z" ; then
         if test "z$with_gnu_ld" = "zyes" ; then
             OPENSSL_LIBS="$OPENSSL_LIBS -Wl,-rpath-link -Wl,$OPENSSL_LIB_PATH"
         fi
-        OPENSSL_LIBS="$OPENSSL_LIBS -L$OPENSSL_LIB_PATH -lcrypto"
+        OPENSSL_LIBS="$OPENSSL_LIBS -L$OPENSSL_LIB_PATH $OPENSSL_LIBS_LIST"
     elif test -f $OPENSSL_LIB_PATH/$OPENSSL_LIB_STATIC_MARKER ; then
         OPENSSL_LIBS="$OPENSSL_LIBS $OPENSSL_LIB_PATH/libcrypto.a"
     fi
@@ -787,8 +872,10 @@ NSPR_PACKAGE=mozilla-nspr
 NSS_PACKAGE=mozilla-nss
 NSPR_INCLUDE_MARKER="nspr/nspr.h"
 NSPR_LIB_MARKER="libnspr4$shrext"
+NSPR_LIBS_LIST="-lnspr4 -lplds4 -lplc4"
 NSS_INCLUDE_MARKER="nss/nss.h"
 NSS_LIB_MARKER="libnss3$shrext"
+NSS_LIBS_LIST="-lnss3 -lsmime3"
 
 XMLSEC_NO_NSS="1"
 NSPR_INCLUDE_PATH=
@@ -938,7 +1025,33 @@ if test "z$NSS_FOUND" = "zno" -a "z$ENABLE_FOLDERS_SEARCH" = "zyes" ; then
     fi
 fi
 
-dnl Set flags if INCLUDE_PATH or LIB_PATH are set
+dnl Priority 5 (NSPR): Just try to compile/link and hope for the best
+if test "z$NSPR_FOUND" = "zno" ; then
+    AC_MSG_CHECKING(for nspr library installation)
+    OLD_CPPFLAGS=$CPPFLAGS
+    CPPFLAGS="$CPPFLAGS $NSPR_CFLAGS"
+    OLD_LIBS=$LIBS
+    LIBS="$LIBS $NSPR_LIBS $NSPR_LIBS_LIST"
+    AC_LINK_IFELSE([
+        AC_LANG_PROGRAM([[
+            #include <stdio.h>
+            #include <nspr/nspr.h>
+        ]],[[
+            int main () { printf("v=%s\n", PR_GetVersion()); return(0); }
+        ]])
+    ],[
+        NSPR_FOUND=yes
+        NSPR_LIBS="$NSPR_LIBS $NSPR_LIBS_LIST"
+        AC_MSG_RESULT([yes])
+    ],[
+        NSPR_FOUND=no
+        AC_MSG_RESULT([not found])
+    ])
+    CPPFLAGS=$OLD_CPPFLAGS
+    LIBS=$OLD_LIBS
+fi
+
+dnl NSRP: Set flags if INCLUDE_PATH or LIB_PATH are set (need to do it before we try to find NSS)
 if test "z$NSPR_FOUND" = "zyes" -a "z$NSPR_INCLUDE_PATH" != "z" ; then
     NSPR_CFLAGS="$NSPR_CFLAGS -I$NSPR_INCLUDE_PATH -I$NSPR_INCLUDE_PATH/nspr"
 fi
@@ -946,8 +1059,36 @@ if test "z$NSPR_FOUND" = "zyes" -a "z$NSPR_LIB_PATH" != "z" ; then
     if test "z$with_gnu_ld" = "zyes" ; then
         NSPR_LIBS="$NSPR_LIBS -Wl,-rpath-link -Wl,$NSPR_LIB_PATH"
     fi
-    NSPR_LIBS="$NSPR_LIBS -L$NSPR_LIB_PATH/lib -lnspr4 -lplds4 -lplc4"
+    NSPR_LIBS="$NSPR_LIBS -L$NSPR_LIB_PATH/lib $NSPR_LIBS_LIST"
 fi
+
+dnl Priority 5 (NSS): Just try to compile/link and hope for the best
+if test "z$NSS_FOUND" = "zno" ; then
+    AC_MSG_CHECKING(for nss library installation)
+    OLD_CPPFLAGS=$CPPFLAGS
+    CPPFLAGS="$CPPFLAGS $NSPR_CFLAGS $NSS_CFLAGS"
+    OLD_LIBS=$LIBS
+    LIBS="$LIBS $NSS_LIBS $NSPR_LIBS $NSS_LIBS_LIST"
+    AC_LINK_IFELSE([
+        AC_LANG_PROGRAM([[
+            #include <stdio.h>
+            #include <nss/nss.h>
+        ]],[[
+            int main () { printf("v=%s\n", NSS_GetVersion()); return(0); }
+        ]])
+    ],[
+        NSS_FOUND=yes
+        NSS_LIBS="$NSS_LIBS $NSS_LIBS_LIST"
+        AC_MSG_RESULT([yes])
+    ],[
+        NSS_FOUND=no
+        AC_MSG_RESULT([not found])
+    ])
+    CPPFLAGS=$OLD_CPPFLAGS
+    LIBS=$OLD_LIBS
+fi
+
+dnl NSS: Set flags if INCLUDE_PATH or LIB_PATH are set
 if test "z$NSS_FOUND" = "zyes" -a "z$NSS_INCLUDE_PATH" != "z" ; then
     NSS_CFLAGS="$NSS_CFLAGS -I$NSS_INCLUDE_PATH -I$NSS_INCLUDE_PATH/nss"
 fi
@@ -955,7 +1096,7 @@ if test "z$NSS_FOUND" = "zyes" -a "z$NSS_LIB_PATH" != "z" ; then
     if test "z$with_gnu_ld" = "zyes" ; then
         NSS_LIBS="$NSS_LIBS -Wl,-rpath-link -Wl,$NSS_LIB_PATH"
     fi
-    NSS_LIBS="$NSS_LIBS -L$NSS_LIB_PATH/lib -lnss3 -lsmime3"
+    NSS_LIBS="$NSS_LIBS -L$NSS_LIB_PATH/lib $NSS_LIBS_LIST"
 fi
 
 dnl Check NSS and NSPR versions
@@ -966,7 +1107,7 @@ if test "z$NSPR_FOUND" = "zyes" ; then
     CPPFLAGS="$CPPFLAGS $NSPR_CFLAGS"
     AC_EGREP_CPP(yes, [
         AC_LANG_PROGRAM([[
-            #include <prinit.h>
+            #include <nspr/prinit.h>
         ]],[[
             #if ((PR_VMAJOR * 100 + PR_VMINOR) * 100 + PR_VPATCH) >= $minvers
             yes
@@ -988,7 +1129,7 @@ if test "z$NSS_FOUND" = "zyes" ; then
     CPPFLAGS="$CPPFLAGS $NSPR_CFLAGS $NSS_CFLAGS"
     AC_EGREP_CPP(yes, [
         AC_LANG_PROGRAM([[
-            #include <nss.h>
+            #include <nss/nss.h>
         ]],[[
             #if ((NSS_VMAJOR * 100 + NSS_VMINOR) * 100 + NSS_VPATCH) >= $minvers
             yes
@@ -1042,6 +1183,7 @@ GCRYPT_CONFIG="libgcrypt-config"
 GCRYPT_INCLUDE_MARKER="gcrypt.h"
 GCRYPT_LIB_MARKER="libgcrypt$shrext"
 GCRYPT_CRYPTO_LIB="$XMLSEC_PACKAGE-gcrypt"
+GCRYPT_LIBS_LIST="-lgcrypt"
 
 XMLSEC_NO_GCRYPT="1"
 GCRYPT_VERSION=
@@ -1127,6 +1269,31 @@ if test "z$GCRYPT_FOUND" = "zno" -a "z$ENABLE_FOLDERS_SEARCH" = "zyes" ; then
     fi
 fi
 
+dnl Priority 6: Just try to compile/link and hope for the best
+if test "z$GCRYPT_FOUND" = "zno" ; then
+    AC_MSG_CHECKING(for gcrypt library installation)
+    OLD_CPPFLAGS=$CPPFLAGS
+    CPPFLAGS="$CPPFLAGS $GCRYPT_CFLAGS"
+    OLD_LIBS=$LIBS
+    LIBS="$LIBS $GCRYPT_LIBS $GCRYPT_LIBS_LIST"
+    AC_LINK_IFELSE([
+        AC_LANG_PROGRAM([[
+            #include <gcrypt.h>
+        ]],[[
+            int main () { printf("v=%s\n", gcry_check_version("0")); return(0); }
+        ]])
+    ],[
+        GCRYPT_FOUND=yes
+        GCRYPT_LIBS="$GCRYPT_LIBS $GCRYPT_LIBS_LIST"
+        AC_MSG_RESULT([yes])
+    ],[
+        GCRYPT_FOUND=no
+        AC_MSG_RESULT([not found])
+    ])
+    CPPFLAGS=$OLD_CPPFLAGS
+    LIBS=$OLD_LIBS
+fi
+
 dnl Set CFLAGS/LIBS flags
 if test "z$GCRYPT_FOUND" = "zyes" ; then
     if test "z$GCRYPT_CONFIG_PATH" != "z" -a "z$ENABLE_CUSTOM_CONFIGS" = "zyes" ; then
@@ -1148,7 +1315,7 @@ if test "z$GCRYPT_FOUND" = "zyes" ; then
             if test "z$with_gnu_ld" = "zyes" ; then
                 GCRYPT_LIBS="$GCRYPT_LIBS -Wl,-rpath-link -Wl,$GCRYPT_LIB_PATH"
             fi
-            GCRYPT_LIBS="$GCRYPT_LIBS -L$GCRYPT_LIB_PATH -lgcrypt"
+            GCRYPT_LIBS="$GCRYPT_LIBS -L$GCRYPT_LIB_PATH $GCRYPT_LIBS_LIST"
         fi
     fi
 fi
@@ -1202,6 +1369,7 @@ GNUTLS_LIB_DIR="$COMMON_LIB_DIR /usr/local/gnutls/lib"
 GNUTLS_INCLUDE_MARKER="gnutls/gnutls.h"
 GNUTLS_LIB_MARKER="libgnutls$shrext"
 GNUTLS_CRYPTO_LIB="$XMLSEC_PACKAGE-gnutls"
+GNUTLS_LIBS_LIST="-lgnutls"
 
 XMLSEC_NO_GNUTLS="1"
 GNUTLS_INCLUDE_PATH=
@@ -1264,6 +1432,31 @@ if test "z$GNUTLS_FOUND" = "zno" -a "z$ENABLE_FOLDERS_SEARCH" = "zyes" ; then
     fi
 fi
 
+dnl Priority 5: Just try to compile/link and hope for the best
+if test "z$GNUTLS_FOUND" = "zno" ; then
+    AC_MSG_CHECKING(for gnutls library installation)
+    OLD_CPPFLAGS=$CPPFLAGS
+    CPPFLAGS="$CPPFLAGS $GCRYPT_CFLAGS $GNUTLS_CFLAGS"
+    OLD_LIBS=$LIBS
+    LIBS="$LIBS $GNUTLS_LIBS $GCRYPT_LIBS $GNUTLS_LIBS_LIST"
+    AC_LINK_IFELSE([
+        AC_LANG_PROGRAM([[
+            #include <gnutls/gnutls.h>
+        ]],[[
+            int main () { gnutls_global_init(); return(0); }
+        ]])
+    ],[
+        GNUTLS_FOUND=yes
+        GNUTLS_LIBS="$GNUTLS_LIBS $GNUTLS_LIBS_LIST"
+        AC_MSG_RESULT([yes])
+    ],[
+        GNUTLS_FOUND=no
+        AC_MSG_RESULT([not found])
+    ])
+    CPPFLAGS=$OLD_CPPFLAGS
+    LIBS=$OLD_LIBS
+fi
+
 dnl Set CFLAGS/LIBS flags
 if test "z$GNUTLS_FOUND" = "zyes" ; then
     dnl Set flags if INCLUDE_PATH or LIB_PATH are set (do NOT overwrite CFLAGS/LIBS!)
@@ -1274,7 +1467,7 @@ if test "z$GNUTLS_FOUND" = "zyes" ; then
         if test "z$with_gnu_ld" = "zyes" ; then
             GNUTLS_LIBS="$GNUTLS_LIBS -Wl,-rpath-link -Wl,$GNUTLS_LIB_PATH"
         fi
-        GNUTLS_LIBS="$GNUTLS_LIBS -L$GNUTLS_LIB_PATH -lgnutls"
+        GNUTLS_LIBS="$GNUTLS_LIBS -L$GNUTLS_LIB_PATH $GNUTLS_LIBS_LIST"
     fi
 fi
 

@@ -19,9 +19,6 @@
 /* Define to 1 if you have the `fprintf' function. */
 #undef HAVE_FPRINTF
 
-/* Define to 1 if you have the <gnutls/gnutls.h> header file. */
-#undef HAVE_GNUTLS_GNUTLS_H
-
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 

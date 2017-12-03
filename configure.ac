@@ -289,7 +289,7 @@ if test "z$with_libxml" = "zno" -o "z$with_libxml_src" = "zno"; then
 fi
 
 dnl Priority 1: User specifies the path to source code
-if test "z$LIBXML_FOUND" = "zno" -a "z$with_libxml_src" != "z" ; then
+if test "z$LIBXML_FOUND" = "zno" -a "z$with_libxml_src" != "z" -a "z$with_libxml_src" != "zyes" ; then
     AC_MSG_CHECKING(for libxml2 library source tree in "$with_libxml_src" folder)
     if test -f "$with_libxml_src/include/$LIBXML_INCLUDE_MARKER" -a -f "$with_libxml_src/.libs/$LIBXML_LIB_MARKER" ; then
         LIBXML_INCLUDE_PATH="$with_libxml_src/include"
@@ -302,7 +302,7 @@ if test "z$LIBXML_FOUND" = "zno" -a "z$with_libxml_src" != "z" ; then
 fi
 
 dnl Priority 2: User specifies path to installation
-if test "z$LIBXML_FOUND" = "zno" -a "z$with_libxml" != "z" ; then
+if test "z$LIBXML_FOUND" = "zno" -a "z$with_libxml" != "z" -a "z$with_libxml" != "zyes" ; then
     AC_MSG_CHECKING(for libxml2 library installation in "$with_libxml" folder)
     if test "z$ENABLE_CUSTOM_CONFIGS" = "zyes" -a -f "$with_libxml/bin/$LIBXML_CONFIG" ; then
         LIBXML_CONFIG_PATH="$with_libxml/bin/$LIBXML_CONFIG"
@@ -412,14 +412,11 @@ if test "z$LIBXML_FOUND" = "zyes" ; then
     OLD_CPPFLAGS=$CPPFLAGS
     CPPFLAGS="$CPPFLAGS $LIBXML_CFLAGS"
     minvers=`echo $LIBXML_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 100 + $2) * 100 + $3;}'`
-    AC_EGREP_CPP(yes, [
-        AC_LANG_PROGRAM([[
-            #include <libxml/xmlversion.h>
-        ]],[[
-            #if LIBXML_VERSION >= $minvers
-            yes
-            #endif
-        ]])
+    AC_EGREP_CPP(greater-than-minvers, [
+        #include <libxml/xmlversion.h>
+        #if LIBXML_VERSION >= $minvers
+        greater-than-minvers
+        #endif
     ],[
         LIBXML_FOUND=yes
     ],[
@@ -469,7 +466,7 @@ if test "z$with_libxslt" = "zno" -o "z$with_libxslt_src" = "zno" ; then
 fi
 
 dnl Priority 1: User specifies the path to source code
-if test "z$LIBXSLT_FOUND" = "zno" -a "z$with_libxslt_src" != "z" ; then
+if test "z$LIBXSLT_FOUND" = "zno" -a "z$with_libxslt_src" != "z" -a "z$with_libxslt_src" != "zyes" ; then
     AC_MSG_CHECKING(for libxslt library source tree in "$with_libxslt_src" folder)
     if test -f "$with_libxslt_src/$LIBXSLT_INCLUDE_MARKER" -a -f "$with_libxslt_src/libxslt/.libs/$LIBXSLT_LIB_MARKER" ; then
         LIBXSLT_INCLUDE_PATH="$with_libxslt_src"
@@ -482,7 +479,7 @@ if test "z$LIBXSLT_FOUND" = "zno" -a "z$with_libxslt_src" != "z" ; then
 fi
 
 dnl Priority 2: User specifies path to installation
-if test "z$LIBXSLT_FOUND" = "zno" -a "z$with_libxslt" != "z" ; then
+if test "z$LIBXSLT_FOUND" = "zno" -a "z$with_libxslt" != "z" -a "z$with_libxslt" != "zyes" ; then
     AC_MSG_CHECKING(for libxslt library installation in "$with_libxslt" folder)
     if test "z$ENABLE_CUSTOM_CONFIGS" = "zyes" -a -f "$with_libxslt/bin/$LIBXSLT_CONFIG" ; then
         LIBXSLT_CONFIG_PATH="$with_libxslt/bin/$LIBXSLT_CONFIG"
@@ -592,14 +589,11 @@ if test "z$LIBXSLT_FOUND" = "zyes" ; then
     OLD_CPPFLAGS=$CPPFLAGS
     CPPFLAGS="$CPPFLAGS $LIBXSLT_CFLAGS"
     minvers=`echo $LIBXSLT_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 100 + $2) * 100 + $3;}'`
-    AC_EGREP_CPP(yes, [
-        AC_LANG_PROGRAM([[
-            #include <libxslt/xsltconfig.h>
-        ]],[[
-            #if LIBXSLT_VERSION >= $minvers
-            yes
-            #endif
-        ]])
+    AC_EGREP_CPP(greater-than-minvers, [
+        #include <libxslt/xsltconfig.h>
+        #if LIBXSLT_VERSION >= $minvers
+        greater-than-minvers
+        #endif
     ],[
         LIBXSLT_FOUND=yes
     ],[
@@ -665,7 +659,7 @@ if test "z$with_openssl" = "zno" ; then
 fi
 
 dnl Priority 1: User specifies the path to installation
-if test "z$OPENSSL_FOUND" = "zno" -a "z$with_openssl" != "z" ; then
+if test "z$OPENSSL_FOUND" = "zno" -a "z$with_openssl" != "z" -a "z$with_openssl" != "zyes" ; then
     AC_MSG_CHECKING(for openssl library installation in "$with_openssl" folder)
     if test -f "$with_openssl/include/$OPENSSL_INCLUDE_MARKER" -a -f "$with_openssl/lib/$OPENSSL_LIB_SHARED_MARKER" ; then
         OPENSSL_INCLUDE_PATH="$with_openssl/include"
@@ -769,14 +763,11 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
     OLD_CPPFLAGS=$CPPFLAGS
     CPPFLAGS="$CPPFLAGS $OPENSSL_CFLAGS"
     if test "z$OPENSSL_VERSION" = "z" ; then
-        AC_EGREP_CPP(yes, [
-            AC_LANG_PROGRAM([[
-                #include <openssl/opensslv.h>
-            ]],[[
-                #if OPENSSL_VERSION_NUMBER == 0x20000000L && defined(LIBRESSL_VERSION_NUMBER)
-                yes
-                #endif
-            ]])
+        AC_EGREP_CPP(greater-than-minvers, [
+            #include <openssl/opensslv.h>
+            #if OPENSSL_VERSION_NUMBER == 0x20000000L && defined(LIBRESSL_VERSION_NUMBER)
+            greater-than-minvers
+            #endif
         ],[
             OPENSSL_VERSION="1.0.0 (libressl)"
         ],[
@@ -785,14 +776,11 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
     fi
 
     if test "z$OPENSSL_VERSION" = "z" ; then
-        AC_EGREP_CPP(yes, [
-            AC_LANG_PROGRAM([[
-                #include <openssl/opensslv.h>
-            ]],[[
-                #if OPENSSL_VERSION_NUMBER >= 0x10100000L
-                yes
-                #endif
-            ]])
+        AC_EGREP_CPP(greater-than-minvers, [
+            #include <openssl/opensslv.h>
+            #if OPENSSL_VERSION_NUMBER >= 0x10100000L
+            greater-than-minvers
+            #endif
         ],[
             OPENSSL_VERSION="1.1.0"
         ],[
@@ -801,14 +789,11 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
     fi
 
     if test "z$OPENSSL_VERSION" = "z" ; then
-        AC_EGREP_CPP(yes, [
-            AC_LANG_PROGRAM([[
-                #include <openssl/opensslv.h>
-            ]],[[
-                #if OPENSSL_VERSION_NUMBER >= 0x10000000L
-                yes
-                #endif
-            ]])
+        AC_EGREP_CPP(greater-than-minvers, [
+            #include <openssl/opensslv.h>
+            #if OPENSSL_VERSION_NUMBER >= 0x10000000L
+            greater-than-minvers
+            #endif
         ],[
             OPENSSL_VERSION="1.0.0"
         ],[
@@ -900,7 +885,7 @@ if test "z$with_nss" = "zno" -o "z$with_nspr" = "zno" ; then
 fi
 
 dnl Priority 1: User specifies the path to installation
-if test "z$NSPR_FOUND" = "zno" -a "z$with_nspr" != "z" ; then
+if test "z$NSPR_FOUND" = "zno" -a "z$with_nspr" != "z" -a "z$with_nspr" != "zyes" ; then
     AC_MSG_CHECKING(for nspr library installation in "$with_nspr" folder)
     if test -f "$with_nspr/include/$NSPR_INCLUDE_MARKER" -a -f "$with_nspr/lib/$NSPR_LIB_MARKER" ; then
         NSPR_INCLUDE_PATH="$with_nspr/include"
@@ -911,7 +896,7 @@ if test "z$NSPR_FOUND" = "zno" -a "z$with_nspr" != "z" ; then
         AC_MSG_ERROR([not found: "$with_nspr/include/$NSPR_INCLUDE_MARKER" and/or "$with_nspr/lib/$NSPR_LIB_MARKER" files don't exist), typo?])
     fi
 fi
-if test "z$NSS_FOUND" = "zno" -a "z$with_nss" != "z" ; then
+if test "z$NSS_FOUND" = "zno" -a "z$with_nss" != "z" -a "z$with_nss" != "zyes" ; then
     AC_MSG_CHECKING(for nss library installation in "$with_nss" folder)
     if test -f "$with_nss/include/$NSS_INCLUDE_MARKER" -a -f "$with_nss/lib/$NSS_LIB_MARKER" ; then
         NSS_INCLUDE_PATH="$with_nss/include"
@@ -1105,14 +1090,11 @@ if test "z$NSPR_FOUND" = "zyes" ; then
     minvers=`echo $NSPR_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 100 + $2) * 100 + $3;}'`
     OLD_CPPFLAGS=$CPPFLAGS
     CPPFLAGS="$CPPFLAGS $NSPR_CFLAGS"
-    AC_EGREP_CPP(yes, [
-        AC_LANG_PROGRAM([[
-            #include <nspr/prinit.h>
-        ]],[[
-            #if ((PR_VMAJOR * 100 + PR_VMINOR) * 100 + PR_VPATCH) >= $minvers
-            yes
-            #endif
-        ]])
+    AC_EGREP_CPP(greater-than-minvers, [
+        #include <nspr/prinit.h>
+        #if ((PR_VMAJOR * 100 + PR_VMINOR) * 100 + PR_VPATCH) >= $minvers
+        greater-than-minvers
+        #endif
     ],[
         NSPR_FOUND=yes
     ],[
@@ -1127,14 +1109,11 @@ if test "z$NSS_FOUND" = "zyes" ; then
     minvers=`echo $NSS_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 100 + $2) * 100 + $3;}'`
     OLD_CPPFLAGS=$CPPFLAGS
     CPPFLAGS="$CPPFLAGS $NSPR_CFLAGS $NSS_CFLAGS"
-    AC_EGREP_CPP(yes, [
-        AC_LANG_PROGRAM([[
-            #include <nss/nss.h>
-        ]],[[
-            #if ((NSS_VMAJOR * 100 + NSS_VMINOR) * 100 + NSS_VPATCH) >= $minvers
-            yes
-            #endif
-        ]])
+    AC_EGREP_CPP(greater-than-minvers, [
+        #include <nss/nss.h>
+        #if ((NSS_VMAJOR * 100 + NSS_VMINOR) * 100 + NSS_VPATCH) >= $minvers
+        greater-than-minvers
+        #endif
     ],[
         NSS_FOUND=yes
     ],[
@@ -1199,7 +1178,7 @@ if test "z$with_gcrypt" = "zno" ; then
 fi
 
 dnl Priority 1: User specifies the path to installation
-if test "z$GCRYPT_FOUND" = "zno" -a "z$with_gcrypt" != "z" ; then
+if test "z$GCRYPT_FOUND" = "zno" -a "z$with_gcrypt" != "z" -a "z$with_gcrypt" != "zyes" ; then
     AC_MSG_CHECKING(for libgcrypt library installation in "$with_gcrypt" folder)
     if test "z$ENABLE_CUSTOM_CONFIGS" = "zyes" -a -f "$with_gcrypt/bin/$GCRYPT_CONFIG" ; then
         GCRYPT_CONFIG_PATH="$with_gcrypt/bin/$GCRYPT_CONFIG"
@@ -1327,14 +1306,11 @@ if test "z$GCRYPT_FOUND" = "zyes" ; then
     CPPFLAGS="$CPPFLAGS $GCRYPT_CFLAGS"
     dnl gcrypt uses hex digits for version number
     minvers=`echo $GCRYPT_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 256 + $2) * 256 + $3;}'`
-    AC_EGREP_CPP(yes, [
-        AC_LANG_PROGRAM([[
-            #include <gcrypt.h>
-        ]],[[
-            #if GCRYPT_VERSION_NUMBER >= $minvers
-            yes
-            #endif
-        ]])
+    AC_EGREP_CPP(greater-than-minvers, [
+        #include <gcrypt.h>
+        #if GCRYPT_VERSION_NUMBER >= $minvers
+        greater-than-minvers
+        #endif
     ],[
         GCRYPT_FOUND=yes
     ], [
@@ -1384,7 +1360,7 @@ if test "z$with_gnutls" = "zno" ; then
 fi
 
 dnl Priority 1: User specifies the path to installation
-if test "z$GNUTLS_FOUND" = "zno" -a "z$with_gnutls" != "z" ; then
+if test "z$GNUTLS_FOUND" = "zno" -a "z$with_gnutls" != "z" -a "z$with_gnutls" != "zyes" ; then
     AC_MSG_CHECKING(for libgnutls library installation in "$with_gnutls" folder)
     if test -f "$with_gnutls/include/$GNUTLS_INCLUDE_MARKER" -a -f "$with_gnutls/lib/$GNUTLS_LIB_MARKER" ; then
         GNUTLS_INCLUDE_PATH="$with_gnutls/include"
@@ -1478,14 +1454,11 @@ if test "z$GNUTLS_FOUND" = "zyes" ; then
     CPPFLAGS="$CPPFLAGS $GNUTLS_CFLAGS"
     dnl gnutls uses hex digits for version number
     minvers=`echo $GNUTLS_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 256 + $2) * 256 + $3;}'`
-    AC_EGREP_CPP(yes, [
-        AC_LANG_PROGRAM([[
-            #include <gnutls/gnutls.h>
-        ]],[[
-            #if GNUTLS_VERSION_NUMBER >= $minvers
-            yes
-            #endif
-        ]])
+    AC_EGREP_CPP(greater-than-minvers, [
+        #include <gnutls/gnutls.h>
+        #if GNUTLS_VERSION_NUMBER >= $minvers
+        greater-than-minvers
+        #endif
     ],[
         GNUTLS_FOUND=yes
     ],[

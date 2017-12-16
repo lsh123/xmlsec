@@ -1091,7 +1091,7 @@ if test "z$NSPR_FOUND" = "zyes" ; then
     OLD_CPPFLAGS=$CPPFLAGS
     CPPFLAGS="$CPPFLAGS $NSPR_CFLAGS"
     AC_EGREP_CPP(greater-than-minvers, [
-        #include <nspr/prinit.h>
+        #include <prinit.h>
         #if ((PR_VMAJOR * 100 + PR_VMINOR) * 100 + PR_VPATCH) >= $minvers
         greater-than-minvers
         #endif
@@ -1110,7 +1110,7 @@ if test "z$NSS_FOUND" = "zyes" ; then
     OLD_CPPFLAGS=$CPPFLAGS
     CPPFLAGS="$CPPFLAGS $NSPR_CFLAGS $NSS_CFLAGS"
     AC_EGREP_CPP(greater-than-minvers, [
-        #include <nss/nss.h>
+        #include <nss.h>
         #if ((NSS_VMAJOR * 100 + NSS_VMINOR) * 100 + NSS_VPATCH) >= $minvers
         greater-than-minvers
         #endif

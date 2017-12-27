@@ -1554,7 +1554,7 @@ fi
 
 dnl Set CFLAGS/LIBS flags, do not change CFLAGS/LIBS if both are set
 if test "z$MSCRYPTO_FOUND" = "zyes" ; then
-    if test test "z$MSCRYPTO_CFLAGS" == "z" -o "z$MSCRYPTO_LIBS" = "z" ; then
+    if test "z$MSCRYPTO_CFLAGS" = "z" -o "z$MSCRYPTO_LIBS" = "z" ; then
         XMLSEC_DEFINES="$XMLSEC_DEFINES $MSCRYPTO_XMLSEC_DEFINES"
         MSCRYPTO_LIBS="$MSCRYPTO_LIBS $MSCRYPTO_LIBS_LIST"
     fi

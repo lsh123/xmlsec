@@ -44,7 +44,7 @@ LT_INIT
 dnl
 dnl Find programs
 dnl
-if test "z$RM" == "z" ; then
+if test "z$RM" = "z" ; then
     AC_PATH_PROG(RM, rm, /bin/rm)
 fi
 AC_PATH_PROG(CP, cp, /bin/cp)
@@ -166,7 +166,7 @@ esac
 dnl ==========================================================================
 dnl Hack for autoconf version mismatch
 dnl ==========================================================================
-if test "z$shrext" == "z" ; then
+if test "z$shrext" = "z" ; then
     shrext=$shrext_cmds
 fi
 
@@ -823,7 +823,7 @@ else
     XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST openssl"
 fi
 
-AM_CONDITIONAL(XMLSEC_NO_OPENSSL, test "z$XMLSEC_NO_OPENSSL" == "z1")
+AM_CONDITIONAL(XMLSEC_NO_OPENSSL, test "z$XMLSEC_NO_OPENSSL" = "z1")
 AC_SUBST(XMLSEC_NO_OPENSSL)
 AC_SUBST(OPENSSL_CFLAGS)
 AC_SUBST(OPENSSL_LIBS)

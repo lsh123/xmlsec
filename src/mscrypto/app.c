@@ -523,7 +523,7 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
 
     while (1) {
         pCert = CertEnumCertificatesInStore(hCertStore, pCert);
-        if(pCert != NULL) {
+        if(pCert == NULL) {
             break;
         }
         DWORD dwData = 0;

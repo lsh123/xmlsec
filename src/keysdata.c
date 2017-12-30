@@ -32,6 +32,7 @@
  *
  *************************************************************************/
 static xmlSecPtrList xmlSecAllKeyDataIds;
+static int xmlSecImportPersistKey = 0;
 
 /**
  * xmlSecKeyDataIdsGet:
@@ -1287,4 +1288,11 @@ xmlSecKeyDataStorePtrListGetKlass(void) {
     return(&xmlSecKeyDataStorePtrListKlass);
 }
 
+void xmlSecImportSetPersistKey(void) {
+    xmlSecImportPersistKey = 1;
+}
+
+int xmlSecImportGetPersistKey(void) {
+    return xmlSecImportPersistKey;
+}
 

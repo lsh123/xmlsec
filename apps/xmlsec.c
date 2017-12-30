@@ -656,6 +656,17 @@ static xmlSecAppCmdLineParam pkcs12Param = {
     NULL
 };
 
+static xmlSecAppCmdLineParam pkcs12PersistParam = {
+    xmlSecAppCmdLineTopicKeysMngr,
+    "--pkcs12-persist",
+    NULL,
+    "--pkcs12-persist"
+    "\n\tpersist loaded private key",
+    xmlSecAppCmdLineParamTypeFlag,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};
+
 static xmlSecAppCmdLineParam pubkeyCertParam = { 
     xmlSecAppCmdLineTopicKeysMngr,
     "--pubkey-cert-pem",
@@ -819,6 +830,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &pwdParam,
 #ifndef XMLSEC_NO_X509
     &pkcs12Param,
+    &pkcs12PersistParam,
     &pubkeyCertParam,
     &pubkeyCertDerParam,
     &trustedParam,
@@ -2086,6 +2098,9 @@ xmlSecAppLoadKeys(void) {
 
 #ifndef XMLSEC_NO_X509
     /* read all pkcs12 files */
+    if(xmlSecAppCmdLineParamIsSet(&pkcs12PersistParam)) {
+        xmlSecImportSetPersistKey();
+    }
     for(value = pkcs12Param.value; value != NULL; value = value->next) {
         if(value->strValue == NULL) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n", pkcs12Param.fullName);

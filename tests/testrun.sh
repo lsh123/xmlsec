@@ -75,6 +75,13 @@ else
     pub_key_format="der"
 fi
 
+#
+# Need to force persistence for mscrypto
+#
+if [ "z$crypto" = "zmscrypto" ] ; then
+    priv_key_option="--pkcs12-persist $priv_key_option"
+fi
+
 # On Windows, one needs to specify Crypto Service Provider (CSP)
 # in the pkcs12 file to ensure it is loaded correctly to be used
 # with SHA2 algorithms. Worse, the CSP is different for XP and older 

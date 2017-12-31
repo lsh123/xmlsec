@@ -829,6 +829,10 @@ struct _xmlSecKeyDataStoreKlass {
 #define xmlSecKeyDataStorePtrListId     xmlSecKeyDataStorePtrListGetKlass()
 XMLSEC_EXPORT xmlSecPtrListId   xmlSecKeyDataStorePtrListGetKlass       (void);
 
+#ifdef XMLSEC_PRIVATE
+XMLSEC_EXPORT void xmlSecImportSetPersistKey                            (void);
+XMLSEC_EXPORT int xmlSecImportGetPersistKey                             (void);
+#endif
 
 #ifdef __cplusplus
 }

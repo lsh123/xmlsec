@@ -18,6 +18,7 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/keysdata.h>
 
 #include <xmlsec/mscrypto/app.h>
 #include <xmlsec/mscrypto/crypto.h>
@@ -509,7 +510,11 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
         goto done;
     }
 
-    hCertStore = PFXImportCertStore(&pfx, wcPwd, CRYPT_EXPORTABLE | PKCS12_NO_PERSIST_KEY);
+    DWORD dwFlags = CRYPT_EXPORTABLE;
+    if (!xmlSecImportGetPersistKey()) {
+        dwFlags |= PKCS12_NO_PERSIST_KEY;
+    }
+    hCertStore = PFXImportCertStore(&pfx, wcPwd, dwFlags);
     if (NULL == hCertStore) {
         xmlSecMSCryptoError("PFXImportCertStore", NULL);
         goto done;

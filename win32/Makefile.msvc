@@ -473,21 +473,21 @@ check-keys : $(BINDIR)\$(APP_NAME)
 	cd ..
 	if not exist win32\tmp mkdir win32\tmp
 	set TMPFOLDER=win32/tmp
-	sh ./tests/testrun.sh ./tests/testKeys.sh default ./tests win32/$(BINDIR)/$(APP_NAME) der
+	sh ./tests/testrun.sh ./tests/testKeys.sh "$(WITH_DEFAULT_CRYPTO)" ./tests win32/$(BINDIR)/$(APP_NAME) der
 	cd win32
 
 check-dsig : $(BINDIR)\$(APP_NAME)	
 	cd ..
 	if not exist win32\tmp mkdir win32\tmp
 	set TMPFOLDER=win32/tmp
-	sh ./tests/testrun.sh ./tests/testDSig.sh default ./tests win32/$(BINDIR)/$(APP_NAME) der
+	sh ./tests/testrun.sh ./tests/testDSig.sh "$(WITH_DEFAULT_CRYPTO)" ./tests win32/$(BINDIR)/$(APP_NAME) der
 	cd win32
 
 check-enc : $(BINDIR)\$(APP_NAME)
 	cd ..
 	if not exist win32\tmp mkdir win32\tmp
 	set TMPFOLDER=win32/tmp
-	sh ./tests/testrun.sh ./tests/testEnc.sh default ./tests win32/$(BINDIR)/$(APP_NAME) der
+	sh ./tests/testrun.sh ./tests/testEnc.sh "$(WITH_DEFAULT_CRYPTO)" ./tests win32/$(BINDIR)/$(APP_NAME) der
 	cd win32
 
 clean :

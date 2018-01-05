@@ -205,6 +205,9 @@ xmlSecCryptoGetFunctions_mscng(void) {
 #ifdef XMLSEC_MSCNG_TODO
     gXmlSecMSCngFunctions->transformSha1GetKlass                = xmlSecMSCngTransformSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
+#ifndef XMLSEC_NO_SHA256
+    gXmlSecMSCngFunctions->transformSha256GetKlass              = xmlSecMSCngTransformSha256GetKlass;
+#endif /* XMLSEC_NO_SHA256 */
 
     /********************************************************************
      *

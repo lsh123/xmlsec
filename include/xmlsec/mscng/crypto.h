@@ -30,6 +30,21 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngShutdown          (void);
 
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngKeysMngrInit      (xmlSecKeysMngrPtr mngr);
 
+/********************************************************************
+ *
+ * SHA256 transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_SHA256
+/**
+ * xmlSecMSCngTransformSha256Id:
+ *
+ * The SHA256 digest transform klass.
+ */
+#define xmlSecMSCngTransformSha256Id \
+       xmlSecMSCngTransformSha256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformSha256GetKlass(void);
+#endif /* XMLSEC_NO_SHA256 */
 
 #ifdef __cplusplus
 }

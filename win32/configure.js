@@ -47,6 +47,7 @@ var withOpenSSL = 0;
 var withOpenSSLVersion = "";
 var withNss = 0;
 var withMSCrypto = 0;
+var withMSCng = 0;
 var withLibXSLT = 1;
 var withIconv = 1;
 var withNT4 = 1;
@@ -104,7 +105,7 @@ function usage()
 	txt += "XmlSec Library options, default value given in parentheses:\n\n";
 	txt += "  crypto:     Crypto engines list, first is default: \"openssl\",\n";
 	txt += "              \"openssl=100\", \"openssl=110\", \n";
-	txt += "              \"nss\", \"mscrypto\" (\"" + withCrypto + "\");\n"
+	txt += "              \"nss\", \"mscrypto\", \"mscng\" (\"" + withCrypto + "\");\n"
  	txt += "  xslt:       LibXSLT is used (" + (withLibXSLT? "yes" : "no")  + ")\n";	
  	txt += "  iconv:      Use the iconv library (" + (withIconv? "yes" : "no")  + ")\n";	
  	txt += "  nt4:        Enable NT 4.0 support (" + (withNT4? "yes" : "no")  + ")\n";	
@@ -168,6 +169,7 @@ function discoverVersion()
 	vf.WriteLine("WITH_OPENSSL_VERSION=XMLSEC_OPENSSL_" + withOpenSSLVersion);
 	vf.WriteLine("WITH_NSS=" + withNss);	
 	vf.WriteLine("WITH_MSCRYPTO=" + withMSCrypto);	
+	vf.WriteLine("WITH_MSCNG=" + withMSCng);
 	vf.WriteLine("WITH_LIBXSLT=" + (withLibXSLT ? "1" : "0"));
 	vf.WriteLine("WITH_ICONV=" + (withIconv ? "1" : "0"));
 	vf.WriteLine("WITH_NT4=" + (withNT4 ? "1" : "0"));
@@ -372,6 +374,9 @@ for (j = 0; j < crlist.length; j++) {
 	} else if (crlist[j] == "mscrypto") {
 		curcrypto="mscrypto";
 		withMSCrypto = 1;
+	} else if (crlist[j] == "mscng") {
+		curcrypto="mscng";
+		withMSCng = 1;
 	} else {
 		WScript.Echo("Unknown crypto engine \"" + crlist[j] + "\" is found. Aborting.");
 		WScript.Quit(error);
@@ -417,6 +422,7 @@ txtOut += "        Use OpenSSL: " + boolToStr(withOpenSSL) + "\n";
 txtOut += "Use OpenSSL Version: " + withOpenSSLVersion + "\n";
 txtOut += "            Use NSS: " + boolToStr(withNss) + "\n";
 txtOut += "       Use MSCrypto: " + boolToStr(withMSCrypto) + "\n";
+txtOut += "          Use MSCng: " + boolToStr(withMSCng) + "\n";
 txtOut += "        Use LibXSLT: " + boolToStr(withLibXSLT) + "\n";
 txtOut += "          Use iconv: " + boolToStr(withIconv) + "\n";
 txtOut += "     NT 4.0 support: " + boolToStr(withNT4) + "\n";

@@ -21,6 +21,7 @@
 
 #include <xmlsec/mscng/app.h>
 #include <xmlsec/mscng/crypto.h>
+#include <xmlsec/mscng/x509.h>
 
 static xmlSecCryptoDLFunctionsPtr gXmlSecMSCngFunctions = NULL;
 
@@ -68,7 +69,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->keyDataDsaGetKlass           = xmlSecMSCngKeyDataDsaGetKlass;
 #endif /* XMLSEC_NO_DSA */
 
-#ifdef XMLSEC_MSCNG_TODO
+#ifndef XMLSEC_NO_ECDSA
     gXmlSecMSCngFunctions->keyDataEcdsaGetKlass         = xmlSecMSCngKeyDataEcdsaGetKlass;
 #endif /* XMLSEC_NO_ECDSA */
 
@@ -85,9 +86,11 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->keyDataRsaGetKlass           = xmlSecMSCngKeyDataRsaGetKlass;
 #endif /* XMLSEC_NO_RSA */
 
-#ifdef XMLSEC_MSCNG_TODO
+#ifndef XMLSEC_NO_X509
     gXmlSecMSCngFunctions->keyDataX509GetKlass                  = xmlSecMSCngKeyDataX509GetKlass;
+#ifdef XMLSEC_MSCNG_TODO
     gXmlSecMSCngFunctions->keyDataRawX509CertGetKlass           = xmlSecMSCngKeyDataRawX509CertGetKlass;
+#endif
 #endif /* XMLSEC_NO_X509 */
 
     /********************************************************************
@@ -145,7 +148,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->transformEcdsaSha224GetKlass         = xmlSecMSCngTransformEcdsaSha224GetKlass;
 #endif /* XMLSEC_NO_SHA224 */
 
-#ifdef XMLSEC_MSCNG_TODO
+#ifndef XMLSEC_NO_SHA256
     gXmlSecMSCngFunctions->transformEcdsaSha256GetKlass         = xmlSecMSCngTransformEcdsaSha256GetKlass;
 #endif /* XMLSEC_NO_SHA256 */
 

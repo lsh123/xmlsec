@@ -437,8 +437,8 @@ XMLSEC_NSS_ALIBS        = smime3.lib ssl3.lib nss3.lib libnspr4_s.lib libplds4_s
 XMLSEC_MSCRYPTO_SOLIBS  = kernel32.lib user32.lib gdi32.lib Crypt32.lib Advapi32.lib
 XMLSEC_MSCRYPTO_ALIBS   = kernel32.lib user32.lib gdi32.lib Crypt32.lib Advapi32.lib
 
-XMLSEC_MSCNG_SOLIBS  = kernel32.lib user32.lib gdi32.lib Advapi32.lib Bcrypt.lib
-XMLSEC_MSCNG_ALIBS   = kernel32.lib user32.lib gdi32.lib Advapi32.lib Bcrypt.lib
+XMLSEC_MSCNG_SOLIBS  = kernel32.lib user32.lib gdi32.lib Crypt32.lib Advapi32.lib Bcrypt.lib
+XMLSEC_MSCNG_ALIBS   = kernel32.lib user32.lib gdi32.lib Crypt32.lib Advapi32.lib Bcrypt.lib
 
 
 # The archiver and its options.

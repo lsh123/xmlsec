@@ -19,6 +19,8 @@ extern "C" {
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 
+#include <windows.h>
+
 /**
  * xmlSecMSCngKeyDataX509Id:
  *
@@ -36,6 +38,10 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCngKeyDataX509GetKlass(void);
 #define xmlSecMSCngX509StoreId \
         xmlSecMSCngX509StoreGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataStoreId xmlSecMSCngX509StoreGetKlass(void);
+
+XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngX509StoreAdoptCert        (xmlSecKeyDataStorePtr store,
+                                                                              PCCERT_CONTEXT cert,
+                                                                              xmlSecKeyDataType type);
 
 #endif /* XMLSEC_NO_X509 */
 

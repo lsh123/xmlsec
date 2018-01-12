@@ -14,7 +14,6 @@
 #include <string.h>
 
 #include <windows.h>
-#include <wincrypt.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>

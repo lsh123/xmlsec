@@ -142,4 +142,52 @@ xmlSecMSCngX509StoreGetKlass(void) {
     return(&xmlSecMSCngX509StoreKlass);
 }
 
+/**
+ * xmlSecMSCngX509StoreAdoptCert:
+ * @store:              the pointer to X509 key data store klass.
+ * @cert:               the pointer to PCCERT_CONTEXT X509 certificate.
+ * @type:               the certificate type (trusted/untrusted).
+ *
+ * Adds trusted (root) or untrusted certificate to the store.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecMSCngX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
+    xmlSecMSCngX509StoreCtxPtr ctx;
+    HCERTSTORE hCertStore;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCngX509StoreId), -1);
+    xmlSecAssert2(pCert != NULL, -1);
+
+    ctx = xmlSecMSCngX509StoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->hCertStoreCollection != NULL, -1);
+
+    if(type == xmlSecKeyDataTypeTrusted) {
+        hCertStore = ctx->hCertStoreCollection;
+    } else if(type == xmlSecKeyDataTypeNone) {
+        xmlSecNotImplementedError(NULL);
+	return(-1);
+    } else {
+        xmlSecNotImplementedError(NULL);
+        return(-1);
+    }
+
+    xmlSecAssert2(hCertStore != NULL, -1);
+    ret = CertAddCertificateContextToStore(
+        hCertStore,
+        pCert,
+        CERT_STORE_ADD_ALWAYS,
+        NULL);
+    if(ret == FALSE) {
+        /* TODO implement a xmlSecMSCngError() */
+        xmlSecInternalError("CertAddCertificateContextToStore", xmlSecKeyDataStoreGetName(store));
+        return(-1);
+    }
+
+    return(0);
+}
+
 #endif /* XMLSEC_NO_X509 */

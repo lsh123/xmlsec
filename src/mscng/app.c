@@ -10,7 +10,7 @@
 
 #include <string.h>
 
-/* TODO: aadd MSCng include files */
+#include <windows.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -273,6 +273,7 @@ xmlSecMSCngAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* d
                                      xmlSecSize dataSize, xmlSecKeyDataFormat format,
                                      xmlSecKeyDataType type) {
     xmlSecKeyDataStorePtr x509Store;
+    PCCERT_CONTEXT pCert = NULL;
     int ret;
 
     xmlSecAssert2(mngr != NULL, -1);
@@ -285,9 +286,34 @@ xmlSecMSCngAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* d
         return(-1);
     }
 
-    xmlSecNotImplementedError(NULL);
+    switch (format) {
+        case xmlSecKeyDataFormatDer:
+            pCert = CertCreateCertificateContext(
+                X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                data,
+                dataSize);
+            if(pCert == NULL) {
+                /* TODO implement a xmlSecMSCngError() */
+                xmlSecInternalError("CertCreateCertificateContext", NULL);
+                return(-1);
+            }
+            break;
+        default:
+            xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
+                              "format=%d", (int)format);
+            return(-1);
+            break;
+    }
 
-    return(-1);
+    xmlSecAssert2(pCert != NULL, -1);
+    ret = xmlSecMSCngX509StoreAdoptCert(x509Store, pCert, type);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecMSCngX509StoreAdoptCert", NULL);
+        CertFreeCertificateContext(pCert);
+        return(-1);
+    }
+
+    return(0);
 }
 
 #endif /* XMLSEC_NO_X509 */

@@ -16,9 +16,12 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/keysmngr.h>
 
 #include <xmlsec/mscng/app.h>
 #include <xmlsec/mscng/crypto.h>
+#include <xmlsec/mscng/symbols.h>
+#include <xmlsec/mscng/x509.h>
 
 /**
  * xmlSecMSCngAppInit:
@@ -269,12 +272,21 @@ int
 xmlSecMSCngAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data,
                                      xmlSecSize dataSize, xmlSecKeyDataFormat format,
                                      xmlSecKeyDataType type) {
+    xmlSecKeyDataStorePtr x509Store;
+    int ret;
+
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* TODO: load cert and add to keys manager */
+    x509Store = xmlSecKeysMngrGetDataStore(mngr, xmlSecMSCngX509StoreId);
+    if(x509Store == NULL) {
+        xmlSecInternalError("xmlSecKeysMngrGetDataStore(xmlSecMSCngX509StoreId)", NULL);
+        return(-1);
+    }
+
     xmlSecNotImplementedError(NULL);
+
     return(-1);
 }
 

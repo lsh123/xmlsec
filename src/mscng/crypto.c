@@ -98,7 +98,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
      * Key data store ids
      *
      ********************************************************************/
-#ifdef XMLSEC_MSCNG_TODO
+#ifndef XMLSEC_NO_X509
     gXmlSecMSCngFunctions->x509StoreGetKlass                    = xmlSecMSCngX509StoreGetKlass;
 #endif /* XMLSEC_NO_X509 */
 
@@ -287,9 +287,29 @@ xmlSecMSCngShutdown(void) {
  */
 int
 xmlSecMSCngKeysMngrInit(xmlSecKeysMngrPtr mngr) {
+    int ret;
     xmlSecAssert2(mngr != NULL, -1);
 
-    /* TODO: add key data stores */
+#ifndef XMLSEC_NO_X509
+    /* create x509 store if needed */
+    if(xmlSecKeysMngrGetDataStore(mngr, xmlSecMSCngX509StoreId) == NULL) {
+        xmlSecKeyDataStorePtr x509Store;
+
+        x509Store = xmlSecKeyDataStoreCreate(xmlSecMSCngX509StoreId);
+        if(x509Store == NULL) {
+            xmlSecInternalError("xmlSecKeyDataStoreCreate(xmlSecMSCngX509StoreId)", NULL);
+            return(-1);
+        }
+
+        ret = xmlSecKeysMngrAdoptDataStore(mngr, x509Store);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecKeysMngrAdoptDataStore", NULL);
+            xmlSecKeyDataStoreDestroy(x509Store);
+            return(-1);
+        }
+    }
+#endif /* XMLSEC_NO_X509 */
+
     return(0);
 }
 

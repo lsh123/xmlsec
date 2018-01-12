@@ -28,6 +28,15 @@ extern "C" {
         xmlSecMSCngKeyDataX509GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCngKeyDataX509GetKlass(void);
 
+/**
+ * xmlSecMSCngX509StoreId:
+ *
+ * The MSCng X509 store klass.
+ */
+#define xmlSecMSCngX509StoreId \
+        xmlSecMSCngX509StoreGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataStoreId xmlSecMSCngX509StoreGetKlass(void);
+
 #endif /* XMLSEC_NO_X509 */
 
 #ifdef __cplusplus

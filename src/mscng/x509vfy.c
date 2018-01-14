@@ -52,13 +52,11 @@ xmlSecMSCngX509StoreFinalize(xmlSecKeyDataStorePtr store) {
     if (ctx->hCertStoreCollection != NULL) {
         ret = CertCloseStore(ctx->hCertStoreCollection, CERT_CLOSE_STORE_CHECK_FLAG);
         xmlSecMSCngLastError("CertCloseStore", xmlSecKeyDataStoreGetName(store));
-        return;
     }
 
     if (ctx->hCertStoreMemory != NULL) {
         ret = CertCloseStore(ctx->hCertStoreMemory, CERT_CLOSE_STORE_CHECK_FLAG);
         xmlSecMSCngLastError("CertCloseStore", xmlSecKeyDataStoreGetName(store));
-        return;
     }
 
     memset(ctx, 0, sizeof(xmlSecMSCngX509StoreCtx));

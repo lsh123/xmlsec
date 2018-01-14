@@ -10,7 +10,10 @@
 
 #include <string.h>
 
+#define WIN32_NO_STATUS
 #include <windows.h>
+#undef WIN32_NO_STATUS
+#include <ntstatus.h>
 #include <bcrypt.h>
 
 #include <xmlsec/xmlsec.h>
@@ -192,7 +195,7 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
             ctx->pszAlgId,
             NULL,
             0);
-        if(status != 0) {
+        if(status != STATUS_SUCCESS) {
             xmlSecMSCngNtError("BCryptOpenAlgorithmProvider", xmlSecTransformGetName(transform), status);
             return(-1);
         }
@@ -205,7 +208,7 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
             sizeof(DWORD),
             &cbData,
             0);
-        if(status != 0) {
+        if(status != STATUS_SUCCESS) {
             xmlSecMSCngNtError("BCryptGetProperty", xmlSecTransformGetName(transform), status);
             return(-1);
         }
@@ -225,7 +228,7 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
             sizeof(DWORD),
             &cbData,
             0);
-        if(status != 0) {
+        if(status != STATUS_SUCCESS) {
             xmlSecMSCngNtError("BCryptGetProperty", xmlSecTransformGetName(transform), status);
             return(-1);
         }
@@ -246,7 +249,7 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
             NULL,
             0,
             0);
-        if(status != 0) {
+        if(status != STATUS_SUCCESS) {
             xmlSecMSCngNtError("BCryptCreateHash", xmlSecTransformGetName(transform), status);
             return(-1);
         }
@@ -265,7 +268,7 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
                 (PBYTE)xmlSecBufferGetData(in),
                 inSize,
                 0);
-            if(status != 0) {
+            if(status != STATUS_SUCCESS) {
                 xmlSecMSCngNtError("BCryptHashData", xmlSecTransformGetName(transform), status);
                 return(-1);
             }
@@ -285,7 +288,7 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
                 ctx->pbHash,
                 ctx->cbHash,
                 0);
-            if(status < 0) {
+            if(status != STATUS_SUCCESS) {
                 xmlSecMSCngNtError("BCryptFinishHash", xmlSecTransformGetName(transform), status);
                 return(-1);
             }

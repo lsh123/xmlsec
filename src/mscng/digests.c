@@ -166,6 +166,7 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
                          xmlSecTransformCtxPtr transformCtx) {
     xmlSecMSCngDigestCtxPtr ctx;
     xmlSecBufferPtr in, out;
+    NTSTATUS status;
     int ret;
     DWORD cbData = 0;
     DWORD cbHashObject = 0;
@@ -186,28 +187,26 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
 
     if(transform->status == xmlSecTransformStatusNone) {
         /* open an algorithm handle */
-        ret = BCryptOpenAlgorithmProvider(
+        status = BCryptOpenAlgorithmProvider(
             &ctx->hAlg,
             ctx->pszAlgId,
             NULL,
             0);
-        if(ret < 0) {
-            /* TODO implement a xmlSecMSCngError() */
-            xmlSecInternalError("BCryptOpenAlgorithmProvider", xmlSecTransformGetName(transform));
+        if(status != 0) {
+            xmlSecMSCngNtError("BCryptOpenAlgorithmProvider", xmlSecTransformGetName(transform), status);
             return(-1);
         }
 
         /* calculate the size of the buffer to hold the hash object */
-        ret = BCryptGetProperty(
+        status = BCryptGetProperty(
             ctx->hAlg,
             BCRYPT_OBJECT_LENGTH,
             (PBYTE)&cbHashObject,
             sizeof(DWORD),
             &cbData,
             0);
-        if(ret < 0) {
-            /* TODO implement a xmlSecMSCngError() */
-            xmlSecInternalError("BCryptGetProperty", xmlSecTransformGetName(transform));
+        if(status != 0) {
+            xmlSecMSCngNtError("BCryptGetProperty", xmlSecTransformGetName(transform), status);
             return(-1);
         }
 
@@ -219,16 +218,15 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
         }
 
         /* calculate the length of the hash */
-        ret = BCryptGetProperty(
+        status = BCryptGetProperty(
             ctx->hAlg,
             BCRYPT_HASH_LENGTH,
             (PBYTE)&ctx->cbHash,
             sizeof(DWORD),
             &cbData,
             0);
-        if(ret < 0) {
-            /* TODO implement a xmlSecMSCngError() */
-            xmlSecInternalError("BCryptGetProperty", xmlSecTransformGetName(transform));
+        if(status != 0) {
+            xmlSecMSCngNtError("BCryptGetProperty", xmlSecTransformGetName(transform), status);
             return(-1);
         }
 
@@ -240,7 +238,7 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
         }
 
         /* create the hash */
-        ret = BCryptCreateHash(
+        status = BCryptCreateHash(
             ctx->hAlg,
             &ctx->hHash,
             ctx->pbHashObject,
@@ -248,9 +246,8 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
             NULL,
             0,
             0);
-        if(ret < 0) {
-            /* TODO implement a xmlSecMSCngError() */
-            xmlSecInternalError("BCryptCreateHash", xmlSecTransformGetName(transform));
+        if(status != 0) {
+            xmlSecMSCngNtError("BCryptCreateHash", xmlSecTransformGetName(transform), status);
             return(-1);
         }
 
@@ -263,14 +260,13 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
         inSize = xmlSecBufferGetSize(in);
         if(inSize > 0) {
             /* hash some data */
-            ret = BCryptHashData(
+            status = BCryptHashData(
                 ctx->hHash,
                 (PBYTE)xmlSecBufferGetData(in),
                 inSize,
                 0);
-            if(ret < 0) {
-                /* TODO implement a xmlSecMSCngError() */
-                xmlSecInternalError("BCryptHashData", xmlSecTransformGetName(transform));
+            if(status != 0) {
+                xmlSecMSCngNtError("BCryptHashData", xmlSecTransformGetName(transform), status);
                 return(-1);
             }
 
@@ -284,14 +280,13 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
 
         if(last) {
             /* close the hash */
-            ret = BCryptFinishHash(
+            status = BCryptFinishHash(
                 ctx->hHash,
                 ctx->pbHash,
                 ctx->cbHash,
                 0);
-            if(ret < 0) {
-                /* TODO implement a xmlSecMSCngError() */
-                xmlSecInternalError("BCryptFinishHash", xmlSecTransformGetName(transform));
+            if(status < 0) {
+                xmlSecMSCngNtError("BCryptFinishHash", xmlSecTransformGetName(transform), status);
                 return(-1);
             }
 

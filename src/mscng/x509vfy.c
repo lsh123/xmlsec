@@ -31,6 +31,7 @@ typedef struct _xmlSecMSCngX509StoreCtx xmlSecMSCngX509StoreCtx,
                                        *xmlSecMSCngX509StoreCtxPtr;
 struct _xmlSecMSCngX509StoreCtx {
     HCERTSTORE hCertStoreCollection;
+    HCERTSTORE hCertStoreMemory;
 };
 
 #define xmlSecMSCngX509StoreGetCtx(store) \
@@ -39,11 +40,34 @@ struct _xmlSecMSCngX509StoreCtx {
 #define xmlSecMSCngX509StoreSize \
     (sizeof(xmlSecKeyDataStoreKlass) + sizeof(xmlSecMSCngX509StoreCtx))
 
+static void
+xmlSecMSCngX509StoreFinalize(xmlSecKeyDataStorePtr store) {
+    xmlSecMSCngX509StoreCtxPtr ctx;
+    int ret;
+
+    xmlSecAssert(xmlSecKeyDataStoreCheckId(store, xmlSecMSCngX509StoreId));
+    ctx = xmlSecMSCngX509StoreGetCtx(store);
+    xmlSecAssert(ctx != NULL);
+
+    if (ctx->hCertStoreCollection != NULL) {
+        ret = CertCloseStore(ctx->hCertStoreCollection, CERT_CLOSE_STORE_CHECK_FLAG);
+        xmlSecMSCngLastError("CertCloseStore", xmlSecKeyDataStoreGetName(store));
+        return;
+    }
+
+    if (ctx->hCertStoreMemory != NULL) {
+        ret = CertCloseStore(ctx->hCertStoreMemory, CERT_CLOSE_STORE_CHECK_FLAG);
+        xmlSecMSCngLastError("CertCloseStore", xmlSecKeyDataStoreGetName(store));
+        return;
+    }
+
+    memset(ctx, 0, sizeof(xmlSecMSCngX509StoreCtx));
+}
+
 static int
 xmlSecMSCngX509StoreInitialize(xmlSecKeyDataStorePtr store) {
     int ret;
     xmlSecMSCngX509StoreCtxPtr ctx;
-    HCERTSTORE hCertStoreMemory;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCngX509StoreId), -1);
     ctx = xmlSecMSCngX509StoreGetCtx(store);
@@ -59,59 +83,36 @@ xmlSecMSCngX509StoreInitialize(xmlSecKeyDataStorePtr store) {
         0,
         NULL);
     if(ctx->hCertStoreCollection == NULL) {
-        /* TODO implement a xmlSecMSCngError() */
-        xmlSecInternalError("CertOpenStore", xmlSecKeyDataStoreGetName(store));
+        xmlSecMSCngLastError("CertOpenStore", xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
 
     /* create an actual store */
-    hCertStoreMemory = CertOpenStore(
+    ctx->hCertStoreMemory = CertOpenStore(
         CERT_STORE_PROV_MEMORY,
         X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
         0,
         CERT_STORE_CREATE_NEW_FLAG,
         NULL);
-    if (hCertStoreMemory == NULL) {
-        /* TODO implement a xmlSecMSCngError() */
-        xmlSecInternalError("CertOpenStore", xmlSecKeyDataStoreGetName(store));
-        CertCloseStore(ctx->hCertStoreCollection, CERT_CLOSE_STORE_FORCE_FLAG);
-        ctx->hCertStoreCollection = NULL;
+    if (ctx->hCertStoreMemory == NULL) {
+        xmlSecMSCngLastError("CertOpenStore", xmlSecKeyDataStoreGetName(store));
+        xmlSecMSCngX509StoreFinalize(store);
         return(-1);
     }
 
     /* add the store to the collection */
     ret = CertAddStoreToCollection(
         ctx->hCertStoreCollection,
-        hCertStoreMemory,
+        ctx->hCertStoreMemory,
         CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG,
         1);
     if (ret == 0) {
-        /* TODO implement a xmlSecMSCngError() */
-        xmlSecInternalError("CertAddStoreToCollection", xmlSecKeyDataStoreGetName(store));
-        CertCloseStore(hCertStoreMemory, CERT_CLOSE_STORE_FORCE_FLAG);
-        CertCloseStore(ctx->hCertStoreCollection, CERT_CLOSE_STORE_FORCE_FLAG);
-        ctx->hCertStoreCollection = NULL;
+        xmlSecMSCngLastError("CertAddStoreToCollection", xmlSecKeyDataStoreGetName(store));
+        xmlSecMSCngX509StoreFinalize(store);
         return(-1);
     }
 
-    CertCloseStore(hCertStoreMemory, CERT_CLOSE_STORE_CHECK_FLAG);
-
     return(0);
-}
-
-static void
-xmlSecMSCngX509StoreFinalize(xmlSecKeyDataStorePtr store) {
-    xmlSecMSCngX509StoreCtxPtr ctx;
-
-    xmlSecAssert(xmlSecKeyDataStoreCheckId(store, xmlSecMSCngX509StoreId));
-    ctx = xmlSecMSCngX509StoreGetCtx(store);
-    xmlSecAssert(ctx != NULL);
-
-    if (ctx->hCertStoreCollection != NULL) {
-        CertCloseStore(ctx->hCertStoreCollection, CERT_CLOSE_STORE_FORCE_FLAG);
-    }
-
-    memset(ctx, 0, sizeof(xmlSecMSCngX509StoreCtx));
 }
 
 static xmlSecKeyDataStoreKlass xmlSecMSCngX509StoreKlass = {
@@ -182,8 +183,7 @@ xmlSecMSCngX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCert,
         CERT_STORE_ADD_ALWAYS,
         NULL);
     if(ret == FALSE) {
-        /* TODO implement a xmlSecMSCngError() */
-        xmlSecInternalError("CertAddCertificateContextToStore", xmlSecKeyDataStoreGetName(store));
+        xmlSecMSCngLastError("CertAddCertificateContextToStore", xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
 

@@ -293,8 +293,7 @@ xmlSecMSCngAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* d
                 data,
                 dataSize);
             if(pCert == NULL) {
-                /* TODO implement a xmlSecMSCngError() */
-                xmlSecInternalError("CertCreateCertificateContext", NULL);
+                xmlSecMSCngLastError("CertCreateCertificateContext", NULL)
                 return(-1);
             }
             break;

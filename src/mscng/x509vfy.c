@@ -36,7 +36,7 @@ struct _xmlSecMSCngX509StoreCtx {
 
 #define xmlSecMSCngX509StoreGetCtx(store) \
     ((xmlSecMSCngX509StoreCtxPtr)(((xmlSecByte*)(store)) + \
-    	sizeof(xmlSecKeyDataStoreKlass)))
+                 sizeof(xmlSecKeyDataStoreKlass)))
 #define xmlSecMSCngX509StoreSize \
     (sizeof(xmlSecKeyDataStoreKlass) + sizeof(xmlSecMSCngX509StoreCtx))
 
@@ -51,16 +51,16 @@ xmlSecMSCngX509StoreFinalize(xmlSecKeyDataStorePtr store) {
 
     if (ctx->hCertStoreCollection != NULL) {
         ret = CertCloseStore(ctx->hCertStoreCollection, CERT_CLOSE_STORE_CHECK_FLAG);
-	if(ret == FALSE) {
+        if(ret == FALSE) {
             xmlSecMSCngLastError("CertCloseStore", xmlSecKeyDataStoreGetName(store));
         }
     }
 
     if (ctx->hCertStoreMemory != NULL) {
         ret = CertCloseStore(ctx->hCertStoreMemory, CERT_CLOSE_STORE_CHECK_FLAG);
-	if(ret == FALSE) {
+        if(ret == FALSE) {
             xmlSecMSCngLastError("CertCloseStore", xmlSecKeyDataStoreGetName(store));
-	}
+        }
     }
 
     memset(ctx, 0, sizeof(xmlSecMSCngX509StoreCtx));
@@ -172,7 +172,7 @@ xmlSecMSCngX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCert,
         hCertStore = ctx->hCertStoreCollection;
     } else if(type == xmlSecKeyDataTypeNone) {
         xmlSecNotImplementedError(NULL);
-	return(-1);
+        return(-1);
     } else {
         xmlSecNotImplementedError(NULL);
         return(-1);

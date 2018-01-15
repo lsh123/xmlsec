@@ -10,15 +10,18 @@
 
 #include <string.h>
 
-/* TODO: aadd MSCng include files */
+#include <windows.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/keysmngr.h>
 
 #include <xmlsec/mscng/app.h>
 #include <xmlsec/mscng/crypto.h>
+#include <xmlsec/mscng/symbols.h>
+#include <xmlsec/mscng/x509.h>
 
 /**
  * xmlSecMSCngAppInit:
@@ -218,13 +221,38 @@ int
 xmlSecMSCngAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
                                xmlSecKeyDataFormat format,
                                xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+    xmlSecBuffer buffer;
+    int ret;
+
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* TODO: load cert and add to keys manager */
-    xmlSecNotImplementedError(NULL);
-    return(-1);
+    ret = xmlSecBufferInitialize(&buffer, 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
+        return(-1);
+    }
+
+    ret = xmlSecBufferReadFile(&buffer, filename);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferReadFile", NULL,
+                             "filename=%s", xmlSecErrorsSafeString(filename));
+        xmlSecBufferFinalize(&buffer);
+        return(-1);
+    }
+
+    ret = xmlSecMSCngAppKeysMngrCertLoadMemory(mngr, xmlSecBufferGetData(&buffer),
+        xmlSecBufferGetSize(&buffer), format, type);
+    if (ret < 0) {
+        xmlSecInternalError2("xmlSecMSCngAppKeysMngrCertLoadMemory", NULL,
+                             "filename=%s", xmlSecErrorsSafeString(filename));
+        xmlSecBufferFinalize(&buffer);
+        return(-1);
+    }
+
+    xmlSecBufferFinalize(&buffer);
+    return(ret);
 }
 
 /**
@@ -244,13 +272,47 @@ int
 xmlSecMSCngAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data,
                                      xmlSecSize dataSize, xmlSecKeyDataFormat format,
                                      xmlSecKeyDataType type) {
+    xmlSecKeyDataStorePtr x509Store;
+    PCCERT_CONTEXT pCert = NULL;
+    int ret;
+
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* TODO: load cert and add to keys manager */
-    xmlSecNotImplementedError(NULL);
-    return(-1);
+    x509Store = xmlSecKeysMngrGetDataStore(mngr, xmlSecMSCngX509StoreId);
+    if(x509Store == NULL) {
+        xmlSecInternalError("xmlSecKeysMngrGetDataStore(xmlSecMSCngX509StoreId)", NULL);
+        return(-1);
+    }
+
+    switch (format) {
+        case xmlSecKeyDataFormatDer:
+            pCert = CertCreateCertificateContext(
+                X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                data,
+                dataSize);
+            if(pCert == NULL) {
+                xmlSecMSCngLastError("CertCreateCertificateContext", NULL)
+                return(-1);
+            }
+            break;
+        default:
+            xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
+                              "format=%d", (int)format);
+            return(-1);
+            break;
+    }
+
+    xmlSecAssert2(pCert != NULL, -1);
+    ret = xmlSecMSCngX509StoreAdoptCert(x509Store, pCert, type);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecMSCngX509StoreAdoptCert", NULL);
+        CertFreeCertificateContext(pCert);
+        return(-1);
+    }
+
+    return(0);
 }
 
 #endif /* XMLSEC_NO_X509 */

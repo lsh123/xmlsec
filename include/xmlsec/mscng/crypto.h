@@ -32,6 +32,35 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngKeysMngrInit      (xmlSecKeys
 
 /********************************************************************
  *
+ * ECDSA transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_ECDSA
+
+/**
+ * xmlSecMSCngKeyDataEcdsaId:
+ *
+ * The ECDSA key klass.
+ */
+#define xmlSecMSCngKeyDataEcdsaId \
+        xmlSecMSCngKeyDataEcdsaGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngKeyDataEcdsaGetKlass(void);
+
+#ifndef XMLSEC_NO_SHA256
+/**
+ * xmlSecMSCngTransformEcdsaSha256Id:
+ *
+ * The ECDSA-SHA256 signature transform klass.
+ */
+#define xmlSecMSCngTransformEcdsaSha256Id     \
+       xmlSecMSCngTransformEcdsaSha256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformEcdsaSha256GetKlass(void);
+#endif /* XMLSEC_NO_SHA256 */
+
+#endif /* XMLSEC_NO_ECDSA */
+
+/********************************************************************
+ *
  * SHA256 transform
  *
  *******************************************************************/

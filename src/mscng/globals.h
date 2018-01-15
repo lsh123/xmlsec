@@ -24,4 +24,41 @@
 /* Include common error helper macros. */
 #include "../errors_helpers.h"
 
+/**
+ * xmlSecMSCngLastError:
+ * @errorFunction:      the failed function name.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting crypro errors from GetLastError().
+ */
+#define xmlSecMSCngLastError(errorFunction, errorObject) \
+    {                                                    \
+        DWORD dwError = GetLastError();                  \
+        xmlSecError(XMLSEC_ERRORS_HERE,                  \
+                    (const char*)(errorObject),          \
+                    (errorFunction),                     \
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,       \
+                    "MSCng last error: 0x%08lx",         \
+                    (long int)dwError                    \
+        );                                               \
+    }
+
+/**
+ * xmlSecMSCngNtError:
+ * @errorFunction:      the failed function name.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting crypro errors from NTSTATUS.
+ */
+#define xmlSecMSCngNtError(errorFunction, errorObject, status) \
+    {                                                          \
+        xmlSecError(XMLSEC_ERRORS_HERE,                        \
+                    (const char*)(errorObject),                \
+                    (errorFunction),                           \
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,             \
+                    "MSCng NTSTATUS: 0x%08lx",                 \
+                    (long int)(status)                         \
+        );                                                     \
+    }
+
 #endif /* ! __XMLSEC_GLOBALS_H__ */

@@ -32,7 +32,7 @@ typedef struct _xmlSecMSCngX509DataCtx xmlSecMSCngX509DataCtx,
                                        *xmlSecMSCngX509DataCtxPtr;
 
 struct _xmlSecMSCngX509DataCtx {
-    PCCERT_CONTEXT pCert;
+    HCERTSTORE hMemStore;
 };
 
 #define xmlSecMSCngX509DataSize      \
@@ -49,9 +49,17 @@ xmlSecMSCngKeyDataX509Initialize(xmlSecKeyDataPtr data) {
     xmlSecAssert2(ctx != NULL, -1);
     memset(ctx, 0, sizeof(xmlSecMSCngX509DataCtx));
 
-    xmlSecNotImplementedError(NULL);
+    ctx->hMemStore = CertOpenStore(CERT_STORE_PROV_MEMORY,
+        0,
+        0,
+        CERT_STORE_CREATE_NEW_FLAG,
+        NULL);
+    if(ctx->hMemStore == 0) {
+        xmlSecMSCngLastError("CertOpenStore", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
 
-    return(-1);
+    return(0);
 }
 
 static int
@@ -73,7 +81,11 @@ xmlSecMSCngKeyDataX509Finalize(xmlSecKeyDataPtr data) {
     ctx = xmlSecMSCngX509DataGetCtx(data);
     xmlSecAssert(ctx != NULL);
 
-    xmlSecNotImplementedError(NULL);
+    if(ctx->hMemStore != 0) {
+        if(!CertCloseStore(ctx->hMemStore, CERT_CLOSE_STORE_CHECK_FLAG)) {
+            xmlSecMSCngLastError("CertCloseStore", NULL);
+        }
+    }
 
     memset(ctx, 0, sizeof(xmlSecMSCngX509DataCtx));
 }

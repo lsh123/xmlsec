@@ -192,4 +192,25 @@ xmlSecMSCngX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCert,
     return(0);
 }
 
+/**
+ * xmlSecMSCngX509StoreVerify:
+ * @store: the pointer to X509 certificate context store klass.
+ * @certs: the untrusted certificates stack.
+ * @keyInfoCtx: the pointer to <dsig:KeyInfo/> element processing context.
+ *
+ * Verifies @certs list.
+ *
+ * Returns: pointer to the first verified certificate from @certs.
+ */
+PCCERT_CONTEXT
+xmlSecMSCngX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs,
+	xmlSecKeyInfoCtx* keyInfoCtx) {
+    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCngX509StoreId), NULL);
+    xmlSecAssert2(certs != NULL, NULL);
+    xmlSecAssert2(keyInfoCtx != NULL, NULL);
+
+    xmlSecNotImplementedError(NULL);
+
+    return (NULL);
+}
 #endif /* XMLSEC_NO_X509 */

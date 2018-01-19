@@ -35,6 +35,48 @@ struct _xmlSecMSCngKeyDataCtx {
 #define xmlSecMSCngKeyDataGetCtx(data) \
     ((xmlSecMSCngKeyDataCtxPtr)(((xmlSecByte*)(data)) + sizeof(xmlSecKeyData)))
 
+/**
+ * xmlSecMSCngCertAdopt:
+ * @pCert:              the pointer to cert.
+ * @type:               the expected key type.
+ *
+ * Creates key data value from the cert.
+ *
+ * Returns: pointer to newly created xmlsec key or NULL if an error occurs.
+ */
+xmlSecKeyDataPtr
+xmlSecMSCngCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
+    xmlSecKeyDataPtr data = NULL;
+    int ret;
+
+    xmlSecAssert2(pCert != NULL, NULL);
+    xmlSecAssert2(pCert->pCertInfo != NULL, NULL);
+    xmlSecAssert2(pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId != NULL, NULL);
+
+#ifndef XMLSEC_NO_ECDSA
+    if (!strcmp(pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId, szOID_ECC_PUBLIC_KEY)) {
+        data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataEcdsaId);
+        if(data == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate(KeyDataEcdsaId)", NULL);
+            return(NULL);
+        }
+    }
+#endif /* XMLSEC_NO_ECDSA */
+
+    if (data == NULL) {
+        xmlSecInvalidStringTypeError("PCCERT_CONTEXT key type",
+            pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId,
+            "unsupported keytype",
+            NULL);
+        return(NULL);
+    }
+
+    /* TODO call xmlSecMSCngKeyDataAdoptCert() now */
+    xmlSecNotImplementedError(NULL);
+    xmlSecKeyDataDestroy(data);
+    return(NULL);
+}
+
 #ifndef XMLSEC_NO_ECDSA
 static int
 xmlSecMSCngKeyDataEcdsaInitialize(xmlSecKeyDataPtr data) {

@@ -27,6 +27,7 @@
 
 #include <xmlsec/mscng/crypto.h>
 #include <xmlsec/mscng/x509.h>
+#include <xmlsec/mscng/certkeys.h>
 
 typedef struct _xmlSecMSCngX509DataCtx xmlSecMSCngX509DataCtx,
                                        *xmlSecMSCngX509DataCtxPtr;
@@ -304,6 +305,38 @@ xmlSecMSCngKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data,
 
     cert = xmlSecMSCngX509StoreVerify(store, ctx->hMemStore, keyInfoCtx);
     if(cert != NULL) {
+        PCCERT_CONTEXT certCopy;
+        xmlSecKeyDataPtr keyValue = NULL;
+
+        ctx->cert = CertDuplicateCertificateContext(cert);
+        if(ctx->cert == NULL) {
+            xmlSecMSCngLastError("CertDuplicateCertificateContext",
+                xmlSecKeyDataGetName(data));
+            return(-1);
+        }
+
+        /* copy the certificate, so it can be adopted according to the key data
+         * type */
+        certCopy = CertDuplicateCertificateContext(ctx->cert);
+        if(certCopy == NULL) {
+            xmlSecMSCngLastError("CertDuplicateCertificateContext",
+                xmlSecKeyDataGetName(data));
+            return(-1);
+        }
+
+        if((keyInfoCtx->keyReq.keyType & xmlSecKeyDataTypePrivate) != 0) {
+            xmlSecNotImplementedError(NULL);
+            return(-1);
+        } else if((keyInfoCtx->keyReq.keyType & xmlSecKeyDataTypePublic) != 0) {
+            keyValue = xmlSecMSCngCertAdopt(certCopy, xmlSecKeyDataTypePublic);
+            if(keyValue == NULL) {
+                xmlSecInternalError("xmlSecMSCngCertAdopt",
+                    xmlSecKeyDataGetName(data));
+                return(-1);
+            }
+        }
+
+        /* verify that keyValue matches the key requirements */
         xmlSecNotImplementedError(NULL);
         return(-1);
     } else if((keyInfoCtx->flags &

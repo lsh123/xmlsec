@@ -11,7 +11,7 @@
 #include <string.h>
 
 #include <windows.h>
-#include <ncrypt.h>
+#include <bcrypt.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
@@ -27,13 +27,81 @@ typedef struct _xmlSecMSCngKeyDataCtx xmlSecMSCngKeyDataCtx,
                                       *xmlSecMSCngKeyDataCtxPtr;
 
 struct _xmlSecMSCngKeyDataCtx {
-    NCRYPT_KEY_HANDLE hKey;
+    PCCERT_CONTEXT cert;
+    xmlSecKeyDataType type;
+    BCRYPT_KEY_HANDLE hKey;
 };
 
 #define xmlSecMSCngKeyDataSize       \
     (sizeof(xmlSecKeyData) + sizeof(xmlSecMSCngKeyDataCtx))
 #define xmlSecMSCngKeyDataGetCtx(data) \
     ((xmlSecMSCngKeyDataCtxPtr)(((xmlSecByte*)(data)) + sizeof(xmlSecKeyData)))
+
+static void
+xmlSecMSCngKeyDataCtxDestroyKey(xmlSecMSCngKeyDataCtxPtr ctx) {
+    xmlSecAssert(ctx != NULL);
+
+    if (ctx->hKey != 0) {
+        if(!BCryptDestroyKey(ctx->hKey)) {
+            xmlSecMSCngLastError("BCryptDestroyKey", NULL);
+        }
+    }
+    ctx->hKey = 0;
+}
+
+static void
+xmlSecMSCngKeyDataCtxDestroyCert(xmlSecMSCngKeyDataCtxPtr ctx) {
+    xmlSecAssert(ctx != NULL);
+
+    if (ctx->cert != NULL) {
+        CertFreeCertificateContext(ctx->cert);
+    }
+    ctx->cert = NULL;
+}
+
+/**
+ * xmlSecMSCngKeyDataAdoptCert:
+ * @data:               the pointer to MSCng pccert data.
+ * @cert:               the pointer to PCCERT key.
+ *
+ * Sets the value of key data.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+static int
+xmlSecMSCngKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert, xmlSecKeyDataType type) {
+    xmlSecMSCngKeyDataCtxPtr ctx;
+    BCRYPT_KEY_HANDLE hKey;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCngKeyDataSize), -1);
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(cert->pCertInfo != NULL, -1);
+    xmlSecAssert2((type & (xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate)) != 0, -1);
+
+    ctx = xmlSecMSCngKeyDataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    xmlSecMSCngKeyDataCtxDestroyKey(ctx);
+    xmlSecMSCngKeyDataCtxDestroyCert(ctx);
+
+    ctx->type = type;
+
+    /* acquire the CNG key handle from the certificate */
+    if (!CryptImportPublicKeyInfoEx2(X509_ASN_ENCODING,
+            &cert->pCertInfo->SubjectPublicKeyInfo,
+            0,
+            NULL,
+            &hKey)) {
+        xmlSecMSCngLastError("CryptImportPublicKeyInfoEx2", NULL);
+        return(-1);
+    }
+    ctx->hKey = hKey;
+    ctx->cert = cert;
+
+    return(0);
+}
 
 /**
  * xmlSecMSCngCertAdopt:
@@ -54,7 +122,7 @@ xmlSecMSCngCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
     xmlSecAssert2(pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId != NULL, NULL);
 
 #ifndef XMLSEC_NO_ECDSA
-    if (!strcmp(pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId, szOID_ECC_PUBLIC_KEY)) {
+    if(!strcmp(pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId, szOID_ECC_PUBLIC_KEY)) {
         data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataEcdsaId);
         if(data == NULL) {
             xmlSecInternalError("xmlSecKeyDataCreate(KeyDataEcdsaId)", NULL);
@@ -63,7 +131,7 @@ xmlSecMSCngCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
     }
 #endif /* XMLSEC_NO_ECDSA */
 
-    if (data == NULL) {
+    if(data == NULL) {
         xmlSecInvalidStringTypeError("PCCERT_CONTEXT key type",
             pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId,
             "unsupported keytype",
@@ -71,10 +139,14 @@ xmlSecMSCngCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
         return(NULL);
     }
 
-    /* TODO call xmlSecMSCngKeyDataAdoptCert() now */
-    xmlSecNotImplementedError(NULL);
-    xmlSecKeyDataDestroy(data);
-    return(NULL);
+    ret = xmlSecMSCngKeyDataAdoptCert(data, pCert, type);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataAdoptCert", NULL);
+        xmlSecKeyDataDestroy(data);
+        return(NULL);
+    }
+
+    return(data);
 }
 
 static int

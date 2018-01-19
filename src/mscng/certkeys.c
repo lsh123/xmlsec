@@ -77,18 +77,48 @@ xmlSecMSCngCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
     return(NULL);
 }
 
-#ifndef XMLSEC_NO_ECDSA
 static int
-xmlSecMSCngKeyDataEcdsaInitialize(xmlSecKeyDataPtr data) {
+xmlSecMSCngKeyDataInitialize(xmlSecKeyDataPtr data) {
     xmlSecMSCngKeyDataCtxPtr ctx;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataEcdsaId), -1);
+    xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCngKeyDataSize), -1);
+
     ctx = xmlSecMSCngKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
-    xmlSecNotImplementedError(NULL);
+    memset(ctx, 0, sizeof(xmlSecMSCngKeyDataCtx));
 
-    return(-1);
+    return(0);
+}
+
+static void
+xmlSecMSCngKeyDataFinalize(xmlSecKeyDataPtr data) {
+    xmlSecMSCngKeyDataCtxPtr ctx;
+
+    xmlSecAssert(xmlSecKeyDataIsValid(data));
+    xmlSecAssert(xmlSecKeyDataCheckSize(data, xmlSecMSCngKeyDataSize));
+
+    ctx = xmlSecMSCngKeyDataGetCtx(data);
+    xmlSecAssert(ctx != NULL);
+
+    memset(ctx, 0, sizeof(xmlSecMSCngKeyDataCtx));
+}
+
+#ifndef XMLSEC_NO_ECDSA
+static int
+xmlSecMSCngKeyDataEcdsaInitialize(xmlSecKeyDataPtr data) {
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataEcdsaId), xmlSecKeyDataTypeUnknown);
+
+    ret = xmlSecMSCngKeyDataInitialize(data);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataInitialize", NULL);
+        return(-1);
+    }
+
+    return(0);
 }
 
 static int
@@ -104,6 +134,8 @@ xmlSecMSCngKeyDataEcdsaDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
 static void
 xmlSecMSCngKeyDataEcdsaFinalize(xmlSecKeyDataPtr data) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataEcdsaId));
+
+    xmlSecMSCngKeyDataFinalize(data);
 }
 
 static xmlSecKeyDataType

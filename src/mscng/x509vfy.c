@@ -192,4 +192,59 @@ xmlSecMSCngX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCert,
     return(0);
 }
 
+/**
+ * xmlSecMSCngX509StoreVerify:
+ * @store: the pointer to X509 certificate context store klass.
+ * @certs: the untrusted certificates stack.
+ * @keyInfoCtx: the pointer to <dsig:KeyInfo/> element processing context.
+ *
+ * Verifies @certs list.
+ *
+ * Returns: pointer to the first verified certificate from @certs.
+ */
+PCCERT_CONTEXT
+xmlSecMSCngX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs,
+	xmlSecKeyInfoCtx* keyInfoCtx) {
+    PCCERT_CONTEXT cert = NULL;
+
+    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCngX509StoreId), NULL);
+    xmlSecAssert2(certs != NULL, NULL);
+    xmlSecAssert2(keyInfoCtx != NULL, NULL);
+
+    while((cert = CertEnumCertificatesInStore(certs, cert)) != NULL) {
+        PCCERT_CONTEXT foundCert = NULL;
+        int skip = 0;
+        xmlSecAssert2(cert->pCertInfo != NULL, NULL);
+
+        /* is cert the issuer of a certificate in certs? if so, skip it */
+        do {
+            foundCert = CertFindCertificateInStore(certs,
+                X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                0,
+                CERT_FIND_ISSUER_NAME,
+                &(cert->pCertInfo->Subject),
+                foundCert);
+            /* don't skip self-signed certificates */
+            if((foundCert != NULL) &&
+                    !CertCompareCertificateName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                                                &(foundCert->pCertInfo->Subject),
+                                                &(foundCert->pCertInfo->Issuer))) {
+                skip = 1;
+            }
+        } while(skip == 0 && foundCert != NULL);
+        if(foundCert != NULL) {
+            CertFreeCertificateContext(foundCert);
+        }
+        if(skip == 0) {
+            if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) != 0) {
+                return(cert);
+            }
+
+            /* need to actually verify the certificate */
+            xmlSecNotImplementedError(NULL);
+        }
+    }
+
+    return (NULL);
+}
 #endif /* XMLSEC_NO_X509 */

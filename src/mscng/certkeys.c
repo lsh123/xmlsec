@@ -28,7 +28,6 @@ typedef struct _xmlSecMSCngKeyDataCtx xmlSecMSCngKeyDataCtx,
 
 struct _xmlSecMSCngKeyDataCtx {
     PCCERT_CONTEXT cert;
-    xmlSecKeyDataType type;
     BCRYPT_KEY_HANDLE hKey;
 };
 
@@ -36,28 +35,6 @@ struct _xmlSecMSCngKeyDataCtx {
     (sizeof(xmlSecKeyData) + sizeof(xmlSecMSCngKeyDataCtx))
 #define xmlSecMSCngKeyDataGetCtx(data) \
     ((xmlSecMSCngKeyDataCtxPtr)(((xmlSecByte*)(data)) + sizeof(xmlSecKeyData)))
-
-static void
-xmlSecMSCngKeyDataCtxDestroyKey(xmlSecMSCngKeyDataCtxPtr ctx) {
-    xmlSecAssert(ctx != NULL);
-
-    if (ctx->hKey != 0) {
-        if(!BCryptDestroyKey(ctx->hKey)) {
-            xmlSecMSCngLastError("BCryptDestroyKey", NULL);
-        }
-    }
-    ctx->hKey = 0;
-}
-
-static void
-xmlSecMSCngKeyDataCtxDestroyCert(xmlSecMSCngKeyDataCtxPtr ctx) {
-    xmlSecAssert(ctx != NULL);
-
-    if (ctx->cert != NULL) {
-        CertFreeCertificateContext(ctx->cert);
-    }
-    ctx->cert = NULL;
-}
 
 /**
  * xmlSecMSCngKeyDataAdoptCert:
@@ -82,11 +59,8 @@ xmlSecMSCngKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert, xmlSecKe
 
     ctx = xmlSecMSCngKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
-
-    xmlSecMSCngKeyDataCtxDestroyKey(ctx);
-    xmlSecMSCngKeyDataCtxDestroyCert(ctx);
-
-    ctx->type = type;
+    xmlSecAssert2(ctx->hKey == NULL, -1);
+    xmlSecAssert2(ctx->cert == NULL, -1);
 
     /* acquire the CNG key handle from the certificate */
     if (!CryptImportPublicKeyInfoEx2(X509_ASN_ENCODING,
@@ -174,25 +148,20 @@ xmlSecMSCngKeyDataFinalize(xmlSecKeyDataPtr data) {
     ctx = xmlSecMSCngKeyDataGetCtx(data);
     xmlSecAssert(ctx != NULL);
 
+    if (ctx->hKey != 0) {
+        if(!BCryptDestroyKey(ctx->hKey)) {
+            xmlSecMSCngLastError("BCryptDestroyKey", NULL);
+        }
+    }
+
+    if (ctx->cert != NULL) {
+        CertFreeCertificateContext(ctx->cert);
+    }
+
     memset(ctx, 0, sizeof(xmlSecMSCngKeyDataCtx));
 }
 
 #ifndef XMLSEC_NO_ECDSA
-static int
-xmlSecMSCngKeyDataEcdsaInitialize(xmlSecKeyDataPtr data) {
-    int ret;
-
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataEcdsaId), xmlSecKeyDataTypeUnknown);
-
-    ret = xmlSecMSCngKeyDataInitialize(data);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataInitialize", NULL);
-        return(-1);
-    }
-
-    return(0);
-}
-
 static int
 xmlSecMSCngKeyDataEcdsaDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecMSCngKeyDataEcdsaId), -1);
@@ -201,13 +170,6 @@ xmlSecMSCngKeyDataEcdsaDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlSecNotImplementedError(NULL);
 
     return(-1);
-}
-
-static void
-xmlSecMSCngKeyDataEcdsaFinalize(xmlSecKeyDataPtr data) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataEcdsaId));
-
-    xmlSecMSCngKeyDataFinalize(data);
 }
 
 static xmlSecKeyDataType
@@ -259,9 +221,9 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataEcdsaKlass = {
     xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    xmlSecMSCngKeyDataEcdsaInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecMSCngKeyDataInitialize,               /* xmlSecKeyDataInitializeMethod initialize; */
     xmlSecMSCngKeyDataEcdsaDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecMSCngKeyDataEcdsaFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecMSCngKeyDataFinalize,                 /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
 
     /* get info */

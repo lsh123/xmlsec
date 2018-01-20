@@ -201,7 +201,7 @@ xmlSecMSCngX509CertificateNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node,
 
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
             xmlSecInvalidNodeContentError(node, xmlSecKeyDataGetName(data),
-                "content is empty string");
+                "content is an empty string");
             return(-1);
         }
 

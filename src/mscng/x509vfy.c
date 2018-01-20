@@ -217,8 +217,7 @@ xmlSecMSCngX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs,
         xmlSecAssert2(cert->pCertInfo != NULL, NULL);
 
         /* is cert the issuer of a certificate in certs? if so, skip it */
-        do
-        {
+        do {
             foundCert = CertFindCertificateInStore(certs,
                 X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
                 0,

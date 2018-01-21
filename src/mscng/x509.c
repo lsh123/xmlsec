@@ -273,6 +273,21 @@ xmlSecMSCngX509DataNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node,
 }
 
 static int
+xmlSecMSCngX509CertGetTime(FILETIME in, time_t* out) {
+    xmlSecAssert2(out != NULL, -1);
+
+    *out = in.dwHighDateTime;
+    *out <<= 32;
+    *out |= in.dwLowDateTime;
+    /* 100 nanoseconds -> seconds */
+    *out /= 10000;
+    /* WinAPI epoch -> Unix epoch */
+    *out -= 11644473600000;
+
+    return(0);
+}
+
+static int
 xmlSecMSCngKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data,
     xmlSecKeyPtr key, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecMSCngX509DataCtxPtr ctx;
@@ -305,6 +320,7 @@ xmlSecMSCngKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data,
 
     cert = xmlSecMSCngX509StoreVerify(store, ctx->hMemStore, keyInfoCtx);
     if(cert != NULL) {
+        int ret;
         PCCERT_CONTEXT certCopy;
         xmlSecKeyDataPtr keyValue = NULL;
 
@@ -337,8 +353,36 @@ xmlSecMSCngKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data,
         }
 
         /* verify that keyValue matches the key requirements */
-        xmlSecNotImplementedError(NULL);
-        return(-1);
+	if(xmlSecKeyReqMatchKeyValue(&(keyInfoCtx->keyReq), keyValue) != 1) {
+            xmlSecInternalError("xmlSecKeyReqMatchKeyValue",
+                xmlSecKeyDataGetName(data));
+            xmlSecKeyDataDestroy(keyValue);
+            return(-1);
+        }
+
+        ret = xmlSecKeySetValue(key, keyValue);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecKeySetValue",
+                xmlSecKeyDataGetName(data));
+            xmlSecKeyDataDestroy(keyValue);
+            return(-1);
+        }
+
+        ret = xmlSecMSCngX509CertGetTime(ctx->cert->pCertInfo->NotBefore,
+            &(key->notValidBefore));
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCngX509CertGetTime",
+                xmlSecKeyDataGetName(data));
+            return(-1);
+        }
+
+        ret = xmlSecMSCngX509CertGetTime(ctx->cert->pCertInfo->NotAfter,
+            &(key->notValidAfter));
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCngX509CertGetTime",
+                xmlSecKeyDataGetName(data));
+            return(-1);
+        }
     } else if((keyInfoCtx->flags &
             XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT) != 0) {
         xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_FOUND,
@@ -346,7 +390,7 @@ xmlSecMSCngKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data,
         return(-1);
     }
 
-    return(-1);
+    return(0);
 }
 
 static int

@@ -37,6 +37,23 @@ struct _xmlSecMSCngKeyDataCtx {
 #define xmlSecMSCngKeyDataGetCtx(data) \
     ((xmlSecMSCngKeyDataCtxPtr)(((xmlSecByte*)(data)) + sizeof(xmlSecKeyData)))
 
+static int
+xmlSecMSCngKeyDataCertGetPubkey(PCCERT_CONTEXT cert, BCRYPT_KEY_HANDLE* key) {
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
+
+    if (!CryptImportPublicKeyInfoEx2(X509_ASN_ENCODING,
+            &cert->pCertInfo->SubjectPublicKeyInfo,
+            0,
+            NULL,
+            key)) {
+        xmlSecMSCngLastError("CryptImportPublicKeyInfoEx2", NULL);
+        return(-1);
+    }
+
+    return(0);
+}
+
 /**
  * xmlSecMSCngKeyDataAdoptCert:
  * @data:               the pointer to MSCng pccert data.
@@ -70,12 +87,9 @@ xmlSecMSCngKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert, xmlSecKe
         return(-1);
     }
 
-    if (!CryptImportPublicKeyInfoEx2(X509_ASN_ENCODING,
-            &cert->pCertInfo->SubjectPublicKeyInfo,
-            0,
-            NULL,
-            &hKey)) {
-        xmlSecMSCngLastError("CryptImportPublicKeyInfoEx2", NULL);
+    ret = xmlSecMSCngKeyDataCertGetPubkey(cert, &hKey);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataCertGetPubkey", NULL);
         return(-1);
     }
     ctx->pubkey = hKey;
@@ -168,15 +182,49 @@ xmlSecMSCngKeyDataFinalize(xmlSecKeyDataPtr data) {
     memset(ctx, 0, sizeof(xmlSecMSCngKeyDataCtx));
 }
 
+static int
+xmlSecMSCngKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecMSCngKeyDataCtxPtr dstCtx;
+    xmlSecMSCngKeyDataCtxPtr srcCtx;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataIsValid(dst), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(dst, xmlSecMSCngKeyDataSize), -1);
+    xmlSecAssert2(xmlSecKeyDataIsValid(src), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(src, xmlSecMSCngKeyDataSize), -1);
+
+    dstCtx = xmlSecMSCngKeyDataGetCtx(dst);
+    xmlSecAssert2(dstCtx != NULL, -1);
+
+    srcCtx = xmlSecMSCngKeyDataGetCtx(src);
+    xmlSecAssert2(srcCtx != NULL, -1);
+
+    if(dstCtx->cert != NULL) {
+        CertFreeCertificateContext(dstCtx->cert);
+    }
+    dstCtx->cert = CertDuplicateCertificateContext(srcCtx->cert);
+    if(dstCtx->cert == NULL) {
+        xmlSecMSCngLastError("CertDuplicateCertificateContext", NULL);
+        return(-1);
+    }
+
+    /* avoid BCryptDuplicateKey() here as that works for symmetric keys only */
+    ret = xmlSecMSCngKeyDataCertGetPubkey(dstCtx->cert, &dstCtx->pubkey);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataCertGetPubkey", NULL);
+        return(-1);
+    }
+
+    return(0);
+}
+
 #ifndef XMLSEC_NO_ECDSA
 static int
 xmlSecMSCngKeyDataEcdsaDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecMSCngKeyDataEcdsaId), -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecMSCngKeyDataEcdsaId), -1);
 
-    xmlSecNotImplementedError(NULL);
-
-    return(-1);
+    return(xmlSecMSCngKeyDataDuplicate(dst, src));
 }
 
 static xmlSecKeyDataType

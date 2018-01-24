@@ -22,6 +22,7 @@
 #include <xmlsec/errors.h>
 
 #include <xmlsec/mscng/crypto.h>
+#include <xmlsec/mscng/certkeys.h>
 
 /**************************************************************************
  *
@@ -204,6 +205,9 @@ static int xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
                                       xmlSecSize dataSize,
                                       xmlSecTransformCtxPtr transformCtx) {
     xmlSecMSCngSignatureCtxPtr ctx;
+    int ret;
+    BCRYPT_KEY_HANDLE pubkey;
+    NTSTATUS status;
 
     xmlSecAssert2(xmlSecMSCngSignatureCheckId(transform), -1);
     xmlSecAssert2(transform->operation == xmlSecTransformOperationVerify, -1);
@@ -216,9 +220,36 @@ static int xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
     ctx = xmlSecMSCngSignatureGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    xmlSecNotImplementedError(NULL);
+    pubkey = xmlSecMSCngKeyDataGetKey(ctx->data, xmlSecKeyDataTypePublic);
+    if(pubkey == 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataGetKey",
+            xmlSecTransformGetName(transform));
+        return(-1);
+    }
 
-    return(-1);
+    status = BCryptVerifySignature(
+        pubkey,
+        NULL,
+        ctx->pbHash,
+        ctx->cbHash,
+        (PBYTE)data,
+        dataSize,
+        0);
+    if(status != STATUS_SUCCESS) {
+        if(status == STATUS_INVALID_SIGNATURE) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
+                xmlSecTransformGetName(transform),
+                "BCryptVerifySignature: the signature was not verified");
+            return(-1);
+        } else {
+            xmlSecMSCngNtError("BCryptVerifySignature",
+                xmlSecTransformGetName(transform), status);
+            return(-1);
+        }
+    }
+
+    transform->status = xmlSecTransformStatusOk;
+    return(0);
 }
 
 static int
@@ -343,6 +374,19 @@ xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
         }
 
         if(last != 0) {
+            /* close the hash */
+            status = BCryptFinishHash(
+                ctx->hHash,
+                ctx->pbHash,
+                ctx->cbHash,
+                0);
+            if(status != STATUS_SUCCESS) {
+                xmlSecMSCngNtError("BCryptFinishHash", xmlSecTransformGetName(transform), status);
+                return(-1);
+            }
+
+            xmlSecAssert2(ctx->cbHash > 0, -1);
+
             if(transform->operation == xmlSecTransformOperationSign) {
                 xmlSecNotImplementedError(NULL);
                 return(-1);

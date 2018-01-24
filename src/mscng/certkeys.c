@@ -144,6 +144,34 @@ xmlSecMSCngCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
     return(data);
 }
 
+/**
+ * xmlSecMSCngKeyDataGetKey:
+ * @data: the key data to retrieve certificate from.
+ * @type: type of key requested (public/private)
+ *
+ * Native MSCng key retrieval from xmlsec keydata. The returned key must not be
+ * destroyed by the caller.
+ *
+ * Returns: key on success or 0 otherwise.
+ */
+BCRYPT_KEY_HANDLE
+xmlSecMSCngKeyDataGetKey(xmlSecKeyDataPtr data, xmlSecKeyDataType type) {
+    xmlSecMSCngKeyDataCtxPtr ctx;
+
+    xmlSecAssert2(xmlSecKeyDataIsValid(data), 0);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCngKeyDataSize), 0);
+
+    ctx = xmlSecMSCngKeyDataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, 0);
+
+    if(type == xmlSecKeyDataTypePrivate) {
+        xmlSecNotImplementedError(NULL);
+        return(0);
+    }
+
+    return(ctx->pubkey);
+}
+
 static int
 xmlSecMSCngKeyDataInitialize(xmlSecKeyDataPtr data) {
     xmlSecMSCngKeyDataCtxPtr ctx;

@@ -84,7 +84,13 @@ xmlSecMSCngKeyDataX509Finalize(xmlSecKeyDataPtr data) {
     xmlSecAssert(ctx != NULL);
 
     if(ctx->cert != NULL) {
-        CertFreeCertificateContext(ctx->cert);
+        if(!CertDeleteCertificateFromStore(ctx->cert)) {
+            xmlSecMSCngLastError("CertDeleteCertificateFromStore", NULL);
+        }
+
+        if(!CertFreeCertificateContext(ctx->cert)) {
+            xmlSecMSCngLastError("CertFreeCertificateContext", NULL);
+        }
     }
 
     if(ctx->hMemStore != 0) {
@@ -353,7 +359,7 @@ xmlSecMSCngKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data,
         }
 
         /* verify that keyValue matches the key requirements */
-	if(xmlSecKeyReqMatchKeyValue(&(keyInfoCtx->keyReq), keyValue) != 1) {
+        if(xmlSecKeyReqMatchKeyValue(&(keyInfoCtx->keyReq), keyValue) != 1) {
             xmlSecInternalError("xmlSecKeyReqMatchKeyValue",
                 xmlSecKeyDataGetName(data));
             xmlSecKeyDataDestroy(keyValue);

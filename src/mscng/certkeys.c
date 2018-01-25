@@ -10,7 +10,10 @@
 
 #include <string.h>
 
+#define WIN32_NO_STATUS
 #include <windows.h>
+#undef WIN32_NO_STATUS
+#include <ntstatus.h>
 #include <bcrypt.h>
 
 #include <xmlsec/xmlsec.h>
@@ -190,6 +193,7 @@ xmlSecMSCngKeyDataInitialize(xmlSecKeyDataPtr data) {
 static void
 xmlSecMSCngKeyDataFinalize(xmlSecKeyDataPtr data) {
     xmlSecMSCngKeyDataCtxPtr ctx;
+    NTSTATUS status;
 
     xmlSecAssert(xmlSecKeyDataIsValid(data));
     xmlSecAssert(xmlSecKeyDataCheckSize(data, xmlSecMSCngKeyDataSize));
@@ -198,8 +202,9 @@ xmlSecMSCngKeyDataFinalize(xmlSecKeyDataPtr data) {
     xmlSecAssert(ctx != NULL);
 
     if (ctx->pubkey != 0) {
-        if(!BCryptDestroyKey(ctx->pubkey)) {
-            xmlSecMSCngLastError("BCryptDestroyKey", NULL);
+        status = BCryptDestroyKey(ctx->pubkey);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptDestroyKey", NULL, status);
         }
     }
 

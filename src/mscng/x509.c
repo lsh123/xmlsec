@@ -278,6 +278,13 @@ xmlSecMSCngX509DataNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node,
     return(0);
 }
 
+/**
+ * xmlSecMSCngX509CertGetTime:
+ *
+ * Converts FILETIME timestamp into time_t. See
+ * <https://msdn.microsoft.com/en-us/library/windows/desktop/ms724284(v=vs.85).aspx>
+ * for details.
+ */
 static int
 xmlSecMSCngX509CertGetTime(FILETIME in, time_t* out) {
     xmlSecAssert2(out != NULL, -1);
@@ -287,7 +294,7 @@ xmlSecMSCngX509CertGetTime(FILETIME in, time_t* out) {
     *out |= in.dwLowDateTime;
     /* 100 nanoseconds -> seconds */
     *out /= 10000;
-    /* WinAPI epoch -> Unix epoch */
+    /* 1601-01-01 epoch -> 1970-01-01 epoch */
     *out -= 11644473600000;
 
     return(0);

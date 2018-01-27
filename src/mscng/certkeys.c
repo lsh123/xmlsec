@@ -168,8 +168,7 @@ xmlSecMSCngKeyDataGetKey(xmlSecKeyDataPtr data, xmlSecKeyDataType type) {
     xmlSecAssert2(ctx != NULL, 0);
 
     if(type == xmlSecKeyDataTypePrivate) {
-        xmlSecNotImplementedError(NULL);
-        return(0);
+        return(ctx->privkey);
     }
 
     return(ctx->pubkey);
@@ -201,6 +200,13 @@ xmlSecMSCngKeyDataFinalize(xmlSecKeyDataPtr data) {
     ctx = xmlSecMSCngKeyDataGetCtx(data);
     xmlSecAssert(ctx != NULL);
 
+    if (ctx->privkey != 0) {
+        status = BCryptDestroyKey(ctx->privkey);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptDestroyKey", NULL, status);
+        }
+    }
+
     if (ctx->pubkey != 0) {
         status = BCryptDestroyKey(ctx->pubkey);
         if(status != STATUS_SUCCESS) {
@@ -228,16 +234,19 @@ xmlSecMSCngKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
 
     dstCtx = xmlSecMSCngKeyDataGetCtx(dst);
     xmlSecAssert2(dstCtx != NULL, -1);
+    xmlSecAssert2(dstCtx->cert == NULL, -1);
 
     srcCtx = xmlSecMSCngKeyDataGetCtx(src);
     xmlSecAssert2(srcCtx != NULL, -1);
 
-    if(dstCtx->cert != NULL) {
-        CertFreeCertificateContext(dstCtx->cert);
-    }
     dstCtx->cert = CertDuplicateCertificateContext(srcCtx->cert);
     if(dstCtx->cert == NULL) {
         xmlSecMSCngLastError("CertDuplicateCertificateContext", NULL);
+        return(-1);
+    }
+
+    if(srcCtx->privkey != 0) {
+        xmlSecNotImplementedError(NULL);
         return(-1);
     }
 

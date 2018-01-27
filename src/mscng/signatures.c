@@ -205,9 +205,9 @@ static int xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
                                       xmlSecSize dataSize,
                                       xmlSecTransformCtxPtr transformCtx) {
     xmlSecMSCngSignatureCtxPtr ctx;
-    int ret;
     BCRYPT_KEY_HANDLE pubkey;
     NTSTATUS status;
+    int ret;
 
     xmlSecAssert2(xmlSecMSCngSignatureCheckId(transform), -1);
     xmlSecAssert2(transform->operation == xmlSecTransformOperationVerify, -1);
@@ -240,6 +240,7 @@ static int xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
             xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
                 xmlSecTransformGetName(transform),
                 "BCryptVerifySignature: the signature was not verified");
+            transform->status = xmlSecTransformStatusFail;
             return(-1);
         } else {
             xmlSecMSCngNtError("BCryptVerifySignature",

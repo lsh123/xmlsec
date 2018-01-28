@@ -204,7 +204,7 @@ xmlSecMSCngX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCert,
  */
 PCCERT_CONTEXT
 xmlSecMSCngX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs,
-	xmlSecKeyInfoCtx* keyInfoCtx) {
+        xmlSecKeyInfoCtx* keyInfoCtx) {
     PCCERT_CONTEXT cert = NULL;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCngX509StoreId), NULL);

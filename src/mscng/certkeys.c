@@ -235,6 +235,8 @@ xmlSecMSCngKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     dstCtx = xmlSecMSCngKeyDataGetCtx(dst);
     xmlSecAssert2(dstCtx != NULL, -1);
     xmlSecAssert2(dstCtx->cert == NULL, -1);
+    xmlSecAssert2(dstCtx->privkey == NULL, -1);
+    xmlSecAssert2(dstCtx->pubkey == NULL, -1);
 
     srcCtx = xmlSecMSCngKeyDataGetCtx(src);
     xmlSecAssert2(srcCtx != NULL, -1);

@@ -10,7 +10,11 @@
 
 #include <string.h>
 
+#define WIN32_NO_STATUS
 #include <windows.h>
+#undef WIN32_NO_STATUS
+#include <ntstatus.h>
+#include <bcrypt.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -18,6 +22,7 @@
 #include <xmlsec/errors.h>
 
 #include <xmlsec/mscng/crypto.h>
+#include <xmlsec/mscng/certkeys.h>
 
 /**************************************************************************
  *
@@ -30,6 +35,11 @@ struct _xmlSecMSCngSignatureCtx {
     xmlSecKeyDataPtr    data;
     xmlSecKeyDataId     keyId;
     LPCWSTR pszHashAlgId;
+    DWORD cbHash;
+    PBYTE pbHash;
+    BCRYPT_ALG_HANDLE hHashAlg;
+    PBYTE pbHashObject;
+    BCRYPT_HASH_HANDLE hHash;
 };
 
 /******************************************************************************
@@ -120,6 +130,22 @@ static void xmlSecMSCngSignatureFinalize(xmlSecTransformPtr transform) {
         xmlSecKeyDataDestroy(ctx->data);
     }
 
+    if (ctx->pbHash != NULL) {
+        xmlFree(ctx->pbHash);
+    }
+
+    if(ctx->hHashAlg != 0) {
+        BCryptCloseAlgorithmProvider(ctx->hHashAlg, 0);
+    }
+
+    if(ctx->pbHashObject != NULL) {
+        xmlFree(ctx->pbHashObject);
+    }
+
+    if(ctx->hHash != 0) {
+        BCryptDestroyHash(ctx->hHash);
+    }
+
     memset(ctx, 0, sizeof(xmlSecMSCngSignatureCtx));
 }
 
@@ -179,6 +205,9 @@ static int xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
                                       xmlSecSize dataSize,
                                       xmlSecTransformCtxPtr transformCtx) {
     xmlSecMSCngSignatureCtxPtr ctx;
+    BCRYPT_KEY_HANDLE pubkey;
+    NTSTATUS status;
+    int ret;
 
     xmlSecAssert2(xmlSecMSCngSignatureCheckId(transform), -1);
     xmlSecAssert2(transform->operation == xmlSecTransformOperationVerify, -1);
@@ -191,14 +220,48 @@ static int xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
     ctx = xmlSecMSCngSignatureGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    xmlSecNotImplementedError(NULL);
+    pubkey = xmlSecMSCngKeyDataGetKey(ctx->data, xmlSecKeyDataTypePublic);
+    if(pubkey == 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataGetKey",
+            xmlSecTransformGetName(transform));
+        return(-1);
+    }
 
-    return(-1);
+    status = BCryptVerifySignature(
+        pubkey,
+        NULL,
+        ctx->pbHash,
+        ctx->cbHash,
+        (PBYTE)data,
+        dataSize,
+        0);
+    if(status != STATUS_SUCCESS) {
+        if(status == STATUS_INVALID_SIGNATURE) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
+                xmlSecTransformGetName(transform),
+                "BCryptVerifySignature: the signature was not verified");
+            transform->status = xmlSecTransformStatusFail;
+            return(-1);
+        } else {
+            xmlSecMSCngNtError("BCryptVerifySignature",
+                xmlSecTransformGetName(transform), status);
+            return(-1);
+        }
+    }
+
+    transform->status = xmlSecTransformStatusOk;
+    return(0);
 }
 
 static int
 xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecMSCngSignatureCtxPtr ctx;
+    xmlSecSize inSize;
+    xmlSecSize outSize;
+    NTSTATUS status;
+    DWORD cbData = 0;
+    DWORD cbHashObject = 0;
+    int ret;
 
     xmlSecAssert2(xmlSecMSCngSignatureCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationSign) || (transform->operation == xmlSecTransformOperationVerify), -1);
@@ -207,10 +270,141 @@ xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
 
     ctx = xmlSecMSCngSignatureGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->pszHashAlgId != NULL, -1);
 
-    xmlSecNotImplementedError(NULL);
+    inSize = xmlSecBufferGetSize(&transform->inBuf);
+    outSize = xmlSecBufferGetSize(&transform->outBuf);
 
-    return(-1);
+    if(transform->status == xmlSecTransformStatusNone) {
+        xmlSecAssert2(outSize == 0, -1);
+
+        /* open an algorithm handle */
+        status = BCryptOpenAlgorithmProvider(
+            &ctx->hHashAlg,
+            ctx->pszHashAlgId,
+            NULL,
+            0);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptOpenAlgorithmProvider",
+                xmlSecTransformGetName(transform), status);
+            return(-1);
+        }
+
+        /* calculate the size of the buffer to hold the hash object */
+        status = BCryptGetProperty(
+            ctx->hHashAlg,
+            BCRYPT_OBJECT_LENGTH,
+            (PBYTE)&cbHashObject,
+            sizeof(DWORD),
+            &cbData,
+            0);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptGetProperty",
+                xmlSecTransformGetName(transform), status);
+            return(-1);
+        }
+
+        /* allocate the hash object on the heap */
+        ctx->pbHashObject = (PBYTE)xmlMalloc(cbHashObject);
+        if(ctx->pbHashObject == NULL) {
+            xmlSecMallocError(cbHashObject, NULL);
+            return(-1);
+        }
+
+        /* calculate the length of the hash */
+        status = BCryptGetProperty(
+            ctx->hHashAlg,
+            BCRYPT_HASH_LENGTH,
+            (PBYTE)&ctx->cbHash,
+            sizeof(DWORD),
+            &cbData,
+            0);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptGetProperty",
+                xmlSecTransformGetName(transform), status);
+            return(-1);
+        }
+
+        /* allocate the hash buffer on the heap */
+        ctx->pbHash = (PBYTE)xmlMalloc(ctx->cbHash);
+        if(ctx->pbHash == NULL) {
+            xmlSecMallocError(ctx->cbHash, NULL);
+            return(-1);
+        }
+
+        /* create the hash */
+        status = BCryptCreateHash(
+            ctx->hHashAlg,
+            &ctx->hHash,
+            ctx->pbHashObject,
+            cbHashObject,
+            NULL,
+            0,
+            0);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptCreateHash",
+                xmlSecTransformGetName(transform), status);
+            return(-1);
+        }
+
+        transform->status = xmlSecTransformStatusWorking;
+    }
+
+    if((transform->status == xmlSecTransformStatusWorking)) {
+        if(inSize > 0) {
+            xmlSecAssert2(outSize == 0, -1);
+
+            /* hash some data */
+            status = BCryptHashData(
+                ctx->hHash,
+                (PBYTE)xmlSecBufferGetData(&transform->inBuf),
+                inSize,
+                0);
+            if(status != STATUS_SUCCESS) {
+                xmlSecMSCngNtError("BCryptHashData",
+                    xmlSecTransformGetName(transform), status);
+                return(-1);
+            }
+
+            ret = xmlSecBufferRemoveHead(&transform->inBuf, inSize);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecBufferRemoveHead",
+                                     xmlSecTransformGetName(transform));
+                return(-1);
+            }
+        }
+
+        if(last != 0) {
+            /* close the hash */
+            status = BCryptFinishHash(
+                ctx->hHash,
+                ctx->pbHash,
+                ctx->cbHash,
+                0);
+            if(status != STATUS_SUCCESS) {
+                xmlSecMSCngNtError("BCryptFinishHash", xmlSecTransformGetName(transform), status);
+                return(-1);
+            }
+
+            xmlSecAssert2(ctx->cbHash > 0, -1);
+
+            if(transform->operation == xmlSecTransformOperationSign) {
+                xmlSecNotImplementedError(NULL);
+                return(-1);
+            }
+            transform->status = xmlSecTransformStatusFinished;
+        }
+    }
+
+    if((transform->status == xmlSecTransformStatusWorking) ||
+            (transform->status == xmlSecTransformStatusFinished)) {
+        xmlSecAssert2(xmlSecBufferGetSize(&transform->inBuf) == 0, -1);
+    } else {
+        xmlSecInvalidTransfromStatusError(transform);
+        return(-1);
+    }
+
+    return(0);
 }
 
 

@@ -10,7 +10,10 @@
 
 #include <string.h>
 
+#define WIN32_NO_STATUS
 #include <windows.h>
+#undef WIN32_NO_STATUS
+#include <ntstatus.h>
 #include <bcrypt.h>
 
 #include <xmlsec/xmlsec.h>
@@ -28,13 +31,31 @@ typedef struct _xmlSecMSCngKeyDataCtx xmlSecMSCngKeyDataCtx,
 
 struct _xmlSecMSCngKeyDataCtx {
     PCCERT_CONTEXT cert;
-    BCRYPT_KEY_HANDLE hKey;
+    BCRYPT_KEY_HANDLE privkey;
+    BCRYPT_KEY_HANDLE pubkey;
 };
 
 #define xmlSecMSCngKeyDataSize       \
     (sizeof(xmlSecKeyData) + sizeof(xmlSecMSCngKeyDataCtx))
 #define xmlSecMSCngKeyDataGetCtx(data) \
     ((xmlSecMSCngKeyDataCtxPtr)(((xmlSecByte*)(data)) + sizeof(xmlSecKeyData)))
+
+static int
+xmlSecMSCngKeyDataCertGetPubkey(PCCERT_CONTEXT cert, BCRYPT_KEY_HANDLE* key) {
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
+
+    if (!CryptImportPublicKeyInfoEx2(X509_ASN_ENCODING,
+            &cert->pCertInfo->SubjectPublicKeyInfo,
+            0,
+            NULL,
+            key)) {
+        xmlSecMSCngLastError("CryptImportPublicKeyInfoEx2", NULL);
+        return(-1);
+    }
+
+    return(0);
+}
 
 /**
  * xmlSecMSCngKeyDataAdoptCert:
@@ -59,19 +80,22 @@ xmlSecMSCngKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert, xmlSecKe
 
     ctx = xmlSecMSCngKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->hKey == NULL, -1);
+    xmlSecAssert2(ctx->pubkey == NULL, -1);
     xmlSecAssert2(ctx->cert == NULL, -1);
 
     /* acquire the CNG key handle from the certificate */
-    if (!CryptImportPublicKeyInfoEx2(X509_ASN_ENCODING,
-            &cert->pCertInfo->SubjectPublicKeyInfo,
-            0,
-            NULL,
-            &hKey)) {
-        xmlSecMSCngLastError("CryptImportPublicKeyInfoEx2", NULL);
+    if((type & xmlSecKeyDataTypePrivate) != 0) {
+        xmlSecNotImplementedError(NULL);
+
         return(-1);
     }
-    ctx->hKey = hKey;
+
+    ret = xmlSecMSCngKeyDataCertGetPubkey(cert, &hKey);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataCertGetPubkey", NULL);
+        return(-1);
+    }
+    ctx->pubkey = hKey;
     ctx->cert = cert;
 
     return(0);
@@ -123,6 +147,33 @@ xmlSecMSCngCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
     return(data);
 }
 
+/**
+ * xmlSecMSCngKeyDataGetKey:
+ * @data: the key data to retrieve certificate from.
+ * @type: type of key requested (public/private)
+ *
+ * Native MSCng key retrieval from xmlsec keydata. The returned key must not be
+ * destroyed by the caller.
+ *
+ * Returns: key on success or 0 otherwise.
+ */
+BCRYPT_KEY_HANDLE
+xmlSecMSCngKeyDataGetKey(xmlSecKeyDataPtr data, xmlSecKeyDataType type) {
+    xmlSecMSCngKeyDataCtxPtr ctx;
+
+    xmlSecAssert2(xmlSecKeyDataIsValid(data), 0);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCngKeyDataSize), 0);
+
+    ctx = xmlSecMSCngKeyDataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, 0);
+
+    if(type == xmlSecKeyDataTypePrivate) {
+        return(ctx->privkey);
+    }
+
+    return(ctx->pubkey);
+}
+
 static int
 xmlSecMSCngKeyDataInitialize(xmlSecKeyDataPtr data) {
     xmlSecMSCngKeyDataCtxPtr ctx;
@@ -141,6 +192,7 @@ xmlSecMSCngKeyDataInitialize(xmlSecKeyDataPtr data) {
 static void
 xmlSecMSCngKeyDataFinalize(xmlSecKeyDataPtr data) {
     xmlSecMSCngKeyDataCtxPtr ctx;
+    NTSTATUS status;
 
     xmlSecAssert(xmlSecKeyDataIsValid(data));
     xmlSecAssert(xmlSecKeyDataCheckSize(data, xmlSecMSCngKeyDataSize));
@@ -148,9 +200,17 @@ xmlSecMSCngKeyDataFinalize(xmlSecKeyDataPtr data) {
     ctx = xmlSecMSCngKeyDataGetCtx(data);
     xmlSecAssert(ctx != NULL);
 
-    if (ctx->hKey != 0) {
-        if(!BCryptDestroyKey(ctx->hKey)) {
-            xmlSecMSCngLastError("BCryptDestroyKey", NULL);
+    if (ctx->privkey != 0) {
+        status = BCryptDestroyKey(ctx->privkey);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptDestroyKey", NULL, status);
+        }
+    }
+
+    if (ctx->pubkey != 0) {
+        status = BCryptDestroyKey(ctx->pubkey);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptDestroyKey", NULL, status);
         }
     }
 
@@ -161,24 +221,68 @@ xmlSecMSCngKeyDataFinalize(xmlSecKeyDataPtr data) {
     memset(ctx, 0, sizeof(xmlSecMSCngKeyDataCtx));
 }
 
+static int
+xmlSecMSCngKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecMSCngKeyDataCtxPtr dstCtx;
+    xmlSecMSCngKeyDataCtxPtr srcCtx;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataIsValid(dst), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(dst, xmlSecMSCngKeyDataSize), -1);
+    xmlSecAssert2(xmlSecKeyDataIsValid(src), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(src, xmlSecMSCngKeyDataSize), -1);
+
+    dstCtx = xmlSecMSCngKeyDataGetCtx(dst);
+    xmlSecAssert2(dstCtx != NULL, -1);
+    xmlSecAssert2(dstCtx->cert == NULL, -1);
+
+    srcCtx = xmlSecMSCngKeyDataGetCtx(src);
+    xmlSecAssert2(srcCtx != NULL, -1);
+
+    dstCtx->cert = CertDuplicateCertificateContext(srcCtx->cert);
+    if(dstCtx->cert == NULL) {
+        xmlSecMSCngLastError("CertDuplicateCertificateContext", NULL);
+        return(-1);
+    }
+
+    if(srcCtx->privkey != 0) {
+        xmlSecNotImplementedError(NULL);
+        return(-1);
+    }
+
+    /* avoid BCryptDuplicateKey() here as that works for symmetric keys only */
+    ret = xmlSecMSCngKeyDataCertGetPubkey(dstCtx->cert, &dstCtx->pubkey);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataCertGetPubkey", NULL);
+        return(-1);
+    }
+
+    return(0);
+}
+
 #ifndef XMLSEC_NO_ECDSA
 static int
 xmlSecMSCngKeyDataEcdsaDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecMSCngKeyDataEcdsaId), -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecMSCngKeyDataEcdsaId), -1);
 
-    xmlSecNotImplementedError(NULL);
-
-    return(-1);
+    return(xmlSecMSCngKeyDataDuplicate(dst, src));
 }
 
 static xmlSecKeyDataType
 xmlSecMSCngKeyDataEcdsaGetType(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataEcdsaId), 0);
+    xmlSecMSCngKeyDataCtxPtr ctx;
 
-    xmlSecNotImplementedError(NULL);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataEcdsaId), xmlSecKeyDataTypeUnknown);
 
-    return(xmlSecKeyDataTypeUnknown);
+    ctx = xmlSecMSCngKeyDataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, xmlSecKeyDataTypeUnknown);
+
+    if (ctx->privkey != 0) {
+        return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
+    }
+
+    return(xmlSecKeyDataTypePublic);
 }
 
 static xmlSecSize

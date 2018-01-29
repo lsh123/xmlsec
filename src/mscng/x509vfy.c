@@ -193,6 +193,45 @@ xmlSecMSCngX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCert,
 }
 
 /**
+ * xmlSecMSCngCheckRevocation:
+ * @store: may contain a CRL
+ * @cert: the certificate that is revoked (or not)
+ *
+ * Checks if @cert is in the CRL of @store.
+ *
+ * Returns: 0 on success or a negative value if an errors occurs.
+ */
+static int
+xmlSecMSCngCheckRevocation(HCERTSTORE store, PCCERT_CONTEXT cert) {
+    PCCRL_CONTEXT crlCtx = NULL;
+    PCRL_ENTRY crlEntry = NULL;
+    int ret;
+
+    xmlSecAssert2(store != NULL, -1);
+    xmlSecAssert2(cert != NULL, -1);
+
+    while((crlCtx = CertEnumCRLsInStore(store, crlCtx)) != NULL) {
+        ret = CertFindCertificateInCRL(cert,
+            crlCtx,
+            0,
+            NULL,
+            &crlEntry);
+        if (ret == 0) {
+            continue;
+        }
+        if (crlEntry == NULL) {
+            continue;
+        }
+
+        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL,
+            "cert found in CRL");
+        return(-1);
+    }
+
+    return(0);
+}
+
+/**
  * xmlSecMSCngX509StoreVerifyCertificateOwn:
  * @cert: the certificate to verify.
  * @trustedStore: trusted certificates added via xmlSecMSCngX509StoreAdoptCert().
@@ -207,8 +246,31 @@ static int
 xmlSecMSCngX509StoreVerifyCertificateOwn(PCCERT_CONTEXT cert,
         HCERTSTORE trustedStore, HCERTSTORE certStore,
         xmlSecKeyDataStorePtr store) {
-        xmlSecNotImplementedError(NULL);
+    PCCERT_CONTEXT issuerCert = NULL;
+    DWORD flags;
+    int ret;
+
+    ret = xmlSecMSCngCheckRevocation(certStore, cert);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngCheckRevocation",
+            xmlSecKeyDataStoreGetName(store));
         return(-1);
+    }
+
+    /* see if trustedStore contains cert */
+    issuerCert = CertFindCertificateInStore(trustedStore,
+        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+        0,
+        CERT_FIND_SUBJECT_NAME,
+        &cert->pCertInfo->Subject,
+        NULL);
+    if(issuerCert != NULL) {
+        CertFreeCertificateContext(issuerCert);
+        return(0);
+    }
+
+    xmlSecNotImplementedError(NULL);
+    return(-1);
 }
 
 /**

@@ -193,6 +193,69 @@ xmlSecMSCngX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCert,
 }
 
 /**
+ * xmlSecMSCngX509StoreVerifyCertificateOwn:
+ * @cert: the certificate to verify.
+ * @trustedStore: trusted certificates added via xmlSecMSCngX509StoreAdoptCert().
+ * @certStore: the untrusted certificates stack.
+ * @store: key data store, name used for error reporting only.
+ *
+ * Verifies @cert based on trustedStore (ignoring system trusted certificates).
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+static int
+xmlSecMSCngX509StoreVerifyCertificateOwn(PCCERT_CONTEXT cert,
+        HCERTSTORE trustedStore, HCERTSTORE certStore,
+        xmlSecKeyDataStorePtr store) {
+        xmlSecNotImplementedError(NULL);
+        return(-1);
+}
+
+/**
+ * xmlSecMSCngX509StoreVerifyCertificate:
+ * @store: the pointer to X509 certificate context store klass.
+ * @cert: the certificate to verify.
+ * @certStore: the untrusted certificates stack.
+ * @keyInfoCtx: the pointer to <dsig:KeyInfo/> element processing context.
+ *
+ * Verifies @cert.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+static int
+xmlSecMSCngX509StoreVerifyCertificate(xmlSecKeyDataStorePtr store,
+    PCCERT_CONTEXT cert, HCERTSTORE certStore, xmlSecKeyInfoCtx* keyInfoCtx) {
+    xmlSecMSCngX509StoreCtxPtr ctx;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCngX509StoreId), -1);
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(cert->pCertInfo != NULL, -1);
+    xmlSecAssert2(certStore != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    ctx = xmlSecMSCngX509StoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->hCertStoreCollection != NULL, -1);
+
+    if(keyInfoCtx->certsVerificationTime > 0) {
+        xmlSecNotImplementedError(NULL);
+        return(-1);
+    }
+
+    /* verify based on the own trusted certificates */
+    ret = xmlSecMSCngX509StoreVerifyCertificateOwn(cert,
+        ctx->hCertStoreCollection, certStore, store);
+    if(ret >= 0) {
+        return(0);
+    }
+
+    /* TODO the same based on system trusted certificates */
+    xmlSecNotImplementedError(NULL);
+    return(-1);
+}
+
+/**
  * xmlSecMSCngX509StoreVerify:
  * @store: the pointer to X509 certificate context store klass.
  * @certs: the untrusted certificates stack.
@@ -206,6 +269,7 @@ PCCERT_CONTEXT
 xmlSecMSCngX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs,
         xmlSecKeyInfoCtx* keyInfoCtx) {
     PCCERT_CONTEXT cert = NULL;
+    int ret;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCngX509StoreId), NULL);
     xmlSecAssert2(certs != NULL, NULL);
@@ -241,7 +305,10 @@ xmlSecMSCngX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs,
             }
 
             /* need to actually verify the certificate */
-            xmlSecNotImplementedError(NULL);
+            ret = xmlSecMSCngX509StoreVerifyCertificate(store, cert, certs, keyInfoCtx);
+            if (ret == 0) {
+                return(cert);
+            }
         }
     }
 

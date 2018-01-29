@@ -257,7 +257,7 @@ xmlSecMSCngX509StoreVerifyCertificateOwn(PCCERT_CONTEXT cert,
         return(-1);
     }
 
-    /* see if trustedStore contains cert */
+    /* does trustedStore contain cert directly? */
     issuerCert = CertFindCertificateInStore(trustedStore,
         X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
         0,
@@ -267,6 +267,34 @@ xmlSecMSCngX509StoreVerifyCertificateOwn(PCCERT_CONTEXT cert,
     if(issuerCert != NULL) {
         CertFreeCertificateContext(issuerCert);
         return(0);
+    }
+
+    /* is cert self-signed? */
+    if(CertCompareCertificateName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+            &cert->pCertInfo->Subject,
+            &cert->pCertInfo->Issuer)) {
+        return(-1);
+    }
+
+    /* does trustedStore contain the issuer cert? */
+    issuerCert = CertFindCertificateInStore(trustedStore,
+        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+        0,
+        CERT_FIND_SUBJECT_NAME,
+        &cert->pCertInfo->Issuer,
+        NULL);
+    if(issuerCert != NULL) {
+        flags = CERT_STORE_REVOCATION_FLAG | CERT_STORE_SIGNATURE_FLAG;
+        ret = CertVerifySubjectCertificateContext(cert,
+            issuerCert,
+            &flags);
+        if (ret == 0) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+                xmlSecKeyDataStoreGetName(store),
+                "CertVerifySubjectCertificateContext");
+            CertFreeCertificateContext(issuerCert);
+            return(-1);
+        }
     }
 
     xmlSecNotImplementedError(NULL);

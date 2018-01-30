@@ -120,7 +120,7 @@ static void xmlSecMSCngDigestFinalize(xmlSecTransformPtr transform) {
         xmlFree(ctx->pbHashObject);
     }
 
-    if (ctx->pbHash != NULL) {
+    if(ctx->pbHash != NULL) {
         xmlFree(ctx->pbHash);
     }
 
@@ -257,7 +257,7 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
         transform->status = xmlSecTransformStatusWorking;
     }
 
-    if (transform->status == xmlSecTransformStatusWorking) {
+    if(transform->status == xmlSecTransformStatusWorking) {
         xmlSecSize inSize;
 
         inSize = xmlSecBufferGetSize(in);

@@ -130,7 +130,7 @@ static void xmlSecMSCngSignatureFinalize(xmlSecTransformPtr transform) {
         xmlSecKeyDataDestroy(ctx->data);
     }
 
-    if (ctx->pbHash != NULL) {
+    if(ctx->pbHash != NULL) {
         xmlFree(ctx->pbHash);
     }
 

@@ -244,7 +244,7 @@ xmlSecMSCngAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
 
     ret = xmlSecMSCngAppKeysMngrCertLoadMemory(mngr, xmlSecBufferGetData(&buffer),
         xmlSecBufferGetSize(&buffer), format, type);
-    if (ret < 0) {
+    if(ret < 0) {
         xmlSecInternalError2("xmlSecMSCngAppKeysMngrCertLoadMemory", NULL,
                              "filename=%s", xmlSecErrorsSafeString(filename));
         xmlSecBufferFinalize(&buffer);
@@ -306,7 +306,7 @@ xmlSecMSCngAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* d
 
     xmlSecAssert2(pCert != NULL, -1);
     ret = xmlSecMSCngX509StoreAdoptCert(x509Store, pCert, type);
-    if (ret < 0) {
+    if(ret < 0) {
         xmlSecInternalError("xmlSecMSCngX509StoreAdoptCert", NULL);
         CertFreeCertificateContext(pCert);
         return(-1);

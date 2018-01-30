@@ -49,14 +49,14 @@ xmlSecMSCngX509StoreFinalize(xmlSecKeyDataStorePtr store) {
     ctx = xmlSecMSCngX509StoreGetCtx(store);
     xmlSecAssert(ctx != NULL);
 
-    if (ctx->hCertStoreCollection != NULL) {
+    if(ctx->hCertStoreCollection != NULL) {
         ret = CertCloseStore(ctx->hCertStoreCollection, CERT_CLOSE_STORE_CHECK_FLAG);
         if(ret == FALSE) {
             xmlSecMSCngLastError("CertCloseStore", xmlSecKeyDataStoreGetName(store));
         }
     }
 
-    if (ctx->hCertStoreMemory != NULL) {
+    if(ctx->hCertStoreMemory != NULL) {
         ret = CertCloseStore(ctx->hCertStoreMemory, CERT_CLOSE_STORE_CHECK_FLAG);
         if(ret == FALSE) {
             xmlSecMSCngLastError("CertCloseStore", xmlSecKeyDataStoreGetName(store));
@@ -96,7 +96,7 @@ xmlSecMSCngX509StoreInitialize(xmlSecKeyDataStorePtr store) {
         0,
         CERT_STORE_CREATE_NEW_FLAG,
         NULL);
-    if (ctx->hCertStoreMemory == NULL) {
+    if(ctx->hCertStoreMemory == NULL) {
         xmlSecMSCngLastError("CertOpenStore", xmlSecKeyDataStoreGetName(store));
         xmlSecMSCngX509StoreFinalize(store);
         return(-1);
@@ -108,7 +108,7 @@ xmlSecMSCngX509StoreInitialize(xmlSecKeyDataStorePtr store) {
         ctx->hCertStoreMemory,
         CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG,
         1);
-    if (ret == 0) {
+    if(ret == 0) {
         xmlSecMSCngLastError("CertAddStoreToCollection", xmlSecKeyDataStoreGetName(store));
         xmlSecMSCngX509StoreFinalize(store);
         return(-1);
@@ -216,10 +216,10 @@ xmlSecMSCngCheckRevocation(HCERTSTORE store, PCCERT_CONTEXT cert) {
             0,
             NULL,
             &crlEntry);
-        if (ret == 0) {
+        if(ret == 0) {
             continue;
         }
-        if (crlEntry == NULL) {
+        if(crlEntry == NULL) {
             continue;
         }
 
@@ -426,12 +426,12 @@ xmlSecMSCngX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs,
 
             /* need to actually verify the certificate */
             ret = xmlSecMSCngX509StoreVerifyCertificate(store, cert, certs, keyInfoCtx);
-            if (ret == 0) {
+            if(ret == 0) {
                 return(cert);
             }
         }
     }
 
-    return (NULL);
+    return(NULL);
 }
 #endif /* XMLSEC_NO_X509 */

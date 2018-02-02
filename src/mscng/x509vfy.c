@@ -233,6 +233,54 @@ xmlSecMSCngCheckRevocation(HCERTSTORE store, PCCERT_CONTEXT cert) {
 
 /**
  * xmlSecMSCngX509StoreVerifyCertificateOwn:
+ * @store: the certificate store
+ * @subject: the name of the subject or issuer to find
+ * @cert: the certificate
+ *
+ * Determines if cert is found in store.
+ *
+ * Returns: 1 and 0 if find does or does not succeed, or a negative value if an
+ * error occurs.
+ */
+static int
+xmlSecMSCngX509StoreContainsCert(HCERTSTORE store, CERT_NAME_BLOB* name,
+        PCCERT_CONTEXT cert)
+{
+    PCCERT_CONTEXT issuerCert = NULL;
+    DWORD flags;
+    int ret;
+
+    xmlSecAssert2(store != NULL, -1);
+    xmlSecAssert2(name != NULL, -1);
+    xmlSecAssert2(cert != NULL, -1);
+
+    issuerCert = CertFindCertificateInStore(store,
+        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+        0,
+        CERT_FIND_SUBJECT_NAME,
+        name,
+        NULL);
+    if(issuerCert != NULL) {
+        flags = CERT_STORE_REVOCATION_FLAG | CERT_STORE_SIGNATURE_FLAG;
+        ret = CertVerifySubjectCertificateContext(cert,
+            issuerCert,
+            &flags);
+        if(ret == 0) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+                NULL,
+                "CertVerifySubjectCertificateContext");
+            CertFreeCertificateContext(issuerCert);
+            return(-1);
+        }
+        CertFreeCertificateContext(issuerCert);
+        return(1);
+    }
+
+    return(0);
+}
+
+/**
+ * xmlSecMSCngX509StoreVerifyCertificateOwn:
  * @cert: the certificate to verify.
  * @trustedStore: trusted certificates added via xmlSecMSCngX509StoreAdoptCert().
  * @certStore: the untrusted certificates stack.
@@ -250,6 +298,11 @@ xmlSecMSCngX509StoreVerifyCertificateOwn(PCCERT_CONTEXT cert,
     DWORD flags;
     int ret;
 
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(trustedStore != NULL, -1);
+    xmlSecAssert2(certStore != NULL, -1);
+    xmlSecAssert2(store != NULL, -1);
+
     ret = xmlSecMSCngCheckRevocation(certStore, cert);
     if(ret < 0) {
         xmlSecInternalError("xmlSecMSCngCheckRevocation",
@@ -258,44 +311,31 @@ xmlSecMSCngX509StoreVerifyCertificateOwn(PCCERT_CONTEXT cert,
     }
 
     /* does trustedStore contain cert directly? */
-    issuerCert = CertFindCertificateInStore(trustedStore,
-        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-        0,
-        CERT_FIND_SUBJECT_NAME,
-        &cert->pCertInfo->Subject,
-        NULL);
-    if(issuerCert != NULL) {
-        CertFreeCertificateContext(issuerCert);
+    ret = xmlSecMSCngX509StoreContainsCert(trustedStore,
+        &cert->pCertInfo->Subject, cert);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngX509StoreContainsCert",
+            xmlSecKeyDataStoreGetName(store));
+        return(-1);
+    }
+    if(ret == 1) {
         return(0);
     }
 
-    /* is cert self-signed? */
+    /* does trustedStore contain the issuer cert? */
+    ret = xmlSecMSCngX509StoreContainsCert(trustedStore,
+        &cert->pCertInfo->Issuer, cert);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngX509StoreContainsCert",
+            xmlSecKeyDataStoreGetName(store));
+        return(-1);
+    }
+
+    /* is cert self-signed? no recursion in that case */
     if(CertCompareCertificateName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
             &cert->pCertInfo->Subject,
             &cert->pCertInfo->Issuer)) {
         return(-1);
-    }
-
-    /* does trustedStore contain the issuer cert? */
-    issuerCert = CertFindCertificateInStore(trustedStore,
-        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-        0,
-        CERT_FIND_SUBJECT_NAME,
-        &cert->pCertInfo->Issuer,
-        NULL);
-    if(issuerCert != NULL) {
-        flags = CERT_STORE_REVOCATION_FLAG | CERT_STORE_SIGNATURE_FLAG;
-        ret = CertVerifySubjectCertificateContext(cert,
-            issuerCert,
-            &flags);
-        if(ret == 0) {
-            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-                xmlSecKeyDataStoreGetName(store),
-                "CertVerifySubjectCertificateContext");
-            CertFreeCertificateContext(issuerCert);
-            return(-1);
-        }
-        CertFreeCertificateContext(issuerCert);
     }
 
     /* the same checks recursively for the issuer cert in certStore */

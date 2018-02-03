@@ -45,7 +45,7 @@ xmlSecMSCngKeyDataCertGetPubkey(PCCERT_CONTEXT cert, BCRYPT_KEY_HANDLE* key) {
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
 
-    if (!CryptImportPublicKeyInfoEx2(X509_ASN_ENCODING,
+    if(!CryptImportPublicKeyInfoEx2(X509_ASN_ENCODING,
             &cert->pCertInfo->SubjectPublicKeyInfo,
             0,
             NULL,
@@ -200,21 +200,21 @@ xmlSecMSCngKeyDataFinalize(xmlSecKeyDataPtr data) {
     ctx = xmlSecMSCngKeyDataGetCtx(data);
     xmlSecAssert(ctx != NULL);
 
-    if (ctx->privkey != 0) {
+    if(ctx->privkey != 0) {
         status = BCryptDestroyKey(ctx->privkey);
         if(status != STATUS_SUCCESS) {
             xmlSecMSCngNtError("BCryptDestroyKey", NULL, status);
         }
     }
 
-    if (ctx->pubkey != 0) {
+    if(ctx->pubkey != 0) {
         status = BCryptDestroyKey(ctx->pubkey);
         if(status != STATUS_SUCCESS) {
             xmlSecMSCngNtError("BCryptDestroyKey", NULL, status);
         }
     }
 
-    if (ctx->cert != NULL) {
+    if(ctx->cert != NULL) {
         CertFreeCertificateContext(ctx->cert);
     }
 
@@ -235,6 +235,8 @@ xmlSecMSCngKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     dstCtx = xmlSecMSCngKeyDataGetCtx(dst);
     xmlSecAssert2(dstCtx != NULL, -1);
     xmlSecAssert2(dstCtx->cert == NULL, -1);
+    xmlSecAssert2(dstCtx->privkey == NULL, -1);
+    xmlSecAssert2(dstCtx->pubkey == NULL, -1);
 
     srcCtx = xmlSecMSCngKeyDataGetCtx(src);
     xmlSecAssert2(srcCtx != NULL, -1);
@@ -278,7 +280,7 @@ xmlSecMSCngKeyDataEcdsaGetType(xmlSecKeyDataPtr data) {
     ctx = xmlSecMSCngKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, xmlSecKeyDataTypeUnknown);
 
-    if (ctx->privkey != 0) {
+    if(ctx->privkey != 0) {
         return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
     }
 

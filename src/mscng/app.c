@@ -185,14 +185,47 @@ xmlSecMSCngAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSec
  */
 xmlSecKeyPtr
 xmlSecMSCngAppPkcs12Load(const char *filename,
-                         const char *pwd ATTRIBUTE_UNUSED,
-                         void* pwdCallback ATTRIBUTE_UNUSED,
-                         void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
-    xmlSecAssert2(filename != NULL, NULL);
+                         const char *pwd,
+                         void* pwdCallback,
+                         void* pwdCallbackCtx) {
+    xmlSecBuffer buffer;
+    xmlSecByte* data;
+    xmlSecKeyPtr key;
+    int ret;
 
-    /* TODO: load pkcs12 file */
-    xmlSecNotImplementedError(NULL);
-    return(NULL);
+    xmlSecAssert2(filename != NULL, NULL);
+    xmlSecAssert2(pwd != NULL, NULL);
+
+    ret = xmlSecBufferInitialize(&buffer, 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
+        return(NULL);
+    }
+
+    ret = xmlSecBufferReadFile(&buffer, filename);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferReadFile", NULL, "filename=%s",
+            xmlSecErrorsSafeString(filename));
+        return(NULL);
+    }
+
+    data = xmlSecBufferGetData(&buffer);
+    if(data == NULL) {
+        xmlSecInvalidDataError("xmlSecBufferGetData", NULL);
+        xmlSecBufferFinalize(&buffer);
+        return(NULL);
+    }
+
+    key = xmlSecMSCngAppPkcs12LoadMemory(data, xmlSecBufferGetSize(&buffer),
+        pwd, pwdCallback, pwdCallbackCtx);
+    if(key == NULL) {
+        xmlSecInternalError("xmlSecMSCngAppPkcs12LoadMemory", NULL);
+        xmlSecBufferFinalize(&buffer);
+        return(NULL);
+    }
+
+    xmlSecBufferFinalize(&buffer);
+    return(key);
 }
 
 /**

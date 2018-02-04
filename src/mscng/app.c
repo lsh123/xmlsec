@@ -22,6 +22,7 @@
 #include <xmlsec/mscng/crypto.h>
 #include <xmlsec/mscng/symbols.h>
 #include <xmlsec/mscng/x509.h>
+#include <xmlsec/mscng/certkeys.h>
 
 /**
  * xmlSecMSCngAppInit:
@@ -246,11 +247,168 @@ xmlSecKeyPtr
 xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const char *pwd,
                                void *pwdCallback ATTRIBUTE_UNUSED,
                                void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
-    xmlSecAssert2(data != NULL, NULL);
+    CRYPT_DATA_BLOB pfx;
+    xmlSecKeyPtr key = NULL;
+    WCHAR* pwdWideChar;
+    HCERTSTORE certStore;
+    xmlSecKeyDataPtr keyData;
+    xmlSecKeyDataPtr privKeyData = NULL;
+    PCCERT_CONTEXT cert = NULL;
+    PCCERT_CONTEXT certDuplicate;
+    int ret;
 
-    /* TODO: load pkcs12 file */
-    xmlSecNotImplementedError(NULL);
-    return(NULL);
+    xmlSecAssert2(data != NULL, NULL);
+    xmlSecAssert2(dataSize > 1, NULL);
+    xmlSecAssert2(pwd != NULL, NULL);
+
+    memset(&pfx, 0, sizeof(pfx));
+    pfx.pbData = (BYTE *)data;
+    pfx.cbData = dataSize;
+    ret = PFXIsPFXBlob(&pfx);
+    if(ret == FALSE) {
+        xmlSecMSCngLastError("PFXIsPFXBlob", NULL);
+        return(NULL);
+    }
+
+    pwdWideChar = xmlSecMSCngMultiByteToWideChar(pwd);
+    if(pwdWideChar == NULL) {
+        xmlSecInternalError("xmlSecMSCngMultiByteToWideChar", NULL);
+        return(NULL);
+    }
+
+    ret = PFXVerifyPassword(&pfx, pwdWideChar, 0);
+    if(ret == FALSE) {
+        xmlSecMSCngLastError("PFXVerifyPassword", NULL);
+        xmlFree(pwdWideChar);
+        return(NULL);
+    }
+
+    DWORD flags = CRYPT_EXPORTABLE;
+    if (!xmlSecImportGetPersistKey()) {
+        flags |= PKCS12_NO_PERSIST_KEY;
+    }
+    certStore = PFXImportCertStore(&pfx, pwdWideChar, flags);
+    if(certStore == NULL) {
+        xmlSecMSCngLastError("PFXImportCertStore", NULL);
+        xmlFree(pwdWideChar);
+        return(NULL);
+    }
+
+    keyData = xmlSecKeyDataCreate(xmlSecMSCngKeyDataX509Id);
+    if(keyData == NULL) {
+        xmlSecInternalError("xmlSecKeyDataCreate", NULL);
+        xmlFree(pwdWideChar);
+        CertCloseStore(certStore, 0);
+        return(NULL);
+    }
+
+    /* enumerate over certifiates in the store */
+    while((cert = CertEnumCertificatesInStore(certStore, cert)) != NULL) {
+        DWORD dwData = 0;
+        DWORD dwDataLen = sizeof(DWORD);
+
+        ret = CertGetCertificateContextProperty(cert, CERT_KEY_SPEC_PROP_ID,
+            &dwData, &dwDataLen);
+        if(ret == TRUE) {
+            /* adopt private key */
+            certDuplicate = CertDuplicateCertificateContext(cert);
+            if(certDuplicate == NULL) {
+                xmlSecMSCngLastError("CertDuplicateCertificateContext", NULL);
+                xmlFree(pwdWideChar);
+                CertCloseStore(certStore, 0);
+                xmlSecKeyDataDestroy(keyData);
+                if (privKeyData != NULL) {
+                    xmlSecKeyDataDestroy(privKeyData);
+                }
+                return(NULL);
+            }
+
+            privKeyData = xmlSecMSCngCertAdopt(certDuplicate,
+                xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
+            if(privKeyData == NULL) {
+                xmlSecInternalError("xmlSecMSCngCertAdopt", NULL);
+                xmlFree(pwdWideChar);
+                CertCloseStore(certStore, 0);
+                xmlSecKeyDataDestroy(keyData);
+                if (privKeyData != NULL) {
+                    xmlSecKeyDataDestroy(privKeyData);
+                }
+                CertFreeCertificateContext(certDuplicate);
+                return(NULL);
+            }
+        }
+
+        /* adopt certificate */
+        certDuplicate = CertDuplicateCertificateContext(cert);
+        if(certDuplicate == NULL) {
+            xmlSecMSCngLastError("CertDuplicateCertificateContext", NULL);
+            xmlFree(pwdWideChar);
+            CertCloseStore(certStore, 0);
+            xmlSecKeyDataDestroy(keyData);
+            if (privKeyData != NULL) {
+                xmlSecKeyDataDestroy(privKeyData);
+            }
+            return(NULL);
+        }
+
+        ret = xmlSecMSCngKeyDataX509AdoptKeyCert(keyData, certDuplicate);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert", NULL);
+            xmlFree(pwdWideChar);
+            CertCloseStore(certStore, 0);
+            xmlSecKeyDataDestroy(keyData);
+            if (privKeyData != NULL) {
+                xmlSecKeyDataDestroy(privKeyData);
+            }
+            CertFreeCertificateContext(certDuplicate);
+            return(NULL);
+        }
+    }
+
+    /* at this point we should have a private key */
+    if(privKeyData == NULL) {
+        xmlSecInternalError2("xmlSecMSCngAppPkcs12LoadMemory",
+            xmlSecKeyDataGetName(keyData), "privKeyData is NULL", NULL);
+        xmlFree(pwdWideChar);
+        CertCloseStore(certStore, 0);
+        xmlSecKeyDataDestroy(keyData);
+        return(NULL);
+    }
+
+    key = xmlSecKeyCreate();
+    if(key == NULL) {
+        xmlSecInternalError("xmlSecKeyCreate", NULL);
+        xmlFree(pwdWideChar);
+        CertCloseStore(certStore, 0);
+        xmlSecKeyDataDestroy(keyData);
+        xmlSecKeyDataDestroy(privKeyData);
+        return(NULL);
+    }
+
+    ret = xmlSecKeySetValue(key, privKeyData);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyCreate", NULL);
+        xmlFree(pwdWideChar);
+        CertCloseStore(certStore, 0);
+        xmlSecKeyDataDestroy(keyData);
+        xmlSecKeyDataDestroy(privKeyData);
+        xmlSecKeyDestroy(key);
+        return(NULL);
+    }
+
+    ret = xmlSecKeyAdoptData(key, keyData);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyAdoptData", NULL);
+        xmlFree(pwdWideChar);
+        CertCloseStore(certStore, 0);
+        xmlSecKeyDataDestroy(keyData);
+        xmlSecKeyDestroy(key);
+        return(NULL);
+    }
+
+    xmlFree(pwdWideChar);
+    CertCloseStore(certStore, 0);
+    return(key);
 }
 
 /**

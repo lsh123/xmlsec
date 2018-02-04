@@ -158,6 +158,25 @@ xmlSecMSCngX509CertBase64DerRead(xmlChar* buf) {
     return(xmlSecMSCngX509CertDerRead((xmlSecByte*)buf, size));
 }
 
+
+int
+xmlSecMSCngKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
+    xmlSecMSCngX509DataCtxPtr ctx;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataX509Id), -1);
+    xmlSecAssert2(cert != NULL, -1);
+
+    ctx = xmlSecMSCngX509DataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    if(ctx->cert != NULL) {
+        CertFreeCertificateContext(ctx->cert);
+    }
+    ctx->cert = cert;
+
+    return(0);
+}
+
 static int
 xmlSecMSCngKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
     xmlSecMSCngX509DataCtxPtr ctx;

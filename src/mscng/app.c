@@ -72,12 +72,28 @@ xmlSecMSCngAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
                       const char *pwd,
                       void* pwdCallback,
                       void* pwdCallbackCtx) {
+    xmlSecKeyPtr key = NULL;
+
     xmlSecAssert2(filename != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
-    /* TODO: load key */
-    xmlSecNotImplementedError(NULL);
-    return(NULL);
+    switch(format) {
+    case xmlSecKeyDataFormatPkcs12:
+        key = xmlSecMSCngAppPkcs12Load(filename, pwd, pwdCallback,
+            pwdCallbackCtx);
+        if(key == NULL) {
+            xmlSecInternalError("xmlSecMSCngAppPkcs12Load", NULL);
+            return(NULL);
+        }
+        break;
+    default:
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL, "format=%d",
+            (int)format);
+        return(NULL);
+        break;
+    }
+
+    return(key);
 }
 
 /**

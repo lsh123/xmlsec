@@ -276,8 +276,11 @@ xmlSecMSCngKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     }
 
     if(srcCtx->privkey != 0) {
-        xmlSecNotImplementedError(NULL);
-        return(-1);
+        ret = xmlSecMSCngKeyDataCertGetPrivkey(dstCtx->cert, &dstCtx->privkey);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCngKeyDataCertGetPrivkey", NULL);
+            return(-1);
+        }
     }
 
     /* avoid BCryptDuplicateKey() here as that works for symmetric keys only */

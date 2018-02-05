@@ -220,9 +220,9 @@ static int xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
     ctx = xmlSecMSCngSignatureGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    pubkey = xmlSecMSCngKeyDataGetKey(ctx->data, xmlSecKeyDataTypePublic);
+    pubkey = xmlSecMSCngKeyDataGetPubKey(ctx->data);
     if(pubkey == 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataGetKey",
+        xmlSecInternalError("xmlSecMSCngKeyDataGetPubKey",
             xmlSecTransformGetName(transform));
         return(-1);
     }

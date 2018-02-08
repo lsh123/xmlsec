@@ -1849,6 +1849,8 @@ static int
 xmlSecAppPrepareKeyInfoReadCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAppCmdLineValuePtr value;
     int ret;
+    xmlSecKeyDataId dataId;
+    const char* p;
     
     if(keyInfoCtx == NULL) {
         fprintf(stderr, "Error: key info context is null\n");
@@ -1877,8 +1879,6 @@ xmlSecAppPrepareKeyInfoReadCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
                     enabledKeyDataParam.fullName);
             return(-1);
         }
-        xmlSecKeyDataId dataId;
-        const char* p;
 
         for(p = value->strListValue; (p != NULL) && ((*p) != '\0'); p += strlen(p)) {
             dataId = xmlSecKeyDataIdListFindByName(xmlSecKeyDataIdsGet(), BAD_CAST p, xmlSecKeyDataUsageAny);
@@ -2300,6 +2300,11 @@ xmlSecAppXmlDataCreate(const char* filename, const xmlChar* defStartNodeName, co
     xmlSecAppCmdLineValuePtr value;
     xmlSecAppXmlDataPtr data;
     xmlNodePtr cur = NULL;
+
+    xmlChar* attrName;
+    xmlChar* nodeName;
+    xmlChar* nsHref;
+    xmlChar* buf;
         
     if(filename == NULL) {
         fprintf(stderr, "Error: xml filename is null\n");
@@ -2348,10 +2353,7 @@ xmlSecAppXmlDataCreate(const char* filename, const xmlChar* defStartNodeName, co
             xmlSecAppXmlDataDestroy(data);
             return(NULL);
         }
-        xmlChar* attrName = (value->paramNameValue != NULL) ? BAD_CAST value->paramNameValue : BAD_CAST "id";
-        xmlChar* nodeName;
-        xmlChar* nsHref;
-        xmlChar* buf;
+        attrName = (value->paramNameValue != NULL) ? BAD_CAST value->paramNameValue : BAD_CAST "id";
 
         buf = xmlStrdup(BAD_CAST value->strValue);
         if(buf == NULL) {

@@ -480,10 +480,13 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
     PCCERT_CONTEXT tmpcert = NULL;
     PCCERT_CONTEXT pCert = NULL;
     WCHAR* wcPwd = NULL;
+    DWORD dwFlags;
     xmlSecKeyDataPtr x509Data = NULL;
     xmlSecKeyDataPtr keyData = NULL;
     xmlSecKeyPtr key = NULL;
-        int ret;
+    int ret;
+    DWORD dwData = 0;
+    DWORD dwDataLen = sizeof(DWORD);
 
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(dataSize > 1, NULL);
@@ -510,7 +513,7 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
         goto done;
     }
 
-    DWORD dwFlags = CRYPT_EXPORTABLE;
+    dwFlags = CRYPT_EXPORTABLE;
     if (!xmlSecImportGetPersistKey()) {
         dwFlags |= PKCS12_NO_PERSIST_KEY;
     }
@@ -531,9 +534,8 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
         if(pCert == NULL) {
             break;
         }
-        DWORD dwData = 0;
-        DWORD dwDataLen = sizeof(DWORD);
 
+        dwData = 0;
         /* Find the certificate that has the private key */
         if((TRUE == CertGetCertificateContextProperty(pCert, CERT_KEY_SPEC_PROP_ID, &dwData, &dwDataLen)) && (dwData > 0)) {
             tmpcert = CertDuplicateCertificateContext(pCert);

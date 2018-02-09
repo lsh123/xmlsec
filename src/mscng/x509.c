@@ -66,12 +66,52 @@ xmlSecMSCngKeyDataX509Initialize(xmlSecKeyDataPtr data) {
 
 static int
 xmlSecMSCngKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    PCCERT_CONTEXT srcCert = NULL;
+    PCCERT_CONTEXT dstCert;
+    xmlSecMSCngX509DataCtxPtr srcCtx;
+    int ret;
+
     xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecMSCngKeyDataX509Id), -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecMSCngKeyDataX509Id), -1);
+    srcCtx = xmlSecMSCngX509DataGetCtx(src);
 
-    xmlSecNotImplementedError(NULL);
+    /* duplicate the certificate store */
+    while((srcCert = CertEnumCertificatesInStore(srcCtx->hMemStore, srcCert)) != NULL) {
+        dstCert = CertDuplicateCertificateContext(srcCert);
+        if(dstCert == NULL) {
+            xmlSecMSCngLastError("CertDuplicateCertificateContext",
+                xmlSecKeyDataGetName(dst));
+            return(-1);
+        }
 
-    return(-1);
+        ret = xmlSecMSCngKeyDataX509AdoptCert(dst, dstCert);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCert",
+                xmlSecKeyDataGetName(dst));
+            CertFreeCertificateContext(dstCert);
+            return(-1);
+        }
+    }
+
+    if(srcCtx->cert != NULL) {
+        /* have a key certificate, duplicate that */
+        dstCert = CertDuplicateCertificateContext(srcCtx->cert);
+        if(dstCert == NULL) {
+            xmlSecMSCngLastError("CertDuplicateCertificateContext",
+                xmlSecKeyDataGetName(dst));
+            return(-1);
+        }
+
+        ret = xmlSecMSCngKeyDataX509AdoptKeyCert(dst, dstCert);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert",
+                xmlSecKeyDataGetName(dst));
+            CertFreeCertificateContext(dstCert);
+            return(-1);
+        }
+    }
+
+    return(0);
 }
 
 static void

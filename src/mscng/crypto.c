@@ -314,3 +314,32 @@ xmlSecMSCngKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 }
 
 
+LPWSTR
+xmlSecMSCngMultiByteToWideChar(const char* multiByte) {
+    LPWSTR wideChar = NULL;
+    int size;
+    int ret;
+
+    xmlSecAssert2(multiByte != NULL, NULL);
+
+    /* determinze size */
+    size = MultiByteToWideChar(CP_ACP, 0, multiByte, -1, NULL, 0);
+    if(size < 0) {
+        return(NULL);
+    }
+
+    wideChar = (LPWSTR)xmlMalloc(size * sizeof(WCHAR));
+    if(wideChar == NULL) {
+        xmlSecMallocError(size * sizeof(WCHAR), NULL);
+        return(NULL);
+    }
+
+    /* process the input string */
+    ret = MultiByteToWideChar(CP_ACP, 0, multiByte, -1, wideChar, size);
+    if(ret < 0) {
+        xmlFree(wideChar);
+        return(NULL);
+    }
+
+    return(wideChar);
+}

@@ -76,9 +76,9 @@ else
 fi
 
 #
-# Need to force persistence for mscrypto
+# Need to force persistence for mscrypto and mscng
 #
-if [ "z$crypto" = "zmscrypto" ] ; then
+if [ "z$crypto" = "zmscrypto" -o "z$crypto" = "zmscng" ] ; then
     priv_key_option="--pkcs12-persist $priv_key_option"
 fi
 

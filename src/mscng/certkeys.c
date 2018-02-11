@@ -15,6 +15,7 @@
 #undef WIN32_NO_STATUS
 #include <ntstatus.h>
 #include <bcrypt.h>
+#include <ncrypt.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
@@ -31,7 +32,7 @@ typedef struct _xmlSecMSCngKeyDataCtx xmlSecMSCngKeyDataCtx,
 
 struct _xmlSecMSCngKeyDataCtx {
     PCCERT_CONTEXT cert;
-    BCRYPT_KEY_HANDLE privkey;
+    NCRYPT_KEY_HANDLE privkey;
     BCRYPT_KEY_HANDLE pubkey;
 };
 
@@ -57,6 +58,31 @@ xmlSecMSCngKeyDataCertGetPubkey(PCCERT_CONTEXT cert, BCRYPT_KEY_HANDLE* key) {
     return(0);
 }
 
+static int
+xmlSecMSCngKeyDataCertGetPrivkey(PCCERT_CONTEXT cert, NCRYPT_KEY_HANDLE* key) {
+    int ret;
+
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
+
+    DWORD keySpec = 0;
+    BOOL callerFree = FALSE;
+
+    ret = CryptAcquireCertificatePrivateKey(
+        cert,
+        CRYPT_ACQUIRE_COMPARE_KEY_FLAG | CRYPT_ACQUIRE_ONLY_NCRYPT_KEY_FLAG,
+        NULL,
+        key,
+        &keySpec,
+        &callerFree);
+    if(ret == FALSE) {
+        xmlSecMSCngLastError("CryptAcquireCertificatePrivateKey", NULL);
+        return(-1);
+    }
+
+    return(0);
+}
+
 /**
  * xmlSecMSCngKeyDataAdoptCert:
  * @data:               the pointer to MSCng pccert data.
@@ -69,7 +95,7 @@ xmlSecMSCngKeyDataCertGetPubkey(PCCERT_CONTEXT cert, BCRYPT_KEY_HANDLE* key) {
 static int
 xmlSecMSCngKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert, xmlSecKeyDataType type) {
     xmlSecMSCngKeyDataCtxPtr ctx;
-    BCRYPT_KEY_HANDLE hKey;
+    BCRYPT_KEY_HANDLE hPubKey;
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
@@ -85,17 +111,24 @@ xmlSecMSCngKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert, xmlSecKe
 
     /* acquire the CNG key handle from the certificate */
     if((type & xmlSecKeyDataTypePrivate) != 0) {
-        xmlSecNotImplementedError(NULL);
+        NCRYPT_KEY_HANDLE hPrivKey;
 
-        return(-1);
+        ret = xmlSecMSCngKeyDataCertGetPrivkey(cert, &hPrivKey);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCngKeyDataCertGetPrivkey", NULL);
+            return(-1);
+        }
+
+        ctx->privkey = hPrivKey;
     }
 
-    ret = xmlSecMSCngKeyDataCertGetPubkey(cert, &hKey);
+    ret = xmlSecMSCngKeyDataCertGetPubkey(cert, &hPubKey);
     if(ret < 0) {
         xmlSecInternalError("xmlSecMSCngKeyDataCertGetPubkey", NULL);
         return(-1);
     }
-    ctx->pubkey = hKey;
+
+    ctx->pubkey = hPubKey;
     ctx->cert = cert;
 
     return(0);
@@ -148,17 +181,16 @@ xmlSecMSCngCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
 }
 
 /**
- * xmlSecMSCngKeyDataGetKey:
+ * xmlSecMSCngKeyDataGetPubKey:
  * @data: the key data to retrieve certificate from.
- * @type: type of key requested (public/private)
  *
- * Native MSCng key retrieval from xmlsec keydata. The returned key must not be
- * destroyed by the caller.
+ * Native MSCng public key retrieval from xmlsec keydata. The returned key must
+ * not be destroyed by the caller.
  *
  * Returns: key on success or 0 otherwise.
  */
 BCRYPT_KEY_HANDLE
-xmlSecMSCngKeyDataGetKey(xmlSecKeyDataPtr data, xmlSecKeyDataType type) {
+xmlSecMSCngKeyDataGetPubKey(xmlSecKeyDataPtr data) {
     xmlSecMSCngKeyDataCtxPtr ctx;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), 0);
@@ -166,10 +198,6 @@ xmlSecMSCngKeyDataGetKey(xmlSecKeyDataPtr data, xmlSecKeyDataType type) {
 
     ctx = xmlSecMSCngKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, 0);
-
-    if(type == xmlSecKeyDataTypePrivate) {
-        return(ctx->privkey);
-    }
 
     return(ctx->pubkey);
 }
@@ -201,7 +229,7 @@ xmlSecMSCngKeyDataFinalize(xmlSecKeyDataPtr data) {
     xmlSecAssert(ctx != NULL);
 
     if(ctx->privkey != 0) {
-        status = BCryptDestroyKey(ctx->privkey);
+        status = NCryptFreeObject(ctx->privkey);
         if(status != STATUS_SUCCESS) {
             xmlSecMSCngNtError("BCryptDestroyKey", NULL, status);
         }
@@ -235,7 +263,7 @@ xmlSecMSCngKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     dstCtx = xmlSecMSCngKeyDataGetCtx(dst);
     xmlSecAssert2(dstCtx != NULL, -1);
     xmlSecAssert2(dstCtx->cert == NULL, -1);
-    xmlSecAssert2(dstCtx->privkey == NULL, -1);
+    xmlSecAssert2(dstCtx->privkey == 0, -1);
     xmlSecAssert2(dstCtx->pubkey == NULL, -1);
 
     srcCtx = xmlSecMSCngKeyDataGetCtx(src);
@@ -248,8 +276,11 @@ xmlSecMSCngKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     }
 
     if(srcCtx->privkey != 0) {
-        xmlSecNotImplementedError(NULL);
-        return(-1);
+        ret = xmlSecMSCngKeyDataCertGetPrivkey(dstCtx->cert, &dstCtx->privkey);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCngKeyDataCertGetPrivkey", NULL);
+            return(-1);
+        }
     }
 
     /* avoid BCryptDuplicateKey() here as that works for symmetric keys only */

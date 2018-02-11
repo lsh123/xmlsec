@@ -22,6 +22,7 @@
 #include <xmlsec/mscng/crypto.h>
 #include <xmlsec/mscng/symbols.h>
 #include <xmlsec/mscng/x509.h>
+#include <xmlsec/mscng/certkeys.h>
 
 /**
  * xmlSecMSCngAppInit:
@@ -72,12 +73,28 @@ xmlSecMSCngAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
                       const char *pwd,
                       void* pwdCallback,
                       void* pwdCallbackCtx) {
+    xmlSecKeyPtr key = NULL;
+
     xmlSecAssert2(filename != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
-    /* TODO: load key */
-    xmlSecNotImplementedError(NULL);
-    return(NULL);
+    switch(format) {
+    case xmlSecKeyDataFormatPkcs12:
+        key = xmlSecMSCngAppPkcs12Load(filename, pwd, pwdCallback,
+            pwdCallbackCtx);
+        if(key == NULL) {
+            xmlSecInternalError("xmlSecMSCngAppPkcs12Load", NULL);
+            return(NULL);
+        }
+        break;
+    default:
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL, "format=%d",
+            (int)format);
+        return(NULL);
+        break;
+    }
+
+    return(key);
 }
 
 /**
@@ -169,14 +186,47 @@ xmlSecMSCngAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSec
  */
 xmlSecKeyPtr
 xmlSecMSCngAppPkcs12Load(const char *filename,
-                         const char *pwd ATTRIBUTE_UNUSED,
-                         void* pwdCallback ATTRIBUTE_UNUSED,
-                         void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
-    xmlSecAssert2(filename != NULL, NULL);
+                         const char *pwd,
+                         void* pwdCallback,
+                         void* pwdCallbackCtx) {
+    xmlSecBuffer buffer;
+    xmlSecByte* data;
+    xmlSecKeyPtr key;
+    int ret;
 
-    /* TODO: load pkcs12 file */
-    xmlSecNotImplementedError(NULL);
-    return(NULL);
+    xmlSecAssert2(filename != NULL, NULL);
+    xmlSecAssert2(pwd != NULL, NULL);
+
+    ret = xmlSecBufferInitialize(&buffer, 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
+        return(NULL);
+    }
+
+    ret = xmlSecBufferReadFile(&buffer, filename);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferReadFile", NULL, "filename=%s",
+            xmlSecErrorsSafeString(filename));
+        return(NULL);
+    }
+
+    data = xmlSecBufferGetData(&buffer);
+    if(data == NULL) {
+        xmlSecInternalError("xmlSecBufferGetData", NULL);
+        xmlSecBufferFinalize(&buffer);
+        return(NULL);
+    }
+
+    key = xmlSecMSCngAppPkcs12LoadMemory(data, xmlSecBufferGetSize(&buffer),
+        pwd, pwdCallback, pwdCallbackCtx);
+    if(key == NULL) {
+        xmlSecInternalError("xmlSecMSCngAppPkcs12LoadMemory", NULL);
+        xmlSecBufferFinalize(&buffer);
+        return(NULL);
+    }
+
+    xmlSecBufferFinalize(&buffer);
+    return(key);
 }
 
 /**
@@ -197,11 +247,144 @@ xmlSecKeyPtr
 xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const char *pwd,
                                void *pwdCallback ATTRIBUTE_UNUSED,
                                void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
-    xmlSecAssert2(data != NULL, NULL);
+    CRYPT_DATA_BLOB pfx;
+    xmlSecKeyPtr key = NULL;
+    WCHAR* pwdWideChar = NULL;
+    HCERTSTORE certStore = NULL;
+    xmlSecKeyDataPtr keyData = NULL;
+    xmlSecKeyDataPtr privKeyData = NULL;
+    PCCERT_CONTEXT cert = NULL;
+    PCCERT_CONTEXT certDuplicate = NULL;
+    int ret;
 
-    /* TODO: load pkcs12 file */
-    xmlSecNotImplementedError(NULL);
-    return(NULL);
+    xmlSecAssert2(data != NULL, NULL);
+    xmlSecAssert2(dataSize > 1, NULL);
+    xmlSecAssert2(pwd != NULL, NULL);
+
+    memset(&pfx, 0, sizeof(pfx));
+    pfx.pbData = (BYTE *)data;
+    pfx.cbData = dataSize;
+    ret = PFXIsPFXBlob(&pfx);
+    if(ret == FALSE) {
+        xmlSecMSCngLastError("PFXIsPFXBlob", NULL);
+        return(NULL);
+    }
+
+    pwdWideChar = xmlSecMSCngMultiByteToWideChar(pwd);
+    if(pwdWideChar == NULL) {
+        xmlSecInternalError("xmlSecMSCngMultiByteToWideChar", NULL);
+        goto cleanup;
+    }
+
+    ret = PFXVerifyPassword(&pfx, pwdWideChar, 0);
+    if(ret == FALSE) {
+        xmlSecMSCngLastError("PFXVerifyPassword", NULL);
+        goto cleanup;
+    }
+
+    DWORD flags = CRYPT_EXPORTABLE;
+    if (!xmlSecImportGetPersistKey()) {
+        flags |= PKCS12_NO_PERSIST_KEY;
+    }
+    certStore = PFXImportCertStore(&pfx, pwdWideChar, flags);
+    if(certStore == NULL) {
+        xmlSecMSCngLastError("PFXImportCertStore", NULL);
+        goto cleanup;
+    }
+
+    keyData = xmlSecKeyDataCreate(xmlSecMSCngKeyDataX509Id);
+    if(keyData == NULL) {
+        xmlSecInternalError("xmlSecKeyDataCreate", NULL);
+        goto cleanup;
+    }
+
+    /* enumerate over certifiates in the store */
+    while((cert = CertEnumCertificatesInStore(certStore, cert)) != NULL) {
+        DWORD dwData = 0;
+        DWORD dwDataLen = sizeof(DWORD);
+
+        ret = CertGetCertificateContextProperty(cert, CERT_KEY_SPEC_PROP_ID,
+            &dwData, &dwDataLen);
+        if(ret == TRUE) {
+            /* adopt private key */
+            certDuplicate = CertDuplicateCertificateContext(cert);
+            if(certDuplicate == NULL) {
+                xmlSecMSCngLastError("CertDuplicateCertificateContext", NULL);
+                goto cleanup;
+            }
+
+            privKeyData = xmlSecMSCngCertAdopt(certDuplicate,
+                xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
+            if(privKeyData == NULL) {
+                xmlSecInternalError("xmlSecMSCngCertAdopt", NULL);
+                goto cleanup;
+            }
+            certDuplicate = NULL;
+        }
+
+        /* adopt certificate */
+        certDuplicate = CertDuplicateCertificateContext(cert);
+        if(certDuplicate == NULL) {
+            xmlSecMSCngLastError("CertDuplicateCertificateContext", NULL);
+            goto cleanup;
+        }
+
+        ret = xmlSecMSCngKeyDataX509AdoptKeyCert(keyData, certDuplicate);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert", NULL);
+            goto cleanup;
+        }
+        certDuplicate = NULL;
+    }
+
+    /* at this point we should have a private key */
+    if(privKeyData == NULL) {
+        xmlSecInternalError2("xmlSecMSCngAppPkcs12LoadMemory",
+            xmlSecKeyDataGetName(keyData), "privKeyData is NULL", NULL);
+        goto cleanup;
+    }
+
+    key = xmlSecKeyCreate();
+    if(key == NULL) {
+        xmlSecInternalError("xmlSecKeyCreate", NULL);
+        goto cleanup;
+    }
+
+    ret = xmlSecKeySetValue(key, privKeyData);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeySetValue", NULL);
+        xmlSecKeyDestroy(key);
+        key = NULL;
+        goto cleanup;
+    }
+    privKeyData = NULL;
+
+    ret = xmlSecKeyAdoptData(key, keyData);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyAdoptData", NULL);
+        xmlSecKeyDestroy(key);
+        key = NULL;
+        goto cleanup;
+    }
+    keyData = NULL;
+
+cleanup:
+    if(certStore != NULL) {
+        CertCloseStore(certStore, 0);
+    }
+    if(pwdWideChar != NULL) {
+        xmlFree(pwdWideChar);
+    }
+    if(keyData != NULL) {
+        xmlSecKeyDataDestroy(keyData);
+    }
+    if(privKeyData != NULL) {
+        xmlSecKeyDataDestroy(privKeyData);
+    }
+    if(certDuplicate != NULL) {
+        CertFreeCertificateContext(certDuplicate);
+    }
+    return(key);
 }
 
 /**

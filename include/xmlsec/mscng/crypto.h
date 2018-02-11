@@ -13,12 +13,15 @@
 extern "C" {
 #endif /* __cplusplus */
 
+#include <windows.h>
+
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/dl.h>
 
 XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctions_mscng(void);
+XMLSEC_CRYPTO_EXPORT LPWSTR xmlSecMSCngMultiByteToWideChar(const char* multiByte);
 
 /********************************************************************
  *

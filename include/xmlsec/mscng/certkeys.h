@@ -22,6 +22,7 @@ extern "C" {
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr   xmlSecMSCngCertAdopt         (PCCERT_CONTEXT pCert,
                                                                       xmlSecKeyDataType type);
 XMLSEC_CRYPTO_EXPORT BCRYPT_KEY_HANDLE  xmlSecMSCngKeyDataGetPubKey  (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT NCRYPT_KEY_HANDLE  xmlSecMSCngKeyDataGetPprivKey(xmlSecKeyDataPtr data);
 
 #ifdef __cplusplus
 }

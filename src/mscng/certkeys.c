@@ -202,6 +202,28 @@ xmlSecMSCngKeyDataGetPubKey(xmlSecKeyDataPtr data) {
     return(ctx->pubkey);
 }
 
+/**
+ * xmlSecMSCngKeyDataGetPrivKey:
+ * @data: the key data to retrieve certificate from.
+ *
+ * Native MSCng private key retrieval from xmlsec keydata. The returned key
+ * must not be destroyed by the caller.
+ *
+ * Returns: key on success or 0 otherwise.
+ */
+NCRYPT_KEY_HANDLE
+xmlSecMSCngKeyDataGetPrivKey(xmlSecKeyDataPtr data) {
+    xmlSecMSCngKeyDataCtxPtr ctx;
+
+    xmlSecAssert2(xmlSecKeyDataIsValid(data), 0);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCngKeyDataSize), 0);
+
+    ctx = xmlSecMSCngKeyDataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, 0);
+
+    return(ctx->privkey);
+}
+
 static int
 xmlSecMSCngKeyDataInitialize(xmlSecKeyDataPtr data) {
     xmlSecMSCngKeyDataCtxPtr ctx;

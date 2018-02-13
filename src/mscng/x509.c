@@ -217,7 +217,7 @@ xmlSecMSCngKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
     return(0);
 }
 
-static int
+int
 xmlSecMSCngKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
     xmlSecMSCngX509DataCtxPtr ctx;
 

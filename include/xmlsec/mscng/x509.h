@@ -41,6 +41,8 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataStoreId xmlSecMSCngX509StoreGetKlass(void);
 
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngKeyDataX509AdoptKeyCert   (xmlSecKeyDataPtr data,
                                                                               PCCERT_CONTEXT cert);
+XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngKeyDataX509AdoptCert      (xmlSecKeyDataPtr data,
+                                                                              PCCERT_CONTEXT cert);
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngX509StoreAdoptCert        (xmlSecKeyDataStorePtr store,
                                                                               PCCERT_CONTEXT cert,
                                                                               xmlSecKeyDataType type);

@@ -486,7 +486,7 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
     xmlSecKeyPtr key = NULL;
     int ret;
     DWORD dwData = 0;
-    DWORD dwDataLen = sizeof(DWORD);
+    DWORD dwDataLen;
 
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(dataSize > 1, NULL);
@@ -534,6 +534,7 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
         if(pCert == NULL) {
             break;
         }
+        dwDataLen = sizeof(DWORD);
 
         dwData = 0;
         /* Find the certificate that has the private key */

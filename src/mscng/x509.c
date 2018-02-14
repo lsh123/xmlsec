@@ -503,13 +503,34 @@ xmlSecMSCngKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 static int
 xmlSecMSCngX509CertificateNodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node,
         xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlChar* buf;
+    xmlNodePtr child;
+    int ret;
+
     xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(cert->pbCertEncoded != NULL, -1);
+    xmlSecAssert2(cert->cbCertEncoded > 0, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    xmlSecNotImplementedError(NULL);
+    buf = xmlSecBase64Encode(cert->pbCertEncoded, cert->cbCertEncoded,
+        keyInfoCtx->base64LineSize);
+    if(buf == NULL) {
+        xmlSecInternalError("xmlSecBase64Encode", NULL);
+        return(-1);
+    }
 
-    return(-1);
+    child = xmlSecEnsureEmptyChild(node, xmlSecNodeX509Certificate, xmlSecDSigNs);
+    if(child == NULL) {
+        xmlSecInternalError("xmlSecEnsureEmptyChild", NULL);
+        xmlFree(buf);
+        return(-1);
+    }
+
+    xmlNodeSetContent(child, buf);
+    xmlFree(buf);
+
+    return(0);
 }
 
 static int

@@ -389,8 +389,56 @@ xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
             xmlSecAssert2(ctx->cbHash > 0, -1);
 
             if(transform->operation == xmlSecTransformOperationSign) {
-                xmlSecNotImplementedError(NULL);
-                return(-1);
+                NCRYPT_KEY_HANDLE privkey;
+                DWORD cbSignature;
+
+                privkey = xmlSecMSCngKeyDataGetPrivKey(ctx->data);
+                if(privkey == 0) {
+                    xmlSecInternalError("xmlSecMSCngKeyDataGetPrivKey",
+                        xmlSecTransformGetName(transform));
+                    return(-1);
+                }
+
+                /* calculate the length of the signature */
+                status = NCryptSignHash(
+                    privkey,
+                    NULL,
+                    ctx->pbHash,
+                    ctx->cbHash,
+                    NULL,
+                    0,
+                    &cbSignature,
+                    0);
+                if(status != STATUS_SUCCESS) {
+                    xmlSecMSCngNtError("NCryptSignHash",
+                        xmlSecTransformGetName(transform), status);
+                    return(-1);
+                }
+                outSize = (xmlSecSize)cbSignature;
+
+                /* allocate the signature buffer on the heap */
+                ret = xmlSecBufferSetSize(&transform->outBuf, outSize);
+                if(ret < 0) {
+                    xmlSecInternalError2("xmlSecBufferSetSize",
+                        xmlSecTransformGetName(transform), "size=%d", outSize);
+                    return(-1);
+                }
+
+                /* sign the hash */
+                status = NCryptSignHash(
+                    privkey,
+                    NULL,
+                    ctx->pbHash,
+                    ctx->cbHash,
+                    (PBYTE)xmlSecBufferGetData(&transform->outBuf),
+                    cbSignature,
+                    &cbSignature,
+                    0);
+                if(status != STATUS_SUCCESS) {
+                    xmlSecMSCngNtError("NCryptSignHash",
+                        xmlSecTransformGetName(transform), status);
+                    return(-1);
+                }
             }
             transform->status = xmlSecTransformStatusFinished;
         }

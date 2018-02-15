@@ -217,7 +217,7 @@ xmlSecMSCngKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
     return(0);
 }
 
-static int
+int
 xmlSecMSCngKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
     xmlSecMSCngX509DataCtxPtr ctx;
 
@@ -501,16 +501,167 @@ xmlSecMSCngKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 }
 
 static int
-xmlSecMSCngKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
-                               xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecAssert2(id == xmlSecMSCngKeyDataX509Id, -1);
-    xmlSecAssert2(key != NULL, -1);
+xmlSecMSCngX509CertificateNodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node,
+        xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlChar* buf;
+    xmlNodePtr child;
+    int ret;
+
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(cert->pbCertEncoded != NULL, -1);
+    xmlSecAssert2(cert->cbCertEncoded > 0, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    buf = xmlSecBase64Encode(cert->pbCertEncoded, cert->cbCertEncoded,
+        keyInfoCtx->base64LineSize);
+    if(buf == NULL) {
+        xmlSecInternalError("xmlSecBase64Encode", NULL);
+        return(-1);
+    }
+
+    child = xmlSecEnsureEmptyChild(node, xmlSecNodeX509Certificate, xmlSecDSigNs);
+    if(child == NULL) {
+        xmlSecInternalError("xmlSecEnsureEmptyChild", NULL);
+        xmlFree(buf);
+        return(-1);
+    }
+
+    xmlNodeSetContent(child, buf);
+    xmlFree(buf);
+
+    return(0);
+}
+
+static int
+xmlSecMSCngX509SubjectNameNodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node) {
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    xmlSecNotImplementedError(NULL);
+
+    return(-1);
+}
+
+static int
+xmlSecMSCngX509IssuerSerialNodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node) {
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    xmlSecNotImplementedError(NULL);
+
+    return(-1);
+}
+
+static int
+xmlSecMSCngX509SKINodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node) {
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    xmlSecNotImplementedError(NULL);
+
+    return(-1);
+}
+
+static int
+xmlSecMSCngX509CRLNodeWrite(PCCRL_CONTEXT crl, xmlNodePtr node,
+        xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecAssert2(crl != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     xmlSecNotImplementedError(NULL);
 
     return(-1);
+}
+
+static int
+xmlSecMSCngKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
+                               xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    int content;
+    xmlSecKeyDataPtr keyData;
+    xmlSecMSCngX509DataCtxPtr x509DataCtx;
+    PCCERT_CONTEXT cert = NULL;
+    HCERTSTORE certs;
+    PCCRL_CONTEXT crlCtx = NULL;
+    int ret;
+
+    xmlSecAssert2(id == xmlSecMSCngKeyDataX509Id, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    content = xmlSecX509DataGetNodeContent(node, keyInfoCtx);
+    if(content < 0) {
+        xmlSecInternalError("xmlSecX509DataGetNodeContent",
+            xmlSecKeyDataKlassGetName(id));
+        return(-1);
+    }
+    if(content == 0) {
+        /* no content -> writer the default */
+        content = XMLSEC_X509DATA_DEFAULT;
+    }
+
+    keyData = xmlSecKeyGetData(key, id);
+    if(keyData == NULL) {
+        /* nothing to do */
+        return(0);
+    }
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(keyData, xmlSecMSCngKeyDataX509Id), -1);
+    x509DataCtx = xmlSecMSCngX509DataGetCtx(keyData);
+    certs = x509DataCtx->hMemStore;
+
+    /* write certificates */
+    while((cert = CertEnumCertificatesInStore(certs, cert)) != NULL) {
+        if((content & XMLSEC_X509DATA_CERTIFICATE_NODE) != 0) {
+            ret = xmlSecMSCngX509CertificateNodeWrite(cert, node, keyInfoCtx);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecMSCngX509CertificateNodeWrite",
+                    xmlSecKeyDataKlassGetName(id));
+                return(-1);
+            }
+        }
+
+        if((content & XMLSEC_X509DATA_SUBJECTNAME_NODE) != 0) {
+            ret = xmlSecMSCngX509SubjectNameNodeWrite(cert, node);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecMSCngX509SubjectNameNodeWrite",
+                    xmlSecKeyDataKlassGetName(id));
+                return(-1);
+            }
+        }
+
+        if((content & XMLSEC_X509DATA_ISSUERSERIAL_NODE) != 0) {
+            ret = xmlSecMSCngX509IssuerSerialNodeWrite(cert, node);
+            if(ret< 0) {
+                xmlSecInternalError("xmlSecMSCngX509IssuerSerialNodeWrite",
+                    xmlSecKeyDataKlassGetName(id));
+                return(-1);
+            }
+        }
+
+        if((content & XMLSEC_X509DATA_SKI_NODE) != 0) {
+            ret = xmlSecMSCngX509SKINodeWrite(cert, node);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecMSCngX509SKINodeWrite",
+                    xmlSecKeyDataKlassGetName(id));
+                return(-1);
+            }
+        }
+    }
+
+    /* write CRLs */
+    while((crlCtx = CertEnumCRLsInStore(certs, crlCtx)) != NULL) {
+        ret = xmlSecMSCngX509CRLNodeWrite(crlCtx, node, keyInfoCtx);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCngX509CRLNodeWrite",
+                xmlSecKeyDataKlassGetName(id));
+            return(-1);
+        }
+    }
+
+    return(0);
 }
 
 static void

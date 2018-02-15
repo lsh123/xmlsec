@@ -329,7 +329,7 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
             goto cleanup;
         }
 
-        ret = xmlSecMSCngKeyDataX509AdoptKeyCert(keyData, certDuplicate);
+        ret = xmlSecMSCngKeyDataX509AdoptCert(keyData, certDuplicate);
         if(ret < 0) {
             xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert", NULL);
             goto cleanup;

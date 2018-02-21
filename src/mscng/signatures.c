@@ -80,6 +80,12 @@ static int xmlSecMSCngSignatureCheckId(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_SHA256 */
 
+#ifndef XMLSEC_NO_SHA512
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformEcdsaSha512Id)) {
+       return(1);
+    } else
+#endif /* XMLSEC_NO_SHA512 */
+
 #endif /* XMLSEC_NO_ECDSA */
 
     /* not found */
@@ -105,6 +111,13 @@ static int xmlSecMSCngSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->keyId = xmlSecMSCngKeyDataEcdsaId;
     } else
 #endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA512
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformEcdsaSha512Id)) {
+        ctx->pszHashAlgId = BCRYPT_SHA512_ALGORITHM;
+        ctx->keyId = xmlSecMSCngKeyDataEcdsaId;
+    } else
+#endif /* XMLSEC_NO_SHA512 */
 
 #endif /* XMLSEC_NO_ECDSA */
 
@@ -503,5 +516,51 @@ xmlSecMSCngTransformEcdsaSha256GetKlass(void) {
     return(&xmlSecMSCngEcdsaSha256Klass);
 }
 #endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA512
+/****************************************************************************
+ *
+ * ECDSA-SHA512 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecMSCngEcdsaSha512Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),              /* xmlSecSize klassSize */
+    xmlSecMSCngSignatureSize,                  /* xmlSecSize objSize */
+
+    xmlSecNameEcdsaSha512,                     /* const xmlChar* name; */
+    xmlSecHrefEcdsaSha512,                     /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,       /* xmlSecTransformUsage usage; */
+
+    xmlSecMSCngSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCngSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecMSCngSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecMSCngSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecMSCngSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCngSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                      /* void* reserved0; */
+    NULL,                                      /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCngTransformEcdsaSha512GetKlass:
+ *
+ * The ECDSA-SHA512 signature transform klass.
+ *
+ * Returns: ECDSA-SHA512 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformEcdsaSha512GetKlass(void) {
+    return(&xmlSecMSCngEcdsaSha512Klass);
+}
+#endif /* XMLSEC_NO_SHA512 */
 
 #endif /* XMLSEC_NO_ECDSA */

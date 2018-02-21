@@ -156,7 +156,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->transformEcdsaSha384GetKlass         = xmlSecMSCngTransformEcdsaSha384GetKlass;
 #endif /* XMLSEC_NO_SHA384 */
 
-#ifdef XMLSEC_MSCNG_TODO
+#ifndef XMLSEC_NO_SHA512
     gXmlSecMSCngFunctions->transformEcdsaSha512GetKlass         = xmlSecMSCngTransformEcdsaSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
@@ -211,6 +211,9 @@ xmlSecCryptoGetFunctions_mscng(void) {
 #ifndef XMLSEC_NO_SHA256
     gXmlSecMSCngFunctions->transformSha256GetKlass              = xmlSecMSCngTransformSha256GetKlass;
 #endif /* XMLSEC_NO_SHA256 */
+#ifndef XMLSEC_NO_SHA512
+    gXmlSecMSCngFunctions->transformSha512GetKlass              = xmlSecMSCngTransformSha512GetKlass;
+#endif /* XMLSEC_NO_SHA512 */
 
     /********************************************************************
      *

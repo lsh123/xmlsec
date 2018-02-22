@@ -49,6 +49,17 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngKeysMngrInit      (xmlSecKeys
         xmlSecMSCngKeyDataEcdsaGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngKeyDataEcdsaGetKlass(void);
 
+#ifndef XMLSEC_NO_SHA1
+/**
+ * xmlSecMSCngTransformEcdsaSha1Id:
+ *
+ * The ECDSA-SHA1 signature transform klass.
+ */
+#define xmlSecMSCngTransformEcdsaSha1Id     \
+       xmlSecMSCngTransformEcdsaSha1GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformEcdsaSha1GetKlass(void);
+#endif /* XMLSEC_NO_SHA1 */
+
 #ifndef XMLSEC_NO_SHA256
 /**
  * xmlSecMSCngTransformEcdsaSha256Id:
@@ -72,6 +83,22 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformEcdsaSha512GetKlass(v
 #endif /* XMLSEC_NO_SHA512 */
 
 #endif /* XMLSEC_NO_ECDSA */
+
+/********************************************************************
+ *
+ * SHA1 transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_SHA1
+/**
+ * xmlSecMSCngTransformSha1Id:
+ *
+ * The SHA1 digest transform klass.
+ */
+#define xmlSecMSCngTransformSha1Id \
+       xmlSecMSCngTransformSha1GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformSha1GetKlass(void);
+#endif /* XMLSEC_NO_SHA1 */
 
 /********************************************************************
  *

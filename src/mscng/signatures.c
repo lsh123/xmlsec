@@ -74,6 +74,12 @@ static int xmlSecMSCngSignatureCheckId(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_ECDSA
 
+#ifndef XMLSEC_NO_SHA1
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformEcdsaSha1Id)) {
+       return(1);
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformEcdsaSha256Id)) {
        return(1);
@@ -104,6 +110,13 @@ static int xmlSecMSCngSignatureInitialize(xmlSecTransformPtr transform) {
     memset(ctx, 0, sizeof(xmlSecMSCngSignatureCtx));
 
 #ifndef XMLSEC_NO_ECDSA
+
+#ifndef XMLSEC_NO_SHA1
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformEcdsaSha1Id)) {
+        ctx->pszHashAlgId = BCRYPT_SHA1_ALGORITHM;
+        ctx->keyId = xmlSecMSCngKeyDataEcdsaId;
+    } else
+#endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformEcdsaSha256Id)) {
@@ -470,6 +483,52 @@ xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
 
 
 #ifndef XMLSEC_NO_ECDSA
+
+#ifndef XMLSEC_NO_SHA1
+/****************************************************************************
+ *
+ * ECDSA-SHA1 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecMSCngEcdsaSha1Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),              /* xmlSecSize klassSize */
+    xmlSecMSCngSignatureSize,                  /* xmlSecSize objSize */
+
+    xmlSecNameEcdsaSha1,                     /* const xmlChar* name; */
+    xmlSecHrefEcdsaSha1,                     /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,       /* xmlSecTransformUsage usage; */
+
+    xmlSecMSCngSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCngSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecMSCngSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecMSCngSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecMSCngSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCngSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                      /* void* reserved0; */
+    NULL,                                      /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCngTransformEcdsaSha1GetKlass:
+ *
+ * The ECDSA-SHA1 signature transform klass.
+ *
+ * Returns: ECDSA-SHA1 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformEcdsaSha1GetKlass(void) {
+    return(&xmlSecMSCngEcdsaSha1Klass);
+}
+#endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
 /****************************************************************************

@@ -140,7 +140,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
     /******************************* ECDSA ********************************/
 #ifndef XMLSEC_NO_ECDSA
 
-#ifdef XMLSEC_MSCNG_TODO
+#ifndef XMLSEC_NO_SHA1
     gXmlSecMSCngFunctions->transformEcdsaSha1GetKlass           = xmlSecMSCngTransformEcdsaSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 
@@ -205,7 +205,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
 #endif /* XMLSEC_NO_RSA */
 
     /******************************* SHA1 ********************************/
-#ifdef XMLSEC_MSCNG_TODO
+#ifndef XMLSEC_NO_SHA1
     gXmlSecMSCngFunctions->transformSha1GetKlass                = xmlSecMSCngTransformSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 #ifndef XMLSEC_NO_SHA256

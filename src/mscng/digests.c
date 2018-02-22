@@ -62,6 +62,11 @@ static int      xmlSecMSCngDigestCheckId     (xmlSecTransformPtr transform);
 static int
 xmlSecMSCngDigestCheckId(xmlSecTransformPtr transform) {
 
+#ifndef XMLSEC_NO_SHA1
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformSha1Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_SHA1 */
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformSha256Id)) {
         return(1);
@@ -89,6 +94,12 @@ xmlSecMSCngDigestInitialize(xmlSecTransformPtr transform) {
 
     /* initialize context */
     memset(ctx, 0, sizeof(xmlSecMSCngDigestCtx));
+
+#ifndef XMLSEC_NO_SHA1
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformSha1Id)) {
+        ctx->pszAlgId = BCRYPT_SHA1_ALGORITHM;
+    } else
+#endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformSha256Id)) {
@@ -326,6 +337,50 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
 
     return(0);
 }
+
+#ifndef XMLSEC_NO_SHA1
+/******************************************************************************
+ *
+ * SHA1
+ *
+ *****************************************************************************/
+static xmlSecTransformKlass xmlSecMSCngSha1Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),              /* size_t klassSize */
+    xmlSecMSCngDigestSize,                  /* size_t objSize */
+
+    xmlSecNameSha1,                          /* const xmlChar* name; */
+    xmlSecHrefSha1,                          /* const xmlChar* href; */
+    xmlSecTransformUsageDigestMethod,          /* xmlSecTransformUsage usage; */
+    xmlSecMSCngDigestInitialize,               /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCngDigestFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,                                      /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                      /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecMSCngDigestVerify,                   /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCngDigestExecute,                  /* xmlSecTransformExecuteMethod execute; */
+    NULL,                                      /* void* reserved0; */
+    NULL,                                      /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCngTransformSha1GetKlass:
+ *
+ * SHA-1 digest transform klass.
+ *
+ * Returns: pointer to SHA-1 digest transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformSha1GetKlass(void) {
+    return(&xmlSecMSCngSha1Klass);
+}
+#endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
 /******************************************************************************

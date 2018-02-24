@@ -6,10 +6,14 @@
 ##########################################################################
 ##########################################################################
 ##########################################################################
-echo "--- testKeys started for xmlsec-$crypto library ($timestamp) ---"
+if [ -z "$XMLSEC_TEST_REPRODUCIBLE" ]; then
+    echo "--- testKeys started for xmlsec-$crypto library ($timestamp) ---"
+fi
 echo "--- LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
 echo "--- LTDL_LIBRARY_PATH=$LTDL_LIBRARY_PATH"
-echo "--- log file is $logfile"
+if [ -z "$XMLSEC_TEST_REPRODUCIBLE" ]; then
+    echo "--- log file is $logfile"
+fi
 echo "--- testKeys started for xmlsec-$crypto library ($timestamp) ---" >> $logfile
 echo "--- LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $logfile
 echo "--- LTDL_LIBRARY_PATH=$LTDL_LIBRARY_PATH" >> $logfile
@@ -68,4 +72,6 @@ execKeysTest $res_success \
 ##########################################################################
 echo "--- testKeys finished ---" >> $logfile
 echo "--- testKeys finished ---"
-echo "--- detailed log is written to  $logfile ---"
+if [ -z "$XMLSEC_TEST_REPRODUCIBLE" ]; then
+    echo "--- detailed log is written to  $logfile ---"
+fi

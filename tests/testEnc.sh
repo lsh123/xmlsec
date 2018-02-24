@@ -6,10 +6,14 @@
 ##########################################################################
 ##########################################################################
 ##########################################################################
-echo "--- testEnc started for xmlsec-$crypto library ($timestamp)"
+if [ -z "$XMLSEC_TEST_REPRODUCIBLE" ]; then
+    echo "--- testEnc started for xmlsec-$crypto library ($timestamp)"
+fi
 echo "--- LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
 echo "--- LTDL_LIBRARY_PATH=$LTDL_LIBRARY_PATH"
-echo "--- log file is $logfile"
+if [ -z "$XMLSEC_TEST_REPRODUCIBLE" ]; then
+    echo "--- log file is $logfile"
+fi
 echo "--- testEnc started for xmlsec-$crypto library ($timestamp)" >> $logfile
 echo "--- LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $logfile
 echo "--- LTDL_LIBRARY_PATH=$LTDL_LIBRARY_PATH" >> $logfile
@@ -385,7 +389,9 @@ fi
 ##########################################################################
 ##########################################################################
 echo "--------- Negative Testing: Following tests MUST FAIL ----------"
-echo "--- detailed log is written to  $logfile" 
+if [ -z "$XMLSEC_TEST_REPRODUCIBLE" ]; then
+    echo "--- detailed log is written to  $logfile"
+fi
 execEncTest $res_fail \
     "" \
     "01-phaos-xmlenc-3/bad-alg-enc-element-aes128-kw-3des" \
@@ -411,5 +417,7 @@ rm -rf $tmpfile
 ##########################################################################
 echo "--- testEnc finished" >> $logfile
 echo "--- testEnc finished"
-echo "--- detailed log is written to  $logfile"
+if [ -z "$XMLSEC_TEST_REPRODUCIBLE" ]; then
+    echo "--- detailed log is written to  $logfile"
+fi
 

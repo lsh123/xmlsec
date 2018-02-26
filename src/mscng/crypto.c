@@ -200,7 +200,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
     /******************************* RSA ********************************/
 #ifndef XMLSEC_NO_RSA
 
-#ifdef XMLSEC_MSCNG_TODO
+#ifndef XMLSEC_NO_SHA1
     gXmlSecMSCngFunctions->transformRsaSha1GetKlass             = xmlSecMSCngTransformRsaSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 

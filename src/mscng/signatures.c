@@ -319,6 +319,9 @@ xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
     NTSTATUS status;
     DWORD cbData = 0;
     DWORD cbHashObject = 0;
+    BCRYPT_PKCS1_PADDING_INFO info;
+    BCRYPT_PKCS1_PADDING_INFO* pInfo = NULL;
+    DWORD infoFlags = 0;
     int ret;
 
     xmlSecAssert2(xmlSecMSCngSignatureCheckId(transform), -1);
@@ -483,15 +486,20 @@ xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
                 }
 
                 /* sign the hash */
+		if(ctx->keyId == xmlSecMSCngKeyDataRsaId) {
+                    info.pszAlgId = ctx->pszHashAlgId;
+                    pInfo = &info;
+                    infoFlags = BCRYPT_PAD_PKCS1;
+		}
                 status = NCryptSignHash(
                     privkey,
-                    NULL,
+                    pInfo,
                     ctx->pbHash,
                     ctx->cbHash,
                     (PBYTE)xmlSecBufferGetData(&transform->outBuf),
                     cbSignature,
                     &cbSignature,
-                    0);
+                    infoFlags);
                 if(status != STATUS_SUCCESS) {
                     xmlSecMSCngNtError("NCryptSignHash",
                         xmlSecTransformGetName(transform), status);

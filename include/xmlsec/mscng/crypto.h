@@ -71,6 +71,17 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaSha1GetKlass(void)
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaSha256GetKlass(void);
 #endif /* XMLSEC_NO_SHA256 */
 
+#ifndef XMLSEC_NO_SHA512
+/**
+ * xmlSecMSCngTransformRsaSha512Id:
+ *
+ * The RSA-SHA512 signature transform klass.
+ */
+#define xmlSecMSCngTransformRsaSha512Id     \
+       xmlSecMSCngTransformRsaSha512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaSha512GetKlass(void);
+#endif /* XMLSEC_NO_SHA512 */
+
 #endif /* XMLSEC_NO_RSA */
 
 /********************************************************************

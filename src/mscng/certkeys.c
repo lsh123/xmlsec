@@ -152,6 +152,16 @@ xmlSecMSCngCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
     xmlSecAssert2(pCert->pCertInfo != NULL, NULL);
     xmlSecAssert2(pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId != NULL, NULL);
 
+#ifndef XMLSEC_NO_RSA
+    if(!strcmp(pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId, szOID_RSA_RSA)) {
+        data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataRsaId);
+        if(data == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate(KeyDataRsaId)", NULL);
+            return(NULL);
+        }
+    }
+#endif /* XMLSEC_NO_RSA */
+
 #ifndef XMLSEC_NO_ECDSA
     if(!strcmp(pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId, szOID_ECC_PUBLIC_KEY)) {
         data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataEcdsaId);
@@ -314,6 +324,109 @@ xmlSecMSCngKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
 
     return(0);
 }
+
+#ifndef XMLSEC_NO_RSA
+static int
+xmlSecMSCngKeyDataRsaDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecMSCngKeyDataRsaId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecMSCngKeyDataRsaId), -1);
+
+    return(xmlSecMSCngKeyDataDuplicate(dst, src));
+}
+
+static xmlSecKeyDataType
+xmlSecMSCngKeyDataRsaGetType(xmlSecKeyDataPtr data) {
+    xmlSecMSCngKeyDataCtxPtr ctx;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataRsaId), xmlSecKeyDataTypeUnknown);
+
+    ctx = xmlSecMSCngKeyDataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, xmlSecKeyDataTypeUnknown);
+
+    if(ctx->privkey != 0) {
+        return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
+    }
+
+    return(xmlSecKeyDataTypePublic);
+}
+
+static xmlSecSize
+xmlSecMSCngKeyDataRsaGetSize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataRsaId), 0);
+
+    xmlSecNotImplementedError(NULL);
+
+    return(0);
+}
+
+
+static void
+xmlSecMSCngKeyDataRsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataRsaId));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "=== rsa key: size = %d\n",
+            xmlSecMSCngKeyDataRsaGetSize(data));
+}
+
+static void xmlSecMSCngKeyDataRsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataRsaId));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "<RSAKeyValue size=\"%d\" />\n",
+            xmlSecMSCngKeyDataRsaGetSize(data));
+}
+
+static xmlSecKeyDataKlass xmlSecMSCngKeyDataRsaKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    xmlSecMSCngKeyDataSize,
+
+    /* data */
+    xmlSecNameRSAKeyValue,
+    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+                                                /* xmlSecKeyDataUsage usage; */
+    xmlSecHrefRSAKeyValue,                      /* const xmlChar* href; */
+    xmlSecNodeRSAKeyValue,                      /* const xmlChar* dataNodeName; */
+    xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecMSCngKeyDataInitialize,               /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecMSCngKeyDataRsaDuplicate,             /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecMSCngKeyDataFinalize,                 /* xmlSecKeyDataFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    xmlSecMSCngKeyDataRsaGetType,               /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecMSCngKeyDataRsaGetSize,               /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    NULL,                                       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecMSCngKeyDataRsaDebugDump,             /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecMSCngKeyDataRsaDebugXmlDump,          /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCngKeyDataRsaGetKlass:
+ *
+ * The MSCng RSA CertKey data klass.
+ *
+ * Returns: pointer to MSCng RSA key data klass.
+ */
+xmlSecKeyDataId
+xmlSecMSCngKeyDataRsaGetKlass(void) {
+    return(&xmlSecMSCngKeyDataRsaKlass);
+}
+#endif /* XMLSEC_NO_RSA */
 
 #ifndef XMLSEC_NO_ECDSA
 static int

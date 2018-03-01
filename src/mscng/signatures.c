@@ -86,6 +86,12 @@ static int xmlSecMSCngSignatureCheckId(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_SHA256 */
 
+#ifndef XMLSEC_NO_SHA384
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaSha384Id)) {
+       return(1);
+    } else
+#endif /* XMLSEC_NO_SHA384 */
+
 #ifndef XMLSEC_NO_SHA512
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaSha512Id)) {
        return(1);
@@ -146,6 +152,13 @@ static int xmlSecMSCngSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->keyId = xmlSecMSCngKeyDataRsaId;
     } else
 #endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaSha384Id)) {
+        ctx->pszHashAlgId = BCRYPT_SHA384_ALGORITHM;
+        ctx->keyId = xmlSecMSCngKeyDataRsaId;
+    } else
+#endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaSha512Id)) {
@@ -640,6 +653,52 @@ xmlSecMSCngTransformRsaSha256GetKlass(void) {
     return(&xmlSecMSCngRsaSha256Klass);
 }
 #endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+/****************************************************************************
+ *
+ * RSA-SHA384 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecMSCngRsaSha384Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),              /* xmlSecSize klassSize */
+    xmlSecMSCngSignatureSize,                  /* xmlSecSize objSize */
+
+    xmlSecNameRsaSha384,                       /* const xmlChar* name; */
+    xmlSecHrefRsaSha384,                       /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,       /* xmlSecTransformUsage usage; */
+
+    xmlSecMSCngSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCngSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecMSCngSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecMSCngSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecMSCngSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCngSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                      /* void* reserved0; */
+    NULL,                                      /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCngTransformRsaSha384GetKlass:
+ *
+ * The RSA-SHA384 signature transform klass.
+ *
+ * Returns: RSA-SHA384 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformRsaSha384GetKlass(void) {
+    return(&xmlSecMSCngRsaSha384Klass);
+}
+#endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
 /****************************************************************************

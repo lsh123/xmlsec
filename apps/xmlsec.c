@@ -28,6 +28,7 @@
 #include <libexslt/exslt.h>
 #endif /* XMLSEC_NO_XSLT */
 
+#define XMLSEC_PRIVATE
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>

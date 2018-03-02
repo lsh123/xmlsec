@@ -2125,6 +2125,18 @@ else
 fi
 
 dnl ==========================================================================
+dnl Warnings as errors
+dnl ==========================================================================
+AC_MSG_CHECKING(for warnings as errors)
+AC_ARG_ENABLE(werror,   [  --enable-werror      handle warnings as errors (no)])
+if test "z$enable_werror" = "zyes" ; then
+    CFLAGS="$CFLAGS -Werror"
+    AC_MSG_RESULT([yes])
+else
+    AC_MSG_RESULT([disabled])
+fi
+
+dnl ==========================================================================
 dnl Profiling
 dnl ==========================================================================
 AC_MSG_CHECKING(for profiling)

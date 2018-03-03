@@ -2400,7 +2400,6 @@ xmlSecAppXmlDataCreate(const char* filename, const xmlChar* defStartNodeName, co
         }
         cur = attr->parent;
     } else if(xmlSecAppCmdLineParamGetString(&nodeNameParam) != NULL) {
-        xmlChar* buf;
         xmlChar* name;
         xmlChar* ns;
         

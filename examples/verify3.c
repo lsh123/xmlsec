@@ -1,4 +1,4 @@
-4/** 
+/**
  * XML Security Library example: Verifying a file signed with X509 certificate
  *
  * Verifies a file signed with X509 certificate. 

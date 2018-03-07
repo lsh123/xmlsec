@@ -223,6 +223,10 @@ xmlSecCryptoGetFunctions_mscng(void) {
 
 #endif /* XMLSEC_NO_RSA */
 
+#ifndef XMLSEC_NO_MD5
+    gXmlSecMSCngFunctions->transformMd5GetKlass                = xmlSecMSCngTransformMd5GetKlass;
+#endif /* XMLSEC_NO_MD5 */
+
     /******************************* SHA1 ********************************/
 #ifndef XMLSEC_NO_SHA1
     gXmlSecMSCngFunctions->transformSha1GetKlass                = xmlSecMSCngTransformSha1GetKlass;

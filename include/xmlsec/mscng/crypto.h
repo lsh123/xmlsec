@@ -148,6 +148,22 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformEcdsaSha512GetKlass(v
 
 /********************************************************************
  *
+ * MD5 transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_MD5
+/**
+ * xmlSecMSCngTransformMd5Id:
+ *
+ * The MD5 digest transform klass.
+ */
+#define xmlSecMSCngTransformMd5Id \
+       xmlSecMSCngTransformMd5GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformMd5GetKlass(void);
+#endif /* XMLSEC_NO_MD5 */
+
+/********************************************************************
+ *
  * SHA1 transform
  *
  *******************************************************************/

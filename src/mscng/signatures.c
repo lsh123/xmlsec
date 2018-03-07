@@ -74,6 +74,12 @@ static int xmlSecMSCngSignatureCheckId(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_RSA
 
+#ifndef XMLSEC_NO_MD5
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaMd5Id)) {
+       return(1);
+    } else
+#endif /* XMLSEC_NO_MD5 */
+
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaSha1Id)) {
        return(1);
@@ -138,6 +144,13 @@ static int xmlSecMSCngSignatureInitialize(xmlSecTransformPtr transform) {
     memset(ctx, 0, sizeof(xmlSecMSCngSignatureCtx));
 
 #ifndef XMLSEC_NO_RSA
+
+#ifndef XMLSEC_NO_MD5
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaMd5Id)) {
+        ctx->pszHashAlgId = BCRYPT_MD5_ALGORITHM;
+        ctx->keyId = xmlSecMSCngKeyDataRsaId;
+    } else
+#endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaSha1Id)) {
@@ -561,6 +574,52 @@ xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
 }
 
 #ifndef XMLSEC_NO_RSA
+
+#ifndef XMLSEC_NO_MD5
+/****************************************************************************
+ *
+ * RSA-MD5 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecMSCngRsaMd5Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),              /* xmlSecSize klassSize */
+    xmlSecMSCngSignatureSize,                  /* xmlSecSize objSize */
+
+    xmlSecNameRsaMd5,                          /* const xmlChar* name; */
+    xmlSecHrefRsaMd5,                          /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,       /* xmlSecTransformUsage usage; */
+
+    xmlSecMSCngSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCngSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecMSCngSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecMSCngSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecMSCngSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCngSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                      /* void* reserved0; */
+    NULL,                                      /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCngTransformRsaMd5GetKlass:
+ *
+ * The RSA-MD5 signature transform klass.
+ *
+ * Returns: RSA-MD5 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformRsaMd5GetKlass(void) {
+    return(&xmlSecMSCngRsaMd5Klass);
+}
+#endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_SHA1
 /****************************************************************************

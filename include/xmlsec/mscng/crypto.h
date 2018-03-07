@@ -49,6 +49,17 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngKeysMngrInit      (xmlSecKeys
         xmlSecMSCngKeyDataRsaGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngKeyDataRsaGetKlass(void);
 
+#ifndef XMLSEC_NO_MD5
+/**
+ * xmlSecMSCngTransformRsaMd5Id:
+ *
+ * The RSA-MD5 signature transform klass.
+ */
+#define xmlSecMSCngTransformRsaMd5Id     \
+       xmlSecMSCngTransformRsaMd5GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaMd5GetKlass(void);
+#endif /* XMLSEC_NO_MD5 */
+
 #ifndef XMLSEC_NO_SHA1
 /**
  * xmlSecMSCngTransformRsaSha1Id:

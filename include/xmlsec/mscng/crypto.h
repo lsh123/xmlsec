@@ -35,6 +35,35 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngKeysMngrInit      (xmlSecKeys
 
 /********************************************************************
  *
+ * DSA transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_DSA
+
+/**
+ * xmlSecMSCngKeyDataDsaId:
+ *
+ * The DSA key klass.
+ */
+#define xmlSecMSCngKeyDataDsaId \
+        xmlSecMSCngKeyDataDsaGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngKeyDataDsaGetKlass(void);
+
+#ifndef XMLSEC_NO_SHA1
+/**
+ * xmlSecMSCngTransformDsaSha1Id:
+ *
+ * The DSA-SHA1 signature transform klass.
+ */
+#define xmlSecMSCngTransformDsaSha1Id     \
+       xmlSecMSCngTransformDsaSha1GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformDsaSha1GetKlass(void);
+#endif /* XMLSEC_NO_SHA1 */
+
+#endif /* XMLSEC_NO_DSA */
+
+/********************************************************************
+ *
  * RSA transforms
  *
  *******************************************************************/
@@ -48,6 +77,17 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngKeysMngrInit      (xmlSecKeys
 #define xmlSecMSCngKeyDataRsaId \
         xmlSecMSCngKeyDataRsaGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngKeyDataRsaGetKlass(void);
+
+#ifndef XMLSEC_NO_MD5
+/**
+ * xmlSecMSCngTransformRsaMd5Id:
+ *
+ * The RSA-MD5 signature transform klass.
+ */
+#define xmlSecMSCngTransformRsaMd5Id     \
+       xmlSecMSCngTransformRsaMd5GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaMd5GetKlass(void);
+#endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_SHA1
 /**
@@ -145,6 +185,22 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformEcdsaSha512GetKlass(v
 #endif /* XMLSEC_NO_SHA512 */
 
 #endif /* XMLSEC_NO_ECDSA */
+
+/********************************************************************
+ *
+ * MD5 transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_MD5
+/**
+ * xmlSecMSCngTransformMd5Id:
+ *
+ * The MD5 digest transform klass.
+ */
+#define xmlSecMSCngTransformMd5Id \
+       xmlSecMSCngTransformMd5GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformMd5GetKlass(void);
+#endif /* XMLSEC_NO_MD5 */
 
 /********************************************************************
  *

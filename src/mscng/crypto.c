@@ -65,7 +65,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->keyDataDesGetKlass           = xmlSecMSCngKeyDataDesGetKlass;
 #endif /* XMLSEC_NO_DES */
 
-#ifdef XMLSEC_MSCNG_TODO
+#ifndef XMLSEC_NO_DSA
     gXmlSecMSCngFunctions->keyDataDsaGetKlass           = xmlSecMSCngKeyDataDsaGetKlass;
 #endif /* XMLSEC_NO_DSA */
 
@@ -127,7 +127,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
     /******************************* DSA ********************************/
 #ifndef XMLSEC_NO_DSA
 
-#ifdef XMLSEC_MSCNG_TODO
+#ifndef XMLSEC_NO_SHA1
     gXmlSecMSCngFunctions->transformDsaSha1GetKlass             = xmlSecMSCngTransformDsaSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 
@@ -200,6 +200,10 @@ xmlSecCryptoGetFunctions_mscng(void) {
     /******************************* RSA ********************************/
 #ifndef XMLSEC_NO_RSA
 
+#ifndef XMLSEC_NO_MD5
+    gXmlSecMSCngFunctions->transformRsaMd5GetKlass             = xmlSecMSCngTransformRsaMd5GetKlass;
+#endif /* XMLSEC_NO_MD5 */
+
 #ifndef XMLSEC_NO_SHA1
     gXmlSecMSCngFunctions->transformRsaSha1GetKlass             = xmlSecMSCngTransformRsaSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
@@ -222,6 +226,10 @@ xmlSecCryptoGetFunctions_mscng(void) {
 #endif /* XMLSEC_MSCNG_TODO */
 
 #endif /* XMLSEC_NO_RSA */
+
+#ifndef XMLSEC_NO_MD5
+    gXmlSecMSCngFunctions->transformMd5GetKlass                = xmlSecMSCngTransformMd5GetKlass;
+#endif /* XMLSEC_NO_MD5 */
 
     /******************************* SHA1 ********************************/
 #ifndef XMLSEC_NO_SHA1

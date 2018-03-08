@@ -62,6 +62,11 @@ static int      xmlSecMSCngDigestCheckId     (xmlSecTransformPtr transform);
 static int
 xmlSecMSCngDigestCheckId(xmlSecTransformPtr transform) {
 
+#ifndef XMLSEC_NO_MD5
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformMd5Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_MD5 */
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformSha1Id)) {
         return(1);
@@ -99,6 +104,12 @@ xmlSecMSCngDigestInitialize(xmlSecTransformPtr transform) {
 
     /* initialize context */
     memset(ctx, 0, sizeof(xmlSecMSCngDigestCtx));
+
+#ifndef XMLSEC_NO_MD5
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformMd5Id)) {
+        ctx->pszAlgId = BCRYPT_MD5_ALGORITHM;
+    } else
+#endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformSha1Id)) {
@@ -348,6 +359,50 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
 
     return(0);
 }
+
+#ifndef XMLSEC_NO_MD5
+/******************************************************************************
+ *
+ * MD5
+ *
+ *****************************************************************************/
+static xmlSecTransformKlass xmlSecMSCngMd5Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),              /* size_t klassSize */
+    xmlSecMSCngDigestSize,                     /* size_t objSize */
+
+    xmlSecNameMd5,                             /* const xmlChar* name; */
+    xmlSecHrefMd5,                             /* const xmlChar* href; */
+    xmlSecTransformUsageDigestMethod,          /* xmlSecTransformUsage usage; */
+    xmlSecMSCngDigestInitialize,               /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCngDigestFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,                                      /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                      /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecMSCngDigestVerify,                   /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCngDigestExecute,                  /* xmlSecTransformExecuteMethod execute; */
+    NULL,                                      /* void* reserved0; */
+    NULL,                                      /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCngTransformMd5GetKlass:
+ *
+ * MD-5 digest transform klass.
+ *
+ * Returns: pointer to MD-5 digest transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformMd5GetKlass(void) {
+    return(&xmlSecMSCngMd5Klass);
+}
+#endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_SHA1
 /******************************************************************************

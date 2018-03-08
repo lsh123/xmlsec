@@ -72,6 +72,16 @@ static int      xmlSecMSCngSignatureExecute             (xmlSecTransformPtr tran
 
 static int xmlSecMSCngSignatureCheckId(xmlSecTransformPtr transform) {
 
+#ifndef XMLSEC_NO_DSA
+
+#ifndef XMLSEC_NO_SHA1
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformDsaSha1Id)) {
+       return(1);
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
+#endif /* XMLSEC_NO_DSA */
+
 #ifndef XMLSEC_NO_RSA
 
 #ifndef XMLSEC_NO_MD5
@@ -142,6 +152,17 @@ static int xmlSecMSCngSignatureInitialize(xmlSecTransformPtr transform) {
     xmlSecAssert2(ctx != NULL, -1);
 
     memset(ctx, 0, sizeof(xmlSecMSCngSignatureCtx));
+
+#ifndef XMLSEC_NO_DSA
+
+#ifndef XMLSEC_NO_SHA1
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformDsaSha1Id)) {
+        ctx->pszHashAlgId = BCRYPT_SHA1_ALGORITHM;
+        ctx->keyId = xmlSecMSCngKeyDataDsaId;
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
+#endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_RSA
 
@@ -572,6 +593,56 @@ xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
 
     return(0);
 }
+
+#ifndef XMLSEC_NO_DSA
+
+#ifndef XMLSEC_NO_SHA1
+/****************************************************************************
+ *
+ * DSA-SHA1 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecMSCngDsaSha1Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),              /* xmlSecSize klassSize */
+    xmlSecMSCngSignatureSize,                  /* xmlSecSize objSize */
+
+    xmlSecNameDsaSha1,                         /* const xmlChar* name; */
+    xmlSecHrefDsaSha1,                         /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,       /* xmlSecTransformUsage usage; */
+
+    xmlSecMSCngSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCngSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecMSCngSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecMSCngSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecMSCngSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCngSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                      /* void* reserved0; */
+    NULL,                                      /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCngTransformDsaSha1GetKlass:
+ *
+ * The DSA-SHA1 signature transform klass.
+ *
+ * Returns: DSA-SHA1 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformDsaSha1GetKlass(void) {
+    return(&xmlSecMSCngDsaSha1Klass);
+}
+#endif /* XMLSEC_NO_SHA1 */
+
+#endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_RSA
 

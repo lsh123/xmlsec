@@ -35,6 +35,35 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngKeysMngrInit      (xmlSecKeys
 
 /********************************************************************
  *
+ * DSA transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_DSA
+
+/**
+ * xmlSecMSCngKeyDataDsaId:
+ *
+ * The DSA key klass.
+ */
+#define xmlSecMSCngKeyDataDsaId \
+        xmlSecMSCngKeyDataDsaGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngKeyDataDsaGetKlass(void);
+
+#ifndef XMLSEC_NO_SHA1
+/**
+ * xmlSecMSCngTransformDsaSha1Id:
+ *
+ * The DSA-SHA1 signature transform klass.
+ */
+#define xmlSecMSCngTransformDsaSha1Id     \
+       xmlSecMSCngTransformDsaSha1GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformDsaSha1GetKlass(void);
+#endif /* XMLSEC_NO_SHA1 */
+
+#endif /* XMLSEC_NO_DSA */
+
+/********************************************************************
+ *
  * RSA transforms
  *
  *******************************************************************/

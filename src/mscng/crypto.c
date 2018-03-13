@@ -376,3 +376,60 @@ xmlSecMSCngMultiByteToWideChar(const char* multiByte) {
 
     return(wideChar);
 }
+
+/**
+ * xmlSecMSCngConvertUtf8ToTstr:
+ * @str:         the string to convert.
+ *
+ * Converts input string from UTF8 to TSTR (locale or Unicode).
+ *
+ * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
+ */
+LPTSTR
+xmlSecMSCngConvertUtf8ToTstr(const xmlChar* str) {
+#ifdef UNICODE
+    return xmlSecMSCngConvertUtf8ToUnicode(str);
+#else  /* UNICODE */
+    xmlSecNotImplementedError(NULL);
+    return(NULL);
+#endif /* UNICODE */
+}
+
+/**
+ * xmlSecMSCngConvertUtf8ToUnicode:
+ * @str:         the string to convert.
+ *
+ * Converts input string from UTF8 to Unicode.
+ *
+ * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
+ */
+LPWSTR
+xmlSecMSCngConvertUtf8ToUnicode(const xmlChar* str) {
+    LPWSTR res;
+    int len;
+    int ret;
+
+    xmlSecAssert2(str != NULL, NULL);
+
+    ret = MultiByteToWideChar(CP_UTF8, 0, (LPCCH)str, -1, NULL, 0);
+    if(ret == 0) {
+        xmlSecMSCngLastError("MultiByteToWideChar", NULL);
+        return(NULL);
+    }
+    len = ret + 1;
+
+    res = (LPWSTR)xmlMalloc(sizeof(WCHAR) * len);
+    if(res == NULL) {
+        xmlSecMallocError(sizeof(WCHAR) * len, NULL);
+        return(NULL);
+    }
+
+    ret = MultiByteToWideChar(CP_UTF8, 0, (LPCCH)str, -1, res, len);
+    if(ret == 0) {
+        xmlSecMSCngLastError("MultiByteToWideChar", NULL);
+        xmlFree(res);
+        return(NULL);
+    }
+
+    return(res);
+}

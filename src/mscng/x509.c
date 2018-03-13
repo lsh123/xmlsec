@@ -243,6 +243,71 @@ xmlSecMSCngKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
 }
 
 /**
+ * xmlSecMSCngX509SubjectNameNodeRead:
+ *
+ * The MSCng reader for the <X509SubjectName> XML element.
+ */
+static int
+xmlSecMSCngX509SubjectNameNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node,
+    xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecKeyDataStorePtr store;
+    xmlChar* subject;
+    PCCERT_CONTEXT cert;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataX509Id), -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->keysMngr != NULL, -1);
+
+    store = xmlSecKeysMngrGetDataStore(keyInfoCtx->keysMngr, xmlSecMSCngX509StoreId);
+    if(store == NULL) {
+        xmlSecInternalError("xmlSecKeysMngrGetDataStore",
+            xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+
+    subject = xmlNodeGetContent(node);
+    if((subject == NULL) || (xmlSecIsEmptyString(subject) == 1)) {
+        if(subject != NULL) {
+            xmlFree(subject);
+        }
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
+            xmlSecInvalidNodeContentError(node, xmlSecKeyDataGetName(data),
+                "empty");
+            return(-1);
+        }
+
+        return(0);
+    }
+
+    cert = xmlSecMSCngX509StoreFindCert(store, subject, NULL, NULL, NULL, keyInfoCtx);
+    if(cert == NULL) {
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT) != 0) {
+            xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_NOT_FOUND,
+                xmlSecKeyDataGetName(data), "subject=%s",
+                xmlSecErrorsSafeString(subject));
+            xmlFree(subject);
+            return(-1);
+        }
+
+        xmlFree(subject);
+        return(0);
+    }
+
+    ret = xmlSecMSCngKeyDataX509AdoptCert(data, cert);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCert",
+            xmlSecKeyDataGetName(data));
+        CertFreeCertificateContext(cert);
+        xmlFree(subject);
+        return(-1);
+    }
+
+    xmlFree(subject);
+    return(0);
+}
+/**
  * xmlSecMSCngX509CertificateNodeRead:
  *
  * The MSCng reader for the <X509Certificate> XML element.
@@ -293,6 +358,189 @@ xmlSecMSCngX509CertificateNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node,
 }
 
 /**
+ * xmlSecMSCngX509IssuerSerialNodeRead:
+ *
+ * The MSCng reader for the <X509IssuerSerial> XML element.
+ */
+static int
+xmlSecMSCngX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node,
+    xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecKeyDataStorePtr store;
+    xmlNodePtr cur;
+    xmlChar* issuerName;
+    xmlChar* issuerSerial;
+    PCCERT_CONTEXT cert;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataX509Id), -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->keysMngr != NULL, -1);
+
+    store = xmlSecKeysMngrGetDataStore(keyInfoCtx->keysMngr, xmlSecMSCngX509StoreId);
+    if(store == NULL) {
+        xmlSecInternalError("xmlSecKeysMngrGetDataStore",
+            xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+
+    cur = xmlSecGetNextElementNode(node->children);
+    if(cur == NULL) {
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
+            xmlSecNodeNotFoundError("xmlSecGetNextElementNode", node, NULL,
+                xmlSecKeyDataGetName(data));
+            return(-1);
+        }
+
+        return(0);
+    }
+
+    /* handle X509IssuerName */
+    if(!xmlSecCheckNodeName(cur, xmlSecNodeX509IssuerName, xmlSecDSigNs)) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeX509IssuerName,
+            xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+
+    issuerName = xmlNodeGetContent(cur);
+    if(issuerName == NULL) {
+        xmlSecInvalidNodeContentError(cur, xmlSecKeyDataGetName(data),
+            "empty");
+        return(-1);
+    }
+
+    cur = xmlSecGetNextElementNode(cur->next);
+    if(cur == NULL) {
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
+            xmlSecNodeNotFoundError("xmlSecGetNextElementNode", node, NULL,
+                xmlSecKeyDataGetName(data));
+            return(-1);
+        }
+
+        return(0);
+    }
+
+    /* handle X509SerialNumber */
+    if(!xmlSecCheckNodeName(cur, xmlSecNodeX509SerialNumber, xmlSecDSigNs)) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeX509SerialNumber,
+            xmlSecKeyDataGetName(data));
+        xmlFree(issuerName);
+        return(-1);
+    }
+
+    issuerSerial = xmlNodeGetContent(cur);
+    if(issuerSerial == NULL) {
+        xmlSecInvalidNodeContentError(cur, xmlSecKeyDataGetName(data),
+            "empty");
+        xmlFree(issuerSerial);
+        return(-1);
+    }
+
+    cur = xmlSecGetNextElementNode(cur->next);
+    if(cur != NULL) {
+        xmlSecUnexpectedNodeError(cur, xmlSecKeyDataGetName(data));
+        xmlFree(issuerSerial);
+        xmlFree(issuerName);
+        return(-1);
+    }
+
+    cert = xmlSecMSCngX509StoreFindCert(store, NULL, issuerName, issuerSerial,
+        NULL, keyInfoCtx);
+    if(cert == NULL) {
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT) != 0) {
+            xmlSecOtherError3(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data),
+                "issuerName=%s;issuerSerial=%s",
+                xmlSecErrorsSafeString(issuerName),
+                xmlSecErrorsSafeString(issuerSerial));
+            xmlFree(issuerSerial);
+            xmlFree(issuerName);
+            return(-1);
+        }
+
+	xmlFree(issuerSerial);
+	xmlFree(issuerName);
+	return(0);
+    }
+
+    ret = xmlSecMSCngKeyDataX509AdoptCert(data, cert);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCert",
+            xmlSecKeyDataGetName(data));
+        CertFreeCertificateContext(cert);
+        xmlFree(issuerSerial);
+        xmlFree(issuerName);
+        return(-1);
+    }
+
+    xmlFree(issuerSerial);
+    xmlFree(issuerName);
+    return(0);
+}
+
+/**
+ * xmlSecMSCngX509SKINodeRead:
+ *
+ * The MSCng reader for the <X509SKI> XML element.
+ */
+static int
+xmlSecMSCngX509SKINodeRead(xmlSecKeyDataPtr data, xmlNodePtr node,
+        xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecKeyDataStorePtr store;
+    xmlChar* ski;
+    PCCERT_CONTEXT cert;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataX509Id), -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->keysMngr != NULL, -1);
+
+    store = xmlSecKeysMngrGetDataStore(keyInfoCtx->keysMngr, xmlSecMSCngX509StoreId);
+    if(store == NULL) {
+        xmlSecInternalError("xmlSecKeysMngrGetDataStore",
+            xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+
+    ski = xmlNodeGetContent(node);
+    if((ski == NULL) || (xmlSecIsEmptyString(ski) == 1)) {
+        if(ski != NULL) {
+            xmlFree(ski);
+        }
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
+            xmlSecInvalidNodeContentError(node, xmlSecKeyDataGetName(data),
+                "empty");
+            return(-1);
+        }
+        return(0);
+    }
+
+    cert = xmlSecMSCngX509StoreFindCert(store, NULL, NULL, NULL, ski, keyInfoCtx);
+    if(cert == NULL){
+        xmlFree(ski);
+
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT) != 0) {
+            xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data),
+                              "ski=%s", xmlSecErrorsSafeString(ski));
+            return(-1);
+        }
+        return(0);
+    }
+
+    ret = xmlSecMSCngKeyDataX509AdoptCert(data, cert);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCert",
+                            xmlSecKeyDataGetName(data));
+        CertFreeCertificateContext(cert);
+        xmlFree(ski);
+        return(-1);
+    }
+
+    xmlFree(ski);
+    return(0);
+}
+
+/**
  * xmlSecMSCngX509DataNodeRead:
  *
  * The MSCng reader for the <X509Data> XML element.
@@ -318,14 +566,24 @@ xmlSecMSCngX509DataNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node,
                 return(-1);
             }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509SubjectName, xmlSecDSigNs)) {
-            xmlSecNotImplementedError(NULL);
-            return(-1);
+            ret = xmlSecMSCngX509SubjectNameNodeRead(data, cur, keyInfoCtx);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecMSCngX509SubjectNameNodeRead",
+                    xmlSecKeyDataGetName(data));
+                return(-1);
+            }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509IssuerSerial, xmlSecDSigNs)) {
-            xmlSecNotImplementedError(NULL);
-            return(-1);
+            ret = xmlSecMSCngX509IssuerSerialNodeRead(data, cur, keyInfoCtx);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecMSCngX509IssuerSerialNodeRead", NULL);
+                return(-1);
+            }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509SKI, xmlSecDSigNs)) {
-            xmlSecNotImplementedError(NULL);
-            return(-1);
+            ret = xmlSecMSCngX509SKINodeRead(data, cur, keyInfoCtx);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecMSCngX509SKINodeRead", NULL);
+                return(-1);
+            }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509CRL, xmlSecDSigNs)) {
             xmlSecNotImplementedError(NULL);
             return(-1);

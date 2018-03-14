@@ -55,6 +55,7 @@ var withNT4 = 1;
 /* Win32 build options. */
 var buildUnicode = 1;
 var buildDebug = 0;
+var buildWerror = 0;
 var buildStatic = 1;
 var buildWithDLSupport = 1;
 var buildPrefix = ".";
@@ -112,6 +113,7 @@ function usage()
 	txt += "\nWin32 build options, default value given in parentheses:\n\n";
 	txt += "  unicode:    Build Unicode version (" + (buildUnicode? "yes" : "no")  + ")\n";
 	txt += "  debug:      Build unoptimised debug executables (" + (buildDebug? "yes" : "no")  + ")\n";
+	txt += "  werror:     Build with warnings as errors(" + (buildWerror? "yes" : "no")  + ")\n";
 	txt += "  static:     Link libxmlsec statically to xmlsec (" + (buildStatic? "yes" : "no")  + ")\n";
 	txt += "  with-dl:    Enable dynamic loading of xmlsec-crypto libraries (" + (buildWithDLSupport? "yes" : "no")  + ")\n";
 	txt += "  prefix:     Base directory for the installation (" + buildPrefix + ")\n";
@@ -175,6 +177,7 @@ function discoverVersion()
 	vf.WriteLine("WITH_NT4=" + (withNT4 ? "1" : "0"));
 	vf.WriteLine("UNICODE=" + (buildUnicode? "1" : "0"));
 	vf.WriteLine("DEBUG=" + (buildDebug? "1" : "0"));
+	vf.WriteLine("WERROR=" + (buildWerror? "1" : "0"));
 	vf.WriteLine("STATIC=" + (buildStatic? "1" : "0"));
 	vf.WriteLine("WITH_DL=" + (buildWithDLSupport ? "1" : "0"));
 	vf.WriteLine("PREFIX=" + buildPrefix);
@@ -307,6 +310,8 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			buildUnicode = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "debug")
 			buildDebug = strToBool(arg.substring(opt.length + 1, arg.length));
+		else if (opt == "werror")
+			buildWerror = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "static")
 			buildStatic = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "with-dl")
@@ -432,6 +437,7 @@ txtOut += "-------------------------\n";
 txtOut += "  C-Runtime option: " + cruntime + "\n";
 txtOut += "           Unicode: " + boolToStr(buildUnicode) + "\n";
 txtOut += "     Debug symbols: " + boolToStr(buildDebug) + "\n";
+txtOut += "Warnings as errors: " + boolToStr(buildWerror) + "\n";
 txtOut += "     Static xmlsec: " + boolToStr(buildStatic) + "\n";
 txtOut += " Enable DL support: " + boolToStr(buildWithDLSupport) + "\n";
 txtOut += "    Install prefix: " + buildPrefix + "\n";

@@ -335,7 +335,14 @@ CPPFLAGS 		= /nologo
 #
 CC 				= cl.exe
 CFLAGS 			= /nologo /D "WIN32" /D "_WINDOWS" /D inline=__inline
-CFLAGS 			= $(CFLAGS) /D "_MBCS" /D "_REENTRANT"  /W1  
+# C4130: '!=': logical operation on address of string constant:
+#     this generates a false warning inside macros
+CFLAGS 			= $(CFLAGS) /D "_MBCS" /D "_REENTRANT"  /W4 /wd4130
+
+!if "$(WERROR)" == "1"
+CFLAGS 			= $(CFLAGS) /WX
+!endif
+
 CFLAGS 			= $(CFLAGS) /I$(BASEDIR) /I$(BASEDIR)\include
 CFLAGS 			= $(CFLAGS) /I$(INCPREFIX)
 CFLAGS 			= $(CFLAGS) /D PACKAGE=\"$(XMLSEC_NAME)\" 

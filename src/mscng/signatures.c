@@ -330,7 +330,6 @@ static int xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
     BCRYPT_PKCS1_PADDING_INFO info;
     BCRYPT_PKCS1_PADDING_INFO* pInfo = NULL;
     DWORD infoFlags = 0;
-    int ret;
 
     xmlSecAssert2(xmlSecMSCngSignatureCheckId(transform), -1);
     xmlSecAssert2(transform->operation == xmlSecTransformOperationVerify, -1);

@@ -94,7 +94,6 @@ xmlSecMSCngDigestCheckId(xmlSecTransformPtr transform) {
 static int
 xmlSecMSCngDigestInitialize(xmlSecTransformPtr transform) {
     xmlSecMSCngDigestCtxPtr ctx;
-    DWORD cbData = 0;
 
     xmlSecAssert2(xmlSecMSCngDigestCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngDigestSize), -1);

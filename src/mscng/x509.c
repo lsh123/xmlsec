@@ -763,7 +763,6 @@ xmlSecMSCngX509CertificateNodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node,
         xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlChar* buf;
     xmlNodePtr child;
-    int ret;
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(cert->pbCertEncoded != NULL, -1);

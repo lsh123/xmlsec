@@ -35,7 +35,8 @@
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecMSCngAppInit(const char* config ATTRIBUTE_UNUSED) {
+xmlSecMSCngAppInit(const char* config) {
+    UNREFERENCED_PARAMETER(config);
     /* TODO: initialize MSCng crypto engine */
     return(0);
 }
@@ -113,6 +114,11 @@ xmlSecMSCngAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
 xmlSecKeyPtr
 xmlSecMSCngAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format,
                             const char *pwd, void* pwdCallback, void* pwdCallbackCtx) {
+    UNREFERENCED_PARAMETER(data);
+    UNREFERENCED_PARAMETER(dataSize);
+    UNREFERENCED_PARAMETER(pwd);
+    UNREFERENCED_PARAMETER(pwdCallback);
+    UNREFERENCED_PARAMETER(pwdCallbackCtx);
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
@@ -162,6 +168,7 @@ xmlSecMSCngAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSec
                                 xmlSecKeyDataFormat format) {
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
     /* TODO */
@@ -245,8 +252,10 @@ xmlSecMSCngAppPkcs12Load(const char *filename,
  */
 xmlSecKeyPtr
 xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const char *pwd,
-                               void *pwdCallback ATTRIBUTE_UNUSED,
-                               void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
+                               void *pwdCallback,
+                               void* pwdCallbackCtx) {
+    UNREFERENCED_PARAMETER(pwdCallback);
+    UNREFERENCED_PARAMETER(pwdCallbackCtx);
     CRYPT_DATA_BLOB pfx;
     xmlSecKeyPtr key = NULL;
     WCHAR* pwdWideChar = NULL;

@@ -750,6 +750,148 @@ done:
     return(res);
 }
 
+static int
+xmlSecMSCngKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
+          xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecMSCngKeyDataCtxPtr ctx;
+    NTSTATUS status;
+    xmlSecBuffer buf;
+    xmlSecByte* bufData;
+    DWORD bufLen;
+    BCRYPT_DSA_KEY_BLOB* dsakey;
+    xmlNodePtr cur;
+    int ret;
+
+    xmlSecAssert2(id == xmlSecMSCngKeyDataDsaId, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key),
+        xmlSecMSCngKeyDataDsaId), -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    ctx = xmlSecMSCngKeyDataGetCtx(xmlSecKeyGetValue(key));
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->pubkey, -1);
+
+    /* turn ctx->pubkey into dsakey */
+    status = BCryptExportKey(ctx->pubkey,
+        NULL,
+        BCRYPT_DSA_PUBLIC_BLOB,
+        NULL,
+        0,
+        &bufLen,
+        0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptExportKey", xmlSecKeyDataKlassGetName(id),
+            status);
+        return(-1);
+    }
+
+    ret = xmlSecBufferInitialize(&buf, bufLen);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferInitialize",
+            xmlSecKeyDataKlassGetName(id), "size=%ld", bufLen);
+        return(-1);
+    }
+
+    bufData = xmlSecBufferGetData(&buf);
+    dsakey = (BCRYPT_DSA_KEY_BLOB*)bufData;
+
+    status = BCryptExportKey(ctx->pubkey,
+        NULL,
+        BCRYPT_DSA_PUBLIC_BLOB,
+        (PUCHAR)dsakey,
+        bufLen,
+        &bufLen,
+        0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptExportKey", xmlSecKeyDataKlassGetName(id),
+            status);
+        xmlSecBufferFinalize(&buf);
+        return(-1);
+    }
+
+    /* write dsaykey in XML format, see xmlSecMSCngKeyDataDsaXmlRead() on the
+     * memory layout of bufData: the struct contains Q, and P, G, Y follows it */
+
+    /* P node */
+    cur = xmlSecAddChild(node, xmlSecNodeDSAP, xmlSecDSigNs);
+    if(cur == NULL) {
+        xmlSecInternalError("xmlSecAddChild(p)",
+            xmlSecKeyDataKlassGetName(id));
+        xmlSecBufferFinalize(&buf);
+        return(-1);
+    }
+
+    /* reverse is 0, both CNG and XML is big-endian */
+    bufData += sizeof(BCRYPT_DSA_KEY_BLOB);
+    ret = xmlSecBnBlobSetNodeValue(bufData, dsakey->cbKey, cur, xmlSecBnBase64, 0, 1);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBnBlobSetNodeValue(p)",
+            xmlSecKeyDataKlassGetName(id));
+        xmlSecBufferFinalize(&buf);
+        return(-1);
+    }
+
+    /* Q node */
+    cur = xmlSecAddChild(node, xmlSecNodeDSAQ, xmlSecDSigNs);
+    if(cur == NULL) {
+        xmlSecInternalError("xmlSecAddChild(q)",
+            xmlSecKeyDataKlassGetName(id));
+        xmlSecBufferFinalize(&buf);
+        return(-1);
+    }
+
+    /* 20 is the documented size of BCRYPT_DSA_KEY_BLOB.q */
+    ret = xmlSecBnBlobSetNodeValue((xmlSecByte*)dsakey->q, 20, cur, xmlSecBnBase64, 0, 1);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBnBlobSetNodeValue(q)",
+            xmlSecKeyDataKlassGetName(id));
+        xmlSecBufferFinalize(&buf);
+        return(-1);
+    }
+
+    /* G node */
+    cur = xmlSecAddChild(node, xmlSecNodeDSAG, xmlSecDSigNs);
+    if(cur == NULL) {
+        xmlSecInternalError("xmlSecAddChild(g)",
+            xmlSecKeyDataKlassGetName(id));
+        xmlSecBufferFinalize(&buf);
+        return(-1);
+    }
+
+    bufData += dsakey->cbKey;
+    ret = xmlSecBnBlobSetNodeValue(bufData, dsakey->cbKey, cur, xmlSecBnBase64, 0, 1);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBnBlobSetNodeValue(g)",
+            xmlSecKeyDataKlassGetName(id));
+        xmlSecBufferFinalize(&buf);
+        return(-1);
+    }
+
+    /* Y node */
+    cur = xmlSecAddChild(node, xmlSecNodeDSAY, xmlSecDSigNs);
+    if(cur == NULL) {
+        xmlSecInternalError("xmlSecAddChild(y)",
+            xmlSecKeyDataKlassGetName(id));
+        xmlSecBufferFinalize(&buf);
+        return(-1);
+    }
+
+    bufData += dsakey->cbKey;
+    ret = xmlSecBnBlobSetNodeValue(bufData, dsakey->cbKey, cur, xmlSecBnBase64, 0, 1);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBnBlobSetNodeValue(y)",
+            xmlSecKeyDataKlassGetName(id));
+        xmlSecBufferFinalize(&buf);
+        return(-1);
+    }
+
+    xmlSecBufferFinalize(&buf);
+
+    return(0);
+}
+
 static void
 xmlSecMSCngKeyDataDsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataDsaId));
@@ -792,7 +934,7 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataDsaKlass = {
 
     /* read/write */
     xmlSecMSCngKeyDataDsaXmlRead,               /* xmlSecKeyDataXmlReadMethod xmlRead; */
-    NULL,                                       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    xmlSecMSCngKeyDataDsaXmlWrite,              /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
     NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
     NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
 

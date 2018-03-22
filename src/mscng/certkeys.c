@@ -303,9 +303,6 @@ xmlSecMSCngKeyDataFinalize(xmlSecKeyDataPtr data) {
 
     if(ctx->cert != NULL) {
         CertFreeCertificateContext(ctx->cert);
-    } else if(ctx->pubkey != NULL) {
-        /* pubkey is now owned by cert, so need to free it explicitly */
-        BCryptDestroyKey(ctx->pubkey);
     }
 
     memset(ctx, 0, sizeof(xmlSecMSCngKeyDataCtx));

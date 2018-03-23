@@ -36,6 +36,8 @@ struct _xmlSecMSCngHmacCtx {
     BCRYPT_ALG_HANDLE hAlg;
     PBYTE hash;
     DWORD hashLength;
+    /* truncation length in bits */
+    DWORD truncationLength;
     BCRYPT_HASH_HANDLE hHash;
 };
 
@@ -126,8 +128,23 @@ xmlSecMSCngHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTra
 
     cur = xmlSecGetNextElementNode(node->children);
     if((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeHMACOutputLength, xmlSecDSigNs)) {
-        xmlSecNotImplementedError(NULL);
-        return(-1);
+        xmlChar *content;
+
+        content = xmlNodeGetContent(cur);
+        if(content != NULL) {
+            ctx->truncationLength = atoi((char*)content);
+            xmlFree(content);
+        }
+
+	/* 80 is a minimum value from
+	 * <https://www.w3.org/TR/xmldsig-core1/#sec-SignatureMethod> */
+        if((int)ctx->truncationLength < 80) {
+            xmlSecInvalidNodeContentError(cur, xmlSecTransformGetName(transform),
+                                          "HMAC output length is too small");
+            return(-1);
+        }
+
+        cur = xmlSecGetNextElementNode(cur->next);
     }
 
     if(cur != NULL) {
@@ -230,6 +247,11 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         return(-1);
     }
 
+    if (ctx->truncationLength == 0) {
+        /* no custom value is requested, then default to the full length */
+        ctx->truncationLength = ctx->hashLength * 8;
+    }
+
     ctx->initialized = 1;
     return(0);
 }
@@ -239,6 +261,7 @@ xmlSecMSCngHmacVerify(xmlSecTransformPtr transform, const xmlSecByte* data,
         xmlSecSize dataSize, xmlSecTransformCtxPtr transformCtx) {
 
     xmlSecMSCngHmacCtxPtr ctx;
+    xmlSecSize truncationBytes;
 
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngHmacSize), -1);
@@ -249,12 +272,14 @@ xmlSecMSCngHmacVerify(xmlSecTransformPtr transform, const xmlSecByte* data,
 
     ctx = xmlSecMSCngHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->hashLength > 0, -1);
+    xmlSecAssert2(ctx->truncationLength > 0, -1);
+
+    truncationBytes = ctx->truncationLength / 8;
 
     /* compare the digest size in bytes */
-    if(dataSize != ctx->hashLength) {
+    if(dataSize != truncationBytes) {
         xmlSecInvalidSizeError("HMAC digest",
-                               dataSize, ctx->hashLength,
+                               dataSize, truncationBytes,
                                xmlSecTransformGetName(transform));
         transform->status = xmlSecTransformStatusFail;
         return(0);

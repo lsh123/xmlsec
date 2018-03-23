@@ -190,6 +190,35 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformEcdsaSha512GetKlass(v
 
 /********************************************************************
  *
+ * HMAC transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_HMAC
+
+/**
+ * xmlSecMSCngKeyDataHmacId:
+ *
+ * The HMAC key klass.
+ */
+#define xmlSecMSCngKeyDataHmacId \
+        xmlSecMSCngKeyDataHmacGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngKeyDataHmacGetKlass(void);
+
+#ifndef XMLSEC_NO_SHA256
+/**
+ * xmlSecMSCngTransformHmacSha256Id:
+ *
+ * The HMAC-SHA256 signature transform klass.
+ */
+#define xmlSecMSCngTransformHmacSha256Id     \
+       xmlSecMSCngTransformHmacSha256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformHmacSha256GetKlass(void);
+#endif /* XMLSEC_NO_SHA256 */
+
+#endif /* XMLSEC_NO_HMAC */
+
+/********************************************************************
+ *
  * MD5 transform
  *
  *******************************************************************/

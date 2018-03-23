@@ -78,7 +78,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->keyDataGostR3410_2012GetKlass = xmlSecMSCngKeyDataGostR3410_2012GetKlass;
 #endif /* XMLSEC_NO_GOST */
 
-#ifdef XMLSEC_MSCNG_TODO
+#ifndef XMLSEC_NO_HMAC
     gXmlSecMSCngFunctions->keyDataHmacGetKlass          = xmlSecMSCngKeyDataHmacGetKlass;
 #endif /* XMLSEC_NO_HMAC */
 
@@ -181,6 +181,10 @@ xmlSecCryptoGetFunctions_mscng(void) {
 #ifdef XMLSEC_MSCNG_TODO
     gXmlSecMSCngFunctions->transformHmacSha1GetKlass            = xmlSecMSCngTransformHmacSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    gXmlSecMSCngFunctions->transformHmacSha256GetKlass          = xmlSecMSCngTransformHmacSha256GetKlass;
+#endif /* XMLSEC_NO_SHA256 */
 
 #ifdef XMLSEC_MSCNG_TODO
     gXmlSecMSCngFunctions->transformHmacRipemd160GetKlass       = xmlSecMSCngTransformHmacRipemd160GetKlass;

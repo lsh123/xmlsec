@@ -358,11 +358,13 @@ xmlSecMSCngHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
 
             /* copy result to output */
             if(transform->operation == xmlSecTransformOperationSign) {
-                ret = xmlSecBufferAppend(out, ctx->hash, ctx->hashLength);
+                xmlSecSize truncationBytes = ctx->truncationLength / 8;
+
+                ret = xmlSecBufferAppend(out, ctx->hash, truncationBytes);
                 if(ret < 0) {
                     xmlSecInternalError2("xmlSecBufferAppend",
                                          xmlSecTransformGetName(transform),
-                                         "size=%d", ctx->hashLength);
+                                         "size=%d", truncationBytes);
                     return(-1);
                 }
             }

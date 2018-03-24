@@ -49,6 +49,12 @@ struct _xmlSecMSCngHmacCtx {
 static int
 xmlSecMSCngHmacCheckId(xmlSecTransformPtr transform) {
 
+#ifndef XMLSEC_NO_MD5
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformHmacMd5Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_MD5 */
+
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformHmacSha1Id)) {
         return(1);
@@ -78,6 +84,12 @@ xmlSecMSCngHmacInitialize(xmlSecTransformPtr transform) {
 
     /* initialize context */
     memset(ctx, 0, sizeof(xmlSecMSCngHmacCtx));
+
+#ifndef XMLSEC_NO_MD5
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformHmacMd5Id)) {
+        ctx->pszAlgId = BCRYPT_MD5_ALGORITHM;
+    } else
+#endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformHmacSha1Id)) {
@@ -392,6 +404,53 @@ xmlSecMSCngHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
 
     return(0);
 }
+
+#ifndef XMLSEC_NO_MD5
+/******************************************************************************
+ *
+ * HMAC MD5
+ *
+ ******************************************************************************/
+static xmlSecTransformKlass xmlSecMSCngHmacMd5Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecMSCngHmacSize,                        /* xmlSecSize objSize */
+
+    xmlSecNameHmacMd5,                          /* const xmlChar* name; */
+    xmlSecHrefHmacMd5,                          /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecMSCngHmacInitialize,                  /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCngHmacFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecMSCngHmacNodeRead,                    /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecMSCngHmacSetKeyReq,                   /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecMSCngHmacSetKey,                      /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecMSCngHmacVerify,                      /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCngHmacExecute,                     /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCngTransformHmacMd5GetKlass:
+ *
+ * The HMAC-MD5 transform klass.
+ *
+ * Returns: the HMAC-MD5 transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformHmacMd5GetKlass(void) {
+    return(&xmlSecMSCngHmacMd5Klass);
+}
+
+#endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_SHA1
 /******************************************************************************

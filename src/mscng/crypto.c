@@ -178,6 +178,10 @@ xmlSecCryptoGetFunctions_mscng(void) {
     /******************************* HMAC ********************************/
 #ifndef XMLSEC_NO_HMAC
 
+#ifndef XMLSEC_NO_MD5
+    gXmlSecMSCngFunctions->transformHmacMd5GetKlass             = xmlSecMSCngTransformHmacMd5GetKlass;
+#endif /* XMLSEC_NO_MD5 */
+
 #ifndef XMLSEC_NO_SHA1
     gXmlSecMSCngFunctions->transformHmacSha1GetKlass            = xmlSecMSCngTransformHmacSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */

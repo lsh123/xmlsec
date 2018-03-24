@@ -67,6 +67,12 @@ xmlSecMSCngHmacCheckId(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_SHA256 */
 
+#ifndef XMLSEC_NO_SHA384
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformHmacSha384Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_SHA384 */
+
 #ifndef XMLSEC_NO_SHA512
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformHmacSha512Id)) {
         return(1);
@@ -108,6 +114,12 @@ xmlSecMSCngHmacInitialize(xmlSecTransformPtr transform) {
         ctx->pszAlgId = BCRYPT_SHA256_ALGORITHM;
     } else
 #endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformHmacSha384Id)) {
+        ctx->pszAlgId = BCRYPT_SHA384_ALGORITHM;
+    } else
+#endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformHmacSha512Id)) {
@@ -557,6 +569,53 @@ xmlSecMSCngTransformHmacSha256GetKlass(void) {
 }
 
 #endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+/******************************************************************************
+ *
+ * HMAC SHA384
+ *
+ ******************************************************************************/
+static xmlSecTransformKlass xmlSecMSCngHmacSha384Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecMSCngHmacSize,                        /* xmlSecSize objSize */
+
+    xmlSecNameHmacSha384,                       /* const xmlChar* name; */
+    xmlSecHrefHmacSha384,                       /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecMSCngHmacInitialize,                  /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCngHmacFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecMSCngHmacNodeRead,                    /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecMSCngHmacSetKeyReq,                   /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecMSCngHmacSetKey,                      /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecMSCngHmacVerify,                      /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCngHmacExecute,                     /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCngTransformHmacSha384GetKlass:
+ *
+ * The HMAC-SHA384 transform klass.
+ *
+ * Returns: the HMAC-SHA384 transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformHmacSha384GetKlass(void) {
+    return(&xmlSecMSCngHmacSha384Klass);
+}
+
+#endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
 /******************************************************************************

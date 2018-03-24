@@ -49,6 +49,12 @@ struct _xmlSecMSCngHmacCtx {
 static int
 xmlSecMSCngHmacCheckId(xmlSecTransformPtr transform) {
 
+#ifndef XMLSEC_NO_SHA1
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformHmacSha1Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformHmacSha256Id)) {
         return(1);
@@ -72,6 +78,12 @@ xmlSecMSCngHmacInitialize(xmlSecTransformPtr transform) {
 
     /* initialize context */
     memset(ctx, 0, sizeof(xmlSecMSCngHmacCtx));
+
+#ifndef XMLSEC_NO_SHA1
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformHmacSha1Id)) {
+        ctx->pszAlgId = BCRYPT_SHA1_ALGORITHM;
+    } else
+#endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformHmacSha256Id)) {
@@ -380,6 +392,53 @@ xmlSecMSCngHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
 
     return(0);
 }
+
+#ifndef XMLSEC_NO_SHA1
+/******************************************************************************
+ *
+ * HMAC SHA1
+ *
+ ******************************************************************************/
+static xmlSecTransformKlass xmlSecMSCngHmacSha1Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecMSCngHmacSize,                        /* xmlSecSize objSize */
+
+    xmlSecNameHmacSha1,                         /* const xmlChar* name; */
+    xmlSecHrefHmacSha1,                         /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecMSCngHmacInitialize,                  /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCngHmacFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecMSCngHmacNodeRead,                    /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecMSCngHmacSetKeyReq,                   /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecMSCngHmacSetKey,                      /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecMSCngHmacVerify,                      /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCngHmacExecute,                     /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCngTransformHmacSha1GetKlass:
+ *
+ * The HMAC-SHA1 transform klass.
+ *
+ * Returns: the HMAC-SHA1 transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformHmacSha1GetKlass(void) {
+    return(&xmlSecMSCngHmacSha1Klass);
+}
+
+#endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
 /******************************************************************************

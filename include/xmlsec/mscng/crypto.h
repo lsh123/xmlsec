@@ -204,6 +204,17 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformEcdsaSha512GetKlass(v
         xmlSecMSCngKeyDataHmacGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngKeyDataHmacGetKlass(void);
 
+#ifndef XMLSEC_NO_SHA1
+/**
+ * xmlSecMSCngTransformHmacSha1Id:
+ *
+ * The HMAC-SHA1 signature transform klass.
+ */
+#define xmlSecMSCngTransformHmacSha1Id     \
+       xmlSecMSCngTransformHmacSha1GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformHmacSha1GetKlass(void);
+#endif /* XMLSEC_NO_SHA1 */
+
 #ifndef XMLSEC_NO_SHA256
 /**
  * xmlSecMSCngTransformHmacSha256Id:

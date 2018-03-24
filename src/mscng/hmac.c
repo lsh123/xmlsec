@@ -67,6 +67,12 @@ xmlSecMSCngHmacCheckId(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_SHA256 */
 
+#ifndef XMLSEC_NO_SHA512
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformHmacSha512Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_SHA512 */
+
     /* not found */
     {
         return(0);
@@ -102,6 +108,12 @@ xmlSecMSCngHmacInitialize(xmlSecTransformPtr transform) {
         ctx->pszAlgId = BCRYPT_SHA256_ALGORITHM;
     } else
 #endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA512
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformHmacSha512Id)) {
+        ctx->pszAlgId = BCRYPT_SHA512_ALGORITHM;
+    } else
+#endif /* XMLSEC_NO_SHA512 */
 
     /* not found */
     {
@@ -545,5 +557,52 @@ xmlSecMSCngTransformHmacSha256GetKlass(void) {
 }
 
 #endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA512
+/******************************************************************************
+ *
+ * HMAC SHA512
+ *
+ ******************************************************************************/
+static xmlSecTransformKlass xmlSecMSCngHmacSha512Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecMSCngHmacSize,                        /* xmlSecSize objSize */
+
+    xmlSecNameHmacSha512,                       /* const xmlChar* name; */
+    xmlSecHrefHmacSha512,                       /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecMSCngHmacInitialize,                  /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCngHmacFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecMSCngHmacNodeRead,                    /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecMSCngHmacSetKeyReq,                   /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecMSCngHmacSetKey,                      /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecMSCngHmacVerify,                      /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCngHmacExecute,                     /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCngTransformHmacSha512GetKlass:
+ *
+ * The HMAC-SHA512 transform klass.
+ *
+ * Returns: the HMAC-SHA512 transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformHmacSha512GetKlass(void) {
+    return(&xmlSecMSCngHmacSha512Klass);
+}
+
+#endif /* XMLSEC_NO_SHA512 */
 
 #endif /* XMLSEC_NO_HMAC */

@@ -307,28 +307,43 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 static int
 xmlSecMSCngHmacVerify(xmlSecTransformPtr transform, const xmlSecByte* data,
         xmlSecSize dataSize, xmlSecTransformCtxPtr transformCtx) {
-
     xmlSecMSCngHmacCtxPtr ctx;
     xmlSecSize truncationBytes;
+    static xmlSecByte lastByteMasks[] = { 0xFF, 0x80, 0xC0, 0xE0, 0xF0, 0xF8,
+        0xFC, 0xFE };
+    xmlSecByte mask;
 
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngHmacSize), -1);
     xmlSecAssert2(transform->operation == xmlSecTransformOperationVerify, -1);
     xmlSecAssert2(transform->status == xmlSecTransformStatusFinished, -1);
     xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
     ctx = xmlSecMSCngHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->truncationLength > 0, -1);
 
-    truncationBytes = ctx->truncationLength / 8;
+    /* round up */
+    truncationBytes = (ctx->truncationLength + 7) / 8;
 
     /* compare the digest size in bytes */
     if(dataSize != truncationBytes) {
         xmlSecInvalidSizeError("HMAC digest",
                                dataSize, truncationBytes,
                                xmlSecTransformGetName(transform));
+        transform->status = xmlSecTransformStatusFail;
+        return(0);
+    }
+
+    /* we check the last byte separatelly as possibly not all bits should be
+     * compared */
+    mask = lastByteMasks[ctx->truncationLength % 8];
+    if((ctx->hash[dataSize - 1] & mask) != (data[dataSize - 1]  & mask)) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
+            xmlSecTransformGetName(transform),
+            "data and digest do not match (last byte)");
         transform->status = xmlSecTransformStatusFail;
         return(0);
     }
@@ -406,7 +421,8 @@ xmlSecMSCngHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
 
             /* copy result to output */
             if(transform->operation == xmlSecTransformOperationSign) {
-                xmlSecSize truncationBytes = ctx->truncationLength / 8;
+                /* round up */
+                xmlSecSize truncationBytes = (ctx->truncationLength + 7) / 8;
 
                 ret = xmlSecBufferAppend(out, ctx->hash, truncationBytes);
                 if(ret < 0) {

@@ -310,6 +310,8 @@ XMLSEC_MSCNG_OBJS = \
 	$(XMLSEC_MSCNG_INTDIR)\certkeys.obj \
 	$(XMLSEC_MSCNG_INTDIR)\crypto.obj\
 	$(XMLSEC_MSCNG_INTDIR)\digests.obj\
+	$(XMLSEC_MSCNG_INTDIR)\hmac.obj \
+	$(XMLSEC_MSCNG_INTDIR)\symkeys.obj \
 	$(XMLSEC_MSCNG_INTDIR)\strings.obj\
 	$(XMLSEC_MSCNG_INTDIR)\signatures.obj\
 	$(XMLSEC_MSCNG_INTDIR)\x509.obj\
@@ -319,6 +321,8 @@ XMLSEC_MSCNG_OBJS_A = \
 	$(XMLSEC_MSCNG_INTDIR_A)\certkeys.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\crypto.obj\
 	$(XMLSEC_MSCNG_INTDIR_A)\digests.obj\
+	$(XMLSEC_MSCNG_INTDIR_A)\hmac.obj \
+	$(XMLSEC_MSCNG_INTDIR_A)\symkeys.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\strings.obj\
 	$(XMLSEC_MSCNG_INTDIR_A)\signatures.obj\
 	$(XMLSEC_MSCNG_INTDIR_A)\x509.obj\

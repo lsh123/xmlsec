@@ -190,6 +190,79 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformEcdsaSha512GetKlass(v
 
 /********************************************************************
  *
+ * HMAC transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_HMAC
+
+/**
+ * xmlSecMSCngKeyDataHmacId:
+ *
+ * The HMAC key klass.
+ */
+#define xmlSecMSCngKeyDataHmacId \
+        xmlSecMSCngKeyDataHmacGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngKeyDataHmacGetKlass(void);
+
+#ifndef XMLSEC_NO_MD5
+/**
+ * xmlSecMSCngTransformHmacMd5Id:
+ *
+ * The HMAC-MD5 signature transform klass.
+ */
+#define xmlSecMSCngTransformHmacMd5Id     \
+       xmlSecMSCngTransformHmacMd5GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformHmacMd5GetKlass(void);
+#endif /* XMLSEC_NO_MD5 */
+
+#ifndef XMLSEC_NO_SHA1
+/**
+ * xmlSecMSCngTransformHmacSha1Id:
+ *
+ * The HMAC-SHA1 signature transform klass.
+ */
+#define xmlSecMSCngTransformHmacSha1Id     \
+       xmlSecMSCngTransformHmacSha1GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformHmacSha1GetKlass(void);
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+/**
+ * xmlSecMSCngTransformHmacSha256Id:
+ *
+ * The HMAC-SHA256 signature transform klass.
+ */
+#define xmlSecMSCngTransformHmacSha256Id     \
+       xmlSecMSCngTransformHmacSha256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformHmacSha256GetKlass(void);
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+/**
+ * xmlSecMSCngTransformHmacSha384Id:
+ *
+ * The HMAC-SHA384 signature transform klass.
+ */
+#define xmlSecMSCngTransformHmacSha384Id     \
+       xmlSecMSCngTransformHmacSha384GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformHmacSha384GetKlass(void);
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+/**
+ * xmlSecMSCngTransformHmacSha512Id:
+ *
+ * The HMAC-SHA512 signature transform klass.
+ */
+#define xmlSecMSCngTransformHmacSha512Id     \
+       xmlSecMSCngTransformHmacSha512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformHmacSha512GetKlass(void);
+#endif /* XMLSEC_NO_SHA512 */
+
+#endif /* XMLSEC_NO_HMAC */
+
+/********************************************************************
+ *
  * MD5 transform
  *
  *******************************************************************/

@@ -243,6 +243,35 @@ xmlSecMSCngKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
 }
 
 /**
+ * xmlSecMSCngKeyDataX509AdoptCrl:
+ * @data:               the pointer to X509 key data.
+ * @crl:                the pointer to MSCng X509 CRL.
+ *
+ * Adds CRL to the X509 key data.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecMSCngKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, PCCRL_CONTEXT crl) {
+    xmlSecMSCngX509DataCtxPtr ctx;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataX509Id), -1);
+    xmlSecAssert2(crl != 0, -1);
+
+    ctx = xmlSecMSCngX509DataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->hMemStore != 0, -1);
+
+    if (!CertAddCRLContextToStore(ctx->hMemStore, crl, CERT_STORE_ADD_ALWAYS, NULL)) {
+        xmlSecMSCngLastError("CertAddCRLContextToStore",
+            xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+
+    return(0);
+}
+
+/**
  * xmlSecMSCngX509SubjectNameNodeRead:
  *
  * The MSCng reader for the <X509SubjectName> XML element.
@@ -540,6 +569,84 @@ xmlSecMSCngX509SKINodeRead(xmlSecKeyDataPtr data, xmlNodePtr node,
     return(0);
 }
 
+static PCCRL_CONTEXT
+xmlSecMSCngX509CrlDerRead(xmlSecByte* buf, xmlSecSize size,
+        xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    PCCRL_CONTEXT crl = NULL;
+
+    xmlSecAssert2(buf != NULL, NULL);
+    xmlSecAssert2(keyInfoCtx != NULL, NULL);
+    xmlSecAssert2(size > 0, NULL);
+
+    crl = CertCreateCRLContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, buf, size);
+
+    if(crl == NULL) {
+        xmlSecMSCngLastError("CertCreateCRLContext", NULL);
+        return(NULL);
+    }
+
+    return(crl);
+}
+
+static PCCRL_CONTEXT
+xmlSecMSCngX509CrlBase64DerRead(xmlChar* buf, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    int ret;
+
+    xmlSecAssert2(buf != NULL, NULL);
+
+    /* usual trick with base64 decoding in-place */
+    ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, xmlStrlen(buf));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBase64Decode", NULL);
+        return(NULL);
+    }
+
+    return(xmlSecMSCngX509CrlDerRead((xmlSecByte*)buf, ret, keyInfoCtx));
+}
+
+static int
+xmlSecMSCngX509CRLNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlChar *content;
+    PCCRL_CONTEXT crl;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataX509Id), -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    content = xmlNodeGetContent(node);
+    if((content == NULL) || (xmlSecIsEmptyString(content) == 1)) {
+        if(content != NULL) {
+            xmlFree(content);
+        }
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
+            xmlSecInvalidNodeContentError(node, xmlSecKeyDataGetName(data), "empty");
+            return(-1);
+        }
+        return(0);
+    }
+
+    crl = xmlSecMSCngX509CrlBase64DerRead(content, keyInfoCtx);
+    if(crl == NULL) {
+        xmlSecInternalError("xmlSecMSCngX509CrlBase64DerRead",
+            xmlSecKeyDataGetName(data));
+        xmlFree(content);
+        return(-1);
+    }
+
+    ret = xmlSecMSCngKeyDataX509AdoptCrl(data, crl);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCrl",
+            xmlSecKeyDataGetName(data));
+        xmlFree(content);
+        CertFreeCRLContext(crl);
+        return(-1);
+    }
+
+    xmlFree(content);
+    return(0);
+}
+
 /**
  * xmlSecMSCngX509DataNodeRead:
  *
@@ -585,8 +692,12 @@ xmlSecMSCngX509DataNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node,
                 return(-1);
             }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509CRL, xmlSecDSigNs)) {
-            xmlSecNotImplementedError(NULL);
-            return(-1);
+            ret = xmlSecMSCngX509CRLNodeRead(data, cur, keyInfoCtx);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecMSCngX509CRLNodeRead",
+                                    xmlSecKeyDataGetName(data));
+                return(-1);
+            }
         } else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CHILD) != 0) {
             xmlSecUnexpectedNodeError(cur, xmlSecKeyDataGetName(data));
             return(-1);
@@ -790,34 +901,245 @@ xmlSecMSCngX509CertificateNodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node,
     return(0);
 }
 
+static xmlChar*
+xmlSecMSCngX509NameWrite(PCERT_NAME_BLOB nm) {
+    LPTSTR resT = NULL;
+    xmlChar *res = NULL;
+    DWORD csz;
+
+
+    xmlSecAssert2(nm->pbData != NULL, NULL);
+    xmlSecAssert2(nm->cbData > 0, NULL);
+
+    csz = CertNameToStr(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, nm, CERT_X500_NAME_STR | CERT_NAME_STR_REVERSE_FLAG, NULL, 0);
+    if(csz <= 0) {
+        xmlSecMSCngLastError("CertNameToStr", NULL);
+        return(NULL);
+    }
+
+    resT = (LPTSTR)xmlMalloc(sizeof(TCHAR) * (csz + 1));
+    if (NULL == resT) {
+        xmlSecMallocError(sizeof(TCHAR) * (csz + 1), NULL);
+        return (NULL);
+    }
+
+    csz = CertNameToStr(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, nm, CERT_X500_NAME_STR | CERT_NAME_STR_REVERSE_FLAG, resT, csz + 1);
+    if (csz <= 0) {
+        xmlSecMSCngLastError("CertNameToStr", NULL);
+        xmlFree(resT);
+        return(NULL);
+    }
+
+    res = xmlSecMSCngConvertTstrToUtf8(resT);
+    if (NULL == res) {
+        xmlSecInternalError("xmlSecMSCngConvertTstrToUtf8", NULL);
+        xmlFree(resT);
+        return(NULL);
+    }
+
+    xmlFree(resT);
+    return(res);
+}
+
 static int
 xmlSecMSCngX509SubjectNameNodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node) {
+    xmlChar* buf = NULL;
+    xmlNodePtr cur = NULL;
+    int ret;
+
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
 
-    xmlSecNotImplementedError(NULL);
+    buf = xmlSecMSCngX509NameWrite(&(cert->pCertInfo->Subject));
+    if(buf == NULL) {
+        xmlSecInternalError("xmlSecMSCngX509NameWrite", NULL);
+        return(-1);
+    }
 
-    return(-1);
+    cur = xmlSecEnsureEmptyChild(node, xmlSecNodeX509SubjectName, xmlSecDSigNs);
+    if(cur == NULL) {
+        xmlSecInternalError("xmlSecEnsureEmptyChild", NULL);
+        xmlFree(buf);
+        return(-1);
+    }
+
+    ret = xmlSecNodeEncodeAndSetContent(cur, buf);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNodeEncodeAndSetContent", NULL);
+        xmlFree(buf);
+        return(-1);
+    }
+
+    /* done */
+    xmlFree(buf);
+    return(0);
+}
+
+static int
+xmlSecMSCngASN1IntegerWrite(xmlNodePtr node, PCRYPT_INTEGER_BLOB num) {
+    xmlSecBn bn;
+    int ret;
+
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(num != NULL, -1);
+
+    ret = xmlSecBnInitialize(&bn, num->cbData + 1);
+    if(ret < 0) {
+	xmlSecInternalError2("xmlSecBnInitialize", NULL, "size=%ld",
+	    num->cbData + 1);
+        return(-1);
+    }
+
+    ret = xmlSecBnSetData(&bn, num->pbData, num->cbData);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBnSetData", NULL);
+        xmlSecBnFinalize(&bn);
+        return(-1);
+    }
+
+    ret = xmlSecBnSetNodeValue(&bn, node, xmlSecBnDec, 0, 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBnSetNodeValue", NULL);
+        xmlSecBnFinalize(&bn);
+        return(-1);
+    }
+
+    xmlSecBnFinalize(&bn);
+    return(0);
 }
 
 static int
 xmlSecMSCngX509IssuerSerialNodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node) {
+    xmlNodePtr cur;
+    xmlNodePtr issuerNameNode;
+    xmlNodePtr issuerNumberNode;
+    xmlChar* buf;
+    int ret;
+
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
 
-    xmlSecNotImplementedError(NULL);
+    /* create xml nodes */
+    cur = xmlSecEnsureEmptyChild(node, xmlSecNodeX509IssuerSerial, xmlSecDSigNs);
+    if(cur == NULL) {
+        xmlSecInternalError("xmlSecEnsureEmptyChild", NULL);
+        return(-1);
+    }
 
-    return(-1);
+    issuerNameNode = xmlSecEnsureEmptyChild(cur, xmlSecNodeX509IssuerName, xmlSecDSigNs);
+    if(issuerNameNode == NULL) {
+        xmlSecInternalError("xmlSecEnsureEmptyChild", NULL);
+        return(-1);
+    }
+
+    issuerNumberNode = xmlSecEnsureEmptyChild(cur, xmlSecNodeX509SerialNumber, xmlSecDSigNs);
+    if(issuerNumberNode == NULL) {
+        xmlSecInternalError("xmlSecEnsureEmptyChild", NULL);
+        return(-1);
+    }
+
+    /* write data */
+    buf = xmlSecMSCngX509NameWrite(&(cert->pCertInfo->Issuer));
+    if(buf == NULL) {
+        xmlSecInternalError("xmlSecMSCngX509NameWrite", NULL);
+        return(-1);
+    }
+
+    ret = xmlSecNodeEncodeAndSetContent(issuerNameNode, buf);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNodeEncodeAndSetContent", NULL);
+        xmlFree(buf);
+        return(-1);
+    }
+
+    xmlFree(buf);
+
+    ret = xmlSecMSCngASN1IntegerWrite(issuerNumberNode, &(cert->pCertInfo->SerialNumber));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngASN1IntegerWrite", NULL);
+        return(-1);
+    }
+    return(0);
+}
+
+static xmlChar*
+xmlSecMSCngX509SKIWrite(PCCERT_CONTEXT cert) {
+    xmlChar *res = NULL;
+    DWORD dwSize;
+    BYTE *bSKI = NULL;
+    PCERT_EXTENSION pCertExt;
+
+    xmlSecAssert2(cert != NULL, NULL);
+
+    /* First check if the SKI extension actually exists, otherwise we get a SHA1 hash of the cert */
+    pCertExt = CertFindExtension(szOID_SUBJECT_KEY_IDENTIFIER, cert->pCertInfo->cExtension, cert->pCertInfo->rgExtension);
+    if (pCertExt == NULL) {
+        xmlSecMSCngLastError("CertFindExtension", NULL);
+        return (NULL);
+    }
+
+    if (!CertGetCertificateContextProperty(cert, CERT_KEY_IDENTIFIER_PROP_ID, NULL, &dwSize) || dwSize < 1) {
+        xmlSecMSCngLastError("CertGetCertificateContextProperty", NULL);
+        return (NULL);
+    }
+    bSKI = xmlMalloc(dwSize);
+    if (bSKI == NULL) {
+        xmlSecMallocError(dwSize, NULL);
+        return (NULL);
+    }
+
+    if (!CertGetCertificateContextProperty(cert, CERT_KEY_IDENTIFIER_PROP_ID, bSKI, &dwSize)) {
+        xmlSecMSCngLastError("CertGetCertificateContextProperty", NULL);
+        xmlFree(bSKI);
+        return (NULL);
+    }
+
+    if (bSKI == NULL) {
+        return(NULL);
+    }
+
+    res = xmlSecBase64Encode(bSKI, dwSize, 0);
+    if(res == NULL) {
+        xmlSecInternalError("xmlSecBase64Encode", NULL);
+        xmlFree(bSKI);
+        return(NULL);
+    }
+    xmlFree(bSKI);
+
+    return(res);
 }
 
 static int
 xmlSecMSCngX509SKINodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node) {
+    xmlChar *buf = NULL;
+    xmlNodePtr cur = NULL;
+    int ret;
+
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
 
-    xmlSecNotImplementedError(NULL);
+    buf = xmlSecMSCngX509SKIWrite(cert);
+    if(buf == NULL) {
+        xmlSecInternalError("xmlSecMSCngX509SKIWrite", NULL);
+        return(-1);
+    }
 
-    return(-1);
+    cur = xmlSecEnsureEmptyChild(node, xmlSecNodeX509SKI, xmlSecDSigNs);
+    if(cur == NULL) {
+        xmlSecInternalError("xmlSecEnsureEmptyChild", NULL);
+        xmlFree(buf);
+        return(-1);
+    }
+
+    ret = xmlSecNodeEncodeAndSetContent(cur, buf);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNodeEncodeAndSetContent", NULL);
+        xmlFree(buf);
+        return(-1);
+    }
+
+    xmlFree(buf);
+    return(0);
 }
 
 static int

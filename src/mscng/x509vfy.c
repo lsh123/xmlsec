@@ -30,8 +30,10 @@
 typedef struct _xmlSecMSCngX509StoreCtx xmlSecMSCngX509StoreCtx,
                                        *xmlSecMSCngX509StoreCtxPtr;
 struct _xmlSecMSCngX509StoreCtx {
-    HCERTSTORE hCertStoreCollection;
-    HCERTSTORE hCertStoreMemory;
+    HCERTSTORE trusted;
+    HCERTSTORE trustedMemStore;
+    HCERTSTORE untrusted;
+    HCERTSTORE untrustedMemStore;
 };
 
 #define xmlSecMSCngX509StoreGetCtx(store) \
@@ -49,15 +51,29 @@ xmlSecMSCngX509StoreFinalize(xmlSecKeyDataStorePtr store) {
     ctx = xmlSecMSCngX509StoreGetCtx(store);
     xmlSecAssert(ctx != NULL);
 
-    if(ctx->hCertStoreCollection != NULL) {
-        ret = CertCloseStore(ctx->hCertStoreCollection, CERT_CLOSE_STORE_CHECK_FLAG);
+    if(ctx->trusted != NULL) {
+        ret = CertCloseStore(ctx->trusted, CERT_CLOSE_STORE_CHECK_FLAG);
         if(ret == FALSE) {
             xmlSecMSCngLastError("CertCloseStore", xmlSecKeyDataStoreGetName(store));
         }
     }
 
-    if(ctx->hCertStoreMemory != NULL) {
-        ret = CertCloseStore(ctx->hCertStoreMemory, CERT_CLOSE_STORE_CHECK_FLAG);
+    if(ctx->trustedMemStore != NULL) {
+        ret = CertCloseStore(ctx->trustedMemStore, CERT_CLOSE_STORE_CHECK_FLAG);
+        if(ret == FALSE) {
+            xmlSecMSCngLastError("CertCloseStore", xmlSecKeyDataStoreGetName(store));
+        }
+    }
+
+    if(ctx->untrusted != NULL) {
+        ret = CertCloseStore(ctx->untrusted, CERT_CLOSE_STORE_CHECK_FLAG);
+        if(ret == FALSE) {
+            xmlSecMSCngLastError("CertCloseStore", xmlSecKeyDataStoreGetName(store));
+        }
+    }
+
+    if(ctx->untrustedMemStore != NULL) {
+        ret = CertCloseStore(ctx->untrustedMemStore, CERT_CLOSE_STORE_CHECK_FLAG);
         if(ret == FALSE) {
             xmlSecMSCngLastError("CertCloseStore", xmlSecKeyDataStoreGetName(store));
         }
@@ -77,35 +93,73 @@ xmlSecMSCngX509StoreInitialize(xmlSecKeyDataStorePtr store) {
 
     memset(ctx, 0, sizeof(xmlSecMSCngX509StoreCtx));
 
-    /* create a store that will be a collection of other stores */
-    ctx->hCertStoreCollection = CertOpenStore(
+    /* create a trusted store that will be a collection of other stores */
+    ctx->trusted = CertOpenStore(
         CERT_STORE_PROV_COLLECTION,
         0,
         0,
         0,
         NULL);
-    if(ctx->hCertStoreCollection == NULL) {
+    if(ctx->trusted == NULL) {
         xmlSecMSCngLastError("CertOpenStore", xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
 
-    /* create an actual store */
-    ctx->hCertStoreMemory = CertOpenStore(
+    /* create an actual trusted store */
+    ctx->trustedMemStore = CertOpenStore(
         CERT_STORE_PROV_MEMORY,
         X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
         0,
         CERT_STORE_CREATE_NEW_FLAG,
         NULL);
-    if(ctx->hCertStoreMemory == NULL) {
+    if(ctx->trustedMemStore == NULL) {
         xmlSecMSCngLastError("CertOpenStore", xmlSecKeyDataStoreGetName(store));
         xmlSecMSCngX509StoreFinalize(store);
         return(-1);
     }
 
-    /* add the store to the collection */
+    /* add the store to the trusted collection */
     ret = CertAddStoreToCollection(
-        ctx->hCertStoreCollection,
-        ctx->hCertStoreMemory,
+        ctx->trusted,
+        ctx->trustedMemStore,
+        CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG,
+        1);
+    if(ret == 0) {
+        xmlSecMSCngLastError("CertAddStoreToCollection", xmlSecKeyDataStoreGetName(store));
+        xmlSecMSCngX509StoreFinalize(store);
+        return(-1);
+    }
+
+    /* create an untrusted store that will be a collection of other stores */
+    ctx->untrusted = CertOpenStore(
+        CERT_STORE_PROV_COLLECTION,
+        0,
+        0,
+        0,
+        NULL);
+    if(ctx->untrusted == NULL) {
+        xmlSecMSCngLastError("CertOpenStore", xmlSecKeyDataStoreGetName(store));
+        xmlSecMSCngX509StoreFinalize(store);
+        return(-1);
+    }
+
+    /* create an actual untrusted store */
+    ctx->untrustedMemStore = CertOpenStore(
+        CERT_STORE_PROV_MEMORY,
+        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+        0,
+        CERT_STORE_CREATE_NEW_FLAG,
+        NULL);
+    if(ctx->untrustedMemStore == NULL) {
+        xmlSecMSCngLastError("CertOpenStore", xmlSecKeyDataStoreGetName(store));
+        xmlSecMSCngX509StoreFinalize(store);
+        return(-1);
+    }
+
+    /* add the store to the untrusted collection */
+    ret = CertAddStoreToCollection(
+        ctx->untrusted,
+        ctx->untrustedMemStore,
         CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG,
         1);
     if(ret == 0) {
@@ -166,13 +220,12 @@ xmlSecMSCngX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCert,
 
     ctx = xmlSecMSCngX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->hCertStoreCollection != NULL, -1);
+    xmlSecAssert2(ctx->trusted != NULL, -1);
 
     if(type == xmlSecKeyDataTypeTrusted) {
-        hCertStore = ctx->hCertStoreCollection;
+        hCertStore = ctx->trusted;
     } else if(type == xmlSecKeyDataTypeNone) {
-        xmlSecNotImplementedError(NULL);
-        return(-1);
+        hCertStore = ctx->untrusted;
     } else {
         xmlSecNotImplementedError(NULL);
         return(-1);
@@ -453,7 +506,7 @@ xmlSecMSCngX509StoreVerifyCertificate(xmlSecKeyDataStorePtr store,
 
     ctx = xmlSecMSCngX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->hCertStoreCollection != NULL, -1);
+    xmlSecAssert2(ctx->trusted != NULL, -1);
 
     if(keyInfoCtx->certsVerificationTime > 0) {
         xmlSecMSCngUnixTimeToFileTime(keyInfoCtx->certsVerificationTime,
@@ -465,7 +518,7 @@ xmlSecMSCngX509StoreVerifyCertificate(xmlSecKeyDataStorePtr store,
 
     /* verify based on the own trusted certificates */
     ret = xmlSecMSCngX509StoreVerifyCertificateOwn(cert,
-        &fTime, ctx->hCertStoreCollection, certStore, store);
+        &fTime, ctx->trusted, certStore, store);
     if(ret >= 0) {
         return(0);
     }
@@ -827,13 +880,17 @@ xmlSecMSCngX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
     ctx = xmlSecMSCngX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, NULL);
 
-    /* search trusted certs store */
-    if((ctx->hCertStoreCollection != NULL)) {
-        cert = xmlSecMSCngX509FindCert(ctx->hCertStoreCollection, subjectName,
+    /* search untrusted certs store */
+    if(ctx->untrusted != NULL) {
+        cert = xmlSecMSCngX509FindCert(ctx->untrusted, subjectName,
             issuerName, issuerSerial, ski);
     }
 
-    /* TODO once non-trusted certs can be adopted, it will be necessary to search for them here */
+    /* search trusted certs store */
+    if(cert == NULL && ctx->trusted != NULL) {
+        cert = xmlSecMSCngX509FindCert(ctx->trusted, subjectName,
+            issuerName, issuerSerial, ski);
+    }
 
     return(cert);
 }

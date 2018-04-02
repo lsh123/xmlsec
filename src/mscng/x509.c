@@ -997,7 +997,9 @@ xmlSecMSCngASN1IntegerWrite(xmlNodePtr node, PCRYPT_INTEGER_BLOB num) {
         return(-1);
     }
 
-    ret = xmlSecBnSetNodeValue(&bn, node, xmlSecBnDec, 0, 0);
+    /* SerialNumber is little-endian, see <https://msdn.microsoft.com/en-us/library/windows/desktop/aa377200(v=vs.85).aspx>.
+     * xmldsig wants big-endian, so enable reversing */
+    ret = xmlSecBnSetNodeValue(&bn, node, xmlSecBnDec, 1, 0);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBnSetNodeValue", NULL);
         xmlSecBnFinalize(&bn);

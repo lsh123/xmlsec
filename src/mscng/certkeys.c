@@ -396,6 +396,11 @@ xmlSecMSCngKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
                 pszAlgId = BCRYPT_DSA_ALGORITHM;
                 break;
 #endif
+#ifndef XMLSEC_NO_RSA
+            case BCRYPT_RSAPUBLIC_MAGIC:
+                pszAlgId = BCRYPT_RSA_ALGORITHM;
+                break;
+#endif
             default:
                 xmlSecNotImplementedError(NULL);
                 xmlFree(pbBlob);
@@ -1009,6 +1014,192 @@ static void xmlSecMSCngKeyDataRsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* outpu
             xmlSecMSCngKeyDataRsaGetSize(data));
 }
 
+static int
+xmlSecMSCngKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
+        xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecBn modulus, exponent;
+    xmlSecBuffer blob;
+    xmlSecSize blobBufferLen;
+    xmlSecSize offset;
+    BCRYPT_RSAKEY_BLOB* rsakey;
+    LPCWSTR lpszBlobType;
+    BCRYPT_ALG_HANDLE hAlg = NULL;
+    xmlSecKeyDataPtr keyData = NULL;
+    BCRYPT_KEY_HANDLE hKey = 0;
+    xmlNodePtr cur;
+    int res = -1;
+    NTSTATUS status;
+    int ret;
+
+    xmlSecAssert2(id == xmlSecMSCngKeyDataRsaId, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    if(xmlSecKeyGetValue(key) != NULL) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_KEY_DATA,
+                         xmlSecKeyDataKlassGetName(id),
+                         "key already has a value");
+        return(-1);
+    }
+
+    /* initialize buffers */
+    ret = xmlSecBnInitialize(&modulus, 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBnInitialize",
+            xmlSecKeyDataKlassGetName(id));
+        return(-1);
+    }
+
+    ret = xmlSecBnInitialize(&exponent, 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBnInitialize",
+            xmlSecKeyDataKlassGetName(id));
+        xmlSecBnFinalize(&modulus);
+        return(-1);
+    }
+
+    ret = xmlSecBufferInitialize(&blob, 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize",
+            xmlSecKeyDataKlassGetName(id));
+        xmlSecBnFinalize(&modulus);
+        xmlSecBnFinalize(&exponent);
+        return(-1);
+    }
+
+    /* read xml */
+    cur = xmlSecGetNextElementNode(node->children);
+
+    /* first is Modulus node, it is required because we do not support Seed and PgenCounter */
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur,  xmlSecNodeRSAModulus, xmlSecDSigNs))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeRSAModulus,
+                               xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    /* 0 as both the XML and CNG works with big-endian */
+    ret = xmlSecBnGetNodeValue(&modulus, cur, xmlSecBnBase64, 0);
+    if((ret < 0) || (xmlSecBnGetSize(&modulus) == 0)) {
+        xmlSecInternalError("xmlSecBnGetNodeValue",
+            xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    cur = xmlSecGetNextElementNode(cur->next);
+
+    /* next is Exponent node, it is required because we do not support Seed and PgenCounter */
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeRSAExponent, xmlSecDSigNs))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeRSAExponent, xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    ret = xmlSecBnGetNodeValue(&exponent, cur, xmlSecBnBase64, 0);
+    if((ret < 0) || (xmlSecBnGetSize(&exponent) == 0)) {
+        xmlSecInternalError("xmlSecBnGetNodeValue",
+            xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+    cur = xmlSecGetNextElementNode(cur->next);
+
+    /* TODO X node */
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeRSAPrivateExponent, xmlSecNs))) {
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    if(cur != NULL) {
+        xmlSecUnexpectedNodeError(cur, xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    /* turn the read data into a public key blob, as documented at
+     * <https://msdn.microsoft.com/en-us/library/windows/desktop/aa375531(v=vs.85).aspx>:
+     * need to write exponent and modulus after the struct */
+    blobBufferLen = sizeof(BCRYPT_RSAKEY_BLOB) + xmlSecBnGetSize(&exponent) +
+        xmlSecBnGetSize(&modulus);
+    ret = xmlSecBufferSetSize(&blob, blobBufferLen);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferSetSize",
+            xmlSecKeyDataKlassGetName(id), "size=%d", blobBufferLen);
+        goto done;
+    }
+
+    rsakey = (BCRYPT_RSAKEY_BLOB *)xmlSecBufferGetData(&blob);
+    rsakey->Magic = BCRYPT_RSAPUBLIC_MAGIC;
+    rsakey->BitLength = xmlSecBnGetSize(&modulus) * 8;
+    rsakey->cbPublicExp = xmlSecBnGetSize(&exponent);
+    rsakey->cbModulus = xmlSecBnGetSize(&modulus);
+    offset = sizeof(BCRYPT_RSAKEY_BLOB);
+
+    memcpy(xmlSecBufferGetData(&blob) + offset, xmlSecBnGetData(&exponent),
+        xmlSecBnGetSize(&exponent));
+    offset += xmlSecBnGetSize(&exponent);
+
+    memcpy(xmlSecBufferGetData(&blob) + offset, xmlSecBnGetData(&modulus),
+        xmlSecBnGetSize(&modulus));
+
+    lpszBlobType = BCRYPT_RSAPUBLIC_BLOB;
+
+    status = BCryptOpenAlgorithmProvider(
+        &hAlg,
+        BCRYPT_RSA_ALGORITHM,
+        NULL,
+        0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptOpenAlgorithmProvider",
+            xmlSecKeyDataKlassGetName(id), status);
+        goto done;
+    }
+
+    status = BCryptImportKeyPair(hAlg, NULL, lpszBlobType, &hKey,
+        xmlSecBufferGetData(&blob), xmlSecBufferGetSize(&blob), 0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptImportKeyPair",
+            xmlSecKeyDataKlassGetName(id), status);
+        goto done;
+    }
+
+    keyData = xmlSecKeyDataCreate(id);
+    if(keyData == NULL) {
+        xmlSecInternalError("xmlSecKeyDataCreate",
+            xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    ret = xmlSecMSCngKeyDataAdoptKey(keyData, hKey);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataAdoptKey",
+            xmlSecKeyDataGetName(keyData));
+        goto done;
+    }
+
+    hKey = 0;
+    ret = xmlSecKeySetValue(key, keyData);
+    if(ret < 0) {
+	xmlSecInternalError("xmlSecKeySetValue",
+            xmlSecKeyDataGetName(keyData));
+        goto done;
+    }
+
+    keyData = NULL;
+    res = 0;
+
+done:
+    xmlSecBnFinalize(&exponent);
+    xmlSecBnFinalize(&modulus);
+    xmlSecBufferFinalize(&blob);
+
+    if(hAlg != 0) {
+        BCryptCloseAlgorithmProvider(hAlg, 0);
+    }
+
+    if(hKey != 0) {
+        BCryptDestroyKey(hKey);
+    }
+
+    return(res);
+}
+
 static xmlSecKeyDataKlass xmlSecMSCngKeyDataRsaKlass = {
     sizeof(xmlSecKeyDataKlass),
     xmlSecMSCngKeyDataSize,
@@ -1033,7 +1224,7 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataRsaKlass = {
     NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
-    NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    xmlSecMSCngKeyDataRsaXmlRead,               /* xmlSecKeyDataXmlReadMethod xmlRead; */
     NULL,                                       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
     NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
     NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */

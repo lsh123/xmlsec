@@ -1311,4 +1311,106 @@ xmlSecMSCngKeyDataX509GetKlass(void) {
     return(&xmlSecMSCngKeyDataX509Klass);
 }
 
+/**************************************************************************
+ *
+ * Raw X509 Certificate processing
+ *
+ *
+ *************************************************************************/
+static int
+xmlSecMSCngKeyDataRawX509CertBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
+        const xmlSecByte* buf, xmlSecSize bufSize,
+        xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecKeyDataPtr data;
+    PCCERT_CONTEXT cert;
+    int ret;
+
+    xmlSecAssert2(id == xmlSecMSCngKeyDataRawX509CertId, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(bufSize > 0, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    cert = xmlSecMSCngX509CertDerRead(buf, bufSize);
+    if(cert == NULL) {
+        xmlSecInternalError("xmlSecMSCngX509CertDerRead", NULL);
+        return(-1);
+    }
+
+    data = xmlSecKeyEnsureData(key, xmlSecMSCngKeyDataX509Id);
+    if(data == NULL) {
+        xmlSecInternalError("xmlSecKeyEnsureData",
+            xmlSecKeyDataKlassGetName(id));
+        CertFreeCertificateContext(cert);
+        return(-1);
+    }
+
+    ret = xmlSecMSCngKeyDataX509AdoptCert(data, cert);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCert",
+            xmlSecKeyDataKlassGetName(id));
+        CertFreeCertificateContext(cert);
+        return(-1);
+    }
+
+    ret = xmlSecMSCngKeyDataX509VerifyAndExtractKey(data, key, keyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataX509VerifyAndExtractKey",
+            xmlSecKeyDataKlassGetName(id));
+        return(-1);
+    }
+
+    return(0);
+}
+
+static xmlSecKeyDataKlass xmlSecMSCngKeyDataRawX509CertKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    sizeof(xmlSecKeyData),
+
+    /* data */
+    xmlSecNameRawX509Cert,
+    xmlSecKeyDataUsageRetrievalMethodNodeBin,
+                                                /* xmlSecKeyDataUsage usage; */
+    xmlSecHrefRawX509Cert,                      /* const xmlChar* href; */
+    NULL,                                       /* const xmlChar* dataNodeName; */
+    xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    NULL,                                       /* xmlSecKeyDataInitializeMethod initialize; */
+    NULL,                                       /* xmlSecKeyDataDuplicateMethod duplicate; */
+    NULL,                                       /* xmlSecKeyDataFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    NULL,                                       /* xmlSecKeyDataGetTypeMethod getType; */
+    NULL,                                       /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    NULL,                                       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    xmlSecMSCngKeyDataRawX509CertBinRead,       /* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    NULL,                                       /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    NULL,                                       /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCngKeyDataRawX509CertGetKlass:
+ *
+ * The raw X509 certificates key data klass.
+ *
+ * Returns: raw X509 certificates key data klass.
+ */
+xmlSecKeyDataId
+xmlSecMSCngKeyDataRawX509CertGetKlass(void) {
+    return(&xmlSecMSCngKeyDataRawX509CertKlass);
+}
+
 #endif /* XMLSEC_NO_X509 */

@@ -31,6 +31,15 @@ extern "C" {
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCngKeyDataX509GetKlass(void);
 
 /**
+ * xmlSecMSCngKeyDataRawX509CertId:
+ *
+ * The MSCng raw X509 certificate klass.
+ */
+#define xmlSecMSCngKeyDataRawX509CertId \
+        xmlSecMSCngKeyDataRawX509CertGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCngKeyDataRawX509CertGetKlass(void);
+
+/**
  * xmlSecMSCngX509StoreId:
  *
  * The MSCng X509 store klass.

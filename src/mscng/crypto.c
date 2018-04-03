@@ -88,9 +88,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
 
 #ifndef XMLSEC_NO_X509
     gXmlSecMSCngFunctions->keyDataX509GetKlass                  = xmlSecMSCngKeyDataX509GetKlass;
-#ifdef XMLSEC_MSCNG_TODO
     gXmlSecMSCngFunctions->keyDataRawX509CertGetKlass           = xmlSecMSCngKeyDataRawX509CertGetKlass;
-#endif
 #endif /* XMLSEC_NO_X509 */
 
     /********************************************************************

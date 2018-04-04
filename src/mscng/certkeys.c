@@ -911,6 +911,78 @@ static void xmlSecMSCngKeyDataDsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* outpu
             xmlSecMSCngKeyDataDsaGetSize(data));
 }
 
+static int
+xmlSecMSCngKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
+        xmlSecKeyDataType type) {
+    UNREFERENCED_PARAMETER(type);
+    xmlSecMSCngKeyDataCtxPtr ctx;
+    BCRYPT_ALG_HANDLE hAlg = 0;
+    BCRYPT_KEY_HANDLE hKey = 0;
+    int res = -1;
+    NTSTATUS status;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataIsValid(data), xmlSecKeyDataTypeUnknown);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCngKeyDataSize), xmlSecKeyDataTypeUnknown);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataDsaId), -1);
+    xmlSecAssert2(sizeBits > 0, -1);
+
+    ctx = xmlSecMSCngKeyDataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    status = BCryptOpenAlgorithmProvider(
+        &hAlg,
+        BCRYPT_DSA_ALGORITHM,
+        NULL,
+        0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptOpenAlgorithmProvider",
+            xmlSecKeyDataGetName(data), status);
+        goto done;
+    }
+
+    status = BCryptGenerateKeyPair(
+        hAlg,
+        &hKey,
+        sizeBits,
+        0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptGenerateKeyPair", xmlSecKeyDataGetName(data),
+            status);
+        goto done;
+    }
+
+    /* need to finalize the key before it can be used */
+    status = BCryptFinalizeKeyPair(hKey, 0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptFinalizeKeyPair", xmlSecKeyDataGetName(data),
+            status);
+        goto done;
+    }
+
+    ret = xmlSecMSCngKeyDataAdoptKey(data, hKey);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataAdoptKey",
+            xmlSecKeyDataGetName(data));
+        goto done;
+    }
+    hKey = 0;
+
+    /* success */
+    res = 0;
+
+done:
+    if (hAlg != 0) {
+        BCryptCloseAlgorithmProvider(hAlg, 0);
+    }
+
+    if (hKey != 0) {
+        BCryptDestroyKey(hKey);
+    }
+
+    return(res);
+}
+
 static xmlSecKeyDataKlass xmlSecMSCngKeyDataDsaKlass = {
     sizeof(xmlSecKeyDataKlass),
     xmlSecMSCngKeyDataSize,
@@ -927,7 +999,7 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataDsaKlass = {
     xmlSecMSCngKeyDataInitialize,               /* xmlSecKeyDataInitializeMethod initialize; */
     xmlSecMSCngKeyDataDsaDuplicate,             /* xmlSecKeyDataDuplicateMethod duplicate; */
     xmlSecMSCngKeyDataFinalize,                 /* xmlSecKeyDataFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
+    xmlSecMSCngKeyDataDsaGenerate,              /* xmlSecKeyDataGenerateMethod generate; */
 
     /* get info */
     xmlSecMSCngKeyDataDsaGetType,               /* xmlSecKeyDataGetTypeMethod getType; */

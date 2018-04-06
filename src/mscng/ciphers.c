@@ -35,6 +35,10 @@
 typedef struct _xmlSecMSCngBlockCipherCtx xmlSecMSCngBlockCipherCtx, *xmlSecMSCngBlockCipherCtxPtr;
 
 struct _xmlSecMSCngBlockCipherCtx {
+    LPCWSTR pszAlgId;
+    BCRYPT_ALG_HANDLE hAlg;
+    xmlSecKeyDataId keyId;
+    xmlSecSize keySize;
     int ctxInitialized;
 };
 
@@ -58,11 +62,44 @@ xmlSecMSCngBlockCipherCheckId(xmlSecTransformPtr transform) {
 
 static int
 xmlSecMSCngBlockCipherInitialize(xmlSecTransformPtr transform) {
+    xmlSecMSCngBlockCipherCtxPtr ctx;
+    NTSTATUS status;
+
     xmlSecAssert2(xmlSecMSCngBlockCipherCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngBlockCipherSize), -1);
 
-    xmlSecNotImplementedError(NULL);
+    ctx = xmlSecMSCngBlockCipherGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
 
-    return(-1);
+    memset(ctx, 0, sizeof(xmlSecMSCngBlockCipherCtx));
+
+#ifndef XMLSEC_NO_AES
+    if(transform->id == xmlSecMSCngTransformAes256CbcId) {
+        ctx->pszAlgId = BCRYPT_AES_ALGORITHM;
+        ctx->keyId = xmlSecMSCngKeyDataAesId;
+        ctx->keySize = 32;
+    } else
+#endif /* XMLSEC_NO_AES */
+
+    {
+        xmlSecInvalidTransfromError(transform)
+        return(-1);
+    }
+
+    status = BCryptOpenAlgorithmProvider(
+        &ctx->hAlg,
+        ctx->pszAlgId,
+        NULL,
+        0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptOpenAlgorithmProvider",
+            xmlSecTransformGetName(transform), status);
+        return(-1);
+    }
+
+    ctx->ctxInitialized = 0;
+
+    return(0);
 }
 
 static void
@@ -74,12 +111,27 @@ xmlSecMSCngBlockCipherFinalize(xmlSecTransformPtr transform) {
 
 static int
 xmlSecMSCngBlockCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
+    xmlSecMSCngBlockCipherCtxPtr ctx;
+
     xmlSecAssert2(xmlSecMSCngBlockCipherCheckId(transform), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngBlockCipherSize), -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
-    xmlSecNotImplementedError(NULL);
+    ctx = xmlSecMSCngBlockCipherGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->hAlg != 0, -1);
 
-    return(-1);
+    keyReq->keyId = ctx->keyId;
+    keyReq->keyType = xmlSecKeyDataTypeSymmetric;
+    if(transform->operation == xmlSecTransformOperationEncrypt) {
+        keyReq->keyUsage = xmlSecKeyUsageEncrypt;
+    } else {
+        keyReq->keyUsage = xmlSecKeyUsageDecrypt;
+    }
+
+    keyReq->keyBitsSize = 8 * ctx->keySize;
+    return(0);
 }
 
 static int

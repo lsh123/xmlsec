@@ -138,6 +138,16 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaSha384GetKlass(voi
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaSha512GetKlass(void);
 #endif /* XMLSEC_NO_SHA512 */
 
+/**
+ * xmlSecMSCngTransformRsaPkcs1Id:
+ *
+ * The RSA PKCS1 key transport transform klass.
+ */
+#define xmlSecMSCngTransformRsaPkcs1Id \
+        xmlSecMSCngTransformRsaPkcs1GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaPkcs1GetKlass(void);
+
+
 #endif /* XMLSEC_NO_RSA */
 
 /********************************************************************

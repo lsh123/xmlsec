@@ -71,13 +71,16 @@ xmlSecMSCngSymKeyDataFinalize(xmlSecKeyDataPtr data) {
 static int
 xmlSecMSCngSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
         xmlSecKeyDataType type) {
+    xmlSecBufferPtr buffer;
+
     xmlSecAssert2(xmlSecMSCngSymKeyDataCheckId(data), -1);
     xmlSecAssert2(sizeBits > 0, -1);
     UNREFERENCED_PARAMETER(type);
 
-    xmlSecNotImplementedError(NULL);
+    buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
+    xmlSecAssert2(buffer != NULL, -1);
 
-    return(-1);
+    return(xmlSecMSCngGenerateRandom(buffer, (sizeBits + 7) / 8));
 }
 
 static xmlSecKeyDataType

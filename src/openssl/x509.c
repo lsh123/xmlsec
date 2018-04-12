@@ -870,6 +870,7 @@ xmlSecOpenSSLX509DataNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyI
                 xmlSecInternalError2("xmlSecOpenSSLX509CertificateNodeRead",
                                      xmlSecKeyDataGetName(data),
                                      "node=%s", xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+                return(-1);
             }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509SubjectName, xmlSecDSigNs)) {
             ret = xmlSecOpenSSLX509SubjectNameNodeRead(data, cur, keyInfoCtx);
@@ -877,6 +878,7 @@ xmlSecOpenSSLX509DataNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyI
                 xmlSecInternalError2("xmlSecOpenSSLX509SubjectNameNodeRead",
                                      xmlSecKeyDataGetName(data),
                                      "node=%s", xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+                return(-1);
             }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509IssuerSerial, xmlSecDSigNs)) {
             ret = xmlSecOpenSSLX509IssuerSerialNodeRead(data, cur, keyInfoCtx);
@@ -884,6 +886,7 @@ xmlSecOpenSSLX509DataNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyI
                 xmlSecInternalError2("xmlSecOpenSSLX509IssuerSerialNodeRead",
                                      xmlSecKeyDataGetName(data),
                                      "node=%s", xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+                return(-1);
             }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509SKI, xmlSecDSigNs)) {
             ret = xmlSecOpenSSLX509SKINodeRead(data, cur, keyInfoCtx);
@@ -891,6 +894,7 @@ xmlSecOpenSSLX509DataNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyI
                 xmlSecInternalError2("xmlSecOpenSSLX509SKINodeRead",
                                      xmlSecKeyDataGetName(data),
                                      "node=%s", xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+                return(-1);
             }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509CRL, xmlSecDSigNs)) {
             ret = xmlSecOpenSSLX509CRLNodeRead(data, cur, keyInfoCtx);
@@ -898,6 +902,7 @@ xmlSecOpenSSLX509DataNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyI
                 xmlSecInternalError2("xmlSecOpenSSLX509CRLNodeRead",
                                      xmlSecKeyDataGetName(data),
                                      "node=%s", xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+                return(-1);
             }
         } else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CHILD) != 0) {
             /* laxi schema validation: ignore unknown nodes */

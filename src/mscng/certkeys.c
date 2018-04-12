@@ -972,12 +972,12 @@ xmlSecMSCngKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
     res = 0;
 
 done:
-    if (hAlg != 0) {
-        BCryptCloseAlgorithmProvider(hAlg, 0);
-    }
-
     if (hKey != 0) {
         BCryptDestroyKey(hKey);
+    }
+
+    if (hAlg != 0) {
+        BCryptCloseAlgorithmProvider(hAlg, 0);
     }
 
     return(res);
@@ -1261,12 +1261,12 @@ done:
     xmlSecBnFinalize(&modulus);
     xmlSecBufferFinalize(&blob);
 
-    if(hAlg != 0) {
-        BCryptCloseAlgorithmProvider(hAlg, 0);
-    }
-
     if(hKey != 0) {
         BCryptDestroyKey(hKey);
+    }
+
+    if(hAlg != 0) {
+        BCryptCloseAlgorithmProvider(hAlg, 0);
     }
 
     return(res);
@@ -1439,12 +1439,12 @@ xmlSecMSCngKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
     res = 0;
 
 done:
-    if (hAlg != 0) {
-        BCryptCloseAlgorithmProvider(hAlg, 0);
-    }
-
     if (hKey != 0) {
         BCryptDestroyKey(hKey);
+    }
+
+    if (hAlg != 0) {
+        BCryptCloseAlgorithmProvider(hAlg, 0);
     }
 
     return(res);

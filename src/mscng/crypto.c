@@ -10,7 +10,10 @@
 
 #include <string.h>
 
-/* TODO: add MSCng include files */
+#define WIN32_NO_STATUS
+#include <windows.h>
+#undef WIN32_NO_STATUS
+#include <ntstatus.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -88,9 +91,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
 
 #ifndef XMLSEC_NO_X509
     gXmlSecMSCngFunctions->keyDataX509GetKlass                  = xmlSecMSCngKeyDataX509GetKlass;
-#ifdef XMLSEC_MSCNG_TODO
     gXmlSecMSCngFunctions->keyDataRawX509CertGetKlass           = xmlSecMSCngKeyDataRawX509CertGetKlass;
-#endif
 #endif /* XMLSEC_NO_X509 */
 
     /********************************************************************
@@ -323,6 +324,43 @@ xmlSecMSCngInit (void)  {
 int
 xmlSecMSCngShutdown(void) {
     /* TODO: if necessary, do additional shutdown here */
+    return(0);
+}
+
+/**
+ * xmlSecMSCngGenerateRandom:
+ * @buffer:             the destination buffer.
+ * @size:               the numer of bytes to generate.
+ *
+ * Generates @size random bytes and puts result in @buffer
+ * (not implemented yet).
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecMSCngGenerateRandom(xmlSecBufferPtr buffer, size_t size) {
+    NTSTATUS status;
+    int ret;
+
+    xmlSecAssert2(buffer != NULL, -1);
+    xmlSecAssert2(size > 0, -1);
+
+    ret = xmlSecBufferSetSize(buffer, size);
+    if(ret < 0) {
+	xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=%d", size);
+        return(-1);
+    }
+
+    status = BCryptGenRandom(
+        NULL,
+        (PBYTE)xmlSecBufferGetData(buffer),
+        size,
+        BCRYPT_USE_SYSTEM_PREFERRED_RNG);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptGenRandom", NULL, status);
+        return(-1);
+    }
+
     return(0);
 }
 

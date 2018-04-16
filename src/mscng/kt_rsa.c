@@ -39,7 +39,6 @@ typedef struct _xmlSecMSCngRsaPkcs1OaepCtx xmlSecMSCngRsaPkcs1OaepCtx, *xmlSecMS
 
 struct _xmlSecMSCngRsaPkcs1OaepCtx {
     xmlSecKeyDataPtr data;
-    int ctxInitialized;
 };
 
 /*********************************************************************
@@ -77,8 +76,7 @@ xmlSecMSCngRsaPkcs1OaepInitialize(xmlSecTransformPtr transform) {
     /* initialize */
     memset(ctx, 0, sizeof(xmlSecMSCngRsaPkcs1OaepCtx));
 
-    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaPkcs1Id)) {
-    } else {
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaPkcs1Id) == 0) {
         /* not found */
         xmlSecInvalidTransfromError(transform)
         return(-1);
@@ -224,7 +222,7 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxP
 
         dwInLen = inSize;
         dwBufLen = outSize;
-	hPubKey = xmlSecMSCngKeyDataGetPubKey(ctx->data);
+        hPubKey = xmlSecMSCngKeyDataGetPubKey(ctx->data);
         if (hPubKey == 0) {
             xmlSecInternalError("xmlSecMSCngKeyDataGetPubKey",
                 xmlSecTransformGetName(transform));
@@ -235,9 +233,9 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxP
         xmlSecAssert2(outBuf != NULL, -1);
 
         /* encrypt */
-	xmlSecNotImplementedError(NULL);
+        xmlSecNotImplementedError(NULL);
 
-	return(-1);
+        return(-1);
     } else {
         dwOutLen = inSize;
 
@@ -253,20 +251,20 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxP
 
         hPrivKey = xmlSecMSCngKeyDataGetPrivKey(ctx->data);
         if (hPrivKey == 0) {
-	    xmlSecInternalError("xmlSecMSCngKeyDataGetPrivKey",
+            xmlSecInternalError("xmlSecMSCngKeyDataGetPrivKey",
                 xmlSecTransformGetName(transform));
             return (-1);
         }
 
         /* decrypt */
-	securityStatus = NCryptDecrypt(hPrivKey,
+        securityStatus = NCryptDecrypt(hPrivKey,
             inBuf,
             inSize,
             NULL,
             outBuf,
             inSize,
             &dwOutLen,
-	    NCRYPT_PAD_PKCS1_FLAG);
+            NCRYPT_PAD_PKCS1_FLAG);
         if(securityStatus != ERROR_SUCCESS) {
             xmlSecMSCngNtError("NCryptDecrypt",
                 xmlSecTransformGetName(transform), securityStatus);

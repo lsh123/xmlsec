@@ -459,6 +459,86 @@ xmlSecMSCngX509StoreVerifyCertificateOwn(PCCERT_CONTEXT cert,
 }
 
 /**
+ * xmlSecMSCngX509StoreVerifyCertificateSystem:
+ * @cert: the certificate we check
+ * @time: pointer to FILETIME that we are interested in
+ * @untrustedStore: untrusted certificates added via API
+ * @docStore: untrusted certificates/CRLs extracted from a document
+ *
+ * Verifies @cert based on system trusted certificates.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+static int
+xmlSecMSCngX509StoreVerifyCertificateSystem(PCCERT_CONTEXT cert,
+        FILETIME* time, HCERTSTORE untrustedStore, HCERTSTORE docStore) {
+    PCCERT_CHAIN_CONTEXT pChainContext = NULL;
+    CERT_CHAIN_PARA chainPara;
+    HCERTSTORE chainStore = NULL;
+    int res = -1;
+    int ret;
+
+    /* initialize data structures */
+    memset(&chainPara, 0, sizeof(CERT_CHAIN_PARA));
+    chainPara.cbSize = sizeof(CERT_CHAIN_PARA);
+
+    /* create additional store for CertGetCertificateChain() */
+    chainStore = CertOpenStore(CERT_STORE_PROV_COLLECTION, 0, 0, 0, NULL);
+    if(chainStore == NULL) {
+        xmlSecMSCngLastError("CertOpenStore", NULL);
+        goto end;
+    }
+
+    ret = CertAddStoreToCollection(chainStore, docStore, 0, 0);
+    if(ret == FALSE) {
+        xmlSecMSCngLastError("CertAddStoreToCollection", NULL);
+        goto end;
+    }
+
+    ret = CertAddStoreToCollection(chainStore, untrustedStore, 0, 0);
+    if(ret == FALSE) {
+        xmlSecMSCngLastError("CertAddStoreToCollection", NULL);
+        goto end;
+    }
+
+    /* build a chain using CertGetCertificateChain
+     and the certificate retrieved */
+    ret = CertGetCertificateChain(NULL, cert, time, chainStore, &chainPara,
+        CERT_CHAIN_REVOCATION_CHECK_CHAIN, NULL, &pChainContext);
+    if(ret == FALSE) {
+        xmlSecMSCngLastError("CertGetCertificateChain", NULL);
+        goto end;
+    }
+
+    if (pChainContext->TrustStatus.dwErrorStatus == CERT_TRUST_REVOCATION_STATUS_UNKNOWN) {
+        CertFreeCertificateChain(pChainContext);
+        pChainContext = NULL;
+        ret = CertGetCertificateChain(NULL, cert, time, chainStore, &chainPara,
+            CERT_CHAIN_REVOCATION_CHECK_CHAIN_EXCLUDE_ROOT, NULL,
+            &pChainContext);
+        if(ret == FALSE) {
+            xmlSecMSCngLastError("CertGetCertificateChain", NULL);
+            goto end;
+        }
+    }
+
+    if(pChainContext->TrustStatus.dwErrorStatus == CERT_TRUST_NO_ERROR) {
+        res = 0;
+    }
+
+end:
+    if(pChainContext != NULL) {
+        CertFreeCertificateChain(pChainContext);
+    }
+
+    if(chainStore != NULL) {
+        CertCloseStore(chainStore, 0);
+    }
+
+    return (res);
+}
+
+/**
  * xmlSecMSCngUnixTimeToFileTime:
  *
  * Converts time_t into FILETIME timestamp. See xmlSecMSCngX509CertGetTime()
@@ -523,8 +603,13 @@ xmlSecMSCngX509StoreVerifyCertificate(xmlSecKeyDataStorePtr store,
         return(0);
     }
 
-    /* TODO the same based on system trusted certificates */
-    xmlSecNotImplementedError(NULL);
+    /* verify based on the system certificates */
+    ret = xmlSecMSCngX509StoreVerifyCertificateSystem(cert,
+        &fTime, ctx->untrusted, certStore);
+    if(ret >= 0) {
+        return(0);
+    }
+
     return(-1);
 }
 

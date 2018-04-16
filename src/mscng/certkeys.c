@@ -1059,13 +1059,33 @@ xmlSecMSCngKeyDataRsaGetType(xmlSecKeyDataPtr data) {
     return(xmlSecKeyDataTypePublic);
 }
 
+static int
+xmlSecMSCngKeyDataGetSize(xmlSecKeyDataPtr data) {
+    xmlSecMSCngKeyDataCtxPtr ctx;
+
+    xmlSecAssert2(xmlSecKeyDataIsValid(data), 0);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCngKeyDataSize), 0);
+
+    ctx = xmlSecMSCngKeyDataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, 0);
+
+    if(ctx->cert != NULL) {
+        xmlSecAssert2(ctx->cert->pCertInfo != NULL, 0);
+        return(CertGetPublicKeyLength(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+            &ctx->cert->pCertInfo->SubjectPublicKeyInfo));
+    } else if(ctx->pubkey != 0 || ctx->privkey != 0) {
+        xmlSecNotImplementedError(NULL);
+        return(0);
+    }
+
+    return(0);
+}
+
 static xmlSecSize
 xmlSecMSCngKeyDataRsaGetSize(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataRsaId), 0);
 
-    xmlSecNotImplementedError(NULL);
-
-    return(0);
+    return(xmlSecMSCngKeyDataGetSize(data));
 }
 
 

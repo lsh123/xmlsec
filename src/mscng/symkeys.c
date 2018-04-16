@@ -34,6 +34,12 @@
 static int
 xmlSecMSCngSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
 
+#ifndef XMLSEC_NO_AES
+    if(klass == xmlSecMSCngKeyDataAesId) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_AES */
+
 #ifndef XMLSEC_NO_HMAC
     if(klass == xmlSecMSCngKeyDataHmacId) {
         return(1);
@@ -207,3 +213,60 @@ xmlSecMSCngKeyDataHmacGetKlass(void) {
     return(&xmlSecMSCngKeyDataHmacKlass);
 }
 #endif /* XMLSEC_NO_HMAC */
+
+#ifndef XMLSEC_NO_AES
+/**************************************************************************
+ *
+ * <xmlsec:AESKeyValue> processing
+ *
+ *************************************************************************/
+static xmlSecKeyDataKlass xmlSecMSCngKeyDataAesKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    xmlSecKeyDataBinarySize,
+
+    /* data */
+    xmlSecNameAESKeyValue,
+    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+                                                /* xmlSecKeyDataUsage usage; */
+    xmlSecHrefAESKeyValue,                      /* const xmlChar* href; */
+    xmlSecNodeAESKeyValue,                      /* const xmlChar* dataNodeName; */
+    xmlSecNs,                                   /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecMSCngSymKeyDataInitialize,            /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecMSCngSymKeyDataDuplicate,             /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecMSCngSymKeyDataFinalize,              /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecMSCngSymKeyDataGenerate,              /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    xmlSecMSCngSymKeyDataGetType,               /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecMSCngSymKeyDataGetSize,               /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    xmlSecMSCngSymKeyDataXmlRead,               /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    xmlSecMSCngSymKeyDataXmlWrite,              /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    xmlSecMSCngSymKeyDataBinRead,               /* xmlSecKeyDataBinReadMethod binRead; */
+    xmlSecMSCngSymKeyDataBinWrite,              /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecMSCngSymKeyDataDebugDump,             /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecMSCngSymKeyDataDebugXmlDump,          /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCngKeyDataAesGetKlass:
+ *
+ * The AES key data klass.
+ *
+ * Returns: AES key data klass.
+ */
+xmlSecKeyDataId
+xmlSecMSCngKeyDataAesGetKlass(void) {
+    return(&xmlSecMSCngKeyDataAesKlass);
+}
+#endif /* XMLSEC_NO_AES */

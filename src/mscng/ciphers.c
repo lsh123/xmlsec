@@ -56,7 +56,9 @@ struct _xmlSecMSCngBlockCipherCtx {
 static int
 xmlSecMSCngBlockCipherCheckId(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_AES
-    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformAes256CbcId)) {
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformAes128CbcId)) {
+       return(1);
+    } else if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformAes256CbcId)) {
        return(1);
     }
 #endif /* XMLSEC_NO_AES */
@@ -78,7 +80,11 @@ xmlSecMSCngBlockCipherInitialize(xmlSecTransformPtr transform) {
     memset(ctx, 0, sizeof(xmlSecMSCngBlockCipherCtx));
 
 #ifndef XMLSEC_NO_AES
-    if(transform->id == xmlSecMSCngTransformAes256CbcId) {
+    if(transform->id == xmlSecMSCngTransformAes128CbcId) {
+        ctx->pszAlgId = BCRYPT_AES_ALGORITHM;
+        ctx->keyId = xmlSecMSCngKeyDataAesId;
+        ctx->keySize = 16;
+    } else if(transform->id == xmlSecMSCngTransformAes256CbcId) {
         ctx->pszAlgId = BCRYPT_AES_ALGORITHM;
         ctx->keyId = xmlSecMSCngKeyDataAesId;
         ctx->keySize = 32;
@@ -705,6 +711,45 @@ xmlSecMSCngBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTran
     }
 
     return(0);
+}
+
+static xmlSecTransformKlass xmlSecMSCngAes128CbcKlass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecMSCngBlockCipherSize,                 /* xmlSecSize objSize */
+
+    xmlSecNameAes128Cbc,                        /* const xmlChar* name; */
+    xmlSecHrefAes128Cbc,                        /* const xmlChar* href; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+
+    xmlSecMSCngBlockCipherInitialize,           /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCngBlockCipherFinalize,             /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecMSCngBlockCipherSetKeyReq,            /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecMSCngBlockCipherSetKey,               /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCngBlockCipherExecute,              /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCngTransformAes128CbcGetKlass:
+ *
+ * AES 128 CBC encryption transform klass.
+ *
+ * Returns: pointer to AES 128 CBC encryption transform.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformAes128CbcGetKlass(void) {
+    return(&xmlSecMSCngAes128CbcKlass);
 }
 
 static xmlSecTransformKlass xmlSecMSCngAes256CbcKlass = {

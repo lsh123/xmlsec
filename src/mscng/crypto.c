@@ -60,7 +60,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
      * Key data ids
      *
      ********************************************************************/
-#ifdef XMLSEC_MSCNG_TODO
+#ifndef XMLSEC_NO_AES
     gXmlSecMSCngFunctions->keyDataAesGetKlass           = xmlSecMSCngKeyDataAesGetKlass;
 #endif /* XMLSEC_NO_AES */
 

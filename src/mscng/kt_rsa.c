@@ -160,11 +160,11 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxP
     BCRYPT_KEY_HANDLE hPubKey;
     NCRYPT_KEY_HANDLE hPrivKey;
     DWORD dwInLen;
-    DWORD dwBufLen;
     DWORD dwOutLen;
     xmlSecByte * outBuf;
     xmlSecByte * inBuf;
     SECURITY_STATUS securityStatus;
+    NTSTATUS status;
     int ret;
 
     xmlSecAssert2(xmlSecMSCngRsaPkcs1OaepCheckId(transform), -1);
@@ -212,16 +212,11 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxP
                 xmlSecTransformGetName(transform));
             return(-1);
         }
-
-        ret = xmlSecBufferSetData(out, xmlSecBufferGetData(in), inSize);
-        if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferSetData",
-                xmlSecTransformGetName(transform), "size=%d", inSize);
-            return(-1);
-        }
-
         dwInLen = inSize;
-        dwBufLen = outSize;
+
+        inBuf   = xmlSecBufferGetData(in);
+        outBuf  = xmlSecBufferGetData(out);
+
         hPubKey = xmlSecMSCngKeyDataGetPubKey(ctx->data);
         if (hPubKey == 0) {
             xmlSecInternalError("xmlSecMSCngKeyDataGetPubKey",
@@ -229,13 +224,22 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxP
             return (-1);
         }
 
-        outBuf = xmlSecBufferGetData(out);
-        xmlSecAssert2(outBuf != NULL, -1);
-
         /* encrypt */
-        xmlSecNotImplementedError(NULL);
-
-        return(-1);
+        status = BCryptEncrypt(hPubKey,
+            inBuf,
+            inSize,
+            NULL,
+            NULL,
+            0,
+            outBuf,
+            outSize,
+            &dwOutLen,
+            BCRYPT_PAD_PKCS1);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptEncrypt",
+                xmlSecTransformGetName(transform), status);
+            return(-1);
+        }
     } else {
         dwOutLen = inSize;
 

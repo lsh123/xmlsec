@@ -1061,6 +1061,7 @@ xmlSecMSCngKeyDataRsaGetType(xmlSecKeyDataPtr data) {
 
 static int
 xmlSecMSCngKeyDataGetSize(xmlSecKeyDataPtr data) {
+    NTSTATUS status;
     xmlSecMSCngKeyDataCtxPtr ctx;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), 0);
@@ -1073,7 +1074,23 @@ xmlSecMSCngKeyDataGetSize(xmlSecKeyDataPtr data) {
         xmlSecAssert2(ctx->cert->pCertInfo != NULL, 0);
         return(CertGetPublicKeyLength(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
             &ctx->cert->pCertInfo->SubjectPublicKeyInfo));
-    } else if(ctx->pubkey != 0 || ctx->privkey != 0) {
+    } else if(ctx->pubkey != 0) {
+        DWORD length = 0;
+        DWORD lenlen = sizeof(DWORD);
+
+        status = BCryptGetProperty(ctx->pubkey,
+            BCRYPT_KEY_STRENGTH,
+            (PUCHAR)&length,
+            lenlen,
+            &lenlen,
+            0);
+        if(status != STATUS_SUCCESS) {
+            xmlSecMSCngNtError("BCryptGetproperty", NULL, status);
+            return(0);
+        }
+
+        return(length);
+    } else if(ctx->privkey != 0) {
         xmlSecNotImplementedError(NULL);
         return(0);
     }

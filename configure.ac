@@ -765,11 +765,11 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
     if test "z$OPENSSL_VERSION" = "z" ; then
         AC_EGREP_CPP(greater-than-minvers, [
             #include <openssl/opensslv.h>
-            #if OPENSSL_VERSION_NUMBER == 0x20000000L && defined(LIBRESSL_VERSION_NUMBER)
+            #if OPENSSL_VERSION_NUMBER == 0x20000000L && (defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER < 0x20700000L)
             greater-than-minvers
             #endif
         ],[
-            OPENSSL_VERSION="1.0.0 (libressl)"
+            OPENSSL_VERSION="1.0.0 (libressl < 2.7)"
         ],[
             OPENSSL_VERSION=""
         ])
@@ -778,7 +778,7 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
     if test "z$OPENSSL_VERSION" = "z" ; then
         AC_EGREP_CPP(greater-than-minvers, [
             #include <openssl/opensslv.h>
-            #if OPENSSL_VERSION_NUMBER >= 0x10100000L
+            #if (defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER >= 0x20700000L) || OPENSSL_VERSION_NUMBER >= 0x10100000L
             greater-than-minvers
             #endif
         ],[

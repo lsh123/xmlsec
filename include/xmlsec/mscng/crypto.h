@@ -379,6 +379,15 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCngKeyDataAesGetKlass(void);
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCngTransformAes128CbcGetKlass(void);
 
 /**
+ * xmlSecMSCngTransformAes192CbcId:
+ *
+ * The AES192 CBC cipher transform klass.
+ */
+#define xmlSecMSCngTransformAes192CbcId \
+        xmlSecMSCngTransformAes192CbcGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCngTransformAes192CbcGetKlass(void);
+
+/**
  * xmlSecMSCngTransformAes256CbcId:
  *
  * The AES256 CBC cipher transform klass.

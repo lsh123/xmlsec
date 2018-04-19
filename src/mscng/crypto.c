@@ -112,11 +112,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
     /******************************* AES ********************************/
 #ifndef XMLSEC_NO_AES
     gXmlSecMSCngFunctions->transformAes128CbcGetKlass           = xmlSecMSCngTransformAes128CbcGetKlass;
-#endif
-#ifdef XMLSEC_MSCNG_TODO
     gXmlSecMSCngFunctions->transformAes192CbcGetKlass           = xmlSecMSCngTransformAes192CbcGetKlass;
-#endif /* XMLSEC_NO_AES */
-#ifndef XMLSEC_NO_AES
     gXmlSecMSCngFunctions->transformAes256CbcGetKlass           = xmlSecMSCngTransformAes256CbcGetKlass;
 #endif
 #ifdef XMLSEC_MSCNG_TODO

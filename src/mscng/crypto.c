@@ -240,9 +240,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
 #endif /* XMLSEC_NO_SHA512 */
 
     gXmlSecMSCngFunctions->transformRsaPkcs1GetKlass            = xmlSecMSCngTransformRsaPkcs1GetKlass;
-#ifdef XMLSEC_MSCNG_TODO
     gXmlSecMSCngFunctions->transformRsaOaepGetKlass             = xmlSecMSCngTransformRsaOaepGetKlass;
-#endif /* XMLSEC_MSCNG_TODO */
 
 #endif /* XMLSEC_NO_RSA */
 

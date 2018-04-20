@@ -147,6 +147,14 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaSha512GetKlass(voi
         xmlSecMSCngTransformRsaPkcs1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaPkcs1GetKlass(void);
 
+/**
+ * xmlSecMSCngTransformRsaOaepId:
+ *
+ * The RSA OAEP key transport transform klass.
+ */
+#define xmlSecMSCngTransformRsaOaepId \
+        xmlSecMSCngTransformRsaOaepGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaOaepGetKlass(void);
 
 #endif /* XMLSEC_NO_RSA */
 

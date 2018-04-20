@@ -60,6 +60,10 @@ xmlSecMSCngRsaPkcs1OaepCheckId(xmlSecTransformPtr transform) {
         return(1);
     }
 
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepId)) {
+        return(1);
+    }
+
     return(0);
 }
 
@@ -75,12 +79,6 @@ xmlSecMSCngRsaPkcs1OaepInitialize(xmlSecTransformPtr transform) {
 
     /* initialize */
     memset(ctx, 0, sizeof(xmlSecMSCngRsaPkcs1OaepCtx));
-
-    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaPkcs1Id) == 0) {
-        /* not found */
-        xmlSecInvalidTransfromError(transform)
-        return(-1);
-    }
 
     /* done */
     return(0);
@@ -261,17 +259,41 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxP
         }
 
         /* decrypt */
-        securityStatus = NCryptDecrypt(hPrivKey,
-            inBuf,
-            inSize,
-            NULL,
-            outBuf,
-            inSize,
-            &dwOutLen,
-            NCRYPT_PAD_PKCS1_FLAG);
-        if(securityStatus != ERROR_SUCCESS) {
-            xmlSecMSCngNtError("NCryptDecrypt",
-                xmlSecTransformGetName(transform), securityStatus);
+        if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaPkcs1Id)) {
+            securityStatus = NCryptDecrypt(hPrivKey,
+                inBuf,
+                inSize,
+                NULL,
+                outBuf,
+                inSize,
+                &dwOutLen,
+                NCRYPT_PAD_PKCS1_FLAG);
+            if(securityStatus != ERROR_SUCCESS) {
+                xmlSecMSCngNtError("NCryptDecrypt",
+                    xmlSecTransformGetName(transform), securityStatus);
+                return(-1);
+            }
+        } else if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepId)) {
+            BCRYPT_OAEP_PADDING_INFO paddingInfo;
+            paddingInfo.pszAlgId = BCRYPT_SHA1_ALGORITHM;
+            paddingInfo.pbLabel = NULL;
+            paddingInfo.cbLabel = 0;
+
+            securityStatus = NCryptDecrypt(hPrivKey,
+                inBuf,
+                inSize,
+                &paddingInfo,
+                outBuf,
+                inSize,
+                &dwOutLen,
+                NCRYPT_PAD_OAEP_FLAG);
+            if(securityStatus != ERROR_SUCCESS) {
+                xmlSecMSCngNtError("NCryptDecrypt",
+                    xmlSecTransformGetName(transform), securityStatus);
+                return(-1);
+            }
+        } else {
+            xmlSecInvalidTransfromError(transform)
             return(-1);
         }
 
@@ -376,6 +398,98 @@ static xmlSecTransformKlass xmlSecMSCngRsaPkcs1Klass = {
 xmlSecTransformId
 xmlSecMSCngTransformRsaPkcs1GetKlass(void) {
     return(&xmlSecMSCngRsaPkcs1Klass);
+}
+
+static int
+xmlSecMSCngRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
+        xmlSecTransformCtxPtr transformCtx) {
+    xmlSecMSCngRsaPkcs1OaepCtxPtr ctx;
+    xmlNodePtr cur;
+
+    xmlSecAssert2(xmlSecMSCngRsaPkcs1OaepCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngRsaPkcs1OaepCtx), -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+
+    ctx = xmlSecMSCngRsaPkcs1OaepGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    cur = xmlSecGetNextElementNode(node->children);
+    while(cur != NULL) {
+        if(xmlSecCheckNodeName(cur, xmlSecNodeRsaOAEPparams, xmlSecEncNs)) {
+            xmlSecNotImplementedError(NULL);
+            return(-1);
+        } else if(xmlSecCheckNodeName(cur,  xmlSecNodeDigestMethod, xmlSecDSigNs)) {
+            xmlChar* algorithm;
+
+            /* Algorithm attribute is required */
+            algorithm = xmlGetProp(cur, xmlSecAttrAlgorithm);
+            if(algorithm == NULL) {
+                xmlSecInvalidNodeAttributeError(cur, xmlSecAttrAlgorithm,
+                                                xmlSecTransformGetName(transform),
+                                                "empty");
+                return(-1);
+            }
+
+            /* for now we support only sha1 */
+            if(xmlStrcmp(algorithm, xmlSecHrefSha1) != 0) {
+                xmlSecInvalidTransfromError2(transform,
+                                "digest algorithm=\"%s\" is not supported for rsa/oaep",
+                                xmlSecErrorsSafeString(algorithm));
+                xmlFree(algorithm);
+                return(-1);
+            }
+            xmlFree(algorithm);
+        } else {
+            /* node not recognized */
+            xmlSecUnexpectedNodeError(cur, xmlSecTransformGetName(transform));
+            return(-1);
+        }
+
+        /* next node */
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    return(0);
+}
+
+static xmlSecTransformKlass xmlSecMSCngRsaOaepKlass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecMSCngRsaPkcs1OaepCtx,                 /* xmlSecSize objSize */
+
+    xmlSecNameRsaOaep,                          /* const xmlChar* name; */
+    xmlSecHrefRsaOaep,                          /* const xmlChar* href; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+
+    xmlSecMSCngRsaPkcs1OaepInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCngRsaPkcs1OaepFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecMSCngRsaOaepNodeRead,                 /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecMSCngRsaPkcs1OaepSetKeyReq,           /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecMSCngRsaPkcs1OaepSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCngRsaPkcs1OaepExecute,             /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCngTransformRsaOaepGetKlass:
+ *
+ * The RSA-OAEP key transport transform klass.
+ *
+ * Returns: RSA-OAEP key transport transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformRsaOaepGetKlass(void) {
+    return(&xmlSecMSCngRsaOaepKlass);
 }
 
 #endif /* XMLSEC_NO_RSA */

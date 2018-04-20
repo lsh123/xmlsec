@@ -223,19 +223,44 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxP
         }
 
         /* encrypt */
-        status = BCryptEncrypt(hPubKey,
-            inBuf,
-            inSize,
-            NULL,
-            NULL,
-            0,
-            outBuf,
-            outSize,
-            &dwOutLen,
-            BCRYPT_PAD_PKCS1);
-        if(status != STATUS_SUCCESS) {
-            xmlSecMSCngNtError("BCryptEncrypt",
-                xmlSecTransformGetName(transform), status);
+        if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaPkcs1Id)) {
+            status = BCryptEncrypt(hPubKey,
+                inBuf,
+                inSize,
+                NULL,
+                NULL,
+                0,
+                outBuf,
+                outSize,
+                &dwOutLen,
+                BCRYPT_PAD_PKCS1);
+            if(status != STATUS_SUCCESS) {
+                xmlSecMSCngNtError("BCryptEncrypt",
+                    xmlSecTransformGetName(transform), status);
+                return(-1);
+            }
+        } else if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepId)) {
+            BCRYPT_OAEP_PADDING_INFO paddingInfo;
+            paddingInfo.pszAlgId = BCRYPT_SHA1_ALGORITHM;
+            paddingInfo.pbLabel = NULL;
+            paddingInfo.cbLabel = 0;
+            status = BCryptEncrypt(hPubKey,
+                inBuf,
+                inSize,
+                &paddingInfo,
+                NULL,
+                0,
+                outBuf,
+                outSize,
+                &dwOutLen,
+                BCRYPT_PAD_OAEP);
+            if(status != STATUS_SUCCESS) {
+                xmlSecMSCngNtError("BCryptEncrypt",
+                    xmlSecTransformGetName(transform), status);
+                return(-1);
+            }
+        } else {
+            xmlSecInvalidTransfromError(transform)
             return(-1);
         }
     } else {

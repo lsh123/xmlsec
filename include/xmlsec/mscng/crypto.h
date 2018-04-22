@@ -211,6 +211,33 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformEcdsaSha512GetKlass(v
 
 /********************************************************************
  *
+ * DES transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_DES
+
+/**
+ * xmlSecMSCngKeyDataDesId:
+ *
+ * The DES key data klass.
+ */
+#define xmlSecMSCngKeyDataDesId \
+        xmlSecMSCngKeyDataDesGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngKeyDataDesGetKlass(void);
+
+/**
+ * xmlSecMSCngTransformDes3CbcId:
+ *
+ * The DES3 CBC cipher transform klass.
+ */
+#define xmlSecMSCngTransformDes3CbcId \
+        xmlSecMSCngTransformDes3CbcGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformDes3CbcGetKlass(void);
+
+#endif /* XMLSEC_NO_DES */
+
+/********************************************************************
+ *
  * HMAC transforms
  *
  *******************************************************************/

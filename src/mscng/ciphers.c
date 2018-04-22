@@ -65,6 +65,12 @@ xmlSecMSCngBlockCipherCheckId(xmlSecTransformPtr transform) {
     }
 #endif /* XMLSEC_NO_AES */
 
+#ifndef XMLSEC_NO_DES
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformDes3CbcId)) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_DES */
+
     return(0);
 }
 
@@ -96,6 +102,14 @@ xmlSecMSCngBlockCipherInitialize(xmlSecTransformPtr transform) {
         ctx->keySize = 32;
     } else
 #endif /* XMLSEC_NO_AES */
+
+#ifndef XMLSEC_NO_DES
+    if(transform->id == xmlSecMSCngTransformDes3CbcId) {
+        ctx->pszAlgId = BCRYPT_3DES_ALGORITHM;
+        ctx->keyId = xmlSecMSCngKeyDataDesId;
+        ctx->keySize = 24;
+    } else
+#endif /* XMLSEC_NO_DES */
 
     {
         xmlSecInvalidTransfromError(transform)
@@ -837,3 +851,46 @@ xmlSecMSCngTransformAes256CbcGetKlass(void) {
 }
 
 #endif /* XMLSEC_NO_AES */
+
+#ifndef XMLSEC_NO_DES
+
+static xmlSecTransformKlass xmlSecMSCngDes3CbcKlass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),        /* size_t klassSize */
+    xmlSecMSCngBlockCipherSize,          /* size_t objSize */
+
+    xmlSecNameDes3Cbc,                   /* const xmlChar* name; */
+    xmlSecHrefDes3Cbc,                   /* const xmlChar* href; */
+    xmlSecTransformUsageEncryptionMethod,/* xmlSecAlgorithmUsage usage; */
+
+    xmlSecMSCngBlockCipherInitialize,    /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCngBlockCipherFinalize,      /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecMSCngBlockCipherSetKeyReq,     /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecMSCngBlockCipherSetKey,        /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,   /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,       /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,        /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCngBlockCipherExecute,       /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                /* void* reserved0; */
+    NULL,                                /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCngTransformDes3CbcGetKlass:
+ *
+ * Triple DES CBC encryption transform klass.
+ *
+ * Returns: pointer to Triple DES encryption transform.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformDes3CbcGetKlass(void) {
+    return(&xmlSecMSCngDes3CbcKlass);
+}
+
+#endif /* XMLSEC_NO_DES */

@@ -49,4 +49,13 @@
 
 #endif /* !defined(XMLSEC_OPENSSL_API_110) */
 
+/******************************************************************************
+ *
+ * LibreSSL 2.7 compatibility (implements most of OpenSSL 1.1 API)
+ *
+ *****************************************************************************/
+#if defined(LIBRESSL_VERSION_NUMBER) && defined(XMLSEC_OPENSSL_API_110)
+#define EVP_CIPHER_CTX_encrypting(x)       ((x)->encrypt)
+#endif /* defined(LIBRESSL_VERSION_NUMBER) && defined(XMLSEC_OPENSSL_API_110) */
+
 #endif /* __XMLSEC_OPENSSL_OPENSSL_COMPAT_H__ */

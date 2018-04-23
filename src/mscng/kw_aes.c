@@ -65,15 +65,124 @@ static int
 xmlSecMSCngKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
         xmlSecByte * out, xmlSecSize outSize, void * context) {
     xmlSecMSCngKWAesCtxPtr ctx = (xmlSecMSCngKWAesCtxPtr)context;
+    BCRYPT_ALG_HANDLE hAlg = NULL;
+    BCRYPT_KEY_HANDLE hKey = NULL;
+    DWORD cbData;
+    PBYTE pbKeyObject = NULL;
+    DWORD cbKeyObject;
+    xmlSecBuffer blob;
+    BCRYPT_KEY_DATA_BLOB_HEADER* blobHeader;
+    xmlSecSize blobHeaderLen;
+    int res = -1;
+    NTSTATUS status;
+    int ret;
 
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize >= XMLSEC_KW_AES_BLOCK_SIZE, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= inSize, -1);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(xmlSecBufferGetSize(&ctx->keyBuffer) == ctx->keySize, -1);
 
-    xmlSecNotImplementedError(NULL);
-    return(-1);
+    status = BCryptOpenAlgorithmProvider(
+        &hAlg,
+        BCRYPT_AES_ALGORITHM,
+        NULL,
+        0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptOpenAlgorithmProvider", NULL, status);
+        goto done;
+    }
+
+    /* allocate the key object */
+    status = BCryptGetProperty(hAlg,
+        BCRYPT_OBJECT_LENGTH,
+        (PBYTE)&cbKeyObject,
+        sizeof(DWORD),
+        &cbData,
+        0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
+        goto done;
+    }
+
+    pbKeyObject = xmlMalloc(cbKeyObject);
+    if(pbKeyObject == NULL) {
+        xmlSecMallocError(cbKeyObject, NULL);
+        goto done;
+    }
+
+    /* prefix the key with a BCRYPT_KEY_DATA_BLOB_HEADER */
+    blobHeaderLen = sizeof(BCRYPT_KEY_DATA_BLOB_HEADER) + xmlSecBufferGetSize(&ctx->keyBuffer);
+    ret = xmlSecBufferInitialize(&blob, blobHeaderLen);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferInitialize", NULL, "size=%d",
+            blobHeaderLen);
+        goto done;
+    }
+
+    blobHeader = (BCRYPT_KEY_DATA_BLOB_HEADER*)xmlSecBufferGetData(&blob);
+    blobHeader->dwMagic = BCRYPT_KEY_DATA_BLOB_MAGIC;
+    blobHeader->dwVersion = BCRYPT_KEY_DATA_BLOB_VERSION1;
+    blobHeader->cbKeyData = xmlSecBufferGetSize(&ctx->keyBuffer);
+    memcpy(xmlSecBufferGetData(&blob) + sizeof(BCRYPT_KEY_DATA_BLOB_HEADER),
+        xmlSecBufferGetData(&ctx->keyBuffer),
+        xmlSecBufferGetSize(&ctx->keyBuffer));
+
+    /* perform the actual import */
+    status = BCryptImportKey(hAlg,
+        NULL,
+        BCRYPT_KEY_DATA_BLOB,
+        &hKey,
+        pbKeyObject,
+        cbKeyObject,
+        xmlSecBufferGetData(&blob),
+        xmlSecBufferGetSize(&blob),
+        0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptImportKey", NULL, status);
+        goto done;
+    }
+
+    /* handle padding ourselves */
+    if(out != in) {
+        memcpy(out, in, inSize);
+    }
+
+    cbData = inSize;
+    status = BCryptEncrypt(hKey,
+        (PUCHAR)in,
+        inSize,
+        NULL,
+        NULL,
+        0,
+        out,
+        inSize,
+        &cbData,
+        0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptEncrypt", NULL, status);
+        goto done;
+    }
+
+    res = cbData;
+
+done:
+    if (hKey != NULL) {
+        BCryptDestroyKey(hKey);
+    }
+
+    xmlSecBufferFinalize(&blob);
+
+    if (pbKeyObject != NULL) {
+        xmlFree(pbKeyObject);
+    }
+
+    if(hAlg != NULL) {
+        BCryptCloseAlgorithmProvider(hAlg, 0);
+    }
+
+    return(res);
 }
 
 static int
@@ -367,8 +476,10 @@ xmlSecMSCngKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
         }
 
         if(transform->operation == xmlSecTransformOperationEncrypt) {
-            xmlSecNotImplementedError(NULL);
-            return(-1);
+            /* the encoded key might be 8 bytes longer plus 8 bytes just in
+             * case */
+            outSize = inSize + XMLSEC_KW_AES_MAGIC_BLOCK_SIZE +
+                XMLSEC_KW_AES_BLOCK_SIZE;
         } else {
             outSize = inSize + XMLSEC_KW_AES_BLOCK_SIZE;
         }
@@ -381,8 +492,16 @@ xmlSecMSCngKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
         }
 
         if(transform->operation == xmlSecTransformOperationEncrypt) {
-            xmlSecNotImplementedError(NULL);
-            return(-1);
+            ret = xmlSecKWAesEncode(&xmlSecMSCngKWAesKlass, ctx,
+                xmlSecBufferGetData(in), inSize, xmlSecBufferGetData(out),
+                outSize);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecKWAesEncode",
+                    xmlSecTransformGetName(transform));
+                return(-1);
+            }
+
+            outSize = ret;
         } else {
             ret = xmlSecKWAesDecode(&xmlSecMSCngKWAesKlass, ctx,
                 xmlSecBufferGetData(in), inSize, xmlSecBufferGetData(out),

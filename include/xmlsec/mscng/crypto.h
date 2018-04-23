@@ -432,6 +432,15 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCngTransformAes192CbcGetKlass(vo
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCngTransformAes256CbcGetKlass(void);
 
 /**
+ * xmlSecMSCngTransformKWAes128Id:
+ *
+ * The AES 128 key wrap transform klass.
+ */
+#define xmlSecMSCngTransformKWAes128Id \
+        xmlSecMSCngTransformKWAes128GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformKWAes128GetKlass(void);
+
+/**
  * xmlSecMSCngTransformKWAes192Id:
  *
  * The AES 192 key wrap transform klass.

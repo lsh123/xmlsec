@@ -323,6 +323,10 @@ static xmlSecKWAesKlass xmlSecMSCngKWAesKlass = {
 static int
 xmlSecMSCngKWAesCheckId(xmlSecTransformPtr transform) {
 
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformKWAes128Id)) {
+       return(1);
+    }
+
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformKWAes192Id)) {
        return(1);
     }
@@ -347,13 +351,14 @@ xmlSecMSCngKWAesInitialize(xmlSecTransformPtr transform) {
 
     memset(ctx, 0, sizeof(xmlSecMSCngKWAesCtx));
 
-    if(transform->id == xmlSecMSCngTransformKWAes192Id) {
-        ctx->pszAlgId = BCRYPT_AES_ALGORITHM;
-        ctx->keyId = xmlSecMSCngKeyDataAesId;
+    ctx->pszAlgId = BCRYPT_AES_ALGORITHM;
+    ctx->keyId = xmlSecMSCngKeyDataAesId;
+
+    if(transform->id == xmlSecMSCngTransformKWAes128Id) {
+        ctx->keySize  = XMLSEC_KW_AES128_KEY_SIZE;
+    } else if(transform->id == xmlSecMSCngTransformKWAes192Id) {
         ctx->keySize  = XMLSEC_KW_AES192_KEY_SIZE;
     } else if(transform->id == xmlSecMSCngTransformKWAes256Id) {
-        ctx->pszAlgId = BCRYPT_AES_ALGORITHM;
-        ctx->keyId = xmlSecMSCngKeyDataAesId;
         ctx->keySize  = XMLSEC_KW_AES256_KEY_SIZE;
     } else {
         xmlSecInvalidTransfromError(transform)
@@ -549,6 +554,48 @@ xmlSecMSCngKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
 }
 
 /*
+ * The AES-128 key wrapper transform klass.
+ */
+static xmlSecTransformKlass xmlSecMSCngKWAes128Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecMSCngKWAesSize,                       /* xmlSecSize objSize */
+
+    xmlSecNameKWAes128,                         /* const xmlChar* name; */
+    xmlSecHrefKWAes128,                         /* const xmlChar* href; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+
+    xmlSecMSCngKWAesInitialize,                 /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCngKWAesFinalize,                   /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecMSCngKWAesSetKeyReq,                  /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecMSCngKWAesSetKey,                     /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCngKWAesExecute,                    /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCngTransformKWAes128GetKlass:
+ *
+ * The AES-128 key wrapper transform klass.
+ *
+ * Returns: AES-128 key wrapper transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformKWAes128GetKlass(void) {
+    return(&xmlSecMSCngKWAes128Klass);
+}
+
+/*
  * The AES-192 key wrapper transform klass.
  */
 static xmlSecTransformKlass xmlSecMSCngKWAes192Klass = {
@@ -589,6 +636,7 @@ xmlSecTransformId
 xmlSecMSCngTransformKWAes192GetKlass(void) {
     return(&xmlSecMSCngKWAes192Klass);
 }
+
 /*
  * The AES-256 key wrapper transform klass.
  */

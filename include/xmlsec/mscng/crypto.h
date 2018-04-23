@@ -147,6 +147,14 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaSha512GetKlass(voi
         xmlSecMSCngTransformRsaPkcs1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaPkcs1GetKlass(void);
 
+/**
+ * xmlSecMSCngTransformRsaOaepId:
+ *
+ * The RSA OAEP key transport transform klass.
+ */
+#define xmlSecMSCngTransformRsaOaepId \
+        xmlSecMSCngTransformRsaOaepGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaOaepGetKlass(void);
 
 #endif /* XMLSEC_NO_RSA */
 
@@ -200,6 +208,33 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformEcdsaSha512GetKlass(v
 #endif /* XMLSEC_NO_SHA512 */
 
 #endif /* XMLSEC_NO_ECDSA */
+
+/********************************************************************
+ *
+ * DES transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_DES
+
+/**
+ * xmlSecMSCngKeyDataDesId:
+ *
+ * The DES key data klass.
+ */
+#define xmlSecMSCngKeyDataDesId \
+        xmlSecMSCngKeyDataDesGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngKeyDataDesGetKlass(void);
+
+/**
+ * xmlSecMSCngTransformDes3CbcId:
+ *
+ * The DES3 CBC cipher transform klass.
+ */
+#define xmlSecMSCngTransformDes3CbcId \
+        xmlSecMSCngTransformDes3CbcGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformDes3CbcGetKlass(void);
+
+#endif /* XMLSEC_NO_DES */
 
 /********************************************************************
  *
@@ -368,6 +403,24 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformSha512GetKlass(void);
 #define xmlSecMSCngKeyDataAesId \
         xmlSecMSCngKeyDataAesGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCngKeyDataAesGetKlass(void);
+
+/**
+ * xmlSecMSCngTransformAes128CbcId:
+ *
+ * The AES128 CBC cipher transform klass.
+ */
+#define xmlSecMSCngTransformAes128CbcId \
+        xmlSecMSCngTransformAes128CbcGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCngTransformAes128CbcGetKlass(void);
+
+/**
+ * xmlSecMSCngTransformAes192CbcId:
+ *
+ * The AES192 CBC cipher transform klass.
+ */
+#define xmlSecMSCngTransformAes192CbcId \
+        xmlSecMSCngTransformAes192CbcGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCngTransformAes192CbcGetKlass(void);
 
 /**
  * xmlSecMSCngTransformAes256CbcId:

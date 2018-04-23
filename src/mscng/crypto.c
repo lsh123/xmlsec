@@ -60,11 +60,11 @@ xmlSecCryptoGetFunctions_mscng(void) {
      * Key data ids
      *
      ********************************************************************/
-#ifdef XMLSEC_MSCNG_TODO
+#ifndef XMLSEC_NO_AES
     gXmlSecMSCngFunctions->keyDataAesGetKlass           = xmlSecMSCngKeyDataAesGetKlass;
 #endif /* XMLSEC_NO_AES */
 
-#ifdef XMLSEC_MSCNG_TODO
+#ifndef XMLSEC_NO_DES
     gXmlSecMSCngFunctions->keyDataDesGetKlass           = xmlSecMSCngKeyDataDesGetKlass;
 #endif /* XMLSEC_NO_DES */
 
@@ -110,11 +110,9 @@ xmlSecCryptoGetFunctions_mscng(void) {
      ********************************************************************/
 
     /******************************* AES ********************************/
-#ifdef XMLSEC_MSCNG_TODO
+#ifndef XMLSEC_NO_AES
     gXmlSecMSCngFunctions->transformAes128CbcGetKlass           = xmlSecMSCngTransformAes128CbcGetKlass;
     gXmlSecMSCngFunctions->transformAes192CbcGetKlass           = xmlSecMSCngTransformAes192CbcGetKlass;
-#endif /* XMLSEC_NO_AES */
-#ifndef XMLSEC_NO_AES
     gXmlSecMSCngFunctions->transformAes256CbcGetKlass           = xmlSecMSCngTransformAes256CbcGetKlass;
 #endif
 #ifdef XMLSEC_MSCNG_TODO
@@ -124,8 +122,10 @@ xmlSecCryptoGetFunctions_mscng(void) {
 #endif /* XMLSEC_NO_AES */
 
     /******************************* DES ********************************/
-#ifdef XMLSEC_MSCNG_TODO
+#ifndef XMLSEC_NO_DES
     gXmlSecMSCngFunctions->transformDes3CbcGetKlass             = xmlSecMSCngTransformDes3CbcGetKlass;
+#endif /* XMLSEC_NO_DES */
+#ifdef XMLSEC_MSCNG_TODO
     gXmlSecMSCngFunctions->transformKWDes3GetKlass              = xmlSecMSCngTransformKWDes3GetKlass;
 #endif /* XMLSEC_NO_DES */
 
@@ -242,9 +242,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
 #endif /* XMLSEC_NO_SHA512 */
 
     gXmlSecMSCngFunctions->transformRsaPkcs1GetKlass            = xmlSecMSCngTransformRsaPkcs1GetKlass;
-#ifdef XMLSEC_MSCNG_TODO
     gXmlSecMSCngFunctions->transformRsaOaepGetKlass             = xmlSecMSCngTransformRsaOaepGetKlass;
-#endif /* XMLSEC_MSCNG_TODO */
 
 #endif /* XMLSEC_NO_RSA */
 

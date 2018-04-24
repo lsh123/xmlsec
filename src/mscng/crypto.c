@@ -122,8 +122,6 @@ xmlSecCryptoGetFunctions_mscng(void) {
     /******************************* DES ********************************/
 #ifndef XMLSEC_NO_DES
     gXmlSecMSCngFunctions->transformDes3CbcGetKlass             = xmlSecMSCngTransformDes3CbcGetKlass;
-#endif /* XMLSEC_NO_DES */
-#ifdef XMLSEC_MSCNG_TODO
     gXmlSecMSCngFunctions->transformKWDes3GetKlass              = xmlSecMSCngTransformKWDes3GetKlass;
 #endif /* XMLSEC_NO_DES */
 

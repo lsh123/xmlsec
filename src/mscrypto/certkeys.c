@@ -897,6 +897,24 @@ xmlSecMSCryptoCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
         }
     }
 #endif /* XMLSEC_NO_GOST*/
+#ifndef XMLSEC_NO_GOST2012
+    if (!strcmp(pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId,  szOID_CP_GOST_R3410_12_256) ||
+        !strcmp(pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId,  szOID_CP_GOST_R3411_12_256_R3410)) {
+        data = xmlSecKeyDataCreate(xmlSecMSCryptoKeyDataGost2012_256Id);
+        if(data == NULL) {
+                xmlSecInternalError("xmlSecKeyDataCreate(KeyDataGost2012_256Id)", NULL);
+                return(NULL);
+        }
+    }
+    if (!strcmp(pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId,  szOID_CP_GOST_R3410_12_512) ||
+        !strcmp(pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId,  szOID_CP_GOST_R3411_12_512_R3410)) {
+        data = xmlSecKeyDataCreate(xmlSecMSCryptoKeyDataGost2012_512Id);
+        if(data == NULL) {
+                xmlSecInternalError("xmlSecKeyDataCreate(KeyDataGost2012_512Id)", NULL);
+                return(NULL);
+        }
+    }
+#endif /* XMLSEC_NO_GOST2012 */
 
     if (NULL == data) {
         xmlSecInvalidStringTypeError("PCCERT_CONTEXT key type",
@@ -2417,4 +2435,318 @@ xmlSecMSCryptoKeyDataGost2001DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
             xmlSecMSCryptoKeyDataGost2001GetSize(data));
 }
 
-#endif /* XMLSEC_NO_GOST*/
+#endif /* XMLSEC_NO_GOST */
+
+
+#ifndef XMLSEC_NO_GOST2012
+
+/**************************************************************************
+ *
+ * GOST2012 256 xml key representation processing.
+ *
+ *************************************************************************/
+static int              xmlSecMSCryptoKeyDataGost2012_256Initialize(xmlSecKeyDataPtr data);
+static int              xmlSecMSCryptoKeyDataGost2012_256Duplicate(xmlSecKeyDataPtr dst,
+                                                         xmlSecKeyDataPtr src);
+static void             xmlSecMSCryptoKeyDataGost2012_256Finalize(xmlSecKeyDataPtr data);
+static int              xmlSecMSCryptoKeyDataGost2012_256XmlRead    (xmlSecKeyDataId id,
+                                                         xmlSecKeyPtr key,
+                                                         xmlNodePtr node,
+                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int              xmlSecMSCryptoKeyDataGost2012_256XmlWrite(xmlSecKeyDataId id,
+                                                         xmlSecKeyPtr key,
+                                                         xmlNodePtr node,
+                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int              xmlSecMSCryptoKeyDataGost2012_256Generate(xmlSecKeyDataPtr data,
+                                                         xmlSecSize sizeBits,
+                                                         xmlSecKeyDataType type);
+
+static xmlSecKeyDataType xmlSecMSCryptoKeyDataGost2012_256GetType(xmlSecKeyDataPtr data);
+static xmlSecSize        xmlSecMSCryptoKeyDataGost2012_256GetSize(xmlSecKeyDataPtr data);
+static void              xmlSecMSCryptoKeyDataGost2012_256DebugDump(xmlSecKeyDataPtr data,
+                                                         FILE* output);
+static void             xmlSecMSCryptoKeyDataGost2012_256DebugXmlDump(xmlSecKeyDataPtr data,
+                                                         FILE* output);
+
+static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataGost2012_256Klass = {
+    sizeof(xmlSecKeyDataKlass),
+    xmlSecMSCryptoKeyDataSize,
+
+    /* data */
+    xmlSecNameGostR3410_2012_256KeyValue,
+    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+                                        /* xmlSecKeyDataUsage usage; */
+    xmlSecHrefGostR3410_2012_256KeyValue,         /* const xmlChar* href; */
+    xmlSecNodeGostR3410_2012_256KeyValue,         /* const xmlChar* dataNodeName; */
+    xmlSecDSigNs,                       /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecMSCryptoKeyDataGost2012_256Initialize,    /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecMSCryptoKeyDataGost2012_256Duplicate,     /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecMSCryptoKeyDataGost2012_256Finalize,      /* xmlSecKeyDataFinalizeMethod finalize; */
+    NULL, /* xmlSecMSCryptoKeyDataGost2001Generate,*/   /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    xmlSecMSCryptoKeyDataGost2012_256GetType,       /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecMSCryptoKeyDataGost2012_256GetSize,       /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                               /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    NULL,       /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    NULL,       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,                               /* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,                               /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecMSCryptoKeyDataGost2012_256DebugDump,     /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecMSCryptoKeyDataGost2012_256DebugXmlDump,/* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                               /* void* reserved0; */
+    NULL,                               /* void* reserved1; */
+};
+
+/* Ordered list of providers to search for algorithm implementation using
+ * xmlSecMSCryptoFindProvider() function
+ *
+ * MUST END with { NULL, 0 } !!!
+ */
+static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Gost2012_256[] = {
+    { CRYPTOPRO_CSP_256,            PROV_GOST_2012_256 },
+    { NULL, 0 }
+};
+
+/**
+ * xmlSecMSCryptoKeyDataGost2001GetKlass:
+ *
+ * The GOST2012_256 key data klass.
+ *
+ * Returns: pointer to GOST2012_256 key data klass.
+ */
+xmlSecKeyDataId
+xmlSecMSCryptoKeyDataGost2012_256GetKlass(void) {
+    return(&xmlSecMSCryptoKeyDataGost2012_256Klass);
+}
+
+
+static int
+xmlSecMSCryptoKeyDataGost2012_256Initialize(xmlSecKeyDataPtr data) {
+    xmlSecMSCryptoKeyDataCtxPtr ctx;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2012_256Id), xmlSecKeyDataTypeUnknown);
+
+    ret = xmlSecMSCryptoKeyDataInitialize(data);
+    if(ret != 0) {
+        xmlSecInternalError("xmlSecMSCryptoKeyDataInitialize", NULL);
+        return(-1);
+    }
+
+    ctx = xmlSecMSCryptoKeyDataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    ctx->providers = xmlSecMSCryptoProviderInfo_Gost2012_256;
+    return(0);
+}
+
+static int
+xmlSecMSCryptoKeyDataGost2012_256Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecMSCryptoKeyDataGost2012_256Id), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecMSCryptoKeyDataGost2012_256Id), -1);
+
+    return(xmlSecMSCryptoKeyDataDuplicate(dst, src));
+}
+
+static void
+xmlSecMSCryptoKeyDataGost2012_256Finalize(xmlSecKeyDataPtr data) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2012_256Id));
+
+    xmlSecMSCryptoKeyDataFinalize(data);
+}
+
+static xmlSecKeyDataType
+xmlSecMSCryptoKeyDataGost2012_256GetType(xmlSecKeyDataPtr data) {
+    return(xmlSecMSCryptoKeyDataGetType(data));
+}
+
+static xmlSecSize
+xmlSecMSCryptoKeyDataGost2012_256GetSize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2012_256Id), 0);
+
+    return xmlSecMSCryptoKeyDataGetSize(data);
+}
+
+static void
+xmlSecMSCryptoKeyDataGost2012_256DebugDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2012_256Id));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "=== dsa key: size = %d\n",
+            xmlSecMSCryptoKeyDataGost2012_256GetSize(data));
+}
+
+static void
+xmlSecMSCryptoKeyDataGost2012_256DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2012_256Id));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "<GOST2012_256KeyValue size=\"%d\" />\n",
+            xmlSecMSCryptoKeyDataGost2012_256GetSize(data));
+}
+
+
+/**************************************************************************
+ *
+ * GOST2012 512 xml key representation processing.
+ *
+ *************************************************************************/
+static int              xmlSecMSCryptoKeyDataGost2012_512Initialize(xmlSecKeyDataPtr data);
+static int              xmlSecMSCryptoKeyDataGost2012_512Duplicate(xmlSecKeyDataPtr dst,
+                                                         xmlSecKeyDataPtr src);
+static void             xmlSecMSCryptoKeyDataGost2012_512Finalize(xmlSecKeyDataPtr data);
+static int              xmlSecMSCryptoKeyDataGost2012_512XmlRead    (xmlSecKeyDataId id,
+                                                         xmlSecKeyPtr key,
+                                                         xmlNodePtr node,
+                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int              xmlSecMSCryptoKeyDataGost2012_512XmlWrite(xmlSecKeyDataId id,
+                                                         xmlSecKeyPtr key,
+                                                         xmlNodePtr node,
+                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int              xmlSecMSCryptoKeyDataGost2012_512Generate(xmlSecKeyDataPtr data,
+                                                         xmlSecSize sizeBits,
+                                                         xmlSecKeyDataType type);
+
+static xmlSecKeyDataType xmlSecMSCryptoKeyDataGost2012_512GetType(xmlSecKeyDataPtr data);
+static xmlSecSize        xmlSecMSCryptoKeyDataGost2012_512GetSize(xmlSecKeyDataPtr data);
+static void              xmlSecMSCryptoKeyDataGost2012_512DebugDump(xmlSecKeyDataPtr data,
+                                                         FILE* output);
+static void             xmlSecMSCryptoKeyDataGost2012_512DebugXmlDump(xmlSecKeyDataPtr data,
+                                                         FILE* output);
+
+static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataGost2012_512Klass = {
+    sizeof(xmlSecKeyDataKlass),
+    xmlSecMSCryptoKeyDataSize,
+
+    /* data */
+    xmlSecNameGostR3410_2012_512KeyValue,
+    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+                                        /* xmlSecKeyDataUsage usage; */
+    xmlSecHrefGostR3410_2012_512KeyValue,         /* const xmlChar* href; */
+    xmlSecNodeGostR3410_2012_512KeyValue,         /* const xmlChar* dataNodeName; */
+    xmlSecDSigNs,                       /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecMSCryptoKeyDataGost2012_512Initialize,    /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecMSCryptoKeyDataGost2012_512Duplicate,     /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecMSCryptoKeyDataGost2012_512Finalize,      /* xmlSecKeyDataFinalizeMethod finalize; */
+    NULL, /* xmlSecMSCryptoKeyDataGost2001Generate,*/   /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    xmlSecMSCryptoKeyDataGost2012_512GetType,       /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecMSCryptoKeyDataGost2012_512GetSize,       /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                               /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    NULL,       /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    NULL,       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,                               /* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,                               /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecMSCryptoKeyDataGost2012_512DebugDump,     /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecMSCryptoKeyDataGost2012_512DebugXmlDump,/* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                               /* void* reserved0; */
+    NULL,                               /* void* reserved1; */
+};
+
+/* Ordered list of providers to search for algorithm implementation using
+ * xmlSecMSCryptoFindProvider() function
+ *
+ * MUST END with { NULL, 0 } !!!
+ */
+static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Gost2012_512[] = {
+    { CRYPTOPRO_CSP_512,            PROV_GOST_2012_512 },
+    { NULL, 0 }
+};
+
+/**
+ * xmlSecMSCryptoKeyDataGost2001GetKlass:
+ *
+ * The GOST2012_512 key data klass.
+ *
+ * Returns: pointer to GOST2012_512 key data klass.
+ */
+xmlSecKeyDataId
+xmlSecMSCryptoKeyDataGost2012_512GetKlass(void) {
+    return(&xmlSecMSCryptoKeyDataGost2012_512Klass);
+}
+
+
+static int
+xmlSecMSCryptoKeyDataGost2012_512Initialize(xmlSecKeyDataPtr data) {
+    xmlSecMSCryptoKeyDataCtxPtr ctx;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2012_512Id), xmlSecKeyDataTypeUnknown);
+
+    ret = xmlSecMSCryptoKeyDataInitialize(data);
+    if(ret != 0) {
+        xmlSecInternalError("xmlSecMSCryptoKeyDataInitialize", NULL);
+        return(-1);
+    }
+
+    ctx = xmlSecMSCryptoKeyDataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    ctx->providers = xmlSecMSCryptoProviderInfo_Gost2012_512;
+    return(0);
+}
+
+static int
+xmlSecMSCryptoKeyDataGost2012_512Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecMSCryptoKeyDataGost2012_512Id), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecMSCryptoKeyDataGost2012_512Id), -1);
+
+    return(xmlSecMSCryptoKeyDataDuplicate(dst, src));
+}
+
+static void
+xmlSecMSCryptoKeyDataGost2012_512Finalize(xmlSecKeyDataPtr data) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2012_512Id));
+
+    xmlSecMSCryptoKeyDataFinalize(data);
+}
+
+static xmlSecKeyDataType
+xmlSecMSCryptoKeyDataGost2012_512GetType(xmlSecKeyDataPtr data) {
+    return(xmlSecMSCryptoKeyDataGetType(data));
+}
+
+static xmlSecSize
+xmlSecMSCryptoKeyDataGost2012_512GetSize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2012_512Id), 0);
+
+    return xmlSecMSCryptoKeyDataGetSize(data);
+}
+
+static void
+xmlSecMSCryptoKeyDataGost2012_512DebugDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2012_512Id));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "=== dsa key: size = %d\n",
+            xmlSecMSCryptoKeyDataGost2012_512GetSize(data));
+}
+
+static void
+xmlSecMSCryptoKeyDataGost2012_512DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2012_512Id));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "<GOST2012_512KeyValue size=\"%d\" />\n",
+            xmlSecMSCryptoKeyDataGost2012_512GetSize(data));
+}
+
+#endif /* XMLSEC_NO_GOST2012 */

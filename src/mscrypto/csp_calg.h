@@ -20,6 +20,9 @@
 #define ALG_SID_GR3411                                  30
 #define ALG_SID_G28147                                  30
 
+#define ALG_SID_GR3411_2012_256 			33
+#define ALG_SID_GR3411_2012_512 			34
+
 #define ALG_SID_GR3410                                  30
 #define ALG_SID_DH_EX_SF                                30
 #define ALG_SID_DH_EX_EPHEM                             31
@@ -52,6 +55,9 @@
 
 #define CALG_MAGPRO_HASH_28147_89       (ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_MAGPRO_28147_89)
 
+#define CALG_GR3411_2012_256		(ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_GR3411_2012_256)
+#define CALG_GR3411_2012_512		(ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_GR3411_2012_512)
+
 #define CALG_MAGPRO_ENCR_28147_89       (ALG_CLASS_DATA_ENCRYPT | ALG_TYPE_BLOCK | ALG_SID_G28147)
 
 #define CALG_GR3410                                             (ALG_CLASS_SIGNATURE | ALG_TYPE_GR3410 | ALG_SID_GR3410)
@@ -82,12 +88,22 @@
 #endif
 
 #define PROV_CRYPTOPRO_GOST         75
+#define PROV_GOST_2012_256          80
+#define PROV_GOST_2012_512          81
 #define CRYPTOPRO_CSP_A             "CryptoPro CSP"
 #define CRYPTOPRO_CSP_W             L"CryptoPro CSP"
+#define CRYPTOPRO_CSP_256_A             "Crypto-Pro GOST R 34.10-2012 Cryptographic Service Provider"
+#define CRYPTOPRO_CSP_256_W             L"Crypto-Pro GOST R 34.10-2012 Cryptographic Service Provider"
+#define CRYPTOPRO_CSP_512_A             "Crypto-Pro GOST R 34.10-2012 Strong Cryptographic Service Provider"
+#define CRYPTOPRO_CSP_512_W             L"Crypto-Pro GOST R 34.10-2012 Strong Cryptographic Service Provider"
 #ifdef UNICODE
 #define CRYPTOPRO_CSP CRYPTOPRO_CSP_W
+#define CRYPTOPRO_CSP_256 CRYPTOPRO_CSP_256_W
+#define CRYPTOPRO_CSP_512 CRYPTOPRO_CSP_512_W
 #else
 #define CRYPTOPRO_CSP CRYPTOPRO_CSP_A
+#define CRYPTOPRO_CSP_256 CRYPTOPRO_CSP_256_A
+#define CRYPTOPRO_CSP_512 CRYPTOPRO_CSP_512_A
 #endif
 
 /*! @} */

@@ -93,6 +93,11 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
     gXmlSecMSCryptoFunctions->keyDataGost2001GetKlass           = xmlSecMSCryptoKeyDataGost2001GetKlass;
 #endif /* XMLSEC_NO_GOST*/
 
+#ifndef XMLSEC_NO_GOST2012
+    gXmlSecMSCryptoFunctions->keyDataGostR3410_2012_256GetKlass = xmlSecMSCryptoKeyDataGost2012_256GetKlass;
+    gXmlSecMSCryptoFunctions->keyDataGostR3410_2012_512GetKlass = xmlSecMSCryptoKeyDataGost2012_512GetKlass;
+#endif /* XMLSEC_NO_GOST2012*/
+
 #ifndef XMLSEC_NO_X509
     gXmlSecMSCryptoFunctions->keyDataX509GetKlass               = xmlSecMSCryptoKeyDataX509GetKlass;
     gXmlSecMSCryptoFunctions->keyDataRawX509CertGetKlass        = xmlSecMSCryptoKeyDataRawX509CertGetKlass;
@@ -138,6 +143,14 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
 #ifndef XMLSEC_NO_GOST
     gXmlSecMSCryptoFunctions->transformGost2001GostR3411_94GetKlass             = xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass;
 #endif /* XMLSEC_NO_GOST */
+
+#ifndef XMLSEC_NO_GOST2012
+    gXmlSecMSCryptoFunctions->transformGostR3411_2012_256GetKlass               = xmlSecMSCryptoTransformGostR3411_2012_256GetKlass;
+    gXmlSecMSCryptoFunctions->transformGostR3410_2012GostR3411_2012_256GetKlass = xmlSecMSCryptoTransformGost2012_256GetKlass;
+
+    gXmlSecMSCryptoFunctions->transformGostR3411_2012_512GetKlass               = xmlSecMSCryptoTransformGostR3411_2012_512GetKlass;
+    gXmlSecMSCryptoFunctions->transformGostR3410_2012GostR3411_2012_512GetKlass = xmlSecMSCryptoTransformGost2012_512GetKlass;
+#endif /* XMLSEC_NO_GOST2012 */
 
 #ifndef XMLSEC_NO_GOST
     gXmlSecMSCryptoFunctions->transformGostR3411_94GetKlass             = xmlSecMSCryptoTransformGostR3411_94GetKlass;

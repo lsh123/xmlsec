@@ -114,6 +114,52 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformGost2001GostR3411_
 
 #endif /* XMLSEC_NO_GOST */
 
+#ifndef XMLSEC_NO_GOST2012
+
+/********************************************************************
+ *
+ * GOST R 34.10-2012  transform
+ *
+ *******************************************************************/
+
+/**
+ * xmlSecMSCryptoKeyDataGost2012_256Id:
+ *
+ * The GOST R 34.10-2012 256 key klass
+ */
+#define xmlSecMSCryptoKeyDataGost2012_256Id \
+        xmlSecMSCryptoKeyDataGost2012_256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCryptoKeyDataGost2012_256GetKlass   (void);
+
+/**
+ * xmlSecMSCryptoKeyDataGost2012_512Id:
+ *
+ * The GOST R 34.10-2012 512 key klass
+ */
+#define xmlSecMSCryptoKeyDataGost2012_512Id \
+        xmlSecMSCryptoKeyDataGost2012_512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCryptoKeyDataGost2012_512GetKlass   (void);
+
+/**
+ * xmlSecMSCryptoTransformGost2012_256Id:
+ *
+ * The GOST R 34.10-2012 - GOST R 3411-2012 256 bit signature transform klass.
+ */
+#define xmlSecMSCryptoTransformGost2012_256Id \
+        xmlSecMSCryptoTransformGost2012_256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformGost2012_256GetKlass(void);
+
+/**
+ * xmlSecMSCryptoTransformGost2012_512Id:
+ *
+ * The GOST R 34.10-2012 - GOST R 3411-2012 512 bit signature transform klass.
+ */
+#define xmlSecMSCryptoTransformGost2012_512Id \
+        xmlSecMSCryptoTransformGost2012_512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformGost2012_512GetKlass(void);
+
+#endif /* XMLSEC_NO_GOST2012 */
+
 /********************************************************************
  *
  * RSA transforms
@@ -315,7 +361,37 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformSha512GetKlass(voi
 #define xmlSecMSCryptoTransformGostR3411_94Id \
         xmlSecMSCryptoTransformGostR3411_94GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformGostR3411_94GetKlass(void);
+
 #endif /* XMLSEC_NO_GOST */
+
+#ifndef XMLSEC_NO_GOST2012
+
+/********************************************************************
+ *
+ * GOST R 34.10-2012 256 and 512-bit digests
+ *
+ *******************************************************************/
+
+/**
+ * xmlSecMSCryptoTransformGostR3411_2012_256Id:
+ *
+ * The GOST R 34.11-2012 256 digest transform klass.
+ */
+#define xmlSecMSCryptoTransformGostR3411_2012_256Id \
+        xmlSecMSCryptoTransformGostR3411_2012_256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformGostR3411_2012_256GetKlass(void);
+
+/**
+ * xmlSecMSCryptoTransformGostR3411_2012_512Id:
+ *
+ * The GOST R 34.11-2012 512 digest transform klass.
+ */
+#define xmlSecMSCryptoTransformGostR3411_2012_512Id \
+        xmlSecMSCryptoTransformGostR3411_2012_512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformGostR3411_2012_512GetKlass(void);
+
+#endif /* XMLSEC_NO_GOST2012 */
+
 
 /********************************************************************
  *

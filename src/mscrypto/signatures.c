@@ -121,6 +121,15 @@ static int xmlSecMSCryptoSignatureCheckId(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_GOST*/
 
+#ifndef XMLSEC_NO_GOST2012
+    if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2012_256Id)) {
+        return(1);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2012_512Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_GOST2012*/
+
 
     /* not found */
     {
@@ -194,6 +203,17 @@ static int xmlSecMSCryptoSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->keyId          = xmlSecMSCryptoKeyDataGost2001Id;
     } else
 #endif /* XMLSEC_NO_GOST*/
+
+#ifndef XMLSEC_NO_GOST2012
+    if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2012_256Id)) {
+        ctx->digestAlgId    = CALG_GR3411_2012_256;
+        ctx->keyId          = xmlSecMSCryptoKeyDataGost2012_256Id;
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2012_512Id)) {
+        ctx->digestAlgId    = CALG_GR3411_2012_512;
+        ctx->keyId          = xmlSecMSCryptoKeyDataGost2012_512Id;
+    } else
+#endif /* XMLSEC_NO_GOST2012*/
 
     /* not found */
     {
@@ -358,6 +378,13 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
     } else
 #endif /* XMLSEC_NO_GOST*/
 
+#ifndef XMLSEC_NO_GOST2012
+    if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2012_256Id) ||
+        xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2012_512Id)) {
+        ConvertEndian(data, tmpBuf, dataSize);
+    } else
+#endif /* XMLSEC_NO_GOST2012*/
+
     {
         xmlSecInvalidTypeError("Invalid signature algorithm", xmlSecTransformGetName(transform));
         xmlSecBufferFinalize(&tmp);
@@ -457,7 +484,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             }
             hProv = (HCRYPTPROV)0;
 
-            if(!CryptAcquireContext(&hProv,
+            if(!CryptAcquireContextW(&hProv,
                 pProviderInfo->pwszContainerName,
                 pProviderInfo->pwszProvName,
                 pProviderInfo->dwProvType,
@@ -478,7 +505,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             }
             hProv = (HCRYPTPROV)0;
 
-            if(!CryptAcquireContext(&hProv,
+            if(!CryptAcquireContextW(&hProv,
                 pProviderInfo->pwszContainerName,
                 NULL,
                 PROV_RSA_AES,
@@ -607,6 +634,13 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
                 ConvertEndian(tmpBuf, outBuf, outSize);
             } else
 #endif /* XMLSEC_NO_GOST*/
+
+#ifndef XMLSEC_NO_GOST2012
+            if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2012_256Id) ||
+                xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2012_512Id)) {
+                ConvertEndian(tmpBuf, outBuf, outSize);
+            } else
+#endif /* XMLSEC_NO_GOST2012*/
 
             {
                 /* We shouldn't get at this place */
@@ -960,4 +994,99 @@ xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass(void) {
 }
 
 #endif /* XMLSEC_NO_GOST*/
+
+
+#ifndef XMLSEC_NO_GOST2012
+
+/****************************************************************************
+ *
+ * GOST R 34.10-2012 256 signature transform
+ *
+ ***************************************************************************/
+
+static xmlSecTransformKlass xmlSecMSCryptoGost2012_256Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecMSCryptoSignatureSize,                /* xmlSecSize objSize */
+
+    xmlSecNameGostR3410_2012GostR3411_2012_256, /* const xmlChar* name; */
+    xmlSecHrefGostR3410_2012GostR3411_2012_256, /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecMSCryptoSignatureInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCryptoSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecMSCryptoSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecMSCryptoSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecMSCryptoSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCryptoSignatureExecute,             /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCryptoTransformGost2012GostR3411_94GetKlass:
+ *
+ * The GOST R 34.10-2012 signature transform klass.
+ *
+ * Returns: GOST2001-GOST R 34.10-2012 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCryptoTransformGost2012_256GetKlass(void) {
+    return(&xmlSecMSCryptoGost2012_256Klass);
+}
+
+/****************************************************************************
+ *
+ * GOST R 34.10-2012 512 signature transform
+ *
+ ***************************************************************************/
+
+static xmlSecTransformKlass xmlSecMSCryptoGost2012_512Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecMSCryptoSignatureSize,                /* xmlSecSize objSize */
+
+    xmlSecNameGostR3410_2012GostR3411_2012_512, /* const xmlChar* name; */
+    xmlSecHrefGostR3410_2012GostR3411_2012_512, /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecMSCryptoSignatureInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCryptoSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecMSCryptoSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecMSCryptoSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecMSCryptoSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCryptoSignatureExecute,             /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCryptoTransformGost2012GostR3411_94GetKlass:
+ *
+ * The GOST R 34.10-2012 signature transform klass.
+ *
+ * Returns: GOST2001-GOST R 34.10-2012 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCryptoTransformGost2012_512GetKlass(void) {
+    return(&xmlSecMSCryptoGost2012_512Klass);
+}
+
+#endif /* XMLSEC_NO_GOST2012*/
 

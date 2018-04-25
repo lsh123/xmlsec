@@ -65,6 +65,8 @@ extern "C" {
 #define xmlSecTransformKWDes3Id                 xmlSecMSCryptoTransformKWDes3Id
 #define xmlSecTransformDsaSha1Id                xmlSecMSCryptoTransformDsaSha1Id
 #define xmlSecTransformGost2001GostR3411_94Id   xmlSecMSCryptoTransformGost2001GostR3411_94Id
+#define xmlSecTransformGost2012_256Id           xmlSecMSCryptoTransformGost2012_256Id
+#define xmlSecTransformGost2012_512Id           xmlSecMSCryptoTransformGost2012_512Id
 #define xmlSecTransformHmacMd5Id                xmlSecMSCryptoTransformHmacMd5Id
 #define xmlSecTransformHmacRipemd160Id          xmlSecMSCryptoTransformHmacRipemd160Id
 #define xmlSecTransformHmacSha1Id               xmlSecMSCryptoTransformHmacSha1Id
@@ -80,6 +82,8 @@ extern "C" {
 #define xmlSecTransformSha384Id                 xmlSecMSCryptoTransformSha384Id
 #define xmlSecTransformSha512Id                 xmlSecMSCryptoTransformSha512Id
 #define xmlSecTransformGostR3411_94Id           xmlSecMSCryptoTransformGostR3411_94Id
+#define xmlSecTransformGostR3411_2012_256Id     xmlSecMSCryptoTransformGostR3411_2012_256Id
+#define xmlSecTransformGostR3411_2012_512Id     xmlSecMSCryptoTransformGostR3411_2012_512Id
 
 /********************************************************************
  *

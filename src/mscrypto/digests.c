@@ -94,7 +94,19 @@ static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Gost[] = {
     { CRYPTOPRO_CSP,                                    PROV_CRYPTOPRO_GOST },
     { NULL, 0 }
 };
-#endif /*ndef XMLSEC_NO_GOST*/
+#endif /* XMLSEC_NO_GOST*/
+
+#ifndef XMLSEC_NO_GOST2012
+static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Gost2012_256[] = {
+    { CRYPTOPRO_CSP_256,                                PROV_GOST_2012_256 },
+    { NULL, 0 }
+};
+
+static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Gost2012_512[] = {
+    { CRYPTOPRO_CSP_512,                                PROV_GOST_2012_512 },
+    { NULL, 0 }
+};
+#endif /* XMLSEC_NO_GOST2012*/
 
 static int
 xmlSecMSCryptoDigestCheckId(xmlSecTransformPtr transform) {
@@ -134,6 +146,15 @@ xmlSecMSCryptoDigestCheckId(xmlSecTransformPtr transform) {
         return(1);
     }
 #endif /* XMLSEC_NO_GOST*/
+
+#ifndef XMLSEC_NO_GOST2012
+    if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGostR3411_2012_256Id)) {
+        return(1);
+    }
+    if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGostR3411_2012_512Id)) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_GOST2012*/
 
     return(0);
 }
@@ -192,6 +213,17 @@ xmlSecMSCryptoDigestInitialize(xmlSecTransformPtr transform) {
         ctx->providers = xmlSecMSCryptoProviderInfo_Gost;
     } else
 #endif /* XMLSEC_NO_GOST*/
+
+#ifndef XMLSEC_NO_GOST2012
+    if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGostR3411_2012_256Id)) {
+        ctx->alg_id = CALG_GR3411_2012_256;
+        ctx->providers = xmlSecMSCryptoProviderInfo_Gost2012_256;
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGostR3411_2012_512Id)) {
+        ctx->alg_id = CALG_GR3411_2012_512;
+        ctx->providers = xmlSecMSCryptoProviderInfo_Gost2012_512;
+    } else
+#endif /* XMLSEC_NO_GOST2012*/
 
     {
         xmlSecInvalidTransfromError(transform)
@@ -632,6 +664,91 @@ static xmlSecTransformKlass xmlSecMSCryptoGostR3411_94Klass = {
 xmlSecTransformId
 xmlSecMSCryptoTransformGostR3411_94GetKlass(void) {
     return(&xmlSecMSCryptoGostR3411_94Klass);
+}
+
+/******************************************************************************
+ *
+ * GOSTR3411-2012/256
+ *
+ *****************************************************************************/
+static xmlSecTransformKlass xmlSecMSCryptoGostR3411_2012_256Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* size_t klassSize */
+    xmlSecMSCryptoDigestSize,                   /* size_t objSize */
+
+    xmlSecNameGostR3411_2012_256,               /* const xmlChar* name; */
+    xmlSecHrefGostR3411_2012_256,               /* const xmlChar* href; */
+    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
+    xmlSecMSCryptoDigestInitialize,             /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCryptoDigestFinalize,               /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecMSCryptoDigestVerify,                 /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCryptoDigestExecute,                /* xmlSecTransformExecuteMethod execute; */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCryptoTransformGostR3411_2012_256GetKlass:
+ *
+ * GOSTR3411_2012_256 digest transform klass.
+ *
+ * Returns: pointer to GOSTR3411_2012_256 digest transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCryptoTransformGostR3411_2012_256GetKlass(void) {
+    return(&xmlSecMSCryptoGostR3411_2012_256Klass);
+}
+
+
+/******************************************************************************
+ *
+ * GOSTR3411-2012/512
+ *
+ *****************************************************************************/
+static xmlSecTransformKlass xmlSecMSCryptoGostR3411_2012_512Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* size_t klassSize */
+    xmlSecMSCryptoDigestSize,                   /* size_t objSize */
+
+    xmlSecNameGostR3411_2012_512,               /* const xmlChar* name; */
+    xmlSecHrefGostR3411_2012_512,               /* const xmlChar* href; */
+    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
+    xmlSecMSCryptoDigestInitialize,             /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCryptoDigestFinalize,               /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecMSCryptoDigestVerify,                 /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCryptoDigestExecute,                /* xmlSecTransformExecuteMethod execute; */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCryptoTransformGostR3411_2012_512GetKlass:
+ *
+ * GOSTR3411_2012_512 digest transform klass.
+ *
+ * Returns: pointer to GOSTR3411_2012_512 digest transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCryptoTransformGostR3411_2012_512GetKlass(void) {
+    return(&xmlSecMSCryptoGostR3411_2012_512Klass);
 }
 #endif /* XMLSEC_NO_GOST*/
 

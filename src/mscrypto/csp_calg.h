@@ -90,8 +90,8 @@
 #define PROV_CRYPTOPRO_GOST         75
 #define PROV_GOST_2012_256          80
 #define PROV_GOST_2012_512          81
-#define CRYPTOPRO_CSP_A             "CryptoPro CSP"
-#define CRYPTOPRO_CSP_W             L"CryptoPro CSP"
+#define CRYPTOPRO_CSP_A             "Crypto-Pro GOST R 34.10-2001 Cryptographic Service Provider"
+#define CRYPTOPRO_CSP_W             L"Crypto-Pro GOST R 34.10-2001 Cryptographic Service Provider"
 #define CRYPTOPRO_CSP_256_A             "Crypto-Pro GOST R 34.10-2012 Cryptographic Service Provider"
 #define CRYPTOPRO_CSP_256_W             L"Crypto-Pro GOST R 34.10-2012 Cryptographic Service Provider"
 #define CRYPTOPRO_CSP_512_A             "Crypto-Pro GOST R 34.10-2012 Strong Cryptographic Service Provider"

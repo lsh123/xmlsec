@@ -198,7 +198,24 @@ static int
 xmlSecMSCngKWDes3BlockEncrypt(void * context, const xmlSecByte * iv,
         xmlSecSize ivSize, const xmlSecByte * in, xmlSecSize inSize,
         xmlSecByte * out, xmlSecSize outSize) {
-    xmlSecAssert2(context != NULL, -1);
+    xmlSecMSCngKWDes3CtxPtr ctx = (xmlSecMSCngKWDes3CtxPtr)context;
+    BCRYPT_ALG_HANDLE hAlg = NULL;
+    BCRYPT_KEY_HANDLE hKey = NULL;
+    DWORD cbData;
+    PBYTE pbKeyObject = NULL;
+    DWORD cbKeyObject;
+    xmlSecBuffer blob;
+    BCRYPT_KEY_DATA_BLOB_HEADER* blobHeader;
+    xmlSecSize blobHeaderLen;
+    int res = -1;
+    NTSTATUS status;
+    DWORD dwBlockLen, dwBlockLenLen;
+    xmlSecBuffer ivCopy;
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(xmlSecBufferGetData(&(ctx->keyBuffer)) != NULL, -1);
+    xmlSecAssert2(xmlSecBufferGetSize(&(ctx->keyBuffer)) >= XMLSEC_KW_DES3_KEY_LENGTH, -1);
     xmlSecAssert2(iv != NULL, -1);
     xmlSecAssert2(ivSize >= XMLSEC_KW_DES3_IV_LENGTH, -1);
     xmlSecAssert2(in != NULL, -1);
@@ -206,8 +223,135 @@ xmlSecMSCngKWDes3BlockEncrypt(void * context, const xmlSecByte * iv,
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= inSize, -1);
 
-    xmlSecNotImplementedError(NULL);
-    return(-1);
+    status = BCryptOpenAlgorithmProvider(
+        &hAlg,
+        BCRYPT_3DES_ALGORITHM,
+        NULL,
+        0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptOpenAlgorithmProvider", NULL, status);
+        goto done;
+    }
+
+    /* allocate the key object */
+    status = BCryptGetProperty(hAlg,
+        BCRYPT_OBJECT_LENGTH,
+        (PBYTE)&cbKeyObject,
+        sizeof(DWORD),
+        &cbData,
+        0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
+        goto done;
+    }
+
+    pbKeyObject = xmlMalloc(cbKeyObject);
+    if(pbKeyObject == NULL) {
+        xmlSecMallocError(cbKeyObject, NULL);
+        goto done;
+    }
+
+    /* prefix the key with a BCRYPT_KEY_DATA_BLOB_HEADER */
+    blobHeaderLen = sizeof(BCRYPT_KEY_DATA_BLOB_HEADER) + xmlSecBufferGetSize(&ctx->keyBuffer);
+    ret = xmlSecBufferInitialize(&blob, blobHeaderLen);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferInitialize", NULL, "size=%d",
+            blobHeaderLen);
+        goto done;
+    }
+
+    blobHeader = (BCRYPT_KEY_DATA_BLOB_HEADER*)xmlSecBufferGetData(&blob);
+    blobHeader->dwMagic = BCRYPT_KEY_DATA_BLOB_MAGIC;
+    blobHeader->dwVersion = BCRYPT_KEY_DATA_BLOB_VERSION1;
+    blobHeader->cbKeyData = xmlSecBufferGetSize(&ctx->keyBuffer);
+    memcpy(xmlSecBufferGetData(&blob) + sizeof(BCRYPT_KEY_DATA_BLOB_HEADER),
+        xmlSecBufferGetData(&ctx->keyBuffer),
+        xmlSecBufferGetSize(&ctx->keyBuffer));
+
+    /* perform the actual import */
+    status = BCryptImportKey(hAlg,
+        NULL,
+        BCRYPT_KEY_DATA_BLOB,
+        &hKey,
+        pbKeyObject,
+        cbKeyObject,
+        xmlSecBufferGetData(&blob),
+        xmlSecBufferGetSize(&blob),
+        0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptImportKey", NULL, status);
+        goto done;
+    }
+
+    /* iv len == block len */
+    dwBlockLenLen = sizeof(DWORD);
+    status = BCryptGetProperty(hAlg,
+        BCRYPT_BLOCK_LENGTH,
+        (PUCHAR)&dwBlockLen,
+        sizeof(dwBlockLen),
+        &dwBlockLenLen,
+        0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
+        goto done;
+    }
+
+    if(ivSize < dwBlockLen / 8) {
+        xmlSecInvalidSizeLessThanError("ivSize", ivSize, dwBlockLen / 8, NULL);
+        goto done;
+    }
+
+    /* handle padding manually */
+    if(out != in) {
+        memcpy(out, in, inSize);
+    }
+
+    /* caller handles iv manually, so let CNG work on a copy */
+    ret = xmlSecBufferInitialize(&ivCopy, ivSize);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferInitialize", NULL, "size=%d",
+            ivSize);
+        goto done;
+    }
+
+    memcpy(xmlSecBufferGetData(&ivCopy), iv, ivSize);
+
+    cbData = inSize;
+    status = BCryptEncrypt(hKey,
+        (PUCHAR)in,
+        inSize,
+        NULL,
+        xmlSecBufferGetData(&ivCopy),
+        ivSize,
+        out,
+        outSize,
+        &cbData,
+        0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptEncrypt", NULL, status);
+        goto done;
+    }
+
+    res = cbData;
+
+done:
+    xmlSecBufferFinalize(&ivCopy);
+
+    if (hKey != NULL) {
+        BCryptDestroyKey(hKey);
+    }
+
+    xmlSecBufferFinalize(&blob);
+
+    if (pbKeyObject != NULL) {
+        xmlFree(pbKeyObject);
+    }
+
+    if(hAlg != NULL) {
+        BCryptCloseAlgorithmProvider(hAlg, 0);
+    }
+
+    return(res);
 }
 
 static int
@@ -519,8 +663,9 @@ xmlSecMSCngKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransform
         }
 
         if(transform->operation == xmlSecTransformOperationEncrypt) {
-            xmlSecNotImplementedError(NULL);
-            return(-1);
+            /* the encoded key might be 16 bytes longer plus one block just in case */
+            outSize = inSize + XMLSEC_KW_DES3_IV_LENGTH +
+                XMLSEC_KW_DES3_BLOCK_LENGTH + XMLSEC_KW_DES3_BLOCK_LENGTH;
         } else {
             /* just in case, add a block */
             outSize = inSize + XMLSEC_KW_DES3_BLOCK_LENGTH;
@@ -534,8 +679,17 @@ xmlSecMSCngKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransform
         }
 
         if(transform->operation == xmlSecTransformOperationEncrypt) {
-            xmlSecNotImplementedError(NULL);
-            return(-1);
+            ret = xmlSecKWDes3Encode(&xmlSecMSCngKWDesKlass, ctx,
+                xmlSecBufferGetData(in), inSize, xmlSecBufferGetData(out),
+                outSize);
+            if(ret < 0) {
+                xmlSecInternalError4("xmlSecKWDes3Encode",
+                    xmlSecTransformGetName(transform), "key=%d,in=%d,out=%d",
+                    keySize, inSize, outSize);
+                return(-1);
+            }
+
+            outSize = ret;
         } else {
             ret = xmlSecKWDes3Decode(&xmlSecMSCngKWDesKlass, ctx,
                                     xmlSecBufferGetData(in), inSize,

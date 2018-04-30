@@ -223,6 +223,12 @@ xmlSecMSCngKWDes3BlockEncrypt(void * context, const xmlSecByte * iv,
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= inSize, -1);
 
+    ret = xmlSecBufferInitialize(&blob, 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
+        goto done;
+    }
+
     status = BCryptOpenAlgorithmProvider(
         &hAlg,
         BCRYPT_3DES_ALGORITHM,
@@ -253,9 +259,9 @@ xmlSecMSCngKWDes3BlockEncrypt(void * context, const xmlSecByte * iv,
 
     /* prefix the key with a BCRYPT_KEY_DATA_BLOB_HEADER */
     blobHeaderLen = sizeof(BCRYPT_KEY_DATA_BLOB_HEADER) + xmlSecBufferGetSize(&ctx->keyBuffer);
-    ret = xmlSecBufferInitialize(&blob, blobHeaderLen);
+    ret = xmlSecBufferSetSize(&blob, blobHeaderLen);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferInitialize", NULL, "size=%d",
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=%d",
             blobHeaderLen);
         goto done;
     }
@@ -382,6 +388,12 @@ xmlSecMSCngKWDes3BlockDecrypt(void * context, const xmlSecByte * iv,
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= inSize, -1);
 
+    ret = xmlSecBufferInitialize(&blob, 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
+        goto done;
+    }
+
     status = BCryptOpenAlgorithmProvider(
         &hAlg,
         BCRYPT_3DES_ALGORITHM,
@@ -412,9 +424,9 @@ xmlSecMSCngKWDes3BlockDecrypt(void * context, const xmlSecByte * iv,
 
     /* prefix the key with a BCRYPT_KEY_DATA_BLOB_HEADER */
     blobHeaderLen = sizeof(BCRYPT_KEY_DATA_BLOB_HEADER) + xmlSecBufferGetSize(&ctx->keyBuffer);
-    ret = xmlSecBufferInitialize(&blob, blobHeaderLen);
+    ret = xmlSecBufferSetSize(&blob, blobHeaderLen);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferInitialize", NULL, "size=%d",
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=%d",
             blobHeaderLen);
         goto done;
     }

@@ -84,6 +84,12 @@ xmlSecMSCngKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(xmlSecBufferGetSize(&ctx->keyBuffer) == ctx->keySize, -1);
 
+    ret = xmlSecBufferInitialize(&blob, 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
+        goto done;
+    }
+
     status = BCryptOpenAlgorithmProvider(
         &hAlg,
         BCRYPT_AES_ALGORITHM,
@@ -114,9 +120,9 @@ xmlSecMSCngKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
 
     /* prefix the key with a BCRYPT_KEY_DATA_BLOB_HEADER */
     blobHeaderLen = sizeof(BCRYPT_KEY_DATA_BLOB_HEADER) + xmlSecBufferGetSize(&ctx->keyBuffer);
-    ret = xmlSecBufferInitialize(&blob, blobHeaderLen);
+    ret = xmlSecBufferSetSize(&blob, blobHeaderLen);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferInitialize", NULL, "size=%d",
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=%d",
             blobHeaderLen);
         goto done;
     }
@@ -208,6 +214,12 @@ xmlSecMSCngKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(xmlSecBufferGetSize(&ctx->keyBuffer) == ctx->keySize, -1);
 
+    ret = xmlSecBufferInitialize(&blob, 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
+        goto done;
+    }
+
     status = BCryptOpenAlgorithmProvider(
         &hAlg,
         BCRYPT_AES_ALGORITHM,
@@ -238,9 +250,9 @@ xmlSecMSCngKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
 
     /* prefix the key with a BCRYPT_KEY_DATA_BLOB_HEADER */
     blobHeaderLen = sizeof(BCRYPT_KEY_DATA_BLOB_HEADER) + xmlSecBufferGetSize(&ctx->keyBuffer);
-    ret = xmlSecBufferInitialize(&blob, blobHeaderLen);
+    ret = xmlSecBufferSetSize(&blob, blobHeaderLen);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferInitialize", NULL, "size=%d",
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=%d",
             blobHeaderLen);
         goto done;
     }

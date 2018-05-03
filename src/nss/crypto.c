@@ -75,6 +75,10 @@ xmlSecCryptoGetFunctions_nss(void) {
     gXmlSecNssFunctions->keyDataDsaGetKlass             = xmlSecNssKeyDataDsaGetKlass;
 #endif /* XMLSEC_NO_DSA */
 
+#ifndef XMLSEC_NO_ECDSA
+    gXmlSecNssFunctions->keyDataEcdsaGetKlass          = xmlSecNssKeyDataEcdsaGetKlass;
+#endif /* XMLSEC_NO_ECDSA */
+
 #ifndef XMLSEC_NO_HMAC
     gXmlSecNssFunctions->keyDataHmacGetKlass            = xmlSecNssKeyDataHmacGetKlass;
 #endif /* XMLSEC_NO_HMAC */

@@ -1471,7 +1471,7 @@ xmlSecNssKeyDataEcdsaGetType(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataEcdsaId), xmlSecKeyDataTypeUnknown);
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(SECKEY_GetPublicKeyType(ctx->pubkey) == ecKey, -1);
+    xmlSecAssert2(ctx->pubkey == NULL || SECKEY_GetPublicKeyType(ctx->pubkey) == ecKey, -1);
     if (ctx->privkey != NULL) {
         return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
     } else {

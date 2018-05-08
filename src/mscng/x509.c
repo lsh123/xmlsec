@@ -124,17 +124,13 @@ xmlSecMSCngKeyDataX509Finalize(xmlSecKeyDataPtr data) {
     xmlSecAssert(ctx != NULL);
 
     if(ctx->cert != NULL) {
-        if(!CertDeleteCertificateFromStore(ctx->cert)) {
-            xmlSecMSCngLastError("CertDeleteCertificateFromStore", NULL);
-        }
-
         if(!CertFreeCertificateContext(ctx->cert)) {
             xmlSecMSCngLastError("CertFreeCertificateContext", NULL);
         }
     }
 
     if(ctx->hMemStore != 0) {
-        if(!CertCloseStore(ctx->hMemStore, CERT_CLOSE_STORE_CHECK_FLAG)) {
+        if(!CertCloseStore(ctx->hMemStore, 0)) {
             xmlSecMSCngLastError("CertCloseStore", NULL);
         }
     }

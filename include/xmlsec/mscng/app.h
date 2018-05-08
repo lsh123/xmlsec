@@ -25,6 +25,7 @@ extern "C" {
  ********************************************************************/
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppInit                   (const char* config);
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppShutdown               (void);
+XMLSEC_CRYPTO_EXPORT LPCTSTR    xmlSecMSCngAppGetCertStoreName       (void);
 
 /********************************************************************
  *

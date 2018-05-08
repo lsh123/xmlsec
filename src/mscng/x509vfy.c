@@ -82,6 +82,37 @@ xmlSecMSCngX509StoreFinalize(xmlSecKeyDataStorePtr store) {
     memset(ctx, 0, sizeof(xmlSecMSCngX509StoreCtx));
 }
 
+/**
+ * xmlSecMSCngX509StoreAdoptKeyStore:
+ * @store:              the pointer to X509 key data store klass.
+ * @keyStore:           the pointer to keys store.
+ *
+ * Adds @keyStore to the list of key stores.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecMSCngX509StoreAdoptKeyStore(xmlSecKeyDataStorePtr store, HCERTSTORE keyStore) {
+    xmlSecMSCngX509StoreCtxPtr ctx;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCngX509StoreId), -1);
+    xmlSecAssert2(keyStore != NULL, -1);
+
+    ctx = xmlSecMSCngX509StoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->trusted != NULL, -1);
+
+    ret = CertAddStoreToCollection(ctx->trusted, keyStore, CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG, 2);
+    if(ret != TRUE) {
+	xmlSecMSCngLastError("CertAddStoreToCollection",
+            xmlSecKeyDataStoreGetName(store));
+        return(-1);
+    }
+
+    return(0);
+}
+
 static int
 xmlSecMSCngX509StoreInitialize(xmlSecKeyDataStorePtr store) {
     int ret;

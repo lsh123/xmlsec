@@ -6,7 +6,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2018 Miklos Vajna <vmiklos@vmiklos.hu>. All Rights Reserved.
+ * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 #ifndef __XMLSEC_GLOBALS_H__
 #define __XMLSEC_GLOBALS_H__

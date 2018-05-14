@@ -318,6 +318,7 @@ XMLSEC_MSCNG_OBJS = \
 	$(XMLSEC_MSCNG_INTDIR)\kw_des.obj \
 	$(XMLSEC_MSCNG_INTDIR)\strings.obj\
 	$(XMLSEC_MSCNG_INTDIR)\signatures.obj\
+	$(XMLSEC_MSCNG_INTDIR)\keysstore.obj \
 	$(XMLSEC_MSCNG_INTDIR)\x509.obj\
 	$(XMLSEC_MSCNG_INTDIR)\x509vfy.obj
 XMLSEC_MSCNG_OBJS_A = \
@@ -333,6 +334,7 @@ XMLSEC_MSCNG_OBJS_A = \
 	$(XMLSEC_MSCNG_INTDIR_A)\kw_des.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\strings.obj\
 	$(XMLSEC_MSCNG_INTDIR_A)\signatures.obj\
+	$(XMLSEC_MSCNG_INTDIR_A)\keysstore.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\x509.obj\
 	$(XMLSEC_MSCNG_INTDIR_A)\x509vfy.obj
 

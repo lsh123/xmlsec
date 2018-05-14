@@ -4,7 +4,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2018 Miklos Vajna <vmiklos@vmiklos.hu>. All Rights Reserved.
+ * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 #ifndef __XMLSEC_MSCNG_APP_H__
 #define __XMLSEC_MSCNG_APP_H__
@@ -25,6 +25,7 @@ extern "C" {
  ********************************************************************/
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppInit                   (const char* config);
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppShutdown               (void);
+XMLSEC_CRYPTO_EXPORT LPCTSTR    xmlSecMSCngAppGetCertStoreName       (void);
 
 /********************************************************************
  *

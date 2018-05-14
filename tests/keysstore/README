@@ -1,0 +1,9 @@
+Manual test of the keysstore feature
+----------------------------------------------
+
+mscng backend:
+
+- import tests/keys/rsakey-win.p12 (double-click on it)
+- verify that the import happened, using certmgr.msc
+- sign: win32/binaries/xmlsec.exe sign --crypto mscng --output out.xml tests/keysstore/keysstore.xml
+- verify: win32/binaries/xmlsec.exe verify --crypto mscng out.xml

@@ -4,7 +4,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2018 Miklos Vajna <vmiklos@vmiklos.hu>. All Rights Reserved.
+ * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 #ifndef __XMLSEC_MSCNG_X509_H__
 #define __XMLSEC_MSCNG_X509_H__
@@ -55,6 +55,8 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngKeyDataX509AdoptCert      (xm
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngX509StoreAdoptCert        (xmlSecKeyDataStorePtr store,
                                                                               PCCERT_CONTEXT cert,
                                                                               xmlSecKeyDataType type);
+XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngX509StoreAdoptKeyStore    (xmlSecKeyDataStorePtr store,
+                                                                              HCERTSTORE keyStore);
 XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT     xmlSecMSCngX509StoreVerify           (xmlSecKeyDataStorePtr store,
 									      HCERTSTORE certs,
 									      xmlSecKeyInfoCtx* keyInfoCtx);

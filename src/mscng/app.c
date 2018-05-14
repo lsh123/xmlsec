@@ -4,7 +4,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2018 Miklos Vajna <vmiklos@vmiklos.hu>. All Rights Reserved.
+ * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 #include "globals.h"
 
@@ -23,6 +23,10 @@
 #include <xmlsec/mscng/symbols.h>
 #include <xmlsec/mscng/x509.h>
 #include <xmlsec/mscng/certkeys.h>
+#include <xmlsec/mscng/keysstore.h>
+
+/* config info for the mscng keysstore */
+static LPTSTR gXmlSecMSCngAppCertStoreName = NULL;
 
 /**
  * xmlSecMSCngAppInit:
@@ -36,8 +40,26 @@
  */
 int
 xmlSecMSCngAppInit(const char* config) {
-    UNREFERENCED_PARAMETER(config);
-    /* TODO: initialize MSCng crypto engine */
+    /* initialize MSCng crypto engine */
+
+    /* config parameter is an ms cert store name */
+    if(config != NULL && strlen(config) > 0) {
+        if(gXmlSecMSCngAppCertStoreName != NULL) {
+            /* deny double initialization */
+            xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_CONFIG, NULL,
+                "config=%s, config already set",
+                xmlSecErrorsSafeString(config));
+            return(-1);
+        }
+
+        gXmlSecMSCngAppCertStoreName = xmlSecMSCngConvertUtf8ToUnicode((const xmlChar*)config);
+        if(gXmlSecMSCngAppCertStoreName == NULL) {
+            xmlSecInternalError2("xmlSecMSCngConvertUtf8ToUnicode", NULL,
+                "config=%s", xmlSecErrorsSafeString(config));
+            return(-1);
+        }
+    }
+
     return(0);
 }
 
@@ -52,9 +74,24 @@ xmlSecMSCngAppInit(const char* config) {
  */
 int
 xmlSecMSCngAppShutdown(void) {
-    /* TODO: shutdown MSCng crypto engine */
-
+    /* shutdown MSCng crypto engine */
+    if(gXmlSecMSCngAppCertStoreName != NULL) {
+        xmlFree(gXmlSecMSCngAppCertStoreName);
+        gXmlSecMSCngAppCertStoreName = NULL;
+    }
     return(0);
+}
+
+/**
+ * xmlSecMSCngAppGetCertStoreName:
+ *
+ * Gets the MS Cng certs store name set by @xmlSecMSCngAppInit function.
+ *
+ * Returns: the MS Cng certs name used by xmlsec-mscng.
+ */
+LPCTSTR
+xmlSecMSCngAppGetCertStoreName(void) {
+    return(gXmlSecMSCngAppCertStoreName);
 }
 
 /**
@@ -524,17 +561,13 @@ xmlSecMSCngAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 
     xmlSecAssert2(mngr != NULL, -1);
 
-    /* TODO: if MSCng crypto engine has another default
-     * keys storage then use it!
-     */
-
-    /* create simple keys store if needed */
+    /* create MSCng keys store if needed */
     if(xmlSecKeysMngrGetKeysStore(mngr) == NULL) {
         xmlSecKeyStorePtr keysStore;
 
-        keysStore = xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId);
+        keysStore = xmlSecKeyStoreCreate(xmlSecMSCngKeysStoreId);
         if(keysStore == NULL) {
-            xmlSecInternalError("xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId)", NULL);
+            xmlSecInternalError("xmlSecKeyStoreCreate(xmlSecMSCngKeysStoreId)", NULL);
             return(-1);
         }
 
@@ -574,19 +607,15 @@ xmlSecMSCngAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) 
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
 
-    /* TODO: if MSCng crypto engine has another default
-     * keys storage then use it!
-     */
-
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
         xmlSecInternalError("xmlSecKeysMngrGetKeysStore", NULL);
         return(-1);
     }
 
-    ret = xmlSecSimpleKeysStoreAdoptKey(store, key);
+    ret = xmlSecMSCngKeysStoreAdoptKey(store, key);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecSimpleKeysStoreAdoptKey", NULL);
+        xmlSecInternalError("xmlSecMSCngKeysStoreAdoptKey", NULL);
         return(-1);
     }
 
@@ -611,20 +640,16 @@ xmlSecMSCngAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(uri != NULL, -1);
 
-    /* TODO: if MSCng crypto engine has another default
-     * keys storage then use it!
-     */
-
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
         xmlSecInternalError("xmlSecKeysMngrGetKeysStore", NULL);
         return(-1);
     }
 
-    ret = xmlSecSimpleKeysStoreLoad(store, uri, mngr);
+    ret = xmlSecMSCngKeysStoreLoad(store, uri, mngr);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecSimpleKeysStoreLoad", NULL,
-                             "uri=%s", xmlSecErrorsSafeString(uri));
+        xmlSecInternalError2("xmlSecMSCngKeysStoreLoad", NULL, "uri=%s",
+            xmlSecErrorsSafeString(uri));
         return(-1);
     }
 
@@ -649,21 +674,16 @@ xmlSecMSCngAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, 
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
 
-    /* TODO: if MSCng crypto engine has another default
-     * keys storage then use it!
-     */
-
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
         xmlSecInternalError("xmlSecKeysMngrGetKeysStore", NULL);
         return(-1);
     }
 
-    ret = xmlSecSimpleKeysStoreSave(store, filename, type);
+    ret = xmlSecMSCngKeysStoreSave(store, filename, type);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecSimpleKeysStoreSave", NULL,
-                             "filename=%s",
-                             xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecMSCngKeysStoreSave", NULL, "filename%s",
+            xmlSecErrorsSafeString(filename));
         return(-1);
     }
 

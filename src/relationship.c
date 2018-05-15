@@ -299,7 +299,7 @@ xmlSecTransformRelationshipProcessNode(xmlSecTransformPtr transform, xmlOutputBu
 
         ctx = xmlSecRelationshipGetCtx(transform);
         for(ii = 0; ii < xmlSecPtrListGetSize(ctx->sourceIdList); ++ii) {
-            if(xmlStrcmp(xmlSecPtrListGetItem(ctx->sourceIdList, ii), id) == 0) {
+            if(xmlStrcmp((xmlChar *)xmlSecPtrListGetItem(ctx->sourceIdList, ii), id) == 0) {
                 found = 1;
                 break;
             }

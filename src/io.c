@@ -119,9 +119,10 @@ xmlSecIOCallbackPtrListFind(xmlSecPtrListPtr list, const char* uri) {
     xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecIOCallbackPtrListId), NULL);
     xmlSecAssert2(uri != NULL, NULL);
 
+    /* Search from the end of the list to ensure the newly added entries are picked up first */
     size = xmlSecPtrListGetSize(list);
-    for(i = 0; i < size; ++i) {
-        callbacks = (xmlSecIOCallbackPtr)xmlSecPtrListGetItem(list, i);
+    for(i = size; i > 0; --i) {
+        callbacks = (xmlSecIOCallbackPtr)xmlSecPtrListGetItem(list, i - 1);
         xmlSecAssert2(callbacks != NULL, NULL);
         xmlSecAssert2(callbacks->matchcallback != NULL, NULL);
 
@@ -152,15 +153,21 @@ xmlSecIOInit(void) {
         return(-1);
     }
 
-#ifdef LIBXML_HTTP_ENABLED
-    xmlNanoHTTPInit();
-#endif /* LIBXML_HTTP_ENABLED */
-
 #ifdef LIBXML_FTP_ENABLED
     xmlNanoFTPInit();
 #endif /* LIBXML_FTP_ENABLED */
 
-    return(xmlSecIORegisterDefaultCallbacks());
+#ifdef LIBXML_HTTP_ENABLED
+    xmlNanoHTTPInit();
+#endif /* LIBXML_HTTP_ENABLED */
+
+    ret = xmlSecIORegisterDefaultCallbacks();
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecIORegisterDefaultCallbacks", NULL);
+        return(-1);
+    }
+
+    return(0);
 }
 
 /**
@@ -241,6 +248,14 @@ int
 xmlSecIORegisterDefaultCallbacks(void) {
     int ret;
 
+    /* Callbacks added later are picked up first */
+    ret = xmlSecIORegisterCallbacks(xmlFileMatch, xmlFileOpen,
+                              xmlFileRead, xmlFileClose);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecIORegisterCallbacks(file)", NULL);
+        return(-1);
+    }
+
 #ifdef LIBXML_HTTP_ENABLED
     ret = xmlSecIORegisterCallbacks(xmlIOHTTPMatch, xmlIOHTTPOpen,
                               xmlIOHTTPRead, xmlIOHTTPClose);
@@ -259,13 +274,7 @@ xmlSecIORegisterDefaultCallbacks(void) {
     }
 #endif /* LIBXML_FTP_ENABLED */
 
-    ret = xmlSecIORegisterCallbacks(xmlFileMatch, xmlFileOpen,
-                              xmlFileRead, xmlFileClose);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecIORegisterCallbacks(file)", NULL);
-        return(-1);
-    }
-
+    /* done */
     return(0);
 }
 

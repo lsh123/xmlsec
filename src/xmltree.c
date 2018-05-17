@@ -896,7 +896,7 @@ xmlSecGetQName(xmlNodePtr node, const xmlChar* href, const xmlChar* local) {
         xmlSecSize len;
 
         len = xmlStrlen(local) + xmlStrlen(ns->prefix) + 4;
-        qname = xmlMalloc(len);
+        qname = (xmlChar *)xmlMalloc(len);
         if(qname == NULL) {
             xmlSecMallocError(len, NULL);
             return(NULL);

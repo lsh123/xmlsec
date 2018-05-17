@@ -1852,7 +1852,7 @@ xmlSecOpenSSLX509NameWrite(X509_NAME* nm) {
     (void)BIO_flush(mem); /* should call flush ? */
 
     size = BIO_pending(mem);
-    res = xmlMalloc(size + 1);
+    res = (xmlChar *)xmlMalloc(size + 1);
     if(res == NULL) {
         xmlSecMallocError(size + 1, NULL);
         BIO_free_all(mem);
@@ -1925,7 +1925,7 @@ xmlSecOpenSSLX509SKIWrite(X509* cert) {
         return(NULL);
     }
 
-    keyId = X509V3_EXT_d2i(ext);
+    keyId = (ASN1_OCTET_STRING *)X509V3_EXT_d2i(ext);
     if (keyId == NULL) {
         xmlSecOpenSSLError("X509V3_EXT_d2i", NULL);
         ASN1_OCTET_STRING_free(keyId);

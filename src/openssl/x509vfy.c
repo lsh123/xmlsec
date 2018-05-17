@@ -671,7 +671,7 @@ xmlSecOpenSSLX509VerifyCRL(X509_STORE* xst, X509_CRL *crl ) {
         xmlSecOpenSSLError("X509_STORE_CTX_new", NULL);
         goto err;
     }
-    xobj = X509_OBJECT_new();
+    xobj = (X509_OBJECT *)X509_OBJECT_new();
     if(xobj == NULL) {
         xmlSecOpenSSLError("X509_OBJECT_new", NULL);
         goto err;
@@ -806,7 +806,7 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
             cert = sk_X509_value(certs, i);
             index = X509_get_ext_by_NID(cert, NID_subject_key_identifier, -1);
             if((index >= 0)  && (ext = X509_get_ext(cert, index))) {
-                keyId = X509V3_EXT_d2i(ext);
+                keyId = (ASN1_OCTET_STRING *)X509V3_EXT_d2i(ext);
                 if((keyId != NULL) && (keyId->length == len) &&
                                     (memcmp(keyId->data, ski, len) == 0)) {
                     ASN1_OCTET_STRING_free(keyId);

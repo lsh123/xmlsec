@@ -97,7 +97,7 @@ xmlSecTransformIdsInit(void) {
 
     ret = xmlSecPtrListInitialize(xmlSecTransformIdsGet(), xmlSecTransformIdListId);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecPtrListPtrInitialize(xmlSecTransformIdListId)", NULL);
+        xmlSecInternalError("xmlSecPtrListInitialize(xmlSecTransformIdListId)", NULL);
         return(-1);
     }
 
@@ -853,7 +853,7 @@ xmlSecTransformCtxPrepare(xmlSecTransformCtxPtr ctx, xmlSecTransformDataType inp
     /* add binary buffer to store result */
     transform = xmlSecTransformCtxCreateAndAppend(ctx, xmlSecTransformMemBufId);
     if(!xmlSecTransformIsValid(transform)) {
-        xmlSecInternalError("xmlSecTransformCreateAndAppend(xmlSecTransformMemBufId)", NULL);
+        xmlSecInternalError("xmlSecTransformCtxCreateAndAppend(xmlSecTransformMemBufId)", NULL);
         return(-1);
     }
     ctx->result = xmlSecTransformMemBufGetBuffer(transform);
@@ -930,7 +930,7 @@ xmlSecTransformCtxBinaryExecute(xmlSecTransformCtxPtr ctx,
 
     ret = xmlSecTransformPushBin(ctx->first, data, dataSize, 1, ctx);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecTransformCtxPushBin", NULL,
+        xmlSecInternalError2("xmlSecTransformPushBin", NULL,
                              "dataSize=%d", dataSize);
         return(-1);
     }
@@ -1952,7 +1952,7 @@ xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, const xmlSecByte* da
         if(outSize > 0) {
             ret = xmlSecBufferRemoveHead(&(transform->outBuf), outSize);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferAppend",
+                xmlSecInternalError2("xmlSecBufferRemoveHead",
                                      xmlSecTransformGetName(transform),
                                      "size=%d", outSize);
                 return(-1);

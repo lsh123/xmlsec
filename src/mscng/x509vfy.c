@@ -144,6 +144,37 @@ xmlSecMSCngX509StoreAdoptTrustedStore(xmlSecKeyDataStorePtr store, HCERTSTORE tr
     return(0);
 }
 
+/**
+ * xmlSecMSCngX509StoreAdoptUntrustedStore:
+ * @store:              the pointer to X509 key data store klass.
+ * @untrustedStore:     the pointer to certs store.
+ *
+ * Adds @trustedStore to the list of untrusted certs stores.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecMSCngX509StoreAdoptUntrustedStore(xmlSecKeyDataStorePtr store, HCERTSTORE untrustedStore) {
+    xmlSecMSCngX509StoreCtxPtr ctx;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCngX509StoreId), -1);
+    xmlSecAssert2(untrustedStore != NULL, -1);
+
+    ctx = xmlSecMSCngX509StoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->untrusted != NULL, -1);
+
+    ret = CertAddStoreToCollection(ctx->untrusted, untrustedStore, CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG , 2);
+    if(ret == FALSE) {
+        xmlSecMSCngLastError("CertAddStoreToCollection",
+            xmlSecKeyDataStoreGetName(store));
+        return(-1);
+    }
+
+    return(0);
+}
+
 static int
 xmlSecMSCngX509StoreInitialize(xmlSecKeyDataStorePtr store) {
     int ret;

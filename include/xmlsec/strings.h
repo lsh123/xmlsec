@@ -113,6 +113,15 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefAes192Cbc[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameAes256Cbc[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefAes256Cbc[];
 
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameAes128Gcm[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefAes128Gcm[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameAes192Gcm[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefAes192Gcm[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameAes256Gcm[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefAes256Gcm[];
+
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameKWAes128[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefKWAes128[];
 

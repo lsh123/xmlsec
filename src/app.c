@@ -388,6 +388,66 @@ xmlSecTransformAes256CbcGetKlass(void) {
 }
 
 /**
+* xmlSecTransformAes128GcmGetKlass:
+*
+* AES 128 GCM encryption transform klass.
+*
+* Returns: pointer to AES 128 GCM encryption transform or NULL if an error
+* occurs (the xmlsec-crypto library is not loaded or this transform is not
+* implemented).
+*/
+xmlSecTransformId
+xmlSecTransformAes128GcmGetKlass(void)
+{
+    if ((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformAes128GcmGetKlass == NULL)) {
+        xmlSecNotImplementedError("transformAes128GcmGetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformAes128GcmGetKlass());
+}
+
+/**
+* xmlSecTransformAes192GcmGetKlass:
+*
+* AES 192 GCM encryption transform klass.
+*
+* Returns: pointer to AES 192 GCM encryption transform or NULL if an error
+* occurs (the xmlsec-crypto library is not loaded or this transform is not
+* implemented).
+*/
+xmlSecTransformId
+xmlSecTransformAes192GcmGetKlass(void)
+{
+    if ((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformAes192GcmGetKlass == NULL)) {
+        xmlSecNotImplementedError("transformAes192GcmGetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformAes192GcmGetKlass());
+}
+
+/**
+* xmlSecTransformAes256GcmGetKlass:
+*
+* AES 256 GCM encryption transform klass.
+*
+* Returns: pointer to AES 256 GCM encryption transform or NULL if an error
+* occurs (the xmlsec-crypto library is not loaded or this transform is not
+* implemented).
+*/
+xmlSecTransformId
+xmlSecTransformAes256GcmGetKlass(void)
+{
+    if ((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformAes256GcmGetKlass == NULL)) {
+        xmlSecNotImplementedError("transformAes256GcmGetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformAes256GcmGetKlass());
+}
+
+/**
  * xmlSecTransformKWAes128GetKlass:
  *
  * The AES-128 kew wrapper transform klass.

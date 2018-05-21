@@ -431,6 +431,9 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod          transformAes128CbcGetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformAes192CbcGetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformAes256CbcGetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformAes128GcmGetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformAes192GcmGetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformAes256GcmGetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformKWAes128GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformKWAes192GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformKWAes256GetKlass;

@@ -39,8 +39,8 @@ struct _xmlSecMSCngBlockCipherCtx {
     BCRYPT_ALG_HANDLE hAlg;
     BCRYPT_KEY_HANDLE hKey;
     PVOID pvPaddingInfo;
-    PBYTE pbKeyObject;
-    DWORD cbKeyObject;
+    //PBYTE pbKeyObject;
+    //DWORD cbKeyObject;
     PBYTE pbIV;
     xmlSecKeyDataId keyId;
     xmlSecSize keySize;
@@ -103,11 +103,11 @@ xmlSecMSCngBlockCipherInitialize(xmlSecTransformPtr transform) {
         ctx->pszAlgId = BCRYPT_AES_ALGORITHM;
         ctx->keyId = xmlSecMSCngKeyDataAesId;
         ctx->keySize = 24;
-    } else if (transform->id == xmlSecMSCngTransformAes256CbcId) {
+    } else if(transform->id == xmlSecMSCngTransformAes256CbcId) {
         ctx->pszAlgId = BCRYPT_AES_ALGORITHM;
         ctx->keyId = xmlSecMSCngKeyDataAesId;
         ctx->keySize = 32;
-    } else if (transform->id == xmlSecMSCngTransformAes128GcmId) {
+    } else if(transform->id == xmlSecMSCngTransformAes128GcmId) {
         ctx->pszAlgId = BCRYPT_AES_ALGORITHM;
         ctx->keyId = xmlSecMSCngKeyDataAesId;
         ctx->keySize = 16;
@@ -119,7 +119,7 @@ xmlSecMSCngBlockCipherInitialize(xmlSecTransformPtr transform) {
         ctx->pszAlgId = BCRYPT_AES_ALGORITHM;
         ctx->keyId = xmlSecMSCngKeyDataAesId;
         ctx->keySize = 32;
-    }
+    } else
 #endif /* XMLSEC_NO_AES */
 
 #ifndef XMLSEC_NO_DES
@@ -183,9 +183,9 @@ xmlSecMSCngBlockCipherFinalize(xmlSecTransformPtr transform) {
         BCryptDestroyKey(ctx->hKey);
     }
 
-    if(ctx->pbKeyObject != NULL) {
-        xmlFree(ctx->pbKeyObject);
-    }
+    //if(ctx->pbKeyObject != NULL) {
+    //    xmlFree(ctx->pbKeyObject);
+    //}
 
     if(ctx->hAlg != NULL) {
         BCryptCloseAlgorithmProvider(ctx->hAlg, 0);
@@ -227,7 +227,7 @@ xmlSecMSCngBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     BCRYPT_KEY_DATA_BLOB_HEADER* blobHeader;
     xmlSecSize blobHeaderLen;
     BYTE* bufData;
-    DWORD cbData;
+    //DWORD cbData;
     NTSTATUS status;
     int ret;
 
@@ -257,23 +257,23 @@ xmlSecMSCngBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(bufData != NULL, -1);
 
     /* allocate the key object */
-    status = BCryptGetProperty(ctx->hAlg,
-        BCRYPT_OBJECT_LENGTH,
-        (PBYTE)&ctx->cbKeyObject,
-        sizeof(DWORD),
-        &cbData,
-        0);
-    if(status != STATUS_SUCCESS) {
-        xmlSecMSCngNtError("BCryptGetProperty",
-            xmlSecTransformGetName(transform), status);
-        return(-1);
-    }
+    //status = BCryptGetProperty(ctx->hAlg,
+    //    BCRYPT_OBJECT_LENGTH,
+    //    (PBYTE)&ctx->cbKeyObject,
+    //    sizeof(DWORD),
+    //    &cbData,
+    //    0);
+    //if(status != STATUS_SUCCESS) {
+    //    xmlSecMSCngNtError("BCryptGetProperty",
+    //        xmlSecTransformGetName(transform), status);
+    //    return(-1);
+    //}
 
-    ctx->pbKeyObject = xmlMalloc(ctx->cbKeyObject);
-    if(ctx->pbKeyObject == NULL) {
-        xmlSecMallocError(ctx->cbKeyObject, NULL);
-        return(-1);
-    }
+    //ctx->pbKeyObject = xmlMalloc(ctx->cbKeyObject);
+    //if(ctx->pbKeyObject == NULL) {
+    //    xmlSecMallocError(ctx->cbKeyObject, NULL);
+    //    return(-1);
+    //}
 
     /* prefix the key with a BCRYPT_KEY_DATA_BLOB_HEADER */
     blobHeaderLen = sizeof(BCRYPT_KEY_DATA_BLOB_HEADER) + xmlSecBufferGetSize(buffer);
@@ -290,14 +290,15 @@ xmlSecMSCngBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     blobHeader->cbKeyData = (ULONG)xmlSecBufferGetSize(buffer);
     memcpy(xmlSecBufferGetData(&blob) + sizeof(BCRYPT_KEY_DATA_BLOB_HEADER),
         bufData, xmlSecBufferGetSize(buffer));
+    xmlSecBufferSetSize(&blob, blobHeaderLen);
 
     /* perform the actual import */
     status = BCryptImportKey(ctx->hAlg,
         NULL,
         BCRYPT_KEY_DATA_BLOB,
         &ctx->hKey,
-        ctx->pbKeyObject,
-        ctx->cbKeyObject,
+        NULL,
+        0,
         xmlSecBufferGetData(&blob),
         (ULONG)xmlSecBufferGetSize(&blob),
         0);

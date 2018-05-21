@@ -1,6 +1,6 @@
 # Makefile for xmlsec, specific for Windows, MSVC and NMAKE.
 #
-# Take a look at the beginning and modify the variables to suit your 
+# Take a look at the beginning and modify the variables to suit your
 # environment. Having done that, you can do a
 #
 # nmake [all]     to build the xmlsec and the accompanying utilities.
@@ -46,9 +46,9 @@ AUTOCONF = .\configure.txt
 #BINPREFIX = $(PREFIX)\bin
 #INCPREFIX = $(PREFIX)\include
 #LIBPREFIX = $(PREFIX)\lib
-#SOPREFIX = $(PREFIX)\lib
+#SOPREFIX = $(PREFIX)\bin
 #INCLUDE = $(INCLUDE);$(INCPREFIX)
-#LIB = $(LIB);$(LIBPREFIX) 
+#LIB = $(LIB);$(LIBPREFIX)
 
 # There should never be a need to modify anything below this line.
 # ----------------------------------------------------------------
@@ -67,6 +67,7 @@ XMLSEC_NAME 		= xmlsec
 XMLSEC_BASENAME 	= lib$(XMLSEC_NAME)
 XMLSEC_SO 		= $(XMLSEC_BASENAME).dll
 XMLSEC_SO_MANIFEST	= $(XMLSEC_BASENAME).dll.manifest
+XMLSEC_PDB 		= $(XMLSEC_BASENAME).pdb
 XMLSEC_IMP 		= $(XMLSEC_BASENAME).lib
 XMLSEC_A 		= $(XMLSEC_BASENAME)_a.lib
 
@@ -74,6 +75,7 @@ XMLSEC_OPENSSL_NAME 	= $(XMLSEC_NAME)-openssl
 XMLSEC_OPENSSL_BASENAME = lib$(XMLSEC_OPENSSL_NAME)
 XMLSEC_OPENSSL_SO 	= $(XMLSEC_OPENSSL_BASENAME).dll
 XMLSEC_OPENSSL_SO_MANIFEST = $(XMLSEC_OPENSSL_BASENAME).dll.manifest
+XMLSEC_OPENSSL_PDB 	= $(XMLSEC_OPENSSL_BASENAME).pdb
 XMLSEC_OPENSSL_IMP 	= $(XMLSEC_OPENSSL_BASENAME).lib
 XMLSEC_OPENSSL_A 	= $(XMLSEC_OPENSSL_BASENAME)_a.lib
 
@@ -81,6 +83,7 @@ XMLSEC_NSS_NAME 	= $(XMLSEC_NAME)-nss
 XMLSEC_NSS_BASENAME 	= lib$(XMLSEC_NSS_NAME)
 XMLSEC_NSS_SO 		= $(XMLSEC_NSS_BASENAME).dll
 XMLSEC_NSS_SO_MANIFEST	= $(XMLSEC_NSS_BASENAME).dll.manifest
+XMLSEC_NSS_PDB 		= $(XMLSEC_NSS_BASENAME).pdb
 XMLSEC_NSS_IMP 		= $(XMLSEC_NSS_BASENAME).lib
 XMLSEC_NSS_A 		= $(XMLSEC_NSS_BASENAME)_a.lib
 
@@ -88,6 +91,7 @@ XMLSEC_MSCRYPTO_NAME 	= $(XMLSEC_NAME)-mscrypto
 XMLSEC_MSCRYPTO_BASENAME= lib$(XMLSEC_MSCRYPTO_NAME)
 XMLSEC_MSCRYPTO_SO 	= $(XMLSEC_MSCRYPTO_BASENAME).dll
 XMLSEC_MSCRYPTO_SO_MANIFEST = $(XMLSEC_MSCRYPTO_BASENAME).dll.manifest
+XMLSEC_MSCRYPTO_PDB 	= $(XMLSEC_MSCRYPTO_BASENAME).pdb
 XMLSEC_MSCRYPTO_IMP 	= $(XMLSEC_MSCRYPTO_BASENAME).lib
 XMLSEC_MSCRYPTO_A 	= $(XMLSEC_MSCRYPTO_BASENAME)_a.lib
 
@@ -95,6 +99,7 @@ XMLSEC_MSCNG_NAME 	= $(XMLSEC_NAME)-mscng
 XMLSEC_MSCNG_BASENAME= lib$(XMLSEC_MSCNG_NAME)
 XMLSEC_MSCNG_SO 	= $(XMLSEC_MSCNG_BASENAME).dll
 XMLSEC_MSCNG_SO_MANIFEST = $(XMLSEC_MSCNG_BASENAME).dll.manifest
+XMLSEC_MSCNG_PDB 	= $(XMLSEC_MSCNG_BASENAME).pdb
 XMLSEC_MSCNG_IMP 	= $(XMLSEC_MSCNG_BASENAME).lib
 XMLSEC_MSCNG_A 		= $(XMLSEC_MSCNG_BASENAME)_a.lib
 
@@ -169,7 +174,7 @@ XMLSEC_OBJS = \
 	$(XMLSEC_INTDIR)\xmlsec.obj \
 	$(XMLSEC_INTDIR)\xmltree.obj \
 	$(XMLSEC_INTDIR)\xpath.obj \
-	$(XMLSEC_INTDIR)\xslt.obj 
+	$(XMLSEC_INTDIR)\xslt.obj
 XMLSEC_OBJS_A = \
 	$(XMLSEC_INTDIR_A)\app.obj\
 	$(XMLSEC_INTDIR_A)\base64.obj\
@@ -200,7 +205,7 @@ XMLSEC_OBJS_A = \
 	$(XMLSEC_INTDIR_A)\xmlsec.obj \
 	$(XMLSEC_INTDIR_A)\xmltree.obj \
 	$(XMLSEC_INTDIR_A)\xpath.obj \
-	$(XMLSEC_INTDIR_A)\xslt.obj 
+	$(XMLSEC_INTDIR_A)\xslt.obj
 
 XMLSEC_OPENSSL_OBJS = \
 	$(XMLSEC_OPENSSL_INTDIR)\app.obj\
@@ -218,7 +223,7 @@ XMLSEC_OPENSSL_OBJS = \
 	$(XMLSEC_OPENSSL_INTDIR)\strings.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\symkeys.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\x509.obj \
-	$(XMLSEC_OPENSSL_INTDIR)\x509vfy.obj 
+	$(XMLSEC_OPENSSL_INTDIR)\x509vfy.obj
 XMLSEC_OPENSSL_OBJS_A = \
 	$(XMLSEC_OPENSSL_INTDIR_A)\app.obj\
 	$(XMLSEC_OPENSSL_INTDIR_A)\bn.obj \
@@ -235,7 +240,7 @@ XMLSEC_OPENSSL_OBJS_A = \
 	$(XMLSEC_OPENSSL_INTDIR_A)\strings.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\symkeys.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\x509.obj \
-	$(XMLSEC_OPENSSL_INTDIR_A)\x509vfy.obj 
+	$(XMLSEC_OPENSSL_INTDIR_A)\x509vfy.obj
 
 XMLSEC_NSS_OBJS = \
 	$(XMLSEC_NSS_INTDIR)\app.obj\
@@ -359,11 +364,11 @@ CFLAGS 			= $(CFLAGS) /WX
 
 CFLAGS 			= $(CFLAGS) /I$(BASEDIR) /I$(BASEDIR)\include
 CFLAGS 			= $(CFLAGS) /I$(INCPREFIX)
-CFLAGS 			= $(CFLAGS) /D PACKAGE=\"$(XMLSEC_NAME)\" 
+CFLAGS 			= $(CFLAGS) /D PACKAGE=\"$(XMLSEC_NAME)\"
 CFLAGS 			= $(CFLAGS) /D "HAVE_STDIO_H" /D "HAVE_STDLIB_H"
 CFLAGS 			= $(CFLAGS) /D "HAVE_STRING_H" /D "HAVE_CTYPE_H"
 CFLAGS 			= $(CFLAGS) /D "HAVE_MALLOC_H" /D "HAVE_MEMORY_H"
-CFLAGS 			= $(CFLAGS) /D "XMLSEC_NO_GOST" /D "XMLSEC_NO_GOST2012" 
+CFLAGS 			= $(CFLAGS) /D "XMLSEC_NO_GOST" /D "XMLSEC_NO_GOST2012"
 
 !if "$(UNICODE)" == "1"
 CFLAGS 			= $(CFLAGS) /D "UNICODE" /D "_UNICODE"
@@ -371,22 +376,22 @@ CFLAGS 			= $(CFLAGS) /D "UNICODE" /D "_UNICODE"
 
 # Optimisation and debug symbols.
 !if "$(DEBUG)" == "1"
-CFLAGS 			= $(CFLAGS) /D "_DEBUG" /Od /Z7 
+CFLAGS 			= $(CFLAGS) /D "_DEBUG" /Od /Zi
 !else
-CFLAGS 			= $(CFLAGS) /D "NDEBUG" /O2 
+CFLAGS 			= $(CFLAGS) /D "NDEBUG" /O2 /Zi
 !endif
 
 CFLAGS 			= $(CFLAGS) $(CRUNTIME)
 
 # configurable options
 !if "$(WITH_LIBXSLT)" == "1"
-!else 
+!else
 CFLAGS 			= $(CFLAGS) /DXMLSEC_NO_XSLT=1
 !endif
 
 !if "$(WITH_NT4)" == "1"
 CFLAGS 			= $(CFLAGS) /DXMLSEC_MSCRYPTO_NT4=1
-!else 
+!else
 !endif
 
 CFLAGS			= $(CFLAGS) /D "XMLSEC_DEFAULT_CRYPTO=\"$(XMLSEC_DEFAULT_CRYPTO)\""
@@ -395,7 +400,7 @@ CFLAGS			= $(CFLAGS) /D "XMLSEC_DL_WIN32"
 APP_CFLAGS		= $(APP_CFLAGS) /D "XMLSEC_CRYPTO_DYNAMIC_LOADING"
 !else
 CFLAGS 			= $(CFLAGS) /D "XMLSEC_NO_CRYPTO_DYNAMIC_LOADING"
-APP_CFLAGS		= $(APP_CFLAGS) $(XMLSEC_CRYPTO_CFLAGS) 
+APP_CFLAGS		= $(APP_CFLAGS) $(XMLSEC_CRYPTO_CFLAGS)
 # this disables TEMPLATE tests and helps with missing algorithms (hmac) in mscrypto
 APP_CFLAGS		= $(APP_CFLAGS) /D "XMLSEC_NO_TMPL_TEST"
 !endif
@@ -409,19 +414,19 @@ XMLSEC_MSCNG_CFLAGS     = /D "XMLSEC_CRYPTO_MSCNG" /D "XMLSEC_DEFAULT_CRYPTO=\"m
 # The linker and its options.
 #
 LD 				= link.exe
-LDFLAGS 		= /nologo 
+LDFLAGS 		= /nologo /debug
 LDFLAGS 		= $(LDFLAGS) /LIBPATH:$(BINDIR) /LIBPATH:$(LIBPREFIX)
-LIBS 			= 
+LIBS 			=
 
 # Optimisation and debug symbols.
 !if "$(DEBUG)" == "1"
-LDFLAGS 		= $(LDFLAGS) /DEBUG
-!else
 LDFLAGS 		= $(LDFLAGS)
+!else
+LDFLAGS 		= $(LDFLAGS) /opt:ref,icf
 !endif
 
-SOLIBS 			= $(LIBS) libxml2.lib 
-ALIBS 			= $(LIBS) libxml2_a.lib 
+SOLIBS 			= $(LIBS) libxml2.lib
+ALIBS 			= $(LIBS) libxml2_a.lib
 
 !if "$(WITH_ICONV)" == "1"
 CFLAGS          = $(CFLAGS) /D "LIBXML_ICONV_ENABLED"
@@ -469,7 +474,7 @@ ARFLAGS = /nologo
 #
 # xmlsec-<default-crypto> options
 #
-!if "$(WITH_DEFAULT_CRYPTO)" == "openssl" 
+!if "$(WITH_DEFAULT_CRYPTO)" == "openssl"
 XMLSEC_DEFAULT_CRYPTO   = "openssl"
 XMLSEC_DEFAULT_CRYPTO_A = "openssla"
 XMLSEC_CRYPTO_CFLAGS   	= $(XMLSEC_OPENSSL_CFLAGS)
@@ -517,7 +522,7 @@ XMLSEC_CRYPTO_A		    = $(XMLSEC_MSCNG_A)
 # Build rules
 #
 
-all : xmlsec xmlseca $(WITH_CRYPTO) apps 
+all : xmlsec xmlseca $(WITH_CRYPTO) apps
 
 xmlsec : $(XMLSEC_APPS_INTDIR) $(BINDIR)\$(XMLSEC_SO) $(XMLSEC_DEFAULT_CRYPTO)
 
@@ -546,7 +551,7 @@ check-keys : $(BINDIR)\$(APP_NAME)
 	sh ./tests/testrun.sh ./tests/testKeys.sh "$(WITH_DEFAULT_CRYPTO)" ./tests win32/$(BINDIR)/$(APP_NAME) der
 	cd win32
 
-check-dsig : $(BINDIR)\$(APP_NAME)	
+check-dsig : $(BINDIR)\$(APP_NAME)
 	cd ..
 	if not exist win32\tmp mkdir win32\tmp
 	set TMPFOLDER=win32/tmp
@@ -592,22 +597,27 @@ install : all
 	if exist $(BINDIR)\$(XMLSEC_MSCNG_SO) copy $(BASEDIR)\include\$(XMLSEC_NAME)\mscng\*.h $(INCPREFIX)\$(XMLSEC_NAME)\mscng
 	if exist $(BINDIR)\$(XMLSEC_SO) copy $(BINDIR)\$(XMLSEC_SO) $(SOPREFIX)
 	if exist $(BINDIR)\$(XMLSEC_SO_MANIFEST) copy $(BINDIR)\$(XMLSEC_SO_MANIFEST) $(SOPREFIX)
+	if exist $(BINDIR)\$(XMLSEC_PDB) copy $(BINDIR)\$(XMLSEC_PDB) $(SOPREFIX)
 	if exist $(BINDIR)\$(XMLSEC_A) copy $(BINDIR)\$(XMLSEC_A) $(LIBPREFIX)
 	if exist $(BINDIR)\$(XMLSEC_IMP) copy $(BINDIR)\$(XMLSEC_IMP) $(LIBPREFIX)
 	if exist $(BINDIR)\$(XMLSEC_OPENSSL_SO) copy $(BINDIR)\$(XMLSEC_OPENSSL_SO) $(SOPREFIX)
 	if exist $(BINDIR)\$(XMLSEC_OPENSSL_SO_MANIFEST) copy $(BINDIR)\$(XMLSEC_OPENSSL_SO_MANIFEST) $(SOPREFIX)
+	if exist $(BINDIR)\$(XMLSEC_OPENSSL_PDB) copy $(BINDIR)\$(XMLSEC_OPENSSL_PDB) $(SOPREFIX)
 	if exist $(BINDIR)\$(XMLSEC_OPENSSL_A) copy $(BINDIR)\$(XMLSEC_OPENSSL_A) $(LIBPREFIX)
 	if exist $(BINDIR)\$(XMLSEC_OPENSSL_IMP) copy $(BINDIR)\$(XMLSEC_OPENSSL_IMP) $(LIBPREFIX)
 	if exist $(BINDIR)\$(XMLSEC_NSS_SO) copy $(BINDIR)\$(XMLSEC_NSS_SO) $(SOPREFIX)
 	if exist $(BINDIR)\$(XMLSEC_NSS_SO_MANIFEST) copy $(BINDIR)\$(XMLSEC_NSS_SO_MANIFEST) $(SOPREFIX)
+	if exist $(BINDIR)\$(XMLSEC_NSS_PDB) copy $(BINDIR)\$(XMLSEC_NSS_PDB) $(SOPREFIX)
 	if exist $(BINDIR)\$(XMLSEC_NSS_A) copy $(BINDIR)\$(XMLSEC_NSS_A) $(LIBPREFIX)
 	if exist $(BINDIR)\$(XMLSEC_NSS_IMP) copy $(BINDIR)\$(XMLSEC_NSS_IMP) $(LIBPREFIX)
 	if exist $(BINDIR)\$(XMLSEC_MSCRYPTO_SO) copy $(BINDIR)\$(XMLSEC_MSCRYPTO_SO) $(SOPREFIX)
 	if exist $(BINDIR)\$(XMLSEC_MSCRYPTO_SO_MANIFEST) copy $(BINDIR)\$(XMLSEC_MSCRYPTO_SO_MANIFEST) $(SOPREFIX)
+	if exist $(BINDIR)\$(XMLSEC_MSCRYPTO_PDB) copy $(BINDIR)\$(XMLSEC_MSCRYPTO_PDB) $(SOPREFIX)
 	if exist $(BINDIR)\$(XMLSEC_MSCRYPTO_A) copy $(BINDIR)\$(XMLSEC_MSCRYPTO_A) $(LIBPREFIX)
 	if exist $(BINDIR)\$(XMLSEC_MSCRYPTO_IMP) copy $(BINDIR)\$(XMLSEC_MSCRYPTO_IMP) $(LIBPREFIX)
 	if exist $(BINDIR)\$(XMLSEC_MSCNG_SO) copy $(BINDIR)\$(XMLSEC_MSCNG_SO) $(SOPREFIX)
 	if exist $(BINDIR)\$(XMLSEC_MSCNG_SO_MANIFEST) copy $(BINDIR)\$(XMLSEC_MSCNG_SO_MANIFEST) $(SOPREFIX)
+	if exist $(BINDIR)\$(XMLSEC_MSCNG_PDB) copy $(BINDIR)\$(XMLSEC_MSCNG_PDB) $(SOPREFIX)
 	if exist $(BINDIR)\$(XMLSEC_MSCNG_A) copy $(BINDIR)\$(XMLSEC_MSCNG_A) $(LIBPREFIX)
 	if exist $(BINDIR)\$(XMLSEC_MSCNG_IMP) copy $(BINDIR)\$(XMLSEC_MSCNG_IMP) $(LIBPREFIX)
 	if exist $(BINDIR)\$(APP_NAME) copy $(BINDIR)\$(APP_NAME) $(BINPREFIX)
@@ -617,22 +627,27 @@ uninstall :
 	if exist $(INCPREFIX)\$(XMLSEC_NAME) rmdir /S /Q $(INCPREFIX)\$(XMLSEC_NAME)
 	if exist $(SOPREFIX)\$(XMLSEC_SO) del /F /S /Q $(SOPREFIX)\$(XMLSEC_SO)
 	if exist $(SOPREFIX)\$(XMLSEC_SO_MANIFEST) del /F /S /Q $(SOPREFIX)\$(XMLSEC_SO)
+	if exist $(SOPREFIX)\$(XMLSEC_PDB) del /F /S /Q $(SOPREFIX)\$(XMLSEC_PDB)
 	if exist $(LIBPREFIX)\$(XMLSEC_A) del /F /S /Q $(LIBPREFIX)\$(XMLSEC_A)
 	if exist $(LIBPREFIX)\$(XMLSEC_IMP) del /F /S /Q $(LIBPREFIX)\$(XMLSEC_IMP)
 	if exist $(SOPREFIX)\$(XMLSEC_OPENSSL_SO) del /F /S /Q $(SOPREFIX)\$(XMLSEC_OPENSSL_SO)
 	if exist $(SOPREFIX)\$(XMLSEC_OPENSSL_SO_MANIFEST) del /F /S /Q $(SOPREFIX)\$(XMLSEC_OPENSSL_SO)
+	if exist $(SOPREFIX)\$(XMLSEC_OPENSSL_PDB) del /F /S /Q $(SOPREFIX)\$(XMLSEC_OPENSSL_PDB)
 	if exist $(LIBPREFIX)\$(XMLSEC_OPENSSL_A) del /F /S /Q $(LIBPREFIX)\$(XMLSEC_OPENSSL_A)
 	if exist $(LIBPREFIX)\$(XMLSEC_OPENSSL_IMP) del /F /S /Q $(LIBPREFIX)\$(XMLSEC_OPENSSL_IMP)
 	if exist $(SOPREFIX)\$(XMLSEC_NSS_SO) del /F /S /Q $(SOPREFIX)\$(XMLSEC_NSS_SO)
 	if exist $(SOPREFIX)\$(XMLSEC_NSS_SO_MANIFEST) del /F /S /Q $(SOPREFIX)\$(XMLSEC_NSS_SO)
+	if exist $(SOPREFIX)\$(XMLSEC_NSS_PDB) del /F /S /Q $(SOPREFIX)\$(XMLSEC_NSS_PDB)
 	if exist $(LIBPREFIX)\$(XMLSEC_NSS_A) del /F /S /Q $(LIBPREFIX)\$(XMLSEC_NSS_A)
 	if exist $(LIBPREFIX)\$(XMLSEC_NSS_IMP) del /F /S /Q $(LIBPREFIX)\$(XMLSEC_NSS_IMP)
 	if exist $(SOPREFIX)\$(XMLSEC_MSCRYPTO_SO) del /F /S /Q $(SOPREFIX)\$(XMLSEC_MSCRYPTO_SO)
 	if exist $(SOPREFIX)\$(XMLSEC_MSCRYPTO_SO_MANIFEST) del /F /S /Q $(SOPREFIX)\$(XMLSEC_MSCRYPTO_SO)
+	if exist $(SOPREFIX)\$(XMLSEC_MSCRYPTO_PDB) del /F /S /Q $(SOPREFIX)\$(XMLSEC_MSCRYPTO_PDB)
 	if exist $(LIBPREFIX)\$(XMLSEC_MSCRYPTO_A) del /F /S /Q $(LIBPREFIX)\$(XMLSEC_MSCRYPTO_A)
 	if exist $(LIBPREFIX)\$(XMLSEC_MSCRYPTO_IMP) del /F /S /Q $(LIBPREFIX)\$(XMLSEC_MSCRYPTO_IMP)
 	if exist $(SOPREFIX)\$(XMLSEC_MSCNG_SO) del /F /S /Q $(SOPREFIX)\$(XMLSEC_MSCNG_SO)
 	if exist $(SOPREFIX)\$(XMLSEC_MSCNG_SO_MANIFEST) del /F /S /Q $(SOPREFIX)\$(XMLSEC_MSCNG_SO)
+	if exist $(SOPREFIX)\$(XMLSEC_MSCNG_PDB) del /F /S /Q $(SOPREFIX)\$(XMLSEC_MSCNG_PDB)
 	if exist $(LIBPREFIX)\$(XMLSEC_MSCNG_A) del /F /S /Q $(LIBPREFIX)\$(XMLSEC_MSCNG_A)
 	if exist $(LIBPREFIX)\$(XMLSEC_MSCNG_IMP) del /F /S /Q $(LIBPREFIX)\$(XMLSEC_MSCNG_IMP)
 	if exist $(BINPREFIX)\$(APP_NAME) del /F /S /Q $(BINPREFIX)\$(APP_NAME)

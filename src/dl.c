@@ -614,6 +614,24 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
         return(-1);
     }
 
+    if ((functions->transformAes128GcmGetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformAes128GcmGetKlass()) < 0) {
+        xmlSecInternalError("xmlSecTransformIdsRegister",
+                            xmlSecTransformKlassGetName(functions->transformAes128GcmGetKlass()));
+        return(-1);
+    }
+
+    if ((functions->transformAes192GcmGetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformAes192GcmGetKlass()) < 0) {
+        xmlSecInternalError("xmlSecTransformIdsRegister",
+                            xmlSecTransformKlassGetName(functions->transformAes192GcmGetKlass()));
+        return(-1);
+    }
+
+    if ((functions->transformAes256GcmGetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformAes256GcmGetKlass()) < 0) {
+        xmlSecInternalError("xmlSecTransformIdsRegister",
+                            xmlSecTransformKlassGetName(functions->transformAes256GcmGetKlass()));
+        return(-1);
+    }
+
     if((functions->transformKWAes128GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformKWAes128GetKlass()) < 0) {
         xmlSecInternalError("xmlSecTransformIdsRegister",
                             xmlSecTransformKlassGetName(functions->transformKWAes128GetKlass()));

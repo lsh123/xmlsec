@@ -343,9 +343,12 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @keyDataX509GetKlass:        the method to get pointer to X509 key data klass.
  * @keyDataRawX509CertGetKlass: the method to get pointer to raw X509 cert key data klass.
  * @x509StoreGetKlass:          the method to get pointer to X509 key data store.
- * @transformAes128CbcGetKlass: the method to get pointer to AES 128 encryption transform.
- * @transformAes192CbcGetKlass: the method to get pointer to AES 192 encryption transform.
- * @transformAes256CbcGetKlass: the method to get pointer to AES 256 encryption transform.
+ * @transformAes128CbcGetKlass: the method to get pointer to AES 128 CBC encryption transform.
+ * @transformAes192CbcGetKlass: the method to get pointer to AES 192 CBC encryption transform.
+ * @transformAes256CbcGetKlass: the method to get pointer to AES 256 CBC encryption transform.
+ * @transformAes128GcmGetKlass: the method to get pointer to AES 128 GCM encryption transform.
+ * @transformAes192GcmGetKlass: the method to get pointer to AES 192 GCM encryption transform.
+ * @transformAes256GcmGetKlass: the method to get pointer to AES 256 GCM encryption transform.
  * @transformKWAes128GetKlass:  the method to get pointer to AES 128 key wrapper transform.
  * @transformKWAes192GetKlass:  the method to get pointer to AES 192 key wrapper transform.
  * @transformKWAes256GetKlass:  the method to get pointer to AES 256 key wrapper transform.

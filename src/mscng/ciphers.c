@@ -310,6 +310,7 @@ xmlSecMSCngBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferInitialize",
             xmlSecTransformGetName(transform), "size=%d", blobHeaderLen);
+        xmlFree(ctx->pbKeyObject);
         return(-1);
     }
 
@@ -335,6 +336,7 @@ xmlSecMSCngBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptImportKey",
             xmlSecTransformGetName(transform), status);
+        xmlFree(ctx->pbKeyObject);
         xmlSecBufferFinalize(&blob);
         return(-1);
     }

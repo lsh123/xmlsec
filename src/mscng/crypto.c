@@ -114,6 +114,9 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->transformAes128CbcGetKlass           = xmlSecMSCngTransformAes128CbcGetKlass;
     gXmlSecMSCngFunctions->transformAes192CbcGetKlass           = xmlSecMSCngTransformAes192CbcGetKlass;
     gXmlSecMSCngFunctions->transformAes256CbcGetKlass           = xmlSecMSCngTransformAes256CbcGetKlass;
+    gXmlSecMSCngFunctions->transformAes128GcmGetKlass           = xmlSecMSCngTransformAes128GcmGetKlass;
+    gXmlSecMSCngFunctions->transformAes192GcmGetKlass           = xmlSecMSCngTransformAes192GcmGetKlass;
+    gXmlSecMSCngFunctions->transformAes256GcmGetKlass           = xmlSecMSCngTransformAes256GcmGetKlass;
     gXmlSecMSCngFunctions->transformKWAes128GetKlass            = xmlSecMSCngTransformKWAes128GetKlass;
     gXmlSecMSCngFunctions->transformKWAes192GetKlass            = xmlSecMSCngTransformKWAes192GetKlass;
     gXmlSecMSCngFunctions->transformKWAes256GetKlass            = xmlSecMSCngTransformKWAes256GetKlass;
@@ -352,7 +355,7 @@ xmlSecMSCngGenerateRandom(xmlSecBufferPtr buffer, size_t size) {
     status = BCryptGenRandom(
         NULL,
         (PBYTE)xmlSecBufferGetData(buffer),
-        size,
+        (ULONG)size,
         BCRYPT_USE_SYSTEM_PREFERRED_RNG);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptGenRandom", NULL, status);

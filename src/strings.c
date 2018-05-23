@@ -108,6 +108,15 @@ const xmlChar xmlSecHrefAes192Cbc[]             = "http://www.w3.org/2001/04/xml
 const xmlChar xmlSecNameAes256Cbc[]             = "aes256-cbc";
 const xmlChar xmlSecHrefAes256Cbc[]             = "http://www.w3.org/2001/04/xmlenc#aes256-cbc";
 
+const xmlChar xmlSecNameAes128Gcm[]             = "aes128-gcm";
+const xmlChar xmlSecHrefAes128Gcm[]             = "http://www.w3.org/2009/xmlenc11#aes128-gcm";
+
+const xmlChar xmlSecNameAes192Gcm[]             = "aes192-gcm";
+const xmlChar xmlSecHrefAes192Gcm[]             = "http://www.w3.org/2009/xmlenc11#aes192-gcm";
+
+const xmlChar xmlSecNameAes256Gcm[]             = "aes256-gcm";
+const xmlChar xmlSecHrefAes256Gcm[]             = "http://www.w3.org/2009/xmlenc11#aes256-gcm";
+
 const xmlChar xmlSecNameKWAes128[]              = "kw-aes128";
 const xmlChar xmlSecHrefKWAes128[]              = "http://www.w3.org/2001/04/xmlenc#kw-aes128";
 

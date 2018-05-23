@@ -41,6 +41,8 @@ struct _xmlSecMSCngBlockCipherCtx {
     BCRYPT_AUTHENTICATED_CIPHER_MODE_INFO authInfo;
     PBYTE pbIV;
     ULONG cbIV;
+    PBYTE pbKeyObject;
+    ULONG cbKeyObject;
     xmlSecKeyDataId keyId;
     xmlSecSize keySize;
     int ctxInitialized;
@@ -211,6 +213,10 @@ xmlSecMSCngBlockCipherFinalize(xmlSecTransformPtr transform) {
         BCryptDestroyKey(ctx->hKey);
     }
 
+    if (ctx->pbKeyObject != NULL) {
+        xmlFree(ctx->pbKeyObject);
+    }
+
     if(ctx->hAlg != NULL) {
         BCryptCloseAlgorithmProvider(ctx->hAlg, 0);
     }
@@ -251,7 +257,7 @@ xmlSecMSCngBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     BCRYPT_KEY_DATA_BLOB_HEADER* blobHeader;
     xmlSecSize blobHeaderLen;
     BYTE* bufData;
-    //DWORD cbData;
+    DWORD dwKeyObjectLength, bytesWritten;
     NTSTATUS status;
     int ret;
 
@@ -280,6 +286,23 @@ xmlSecMSCngBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     bufData = xmlSecBufferGetData(buffer);
     xmlSecAssert2(bufData != NULL, -1);
 
+    dwKeyObjectLength = 0;
+    status = BCryptGetProperty(ctx->hAlg,
+        BCRYPT_OBJECT_LENGTH,
+        (PUCHAR)&dwKeyObjectLength,
+        (ULONG)sizeof(DWORD),
+        &bytesWritten, 0);
+    if (status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptGetProperty",
+            xmlSecTransformGetName(transform), status);
+        return(-1);
+    }
+
+    ctx->pbKeyObject = xmlMalloc(dwKeyObjectLength);
+    if (ctx->pbKeyObject == NULL) {
+        xmlSecMallocError(dwKeyObjectLength, xmlSecTransformGetName(transform));
+        return(-1);
+    }
 
     /* prefix the key with a BCRYPT_KEY_DATA_BLOB_HEADER */
     blobHeaderLen = sizeof(BCRYPT_KEY_DATA_BLOB_HEADER) + xmlSecBufferGetSize(buffer);
@@ -298,13 +321,14 @@ xmlSecMSCngBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         bufData, xmlSecBufferGetSize(buffer));
     xmlSecBufferSetSize(&blob, blobHeaderLen);
 
+
     /* perform the actual import */
     status = BCryptImportKey(ctx->hAlg,
         NULL,
         BCRYPT_KEY_DATA_BLOB,
         &ctx->hKey,
-        NULL,
-        0,
+        ctx->pbKeyObject,
+        dwKeyObjectLength,
         xmlSecBufferGetData(&blob),
         (ULONG)xmlSecBufferGetSize(&blob),
         0);

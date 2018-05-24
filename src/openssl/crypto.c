@@ -120,6 +120,9 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->transformAes128CbcGetKlass         = xmlSecOpenSSLTransformAes128CbcGetKlass;
     gXmlSecOpenSSLFunctions->transformAes192CbcGetKlass         = xmlSecOpenSSLTransformAes192CbcGetKlass;
     gXmlSecOpenSSLFunctions->transformAes256CbcGetKlass         = xmlSecOpenSSLTransformAes256CbcGetKlass;
+    gXmlSecOpenSSLFunctions->transformAes128GcmGetKlass         = xmlSecOpenSSLTransformAes128GcmGetKlass;
+    gXmlSecOpenSSLFunctions->transformAes192GcmGetKlass         = xmlSecOpenSSLTransformAes192GcmGetKlass;
+    gXmlSecOpenSSLFunctions->transformAes256GcmGetKlass         = xmlSecOpenSSLTransformAes256GcmGetKlass;
     gXmlSecOpenSSLFunctions->transformKWAes128GetKlass          = xmlSecOpenSSLTransformKWAes128GetKlass;
     gXmlSecOpenSSLFunctions->transformKWAes192GetKlass          = xmlSecOpenSSLTransformKWAes192GetKlass;
     gXmlSecOpenSSLFunctions->transformKWAes256GetKlass          = xmlSecOpenSSLTransformKWAes256GetKlass;

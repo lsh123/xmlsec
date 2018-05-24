@@ -429,7 +429,10 @@ xmlSecOpenSSLEvpBlockCipherCheckId(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_AES
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformAes128CbcId) ||
        xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformAes192CbcId) ||
-       xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformAes256CbcId)) {
+       xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformAes256CbcId) ||
+       xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformAes192GcmId) ||
+       xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformAes192GcmId) ||
+       xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformAes192GcmId)) {
 
        return(1);
     }
@@ -771,6 +774,126 @@ static xmlSecTransformKlass xmlSecOpenSSLAes256CbcKlass = {
 xmlSecTransformId
 xmlSecOpenSSLTransformAes256CbcGetKlass(void) {
     return(&xmlSecOpenSSLAes256CbcKlass);
+}
+
+static xmlSecTransformKlass xmlSecOpenSSLAes128GcmKlass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecOpenSSLEvpBlockCipherSize,            /* xmlSecSize objSize */
+
+    xmlSecNameAes128Gcm,                        /* const xmlChar* name; */
+    xmlSecHrefAes128Gcm,                        /* const xmlChar* href; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+
+    xmlSecOpenSSLEvpBlockCipherInitialize,      /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLEvpBlockCipherFinalize,        /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecOpenSSLEvpBlockCipherSetKeyReq,       /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecOpenSSLEvpBlockCipherSetKey,          /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecOpenSSLEvpBlockCipherExecute,         /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+* xmlSecOpenSSLTransformAes128GcmGetKlass:
+*
+* AES 128 GCM encryption transform klass.
+*
+* Returns: pointer to AES 128 GCM encryption transform.
+*/
+xmlSecTransformId
+xmlSecOpenSSLTransformAes128GcmGetKlass(void)
+{
+    return(&xmlSecOpenSSLAes128GcmKlass);
+}
+
+static xmlSecTransformKlass xmlSecOpenSSLAes192GcmKlass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecOpenSSLEvpBlockCipherSize,            /* xmlSecSize objSize */
+
+    xmlSecNameAes192Gcm,                        /* const xmlChar* name; */
+    xmlSecHrefAes192Gcm,                        /* const xmlChar* href; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+
+    xmlSecOpenSSLEvpBlockCipherInitialize,      /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLEvpBlockCipherFinalize,        /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecOpenSSLEvpBlockCipherSetKeyReq,       /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecOpenSSLEvpBlockCipherSetKey,          /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecOpenSSLEvpBlockCipherExecute,         /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+* xmlSecOpenSSLTransformAes192GcmGetKlass:
+*
+* AES 192 GCM encryption transform klass.
+*
+* Returns: pointer to AES 192 GCM encryption transform.
+*/
+xmlSecTransformId
+xmlSecOpenSSLTransformAes192GcmGetKlass(void)
+{
+    return(&xmlSecOpenSSLAes192GcmKlass);
+}
+
+static xmlSecTransformKlass xmlSecOpenSSLAes256GcmKlass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecOpenSSLEvpBlockCipherSize,            /* xmlSecSize objSize */
+
+    xmlSecNameAes256Gcm,                        /* const xmlChar* name; */
+    xmlSecHrefAes256Gcm,                        /* const xmlChar* href; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+
+    xmlSecOpenSSLEvpBlockCipherInitialize,      /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLEvpBlockCipherFinalize,        /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecOpenSSLEvpBlockCipherSetKeyReq,       /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecOpenSSLEvpBlockCipherSetKey,          /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecOpenSSLEvpBlockCipherExecute,         /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+* xmlSecOpenSSLTransformAes256GcmGetKlass:
+*
+* AES 256 GCM encryption transform klass.
+*
+* Returns: pointer to AES 256 GCM encryption transform.
+*/
+xmlSecTransformId
+xmlSecOpenSSLTransformAes256GcmGetKlass(void)
+{
+    return(&xmlSecOpenSSLAes256GcmKlass);
 }
 
 #endif /* XMLSEC_NO_AES */

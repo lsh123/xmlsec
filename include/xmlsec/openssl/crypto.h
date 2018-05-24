@@ -163,6 +163,34 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformAes192CbcGetKlass(
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformAes256CbcGetKlass(void);
 
 /**
+* xmlSecOpenSSLTransformAes128GcmId:
+*
+* The AES128 GCM cipher transform klass.
+*/
+#define xmlSecOpenSSLTransformAes128GcmId \
+        xmlSecOpenSSLTransformAes128GcmGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformAes128GcmGetKlass(void);
+
+/**
+* xmlSecOpenSSLTransformAes192GcmId:
+*
+* The AES192 GCM cipher transform klass.
+*/
+#define xmlSecOpenSSLTransformAes192GcmId \
+        xmlSecOpenSSLTransformAes192GcmGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformAes192GcmGetKlass(void);
+
+/**
+* xmlSecOpenSSLTransformAes256GcmId:
+*
+* The AES256 GCM cipher transform klass.
+*/
+#define xmlSecOpenSSLTransformAes256GcmId \
+        xmlSecOpenSSLTransformAes256GcmGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformAes256GcmGetKlass(void);
+
+
+/**
  * xmlSecOpenSSLTransformKWAes128Id:
  *
  * The AES 128 key wrap transform klass.
@@ -390,7 +418,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGost2001GostR3411_9
  * The GOSTR3411_94 signature transform klass.
  */
 #define xmlSecOpenSSLTransformGostR3411_94Id \
-		xmlSecOpenSSLTransformGostR3411_94GetKlass()
+        xmlSecOpenSSLTransformGostR3411_94GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGostR3411_94GetKlass(void);
 #endif /* XMLSEC_NO_GOST */
 
@@ -448,7 +476,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGostR3410_2012GostR
  * The GOST R 34.11-2012 256 bit hash transform klass.
  */
 #define xmlSecOpenSSLTransformGostR3411_2012_256Id \
-	xmlSecOpenSSLTransformGostR3411_2012_256GetKlass()
+    xmlSecOpenSSLTransformGostR3411_2012_256GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGostR3411_2012_256GetKlass(void);
 
 
@@ -458,7 +486,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGostR3411_2012_256G
  * The GOST R 34.11-2012 512 bit hash transform klass.
  */
 #define xmlSecOpenSSLTransformGostR3411_2012_512Id \
-	xmlSecOpenSSLTransformGostR3411_2012_512GetKlass()
+    xmlSecOpenSSLTransformGostR3411_2012_512GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGostR3411_2012_512GetKlass(void);
 
 #endif /* XMLSEC_NO_GOST2012 */

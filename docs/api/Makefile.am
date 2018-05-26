@@ -14,7 +14,6 @@ SGML_DIR=$(builddir)/sgml.tmp
 EXAMPLES_DIR=$(SGML_DIR)/examples
 SOURCE_CODE_DIR=$(builddir)/code
 
-GTKDOC_MKDB_OUTPUT_DIR=$(builddir)/xml
 
 # We need to copy some files to make gkdoc happy that
 # everything is in one folder

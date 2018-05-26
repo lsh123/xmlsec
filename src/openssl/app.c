@@ -6,6 +6,13 @@
  *
  * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
+/**
+ * SECTION:app
+ * @Short_description: Application support functions for OpenSSL.
+ * @Stability: Stable
+ *
+ */
+
 #include "globals.h"
 
 #include <string.h>

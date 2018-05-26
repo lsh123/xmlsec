@@ -7,8 +7,31 @@
 <link rel="up" href="xmlsec-reference.html" title="Part II. XML Security Library API Reference.">
 <link rel="prev" href="xmlsec-reference.html" title="Part II. XML Security Library API Reference.">
 <link rel="next" href="xmlsec-app.html" title="app">
-<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
 <style type="text/css">
 table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     width: 20em;
@@ -85,61 +108,61 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a name="xmlsec-ref"></a>XML Security Core Library API Reference.</h2></div></div></div>
 <div class="toc"><dl class="toc">
 <dt>
-<span class="refentrytitle"><a href="xmlsec-app.html">app</a></span><span class="refpurpose"> &#8212; Crypto-engine independent application support function.</span>
+<span class="refentrytitle"><a href="xmlsec-app.html">app</a></span><span class="refpurpose"> &#8212; Crypto-engine independent application support functions.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="xmlsec-base64.html">base64</a></span><span class="refpurpose"> &#8212; Base64 encoding/decoding functions.</span>
+<span class="refentrytitle"><a href="xmlsec-base64.html">base64</a></span><span class="refpurpose"> &#8212; Base64 encoding/decoding functions and base64 transform implementation.</span>
 </dt>
 <dt>
 <span class="refentrytitle"><a href="xmlsec-bn.html">bn</a></span><span class="refpurpose"> &#8212; Big numbers support functions.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="xmlsec-buffer.html">buffer</a></span><span class="refpurpose"> &#8212; Binary buffer implementation.</span>
+<span class="refentrytitle"><a href="xmlsec-buffer.html">buffer</a></span><span class="refpurpose"> &#8212; Binary memory buffer functions.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="xmlsec-dl.html">dl</a></span><span class="refpurpose"> &#8212; Dynamic crypto-engine library loading support.</span>
+<span class="refentrytitle"><a href="xmlsec-dl.html">dl</a></span><span class="refpurpose"> &#8212; Dynamic crypto-engine library loading functions.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="xmlsec-errors.html">errors</a></span><span class="refpurpose"> &#8212; Error/log messages support.</span>
+<span class="refentrytitle"><a href="xmlsec-errors.html">errors</a></span><span class="refpurpose"> &#8212; Error reporting and logging functions.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="xmlsec-io.html">io</a></span><span class="refpurpose"> &#8212; Input/output support.</span>
+<span class="refentrytitle"><a href="xmlsec-io.html">io</a></span><span class="refpurpose"> &#8212; Input/output functions.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="xmlsec-keyinfo.html">keyinfo</a></span><span class="refpurpose"> &#8212; &lt;dsig:KeyInfo/&gt; node parser.</span>
+<span class="refentrytitle"><a href="xmlsec-keyinfo.html">keyinfo</a></span><span class="refpurpose"> &#8212; &lt;dsig:KeyInfo/&gt; node parser functions.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="xmlsec-keysdata.html">keysdata</a></span><span class="refpurpose"> &#8212; Crypto key data object definition.</span>
+<span class="refentrytitle"><a href="xmlsec-keysdata.html">keysdata</a></span><span class="refpurpose"> &#8212; Crypto key data object functions.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="xmlsec-keys.html">keys</a></span><span class="refpurpose"> &#8212; Crypto key object definition.</span>
+<span class="refentrytitle"><a href="xmlsec-keys.html">keys</a></span><span class="refpurpose"> &#8212; Crypto key object functions.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="xmlsec-keysmngr.html">keysmngr</a></span><span class="refpurpose"> &#8212; Keys manager object support.</span>
+<span class="refentrytitle"><a href="xmlsec-keysmngr.html">keysmngr</a></span><span class="refpurpose"> &#8212; Keys manager object functions.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="xmlsec-list.html">list</a></span><span class="refpurpose"> &#8212; Generic list structure implementation.</span>
+<span class="refentrytitle"><a href="xmlsec-list.html">list</a></span><span class="refpurpose"> &#8212; Generic list structure functions.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="xmlsec-membuf.html">membuf</a></span><span class="refpurpose"> &#8212; Memory buffer transform implementation.</span>
+<span class="refentrytitle"><a href="xmlsec-membuf.html">membuf</a></span><span class="refpurpose"> &#8212; Memory buffer transform functions.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="xmlsec-nodeset.html">nodeset</a></span><span class="refpurpose"> &#8212; Nodeset object implementation.</span>
+<span class="refentrytitle"><a href="xmlsec-nodeset.html">nodeset</a></span><span class="refpurpose"> &#8212; XML nodes set functions</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="xmlsec-parser.html">parser</a></span><span class="refpurpose"> &#8212; Parser transform implementation.</span>
+<span class="refentrytitle"><a href="xmlsec-parser.html">parser</a></span><span class="refpurpose"> &#8212; XML parser functions and the XML parser transform implementation.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="xmlsec-templates.html">templates</a></span><span class="refpurpose"> &#8212; Dynamic templates creation functions.</span>
+<span class="refentrytitle"><a href="xmlsec-templates.html">templates</a></span><span class="refpurpose"> &#8212; XML signature and encryption template functions.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="xmlsec-transforms.html">transforms</a></span><span class="refpurpose"> &#8212; Transform object definition.</span>
+<span class="refentrytitle"><a href="xmlsec-transforms.html">transforms</a></span><span class="refpurpose"> &#8212; Transform object functions.</span>
 </dt>
 <dt>
 <span class="refentrytitle"><a href="xmlsec-version.html">version</a></span><span class="refpurpose"> &#8212; Version macros.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="xmlsec-xmldsig.html">xmldsig</a></span><span class="refpurpose"> &#8212; XML Digital Signature support.</span>
+<span class="refentrytitle"><a href="xmlsec-xmldsig.html">xmldsig</a></span><span class="refpurpose"> &#8212; XML Digital Signature functions.</span>
 </dt>
 <dt>
 <span class="refentrytitle"><a href="xmlsec-xmlenc.html">xmlenc</a></span><span class="refpurpose"> &#8212; XML Encryption support.</span>
@@ -148,10 +171,10 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <span class="refentrytitle"><a href="xmlsec-xmlsec.html">xmlsec</a></span><span class="refpurpose"> &#8212; Utility functions.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="xmlsec-xmltree.html">xmltree</a></span><span class="refpurpose"> &#8212; XML tree operations.</span>
+<span class="refentrytitle"><a href="xmlsec-xmltree.html">xmltree</a></span><span class="refpurpose"> &#8212; XML tree functions.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="xmlsec-x509.html">x509</a></span><span class="refpurpose"> &#8212; &lt;dsig:X509Certificate/&gt; node parser.</span>
+<span class="refentrytitle"><a href="xmlsec-x509.html">x509</a></span><span class="refpurpose"> &#8212; &lt;dsig:X509Certificate/&gt; node parser functions.</span>
 </dt>
 </dl></div>
 <p>This section contains the API reference for xmlsec. All
@@ -159,7 +182,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     build by extracting comments from the code sources. </p>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.25</div>
+<hr>Generated by GTK-Doc V1.27</div>
 </td></tr></table></td>
 </tr></table></body>
 </html>

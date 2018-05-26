@@ -1,12 +1,17 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Key data.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ */
+/**
+ * SECTION:keysdata
+ * @Short_description: Crypto key data object functions.
+ * @Stability: Stable
+ *
  */
 
 #include "globals.h"
@@ -24,7 +29,6 @@
 #include <xmlsec/base64.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/errors.h>
-
 
 /**************************************************************************
  *

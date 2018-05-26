@@ -1,11 +1,19 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
+/**
+ * SECTION:app
+ * @Short_description: Application support functions for Microsoft Cryptography API: Next Generation (CNG).
+ * @Stability: Stable
+ *
+ */
+
 #include "globals.h"
 
 #include <string.h>

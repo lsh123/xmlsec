@@ -1,11 +1,19 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
+/**
+ * SECTION:signatures
+ * @Short_description: Signatures implementation for NSS.
+ * @Stability: Private
+ *
+ */
+
 #include "globals.h"
 
 #include <string.h>

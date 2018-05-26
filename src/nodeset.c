@@ -1,13 +1,19 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Enchanced nodes set
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
+/**
+ * SECTION:nodeset
+ * @Short_description: XML nodes set functions
+ * @Stability: Stable
+ *
+ */
+
 #include "globals.h"
 
 #include <stdlib.h>

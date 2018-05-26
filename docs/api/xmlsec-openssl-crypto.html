@@ -7,8 +7,31 @@
 <link rel="up" href="xmlsec-openssl-ref.html" title="XML Security Library for OpenSLL API Reference.">
 <link rel="prev" href="xmlsec-openssl-bn.html" title="bn">
 <link rel="next" href="xmlsec-openssl-evp.html" title="evp">
-<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
 <style type="text/css">
 table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     width: 20em;
@@ -92,6 +115,10 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
+<div class="refsect1">
+<a name="xmlsec-openssl-crypto.stability-level"></a><h2>Stability Level</h2>
+<a href="http://foldoc.org/Stable"><span class="acronym">Stable</span></a>, unless otherwise indicated
+</div>
 <div class="refsect1">
 <a name="xmlsec-openssl-crypto.functions"></a><h2>Functions</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -1023,8 +1050,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </div>
 <div class="refsect1">
 <a name="xmlsec-openssl-crypto.description"></a><h2>Description</h2>
-<p>Crypto transforms implementation for OpenSSL.
-</p>
+<p></p>
 </div>
 <div class="refsect1">
 <a name="xmlsec-openssl-crypto.functions_details"></a><h2>Functions</h2>
@@ -1767,7 +1793,6 @@ xmlSecOpenSSLKeyDataGostR3410_2012_512GetKlass
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_256GetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1775,7 +1800,6 @@ xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_256GetKlass
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_512GetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -2349,126 +2373,108 @@ xmlSecOpenSSLErrorsDefaultCallback (<em class="parameter"><code>const <font><spa
 <a name="XMLSEC-OPENSSL-API-100:CAPS"></a><h3>XMLSEC_OPENSSL_API_100</h3>
 <pre class="programlisting">#define XMLSEC_OPENSSL_API_100      1
 </pre>
-<p></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-OPENSSL-API-110:CAPS"></a><h3>XMLSEC_OPENSSL_API_110</h3>
 <pre class="programlisting">#define XMLSEC_OPENSSL_API_110      1
 </pre>
-<p></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-AES:CAPS"></a><h3>XMLSEC_NO_AES</h3>
 <pre class="programlisting">#define XMLSEC_NO_AES       1
 </pre>
-<p></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-DES:CAPS"></a><h3>XMLSEC_NO_DES</h3>
 <pre class="programlisting">#define XMLSEC_NO_DES       1
 </pre>
-<p></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-DSA:CAPS"></a><h3>XMLSEC_NO_DSA</h3>
 <pre class="programlisting">#define XMLSEC_NO_DSA       1
 </pre>
-<p></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-ECDSA:CAPS"></a><h3>XMLSEC_NO_ECDSA</h3>
 <pre class="programlisting">#define XMLSEC_NO_ECDSA     1
 </pre>
-<p></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-GOST:CAPS"></a><h3>XMLSEC_NO_GOST</h3>
 <pre class="programlisting">#define XMLSEC_NO_GOST      1
 </pre>
-<p></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-GOST2012:CAPS"></a><h3>XMLSEC_NO_GOST2012</h3>
 <pre class="programlisting">#define XMLSEC_NO_GOST2012  1
 </pre>
-<p></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-HMAC:CAPS"></a><h3>XMLSEC_NO_HMAC</h3>
 <pre class="programlisting">#define XMLSEC_NO_HMAC      1
 </pre>
-<p></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-MD5:CAPS"></a><h3>XMLSEC_NO_MD5</h3>
 <pre class="programlisting">#define XMLSEC_NO_MD5       1
 </pre>
-<p></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-RIPEMD160:CAPS"></a><h3>XMLSEC_NO_RIPEMD160</h3>
 <pre class="programlisting">#define XMLSEC_NO_RIPEMD160 1
 </pre>
-<p></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-RSA:CAPS"></a><h3>XMLSEC_NO_RSA</h3>
 <pre class="programlisting">#define XMLSEC_NO_RSA       1
 </pre>
-<p></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-SHA1:CAPS"></a><h3>XMLSEC_NO_SHA1</h3>
 <pre class="programlisting">#define XMLSEC_NO_SHA1      1
 </pre>
-<p></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-SHA256:CAPS"></a><h3>XMLSEC_NO_SHA256</h3>
 <pre class="programlisting">#define XMLSEC_NO_SHA256    1
 </pre>
-<p></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-SHA224:CAPS"></a><h3>XMLSEC_NO_SHA224</h3>
 <pre class="programlisting">#define XMLSEC_NO_SHA224    1
 </pre>
-<p></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-SHA384:CAPS"></a><h3>XMLSEC_NO_SHA384</h3>
 <pre class="programlisting">#define XMLSEC_NO_SHA384    1
 </pre>
-<p></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-SHA512:CAPS"></a><h3>XMLSEC_NO_SHA512</h3>
 <pre class="programlisting">#define XMLSEC_NO_SHA512    1
 </pre>
-<p></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-X509:CAPS"></a><h3>XMLSEC_NO_X509</h3>
 <pre class="programlisting">#define XMLSEC_NO_X509      1
 </pre>
-<p></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -2606,13 +2612,11 @@ xmlSecOpenSSLErrorsDefaultCallback (<em class="parameter"><code>const <font><spa
 <div class="refsect2">
 <a name="xmlSecOpenSSLKeyDataGostR3410-2012-256Id"></a><h3>xmlSecOpenSSLKeyDataGostR3410_2012_256Id</h3>
 <pre class="programlisting">#define             xmlSecOpenSSLKeyDataGostR3410_2012_256Id</pre>
-<p></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecOpenSSLKeyDataGostR3410-2012-512Id"></a><h3>xmlSecOpenSSLKeyDataGostR3410_2012_512Id</h3>
 <pre class="programlisting">#define             xmlSecOpenSSLKeyDataGostR3410_2012_512Id</pre>
-<p></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -2791,7 +2795,7 @@ xmlSecOpenSSLErrorsDefaultCallback (<em class="parameter"><code>const <font><spa
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.25</div>
+<hr>Generated by GTK-Doc V1.27</div>
 </td></tr></table></td>
 </tr></table></body>
 </html>

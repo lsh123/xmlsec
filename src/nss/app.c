@@ -1,12 +1,20 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
+/**
+ * SECTION:app
+ * @Short_description: Application support functions for NSS.
+ * @Stability: Stable
+ *
+ */
+
 #include "globals.h"
 
 #include <string.h>

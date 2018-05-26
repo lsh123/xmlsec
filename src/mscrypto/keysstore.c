@@ -1,13 +1,6 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * MSCrypto keys store that uses Simple Keys Store under the hood. Uses the
- * MS Certificate store as a backing store for the finding keys, but the
- * MS Certificate store not written to by the keys store.
- * So, if store->findkey is done and the key is not found in the simple
- * keys store, the MS Certificate store is looked up.
- * Thus, the MS Certificate store can be used to pre-load keys and becomes
- * an alternate source of keys for xmlsec
  *
  * This is free software; see Copyright file in the source
  * distribution for precise wording.
@@ -15,6 +8,20 @@
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  * Copyright (C) 2003-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
+/**
+ * SECTION:keysstore
+ * @Short_description: Keys store implementation for Microsoft Crypto API.
+ * @Stability: Private
+ *
+ * MSCrypto keys store that uses Simple Keys Store under the hood. Uses the
+ * MS Certificate store as a backing store for the finding keys, but the
+ * MS Certificate store not written to by the keys store.
+ * So, if store->findkey is done and the key is not found in the simple
+ * keys store, the MS Certificate store is looked up.
+ * Thus, the MS Certificate store can be used to pre-load keys and becomes
+ * an alternate source of keys for xmlsec.
+ */
+
 #include "globals.h"
 
 #include <stdlib.h>

@@ -1,13 +1,19 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Error codes and error reporting functions.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
+/**
+ * SECTION:errors
+ * @Short_description: Error reporting and logging functions.
+ * @Stability: Stable
+ *
+ */
+
 #include "globals.h"
 
 #include <stdlib.h>

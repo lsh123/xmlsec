@@ -16,29 +16,29 @@ http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
 
 <!ENTITY xmlsec-index 			SYSTEM "xmlsec-index.sgml">
 
-<!ENTITY xmlsec-app 			"app.xml">
-<!ENTITY xmlsec-base64 			"base64.xml">
-<!ENTITY xmlsec-bn 			"bn.xml">
-<!ENTITY xmlsec-buffer 			"buffer.xml">
-<!ENTITY xmlsec-dl 			"dl.xml">
-<!ENTITY xmlsec-errors 			"errors.xml">
-<!ENTITY xmlsec-io 			"io.xml">
-<!ENTITY xmlsec-keyinfo 		"keyinfo.xml">
-<!ENTITY xmlsec-keysdata 		"keysdata.xml">
-<!ENTITY xmlsec-keys 			"keys.xml">
-<!ENTITY xmlsec-keysmngr 		"keysmngr.xml">
-<!ENTITY xmlsec-list 			"list.xml">
-<!ENTITY xmlsec-membuf 			"membuf.xml">
-<!ENTITY xmlsec-nodeset 		"nodeset.xml">
-<!ENTITY xmlsec-parser 			"parser.xml">
-<!ENTITY xmlsec-templates 		"templates.xml">
-<!ENTITY xmlsec-transforms 		"transforms.xml">
-<!ENTITY xmlsec-version 		"version.xml">
-<!ENTITY xmlsec-x509                    "x509.xml">
-<!ENTITY xmlsec-xmldsig 		"xmldsig.xml">
-<!ENTITY xmlsec-xmlenc 			"xmlenc.xml">
-<!ENTITY xmlsec-xmlsec 			"xmlsec.xml">
-<!ENTITY xmlsec-xmltree 		"xmltree.xml">
+<!ENTITY xmlsec-app 			"base/app.xml">
+<!ENTITY xmlsec-base64 			"base/base64.xml">
+<!ENTITY xmlsec-bn 			"base/bn.xml">
+<!ENTITY xmlsec-buffer 			"base/buffer.xml">
+<!ENTITY xmlsec-dl 			"base/dl.xml">
+<!ENTITY xmlsec-errors 			"base/errors.xml">
+<!ENTITY xmlsec-io 			"base/io.xml">
+<!ENTITY xmlsec-keyinfo 		"base/keyinfo.xml">
+<!ENTITY xmlsec-keysdata 		"base/keysdata.xml">
+<!ENTITY xmlsec-keys 			"base/keys.xml">
+<!ENTITY xmlsec-keysmngr 		"base/keysmngr.xml">
+<!ENTITY xmlsec-list 			"base/list.xml">
+<!ENTITY xmlsec-membuf 			"base/membuf.xml">
+<!ENTITY xmlsec-nodeset 		"base/nodeset.xml">
+<!ENTITY xmlsec-parser 			"base/parser.xml">
+<!ENTITY xmlsec-templates 		"base/templates.xml">
+<!ENTITY xmlsec-transforms 		"base/transforms.xml">
+<!ENTITY xmlsec-version 		"base/version.xml">
+<!ENTITY xmlsec-x509                    "base/x509.xml">
+<!ENTITY xmlsec-xmldsig 		"base/xmldsig.xml">
+<!ENTITY xmlsec-xmlenc 			"base/xmlenc.xml">
+<!ENTITY xmlsec-xmlsec 			"base/xmlsec.xml">
+<!ENTITY xmlsec-xmltree 		"base/xmltree.xml">
 
 <!ENTITY xmlsec-openssl-app 		"openssl/app.xml">
 <!ENTITY xmlsec-openssl-bn 		"openssl/bn.xml">
@@ -65,6 +65,12 @@ http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
 <!ENTITY xmlsec-mscrypto-crypto 	"mscrypto/crypto.xml">
 <!ENTITY xmlsec-mscrypto-keysstore	"mscrypto/keysstore.xml">
 <!ENTITY xmlsec-mscrypto-x509		"mscrypto/x509.xml">
+
+<!ENTITY xmlsec-mscng-app 		"mscng/app.xml">
+<!ENTITY xmlsec-mscng-certkeys	"mscng/certkeys.xml">
+<!ENTITY xmlsec-mscng-crypto 	"mscng/crypto.xml">
+<!ENTITY xmlsec-mscng-keysstore	"mscng/keysstore.xml">
+<!ENTITY xmlsec-mscng-x509		"mscng/x509.xml">
 
 <!ENTITY xmlsec-example-sign1 		SYSTEM "examples/sign1.sgml">
 <!ENTITY xmlsec-example-sign2 		SYSTEM "examples/sign2.sgml">
@@ -101,7 +107,7 @@ http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
 <!ENTITY xmlsec-example-encrypt3-doc	SYSTEM "examples/encrypt3-doc.sgml">
 <!ENTITY xmlsec-example-encrypt3-res	SYSTEM "examples/encrypt3-res.sgml">
 ]>
-<book id="index">
+<book id="index" xmlns:xi="http://www.w3.org/2001/XInclude">
   <bookinfo>
     <title>XML Security Library Reference Manual</title>
     <authorgroup>
@@ -148,14 +154,15 @@ http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
 	<para>XML Security Library provides support for XML Digital Signature 
 	and XML Encryption. It is based on LibXML/LibXSLT and can use
 	practicaly any crypto library (currently there is "out of the box" 
-	support for OpenSSL, MSCrypto, GnuTLS, GCrypt and NSS).
+	support for OpenSSL, Microsoft Crypto API, Microsoft Cryptography API:
+	Next Generation (CNG), GnuTLS, GCrypt and NSS).
 	</para>
     </chapter>
     <chapter id="xmlsec-notes-structure">
 	<title>XML Security Library Structure.</title>
 	<para>In order to provide the an ability to use different crypto engines, 
 	the XML Security Library is splitted in two parts: core library (xmlsec)
-	and crypto library (xmlsec-openssl, xmlsec-mscrypt, xmlsec-gnutls, 
+	and crypto library (xmlsec-openssl, xmlsec-mscrypt, xmlsec-mscng, xmlsec-gnutls, 
 	xmlsec-gcrypt, xmlsec-nss, ...).
 	<figure>
 	    <title>The library structure and dependencies.</title>
@@ -212,29 +219,29 @@ http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </para>
 
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-app;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-base64;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-bn;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-buffer;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-dl;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-errors;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-io;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-keyinfo;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-keysdata;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-keys;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-keysmngr;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-list;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-membuf;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-nodeset;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-parser;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-templates;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-transforms;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-version;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-xmldsig;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-xmlenc;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-xmlsec;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-xmltree;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-x509;"/>
+    <xi:include href="&xmlsec-app;"/>
+    <xi:include href="&xmlsec-base64;"/>
+    <xi:include href="&xmlsec-bn;"/>
+    <xi:include href="&xmlsec-buffer;"/>
+    <xi:include href="&xmlsec-dl;"/>
+    <xi:include href="&xmlsec-errors;"/>
+    <xi:include href="&xmlsec-io;"/>
+    <xi:include href="&xmlsec-keyinfo;"/>
+    <xi:include href="&xmlsec-keysdata;"/>
+    <xi:include href="&xmlsec-keys;"/>
+    <xi:include href="&xmlsec-keysmngr;"/>
+    <xi:include href="&xmlsec-list;"/>
+    <xi:include href="&xmlsec-membuf;"/>
+    <xi:include href="&xmlsec-nodeset;"/>
+    <xi:include href="&xmlsec-parser;"/>
+    <xi:include href="&xmlsec-templates;"/>
+    <xi:include href="&xmlsec-transforms;"/>
+    <xi:include href="&xmlsec-version;"/>
+    <xi:include href="&xmlsec-xmldsig;"/>
+    <xi:include href="&xmlsec-xmlenc;"/>
+    <xi:include href="&xmlsec-xmlsec;"/>
+    <xi:include href="&xmlsec-xmltree;"/>
+    <xi:include href="&xmlsec-x509;"/>
     </chapter>
 
     <chapter id="xmlsec-openssl-ref">
@@ -243,11 +250,11 @@ http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </para>
 
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-openssl-app;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-openssl-bn;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-openssl-crypto;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-openssl-evp;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-openssl-x509;"/>
+    <xi:include href="&xmlsec-openssl-app;"/>
+    <xi:include href="&xmlsec-openssl-bn;"/>
+    <xi:include href="&xmlsec-openssl-crypto;"/>
+    <xi:include href="&xmlsec-openssl-evp;"/>
+    <xi:include href="&xmlsec-openssl-x509;"/>
     </chapter>
 
     <chapter id="xmlsec-gnutls-ref">
@@ -256,9 +263,9 @@ http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </para>
 
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-gnutls-app;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-gnutls-crypto;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-gnutls-x509;"/>
+    <xi:include href="&xmlsec-gnutls-app;"/>
+    <xi:include href="&xmlsec-gnutls-crypto;"/>
+    <xi:include href="&xmlsec-gnutls-x509;"/>
     </chapter>
 
     <chapter id="xmlsec-gcrypt-ref">
@@ -267,8 +274,8 @@ http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </para>
 
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-gcrypt-app;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-gcrypt-crypto;"/>
+    <xi:include href="&xmlsec-gcrypt-app;"/>
+    <xi:include href="&xmlsec-gcrypt-crypto;"/>
     </chapter>
 
     <chapter id="xmlsec-nss-ref">
@@ -277,27 +284,44 @@ http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </para>
 
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-nss-app;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-nss-bignum;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-nss-crypto;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-nss-keysstore;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-nss-pkikeys;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-nss-x509;"/>
+    <xi:include href="&xmlsec-nss-app;"/>
+    <xi:include href="&xmlsec-nss-bignum;"/>
+    <xi:include href="&xmlsec-nss-crypto;"/>
+    <xi:include href="&xmlsec-nss-keysstore;"/>
+    <xi:include href="&xmlsec-nss-pkikeys;"/>
+    <xi:include href="&xmlsec-nss-x509;"/>
     </chapter>
 
     <chapter id="xmlsec-mscrypto-ref">
-    <title>XML Security Library for MSCrypto API Reference.</title>
-    <para>This section contains the API reference for xmlsec-mscrypto. All
-    the public interfaces are documented here. This reference guide is
-    build by extracting comments from the code sources. </para>
+    <title>XML Security Library for Microsoft Crypto API Reference.</title>
+    <para>This section contains the API reference for xmlsec-mscrypto (based on
+    Microsoft Crypto API). All the public interfaces are documented here.
+    This reference guide is build by extracting comments from the code sources.
+    </para>
 
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-mscrypto-app;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-mscrypto-certkeys;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-mscrypto-crypto;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-mscrypto-keysstore;"/>
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="&xmlsec-mscrypto-x509;"/>
+    <xi:include href="&xmlsec-mscrypto-app;"/>
+    <xi:include href="&xmlsec-mscrypto-certkeys;"/>
+    <xi:include href="&xmlsec-mscrypto-crypto;"/>
+    <xi:include href="&xmlsec-mscrypto-keysstore;"/>
+    <xi:include href="&xmlsec-mscrypto-x509;"/>
     </chapter>
     
+
+    <chapter id="xmlsec-msccng-ref">
+    <title>XML Security Library for Microsoft Cryptography API: Next Generation (CNG) Reference.</title>
+    <para>This section contains the API reference for xmlsec-mscng (based on
+    <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa376210(v=vs.85).aspx">Microsoft 
+    Cryptography API: Next Generation (CNG)</a>). All the public interfaces are
+    documented here. This reference guide is build by extracting comments from
+    the code sources. </para>
+
+    <xi:include href="&xmlsec-mscng-app;"/>
+    <xi:include href="&xmlsec-mscng-certkeys;"/>
+    <xi:include href="&xmlsec-mscng-crypto;"/>
+    <xi:include href="&xmlsec-mscng-keysstore;"/>
+    <xi:include href="&xmlsec-mscng-x509;"/>
+    </chapter>
+
     <chapter id="xmlsec-index">
     <title>XML Security Library Reference Index</title>
     <para>

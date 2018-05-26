@@ -1,13 +1,19 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * AES Algorithm support
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright .................................
+ * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
+/**
+ * SECTION:keytrans
+ * @Short_description: RSA Key Transport transforms implementation for NSS.
+ * @Stability: Private
+ *
+ */
+
 #include "globals.h"
 
 #include <stdlib.h>

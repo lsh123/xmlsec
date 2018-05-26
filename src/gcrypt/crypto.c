@@ -1,11 +1,19 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
+/**
+ * SECTION:crypto
+ * @Short_description: Crypto transforms implementation for GCrypt.
+ * @Stability: Stable
+ *
+ */
+
 #include "globals.h"
 
 #include <string.h>

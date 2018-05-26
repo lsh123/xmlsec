@@ -4,11 +4,34 @@
 <title>crypto: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
-<link rel="up" href="xmlsec-mscrypto-ref.html" title="XML Security Library for MSCrypto API Reference.">
+<link rel="up" href="xmlsec-mscrypto-ref.html" title="XML Security Library for Microsoft Crypto API Reference.">
 <link rel="prev" href="xmlsec-mscrypto-certkeys.html" title="certkeys">
 <link rel="next" href="xmlsec-mscrypto-keysstore.html" title="keysstore">
-<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
 <style type="text/css">
 table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     width: 20em;
@@ -88,10 +111,14 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="xmlsec-mscrypto-crypto.top_of_page"></a>crypto</span></h2>
-<p>crypto &#8212; Crypto transforms implementation for MS Crypto.</p>
+<p>crypto &#8212; Crypto transforms implementation for Microsoft Crypto API.</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
+<div class="refsect1">
+<a name="xmlsec-mscrypto-crypto.stability-level"></a><h2>Stability Level</h2>
+<a href="http://foldoc.org/Stable"><span class="acronym">Stable</span></a>, unless otherwise indicated
+</div>
 <div class="refsect1">
 <a name="xmlsec-mscrypto-crypto.functions"></a><h2>Functions</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -241,6 +268,38 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">xmlSecKeyDataId</span></font>
 </td>
 <td class="function_name">
+<a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoKeyDataGost2012-256GetKlass" title="xmlSecMSCryptoKeyDataGost2012_256GetKlass ()">xmlSecMSCryptoKeyDataGost2012_256GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecKeyDataId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoKeyDataGost2012-512GetKlass" title="xmlSecMSCryptoKeyDataGost2012_512GetKlass ()">xmlSecMSCryptoKeyDataGost2012_512GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformGost2012-256GetKlass" title="xmlSecMSCryptoTransformGost2012_256GetKlass ()">xmlSecMSCryptoTransformGost2012_256GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformGost2012-512GetKlass" title="xmlSecMSCryptoTransformGost2012_512GetKlass ()">xmlSecMSCryptoTransformGost2012_512GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecKeyDataId</span></font>
+</td>
+<td class="function_name">
 <a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoKeyDataRsaGetKlass" title="xmlSecMSCryptoKeyDataRsaGetKlass ()">xmlSecMSCryptoKeyDataRsaGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
@@ -346,6 +405,22 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformGostR3411-94GetKlass" title="xmlSecMSCryptoTransformGostR3411_94GetKlass ()">xmlSecMSCryptoTransformGostR3411_94GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformGostR3411-2012-256GetKlass" title="xmlSecMSCryptoTransformGostR3411_2012_256GetKlass ()">xmlSecMSCryptoTransformGostR3411_2012_256GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformGostR3411-2012-512GetKlass" title="xmlSecMSCryptoTransformGostR3411_2012_512GetKlass ()">xmlSecMSCryptoTransformGostR3411_2012_512GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -537,6 +612,22 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoKeyDataGost2012-256Id" title="xmlSecMSCryptoKeyDataGost2012_256Id">xmlSecMSCryptoKeyDataGost2012_256Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoKeyDataGost2012-512Id" title="xmlSecMSCryptoKeyDataGost2012_512Id">xmlSecMSCryptoKeyDataGost2012_512Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformGost2012-256Id" title="xmlSecMSCryptoTransformGost2012_256Id">xmlSecMSCryptoTransformGost2012_256Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformGost2012-512Id" title="xmlSecMSCryptoTransformGost2012_512Id">xmlSecMSCryptoTransformGost2012_512Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoKeyDataRsaId" title="xmlSecMSCryptoKeyDataRsaId">xmlSecMSCryptoKeyDataRsaId</a></td>
 </tr>
 <tr>
@@ -590,6 +681,14 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <tr>
 <td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformGostR3411-94Id" title="xmlSecMSCryptoTransformGostR3411_94Id">xmlSecMSCryptoTransformGostR3411_94Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformGostR3411-2012-256Id" title="xmlSecMSCryptoTransformGostR3411_2012_256Id">xmlSecMSCryptoTransformGostR3411_2012_256Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformGostR3411-2012-512Id" title="xmlSecMSCryptoTransformGostR3411_2012_512Id">xmlSecMSCryptoTransformGostR3411_2012_512Id</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -660,8 +759,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </div>
 <div class="refsect1">
 <a name="xmlsec-mscrypto-crypto.description"></a><h2>Description</h2>
-<p>Crypto transforms implementation for MS Crypto.
-</p>
+<p></p>
 </div>
 <div class="refsect1">
 <a name="xmlsec-mscrypto-crypto.functions_details"></a><h2>Functions</h2>
@@ -1030,10 +1128,10 @@ xmlSecMSCryptoTransformDsaSha1GetKlass
 <a name="xmlSecMSCryptoKeyDataGost2001GetKlass"></a><h3>xmlSecMSCryptoKeyDataGost2001GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
 xmlSecMSCryptoKeyDataGost2001GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The GOST2001 key data klass.</p>
+<p>The GOST2012_512 key data klass.</p>
 <div class="refsect3">
 <a name="xmlSecMSCryptoKeyDataGost2001GetKlass.returns"></a><h4>Returns</h4>
-<p> pointer to GOST2001 key data klass.</p>
+<p> pointer to GOST2012_512 key data klass.</p>
 </div>
 </div>
 <hr>
@@ -1047,6 +1145,34 @@ xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass
 <a name="xmlSecMSCryptoTransformGost2001GostR3411-94GetKlass.returns"></a><h4>Returns</h4>
 <p> GOST2001-GOSTR3411_94 signature transform klass.</p>
 </div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCryptoKeyDataGost2012-256GetKlass"></a><h3>xmlSecMSCryptoKeyDataGost2012_256GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
+xmlSecMSCryptoKeyDataGost2012_256GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCryptoKeyDataGost2012-512GetKlass"></a><h3>xmlSecMSCryptoKeyDataGost2012_512GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
+xmlSecMSCryptoKeyDataGost2012_512GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCryptoTransformGost2012-256GetKlass"></a><h3>xmlSecMSCryptoTransformGost2012_256GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCryptoTransformGost2012_256GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCryptoTransformGost2012-512GetKlass"></a><h3>xmlSecMSCryptoTransformGost2012_512GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCryptoTransformGost2012_512GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -1207,6 +1333,30 @@ xmlSecMSCryptoTransformGostR3411_94GetKlass
 <div class="refsect3">
 <a name="xmlSecMSCryptoTransformGostR3411-94GetKlass.returns"></a><h4>Returns</h4>
 <p> pointer to GOSTR3411_94 digest transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCryptoTransformGostR3411-2012-256GetKlass"></a><h3>xmlSecMSCryptoTransformGostR3411_2012_256GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCryptoTransformGostR3411_2012_256GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>GOSTR3411_2012_256 digest transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCryptoTransformGostR3411-2012-256GetKlass.returns"></a><h4>Returns</h4>
+<p> pointer to GOSTR3411_2012_256 digest transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCryptoTransformGostR3411-2012-512GetKlass"></a><h3>xmlSecMSCryptoTransformGostR3411_2012_512GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCryptoTransformGostR3411_2012_512GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>GOSTR3411_2012_512 digest transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCryptoTransformGostR3411-2012-512GetKlass.returns"></a><h4>Returns</h4>
+<p> pointer to GOSTR3411_2012_512 digest transform klass.</p>
 </div>
 </div>
 <hr>
@@ -1538,6 +1688,30 @@ xmlSecMSCryptoTransformHmacSha512GetKlass
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecMSCryptoKeyDataGost2012-256Id"></a><h3>xmlSecMSCryptoKeyDataGost2012_256Id</h3>
+<pre class="programlisting">#define             xmlSecMSCryptoKeyDataGost2012_256Id</pre>
+<p>The GOST R 34.10-2012 256 key klass</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCryptoKeyDataGost2012-512Id"></a><h3>xmlSecMSCryptoKeyDataGost2012_512Id</h3>
+<pre class="programlisting">#define             xmlSecMSCryptoKeyDataGost2012_512Id</pre>
+<p>The GOST R 34.10-2012 512 key klass</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCryptoTransformGost2012-256Id"></a><h3>xmlSecMSCryptoTransformGost2012_256Id</h3>
+<pre class="programlisting">#define             xmlSecMSCryptoTransformGost2012_256Id</pre>
+<p>The GOST R 34.10-2012 - GOST R 3411-2012 256 bit signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCryptoTransformGost2012-512Id"></a><h3>xmlSecMSCryptoTransformGost2012_512Id</h3>
+<pre class="programlisting">#define             xmlSecMSCryptoTransformGost2012_512Id</pre>
+<p>The GOST R 34.10-2012 - GOST R 3411-2012 512 bit signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecMSCryptoKeyDataRsaId"></a><h3>xmlSecMSCryptoKeyDataRsaId</h3>
 <pre class="programlisting">#define             xmlSecMSCryptoKeyDataRsaId</pre>
 <p>The RSA key klass.</p>
@@ -1619,6 +1793,18 @@ xmlSecMSCryptoTransformHmacSha512GetKlass
 <a name="xmlSecMSCryptoTransformGostR3411-94Id"></a><h3>xmlSecMSCryptoTransformGostR3411_94Id</h3>
 <pre class="programlisting">#define             xmlSecMSCryptoTransformGostR3411_94Id</pre>
 <p>The GOSTR3411_94 digest transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCryptoTransformGostR3411-2012-256Id"></a><h3>xmlSecMSCryptoTransformGostR3411_2012_256Id</h3>
+<pre class="programlisting">#define             xmlSecMSCryptoTransformGostR3411_2012_256Id</pre>
+<p>The GOST R 34.11-2012 256 digest transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCryptoTransformGostR3411-2012-512Id"></a><h3>xmlSecMSCryptoTransformGostR3411_2012_512Id</h3>
+<pre class="programlisting">#define             xmlSecMSCryptoTransformGostR3411_2012_512Id</pre>
+<p>The GOST R 34.11-2012 512 digest transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1719,7 +1905,7 @@ xmlSecMSCryptoTransformHmacSha512GetKlass
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.25</div>
+<hr>Generated by GTK-Doc V1.27</div>
 </td></tr></table></td>
 </tr></table></body>
 </html>

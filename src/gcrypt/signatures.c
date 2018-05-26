@@ -1,11 +1,19 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (C) 2010-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
+/**
+ * SECTION:signatures
+ * @Short_description: Signatures implementation for GCrypt.
+ * @Stability: Private
+ *
+ */
+
 #include "globals.h"
 
 #include <string.h>

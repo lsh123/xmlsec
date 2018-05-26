@@ -5,9 +5,32 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
 <link rel="up" href="xmlsec-reference.html" title="Part II. XML Security Library API Reference.">
-<link rel="prev" href="xmlsec-mscrypto-x509.html" title="x509">
-<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="prev" href="xmlsec-mscng-x509.html" title="x509">
+<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
 <style type="text/css">
 table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     width: 20em;
@@ -76,7 +99,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="xmlsec-reference.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="p" href="xmlsec-mscrypto-x509.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="xmlsec-mscng-x509.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><img src="right-insensitive.png" width="16" height="16" border="0"></td>
 </tr></table>
 <div class="chapter">
@@ -195,6 +218,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <li class="listitem"><p><a class="link" href="xmlsec-dl.html#xmlSecCryptoDLUnloadLibrary" title="xmlSecCryptoDLUnloadLibrary ()">xmlSecCryptoDLUnloadLibrary</a></p></li>
 <li class="listitem"><p><font>xmlSecCryptoGetFunctions-gcrypt</font></p></li>
 <li class="listitem"><p><font>xmlSecCryptoGetFunctions-gnutls</font></p></li>
+<li class="listitem"><p><font>xmlSecCryptoGetFunctions-mscng</font></p></li>
 <li class="listitem"><p><font>xmlSecCryptoGetFunctions-mscrypto</font></p></li>
 <li class="listitem"><p><font>xmlSecCryptoGetFunctions-nss</font></p></li>
 <li class="listitem"><p><font>xmlSecCryptoGetFunctions-openssl</font></p></li>
@@ -536,6 +560,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <li class="listitem"><p><a class="link" href="xmlsec-gnutls-x509.html#xmlSecGnuTLSX509StoreGetKlass" title="xmlSecGnuTLSX509StoreGetKlass ()">xmlSecGnuTLSX509StoreGetKlass</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-gnutls-x509.html#xmlSecGnuTLSX509StoreId" title="xmlSecGnuTLSX509StoreId">xmlSecGnuTLSX509StoreId</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-gnutls-x509.html#xmlSecGnuTLSX509StoreVerify" title="xmlSecGnuTLSX509StoreVerify ()">xmlSecGnuTLSX509StoreVerify</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-keysdata.html#xmlSecImportGetPersistKey" title="xmlSecImportGetPersistKey ()">xmlSecImportGetPersistKey</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-keysdata.html#xmlSecImportSetPersistKey" title="xmlSecImportSetPersistKey ()">xmlSecImportSetPersistKey</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-xmlsec.html#xmlSecInit" title="xmlSecInit ()">xmlSecInit</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-io.html#xmlSecIOCleanupCallbacks" title="xmlSecIOCleanupCallbacks ()">xmlSecIOCleanupCallbacks</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-io.html#xmlSecIOInit" title="xmlSecIOInit ()">xmlSecIOInit</a></p></li>
@@ -778,6 +804,124 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <li class="listitem"><p><a class="link" href="xmlsec-keys.html#xmlSecKeyUseWithPtrListId" title="xmlSecKeyUseWithPtrListId">xmlSecKeyUseWithPtrListId</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-keys.html#xmlSecKeyUseWithReset" title="xmlSecKeyUseWithReset ()">xmlSecKeyUseWithReset</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-keys.html#xmlSecKeyUseWithSet" title="xmlSecKeyUseWithSet ()">xmlSecKeyUseWithSet</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppDefaultKeysMngrAdoptKey" title="xmlSecMSCngAppDefaultKeysMngrAdoptKey ()">xmlSecMSCngAppDefaultKeysMngrAdoptKey</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppDefaultKeysMngrInit" title="xmlSecMSCngAppDefaultKeysMngrInit ()">xmlSecMSCngAppDefaultKeysMngrInit</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppDefaultKeysMngrLoad" title="xmlSecMSCngAppDefaultKeysMngrLoad ()">xmlSecMSCngAppDefaultKeysMngrLoad</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppDefaultKeysMngrSave" title="xmlSecMSCngAppDefaultKeysMngrSave ()">xmlSecMSCngAppDefaultKeysMngrSave</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppGetCertStoreName" title="xmlSecMSCngAppGetCertStoreName ()">xmlSecMSCngAppGetCertStoreName</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppGetDefaultPwdCallback" title="xmlSecMSCngAppGetDefaultPwdCallback ()">xmlSecMSCngAppGetDefaultPwdCallback</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppInit" title="xmlSecMSCngAppInit ()">xmlSecMSCngAppInit</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppKeyCertLoadMemory" title="xmlSecMSCngAppKeyCertLoadMemory ()">xmlSecMSCngAppKeyCertLoadMemory</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppKeyCertLoad" title="xmlSecMSCngAppKeyCertLoad ()">xmlSecMSCngAppKeyCertLoad</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppKeyLoadMemory" title="xmlSecMSCngAppKeyLoadMemory ()">xmlSecMSCngAppKeyLoadMemory</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppKeyLoad" title="xmlSecMSCngAppKeyLoad ()">xmlSecMSCngAppKeyLoad</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppKeysMngrCertLoadMemory" title="xmlSecMSCngAppKeysMngrCertLoadMemory ()">xmlSecMSCngAppKeysMngrCertLoadMemory</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppKeysMngrCertLoad" title="xmlSecMSCngAppKeysMngrCertLoad ()">xmlSecMSCngAppKeysMngrCertLoad</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppPkcs12LoadMemory" title="xmlSecMSCngAppPkcs12LoadMemory ()">xmlSecMSCngAppPkcs12LoadMemory</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppPkcs12Load" title="xmlSecMSCngAppPkcs12Load ()">xmlSecMSCngAppPkcs12Load</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppShutdown" title="xmlSecMSCngAppShutdown ()">xmlSecMSCngAppShutdown</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-certkeys.html#xmlSecMSCngCertAdopt" title="xmlSecMSCngCertAdopt ()">xmlSecMSCngCertAdopt</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngConvertTstrToUtf8" title="xmlSecMSCngConvertTstrToUtf8 ()">xmlSecMSCngConvertTstrToUtf8</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngConvertUnicodeToUtf8" title="xmlSecMSCngConvertUnicodeToUtf8 ()">xmlSecMSCngConvertUnicodeToUtf8</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngConvertUtf8ToTstr" title="xmlSecMSCngConvertUtf8ToTstr ()">xmlSecMSCngConvertUtf8ToTstr</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngConvertUtf8ToUnicode" title="xmlSecMSCngConvertUtf8ToUnicode ()">xmlSecMSCngConvertUtf8ToUnicode</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngGenerateRandom" title="xmlSecMSCngGenerateRandom ()">xmlSecMSCngGenerateRandom</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngInit" title="xmlSecMSCngInit ()">xmlSecMSCngInit</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataAesGetKlass" title="xmlSecMSCngKeyDataAesGetKlass ()">xmlSecMSCngKeyDataAesGetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataAesId" title="xmlSecMSCngKeyDataAesId">xmlSecMSCngKeyDataAesId</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataDesGetKlass" title="xmlSecMSCngKeyDataDesGetKlass ()">xmlSecMSCngKeyDataDesGetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataDesId" title="xmlSecMSCngKeyDataDesId">xmlSecMSCngKeyDataDesId</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataDsaGetKlass" title="xmlSecMSCngKeyDataDsaGetKlass ()">xmlSecMSCngKeyDataDsaGetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataDsaId" title="xmlSecMSCngKeyDataDsaId">xmlSecMSCngKeyDataDsaId</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataEcdsaGetKlass" title="xmlSecMSCngKeyDataEcdsaGetKlass ()">xmlSecMSCngKeyDataEcdsaGetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataEcdsaId" title="xmlSecMSCngKeyDataEcdsaId">xmlSecMSCngKeyDataEcdsaId</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-certkeys.html#xmlSecMSCngKeyDataGetPrivKey" title="xmlSecMSCngKeyDataGetPrivKey ()">xmlSecMSCngKeyDataGetPrivKey</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-certkeys.html#xmlSecMSCngKeyDataGetPubKey" title="xmlSecMSCngKeyDataGetPubKey ()">xmlSecMSCngKeyDataGetPubKey</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataHmacGetKlass" title="xmlSecMSCngKeyDataHmacGetKlass ()">xmlSecMSCngKeyDataHmacGetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataHmacId" title="xmlSecMSCngKeyDataHmacId">xmlSecMSCngKeyDataHmacId</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-x509.html#xmlSecMSCngKeyDataRawX509CertGetKlass" title="xmlSecMSCngKeyDataRawX509CertGetKlass ()">xmlSecMSCngKeyDataRawX509CertGetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-x509.html#xmlSecMSCngKeyDataRawX509CertId" title="xmlSecMSCngKeyDataRawX509CertId">xmlSecMSCngKeyDataRawX509CertId</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataRsaGetKlass" title="xmlSecMSCngKeyDataRsaGetKlass ()">xmlSecMSCngKeyDataRsaGetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataRsaId" title="xmlSecMSCngKeyDataRsaId">xmlSecMSCngKeyDataRsaId</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-x509.html#xmlSecMSCngKeyDataX509AdoptCert" title="xmlSecMSCngKeyDataX509AdoptCert ()">xmlSecMSCngKeyDataX509AdoptCert</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-x509.html#xmlSecMSCngKeyDataX509AdoptKeyCert" title="xmlSecMSCngKeyDataX509AdoptKeyCert ()">xmlSecMSCngKeyDataX509AdoptKeyCert</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-x509.html#xmlSecMSCngKeyDataX509GetKlass" title="xmlSecMSCngKeyDataX509GetKlass ()">xmlSecMSCngKeyDataX509GetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-x509.html#xmlSecMSCngKeyDataX509Id" title="xmlSecMSCngKeyDataX509Id">xmlSecMSCngKeyDataX509Id</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeysMngrInit" title="xmlSecMSCngKeysMngrInit ()">xmlSecMSCngKeysMngrInit</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-keysstore.html#xmlSecMSCngKeysStoreAdoptKey" title="xmlSecMSCngKeysStoreAdoptKey ()">xmlSecMSCngKeysStoreAdoptKey</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-keysstore.html#xmlSecMSCngKeysStoreGetKlass" title="xmlSecMSCngKeysStoreGetKlass ()">xmlSecMSCngKeysStoreGetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-keysstore.html#xmlSecMSCngKeysStoreId" title="xmlSecMSCngKeysStoreId">xmlSecMSCngKeysStoreId</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-keysstore.html#xmlSecMSCngKeysStoreLoad" title="xmlSecMSCngKeysStoreLoad ()">xmlSecMSCngKeysStoreLoad</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-keysstore.html#xmlSecMSCngKeysStoreSave" title="xmlSecMSCngKeysStoreSave ()">xmlSecMSCngKeysStoreSave</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngMultiByteToWideChar" title="xmlSecMSCngMultiByteToWideChar ()">xmlSecMSCngMultiByteToWideChar</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngShutdown" title="xmlSecMSCngShutdown ()">xmlSecMSCngShutdown</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformAes128CbcGetKlass" title="xmlSecMSCngTransformAes128CbcGetKlass ()">xmlSecMSCngTransformAes128CbcGetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformAes128CbcId" title="xmlSecMSCngTransformAes128CbcId">xmlSecMSCngTransformAes128CbcId</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformAes192CbcGetKlass" title="xmlSecMSCngTransformAes192CbcGetKlass ()">xmlSecMSCngTransformAes192CbcGetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformAes192CbcId" title="xmlSecMSCngTransformAes192CbcId">xmlSecMSCngTransformAes192CbcId</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformAes256CbcGetKlass" title="xmlSecMSCngTransformAes256CbcGetKlass ()">xmlSecMSCngTransformAes256CbcGetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformAes256CbcId" title="xmlSecMSCngTransformAes256CbcId">xmlSecMSCngTransformAes256CbcId</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformDes3CbcGetKlass" title="xmlSecMSCngTransformDes3CbcGetKlass ()">xmlSecMSCngTransformDes3CbcGetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformDes3CbcId" title="xmlSecMSCngTransformDes3CbcId">xmlSecMSCngTransformDes3CbcId</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformDsaSha1GetKlass" title="xmlSecMSCngTransformDsaSha1GetKlass ()">xmlSecMSCngTransformDsaSha1GetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformDsaSha1Id" title="xmlSecMSCngTransformDsaSha1Id">xmlSecMSCngTransformDsaSha1Id</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformEcdsaSha1GetKlass" title="xmlSecMSCngTransformEcdsaSha1GetKlass ()">xmlSecMSCngTransformEcdsaSha1GetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformEcdsaSha1Id" title="xmlSecMSCngTransformEcdsaSha1Id">xmlSecMSCngTransformEcdsaSha1Id</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformEcdsaSha256GetKlass" title="xmlSecMSCngTransformEcdsaSha256GetKlass ()">xmlSecMSCngTransformEcdsaSha256GetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformEcdsaSha256Id" title="xmlSecMSCngTransformEcdsaSha256Id">xmlSecMSCngTransformEcdsaSha256Id</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformEcdsaSha512GetKlass" title="xmlSecMSCngTransformEcdsaSha512GetKlass ()">xmlSecMSCngTransformEcdsaSha512GetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformEcdsaSha512Id" title="xmlSecMSCngTransformEcdsaSha512Id">xmlSecMSCngTransformEcdsaSha512Id</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformHmacMd5GetKlass" title="xmlSecMSCngTransformHmacMd5GetKlass ()">xmlSecMSCngTransformHmacMd5GetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformHmacMd5Id" title="xmlSecMSCngTransformHmacMd5Id">xmlSecMSCngTransformHmacMd5Id</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformHmacSha1GetKlass" title="xmlSecMSCngTransformHmacSha1GetKlass ()">xmlSecMSCngTransformHmacSha1GetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformHmacSha1Id" title="xmlSecMSCngTransformHmacSha1Id">xmlSecMSCngTransformHmacSha1Id</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformHmacSha256GetKlass" title="xmlSecMSCngTransformHmacSha256GetKlass ()">xmlSecMSCngTransformHmacSha256GetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformHmacSha256Id" title="xmlSecMSCngTransformHmacSha256Id">xmlSecMSCngTransformHmacSha256Id</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformHmacSha384GetKlass" title="xmlSecMSCngTransformHmacSha384GetKlass ()">xmlSecMSCngTransformHmacSha384GetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformHmacSha384Id" title="xmlSecMSCngTransformHmacSha384Id">xmlSecMSCngTransformHmacSha384Id</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformHmacSha512GetKlass" title="xmlSecMSCngTransformHmacSha512GetKlass ()">xmlSecMSCngTransformHmacSha512GetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformHmacSha512Id" title="xmlSecMSCngTransformHmacSha512Id">xmlSecMSCngTransformHmacSha512Id</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformKWAes128GetKlass" title="xmlSecMSCngTransformKWAes128GetKlass ()">xmlSecMSCngTransformKWAes128GetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformKWAes128Id" title="xmlSecMSCngTransformKWAes128Id">xmlSecMSCngTransformKWAes128Id</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformKWAes192GetKlass" title="xmlSecMSCngTransformKWAes192GetKlass ()">xmlSecMSCngTransformKWAes192GetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformKWAes192Id" title="xmlSecMSCngTransformKWAes192Id">xmlSecMSCngTransformKWAes192Id</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformKWAes256GetKlass" title="xmlSecMSCngTransformKWAes256GetKlass ()">xmlSecMSCngTransformKWAes256GetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformKWAes256Id" title="xmlSecMSCngTransformKWAes256Id">xmlSecMSCngTransformKWAes256Id</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformKWDes3GetKlass" title="xmlSecMSCngTransformKWDes3GetKlass ()">xmlSecMSCngTransformKWDes3GetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformKWDes3Id" title="xmlSecMSCngTransformKWDes3Id">xmlSecMSCngTransformKWDes3Id</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformMd5GetKlass" title="xmlSecMSCngTransformMd5GetKlass ()">xmlSecMSCngTransformMd5GetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformMd5Id" title="xmlSecMSCngTransformMd5Id">xmlSecMSCngTransformMd5Id</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaMd5GetKlass" title="xmlSecMSCngTransformRsaMd5GetKlass ()">xmlSecMSCngTransformRsaMd5GetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaMd5Id" title="xmlSecMSCngTransformRsaMd5Id">xmlSecMSCngTransformRsaMd5Id</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaOaepGetKlass" title="xmlSecMSCngTransformRsaOaepGetKlass ()">xmlSecMSCngTransformRsaOaepGetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaOaepId" title="xmlSecMSCngTransformRsaOaepId">xmlSecMSCngTransformRsaOaepId</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaPkcs1GetKlass" title="xmlSecMSCngTransformRsaPkcs1GetKlass ()">xmlSecMSCngTransformRsaPkcs1GetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaPkcs1Id" title="xmlSecMSCngTransformRsaPkcs1Id">xmlSecMSCngTransformRsaPkcs1Id</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaSha1GetKlass" title="xmlSecMSCngTransformRsaSha1GetKlass ()">xmlSecMSCngTransformRsaSha1GetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaSha1Id" title="xmlSecMSCngTransformRsaSha1Id">xmlSecMSCngTransformRsaSha1Id</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaSha256GetKlass" title="xmlSecMSCngTransformRsaSha256GetKlass ()">xmlSecMSCngTransformRsaSha256GetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaSha256Id" title="xmlSecMSCngTransformRsaSha256Id">xmlSecMSCngTransformRsaSha256Id</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaSha384GetKlass" title="xmlSecMSCngTransformRsaSha384GetKlass ()">xmlSecMSCngTransformRsaSha384GetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaSha384Id" title="xmlSecMSCngTransformRsaSha384Id">xmlSecMSCngTransformRsaSha384Id</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaSha512GetKlass" title="xmlSecMSCngTransformRsaSha512GetKlass ()">xmlSecMSCngTransformRsaSha512GetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaSha512Id" title="xmlSecMSCngTransformRsaSha512Id">xmlSecMSCngTransformRsaSha512Id</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformSha1GetKlass" title="xmlSecMSCngTransformSha1GetKlass ()">xmlSecMSCngTransformSha1GetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformSha1Id" title="xmlSecMSCngTransformSha1Id">xmlSecMSCngTransformSha1Id</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformSha256GetKlass" title="xmlSecMSCngTransformSha256GetKlass ()">xmlSecMSCngTransformSha256GetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformSha256Id" title="xmlSecMSCngTransformSha256Id">xmlSecMSCngTransformSha256Id</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformSha384GetKlass" title="xmlSecMSCngTransformSha384GetKlass ()">xmlSecMSCngTransformSha384GetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformSha384Id" title="xmlSecMSCngTransformSha384Id">xmlSecMSCngTransformSha384Id</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformSha512GetKlass" title="xmlSecMSCngTransformSha512GetKlass ()">xmlSecMSCngTransformSha512GetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformSha512Id" title="xmlSecMSCngTransformSha512Id">xmlSecMSCngTransformSha512Id</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-x509.html#xmlSecMSCngX509FindCertBySubject" title="xmlSecMSCngX509FindCertBySubject ()">xmlSecMSCngX509FindCertBySubject</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-x509.html#xmlSecMSCngX509StoreAdoptCert" title="xmlSecMSCngX509StoreAdoptCert ()">xmlSecMSCngX509StoreAdoptCert</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-x509.html#xmlSecMSCngX509StoreAdoptKeyStore" title="xmlSecMSCngX509StoreAdoptKeyStore ()">xmlSecMSCngX509StoreAdoptKeyStore</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-x509.html#xmlSecMSCngX509StoreAdoptTrustedStore" title="xmlSecMSCngX509StoreAdoptTrustedStore ()">xmlSecMSCngX509StoreAdoptTrustedStore</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-x509.html#xmlSecMSCngX509StoreAdoptUntrustedStore" title="xmlSecMSCngX509StoreAdoptUntrustedStore ()">xmlSecMSCngX509StoreAdoptUntrustedStore</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-x509.html#xmlSecMSCngX509StoreFindCert" title="xmlSecMSCngX509StoreFindCert ()">xmlSecMSCngX509StoreFindCert</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-x509.html#xmlSecMSCngX509StoreGetKlass" title="xmlSecMSCngX509StoreGetKlass ()">xmlSecMSCngX509StoreGetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-x509.html#xmlSecMSCngX509StoreId" title="xmlSecMSCngX509StoreId">xmlSecMSCngX509StoreId</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-x509.html#xmlSecMSCngX509StoreVerify" title="xmlSecMSCngX509StoreVerify ()">xmlSecMSCngX509StoreVerify</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscrypto-app.html#xmlSecMSCryptoAppDefaultKeysMngrAdoptKey" title="xmlSecMSCryptoAppDefaultKeysMngrAdoptKey ()">xmlSecMSCryptoAppDefaultKeysMngrAdoptKey</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscrypto-app.html#xmlSecMSCryptoAppDefaultKeysMngrAdoptKeyStore" title="xmlSecMSCryptoAppDefaultKeysMngrAdoptKeyStore ()">xmlSecMSCryptoAppDefaultKeysMngrAdoptKeyStore</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscrypto-app.html#xmlSecMSCryptoAppDefaultKeysMngrAdoptTrustedStore" title="xmlSecMSCryptoAppDefaultKeysMngrAdoptTrustedStore ()">xmlSecMSCryptoAppDefaultKeysMngrAdoptTrustedStore</a></p></li>
@@ -829,6 +973,10 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <li class="listitem"><p><a class="link" href="xmlsec-mscrypto-certkeys.html#xmlSecMSCryptoKeyDataGetMSCryptoProvider" title="xmlSecMSCryptoKeyDataGetMSCryptoProvider ()">xmlSecMSCryptoKeyDataGetMSCryptoProvider</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoKeyDataGost2001GetKlass" title="xmlSecMSCryptoKeyDataGost2001GetKlass ()">xmlSecMSCryptoKeyDataGost2001GetKlass</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoKeyDataGost2001Id" title="xmlSecMSCryptoKeyDataGost2001Id">xmlSecMSCryptoKeyDataGost2001Id</a></p></li>
+<li class="listitem"><p><font>xmlSecMSCryptoKeyDataGost2012-256GetKlass</font></p></li>
+<li class="listitem"><p><font>xmlSecMSCryptoKeyDataGost2012-256Id</font></p></li>
+<li class="listitem"><p><font>xmlSecMSCryptoKeyDataGost2012-512GetKlass</font></p></li>
+<li class="listitem"><p><font>xmlSecMSCryptoKeyDataGost2012-512Id</font></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoKeyDataHmacGetKlass" title="xmlSecMSCryptoKeyDataHmacGetKlass ()">xmlSecMSCryptoKeyDataHmacGetKlass</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoKeyDataHmacId" title="xmlSecMSCryptoKeyDataHmacId">xmlSecMSCryptoKeyDataHmacId</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoKeyDataHmacSet" title="xmlSecMSCryptoKeyDataHmacSet ()">xmlSecMSCryptoKeyDataHmacSet</a></p></li>
@@ -865,6 +1013,14 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <li class="listitem"><p><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformDsaSha1Id" title="xmlSecMSCryptoTransformDsaSha1Id">xmlSecMSCryptoTransformDsaSha1Id</a></p></li>
 <li class="listitem"><p><font>xmlSecMSCryptoTransformGost2001GostR3411-94GetKlass</font></p></li>
 <li class="listitem"><p><font>xmlSecMSCryptoTransformGost2001GostR3411-94Id</font></p></li>
+<li class="listitem"><p><font>xmlSecMSCryptoTransformGost2012-256GetKlass</font></p></li>
+<li class="listitem"><p><font>xmlSecMSCryptoTransformGost2012-256Id</font></p></li>
+<li class="listitem"><p><font>xmlSecMSCryptoTransformGost2012-512GetKlass</font></p></li>
+<li class="listitem"><p><font>xmlSecMSCryptoTransformGost2012-512Id</font></p></li>
+<li class="listitem"><p><font>xmlSecMSCryptoTransformGostR3411-2012-256GetKlass</font></p></li>
+<li class="listitem"><p><font>xmlSecMSCryptoTransformGostR3411-2012-256Id</font></p></li>
+<li class="listitem"><p><font>xmlSecMSCryptoTransformGostR3411-2012-512GetKlass</font></p></li>
+<li class="listitem"><p><font>xmlSecMSCryptoTransformGostR3411-2012-512Id</font></p></li>
 <li class="listitem"><p><font>xmlSecMSCryptoTransformGostR3411-94GetKlass</font></p></li>
 <li class="listitem"><p><font>xmlSecMSCryptoTransformGostR3411-94Id</font></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformHmacMd5GetKlass" title="xmlSecMSCryptoTransformHmacMd5GetKlass ()">xmlSecMSCryptoTransformHmacMd5GetKlass</a></p></li>
@@ -1643,7 +1799,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     </p>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.25</div>
+<hr>Generated by GTK-Doc V1.27</div>
 </td></tr></table></td>
 </tr></table></body>
 </html>

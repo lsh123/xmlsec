@@ -7,6 +7,13 @@
  *
  * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
+/**
+ * SECTION:app
+ * @Short_description: Crypto-engine independent application support functions.
+ * @Stability: Stable
+ *
+ */
+
 #include "globals.h"
 
 #ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
@@ -28,7 +35,6 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/private.h>
 #include <xmlsec/errors.h>
-
 
 /******************************************************************************
  *

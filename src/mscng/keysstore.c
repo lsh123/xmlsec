@@ -1,11 +1,19 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
+/**
+ * SECTION:keysstore
+ * @Short_description: Keys store implementation for Microsoft Cryptography API: Next Generation (CNG).
+ * @Stability: Stable
+ *
+ */
+
 #include "globals.h"
 
 #include <string.h>

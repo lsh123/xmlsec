@@ -1,13 +1,19 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * RSA Algorithms support
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  */
+/**
+ * SECTION:kt_rsa
+ * @Short_description: RSA Key Transport transforms implementation for Microsoft Crypto API.
+ * @Stability: Private
+ *
+ */
+
 #include "globals.h"
 
 #ifndef XMLSEC_NO_RSA

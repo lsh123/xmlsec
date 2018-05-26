@@ -1,37 +1,18 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Relationship transform
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#include "globals.h"
-
-#include <stdlib.h>
-#include <string.h>
-
-#include <libxml/tree.h>
-#include <libxml/xpointer.h>
-#include <libxml/c14n.h>
-
-#include <xmlsec/xmlsec.h>
-#include <xmlsec/xmltree.h>
-#include <xmlsec/keys.h>
-#include <xmlsec/list.h>
-#include <xmlsec/transforms.h>
-#include <xmlsec/errors.h>
-
-
-/******************************************************************************
+/**
+ * SECTION:relationship
+ * @Short_description: Relationship transform implementation
+ * @Stability: Private
  *
- * Relationship transform
- *
- * http://standards.iso.org/ittf/PubliclyAvailableStandards/c061796_ISO_IEC_29500-2_2012.zip
- *
- * 13.2.4.24 Relationships Transform Algorithm
+ * [Relationship transform](http://standards.iso.org/ittf/PubliclyAvailableStandards/c061796_ISO_IEC_29500-2_2012.zip)
  *
  * The relationships transform takes the XML document from the Relationships part and converts
  * it to another XML document.
@@ -79,7 +60,7 @@
  *   IMPLEMENTATION NOTES (https://github.com/lsh123/xmlsec/pull/24):
  *
  *   * We don't simply manipulate the XML tree, but do an XML tree -> output bytes transformation,
- *     so e.g. because we never write characters inside XML elements, we implicitly remove all character
+ *     because we never write characters inside XML elements, we implicitly remove all character
  *     contents, as required by step 3, point 1. It also simplifies the task of the situation that
  *     realistically the input of the transformation is always a document that conforms to the OOXML
  *     relationships XML schema, so in practice it'll never happen that the input document has e.g.
@@ -91,7 +72,24 @@
  *     when there will be such an input, then it'll be easy to add support for that. But I didn't want to clutter
  *     the current implementation with details that doesn't seem to be used in practice
  *
- *****************************************************************************/
+ */
+#include "globals.h"
+
+#include <stdlib.h>
+#include <string.h>
+
+#include <libxml/tree.h>
+#include <libxml/xpointer.h>
+#include <libxml/c14n.h>
+
+#include <xmlsec/xmlsec.h>
+#include <xmlsec/xmltree.h>
+#include <xmlsec/keys.h>
+#include <xmlsec/list.h>
+#include <xmlsec/transforms.h>
+#include <xmlsec/errors.h>
+
+
 typedef struct _xmlSecRelationshipCtx           xmlSecRelationshipCtx,
                                                 *xmlSecRelationshipCtxPtr;
 struct _xmlSecRelationshipCtx {

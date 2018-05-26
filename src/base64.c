@@ -1,13 +1,19 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Base64 encode/decode transform and utility functions.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
+/**
+ * SECTION:base64
+ * @Short_description: Base64 encoding/decoding functions and base64 transform implementation.
+ * @Stability: Stable
+ *
+ */
+
 #include "globals.h"
 
 #include <stdlib.h>

@@ -1,12 +1,17 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Version information
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ */
+/**
+ * SECTION:version
+ * @Short_description: Version macros.
+ * @Stability: Stable
+ *
  */
 #ifndef __XMLSEC_VERSION_H__
 #define __XMLSEC_VERSION_H__

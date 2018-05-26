@@ -1,11 +1,19 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
+/**
+ * SECTION:x509
+ * @Short_description: &lt;dsig:X509Certificate/&gt; node parser functions.
+ * @Stability: Stable
+ *
+ */
+
 #include "globals.h"
 
 #ifndef XMLSEC_NO_X509

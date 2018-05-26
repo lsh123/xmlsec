@@ -1,13 +1,19 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * DES Algorithm support
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  */
+/**
+ * SECTION:symkeys
+ * @Short_description: Symmetric keys implementation for Microsoft Crypto API.
+ * @Stability: Private
+ *
+ */
+
 #include "globals.h"
 
 #include <stdlib.h>

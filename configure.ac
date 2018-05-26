@@ -114,7 +114,6 @@ if test "z$enable_docs_build" = "zyes" ; then
     AC_PATH_PROG(XSLTPROC, xsltproc)
     AC_PATH_PROG(MAN2HTML, man2html)
     AC_PATH_PROG(GTKDOC_MKHTML, gtkdoc-mkhtml)
-    AC_PATH_PROG(GTKDOC_MKTMPL, gtkdoc-mktmpl)
     AC_PATH_PROG(GTKDOC_MKDB,   gtkdoc-mkdb)
     AC_PATH_PROG(GTKDOC_SCAN,   gtkdoc-scan)
 
@@ -127,7 +126,7 @@ AM_CONDITIONAL(HAS_MAN2HTML, [test x"$MAN2HTML" != x])
 AM_CONDITIONAL(HAS_XSLTPROC, [test x"$XSLTPROC" != x])
 
 AM_CONDITIONAL(BUILD_MAN_DOCS, [test x"$PERL" != x && test x"$XSLTPROC" != x && test x"$MAN2HTML" != x])
-AM_CONDITIONAL(BUILD_API_DOCS, [test x"$PERL" != x && test x"$XSLTPROC" != x && test x"$GTKDOC_MKHTML" != x && test x"$GTKDOC_MKTMPL" != x && test x"$GTKDOC_MKDB" != x && test x"$GTKDOC_SCAN" != x])
+AM_CONDITIONAL(BUILD_API_DOCS, [test x"$PERL" != x && test x"$XSLTPROC" != x && test x"$GTKDOC_MKHTML" != x && test x"$GTKDOC_MKDB" != x && test x"$GTKDOC_SCAN" != x])
 
 dnl ==========================================================================
 dnl Perform host specific configuration

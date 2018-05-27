@@ -491,7 +491,7 @@ xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
         transform->status = xmlSecTransformStatusWorking;
     }
 
-    if((transform->status == xmlSecTransformStatusWorking)) {
+    if(transform->status == xmlSecTransformStatusWorking) {
         if(inSize > 0) {
             xmlSecAssert2(outSize == 0, -1);
 

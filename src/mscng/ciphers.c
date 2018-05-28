@@ -313,7 +313,6 @@ xmlSecMSCngBlockCipherCtxInit(xmlSecMSCngBlockCipherCtxPtr ctx,
         return(-1);
     }
 
-    dwBlockLen;
     xmlSecAssert2(dwBlockLen > 0, -1);
     if(encrypt) {
         unsigned char* iv;

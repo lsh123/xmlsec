@@ -427,7 +427,7 @@ xmlSecTransformXPathExecute(xmlSecTransformPtr transform, int last,
     transform->outNodes = xmlSecXPathDataListExecute(dataList, doc,
                                 transform->hereNode, transform->inNodes);
     if(transform->outNodes == NULL) {
-        xmlSecInternalError("xmlSecXPathDataExecute",
+        xmlSecInternalError("xmlSecXPathDataListExecute",
                             xmlSecTransformGetName(transform));
         return(-1);
     }

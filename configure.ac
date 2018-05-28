@@ -52,6 +52,16 @@ AC_PATH_PROG(MV, mv, /bin/mv)
 AC_PATH_PROG(TAR, tar, /bin/tar)
 AC_PATH_PROG(PERL, perl)
 
+dnl Programs for man pahes and html docs
+AC_PATH_PROG(HELP2MAN, help2man)
+AC_PATH_PROG(XSLTPROC, xsltproc)
+AC_PATH_PROG(MAN2HTML, man2html)
+AC_PATH_PROG(GTKDOC_MKHTML, gtkdoc-mkhtml)
+AC_PATH_PROG(GTKDOC_MKDB,   gtkdoc-mkdb)
+AC_PATH_PROG(GTKDOC_SCAN,   gtkdoc-scan)
+AM_CONDITIONAL(HAS_HELP2MAN, [test x"$HELP2MAN" != x])
+AM_CONDITIONAL(HAS_MAN2HTML, [test x"$MAN2HTML" != x])
+AM_CONDITIONAL(HAS_XSLTPROC, [test x"$XSLTPROC" != x])
 
 dnl Checks for header files.
 AC_HEADER_DIRENT
@@ -95,15 +105,12 @@ dnl ==========================================================================
 AC_MSG_CHECKING(for man pages build)
 AC_ARG_ENABLE(manpages_build,[  --enable-manpages-build man pages build (no)])
 if test "z$enable_manpages_build" = "zyes" ; then
-    AC_PATH_PROG(HELP2MAN, help2man)
-
+    AM_CONDITIONAL(BUILD_MANPAGES, [test x"$HELP2MAN" != x])
     AC_MSG_RESULT([yes])
 else
+    AM_CONDITIONAL(BUILD_MANPAGES, [test "x" = "y"])
     AC_MSG_RESULT([disabled])
 fi
-
-AM_CONDITIONAL(HAS_HELP2MAN, [test x"$HELP2MAN" != x])
-AM_CONDITIONAL(BUILD_MANPAGES, [test x"$HELP2MAN" != x])
 
 dnl ==========================================================================
 dnl Do we want to build docs?
@@ -111,22 +118,14 @@ dnl ==========================================================================
 AC_MSG_CHECKING(for docs build)
 AC_ARG_ENABLE(docs_build,    [  --enable-docs-build     docs build (no)])
 if test "z$enable_docs_build" = "zyes" ; then
-    AC_PATH_PROG(XSLTPROC, xsltproc)
-    AC_PATH_PROG(MAN2HTML, man2html)
-    AC_PATH_PROG(GTKDOC_MKHTML, gtkdoc-mkhtml)
-    AC_PATH_PROG(GTKDOC_MKDB,   gtkdoc-mkdb)
-    AC_PATH_PROG(GTKDOC_SCAN,   gtkdoc-scan)
-
+    AM_CONDITIONAL(BUILD_MAN_DOCS, [test x"$PERL" != x && test x"$XSLTPROC" != x && test x"$MAN2HTML" != x])
+    AM_CONDITIONAL(BUILD_API_DOCS, [test x"$PERL" != x && test x"$XSLTPROC" != x && test x"$GTKDOC_MKHTML" != x && test x"$GTKDOC_MKDB" != x && test x"$GTKDOC_SCAN" != x])
     AC_MSG_RESULT([yes])
 else
+    AM_CONDITIONAL(BUILD_MAN_DOCS, [test "x" = "y"])
+    AM_CONDITIONAL(BUILD_API_DOCS, [test "x" = "y"])
     AC_MSG_RESULT([disabled])
 fi
-
-AM_CONDITIONAL(HAS_MAN2HTML, [test x"$MAN2HTML" != x])
-AM_CONDITIONAL(HAS_XSLTPROC, [test x"$XSLTPROC" != x])
-
-AM_CONDITIONAL(BUILD_MAN_DOCS, [test x"$PERL" != x && test x"$XSLTPROC" != x && test x"$MAN2HTML" != x])
-AM_CONDITIONAL(BUILD_API_DOCS, [test x"$PERL" != x && test x"$XSLTPROC" != x && test x"$GTKDOC_MKHTML" != x && test x"$GTKDOC_MKDB" != x && test x"$GTKDOC_SCAN" != x])
 
 dnl ==========================================================================
 dnl Perform host specific configuration

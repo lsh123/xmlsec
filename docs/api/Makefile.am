@@ -18,9 +18,6 @@ GTKDOC_MKDB_OUTPUT_DIR=$(builddir)/xml
 
 # We need to copy some files to make gkdoc happy that
 # everything is in one folder
-TMPL_DIR=$(builddir)/tmpl
-TMPL_SRC_DIR=$(srcdir)/tmpl
-
 MAIN_SGML_FILE=$(SGML_DIR)/xmlsec.sgml
 MAIN_SGML_SRC_FILE=$(srcdir)/src/xmlsec.sgml
 
@@ -29,7 +26,6 @@ SGML_CHAPTERS_SRC_DIR=$(srcdir)/src/chapters
 
 
 EXTRA_DIST = \
-	$(TMPL_DIR) \
 	$(srcdir)/src \
 	$(srcdir)/images \
 	$(srcdir)/style.css \
@@ -271,10 +267,7 @@ dist-hook:
 clean-local:
 	-rm -rf $(SOURCE_CODE_DIR) $(EXAMPLES_DIR) $(SCAN_DIR)/*.txt $(SGML_DIR) $(GTKDOC_MKDB_OUTPUT_DIR)
 	-rm -f *.stamp *.types index.sgml
-	( if [ z"$(TMPL_SRC_DIR)" != z"$(TMPL_DIR)" ] && [ -d "$(TMPL_DIR)" ] ; then \
-		chmod -R u+w $(TMPL_DIR) && rm -rf $(TMPL_DIR) ; \
-	 fi ; )
-	 ( if [ z"$(builddir)" != z"$(srcdir)" ] ; then \
+	@( if [ z"$(builddir)" != z"$(srcdir)" ] ; then \
     	chmod -R u+w $(builddir)/src && rm -rf $(builddir)/src ; \
     	chmod -R u+w $(builddir)/images && rm -rf $(builddir)/images ; \
     	chmod -R u+w $(builddir)/*.png && rm -rf $(builddir)/*.png ; \

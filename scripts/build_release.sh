@@ -26,7 +26,7 @@ cd "$build_root"
 echo "============== Checking out the module '$git_url'"
 git clone $git_uri
 cd xmlsec
-#git checkout $git_release_branch
+git checkout $git_release_branch
 find . -name ".git" | xargs rm -r
 
 echo "============== Building xmlsec1-$version"

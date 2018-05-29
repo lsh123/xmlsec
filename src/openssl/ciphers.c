@@ -71,6 +71,8 @@ static int      xmlSecOpenSSLEvpBlockCipherCtxFinal     (xmlSecOpenSSLEvpBlockCi
                                                          xmlSecBufferPtr out,
                                                          const xmlChar* cipherName,
                                                          xmlSecTransformCtxPtr transformCtx);
+static int      xmlSecOpenSSLIsCBCMode                  ()
+
 static int
 xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
                                 xmlSecBufferPtr in, xmlSecBufferPtr out,
@@ -477,6 +479,15 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
         ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
     } else if(transform->id == xmlSecOpenSSLTransformAes256CbcId) {
         ctx->cipher     = EVP_aes_256_cbc();
+        ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
+    } else if(transform->id == xmlSecOpenSSLTransformAes128GcmId) {
+        ctx->cipher     = EVP_aes_128_gcm();
+        ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
+    } else if(transform->id == xmlSecOpenSSLTransformAes192GcmId) {
+        ctx->cipher     = EVP_aes_192_gcm();
+        ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
+    } else if(transform->id == xmlSecOpenSSLTransformAes256GcmId) {
+        ctx->cipher     = EVP_aes_256_gcm();
         ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
     } else
 #endif /* XMLSEC_NO_AES */

@@ -1,13 +1,19 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * DES Algorithm support
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (C) 2010-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
+/**
+ * SECTION:kw_des
+ * @Short_description: DES Key Transport transforms implementation for GnuTLS.
+ * @Stability: Private
+ *
+ */
+
 #ifndef XMLSEC_NO_DES
 #include "globals.h"
 

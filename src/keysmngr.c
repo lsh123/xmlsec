@@ -1,12 +1,17 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Keys Manager.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ */
+/**
+ * SECTION:keysmngr
+ * @Short_description: Keys manager object functions.
+ * @Stability: Stable
+ *
  */
 #include "globals.h"
 
@@ -25,6 +30,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/errors.h>
+
 
 /****************************************************************************
  *

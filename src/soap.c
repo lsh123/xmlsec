@@ -1,12 +1,17 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Simple SOAP messages parsing/creation.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (C) 2002-2017 Aleksey Sanin <aleksey@aleksey.com>
+ */
+/**
+ * SECTION:soap
+ * @Short_description: Simple SOAP messages parsing/creation functions.
+ * @Stability: Private
+ *
  */
 #include "globals.h"
 

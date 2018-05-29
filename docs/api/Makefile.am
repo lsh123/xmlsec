@@ -11,17 +11,17 @@ INCLUDE_DIR2=$(top_builddir)/include
 
 SCAN_DIR=$(builddir)
 SGML_DIR=$(builddir)/sgml.tmp
-XML_DIR=$(builddir)/xml.tmp
 EXAMPLES_DIR=$(SGML_DIR)/examples
 SOURCE_CODE_DIR=$(builddir)/code
 
+GTKDOC_MKDB_OUTPUT_DIR=$(builddir)/xml
 
 # We need to copy some files to make gkdoc happy that
 # everything is in one folder
 TMPL_DIR=$(builddir)/tmpl
 TMPL_SRC_DIR=$(srcdir)/tmpl
 
-MAIN_SGML_FILE=$(SGML_DIR)/xmlsec-main.sgml
+MAIN_SGML_FILE=$(SGML_DIR)/xmlsec.sgml
 MAIN_SGML_SRC_FILE=$(srcdir)/src/xmlsec.sgml
 
 SGML_CHAPTERS_DIR=$(SGML_DIR)/chapters
@@ -42,6 +42,15 @@ SOURCE_FILES_TO_COPY = \
 	$(srcdir)/*.html \
 	$(srcdir)/*.png \
 	$(NULL)	
+
+CRYPTO_LIBS_LIST = \
+        openssl \
+        nss \
+        gnutls \
+        gcrypt \
+        mscrypto \
+        mscng \
+        $(NULL)
 
 #
 # We need to pre-process original source files
@@ -83,7 +92,7 @@ docs:
 endif
 
 html-cleanup: html
-	( echo "Cleaning up result files"; \
+	@( echo "Cleaning up result files"; \
 	   $(PERL) $(REMOVE_GTKDOCLINK) `find . -name "*.html" -print` \
 	)
 
@@ -127,103 +136,46 @@ sgml: sgml-base
 	        mv -f $$i.tmp $$i; \
 	 done);
 
-sgml-base: templates $(SGML_DIR)/.sentinel
-	$(GTKDOC_MKDB) --module=xmlsec \
+# gtkdoc-mkdb doesn't support --output-dir thus we have to "hack" it a litle bit
+sgml-base: scan $(SGML_DIR)/.sentinel
+	@( \
+	    echo "Create DocBook files for xmlsec-core" ; \
+	    rm -rf $(GTKDOC_MKDB_OUTPUT_DIR) $(SGML_DIR)/base ; \
+	    $(GTKDOC_MKDB) --module=xmlsec \
 		--xml-mode \
 		--main-sgml-file=$(SGML_DIR)/xmlsec-base.sgml \
-		--output-dir=$(SGML_DIR)/ \
-		--tmpl-dir=$(TMPL_DIR)/base \
 		--source-dir=$(SOURCE_CODE_DIR)/src/base \
-		--source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/base
-	$(GTKDOC_MKDB) --module=xmlsec-openssl \
+		--source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/base ; \
+	    mv $(GTKDOC_MKDB_OUTPUT_DIR) $(SGML_DIR)/base ; \
+	);
+	@(for i in $(CRYPTO_LIBS_LIST) ; do \
+	    echo "Create DocBook files for xmlsec-$$i" ; \
+	    rm -rf $(GTKDOC_MKDB_OUTPUT_DIR) $(SGML_DIR)/$$i ; \
+	    $(GTKDOC_MKDB) --module=xmlsec-$$i \
 		--xml-mode \
-		--main-sgml-file=$(SGML_DIR)/xmlsec-openssl.sgml \
-		--tmpl-dir=$(TMPL_DIR)/openssl \
-		--output-dir=$(SGML_DIR)/openssl \
-		--source-dir=$(SOURCE_CODE_DIR)/src/openssl \
-		--source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/openssl
-	$(GTKDOC_MKDB) --module=xmlsec-gnutls \
-		--xml-mode \
-		--main-sgml-file=$(SGML_DIR)/xmlsec-gnutls.sgml \
-		--tmpl-dir=$(TMPL_DIR)/gnutls \
-		--output-dir=$(SGML_DIR)/gnutls \
-		--source-dir=$(SOURCE_CODE_DIR)/src/gnutls \
-		--source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/gnutls
-	$(GTKDOC_MKDB) --module=xmlsec-gcrypt \
-		--xml-mode \
-		--main-sgml-file=$(SGML_DIR)/xmlsec-gcrypt.sgml \
-		--tmpl-dir=$(TMPL_DIR)/gcrypt \
-		--output-dir=$(SGML_DIR)/gcrypt \
-		--source-dir=$(SOURCE_CODE_DIR)/src/gcrypt \
-		--source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/gcrypt
-	$(GTKDOC_MKDB) --module=xmlsec-nss \
-		--xml-mode \
-		--main-sgml-file=$(SGML_DIR)/xmlsec-nss.sgml \
-		--tmpl-dir=$(TMPL_DIR)/nss \
-		--output-dir=$(SGML_DIR)/nss \
-		--source-dir=$(SOURCE_CODE_DIR)/src/nss \
-		--source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/nss
-	$(GTKDOC_MKDB) --module=xmlsec-mscrypto \
-		--xml-mode \
-		--main-sgml-file=$(SGML_DIR)/xmlsec-mscrypto.sgml \
-		--tmpl-dir=$(TMPL_DIR)/mscrypto \
-		--output-dir=$(SGML_DIR)/mscrypto \
-		--source-dir=$(SOURCE_CODE_DIR)/src/mscrypto \
-		--source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/mscrypto
-
-templates: scan templates-copy
-	$(GTKDOC_MKTMPL) --module=xmlsec \
-			--output-dir=$(TMPL_DIR)/base
-	$(GTKDOC_MKTMPL) --module=xmlsec-openssl \
-		    --output-dir=$(TMPL_DIR)/openssl
-	$(GTKDOC_MKTMPL) --module=xmlsec-gnutls \
-		    --output-dir=$(TMPL_DIR)/gnutls
-	$(GTKDOC_MKTMPL) --module=xmlsec-gcrypt \
-		    --output-dir=$(TMPL_DIR)/gcrypt
-	$(GTKDOC_MKTMPL) --module=xmlsec-nss \
-		    --output-dir=$(TMPL_DIR)/nss
-	$(GTKDOC_MKTMPL) --module=xmlsec-mscrypto \
-		    --output-dir=$(TMPL_DIR)/mscrypto
-
-# make sure to run chmod since we will update templates
-templates-copy: $(TMPL_SRC_DIR) $(TMPL_DIR)/.sentinel
-	@echo "Copying original template files into '$(TMPL_DIR)' ..."
-	( if [ z"$(TMPL_DIR)" != z"$(TMPL_SRC_DIR)" ] ; then \
-		$(CP) -ru $(TMPL_SRC_DIR)/* $(TMPL_DIR)/ ; \
-	  fi ; )
-	chmod -R u+w $(TMPL_DIR)
+		--main-sgml-file=$(SGML_DIR)/xmlsec-$$i.sgml \
+		--source-dir=$(SOURCE_CODE_DIR)/src/$$i \
+		--source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/$$i ; \
+	    mv $(GTKDOC_MKDB_OUTPUT_DIR) $(SGML_DIR)/$$i ; \
+	done);
 
 scan: SOURCE_CODEs example_sources
-	$(GTKDOC_SCAN) --module=xmlsec \
-		    --rebuild-sections \
+	@( \
+	    echo "Scanning source code for xmlsec-core" ; \
+	    $(GTKDOC_SCAN) --module=xmlsec \
+	            --rebuild-sections \
 		    --output-dir=$(SCAN_DIR) \
 		    --source-dir=$(SOURCE_CODE_DIR)/src/base \
-		    --source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/base
-	$(GTKDOC_SCAN) --module=xmlsec-openssl \
-		    --rebuild-sections \
+		    --source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/base ; \
+	);
+	@(for i in $(CRYPTO_LIBS_LIST) ; do \
+	    echo "Scanning source code for xmlsec-$$i" ; \
+	    $(GTKDOC_SCAN) --module=xmlsec-$$i \
+	            --rebuild-sections \
 		    --output-dir=$(SCAN_DIR) \
-		    --source-dir=$(SOURCE_CODE_DIR)/src/openssl \
-		    --source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/openssl
-	$(GTKDOC_SCAN) --module=xmlsec-gnutls \
-		    --rebuild-sections \
-		    --output-dir=$(SCAN_DIR) \
-		    --source-dir=$(SOURCE_CODE_DIR)/src/gnutls \
-		    --source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/gnutls
-	$(GTKDOC_SCAN) --module=xmlsec-gcrypt \
-		    --rebuild-sections \
-		    --output-dir=$(SCAN_DIR) \
-		    --source-dir=$(SOURCE_CODE_DIR)/src/gcrypt \
-		    --source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/gcrypt
-	$(GTKDOC_SCAN) --module=xmlsec-nss \
-		    --rebuild-sections \
-		    --output-dir=$(SCAN_DIR) \
-		    --source-dir=$(SOURCE_CODE_DIR)/src/nss \
-		    --source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/nss
-	$(GTKDOC_SCAN) --module=xmlsec-mscrypto \
-		    --rebuild-sections \
-		    --output-dir=$(SCAN_DIR) \
-		    --source-dir=$(SOURCE_CODE_DIR)/src/mscrypto \
-		    --source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/mscrypto
+		    --source-dir=$(SOURCE_CODE_DIR)/src/$$i \
+		    --source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/$$i ; \
+	done);
 
 #
 # Prepare source files by coping them to "code" folder and 
@@ -317,7 +269,7 @@ dist-hook:
 	done ; )
 	
 clean-local:
-	-rm -rf $(SOURCE_CODE_DIR) $(EXAMPLES_DIR) $(SCAN_DIR)/*.txt $(SGML_DIR) $(XML_DIR)
+	-rm -rf $(SOURCE_CODE_DIR) $(EXAMPLES_DIR) $(SCAN_DIR)/*.txt $(SGML_DIR) $(GTKDOC_MKDB_OUTPUT_DIR)
 	-rm -f *.stamp *.types index.sgml
 	( if [ z"$(TMPL_SRC_DIR)" != z"$(TMPL_DIR)" ] && [ -d "$(TMPL_DIR)" ] ; then \
 		chmod -R u+w $(TMPL_DIR) && rm -rf $(TMPL_DIR) ; \

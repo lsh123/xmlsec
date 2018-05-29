@@ -1,13 +1,18 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * List of pointers.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- *
  * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
+/**
+ * SECTION:list
+ * @Short_description: Generic list structure functions.
+ * @Stability: Stable
+ *
+ */
+
 #include "globals.h"
 
 #include <stdlib.h>
@@ -18,7 +23,6 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/list.h>
 #include <xmlsec/errors.h>
-
 
 static int              xmlSecPtrListEnsureSize                 (xmlSecPtrListPtr list,
                                                                  xmlSecSize size);

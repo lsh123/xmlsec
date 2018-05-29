@@ -1,0 +1,1463 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>crypto: XML Security Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="XML Security Library Reference Manual">
+<link rel="up" href="xmlsec-msccng-ref.html" title="XML Security Library for Microsoft Cryptography API: Next Generation (CNG) Reference.">
+<link rel="prev" href="xmlsec-mscng-certkeys.html" title="certkeys">
+<link rel="next" href="xmlsec-mscng-keysstore.html" title="keysstore">
+<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
+</head>
+<body><table width="100%" valign="top"><tr valign="top">
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<ul>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
+<li><a href="../api/xmlsec-reference.html">API reference</a></li>
+<li><a href="../api/xmlsec-examples.html">Examples</a></li>
+</ul>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul><li><a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a></li></ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+<li><a href="../authors.html">Authors</a></li>
+</ul>
+<table width="100%">
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
+</tr>
+<!--Links - start--><!--Links - end-->
+</table>
+</td>
+<td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#xmlsec-mscng-crypto.description" class="shortcut">Description</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="xmlsec-msccng-ref.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="xmlsec-mscng-certkeys.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="xmlsec-mscng-keysstore.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="xmlsec-mscng-crypto"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="xmlsec-mscng-crypto.top_of_page"></a>crypto</span></h2>
+<p>crypto &#8212; Crypto transforms implementation for Microsoft Cryptography API: Next Generation (CNG).</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="xmlsec-mscng-crypto.stability-level"></a><h2>Stability Level</h2>
+<a href="http://foldoc.org/Stable"><span class="acronym">Stable</span></a>, unless otherwise indicated
+</div>
+<div class="refsect1">
+<a name="xmlsec-mscng-crypto.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecCryptoDLFunctionsPtr</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecCryptoGetFunctions-mscng" title="xmlSecCryptoGetFunctions_mscng ()">xmlSecCryptoGetFunctions_mscng</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">LPWSTR</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngMultiByteToWideChar" title="xmlSecMSCngMultiByteToWideChar ()">xmlSecMSCngMultiByteToWideChar</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">LPTSTR</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngConvertUtf8ToTstr" title="xmlSecMSCngConvertUtf8ToTstr ()">xmlSecMSCngConvertUtf8ToTstr</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">LPWSTR</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngConvertUtf8ToUnicode" title="xmlSecMSCngConvertUtf8ToUnicode ()">xmlSecMSCngConvertUtf8ToUnicode</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlChar</span></font> *
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngConvertTstrToUtf8" title="xmlSecMSCngConvertTstrToUtf8 ()">xmlSecMSCngConvertTstrToUtf8</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlChar</span></font> *
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngConvertUnicodeToUtf8" title="xmlSecMSCngConvertUnicodeToUtf8 ()">xmlSecMSCngConvertUnicodeToUtf8</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngGenerateRandom" title="xmlSecMSCngGenerateRandom ()">xmlSecMSCngGenerateRandom</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngInit" title="xmlSecMSCngInit ()">xmlSecMSCngInit</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngShutdown" title="xmlSecMSCngShutdown ()">xmlSecMSCngShutdown</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeysMngrInit" title="xmlSecMSCngKeysMngrInit ()">xmlSecMSCngKeysMngrInit</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecKeyDataId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataDsaGetKlass" title="xmlSecMSCngKeyDataDsaGetKlass ()">xmlSecMSCngKeyDataDsaGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformDsaSha1GetKlass" title="xmlSecMSCngTransformDsaSha1GetKlass ()">xmlSecMSCngTransformDsaSha1GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecKeyDataId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataRsaGetKlass" title="xmlSecMSCngKeyDataRsaGetKlass ()">xmlSecMSCngKeyDataRsaGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaMd5GetKlass" title="xmlSecMSCngTransformRsaMd5GetKlass ()">xmlSecMSCngTransformRsaMd5GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaSha1GetKlass" title="xmlSecMSCngTransformRsaSha1GetKlass ()">xmlSecMSCngTransformRsaSha1GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaSha256GetKlass" title="xmlSecMSCngTransformRsaSha256GetKlass ()">xmlSecMSCngTransformRsaSha256GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaSha384GetKlass" title="xmlSecMSCngTransformRsaSha384GetKlass ()">xmlSecMSCngTransformRsaSha384GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaSha512GetKlass" title="xmlSecMSCngTransformRsaSha512GetKlass ()">xmlSecMSCngTransformRsaSha512GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaPkcs1GetKlass" title="xmlSecMSCngTransformRsaPkcs1GetKlass ()">xmlSecMSCngTransformRsaPkcs1GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaOaepGetKlass" title="xmlSecMSCngTransformRsaOaepGetKlass ()">xmlSecMSCngTransformRsaOaepGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecKeyDataId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataEcdsaGetKlass" title="xmlSecMSCngKeyDataEcdsaGetKlass ()">xmlSecMSCngKeyDataEcdsaGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformEcdsaSha1GetKlass" title="xmlSecMSCngTransformEcdsaSha1GetKlass ()">xmlSecMSCngTransformEcdsaSha1GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformEcdsaSha256GetKlass" title="xmlSecMSCngTransformEcdsaSha256GetKlass ()">xmlSecMSCngTransformEcdsaSha256GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformEcdsaSha512GetKlass" title="xmlSecMSCngTransformEcdsaSha512GetKlass ()">xmlSecMSCngTransformEcdsaSha512GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecKeyDataId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataDesGetKlass" title="xmlSecMSCngKeyDataDesGetKlass ()">xmlSecMSCngKeyDataDesGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformDes3CbcGetKlass" title="xmlSecMSCngTransformDes3CbcGetKlass ()">xmlSecMSCngTransformDes3CbcGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformKWDes3GetKlass" title="xmlSecMSCngTransformKWDes3GetKlass ()">xmlSecMSCngTransformKWDes3GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecKeyDataId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataHmacGetKlass" title="xmlSecMSCngKeyDataHmacGetKlass ()">xmlSecMSCngKeyDataHmacGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformHmacMd5GetKlass" title="xmlSecMSCngTransformHmacMd5GetKlass ()">xmlSecMSCngTransformHmacMd5GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformHmacSha1GetKlass" title="xmlSecMSCngTransformHmacSha1GetKlass ()">xmlSecMSCngTransformHmacSha1GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformHmacSha256GetKlass" title="xmlSecMSCngTransformHmacSha256GetKlass ()">xmlSecMSCngTransformHmacSha256GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformHmacSha384GetKlass" title="xmlSecMSCngTransformHmacSha384GetKlass ()">xmlSecMSCngTransformHmacSha384GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformHmacSha512GetKlass" title="xmlSecMSCngTransformHmacSha512GetKlass ()">xmlSecMSCngTransformHmacSha512GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformMd5GetKlass" title="xmlSecMSCngTransformMd5GetKlass ()">xmlSecMSCngTransformMd5GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformSha1GetKlass" title="xmlSecMSCngTransformSha1GetKlass ()">xmlSecMSCngTransformSha1GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformSha256GetKlass" title="xmlSecMSCngTransformSha256GetKlass ()">xmlSecMSCngTransformSha256GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformSha384GetKlass" title="xmlSecMSCngTransformSha384GetKlass ()">xmlSecMSCngTransformSha384GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformSha512GetKlass" title="xmlSecMSCngTransformSha512GetKlass ()">xmlSecMSCngTransformSha512GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecKeyDataId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataAesGetKlass" title="xmlSecMSCngKeyDataAesGetKlass ()">xmlSecMSCngKeyDataAesGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformAes128CbcGetKlass" title="xmlSecMSCngTransformAes128CbcGetKlass ()">xmlSecMSCngTransformAes128CbcGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformAes192CbcGetKlass" title="xmlSecMSCngTransformAes192CbcGetKlass ()">xmlSecMSCngTransformAes192CbcGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformAes256CbcGetKlass" title="xmlSecMSCngTransformAes256CbcGetKlass ()">xmlSecMSCngTransformAes256CbcGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformKWAes128GetKlass" title="xmlSecMSCngTransformKWAes128GetKlass ()">xmlSecMSCngTransformKWAes128GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformKWAes192GetKlass" title="xmlSecMSCngTransformKWAes192GetKlass ()">xmlSecMSCngTransformKWAes192GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformKWAes256GetKlass" title="xmlSecMSCngTransformKWAes256GetKlass ()">xmlSecMSCngTransformKWAes256GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="xmlsec-mscng-crypto.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataDsaId" title="xmlSecMSCngKeyDataDsaId">xmlSecMSCngKeyDataDsaId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformDsaSha1Id" title="xmlSecMSCngTransformDsaSha1Id">xmlSecMSCngTransformDsaSha1Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataRsaId" title="xmlSecMSCngKeyDataRsaId">xmlSecMSCngKeyDataRsaId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaMd5Id" title="xmlSecMSCngTransformRsaMd5Id">xmlSecMSCngTransformRsaMd5Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaSha1Id" title="xmlSecMSCngTransformRsaSha1Id">xmlSecMSCngTransformRsaSha1Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaSha256Id" title="xmlSecMSCngTransformRsaSha256Id">xmlSecMSCngTransformRsaSha256Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaSha384Id" title="xmlSecMSCngTransformRsaSha384Id">xmlSecMSCngTransformRsaSha384Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaSha512Id" title="xmlSecMSCngTransformRsaSha512Id">xmlSecMSCngTransformRsaSha512Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaPkcs1Id" title="xmlSecMSCngTransformRsaPkcs1Id">xmlSecMSCngTransformRsaPkcs1Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaOaepId" title="xmlSecMSCngTransformRsaOaepId">xmlSecMSCngTransformRsaOaepId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataEcdsaId" title="xmlSecMSCngKeyDataEcdsaId">xmlSecMSCngKeyDataEcdsaId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformEcdsaSha1Id" title="xmlSecMSCngTransformEcdsaSha1Id">xmlSecMSCngTransformEcdsaSha1Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformEcdsaSha256Id" title="xmlSecMSCngTransformEcdsaSha256Id">xmlSecMSCngTransformEcdsaSha256Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformEcdsaSha512Id" title="xmlSecMSCngTransformEcdsaSha512Id">xmlSecMSCngTransformEcdsaSha512Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataDesId" title="xmlSecMSCngKeyDataDesId">xmlSecMSCngKeyDataDesId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformDes3CbcId" title="xmlSecMSCngTransformDes3CbcId">xmlSecMSCngTransformDes3CbcId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformKWDes3Id" title="xmlSecMSCngTransformKWDes3Id">xmlSecMSCngTransformKWDes3Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataHmacId" title="xmlSecMSCngKeyDataHmacId">xmlSecMSCngKeyDataHmacId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformHmacMd5Id" title="xmlSecMSCngTransformHmacMd5Id">xmlSecMSCngTransformHmacMd5Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformHmacSha1Id" title="xmlSecMSCngTransformHmacSha1Id">xmlSecMSCngTransformHmacSha1Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformHmacSha256Id" title="xmlSecMSCngTransformHmacSha256Id">xmlSecMSCngTransformHmacSha256Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformHmacSha384Id" title="xmlSecMSCngTransformHmacSha384Id">xmlSecMSCngTransformHmacSha384Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformHmacSha512Id" title="xmlSecMSCngTransformHmacSha512Id">xmlSecMSCngTransformHmacSha512Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformMd5Id" title="xmlSecMSCngTransformMd5Id">xmlSecMSCngTransformMd5Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformSha1Id" title="xmlSecMSCngTransformSha1Id">xmlSecMSCngTransformSha1Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformSha256Id" title="xmlSecMSCngTransformSha256Id">xmlSecMSCngTransformSha256Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformSha384Id" title="xmlSecMSCngTransformSha384Id">xmlSecMSCngTransformSha384Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformSha512Id" title="xmlSecMSCngTransformSha512Id">xmlSecMSCngTransformSha512Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataAesId" title="xmlSecMSCngKeyDataAesId">xmlSecMSCngKeyDataAesId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformAes128CbcId" title="xmlSecMSCngTransformAes128CbcId">xmlSecMSCngTransformAes128CbcId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformAes192CbcId" title="xmlSecMSCngTransformAes192CbcId">xmlSecMSCngTransformAes192CbcId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformAes256CbcId" title="xmlSecMSCngTransformAes256CbcId">xmlSecMSCngTransformAes256CbcId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformKWAes128Id" title="xmlSecMSCngTransformKWAes128Id">xmlSecMSCngTransformKWAes128Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformKWAes192Id" title="xmlSecMSCngTransformKWAes192Id">xmlSecMSCngTransformKWAes192Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformKWAes256Id" title="xmlSecMSCngTransformKWAes256Id">xmlSecMSCngTransformKWAes256Id</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="xmlsec-mscng-crypto.description"></a><h2>Description</h2>
+<p></p>
+</div>
+<div class="refsect1">
+<a name="xmlsec-mscng-crypto.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="xmlSecCryptoGetFunctions-mscng"></a><h3>xmlSecCryptoGetFunctions_mscng ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecCryptoDLFunctionsPtr</span></font>
+xmlSecCryptoGetFunctions_mscng (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the pointer to xmlsec-mscng functions table.</p>
+<div class="refsect3">
+<a name="xmlSecCryptoGetFunctions-mscng.returns"></a><h4>Returns</h4>
+<p> the xmlsec-mscng functions table or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngMultiByteToWideChar"></a><h3>xmlSecMSCngMultiByteToWideChar ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">LPWSTR</span></font>
+xmlSecMSCngMultiByteToWideChar (<em class="parameter"><code>const <font><span class="type">char</span></font> *multiByte</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngConvertUtf8ToTstr"></a><h3>xmlSecMSCngConvertUtf8ToTstr ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">LPTSTR</span></font>
+xmlSecMSCngConvertUtf8ToTstr (<em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *str</code></em>);</pre>
+<p>Converts input string from UTF8 to TSTR (locale or Unicode).</p>
+<div class="refsect3">
+<a name="xmlSecMSCngConvertUtf8ToTstr.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>str</p></td>
+<td class="parameter_description"><p>the string to convert.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecMSCngConvertUtf8ToTstr.returns"></a><h4>Returns</h4>
+<p> a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngConvertUtf8ToUnicode"></a><h3>xmlSecMSCngConvertUtf8ToUnicode ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">LPWSTR</span></font>
+xmlSecMSCngConvertUtf8ToUnicode (<em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *str</code></em>);</pre>
+<p>Converts input string from UTF8 to Unicode.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngConvertUtf8ToUnicode.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>str</p></td>
+<td class="parameter_description"><p>the string to convert.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecMSCngConvertUtf8ToUnicode.returns"></a><h4>Returns</h4>
+<p> a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngConvertTstrToUtf8"></a><h3>xmlSecMSCngConvertTstrToUtf8 ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlChar</span></font> *
+xmlSecMSCngConvertTstrToUtf8 (<em class="parameter"><code><font><span class="type">LPCTSTR</span></font> str</code></em>);</pre>
+<p>Converts input string from TSTR (locale or Unicode) to UTF8.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngConvertTstrToUtf8.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>str</p></td>
+<td class="parameter_description"><p>the string to convert.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecMSCngConvertTstrToUtf8.returns"></a><h4>Returns</h4>
+<p> a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngConvertUnicodeToUtf8"></a><h3>xmlSecMSCngConvertUnicodeToUtf8 ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlChar</span></font> *
+xmlSecMSCngConvertUnicodeToUtf8 (<em class="parameter"><code><font><span class="type">LPCWSTR</span></font> str</code></em>);</pre>
+<p>Converts input string from Unicode to UTF8.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngConvertUnicodeToUtf8.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>str</p></td>
+<td class="parameter_description"><p>the string to convert.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecMSCngConvertUnicodeToUtf8.returns"></a><h4>Returns</h4>
+<p> a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngGenerateRandom"></a><h3>xmlSecMSCngGenerateRandom ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecMSCngGenerateRandom (<em class="parameter"><code><a class="link" href="xmlsec-buffer.html#xmlSecBuffer" title="struct xmlSecBuffer"><span class="type">xmlSecBufferPtr</span></a> buffer</code></em>,
+                           <em class="parameter"><code><font><span class="type">size_t</span></font> size</code></em>);</pre>
+<p>Generates <em class="parameter"><code>size</code></em>
+ random bytes and puts result in <em class="parameter"><code>buffer</code></em>
+
+(not implemented yet).</p>
+<div class="refsect3">
+<a name="xmlSecMSCngGenerateRandom.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>buffer</p></td>
+<td class="parameter_description"><p>the destination buffer.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>size</p></td>
+<td class="parameter_description"><p>the numer of bytes to generate.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecMSCngGenerateRandom.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngInit"></a><h3>xmlSecMSCngInit ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecMSCngInit (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>XMLSec library specific crypto engine initialization.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngInit.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngShutdown"></a><h3>xmlSecMSCngShutdown ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecMSCngShutdown (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>XMLSec library specific crypto engine shutdown.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngShutdown.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngKeysMngrInit"></a><h3>xmlSecMSCngKeysMngrInit ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecMSCngKeysMngrInit (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>);</pre>
+<p>Adds MSCng specific key data stores in keys manager.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngKeysMngrInit.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>mngr</p></td>
+<td class="parameter_description"><p>the pointer to keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecMSCngKeysMngrInit.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngKeyDataDsaGetKlass"></a><h3>xmlSecMSCngKeyDataDsaGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
+xmlSecMSCngKeyDataDsaGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The MSCng DSA CertKey data klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngKeyDataDsaGetKlass.returns"></a><h4>Returns</h4>
+<p> pointer to MSCng DSA key data klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformDsaSha1GetKlass"></a><h3>xmlSecMSCngTransformDsaSha1GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformDsaSha1GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The DSA-SHA1 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformDsaSha1GetKlass.returns"></a><h4>Returns</h4>
+<p> DSA-SHA1 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngKeyDataRsaGetKlass"></a><h3>xmlSecMSCngKeyDataRsaGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
+xmlSecMSCngKeyDataRsaGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The MSCng RSA CertKey data klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngKeyDataRsaGetKlass.returns"></a><h4>Returns</h4>
+<p> pointer to MSCng RSA key data klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformRsaMd5GetKlass"></a><h3>xmlSecMSCngTransformRsaMd5GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformRsaMd5GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-MD5 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformRsaMd5GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-MD5 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformRsaSha1GetKlass"></a><h3>xmlSecMSCngTransformRsaSha1GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformRsaSha1GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-SHA1 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformRsaSha1GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-SHA1 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformRsaSha256GetKlass"></a><h3>xmlSecMSCngTransformRsaSha256GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformRsaSha256GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-SHA256 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformRsaSha256GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-SHA256 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformRsaSha384GetKlass"></a><h3>xmlSecMSCngTransformRsaSha384GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformRsaSha384GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-SHA384 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformRsaSha384GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-SHA384 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformRsaSha512GetKlass"></a><h3>xmlSecMSCngTransformRsaSha512GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformRsaSha512GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-SHA512 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformRsaSha512GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-SHA512 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformRsaPkcs1GetKlass"></a><h3>xmlSecMSCngTransformRsaPkcs1GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformRsaPkcs1GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-PKCS1 key transport transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformRsaPkcs1GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-PKCS1 key transport transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformRsaOaepGetKlass"></a><h3>xmlSecMSCngTransformRsaOaepGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformRsaOaepGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-OAEP key transport transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformRsaOaepGetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-OAEP key transport transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngKeyDataEcdsaGetKlass"></a><h3>xmlSecMSCngKeyDataEcdsaGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
+xmlSecMSCngKeyDataEcdsaGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The MSCng ECDSA CertKey data klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngKeyDataEcdsaGetKlass.returns"></a><h4>Returns</h4>
+<p> pointer to MSCng ECDSA key data klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformEcdsaSha1GetKlass"></a><h3>xmlSecMSCngTransformEcdsaSha1GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformEcdsaSha1GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The ECDSA-SHA1 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformEcdsaSha1GetKlass.returns"></a><h4>Returns</h4>
+<p> ECDSA-SHA1 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformEcdsaSha256GetKlass"></a><h3>xmlSecMSCngTransformEcdsaSha256GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformEcdsaSha256GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The ECDSA-SHA256 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformEcdsaSha256GetKlass.returns"></a><h4>Returns</h4>
+<p> ECDSA-SHA256 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformEcdsaSha512GetKlass"></a><h3>xmlSecMSCngTransformEcdsaSha512GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformEcdsaSha512GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The ECDSA-SHA512 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformEcdsaSha512GetKlass.returns"></a><h4>Returns</h4>
+<p> ECDSA-SHA512 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngKeyDataDesGetKlass"></a><h3>xmlSecMSCngKeyDataDesGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
+xmlSecMSCngKeyDataDesGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The DES key data klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngKeyDataDesGetKlass.returns"></a><h4>Returns</h4>
+<p> DES key data klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformDes3CbcGetKlass"></a><h3>xmlSecMSCngTransformDes3CbcGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformDes3CbcGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Triple DES CBC encryption transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformDes3CbcGetKlass.returns"></a><h4>Returns</h4>
+<p> pointer to Triple DES encryption transform.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformKWDes3GetKlass"></a><h3>xmlSecMSCngTransformKWDes3GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformKWDes3GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The Triple DES key wrapper transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformKWDes3GetKlass.returns"></a><h4>Returns</h4>
+<p> Triple DES key wrapper transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngKeyDataHmacGetKlass"></a><h3>xmlSecMSCngKeyDataHmacGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
+xmlSecMSCngKeyDataHmacGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The HMAC key data klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngKeyDataHmacGetKlass.returns"></a><h4>Returns</h4>
+<p> HMAC key data klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformHmacMd5GetKlass"></a><h3>xmlSecMSCngTransformHmacMd5GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformHmacMd5GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The HMAC-MD5 transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformHmacMd5GetKlass.returns"></a><h4>Returns</h4>
+<p> the HMAC-MD5 transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformHmacSha1GetKlass"></a><h3>xmlSecMSCngTransformHmacSha1GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformHmacSha1GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The HMAC-SHA1 transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformHmacSha1GetKlass.returns"></a><h4>Returns</h4>
+<p> the HMAC-SHA1 transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformHmacSha256GetKlass"></a><h3>xmlSecMSCngTransformHmacSha256GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformHmacSha256GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The HMAC-SHA256 transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformHmacSha256GetKlass.returns"></a><h4>Returns</h4>
+<p> the HMAC-SHA256 transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformHmacSha384GetKlass"></a><h3>xmlSecMSCngTransformHmacSha384GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformHmacSha384GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The HMAC-SHA384 transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformHmacSha384GetKlass.returns"></a><h4>Returns</h4>
+<p> the HMAC-SHA384 transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformHmacSha512GetKlass"></a><h3>xmlSecMSCngTransformHmacSha512GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformHmacSha512GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The HMAC-SHA512 transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformHmacSha512GetKlass.returns"></a><h4>Returns</h4>
+<p> the HMAC-SHA512 transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformMd5GetKlass"></a><h3>xmlSecMSCngTransformMd5GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformMd5GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>MD-5 digest transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformMd5GetKlass.returns"></a><h4>Returns</h4>
+<p> pointer to MD-5 digest transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformSha1GetKlass"></a><h3>xmlSecMSCngTransformSha1GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformSha1GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>SHA-1 digest transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformSha1GetKlass.returns"></a><h4>Returns</h4>
+<p> pointer to SHA-1 digest transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformSha256GetKlass"></a><h3>xmlSecMSCngTransformSha256GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformSha256GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>SHA-256 digest transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformSha256GetKlass.returns"></a><h4>Returns</h4>
+<p> pointer to SHA-256 digest transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformSha384GetKlass"></a><h3>xmlSecMSCngTransformSha384GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformSha384GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>SHA-256 digest transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformSha384GetKlass.returns"></a><h4>Returns</h4>
+<p> pointer to SHA-256 digest transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformSha512GetKlass"></a><h3>xmlSecMSCngTransformSha512GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformSha512GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>SHA-512 digest transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformSha512GetKlass.returns"></a><h4>Returns</h4>
+<p> pointer to SHA-512 digest transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngKeyDataAesGetKlass"></a><h3>xmlSecMSCngKeyDataAesGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
+xmlSecMSCngKeyDataAesGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The AES key data klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngKeyDataAesGetKlass.returns"></a><h4>Returns</h4>
+<p> AES key data klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformAes128CbcGetKlass"></a><h3>xmlSecMSCngTransformAes128CbcGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformAes128CbcGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>AES 128 CBC encryption transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformAes128CbcGetKlass.returns"></a><h4>Returns</h4>
+<p> pointer to AES 128 CBC encryption transform.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformAes192CbcGetKlass"></a><h3>xmlSecMSCngTransformAes192CbcGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformAes192CbcGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>AES 192 CBC encryption transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformAes192CbcGetKlass.returns"></a><h4>Returns</h4>
+<p> pointer to AES 192 CBC encryption transform.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformAes256CbcGetKlass"></a><h3>xmlSecMSCngTransformAes256CbcGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformAes256CbcGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>AES 256 CBC encryption transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformAes256CbcGetKlass.returns"></a><h4>Returns</h4>
+<p> pointer to AES 256 CBC encryption transform.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformKWAes128GetKlass"></a><h3>xmlSecMSCngTransformKWAes128GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformKWAes128GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The AES-128 key wrapper transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformKWAes128GetKlass.returns"></a><h4>Returns</h4>
+<p> AES-128 key wrapper transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformKWAes192GetKlass"></a><h3>xmlSecMSCngTransformKWAes192GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformKWAes192GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The AES-192 key wrapper transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformKWAes192GetKlass.returns"></a><h4>Returns</h4>
+<p> AES-192 key wrapper transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformKWAes256GetKlass"></a><h3>xmlSecMSCngTransformKWAes256GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformKWAes256GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The AES-256 key wrapper transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformKWAes256GetKlass.returns"></a><h4>Returns</h4>
+<p> AES-256 key wrapper transform klass.</p>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="xmlsec-mscng-crypto.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="xmlSecMSCngKeyDataDsaId"></a><h3>xmlSecMSCngKeyDataDsaId</h3>
+<pre class="programlisting">#define             xmlSecMSCngKeyDataDsaId</pre>
+<p>The DSA key klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformDsaSha1Id"></a><h3>xmlSecMSCngTransformDsaSha1Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformDsaSha1Id</pre>
+<p>The DSA-SHA1 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngKeyDataRsaId"></a><h3>xmlSecMSCngKeyDataRsaId</h3>
+<pre class="programlisting">#define             xmlSecMSCngKeyDataRsaId</pre>
+<p>The RSA key klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformRsaMd5Id"></a><h3>xmlSecMSCngTransformRsaMd5Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformRsaMd5Id</pre>
+<p>The RSA-MD5 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformRsaSha1Id"></a><h3>xmlSecMSCngTransformRsaSha1Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformRsaSha1Id</pre>
+<p>The RSA-SHA1 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformRsaSha256Id"></a><h3>xmlSecMSCngTransformRsaSha256Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformRsaSha256Id</pre>
+<p>The RSA-SHA256 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformRsaSha384Id"></a><h3>xmlSecMSCngTransformRsaSha384Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformRsaSha384Id</pre>
+<p>The RSA-SHA384 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformRsaSha512Id"></a><h3>xmlSecMSCngTransformRsaSha512Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformRsaSha512Id</pre>
+<p>The RSA-SHA512 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformRsaPkcs1Id"></a><h3>xmlSecMSCngTransformRsaPkcs1Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformRsaPkcs1Id</pre>
+<p>The RSA PKCS1 key transport transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformRsaOaepId"></a><h3>xmlSecMSCngTransformRsaOaepId</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformRsaOaepId</pre>
+<p>The RSA OAEP key transport transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngKeyDataEcdsaId"></a><h3>xmlSecMSCngKeyDataEcdsaId</h3>
+<pre class="programlisting">#define             xmlSecMSCngKeyDataEcdsaId</pre>
+<p>The ECDSA key klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformEcdsaSha1Id"></a><h3>xmlSecMSCngTransformEcdsaSha1Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformEcdsaSha1Id</pre>
+<p>The ECDSA-SHA1 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformEcdsaSha256Id"></a><h3>xmlSecMSCngTransformEcdsaSha256Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformEcdsaSha256Id</pre>
+<p>The ECDSA-SHA256 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformEcdsaSha512Id"></a><h3>xmlSecMSCngTransformEcdsaSha512Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformEcdsaSha512Id</pre>
+<p>The ECDSA-SHA512 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngKeyDataDesId"></a><h3>xmlSecMSCngKeyDataDesId</h3>
+<pre class="programlisting">#define             xmlSecMSCngKeyDataDesId</pre>
+<p>The DES key data klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformDes3CbcId"></a><h3>xmlSecMSCngTransformDes3CbcId</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformDes3CbcId</pre>
+<p>The DES3 CBC cipher transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformKWDes3Id"></a><h3>xmlSecMSCngTransformKWDes3Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformKWDes3Id</pre>
+<p>The DES3 KW transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngKeyDataHmacId"></a><h3>xmlSecMSCngKeyDataHmacId</h3>
+<pre class="programlisting">#define             xmlSecMSCngKeyDataHmacId</pre>
+<p>The HMAC key klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformHmacMd5Id"></a><h3>xmlSecMSCngTransformHmacMd5Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformHmacMd5Id</pre>
+<p>The HMAC-MD5 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformHmacSha1Id"></a><h3>xmlSecMSCngTransformHmacSha1Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformHmacSha1Id</pre>
+<p>The HMAC-SHA1 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformHmacSha256Id"></a><h3>xmlSecMSCngTransformHmacSha256Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformHmacSha256Id</pre>
+<p>The HMAC-SHA256 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformHmacSha384Id"></a><h3>xmlSecMSCngTransformHmacSha384Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformHmacSha384Id</pre>
+<p>The HMAC-SHA384 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformHmacSha512Id"></a><h3>xmlSecMSCngTransformHmacSha512Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformHmacSha512Id</pre>
+<p>The HMAC-SHA512 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformMd5Id"></a><h3>xmlSecMSCngTransformMd5Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformMd5Id</pre>
+<p>The MD5 digest transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformSha1Id"></a><h3>xmlSecMSCngTransformSha1Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformSha1Id</pre>
+<p>The SHA1 digest transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformSha256Id"></a><h3>xmlSecMSCngTransformSha256Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformSha256Id</pre>
+<p>The SHA256 digest transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformSha384Id"></a><h3>xmlSecMSCngTransformSha384Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformSha384Id</pre>
+<p>The SHA384 digest transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformSha512Id"></a><h3>xmlSecMSCngTransformSha512Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformSha512Id</pre>
+<p>The SHA512 digest transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngKeyDataAesId"></a><h3>xmlSecMSCngKeyDataAesId</h3>
+<pre class="programlisting">#define             xmlSecMSCngKeyDataAesId</pre>
+<p>The AES key data klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformAes128CbcId"></a><h3>xmlSecMSCngTransformAes128CbcId</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformAes128CbcId</pre>
+<p>The AES128 CBC cipher transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformAes192CbcId"></a><h3>xmlSecMSCngTransformAes192CbcId</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformAes192CbcId</pre>
+<p>The AES192 CBC cipher transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformAes256CbcId"></a><h3>xmlSecMSCngTransformAes256CbcId</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformAes256CbcId</pre>
+<p>The AES256 CBC cipher transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformKWAes128Id"></a><h3>xmlSecMSCngTransformKWAes128Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformKWAes128Id</pre>
+<p>The AES 128 key wrap transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformKWAes192Id"></a><h3>xmlSecMSCngTransformKWAes192Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformKWAes192Id</pre>
+<p>The AES 192 key wrap transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformKWAes256Id"></a><h3>xmlSecMSCngTransformKWAes256Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformKWAes256Id</pre>
+<p>The AES 256 key wrap transform klass.</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.27</div>
+</td></tr></table></td>
+</tr></table></body>
+</html>

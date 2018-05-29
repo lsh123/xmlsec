@@ -1,13 +1,19 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Memory buffer.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
+/**
+ * SECTION:buffer
+ * @Short_description:Binary memory buffer functions.
+ * @Stability: Stable
+ *
+ */
+
 #include "globals.h"
 
 #include <stdlib.h>

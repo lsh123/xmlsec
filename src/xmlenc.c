@@ -1,14 +1,20 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * "XML Encryption" implementation
- *  http://www.w3.org/TR/xmlenc-core
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
+/**
+ * SECTION:xmlenc
+ * @Short_description: XML Encryption support.
+ * @Stability: Stable
+ *
+ * [XML Encryption](http://www.w3.org/TR/xmlenc-core) implementation.
+ */
+
 #include "globals.h"
 
 #ifndef XMLSEC_NO_XMLENC

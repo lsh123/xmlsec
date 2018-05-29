@@ -1,12 +1,17 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * All the string constants.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ */
+/**
+ * SECTION:strings
+ * @Short_description: The strings constants.
+ * @Stability: Private
+ *
  */
 #include "globals.h"
 

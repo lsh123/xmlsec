@@ -1,11 +1,19 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
+/**
+ * SECTION:signatures
+ * @Short_description: Signatures implementation for Microsoft Cryptography API: Next Generation (CNG).
+ * @Stability: Private
+ *
+ */
+
 #include "globals.h"
 
 #include <string.h>
@@ -483,7 +491,7 @@ xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
         transform->status = xmlSecTransformStatusWorking;
     }
 
-    if((transform->status == xmlSecTransformStatusWorking)) {
+    if(transform->status == xmlSecTransformStatusWorking) {
         if(inSize > 0) {
             xmlSecAssert2(outSize == 0, -1);
 

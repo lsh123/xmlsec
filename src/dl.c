@@ -7,6 +7,12 @@
  *
  * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
+/**
+ * SECTION:dl
+ * @Short_description: Dynamic crypto-engine library loading functions.
+ * @Stability: Stable
+ *
+ */
 #include "globals.h"
 
 #include <stdlib.h>
@@ -30,7 +36,6 @@
 #include <xmlsec/dl.h>
 
 #ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
-
 
 #ifdef XMLSEC_DL_LIBLTDL
 #include <ltdl.h>

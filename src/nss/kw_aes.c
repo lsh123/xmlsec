@@ -1,7 +1,6 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * AES Algorithm support
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -9,6 +8,13 @@
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  * Copyright (C) 2010-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
+/**
+ * SECTION:kw_aes
+ * @Short_description: AES Key Transport transforms implementation for NSS.
+ * @Stability: Private
+ *
+ */
+
 #ifndef XMLSEC_NO_AES
 
 #include "globals.h"

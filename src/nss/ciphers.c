@@ -1,12 +1,20 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
+/**
+ * SECTION:ciphers
+ * @Short_description: Ciphers transforms implementation for NSS.
+ * @Stability: Private
+ *
+ */
+
 #include "globals.h"
 
 #include <string.h>

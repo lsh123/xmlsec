@@ -1,13 +1,18 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Implementation of AES/DES Key Transport algorithm
- *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
+/**
+ * SECTION:kw_aes_des
+ * @Short_description: AES/DES Key Transport implementation.
+ * @Stability: Private
+ *
+ */
+
 #include "globals.h"
 
 #include <stdlib.h>

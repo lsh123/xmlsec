@@ -1,11 +1,19 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
+/**
+ * SECTION:certkeys
+ * @Short_description: Certificate keys support functions for Microsoft Cryptography API: Next Generation (CNG).
+ * @Stability: Stable
+ *
+ */
+
 #include "globals.h"
 
 #include <string.h>
@@ -900,7 +908,7 @@ xmlSecMSCngKeyDataDsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(output != NULL);
 
     fprintf(output, "=== rsa key: size = %d\n",
-            xmlSecMSCngKeyDataDsaGetSize(data));
+            (int)xmlSecMSCngKeyDataDsaGetSize(data));
 }
 
 static void xmlSecMSCngKeyDataDsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
@@ -908,7 +916,7 @@ static void xmlSecMSCngKeyDataDsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* outpu
     xmlSecAssert(output != NULL);
 
     fprintf(output, "<DSAKeyValue size=\"%d\" />\n",
-            xmlSecMSCngKeyDataDsaGetSize(data));
+            (int)xmlSecMSCngKeyDataDsaGetSize(data));
 }
 
 static int
@@ -1112,7 +1120,7 @@ xmlSecMSCngKeyDataRsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(output != NULL);
 
     fprintf(output, "=== rsa key: size = %d\n",
-            xmlSecMSCngKeyDataRsaGetSize(data));
+            (int)xmlSecMSCngKeyDataRsaGetSize(data));
 }
 
 static void xmlSecMSCngKeyDataRsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
@@ -1120,7 +1128,7 @@ static void xmlSecMSCngKeyDataRsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* outpu
     xmlSecAssert(output != NULL);
 
     fprintf(output, "<RSAKeyValue size=\"%d\" />\n",
-            xmlSecMSCngKeyDataRsaGetSize(data));
+            (int)xmlSecMSCngKeyDataRsaGetSize(data));
 }
 
 static int
@@ -1579,7 +1587,7 @@ xmlSecMSCngKeyDataEcdsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(output != NULL);
 
     fprintf(output, "=== rsa key: size = %d\n",
-            xmlSecMSCngKeyDataEcdsaGetSize(data));
+            (int)xmlSecMSCngKeyDataEcdsaGetSize(data));
 }
 
 static void xmlSecMSCngKeyDataEcdsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
@@ -1587,7 +1595,7 @@ static void xmlSecMSCngKeyDataEcdsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* out
     xmlSecAssert(output != NULL);
 
     fprintf(output, "<ECDSAKeyValue size=\"%d\" />\n",
-            xmlSecMSCngKeyDataEcdsaGetSize(data));
+            (int)xmlSecMSCngKeyDataEcdsaGetSize(data));
 }
 
 static xmlSecKeyDataKlass xmlSecMSCngKeyDataEcdsaKlass = {

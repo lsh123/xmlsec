@@ -1,11 +1,19 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
+/**
+ * SECTION:symkeys
+ * @Short_description: Symmetric keys implementation for Microsoft Cryptography API: Next Generation (CNG).
+ * @Stability: Private
+ *
+ */
+
 #include "globals.h"
 
 #include <string.h>

@@ -1,6 +1,17 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ *
+ * This is free software; see Copyright file in the source
+ * distribution for precise wording.
+ *
+ * Copyright (c) 2003 America Online, Inc.  All rights reserved.
+ */
+/**
+ * SECTION:keysstore
+ * @Short_description: Keys store implementation for NSS.
+ * @Stability: Stable
+ *
  * Nss keys store that uses Simple Keys Store under the hood. Uses the
  * Nss DB as a backing store for the finding keys, but the NSS DB is
  * not written to by the keys store.
@@ -10,11 +21,6 @@
  * DB.
  * Thus, the NSS DB can be used to pre-load keys and becomes an alternate
  * source of keys for xmlsec
- *
- * This is free software; see Copyright file in the source
- * distribution for precise wording.
- *
- * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 #include "globals.h"
 

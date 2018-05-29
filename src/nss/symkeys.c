@@ -1,13 +1,19 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * DES Algorithm support
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
+/**
+ * SECTION:symkeys
+ * @Short_description: Symmetric keys implementation for NSS.
+ * @Stability: Private
+ *
+ */
+
 #include "globals.h"
 
 #include <stdlib.h>

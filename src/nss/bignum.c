@@ -1,13 +1,19 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Reading/writing bignum values
  *
  * This is free software; see Copyright file in the source
  * distribution for precise wording.
  *
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
+/**
+ * SECTION:bignum
+ * @Short_description: Big numbers support functions implementation for NSS.
+ * @Stability: Stable
+ *
+ */
+
 #include "globals.h"
 
 #include <stdlib.h>

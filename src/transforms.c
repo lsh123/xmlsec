@@ -1,14 +1,24 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * The Transforms Element (http://www.w3.org/TR/xmldsig-core/#sec-Transforms)
  *
- * The optional Transforms element contains an ordered list of Transform
- * elements; these describe how the signer obtained the data object that
- * was digested.
+ * This is free software; see Copyright file in the source
+ * distribution for preciese wording.
+ *
+ * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ */
+/**
+ * SECTION:transforms 
+ * @Short_description: Transform object functions.
+ * @Stability: Stable
+ *
+ * The [Transforms Element](http://www.w3.org/TR/xmldsig-core/#sec-Transforms)
+ * contains an ordered list of Transform elements; these describe how the signer
+ * obtained the data object that was digested.
  *
  * Schema Definition:
  *
+ * |[<!-- language="XML" -->
  *  <element name="Transforms" type="ds:TransformsType"/>
  *  <complexType name="TransformsType">
  *    <sequence>
@@ -25,18 +35,16 @@
  *    </choice>
  *    <attribute name="Algorithm" type="anyURI" use="required"/>
  *  </complexType>
+ * ]|
  *
  * DTD:
  *
+ * |[<!-- language="XML" -->
  *  <!ELEMENT Transforms (Transform+)>
  *  <!ELEMENT Transform (#PCDATA|XPath %Transform.ANY;)* >
  *  <!ATTLIST Transform Algorithm    CDATA    #REQUIRED >
  *  <!ELEMENT XPath (#PCDATA) >
- *
- * This is free software; see Copyright file in the source
- * distribution for preciese wording.
- *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * ]|
  */
 
 #include "globals.h"

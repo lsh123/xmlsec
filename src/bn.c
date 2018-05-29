@@ -1,7 +1,6 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Big Numbers.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -9,6 +8,13 @@
  * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  */
+/**
+ * SECTION:bn
+ * @Short_description: Big numbers support functions.
+ * @Stability: Stable
+ *
+ */
+
 #include "globals.h"
 
 #include <stdlib.h>

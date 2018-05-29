@@ -352,7 +352,6 @@ CPPFLAGS 		= /nologo
 #
 # The compiler and its options.
 #
-CC 				= cl.exe
 CFLAGS 			= /nologo /D "WIN32" /D "_WINDOWS" /D inline=__inline
 # C4130: '!=': logical operation on address of string constant:
 #     this generates a false warning inside macros

@@ -8,6 +8,13 @@
  *
  * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
+/**
+ * SECTION:io
+ * @Short_description: Input/output functions.
+ * @Stability: Stable
+ *
+ */
+
 #include "globals.h"
 
 #include <stdlib.h>
@@ -31,6 +38,7 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/io.h>
 #include <xmlsec/errors.h>
+
 
 /*******************************************************************
  *

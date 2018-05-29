@@ -1,13 +1,19 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Keys.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
+/**
+ * SECTION:keys
+ * @Short_description: Crypto key object functions.
+ * @Stability: Stable
+ *
+ */
+
 #include "globals.h"
 
 #include <stdlib.h>
@@ -23,6 +29,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/errors.h>
+
 
 /**************************************************************************
  *

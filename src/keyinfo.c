@@ -1,18 +1,27 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * <dsig:KeyInfo/> element processing
- * (http://www.w3.org/TR/xmlSec-core/#sec-KeyInfo:
  *
- * The KeyInfo Element
+ * This is free software; see Copyright file in the source
+ * distribution for preciese wording.
  *
- * KeyInfo is an optional element that enables the recipient(s) to obtain
+ * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ */
+/**
+ * SECTION:keyinfo
+ * @Short_description: &lt;dsig:KeyInfo/&gt; node parser functions.
+ * @Stability: Stable
+ *
+ *
+ * [KeyInfo](https://www.w3.org/TR/xmldsig-core/#sec-KeyInfo) is an 
+ * optional element that enables the recipient(s) to obtain
  * the key needed to validate the signature.  KeyInfo may contain keys,
  * names, certificates and other public key management information, such as
  * in-band key distribution or key agreement data.
  *
- *  Schema Definition:
+ * Schema Definition:
  *
+ * |[<!-- language="XML" -->
  *  <element name="KeyInfo" type="ds:KeyInfoType"/>
  *  <complexType name="KeyInfoType" mixed="true">
  *    <choice maxOccurs="unbounded">
@@ -28,19 +37,17 @@
  *    </choice>
  *    <attribute name="Id" type="ID" use="optional"/>
  *  </complexType>
+ * ]|
  *
  * DTD:
  *
+ * |[<!-- language="XML" -->
  * <!ELEMENT KeyInfo (#PCDATA|KeyName|KeyValue|RetrievalMethod|
  *                    X509Data|PGPData|SPKIData|MgmtData %KeyInfo.ANY;)* >
  * <!ATTLIST KeyInfo  Id  ID   #IMPLIED >
- *
- *
- * This is free software; see Copyright file in the source
- * distribution for preciese wording.
- *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * ]|
  */
+
 #include "globals.h"
 
 #include <stdlib.h>

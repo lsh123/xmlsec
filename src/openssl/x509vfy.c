@@ -43,6 +43,12 @@
 #include <xmlsec/openssl/x509.h>
 #include "openssl_compat.h"
 
+#ifdef _WIN32
+#ifdef X509_NAME
+#undef X509_NAME
+#endif
+#endif
+
 /**************************************************************************
  *
  * Internal OpenSSL X509 store CTX
@@ -1028,9 +1034,9 @@ xmlSecOpenSSLX509NameStringRead(xmlSecByte **str, int *strLen,
         xmlSecInvalidSizeOtherError("buffer is too small", NULL);
         return(-1);
     }
-    (*strLen) -= (p - (*str));
+    (*strLen) -= (int)(p - (*str));
     (*str) = p;
-    return((ingoreTrailingSpaces) ? nonSpace - res + 1 : q - res);
+    return(int)((ingoreTrailingSpaces) ? nonSpace - res + 1 : q - res);
 }
 
 /*

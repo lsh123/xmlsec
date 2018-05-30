@@ -46,6 +46,12 @@
 #include <xmlsec/openssl/x509.h>
 #include "openssl_compat.h"
 
+#ifdef _WIN32
+#ifdef X509_NAME
+#undef X509_NAME
+#endif
+#endif
+
 /* The ASN1_TIME_check() function was changed from ASN1_TIME * to
  * const ASN1_TIME * in 1.1.0. To avoid compiler warnings, we use this hack.
  */
@@ -402,7 +408,7 @@ xmlSecOpenSSLKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecAssert2(ctx->certsList != NULL, NULL);
     xmlSecAssert2((int)pos < sk_X509_num(ctx->certsList), NULL);
 
-    return(sk_X509_value(ctx->certsList, pos));
+    return(sk_X509_value(ctx->certsList, (int)pos));
 }
 
 /**
@@ -486,7 +492,7 @@ xmlSecOpenSSLKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecAssert2(ctx->crlsList != NULL, NULL);
     xmlSecAssert2((int)pos < sk_X509_CRL_num(ctx->crlsList), NULL);
 
-    return(sk_X509_CRL_value(ctx->crlsList, pos));
+    return(sk_X509_CRL_value(ctx->crlsList, (int)pos));
 }
 
 /**

@@ -224,8 +224,9 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     xmlSecAssert2(blockLen > 0, -1);
     xmlSecAssert2((inSize % blockLen) == 0, -1);
 
-#ifndef XMLSEC_NO_AES
     outSize = xmlSecBufferGetSize(out);
+
+#ifndef XMLSEC_NO_AES
     if (cbcMode) {
         /* prepare: ensure we have enough space (+blockLen for final) */
         ret = xmlSecBufferSetMaxSize(out, outSize + inSize + blockLen);
@@ -246,7 +247,6 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         }
     }
 #else
-    outSize = xmlSecBufferGetSize(out);
     ret = xmlSecBufferSetMaxSize(out, outSize + inSize + blockLen);
     if (ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetMaxSize",
@@ -255,6 +255,7 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         return(-1);
     }
 #endif
+
     outBuf  = xmlSecBufferGetData(out) + outSize;
 
     /* encrypt/decrypt */

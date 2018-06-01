@@ -52,6 +52,7 @@ struct _xmlSecMSCngBlockCipherCtx {
     ULONG cbKeyObject;
     xmlSecKeyDataId keyId;
     xmlSecSize keySize;
+    int cbcMode;
     int ctxInitialized;
 };
 
@@ -88,23 +89,10 @@ xmlSecMSCngBlockCipherCheckId(xmlSecTransformPtr transform) {
     return(0);
 }
 
-static int xmlSecMSCngBlockCipherIsCBC(const xmlChar *cipherName)
-{
-    const xmlChar* chainingMode;
-
-    /* cbc or gcm mode */
-    chainingMode = cipherName + xmlStrlen(cipherName) - 3;
-    if (xmlStrcmp(chainingMode, BAD_CAST"gcm") == 0) {
-        return(0);
-    }
-    return(1);
-}
-
 static int
 xmlSecMSCngBlockCipherInitialize(xmlSecTransformPtr transform) {
     xmlSecMSCngBlockCipherCtxPtr ctx;
     NTSTATUS status;
-    int cbcMode;
 
     xmlSecAssert2(xmlSecMSCngBlockCipherCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngBlockCipherSize), -1);
@@ -119,26 +107,32 @@ xmlSecMSCngBlockCipherInitialize(xmlSecTransformPtr transform) {
         ctx->pszAlgId = BCRYPT_AES_ALGORITHM;
         ctx->keyId = xmlSecMSCngKeyDataAesId;
         ctx->keySize = 16;
+        ctx->cbcMode = 1;
     } else if(transform->id == xmlSecMSCngTransformAes192CbcId) {
         ctx->pszAlgId = BCRYPT_AES_ALGORITHM;
         ctx->keyId = xmlSecMSCngKeyDataAesId;
         ctx->keySize = 24;
+        ctx->cbcMode = 1;
     } else if(transform->id == xmlSecMSCngTransformAes256CbcId) {
         ctx->pszAlgId = BCRYPT_AES_ALGORITHM;
         ctx->keyId = xmlSecMSCngKeyDataAesId;
         ctx->keySize = 32;
+        ctx->cbcMode = 1;
     } else if(transform->id == xmlSecMSCngTransformAes128GcmId) {
         ctx->pszAlgId = BCRYPT_AES_ALGORITHM;
         ctx->keyId = xmlSecMSCngKeyDataAesId;
         ctx->keySize = 16;
+        ctx->cbcMode = 0;
     } else if(transform->id == xmlSecMSCngTransformAes192GcmId) {
         ctx->pszAlgId = BCRYPT_AES_ALGORITHM;
         ctx->keyId = xmlSecMSCngKeyDataAesId;
         ctx->keySize = 24;
+        ctx->cbcMode = 0;
     } else if(transform->id == xmlSecMSCngTransformAes256GcmId) {
         ctx->pszAlgId = BCRYPT_AES_ALGORITHM;
         ctx->keyId = xmlSecMSCngKeyDataAesId;
         ctx->keySize = 32;
+        ctx->cbcMode = 0;
     } else
 #endif /* XMLSEC_NO_AES */
 
@@ -147,6 +141,7 @@ xmlSecMSCngBlockCipherInitialize(xmlSecTransformPtr transform) {
         ctx->pszAlgId = BCRYPT_3DES_ALGORITHM;
         ctx->keyId = xmlSecMSCngKeyDataDesId;
         ctx->keySize = 24;
+        ctx->cbcMode = 1;
     } else
 #endif /* XMLSEC_NO_DES */
 
@@ -166,10 +161,7 @@ xmlSecMSCngBlockCipherInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    /* cbc or gcm mode */
-    cbcMode = xmlSecMSCngBlockCipherIsCBC(xmlSecTransformGetName(transform));
-
-    if (cbcMode) {
+    if (ctx->cbcMode) {
         status = BCryptSetProperty(ctx->hAlg,
                                    BCRYPT_CHAINING_MODE,
                                    (PUCHAR)BCRYPT_CHAIN_MODE_CBC,
@@ -280,6 +272,7 @@ xmlSecMSCngBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(ctx->keyId != NULL, -1);
     xmlSecAssert2(xmlSecKeyCheckId(key, ctx->keyId), -1);
     xmlSecAssert2(ctx->keySize > 0, -1);
+    xmlSecAssert2(ctx->pbKeyObject == NULL, -1);
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(xmlSecKeyGetValue(key));
     xmlSecAssert2(buffer != NULL, -1);
@@ -293,6 +286,7 @@ xmlSecMSCngBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     bufData = xmlSecBufferGetData(buffer);
     xmlSecAssert2(bufData != NULL, -1);
 
+    /* allocate the key object */
     dwKeyObjectLength = 0;
     status = BCryptGetProperty(ctx->hAlg,
         BCRYPT_OBJECT_LENGTH,
@@ -317,7 +311,6 @@ xmlSecMSCngBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferInitialize",
             xmlSecTransformGetName(transform), "size=%d", blobHeaderLen);
-        xmlFree(ctx->pbKeyObject);
         return(-1);
     }
 
@@ -595,7 +588,6 @@ xmlSecMSCngBlockCipherCtxInit(xmlSecMSCngBlockCipherCtxPtr ctx,
         xmlSecBufferPtr in, xmlSecBufferPtr out, int encrypt, int last,
         const xmlChar* cipherName, xmlSecTransformCtxPtr transformCtx) {
     NTSTATUS status;
-    int cbcMode;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->hKey != 0, -1);
@@ -604,10 +596,7 @@ xmlSecMSCngBlockCipherCtxInit(xmlSecMSCngBlockCipherCtxPtr ctx,
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    /* cbc or gcm mode */
-    cbcMode = xmlSecMSCngBlockCipherIsCBC(cipherName);
-
-    if (cbcMode) {
+    if (ctx->cbcMode) {
         status = BCryptSetProperty(ctx->hKey,
             BCRYPT_CHAINING_MODE,
             (PUCHAR)BCRYPT_CHAIN_MODE_CBC,
@@ -625,7 +614,7 @@ xmlSecMSCngBlockCipherCtxInit(xmlSecMSCngBlockCipherCtxPtr ctx,
         return(-1);
     }
 
-    if (cbcMode) {
+    if (ctx->cbcMode) {
         return xmlSecMSCngCBCBlockCipherCtxInit(ctx, in, out, encrypt,
             cipherName, transformCtx);
     } else {
@@ -895,16 +884,13 @@ xmlSecMSCngBlockCipherCtxUpdate(xmlSecMSCngBlockCipherCtxPtr ctx,
         xmlSecBufferPtr in, xmlSecBufferPtr out, int encrypt, int last,
         const xmlChar* cipherName, xmlSecTransformCtxPtr transformCtx) {
 
-    int cbcMode;
-
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->ctxInitialized != 0, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    cbcMode = xmlSecMSCngBlockCipherIsCBC(cipherName);
-    if (cbcMode) {
+    if (ctx->cbcMode) {
         return xmlSecMSCngCBCBlockCipherCtxUpdate(ctx, in, out, encrypt,
             cipherName, transformCtx);
     } else {
@@ -1202,16 +1188,13 @@ xmlSecMSCngBlockCipherCtxFinal(xmlSecMSCngBlockCipherCtxPtr ctx,
         xmlSecBufferPtr in, xmlSecBufferPtr out, int encrypt,
         const xmlChar* cipherName, xmlSecTransformCtxPtr transformCtx)
 {
-    int cbcMode;
-
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->ctxInitialized != 0, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    cbcMode = xmlSecMSCngBlockCipherIsCBC(cipherName);
-    if (cbcMode) {
+    if (ctx->cbcMode) {
         return xmlSecMSCngCBCBlockCipherCtxFinal(ctx, in, out, encrypt,
                                                  cipherName, transformCtx);
     } else {

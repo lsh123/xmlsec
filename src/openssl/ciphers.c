@@ -365,10 +365,10 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdate(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 
 static int
 xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
-                                       xmlSecBufferPtr in,
-                                       xmlSecBufferPtr out,
-                                       const xmlChar* cipherName,
-                                       xmlSecTransformCtxPtr transformCtx)
+        xmlSecBufferPtr in,
+        xmlSecBufferPtr out,
+        const xmlChar* cipherName,
+        xmlSecTransformCtxPtr transformCtx)
 {
     xmlSecSize inSize, outSize, blockLen;
     xmlSecByte* inBuf;
@@ -480,10 +480,10 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 #ifndef XMLSEC_NO_AES
 static int
 xmlSecOpenSSLEvpBlockCipherGCMCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
-                                       xmlSecBufferPtr in,
-                                       xmlSecBufferPtr out,
-                                       const xmlChar* cipherName,
-                                       xmlSecTransformCtxPtr transformCtx)
+        xmlSecBufferPtr in,
+        xmlSecBufferPtr out,
+        const xmlChar* cipherName,
+        xmlSecTransformCtxPtr transformCtx)
 {
     xmlSecSize inSize, outSize;
     xmlSecByte* inBuf;
@@ -547,10 +547,10 @@ xmlSecOpenSSLEvpBlockCipherGCMCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 
 static int
 xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
-                                    xmlSecBufferPtr in,
-                                    xmlSecBufferPtr out,
-                                    const xmlChar* cipherName,
-                                    xmlSecTransformCtxPtr transformCtx)
+        xmlSecBufferPtr in,
+        xmlSecBufferPtr out,
+        const xmlChar* cipherName,
+        xmlSecTransformCtxPtr transformCtx)
 {
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->cipher != NULL, -1);
@@ -674,7 +674,7 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
     ctx->cipherCtx = EVP_CIPHER_CTX_new();
     if(ctx->cipherCtx == NULL) {
         xmlSecOpenSSLError("EVP_CIPHER_CTX_new",
-                           xmlSecTransformGetName(transform));
+            xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -756,7 +756,7 @@ xmlSecOpenSSLEvpBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key
 
     if(xmlSecBufferGetSize(buffer) < (xmlSecSize)cipherKeyLen) {
         xmlSecInvalidKeyDataSizeError(xmlSecBufferGetSize(buffer), cipherKeyLen,
-                xmlSecTransformGetName(transform));
+            xmlSecTransformGetName(transform));
         return(-1);
     }
 

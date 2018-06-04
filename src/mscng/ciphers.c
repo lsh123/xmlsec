@@ -163,7 +163,7 @@ xmlSecMSCngBlockCipherInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    if (ctx->cbcMode) {
+    if(ctx->cbcMode) {
         status = BCryptSetProperty(ctx->hAlg,
                                    BCRYPT_CHAINING_MODE,
                                    (PUCHAR)BCRYPT_CHAIN_MODE_CBC,
@@ -176,7 +176,7 @@ xmlSecMSCngBlockCipherInitialize(xmlSecTransformPtr transform) {
                                    sizeof(BCRYPT_CHAIN_MODE_GCM),
                                    0);
     }
-    if (status != STATUS_SUCCESS) {
+    if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptSetProperty", xmlSecTransformGetName(transform), status);
         return(-1);
     }
@@ -200,13 +200,13 @@ xmlSecMSCngBlockCipherFinalize(xmlSecTransformPtr transform) {
         xmlFree(ctx->pbIV);
     }
 
-    if (ctx->authInfo.pbNonce != NULL) {
+    if(ctx->authInfo.pbNonce != NULL) {
         xmlFree(ctx->authInfo.pbNonce);
     }
-    if (ctx->authInfo.pbTag != NULL) {
+    if(ctx->authInfo.pbTag != NULL) {
         xmlFree(ctx->authInfo.pbTag);
     }
-    if (ctx->authInfo.pbMacContext != NULL) {
+    if(ctx->authInfo.pbMacContext != NULL) {
         xmlFree(ctx->authInfo.pbMacContext);
     }
 
@@ -214,7 +214,7 @@ xmlSecMSCngBlockCipherFinalize(xmlSecTransformPtr transform) {
         BCryptDestroyKey(ctx->hKey);
     }
 
-    if (ctx->pbKeyObject != NULL) {
+    if(ctx->pbKeyObject != NULL) {
         xmlFree(ctx->pbKeyObject);
     }
 
@@ -338,7 +338,6 @@ xmlSecMSCngBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptImportKey",
             xmlSecTransformGetName(transform), status);
-        xmlFree(ctx->pbKeyObject);
         xmlSecBufferFinalize(&blob);
         return(-1);
     }
@@ -464,7 +463,6 @@ static int xmlSecMSCngGCMBlockCipherCtxInit(xmlSecMSCngBlockCipherCtxPtr ctx,
     /* See http://www.w3.org/TR/xmlenc-core1/#sec-AES-GCM */
     ctx->authInfo.pbTag = xmlMalloc(xmlSecMSCngAesGcmTagLengthInBytes);
     if(ctx->authInfo.pbTag == NULL) {
-        xmlFree(ctx->authInfo.pbNonce);
         xmlSecMallocError(xmlSecMSCngAesGcmTagLengthInBytes, cipherName);
         return(-1);
     }
@@ -482,8 +480,6 @@ static int xmlSecMSCngGCMBlockCipherCtxInit(xmlSecMSCngBlockCipherCtxPtr ctx,
                                    &bytesRead,
                                    0);
         if(status != STATUS_SUCCESS) {
-            xmlFree(ctx->authInfo.pbTag);
-            xmlFree(ctx->authInfo.pbNonce);
             xmlSecMSCngNtError("BCryptGetProperty", cipherName, status);
             return(-1);
         }
@@ -491,8 +487,6 @@ static int xmlSecMSCngGCMBlockCipherCtxInit(xmlSecMSCngBlockCipherCtxPtr ctx,
             ctx->pbIV = xmlMalloc(dwBlockLen);
         }
         if(ctx->pbIV == NULL) {
-            xmlFree(ctx->authInfo.pbTag);
-            xmlFree(ctx->authInfo.pbNonce);
             xmlSecMallocError(dwBlockLen, cipherName);
             return(-1);
         }
@@ -507,20 +501,12 @@ static int xmlSecMSCngGCMBlockCipherCtxInit(xmlSecMSCngBlockCipherCtxPtr ctx,
             &bytesRead,
             0);
         if(status != STATUS_SUCCESS) {
-            xmlFree(ctx->pbIV);
-            ctx->pbIV = NULL;
-            xmlFree(ctx->authInfo.pbTag);
-            xmlFree(ctx->authInfo.pbNonce);
             xmlSecMSCngNtError("BCryptGetProperty", cipherName, status);
             return(-1);
         }
 
         ctx->authInfo.pbMacContext = xmlMalloc(authTagLengths.dwMaxLength);
         if(ctx->authInfo.pbMacContext == NULL) {
-            xmlFree(ctx->pbIV);
-            ctx->pbIV = NULL;
-            xmlFree(ctx->authInfo.pbTag);
-            xmlFree(ctx->authInfo.pbNonce);
             xmlSecMallocError(authTagLengths.dwMaxLength, cipherName);
             return(-1);
         }
@@ -1079,7 +1065,7 @@ xmlSecMSCngGCMBlockCipherCtxFinal(xmlSecMSCngBlockCipherCtxPtr ctx,
     if(encrypt) {
         ret = xmlSecBufferSetMaxSize(out,
             outBufSize + inBufSize + xmlSecMSCngAesGcmTagLengthInBytes); /* add space for the tag */
-        if (ret < 0) {
+        if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetMaxSize", cipherName,
                 "size=%d", outBufSize + inBufSize + xmlSecMSCngAesGcmTagLengthInBytes);
             return(-1);

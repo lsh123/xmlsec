@@ -452,19 +452,25 @@ static int xmlSecMSCngGCMBlockCipherCtxInit(xmlSecMSCngBlockCipherCtxPtr ctx,
     /* unreferenced parameter */
     (void)transformCtx;
 
-    ctx->authInfo.pbNonce = xmlMalloc(xmlSecMSCngAesGcmNonceLengthInBytes);
+    /* Check that we haven't already allocated space for the nonce. Might
+     * happen if the context is initialised more that once */
     if(ctx->authInfo.pbNonce == NULL) {
-        xmlSecMallocError(xmlSecMSCngAesGcmNonceLengthInBytes, cipherName);
-        return(-1);
+        ctx->authInfo.pbNonce = xmlMalloc(xmlSecMSCngAesGcmNonceLengthInBytes);
+        if(ctx->authInfo.pbNonce == NULL) {
+            xmlSecMallocError(xmlSecMSCngAesGcmNonceLengthInBytes, cipherName);
+            return(-1);
+        }
     }
     ctx->authInfo.cbNonce = xmlSecMSCngAesGcmNonceLengthInBytes;
 
     /* Tag length is 128 bits */
     /* See http://www.w3.org/TR/xmlenc-core1/#sec-AES-GCM */
-    ctx->authInfo.pbTag = xmlMalloc(xmlSecMSCngAesGcmTagLengthInBytes);
     if(ctx->authInfo.pbTag == NULL) {
-        xmlSecMallocError(xmlSecMSCngAesGcmTagLengthInBytes, cipherName);
-        return(-1);
+        ctx->authInfo.pbTag = xmlMalloc(xmlSecMSCngAesGcmTagLengthInBytes);
+        if(ctx->authInfo.pbTag == NULL) {
+            xmlSecMallocError(xmlSecMSCngAesGcmTagLengthInBytes, cipherName);
+            return(-1);
+        }
     }
     memset(ctx->authInfo.pbTag, 0, xmlSecMSCngAesGcmTagLengthInBytes);
     ctx->authInfo.cbTag = xmlSecMSCngAesGcmTagLengthInBytes;
@@ -485,10 +491,10 @@ static int xmlSecMSCngGCMBlockCipherCtxInit(xmlSecMSCngBlockCipherCtxPtr ctx,
         }
         if(ctx->pbIV == NULL) {
             ctx->pbIV = xmlMalloc(dwBlockLen);
-        }
-        if(ctx->pbIV == NULL) {
-            xmlSecMallocError(dwBlockLen, cipherName);
-            return(-1);
+            if(ctx->pbIV == NULL) {
+                xmlSecMallocError(dwBlockLen, cipherName);
+                return(-1);
+            }
         }
         ctx->cbIV = dwBlockLen;
         memset(ctx->pbIV, 0, dwBlockLen);
@@ -505,10 +511,12 @@ static int xmlSecMSCngGCMBlockCipherCtxInit(xmlSecMSCngBlockCipherCtxPtr ctx,
             return(-1);
         }
 
-        ctx->authInfo.pbMacContext = xmlMalloc(authTagLengths.dwMaxLength);
         if(ctx->authInfo.pbMacContext == NULL) {
-            xmlSecMallocError(authTagLengths.dwMaxLength, cipherName);
-            return(-1);
+            ctx->authInfo.pbMacContext = xmlMalloc(authTagLengths.dwMaxLength);
+            if(ctx->authInfo.pbMacContext == NULL) {
+                xmlSecMallocError(authTagLengths.dwMaxLength, cipherName);
+                return(-1);
+            }
         }
         ctx->authInfo.cbMacContext = authTagLengths.dwMaxLength;
         memset(ctx->authInfo.pbMacContext, 0, authTagLengths.dwMaxLength);
@@ -545,7 +553,7 @@ static int xmlSecMSCngGCMBlockCipherCtxInit(xmlSecMSCngBlockCipherCtxPtr ctx,
 
     } else {
         /* if we don't have enough data, exit and hope that
-           we'll have nonce next time */
+           we'll have the nonce next time */
         bufferSize = xmlSecBufferGetSize(in);
         if(bufferSize < xmlSecMSCngAesGcmNonceLengthInBytes) {
             return(0);

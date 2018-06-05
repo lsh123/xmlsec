@@ -14,7 +14,7 @@ build_root="/tmp/xmlsec-build-area-$today"
 tar_file="xmlsec1-$version-$today.tar.gz"
 
 if [ x"$version" = x ]; then
-    echo "Usage: $0 <version>"
+    echo "Usage: $0 <token> <version>"
     exit 1
 fi
 

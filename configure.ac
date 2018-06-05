@@ -1592,7 +1592,7 @@ dnl ==========================================================================
 dnl See if we can find MSCng
 dnl ==========================================================================
 MSCNG_CRYPTO_LIB="$XMLSEC_PACKAGE-mscng"
-# This is tested on w64-mingw only so far.
+dnl This is tested on w64-mingw only so far.
 MSCNG_XMLSEC_DEFINES=
 MSCNG_LIBS_LIST="-lcrypt32 -lbcrypt -lncrypt"
 

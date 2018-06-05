@@ -50,6 +50,7 @@ struct _xmlSecMSCngBlockCipherCtx {
     ULONG cbIV;
     PBYTE pbKeyObject;
     ULONG cbKeyObject;
+    DWORD dwBlockLen;
     xmlSecKeyDataId keyId;
     xmlSecSize keySize;
     int cbcMode;
@@ -188,7 +189,7 @@ xmlSecMSCngBlockCipherInitialize(xmlSecTransformPtr transform) {
 
 static void
 xmlSecMSCngBlockCipherFinalize(xmlSecTransformPtr transform) {
-        xmlSecMSCngBlockCipherCtxPtr ctx;
+    xmlSecMSCngBlockCipherCtxPtr ctx;
 
     xmlSecAssert(xmlSecMSCngBlockCipherCheckId(transform));
     xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecMSCngBlockCipherSize));
@@ -351,7 +352,6 @@ static int xmlSecMSCngCBCBlockCipherCtxInit(xmlSecMSCngBlockCipherCtxPtr ctx,
         xmlSecBufferPtr in, xmlSecBufferPtr out, int encrypt,
         const xmlChar* cipherName, xmlSecTransformCtxPtr transformCtx) {
 
-    DWORD dwBlockLen, dwBlockLenLen;
     NTSTATUS status;
     int ret;
 
@@ -359,21 +359,7 @@ static int xmlSecMSCngCBCBlockCipherCtxInit(xmlSecMSCngBlockCipherCtxPtr ctx,
     (void)transformCtx;
 
     /* iv len == block len */
-    dwBlockLenLen = sizeof(DWORD);
-    status = BCryptGetProperty(ctx->hAlg,
-        BCRYPT_BLOCK_LENGTH,
-        (PUCHAR)&dwBlockLen,
-        sizeof(dwBlockLen),
-        &dwBlockLenLen,
-        0);
-    if(status != STATUS_SUCCESS) {
-        xmlSecMSCngNtError("BCryptGetProperty", cipherName, status);
-        return(-1);
-    }
-
-    xmlSecAssert2(dwBlockLen > 0, -1);
-
-    ctx->cbIV = dwBlockLen;
+    ctx->cbIV = ctx->dwBlockLen;
 
     if(encrypt) {
         unsigned char* iv;
@@ -381,7 +367,7 @@ static int xmlSecMSCngCBCBlockCipherCtxInit(xmlSecMSCngBlockCipherCtxPtr ctx,
 
         /* allocate space for IV */
         outSize = xmlSecBufferGetSize(out);
-        ret = xmlSecBufferSetSize(out, outSize + dwBlockLen);
+        ret = xmlSecBufferSetSize(out, outSize + ctx->dwBlockLen);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetSize", cipherName,
                 "size=%d", outSize + dwBlockLen);
@@ -392,7 +378,7 @@ static int xmlSecMSCngCBCBlockCipherCtxInit(xmlSecMSCngBlockCipherCtxPtr ctx,
         /* generate and use random iv */
         status = BCryptGenRandom(NULL,
             (PBYTE)iv,
-            dwBlockLen,
+            ctx->dwBlockLen,
             BCRYPT_USE_SYSTEM_PREFERRED_RNG);
         if(status != STATUS_SUCCESS) {
             xmlSecMSCngNtError("BCryptGenRandom", cipherName, status);
@@ -400,35 +386,35 @@ static int xmlSecMSCngCBCBlockCipherCtxInit(xmlSecMSCngBlockCipherCtxPtr ctx,
         }
 
         if(ctx->pbIV == NULL) {
-            ctx->pbIV = xmlMalloc(dwBlockLen);
+            ctx->pbIV = xmlMalloc(ctx->dwBlockLen);
         }
         if(ctx->pbIV == NULL) {
-            xmlSecMallocError(dwBlockLen, cipherName);
+            xmlSecMallocError(ctx->dwBlockLen, cipherName);
             return(-1);
         }
 
-        memcpy(ctx->pbIV, iv, dwBlockLen);
+        memcpy(ctx->pbIV, iv, ctx->dwBlockLen);
     } else {
         /* if we don't have enough data, exit and hope that
         * we'll have iv next time */
-        if(xmlSecBufferGetSize(in) < (size_t)dwBlockLen) {
+        if(xmlSecBufferGetSize(in) < (size_t)ctx->dwBlockLen) {
             return(0);
         }
         xmlSecAssert2(xmlSecBufferGetData(in) != NULL, -1);
 
         /* set iv */
-        ctx->pbIV = xmlMalloc(dwBlockLen);
+        ctx->pbIV = xmlMalloc(ctx->dwBlockLen);
         if(ctx->pbIV == NULL) {
-            xmlSecMallocError(dwBlockLen, cipherName);
+            xmlSecMallocError(ctx->dwBlockLen, cipherName);
             return(-1);
         }
-        memcpy(ctx->pbIV, xmlSecBufferGetData(in), dwBlockLen);
+        memcpy(ctx->pbIV, xmlSecBufferGetData(in), ctx->dwBlockLen);
 
         /* and remove from input */
-        ret = xmlSecBufferRemoveHead(in, dwBlockLen);
+        ret = xmlSecBufferRemoveHead(in, ctx->dwBlockLen);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName,
-                "size=%d", dwBlockLen);
+                "size=%d", ctx->dwBlockLen);
             return(-1);
 
         }
@@ -446,7 +432,7 @@ static int xmlSecMSCngGCMBlockCipherCtxInit(xmlSecMSCngBlockCipherCtxPtr ctx,
     int ret;
     xmlSecByte *bufferPtr;
     xmlSecSize bufferSize;
-    DWORD dwBlockLen, bytesRead;
+    DWORD bytesRead;
     BCRYPT_AUTH_TAG_LENGTHS_STRUCT authTagLengths;
 
     /* unreferenced parameter */
@@ -479,25 +465,15 @@ static int xmlSecMSCngGCMBlockCipherCtxInit(xmlSecMSCngBlockCipherCtxPtr ctx,
         /* Need some working buffers */
 
         /* iv len == block len */
-        status = BCryptGetProperty(ctx->hAlg,
-                                   BCRYPT_BLOCK_LENGTH,
-                                   (PUCHAR)&dwBlockLen,
-                                   sizeof(dwBlockLen),
-                                   &bytesRead,
-                                   0);
-        if(status != STATUS_SUCCESS) {
-            xmlSecMSCngNtError("BCryptGetProperty", cipherName, status);
-            return(-1);
-        }
         if(ctx->pbIV == NULL) {
-            ctx->pbIV = xmlMalloc(dwBlockLen);
+            ctx->pbIV = xmlMalloc(ctx->dwBlockLen);
             if(ctx->pbIV == NULL) {
-                xmlSecMallocError(dwBlockLen, cipherName);
+                xmlSecMallocError(ctx->dwBlockLen, cipherName);
                 return(-1);
             }
         }
-        ctx->cbIV = dwBlockLen;
-        memset(ctx->pbIV, 0, dwBlockLen);
+        ctx->cbIV = ctx->dwBlockLen;
+        memset(ctx->pbIV, 0, ctx->dwBlockLen);
 
         /* Setup an empty MAC context if we're chaining calls */
         status = BCryptGetProperty(ctx->hAlg,
@@ -584,6 +560,7 @@ xmlSecMSCngBlockCipherCtxInit(xmlSecMSCngBlockCipherCtxPtr ctx,
         xmlSecBufferPtr in, xmlSecBufferPtr out, int encrypt, int last,
         const xmlChar* cipherName, xmlSecTransformCtxPtr transformCtx) {
     NTSTATUS status;
+    DWORD dwBlockLenLen;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->hKey != 0, -1);
@@ -592,23 +569,20 @@ xmlSecMSCngBlockCipherCtxInit(xmlSecMSCngBlockCipherCtxPtr ctx,
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    if(ctx->cbcMode) {
-        status = BCryptSetProperty(ctx->hKey,
-            BCRYPT_CHAINING_MODE,
-            (PUCHAR)BCRYPT_CHAIN_MODE_CBC,
-            sizeof(BCRYPT_CHAIN_MODE_CBC),
-            0);
-    } else {
-        status = BCryptSetProperty(ctx->hKey,
-            BCRYPT_CHAINING_MODE,
-            (PUCHAR)BCRYPT_CHAIN_MODE_GCM,
-            sizeof(BCRYPT_CHAIN_MODE_GCM),
-            0);
-    }
+    /* Get the cipher block length */
+    dwBlockLenLen = sizeof(DWORD);
+    status = BCryptGetProperty(ctx->hAlg,
+        BCRYPT_BLOCK_LENGTH,
+        (PUCHAR)&ctx->dwBlockLen,
+        sizeof(ctx->dwBlockLen),
+        &dwBlockLenLen,
+        0);
     if(status != STATUS_SUCCESS) {
-        xmlSecMSCngNtError("BCryptSetProperty", cipherName, status);
+        xmlSecMSCngNtError("BCryptGetProperty", cipherName, status);
         return(-1);
     }
+
+    xmlSecAssert2(ctx->dwBlockLen > 0, -1);
 
     if(ctx->cbcMode) {
         return xmlSecMSCngCBCBlockCipherCtxInit(ctx, in, out, encrypt,
@@ -626,48 +600,34 @@ xmlSecMSCngCBCBlockCipherCtxUpdate(xmlSecMSCngBlockCipherCtxPtr ctx,
     size_t inSize, inBlocks, outSize;
     unsigned char* outBuf;
     unsigned char* inBuf;
-    DWORD dwBlockLen, dwBlockLenLen, dwCLen;
+    DWORD dwCLen;
     NTSTATUS status;
     int ret;
 
     /* unreferenced parameter */
     (void)transformCtx;
 
-    dwBlockLenLen = sizeof(DWORD);
-    status = BCryptGetProperty(ctx->hAlg,
-        BCRYPT_BLOCK_LENGTH,
-        (PUCHAR)&dwBlockLen,
-        sizeof(dwBlockLen),
-        &dwBlockLenLen,
-        0);
-    if(status != STATUS_SUCCESS) {
-        xmlSecMSCngNtError("BCryptGetProperty", cipherName, status);
-        return(-1);
-    }
-
-    xmlSecAssert2(dwBlockLen > 0, -1);
-
     inSize = xmlSecBufferGetSize(in);
     outSize = xmlSecBufferGetSize(out);
 
-    if(inSize < (size_t)dwBlockLen) {
+    if(inSize < (size_t)ctx->dwBlockLen) {
         return(0);
     }
 
     if(encrypt) {
-        inBlocks = inSize / ((size_t)dwBlockLen);
+        inBlocks = inSize / ((size_t)ctx->dwBlockLen);
     } else {
         /* we want to have the last block in the input buffer
         * for padding check */
-        inBlocks = (inSize - 1) / ((size_t)dwBlockLen);
+        inBlocks = (inSize - 1) / ((size_t)ctx->dwBlockLen);
     }
-    inSize = inBlocks * ((size_t)dwBlockLen);
+    inSize = inBlocks * ((size_t)ctx->dwBlockLen);
 
     /* we write out the input size plus maybe one block */
-    ret = xmlSecBufferSetMaxSize(out, outSize + inSize + dwBlockLen);
+    ret = xmlSecBufferSetMaxSize(out, outSize + inSize + ctx->dwBlockLen);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetMaxSize", cipherName,
-            "size=%d", outSize + inSize + dwBlockLen);
+            "size=%d", outSize + inSize + ctx->dwBlockLen);
         return(-1);
     }
     outBuf = xmlSecBufferGetData(out) + outSize;
@@ -750,7 +710,7 @@ xmlSecMSCngGCMBlockCipherCtxUpdate(xmlSecMSCngBlockCipherCtxPtr ctx,
     NTSTATUS status;
     size_t inSize, outSize;
     xmlSecByte *inBuf, *outBuf;
-    DWORD dwCLen, dwBlockLen;
+    DWORD dwCLen;
     int ret;
 
     /* unreferenced parameter */
@@ -764,32 +724,21 @@ xmlSecMSCngGCMBlockCipherCtxUpdate(xmlSecMSCngBlockCipherCtxPtr ctx,
     inBuf = xmlSecBufferGetData(in);
     xmlSecAssert2(inBuf != NULL, -1);
 
-    status = BCryptGetProperty(ctx->hAlg,
-                               BCRYPT_BLOCK_LENGTH,
-                               (PUCHAR)&dwBlockLen,
-                               sizeof(dwBlockLen),
-                               &dwCLen,
-                               0);
-    if(status != STATUS_SUCCESS) {
-        xmlSecMSCngNtError("BCryptGetProperty", cipherName, status);
-        return(-1);
-    }
-
-    if(xmlSecBufferGetSize(in) < dwBlockLen) {
+    if(xmlSecBufferGetSize(in) < ctx->dwBlockLen) {
         return 0;
     }
 
     if(encrypt) {
         /* Round to the block size. We will finalize this later */
-        inSize = (xmlSecBufferGetSize(in) / (size_t)dwBlockLen) * (size_t)dwBlockLen;
+        inSize = (xmlSecBufferGetSize(in) / (size_t)ctx->dwBlockLen) * (size_t)ctx->dwBlockLen;
     } else {
         /* If we've been called here, we know there is more data
          * to come, but we don't know how much. The spec tells us that
          * the tag is the last 16 bytes of the data when decrypting, so to make sure
          * we don't try to decrypt it, we leave at least 16 bytes in the buffer
          * until we know we're processing the last one */
-        inSize = ((xmlSecBufferGetSize(in) - xmlSecMSCngAesGcmTagLengthInBytes) / (size_t)dwBlockLen) * (size_t)dwBlockLen;
-        if (inSize < dwBlockLen) {
+        inSize = ((xmlSecBufferGetSize(in) - xmlSecMSCngAesGcmTagLengthInBytes) / (size_t)ctx->dwBlockLen) * (size_t)ctx->dwBlockLen;
+        if (inSize < ctx->dwBlockLen) {
             return 0;
         }
     }
@@ -882,6 +831,7 @@ xmlSecMSCngBlockCipherCtxUpdate(xmlSecMSCngBlockCipherCtxPtr ctx,
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->ctxInitialized != 0, -1);
+    xmlSecAssert2(ctx->dwBlockLen > 0, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
@@ -903,68 +853,54 @@ xmlSecMSCngCBCBlockCipherCtxFinal(xmlSecMSCngBlockCipherCtxPtr ctx,
     int outLen;
     unsigned char* inBuf;
     unsigned char* outBuf;
-    DWORD dwBlockLen, dwBlockLenLen, dwCLen;
+    DWORD dwCLen;
     NTSTATUS status;
     int ret;
 
     /* unreferenced parameter */
     (void)transformCtx;
 
-    dwBlockLenLen = sizeof(DWORD);
-    status = BCryptGetProperty(ctx->hAlg,
-        BCRYPT_BLOCK_LENGTH,
-        (PUCHAR)&dwBlockLen,
-        sizeof(dwBlockLen),
-        &dwBlockLenLen,
-        0);
-    if(status != STATUS_SUCCESS) {
-        xmlSecMSCngNtError("BCryptGetProperty", cipherName, status);
-        return(-1);
-    }
-
-    xmlSecAssert2(dwBlockLen > 0, -1);
-
     inSize = xmlSecBufferGetSize(in);
     outSize = xmlSecBufferGetSize(out);
 
     if(encrypt != 0) {
-        xmlSecAssert2(inSize < (size_t)dwBlockLen, -1);
+        xmlSecAssert2(inSize < (size_t)ctx->dwBlockLen, -1);
 
         /* create padding */
-        ret = xmlSecBufferSetMaxSize(in, dwBlockLen);
+        ret = xmlSecBufferSetMaxSize(in, ctx->dwBlockLen);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetMaxSize", cipherName,
-                "size=%d", dwBlockLen);
+                "size=%d", ctx->dwBlockLen);
             return(-1);
         }
         inBuf = xmlSecBufferGetData(in);
 
         /* create random padding */
-        if((size_t)dwBlockLen > (inSize + 1)) {
+        if((size_t)ctx->dwBlockLen > (inSize + 1)) {
             status = BCryptGenRandom(NULL,
                 (PBYTE) inBuf + inSize,
-                (ULONG)(dwBlockLen - inSize - 1),
+                (ULONG)(ctx->dwBlockLen - inSize - 1),
                 BCRYPT_USE_SYSTEM_PREFERRED_RNG);
             if(status != STATUS_SUCCESS) {
                 xmlSecMSCngNtError("BCryptGetProperty", cipherName, status);
                 return(-1);
             }
         }
-        inBuf[dwBlockLen - 1] = (unsigned char)(dwBlockLen - inSize);
-        inSize = dwBlockLen;
+        inBuf[ctx->dwBlockLen - 1] = (unsigned char)(ctx->dwBlockLen - inSize);
+        inSize = ctx->dwBlockLen;
     } else {
-        if(inSize != (size_t)dwBlockLen) {
-            xmlSecInvalidSizeError("Input data", inSize, dwBlockLen, cipherName);
+        if(inSize != (size_t)ctx->dwBlockLen) {
+            xmlSecInvalidSizeError("Input data", inSize, ctx->dwBlockLen, cipherName);
             return(-1);
         }
         inBuf = xmlSecBufferGetData(in);
     }
 
     /* process last block */
-    ret = xmlSecBufferSetMaxSize(out, outSize + 2 * dwBlockLen);
+    ret = xmlSecBufferSetMaxSize(out, outSize + 2 * ctx->dwBlockLen);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetMaxSize", cipherName, "size=%d",
-            outSize + 2 * dwBlockLen);
+            outSize + 2 * ctx->dwBlockLen);
         return(-1);
     }
 
@@ -979,7 +915,7 @@ xmlSecMSCngCBCBlockCipherCtxFinal(xmlSecMSCngBlockCipherCtxPtr ctx,
             ctx->pbIV,
             ctx->cbIV,
             outBuf,
-            (ULONG)(inSize + dwBlockLen),
+            (ULONG)(inSize + ctx->dwBlockLen),
             &dwCLen,
             0);
         if(status != STATUS_SUCCESS) {
@@ -1021,12 +957,12 @@ xmlSecMSCngCBCBlockCipherCtxFinal(xmlSecMSCngBlockCipherCtxPtr ctx,
 
     if(encrypt == 0) {
         /* check padding */
-        if(inSize < outBuf[dwBlockLen - 1]) {
+        if(inSize < outBuf[ctx->dwBlockLen - 1]) {
             xmlSecInvalidSizeLessThanError("Input data padding", inSize,
-                outBuf[dwBlockLen - 1], cipherName);
+                outBuf[ctx->dwBlockLen - 1], cipherName);
             return(-1);
         }
-        outLen = (int)(inSize - outBuf[dwBlockLen - 1]);
+        outLen = (int)(inSize - outBuf[ctx->dwBlockLen - 1]);
     } else {
         outLen = (int)inSize;
     }

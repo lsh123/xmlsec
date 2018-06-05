@@ -1489,7 +1489,7 @@ static xmlSecTransformKlass xmlSecMSCngDes3CbcKlass = {
     NULL,                                /* xmlSecTransformPopXmlMethod popXml; */
     xmlSecMSCngBlockCipherExecute,       /* xmlSecTransformExecuteMethod execute; */
 
-    NULL,                                       /* void* reserved0; */
+    NULL,                                /* void* reserved0; */
     NULL,                                /* void* reserved1; */
 };
 

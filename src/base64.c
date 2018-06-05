@@ -296,7 +296,7 @@ xmlSecBase64CtxFinal(xmlSecBase64CtxPtr ctx,
         }
     } else {
         if(!xmlSecBase64CtxDecodeIsFinished(ctx)) {
-            xmlSecInternalError("xmlSecBase64CtxIsFinished", NULL);
+            xmlSecInternalError("xmlSecBase64CtxDecodeIsFinished", NULL);
             return(-1);
         }
     }

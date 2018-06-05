@@ -1589,6 +1589,82 @@ AC_SUBST(MSCRYPTO_CRYPTO_LIB)
 
 
 dnl ==========================================================================
+dnl See if we can find MSCng
+dnl ==========================================================================
+MSCNG_CRYPTO_LIB="$XMLSEC_PACKAGE-mscng"
+dnl This is tested on w64-mingw only so far.
+MSCNG_XMLSEC_DEFINES=
+MSCNG_LIBS_LIST="-lcrypt32 -lbcrypt -lncrypt"
+
+XMLSEC_NO_MSCNG="1"
+MSCNG_FOUND="no"
+AC_ARG_ENABLE(mscng,
+    [  --enable-mscng          enable mscng (no)])
+
+dnl Priority 0: Check if library is not needed
+if test "z$enable_mscng" = "zno" ; then
+    MSCNG_FOUND="disabled"
+fi
+
+dnl Priority 1: User sets both CFLAGS and LIBS flags
+if test "z$MSCNG_FOUND" = "zno" -a "z$MSCNG_CFLAGS" != "z" -a "z$MSCNG_LIBS" != "z" ; then
+    MSCNG_FOUND=yes
+fi
+
+dnl Priority 2: Just try to compile/link and hope for the best
+if test "z$MSCNG_FOUND" = "zno" ; then
+    AC_MSG_CHECKING(for mscng)
+    OLD_CPPFLAGS=$CPPFLAGS
+    CPPFLAGS="$CPPFLAGS $MSCNG_CFLAGS"
+    OLD_LIBS=$LIBS
+    LIBS="$LIBS $MSCNG_LIBS $MSCNG_LIBS_LIST"
+    AC_LINK_IFELSE([
+        AC_LANG_PROGRAM([[
+            #include <windows.h>
+            #include <wincrypt.h>
+        ]],[[
+            int main () {
+                BCRYPT_ALG_HANDLE hAlg;
+                BCryptOpenAlgorithmProvider(&hAlg, BCRYPT_SHA256_ALGORITHM, NULL, 0);
+                return(0);
+            }
+        ]])
+    ],[
+        MSCNG_FOUND=yes
+        AC_MSG_RESULT([yes])
+    ],[
+        MSCNG_FOUND=no
+        AC_MSG_RESULT([not found])
+    ])
+    CPPFLAGS=$OLD_CPPFLAGS
+    LIBS=$OLD_LIBS
+fi
+
+dnl Set CFLAGS/LIBS flags, do not change CFLAGS/LIBS if both are set
+if test "z$MSCNG_FOUND" = "zyes" ; then
+    if test "z$MSCNG_CFLAGS" = "z" -o "z$MSCNG_LIBS" = "z" ; then
+        XMLSEC_DEFINES="$XMLSEC_DEFINES $MSCNG_XMLSEC_DEFINES"
+        MSCNG_LIBS="$MSCNG_LIBS $MSCNG_LIBS_LIST"
+    fi
+fi
+
+dnl Finally set all the flags
+if test "z$MSCNG_FOUND" = "zyes" ; then
+    XMLSEC_NO_MSCNG="0"
+    MSCNG_CFLAGS="$MSCNG_CFLAGS -DXMLSEC_CRYPTO_MSCNG=1"
+    XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST mscng"
+else
+    XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST mscng"
+fi
+
+AM_CONDITIONAL(XMLSEC_NO_MSCNG, [test "z$XMLSEC_NO_MSCNG" = "z1"])
+AC_SUBST(XMLSEC_NO_MSCNG)
+AC_SUBST(MSCNG_CFLAGS)
+AC_SUBST(MSCNG_LIBS)
+AC_SUBST(MSCNG_CRYPTO_LIB)
+
+
+dnl ==========================================================================
 dnl Figure out the default crypt - the first crypto library wins
 dnl ==========================================================================
 XMLSEC_DEFAULT_CRYPTO=""
@@ -1603,6 +1679,13 @@ case "z$with_default_crypto" in
     'zmscrypto')
         if test "z$XMLSEC_NO_MSCRYPTO" != "z1" ; then
             XMLSEC_DEFAULT_CRYPTO="mscrypto"
+        else
+            AC_MSG_ERROR('$with_default_crypto' is specified as default crypto library but it is not configured or found)
+        fi
+        ;;
+    'zmscng')
+        if test "z$XMLSEC_NO_MSCNG" != "z1" ; then
+            XMLSEC_DEFAULT_CRYPTO="mscng"
         else
             AC_MSG_ERROR('$with_default_crypto' is specified as default crypto library but it is not configured or found)
         fi
@@ -1639,6 +1722,8 @@ case "z$with_default_crypto" in
         dnl The first crypto library wins
         if test "z$XMLSEC_NO_MSCRYPTO" != "z1" ; then
             XMLSEC_DEFAULT_CRYPTO="mscrypto"
+        elif test "z$XMLSEC_NO_MSCNG" != "z1" ; then
+            XMLSEC_DEFAULT_CRYPTO="mscng"
         elif test "z$XMLSEC_NO_OPENSSL" != "z1" ; then
             XMLSEC_DEFAULT_CRYPTO="openssl"
         elif test "z$XMLSEC_NO_NSS" != "z1" ; then
@@ -1662,6 +1747,11 @@ case "$XMLSEC_DEFAULT_CRYPTO" in
         XMLSEC_CRYPTO_LIB="$MSCRYPTO_CRYPTO_LIB"
         XMLSEC_CRYPTO_CFLAGS="$MSCRYPTO_CFLAGS"
         XMLSEC_CRYPTO_LIBS="$MSCRYPTO_LIBS"
+        ;;
+    'mscng')
+        XMLSEC_CRYPTO_LIB="$MSCNG_CRYPTO_LIB"
+        XMLSEC_CRYPTO_CFLAGS="$MSCNG_CFLAGS"
+        XMLSEC_CRYPTO_LIBS="$MSCNG_LIBS"
         ;;
     'openssl')
         XMLSEC_CRYPTO_LIB="$OPENSSL_CRYPTO_LIB"
@@ -2212,6 +2302,12 @@ dnl XMLSEC_MSCRYPTO_LIBS="-L${libdir} -l$MSCRYPTO_CRYPTO_LIB $XMLSEC_CORE_LIBS $
 dnl AC_SUBST(XMLSEC_MSCRYPTO_CFLAGS)
 dnl AC_SUBST(XMLSEC_MSCRYPTO_LIBS)
 
+dnl No we will not generate pkg-config file for mscng.
+dnl XMLSEC_MSCNG_CFLAGS="$XMLSEC_CORE_CFLAGS $MSCNG_CFLAGS"
+dnl XMLSEC_MSCNG_LIBS="-L${libdir} -l$MSCNG_CRYPTO_LIB $XMLSEC_CORE_LIBS $MSCNG_LIBS";;
+dnl AC_SUBST(XMLSEC_MSCNG_CFLAGS)
+dnl AC_SUBST(XMLSEC_MSCNG_LIBS)
+
 XMLSEC_CFLAGS="$XMLSEC_CORE_CFLAGS $LIBXML_CFLAGS $LIBXSLT_CFLAGS $XMLSEC_CRYPTO_CFLAGS"
 XMLSEC_LIBS="-L${libdir} -l$XMLSEC_CRYPTO_LIB $XMLSEC_CORE_LIBS $LIBXML_LIBS $LIBXSLT_LIBS $XMLSEC_CRYPTO_LIBS"
 AC_SUBST(XMLSEC_CFLAGS)
@@ -2234,8 +2330,9 @@ AC_SUBST(XMLSEC_CRYPTO_LIBS)
 
 XMLSEC_CRYPTO_PC_FILES_LIST=""
 for i in $XMLSEC_CRYPTO_LIST ; do
-    dnl skip pkg-config file for mscrypto
+    dnl skip pkg-config file for mscrypto/mscng
     test x$i = xmscrypto && continue
+    test x$i = xmscng && continue
     XMLSEC_CRYPTO_PC_FILES_LIST="$XMLSEC_CRYPTO_PC_FILES_LIST $XMLSEC_PACKAGE-$i.pc"
 done
 AC_SUBST(XMLSEC_CRYPTO_PC_FILES_LIST)
@@ -2261,6 +2358,10 @@ fi
 
 if test "z$XMLSEC_NO_MSCRYPTO" != "z1" ; then
 AC_CONFIG_FILES([include/xmlsec/mscrypto/Makefile src/mscrypto/Makefile])
+fi
+
+if test "z$XMLSEC_NO_MSCNG" != "z1" ; then
+AC_CONFIG_FILES([include/xmlsec/mscng/Makefile src/mscng/Makefile])
 fi
 
 if test "z$XMLSEC_NO_CRYPTO_DYNAMIC_LOADING" = "z1" ; then

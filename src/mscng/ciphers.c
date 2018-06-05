@@ -1124,6 +1124,7 @@ xmlSecMSCngBlockCipherCtxFinal(xmlSecMSCngBlockCipherCtxPtr ctx,
 {
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->ctxInitialized != 0, -1);
+    xmlSecAssert2(ctx->dwBlockLen != 0, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);

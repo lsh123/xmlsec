@@ -370,7 +370,7 @@ static int xmlSecMSCngCBCBlockCipherCtxInit(xmlSecMSCngBlockCipherCtxPtr ctx,
         ret = xmlSecBufferSetSize(out, outSize + ctx->dwBlockLen);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetSize", cipherName,
-                "size=%d", outSize + dwBlockLen);
+                "size=%d", outSize + ctx->dwBlockLen);
             return(-1);
         }
         iv = xmlSecBufferGetData(out) + outSize;

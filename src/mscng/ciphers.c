@@ -1220,7 +1220,7 @@ xmlSecMSCngBlockCipherExecute(xmlSecTransformPtr transform, int last,
     xmlSecAssert2(ctx != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
-        ctx->pbIV = NULL;
+        /* This should only be done once, before the context has been initialised */
         BCRYPT_INIT_AUTH_MODE_INFO(ctx->authInfo);
         transform->status = xmlSecTransformStatusWorking;
     }

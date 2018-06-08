@@ -181,14 +181,15 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     xmlSecAssert2(ctx->keyInitialized != 0, -1);
     xmlSecAssert2(ctx->ctxInitialized != 0, -1);
     xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
 
     if (ctx->cbcMode) {
         xmlSecAssert2(inSize > 0, -1);
     } else {
-        xmlSecAssert2(tagData != NULL, -1);
+        if (final != 0) {
+            xmlSecAssert2(tagData != NULL, -1);
+        }
     }
-
-    xmlSecAssert2(out != NULL, -1);
 
     /* OpenSSL docs: If the pad parameter is zero then no padding is performed, the total amount of
      * data encrypted or decrypted must then be a multiple of the block size or an error will occur.
@@ -378,6 +379,15 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     /* unreferenced parameter */
     (void)transformCtx;
 
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->cipher != NULL, -1);
+    xmlSecAssert2(ctx->cipherCtx != NULL, -1);
+    xmlSecAssert2(ctx->keyInitialized != 0, -1);
+    xmlSecAssert2(ctx->ctxInitialized != 0, -1);
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+
     blockLen = EVP_CIPHER_block_size(ctx->cipher);
     xmlSecAssert2(blockLen > 0, -1);
     xmlSecAssert2(blockLen <= EVP_MAX_BLOCK_LENGTH, -1);
@@ -494,6 +504,15 @@ xmlSecOpenSSLEvpBlockCipherGCMCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     /* unreferenced parameter */
     (void)transformCtx;
 
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->cipher != NULL, -1);
+    xmlSecAssert2(ctx->cipherCtx != NULL, -1);
+    xmlSecAssert2(ctx->keyInitialized != 0, -1);
+    xmlSecAssert2(ctx->ctxInitialized != 0, -1);
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+
     inSize = xmlSecBufferGetSize(in);
     inBuf = xmlSecBufferGetData(in);
 
@@ -553,13 +572,6 @@ xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         xmlSecTransformCtxPtr transformCtx)
 {
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->cipher != NULL, -1);
-    xmlSecAssert2(ctx->cipherCtx != NULL, -1);
-    xmlSecAssert2(ctx->keyInitialized != 0, -1);
-    xmlSecAssert2(ctx->ctxInitialized != 0, -1);
-    xmlSecAssert2(in != NULL, -1);
-    xmlSecAssert2(out != NULL, -1);
-    xmlSecAssert2(transformCtx != NULL, -1);
 
     if (ctx->cbcMode) {
         return xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(ctx, in, out, cipherName, transformCtx);
@@ -715,7 +727,7 @@ xmlSecOpenSSLEvpBlockCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReq
     xmlSecAssert2(ctx->keyId != NULL, -1);
 
     keyReq->keyId       = ctx->keyId;
-    keyReq->keyType = xmlSecKeyDataTypeSymmetric;
+    keyReq->keyType     = xmlSecKeyDataTypeSymmetric;
     if(transform->operation == xmlSecTransformOperationEncrypt) {
         keyReq->keyUsage = xmlSecKeyUsageEncrypt;
     } else {

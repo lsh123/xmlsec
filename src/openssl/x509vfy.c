@@ -25,10 +25,6 @@
 #include <errno.h>
 
 #include <libxml/tree.h>
-#include <openssl/evp.h>
-#include <openssl/x509.h>
-#include <openssl/x509_vfy.h>
-#include <openssl/x509v3.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
@@ -38,16 +34,14 @@
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
 
+#include <openssl/evp.h>
+#include <openssl/x509.h>
+#include <openssl/x509_vfy.h>
+#include <openssl/x509v3.h>
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
 #include <xmlsec/openssl/x509.h>
 #include "openssl_compat.h"
-
-#ifdef _WIN32
-#ifdef X509_NAME
-#undef X509_NAME
-#endif
-#endif
 
 /**************************************************************************
  *
@@ -1182,7 +1176,6 @@ xmlSecOpenSSLX509_NAME_ENTRY_cmp(const X509_NAME_ENTRY * const *a, const X509_NA
 
     return(OBJ_cmp(a_name, b_name));
 }
-
 
 #endif /* XMLSEC_NO_X509 */
 

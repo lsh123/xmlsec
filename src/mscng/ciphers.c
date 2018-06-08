@@ -49,7 +49,6 @@ struct _xmlSecMSCngBlockCipherCtx {
     PBYTE pbIV;
     ULONG cbIV;
     PBYTE pbKeyObject;
-    ULONG cbKeyObject;
     DWORD dwBlockLen;
     xmlSecKeyDataId keyId;
     xmlSecSize keySize;
@@ -324,7 +323,6 @@ xmlSecMSCngBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     memcpy(xmlSecBufferGetData(&blob) + sizeof(BCRYPT_KEY_DATA_BLOB_HEADER),
         bufData, xmlSecBufferGetSize(buffer));
     xmlSecBufferSetSize(&blob, blobHeaderLen);
-
 
     /* perform the actual import */
     status = BCryptImportKey(ctx->hAlg,

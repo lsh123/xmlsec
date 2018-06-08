@@ -358,6 +358,14 @@ static int xmlSecMSCngCBCBlockCipherCtxInit(xmlSecMSCngBlockCipherCtxPtr ctx,
     /* unreferenced parameter */
     (void)transformCtx;
 
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->hKey != 0, -1);
+    xmlSecAssert2(ctx->ctxInitialized == 0, -1);
+    xmlSecAssert2(ctx->dwBlockLen > 0, -1);
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+
     /* iv len == block len */
     ctx->cbIV = ctx->dwBlockLen;
 
@@ -437,6 +445,14 @@ static int xmlSecMSCngGCMBlockCipherCtxInit(xmlSecMSCngBlockCipherCtxPtr ctx,
 
     /* unreferenced parameter */
     (void)transformCtx;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->hKey != 0, -1);
+    xmlSecAssert2(ctx->ctxInitialized == 0, -1);
+    xmlSecAssert2(ctx->dwBlockLen > 0, -1);
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
 
     /* Check that we haven't already allocated space for the nonce. Might
      * happen if the context is initialised more that once */
@@ -564,10 +580,8 @@ xmlSecMSCngBlockCipherCtxInit(xmlSecMSCngBlockCipherCtxPtr ctx,
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->hKey != 0, -1);
+    xmlSecAssert2(ctx->hAlg != 0, -1);
     xmlSecAssert2(ctx->ctxInitialized == 0, -1);
-    xmlSecAssert2(in != NULL, -1);
-    xmlSecAssert2(out != NULL, -1);
-    xmlSecAssert2(transformCtx != NULL, -1);
 
     /* Get the cipher block length */
     dwBlockLenLen = sizeof(DWORD);
@@ -606,6 +620,13 @@ xmlSecMSCngCBCBlockCipherCtxUpdate(xmlSecMSCngBlockCipherCtxPtr ctx,
 
     /* unreferenced parameter */
     (void)transformCtx;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->ctxInitialized != 0, -1);
+    xmlSecAssert2(ctx->dwBlockLen > 0, -1);
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
 
     inSize = xmlSecBufferGetSize(in);
     outSize = xmlSecBufferGetSize(out);
@@ -715,6 +736,13 @@ xmlSecMSCngGCMBlockCipherCtxUpdate(xmlSecMSCngBlockCipherCtxPtr ctx,
 
     /* unreferenced parameter */
     (void)transformCtx;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->ctxInitialized != 0, -1);
+    xmlSecAssert2(ctx->dwBlockLen > 0, -1);
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
 
     if(last != 0) {
         /* We handle everything in finalize for the last block of data */
@@ -830,11 +858,6 @@ xmlSecMSCngBlockCipherCtxUpdate(xmlSecMSCngBlockCipherCtxPtr ctx,
         const xmlChar* cipherName, xmlSecTransformCtxPtr transformCtx) {
 
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->ctxInitialized != 0, -1);
-    xmlSecAssert2(ctx->dwBlockLen > 0, -1);
-    xmlSecAssert2(in != NULL, -1);
-    xmlSecAssert2(out != NULL, -1);
-    xmlSecAssert2(transformCtx != NULL, -1);
 
     if(ctx->cbcMode) {
         return xmlSecMSCngCBCBlockCipherCtxUpdate(ctx, in, out, encrypt,
@@ -1124,7 +1147,6 @@ xmlSecMSCngBlockCipherCtxFinal(xmlSecMSCngBlockCipherCtxPtr ctx,
 {
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->ctxInitialized != 0, -1);
-    xmlSecAssert2(ctx->dwBlockLen != 0, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);

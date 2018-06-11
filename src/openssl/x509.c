@@ -26,11 +26,6 @@
 #include <time.h>
 
 #include <libxml/tree.h>
-#include <openssl/evp.h>
-#include <openssl/x509.h>
-#include <openssl/x509_vfy.h>
-#include <openssl/x509v3.h>
-#include <openssl/asn1.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
@@ -45,6 +40,12 @@
 #include <xmlsec/openssl/evp.h>
 #include <xmlsec/openssl/x509.h>
 #include "openssl_compat.h"
+
+#include <openssl/evp.h>
+#include <openssl/x509.h>
+#include <openssl/x509_vfy.h>
+#include <openssl/x509v3.h>
+#include <openssl/asn1.h>
 
 /* The ASN1_TIME_check() function was changed from ASN1_TIME * to
  * const ASN1_TIME * in 1.1.0. To avoid compiler warnings, we use this hack.

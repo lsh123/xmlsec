@@ -18,4 +18,5 @@ install:
 # install gnutls libraries
 - sudo apt-get install libgnutls28 libgnutls-dev
 script:
-- ./autogen.sh && make && make check
+- ./autogen.sh
+- mkdir build && cd build && ../configure && make && make check

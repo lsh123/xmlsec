@@ -1,8 +1,21 @@
 language: c
 sudo: required
-dist: bionic
+dist: trusty
 install:
 - sudo apt-get update
-- sudo apt-get install automake autoconf libtool libxml2 libxml2-dev libxslt libxslt-dev libssl libssl-dev libnspr4 libnspr4-dev libnss3 libnss3-dev
+- sudo apt search libgnutls
+- sudo apt search libgcrypt
+# install build tools
+- sudo apt-get install automake autoconf libtool
+# install libxml2/libxslt libraries
+- sudo apt-get install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
+# install openssl libraries
+- sudo apt-get install libssl1.0.0 libssl-dev
+# install nspr/nss libraries
+- sudo apt-get install libnspr4 libnspr4-dev libnss3 libnss3-dev
+# install gcrypt libraries
+- sudo apt-get install libgcrypt11 libgcrypt11-dev
+# install gnutls libraries
+- sudo apt-get install libgnutls28 libgnutls-dev
 script:
-- ./autogen.sh && make && make test
+- mkdir build && cd build && ../autogen.sh && make && make check

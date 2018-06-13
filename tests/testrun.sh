@@ -2,6 +2,7 @@
 
 OS_ARCH=`uname -o`
 OS_KERNEL=`uname -s`
+OS_KERNEL_RELEASE=`uname -r`
 
 #
 # Get command line params
@@ -13,23 +14,61 @@ xmlsec_app="$4"
 file_format="$5"
 timestamp=`date +%Y%m%d_%H%M%S`
 
+usingWSL=0
+case "$OS_KERNEL_RELEASE" in
+  *Microsoft* )
+    wslexe=`which wslpath`
+    if [ -n "$wslexe" ]; then
+        wslpath -w . > /dev/null 2>&1
+        if [ $? -eq 0 ]; then
+            usingWSL=1
+        fi
+    fi
+  ;;
+  *) ;;
+esac
+
 if [ "z$OS_ARCH" = "zCygwin" ] ; then
     topfolder=`cygpath -wa "$topfolder"`
     xmlsec_app=`cygpath -a "$xmlsec_app"`
+elif [ $usingWSL -eq 1 ] ; then
+    topfolder=`wslpath -am "$topfolder"`
+    case "$xmlsec_app" in
+    /*)
+       ;;
+    *) xmlsec_app=`pwd`/$xmlsec_app
+       ;;
+    esac
 fi
-
 #
 # Prepare folders
 #
 if [ "z$TMPFOLDER" = "z" ] ; then
     TMPFOLDER=/tmp
+else
+#
+# Ensure the path to TMPFOLDER is absolute
+#
+    case "$TMPFOLDER" in
+    /*)
+       ;;
+    *) scriptRootFolder=`pwd`
+       TMPFOLDER=$scriptRootFolder/$TMPFOLDER
+       ;;
+    esac
 fi
 testname=`basename $testfile`
 if [ "z$OS_ARCH" = "zCygwin" ] ; then
     tmpfile=`cygpath -wa $TMPFOLDER/$testname.$timestamp-$$.tmp`
+    argtmpfile=$tmpfile
     logfile=`cygpath -wa $TMPFOLDER/$testname.$timestamp-$$.log`
+elif [ $usingWSL -eq 1 ] ; then
+    tmpfile=$TMPFOLDER/$testname.$timestamp-$$.tmp
+    argtmpfile=`wslpath -am "$tmpfile"`
+    logfile=$TMPFOLDER/$testname.$timestamp-$$.log
 else
     tmpfile=$TMPFOLDER/$testname.$timestamp-$$.tmp
+    argtmpfile=$tmpfile
     logfile=$TMPFOLDER/$testname.$timestamp-$$.log
 fi
 nssdbfolder=$topfolder/nssdb
@@ -49,13 +88,20 @@ fi
 # Setup crypto engine
 #
 crypto_config=$TMPFOLDER/xmlsec-crypto-config
-keysfile=$crypto_config/keys.xml
+non_args_keysfile=$crypto_config/keys.xml
+if [ $usingWSL -eq 0 ] ; then
+    args_crypto_config=$crypto_config
+    keysfile=$non_args_keysfile
+else
+    args_crypto_config=$(wslpath -am "$crypto_config")
+    keysfile=$(wslpath -am "$non_args_keysfile")
+fi
 if [ "z$XMLSEC_DEFAULT_CRYPTO" != "z" ] ; then
     xmlsec_params="$xmlsec_params --crypto $XMLSEC_DEFAULT_CRYPTO"
 elif [ "z$crypto" != "z" ] ; then
     xmlsec_params="$xmlsec_params --crypto $crypto"
 fi
-xmlsec_params="$xmlsec_params --crypto-config $crypto_config"
+xmlsec_params="$xmlsec_params --crypto-config $args_crypto_config"
 
 #
 # Setup keys config
@@ -86,7 +132,7 @@ fi
 # in the pkcs12 file to ensure it is loaded correctly to be used
 # with SHA2 algorithms. Worse, the CSP is different for XP and older 
 # versions
-if test "z$OS_ARCH" = "zCygwin" || test "z$OS_ARCH" = "zMsys" ; then
+if test "z$OS_ARCH" = "zCygwin" || test "z$OS_ARCH" = "zMsys" || test $usingWSL -eq 1; then
     # Samples:
     #   Cygwin	: CYGWIN_NT-5.1
     #   Msys	: MINGW32_NT-5.1
@@ -107,7 +153,7 @@ if [ -n "$PERF_TEST" ] ; then
     xmlsec_params="$xmlsec_params --repeat $PERF_TEST"
 fi
 
-if test "z$OS_ARCH" = "zCygwin" || test "z$OS_ARCH" = "zMsys" ; then
+if test "z$OS_ARCH" = "zCygwin" || test "z$OS_ARCH" = "zMsys" || test $usingWSL -eq 1; then
     diff_param=-uw
 else
     diff_param=-u
@@ -187,7 +233,7 @@ execKeysTest() {
     # run tests
     printf "    Creating new key                                      "
     params="--gen-key:$key_name $alg_name"
-    if [ -f $keysfile ] ; then
+    if [ -f $non_args_keysfile ] ; then
         params="$params --keys-file $keysfile"
     fi
     echo "$VALGRIND $xmlsec_app keys $params $xmlsec_params $keysfile" >>  $logfile 
@@ -227,7 +273,11 @@ execDSigTest() {
         return
     fi
     if [ -n "$folder" ] ; then
-        cd $topfolder/$folder
+        if [ $usingWSL -eq 0 ] ; then
+            cd $topfolder/$folder
+        else
+            cd `wslpath $topfolder/$folder`
+        fi
         full_file=$filename
         echo $folder/$filename
         echo "Test: $folder/$filename in folder " `pwd` " ($expected_res)" >> $logfile
@@ -276,15 +326,15 @@ execDSigTest() {
 
     if [ -n "$params2" -a -z "$PERF_TEST" ] ; then
         printf "    Create new signature                                 "
-        echo "$VALGRIND $xmlsec_app sign $xmlsec_params $params2 --output $tmpfile $full_file.tmpl" >> $logfile
-        $VALGRIND $xmlsec_app sign $xmlsec_params $params2 --output $tmpfile $full_file.tmpl >> $logfile 2>> $logfile
+        echo "$VALGRIND $xmlsec_app sign $xmlsec_params $params2 --output $argtmpfile $full_file.tmpl" >> $logfile
+        $VALGRIND $xmlsec_app sign $xmlsec_params $params2 --output $argtmpfile $full_file.tmpl >> $logfile 2>> $logfile
         printRes $expected_res $?
     fi
 
     if [ -n "$params3" -a -z "$PERF_TEST" ] ; then
         printf "    Verify new signature                                 "
-        echo "$VALGRIND $xmlsec_app verify $xmlsec_params $params3 $tmpfile" >> $logfile
-        $VALGRIND $xmlsec_app verify $xmlsec_params $params3 $tmpfile >> $logfile 2>> $logfile
+        echo "$VALGRIND $xmlsec_app verify $xmlsec_params $params3 $argtmpfile" >> $logfile
+        $VALGRIND $xmlsec_app verify $xmlsec_params $params3 $argtmpfile >> $logfile 2>> $logfile
         printRes $expected_res $?
     fi
 
@@ -305,10 +355,17 @@ execEncTest() {
     params2="$6"
     params3="$7"
 
+    if [ $# -gt 7 ]; then
+        transformOutputMethod=$8
+        expected_value=$9
+    else
+        transformOutputMethod=""
+    fi
+
     if [ -n "$XMLSEC_TEST_NAME" -a "$XMLSEC_TEST_NAME" != "$filename" ]; then
         return
     fi
-
+    
     # prepare
     rm -f $tmpfile $tmpfile.2
     old_pwd=`pwd`
@@ -320,12 +377,21 @@ execEncTest() {
         return
     fi
     if [ -n "$folder" ] ; then
-        cd $topfolder/$folder
+        if [ $usingWSL -eq 0 ] ; then
+            cd $topfolder/$folder
+        else
+            cd `wslpath $topfolder/$folder`
+        fi
         full_file=$filename
         echo $folder/$filename
         echo "Test: $folder/$filename in folder " `pwd` " ($expected_res)" >> $logfile
     else
         full_file=$topfolder/$filename
+        if [ $usingWSL -eq 0 ] ; then
+            diff_full_file=$full_file
+        else
+            diff_full_file=`wslpath "$full_file"`
+        fi
         echo $filename
         echo "Test: $folder/$filename ($expected_res)" >> $logfile
     fi
@@ -351,8 +417,16 @@ execEncTest() {
         echo "$VALGRIND $xmlsec_app decrypt $xmlsec_params $params1 $full_file.xml" >>  $logfile 
         $VALGRIND $xmlsec_app decrypt $xmlsec_params $params1 $full_file.xml > $tmpfile 2>> $logfile
         res=$?
-        if [ $res = 0 ]; then
-            diff $diff_param $full_file.data $tmpfile >> $logfile 2>> $logfile
+        if [ $res -eq 0 ] ; then
+            if [ -n "$transformOutputMethod" ] ; then
+                rm -f $tmpfile.3
+                cat $tmpfile | xxd -p | sed 's/0d0a/0a/g' | xxd -r -p | $transformOutputMethod > $tmpfile.3 && rm -f $tmpfile && mv $tmpfile.3 $tmpfile
+            fi
+            if [ -z "$expected_value" ] ; then
+                diff $diff_param $diff_full_file.data $tmpfile >> $logfile 2>> $logfile
+            else
+                echo $expected_value | diff $diff_param $tmpfile - >> $logfile 2>> $logfile
+            fi
             printRes $expected_res $?
         else
             printRes $expected_res $res
@@ -362,8 +436,8 @@ execEncTest() {
     if [ -n "$params2" -a -z "$PERF_TEST" ] ; then
         rm -f $tmpfile
         printf "    Encrypt document                                     "
-        echo "$VALGRIND $xmlsec_app encrypt $xmlsec_params $params2 --output $tmpfile $full_file.tmpl" >>  $logfile 
-        $VALGRIND $xmlsec_app encrypt $xmlsec_params $params2 --output $tmpfile $full_file.tmpl >> $logfile 2>> $logfile
+        echo "$VALGRIND $xmlsec_app encrypt $xmlsec_params $params2 --output $argtmpfile $full_file.tmpl" >>  $logfile 
+        $VALGRIND $xmlsec_app encrypt $xmlsec_params $params2 --output $argtmpfile $full_file.tmpl >> $logfile 2>> $logfile
         printRes $expected_res $?
     fi
 
@@ -371,10 +445,10 @@ execEncTest() {
         rm -f $tmpfile.2
         printf "    Decrypt new document                                 "
         echo "$VALGRIND $xmlsec_app decrypt $xmlsec_params $params3 --output $tmpfile.2 $tmpfile" >>  $logfile
-        $VALGRIND $xmlsec_app decrypt $xmlsec_params $params3 --output $tmpfile.2 $tmpfile >> $logfile 2>> $logfile
+        $VALGRIND $xmlsec_app decrypt $xmlsec_params $params3 --output $argtmpfile.2 $argtmpfile >> $logfile 2>> $logfile
         res=$?
         if [ $res = 0 ]; then
-            diff $diff_param $full_file.data $tmpfile.2 >> $logfile 2>> $logfile
+            diff $diff_param $diff_full_file.data $tmpfile.2 >> $logfile 2>> $logfile
             printRes $expected_res $?
         else
             printRes $expected_res $res
@@ -390,7 +464,11 @@ execEncTest() {
 rm -rf $tmpfile $tmpfile.2 tmpfile.3
 
 # run tests
-source "$testfile"
+if [ $usingWSL -eq 0 ] ; then
+  source "$testfile"
+else
+  . "$testfile"
+fi
 
 # cleanup
 rm -rf $tmpfile $tmpfile.2 tmpfile.3

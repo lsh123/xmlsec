@@ -30,6 +30,8 @@
 #include <xmlsec/openssl/evp.h>
 #include "openssl_compat.h"
 
+#define xmlSecOpenSSLAesGcmNonceLengthInBytes 12
+#define xmlSecOpenSSLAesGcmTagLengthInBytes 16
 
 /**************************************************************************
  *
@@ -44,6 +46,7 @@ struct _xmlSecOpenSSLEvpBlockCipherCtx {
     EVP_CIPHER_CTX*     cipherCtx;
     int                 keyInitialized;
     int                 ctxInitialized;
+    int                 cbcMode;
     xmlSecByte          key[EVP_MAX_KEY_LENGTH];
     xmlSecByte          iv[EVP_MAX_IV_LENGTH];
     xmlSecByte          pad[2*EVP_MAX_BLOCK_LENGTH];
@@ -60,7 +63,8 @@ static int      xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockC
                                                          int inSize,
                                                          xmlSecBufferPtr out,
                                                          const xmlChar* cipherName,
-                                                         int final);
+                                                         int final,
+                                                         xmlSecByte *tag);
 static int      xmlSecOpenSSLEvpBlockCipherCtxUpdate    (xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
                                                          xmlSecBufferPtr in,
                                                          xmlSecBufferPtr out,
@@ -71,6 +75,7 @@ static int      xmlSecOpenSSLEvpBlockCipherCtxFinal     (xmlSecOpenSSLEvpBlockCi
                                                          xmlSecBufferPtr out,
                                                          const xmlChar* cipherName,
                                                          xmlSecTransformCtxPtr transformCtx);
+
 static int
 xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
                                 xmlSecBufferPtr in, xmlSecBufferPtr out,
@@ -89,7 +94,13 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    ivLen = EVP_CIPHER_iv_length(ctx->cipher);
+    if(ctx->cbcMode) {
+        ivLen = EVP_CIPHER_iv_length(ctx->cipher);
+    } else {
+        /* This is the nonce length for GCM mode rather than an IV */
+        ivLen = xmlSecOpenSSLAesGcmNonceLengthInBytes;
+    }
+
     xmlSecAssert2(ivLen > 0, -1);
     xmlSecAssert2((xmlSecSize)ivLen <= sizeof(ctx->iv), -1);
 
@@ -144,18 +155,21 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
      *
      * https://www.w3.org/TR/2002/REC-xmlenc-core-20021210/Overview.html#sec-Alg-Block
      */
-    EVP_CIPHER_CTX_set_padding(ctx->cipherCtx, 0);
+    if(ctx->cbcMode) {
+        EVP_CIPHER_CTX_set_padding(ctx->cipherCtx, 0);
+    }
 
     return(0);
 }
 
 static int
 xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
-                                        const xmlSecByte * in,
-                                        int inSize,
-                                        xmlSecBufferPtr out,
-                                        const xmlChar* cipherName,
-                                        int final) {
+        const xmlSecByte * in,
+        int inSize,
+        xmlSecBufferPtr out,
+        const xmlChar* cipherName,
+        int final,
+        xmlSecByte *tagData) {
     xmlSecByte* outBuf;
     xmlSecSize outSize;
     int blockLen, outLen = 0;
@@ -167,8 +181,15 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     xmlSecAssert2(ctx->keyInitialized != 0, -1);
     xmlSecAssert2(ctx->ctxInitialized != 0, -1);
     xmlSecAssert2(in != NULL, -1);
-    xmlSecAssert2(inSize > 0, -1);
     xmlSecAssert2(out != NULL, -1);
+
+    if (ctx->cbcMode) {
+        xmlSecAssert2(inSize > 0, -1);
+    } else {
+        if (final != 0) {
+            xmlSecAssert2(tagData != NULL, -1);
+        }
+    }
 
     /* OpenSSL docs: If the pad parameter is zero then no padding is performed, the total amount of
      * data encrypted or decrypted must then be a multiple of the block size or an error will occur.
@@ -177,15 +198,28 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     xmlSecAssert2(blockLen > 0, -1);
     xmlSecAssert2((inSize % blockLen) == 0, -1);
 
-    /* prepare: ensure we have enough space (+blockLen for final) */
     outSize = xmlSecBufferGetSize(out);
-    ret = xmlSecBufferSetMaxSize(out, outSize + inSize + blockLen);
-    if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetMaxSize",
-                             xmlSecErrorsSafeString(cipherName),
-                            "size=%d", (int)(outSize + inSize + blockLen));
-        return(-1);
+
+    if(ctx->cbcMode) {
+        /* prepare: ensure we have enough space (+blockLen for final) */
+        ret = xmlSecBufferSetMaxSize(out, outSize + inSize + blockLen);
+        if(ret < 0) {
+            xmlSecInternalError2("xmlSecBufferSetMaxSize",
+                xmlSecErrorsSafeString(cipherName),
+                "size=%d", (int)(outSize + inSize + blockLen));
+            return(-1);
+        }
+    } else {
+        /* prepare: ensure we have enough space */
+        ret = xmlSecBufferSetMaxSize(out, outSize + inSize);
+        if(ret < 0) {
+            xmlSecInternalError2("xmlSecBufferSetMaxSize",
+                xmlSecErrorsSafeString(cipherName),
+                "size=%d", (int)(outSize + inSize + blockLen));
+            return(-1);
+        }
     }
+
     outBuf  = xmlSecBufferGetData(out) + outSize;
 
     /* encrypt/decrypt */
@@ -200,10 +234,32 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     if(final != 0) {
         int outLen2 = 0;
 
+        if(ctx->cbcMode == 0) {
+            if(!EVP_CIPHER_CTX_encrypting(ctx->cipherCtx)) {
+                ret = EVP_CIPHER_CTX_ctrl(ctx->cipherCtx, EVP_CTRL_GCM_SET_TAG,
+                    xmlSecOpenSSLAesGcmTagLengthInBytes, tagData);
+                if(ret != 1) {
+                    xmlSecOpenSSLError("EVP_CIPHER_CTX_ctrl", cipherName);
+                    return(-1);
+                }
+            }
+        }
+
         ret = EVP_CipherFinal(ctx->cipherCtx, outBuf + outLen, &outLen2);
         if(ret != 1) {
             xmlSecOpenSSLError("EVP_CipherFinal", cipherName);
             return(-1);
+        }
+
+        if(ctx->cbcMode == 0) {
+            if(EVP_CIPHER_CTX_encrypting(ctx->cipherCtx)) {
+                ret = EVP_CIPHER_CTX_ctrl(ctx->cipherCtx, EVP_CTRL_GCM_GET_TAG,
+                    xmlSecOpenSSLAesGcmTagLengthInBytes, tagData);
+                if(ret != 1) {
+                    xmlSecOpenSSLError("EVP_CIPHER_CTX_ctrl", cipherName);
+                    return(-1);
+                }
+            }
         }
 
         outLen += outLen2;
@@ -223,9 +279,9 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 
 static int
 xmlSecOpenSSLEvpBlockCipherCtxUpdate(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
-                                  xmlSecBufferPtr in, xmlSecBufferPtr out,
-                                  const xmlChar* cipherName,
-                                  xmlSecTransformCtxPtr transformCtx) {
+                                     xmlSecBufferPtr in, xmlSecBufferPtr out,
+                                     const xmlChar* cipherName,
+                                     xmlSecTransformCtxPtr transformCtx) {
     xmlSecSize inSize, blockLen, inBlocksLen;
     xmlSecByte* inBuf;
     int ret;
@@ -242,11 +298,21 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdate(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     xmlSecAssert2(blockLen > 0, -1);
 
     inSize = xmlSecBufferGetSize(in);
-    if(inSize <= blockLen) {
-        /* wait for more data: we want to make sure we keep the last chunk in tmp buffer for
-         * padding check/removal on decryption
-         */
-        return(0);
+
+    if(ctx->cbcMode) {
+        if(inSize <= blockLen) {
+            /* wait for more data: we want to make sure we keep the last chunk in tmp buffer for
+             * padding check/removal on decryption
+             */
+            return(0);
+        }
+    } else {
+        if(inSize <= xmlSecOpenSSLAesGcmTagLengthInBytes) {
+            /* In GCM mode during decryption the last 16 bytes of the buffer are the tag.
+             * Make sure there are always at least 16 bytes left over until we know we're
+             * processing the last buffer */
+            return(0);
+        }
     }
 
     /* OpenSSL docs: If the pad parameter is zero then no padding is performed, the total amount of
@@ -254,14 +320,26 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdate(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
      *
      * We process all complete blocks from the input
      */
-    inBlocksLen = blockLen * (inSize / blockLen);
+    if(ctx->cbcMode) {
+        inBlocksLen = blockLen * (inSize / blockLen);
+    } else {
+        /* ensure we keep the last 16 bytes around until the Final() call */
+        inBlocksLen = blockLen * ((inSize - xmlSecOpenSSLAesGcmTagLengthInBytes) / blockLen);
+        if(inBlocksLen == 0) {
+            return(0);
+        }
+    }
+
     if(inBlocksLen == inSize) {
-        inBlocksLen -= blockLen; /* ensure we keep the last block around for Final() call to add/check/remove padding */
+        if(ctx->cbcMode) {
+            inBlocksLen -= blockLen; /* ensure we keep the last block around for Final() call to add/check/remove padding */
+        }
     }
     xmlSecAssert2(inBlocksLen > 0, -1);
 
     inBuf  = xmlSecBufferGetData(in);
-    ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, inBuf, inBlocksLen, out, cipherName, 0); /* not final */
+    ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, inBuf, (int)inBlocksLen, out, cipherName, 0,
+                                                    NULL); /* not final */
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock", cipherName);
         return(-1);
@@ -277,22 +355,29 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdate(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     /* just a double check */
     inSize = xmlSecBufferGetSize(in);
     xmlSecAssert2(inSize > 0, -1);
-    xmlSecAssert2(inSize <= blockLen, -1);
+
+    if(ctx->cbcMode) {
+        xmlSecAssert2(inSize <= blockLen, -1);
+    }
 
     /* done */
     return(0);
 }
 
 static int
-xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
-                                 xmlSecBufferPtr in,
-                                 xmlSecBufferPtr out,
-                                 const xmlChar* cipherName,
-                                 xmlSecTransformCtxPtr transformCtx) {
+xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
+        xmlSecBufferPtr in,
+        xmlSecBufferPtr out,
+        const xmlChar* cipherName,
+        xmlSecTransformCtxPtr transformCtx)
+{
     xmlSecSize inSize, outSize, blockLen;
     xmlSecByte* inBuf;
     xmlSecByte* outBuf;
     int ret;
+
+    /* unreferenced parameter */
+    (void)transformCtx;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->cipher != NULL, -1);
@@ -313,12 +398,12 @@ xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     xmlSecAssert2(inSize <= blockLen, -1);
 
     /*
-     * The padding used in XML Enc does not follow RFC 1423
-     * and is not supported by OpenSSL. However, it is possible
-     * to disable padding and do it by yourself
-     *
-     * https://www.w3.org/TR/2002/REC-xmlenc-core-20021210/Overview.html#sec-Alg-Block
-     */
+    * The padding used in XML Enc does not follow RFC 1423
+    * and is not supported by OpenSSL. However, it is possible
+    * to disable padding and do it by yourself
+    *
+    * https://www.w3.org/TR/2002/REC-xmlenc-core-20021210/Overview.html#sec-Alg-Block
+    */
     if(EVP_CIPHER_CTX_encrypting(ctx->cipherCtx)) {
         xmlSecSize padLen;
 
@@ -337,18 +422,19 @@ xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 
         /* generate random padding */
         if(padLen > 1) {
-            ret = RAND_bytes(ctx->pad + inSize, padLen - 1);
-            if(ret != 1) {
+            ret = RAND_bytes(ctx->pad + inSize, (int)(padLen - 1));
+            if (ret != 1) {
                 xmlSecOpenSSLError("RAND_bytes", cipherName);
                 return(-1);
             }
         }
 
         /* set the last byte to the pad length */
-        ctx->pad[inSize + padLen - 1] = padLen;
+        ctx->pad[inSize + padLen - 1] = (xmlSecByte)padLen;
 
         /* update the last 1 or 2 blocks with padding */
-        ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, ctx->pad, inSize + padLen, out, cipherName, 1); /* final */
+        ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, ctx->pad, (int)(inSize + padLen), out,
+                                                        cipherName, 1, NULL); /* final */
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock", cipherName);
             return(-1);
@@ -357,7 +443,7 @@ xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         xmlSecSize padLen;
 
         /* update the last one block with padding */
-        ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, inBuf, inSize, out, cipherName, 1); /* final */
+        ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, inBuf, (int)inSize, out, cipherName, 1, NULL); /* final */
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock", cipherName);
             return(-1);
@@ -368,7 +454,7 @@ xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         outSize = xmlSecBufferGetSize(out);
         if(outSize < blockLen) {
             xmlSecInvalidIntegerDataError2("outSize", outSize, "blockLen", blockLen,
-                    "outSize >= blockLen", cipherName);
+                "outSize >= blockLen", cipherName);
             return(-1);
         }
 
@@ -376,7 +462,7 @@ xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         padLen = (xmlSecSize)(outBuf[outSize - 1]);
         if(padLen > blockLen) {
             xmlSecInvalidIntegerDataError2("padLen", padLen, "blockLen", blockLen,
-                    "padLen <= blockLen", cipherName);
+                "padLen <= blockLen", cipherName);
             return(-1);
         }
         xmlSecAssert2(padLen <= outSize, -1);
@@ -398,6 +484,100 @@ xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 
     /* done */
     return(0);
+
+}
+
+#ifndef XMLSEC_NO_AES
+static int
+xmlSecOpenSSLEvpBlockCipherGCMCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
+        xmlSecBufferPtr in,
+        xmlSecBufferPtr out,
+        const xmlChar* cipherName,
+        xmlSecTransformCtxPtr transformCtx)
+{
+    xmlSecSize inSize, outSize;
+    xmlSecByte* inBuf;
+    xmlSecByte* outBuf;
+    xmlSecByte tag[xmlSecOpenSSLAesGcmTagLengthInBytes];
+    int ret;
+
+    /* unreferenced parameter */
+    (void)transformCtx;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->cipher != NULL, -1);
+    xmlSecAssert2(ctx->cipherCtx != NULL, -1);
+    xmlSecAssert2(ctx->keyInitialized != 0, -1);
+    xmlSecAssert2(ctx->ctxInitialized != 0, -1);
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+
+    inSize = xmlSecBufferGetSize(in);
+    inBuf = xmlSecBufferGetData(in);
+
+    if(EVP_CIPHER_CTX_encrypting(ctx->cipherCtx)) {
+        ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, inBuf, (int)inSize, out, cipherName,
+            1, tag); /* final */
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock", cipherName);
+            return(-1);
+        }
+
+        /* get the tag and add to the output */
+        outSize = xmlSecBufferGetSize(out);
+        xmlSecBufferSetMaxSize(out, outSize + xmlSecOpenSSLAesGcmTagLengthInBytes);
+        outBuf = xmlSecBufferGetData(out) + outSize;
+        memcpy(outBuf, tag, xmlSecOpenSSLAesGcmTagLengthInBytes);
+        xmlSecBufferSetSize(out, outSize + xmlSecOpenSSLAesGcmTagLengthInBytes);
+
+    } else {
+        /* There must be at least 16 bytes in the buffer - the tag and anything left over */
+        xmlSecAssert2(inSize >= xmlSecOpenSSLAesGcmTagLengthInBytes, -1);
+
+        /* extract the tag */
+        memcpy(tag, inBuf + inSize - xmlSecOpenSSLAesGcmTagLengthInBytes,
+            xmlSecOpenSSLAesGcmTagLengthInBytes);
+        xmlSecBufferRemoveTail(in, xmlSecOpenSSLAesGcmTagLengthInBytes);
+
+        inBuf = xmlSecBufferGetData(in);
+        inSize = xmlSecBufferGetSize(in);
+
+        /* Decrypt anything remaining and verify the tag */
+        ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, inBuf, (int)inSize, out, cipherName,
+            1, tag); /* final */
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock", cipherName);
+            return(-1);
+        }
+    }
+
+    /* remove the processed data from input */
+    ret = xmlSecBufferRemoveHead(in, inSize);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName, "size=%d", (int)inSize);
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+#endif
+
+static int
+xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
+        xmlSecBufferPtr in,
+        xmlSecBufferPtr out,
+        const xmlChar* cipherName,
+        xmlSecTransformCtxPtr transformCtx)
+{
+    xmlSecAssert2(ctx != NULL, -1);
+
+    if (ctx->cbcMode) {
+        return xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(ctx, in, out, cipherName, transformCtx);
+    } else {
+        return xmlSecOpenSSLEvpBlockCipherGCMCtxFinal(ctx, in, out, cipherName, transformCtx);
+    }
 }
 
 
@@ -437,7 +617,10 @@ xmlSecOpenSSLEvpBlockCipherCheckId(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_AES
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformAes128CbcId) ||
        xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformAes192CbcId) ||
-       xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformAes256CbcId)) {
+       xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformAes256CbcId) ||
+       xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformAes128GcmId) ||
+       xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformAes192GcmId) ||
+       xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformAes256GcmId)) {
 
        return(1);
     }
@@ -462,6 +645,7 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
     if(transform->id == xmlSecOpenSSLTransformDes3CbcId) {
         ctx->cipher     = EVP_des_ede3_cbc();
         ctx->keyId      = xmlSecOpenSSLKeyDataDesId;
+        ctx->cbcMode    = 1;
     } else
 #endif /* XMLSEC_NO_DES */
 
@@ -469,12 +653,27 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
     if(transform->id == xmlSecOpenSSLTransformAes128CbcId) {
         ctx->cipher     = EVP_aes_128_cbc();
         ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
+        ctx->cbcMode    = 1;
     } else if(transform->id == xmlSecOpenSSLTransformAes192CbcId) {
         ctx->cipher     = EVP_aes_192_cbc();
         ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
+        ctx->cbcMode    = 1;
     } else if(transform->id == xmlSecOpenSSLTransformAes256CbcId) {
         ctx->cipher     = EVP_aes_256_cbc();
         ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
+        ctx->cbcMode    = 1;
+    } else if(transform->id == xmlSecOpenSSLTransformAes128GcmId) {
+        ctx->cipher     = EVP_aes_128_gcm();
+        ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
+        ctx->cbcMode    = 0;
+    } else if(transform->id == xmlSecOpenSSLTransformAes192GcmId) {
+        ctx->cipher     = EVP_aes_192_gcm();
+        ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
+        ctx->cbcMode    = 0;
+    } else if(transform->id == xmlSecOpenSSLTransformAes256GcmId) {
+        ctx->cipher     = EVP_aes_256_gcm();
+        ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
+        ctx->cbcMode    = 0;
     } else
 #endif /* XMLSEC_NO_AES */
 
@@ -487,7 +686,7 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
     ctx->cipherCtx = EVP_CIPHER_CTX_new();
     if(ctx->cipherCtx == NULL) {
         xmlSecOpenSSLError("EVP_CIPHER_CTX_new",
-                           xmlSecTransformGetName(transform));
+            xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -528,7 +727,7 @@ xmlSecOpenSSLEvpBlockCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReq
     xmlSecAssert2(ctx->keyId != NULL, -1);
 
     keyReq->keyId       = ctx->keyId;
-    keyReq->keyType = xmlSecKeyDataTypeSymmetric;
+    keyReq->keyType     = xmlSecKeyDataTypeSymmetric;
     if(transform->operation == xmlSecTransformOperationEncrypt) {
         keyReq->keyUsage = xmlSecKeyUsageEncrypt;
     } else {
@@ -569,7 +768,7 @@ xmlSecOpenSSLEvpBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key
 
     if(xmlSecBufferGetSize(buffer) < (xmlSecSize)cipherKeyLen) {
         xmlSecInvalidKeyDataSizeError(xmlSecBufferGetSize(buffer), cipherKeyLen,
-                xmlSecTransformGetName(transform));
+            xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -779,6 +978,126 @@ static xmlSecTransformKlass xmlSecOpenSSLAes256CbcKlass = {
 xmlSecTransformId
 xmlSecOpenSSLTransformAes256CbcGetKlass(void) {
     return(&xmlSecOpenSSLAes256CbcKlass);
+}
+
+static xmlSecTransformKlass xmlSecOpenSSLAes128GcmKlass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecOpenSSLEvpBlockCipherSize,            /* xmlSecSize objSize */
+
+    xmlSecNameAes128Gcm,                        /* const xmlChar* name; */
+    xmlSecHrefAes128Gcm,                        /* const xmlChar* href; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+
+    xmlSecOpenSSLEvpBlockCipherInitialize,      /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLEvpBlockCipherFinalize,        /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecOpenSSLEvpBlockCipherSetKeyReq,       /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecOpenSSLEvpBlockCipherSetKey,          /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecOpenSSLEvpBlockCipherExecute,         /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+* xmlSecOpenSSLTransformAes128GcmGetKlass:
+*
+* AES 128 GCM encryption transform klass.
+*
+* Returns: pointer to AES 128 GCM encryption transform.
+*/
+xmlSecTransformId
+xmlSecOpenSSLTransformAes128GcmGetKlass(void)
+{
+    return(&xmlSecOpenSSLAes128GcmKlass);
+}
+
+static xmlSecTransformKlass xmlSecOpenSSLAes192GcmKlass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecOpenSSLEvpBlockCipherSize,            /* xmlSecSize objSize */
+
+    xmlSecNameAes192Gcm,                        /* const xmlChar* name; */
+    xmlSecHrefAes192Gcm,                        /* const xmlChar* href; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+
+    xmlSecOpenSSLEvpBlockCipherInitialize,      /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLEvpBlockCipherFinalize,        /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecOpenSSLEvpBlockCipherSetKeyReq,       /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecOpenSSLEvpBlockCipherSetKey,          /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecOpenSSLEvpBlockCipherExecute,         /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+* xmlSecOpenSSLTransformAes192GcmGetKlass:
+*
+* AES 192 GCM encryption transform klass.
+*
+* Returns: pointer to AES 192 GCM encryption transform.
+*/
+xmlSecTransformId
+xmlSecOpenSSLTransformAes192GcmGetKlass(void)
+{
+    return(&xmlSecOpenSSLAes192GcmKlass);
+}
+
+static xmlSecTransformKlass xmlSecOpenSSLAes256GcmKlass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecOpenSSLEvpBlockCipherSize,            /* xmlSecSize objSize */
+
+    xmlSecNameAes256Gcm,                        /* const xmlChar* name; */
+    xmlSecHrefAes256Gcm,                        /* const xmlChar* href; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+
+    xmlSecOpenSSLEvpBlockCipherInitialize,      /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLEvpBlockCipherFinalize,        /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecOpenSSLEvpBlockCipherSetKeyReq,       /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecOpenSSLEvpBlockCipherSetKey,          /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecOpenSSLEvpBlockCipherExecute,         /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+* xmlSecOpenSSLTransformAes256GcmGetKlass:
+*
+* AES 256 GCM encryption transform klass.
+*
+* Returns: pointer to AES 256 GCM encryption transform.
+*/
+xmlSecTransformId
+xmlSecOpenSSLTransformAes256GcmGetKlass(void)
+{
+    return(&xmlSecOpenSSLAes256GcmKlass);
 }
 
 #endif /* XMLSEC_NO_AES */

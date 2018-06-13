@@ -1,5 +1,5 @@
 /* Configure script for xmlsec, specific for Windows with Scripting Host.
- * 
+ *
  * This script will configure the libxmlsec build process and create necessary files.
  * Run it with an 'help', or an invalid option and it will tell you what options
  * it accepts.
@@ -34,7 +34,7 @@ var optsFile = baseDir + "\\config.h";
 var versionHeaderIn = baseDir + "\\include\\xmlsec\\version.h.in";
 var versionHeader = baseDir + "\\include\\xmlsec\\version.h";
 
-/* Version strings for the binary distribution. Will be filled later 
+/* Version strings for the binary distribution. Will be filled later
    in the code. */
 var verMajorXmlSec;
 var verMinorXmlSec;
@@ -63,7 +63,7 @@ var buildPrefix = ".";
 var buildBinPrefix = "$(PREFIX)\\bin";
 var buildIncPrefix = "$(PREFIX)\\include";
 var buildLibPrefix = "$(PREFIX)\\lib";
-var buildSoPrefix = "$(PREFIX)\\lib";
+var buildSoPrefix = "$(PREFIX)\\bin";
 var buildInclude = ".";
 var buildLib = ".";
 var cruntime = "/MD";
@@ -108,9 +108,9 @@ function usage()
 	txt += "  crypto:     Crypto engines list, first is default: \"openssl\",\n";
 	txt += "              \"openssl=100\", \"openssl=110\", \n";
 	txt += "              \"nss\", \"mscrypto\", \"mscng\" (\"" + withCrypto + "\");\n"
- 	txt += "  xslt:       LibXSLT is used (" + (withLibXSLT? "yes" : "no")  + ")\n";	
- 	txt += "  iconv:      Use the iconv library (" + (withIconv? "yes" : "no")  + ")\n";	
- 	txt += "  nt4:        Enable NT 4.0 support (" + (withNT4? "yes" : "no")  + ")\n";	
+ 	txt += "  xslt:       LibXSLT is used (" + (withLibXSLT? "yes" : "no")  + ")\n";
+ 	txt += "  iconv:      Use the iconv library (" + (withIconv? "yes" : "no")  + ")\n";
+ 	txt += "  nt4:        Enable NT 4.0 support (" + (withNT4? "yes" : "no")  + ")\n";
 	txt += "\nWin32 build options, default value given in parentheses:\n\n";
 	txt += "  unicode:    Build Unicode version (" + (buildUnicode? "yes" : "no")  + ")\n";
 	txt += "  debug:      Build unoptimised debug executables (" + (buildDebug? "yes" : "no")  + ")\n";
@@ -125,7 +125,7 @@ function usage()
 	txt += "              (" + buildIncPrefix + ")\n";
 	txt += "  libdir:     Directory where static and import libraries should be\n";
 	txt += "              installed (" + buildLibPrefix + ")\n";
-	txt += "  sodir:      Directory where shared libraries should be installed\n"; 
+	txt += "  sodir:      Directory where shared libraries should be installed\n";
 	txt += "              (" + buildSoPrefix + ")\n";
 	txt += "  include:    Additional search path for the compiler, particularily\n";
 	txt += "              where libxml headers can be found (" + buildInclude + ")\n";
@@ -160,19 +160,19 @@ function discoverVersion()
 		} else if(s.search(/^XMLSEC_VERSION_SUBMINOR/) != -1) {
 			vf.WriteLine(s);
 			verMicroXmlSec = s.substring(s.indexOf("=") + 1, s.length)
-		}		
+		}
 	}
 	cf.Close();
 	vf.WriteLine("BASEDIR=" + baseDir);
 	vf.WriteLine("XMLSEC_SRCDIR=" + srcDir);
 	vf.WriteLine("APPS_SRCDIR=" + srcDirApps);
 	vf.WriteLine("BINDIR=" + binDir);
-	vf.WriteLine("WITH_CRYPTO=" + withCrypto);	
-	vf.WriteLine("WITH_DEFAULT_CRYPTO=" + withDefaultCrypto);	
-	vf.WriteLine("WITH_OPENSSL=" + withOpenSSL);	
+	vf.WriteLine("WITH_CRYPTO=" + withCrypto);
+	vf.WriteLine("WITH_DEFAULT_CRYPTO=" + withDefaultCrypto);
+	vf.WriteLine("WITH_OPENSSL=" + withOpenSSL);
 	vf.WriteLine("WITH_OPENSSL_VERSION=XMLSEC_OPENSSL_" + withOpenSSLVersion);
-	vf.WriteLine("WITH_NSS=" + withNss);	
-	vf.WriteLine("WITH_MSCRYPTO=" + withMSCrypto);	
+	vf.WriteLine("WITH_NSS=" + withNss);
+	vf.WriteLine("WITH_MSCRYPTO=" + withMSCrypto);
 	vf.WriteLine("WITH_MSCNG=" + withMSCng);
 	vf.WriteLine("WITH_LIBXSLT=" + (withLibXSLT ? "1" : "0"));
 	vf.WriteLine("WITH_ICONV=" + (withIconv ? "1" : "0"));
@@ -206,10 +206,10 @@ function configureXmlSec()
 		ln = ofi.ReadLine();
 		s = new String(ln);
 		if (s.search(/\@VERSION\@/) != -1) {
-			of.WriteLine(s.replace(/\@VERSION\@/, 
+			of.WriteLine(s.replace(/\@VERSION\@/,
 				verMajorXmlSec + "." + verMinorXmlSec + "." + verMicroXmlSec));
 		} else if (s.search(/\@XMLSECVERSION_NUMBER\@/) != -1) {
-			of.WriteLine(s.replace(/\@XMLSECVERSION_NUMBER\@/, 
+			of.WriteLine(s.replace(/\@XMLSECVERSION_NUMBER\@/,
 				verMajorXmlSec*10000 + verMinorXmlSec*100 + verMicroXmlSec*1));
 		} else
 			of.WriteLine(ln);
@@ -278,7 +278,7 @@ function genReadme(bname, ver, file)
 	f.WriteLine("environment variable.");
 	f.WriteLine("  If you want to make programmes in C which use " + bname + ", you'll");
 	f.WriteLine("likely know how to use the contents of this package. If you don't, please");
-	f.WriteLine("refer to your compiler's documentation."); 
+	f.WriteLine("refer to your compiler's documentation.");
 	f.WriteBlankLines(1);
 	f.WriteLine("  If there is something you cannot keep for yourself, such as a problem,");
 	f.WriteLine("a cheer of joy, a comment or a suggestion, feel free to contact me using");
@@ -362,10 +362,10 @@ if (error != 0) {
 
 // Discover crypto support
 var crlist, j, curcrypto;
-crlist = withCrypto.split(",");			
+crlist = withCrypto.split(",");
 withCrypto = "";
 withDefaultCrypto = "";
-for (j = 0; j < crlist.length; j++) {		
+for (j = 0; j < crlist.length; j++) {
 	if (crlist[j] == "openssl") {
 		curcrypto="openssl";
 		withOpenSSL = 1;

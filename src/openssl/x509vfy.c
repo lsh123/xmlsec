@@ -1029,9 +1029,9 @@ xmlSecOpenSSLX509NameStringRead(xmlSecByte **str, int *strLen,
         xmlSecInvalidSizeOtherError("buffer is too small", NULL);
         return(-1);
     }
-    (*strLen) -= (p - (*str));
+    (*strLen) -= (int)(p - (*str));
     (*str) = p;
-    return((ingoreTrailingSpaces) ? nonSpace - res + 1 : q - res);
+    return(int)((ingoreTrailingSpaces) ? nonSpace - res + 1 : q - res);
 }
 
 /*
@@ -1177,7 +1177,6 @@ xmlSecOpenSSLX509_NAME_ENTRY_cmp(const X509_NAME_ENTRY * const *a, const X509_NA
 
     return(OBJ_cmp(a_name, b_name));
 }
-
 
 #endif /* XMLSEC_NO_X509 */
 

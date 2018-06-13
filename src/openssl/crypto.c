@@ -18,9 +18,6 @@
 
 #include <string.h>
 
-#include <openssl/evp.h>
-#include <openssl/rand.h>
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
@@ -29,6 +26,9 @@
 #include <xmlsec/dl.h>
 #include <xmlsec/private.h>
 
+#include <openssl/x509.h>
+#include <openssl/evp.h>
+#include <openssl/rand.h>
 #include <xmlsec/openssl/app.h>
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/x509.h>
@@ -128,6 +128,9 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->transformAes128CbcGetKlass         = xmlSecOpenSSLTransformAes128CbcGetKlass;
     gXmlSecOpenSSLFunctions->transformAes192CbcGetKlass         = xmlSecOpenSSLTransformAes192CbcGetKlass;
     gXmlSecOpenSSLFunctions->transformAes256CbcGetKlass         = xmlSecOpenSSLTransformAes256CbcGetKlass;
+    gXmlSecOpenSSLFunctions->transformAes128GcmGetKlass         = xmlSecOpenSSLTransformAes128GcmGetKlass;
+    gXmlSecOpenSSLFunctions->transformAes192GcmGetKlass         = xmlSecOpenSSLTransformAes192GcmGetKlass;
+    gXmlSecOpenSSLFunctions->transformAes256GcmGetKlass         = xmlSecOpenSSLTransformAes256GcmGetKlass;
     gXmlSecOpenSSLFunctions->transformKWAes128GetKlass          = xmlSecOpenSSLTransformKWAes128GetKlass;
     gXmlSecOpenSSLFunctions->transformKWAes192GetKlass          = xmlSecOpenSSLTransformKWAes192GetKlass;
     gXmlSecOpenSSLFunctions->transformKWAes256GetKlass          = xmlSecOpenSSLTransformKWAes256GetKlass;
@@ -517,6 +520,3 @@ const xmlChar*
 xmlSecOpenSSLGetDefaultTrustedCertsFolder(void) {
     return(gXmlSecOpenSSLTrustedCertsFolder);
 }
-
-
-

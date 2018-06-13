@@ -162,6 +162,27 @@ XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformAes192CbcGetKlass
 #define xmlSecTransformAes256CbcId              xmlSecTransformAes256CbcGetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformAes256CbcGetKlass(void);
 /**
+* xmlSecTransformAes128GcmId:
+*
+* The AES128 GCM cipher transform klass.
+*/
+#define xmlSecTransformAes128GcmId              xmlSecTransformAes128GcmGetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformAes128GcmGetKlass(void);
+/**
+* xmlSecTransformAes192GcmId:
+*
+* The AES192 GCM cipher transform klass.
+*/
+#define xmlSecTransformAes192GcmId              xmlSecTransformAes192GcmGetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformAes192GcmGetKlass(void);
+/**
+* xmlSecTransformAes256GcmId:
+*
+* The AES256 GCM cipher transform klass.
+*/
+#define xmlSecTransformAes256GcmId              xmlSecTransformAes256GcmGetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformAes256GcmGetKlass(void);
+/**
  * xmlSecTransformKWAes128Id:
  *
  * The AES 128 key wrap transform klass.

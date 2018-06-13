@@ -3,8 +3,7 @@ sudo: required
 dist: bionic
 install:
 - sudo apt-get update
-- sudo apt search libxslt
-- sudo apt-get install automake autoconf libtool libxml2 libxml2-dev libxslt libxslt1-dev
+- sudo apt-get install automake autoconf libtool libxml2 libxml2-dev libxslt1.1 libxslt1-dev
 - sudo apt-get install libssl1.0.0 libssl1-dev libnspr4 libnspr4-dev libnss3 libnss3-dev
 script:
 - ./autogen.sh && make && make test

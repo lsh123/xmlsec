@@ -43,6 +43,11 @@
 #include <xmlsec/openssl/x509.h>
 #include "openssl_compat.h"
 
+#include <openssl/evp.h>
+#include <openssl/x509.h>
+#include <openssl/x509_vfy.h>
+#include <openssl/x509v3.h>
+
 /**************************************************************************
  *
  * Internal OpenSSL X509 store CTX

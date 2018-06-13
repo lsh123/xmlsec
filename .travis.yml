@@ -1,6 +1,6 @@
 language: c
 sudo: required
-dist: bionic
+dist: trusty
 install:
 - sudo apt-get update
 - sudo apt-get install automake autoconf libtool libxml2 libxml2-dev libxslt1.1 libxslt1-dev

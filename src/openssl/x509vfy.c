@@ -25,10 +25,6 @@
 #include <errno.h>
 
 #include <libxml/tree.h>
-#include <openssl/evp.h>
-#include <openssl/x509.h>
-#include <openssl/x509_vfy.h>
-#include <openssl/x509v3.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
@@ -43,11 +39,11 @@
 #include <xmlsec/openssl/x509.h>
 #include "openssl_compat.h"
 
-#ifdef _WIN32
-#ifdef X509_NAME
-#undef X509_NAME
-#endif
-#endif
+
+#include <openssl/evp.h>
+#include <openssl/x509.h>
+#include <openssl/x509_vfy.h>
+#include <openssl/x509v3.h>
 
 /**************************************************************************
  *

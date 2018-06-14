@@ -29,15 +29,19 @@ environment:
     #   COMPILER: MinGW-w64
     #   PLATFORM: x64
 
+
+init:
+  - if [%COMPILER%]==[MinGW-w64] set PATH=C:\msys64\usr\bin;C:\msys64\mingw64\bin;%PATH%
+    
 install:
-  - if [%COMPILER%]==[MinGW-w64] C:\msys64\usr\bin\pacman --noconfirm --sync --refresh --refresh --sysupgrade --sysupgrade
-  - if [%COMPILER%]==[MinGW-w64] C:\msys64\usr\bin\pacman -S --noconfirm --needed mingw-w64-x86_64-toolchain
-  - if [%COMPILER%]==[MinGW-w64] C:\msys64\usr\bin\pacman -S --noconfirm --needed mingw-w64-x86_64-{libtool,libxml2,libxslt,openssl,gnutls}
+  - if [%COMPILER%]==[MinGW-w64] pacman --noconfirm --sync --refresh --refresh --sysupgrade --sysupgrade
+  - if [%COMPILER%]==[MinGW-w64] pacman -S --noconfirm --needed mingw-w64-x86_64-toolchain
+  - if [%COMPILER%]==[MinGW-w64] pacman -S --noconfirm --needed mingw-w64-x86_64-{libtool,libxml2,libxslt,openssl,gnutls}
 
 build_script:
-  - if [%COMPILER%]==[MinGW-w64] C:\msys64\usr\bin\autoreconf -fi
+  - if [%COMPILER%]==[MinGW-w64] autoreconf -fi
   - mkdir build && cd build
-  - if [%COMPILER%]==[MinGW-w64] C:\msys64\usr\bin\bash ../configure --build="x86_64-w64-mingw32" --host="x86_64-w64-mingw32" --enable-mscrypto --enable-static-linking=$STATIC
+  - if [%COMPILER%]==[MinGW-w64] bash ../configure --build="x86_64-w64-mingw32" --host="x86_64-w64-mingw32" --enable-mscrypto --enable-static-linking=$STATIC
   - make
 
 test_script:

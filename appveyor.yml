@@ -25,9 +25,9 @@ environment:
       PLATFORM: x64
 
     # enable static linking
-    - STATIC: yes
-      COMPILER: MinGW-w64
-      PLATFORM: x64
+    # - STATIC: yes
+    #   COMPILER: MinGW-w64
+    #   PLATFORM: x64
 
 install:
   - if [%COMPILER%]==[MinGW-w64] C:\msys64\usr\bin\pacman --noconfirm --sync --refresh --refresh --sysupgrade --sysupgrade

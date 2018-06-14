@@ -30,9 +30,9 @@ environment:
       PLATFORM: x64
 
 install:
-  - if [%COMPILER%]==[MinGW-w64] pacman -S --noconfirm mingw-w64-x86_64-toolchain
-  - if [%COMPILER%]==[MinGW-w64] pacman -S --noconfirm mingw-w64-x86_64-{libtool,libxml2,libxslt,openssl,gnutls}
-  - if [%COMPILER%]==[MinGW-w64] pacman --noconfirm --sync --refresh --refresh --sysupgrade --sysupgrade
+  - if [%COMPILER%]==[MinGW-w64] C:\msys64\usr\bin\pacman -S --noconfirm mingw-w64-x86_64-toolchain
+  - if [%COMPILER%]==[MinGW-w64] C:\msys64\usr\bin\pacman -S --noconfirm mingw-w64-x86_64-{libtool,libxml2,libxslt,openssl,gnutls}
+  - if [%COMPILER%]==[MinGW-w64] C:\msys64\usr\bin\pacman --noconfirm --sync --refresh --refresh --sysupgrade --sysupgrade
 
 build_script:
   - mkdir build

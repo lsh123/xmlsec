@@ -16,7 +16,7 @@ shallow_clone: true
 
 environment:
   global:
-    EXTRAS_FOLDER: %APPVEYOR_BUILD_FOLDER%/extra
+    EXTRAS_FOLDER: {APPVEYOR_BUILD_FOLDER}/extra
     EXTRAS_URL: http://xmlsoft.org/sources/win32/64bit
     ICONV_FILE: iconv-1.14-win32-x86_64.7z
     LIBXML2_FILE: libxml2-2.9.3-win32-x86_64.7z

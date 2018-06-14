@@ -16,10 +16,11 @@ shallow_clone: true
 
 environment:
   global:
-    extra_downloads_url: http://xmlsoft.org/sources/win32/64bit
-    iconv_file: iconv-1.14-win32-x86_64.7z
-    libxml2_file: libxml2-2.9.3-win32-x86_64.7z
-    libxslt_file: libxslt-1.1.28-win32-x86_64.7z
+    EXTRAS_FOLDER: %APPVEYOR_BUILD_FOLDER%/extra
+    EXTRAS_URL: http://xmlsoft.org/sources/win32/64bit
+    ICONV_FILE: iconv-1.14-win32-x86_64.7z
+    LIBXML2_FILE: libxml2-2.9.3-win32-x86_64.7z
+    LIBXSLT_FILE: libxslt-1.1.28-win32-x86_64.7z
 
   matrix:
     # enable shared linking
@@ -43,22 +44,21 @@ install:
   - if [%COMPILER%]==[MinGW-w64] pacman --noconfirm --sync --refresh --refresh --sysupgrade --sysupgrade
   - if [%COMPILER%]==[MinGW-w64] pacman -S --noconfirm --needed mingw-w64-x86_64-{toolchain,libtool}
   - if [%COMPILER%]==[MinGW-w64] pacman -S --noconfirm --needed mingw-w64-x86_64-{libxml2,libxslt,openssl,gnutls}
-  - if [%COMPILER%]==[MSVC17] mkdir extra && cd extra
-  - if [%COMPILER%]==[MSVC17] appveyor DownloadFile %extra_downloads_url%/%iconv_file%
-  - if [%COMPILER%]==[MSVC17] 7z x %iconv_file%
-  - if [%COMPILER%]==[MSVC17] appveyor DownloadFile %extra_downloads_url%/%libxml2_file%
-  - if [%COMPILER%]==[MSVC17] 7z x %libxml2_file%
-  - if [%COMPILER%]==[MSVC17] appveyor DownloadFile %extra_downloads_url%/%libxslt_file%
-  - if [%COMPILER%]==[MSVC17] 7z x %libxslt_file%
-  - if [%COMPILER%]==[MSVC17] dir . include lib
-  - if [%COMPILER%]==[MSVC17] cd ..
+  - if [%COMPILER%]==[MSVC17] mkdir %EXTRAS_FOLDER% && cd %EXTRAS_FOLDER%
+  - if [%COMPILER%]==[MSVC17] appveyor DownloadFile %EXTRAS_URL%/%ICONV_FILE%
+  - if [%COMPILER%]==[MSVC17] 7z x %ICONV_FILE%
+  - if [%COMPILER%]==[MSVC17] appveyor DownloadFile %EXTRAS_URL%/%LIBXML2_FILE%
+  - if [%COMPILER%]==[MSVC17] 7z x %LIBXML2_FILE%
+  - if [%COMPILER%]==[MSVC17] appveyor DownloadFile %EXTRAS_URL%/%LIBXSLT_FILE%
+  - if [%COMPILER%]==[MSVC17] 7z x %LIBXSLT_FILE%
+  - if [%COMPILER%]==[MSVC17] cd %APPVEYOR_BUILD_FOLDER%
 
 build_script:
   - if [%COMPILER%]==[MinGW-w64] mkdir build && cd build
   - if [%COMPILER%]==[MinGW-w64] bash ../autogen.sh --build="x86_64-w64-mingw32" --host="x86_64-w64-mingw32" --enable-mscrypto --enable-static-linking=$STATIC
   - if [%COMPILER%]==[MinGW-w64] make
   - if [%COMPILER%]==[MSVC17] cd win32
-  - if [%COMPILER%]==[MSVC17] cscript configure.js static=$STATIC
-
+  - if [%COMPILER%]==[MSVC17] cscript configure.js iconv=yes unicode=yes static=$STATIC prefix=%EXTRAS_FOLDER% include=%EXTRAS_FOLDER%\include;%MSSDK_INCLUDE% lib=%EXTRAS_FOLDER%\lib;%MSSDK_LIB%
+ 
 test_script:
   - if [%COMPILER%]==[MinGW-w64] make check

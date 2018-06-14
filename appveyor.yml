@@ -21,10 +21,24 @@ environment:
   matrix:
     # enable shared linking
     - STATIC: no
+      COMPILER: MinGW-w64
+      PLATFORM: x64
 
     # enable static linking
     - STATIC: yes
+      COMPILER: MinGW-w64
+      PLATFORM: x64
+
+install:
+  - if [%COMPILER%]==[MinGW-w64] pacman -S --noconfirm mingw-w64-x86_64-toolchain
+  - if [%COMPILER%]==[MinGW-w64] pacman -S --noconfirm mingw-w64-x86_64-{libtool,libxml2,libxslt,openssl,gnutls}
+  - if [%COMPILER%]==[MinGW-w64] pacman --noconfirm --sync --refresh --refresh --sysupgrade --sysupgrade
 
 build_script:
-  - C:\msys64\usr\bin\pacman --noconfirm --sync --refresh --refresh --sysupgrade --sysupgrade
-  - C:\msys64\usr\bin\bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/ci-script-windows.sh"
+  - mkdir build
+  - cd build
+  - if [%COMPILER%]==[MinGW-w64] ../autogen.sh --build="x86_64-w64-mingw32" --host="x86_64-w64-mingw32" --enable-mscrypto --enable-static-linking=$STATIC
+  - make
+
+test_script:
+  - make check

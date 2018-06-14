@@ -38,9 +38,7 @@ install:
 
 build_script:
   - dir
-  - cd %APPVEYOR_BUILD_FOLDER%
-  - dir
-  - if [%COMPILER%]==[MinGW-w64] bash --login -c autoreconf -fi
+  - if [%COMPILER%]==[MinGW-w64] bash -c autoreconf -fi
   - mkdir build && cd build
   - if [%COMPILER%]==[MinGW-w64] bash ../configure --build="x86_64-w64-mingw32" --host="x86_64-w64-mingw32" --enable-mscrypto --enable-static-linking=$STATIC
   - make

@@ -17,29 +17,39 @@ shallow_clone: true
 environment:
   matrix:
     # enable shared linking
-    - STATIC: no
-      COMPILER: MinGW-w64
-      PLATFORM: x64
+    #- STATIC: no
+    #  COMPILER: MinGW-w64
 
     # enable static linking
-    # - STATIC: yes
-    #   COMPILER: MinGW-w64
-    #   PLATFORM: x64
+    #- STATIC: yes
+    #  COMPILER: MinGW-w64
 
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      STATIC: no
+      COMPILER: MSVC17
 
 init:
   - git config --global core.autocrlf input
   - if [%COMPILER%]==[MinGW-w64] set PATH=C:\msys64\usr\bin;C:\msys64\mingw64\bin;%PATH%
+  #- if [%COMPILER%]==[MSVC17] 
     
 install:
   - if [%COMPILER%]==[MinGW-w64] pacman --noconfirm --sync --refresh --refresh --sysupgrade --sysupgrade
   - if [%COMPILER%]==[MinGW-w64] pacman -S --noconfirm --needed mingw-w64-x86_64-{toolchain,libtool}
   - if [%COMPILER%]==[MinGW-w64] pacman -S --noconfirm --needed mingw-w64-x86_64-{libxml2,libxslt,openssl,gnutls}
+  - if [%COMPILER%]==[MSVC17] mkdir extra && cd extra
+  - if [%COMPILER%]==[MSVC17] Start-FileDownload http://xmlsoft.org/sources/win32/64bit/iconv-1.14-win32-x86_64.7z
+  - if [%COMPILER%]==[MSVC17] Start-FileDownload http://xmlsoft.org/sources/win32/64bit/libxml2-2.9.3-win32-x86_64.7z
+  - if [%COMPILER%]==[MSVC17] Start-FileDownload http://xmlsoft.org/sources/win32/64bit/libxslt-1.1.28-win32-x86_64.7z
+  - if [%COMPILER%]==[MSVC17] 7z x iconv-1.14-win32-x86_64.7z libxml2-2.9.3-win32-x86_64.7z libxslt-1.1.28-win32-x86_64.7z 
+  - if [%COMPILER%]==[MSVC17] cd ..
 
 build_script:
-  - mkdir build && cd build
+  - if [%COMPILER%]==[MinGW-w64] mkdir build && cd build
   - if [%COMPILER%]==[MinGW-w64] bash ../autogen.sh --build="x86_64-w64-mingw32" --host="x86_64-w64-mingw32" --enable-mscrypto --enable-static-linking=$STATIC
-  - make
+  - if [%COMPILER%]==[MinGW-w64] make
+  - if [%COMPILER%]==[MSVC17] cd win32
+  - if [%COMPILER%]==[MSVC17] cscript configure.js static=$STATIC
 
 test_script:
-  - make check
+  - if [%COMPILER%]==[MinGW-w64] make check

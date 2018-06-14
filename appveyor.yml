@@ -39,6 +39,7 @@ install:
 build_script:
   - dir C:\msys64
   - dir C:\msys64\mingw64
+  - find C:\msys64 -name "autoreconf.exe"
   - if [%COMPILER%]==[MinGW-w64] autoreconf -fi
   - mkdir build && cd build
   - if [%COMPILER%]==[MinGW-w64] bash ../configure --build="x86_64-w64-mingw32" --host="x86_64-w64-mingw32" --enable-mscrypto --enable-static-linking=$STATIC

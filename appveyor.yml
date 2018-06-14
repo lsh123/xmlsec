@@ -44,12 +44,12 @@ install:
   - if [%COMPILER%]==[MinGW-w64] pacman -S --noconfirm --needed mingw-w64-x86_64-{toolchain,libtool}
   - if [%COMPILER%]==[MinGW-w64] pacman -S --noconfirm --needed mingw-w64-x86_64-{libxml2,libxslt,openssl,gnutls}
   - if [%COMPILER%]==[MSVC17] mkdir extra && cd extra
-  - if [%COMPILER%]==[MSVC17] appveyor DownloadFile {extra_downloads_url}/{iconv_file}
-  - if [%COMPILER%]==[MSVC17] 7z x {iconv_file}
-  - if [%COMPILER%]==[MSVC17] appveyor DownloadFile {extra_downloads_url}/{libxml2_file}
-  - if [%COMPILER%]==[MSVC17] 7z x {libxml2_file}
-  - if [%COMPILER%]==[MSVC17] appveyor DownloadFile {extra_downloads_url}/{libxslt_file}
-  - if [%COMPILER%]==[MSVC17] 7z x {libxslt_file}
+  - if [%COMPILER%]==[MSVC17] appveyor DownloadFile %extra_downloads_url%/%iconv_file%
+  - if [%COMPILER%]==[MSVC17] 7z x %iconv_file%
+  - if [%COMPILER%]==[MSVC17] appveyor DownloadFile %extra_downloads_url%/%libxml2_file%
+  - if [%COMPILER%]==[MSVC17] 7z x %libxml2_file%
+  - if [%COMPILER%]==[MSVC17] appveyor DownloadFile %extra_downloads_url%/%libxslt_file%
+  - if [%COMPILER%]==[MSVC17] 7z x %libxslt_file%
   - if [%COMPILER%]==[MSVC17] cd ..
 
 build_script:

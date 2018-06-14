@@ -12,9 +12,6 @@
 # You can check the whole build process in the logs, and any later commit will start
 # a new build using a fresh virtual machine.
 
-init:
-  - git config --global core.autocrlf input
-
 shallow_clone: true
 
 environment:
@@ -31,6 +28,7 @@ environment:
 
 
 init:
+  - git config --global core.autocrlf input
   - if [%COMPILER%]==[MinGW-w64] set PATH=C:\msys64\usr\bin;C:\msys64\mingw64\bin;%PATH%
     
 install:

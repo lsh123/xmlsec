@@ -52,6 +52,7 @@ install:
   - if [%COMPILER%]==[MSVC17] 7z x %LIBXML2_FILE%
   - if [%COMPILER%]==[MSVC17] appveyor DownloadFile %EXTRAS_URL%/%LIBXSLT_FILE%
   - if [%COMPILER%]==[MSVC17] 7z x %LIBXSLT_FILE%
+  - if [%COMPILER%]==[MSVC17] dir include include/libxml2 include/libxslt
   - if [%COMPILER%]==[MSVC17] cd %APPVEYOR_BUILD_FOLDER%
 
 build_script:

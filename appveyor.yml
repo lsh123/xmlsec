@@ -44,6 +44,7 @@ install:
   - if [%COMPILER%]==[MinGW-w64] pacman --noconfirm --sync --refresh --refresh --sysupgrade --sysupgrade
   - if [%COMPILER%]==[MinGW-w64] pacman -S --noconfirm --needed mingw-w64-x86_64-{toolchain,libtool}
   - if [%COMPILER%]==[MinGW-w64] pacman -S --noconfirm --needed mingw-w64-x86_64-{libxml2,libxslt,openssl,gnutls}
+  - if [%COMPILER%]==[MSVC17] call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
   - if [%COMPILER%]==[MSVC17] mkdir %EXTRAS_FOLDER% && cd %EXTRAS_FOLDER%
   - if [%COMPILER%]==[MSVC17] appveyor DownloadFile %EXTRAS_URL%/%ICONV_FILE%
   - if [%COMPILER%]==[MSVC17] 7z x %ICONV_FILE%

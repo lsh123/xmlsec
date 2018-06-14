@@ -33,7 +33,7 @@ init:
     
 install:
   - if [%COMPILER%]==[MinGW-w64] pacman --noconfirm --sync --refresh --refresh --sysupgrade --sysupgrade
-  - if [%COMPILER%]==[MinGW-w64] pacman -S --noconfirm --needed mingw-w64-x86_64-{toolchain,automake,autoconf,libtool}
+  - if [%COMPILER%]==[MinGW-w64] pacman -S --noconfirm --needed mingw-w64-x86_64-{toolchain,libtool}
   - if [%COMPILER%]==[MinGW-w64] pacman -S --noconfirm --needed mingw-w64-x86_64-{libxml2,libxslt,openssl,gnutls}
 
 build_script:

@@ -3,8 +3,6 @@ sudo: required
 dist: trusty
 install:
 - sudo apt-get update
-- sudo apt search libgnutls
-- sudo apt search libgcrypt
 # install build tools
 - sudo apt-get install automake autoconf libtool
 # install libxml2/libxslt libraries

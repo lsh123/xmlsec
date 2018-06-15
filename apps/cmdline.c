@@ -301,7 +301,7 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
             }    
             value->strValue = argv[++pos];
 #ifdef WIN32
-	    if(sscanf_s(value->strValue, "%d", &(value->intValue)) != 1) {
+            if(sscanf_s(value->strValue, "%d", &(value->intValue)) != 1) {
 #else /* WIN32 */
             if(sscanf(value->strValue, "%d", &(value->intValue)) != 1) {
 #endif /* WIN32 */

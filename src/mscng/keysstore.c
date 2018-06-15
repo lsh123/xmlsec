@@ -89,7 +89,7 @@ xmlSecMSCngKeysStoreFinalize(xmlSecKeyStorePtr store) {
 static PCCERT_CONTEXT
 xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
         xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    LPCWSTR storeName;
+    LPCTSTR storeName;
     HCERTSTORE hStore = NULL;
     PCCERT_CONTEXT pCertContext = NULL;
     LPTSTR wcName = NULL;

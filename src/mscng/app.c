@@ -34,7 +34,7 @@
 #include <xmlsec/mscng/keysstore.h>
 
 /* config info for the mscng keysstore */
-static LPWSTR gXmlSecMSCngAppCertStoreName = NULL;
+static LPTSTR gXmlSecMSCngAppCertStoreName = NULL;
 
 /**
  * xmlSecMSCngAppInit:
@@ -60,12 +60,20 @@ xmlSecMSCngAppInit(const char* config) {
             return(-1);
         }
 
+#ifdef UNICODE
         gXmlSecMSCngAppCertStoreName = xmlSecMSCngConvertUtf8ToUnicode((const xmlChar*)config);
         if(gXmlSecMSCngAppCertStoreName == NULL) {
             xmlSecInternalError2("xmlSecMSCngConvertUtf8ToUnicode", NULL,
                 "config=%s", xmlSecErrorsSafeString(config));
             return(-1);
         }
+#else  /* UNICODE */
+        gXmlSecMSCngAppCertStoreName = xmlStrdup(config);
+        if (gXmlSecMSCngAppCertStoreName == NULL) {
+            xmlSecStrdupError(config, NULL);
+            return (-1);
+        }
+#endif /* UNICODE */
     }
 
     return(0);

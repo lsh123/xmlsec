@@ -812,16 +812,16 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
             cert = sk_X509_value(certs, i);
             index = X509_get_ext_by_NID(cert, NID_subject_key_identifier, -1);
             if(index < 0) {
-		continue;
-	    }
-	    ext = X509_get_ext(cert, index);
-	    if(ext == NULL) {
-		continue;
-	    }
+                continue;
+            }
+            ext = X509_get_ext(cert, index);
+            if(ext == NULL) {
+                continue;
+            }
             keyId = (ASN1_OCTET_STRING *)X509V3_EXT_d2i(ext);
-	    if(keyId == NULL) {
-		continue;
-	    }
+            if(keyId == NULL) {
+                continue;
+            }
             if((keyId->length == len) && (memcmp(keyId->data, ski, len) == 0)) {
                 ASN1_OCTET_STRING_free(keyId);
                 return(cert);

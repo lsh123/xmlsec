@@ -246,7 +246,7 @@ xmlSecCryptoDLLibraryConstructFilename(const xmlChar* name) {
     xmlSecAssert2(name != NULL, NULL);
 
     /* TODO */
-    len = xmlStrlen(BAD_CAST PACKAGE) + xmlStrlen(name) + strlen(tmpl) + 1;
+    len = xmlStrlen(BAD_CAST PACKAGE) + xmlStrlen(name) + xmlStrlen(BAD_CAST tmpl) + 1;
     res = (xmlChar*)xmlMalloc(len + 1);
     if(res == NULL) {
         xmlSecMallocError(len + 1, NULL);
@@ -272,7 +272,7 @@ xmlSecCryptoDLLibraryConstructGetFunctionsName(const xmlChar* name) {
 
     xmlSecAssert2(name != NULL, NULL);
 
-    len = xmlStrlen(name) + strlen(tmpl) + 1;
+    len = xmlStrlen(name) + xmlStrlen(BAD_CAST tmpl) + 1;
     res = (xmlChar*)xmlMalloc(len + 1);
     if(res == NULL) {
         xmlSecMallocError(len + 1, NULL);

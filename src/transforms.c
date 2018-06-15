@@ -739,7 +739,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
         return(0);
     }
 
-    ctx->uri = xmlStrndup(uri, xptr - uri);
+    ctx->uri = xmlStrndup(uri, (int)(xptr - uri));
     if(ctx->uri == NULL) {
         xmlSecStrdupError(uri, NULL);
         return(-1);

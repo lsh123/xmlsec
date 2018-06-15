@@ -443,23 +443,26 @@ xmlSecBufferRemoveTail(xmlSecBufferPtr buf, xmlSecSize size) {
 int
 xmlSecBufferReadFile(xmlSecBufferPtr buf, const char* filename) {
     xmlSecByte buffer[1024];
-    FILE* f;
-    int ret, len;
+    FILE* f = NULL;
+    size_t len;
+    int ret;
 
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
 
+#ifndef _MSC_VER
     f = fopen(filename, "rb");
+#else
+    fopen_s(&f, filename, "rb");
+#endif /* _MSC_VER */
     if(f == NULL) {
         xmlSecIOError("fopen", filename, NULL);
         return(-1);
     }
 
-    while(1) {
+    while(!feof(f)) {
         len = fread(buffer, 1, sizeof(buffer), f);
-        if(len == 0) {
-            break;
-        }else if(len < 0) {
+        if(ferror(f)) {
             xmlSecIOError("fread", filename, NULL);
             fclose(f);
             return(-1);

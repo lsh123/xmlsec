@@ -1682,7 +1682,7 @@ done:
 #ifndef XMLSEC_NO_TMPL_TEST
 static int 
 xmlSecAppEncryptTmpl(void) {
-    const xmlChar[] data = "Hello, World!";
+    const xmlChar data[] = "Hello, World!";
     xmlSecEncCtx encCtx;
     xmlDocPtr doc = NULL;
     xmlNodePtr cur;

@@ -369,7 +369,7 @@ static int xmlSecMSCngCBCBlockCipherCtxInit(xmlSecMSCngBlockCipherCtxPtr ctx,
 
     if(encrypt) {
         unsigned char* iv;
-        size_t outSize;
+        xmlSecSize outSize;
 
         /* allocate space for IV */
         outSize = xmlSecBufferGetSize(out);
@@ -403,7 +403,7 @@ static int xmlSecMSCngCBCBlockCipherCtxInit(xmlSecMSCngBlockCipherCtxPtr ctx,
     } else {
         /* if we don't have enough data, exit and hope that
         * we'll have iv next time */
-        if(xmlSecBufferGetSize(in) < (size_t)ctx->dwBlockLen) {
+        if(xmlSecBufferGetSize(in) < XMLSEC_SIZE_BAD_CAST(ctx->dwBlockLen)) {
             return(0);
         }
         xmlSecAssert2(xmlSecBufferGetData(in) != NULL, -1);
@@ -609,7 +609,7 @@ static int
 xmlSecMSCngCBCBlockCipherCtxUpdate(xmlSecMSCngBlockCipherCtxPtr ctx,
         xmlSecBufferPtr in, xmlSecBufferPtr out, int encrypt,
         const xmlChar* cipherName, xmlSecTransformCtxPtr transformCtx) {
-    size_t inSize, inBlocks, outSize;
+    xmlSecSize inSize, inBlocks, outSize;
     unsigned char* outBuf;
     unsigned char* inBuf;
     DWORD dwCLen;
@@ -629,18 +629,18 @@ xmlSecMSCngCBCBlockCipherCtxUpdate(xmlSecMSCngBlockCipherCtxPtr ctx,
     inSize = xmlSecBufferGetSize(in);
     outSize = xmlSecBufferGetSize(out);
 
-    if(inSize < (size_t)ctx->dwBlockLen) {
+    if(inSize < XMLSEC_SIZE_BAD_CAST(ctx->dwBlockLen)) {
         return(0);
     }
 
     if(encrypt) {
-        inBlocks = inSize / ((size_t)ctx->dwBlockLen);
+        inBlocks = inSize / XMLSEC_SIZE_BAD_CAST(ctx->dwBlockLen);
     } else {
         /* we want to have the last block in the input buffer
         * for padding check */
-        inBlocks = (inSize - 1) / ((size_t)ctx->dwBlockLen);
+        inBlocks = (inSize - 1) / XMLSEC_SIZE_BAD_CAST(ctx->dwBlockLen);
     }
-    inSize = inBlocks * ((size_t)ctx->dwBlockLen);
+    inSize = inBlocks * XMLSEC_SIZE_BAD_CAST(ctx->dwBlockLen);
 
     /* we write out the input size plus maybe one block */
     ret = xmlSecBufferSetMaxSize(out, outSize + inSize + ctx->dwBlockLen);
@@ -727,7 +727,7 @@ xmlSecMSCngGCMBlockCipherCtxUpdate(xmlSecMSCngBlockCipherCtxPtr ctx,
         const xmlChar* cipherName, xmlSecTransformCtxPtr transformCtx) {
 
     NTSTATUS status;
-    size_t inSize, outSize;
+    xmlSecSize inSize, outSize;
     xmlSecByte *inBuf, *outBuf;
     DWORD dwCLen;
     int ret;
@@ -756,14 +756,14 @@ xmlSecMSCngGCMBlockCipherCtxUpdate(xmlSecMSCngBlockCipherCtxPtr ctx,
 
     if(encrypt) {
         /* Round to the block size. We will finalize this later */
-        inSize = (xmlSecBufferGetSize(in) / (size_t)ctx->dwBlockLen) * (size_t)ctx->dwBlockLen;
+        inSize = (xmlSecBufferGetSize(in) / XMLSEC_SIZE_BAD_CAST(ctx->dwBlockLen)) * XMLSEC_SIZE_BAD_CAST(ctx->dwBlockLen);
     } else {
         /* If we've been called here, we know there is more data
          * to come, but we don't know how much. The spec tells us that
          * the tag is the last 16 bytes of the data when decrypting, so to make sure
          * we don't try to decrypt it, we leave at least 16 bytes in the buffer
          * until we know we're processing the last one */
-        inSize = ((xmlSecBufferGetSize(in) - xmlSecMSCngAesGcmTagLengthInBytes) / (size_t)ctx->dwBlockLen) * (size_t)ctx->dwBlockLen;
+        inSize = ((xmlSecBufferGetSize(in) - xmlSecMSCngAesGcmTagLengthInBytes) / XMLSEC_SIZE_BAD_CAST(ctx->dwBlockLen)) * XMLSEC_SIZE_BAD_CAST(ctx->dwBlockLen);
         if (inSize < ctx->dwBlockLen) {
             return 0;
         }
@@ -870,7 +870,7 @@ static int
 xmlSecMSCngCBCBlockCipherCtxFinal(xmlSecMSCngBlockCipherCtxPtr ctx,
         xmlSecBufferPtr in, xmlSecBufferPtr out, int encrypt,
         const xmlChar* cipherName, xmlSecTransformCtxPtr transformCtx) {
-    size_t inSize, outSize;
+    xmlSecSize inSize, outSize;
     int outLen;
     unsigned char* inBuf;
     unsigned char* outBuf;
@@ -885,7 +885,7 @@ xmlSecMSCngCBCBlockCipherCtxFinal(xmlSecMSCngBlockCipherCtxPtr ctx,
     outSize = xmlSecBufferGetSize(out);
 
     if(encrypt != 0) {
-        xmlSecAssert2(inSize < (size_t)ctx->dwBlockLen, -1);
+        xmlSecAssert2(inSize < XMLSEC_SIZE_BAD_CAST(ctx->dwBlockLen), -1);
 
         /* create padding */
         ret = xmlSecBufferSetMaxSize(in, ctx->dwBlockLen);
@@ -897,7 +897,7 @@ xmlSecMSCngCBCBlockCipherCtxFinal(xmlSecMSCngBlockCipherCtxPtr ctx,
         inBuf = xmlSecBufferGetData(in);
 
         /* create random padding */
-        if((size_t)ctx->dwBlockLen > (inSize + 1)) {
+        if(XMLSEC_SIZE_BAD_CAST(ctx->dwBlockLen) > (inSize + 1)) {
             status = BCryptGenRandom(NULL,
                 (PBYTE) inBuf + inSize,
                 (ULONG)(ctx->dwBlockLen - inSize - 1),
@@ -910,7 +910,7 @@ xmlSecMSCngCBCBlockCipherCtxFinal(xmlSecMSCngBlockCipherCtxPtr ctx,
         inBuf[ctx->dwBlockLen - 1] = (unsigned char)(ctx->dwBlockLen - inSize);
         inSize = ctx->dwBlockLen;
     } else {
-        if(inSize != (size_t)ctx->dwBlockLen) {
+        if(inSize != XMLSEC_SIZE_BAD_CAST(ctx->dwBlockLen)) {
             xmlSecInvalidSizeError("Input data", inSize, ctx->dwBlockLen, cipherName);
             return(-1);
         }

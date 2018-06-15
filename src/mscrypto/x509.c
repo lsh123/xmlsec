@@ -396,7 +396,9 @@ xmlSecMSCryptoKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecAssert2(ctx->hMemStore != 0, NULL);
     xmlSecAssert2(ctx->numCerts > pos, NULL);
 
-    while ((pCert = CertEnumCertificatesInStore(ctx->hMemStore, pCert)) && (pos > 0)) {
+    pCert = CertEnumCertificatesInStore(ctx->hMemStore, pCert);
+    while ((pCert != NULL) && (pos > 0)) {
+      pCert = CertEnumCertificatesInStore(ctx->hMemStore, pCert);
       pos--;
     }
 
@@ -474,7 +476,9 @@ xmlSecMSCryptoKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecAssert2(ctx->hMemStore != 0, NULL);
     xmlSecAssert2(ctx->numCrls > pos, NULL);
 
-    while ((pCRL = CertEnumCRLsInStore(ctx->hMemStore, pCRL)) && (pos > 0)) {
+    pCRL = CertEnumCRLsInStore(ctx->hMemStore, pCRL);
+    while ((pCRL != NULL) && (pos > 0)) {
+      pCRL = CertEnumCRLsInStore(ctx->hMemStore, pCRL);
       pos--;
     }
 
@@ -1059,6 +1063,7 @@ xmlSecMSCryptoX509SubjectNameNodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node, xml
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
+    UNREFERENCED_PARAMETER(keyInfoCtx);
 
     buf = xmlSecMSCryptoX509NameWrite(&(cert->pCertInfo->Subject));
     if(buf == NULL) {
@@ -1193,6 +1198,7 @@ xmlSecMSCryptoX509IssuerSerialNodeWrite(PCCERT_CONTEXT cert,
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
+    UNREFERENCED_PARAMETER(keyInfoCtx);
 
     /* create xml nodes */
     cur = xmlSecEnsureEmptyChild(node, xmlSecNodeX509IssuerSerial, xmlSecDSigNs);
@@ -1301,6 +1307,7 @@ xmlSecMSCryptoX509SKINodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node, xmlSecKeyIn
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
+    UNREFERENCED_PARAMETER(keyInfoCtx);
 
     buf = xmlSecMSCryptoX509SKIWrite(cert);
     if(buf == NULL) {

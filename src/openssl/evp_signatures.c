@@ -139,8 +139,6 @@ xmlSecOpenSSLEvpSignatureCheckId(xmlSecTransformPtr transform) {
     {
         return(0);
     }
-
-    return(0);
 }
 
 static int

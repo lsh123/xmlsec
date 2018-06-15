@@ -208,8 +208,6 @@ xmlSecMSCryptoSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
     {
         return(0);
     }
-
-    return(0);
 }
 
 

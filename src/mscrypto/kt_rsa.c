@@ -90,9 +90,6 @@ xmlSecMSCryptoRsaPkcs1OaepCheckId(xmlSecTransformPtr transform) {
     {
         return(0);
     }
-
-    /* just in case */
-    return(0);
 }
 
 static int

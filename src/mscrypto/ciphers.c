@@ -423,7 +423,6 @@ xmlSecMSCryptoBlockCipherCheckId(xmlSecTransformPtr transform) {
 static int
 xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
     xmlSecMSCryptoBlockCipherCtxPtr ctx;
-    int ret;
 
     xmlSecAssert2(xmlSecMSCryptoBlockCipherCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoBlockCipherSize), -1);

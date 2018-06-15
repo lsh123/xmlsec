@@ -27,6 +27,7 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/bn.h>
@@ -976,6 +977,7 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
+    UNREFERENCED_PARAMETER(type);
 
     dsa = DSA_new();
     if(dsa == NULL) {
@@ -1287,6 +1289,7 @@ xmlSecOpenSSLKeyDataEcdsaFinalize(xmlSecKeyDataPtr data) {
 
 static xmlSecKeyDataType
 xmlSecOpenSSLKeyDataEcdsaGetType(xmlSecKeyDataPtr data ATTRIBUTE_UNUSED) {
+    UNREFERENCED_PARAMETER(data);
     /* XXX-MAK: Fix this. */
     return(xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate);
 }
@@ -1791,6 +1794,7 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
+    UNREFERENCED_PARAMETER(type);
 
     /* create exponent */
     e = BN_new();

@@ -347,7 +347,7 @@ xmlSecMSCngShutdown(void) {
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecMSCngGenerateRandom(xmlSecBufferPtr buffer, size_t size) {
+xmlSecMSCngGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
     NTSTATUS status;
     int ret;
 

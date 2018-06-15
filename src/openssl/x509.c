@@ -35,6 +35,7 @@
 #include <xmlsec/x509.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
@@ -1068,6 +1069,7 @@ xmlSecOpenSSLX509SubjectNameNodeWrite(X509* cert, xmlNodePtr node, xmlSecKeyInfo
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
+    UNREFERENCED_PARAMETER(keyInfoCtx);
 
     buf = xmlSecOpenSSLX509NameWrite(X509_get_subject_name(cert));
     if(buf == NULL) {
@@ -1210,6 +1212,7 @@ xmlSecOpenSSLX509IssuerSerialNodeWrite(X509* cert, xmlNodePtr node, xmlSecKeyInf
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
+    UNREFERENCED_PARAMETER(keyInfoCtx);
 
     /* create xml nodes */
     cur = xmlSecEnsureEmptyChild(node, xmlSecNodeX509IssuerSerial, xmlSecDSigNs);
@@ -1337,6 +1340,7 @@ xmlSecOpenSSLX509SKINodeWrite(X509* cert, xmlNodePtr node, xmlSecKeyInfoCtxPtr k
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
+    UNREFERENCED_PARAMETER(keyInfoCtx);
 
     buf = xmlSecOpenSSLX509SKIWrite(cert);
     if(buf == NULL) {

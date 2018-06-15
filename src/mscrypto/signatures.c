@@ -143,8 +143,6 @@ static int xmlSecMSCryptoSignatureCheckId(xmlSecTransformPtr transform) {
     {
         return(0);
     }
-
-    return(0);
 }
 
 static int xmlSecMSCryptoSignatureInitialize(xmlSecTransformPtr transform) {
@@ -446,7 +444,6 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
     BYTE *tmpBuf, *outBuf;
     int bOk;
     PCRYPT_KEY_PROV_INFO pProviderInfo = NULL;
-    size_t size;
 
     xmlSecAssert2(xmlSecMSCryptoSignatureCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationSign) || (transform->operation == xmlSecTransformOperationVerify), -1);

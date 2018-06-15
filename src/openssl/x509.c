@@ -1527,9 +1527,21 @@ xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr 
 #ifdef HAVE_TIMEGM
 extern time_t timegm (struct tm *tm);
 #else  /* HAVE_TIMEGM */
+
 #ifdef WIN32
-#define timegm(tm)      (mktime(tm) - _timezone)
+
+static time_t
+my_timegm(struct tm *t) {
+    long seconds = 0;
+    if(_get_timezone(&seconds) != 0) {
+        return(-1);
+    }
+    return (mktime() - seconds);
+}
+#define timegm(tm) my_timegm(tm)
+
 #else /* WIN32 */
+
 /* Absolutely not the best way but it's the only ANSI compatible way I know.
  * If you system has a native struct tm --> GMT time_t conversion function
  * (like timegm) use it instead.
@@ -1544,7 +1556,7 @@ my_timegm(struct tm *t) {
         t->tm_hour--;
         tl = mktime (t);
         if (tl == -1) {
-            return -1;
+            return (-1);
         }
         tl += 3600;
     }
@@ -1555,7 +1567,7 @@ my_timegm(struct tm *t) {
         tg->tm_hour--;
         tb = mktime (tg);
         if (tb == -1) {
-            return -1;
+            return (-1);
         }
         tb += 3600;
     }
@@ -1563,6 +1575,7 @@ my_timegm(struct tm *t) {
 }
 
 #define timegm(tm) my_timegm(tm)
+
 #endif /* WIN32 */
 #endif /* HAVE_TIMEGM */
 

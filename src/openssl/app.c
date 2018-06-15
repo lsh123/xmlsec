@@ -1363,13 +1363,19 @@ xmlSecOpenSSLDummyPasswordCallback(char *buf, int bufsize,
                                    int verify ATTRIBUTE_UNUSED,
                                    void *userdata) {
     char* password = (char*)userdata;
+    int passwordlen = (int)strlen(password);
     UNREFERENCED_PARAMETER(verify);
 
-    if((password == NULL) || ((int)strlen(password) + 1 > bufsize)) {
+    if((password == NULL) || (passwordlen + 1 > bufsize)) {
         return(-1);
     }
 
+#ifdef WIN32
+    strcpy_s(buf, bufsize, password);
+#else  /* WIN32 */
     strcpy(buf, password);
-    return ((int)strlen(buf));
+#endif /* WIN32 */
+
+    return (passwordlen);
 }
 

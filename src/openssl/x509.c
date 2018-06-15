@@ -1536,7 +1536,7 @@ my_timegm(struct tm *t) {
     if(_get_timezone(&seconds) != 0) {
         return(-1);
     }
-    return (mktime() - seconds);
+    return (mktime(t) - seconds);
 }
 #define timegm(tm) my_timegm(tm)
 

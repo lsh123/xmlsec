@@ -34,6 +34,8 @@ else
 fi
 nssdbfolder=$topfolder/nssdb
 
+echo "===== OS_ARCH: $OS_ARCH; OS_KERNEL: $OS_KERNEL ====="
+
 #
 # Valgrind
 #

@@ -1682,7 +1682,7 @@ done:
 #ifndef XMLSEC_NO_TMPL_TEST
 static int 
 xmlSecAppEncryptTmpl(void) {
-    const char* data = "Hello, World!";
+    const xmlChar[] data = "Hello, World!";
     xmlSecEncCtx encCtx;
     xmlDocPtr doc = NULL;
     xmlNodePtr cur;
@@ -1732,7 +1732,7 @@ xmlSecAppEncryptTmpl(void) {
     /* encrypt */
     start_time = clock();            
     if(xmlSecEncCtxBinaryEncrypt(&encCtx, xmlDocGetRootElement(doc), 
-                                (const xmlSecByte*)data, strlen(data)) < 0) {
+                                (const xmlSecByte*)data, xmlStrlen(data)) < 0) {
         fprintf(stderr, "Error: failed to encrypt data\n");
         goto done;      
     }
@@ -2743,12 +2743,16 @@ xmlSecAppGetUriType(const char* string) {
 
 static FILE* 
 xmlSecAppOpenFile(const char* filename) {
-    FILE* file;
+    FILE* file = NULL;
     
     if((filename == NULL) || (strcmp(filename, XMLSEC_STDOUT_FILENAME) == 0)) {
         return(stdout);
     }
+#ifdef WIN32
+    fopen_s(&file, filename, "wb");
+#else /* WIN32 */
     file = fopen(filename, "wb");
+#endif /* WIN32 */
     if(file == NULL) {
         fprintf(stderr, "Error: failed to open file \"%s\"\n", filename);
         return(NULL);

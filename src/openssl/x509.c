@@ -1530,6 +1530,7 @@ extern time_t timegm (struct tm *tm);
 
 #ifdef WIN32
 
+#ifdef _MSC_VER
 static time_t
 my_timegm(struct tm *t) {
     long seconds = 0;
@@ -1539,6 +1540,12 @@ my_timegm(struct tm *t) {
     return (mktime(t) - seconds);
 }
 #define timegm(tm) my_timegm(tm)
+
+#else  /* _MSC_VER */
+
+#define timegm(tm)      (mktime(tm) - _timezone)
+
+#endif /* _MSC_VER */
 
 #else /* WIN32 */
 

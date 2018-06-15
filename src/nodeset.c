@@ -26,6 +26,7 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/nodeset.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/private.h>
 
 #define xmlSecGetParent(node)           \
     (((node)->type != XML_NAMESPACE_DECL) ? \
@@ -499,6 +500,8 @@ xmlSecNodeSetDumpTextNodesWalkCallback(xmlSecNodeSetPtr nset, xmlNodePtr cur,
     xmlSecAssert2(nset != NULL, -1);
     xmlSecAssert2(cur != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
+
+    UNREFERENCED_PARAMETER(parent);
 
     if(cur->type != XML_TEXT_NODE) {
         return(0);

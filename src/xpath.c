@@ -537,7 +537,7 @@ xmlSecTransformXPathNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
 
     /* create full XPath expression */
     xmlSecAssert2(data->expr != NULL, -1);
-    tmpSize = xmlStrlen(data->expr) + strlen(xpathPattern) + 1;
+    tmpSize = xmlStrlen(data->expr) + xmlStrlen(BAD_CAST xpathPattern) + 1;
     tmp = (xmlChar*) xmlMalloc(sizeof(xmlChar) * tmpSize);
     if(tmp == NULL) {
         xmlSecMallocError(sizeof(xmlChar) * tmpSize,

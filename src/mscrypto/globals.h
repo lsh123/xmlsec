@@ -44,15 +44,15 @@ void xmlSecMSCryptoGetErrorMessage      (DWORD dwError,
  */
 #define xmlSecMSCryptoError(errorFunction, errorObject) \
     {                                                             \
-        DWORD dwError = GetLastError();                           \
-        xmlChar buf[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE];       \
-        xmlSecMSCryptoGetErrorMessage(dwError, buf, sizeof(buf)); \
+        DWORD dwLastError = GetLastError();                       \
+        xmlChar errBuf[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE];    \
+        xmlSecMSCryptoGetErrorMessage(dwLastError, errBuf, sizeof(errBuf)); \
         xmlSecError(XMLSEC_ERRORS_HERE,                           \
                     (const char*)(errorObject),                   \
                     (errorFunction),                              \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,                \
                     "MSCrypto error: %ld: 0x%08lx: %s",           \
-                    (long int)dwError, (long int)dwError, buf     \
+                    (long int)dwLastError, (long int)dwLastError, errBuf \
         );                                                        \
     }
 
@@ -67,16 +67,16 @@ void xmlSecMSCryptoGetErrorMessage      (DWORD dwError,
  */
 #define xmlSecMSCryptoError2(errorFunction, errorObject, msg, param) \
     {                                                             \
-        DWORD dwError = GetLastError();                           \
-        xmlChar buf[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE];       \
-        xmlSecMSCryptoGetErrorMessage(dwError, buf, sizeof(buf)); \
+        DWORD dwLastError = GetLastError();                       \
+        xmlChar errBuf[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE];    \
+        xmlSecMSCryptoGetErrorMessage(dwLastError, errBuf, sizeof(errBuf)); \
         xmlSecError(XMLSEC_ERRORS_HERE,                           \
                     (const char*)(errorObject),                   \
                     (errorFunction),                              \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,                \
                     msg  "MSCrypto error: %ld: 0x%08lx: %s",      \
                     (param),                                      \
-                    (long int)dwError, (long int)dwError, buf     \
+                    (long int)dwLastError, (long int)dwLastError, errBuf \
         );                                                        \
     }
 

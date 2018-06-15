@@ -177,8 +177,7 @@ xmlSecAppCmdLineMatchParam(const char* argvParam, const char* paramName,
     assert(paramName != NULL);
     
     if(canHaveNameString != 0) {
-        int len = strlen(paramName);
-        
+        size_t len = strlen(paramName);
         if((strncmp(argvParam, paramName, len) == 0) &&
            ((argvParam[len] == '\0') || (argvParam[len] == ':'))) {
            
@@ -301,7 +300,11 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
                 return(-1);
             }    
             value->strValue = argv[++pos];
+#ifdef WIN32
+            if(sscanf_s(value->strValue, "%d", &(value->intValue)) != 1) {
+#else /* WIN32 */
             if(sscanf(value->strValue, "%d", &(value->intValue)) != 1) {
+#endif /* WIN32 */
                 fprintf(stderr, "Error: integer argument \"%s\" is invalid.\n", value->strValue);
                 return(-1);
             }    
@@ -331,10 +334,16 @@ xmlSecAppCmdLineTimeParamRead(const char* str, time_t* t) {
     }
     memset(&tm, 0, sizeof(tm));
     tm.tm_isdst = -1;
-    
+
+#ifdef WIN32
+    n = sscanf_s(str, "%4d-%2d-%2d%*c%2d:%2d:%2d",
+                            &tm.tm_year, &tm.tm_mon, &tm.tm_mday,
+                            &tm.tm_hour, &tm.tm_min, &tm.tm_sec);    
+#else /* WIN32 */
     n = sscanf(str, "%4d-%2d-%2d%*c%2d:%2d:%2d", 
                             &tm.tm_year, &tm.tm_mon, &tm.tm_mday,
                             &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
+#endif /* WIN32 */
     if((n != 6) || (tm.tm_year < 1900) 
                 || (tm.tm_mon  < 1) || (tm.tm_mon  > 12) 
                 || (tm.tm_mday < 1) || (tm.tm_mday > 31)

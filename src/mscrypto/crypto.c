@@ -354,7 +354,7 @@ static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Random[] = {
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecMSCryptoGenerateRandom(xmlSecBufferPtr buffer, size_t size) {
+xmlSecMSCryptoGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
     HCRYPTPROV hProv = 0;
     int ret;
 
@@ -419,7 +419,7 @@ xmlSecMSCryptoGetErrorMessage(DWORD dwError, xmlChar * out, xmlSecSize outSize) 
     }
 
 #ifdef UNICODE
-    ret = WideCharToMultiByte(CP_UTF8, 0, errorText, -1, out, outSize, NULL, NULL);
+    ret = WideCharToMultiByte(CP_UTF8, 0, errorText, -1, (LPSTR)out, outSize, NULL, NULL);
     if(ret <= 0) {
         out[0] = '\0';
         goto done;

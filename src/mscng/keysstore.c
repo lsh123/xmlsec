@@ -39,7 +39,7 @@
 #include <xmlsec/mscng/x509.h>
 #include <xmlsec/mscng/certkeys.h>
 
-#define XMLSEC_MSCNG_APP_DEFAULT_CERT_STORE_NAME L"MY"
+#define XMLSEC_MSCNG_APP_DEFAULT_CERT_STORE_NAME TEXT("MY")
 
 /****************************************************************************
  *

@@ -513,6 +513,15 @@ struct _xmlSecCryptoDLFunctions {
 #define ATTRIBUTE_UNUSED
 #endif
 
+/**
+ * UNREFERENCED_PARAMETER:
+ *
+ * Macro used to signal to MSVC unused function parameters
+ */
+#ifndef UNREFERENCED_PARAMETER
+#define UNREFERENCED_PARAMETER(x)
+#endif /* UNREFERENCED_PARAMETER */
+
 /***********************************************************************
  *
  * Helpers to convert from void* to function pointer, this silence

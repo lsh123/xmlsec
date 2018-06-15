@@ -88,7 +88,7 @@ xmlSecMSCryptoBlockCipherCtxInit(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     xmlSecAssert2(blockLen > 0, -1);
     if(encrypt) {
         unsigned char* iv;
-        size_t outSize;
+        xmlSecSize outSize;
 
         /* allocate space for IV */
         outSize = xmlSecBufferGetSize(out);
@@ -114,7 +114,7 @@ xmlSecMSCryptoBlockCipherCtxInit(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     } else {
         /* if we don't have enough data, exit and hope that
         * we'll have iv next time */
-        if(xmlSecBufferGetSize(in) < (size_t)blockLen) {
+        if(xmlSecBufferGetSize(in) < XMLSEC_SIZE_BAD_CAST(blockLen)) {
             return(0);
         }
         xmlSecAssert2(xmlSecBufferGetData(in) != NULL, -1);
@@ -145,7 +145,7 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
                                    int encrypt,
                                    const xmlChar* cipherName,
                                    xmlSecTransformCtxPtr transformCtx) {
-    size_t inSize, inBlocks, outSize;
+    xmlSecSize inSize, inBlocks, outSize;
     int blockLen;
     unsigned char* outBuf;
     unsigned char* inBuf;
@@ -169,18 +169,18 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     inSize = xmlSecBufferGetSize(in);
     outSize = xmlSecBufferGetSize(out);
 
-    if(inSize < (size_t)blockLen) {
+    if(inSize < XMLSEC_SIZE_BAD_CAST(blockLen)) {
         return(0);
     }
 
     if(encrypt) {
-        inBlocks = inSize / ((size_t)blockLen);
+        inBlocks = inSize / XMLSEC_SIZE_BAD_CAST(blockLen);
     } else {
         /* we want to have the last block in the input buffer
          * for padding check */
-        inBlocks = (inSize - 1) / ((size_t)blockLen);
+        inBlocks = (inSize - 1) / XMLSEC_SIZE_BAD_CAST(blockLen);
     }
-    inSize = inBlocks * ((size_t)blockLen);
+    inSize = inBlocks * XMLSEC_SIZE_BAD_CAST(blockLen);
 
     /* we write out the input size plus may be one block */
     ret = xmlSecBufferSetMaxSize(out, outSize + inSize + blockLen);
@@ -238,7 +238,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
                                   int encrypt,
                                   const xmlChar* cipherName,
                                   xmlSecTransformCtxPtr transformCtx) {
-    size_t inSize, outSize;
+    xmlSecSize inSize, outSize;
     int blockLen, outLen = 0;
     unsigned char* inBuf;
     unsigned char* outBuf;
@@ -263,7 +263,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     outSize = xmlSecBufferGetSize(out);
 
     if(encrypt != 0) {
-        xmlSecAssert2(inSize < (size_t)blockLen, -1);
+        xmlSecAssert2(inSize < XMLSEC_SIZE_BAD_CAST(blockLen), -1);
 
         /* create padding */
         ret = xmlSecBufferSetMaxSize(in, blockLen);
@@ -275,7 +275,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
         inBuf = xmlSecBufferGetData(in);
 
         /* create random padding */
-        if((size_t)blockLen > (inSize + 1)) {
+        if(XMLSEC_SIZE_BAD_CAST(blockLen) > (inSize + 1)) {
             if (!CryptGenRandom(ctx->cryptProvider, blockLen - inSize - 1, inBuf + inSize)) {
                 xmlSecMSCryptoError("CryptGenRandom", cipherName);
                 return(-1);
@@ -284,7 +284,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
         inBuf[blockLen - 1] = (unsigned char)(blockLen - inSize);
         inSize = blockLen;
     } else {
-        if(inSize != (size_t)blockLen) {
+        if(inSize != XMLSEC_SIZE_BAD_CAST(blockLen)) {
             xmlSecInvalidSizeError("Input data", inSize, blockLen, cipherName);
             return(-1);
         }
@@ -423,7 +423,6 @@ xmlSecMSCryptoBlockCipherCheckId(xmlSecTransformPtr transform) {
 static int
 xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
     xmlSecMSCryptoBlockCipherCtxPtr ctx;
-    int ret;
 
     xmlSecAssert2(xmlSecMSCryptoBlockCipherCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoBlockCipherSize), -1);

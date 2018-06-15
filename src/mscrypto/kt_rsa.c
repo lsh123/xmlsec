@@ -90,9 +90,6 @@ xmlSecMSCryptoRsaPkcs1OaepCheckId(xmlSecTransformPtr transform) {
     {
         return(0);
     }
-
-    /* just in case */
-    return(0);
 }
 
 static int
@@ -250,7 +247,6 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformC
     DWORD dwOutLen;
     xmlSecByte * outBuf;
     xmlSecByte * inBuf;
-    int i;
 
     xmlSecAssert2(xmlSecMSCryptoRsaPkcs1OaepCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);

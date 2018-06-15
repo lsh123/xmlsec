@@ -489,7 +489,6 @@ xmlSecMSCryptoKWDes3GenerateRandom(void * context,
                                    xmlSecByte * out, xmlSecSize outSize) 
 {
     xmlSecMSCryptoKWDes3CtxPtr ctx = (xmlSecMSCryptoKWDes3CtxPtr)context;
-    int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->desCryptProvider != 0, -1);
@@ -513,7 +512,6 @@ xmlSecMSCryptoKWDes3BlockEncrypt(void * context,
     xmlSecMSCryptoKWDes3CtxPtr ctx = (xmlSecMSCryptoKWDes3CtxPtr)context;
     DWORD dwBlockLen, dwBlockLenLen, dwCLen;
     HCRYPTKEY cryptKey = 0;
-    int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(xmlSecBufferGetData(&(ctx->keyBuffer)) != NULL, -1);
@@ -586,7 +584,6 @@ xmlSecMSCryptoKWDes3BlockDecrypt(void * context,
     xmlSecMSCryptoKWDes3CtxPtr ctx = (xmlSecMSCryptoKWDes3CtxPtr)context;
     DWORD dwBlockLen, dwBlockLenLen, dwCLen;
     HCRYPTKEY cryptKey = 0;
-    int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(xmlSecBufferGetData(&(ctx->keyBuffer)) != NULL, -1);

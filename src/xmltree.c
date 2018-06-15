@@ -1017,7 +1017,7 @@ xmlSecQName2IntegerGetIntegerFromString(xmlSecQName2IntegerInfoConstPtr info,
 
     qnameLocalPart = xmlStrchr(qname, ':');
     if(qnameLocalPart != NULL) {
-        qnamePrefix = xmlStrndup(qname, qnameLocalPart - qname);
+        qnamePrefix = xmlStrndup(qname, (int)(qnameLocalPart - qname));
         if(qnamePrefix == NULL) {
             xmlSecStrdupError(qname, NULL);
             return(-1);
@@ -1421,7 +1421,7 @@ xmlSecQName2BitMaskGetBitMaskFromString(xmlSecQName2BitMaskInfoConstPtr info,
 
     qnameLocalPart = xmlStrchr(qname, ':');
     if(qnameLocalPart != NULL) {
-        qnamePrefix = xmlStrndup(qname, qnameLocalPart - qname);
+        qnamePrefix = xmlStrndup(qname, (int)(qnameLocalPart - qname));
         if(qnamePrefix == NULL) {
             xmlSecStrdupError(qname, NULL);
             return(-1);

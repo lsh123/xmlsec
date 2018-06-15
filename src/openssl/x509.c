@@ -35,6 +35,7 @@
 #include <xmlsec/x509.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
@@ -1068,6 +1069,7 @@ xmlSecOpenSSLX509SubjectNameNodeWrite(X509* cert, xmlNodePtr node, xmlSecKeyInfo
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
+    UNREFERENCED_PARAMETER(keyInfoCtx);
 
     buf = xmlSecOpenSSLX509NameWrite(X509_get_subject_name(cert));
     if(buf == NULL) {
@@ -1210,6 +1212,7 @@ xmlSecOpenSSLX509IssuerSerialNodeWrite(X509* cert, xmlNodePtr node, xmlSecKeyInf
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
+    UNREFERENCED_PARAMETER(keyInfoCtx);
 
     /* create xml nodes */
     cur = xmlSecEnsureEmptyChild(node, xmlSecNodeX509IssuerSerial, xmlSecDSigNs);
@@ -1337,6 +1340,7 @@ xmlSecOpenSSLX509SKINodeWrite(X509* cert, xmlNodePtr node, xmlSecKeyInfoCtxPtr k
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
+    UNREFERENCED_PARAMETER(keyInfoCtx);
 
     buf = xmlSecOpenSSLX509SKIWrite(cert);
     if(buf == NULL) {
@@ -1523,9 +1527,28 @@ xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr 
 #ifdef HAVE_TIMEGM
 extern time_t timegm (struct tm *tm);
 #else  /* HAVE_TIMEGM */
+
 #ifdef WIN32
+
+#ifdef _MSC_VER
+static time_t
+my_timegm(struct tm *t) {
+    long seconds = 0;
+    if(_get_timezone(&seconds) != 0) {
+        return(-1);
+    }
+    return (mktime(t) - seconds);
+}
+#define timegm(tm) my_timegm(tm)
+
+#else  /* _MSC_VER */
+
 #define timegm(tm)      (mktime(tm) - _timezone)
+
+#endif /* _MSC_VER */
+
 #else /* WIN32 */
+
 /* Absolutely not the best way but it's the only ANSI compatible way I know.
  * If you system has a native struct tm --> GMT time_t conversion function
  * (like timegm) use it instead.
@@ -1540,7 +1563,7 @@ my_timegm(struct tm *t) {
         t->tm_hour--;
         tl = mktime (t);
         if (tl == -1) {
-            return -1;
+            return (-1);
         }
         tl += 3600;
     }
@@ -1551,7 +1574,7 @@ my_timegm(struct tm *t) {
         tg->tm_hour--;
         tb = mktime (tg);
         if (tb == -1) {
-            return -1;
+            return (-1);
         }
         tb += 3600;
     }
@@ -1559,6 +1582,7 @@ my_timegm(struct tm *t) {
 }
 
 #define timegm(tm) my_timegm(tm)
+
 #endif /* WIN32 */
 #endif /* HAVE_TIMEGM */
 

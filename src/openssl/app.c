@@ -609,6 +609,8 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
     int ret;
 
     xmlSecAssert2(bio != NULL, NULL);
+    UNREFERENCED_PARAMETER(pwdCallback);
+    UNREFERENCED_PARAMETER(pwdCallbackCtx);
 
     p12 = d2i_PKCS12_bio(bio, NULL);
     if(p12 == NULL) {
@@ -616,7 +618,7 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
         goto done;
     }
 
-    ret = PKCS12_verify_mac(p12, pwd, (pwd != NULL) ? strlen(pwd) : 0);
+    ret = PKCS12_verify_mac(p12, pwd, (pwd != NULL) ? (int)strlen(pwd) : 0);
     if(ret != 1) {
         xmlSecOpenSSLError("PKCS12_verify_mac", NULL);
         goto done;
@@ -1315,7 +1317,7 @@ xmlSecOpenSSLDefaultPasswordCallback(char *buf, int bufsize, int verify, void *u
 
         /* if we don't need to verify password then we are done */
         if(verify == 0) {
-            return(strlen(buf));
+            return((int)strlen(buf));
         }
 
         if(filename != NULL) {
@@ -1345,7 +1347,7 @@ xmlSecOpenSSLDefaultPasswordCallback(char *buf, int bufsize, int verify, void *u
         if(strcmp(buf, buf2) == 0) {
             memset(buf2, 0, bufsize);
             xmlFree(buf2);
-            return(strlen(buf));
+            return((int)strlen(buf));
         }
 
         /* try again */
@@ -1361,12 +1363,19 @@ xmlSecOpenSSLDummyPasswordCallback(char *buf, int bufsize,
                                    int verify ATTRIBUTE_UNUSED,
                                    void *userdata) {
     char* password = (char*)userdata;
+    int passwordlen = (int)strlen(password);
+    UNREFERENCED_PARAMETER(verify);
 
-    if((password == NULL) || ((int)strlen(password) + 1 > bufsize)) {
+    if((password == NULL) || (passwordlen + 1 > bufsize)) {
         return(-1);
     }
 
+#ifdef WIN32
+    strcpy_s(buf, bufsize, password);
+#else  /* WIN32 */
     strcpy(buf, password);
-    return (strlen(buf));
+#endif /* WIN32 */
+
+    return (passwordlen);
 }
 

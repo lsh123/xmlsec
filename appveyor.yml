@@ -22,16 +22,18 @@ environment:
     LIBXSLT_FILE: libxslt-1.1.32-noiconv-win-x64.7z
 
   matrix:
-    # enable shared linking
-    #- STATIC: no
-    #  COMPILER: MinGW-w64
+    - STATIC: no
+      COMPILER: MinGW-w64
 
-    # enable static linking
-    #- STATIC: yes
-    #  COMPILER: MinGW-w64
+    - STATIC: yes
+      COMPILER: MinGW-w64
 
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       STATIC: no
+      COMPILER: MSVC17
+
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      STATIC: yes
       COMPILER: MSVC17
 
 init:
@@ -49,7 +51,6 @@ install:
   - if [%COMPILER%]==[MSVC17] 7z x %LIBXML2_FILE%
   - if [%COMPILER%]==[MSVC17] appveyor DownloadFile %EXTRAS_URL%/%LIBXSLT_FILE%
   - if [%COMPILER%]==[MSVC17] 7z x %LIBXSLT_FILE%
-  - if [%COMPILER%]==[MSVC17] dir bin lib
   - if [%COMPILER%]==[MSVC17] cd %APPVEYOR_BUILD_FOLDER%
 
 build_script:
@@ -63,3 +64,5 @@ build_script:
 test_script:
   - if [%COMPILER%]==[MinGW-w64] make check
   - if [%COMPILER%]==[MSVC17] nmake check
+
+

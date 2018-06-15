@@ -18,6 +18,8 @@ extern "C" {
 #include <xmlsec/transforms.h>
 #include <xmlsec/dl.h>
 
+#include <gcrypt.h>
+
 XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctions_gcrypt(void);
 
 /********************************************************************
@@ -151,7 +153,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformKWDes3GetKlass(void)
  *
  *******************************************************************/
 #ifndef XMLSEC_NO_DSA
-#include <gcrypt.h>
 
 /**
  * xmlSecGCryptKeyDataDsaId:
@@ -281,7 +282,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformHmacSha512GetKlass(v
  *
  *******************************************************************/
 #ifndef XMLSEC_NO_RSA
-#include <gcrypt.h>
 
 /**
  * xmlSecGCryptKeyDataRsaId:

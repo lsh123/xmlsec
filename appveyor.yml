@@ -23,12 +23,6 @@ environment:
     OPENSSL_FILE: openssl-1.1.0h-x64.7z
 
   matrix:
-    - STATIC: no
-      COMPILER: MinGW-w64
-
-    - STATIC: yes
-      COMPILER: MinGW-w64
-
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       STATIC: no
       COMPILER: MSVC17
@@ -36,6 +30,12 @@ environment:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       STATIC: yes
       COMPILER: MSVC17
+
+    - STATIC: no
+      COMPILER: MinGW-w64
+
+    - STATIC: yes
+      COMPILER: MinGW-w64
 
 init:
   - git config --global core.autocrlf input

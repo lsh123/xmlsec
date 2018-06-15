@@ -33,7 +33,7 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoShutdown          (void);
 
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoKeysMngrInit      (xmlSecKeysMngrPtr mngr);
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoGenerateRandom    (xmlSecBufferPtr buffer,
-                                                                         size_t size);
+                                                                         xmlSecSize size);
 
 XMLSEC_CRYPTO_EXPORT void               xmlSecMSCryptoErrorsDefaultCallback(const char* file,
                                                                         int line,

@@ -217,6 +217,9 @@ xmlSecMSCryptoAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlS
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(dataSize > 0, NULL);
     xmlSecAssert2(format == xmlSecKeyDataFormatCertDer, NULL);
+    UNREFERENCED_PARAMETER(pwd);
+    UNREFERENCED_PARAMETER(pwdCallback);
+    UNREFERENCED_PARAMETER(pwdCallbackCtx);
 
     pCert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, data, dataSize);
     if (NULL == pCert) {
@@ -499,6 +502,8 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(dataSize > 1, NULL);
     xmlSecAssert2(pwd != NULL, NULL);
+    UNREFERENCED_PARAMETER(pwdCallback);
+    UNREFERENCED_PARAMETER(pwdCallbackCtx);
 
     memset(&pfx, 0, sizeof(pfx));
     pfx.pbData = (BYTE *)data;

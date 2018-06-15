@@ -92,7 +92,7 @@ struct _xmlSecMSCryptoHmacCtx {
     const xmlSecMSCryptoProviderInfo  * providers;
     HCRYPTHASH      mscHash;
     unsigned char   dgst[XMLSEC_MSCRYPTO_MAX_HMAC_SIZE];
-    size_t          dgstSize;   /* dgst size in bytes */
+    xmlSecSize      dgstSize;   /* dgst size in bytes */
     int             ctxInitialized;
 };
 

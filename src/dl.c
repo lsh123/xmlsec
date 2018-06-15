@@ -371,6 +371,8 @@ xmlSecCryptoDLShutdown(void) {
     if(ret != 0) {
         xmlSecIOError("lt_dlexit", NULL, NULL);
     }
+#else  /* XMLSEC_DL_LIBLTDL */
+    UNREFERENCED_PARAMETER(ret);
 #endif /* XMLSEC_DL_LIBLTDL */
 
     return(0);

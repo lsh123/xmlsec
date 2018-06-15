@@ -143,6 +143,7 @@ xmlSecMSCryptoSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xml
 
     xmlSecAssert2(xmlSecMSCryptoSymKeyDataCheckId(data), -1);
     xmlSecAssert2(sizeBits > 0, -1);
+    UNREFERENCED_PARAMETER(type);
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert2(buffer != NULL, -1);
@@ -230,9 +231,8 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
     DWORD keyBlobLen;
     PUBLICKEYSTRUC* pubKeyStruc;
     RSAPUBKEY* rsaPubKey;
-    DWORD bitLen;
+    DWORD bitLen, n;
     BYTE *ptr;
-    int n;
     BOOL res = FALSE;
 
     xmlSecAssert2(hProv != 0, FALSE);

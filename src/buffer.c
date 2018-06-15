@@ -468,9 +468,9 @@ xmlSecBufferReadFile(xmlSecBufferPtr buf, const char* filename) {
             return(-1);
         }
 
-        ret = xmlSecBufferAppend(buf, buffer, len);
+        ret = xmlSecBufferAppend(buf, buffer, XMLSEC_SIZE_BAD_CAST(len));
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferAppend", NULL, "size=%d", len);
+            xmlSecInternalError2("xmlSecBufferAppend", NULL, "size=%d", XMLSEC_SIZE_BAD_CAST(len));
             fclose(f);
             return(-1);
         }

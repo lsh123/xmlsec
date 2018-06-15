@@ -34,7 +34,7 @@
 #include <xmlsec/mscng/keysstore.h>
 
 /* config info for the mscng keysstore */
-static LPTSTR gXmlSecMSCngAppCertStoreName = NULL;
+static LPWSTR gXmlSecMSCngAppCertStoreName = NULL;
 
 /**
  * xmlSecMSCngAppInit:

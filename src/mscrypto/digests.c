@@ -41,7 +41,7 @@ struct _xmlSecMSCryptoDigestCtx {
     const xmlSecMSCryptoProviderInfo  * providers;
     HCRYPTHASH      mscHash;
     unsigned char   dgst[MSCRYPTO_MAX_HASH_SIZE];
-    size_t          dgstSize;   /* dgst size in bytes */
+    xmlSecSize      dgstSize;   /* dgst size in bytes */
 };
 
 /******************************************************************************
@@ -383,7 +383,7 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
                 return(-1);
             }
 
-            ctx->dgstSize = (size_t)retLen;
+            ctx->dgstSize = XMLSEC_SIZE_BAD_CAST(retLen);
 
             xmlSecAssert2(ctx->dgstSize > 0, -1);
 

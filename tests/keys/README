@@ -248,3 +248,11 @@ Worse, the CSP is different for XP and older versions
     > openssl pkcs12 -export -in alllargersa.pem -name TestLargeRsaKey -out largersakey-winxp.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"
     > openssl pkcs12 -export -in alllargersa.pem -name TestLargeRsaKey -out largersakey-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
 
+   > cat dsa2048key.pem dsa2048cert.pem ca2cert.pem cacert.pem > alldsa2048.pem
+   > openssl pkcs12 -export -in alldsa2048.pem -name TestDsa2048Key -out dsa2048key-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
+
+   > cat dsa3072key.pem dsa3072cert.pem ca2cert.pem cacert.pem > alldsa3072.pem
+   > openssl pkcs12 -export -in alldsa3072.pem -name TestDsa3072Key -out dsa3072key-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
+
+
+

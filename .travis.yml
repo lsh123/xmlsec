@@ -10,7 +10,7 @@ install:
 # install openssl libraries
 - sudo apt-get install libssl1.0.0 libssl-dev
 # install nspr/nss libraries
-- sudo apt-get install libnspr4 libnspr4-dev libnss3 libnss3-dev
+- sudo apt-get install libnspr4 libnspr4-dev libnss3 libnss3-dev libnss-tools
 # install gcrypt libraries
 - sudo apt-get install libgcrypt11 libgcrypt11-dev
 # install gnutls libraries

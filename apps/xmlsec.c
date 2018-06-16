@@ -949,6 +949,7 @@ int main(int argc, const char **argv) {
 
     /* read the command (first argument) */
     if(argc < 2) {
+	fprintf(stderr, "Error: not enough arguments\n");
         xmlSecAppPrintUsage();
         goto fail;
     }
@@ -2670,6 +2671,9 @@ static void
 xmlSecAppPrintHelp(xmlSecAppCommand command, xmlSecAppCmdLineParamTopic topics) {
     switch(command) {
     case xmlSecAppCommandUnknown:
+	fprintf(stderr, "Unknown command\n");
+	fprintf(stdout, "%s%s\n", helpCommands1, helpCommands2);
+        break;
     case xmlSecAppCommandHelp:
         fprintf(stdout, "%s%s\n", helpCommands1, helpCommands2);
         break;

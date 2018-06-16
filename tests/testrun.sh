@@ -304,6 +304,7 @@ execEncTest() {
     params1="$5"
     params2="$6"
     params3="$7"
+    outputTransform="$8"
 
     if [ -n "$XMLSEC_TEST_NAME" -a "$XMLSEC_TEST_NAME" != "$filename" ]; then
         return
@@ -329,6 +330,11 @@ execEncTest() {
         echo $filename
         echo "Test: $folder/$filename ($expected_res)" >> $logfile
     fi
+    if [ "z$outputTransform" != "z" ] ; then
+	OUTPUT_TRANSFORM_COMMAND="$outputTransform"
+    else
+        OUTPUT_TRANSFORM_COMMAND="tee"
+    fi
 
     # check transforms
     if [ -n "$req_transforms" ] ; then
@@ -348,8 +354,8 @@ execEncTest() {
     if [ -n "$params1" ] ; then
         rm -f $tmpfile
         printf "    Decrypt existing document                            "
-        echo "$VALGRIND $xmlsec_app decrypt $xmlsec_params $params1 $full_file.xml" >>  $logfile 
-        $VALGRIND $xmlsec_app decrypt $xmlsec_params $params1 $full_file.xml > $tmpfile 2>> $logfile
+        echo "$VALGRIND $xmlsec_app decrypt $xmlsec_params $params1 $full_file.xml | $OUTPUT_TRANSFORM_COMMAND" >>  $logfile 
+        $VALGRIND $xmlsec_app decrypt $xmlsec_params $params1 $full_file.xml  2>> $logfile | $OUTPUT_TRANSFORM_COMMAND > $tmpfile
         res=$?
         if [ $res = 0 ]; then
             diff $diff_param $full_file.data $tmpfile >> $logfile 2>> $logfile

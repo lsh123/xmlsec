@@ -949,6 +949,7 @@ int main(int argc, const char **argv) {
 
     /* read the command (first argument) */
     if(argc < 2) {
+	fprintf(stderr, "Error: not enough arguments\n");
         xmlSecAppPrintUsage();
         goto fail;
     }

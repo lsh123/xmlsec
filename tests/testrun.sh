@@ -142,9 +142,11 @@ printRes() {
     # check
     if [ "z$expected_res" = "z$actual_res_str" ] ; then
         count_success=`expr $count_success + 1`
+	actual_res="0"
         echo "   OK"
     else
         count_fail=`expr $count_fail + 1`
+	actual_res="1"
         echo " Fail"
     fi
 

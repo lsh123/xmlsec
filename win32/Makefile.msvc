@@ -547,18 +547,22 @@ check : check-keys check-dsig check-enc
 
 check-keys : $(BINDIR)\$(APP_NAME)
 	cd ..
+	if not exist %MAKEDIR%\tmp mkdir %MAKEDIR%\tmp
+	set TMPFOLDER=%MAKEDIR%\tmp
 	sh ./tests/testrun.sh ./tests/testKeys.sh "$(WITH_DEFAULT_CRYPTO)" ./tests win32/$(BINDIR)/$(APP_NAME) der
 	cd win32
 
 check-dsig : $(BINDIR)\$(APP_NAME)
 	cd ..
-	set TMPFOLDER=/tmp
+	if not exist %MAKEDIR%\tmp mkdir %MAKEDIR%\tmp
+	set TMPFOLDER=%MAKEDIR%\tmp
 	sh ./tests/testrun.sh ./tests/testDSig.sh "$(WITH_DEFAULT_CRYPTO)" ./tests win32/$(BINDIR)/$(APP_NAME) der
 	cd win32
 
 check-enc : $(BINDIR)\$(APP_NAME)
 	cd ..
-	set TMPFOLDER=/tmp
+	if not exist %MAKEDIR%\tmp mkdir %MAKEDIR%\tmp
+	set TMPFOLDER=%MAKEDIR%\tmp
 	sh ./tests/testrun.sh ./tests/testEnc.sh "$(WITH_DEFAULT_CRYPTO)" ./tests win32/$(BINDIR)/$(APP_NAME) der
 	cd win32
 

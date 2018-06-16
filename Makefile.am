@@ -96,7 +96,7 @@ check: check-all check-info
 
 check-all: $(TEST_APP) 
 	for crypto in $(CHECK_CRYPTO_LIST) ; do \
-		make check-crypto-$$crypto ; \
+		make check-crypto-$$crypto || exit 1 ; \
 	done
 
 check-crypto-%: $(TEST_APP) 

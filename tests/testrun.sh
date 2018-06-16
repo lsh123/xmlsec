@@ -121,6 +121,9 @@ NSS_TEST_CERT_NICKNAME="NSS Certificate DB:Aleksey Sanin - XML Security Library 
 #
 res_success="success"
 res_fail="fail"
+count_success=0
+count_fail=0
+count_skip=0
 printRes() {
     expected_res="$1"
     actual_res="$2"
@@ -134,8 +137,10 @@ printRes() {
 
     # check
     if [ "z$expected_res" = "z$actual_res" ] ; then
+        count_success=`expr $count_success + 1`
         echo "   OK"
     else
+        count_fail=`expr $count_fail + 1`
         echo " Fail"
     fi
 
@@ -143,6 +148,17 @@ printRes() {
     if [ -f .memdump ] ; then
         cat .memdump >> $logfile
     fi
+}
+
+printCheckStatus() {
+    check_res="$1"
+    if [ $check_res = 0 ]; then
+        echo "   OK"
+    else
+	count_skip=`expr $count_skip + 1`
+        echo " Skip"
+    fi
+    return "$check_res"
 }
 
 #
@@ -341,11 +357,9 @@ execEncTest() {
         printf "    Checking required transforms                         "
         echo "$xmlsec_app check-transforms $xmlsec_params $req_transforms" >> $logfile
         $xmlsec_app check-transforms $xmlsec_params $req_transforms >> $logfile 2>> $logfile
+	printCheckStatus $?
         res=$?
-        if [ $res = 0 ]; then
-            echo "   OK"
-        else
-            echo " Skip"
+        if [ $res != 0 ]; then
             return
         fi
     fi
@@ -397,6 +411,15 @@ rm -rf $tmpfile $tmpfile.2 tmpfile.3
 
 # run tests
 source "$testfile"
+
+# print results
+echo "--- TOTAL OK: $count_success; TOTAL FAILED: $count_fail; TOTAL SKIPPED: $count_skip" >> $logfile
+echo "--- TOTAL OK: $count_success; TOTAL FAILED: $count_fail; TOTAL SKIPPED: $count_skip"
+
+# print log file if failed
+if [ $count_fail != 0 ] ; then
+    cat $logfile
+fi
 
 # cleanup
 rm -rf $tmpfile $tmpfile.2 tmpfile.3

@@ -205,6 +205,7 @@ execKeysTest() {
         res=$?
         if [ $res != 0 ]; then
 	    cat $curlogfile >> $logfile
+	    cd $old_pwd
             return
         fi
     fi
@@ -283,6 +284,7 @@ execDSigTest() {
         res=$?
         if [ $res != 0 ]; then
             cat $curlogfile >> $logfile
+	    cd $old_pwd
             return
         fi
     fi
@@ -296,6 +298,7 @@ execDSigTest() {
         res=$?
         if [ $res != 0 ]; then
             cat $curlogfile >> $logfile
+	    cd $old_pwd
             return
         fi
     fi
@@ -397,6 +400,7 @@ execEncTest() {
         res=$?
         if [ $res != 0 ]; then
 	    cat $curlogfile >> $logfile
+	    cd $old_pwd
             return
         fi
     fi

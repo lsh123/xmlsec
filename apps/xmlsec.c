@@ -2671,6 +2671,9 @@ static void
 xmlSecAppPrintHelp(xmlSecAppCommand command, xmlSecAppCmdLineParamTopic topics) {
     switch(command) {
     case xmlSecAppCommandUnknown:
+	fprintf(stderr, "Unknown command\n");
+	fprintf(stdout, "%s%s\n", helpCommands1, helpCommands2);
+        break;
     case xmlSecAppCommandHelp:
         fprintf(stdout, "%s%s\n", helpCommands1, helpCommands2);
         break;

@@ -1262,7 +1262,7 @@ xmlSecQName2IntegerAttributeWrite(xmlSecQName2IntegerInfoConstPtr info, xmlNodeP
 
     attr = xmlSetProp(node, attrName, qname);
     if(attr == NULL) {
-        xmlSecInternalError4("xmlSecAddChildNode", NULL,
+        xmlSecInternalError4("xmlSetProp", NULL,
                              "node=%s,attrName=%s,intValue=%d",
                              xmlSecErrorsSafeString(node->name),
                              xmlSecErrorsSafeString(attrName),

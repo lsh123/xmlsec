@@ -127,7 +127,9 @@ xmlSecMSCngAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
                       const char *pwd,
                       void* pwdCallback,
                       void* pwdCallbackCtx) {
+    xmlSecBuffer buffer;
     xmlSecKeyPtr key = NULL;
+    int ret;
 
     xmlSecAssert2(filename != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
@@ -140,6 +142,31 @@ xmlSecMSCngAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
             xmlSecInternalError("xmlSecMSCngAppPkcs12Load", NULL);
             return(NULL);
         }
+        break;
+    case xmlSecKeyDataFormatCertDer:
+        ret = xmlSecBufferInitialize(&buffer, 0);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecBufferInitialize", NULL);
+            return(NULL);
+        }
+
+        ret = xmlSecBufferReadFile(&buffer, filename);
+        if(ret < 0) {
+            xmlSecInternalError2("xmlSecBufferReadFile", NULL,
+                                 "filename=%s", xmlSecErrorsSafeString(filename));
+            xmlSecBufferFinalize(&buffer);
+            return (NULL);
+        }
+
+        key = xmlSecMSCngAppKeyLoadMemory(xmlSecBufferGetData(&buffer),
+                                        xmlSecBufferGetSize(&buffer), format,
+                                        pwd, pwdCallback, pwdCallbackCtx);
+        if(key == NULL) {
+            xmlSecInternalError("xmlSecMSCngAppKeyLoadMemory", NULL);
+            xmlSecBufferFinalize(&buffer);
+            return(NULL);
+        }
+        xmlSecBufferFinalize(&buffer);
         break;
     default:
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL, "format=%d",
@@ -167,17 +194,101 @@ xmlSecMSCngAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
 xmlSecKeyPtr
 xmlSecMSCngAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format,
                             const char *pwd, void* pwdCallback, void* pwdCallbackCtx) {
-    UNREFERENCED_PARAMETER(data);
-    UNREFERENCED_PARAMETER(dataSize);
+    PCCERT_CONTEXT pCert = NULL;
+    PCCERT_CONTEXT tmpcert = NULL;
+    xmlSecKeyDataPtr x509Data = NULL;
+    xmlSecKeyDataPtr keyData = NULL;
+    xmlSecKeyPtr key = NULL;
+    xmlSecKeyPtr res = NULL;
+    int ret;
+
+    xmlSecAssert2(data != NULL, NULL);
+    xmlSecAssert2(dataSize > 0, NULL);
+    xmlSecAssert2(format == xmlSecKeyDataFormatCertDer, NULL);
     UNREFERENCED_PARAMETER(pwd);
     UNREFERENCED_PARAMETER(pwdCallback);
     UNREFERENCED_PARAMETER(pwdCallbackCtx);
-    xmlSecAssert2(data != NULL, NULL);
-    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
-    /* TODO: load key */
-    xmlSecNotImplementedError(NULL);
-    return(NULL);
+    pCert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, data, dataSize);
+    if(pCert == NULL) {
+        xmlSecMSCngLastError("CertCreateCertificateContext", NULL);
+        goto done;
+    }
+
+    x509Data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataX509Id);
+    if(x509Data == NULL) {
+        xmlSecInternalError("xmlSecKeyDataCreate", NULL);
+        goto done;
+    }
+
+    tmpcert = CertDuplicateCertificateContext(pCert);
+    if(tmpcert == NULL) {
+        xmlSecMSCngLastError("CertDuplicateCertificateContext",
+            xmlSecKeyDataGetName(x509Data));
+        goto done;
+    }
+
+    ret = xmlSecMSCngKeyDataX509AdoptKeyCert(x509Data, tmpcert);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert",
+            xmlSecKeyDataGetName(x509Data));
+        CertFreeCertificateContext(tmpcert);
+        goto done;
+    }
+    tmpcert = NULL;
+
+    keyData = xmlSecMSCngCertAdopt(pCert, xmlSecKeyDataTypePublic);
+    if(keyData == NULL) {
+        xmlSecInternalError("xmlSecMSCngCertAdopt",
+            xmlSecKeyDataGetName(x509Data));
+        goto done;
+    }
+    pCert = NULL;
+
+    key = xmlSecKeyCreate();
+    if(key == NULL) {
+        xmlSecInternalError("xmlSecKeyCreate",
+            xmlSecKeyDataGetName(x509Data));
+        goto done;
+    }
+
+    ret = xmlSecKeySetValue(key, keyData);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeySetValue",
+            xmlSecKeyDataGetName(x509Data));
+        goto done;
+    }
+    keyData = NULL;
+
+    ret = xmlSecKeyAdoptData(key, x509Data);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyAdoptData",
+            xmlSecKeyDataGetName(x509Data));
+        goto done;
+    }
+    x509Data = NULL;
+
+    /* success */
+    res = key;
+    key = NULL;
+done:
+    if(pCert != NULL) {
+        CertFreeCertificateContext(pCert);
+    }
+    if(tmpcert != NULL) {
+        CertFreeCertificateContext(tmpcert);
+    }
+    if(x509Data != NULL) {
+        xmlSecKeyDataDestroy(x509Data);
+    }
+    if(keyData != NULL) {
+        xmlSecKeyDataDestroy(keyData);
+    }
+    if(key != NULL) {
+        xmlSecKeyDestroy(key);
+    }
+
+    return(res);
 }
 
 

@@ -52,13 +52,18 @@ environment:
       STATIC: yes
       UNICODE: no
 
+    - COMPILER: MSVC17
+      CRYPTO: mscng
+      STATIC: yes
+      UNICODE: no
+
     - COMPILER: MinGW-w64
       STATIC: no
       UNICODE: yes
     
     - COMPILER: MinGW-w64
       STATIC: yes
-      UNICODE: yes
+      UNICODE: no
 
 init:
   - git config --global core.autocrlf input

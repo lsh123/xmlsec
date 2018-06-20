@@ -16,9 +16,14 @@ The NIST tests vectors are a mix of pass/fail tests. A missing corresponding *.d
 
 Files are named based on the lengths of the key, IV, plaintext, AAD and tag as follows:
 
-tests/nist-aesgcm/aes[key length in bits]/aes[key length in bits]-gcm-[IV length in bits]-[plaintext length in bits]-[AAD length in bits]-[tag length in bits]-[test vector number].xml
+tests/nist-aesgcm/aes<key length in bits>/aes<key length in bits>-gcm-<IV length in bits>-<plaintext length in bits>-<AAD length in bits>-<tag length in bits>-<test vector number>.xml
 
 There are 15 test vectors for each plaintext length (104, 128, 256 and 408 bits)
 
 As mentioned above, only files with IV length=96, AAD length=0 and tag length=128 are included.
+
+The encryption tests were created with the XSLT transform:
+
+xsltproc -o <base filename>.tmpl create-enc-test.xslt <base-filename>.xml
+
 

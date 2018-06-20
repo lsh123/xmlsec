@@ -320,7 +320,7 @@ execDSigTest() {
         printf "    Create new signature                                 "
         echo "$VALGRIND $xmlsec_app sign $xmlsec_params $params2 --output $tmpfile $full_file.tmpl" >> $curlogfile
         $VALGRIND $xmlsec_app sign $xmlsec_params $params2 --output $tmpfile $full_file.tmpl >> $curlogfile 2>> $curlogfile
-        printRes $expected_res $?
+        printRes $res_success $?
         if [ $? != 0 ]; then
             failures=`expr $failures + 1`
         fi
@@ -330,7 +330,7 @@ execDSigTest() {
         printf "    Verify new signature                                 "
         echo "$VALGRIND $xmlsec_app verify $xmlsec_params $params3 $tmpfile" >> $curlogfile
         $VALGRIND $xmlsec_app verify $xmlsec_params $params3 $tmpfile >> $curlogfile 2>> $curlogfile
-        printRes $expected_res $?
+        printRes $res_success $?
         if [ $? != 0 ]; then
             failures=`expr $failures + 1`
         fi
@@ -387,18 +387,13 @@ execEncTest() {
         echo $filename
         echo "Test: $folder/$filename ($expected_res)" > $curlogfile
     fi
-    if [ "z$outputTransform" != "z" ] ; then
-	OUTPUT_TRANSFORM_COMMAND="$outputTransform"
-    else
-        OUTPUT_TRANSFORM_COMMAND="tee"
-    fi
 
     # check transforms
     if [ -n "$req_transforms" ] ; then
         printf "    Checking required transforms                         "
         echo "$xmlsec_app check-transforms $xmlsec_params $req_transforms" >> $curlogfile
         $xmlsec_app check-transforms $xmlsec_params $req_transforms >> $curlogfile 2>> $curlogfile
-	printCheckStatus $?
+        printCheckStatus $?
         res=$?
         if [ $res != 0 ]; then
 	    cat $curlogfile >> $logfile
@@ -411,18 +406,23 @@ execEncTest() {
     if [ -n "$params1" ] ; then
         rm -f $tmpfile
         printf "    Decrypt existing document                            "
-        echo "$VALGRIND $xmlsec_app decrypt $xmlsec_params $params1 $full_file.xml | $OUTPUT_TRANSFORM_COMMAND" >>  $curlogfile 
-        $VALGRIND $xmlsec_app decrypt $xmlsec_params $params1 $full_file.xml  2>> $curlogfile | $OUTPUT_TRANSFORM_COMMAND > $tmpfile
+        echo "$VALGRIND $xmlsec_app decrypt $xmlsec_params $params1 $full_file.xml" >>  $curlogfile 
+        $VALGRIND $xmlsec_app decrypt $xmlsec_params $params1 --output $tmpfile $full_file.xml >> $curlogfile  2>> $curlogfile
         res=$?
-        if [ $res = 0 ]; then
+        echo "=== TEST RESULT: $res; expected: $expected_res" >> $curlogfile
+        if [ $res = 0 -a "$expected_res" = "$res_success" ]; then
+            if [ "z$outputTransform" != "z" ] ; then
+                cat $tmpfile | $outputTransform > $tmpfile.2
+                mv $tmpfile.2 $tmpfile
+            fi
             diff $diff_param $full_file.data $tmpfile >> $curlogfile 2>> $curlogfile
             printRes $expected_res $?
         else
             printRes $expected_res $res
         fi
-	if [ $? != 0 ]; then
+    	if [ $? != 0 ]; then
             failures=`expr $failures + 1`
-	fi
+    	fi
     fi
 
     if [ -n "$params2" -a -z "$PERF_TEST" ] ; then
@@ -430,7 +430,7 @@ execEncTest() {
         printf "    Encrypt document                                     "
         echo "$VALGRIND $xmlsec_app encrypt $xmlsec_params $params2 --output $tmpfile $full_file.tmpl" >>  $curlogfile 
         $VALGRIND $xmlsec_app encrypt $xmlsec_params $params2 --output $tmpfile $full_file.tmpl >> $curlogfile 2>> $curlogfile
-        printRes $expected_res $?
+        printRes $res_success $?
         if [ $? != 0 ]; then
             failures=`expr $failures + 1`
         fi
@@ -443,10 +443,14 @@ execEncTest() {
         $VALGRIND $xmlsec_app decrypt $xmlsec_params $params3 --output $tmpfile.2 $tmpfile >> $curlogfile 2>> $curlogfile
         res=$?
         if [ $res = 0 ]; then
+            if [ "z$outputTransform" != "z" ] ; then
+                cat $tmpfile.2 | $outputTransform > $tmpfile
+                mv $tmpfile $tmpfile.2
+            fi
             diff $diff_param $full_file.data $tmpfile.2 >> $curlogfile 2>> $curlogfile
-            printRes $expected_res $?
+            printRes $res_success $?
         else
-            printRes $expected_res $res
+            printRes $res_success $res
         fi
         if [ $? != 0 ]; then
             failures=`expr $failures + 1`
@@ -461,7 +465,7 @@ execEncTest() {
 
     # cleanup
     cd $old_pwd
-    rm -f $tmpfile $tmpfile.2
+    rm -f $tmpfile $tmpfile.2 
 }
 
 # prepare

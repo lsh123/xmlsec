@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#">
+<EncryptionMethod Algorithm="http://www.w3.org/2009/xmlenc11#aes128-gcm"/>
+<KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+   <KeyName>key-aes128-gcm-96-408-0-128-5</KeyName>
+</KeyInfo>
+<CipherData>
+   <CipherValue>
+     te5EVr7pmrhXEg0aChS8YjJsmvmWC4lgGNmMeS1uBFZDUAXWXmDVU7TqczrOfc/c7wx9hqbzBlyr
+gBKkyyy5j7Nik74YpornFg/ISMycyQ==
+   </CipherValue>
+</CipherData>
+</EncryptedData>

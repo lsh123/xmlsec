@@ -553,7 +553,7 @@ execDSigTest $res_success \
 execDSigTest $res_success \
     "" \
     "merlin-xmldsig-twenty-three/signature" \
-    "base64 xpath enveloped-signature c14n-with-comments sha1 dsa-sha1" \
+    "base64 xpath xslt enveloped-signature c14n-with-comments sha1 dsa-sha1" \
     "dsa x509" \
     "" \
     "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \

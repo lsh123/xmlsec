@@ -367,6 +367,50 @@ execEncTest $res_success \
 #01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha256.xml
 #01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha512.xml
 
+
+echo "--------- AES-GCM tests include both positive and negative tests  ----------"
+if [ -z "$XMLSEC_TEST_REPRODUCIBLE" ]; then
+    echo "--- detailed log is written to  $logfile"
+fi
+##########################################################################
+#
+# AES-GCM
+#
+# IV length=96, AAD length=0 and tag length=128
+##########################################################################
+aesgcm_key_lengths="128 192 256"
+aesgcm_plaintext_lengths="104 128 256 408"
+aesgcm_vectors="01 02 03 04 05 06 07 08 09 10 11 12 13 14 15"
+for aesgcm_k_l in $aesgcm_key_lengths ; do 
+    for aesgcm_pt_l in $aesgcm_plaintext_lengths ; do 
+        for aesgcm_v in $aesgcm_vectors ; do 
+            base_test_name="nist-aesgcm/aes${aesgcm_k_l}/aes${aesgcm_k_l}-gcm-96-${aesgcm_pt_l}-0-128-${aesgcm_v}"
+            # If the corresponding *.data file is missing then we expect the test to fail 
+            if [ -f "$topfolder/$base_test_name.xml" -a ! -f "$topfolder/$base_test_name.data" ] ; then
+                execEncTest "$res_fail" \
+                    "" \
+                    "$base_test_name" \
+                    "aes${aesgcm_k_l}-gcm" \
+                    "--keys-file $topfolder/nist-aesgcm/keys-aes${aesgcm_k_l}-gcm.xml" \
+                    "" \
+                    ""
+            else
+                # generate binary file out of base64
+                cat "$topfolder/$base_test_name.data" | base64 -d > $tmpfile.3
+                execEncTest "$res_success" \
+                    "" \
+                    "$base_test_name" \
+                    "aes${aesgcm_k_l}-gcm" \
+                    "--keys-file $topfolder/nist-aesgcm/keys-aes${aesgcm_k_l}-gcm.xml" \
+                    "--keys-file $topfolder/nist-aesgcm/keys-aes${aesgcm_k_l}-gcm.xml --binary-data $tmpfile.3" \
+                    "--keys-file $topfolder/nist-aesgcm/keys-aes${aesgcm_k_l}-gcm.xml" \
+		    "base64"
+            fi
+        done
+    done
+done
+
+
 ##########################################################################
 #
 # test dynamicencryption

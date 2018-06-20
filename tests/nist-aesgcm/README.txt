@@ -10,19 +10,15 @@ The encrypted data is a concatenation of the IV, ciphertext and tag which is the
 
 Keys are base64 encoded directly from the NIST files
 
-The corresponding plain text test vectors have been base64 encoded and can be found in the files
-in the corresponding expected folder.
+The corresponding plain text test vectors have been base64 encoded and can be found in the corresponding *.data files.
 
-The NIST tests vectors are a mix of pass/fail tests. A blank line in a file in the expected folder
-indicates a test that must fail.
+The NIST tests vectors are a mix of pass/fail tests. A missing corresponding *.data file indicates a test that must fail.
 
 Files are named based on the lengths of the key, IV, plaintext, AAD and tag as follows:
 
-gcmDecrypt[key length in bits]-[IV length in bits]-[plaintext length in bits]-[AAD length in bits]-[tag length in bits]
+tests/nist-aesgcm/aes[key length in bits]/aes[key length in bits]-gcm-[IV length in bits]-[plaintext length in bits]-[AAD length in bits]-[tag length in bits]-[test vector number].xml
 
 There are 15 test vectors for each plaintext length (104, 128, 256 and 408 bits)
 
 As mentioned above, only files with IV length=96, AAD length=0 and tag length=128 are included.
 
-Files in the encrypt folder are just used to check that encryption-decryption successfully round-trips. The keys used are just
-the first key from each of the NIST encryption test vectors of appropriate length. The test data is arbitrary.

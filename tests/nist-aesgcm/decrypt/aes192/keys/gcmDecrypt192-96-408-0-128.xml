@@ -1,91 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Keys xmlns="http://www.aleksey.com/xmlsec/2002">
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
-  <KeyName>gcmDecrypt192-96-408-0-128-1</KeyName>
+  <KeyName>key-aes192-gcm-96-408-0-128-1</KeyName>
   <KeyValue>
     <AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">EXxgfgG63La+BTQMqRuoAx8w198gbHDf</AESKeyValue>
   </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
-  <KeyName>gcmDecrypt192-96-408-0-128-2</KeyName>
+  <KeyName>key-aes192-gcm-96-408-0-128-2</KeyName>
   <KeyValue>
     <AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">3g2TA40hnn+X/AsoiYS/z+SHis9Z8vWZ</AESKeyValue>
   </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
-  <KeyName>gcmDecrypt192-96-408-0-128-3</KeyName>
+  <KeyName>key-aes192-gcm-96-408-0-128-3</KeyName>
   <KeyValue>
     <AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">wXx/UL3c9nB+pQP9eKgo9W1jeyUB9RBl</AESKeyValue>
   </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
-  <KeyName>gcmDecrypt192-96-408-0-128-4</KeyName>
+  <KeyName>key-aes192-gcm-96-408-0-128-4</KeyName>
   <KeyValue>
     <AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">Ixd4VEGSh2teGa2nn5wG+3atQfbkDZFy</AESKeyValue>
   </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
-  <KeyName>gcmDecrypt192-96-408-0-128-5</KeyName>
+  <KeyName>key-aes192-gcm-96-408-0-128-5</KeyName>
   <KeyValue>
     <AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">0Iar6aeSPXTk6BgqCzk6F8UaMwZW1QIZ</AESKeyValue>
   </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
-  <KeyName>gcmDecrypt192-96-408-0-128-6</KeyName>
+  <KeyName>key-aes192-gcm-96-408-0-128-6</KeyName>
   <KeyValue>
     <AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">cXEIGfUO3rjG8XlydCNYu3gusntuYKSY</AESKeyValue>
   </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
-  <KeyName>gcmDecrypt192-96-408-0-128-7</KeyName>
+  <KeyName>key-aes192-gcm-96-408-0-128-7</KeyName>
   <KeyValue>
     <AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">avm+JwUUnWmVcy88ghd3zo5gyI1SEoxd</AESKeyValue>
   </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
-  <KeyName>gcmDecrypt192-96-408-0-128-8</KeyName>
+  <KeyName>key-aes192-gcm-96-408-0-128-8</KeyName>
   <KeyValue>
     <AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">Ls/02RuXlxu/Yuhe9fzTAyEoOGug36vk</AESKeyValue>
   </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
-  <KeyName>gcmDecrypt192-96-408-0-128-9</KeyName>
+  <KeyName>key-aes192-gcm-96-408-0-128-9</KeyName>
   <KeyValue>
     <AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">/is4Wx4+OgtEK861jPHilylCGi0gYYBT</AESKeyValue>
   </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
-  <KeyName>gcmDecrypt192-96-408-0-128-10</KeyName>
+  <KeyName>key-aes192-gcm-96-408-0-128-10</KeyName>
   <KeyValue>
     <AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">nuBl7jR/h0SMXi6+WPATp39ExfQUdMeY</AESKeyValue>
   </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
-  <KeyName>gcmDecrypt192-96-408-0-128-11</KeyName>
+  <KeyName>key-aes192-gcm-96-408-0-128-11</KeyName>
   <KeyValue>
     <AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">P5LKJ1Frzd4g2nOLGH2BYRT7eFnmlmtf</AESKeyValue>
   </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
-  <KeyName>gcmDecrypt192-96-408-0-128-12</KeyName>
+  <KeyName>key-aes192-gcm-96-408-0-128-12</KeyName>
   <KeyValue>
     <AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">iWgOAWEEa66eMD22DdN4ppdf2HDe4yWt</AESKeyValue>
   </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
-  <KeyName>gcmDecrypt192-96-408-0-128-13</KeyName>
+  <KeyName>key-aes192-gcm-96-408-0-128-13</KeyName>
   <KeyValue>
     <AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">wZF3hCrINjEj/2V9Q5XSs3v9lHVbGfEA</AESKeyValue>
   </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
-  <KeyName>gcmDecrypt192-96-408-0-128-14</KeyName>
+  <KeyName>key-aes192-gcm-96-408-0-128-14</KeyName>
   <KeyValue>
     <AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">YJcsO9VNsRVcPfOoaVnT3peZkqFYp3st</AESKeyValue>
   </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
-  <KeyName>gcmDecrypt192-96-408-0-128-15</KeyName>
+  <KeyName>key-aes192-gcm-96-408-0-128-15</KeyName>
   <KeyValue>
     <AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">3Oy9RqRHKCzRYvqt6+0n+VjTDkNjtFw1</AESKeyValue>
   </KeyValue>

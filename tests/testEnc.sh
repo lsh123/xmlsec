@@ -29,7 +29,7 @@ echo "--------- Positive Testing ----------"
 #
 # IV length=96, AAD length=0 and tag length=128
 ##########################################################################
-aesgcm_key_lengths="128"
+aesgcm_key_lengths="128 192"
 aesgcm_plaintext_lengths="104 128 256 408"
 aesgcm_vectors="01 02 03 04 05 06 07 08 09 10 11 12 13 14 15"
 for aesgcm_k_l in $aesgcm_key_lengths ; do 

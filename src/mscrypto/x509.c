@@ -1679,9 +1679,9 @@ xmlSecMSCryptoX509NameWrite(PCERT_NAME_BLOB nm) {
         return(NULL);
     }
 
-    res = xmlSecMSCryptoConvertTstrToUtf8(resT);
+    res = xmlSecWin32ConvertTstrToUtf8(resT);
     if (NULL == res) {
-        xmlSecInternalError("xmlSecMSCryptoConvertTstrToUtf8", NULL);
+        xmlSecInternalError("xmlSecWin32ConvertTstrToUtf8", NULL);
         xmlFree(resT);
         return(NULL);
     }

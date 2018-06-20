@@ -820,9 +820,9 @@ xmlSecMSCngX509GetCertName(const xmlChar* name) {
         memcpy(p, "           E=", 13);
     }
 
-    res = xmlSecMSCngConvertUtf8ToTstr(copy);
+    res = xmlSecWin32ConvertUtf8ToTstr(copy);
     if(res == NULL) {
-        xmlSecInternalError("xmlSecMSCngConvertUtf8ToTstr", NULL);
+        xmlSecInternalError("xmlSecWin32ConvertUtf8ToTstr", NULL);
         xmlFree(copy);
         return(NULL);
     }

@@ -61,9 +61,9 @@ xmlSecMSCngAppInit(const char* config) {
         }
 
 #ifdef UNICODE
-        gXmlSecMSCngAppCertStoreName = xmlSecMSCngConvertUtf8ToUnicode((const xmlChar*)config);
+        gXmlSecMSCngAppCertStoreName = xmlSecWin32ConvertUtf8ToUnicode((const xmlChar*)config);
         if(gXmlSecMSCngAppCertStoreName == NULL) {
-            xmlSecInternalError2("xmlSecMSCngConvertUtf8ToUnicode", NULL,
+            xmlSecInternalError2("xmlSecWin32ConvertUtf8ToUnicode", NULL,
                 "config=%s", xmlSecErrorsSafeString(config));
             return(-1);
         }
@@ -443,9 +443,9 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
         return(NULL);
     }
 
-    pwdWideChar = xmlSecMSCngMultiByteToWideChar(pwd);
+    pwdWideChar = xmlSecWin32ConvertLocaleToUnicode(pwd);
     if(pwdWideChar == NULL) {
-        xmlSecInternalError("xmlSecMSCngMultiByteToWideChar", NULL);
+        xmlSecInternalError("xmlSecWin32ConvertLocaleToUnicode", NULL);
         goto cleanup;
     }
 

@@ -72,9 +72,9 @@ xmlSecMSCryptoAppInit(const char* config) {
         }
 
 #ifdef UNICODE
-        gXmlSecMSCryptoAppCertStoreName = xmlSecMSCryptoConvertLocaleToUnicode(config);
+        gXmlSecMSCryptoAppCertStoreName = xmlSecWin32ConvertLocaleToUnicode(config);
         if (gXmlSecMSCryptoAppCertStoreName == NULL) {
-            xmlSecInternalError2("xmlSecMSCryptoConvertLocaleToUnicode", NULL,
+            xmlSecInternalError2("xmlSecWin32ConvertLocaleToUnicode", NULL,
                                  "config=%s", xmlSecErrorsSafeString(config));
             return (-1);
         }
@@ -515,9 +515,9 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
         goto done;
     }
 
-    wcPwd = xmlSecMSCryptoConvertLocaleToUnicode(pwd);
+    wcPwd = xmlSecWin32ConvertLocaleToUnicode(pwd);
     if (wcPwd == NULL) {
-        xmlSecInternalError("xmlSecMSCryptoConvertLocaleToUnicode(pw)", NULL);
+        xmlSecInternalError("xmlSecWin32ConvertLocaleToUnicode(pw)", NULL);
         goto done;
     }
 

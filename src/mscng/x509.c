@@ -937,9 +937,9 @@ xmlSecMSCngX509NameWrite(PCERT_NAME_BLOB nm) {
         return(NULL);
     }
 
-    res = xmlSecMSCngConvertTstrToUtf8(resT);
+    res = xmlSecWin32ConvertTstrToUtf8(resT);
     if (NULL == res) {
-        xmlSecInternalError("xmlSecMSCngConvertTstrToUtf8", NULL);
+        xmlSecInternalError("xmlSecWin32ConvertTstrToUtf8", NULL);
         xmlFree(resT);
         return(NULL);
     }

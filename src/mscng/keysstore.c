@@ -112,9 +112,9 @@ xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
     }
 
     /* convert name to unicode */
-    wcName = xmlSecMSCngConvertUtf8ToTstr(name);
+    wcName = xmlSecWin32ConvertUtf8ToTstr(name);
     if(wcName == NULL) {
-        xmlSecInternalError("xmlSecMSCngConvertUtf8ToTstr(name)",
+        xmlSecInternalError("xmlSecWin32ConvertUtf8ToTstr(name)",
                             xmlSecKeyStoreGetName(store));
         CertCloseStore(hStore, 0);
         return(NULL);

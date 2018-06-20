@@ -474,35 +474,7 @@ xmlSecMSCryptoErrorsDefaultCallback(const char* file, int line, const char* func
  */
 LPWSTR
 xmlSecMSCryptoConvertUtf8ToUnicode(const xmlChar* str) {
-    LPWSTR res = NULL;
-    int len;
-    int ret;
-
-    xmlSecAssert2(str != NULL, NULL);
-
-    /* call MultiByteToWideChar first to get the buffer size */
-    ret = MultiByteToWideChar(CP_UTF8, 0, (LPCCH)str, -1, NULL, 0);
-    if(ret <= 0) {
-        return(NULL);
-    }
-    len = ret + 1;
-
-    /* allocate buffer */
-    res = (LPWSTR)xmlMalloc(sizeof(WCHAR) * len);
-    if(res == NULL) {
-        xmlSecMallocError(sizeof(WCHAR) * len, NULL);
-        return(NULL);
-    }
-
-    /* convert */
-    ret = MultiByteToWideChar(CP_UTF8, 0, (LPCCH)str, -1, res, len);
-    if(ret <= 0) {
-        xmlFree(res);
-        return(NULL);
-    }
-
-    /* done */
-    return(res);
+    return(xmlSecWin32ConvertUtf8ToUnicode(str));
 }
 
 /**
@@ -513,37 +485,9 @@ xmlSecMSCryptoConvertUtf8ToUnicode(const xmlChar* str) {
  *
  * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
  */
-xmlChar* 
+xmlChar*
 xmlSecMSCryptoConvertUnicodeToUtf8(LPCWSTR str) {
-    xmlChar * res = NULL;
-    int len;
-    int ret;
-
-    xmlSecAssert2(str != NULL, NULL);
-
-    /* call WideCharToMultiByte first to get the buffer size */
-    ret = WideCharToMultiByte(CP_UTF8, 0, str, -1, NULL, 0, NULL, NULL);
-    if(ret <= 0) {
-        return(NULL);
-    }
-    len = ret + 1;
-
-    /* allocate buffer */
-    res = (xmlChar*)xmlMalloc(sizeof(xmlChar) * len);
-    if(res == NULL) {
-        xmlSecMallocError(sizeof(xmlChar) * len, NULL);
-        return(NULL);
-    }
-
-    /* convert */
-    ret = WideCharToMultiByte(CP_UTF8, 0, str, -1, (LPSTR)res, len, NULL, NULL);
-    if(ret <= 0) {
-        xmlFree(res);
-        return(NULL);
-    }
-
-    /* done */
-    return(res);
+    return(xmlSecWin32ConvertUnicodeToUtf8(str));
 }
 
 /**
@@ -556,35 +500,7 @@ xmlSecMSCryptoConvertUnicodeToUtf8(LPCWSTR str) {
  */
 LPWSTR
 xmlSecMSCryptoConvertLocaleToUnicode(const char* str) {
-    LPWSTR res = NULL;
-    int len;
-    int ret;
-
-    xmlSecAssert2(str != NULL, NULL);
-
-    /* call MultiByteToWideChar first to get the buffer size */
-    ret = MultiByteToWideChar(CP_ACP, 0, str, -1, NULL, 0);
-    if(ret <= 0) {
-        return(NULL);
-    }
-    len = ret;
-
-    /* allocate buffer */
-    res = (LPWSTR)xmlMalloc(sizeof(WCHAR) * len);
-    if(res == NULL) {
-        xmlSecMallocError(sizeof(WCHAR) * len, NULL);
-        return(NULL);
-    }
-
-    /* convert */
-    ret = MultiByteToWideChar(CP_ACP, 0, str, -1, res, len);
-    if(ret <= 0) {
-        xmlFree(res);
-        return(NULL);
-    }
-
-    /* done */
-    return(res);
+    return(xmlSecWin32ConvertLocaleToUnicode(str));
 }
 
 /**
@@ -597,45 +513,7 @@ xmlSecMSCryptoConvertLocaleToUnicode(const char* str) {
  */
 xmlChar* 
 xmlSecMSCryptoConvertLocaleToUtf8(const char * str) {
-    LPWSTR strW = NULL;
-    xmlChar * res = NULL;
-    int len;
-    int ret;
-
-    xmlSecAssert2(str != NULL, NULL);
-
-    strW = xmlSecMSCryptoConvertLocaleToUnicode(str);
-    if(strW == NULL) {
-        return(NULL);
-    }
-
-    /* call WideCharToMultiByte first to get the buffer size */
-    ret = WideCharToMultiByte(CP_ACP, 0, strW, -1, NULL, 0, NULL, NULL);
-    if(ret <= 0) {
-        xmlFree(strW);
-        return(NULL);
-    }
-    len = ret + 1;
-
-    /* allocate buffer */
-    res = (xmlChar*)xmlMalloc(sizeof(xmlChar) * len);
-    if(res == NULL) {
-        xmlSecMallocError(sizeof(xmlChar) * len, NULL);
-        xmlFree(strW);
-        return(NULL);
-    }
-
-    /* convert */
-    ret = WideCharToMultiByte(CP_ACP, 0, strW, -1, (LPSTR)res, len, NULL, NULL);
-    if(ret <= 0) {
-        xmlFree(strW);
-        xmlFree(res);
-        return(NULL);
-    }
-
-    /* done */
-    xmlFree(strW);
-    return(res);
+    return(xmlSecWin32ConvertLocaleToUtf8(str));
 }
 
 /**
@@ -648,45 +526,7 @@ xmlSecMSCryptoConvertLocaleToUtf8(const char * str) {
  */
 char * 
 xmlSecMSCryptoConvertUtf8ToLocale(const xmlChar* str) {
-    LPWSTR strW = NULL;
-    char * res = NULL;
-    int len;
-    int ret;
-
-    xmlSecAssert2(str != NULL, NULL);
-
-    strW = xmlSecMSCryptoConvertUtf8ToUnicode(str);
-    if(strW == NULL) {
-        return(NULL);
-    }
-
-    /* call WideCharToMultiByte first to get the buffer size */
-    ret = WideCharToMultiByte(CP_ACP, 0, strW, -1, NULL, 0, NULL, NULL);
-    if(ret <= 0) {
-        xmlFree(strW);
-        return(NULL);
-    }
-    len = ret + 1;
-
-    /* allocate buffer */
-    res = (char*)xmlMalloc(sizeof(char) * len);
-    if(res == NULL) {
-        xmlSecMallocError(sizeof(char) * len, NULL);
-        xmlFree(strW);
-        return(NULL);
-    }
-
-    /* convert */
-    ret = WideCharToMultiByte(CP_ACP, 0, strW, -1, res, len, NULL, NULL);
-    if(ret <= 0) {
-        xmlFree(strW);
-        xmlFree(res);
-        return(NULL);
-    }
-
-    /* done */
-    xmlFree(strW);
-    return(res);
+    return(xmlSecWin32ConvertUtf8ToLocale(str)));
 }
 
 /**
@@ -699,11 +539,7 @@ xmlSecMSCryptoConvertUtf8ToLocale(const xmlChar* str) {
  */
 xmlChar* 
 xmlSecMSCryptoConvertTstrToUtf8(LPCTSTR str) {
-#ifdef UNICODE
-    return xmlSecMSCryptoConvertUnicodeToUtf8(str);
-#else  /* UNICODE */
-    return xmlSecMSCryptoConvertLocaleToUtf8(str);
-#endif /* UNICODE */
+    return(xmlSecWin32ConvertTstrToUtf8(str));
 }
 
 /**
@@ -716,11 +552,7 @@ xmlSecMSCryptoConvertTstrToUtf8(LPCTSTR str) {
  */
 LPTSTR
 xmlSecMSCryptoConvertUtf8ToTstr(const xmlChar*  str) {
-#ifdef UNICODE
-    return xmlSecMSCryptoConvertUtf8ToUnicode(str);
-#else  /* UNICODE */
-    return xmlSecMSCryptoConvertUtf8ToLocale(str);
-#endif /* UNICODE */
+    return(xmlSecWin32ConverttUtf8ToTstr(str));
 }
 
 /********************************************************************

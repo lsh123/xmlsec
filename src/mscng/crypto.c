@@ -28,6 +28,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/dl.h>
+#include <xmlsec/xmltree.h>
 #include <xmlsec/private.h>
 
 #include <xmlsec/mscng/app.h>
@@ -445,7 +446,7 @@ xmlSecMSCngConvertTstrToUtf8(LPCTSTR str) {
  */
 xmlChar*
 xmlSecMSCngConvertUnicodeToUtf8(LPCWSTR str) {
-    return(xmlSecWin32ConvertUnicodeToUtf8(str)));
+    return(xmlSecWin32ConvertUnicodeToUtf8(str));
 }
 
 /**

@@ -258,20 +258,28 @@ static void xmlSecMSCngSignatureFinalize(xmlSecTransformPtr transform) {
         xmlSecKeyDataDestroy(ctx->data);
     }
 
-    if(ctx->pbHash != NULL) {
-        xmlFree(ctx->pbHash);
-    }
+    // MSDN documents at
+    // https://msdn.microsoft.com/en-us/library/windows/desktop/aa376217(v=vs.85).aspx
+    // that the order of cleanup should be:
+    // - algo handle
+    // - hash handle
+    // - hash object pointer
+    // - hash pointer
 
     if(ctx->hHashAlg != 0) {
         BCryptCloseAlgorithmProvider(ctx->hHashAlg, 0);
+    }
+
+    if(ctx->hHash != 0) {
+        BCryptDestroyHash(ctx->hHash);
     }
 
     if(ctx->pbHashObject != NULL) {
         xmlFree(ctx->pbHashObject);
     }
 
-    if(ctx->hHash != 0) {
-        BCryptDestroyHash(ctx->hHash);
+    if(ctx->pbHash != NULL) {
+        xmlFree(ctx->pbHash);
     }
 
     memset(ctx, 0, sizeof(xmlSecMSCngSignatureCtx));

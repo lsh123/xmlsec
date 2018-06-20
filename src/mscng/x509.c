@@ -785,8 +785,12 @@ xmlSecMSCngKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data,
         }
 
         if((keyInfoCtx->keyReq.keyType & xmlSecKeyDataTypePrivate) != 0) {
-            xmlSecNotImplementedError(NULL);
-            return(-1);
+            keyValue = xmlSecMSCngCertAdopt(certCopy, xmlSecKeyDataTypePrivate);
+            if(keyValue == NULL) {
+                xmlSecInternalError("xmlSecMSCngCertAdopt",
+                    xmlSecKeyDataGetName(data));
+                return(-1);
+            }
         } else if((keyInfoCtx->keyReq.keyType & xmlSecKeyDataTypePublic) != 0) {
             keyValue = xmlSecMSCngCertAdopt(certCopy, xmlSecKeyDataTypePublic);
             if(keyValue == NULL) {

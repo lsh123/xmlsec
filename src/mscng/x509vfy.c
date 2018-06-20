@@ -469,7 +469,7 @@ xmlSecMSCngVerifyCertTime(PCCERT_CONTEXT cert, LPFILETIME time) {
  */
 static int
 xmlSecMSCngX509StoreVerifyCertificateOwn(PCCERT_CONTEXT cert,
-        FILETIME* time, HCERTSTORE trustedStore, HCERTSTORE certStore,
+        FILETIME* time, HCERTSTORE trustedStore, HCERTSTORE untrustedStore, HCERTSTORE certStore,
         xmlSecKeyDataStorePtr store) {
     PCCERT_CONTEXT issuerCert = NULL;
     DWORD flags;
@@ -543,7 +543,8 @@ xmlSecMSCngX509StoreVerifyCertificateOwn(PCCERT_CONTEXT cert,
             return(-1);
         }
 
-        ret = xmlSecMSCngX509StoreVerifyCertificateOwn(issuerCert, time, trustedStore, certStore, store);
+        ret = xmlSecMSCngX509StoreVerifyCertificateOwn(issuerCert, time,
+            trustedStore, untrustedStore, certStore, store);
         if(ret < 0) {
             xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateOwn", xmlSecKeyDataStoreGetName(store));
             CertFreeCertificateContext(issuerCert);
@@ -553,8 +554,35 @@ xmlSecMSCngX509StoreVerifyCertificateOwn(PCCERT_CONTEXT cert,
         return(0);
     }
 
-    /* TODO the same checks recursively for the issuer cert in an untrustedStore */
-    xmlSecNotImplementedError(NULL);
+    /* the same checks recursively for the issuer cert in untrustedStore */
+    issuerCert = CertFindCertificateInStore(untrustedStore,
+        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+        0,
+        CERT_FIND_SUBJECT_NAME,
+        &cert->pCertInfo->Issuer,
+        NULL);
+    if(issuerCert != NULL) {
+        flags = CERT_STORE_REVOCATION_FLAG | CERT_STORE_SIGNATURE_FLAG;
+        ret = CertVerifySubjectCertificateContext(cert, issuerCert, &flags);
+        if(ret == 0) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+                xmlSecKeyDataStoreGetName(store),
+                "CertVerifySubjectCertificateContext");
+            CertFreeCertificateContext(issuerCert);
+            return(-1);
+        }
+
+        ret = xmlSecMSCngX509StoreVerifyCertificateOwn(issuerCert, time,
+            trustedStore, untrustedStore, certStore, store);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateOwn", xmlSecKeyDataStoreGetName(store));
+            CertFreeCertificateContext(issuerCert);
+            return(-1);
+        }
+        CertFreeCertificateContext(issuerCert);
+        return(0);
+    }
+
     return(-1);
 }
 
@@ -698,7 +726,7 @@ xmlSecMSCngX509StoreVerifyCertificate(xmlSecKeyDataStorePtr store,
 
     /* verify based on the own trusted certificates */
     ret = xmlSecMSCngX509StoreVerifyCertificateOwn(cert,
-        &fTime, ctx->trusted, certStore, store);
+        &fTime, ctx->trusted, ctx->untrusted, certStore, store);
     if(ret >= 0) {
         return(0);
     }

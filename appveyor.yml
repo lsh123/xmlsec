@@ -20,6 +20,8 @@ skip_commits:
     - docs/*
     - man/*
 
+image:
+- Visual Studio 2017
 
 environment:
   global:
@@ -30,26 +32,22 @@ environment:
     OPENSSL_FILE: openssl-1.1.0h-x64.7z
 
   matrix:
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      COMPILER: MSVC17
+    - COMPILER: MSVC17
       CRYPTO: mscrypto
       STATIC: no
       UNICODE: yes
 
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      COMPILER: MSVC17
+    - COMPILER: MSVC17
       CRYPTO: mscng
       STATIC: no
       UNICODE: yes
 
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      COMPILER: MSVC17
+    - COMPILER: MSVC17
       CRYPTO: openssl
       STATIC: no
       UNICODE: yes
 
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      COMPILER: MSVC17
+    - COMPILER: MSVC17
       CRYPTO: mscrypto
       STATIC: yes
       UNICODE: no

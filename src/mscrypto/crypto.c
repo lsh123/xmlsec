@@ -526,7 +526,7 @@ xmlSecMSCryptoConvertLocaleToUtf8(const char * str) {
  */
 char * 
 xmlSecMSCryptoConvertUtf8ToLocale(const xmlChar* str) {
-    return(xmlSecWin32ConvertUtf8ToLocale(str)));
+    return(xmlSecWin32ConvertUtf8ToLocale(str));
 }
 
 /**

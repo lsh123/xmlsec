@@ -552,7 +552,7 @@ xmlSecMSCryptoConvertTstrToUtf8(LPCTSTR str) {
  */
 LPTSTR
 xmlSecMSCryptoConvertUtf8ToTstr(const xmlChar*  str) {
-    return(xmlSecWin32ConverttUtf8ToTstr(str));
+    return(xmlSecWin32ConvertUtf8ToTstr(str));
 }
 
 /********************************************************************

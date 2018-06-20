@@ -397,7 +397,6 @@ for aesgcm_k_l in $aesgcm_key_lengths ; do
             else
                 # generate binary file out of base64
                 cat "$topfolder/$base_test_name.data" | base64 -d > $tmpfile.3
-		echo "tmpfile.3 = $tmpfile.3"
                 execEncTest "$res_success" \
                     "" \
                     "$base_test_name" \

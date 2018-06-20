@@ -78,6 +78,16 @@ AC_CHECK_FUNCS(strchr strrchr printf sprintf fprintf snprintf vfprintf vsprintf 
 XMLSEC_DEFINES=""
 
 dnl ==========================================================================
+dnl Detect windows
+dnl ==========================================================================
+build_windows=no
+case "${host_os}" in
+    cygwin*|mingw*)
+        build_windows=yes
+        ;;
+esac
+
+dnl ==========================================================================
 dnl Specific setup for Aleksey's development environment:
 dnl	- with debug
 dnl - with pedantic compiler flags
@@ -1777,6 +1787,20 @@ case "$XMLSEC_DEFAULT_CRYPTO" in
         ;;
 esac
 AC_MSG_RESULT([yes ("$XMLSEC_DEFAULT_CRYPTO")])
+
+dnl ==========================================================================
+dnl Do we need to use Unicode (Windows build only)
+dnl ==========================================================================
+if test "z$build_windows" = "zyes" ; then
+    AC_MSG_CHECKING(for Unicode support)
+    AC_ARG_ENABLE(unicode,   [  --enable-unicode    enable Unicode support on Windows (yes)])
+    if test "z$enable_unicode" = "zyes" ; then
+        XMLSEC_DEFINES="$XMLSEC_DEFINES -DUNICODE=1"
+        AC_MSG_RESULT([yes])
+    else
+        AC_MSG_RESULT([no])
+    fi
+fi
 
 dnl ==========================================================================
 dnl See do we need MD5 support

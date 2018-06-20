@@ -393,17 +393,19 @@ for aesgcm_k_l in $aesgcm_key_lengths ; do
                     "aes${aesgcm_k_l}-gcm" \
                     "--keys-file $topfolder/nist-aesgcm/keys-aes${aesgcm_k_l}-gcm.xml" \
                     "" \
-                    "" \
-                    "base64"
+                    ""
             else
+                # generate binary file out of base64
+                cat "$topfolder/$base_test_name.data" | base64 -d > $tmpfile.3
+		echo "tmpfile.3 = $tmpfile.3"
                 execEncTest "$res_success" \
                     "" \
                     "$base_test_name" \
                     "aes${aesgcm_k_l}-gcm" \
                     "--keys-file $topfolder/nist-aesgcm/keys-aes${aesgcm_k_l}-gcm.xml" \
-                    "--keys-file $topfolder/nist-aesgcm/keys-aes${aesgcm_k_l}-gcm.xml --binary-data $topfolder/$base_test_name.data" \
+                    "--keys-file $topfolder/nist-aesgcm/keys-aes${aesgcm_k_l}-gcm.xml --binary-data $tmpfile.3" \
                     "--keys-file $topfolder/nist-aesgcm/keys-aes${aesgcm_k_l}-gcm.xml" \
-                    "base64"
+		    "base64"
             fi
         done
     done

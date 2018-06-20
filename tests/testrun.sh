@@ -443,6 +443,10 @@ execEncTest() {
         $VALGRIND $xmlsec_app decrypt $xmlsec_params $params3 --output $tmpfile.2 $tmpfile >> $curlogfile 2>> $curlogfile
         res=$?
         if [ $res = 0 ]; then
+            if [ "z$outputTransform" != "z" ] ; then
+                cat $tmpfile.2 | $outputTransform > $tmpfile
+                mv $tmpfile $tmpfile.2
+            fi
             diff $diff_param $full_file.data $tmpfile.2 >> $curlogfile 2>> $curlogfile
             printRes $res_success $?
         else
@@ -461,7 +465,7 @@ execEncTest() {
 
     # cleanup
     cd $old_pwd
-    rm -f $tmpfile $tmpfile.2
+    rm -f $tmpfile $tmpfile.2 
 }
 
 # prepare

@@ -27,6 +27,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/keysdata.h>
+#include <xmlsec/xmltree.h>
 
 #include <xmlsec/mscrypto/app.h>
 #include <xmlsec/mscrypto/crypto.h>
@@ -71,20 +72,12 @@ xmlSecMSCryptoAppInit(const char* config) {
             return (-1);
         }
 
-#ifdef UNICODE
-        gXmlSecMSCryptoAppCertStoreName = xmlSecMSCryptoConvertLocaleToUnicode(config);
+        gXmlSecMSCryptoAppCertStoreName = xmlSecWin32ConvertUtf8ToTstr((const xmlChar *)config);
         if (gXmlSecMSCryptoAppCertStoreName == NULL) {
-            xmlSecInternalError2("xmlSecMSCryptoConvertLocaleToUnicode", NULL,
+            xmlSecInternalError2("xmlSecWin32ConvertUtf8ToTstr", NULL,
                                  "config=%s", xmlSecErrorsSafeString(config));
             return (-1);
         }
-#else  /* UNICODE */
-        gXmlSecMSCryptoAppCertStoreName = xmlStrdup(config);
-        if (gXmlSecMSCryptoAppCertStoreName == NULL) {
-            xmlSecStrdupError(config, NULL);
-            return (-1);
-        }
-#endif /* UNICODE */
     }
 
     return(0);
@@ -515,9 +508,9 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
         goto done;
     }
 
-    wcPwd = xmlSecMSCryptoConvertLocaleToUnicode(pwd);
+    wcPwd = xmlSecWin32ConvertLocaleToUnicode(pwd);
     if (wcPwd == NULL) {
-        xmlSecInternalError("xmlSecMSCryptoConvertLocaleToUnicode(pw)", NULL);
+        xmlSecInternalError("xmlSecWin32ConvertLocaleToUnicode(pw)", NULL);
         goto done;
     }
 

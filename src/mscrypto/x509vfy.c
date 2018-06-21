@@ -1101,9 +1101,9 @@ xmlSecMSCryptoX509GetCertName(const xmlChar * name) {
     }
 
     /* get name */
-    res = xmlSecMSCryptoConvertUtf8ToTstr(name2);
+    res = xmlSecWin32ConvertUtf8ToTstr(name2);
     if(res == NULL) {
-        xmlSecInternalError("xmlSecMSCryptoConvertUtf8ToTstr", NULL);
+        xmlSecInternalError("xmlSecWin32ConvertUtf8ToTstr", NULL);
         xmlFree(name2);
         return(NULL);
     }
@@ -1268,9 +1268,9 @@ xmlSecMSCryptoX509GetNameString(PCCERT_CONTEXT pCertContext, DWORD dwType, DWORD
         return (NULL);
     }
 
-    res = xmlSecMSCryptoConvertTstrToUtf8(name);
+    res = xmlSecWin32ConvertTstrToUtf8(name);
     if(res == NULL) {
-        xmlSecInternalError("xmlSecMSCryptoConvertTstrToUtf8", NULL);
+        xmlSecInternalError("xmlSecWin32ConvertTstrToUtf8", NULL);
         xmlFree(name);
         return (NULL);
     }

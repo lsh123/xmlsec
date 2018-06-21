@@ -311,9 +311,9 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
     }
 
     /* convert name to unicode */
-    wcName = xmlSecMSCryptoConvertUtf8ToTstr(name);
+    wcName = xmlSecWin32ConvertUtf8ToTstr(name);
     if(wcName == NULL) {
-        xmlSecInternalError("xmlSecMSCryptoConvertUtf8ToTstr(name)",
+        xmlSecInternalError("xmlSecWin32ConvertUtf8ToTstr(name)",
                             xmlSecKeyStoreGetName(store));
         CertCloseStore(hStoreHandle, 0);
         return(NULL);

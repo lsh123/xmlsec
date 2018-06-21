@@ -48,16 +48,16 @@ XMLSEC_CRYPTO_EXPORT void               xmlSecMSCryptoErrorsDefaultCallback(cons
  * String encoding conversion utils
  *
  ******************************************************************************/
-XMLSEC_CRYPTO_EXPORT LPWSTR             xmlSecMSCryptoConvertLocaleToUnicode(const char* str);
+XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT LPWSTR             xmlSecMSCryptoConvertLocaleToUnicode(const char* str);
 
-XMLSEC_CRYPTO_EXPORT LPWSTR             xmlSecMSCryptoConvertUtf8ToUnicode  (const xmlChar* str);
-XMLSEC_CRYPTO_EXPORT xmlChar*           xmlSecMSCryptoConvertUnicodeToUtf8  (LPCWSTR str);
+XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT LPWSTR             xmlSecMSCryptoConvertUtf8ToUnicode  (const xmlChar* str);
+XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT xmlChar*           xmlSecMSCryptoConvertUnicodeToUtf8  (LPCWSTR str);
 
-XMLSEC_CRYPTO_EXPORT xmlChar*           xmlSecMSCryptoConvertLocaleToUtf8   (const char* str);
-XMLSEC_CRYPTO_EXPORT char*              xmlSecMSCryptoConvertUtf8ToLocale   (const xmlChar* str);
+XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT xmlChar*           xmlSecMSCryptoConvertLocaleToUtf8   (const char* str);
+XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT char*              xmlSecMSCryptoConvertUtf8ToLocale   (const xmlChar* str);
 
-XMLSEC_CRYPTO_EXPORT xmlChar*           xmlSecMSCryptoConvertTstrToUtf8     (LPCTSTR str);
-XMLSEC_CRYPTO_EXPORT LPTSTR             xmlSecMSCryptoConvertUtf8ToTstr     (const xmlChar*  str);
+XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT xmlChar*           xmlSecMSCryptoConvertTstrToUtf8     (LPCTSTR str);
+XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT LPTSTR             xmlSecMSCryptoConvertUtf8ToTstr     (const xmlChar*  str);
 
 
 /********************************************************************

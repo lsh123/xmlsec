@@ -25,6 +25,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/keysmngr.h>
+#include <xmlsec/xmltree.h>
 
 #include <xmlsec/mscng/app.h>
 #include <xmlsec/mscng/crypto.h>
@@ -60,20 +61,12 @@ xmlSecMSCngAppInit(const char* config) {
             return(-1);
         }
 
-#ifdef UNICODE
-        gXmlSecMSCngAppCertStoreName = xmlSecMSCngConvertUtf8ToUnicode((const xmlChar*)config);
+        gXmlSecMSCngAppCertStoreName = xmlSecWin32ConvertUtf8ToTstr((const xmlChar*)config);
         if(gXmlSecMSCngAppCertStoreName == NULL) {
-            xmlSecInternalError2("xmlSecMSCngConvertUtf8ToUnicode", NULL,
+            xmlSecInternalError2("xmlSecWin32ConvertUtf8ToTstr", NULL,
                 "config=%s", xmlSecErrorsSafeString(config));
             return(-1);
         }
-#else  /* UNICODE */
-        gXmlSecMSCngAppCertStoreName = xmlStrdup(config);
-        if (gXmlSecMSCngAppCertStoreName == NULL) {
-            xmlSecStrdupError(config, NULL);
-            return (-1);
-        }
-#endif /* UNICODE */
     }
 
     return(0);
@@ -443,9 +436,9 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
         return(NULL);
     }
 
-    pwdWideChar = xmlSecMSCngMultiByteToWideChar(pwd);
+    pwdWideChar = xmlSecWin32ConvertLocaleToUnicode(pwd);
     if(pwdWideChar == NULL) {
-        xmlSecInternalError("xmlSecMSCngMultiByteToWideChar", NULL);
+        xmlSecInternalError("xmlSecWin32ConvertLocaleToUnicode", NULL);
         goto cleanup;
     }
 

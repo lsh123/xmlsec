@@ -940,12 +940,38 @@ int print_debug = 0;
 clock_t total_time = 0;
 const char* xmlsec_crypto = NULL;
 const char* tmp = NULL;
+const char** utf8_argv = NULL; /* TODO: this should be xmlChar** but it will break things downstream */
 
+#if defined(WIN32) && defined(UNICODE)
+int wmain(int argc, wchar_t *argv[ ], wchar_t *envp[ ]) {
+    UNREFERENCED_PARAMETER(envp);
+
+#else /* defined(WIN32) && defined(UNICODE) */
 int main(int argc, const char **argv) {
+#endif /* defined(WIN32) && defined(UNICODE) */
     xmlSecAppCmdLineParamTopic cmdLineTopics;
     xmlSecAppCommand command, subCommand;
     int pos, i;
     int res = 1;
+
+#if defined(WIN32)
+    /* convert command line to UTF8 from locale or UNICODE */
+    utf8_argv = (char**)xmlMalloc(sizeof(char*) * argc);
+    if(utf8_argv == NULL) {
+        fprintf(stderr, "Error: can not allocate memory (%d bytes)\n", (int)sizeof(char*) * argc);
+        goto fail;
+    }
+    memset((char**)utf8_argv, 0, sizeof(char*) * argc);
+    for(i = 0; i < argc; ++i) {
+        utf8_argv[i] = (const char*)xmlSecWin32ConvertTstrToUtf8(argv[i]);
+        if(utf8_argv[i] == NULL) {
+            fprintf(stderr, "Error: can not convert command line parameter at position %d to UTF8\n", i);
+            goto fail;
+        }
+    }
+#else /* defined(WIN32) */
+    utf8_argv = argv;
+#endif /* defined(WIN32) */
 
     /* read the command (first argument) */
     if(argc < 2) {
@@ -953,9 +979,9 @@ int main(int argc, const char **argv) {
         xmlSecAppPrintUsage();
         goto fail;
     }
-    command = xmlSecAppParseCommand(argv[1], &cmdLineTopics, &subCommand);
+    command = xmlSecAppParseCommand(utf8_argv[1], &cmdLineTopics, &subCommand);
     if(command == xmlSecAppCommandUnknown) {
-        fprintf(stderr, "Error: unknown command \"%s\"\n", argv[1]);
+        fprintf(stderr, "Error: unknown command \"%s\"\n", utf8_argv[1]);
         xmlSecAppPrintUsage();
         goto fail;
     }
@@ -970,7 +996,7 @@ int main(int argc, const char **argv) {
     }
     
     /* parse command line */
-    pos = xmlSecAppCmdLineParamsListParse(parameters, cmdLineTopics, argv, argc, 2);
+    pos = xmlSecAppCmdLineParamsListParse(parameters, cmdLineTopics, utf8_argv, argc, 2);
     if(pos < 0) {
         fprintf(stderr, "Error: invalid parameters\n");
         xmlSecAppPrintUsage();
@@ -1048,11 +1074,11 @@ int main(int argc, const char **argv) {
             break;
         case xmlSecAppCommandCheckKeyData:
             for(i = pos; i < argc; ++i) {
-                if(xmlSecAppCheckKeyData(argv[i]) < 0) {
-                    fprintf(stderr, "Error: key data \"%s\" not found\n", argv[i]);
+                if(xmlSecAppCheckKeyData(utf8_argv[i]) < 0) {
+                    fprintf(stderr, "Error: key data \"%s\" not found\n", utf8_argv[i]);
                     goto fail;
                 } else {
-                    fprintf(stdout, "Key data \"%s\" found\n", argv[i]);
+                    fprintf(stdout, "Key data \"%s\" found\n", utf8_argv[i]);
                 }
             }
             break;
@@ -1061,18 +1087,18 @@ int main(int argc, const char **argv) {
             break;          
         case xmlSecAppCommandCheckTransforms:
             for(i = pos; i < argc; ++i) {
-                if(xmlSecAppCheckTransform(argv[i]) < 0) {
-                    fprintf(stderr, "Error: transform \"%s\" not found\n", argv[i]);
+                if(xmlSecAppCheckTransform(utf8_argv[i]) < 0) {
+                    fprintf(stderr, "Error: transform \"%s\" not found\n", utf8_argv[i]);
                     goto fail;
                 } else {
-                    fprintf(stdout, "Transforms \"%s\" found\n", argv[i]);
+                    fprintf(stdout, "Transforms \"%s\" found\n", utf8_argv[i]);
                 }
             }
             break;          
         case xmlSecAppCommandKeys:
             for(i = pos; i < argc; ++i) {
-                if(xmlSecAppCryptoSimpleKeysMngrSave(gKeysMngr, argv[i], xmlSecKeyDataTypeAny) < 0) {
-                    fprintf(stderr, "Error: failed to save keys to file \"%s\"\n", argv[i]);
+                if(xmlSecAppCryptoSimpleKeysMngrSave(gKeysMngr, utf8_argv[i], xmlSecKeyDataTypeAny) < 0) {
+                    fprintf(stderr, "Error: failed to save keys to file \"%s\"\n", utf8_argv[i]);
                     goto fail;
                 }
             }
@@ -1080,16 +1106,16 @@ int main(int argc, const char **argv) {
 #ifndef XMLSEC_NO_XMLDSIG
         case xmlSecAppCommandSign:
             for(i = pos; i < argc; ++i) {
-                if(xmlSecAppSignFile(argv[i]) < 0) {
-                    fprintf(stderr, "Error: failed to sign file \"%s\"\n", argv[i]);
+                if(xmlSecAppSignFile(utf8_argv[i]) < 0) {
+                    fprintf(stderr, "Error: failed to sign file \"%s\"\n", utf8_argv[i]);
                     goto fail;
                 }
             }
             break;
         case xmlSecAppCommandVerify:
             for(i = pos; i < argc; ++i) {
-                if(xmlSecAppVerifyFile(argv[i]) < 0) {
-                    fprintf(stderr, "Error: failed to verify file \"%s\"\n", argv[i]);
+                if(xmlSecAppVerifyFile(utf8_argv[i]) < 0) {
+                    fprintf(stderr, "Error: failed to verify file \"%s\"\n", utf8_argv[i]);
                     goto fail;
                 }
             }
@@ -1107,16 +1133,16 @@ int main(int argc, const char **argv) {
 #ifndef XMLSEC_NO_XMLENC
         case xmlSecAppCommandEncrypt:
             for(i = pos; i < argc; ++i) {
-                if(xmlSecAppEncryptFile(argv[i]) < 0) {
-                    fprintf(stderr, "Error: failed to encrypt file with template \"%s\"\n", argv[i]);
+                if(xmlSecAppEncryptFile(utf8_argv[i]) < 0) {
+                    fprintf(stderr, "Error: failed to encrypt file with template \"%s\"\n", utf8_argv[i]);
                     goto fail;
                 }
             }
             break;
         case xmlSecAppCommandDecrypt:
             for(i = pos; i < argc; ++i) {
-                if(xmlSecAppDecryptFile(argv[i]) < 0) {
-                    fprintf(stderr, "Error: failed to decrypt file \"%s\"\n", argv[i]);
+                if(xmlSecAppDecryptFile(utf8_argv[i]) < 0) {
+                    fprintf(stderr, "Error: failed to decrypt file \"%s\"\n", utf8_argv[i]);
                     goto fail;
                 }
             }
@@ -1156,6 +1182,18 @@ fail:
     }
     xmlSecAppShutdown();
     xmlSecAppCmdLineParamsListClean(parameters);
+#if defined(WIN32)
+    if(utf8_argv != NULL) {
+        for(i = 0; i < argc; ++i) {
+           if(utf8_argv[i] != NULL) {
+               xmlFree(BAD_CAST utf8_argv[i]);
+               utf8_argv[i] = NULL;
+           }
+        }
+        xmlFree(BAD_CAST utf8_argv);
+        utf8_argv = NULL;
+    }
+#endif /* defined(WIN32) */
     return(res);
 }
 

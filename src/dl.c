@@ -155,17 +155,13 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
         return(NULL);
     }
 
-    getFunctions = XMLSEC_PTR_TO_FUNC(xmlSecCryptoGetFunctionsCallback,
-                        GetProcAddress(
-                            lib->handle,
-                            (const char*)lib->getFunctionsName
-                        )
-                    );
+    FARPROC proc = GetProcAddress(lib->handle, (const char*)lib->getFunctionsName);
     if(getFunctions == NULL) {
         xmlSecIOError("GetProcAddressA", lib->getFunctionsName, NULL);
         xmlSecCryptoDLLibraryDestroy(lib);
         return(NULL);
     }
+    getFunctions = XMLSEC_PTR_TO_FUNC(xmlSecCryptoGetFunctionsCallback, proc);
 #endif /* XMLSEC_DL_WIN32 */
 
     if(getFunctions == NULL) {

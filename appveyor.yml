@@ -12,6 +12,8 @@
 # You can check the whole build process in the logs, and any later commit will start
 # a new build using a fresh virtual machine.
 
+version: '1.2.26-{build}'
+
 shallow_clone: true
 skip_branch_with_pr: true
 skip_tags: true

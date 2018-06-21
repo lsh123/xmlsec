@@ -430,7 +430,7 @@ xmlSecMSCryptoGetErrorMessage(DWORD dwError, xmlChar * out, xmlSecSize outSize) 
         out[0] = '\0';
         goto done;
     }
-    ret = WideCharToMultiByte(CP_UTF8, 0, errorTextW, -1, out, outSize, NULL, NULL);
+    ret = WideCharToMultiByte(CP_UTF8, 0, errorTextW, -1, (LPSTR)out, outSize, NULL, NULL);
     if(ret <= 0) {
         out[0] = '\0';
         goto done;

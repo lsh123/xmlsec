@@ -72,20 +72,12 @@ xmlSecMSCryptoAppInit(const char* config) {
             return (-1);
         }
 
-#ifdef UNICODE
-        gXmlSecMSCryptoAppCertStoreName = xmlSecWin32ConvertLocaleToUnicode(config);
+        gXmlSecMSCryptoAppCertStoreName = xmlSecWin32ConvertUtf8ToTstr((const xmlChar *)config);
         if (gXmlSecMSCryptoAppCertStoreName == NULL) {
-            xmlSecInternalError2("xmlSecWin32ConvertLocaleToUnicode", NULL,
+            xmlSecInternalError2("xmlSecWin32ConvertUtf8ToTstr", NULL,
                                  "config=%s", xmlSecErrorsSafeString(config));
             return (-1);
         }
-#else  /* UNICODE */
-        gXmlSecMSCryptoAppCertStoreName = xmlStrdup(config);
-        if (gXmlSecMSCryptoAppCertStoreName == NULL) {
-            xmlSecStrdupError(config, NULL);
-            return (-1);
-        }
-#endif /* UNICODE */
     }
 
     return(0);

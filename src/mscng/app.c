@@ -61,20 +61,12 @@ xmlSecMSCngAppInit(const char* config) {
             return(-1);
         }
 
-#ifdef UNICODE
-        gXmlSecMSCngAppCertStoreName = xmlSecWin32ConvertUtf8ToUnicode((const xmlChar*)config);
+        gXmlSecMSCngAppCertStoreName = xmlSecWin32ConvertUtf8ToTstr((const xmlChar*)config);
         if(gXmlSecMSCngAppCertStoreName == NULL) {
-            xmlSecInternalError2("xmlSecWin32ConvertUtf8ToUnicode", NULL,
+            xmlSecInternalError2("xmlSecWin32ConvertUtf8ToTstr", NULL,
                 "config=%s", xmlSecErrorsSafeString(config));
             return(-1);
         }
-#else  /* UNICODE */
-        gXmlSecMSCngAppCertStoreName = xmlStrdup(config);
-        if (gXmlSecMSCngAppCertStoreName == NULL) {
-            xmlSecStrdupError(config, NULL);
-            return (-1);
-        }
-#endif /* UNICODE */
     }
 
     return(0);

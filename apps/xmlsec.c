@@ -940,7 +940,7 @@ int print_debug = 0;
 clock_t total_time = 0;
 const char* xmlsec_crypto = NULL;
 const char* tmp = NULL;
-const char** utf8_argv = NULL;
+const char** utf8_argv = NULL; /* TODO: this should be xmlChar** but it will break things downstream */
 
 #if defined(WIN32) && defined(UNICODE)
 int wmain(int argc, wchar_t *argv[ ], wchar_t *envp[ ]) {
@@ -956,11 +956,10 @@ int main(int argc, const char **argv) {
     /* convert command line to UTF8 from locale or UNICODE */
     utf8_argv = (char**)xmlMalloc(sizeof(char*) * argc);
     if(utf8_argv == NULL) {
-        fprintf(stderr, "Error: can not allocate memory (%d bytes)\n", (int)sizeof(xmlChar*) * argc);
-        xmlSecMallocError(sizeof(xmlChar*) * argc, NULL);
+        fprintf(stderr, "Error: can not allocate memory (%d bytes)\n", (int)sizeof(char*) * argc);
         goto fail;
     }
-    memset(utf8_argv, 0, sizeof(xmlChar*) * argc);
+    memset((char**)utf8_argv, 0, sizeof(char*) * argc);
     for(i = 0; i < argc; ++i) {
         utf8_argv[i] = xmlSecWin32ConvertTstrToUtf8(argv[i]);
         if(utf8_argv[i] == NULL) {
@@ -1181,7 +1180,8 @@ fail:
     }
     xmlSecAppShutdown();
     xmlSecAppCmdLineParamsListClean(parameters);
-    if(utf8_argv != NULL && utf8_argv != argv) {
+#if defined(WIN32)
+    if(utf8_argv != NULL) {
         for(i = 0; i < argc; ++i) {
            if(utf8_argv[i] != NULL) {
                xmlFree(BAD_CAST utf8_argv[i]);
@@ -1191,6 +1191,7 @@ fail:
         xmlFree(utf8_argv);
         utf8_argv = NULL;
     }
+#endif /* defined(WIN32) */
     return(res);
 }
 

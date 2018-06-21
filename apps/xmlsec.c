@@ -944,6 +944,8 @@ const char** utf8_argv = NULL; /* TODO: this should be xmlChar** but it will bre
 
 #if defined(WIN32) && defined(UNICODE)
 int wmain(int argc, wchar_t *argv[ ], wchar_t *envp[ ]) {
+    UNREFERENCED_PARAMETER(envp);
+
 #else /* defined(WIN32) && defined(UNICODE) */
 int main(int argc, const char **argv) {
 #endif /* defined(WIN32) && defined(UNICODE) */
@@ -961,7 +963,7 @@ int main(int argc, const char **argv) {
     }
     memset((char**)utf8_argv, 0, sizeof(char*) * argc);
     for(i = 0; i < argc; ++i) {
-        utf8_argv[i] = xmlSecWin32ConvertTstrToUtf8(argv[i]);
+        utf8_argv[i] = (const char*)xmlSecWin32ConvertTstrToUtf8(argv[i]);
         if(utf8_argv[i] == NULL) {
             fprintf(stderr, "Error: can not convert command line parameter at position %d to UTF8\n", i);
             goto fail;
@@ -1188,7 +1190,7 @@ fail:
                utf8_argv[i] = NULL;
            }
         }
-        xmlFree(utf8_argv);
+        xmlFree(BAD_CAST utf8_argv);
         utf8_argv = NULL;
     }
 #endif /* defined(WIN32) */

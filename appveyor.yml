@@ -49,12 +49,12 @@ environment:
 
     - COMPILER: MSVC17
       CRYPTO: mscrypto
-      STATIC: yes
+      STATIC: no
       UNICODE: no
 
     - COMPILER: MSVC17
       CRYPTO: mscng
-      STATIC: yes
+      STATIC: no
       UNICODE: no
 
     - COMPILER: MinGW-w64

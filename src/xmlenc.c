@@ -403,7 +403,7 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
         if((encCtx->flags & XMLSEC_ENC_RETURN_REPLACED_NODE) != 0) {
             ret = xmlSecReplaceNodeAndReturn(node, tmpl, &(encCtx->replacedNodeList));
             if(ret < 0) {
-                xmlSecInternalError("xmlSecReplaceNode",
+                xmlSecInternalError("xmlSecReplaceNodeAndReturn",
                                     xmlSecNodeGetName(node));
                 return(-1);
             }
@@ -625,7 +625,7 @@ xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     } else {
         ret = xmlSecTransformCtxExecute(&(encCtx->transformCtx), node->doc);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecTransformCtxBinaryExecute", NULL);
+            xmlSecInternalError("xmlSecTransformCtxExecute", NULL);
             return(NULL);
         }
     }

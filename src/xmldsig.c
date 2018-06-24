@@ -288,7 +288,7 @@ xmlSecDSigCtxSign(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr tmpl) {
     /* read signature template */
     ret = xmlSecDSigCtxProcessSignatureNode(dsigCtx, tmpl);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecDSigCtxSignatureProcessNode", NULL);
+        xmlSecInternalError("xmlSecDSigCtxProcessSignatureNode", NULL);
         return(-1);
     }
     xmlSecAssert2(dsigCtx->signMethod != NULL, -1);
@@ -343,7 +343,7 @@ xmlSecDSigCtxVerify(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     /* read signature info */
     ret = xmlSecDSigCtxProcessSignatureNode(dsigCtx, node);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecDSigCtxSignatureProcessNode", NULL);
+        xmlSecInternalError("xmlSecDSigCtxProcessSignatureNode", NULL);
         return(-1);
     }
     xmlSecAssert2(dsigCtx->signMethod != NULL, -1);
@@ -630,7 +630,7 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xm
         dsigCtx->c14nMethod = xmlSecTransformCtxCreateAndAppend(&(dsigCtx->transformCtx),
                                                               dsigCtx->defC14NMethodId);
         if(dsigCtx->c14nMethod == NULL) {
-            xmlSecInternalError("xmlSecTransformCtxAppend", NULL);
+            xmlSecInternalError("xmlSecTransformCtxCreateAndAppend", NULL);
             return(-1);
         }
     } else {
@@ -669,7 +669,7 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xm
         dsigCtx->signMethod = xmlSecTransformCtxCreateAndAppend(&(dsigCtx->transformCtx),
                                                               dsigCtx->defSignMethodId);
         if(dsigCtx->signMethod == NULL) {
-            xmlSecInternalError("xmlSecTransformCtxAppend", NULL);
+            xmlSecInternalError("xmlSecTransformCtxCreateAndAppend", NULL);
             return(-1);
         }
     } else {
@@ -1364,7 +1364,7 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
         dsigRefCtx->digestMethod = xmlSecTransformCtxCreateAndAppend(&(dsigRefCtx->transformCtx),
                                                               dsigRefCtx->dsigCtx->defSignMethodId);
         if(dsigRefCtx->digestMethod == NULL) {
-            xmlSecInternalError("xmlSecTransformCtxAppend", NULL);
+            xmlSecInternalError("xmlSecTransformCtxCreateAndAppend", NULL);
             return(-1);
         }
     } else {

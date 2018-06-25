@@ -165,7 +165,10 @@ dnl ==========================================================================
 dnl Hack for autoconf version mismatch
 dnl ==========================================================================
 if test "z$shrext" = "z" ; then
-    shrext=$shrext_cmds
+    AC_MSG_CHECKING(for shared library suffix)
+    module=no
+    eval shrext=$shrext_cmds
+    AC_MSG_RESULT($shrext)
 fi
 
 dnl ==========================================================================

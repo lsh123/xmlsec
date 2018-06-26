@@ -32,29 +32,28 @@ typedef unsigned int                    xmlSecKeyUsage;
 /**
  * xmlSecKeyUsageSign:
  *
- * Key can be used in any way.
-
+ * Key for signing.
  */
 #define xmlSecKeyUsageSign              0x00000001
 
 /**
  * xmlSecKeyUsageVerify:
  *
- * Key for signing.
+ * Key for signature verification.
  */
 #define xmlSecKeyUsageVerify            0x00000002
 
 /**
  * xmlSecKeyUsageEncrypt:
  *
- * Key for signature verification.
+ * An encryption key.
  */
 #define xmlSecKeyUsageEncrypt           0x00000004
 
 /**
  * xmlSecKeyUsageDecrypt:
  *
- * An encryption key.
+ * A decryption key.
  */
 #define xmlSecKeyUsageDecrypt           0x00000008
 
@@ -68,7 +67,7 @@ typedef unsigned int                    xmlSecKeyUsage;
 /**
  * xmlSecKeyUsageAny:
  *
- * A decryption key.
+ * Key can be used in any way.
  */
 #define xmlSecKeyUsageAny               0xFFFFFFFF
 

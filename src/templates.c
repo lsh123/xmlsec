@@ -412,12 +412,16 @@ xmlSecTmplReferenceAddTransform(xmlNodePtr referenceNode, xmlSecTransformId tran
         tmp = xmlSecGetNextElementNode(referenceNode->children);
         if(tmp == NULL) {
             transformsNode = xmlSecAddChild(referenceNode, xmlSecNodeTransforms, xmlSecDSigNs);
+            if(transformsNode == NULL) {
+                xmlSecInternalError("xmlSecAddChild(xmlSecNodeTransforms)", NULL);
+                return(NULL);
+            }
         } else {
             transformsNode = xmlSecAddPrevSibling(tmp, xmlSecNodeTransforms, xmlSecDSigNs);
-        }
-        if(transformsNode == NULL) {
-            xmlSecInternalError("xmlSecAddChild or xmlSecAddPrevSibling(xmlSecNodeTransforms)", NULL);
-            return(NULL);
+            if(transformsNode == NULL) {
+                xmlSecInternalError("xmlSecAddPrevSibling(xmlSecNodeTransforms)", NULL);
+                return(NULL);
+            }
         }
     }
 

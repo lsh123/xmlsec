@@ -225,7 +225,6 @@ xmlSecMSCngAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecK
     if(ret < 0) {
         xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert",
             xmlSecKeyDataGetName(x509Data));
-        CertFreeCertificateContext(tmpcert);
         goto done;
     }
     tmpcert = NULL;

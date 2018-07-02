@@ -219,6 +219,10 @@ xmlSecXsltFinalize(xmlSecTransformPtr transform) {
         xsltFreeStylesheet(ctx->xslt);
     }
     if(ctx->parserCtx != NULL) {
+        if(ctx->parserCtx->myDoc != NULL) {
+            xmlFreeDoc(ctx->parserCtx->myDoc);
+	    ctx->parserCtx->myDoc = NULL;
+        }
         xmlFreeParserCtxt(ctx->parserCtx);
     }
     memset(ctx, 0, sizeof(xmlSecXsltCtx));

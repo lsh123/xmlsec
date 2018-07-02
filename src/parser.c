@@ -132,6 +132,10 @@ xmlSecParserFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     if(ctx->parserCtx != NULL) {
+        if(ctx->parserCtx->myDoc != NULL) {
+            xmlFreeDoc(ctx->parserCtx->myDoc);
+	    ctx->parserCtx->myDoc = NULL;
+        }
         xmlFreeParserCtxt(ctx->parserCtx);
     }
     memset(ctx, 0, sizeof(xmlSecParserCtx));
@@ -294,6 +298,10 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
         xmlSecXmlParserError("inputPush", ctxt,
                              xmlSecTransformGetName(transform));
         xmlFreeInputStream(input);
+        if(ctxt->myDoc != NULL) {
+            xmlFreeDoc(ctxt->myDoc);
+            ctxt->myDoc = NULL;
+        }
         xmlFreeParserCtxt(ctxt);
         return(-1);
     }
@@ -404,20 +412,27 @@ xmlSecParseFile(const char *filename) {
         xmlSecXmlParserError2("xmlParseDocument", ctxt, NULL,
                               "filename=%s",
                               xmlSecErrorsSafeString(filename));
+        if(ctxt->myDoc != NULL) {
+            xmlFreeDoc(ctxt->myDoc);
+            ctxt->myDoc = NULL;
+        }
         xmlFreeParserCtxt(ctxt);
         return(NULL);
     }
 
     if(!ctxt->wellFormed) {
        xmlSecInternalError("document is not well formed", NULL);
-       xmlFreeDoc(ctxt->myDoc);
-       ctxt->myDoc = NULL;
+       if(ctxt->myDoc != NULL) {
+           xmlFreeDoc(ctxt->myDoc);
+           ctxt->myDoc = NULL;
+       }
        xmlFreeParserCtxt(ctxt);
        return(NULL);
     }
 
     /* done */
     res = ctxt->myDoc;
+    ctxt->myDoc = NULL;
     xmlFreeParserCtxt(ctxt);
     return(res);
 
@@ -495,9 +510,14 @@ xmlSecParseMemoryExt(const xmlSecByte *prefix, xmlSecSize prefixSize,
         goto done;
     }
     doc = ctxt->myDoc;
+    ctxt->myDoc = NULL;
 
 done:
     if(ctxt != NULL) {
+        if(ctxt->myDoc != NULL) {
+            xmlFreeDoc(ctxt->myDoc);
+            ctxt->myDoc = NULL;
+        }
         xmlFreeParserCtxt(ctxt);
     }
     return(doc);
@@ -536,20 +556,27 @@ xmlSecParseMemory(const xmlSecByte *buffer, xmlSecSize size, int recovery) {
     ret = xmlParseDocument(ctxt);
     if(ret < 0) {
         xmlSecXmlParserError("xmlParseDocument", ctxt, NULL);
+        if(ctxt->myDoc != NULL) {
+            xmlFreeDoc(ctxt->myDoc);
+            ctxt->myDoc = NULL;
+        }	
         xmlFreeParserCtxt(ctxt);
         return(NULL);
     }
 
     if(!(ctxt->wellFormed) && !recovery) {
         xmlSecInternalError("document is not well formed", NULL);
-        xmlFreeDoc(ctxt->myDoc);
-        ctxt->myDoc = NULL;
+        if(ctxt->myDoc != NULL) {
+            xmlFreeDoc(ctxt->myDoc);
+            ctxt->myDoc = NULL;
+        }
         xmlFreeParserCtxt(ctxt);
         return(NULL);
     }
 
     /* done */
     res = ctxt->myDoc;
+    ctxt->myDoc = NULL;
     xmlFreeParserCtxt(ctxt);
     return(res);
 }

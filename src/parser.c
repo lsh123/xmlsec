@@ -135,7 +135,7 @@ xmlSecParserFinalize(xmlSecTransformPtr transform) {
         if(ctx->parserCtx->myDoc != NULL) {
             xmlFreeDoc(ctx->parserCtx->myDoc);
 	    ctx->parserCtx->myDoc = NULL;
-	}
+        }
         xmlFreeParserCtxt(ctx->parserCtx);
     }
     memset(ctx, 0, sizeof(xmlSecParserCtx));
@@ -416,7 +416,7 @@ xmlSecParseFile(const char *filename) {
             xmlFreeDoc(ctxt->myDoc);
             ctxt->myDoc = NULL;
         }
-	xmlFreeParserCtxt(ctxt);
+        xmlFreeParserCtxt(ctxt);
         return(NULL);
     }
 
@@ -570,7 +570,7 @@ xmlSecParseMemory(const xmlSecByte *buffer, xmlSecSize size, int recovery) {
             xmlFreeDoc(ctxt->myDoc);
             ctxt->myDoc = NULL;
         }
-	xmlFreeParserCtxt(ctxt);
+        xmlFreeParserCtxt(ctxt);
         return(NULL);
     }
 

@@ -175,6 +175,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformKWDes3GetKlass(void);
         xmlSecNssKeyDataDsaGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataDsaGetKlass     (void);
 
+#ifndef XMLSEC_NO_SHA1
 /**
  * xmlSecNssTransformDsaSha1Id:
  *
@@ -183,6 +184,18 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataDsaGetKlass     (void);
 #define xmlSecNssTransformDsaSha1Id \
         xmlSecNssTransformDsaSha1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformDsaSha1GetKlass(void);
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+/**
+ * xmlSecNssTransformDsaSha256Id:
+ *
+ * The DSA SHA256 signature transform klass.
+ */
+#define xmlSecNssTransformDsaSha256Id \
+        xmlSecNssTransformDsaSha256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformDsaSha256GetKlass(void);
+#endif /* XMLSEC_NO_SHA256 */
 
 #endif /* XMLSEC_NO_DSA */
 

@@ -109,6 +109,14 @@ execDSigTest $res_success \
 # aleksey-xmldsig-01
 #
 ##########################################################################
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/signature-two-keynames" \
+    "sha1 rsa-sha1" \
+    "rsa x509" \
+    "$priv_key_option:key2 $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:key2 $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:key2 $topfolder/keys/rsakey.$priv_key_format --pwd secret123"
 
 execDSigTest $res_success \
     "" \

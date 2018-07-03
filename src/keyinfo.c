@@ -640,7 +640,6 @@ xmlSecKeyDataNameGetKlass(void) {
 
 static int
 xmlSecKeyDataNameXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    const xmlChar* oldName;
     xmlChar* newName;
     int ret;
 
@@ -650,19 +649,10 @@ xmlSecKeyDataNameXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, 
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeRead, -1);
 
-    oldName = xmlSecKeyGetName(key);
+    /* read key name */
     newName = xmlNodeGetContent(node);
     if(newName == NULL) {
         xmlSecInvalidNodeContentError(node, xmlSecKeyDataKlassGetName(id), "empty");
-        return(-1);
-    }
-
-    /* compare name values */
-    if((oldName != NULL) && !xmlStrEqual(oldName, newName)) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_KEY_DATA,
-                         xmlSecKeyDataKlassGetName(id),
-                         "key name is already specified");
-        xmlFree(newName);
         return(-1);
     }
 
@@ -690,19 +680,42 @@ xmlSecKeyDataNameXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, 
                 return(-1);
             }
             xmlSecKeyDestroy(tmpKey);
+
+            /* and set the key name */
+            ret = xmlSecKeySetName(key, newName);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecKeySetName",
+                                    xmlSecKeyDataKlassGetName(id));
+                xmlFree(newName);   
+                return(-1);
+            } 
+        }
+        /* TODO: record the key names we tried */
+    } else {
+        const xmlChar* oldName;
+
+        /* if we already have a keyname, make sure that it matches or set it */
+        oldName = xmlSecKeyGetName(key);
+        if(oldName != NULL) {
+            if(!xmlStrEqual(oldName, newName)) {
+                xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_KEY_DATA,
+                                 xmlSecKeyDataKlassGetName(id),
+                                 "key name is already specified");
+                xmlFree(newName);
+                return(-1);
+            }
+        } else {
+            ret = xmlSecKeySetName(key, newName);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecKeySetName",
+                                    xmlSecKeyDataKlassGetName(id));
+                xmlFree(newName);
+                return(-1);
+            }
         }
     }
 
-    /* finally set key name if it is not there */
-    if(xmlSecKeyGetName(key) == NULL) {
-        ret = xmlSecKeySetName(key, newName);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecKeySetName",
-                                xmlSecKeyDataKlassGetName(id));
-            xmlFree(newName);
-            return(-1);
-        }
-    }
+    /* done */
     xmlFree(newName);
     return(0);
 }
@@ -719,13 +732,21 @@ xmlSecKeyDataNameXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node,
     xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeWrite, -1);
 
     name = xmlSecKeyGetName(key);
-    if(name != NULL) {
-        ret = xmlSecNodeEncodeAndSetContent(node, name);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecNodeEncodeAndSetContent", NULL);
-            return(-1);
-        }
+    if(name == NULL) {
+        return(8);
     }
+
+    if(!xmlSecIsEmptyNode(node)) {
+        return(0);
+    }
+
+    ret = xmlSecNodeEncodeAndSetContent(node, name);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNodeEncodeAndSetContent", NULL);
+        return(-1);
+    }
+
+    /* done */
     return(0);
 }
 

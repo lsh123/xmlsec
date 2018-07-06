@@ -662,6 +662,7 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xm
                                 xmlSecNodeGetName(cur));
             return(-1);
         }
+        cur = xmlSecGetNextElementNode(cur->next);
     } else if(dsigCtx->defSignMethodId != xmlSecTransformIdUnknown) {
         /* the dsig spec does require SignatureMethod node
          * to be present but in some case it application might decide to
@@ -682,9 +683,6 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xm
     dsigCtx->signMethod->operation = dsigCtx->operation;
 
     /* read references */
-    if(cur != NULL) {
-        cur = xmlSecGetNextElementNode(cur->next);
-    }
     while((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeReference, xmlSecDSigNs))) {
         /* record first reference node */
         if((*firstReferenceNode) == NULL) {

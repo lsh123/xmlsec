@@ -656,7 +656,7 @@ xmlSecTransformRelationshipPopBin(xmlSecTransformPtr transform, xmlSecByte* data
 
        ret = xmlC14NExecute(transform->inNodes->doc, (xmlC14NIsVisibleCallback)xmlSecNodeSetContains, transform->inNodes, XML_C14N_1_0, NULL, 0, buf);
        if(ret < 0) {
-            xmlSecInternalError("xmlSecTransformC14NExecute",
+            xmlSecInternalError("xmlC14NExecute",
                                 xmlSecTransformGetName(transform));
            xmlOutputBufferClose(buf);
            return(-1);

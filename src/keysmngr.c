@@ -387,7 +387,7 @@ xmlSecSimpleKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
  */
 int
 xmlSecSimpleKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
-                            xmlSecKeysMngrPtr keysMngr) {
+                            xmlSecKeysMngrPtr keysMngr ATTRIBUTE_UNUSED) {
     xmlDocPtr doc;
     xmlNodePtr root;
     xmlNodePtr cur;

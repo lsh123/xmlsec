@@ -132,7 +132,7 @@ xmlSecNssKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
  */
 int
 xmlSecNssKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
-                            xmlSecKeysMngrPtr keysMngr) {
+                            xmlSecKeysMngrPtr keysMngr ATTRIBUTE_UNUSED) {
     xmlDocPtr doc;
     xmlNodePtr root;
     xmlNodePtr cur;

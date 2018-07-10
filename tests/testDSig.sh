@@ -381,6 +381,15 @@ execDSigTest $res_success \
 
 execDSigTest $res_success \
     "" \
+    "aleksey-xmldsig-01/enveloping-sha384-ecdsa-sha384" \
+    "sha384 ecdsa-sha384" \
+    "ecdsa x509" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "$priv_key_option $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+execDSigTest $res_success \
+    "" \
     "aleksey-xmldsig-01/enveloping-sha512-ecdsa-sha512" \
     "sha512 ecdsa-sha512" \
     "ecdsa x509" \

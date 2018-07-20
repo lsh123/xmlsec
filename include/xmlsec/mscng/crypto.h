@@ -198,6 +198,17 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformEcdsaSha1GetKlass(voi
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformEcdsaSha256GetKlass(void);
 #endif /* XMLSEC_NO_SHA256 */
 
+#ifndef XMLSEC_NO_SHA384
+/**
+ * xmlSecMSCngTransformEcdsaSha384Id:
+ *
+ * The ECDSA-SHA384 signature transform klass.
+ */
+#define xmlSecMSCngTransformEcdsaSha384Id     \
+       xmlSecMSCngTransformEcdsaSha384GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformEcdsaSha384GetKlass(void);
+#endif /* XMLSEC_NO_SHA384 */
+
 #ifndef XMLSEC_NO_SHA512
 /**
  * xmlSecMSCngTransformEcdsaSha512Id:

@@ -30,6 +30,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/private.h>
 
 
 /****************************************************************************
@@ -397,6 +398,7 @@ xmlSecSimpleKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecSimpleKeysStoreId), -1);
     xmlSecAssert2(uri != NULL, -1);
+    UNREFERENCED_PARAMETER(keysMngr);
 
     doc = xmlParseFile(uri);
     if(doc == NULL) {

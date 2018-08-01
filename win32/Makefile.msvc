@@ -355,7 +355,12 @@ CPPFLAGS 		= /nologo
 CFLAGS 			= /nologo /D "WIN32" /D "_WINDOWS" /D inline=__inline
 # C4130: '!=': logical operation on address of string constant:
 #     this generates a false warning inside macros
+# C4127: conditional expression is constant
+#     this generates a false warning inside asserts
+# C4152: nonstandard extension, function/data pointer conversion in expression
+#     this generates a false warning for XMLSEC_PTR_TO_FUNC
 CFLAGS 			= $(CFLAGS) /D "_MBCS" /D "_REENTRANT"  /W4 /wd4130
+CFLAGS                  = $(CFLAGS) /wd4127 /wd4152
 
 !if "$(WERROR)" == "1"
 CFLAGS 			= $(CFLAGS) /WX

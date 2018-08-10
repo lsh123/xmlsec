@@ -38,7 +38,7 @@ environment:
       CRYPTO: mscrypto
       STATIC: no
       UNICODE: yes
-      WERROR: no
+      WERROR: yes
 
     - COMPILER: MSVC17
       CRYPTO: mscng
@@ -56,7 +56,7 @@ environment:
       CRYPTO: mscrypto
       STATIC: no
       UNICODE: no
-      WERROR: no
+      WERROR: yes
 
     - COMPILER: MSVC17
       CRYPTO: mscng

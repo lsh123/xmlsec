@@ -150,6 +150,7 @@ xmlSecMSCryptoKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCryptoKeysStoreId), -1);
     xmlSecAssert2((uri != NULL), -1);
+    UNREFERENCED_PARAMETER(keysMngr);
 
     doc = xmlParseFile(uri);
     if(doc == NULL) {

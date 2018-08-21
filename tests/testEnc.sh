@@ -107,6 +107,14 @@ execEncTest $res_success \
     "--keys-file $keysfile  --session-key des-192  --binary-data $topfolder/aleksey-xmlenc-01/enc-des3cbc-aes192-keyname.data" \
     "--keys-file $keysfile"
 
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha1-params" \
+    "aes256-cbc rsa-oaep-mgf1p" \
+    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123 --session-key aes-256 --enabled-key-data key-name --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha1-params.data --node-name http://example.org/paymentv2:CreditCard"  \
+    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+
 ##########################################################################
 #
 # merlin-xmlenc-five

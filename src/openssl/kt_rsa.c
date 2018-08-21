@@ -676,39 +676,43 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
         }
         outSize = ret;
     } else if((transform->operation == xmlSecTransformOperationEncrypt) && (paramsSize > 0)) {
+        xmlSecBuffer tmp;
+
         xmlSecAssert2(xmlSecBufferGetData(&(ctx->oaepParams)) != NULL, -1);
 
-        /* add space for padding */
-        ret = xmlSecBufferSetMaxSize(in, keySize);
+        /* allocate space for temp buffer */
+        ret = xmlSecBufferInitialize(&tmp, keySize);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferSetMaxSize",
+            xmlSecInternalError2("xmlSecBufferInitialize",
                                  xmlSecTransformGetName(transform),
                                  "size=%d", keySize);
             return(-1);
         }
 
         /* add padding */
-        ret = RSA_padding_add_PKCS1_OAEP(xmlSecBufferGetData(in), keySize,
+        ret = RSA_padding_add_PKCS1_OAEP(xmlSecBufferGetData(&tmp), keySize,
                                          xmlSecBufferGetData(in), inSize,
                                          xmlSecBufferGetData(&(ctx->oaepParams)),
                                          paramsSize);
         if(ret != 1) {
             xmlSecOpenSSLError("RSA_padding_add_PKCS1_OAEP",
                                xmlSecTransformGetName(transform));
+            xmlSecBufferFinalize(&tmp);
             return(-1);
         }
-        inSize = keySize;
 
         /* encode with OAEPParams */
-        ret = RSA_public_encrypt(inSize, xmlSecBufferGetData(in),
+        ret = RSA_public_encrypt(keySize, xmlSecBufferGetData(&tmp),
                                 xmlSecBufferGetData(out),
                                 rsa, RSA_NO_PADDING);
         if(ret <= 0) {
             xmlSecOpenSSLError("RSA_public_encrypt(RSA_NO_PADDING)",
                                xmlSecTransformGetName(transform));
+            xmlSecBufferFinalize(&tmp);
             return(-1);
         }
         outSize = ret;
+        xmlSecBufferFinalize(&tmp);
     } else if((transform->operation == xmlSecTransformOperationDecrypt) && (paramsSize == 0)) {
         ret = RSA_private_decrypt(inSize, xmlSecBufferGetData(in),
                                 xmlSecBufferGetData(out),

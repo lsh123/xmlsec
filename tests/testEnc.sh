@@ -281,6 +281,14 @@ execEncTest $res_success \
 
 execEncTest $res_success \
     "" \
+    "01-phaos-xmlenc-3/enc-text-aes256-kt-rsa_oaep_sha1-params" \
+    "aes256-cbc rsa-oaep-mgf1p" \
+    "$priv_key_option $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret" \
+    "--session-key aes-256 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name --xml-data $topfolder/01-phaos-xmlenc-3/enc-text-aes256-kt-rsa_oaep_sha1-params.data --node-name http://example.org/paymentv2:CreditCard"  \
+    "$priv_key_option $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret"
+
+execEncTest $res_success \
+    "" \
     "01-phaos-xmlenc-3/enc-element-3des-kw-3des" \
     "tripledes-cbc kw-tripledes" \
     "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml" \

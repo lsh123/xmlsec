@@ -450,10 +450,8 @@ xmlSecMSCngRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     cur = xmlSecGetNextElementNode(node->children);
     while(cur != NULL) {
         if(xmlSecCheckNodeName(cur, xmlSecNodeRsaOAEPparams, xmlSecEncNs)) {
-            /* ignore the node -- not supported */
-            /* xmlSecNotImplementedError(NULL); *
-            /* return(-1); */
-
+            xmlSecNotImplementedError(NULL);
+            return(-1);
         } else if(xmlSecCheckNodeName(cur,  xmlSecNodeDigestMethod, xmlSecDSigNs)) {
             xmlChar* algorithm;
 

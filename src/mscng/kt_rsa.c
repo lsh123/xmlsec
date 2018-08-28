@@ -261,8 +261,8 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxP
         } else if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepId)) {
             BCRYPT_OAEP_PADDING_INFO paddingInfo;
             paddingInfo.pszAlgId = BCRYPT_SHA1_ALGORITHM;
-            paddingInfo.pbLabel = NULL;
-            paddingInfo.cbLabel = 0;
+            paddingInfo.pbLabel = xmlSecBufferGetData(&(ctx->oaepParams));
+            paddingInfo.cbLabel = xmlSecBufferGetSize(&(ctx->oaepParams));
             status = BCryptEncrypt(hPubKey,
                 inBuf,
                 inSize,

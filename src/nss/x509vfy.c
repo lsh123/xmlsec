@@ -402,6 +402,7 @@ xmlSecNssGetCertName(const xmlChar * name) {
     }
 
     PORT_Free(tmp);
+    xmlFree(name2);
     return(res);
 }
 

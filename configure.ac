@@ -760,11 +760,8 @@ if test "z$OPENSSL_FOUND" = "zyes" -a "z$OPENSSL_LIB_PATH" != "z" ; then
         if test "z$with_gnu_ld" = "zyes" ; then
             OPENSSL_LIBS="$OPENSSL_LIBS -Wl,-rpath-link -Wl,$OPENSSL_LIB_PATH"
         fi
-        OPENSSL_LIBS="$OPENSSL_LIBS -L$OPENSSL_LIB_PATH $OPENSSL_LIBS_LIST"
-    elif test -f $OPENSSL_LIB_PATH/$OPENSSL_LIB_STATIC_MARKER ; then
-        OPENSSL_LIBS="$OPENSSL_LIBS $OPENSSL_LIB_PATH/libcrypto.a"
     fi
-    OPENSSL_LIBS="$OPENSSL_LIBS $OPENSSL_EXTRA_LIBS"
+    OPENSSL_LIBS="$OPENSSL_LIBS -L$OPENSSL_LIB_PATH $OPENSSL_LIBS_LIST $OPENSSL_EXTRA_LIBS"
 fi
 
 dnl Check the OpenSSL version; if you change this code then you probably want to

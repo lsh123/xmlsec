@@ -1305,7 +1305,7 @@ xmlSecOpenSSLKeyDataEcdsaGetSize(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId), 0);
 
     ecdsa = xmlSecOpenSSLKeyDataEcdsaGetEcdsa(data);
-    if((ecdsa == NULL)) {
+    if(ecdsa == NULL) {
         return(0);
     }
 

@@ -397,6 +397,13 @@ execDSigTest $res_success \
     "$priv_key_option $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-ecdsa-java-bug" \
+    "sha512 ecdsa-sha512" \
+    "ecdsa x509" \
+    "--trusted-$cert_format $topfolder/keys/enveloped-ecdsa-java-bug-cert.$cert_format --enabled-key-data x509"
+
 #
 # To generate expired cert run the following command
 # > xmlsec1 sign --pkcs12 tests/keys/expiredkey.p12 --pwd secret123 --output out.xml ./tests/aleksey-xmldsig-01/enveloping-expired-cert.tmpl

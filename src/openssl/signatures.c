@@ -1057,8 +1057,12 @@ xmlSecOpenSSLSignatureEcdsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSec
         goto done;
     }
 
-    /* check size */
-    if(signSize != 2 * signHalfSize) {
+    /* check size: we expect the r and s to be the same size and match the size of
+     * the key (RFC 6931); however some  implementations (e.g. Java) cut leading zeros:
+     * https://github.com/lsh123/xmlsec/issues/228 */
+    if((signSize < 2 * signHalfSize) && (signSize % 2 == 0)) {
+        signHalfSize = signSize / 2;
+    } else if(signSize != 2 * signHalfSize) {
         xmlSecInvalidSizeError("ECDSA signature", signSize, 2 * signHalfSize,
                                NULL);
         goto done;

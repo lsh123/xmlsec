@@ -961,6 +961,8 @@ static int                      xmlSecAppInputCloseCallback     (void * context)
 xmlSecKeysMngrPtr gKeysMngr = NULL;
 int repeats = 1;
 int print_debug = 0;
+int print_verbose_debug = 1;
+int block_network_io = 0;
 clock_t total_time = 0;
 const char* xmlsec_crypto = NULL;
 const char* tmp = NULL;
@@ -1567,10 +1569,6 @@ xmlSecAppPrintDSigCtx(xmlSecDSigCtxPtr dsigCtx) {
         return;
     }
 
-    if(xmlSecAppCmdLineParamIsSet(&printDebugParam) || xmlSecAppCmdLineParamIsSet(&printXmlDebugParam)) { 
-        print_debug = 0;
-    }
-    
     /* print debug info if requested */
     if((print_debug != 0) || xmlSecAppCmdLineParamIsSet(&printDebugParam)) {
         xmlSecDSigCtxDebugDump(dsigCtx, stdout);
@@ -2287,13 +2285,36 @@ xmlSecAppInputMatchCallback(char const* filename) {
             continue;
         }
         if(strcmp(filename, value->paramNameValue) == 0) {
-            if(print_debug != 0) {
+            if(print_verbose_debug != 0) {
                 fprintf(stderr, "Debug: found mapped file \"%s\" for url \"%s\"\n", value->strValue, filename);
             }
             return(1);
         }
     }
-    
+
+    if(block_network_io != 0) {
+        static const char http[] = "http://";
+        static const char https[] = "https://";
+        static const char ftp[] = "ftp://";
+        if(xmlStrncasecmp(BAD_CAST filename, BAD_CAST http, strlen(http)) == 0) {
+            if(print_verbose_debug != 0) {
+                fprintf(stderr, "Debug: blocking access to \"%s\"\n", filename);
+            }
+            return(1);
+        }
+        if(xmlStrncasecmp(BAD_CAST filename, BAD_CAST https, strlen(https)) == 0) {
+            if(print_verbose_debug != 0) {
+                fprintf(stderr, "Debug: blocking access to \"%s\"\n", filename);
+            }
+            return(1);
+        }
+        if(xmlStrncasecmp(BAD_CAST filename, BAD_CAST ftp, strlen(ftp)) == 0) {
+            if(print_verbose_debug != 0) {
+                fprintf(stderr, "Debug: blocking access to \"%s\"\n", filename);
+            }
+            return(1);
+        }
+    }
     return(0);
 }
 
@@ -2310,12 +2331,17 @@ xmlSecAppInputOpenCallback(char const* filename) {
             continue;
         }
         if(strcmp(filename, value->paramNameValue) == 0) {
-            FILE* f = fopen(value->strValue, "rb");
+            FILE * f = NULL;
+#ifdef WIN32
+            fopen_s(&f, value->strValue, "rb");
+#else /* WIN32 */
+            f = fopen(value->strValue, "rb");
+#endif /* WIN32 */
             if(f == NULL) {
                 fprintf(stdout, "Error: can not open file \"%s\" for url \"%s\"\n", value->strValue, filename);
                 return(NULL);
             }
-            if(print_debug != 0) {
+            if(print_verbose_debug != 0) {
                 fprintf(stdout, "Debug: opened file \"%s\" for url \"%s\"\n", value->strValue, filename);
             }
             return(f);
@@ -2353,7 +2379,7 @@ static int xmlSecAppInputCloseCallback(void* context) {
     if(ret != 0) {
         return(-1);
     }
-    if(print_debug != 0) {
+    if(print_verbose_debug != 0) {
         fprintf(stdout, "Debug: closed file\n");
     }
     return(0);

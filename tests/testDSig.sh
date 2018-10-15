@@ -3,6 +3,15 @@
 # This script needs to be called from testrun.sh script
 #
 
+# Setup URL to files mapping for offline testing
+urls_map=""
+
+if [ -z "$XMLSEC_TEST_ONLINE" ]; then
+    urls_map="$urls_map --url-map:http://www.w3.org/TR/xml-stylesheet $topfolder/external-data/xml-stylesheet"
+    urls_map="$urls_map --url-map:http://www.ietf.org/rfc/rfc3161.txt $topfolder/external-data/rfc3161.txt"
+    urls_map="$urls_map --url-map:http://www.w3.org/Signature/2002/04/xml-stylesheet.b64 $topfolder/external-data/xml-stylesheet.b64"
+fi
+
 ##########################################################################
 ##########################################################################
 ##########################################################################
@@ -17,6 +26,7 @@ fi
 echo "--- testDSig started for xmlsec-$crypto library ($timestamp)" >> $logfile
 echo "--- LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $logfile
 echo "--- LTDL_LIBRARY_PATH=$LTDL_LIBRARY_PATH" >> $logfile
+
 
 ##########################################################################
 ##########################################################################
@@ -114,9 +124,9 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/signature-two-keynames" \
     "sha1 rsa-sha1" \
     "rsa x509" \
-    "$priv_key_option:key2 $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
-    "$priv_key_option:key2 $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
-    "$priv_key_option:key2 $topfolder/keys/rsakey.$priv_key_format --pwd secret123"
+    "$priv_key_option:key2 $topfolder/keys/rsakey.$priv_key_format --pwd secret123 $urls_map" \
+    "$priv_key_option:key2 $topfolder/keys/rsakey.$priv_key_format --pwd secret123 $urls_map" \
+    "$priv_key_option:key2 $topfolder/keys/rsakey.$priv_key_format --pwd secret123 $urls_map"
 
 execDSigTest $res_success \
     "" \
@@ -511,81 +521,81 @@ execDSigTest $res_success \
     "merlin-xmldsig-twenty-three/signature-external-b64-dsa" \
     "base64 sha1 dsa-sha1" \
     "dsa" \
-    " " \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
-    " "
+    " $urls_map" \
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $urls_map" \
+    " $urls_map"
 
 execDSigTest $res_success \
     "" \
     "merlin-xmldsig-twenty-three/signature-external-dsa" \
     "sha1 dsa-sha1" \
     "dsa" \
-    "" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
-    " "
+    " $urls_map" \
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $urls_map" \
+    "$urls_map "
 
 execDSigTest $res_success \
     "" \
     "merlin-xmldsig-twenty-three/signature-keyname" \
     "sha1 dsa-sha1" \
     "dsa x509" \
-    "" \
-    "$priv_key_option:test-dsa $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
-    "$priv_key_option:test-dsa $topfolder/keys/dsakey.$priv_key_format --pwd secret123"
+    " $urls_map" \
+    "$priv_key_option:test-dsa $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $urls_map" \
+    "$priv_key_option:test-dsa $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $urls_map"
 
 execDSigTest $res_success \
     "" \
     "merlin-xmldsig-twenty-three/signature-x509-crt" \
     "sha1 dsa-sha1" \
     "dsa x509" \
-    "" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123"\
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
+    " $urls_map" \
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $urls_map"\
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format $urls_map"
 
 execDSigTest $res_success \
     "" \
     "merlin-xmldsig-twenty-three/signature-x509-sn" \
     "sha1 dsa-sha1" \
     "dsa x509" \
-    "" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123"\
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
+    " $urls_map" \
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $urls_map"\
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format $urls_map"
 
 execDSigTest $res_success \
     "" \
     "merlin-xmldsig-twenty-three/signature-x509-is" \
     "sha1 dsa-sha1" \
     "dsa x509" \
-    "" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123"\
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
+    " $urls_map" \
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $urls_map"\
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format $urls_map"
 
 execDSigTest $res_success \
     "" \
     "merlin-xmldsig-twenty-three/signature-x509-ski" \
     "sha1 dsa-sha1" \
     "dsa x509" \
-    "" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123"\
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
+    "$urls_map" \
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $urls_map"\
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format $urls_map"
 
 execDSigTest $res_success \
     "" \
     "merlin-xmldsig-twenty-three/signature-retrievalmethod-rawx509crt" \
     "sha1 dsa-sha1" \
     "dsa x509" \
-    "" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123"\
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --trusted-$cert_format $topfolder/keys/ca2cert.$cert_format"
+    "$urls_map" \
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $urls_map"\
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --trusted-$cert_format $topfolder/keys/ca2cert.$cert_format $urls_map"
 
 execDSigTest $res_success \
     "" \
     "merlin-xmldsig-twenty-three/signature" \
     "base64 xpath xslt enveloped-signature c14n-with-comments sha1 dsa-sha1" \
     "dsa x509" \
-    "" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format"
+    " $urls_map" \
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $urls_map" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format $urls_map"
 
 
 ##########################################################################
@@ -714,7 +724,7 @@ execDSigTest $res_success \
     "signature-dsa-detached" \
     "sha1 dsa-sha1" \
     "dsa x509" \
-    "--trusted-$cert_format certs/dsa-ca-cert.$cert_format --verification-time 2009-01-01+10:00:00 --url-map:http://www.ietf.org/rfc/rfc3161.txt rfc3161.txt"
+    "--trusted-$cert_format certs/dsa-ca-cert.$cert_format --verification-time 2009-01-01+10:00:00 $urls_map"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
@@ -749,21 +759,21 @@ execDSigTest $res_success \
     "signature-hmac-sha1-40-c14n-comments-detached" \
     "c14n-with-comments sha1 hmac-sha1" \
     "hmac" \
-    "--hmackey certs/hmackey.bin"
+    "--hmackey certs/hmackey.bin  $urls_map"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-hmac-sha1-40-exclusive-c14n-comments-detached" \
     "exc-c14n-with-comments sha1 hmac-sha1" \
     "hmac" \
-    "--hmackey certs/hmackey.bin"
+    "--hmackey certs/hmackey.bin $urls_map"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-hmac-sha1-exclusive-c14n-comments-detached" \
     "exc-c14n-with-comments sha1 hmac-sha1" \
     "hmac" \
-    "--hmackey certs/hmackey.bin"
+    "--hmackey certs/hmackey.bin  $urls_map"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
@@ -777,35 +787,35 @@ execDSigTest $res_success \
     "signature-rsa-detached-b64-transform" \
     "base64 sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --X509-skip-strict-checks --verification-time 2009-01-01+10:00:00"
+    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --X509-skip-strict-checks --verification-time 2009-01-01+10:00:00  $urls_map"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-rsa-detached" \
     "sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --X509-skip-strict-checks --verification-time 2009-01-01+10:00:00"
+    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --X509-skip-strict-checks --verification-time 2009-01-01+10:00:00  $urls_map"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-rsa-detached-xpath-transform" \
     "xpath sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --X509-skip-strict-checks --verification-time 2009-01-01+10:00:00"
+    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --X509-skip-strict-checks --verification-time 2009-01-01+10:00:00  $urls_map"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-rsa-detached-xslt-transform-retrieval-method" \
     "xslt sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --X509-skip-strict-checks --verification-time 2009-01-01+10:00:00"
+    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --X509-skip-strict-checks --verification-time 2009-01-01+10:00:00  $urls_map"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-rsa-detached-xslt-transform" \
     "xslt sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --X509-skip-strict-checks --verification-time 2009-01-01+10:00:00"
+    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --X509-skip-strict-checks --verification-time 2009-01-01+10:00:00  $urls_map"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
@@ -912,7 +922,7 @@ execDSigTest $res_fail \
     "merlin-xmldsig-twenty-three/signature-x509-crt-crl" \
     "sha1 rsa-sha1" \
     "rsa x509" \
-    "--X509-skip-strict-checks --trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format"
+    "--X509-skip-strict-checks --trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format $urls_map"
 
 execDSigTest $res_fail \
     "" \
@@ -933,7 +943,7 @@ execDSigTest $res_fail \
     "signature-rsa-detached-xslt-transform-bad-retrieval-method" \
     "xslt sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format"
+    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format $urls_map"
 
 execDSigTest $res_fail \
     "phaos-xmldsig-three" \

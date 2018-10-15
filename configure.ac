@@ -2032,7 +2032,7 @@ dnl ==========================================================================
 dnl See do we need GOST2012 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for EXPERMIENTAL GOST2012 support)
-AC_ARG_ENABLE(gost,   [  --enable-gost2012       enable EXPERMIENTAL GOST2012 support (no)])
+AC_ARG_ENABLE(gost2012,[  --enable-gost2012       enable EXPERMIENTAL GOST2012 support (no)])
 if test "z$enable_gost2012" != "zyes" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_GOST2012=1"
     XMLSEC_NO_GOST2012="1"

@@ -521,7 +521,7 @@ execDSigTest $res_success \
     "merlin-xmldsig-twenty-three/signature-external-b64-dsa" \
     "base64 sha1 dsa-sha1" \
     "dsa" \
-    "" \
+    " $urls_map" \
     "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $urls_map" \
     " $urls_map"
 

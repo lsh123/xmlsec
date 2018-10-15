@@ -714,7 +714,7 @@ execDSigTest $res_success \
     "signature-dsa-detached" \
     "sha1 dsa-sha1" \
     "dsa x509" \
-    "--trusted-$cert_format certs/dsa-ca-cert.$cert_format --verification-time 2009-01-01+10:00:00"
+    "--trusted-$cert_format certs/dsa-ca-cert.$cert_format --verification-time 2009-01-01+10:00:00 --url-map:http://www.ietf.org/rfc/rfc3161.txt rfc3161.txt"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \

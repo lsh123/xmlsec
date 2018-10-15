@@ -2293,22 +2293,22 @@ xmlSecAppInputMatchCallback(char const* filename) {
     }
 
     if(block_network_io != 0) {
-        static const char http[] = "http://";
-        static const char https[] = "https://";
-        static const char ftp[] = "ftp://";
-        if(xmlStrncasecmp(BAD_CAST filename, BAD_CAST http, strlen(http)) == 0) {
+        static const xmlChar http[] = "http://";
+        static const xmlChar https[] = "https://";
+        static const xmlChar ftp[] = "ftp://";
+        if(xmlStrncasecmp(BAD_CAST filename, http, xmlStrlen(http)) == 0) {
             if(print_verbose_debug != 0) {
                 fprintf(stderr, "Debug: blocking access to \"%s\"\n", filename);
             }
             return(1);
         }
-        if(xmlStrncasecmp(BAD_CAST filename, BAD_CAST https, strlen(https)) == 0) {
+        if(xmlStrncasecmp(BAD_CAST filename, https, xmlStrlen(https)) == 0) {
             if(print_verbose_debug != 0) {
                 fprintf(stderr, "Debug: blocking access to \"%s\"\n", filename);
             }
             return(1);
         }
-        if(xmlStrncasecmp(BAD_CAST filename, BAD_CAST ftp, strlen(ftp)) == 0) {
+        if(xmlStrncasecmp(BAD_CAST filename, ftp, xmlStrlen(ftp)) == 0) {
             if(print_verbose_debug != 0) {
                 fprintf(stderr, "Debug: blocking access to \"%s\"\n", filename);
             }

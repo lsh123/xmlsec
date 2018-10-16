@@ -34,6 +34,7 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/keysmngr.h>
+#include <xmlsec/io.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/xmldsig.h>
 #include <xmlsec/xmlenc.h>
@@ -526,6 +527,18 @@ static xmlSecAppCmdLineParam xxeParam = {
     NULL
 };    
 
+static xmlSecAppCmdLineParam urlMapParam = { 
+    xmlSecAppCmdLineTopicDSigCommon | 
+    xmlSecAppCmdLineTopicEncCommon,
+    "--url-map",
+    NULL,
+    "--url-map:<url> <file>"
+    "\n\tmaps a given <url> to the given <file> for loading external resources",
+    xmlSecAppCmdLineParamTypeString,
+    xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
+
 
 /****************************************************************
  *
@@ -852,6 +865,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &printCryptoErrorMsgsParam,
     &helpParam,
     &xxeParam,
+    &urlMapParam,
         
     /* MUST be the last one */
     NULL
@@ -934,9 +948,21 @@ static int                      xmlSecAppAddIDAttr              (xmlNodePtr cur,
                                                                  const xmlChar* node,
                                                                  const xmlChar* nsHref);                                                                 
 
+
+static int                      xmlSecAppInputMatchCallback     (char const * filename);
+static void*                    xmlSecAppInputOpenCallback      (char const * filename);
+static int                      xmlSecAppInputReadCallback      (void * context, 
+                                                                 char * buffer, 
+                                                                 int len);
+static int                      xmlSecAppInputCloseCallback     (void * context);
+
+
+
 xmlSecKeysMngrPtr gKeysMngr = NULL;
 int repeats = 1;
 int print_debug = 0;
+int print_verbose_debug = 0;
+int block_network_io = 0;
 clock_t total_time = 0;
 const char* xmlsec_crypto = NULL;
 const char* tmp = NULL;
@@ -975,7 +1001,7 @@ int main(int argc, const char **argv) {
 
     /* read the command (first argument) */
     if(argc < 2) {
-	fprintf(stderr, "Error: not enough arguments\n");
+        fprintf(stderr, "Error: not enough arguments\n");
         xmlSecAppPrintUsage();
         goto fail;
     }
@@ -985,7 +1011,7 @@ int main(int argc, const char **argv) {
         xmlSecAppPrintUsage();
         goto fail;
     }
-    
+
     /* do as much as we can w/o initialization */
     if(command == xmlSecAppCommandHelp) {
         xmlSecAppPrintHelp(subCommand, cmdLineTopics);
@@ -994,7 +1020,7 @@ int main(int argc, const char **argv) {
         fprintf(stdout, "%s %s (%s)\n", PACKAGE, XMLSEC_VERSION, xmlSecGetDefaultCrypto());
         goto success;
     }
-    
+
     /* parse command line */
     pos = xmlSecAppCmdLineParamsListParse(parameters, cmdLineTopics, utf8_argv, argc, 2);
     if(pos < 0) {
@@ -1002,13 +1028,13 @@ int main(int argc, const char **argv) {
         xmlSecAppPrintUsage();
         goto fail;
     }
-    
+
     /* is it a help request? */    
     if(xmlSecAppCmdLineParamIsSet(&helpParam)) {
         xmlSecAppPrintHelp(command, cmdLineTopics);
         goto success;
     }
-    
+
     /* we need to have some files at the end */
     switch(command) {
         case xmlSecAppCommandKeys:
@@ -1543,10 +1569,6 @@ xmlSecAppPrintDSigCtx(xmlSecDSigCtxPtr dsigCtx) {
         return;
     }
 
-    if(xmlSecAppCmdLineParamIsSet(&printDebugParam) || xmlSecAppCmdLineParamIsSet(&printXmlDebugParam)) { 
-        print_debug = 0;
-    }
-    
     /* print debug info if requested */
     if((print_debug != 0) || xmlSecAppCmdLineParamIsSet(&printDebugParam)) {
         xmlSecDSigCtxDebugDump(dsigCtx, stdout);
@@ -2247,6 +2269,123 @@ xmlSecAppLoadKeys(void) {
     return(0);
 }
 
+/**
+ * Callbacks for supporting mapping URLs to files
+ */
+static int
+xmlSecAppInputMatchCallback(char const* filename) {
+    xmlSecAppCmdLineValuePtr value;
+    
+    if(filename == NULL) {
+        return(0);
+    }
+    
+    for(value = urlMapParam.value; value != NULL; value = value->next) {
+        if((value->strValue == NULL) || (value->paramNameValue == NULL)) {
+            continue;
+        }
+        if(strcmp(filename, value->paramNameValue) == 0) {
+            if(print_verbose_debug != 0) {
+                fprintf(stderr, "Debug: found mapped file \"%s\" for url \"%s\"\n", value->strValue, filename);
+            }
+            return(1);
+        }
+    }
+
+    if(block_network_io != 0) {
+        static const xmlChar http[] = "http://";
+        static const xmlChar https[] = "https://";
+        static const xmlChar ftp[] = "ftp://";
+        if(xmlStrncasecmp(BAD_CAST filename, http, xmlStrlen(http)) == 0) {
+            if(print_verbose_debug != 0) {
+                fprintf(stderr, "Debug: blocking access to \"%s\"\n", filename);
+            }
+            return(1);
+        }
+        if(xmlStrncasecmp(BAD_CAST filename, https, xmlStrlen(https)) == 0) {
+            if(print_verbose_debug != 0) {
+                fprintf(stderr, "Debug: blocking access to \"%s\"\n", filename);
+            }
+            return(1);
+        }
+        if(xmlStrncasecmp(BAD_CAST filename, ftp, xmlStrlen(ftp)) == 0) {
+            if(print_verbose_debug != 0) {
+                fprintf(stderr, "Debug: blocking access to \"%s\"\n", filename);
+            }
+            return(1);
+        }
+    }
+    return(0);
+}
+
+static void*
+xmlSecAppInputOpenCallback(char const* filename) {
+    xmlSecAppCmdLineValuePtr value;
+    
+    if(filename == NULL) {
+        return(NULL);
+    }
+    
+    for(value = urlMapParam.value; value != NULL; value = value->next) {
+        if((value->strValue == NULL) || (value->paramNameValue == NULL)) {
+            continue;
+        }
+        if(strcmp(filename, value->paramNameValue) == 0) {
+            FILE * f = NULL;
+#ifdef WIN32
+            fopen_s(&f, value->strValue, "rb");
+#else /* WIN32 */
+            f = fopen(value->strValue, "rb");
+#endif /* WIN32 */
+            if(f == NULL) {
+                fprintf(stdout, "Error: can not open file \"%s\" for url \"%s\"\n", value->strValue, filename);
+                return(NULL);
+            }
+            if(print_verbose_debug != 0) {
+                fprintf(stdout, "Debug: opened file \"%s\" for url \"%s\"\n", value->strValue, filename);
+            }
+            return(f);
+        }
+    }
+    return(NULL);
+}
+
+static int
+xmlSecAppInputReadCallback(void* context, char* buffer, int len) {
+    FILE* f = (FILE*)context;
+    size_t res;
+
+    if(f == NULL) {
+        return(-1);
+    }
+    if(feof(f)) {
+        return(0);
+    }
+    res = fread(buffer, 1, len, f);
+    if(ferror(f)) {
+        return(-1);
+    }
+    return((int)res);
+}
+
+static int xmlSecAppInputCloseCallback(void* context) {
+    FILE* f = (FILE*)context;
+    int ret;
+
+    if(f == NULL) {
+        return(-1);
+    }
+    ret = fclose(f);
+    if(ret != 0) {
+        return(-1);
+    }
+    if(print_verbose_debug != 0) {
+        fprintf(stdout, "Debug: closed file\n");
+    }
+    return(0);
+}
+
+
 static int intialized = 0;
 
 #ifndef XMLSEC_NO_XSLT
@@ -2255,6 +2394,8 @@ static xsltSecurityPrefsPtr xsltSecPrefs = NULL;
 
 static int
 xmlSecAppInit(void) {
+    int ret;
+    
     if(intialized != 0) {
         return(0);
     }
@@ -2282,12 +2423,23 @@ xmlSecAppInit(void) {
 #endif /* XMLSEC_NO_XSLT */                
     
     /* Init xmlsec */
-    if(xmlSecInit() < 0) {
+    ret = xmlSecInit();
+    if(ret < 0) {
         fprintf(stderr, "Error: xmlsec intialization failed.\n");
         return(-1);
     }
     if(xmlSecCheckVersion() != 1) {
         fprintf(stderr, "Error: loaded xmlsec library version is not compatible.\n");
+        return(-1);
+    }
+
+    /* Setup IO callbacks */
+    ret = xmlSecIORegisterCallbacks(xmlSecAppInputMatchCallback,
+                                    xmlSecAppInputOpenCallback,
+                                    xmlSecAppInputReadCallback,
+                                    xmlSecAppInputCloseCallback);
+    if(ret < 0) {
+        fprintf(stderr, "Error: xmlsec IO callbacks intialization failed.\n");
         return(-1);
     }
 

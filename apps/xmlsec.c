@@ -961,7 +961,7 @@ static int                      xmlSecAppInputCloseCallback     (void * context)
 xmlSecKeysMngrPtr gKeysMngr = NULL;
 int repeats = 1;
 int print_debug = 0;
-int print_verbose_debug = 1;
+int print_verbose_debug = 0;
 int block_network_io = 0;
 clock_t total_time = 0;
 const char* xmlsec_crypto = NULL;

@@ -157,6 +157,9 @@
     <keyword type="function" name="xmlSecTransformAes128CbcGetKlass ()" link="xmlsec-app.html#xmlSecTransformAes128CbcGetKlass"/>
     <keyword type="function" name="xmlSecTransformAes192CbcGetKlass ()" link="xmlsec-app.html#xmlSecTransformAes192CbcGetKlass"/>
     <keyword type="function" name="xmlSecTransformAes256CbcGetKlass ()" link="xmlsec-app.html#xmlSecTransformAes256CbcGetKlass"/>
+    <keyword type="function" name="xmlSecTransformAes128GcmGetKlass ()" link="xmlsec-app.html#xmlSecTransformAes128GcmGetKlass"/>
+    <keyword type="function" name="xmlSecTransformAes192GcmGetKlass ()" link="xmlsec-app.html#xmlSecTransformAes192GcmGetKlass"/>
+    <keyword type="function" name="xmlSecTransformAes256GcmGetKlass ()" link="xmlsec-app.html#xmlSecTransformAes256GcmGetKlass"/>
     <keyword type="function" name="xmlSecTransformKWAes128GetKlass ()" link="xmlsec-app.html#xmlSecTransformKWAes128GetKlass"/>
     <keyword type="function" name="xmlSecTransformKWAes192GetKlass ()" link="xmlsec-app.html#xmlSecTransformKWAes192GetKlass"/>
     <keyword type="function" name="xmlSecTransformKWAes256GetKlass ()" link="xmlsec-app.html#xmlSecTransformKWAes256GetKlass"/>
@@ -228,6 +231,9 @@
     <keyword type="macro" name="xmlSecTransformAes128CbcId" link="xmlsec-app.html#xmlSecTransformAes128CbcId"/>
     <keyword type="macro" name="xmlSecTransformAes192CbcId" link="xmlsec-app.html#xmlSecTransformAes192CbcId"/>
     <keyword type="macro" name="xmlSecTransformAes256CbcId" link="xmlsec-app.html#xmlSecTransformAes256CbcId"/>
+    <keyword type="macro" name="xmlSecTransformAes128GcmId" link="xmlsec-app.html#xmlSecTransformAes128GcmId"/>
+    <keyword type="macro" name="xmlSecTransformAes192GcmId" link="xmlsec-app.html#xmlSecTransformAes192GcmId"/>
+    <keyword type="macro" name="xmlSecTransformAes256GcmId" link="xmlsec-app.html#xmlSecTransformAes256GcmId"/>
     <keyword type="macro" name="xmlSecTransformKWAes128Id" link="xmlsec-app.html#xmlSecTransformKWAes128Id"/>
     <keyword type="macro" name="xmlSecTransformKWAes192Id" link="xmlsec-app.html#xmlSecTransformKWAes192Id"/>
     <keyword type="macro" name="xmlSecTransformKWAes256Id" link="xmlsec-app.html#xmlSecTransformKWAes256Id"/>
@@ -970,6 +976,13 @@
     <keyword type="function" name="xmlSecQName2BitMaskNodesWrite ()" link="xmlsec-xmltree.html#xmlSecQName2BitMaskNodesWrite"/>
     <keyword type="function" name="xmlSecQName2BitMaskDebugDump ()" link="xmlsec-xmltree.html#xmlSecQName2BitMaskDebugDump"/>
     <keyword type="function" name="xmlSecQName2BitMaskDebugXmlDump ()" link="xmlsec-xmltree.html#xmlSecQName2BitMaskDebugXmlDump"/>
+    <keyword type="function" name="xmlSecWin32ConvertLocaleToUnicode ()" link="xmlsec-xmltree.html#xmlSecWin32ConvertLocaleToUnicode"/>
+    <keyword type="function" name="xmlSecWin32ConvertUtf8ToUnicode ()" link="xmlsec-xmltree.html#xmlSecWin32ConvertUtf8ToUnicode"/>
+    <keyword type="function" name="xmlSecWin32ConvertUnicodeToUtf8 ()" link="xmlsec-xmltree.html#xmlSecWin32ConvertUnicodeToUtf8"/>
+    <keyword type="function" name="xmlSecWin32ConvertLocaleToUtf8 ()" link="xmlsec-xmltree.html#xmlSecWin32ConvertLocaleToUtf8"/>
+    <keyword type="function" name="xmlSecWin32ConvertUtf8ToLocale ()" link="xmlsec-xmltree.html#xmlSecWin32ConvertUtf8ToLocale"/>
+    <keyword type="function" name="xmlSecWin32ConvertTstrToUtf8 ()" link="xmlsec-xmltree.html#xmlSecWin32ConvertTstrToUtf8"/>
+    <keyword type="function" name="xmlSecWin32ConvertUtf8ToTstr ()" link="xmlsec-xmltree.html#xmlSecWin32ConvertUtf8ToTstr"/>
     <keyword type="struct" name="struct xmlSecQName2IntegerInfo" link="xmlsec-xmltree.html#xmlSecQName2IntegerInfo"/>
     <keyword type="typedef" name="xmlSecQName2IntegerInfoConstPtr" link="xmlsec-xmltree.html#xmlSecQName2IntegerInfoConstPtr"/>
     <keyword type="typedef" name="xmlSecBitMask" link="xmlsec-xmltree.html#xmlSecBitMask"/>
@@ -1018,6 +1031,9 @@
     <keyword type="function" name="xmlSecOpenSSLTransformAes128CbcGetKlass ()" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformAes128CbcGetKlass"/>
     <keyword type="function" name="xmlSecOpenSSLTransformAes192CbcGetKlass ()" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformAes192CbcGetKlass"/>
     <keyword type="function" name="xmlSecOpenSSLTransformAes256CbcGetKlass ()" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformAes256CbcGetKlass"/>
+    <keyword type="function" name="xmlSecOpenSSLTransformAes128GcmGetKlass ()" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformAes128GcmGetKlass"/>
+    <keyword type="function" name="xmlSecOpenSSLTransformAes192GcmGetKlass ()" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformAes192GcmGetKlass"/>
+    <keyword type="function" name="xmlSecOpenSSLTransformAes256GcmGetKlass ()" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformAes256GcmGetKlass"/>
     <keyword type="function" name="xmlSecOpenSSLTransformKWAes128GetKlass ()" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformKWAes128GetKlass"/>
     <keyword type="function" name="xmlSecOpenSSLTransformKWAes192GetKlass ()" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformKWAes192GetKlass"/>
     <keyword type="function" name="xmlSecOpenSSLTransformKWAes256GetKlass ()" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformKWAes256GetKlass"/>
@@ -1106,6 +1122,9 @@
     <keyword type="macro" name="xmlSecOpenSSLTransformAes128CbcId" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformAes128CbcId"/>
     <keyword type="macro" name="xmlSecOpenSSLTransformAes192CbcId" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformAes192CbcId"/>
     <keyword type="macro" name="xmlSecOpenSSLTransformAes256CbcId" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformAes256CbcId"/>
+    <keyword type="macro" name="xmlSecOpenSSLTransformAes128GcmId" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformAes128GcmId"/>
+    <keyword type="macro" name="xmlSecOpenSSLTransformAes192GcmId" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformAes192GcmId"/>
+    <keyword type="macro" name="xmlSecOpenSSLTransformAes256GcmId" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformAes256GcmId"/>
     <keyword type="macro" name="xmlSecOpenSSLTransformKWAes128Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformKWAes128Id"/>
     <keyword type="macro" name="xmlSecOpenSSLTransformKWAes192Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformKWAes192Id"/>
     <keyword type="macro" name="xmlSecOpenSSLTransformKWAes256Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformKWAes256Id"/>
@@ -1433,10 +1452,12 @@
     <keyword type="function" name="xmlSecNssTransformKWDes3GetKlass ()" link="xmlsec-nss-crypto.html#xmlSecNssTransformKWDes3GetKlass"/>
     <keyword type="function" name="xmlSecNssKeyDataDsaGetKlass ()" link="xmlsec-nss-crypto.html#xmlSecNssKeyDataDsaGetKlass"/>
     <keyword type="function" name="xmlSecNssTransformDsaSha1GetKlass ()" link="xmlsec-nss-crypto.html#xmlSecNssTransformDsaSha1GetKlass"/>
+    <keyword type="function" name="xmlSecNssTransformDsaSha256GetKlass ()" link="xmlsec-nss-crypto.html#xmlSecNssTransformDsaSha256GetKlass"/>
     <keyword type="function" name="xmlSecNssKeyDataEcdsaGetKlass ()" link="xmlsec-nss-crypto.html#xmlSecNssKeyDataEcdsaGetKlass"/>
     <keyword type="function" name="xmlSecNssTransformEcdsaSha1GetKlass ()" link="xmlsec-nss-crypto.html#xmlSecNssTransformEcdsaSha1GetKlass"/>
     <keyword type="function" name="xmlSecNssTransformEcdsaSha224GetKlass ()" link="xmlsec-nss-crypto.html#xmlSecNssTransformEcdsaSha224GetKlass"/>
     <keyword type="function" name="xmlSecNssTransformEcdsaSha256GetKlass ()" link="xmlsec-nss-crypto.html#xmlSecNssTransformEcdsaSha256GetKlass"/>
+    <keyword type="function" name="xmlSecNssTransformEcdsaSha384GetKlass ()" link="xmlsec-nss-crypto.html#xmlSecNssTransformEcdsaSha384GetKlass"/>
     <keyword type="function" name="xmlSecNssTransformEcdsaSha512GetKlass ()" link="xmlsec-nss-crypto.html#xmlSecNssTransformEcdsaSha512GetKlass"/>
     <keyword type="function" name="xmlSecNssHmacGetMinOutputLength ()" link="xmlsec-nss-crypto.html#xmlSecNssHmacGetMinOutputLength"/>
     <keyword type="function" name="xmlSecNssHmacSetMinOutputLength ()" link="xmlsec-nss-crypto.html#xmlSecNssHmacSetMinOutputLength"/>
@@ -1476,10 +1497,12 @@
     <keyword type="macro" name="xmlSecNssTransformKWDes3Id" link="xmlsec-nss-crypto.html#xmlSecNssTransformKWDes3Id"/>
     <keyword type="macro" name="xmlSecNssKeyDataDsaId" link="xmlsec-nss-crypto.html#xmlSecNssKeyDataDsaId"/>
     <keyword type="macro" name="xmlSecNssTransformDsaSha1Id" link="xmlsec-nss-crypto.html#xmlSecNssTransformDsaSha1Id"/>
+    <keyword type="macro" name="xmlSecNssTransformDsaSha256Id" link="xmlsec-nss-crypto.html#xmlSecNssTransformDsaSha256Id"/>
     <keyword type="macro" name="xmlSecNssKeyDataEcdsaId" link="xmlsec-nss-crypto.html#xmlSecNssKeyDataEcdsaId"/>
     <keyword type="macro" name="xmlSecNssTransformEcdsaSha1Id" link="xmlsec-nss-crypto.html#xmlSecNssTransformEcdsaSha1Id"/>
     <keyword type="macro" name="xmlSecNssTransformEcdsaSha224Id" link="xmlsec-nss-crypto.html#xmlSecNssTransformEcdsaSha224Id"/>
     <keyword type="macro" name="xmlSecNssTransformEcdsaSha256Id" link="xmlsec-nss-crypto.html#xmlSecNssTransformEcdsaSha256Id"/>
+    <keyword type="macro" name="xmlSecNssTransformEcdsaSha384Id" link="xmlsec-nss-crypto.html#xmlSecNssTransformEcdsaSha384Id"/>
     <keyword type="macro" name="xmlSecNssTransformEcdsaSha512Id" link="xmlsec-nss-crypto.html#xmlSecNssTransformEcdsaSha512Id"/>
     <keyword type="macro" name="xmlSecNssKeyDataHmacId" link="xmlsec-nss-crypto.html#xmlSecNssKeyDataHmacId"/>
     <keyword type="macro" name="xmlSecNssTransformHmacMd5Id" link="xmlsec-nss-crypto.html#xmlSecNssTransformHmacMd5Id"/>
@@ -1568,13 +1591,6 @@
     <keyword type="function" name="xmlSecMSCryptoKeysMngrInit ()" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoKeysMngrInit"/>
     <keyword type="function" name="xmlSecMSCryptoGenerateRandom ()" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoGenerateRandom"/>
     <keyword type="function" name="xmlSecMSCryptoErrorsDefaultCallback ()" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoErrorsDefaultCallback"/>
-    <keyword type="function" name="xmlSecMSCryptoConvertLocaleToUnicode ()" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoConvertLocaleToUnicode"/>
-    <keyword type="function" name="xmlSecMSCryptoConvertUtf8ToUnicode ()" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoConvertUtf8ToUnicode"/>
-    <keyword type="function" name="xmlSecMSCryptoConvertUnicodeToUtf8 ()" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoConvertUnicodeToUtf8"/>
-    <keyword type="function" name="xmlSecMSCryptoConvertLocaleToUtf8 ()" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoConvertLocaleToUtf8"/>
-    <keyword type="function" name="xmlSecMSCryptoConvertUtf8ToLocale ()" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoConvertUtf8ToLocale"/>
-    <keyword type="function" name="xmlSecMSCryptoConvertTstrToUtf8 ()" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoConvertTstrToUtf8"/>
-    <keyword type="function" name="xmlSecMSCryptoConvertUtf8ToTstr ()" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoConvertUtf8ToTstr"/>
     <keyword type="function" name="xmlSecMSCryptoKeyDataDsaGetKlass ()" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoKeyDataDsaGetKlass"/>
     <keyword type="function" name="xmlSecMSCryptoTransformDsaSha1GetKlass ()" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformDsaSha1GetKlass"/>
     <keyword type="function" name="xmlSecMSCryptoKeyDataGost2001GetKlass ()" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoKeyDataGost2001GetKlass"/>
@@ -1619,7 +1635,7 @@
     <keyword type="function" name="xmlSecMSCryptoTransformHmacSha256GetKlass ()" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformHmacSha256GetKlass"/>
     <keyword type="function" name="xmlSecMSCryptoTransformHmacSha384GetKlass ()" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformHmacSha384GetKlass"/>
     <keyword type="function" name="xmlSecMSCryptoTransformHmacSha512GetKlass ()" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformHmacSha512GetKlass"/>
-    <keyword type="macro" name="xmlSecMSCryptoKeyDataDsaId" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoKeyDataDsaId"/>
+    <keyword type="macro" name="xmlSecMSCryptoKeyDataDsaId" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoKeyDataDsaId" deprecated=""/>
     <keyword type="macro" name="xmlSecMSCryptoTransformDsaSha1Id" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformDsaSha1Id"/>
     <keyword type="macro" name="xmlSecMSCryptoKeyDataGost2001Id" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoKeyDataGost2001Id"/>
     <keyword type="macro" name="xmlSecMSCryptoTransformGost2001GostR3411_94Id" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformGost2001GostR3411-94Id"/>
@@ -1703,12 +1719,7 @@
     <keyword type="function" name="xmlSecMSCngKeyDataGetPubKey ()" link="xmlsec-mscng-certkeys.html#xmlSecMSCngKeyDataGetPubKey"/>
     <keyword type="function" name="xmlSecMSCngKeyDataGetPrivKey ()" link="xmlsec-mscng-certkeys.html#xmlSecMSCngKeyDataGetPrivKey"/>
     <keyword type="function" name="xmlSecCryptoGetFunctions_mscng ()" link="xmlsec-mscng-crypto.html#xmlSecCryptoGetFunctions-mscng"/>
-    <keyword type="function" name="xmlSecMSCngMultiByteToWideChar ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngMultiByteToWideChar"/>
-    <keyword type="function" name="xmlSecMSCngConvertUtf8ToTstr ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngConvertUtf8ToTstr"/>
-    <keyword type="function" name="xmlSecMSCngConvertUtf8ToUnicode ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngConvertUtf8ToUnicode"/>
-    <keyword type="function" name="xmlSecMSCngConvertTstrToUtf8 ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngConvertTstrToUtf8"/>
-    <keyword type="function" name="xmlSecMSCngConvertUnicodeToUtf8 ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngConvertUnicodeToUtf8"/>
-    <keyword type="function" name="xmlSecMSCngGenerateRandom ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngGenerateRandom"/>
+    <keyword type="function" name="xmlSecMSCngGenerateRandom ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngGenerateRandom" deprecated=""/>
     <keyword type="function" name="xmlSecMSCngInit ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngInit"/>
     <keyword type="function" name="xmlSecMSCngShutdown ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngShutdown"/>
     <keyword type="function" name="xmlSecMSCngKeysMngrInit ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngKeysMngrInit"/>
@@ -1725,6 +1736,7 @@
     <keyword type="function" name="xmlSecMSCngKeyDataEcdsaGetKlass ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataEcdsaGetKlass"/>
     <keyword type="function" name="xmlSecMSCngTransformEcdsaSha1GetKlass ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngTransformEcdsaSha1GetKlass"/>
     <keyword type="function" name="xmlSecMSCngTransformEcdsaSha256GetKlass ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngTransformEcdsaSha256GetKlass"/>
+    <keyword type="function" name="xmlSecMSCngTransformEcdsaSha384GetKlass ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngTransformEcdsaSha384GetKlass"/>
     <keyword type="function" name="xmlSecMSCngTransformEcdsaSha512GetKlass ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngTransformEcdsaSha512GetKlass"/>
     <keyword type="function" name="xmlSecMSCngKeyDataDesGetKlass ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataDesGetKlass"/>
     <keyword type="function" name="xmlSecMSCngTransformDes3CbcGetKlass ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngTransformDes3CbcGetKlass"/>
@@ -1744,6 +1756,9 @@
     <keyword type="function" name="xmlSecMSCngTransformAes128CbcGetKlass ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngTransformAes128CbcGetKlass"/>
     <keyword type="function" name="xmlSecMSCngTransformAes192CbcGetKlass ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngTransformAes192CbcGetKlass"/>
     <keyword type="function" name="xmlSecMSCngTransformAes256CbcGetKlass ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngTransformAes256CbcGetKlass"/>
+    <keyword type="function" name="xmlSecMSCngTransformAes128GcmGetKlass ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngTransformAes128GcmGetKlass"/>
+    <keyword type="function" name="xmlSecMSCngTransformAes192GcmGetKlass ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngTransformAes192GcmGetKlass"/>
+    <keyword type="function" name="xmlSecMSCngTransformAes256GcmGetKlass ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngTransformAes256GcmGetKlass"/>
     <keyword type="function" name="xmlSecMSCngTransformKWAes128GetKlass ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngTransformKWAes128GetKlass"/>
     <keyword type="function" name="xmlSecMSCngTransformKWAes192GetKlass ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngTransformKWAes192GetKlass"/>
     <keyword type="function" name="xmlSecMSCngTransformKWAes256GetKlass ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngTransformKWAes256GetKlass"/>
@@ -1760,6 +1775,7 @@
     <keyword type="macro" name="xmlSecMSCngKeyDataEcdsaId" link="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataEcdsaId"/>
     <keyword type="macro" name="xmlSecMSCngTransformEcdsaSha1Id" link="xmlsec-mscng-crypto.html#xmlSecMSCngTransformEcdsaSha1Id"/>
     <keyword type="macro" name="xmlSecMSCngTransformEcdsaSha256Id" link="xmlsec-mscng-crypto.html#xmlSecMSCngTransformEcdsaSha256Id"/>
+    <keyword type="macro" name="xmlSecMSCngTransformEcdsaSha384Id" link="xmlsec-mscng-crypto.html#xmlSecMSCngTransformEcdsaSha384Id"/>
     <keyword type="macro" name="xmlSecMSCngTransformEcdsaSha512Id" link="xmlsec-mscng-crypto.html#xmlSecMSCngTransformEcdsaSha512Id"/>
     <keyword type="macro" name="xmlSecMSCngKeyDataDesId" link="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataDesId"/>
     <keyword type="macro" name="xmlSecMSCngTransformDes3CbcId" link="xmlsec-mscng-crypto.html#xmlSecMSCngTransformDes3CbcId"/>
@@ -1779,6 +1795,9 @@
     <keyword type="macro" name="xmlSecMSCngTransformAes128CbcId" link="xmlsec-mscng-crypto.html#xmlSecMSCngTransformAes128CbcId"/>
     <keyword type="macro" name="xmlSecMSCngTransformAes192CbcId" link="xmlsec-mscng-crypto.html#xmlSecMSCngTransformAes192CbcId"/>
     <keyword type="macro" name="xmlSecMSCngTransformAes256CbcId" link="xmlsec-mscng-crypto.html#xmlSecMSCngTransformAes256CbcId"/>
+    <keyword type="macro" name="xmlSecMSCngTransformAes128GcmId" link="xmlsec-mscng-crypto.html#xmlSecMSCngTransformAes128GcmId"/>
+    <keyword type="macro" name="xmlSecMSCngTransformAes192GcmId" link="xmlsec-mscng-crypto.html#xmlSecMSCngTransformAes192GcmId"/>
+    <keyword type="macro" name="xmlSecMSCngTransformAes256GcmId" link="xmlsec-mscng-crypto.html#xmlSecMSCngTransformAes256GcmId"/>
     <keyword type="macro" name="xmlSecMSCngTransformKWAes128Id" link="xmlsec-mscng-crypto.html#xmlSecMSCngTransformKWAes128Id"/>
     <keyword type="macro" name="xmlSecMSCngTransformKWAes192Id" link="xmlsec-mscng-crypto.html#xmlSecMSCngTransformKWAes192Id"/>
     <keyword type="macro" name="xmlSecMSCngTransformKWAes256Id" link="xmlsec-mscng-crypto.html#xmlSecMSCngTransformKWAes256Id"/>

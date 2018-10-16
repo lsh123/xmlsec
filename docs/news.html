@@ -306,6 +306,52 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     color: initial;
 }
 </style>
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
+<style type="text/css">
+table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
+    width: 20em;
+}
+.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+}
+.programlisting {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation {
+    background: #eeeeee;
+    border: solid 1px #000000;
+}
+.navigation a {
+    color: initial;
+}
+.navigation a:visited {
+    color: initial;
+}
+</style>
 </head>
 <body><table width="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -351,12 +397,22 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <h1>XML Security Library News</h1>
 </div>
 <ul>
-<li>June 5 2018<br>
+<li>October 23 2018<br>
+        The <a href="download.html">XML Security Library 1.2.27</a> release includes the following changes:
+        <ul>
+        <li>Added AES-GCM support for OpenSSL and MSCNG (snargit).</li>
+        <li>Added DSA-SHA256 and ECDSA-SHA384 support for NSS (vmiklos).</li>
+        <li>Added RSA-OAEP support for MSCNG (vmiklos).</li>
+        <li>Continuous build integration in Travis and Appveyor.</li>
+        <li>Several other small fixes (<a href="https://github.com/lsh123/xmlsec/commits/master">more details</a>).</li>
+        </ul>
+</li>
+<br><li>June 5 2018<br>
         The <a href="download.html">XML Security Library 1.2.26</a> release includes the following changes:
         <ul>
         <li>Added xmlsec-mscng module based on <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa376210(v=vs.85).aspx">Microsoft Cryptography API: Next Generation</a> (vmiklos).</li>
         <li>Added support for GOST 2012 and fixed CryptoPro CSP provider for GOST R 34.10-2001 in xmlsec-mscrypto (ipechorin).</li>
-	<li>Added LibreSSL 2.7 support (vishwin).</li>
+	    <li>Added LibreSSL 2.7 support (vishwin).</li>
         <li>Upgraded documentation build process to support the latest gtk-doc.</li>
         <li>Several other small fixes (<a href="https://github.com/lsh123/xmlsec/commits/master">more details</a>).</li>
         </ul>

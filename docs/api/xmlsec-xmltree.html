@@ -32,52 +32,6 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     color: initial;
 }
 </style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
 </head>
 <body><table width="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -524,6 +478,62 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-xmltree.html#xmlSecQName2BitMaskDebugXmlDump" title="xmlSecQName2BitMaskDebugXmlDump ()">xmlSecQName2BitMaskDebugXmlDump</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">LPWSTR</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmltree.html#xmlSecWin32ConvertLocaleToUnicode" title="xmlSecWin32ConvertLocaleToUnicode ()">xmlSecWin32ConvertLocaleToUnicode</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">LPWSTR</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmltree.html#xmlSecWin32ConvertUtf8ToUnicode" title="xmlSecWin32ConvertUtf8ToUnicode ()">xmlSecWin32ConvertUtf8ToUnicode</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlChar</span></font> *
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmltree.html#xmlSecWin32ConvertUnicodeToUtf8" title="xmlSecWin32ConvertUnicodeToUtf8 ()">xmlSecWin32ConvertUnicodeToUtf8</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlChar</span></font> *
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmltree.html#xmlSecWin32ConvertLocaleToUtf8" title="xmlSecWin32ConvertLocaleToUtf8 ()">xmlSecWin32ConvertLocaleToUtf8</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">char</span></font> *
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmltree.html#xmlSecWin32ConvertUtf8ToLocale" title="xmlSecWin32ConvertUtf8ToLocale ()">xmlSecWin32ConvertUtf8ToLocale</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlChar</span></font> *
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmltree.html#xmlSecWin32ConvertTstrToUtf8" title="xmlSecWin32ConvertTstrToUtf8 ()">xmlSecWin32ConvertTstrToUtf8</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">LPTSTR</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmltree.html#xmlSecWin32ConvertUtf8ToTstr" title="xmlSecWin32ConvertUtf8ToTstr ()">xmlSecWin32ConvertUtf8ToTstr</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 </tbody>
@@ -2480,6 +2490,188 @@ xmlSecQName2BitMaskDebugXmlDump (<em class="parameter"><code><font><span class="
 </tr>
 </tbody>
 </table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecWin32ConvertLocaleToUnicode"></a><h3>xmlSecWin32ConvertLocaleToUnicode ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">LPWSTR</span></font>
+xmlSecWin32ConvertLocaleToUnicode (<em class="parameter"><code>const <font><span class="type">char</span></font> *str</code></em>);</pre>
+<p>Converts input string from current system locale to Unicode.</p>
+<div class="refsect3">
+<a name="xmlSecWin32ConvertLocaleToUnicode.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>str</p></td>
+<td class="parameter_description"><p>the string to convert.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecWin32ConvertLocaleToUnicode.returns"></a><h4>Returns</h4>
+<p> a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecWin32ConvertUtf8ToUnicode"></a><h3>xmlSecWin32ConvertUtf8ToUnicode ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">LPWSTR</span></font>
+xmlSecWin32ConvertUtf8ToUnicode (<em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *str</code></em>);</pre>
+<p>Converts input string from UTF8 to Unicode.</p>
+<div class="refsect3">
+<a name="xmlSecWin32ConvertUtf8ToUnicode.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>str</p></td>
+<td class="parameter_description"><p>the string to convert.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecWin32ConvertUtf8ToUnicode.returns"></a><h4>Returns</h4>
+<p> a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecWin32ConvertUnicodeToUtf8"></a><h3>xmlSecWin32ConvertUnicodeToUtf8 ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlChar</span></font> *
+xmlSecWin32ConvertUnicodeToUtf8 (<em class="parameter"><code><font><span class="type">LPCWSTR</span></font> str</code></em>);</pre>
+<p>Converts input string from Unicode to UTF8.</p>
+<div class="refsect3">
+<a name="xmlSecWin32ConvertUnicodeToUtf8.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>str</p></td>
+<td class="parameter_description"><p>the string to convert.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecWin32ConvertUnicodeToUtf8.returns"></a><h4>Returns</h4>
+<p> a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecWin32ConvertLocaleToUtf8"></a><h3>xmlSecWin32ConvertLocaleToUtf8 ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlChar</span></font> *
+xmlSecWin32ConvertLocaleToUtf8 (<em class="parameter"><code>const <font><span class="type">char</span></font> *str</code></em>);</pre>
+<p>Converts input string from locale to UTF8.</p>
+<div class="refsect3">
+<a name="xmlSecWin32ConvertLocaleToUtf8.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>str</p></td>
+<td class="parameter_description"><p>the string to convert.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecWin32ConvertLocaleToUtf8.returns"></a><h4>Returns</h4>
+<p> a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecWin32ConvertUtf8ToLocale"></a><h3>xmlSecWin32ConvertUtf8ToLocale ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">char</span></font> *
+xmlSecWin32ConvertUtf8ToLocale (<em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *str</code></em>);</pre>
+<p>Converts input string from UTF8 to locale.</p>
+<div class="refsect3">
+<a name="xmlSecWin32ConvertUtf8ToLocale.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>str</p></td>
+<td class="parameter_description"><p>the string to convert.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecWin32ConvertUtf8ToLocale.returns"></a><h4>Returns</h4>
+<p> a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecWin32ConvertTstrToUtf8"></a><h3>xmlSecWin32ConvertTstrToUtf8 ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlChar</span></font> *
+xmlSecWin32ConvertTstrToUtf8 (<em class="parameter"><code><font><span class="type">LPCTSTR</span></font> str</code></em>);</pre>
+<p>Converts input string from TSTR (locale or Unicode) to UTF8.</p>
+<div class="refsect3">
+<a name="xmlSecWin32ConvertTstrToUtf8.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>str</p></td>
+<td class="parameter_description"><p>the string to convert.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecWin32ConvertTstrToUtf8.returns"></a><h4>Returns</h4>
+<p> a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecWin32ConvertUtf8ToTstr"></a><h3>xmlSecWin32ConvertUtf8ToTstr ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">LPTSTR</span></font>
+xmlSecWin32ConvertUtf8ToTstr (<em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *str</code></em>);</pre>
+<p>Converts input string from UTF8 to TSTR (locale or Unicode).</p>
+<div class="refsect3">
+<a name="xmlSecWin32ConvertUtf8ToTstr.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>str</p></td>
+<td class="parameter_description"><p>the string to convert.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecWin32ConvertUtf8ToTstr.returns"></a><h4>Returns</h4>
+<p> a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.</p>
 </div>
 </div>
 </div>

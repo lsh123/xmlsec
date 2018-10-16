@@ -32,52 +32,6 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     color: initial;
 }
 </style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
 </head>
 <body><table width="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -1881,28 +1835,28 @@ xmlSecKeyPtrListGetKlass (<em class="parameter"><code><span class="type">void</s
 <a name="xmlSecKeyUsageSign"></a><h3>xmlSecKeyUsageSign</h3>
 <pre class="programlisting">#define xmlSecKeyUsageSign              0x00000001
 </pre>
-<p>Key can be used in any way.</p>
+<p>Key for signing.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecKeyUsageVerify"></a><h3>xmlSecKeyUsageVerify</h3>
 <pre class="programlisting">#define xmlSecKeyUsageVerify            0x00000002
 </pre>
-<p>Key for signing.</p>
+<p>Key for signature verification.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecKeyUsageEncrypt"></a><h3>xmlSecKeyUsageEncrypt</h3>
 <pre class="programlisting">#define xmlSecKeyUsageEncrypt           0x00000004
 </pre>
-<p>Key for signature verification.</p>
+<p>An encryption key.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecKeyUsageDecrypt"></a><h3>xmlSecKeyUsageDecrypt</h3>
 <pre class="programlisting">#define xmlSecKeyUsageDecrypt           0x00000008
 </pre>
-<p>An encryption key.</p>
+<p>A decryption key.</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1916,7 +1870,7 @@ xmlSecKeyPtrListGetKlass (<em class="parameter"><code><span class="type">void</s
 <a name="xmlSecKeyUsageAny"></a><h3>xmlSecKeyUsageAny</h3>
 <pre class="programlisting">#define xmlSecKeyUsageAny               0xFFFFFFFF
 </pre>
-<p>A decryption key.</p>
+<p>Key can be used in any way.</p>
 </div>
 <hr>
 <div class="refsect2">

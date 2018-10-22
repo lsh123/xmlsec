@@ -32,52 +32,6 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     color: initial;
 }
 </style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
 </head>
 <body><table width="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -320,6 +274,14 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </tr>
 <tr>
 <td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-nss-crypto.html#xmlSecNssTransformDsaSha256GetKlass" title="xmlSecNssTransformDsaSha256GetKlass ()">xmlSecNssTransformDsaSha256GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
 <font><span class="returnvalue">xmlSecKeyDataId</span></font>
 </td>
 <td class="function_name">
@@ -348,6 +310,14 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-nss-crypto.html#xmlSecNssTransformEcdsaSha256GetKlass" title="xmlSecNssTransformEcdsaSha256GetKlass ()">xmlSecNssTransformEcdsaSha256GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-nss-crypto.html#xmlSecNssTransformEcdsaSha384GetKlass" title="xmlSecNssTransformEcdsaSha384GetKlass ()">xmlSecNssTransformEcdsaSha384GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -627,6 +597,10 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-nss-crypto.html#xmlSecNssTransformDsaSha256Id" title="xmlSecNssTransformDsaSha256Id">xmlSecNssTransformDsaSha256Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-nss-crypto.html#xmlSecNssKeyDataEcdsaId" title="xmlSecNssKeyDataEcdsaId">xmlSecNssKeyDataEcdsaId</a></td>
 </tr>
 <tr>
@@ -640,6 +614,10 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <tr>
 <td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-nss-crypto.html#xmlSecNssTransformEcdsaSha256Id" title="xmlSecNssTransformEcdsaSha256Id">xmlSecNssTransformEcdsaSha256Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-nss-crypto.html#xmlSecNssTransformEcdsaSha384Id" title="xmlSecNssTransformEcdsaSha384Id">xmlSecNssTransformEcdsaSha384Id</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -1125,6 +1103,17 @@ xmlSecNssTransformDsaSha1GetKlass (<em class="parameter"><code><span class="type
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecNssTransformDsaSha256GetKlass"></a><h3>xmlSecNssTransformDsaSha256GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecNssTransformDsaSha256GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The DSA-SHA256 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecNssTransformDsaSha256GetKlass.returns"></a><h4>Returns</h4>
+<p> DSA-SHA256 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecNssKeyDataEcdsaGetKlass"></a><h3>xmlSecNssKeyDataEcdsaGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
 xmlSecNssKeyDataEcdsaGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
@@ -1165,6 +1154,17 @@ xmlSecNssTransformEcdsaSha256GetKlass (<em class="parameter"><code><span class="
 <div class="refsect3">
 <a name="xmlSecNssTransformEcdsaSha256GetKlass.returns"></a><h4>Returns</h4>
 <p> ECDSA-SHA256 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecNssTransformEcdsaSha384GetKlass"></a><h3>xmlSecNssTransformEcdsaSha384GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecNssTransformEcdsaSha384GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The ECDSA-SHA384 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecNssTransformEcdsaSha384GetKlass.returns"></a><h4>Returns</h4>
+<p> ECDSA-SHA384 signature transform klass.</p>
 </div>
 </div>
 <hr>
@@ -1581,6 +1581,12 @@ xmlSecNssTransformMd5GetKlass (<em class="parameter"><code><span class="type">vo
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecNssTransformDsaSha256Id"></a><h3>xmlSecNssTransformDsaSha256Id</h3>
+<pre class="programlisting">#define             xmlSecNssTransformDsaSha256Id</pre>
+<p>The DSA SHA256 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecNssKeyDataEcdsaId"></a><h3>xmlSecNssKeyDataEcdsaId</h3>
 <pre class="programlisting">#define xmlSecNssKeyDataEcdsaId xmlSecNssKeyDataEcdsaGetKlass()
 </pre>
@@ -1606,6 +1612,13 @@ xmlSecNssTransformMd5GetKlass (<em class="parameter"><code><span class="type">vo
 <pre class="programlisting">#define xmlSecNssTransformEcdsaSha256Id xmlSecNssTransformEcdsaSha256GetKlass()
 </pre>
 <p>The ECDSA SHA256 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecNssTransformEcdsaSha384Id"></a><h3>xmlSecNssTransformEcdsaSha384Id</h3>
+<pre class="programlisting">#define xmlSecNssTransformEcdsaSha384Id xmlSecNssTransformEcdsaSha384GetKlass()
+</pre>
+<p>The ECDSA SHA384 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">

@@ -32,52 +32,6 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     color: initial;
 }
 </style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
 </head>
 <body><table width="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -292,6 +246,30 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-app.html#xmlSecTransformAes256CbcGetKlass" title="xmlSecTransformAes256CbcGetKlass ()">xmlSecTransformAes256CbcGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecTransformAes128GcmGetKlass" title="xmlSecTransformAes128GcmGetKlass ()">xmlSecTransformAes128GcmGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecTransformAes192GcmGetKlass" title="xmlSecTransformAes192GcmGetKlass ()">xmlSecTransformAes192GcmGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecTransformAes256GcmGetKlass" title="xmlSecTransformAes256GcmGetKlass ()">xmlSecTransformAes256GcmGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -815,6 +793,18 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformAes128GcmId" title="xmlSecTransformAes128GcmId">xmlSecTransformAes128GcmId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformAes192GcmId" title="xmlSecTransformAes192GcmId">xmlSecTransformAes192GcmId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformAes256GcmId" title="xmlSecTransformAes256GcmId">xmlSecTransformAes256GcmId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformKWAes128Id" title="xmlSecTransformKWAes128Id">xmlSecTransformKWAes128Id</a></td>
 </tr>
 <tr>
@@ -1226,6 +1216,45 @@ xmlSecTransformAes256CbcGetKlass (<em class="parameter"><code><span class="type"
 <div class="refsect3">
 <a name="xmlSecTransformAes256CbcGetKlass.returns"></a><h4>Returns</h4>
 <p> pointer to AES 256 CBC encryption transform or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformAes128GcmGetKlass"></a><h3>xmlSecTransformAes128GcmGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecTransformAes128GcmGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>AES 128 GCM encryption transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecTransformAes128GcmGetKlass.returns"></a><h4>Returns</h4>
+<p> pointer to AES 128 GCM encryption transform or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformAes192GcmGetKlass"></a><h3>xmlSecTransformAes192GcmGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecTransformAes192GcmGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>AES 192 GCM encryption transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecTransformAes192GcmGetKlass.returns"></a><h4>Returns</h4>
+<p> pointer to AES 192 GCM encryption transform or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformAes256GcmGetKlass"></a><h3>xmlSecTransformAes256GcmGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecTransformAes256GcmGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>AES 256 GCM encryption transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecTransformAes256GcmGetKlass.returns"></a><h4>Returns</h4>
+<p> pointer to AES 256 GCM encryption transform or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
 </div>
@@ -2476,6 +2505,27 @@ xmlSecCryptoAppGetDefaultPwdCallback (<em class="parameter"><code><span class="t
 <pre class="programlisting">#define xmlSecTransformAes256CbcId              xmlSecTransformAes256CbcGetKlass()
 </pre>
 <p>The AES256 CBC cipher transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformAes128GcmId"></a><h3>xmlSecTransformAes128GcmId</h3>
+<pre class="programlisting">#define xmlSecTransformAes128GcmId              xmlSecTransformAes128GcmGetKlass()
+</pre>
+<p>The AES128 GCM cipher transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformAes192GcmId"></a><h3>xmlSecTransformAes192GcmId</h3>
+<pre class="programlisting">#define xmlSecTransformAes192GcmId              xmlSecTransformAes192GcmGetKlass()
+</pre>
+<p>The AES192 GCM cipher transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformAes256GcmId"></a><h3>xmlSecTransformAes256GcmId</h3>
+<pre class="programlisting">#define xmlSecTransformAes256GcmId              xmlSecTransformAes256GcmGetKlass()
+</pre>
+<p>The AES256 GCM cipher transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">

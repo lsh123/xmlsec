@@ -1362,11 +1362,16 @@ static int
 xmlSecOpenSSLDummyPasswordCallback(char *buf, int bufsize,
                                    int verify ATTRIBUTE_UNUSED,
                                    void *userdata) {
-    char* password = (char*)userdata;
-    int passwordlen = (int)strlen(password);
+    char* password;
+    int passwordlen;
     UNREFERENCED_PARAMETER(verify);
 
-    if((password == NULL) || (passwordlen + 1 > bufsize)) {
+    password = (char*)userdata;
+    if(password == NULL) {
+        return(-1);
+    }
+    passwordlen = (int)strlen(password);
+    if(passwordlen + 1 > bufsize) {
         return(-1);
     }
 

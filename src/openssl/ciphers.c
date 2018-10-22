@@ -526,11 +526,18 @@ xmlSecOpenSSLEvpBlockCipherGCMCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 
         /* get the tag and add to the output */
         outSize = xmlSecBufferGetSize(out);
-        xmlSecBufferSetMaxSize(out, outSize + xmlSecOpenSSLAesGcmTagLengthInBytes);
+        ret = xmlSecBufferSetMaxSize(out, outSize + xmlSecOpenSSLAesGcmTagLengthInBytes);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecBufferSetMaxSize", cipherName);
+            return(-1);
+        }
         outBuf = xmlSecBufferGetData(out) + outSize;
         memcpy(outBuf, tag, xmlSecOpenSSLAesGcmTagLengthInBytes);
-        xmlSecBufferSetSize(out, outSize + xmlSecOpenSSLAesGcmTagLengthInBytes);
-
+        ret = xmlSecBufferSetSize(out, outSize + xmlSecOpenSSLAesGcmTagLengthInBytes);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecBufferSetSize", cipherName);
+            return(-1);
+        }
     } else {
         /* There must be at least 16 bytes in the buffer - the tag and anything left over */
         xmlSecAssert2(inSize >= xmlSecOpenSSLAesGcmTagLengthInBytes, -1);

@@ -31,9 +31,15 @@
 
 #include <xmlsec/nss/crypto.h>
 
+/* All sizes are in bytes */
 #define XMLSEC_NSS_MAX_KEY_SIZE         32
-#define XMLSEC_NSS_MAX_IV_SIZE          32
+#define XMLSEC_NSS_MAX_IV_SIZE          32 /* should be >= than XMLSEC_NSS_AES_GCM_NONCE_SIZE */
 #define XMLSEC_NSS_MAX_BLOCK_SIZE       32
+#define XMLSEC_NSS_AES_GCM_NONCE_SIZE   12 /* should be <= than XMLSEC_NSS_MAX_IV_SIZE */
+#define XMLSEC_NSS_AES_GCM_TAG_SIZE     16
+
+#define XMLSEC_NSS_MODE_CBC             0
+#define XMLSEC_NSS_MODE_GCM             1
 
 /**************************************************************************
  *
@@ -48,10 +54,11 @@ struct _xmlSecNssBlockCipherCtx {
     xmlSecKeyDataId     keyId;
     int                 keyInitialized;
     int                 ctxInitialized;
+    int                 mode;
     xmlSecByte          key[XMLSEC_NSS_MAX_KEY_SIZE];
     xmlSecSize          keySize;
     xmlSecByte          iv[XMLSEC_NSS_MAX_IV_SIZE];
-    xmlSecSize          ivSize;
+    CK_GCM_PARAMS       gcmParams;
 };
 static int      xmlSecNssBlockCipherCtxInit             (xmlSecNssBlockCipherCtxPtr ctx,
                                                          xmlSecBufferPtr in,
@@ -78,7 +85,7 @@ xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
                             const xmlChar* cipherName,
                             xmlSecTransformCtxPtr transformCtx) {
     SECItem keyItem;
-    SECItem ivItem;
+    SECItem paramItem;
     PK11SlotInfo* slot;
     PK11SymKey* symKey;
     int ivLen;
@@ -94,7 +101,17 @@ xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    ivLen = PK11_GetIVLength(ctx->cipher);
+    switch(ctx->mode) {
+    case XMLSEC_NSS_MODE_CBC:
+        ivLen = PK11_GetIVLength(ctx->cipher);
+        break;
+    case XMLSEC_NSS_MODE_GCM:
+        ivLen = XMLSEC_NSS_AES_GCM_NONCE_SIZE;
+        break;
+    default:
+        xmlSecInvalidIntegerTypeError("ctx->mode", ctx->mode, "CBC/GCM", NULL);
+        return(-1);
+    }
     xmlSecAssert2(ivLen > 0, -1);
     xmlSecAssert2((xmlSecSize)ivLen <= sizeof(ctx->iv), -1);
 
@@ -114,7 +131,6 @@ xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
                                  "size=%d", ivLen);
             return(-1);
         }
-
     } else {
         /* if we don't have enough data, exit and hope that
          * we'll have iv next time */
@@ -138,9 +154,6 @@ xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
     memset(&keyItem, 0, sizeof(keyItem));
     keyItem.data = ctx->key;
     keyItem.len  = ctx->keySize;
-    memset(&ivItem, 0, sizeof(ivItem));
-    ivItem.data = ctx->iv;
-    ivItem.len  = ctx->ivSize;
 
     slot = PK11_GetBestSlot(ctx->cipher, NULL);
     if(slot == NULL) {
@@ -149,16 +162,40 @@ xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
     }
 
     symKey = PK11_ImportSymKey(slot, ctx->cipher, PK11_OriginDerive,
-                               CKA_SIGN, &keyItem, NULL);
+                               CKA_ENCRYPT, &keyItem, NULL);
     if(symKey == NULL) {
         xmlSecNssError("PK11_ImportSymKey", cipherName);
         PK11_FreeSlot(slot);
         return(-1);
     }
 
+    memset(&paramItem, 0, sizeof(paramItem));
+    switch(ctx->mode) {
+    case XMLSEC_NSS_MODE_CBC:
+        paramItem.type = siBuffer;
+        paramItem.data = ctx->iv;
+        paramItem.len  = ivLen;
+        break;
+    case XMLSEC_NSS_MODE_GCM:
+        memset(&ctx->gcmParams, 0, sizeof(ctx->gcmParams));
+        ctx->gcmParams.pIv       = ctx->iv;
+        ctx->gcmParams.ulIvLen   = ivLen;
+        ctx->gcmParams.pAAD      = NULL;
+        ctx->gcmParams.ulAADLen  = 0;
+        ctx->gcmParams.ulTagBits = XMLSEC_NSS_AES_GCM_TAG_SIZE * 8;
+
+        paramItem.type = siBuffer;
+        paramItem.data = (unsigned char*)(&ctx->gcmParams);
+        paramItem.len  = sizeof(ctx->gcmParams);
+        break;
+    default:
+        xmlSecInvalidIntegerTypeError("ctx->mode", ctx->mode, "CBC/GCM", NULL);
+        return(-1);
+    }
+
     ctx->cipherCtx = PK11_CreateContextBySymKey(ctx->cipher,
                         (encrypt) ? CKA_ENCRYPT : CKA_DECRYPT,
-                        symKey, &ivItem);
+                        symKey, &paramItem);
     if(ctx->cipherCtx == NULL) {
         xmlSecNssError("PK11_CreateContextBySymKey", cipherName);
         PK11_FreeSymKey(symKey);
@@ -388,8 +425,11 @@ xmlSecNssBlockCipherCheckId(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_AES
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformAes128CbcId) ||
        xmlSecTransformCheckId(transform, xmlSecNssTransformAes192CbcId) ||
-       xmlSecTransformCheckId(transform, xmlSecNssTransformAes256CbcId)) {
-
+       xmlSecTransformCheckId(transform, xmlSecNssTransformAes256CbcId) ||
+	   xmlSecTransformCheckId(transform, xmlSecNssTransformAes128GcmId) ||
+	   xmlSecTransformCheckId(transform, xmlSecNssTransformAes192GcmId) ||
+	   xmlSecTransformCheckId(transform, xmlSecNssTransformAes256GcmId)
+    ) {
        return(1);
     }
 #endif /* XMLSEC_NO_AES */
@@ -414,6 +454,7 @@ xmlSecNssBlockCipherInitialize(xmlSecTransformPtr transform) {
         ctx->cipher     = CKM_DES3_CBC;
         ctx->keyId      = xmlSecNssKeyDataDesId;
         ctx->keySize    = 24;
+        ctx->mode       = XMLSEC_NSS_MODE_CBC;
     } else
 #endif /* XMLSEC_NO_DES */
 
@@ -422,14 +463,32 @@ xmlSecNssBlockCipherInitialize(xmlSecTransformPtr transform) {
         ctx->cipher     = CKM_AES_CBC;
         ctx->keyId      = xmlSecNssKeyDataAesId;
         ctx->keySize    = 16;
+        ctx->mode       = XMLSEC_NSS_MODE_CBC;
     } else if(transform->id == xmlSecNssTransformAes192CbcId) {
         ctx->cipher     = CKM_AES_CBC;
         ctx->keyId      = xmlSecNssKeyDataAesId;
         ctx->keySize    = 24;
+        ctx->mode       = XMLSEC_NSS_MODE_CBC;
     } else if(transform->id == xmlSecNssTransformAes256CbcId) {
         ctx->cipher     = CKM_AES_CBC;
         ctx->keyId      = xmlSecNssKeyDataAesId;
         ctx->keySize    = 32;
+        ctx->mode       = XMLSEC_NSS_MODE_CBC;
+    } else if(transform->id == xmlSecNssTransformAes128GcmId) {
+		ctx->cipher     = CKM_AES_GCM;
+		ctx->keyId      = xmlSecNssKeyDataAesId;
+		ctx->keySize    = 16;
+        ctx->mode       = XMLSEC_NSS_MODE_GCM;
+	} else if(transform->id == xmlSecNssTransformAes192GcmId) {
+		ctx->cipher     = CKM_AES_GCM;
+		ctx->keyId      = xmlSecNssKeyDataAesId;
+		ctx->keySize    = 24;
+        ctx->mode       = XMLSEC_NSS_MODE_GCM;
+	} else if(transform->id == xmlSecNssTransformAes256GcmId) {
+		ctx->cipher     = CKM_AES_GCM;
+		ctx->keyId      = xmlSecNssKeyDataAesId;
+		ctx->keySize    = 32;
+        ctx->mode       = XMLSEC_NSS_MODE_GCM;
     } else
 #endif /* XMLSEC_NO_AES */
 
@@ -680,7 +739,7 @@ xmlSecNssTransformAes192CbcGetKlass(void) {
 static xmlSecTransformKlass xmlSecNssAes256CbcKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecNssBlockCipherSize,           /* xmlSecSize objSize */
+    xmlSecNssBlockCipherSize,                   /* xmlSecSize objSize */
 
     xmlSecNameAes256Cbc,                        /* const xmlChar* name; */
     xmlSecHrefAes256Cbc,                        /* const xmlChar* href; */
@@ -715,6 +774,113 @@ xmlSecTransformId
 xmlSecNssTransformAes256CbcGetKlass(void) {
     return(&xmlSecNssAes256CbcKlass);
 }
+
+static xmlSecTransformKlass xmlSecNssAes128GcmKlass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecNssBlockCipherSize,                   /* xmlSecSize objSize */
+    xmlSecNameAes128Gcm,                        /* const xmlChar* name; */
+    xmlSecHrefAes128Gcm,                        /* const xmlChar* href; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+    xmlSecNssBlockCipherInitialize,      /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecNssBlockCipherFinalize,        /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecNssBlockCipherSetKeyReq,       /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecNssBlockCipherSetKey,          /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecNssBlockCipherExecute,         /* xmlSecTransformExecuteMethod execute; */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+/**
+* xmlSecNssTransformAes128GcmGetKlass:
+*
+* AES 128 GCM encryption transform klass.
+*
+* Returns: pointer to AES 128 GCM encryption transform.
+*/
+xmlSecTransformId
+xmlSecNssTransformAes128GcmGetKlass(void)
+{
+    return(&xmlSecNssAes128GcmKlass);
+}
+static xmlSecTransformKlass xmlSecNssAes192GcmKlass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecNssBlockCipherSize,                   /* xmlSecSize objSize */
+    xmlSecNameAes192Gcm,                        /* const xmlChar* name; */
+    xmlSecHrefAes192Gcm,                        /* const xmlChar* href; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+    xmlSecNssBlockCipherInitialize,      /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecNssBlockCipherFinalize,        /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecNssBlockCipherSetKeyReq,       /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecNssBlockCipherSetKey,          /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecNssBlockCipherExecute,         /* xmlSecTransformExecuteMethod execute; */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+/**
+* xmlSecNssTransformAes192GcmGetKlass:
+*
+* AES 192 GCM encryption transform klass.
+*
+* Returns: pointer to AES 192 GCM encryption transform.
+*/
+xmlSecTransformId
+xmlSecNssTransformAes192GcmGetKlass(void)
+{
+    return(&xmlSecNssAes192GcmKlass);
+}
+static xmlSecTransformKlass xmlSecNssAes256GcmKlass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecNssBlockCipherSize,                   /* xmlSecSize objSize */
+    xmlSecNameAes256Gcm,                        /* const xmlChar* name; */
+    xmlSecHrefAes256Gcm,                        /* const xmlChar* href; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+    xmlSecNssBlockCipherInitialize,      /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecNssBlockCipherFinalize,        /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecNssBlockCipherSetKeyReq,       /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecNssBlockCipherSetKey,          /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecNssBlockCipherExecute,         /* xmlSecTransformExecuteMethod execute; */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+/**
+* xmlSecNssTransformAes256GcmGetKlass:
+*
+* AES 256 GCM encryption transform klass.
+*
+* Returns: pointer to AES 256 GCM encryption transform.
+*/
+xmlSecTransformId
+xmlSecNssTransformAes256GcmGetKlass(void)
+{
+    return(&xmlSecNssAes256GcmKlass);
+}
+
 
 #endif /* XMLSEC_NO_AES */
 

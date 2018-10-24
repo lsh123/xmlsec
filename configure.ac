@@ -101,8 +101,8 @@ if test "z$enable_development" = "zyes" ; then
     enable_debugging="yes"
     enable_pedantic="yes"
     enable_static_linking="yes"
-    enable_manpages_build="yes"
-    enable_docs_build="yes"
+    enable_manpages_build="no"
+    enable_docs_build="no"
     enable_crypto_dl="no"
     AC_MSG_RESULT([yes])
 else
@@ -869,7 +869,7 @@ dnl
 dnl   2 overrides 1
 dnl
 dnl ==========================================================================
-NSS_MIN_VERSION="3.11.1"
+NSS_MIN_VERSION="3.15.0"
 NSPR_MIN_VERSION="4.4.1"
 SEAMONKEY_MIN_VERSION="1.0"
 MOZILLA_MIN_VERSION="1.4"

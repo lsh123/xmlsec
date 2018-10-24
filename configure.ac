@@ -101,8 +101,8 @@ if test "z$enable_development" = "zyes" ; then
     enable_debugging="yes"
     enable_pedantic="yes"
     enable_static_linking="yes"
-    enable_manpages_build="yes"
-    enable_docs_build="yes"
+    enable_manpages_build="no"
+    enable_docs_build="no"
     enable_crypto_dl="no"
     AC_MSG_RESULT([yes])
 else

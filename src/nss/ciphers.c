@@ -51,7 +51,6 @@ struct _xmlSecNssBlockCipherCtx {
     xmlSecByte          key[XMLSEC_NSS_MAX_KEY_SIZE];
     xmlSecSize          keySize;
     xmlSecByte          iv[XMLSEC_NSS_MAX_IV_SIZE];
-    xmlSecSize          ivSize;
 };
 static int      xmlSecNssBlockCipherCtxInit             (xmlSecNssBlockCipherCtxPtr ctx,
                                                          xmlSecBufferPtr in,
@@ -140,7 +139,7 @@ xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
     keyItem.len  = ctx->keySize;
     memset(&ivItem, 0, sizeof(ivItem));
     ivItem.data = ctx->iv;
-    ivItem.len  = ctx->ivSize;
+    ivItem.len  = ivLen;
 
     slot = PK11_GetBestSlot(ctx->cipher, NULL);
     if(slot == NULL) {
@@ -149,7 +148,7 @@ xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
     }
 
     symKey = PK11_ImportSymKey(slot, ctx->cipher, PK11_OriginDerive,
-                               CKA_SIGN, &keyItem, NULL);
+                               CKA_ENCRYPT, &keyItem, NULL);
     if(symKey == NULL) {
         xmlSecNssError("PK11_ImportSymKey", cipherName);
         PK11_FreeSlot(slot);

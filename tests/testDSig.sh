@@ -339,9 +339,9 @@ if [ "z$crypto" = "zopenssl" -a "z$priv_key_suffix" != "z-win" ] ; then
         "aleksey-xmldsig-01/enveloping-sha256-rsa-sha256-der" \
         "sha256 rsa-sha256" \
         "rsa x509" \
-        "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+        "--pubkey-cert-$cert_format $topfolder/keys/rsacert.$cert_format" \
         "--privkey-$cert_format $topfolder/keys/rsakey$priv_key_suffix.$cert_format" \
-        "--pubkey-cert-$cert_format $topfolder/keys/rsacert.$cert_format --enabled-key-data x509"
+        "--pubkey-cert-$cert_format $topfolder/keys/rsacert.$cert_format"
 fi
 
 execDSigTest $res_success \

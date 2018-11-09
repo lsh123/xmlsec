@@ -203,7 +203,7 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
      */
     ret = xmlSecBufferSetMaxSize(bn, xmlSecBufferGetSize(bn) + len / 2 + 1 + 1);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBnRevLookupTable", NULL, "size=%d", len / 2 + 1);
+        xmlSecInternalError2("xmlSecBufferSetMaxSize", NULL, "size=%d", len / 2 + 1);
         return (-1);
     }
 
@@ -321,7 +321,7 @@ xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
     size = xmlSecBufferGetSize(bn);
     ret = xmlSecBnInitialize(&bn2, size);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBnCreate", NULL, "size=%d", size);
+        xmlSecInternalError2("xmlSecBnInitialize", NULL, "size=%d", size);
         return (NULL);
     }
 

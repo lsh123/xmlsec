@@ -292,7 +292,7 @@ xmlSecPtrListAdd(xmlSecPtrListPtr list, xmlSecPtr item) {
 
     ret = xmlSecPtrListEnsureSize(list, list->use + 1);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecPtrListAdd",
+        xmlSecInternalError2("xmlSecPtrListEnsureSize",
                              xmlSecPtrListGetName(list),
                              "size=%d", list->use + 1);
         return(-1);

@@ -64,7 +64,7 @@ xmlSecKeyDataIdsInit(void) {
 
     ret = xmlSecPtrListInitialize(xmlSecKeyDataIdsGet(), xmlSecKeyDataIdListId);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecPtrListPtrInitialize(xmlSecKeyDataIdListId)", NULL);
+        xmlSecInternalError("xmlSecPtrListInitialize(xmlSecKeyDataIdListId)", NULL);
         return(-1);
     }
 

@@ -157,7 +157,7 @@ xmlSecIOInit(void) {
 
     ret = xmlSecPtrListInitialize(&xmlSecAllIOCallbacks, xmlSecIOCallbackPtrListId);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecPtrListPtrInitialize", NULL);
+        xmlSecInternalError("xmlSecPtrListInitialize", NULL);
         return(-1);
     }
 

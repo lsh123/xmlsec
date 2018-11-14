@@ -34,6 +34,9 @@
 #include <xmlsec/openssl/crypto.h>
 
 #include "../kw_aes_des.h"
+#ifdef OPENSSL_IS_BORINGSSL
+#include "openssl_compat.h"
+#endif
 
 /*********************************************************************
  *

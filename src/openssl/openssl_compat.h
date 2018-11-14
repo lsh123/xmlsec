@@ -18,11 +18,25 @@
  *****************************************************************************/
 #if !defined(XMLSEC_OPENSSL_API_110)
 
+#ifndef OPENSSL_IS_BORINGSSL
 /* EVP_PKEY stuff */
 #define EVP_PKEY_up_ref(pKey)              CRYPTO_add(&((pKey)->references), 1, CRYPTO_LOCK_EVP_PKEY)
 #define EVP_PKEY_get0_DSA(pKey)            (((pKey) != NULL) ? ((pKey)->pkey.dsa) : (DSA*)NULL)
 #define EVP_PKEY_get0_RSA(pKey)            (((pKey) != NULL) ? ((pKey)->pkey.rsa) : (RSA*)NULL)
 #define EVP_PKEY_get0_EC_KEY(pKey)         (((pKey) != NULL) ? ((pKey)->pkey.ec)  : (EC_KEY*)NULL)
+#endif
+#ifdef OPENSSL_IS_BORINGSSL
+#define EVP_PKEY_base_id(pkey) EVP_PKEY_id(pkey)
+#define EVP_CipherFinal(ctx, out, out_len) EVP_CipherFinal_ex(ctx, out, out_len)
+#define RSA_padding_add_PKCS1_OAEP(...) (0) // TODO
+//  RSA_padding_add_PKCS1_PSS_mgf1(rsa, EM, mHash, Hash, mgf1Hash, sLen)
+
+#define RSA_padding_check_PKCS1_OAEP(...) (-1) // TODO
+//  RSA_verify_PKCS1_PSS_mgf1(rsa, mHash, Hash, mgf1Hash, EM, sLen)
+
+#define EVP_read_pw_string(buf, len, prompt, verify) (-1) // TODO
+#define RAND_write_file(file) (0)                         // TODO
+#endif
 
 /* EVP_MD stuff */
 #define EVP_MD_CTX_new()                   EVP_MD_CTX_create()

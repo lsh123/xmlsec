@@ -19,7 +19,9 @@ extern "C" {
 #include <xmlsec/dl.h>
 
 #include <openssl/err.h>
+#ifndef OPENSSL_IS_BORINGSSL
 #include <openssl/opensslconf.h>
+#endif
 
 XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctions_openssl(void);
 

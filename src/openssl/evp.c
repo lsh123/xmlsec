@@ -114,7 +114,11 @@ static inline void DSA_get0_key(const DSA *d, const BIGNUM **pub_key, const BIGN
 
 static inline ENGINE *DSA_get0_engine(DSA *d) {
     xmlSecAssert2(d != NULL, NULL);
+#ifndef OPENSSL_IS_BORINGSSL
     return(d->engine);
+#else
+    return NULL; // TODO
+#endif
 }
 
 static inline int DSA_set0_pqg(DSA *d, BIGNUM *p, BIGNUM *q, BIGNUM *g) {
@@ -315,6 +319,7 @@ xmlSecOpenSSLEvpKeyDup(EVP_PKEY* pKey) {
 
     xmlSecAssert2(pKey != NULL, NULL);
 
+#ifndef OPENSSL_IS_BORINGSSL
     ret = EVP_PKEY_up_ref(pKey);
     if(ret <= 0) {
         xmlSecOpenSSLError("EVP_PKEY_up_ref", NULL);
@@ -322,6 +327,10 @@ xmlSecOpenSSLEvpKeyDup(EVP_PKEY* pKey) {
     }
 
     return(pKey);
+#else
+    (void)ret;
+    return EVP_PKEY_up_ref(pKey);
+#endif
 }
 
 /**

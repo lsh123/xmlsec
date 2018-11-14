@@ -454,6 +454,7 @@ xmlSecOpenSSLErrorsDefaultCallback(const char* file, int line, const char* func,
 
 static int
 xmlSecOpenSSLErrorsInit(void) {
+#ifndef OPENSSL_IS_BORINGSSL
     static ERR_STRING_DATA xmlSecOpenSSLStrReasons[XMLSEC_ERRORS_MAX_NUMBER + 1];
     static ERR_STRING_DATA xmlSecOpenSSLStrLib[]= {
         { ERR_PACK(XMLSEC_OPENSSL_ERRORS_LIB,0,0),      "xmlsec routines"},
@@ -476,6 +477,7 @@ xmlSecOpenSSLErrorsInit(void) {
     ERR_load_strings(XMLSEC_OPENSSL_ERRORS_LIB, xmlSecOpenSSLStrLib); /* define xmlsec lib name */
     ERR_load_strings(XMLSEC_OPENSSL_ERRORS_LIB, xmlSecOpenSSLStrDefReason); /* define default reason */
     ERR_load_strings(XMLSEC_OPENSSL_ERRORS_LIB, xmlSecOpenSSLStrReasons);
+#endif
 
     /* and set default errors callback for xmlsec to us */
     xmlSecErrorsSetCallback(xmlSecOpenSSLErrorsDefaultCallback);

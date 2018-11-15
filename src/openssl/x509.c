@@ -47,9 +47,6 @@
 #include <openssl/x509_vfy.h>
 #include <openssl/x509v3.h>
 #include <openssl/asn1.h>
-#ifdef OPENSSL_IS_BORINGSSL
-#include <openssl/mem.h>
-#endif
 
 /* The ASN1_TIME_check() function was changed from ASN1_TIME * to
  * const ASN1_TIME * in 1.1.0. To avoid compiler warnings, we use this hack.
@@ -405,11 +402,7 @@ xmlSecOpenSSLKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
     ctx = xmlSecOpenSSLX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, NULL);
     xmlSecAssert2(ctx->certsList != NULL, NULL);
-#ifdef OPENSSL_IS_BORINGSSL
-    xmlSecAssert2(pos < sk_X509_num(ctx->certsList), NULL);
-#else
-    xmlSecAssert2((int)pos < sk_X509_num(ctx->certsList), NULL);
-#endif
+    xmlSecAssert2(pos < (xmlSecSize)sk_X509_num(ctx->certsList), NULL);
 
     return(sk_X509_value(ctx->certsList, (int)pos));
 }
@@ -493,11 +486,7 @@ xmlSecOpenSSLKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecAssert2(ctx != NULL, NULL);
 
     xmlSecAssert2(ctx->crlsList != NULL, NULL);
-#ifdef OPENSSL_IS_BORINGSSL
-    xmlSecAssert2(pos < sk_X509_CRL_num(ctx->crlsList), NULL);
-#else
-    xmlSecAssert2((int)pos < sk_X509_CRL_num(ctx->crlsList), NULL);
-#endif
+    xmlSecAssert2(pos < (xmlSecSize)sk_X509_CRL_num(ctx->crlsList), NULL);
 
     return(sk_X509_CRL_value(ctx->crlsList, (int)pos));
 }

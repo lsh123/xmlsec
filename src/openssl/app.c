@@ -40,9 +40,7 @@
 #include <xmlsec/openssl/evp.h>
 #include <xmlsec/openssl/x509.h>
 
-#ifdef OPENSSL_IS_BORINGSSL
 #include "openssl_compat.h"
-#endif
 
 static int      xmlSecOpenSSLAppLoadRANDFile            (const char *filename);
 static int      xmlSecOpenSSLAppSaveRANDFile            (const char *filename);
@@ -75,9 +73,7 @@ xmlSecOpenSSLAppInit(const char* config) {
 #if !defined(XMLSEC_OPENSSL_API_110)
 
     ERR_load_crypto_strings();
-#ifndef OPENSSL_IS_BORINGSSL
     OPENSSL_config(NULL);
-#endif
     OpenSSL_add_all_algorithms();
 
 #else /* !defined(XMLSEC_OPENSSL_API_110) */

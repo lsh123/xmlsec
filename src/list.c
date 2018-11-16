@@ -247,7 +247,7 @@ xmlSecPtrListDuplicate(xmlSecPtrListPtr list) {
  *
  * Gets list size.
  *
- * Returns: the number of itmes in @list.
+ * Returns: the number of items in @list.
  */
 xmlSecSize
 xmlSecPtrListGetSize(xmlSecPtrListPtr list) {
@@ -292,7 +292,7 @@ xmlSecPtrListAdd(xmlSecPtrListPtr list, xmlSecPtr item) {
 
     ret = xmlSecPtrListEnsureSize(list, list->use + 1);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecPtrListEnsureSize",
+        xmlSecInternalError2("xmlSecPtrListAdd",
                              xmlSecPtrListGetName(list),
                              "size=%d", list->use + 1);
         return(-1);
@@ -488,7 +488,7 @@ static xmlSecPtrListKlass xmlSecStringListKlass = {
 /**
  * xmlSecStringListGetKlass:
  *
- * The strins list class.
+ * The strings list class.
  *
  * Returns: strings list klass.
  */

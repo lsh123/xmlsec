@@ -37,7 +37,7 @@
  *
  * xmlSecXPathHereFunction:
  * @ctxt:               the ponter to XPath context.
- * @nargs:              the arguments nubmer.
+ * @nargs:              the arguments number.
  *
  * The implementation of XPath "here()" function.
  * See xmlXPtrHereFunction() in xpointer.c. the only change is that

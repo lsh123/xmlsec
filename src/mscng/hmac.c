@@ -345,7 +345,7 @@ xmlSecMSCngHmacVerify(xmlSecTransformPtr transform, const xmlSecByte* data,
         return(0);
     }
 
-    /* we check the last byte separatelly as possibly not all bits should be
+    /* we check the last byte separately as possibly not all bits should be
      * compared */
     mask = lastByteMasks[ctx->truncationLength % 8];
     if((ctx->hash[dataSize - 1] & mask) != (data[dataSize - 1]  & mask)) {

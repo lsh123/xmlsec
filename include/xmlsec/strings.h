@@ -1,7 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * All the string constans.
+ * All the string constants.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.

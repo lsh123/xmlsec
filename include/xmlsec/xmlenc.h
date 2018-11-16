@@ -87,7 +87,7 @@ typedef enum {
  * @cipherValueNode:            the pointer to <enc:CipherValue/> node.
  * @reserved1:                  reserved for the future.
  *
- * XML Encrypiton context.
+ * XML Encryption context.
  */
 struct _xmlSecEncCtx {
     /* these data user can set before performing the operation */

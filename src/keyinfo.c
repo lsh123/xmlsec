@@ -1350,7 +1350,7 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
     result = xmlSecEncCtxDecryptToBuffer(keyInfoCtx->encCtx, node);
     if((result == NULL) || (xmlSecBufferGetData(result) == NULL)) {
         /* We might have multiple EncryptedKey elements, encrypted
-         * for different receipints but application can enforce
+         * for different recipients but application can enforce
          * correct enc key.
          */
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION) != 0) {

@@ -1738,7 +1738,7 @@ xmlSecMSCryptoX509SKIWrite(PCCERT_CONTEXT cert) {
 
     xmlSecAssert2(cert != NULL, NULL);
 
-    /* First check if the SKI extension actually exists, otherwise we get a SHA1 hash o fthe key/cert */
+    /* First check if the SKI extension actually exists, otherwise we get a SHA1 hash of the key/cert */
     pCertExt = CertFindExtension(szOID_SUBJECT_KEY_IDENTIFIER, cert->pCertInfo->cExtension, cert->pCertInfo->rgExtension);
     if (pCertExt == NULL) {
         xmlSecMSCryptoError("CertFindExtension", NULL);

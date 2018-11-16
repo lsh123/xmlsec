@@ -142,7 +142,7 @@ xmlSecTmplSignatureCreateNsPref(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
         return(NULL);
     }
 
-    /* add CanonicaizationMethod node to SignedInfo */
+    /* add CanonicalizationMethod node to SignedInfo */
     cur = xmlSecAddChild(signedInfoNode, xmlSecNodeCanonicalizationMethod, xmlSecDSigNs);
     if(cur == NULL) {
         xmlSecInternalError("xmlSecAddChild(xmlSecNodeCanonicalizationMethod)", NULL);
@@ -823,7 +823,7 @@ xmlSecTmplEncDataEnsureCipherReference(xmlNodePtr encNode, const xmlChar *uri) {
  * xmlSecTmplEncDataGetEncMethodNode:
  * @encNode:            the pointer to <enc:EcnryptedData /> node.
  *
- * Gets pointer to <enc:EncrytpionMethod/> node.
+ * Gets pointer to <enc:EncryptionMethod/> node.
  *
  * Returns: pointer to <enc:EncryptionMethod /> node or NULL if an error occurs.
  */
@@ -1440,7 +1440,7 @@ xmlSecTmplX509DataAddCRL(xmlNodePtr x509DataNode) {
  * Creates <dsig:HMACOutputLength/> child for the HMAC transform
  * node @node.
  *
- * Returns: 0 on success and a negatie value otherwise.
+ * Returns: 0 on success and a negative value otherwise.
  */
 int
 xmlSecTmplTransformAddHmacOutputLength(xmlNodePtr transformNode, xmlSecSize bitsLen) {
@@ -1517,7 +1517,7 @@ xmlSecTmplTransformAddRsaOaepParam(xmlNodePtr transformNode,
 /**
  * xmlSecTmplTransformAddXsltStylesheet:
  * @transformNode:      the pointer to <dsig:Transform/> node.
- * @xslt:               the XSLT transform exspression.
+ * @xslt:               the XSLT transform expression.
  *
  * Writes the XSLT transform expression to the @node.
  *

@@ -137,7 +137,7 @@ typedef unsigned int                                    xmlSecKeyDataUsage;
 /**
  * xmlSecKeyDataType:
  *
- * The key data type (public/private, session/permanet, etc.).
+ * The key data type (public/private, session/permanent, etc.).
  */
 typedef unsigned int                            xmlSecKeyDataType;
 
@@ -378,7 +378,7 @@ typedef int                     (*xmlSecKeyDataInitMethod)      (xmlSecKeyDataPt
 /**
  * xmlSecKeyDataDuplicateMethod:
  * @dst:                the pointer to destination key data.
- * @src:                the poiniter to source key data.
+ * @src:                the pointer to source key data.
  *
  * Key data specific duplication (copy) method.
  *

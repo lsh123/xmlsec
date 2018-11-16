@@ -129,7 +129,7 @@ typedef unsigned int                            xmlSecTransformUriType;
 /**
  * xmlSecTransformUriTypeSameDocument:
  *
- * The smae document ("#...") but not empty ("") URI type.
+ * The same document ("#...") but not empty ("") URI type.
  */
 #define xmlSecTransformUriTypeSameDocument      0x0002
 
@@ -296,7 +296,7 @@ typedef int             (*xmlSecTransformCtxPreExecuteCallback)         (xmlSecT
  *                      additional validation (and abort transform execution
  *                      if needed).
  * @result:             the pointer to transforms result buffer.
- * @status:             the transforms chain processng status.
+ * @status:             the transforms chain processing status.
  * @uri:                the data source URI without xpointer expression.
  * @xptrExpr:           the xpointer expression from data source URI (if any).
  * @first:              the first transform in the chain.
@@ -376,7 +376,7 @@ XMLSEC_EXPORT void                      xmlSecTransformCtxDebugXmlDump  (xmlSecT
 /**
  * xmlSecTransform:
  * @id:                 the transform id (pointer to #xmlSecTransformId).
- * @operation:          the transform's opertaion.
+ * @operation:          the transform's operation.
  * @status:             the current status.
  * @hereNode:           the pointer to transform's <dsig:Transform /> node.
  * @next:               the pointer to next transform in the chain.
@@ -748,7 +748,7 @@ typedef int             (*xmlSecTransformExecuteMethod)         (xmlSecTransform
  * @href:                       the transform's identification string (href).
  * @usage:                      the allowed transforms usages.
  * @initialize:                 the initialization method.
- * @finalize:                   the finmalization (destroy) function.
+ * @finalize:                   the finalization (destroy) function.
  * @readNode:                   the XML node read method.
  * @writeNode:                  the XML node write method.
  * @setKeyReq:                  the set key requirements method.
@@ -764,7 +764,7 @@ typedef int             (*xmlSecTransformExecuteMethod)         (xmlSecTransform
  * @reserved0:                  reserved for the future.
  * @reserved1:                  reserved for the future.
  *
- * The transform klass desccription structure.
+ * The transform klass description structure.
  */
 struct _xmlSecTransformKlass {
     /* data */
@@ -801,7 +801,7 @@ struct _xmlSecTransformKlass {
 
 /**
  * xmlSecTransformKlassGetName:
- * @klass:              the transofrm's klass.
+ * @klass:              the transform's klass.
  *
  * Macro. Returns transform klass name.
  */

@@ -574,7 +574,7 @@ xmlSecMSCryptoX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCe
     }
 
     /* TODO: The context to be added here is not duplicated first,
-    * hopefully this will not lead to errors when closing teh store
+    * hopefully this will not lead to errors when closing the store
     * and freeing the mem for all the context in the store.
     */
     xmlSecAssert2(certStore != NULL, -1);
@@ -692,7 +692,7 @@ xmlSecMSCryptoX509StoreEnableSystemTrustedCerts (xmlSecKeyDataStorePtr store, in
     xmlSecAssert(ctx != NULL);
     xmlSecAssert(ctx->untrusted != NULL);
 
-    /* it is other way around to make default value 0 mimic old behaiviour */
+    /* it is other way around to make default value 0 mimic old behaviour */
     ctx->dont_use_system_trusted_certs = !val;
 }
 

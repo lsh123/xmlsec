@@ -740,7 +740,7 @@ xmlSecAddIDs(xmlDocPtr doc, xmlNodePtr cur, const xmlChar** ids) {
 /**
  * xmlSecCreateTree:
  * @rootNodeName:       the root node name.
- * @rootNodeNs:         the root node namespace (otpional).
+ * @rootNodeNs:         the root node namespace (optional).
  *
  * Creates a new XML tree with one root node @rootNodeName.
  *
@@ -788,7 +788,7 @@ xmlSecCreateTree(const xmlChar* rootNodeName, const xmlChar* rootNodeNs) {
  * xmlSecIsEmptyNode:
  * @node:               the node to check
  *
- * Checks whethere the @node is empty (i.e. has only whitespaces children).
+ * Checks whether the @node is empty (i.e. has only whitespaces children).
  *
  * Returns: 1 if @node is empty, 0 otherwise or a negative value if an error occurs.
  */
@@ -817,7 +817,7 @@ xmlSecIsEmptyNode(xmlNodePtr node) {
  * xmlSecIsEmptyString:
  * @str:                the string to check
  *
- * Checks whethere the @str is empty (i.e. has only whitespaces children).
+ * Checks whether the @str is empty (i.e. has only whitespaces children).
  *
  * Returns: 1 if @str is empty, 0 otherwise or a negative value if an error occurs.
  */

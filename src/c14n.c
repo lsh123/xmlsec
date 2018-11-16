@@ -627,7 +627,7 @@ static xmlSecTransformKlass xmlSecTransformExclC14NKlass = {
 /**
  * xmlSecTransformExclC14NGetKlass:
  *
- * Exclusive canoncicalization that ommits comments transform klass
+ * Exclusive canoncicalization that omits comments transform klass
  * (http://www.w3.org/TR/xml-exc-c14n/).
  *
  * Returns: exclusive c14n transform id.

@@ -421,7 +421,7 @@ xmlSecNssHmacVerify(xmlSecTransformPtr transform,
         return(0);
     }
 
-    /* we check the last byte separatelly */
+    /* we check the last byte separately */
     xmlSecAssert2(dataSize > 0, -1);
     mask = last_byte_masks[ctx->dgstSize % 8];
     if((ctx->dgst[dataSize - 1] & mask) != (data[dataSize - 1]  & mask)) {

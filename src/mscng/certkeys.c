@@ -366,7 +366,7 @@ xmlSecMSCngKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
             return(-1);
         }
     } else if(srcCtx->pubkey != NULL) {
-        /* BCryptDuplicateKey() works with symmetic keys only, so go with
+        /* BCryptDuplicateKey() works with symmetric keys only, so go with
          * export + import instead */
         status = BCryptExportKey(srcCtx->pubkey,
             NULL,

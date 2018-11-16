@@ -55,7 +55,7 @@ xmlSecBufferSetDefaultAllocMode(xmlSecAllocMode defAllocMode, xmlSecSize defInit
  * xmlSecBufferCreate:
  * @size:               the intial size.
  *
- * Allocates and initalizes new memory buffer with given size.
+ * Allocates and initializes new memory buffer with given size.
  * Caller is responsible for calling #xmlSecBufferDestroy function
  * to free the buffer.
  *
@@ -85,7 +85,7 @@ xmlSecBufferCreate(xmlSecSize size) {
  * xmlSecBufferDestroy:
  * @buf:                the pointer to buffer object.
  *
- * Desrtoys buffer object created with #xmlSecBufferCreate function.
+ * Destroys buffer object created with #xmlSecBufferCreate function.
  */
 void
 xmlSecBufferDestroy(xmlSecBufferPtr buf) {
@@ -120,7 +120,7 @@ xmlSecBufferInitialize(xmlSecBufferPtr buf, xmlSecSize size) {
  * xmlSecBufferFinalize:
  * @buf:                the pointer to buffer object.
  *
- * Frees allocated resource for a buffer intialized with #xmlSecBufferInitialize
+ * Frees allocated resource for a buffer initialized with #xmlSecBufferInitialize
  * function.
  */
 void
@@ -536,7 +536,7 @@ xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
  * xmlSecBufferBase64NodeContentWrite:
  * @buf:                the pointer to buffer object.
  * @node:               the pointer to a node.
- * @columns:            the max line size fro base64 encoded data.
+ * @columns:            the max line size for base64 encoded data.
  *
  * Sets the content of the @node to the base64 encoded buffer data.
  *

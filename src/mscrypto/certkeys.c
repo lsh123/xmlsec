@@ -58,7 +58,7 @@ typedef struct _xmlSecMSCryptoKeyDataCtx xmlSecMSCryptoKeyDataCtx,
 
 #ifdef XMLSEC_MSCRYPTO_NT4
 /*-
- * A wrapper of HCRYPTKEY, a reference countor is introduced, the function is
+ * A wrapper of HCRYPTKEY, a reference counter is introduced, the function is
  * the same as CryptDuplicateKey. Because the CryptDuplicateKey is not support
  * by WINNT 4.0, the wrapper will enable the library work on WINNT 4.0
  */
@@ -68,7 +68,7 @@ struct _mscrypt_key {
 } ;
 
 /*-
- * A wrapper of HCRYPTPROV, a reference countor is introduced, the function is
+ * A wrapper of HCRYPTPROV, a reference counter is introduced, the function is
  * the same as CryptContextAddRef. Because the CryptContextAddRef is not support
  * by WINNT 4.0, the wrapper will enable the library work on WINNT 4.0
  */
@@ -485,7 +485,7 @@ xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlS
      * is needed. The key handle is needed for de/encrypting and for
      * verifying of a signature, *not* for signing. We could call
      * CryptImportPublicKeyInfo in xmlSecMSCryptoKeyDataGetKey instead
-     * so no unnessecary calls to CryptImportPublicKeyInfo are being
+     * so no unnecessary calls to CryptImportPublicKeyInfo are being
      * made. WK
      */
     if(!CryptImportPublicKeyInfo(xmlSecMSCryptoKeyDataCtxGetProvider(ctx),

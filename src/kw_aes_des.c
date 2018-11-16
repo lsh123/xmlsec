@@ -264,11 +264,11 @@ xmlSecKWDes3BufferReverse(xmlSecByte *buf, xmlSecSize size)
  * 64-bit register A, 128-bit register B, and array of 64-bit quantities
  * R(1) through R(N).
  *
- * "|" represents concatentation so x|y, where x and y and 64-bit quantities,
+ * "|" represents concatenation so x|y, where x and y and 64-bit quantities,
  * is the 128-bit quantity with x in the most significant bits and y in the
  * least significant bits. AES(K)enc(x) is the operation of AES encrypting
  * the 128-bit quantity x under the key K. AES(K)dec(x) is the corresponding
- * decryption opteration. XOR(x,y) is the bitwise exclusive or of x and y.
+ * decryption operation. XOR(x,y) is the bitwise exclusive or of x and y.
  * MSB(x) and LSB(y) are the most significant 64 bits and least significant
  * 64 bits of x and y respectively.
  *

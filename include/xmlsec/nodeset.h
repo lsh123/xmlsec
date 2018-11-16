@@ -34,7 +34,7 @@ typedef struct _xmlSecNodeSet   xmlSecNodeSet, *xmlSecNodeSetPtr;
  * @xmlSecNodeSetTreeWithoutCommentsInvert:     nodes set = all document nodes
  *                              minus (nodes in the list and all their subtress
  *                              plus all comment nodes).
- * @xmlSecNodeSetList:          nodes set = all nodes in the chidren list of nodes sets.
+ * @xmlSecNodeSetList:          nodes set = all nodes in the children list of nodes sets.
  *
  * The basic nodes sets types.
  */

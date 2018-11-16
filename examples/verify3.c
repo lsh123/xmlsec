@@ -95,7 +95,7 @@ main(int argc, char **argv) {
     if(xmlSecCryptoDLLoadLibrary(NULL) < 0) {
         fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
                         "that you have it installed and check shared libraries path\n"
-                        "(LD_LIBRARY_PATH and/or LTDL_LIBRARY_PATH) envornment variables.\n");
+                        "(LD_LIBRARY_PATH and/or LTDL_LIBRARY_PATH) environment variables.\n");
         return(-1);     
     }
 #endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
@@ -152,7 +152,7 @@ main(int argc, char **argv) {
  * @files_size:         the number of filenames in #files.
  *
  * Creates simple keys manager and load trusted certificates from PEM #files.
- * The caller is responsible for destroing returned keys manager using
+ * The caller is responsible for destroying returned keys manager using
  * @xmlSecKeysMngrDestroy.
  *
  * Returns the pointer to newly created keys manager or NULL if an error

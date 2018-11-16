@@ -147,7 +147,7 @@ typedef void                    (*xmlSecPtrDebugDumpItemMethod) (xmlSecPtr ptr,
 /**
  * xmlSecPtrListKlass:
  * @name:               the list klass name.
- * @duplicateItem:      the duplciate item method.
+ * @duplicateItem:      the duplicate item method.
  * @destroyItem:        the destroy item method.
  * @debugDumpItem:      the debug dump item method.
  * @debugXmlDumpItem:   the debug dump item in xml format method.

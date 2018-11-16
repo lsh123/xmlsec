@@ -393,7 +393,7 @@ done:
 
 /**
  * xmlSecGCryptNodeGetMpiValue:
- * @cur: the poitner to an XML node.
+ * @cur: the pointer to an XML node.
  *
  * Converts the node content from CryptoBinary format
  * (http://www.w3.org/TR/xmldsig-core/#sec-CryptoBinary)

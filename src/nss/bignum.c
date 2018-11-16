@@ -36,7 +36,7 @@
 /**
  * xmlSecNssNodeGetBigNumValue:
  * @arena: the arena from which to allocate memory
- * @cur: the poitner to an XML node.
+ * @cur: the pointer to an XML node.
  * @a: a SECItem object to hold the BigNum value
  *
  * Converts the node content from CryptoBinary format

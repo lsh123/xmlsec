@@ -335,7 +335,7 @@ xmlSecCryptoDLInit(void) {
     ret = xmlSecPtrListInitialize(&gXmlSecCryptoDLLibraries,
                                   xmlSecCryptoDLLibrariesListGetKlass());
     if(ret < 0) {
-        xmlSecInternalError("xmlSecPtrListInitialize",
+        xmlSecInternalError("xmlSecPtrListPtrInitialize",
                             "xmlSecCryptoDLLibrariesListGetKlass");
         return(-1);
     }

@@ -744,7 +744,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
         outSize = ret;
 
         /*
-         * the private decrypt w/o padding adds '0's at the begginning.
+         * the private decrypt w/o padding adds '0's at the beginning.
          * it's not clear for me can I simply skip all '0's from the
          * beggining so I have to do decode it back to BIGNUM and dump
          * buffer again

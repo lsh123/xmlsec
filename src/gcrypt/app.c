@@ -69,7 +69,7 @@ Noteworthy changes in version 1.4.3 (2008-09-18)
     */
 
     /* Version check should be the very first call because it
-       makes sure that important subsystems are intialized. */
+       makes sure that important subsystems are initialized. */
 
     /* NOTE configure.in defines GCRYPT_MIN_VERSION */
     if (!gcry_check_version (GCRYPT_MIN_VERSION)) {
@@ -89,7 +89,7 @@ Noteworthy changes in version 1.4.3 (2008-09-18)
 
     /* ... If required, other initialization goes here.  Note that the
        process might still be running with increased privileges and that
-       the secure memory has not been intialized.  */
+       the secure memory has not been initialized.  */
 
     /* Allocate a pool of 32k secure memory.  This make the secure memory
        available and also drops privileges where needed.  */

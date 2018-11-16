@@ -410,7 +410,7 @@ struct _xmlSecTransform {
 	after transform execution is finished. The 
 	<link linkend="xmlSecTransformVerifyMethod">verify</link> method implementation 
 	must set the "status" member to <link linkend="xmlSecTransformStatusOk">xmlSecTransformStatusOk</link>
-	if signature, hmac or digest is successfuly verified or to
+	if signature, hmac or digest is successfully verified or to
 	<link linkend="xmlSecTransformStatusFail">xmlSecTransformStatusFail</link>
 	otherwise.
 	</para>

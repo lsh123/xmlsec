@@ -114,7 +114,7 @@ typedef enum {
  *                              functions.
  * @operation:                  the operation: sign or verify.
  * @result:                     the pointer to signature (not valid for signature verification).
- * @status:                     the <dsig:Signatuire/> processing status.
+ * @status:                     the <dsig:Signature/> processing status.
  * @signMethod:                 the pointer to signature transform.
  * @c14nMethod:                 the pointer to c14n transform.
  * @preSignMemBufMethod:        the pointer to binary buffer right before signature

@@ -87,7 +87,7 @@ static xmlSecErrorDescription xmlSecErrorsTable[XMLSEC_ERRORS_MAX_NUMBER + 1] = 
   { XMLSEC_ERRORS_R_CERT_REVOKED,               "certificate is revoked" },
   { XMLSEC_ERRORS_R_CERT_ISSUER_FAILED,         "certificate issuer check failed" },
   { XMLSEC_ERRORS_R_CERT_NOT_YET_VALID,         "certificate is not yet valid" },
-  { XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,           "certificate has expirred" },
+  { XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,           "certificate has expired" },
   { XMLSEC_ERRORS_R_DSIG_NO_REFERENCES,         "Reference nodes are not found" },
   { XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE,     "Reference verification failed" },
   { XMLSEC_ERRORS_R_ASSERTION,                  "assertion" },
@@ -95,7 +95,7 @@ static xmlSecErrorDescription xmlSecErrorsTable[XMLSEC_ERRORS_MAX_NUMBER + 1] = 
 };
 
 static xmlSecErrorsCallback xmlSecErrorsClbk = xmlSecErrorsDefaultCallback;
-static int  xmlSecPrintErrorMessages = 1;       /* whether the error messages will be printed immidiatelly */
+static int  xmlSecPrintErrorMessages = 1;       /* whether the error messages will be printed immediately */
 
 /**
  * xmlSecErrorsInit:
@@ -221,7 +221,7 @@ xmlSecErrorsGetMsg(xmlSecSize pos) {
  * xmlSecError:
  * @file:               the error location filename (__FILE__).
  * @line:               the error location line number (__LINE__).
- * @func:               the error location function (__FUNCTIION__).
+ * @func:               the error location function (__FUNCTION__).
  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
  * @errorSubject:       the error specific error subject (e.g. failed function name).
  * @reason:             the error code.

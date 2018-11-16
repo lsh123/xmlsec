@@ -18,7 +18,7 @@
 
 #include <string.h>
 
-/* TODO: aadd Skeleton include files */
+/* TODO: add Skeleton include files */
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>

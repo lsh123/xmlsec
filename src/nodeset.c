@@ -257,7 +257,7 @@ xmlSecNodeSetContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent)
 
 /**
  * xmlSecNodeSetAdd:
- * @nset:               the pointer to currrent nodes set (or NULL).
+ * @nset:               the pointer to current nodes set (or NULL).
  * @newNSet:            the pointer to new nodes set.
  * @op:                 the operation type.
  *
@@ -289,7 +289,7 @@ xmlSecNodeSetAdd(xmlSecNodeSetPtr nset, xmlSecNodeSetPtr newNSet,
 
 /**
  * xmlSecNodeSetAddList:
- * @nset:               the pointer to currrent nodes set (or NULL).
+ * @nset:               the pointer to current nodes set (or NULL).
  * @newNSet:            the pointer to new nodes set.
  * @op:                 the operation type.
  *

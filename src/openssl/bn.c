@@ -32,7 +32,7 @@
 
 /**
  * xmlSecOpenSSLNodeGetBNValue:
- * @cur: the poitner to an XML node.
+ * @cur: the pointer to an XML node.
  * @a: the BIGNUM buffer.
  *
  * Converts the node content from CryptoBinary format

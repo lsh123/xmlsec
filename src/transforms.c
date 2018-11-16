@@ -367,7 +367,7 @@ xmlSecTransformCtxFinalize(xmlSecTransformCtxPtr ctx) {
  * xmlSecTransformCtxReset:
  * @ctx:                the pointer to transforms chain processing context.
  *
- * Resets transfroms context for new processing.
+ * Resets transforms context for new processing.
  */
 void
 xmlSecTransformCtxReset(xmlSecTransformCtxPtr ctx) {
@@ -500,7 +500,7 @@ xmlSecTransformCtxPrepend(xmlSecTransformCtxPtr ctx, xmlSecTransformPtr transfor
  * @ctx:                the pointer to transforms chain processing context.
  * @id:                 the new transform klass.
  *
- * Creaeates new transform and connects it to the end of the chain of
+ * Creates new transform and connects it to the end of the chain of
  * transforms in the @ctx (see #xmlSecTransformConnect function for details).
  *
  * Returns: pointer to newly created transform or NULL if an error occurs.
@@ -537,7 +537,7 @@ xmlSecTransformCtxCreateAndAppend(xmlSecTransformCtxPtr ctx, xmlSecTransformId i
  * @ctx:                the pointer to transforms chain processing context.
  * @id:                 the new transform klass.
  *
- * Creaeates new transform and connects it to the end of the chain of
+ * Creates new transform and connects it to the end of the chain of
  * transforms in the @ctx (see #xmlSecTransformConnect function for details).
  *
  * Returns: pointer to newly created transform or NULL if an error occurs.
@@ -689,7 +689,7 @@ xmlSecTransformCtxNodesListRead(xmlSecTransformCtxPtr ctx, xmlNodePtr node, xmlS
  * identifies a node-set containing the element with ID attribute value
  * 'chapter1' of the XML resource containing the signature. XML Signature
  * (and its applications) modify this node-set to include the element plus
- * all descendents including namespaces and attributes -- but not comments.
+ * all descendants including namespaces and attributes -- but not comments.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
@@ -1191,7 +1191,7 @@ xmlSecTransformCtxDebugXmlDump(xmlSecTransformCtxPtr ctx, FILE* output) {
  * @id:                 the transform id to create.
  *
  * Creates new transform of the @id klass. The caller is responsible for
- * destroying returned tansform using #xmlSecTransformDestroy function.
+ * destroying returned transform using #xmlSecTransformDestroy function.
  *
  * Returns: pointer to newly created transform or NULL if an error occurs.
  */
@@ -1278,7 +1278,7 @@ xmlSecTransformDestroy(xmlSecTransformPtr transform) {
  * xmlSecTransformNodeRead:
  * @node:               the pointer to the transform's node.
  * @usage:              the transform usage (signature, encryption, ...).
- * @transformCtx:       the transform's chaing processing context.
+ * @transformCtx:       the transform's chain processing context.
  *
  * Reads transform from the @node as follows:
  *
@@ -1356,7 +1356,7 @@ xmlSecTransformNodeRead(xmlNodePtr node, xmlSecTransformUsage usage, xmlSecTrans
  * xmlSecTransformPump:
  * @left:               the source pumping transform.
  * @right:              the destination pumping transform.
- * @transformCtx:       the transform's chaing processing context.
+ * @transformCtx:       the transform's chain processing context.
  *
  * Pops data from @left transform and pushes to @right transform until
  * no more data is available.
@@ -1474,7 +1474,7 @@ xmlSecTransformSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
  * @transform:          the pointer to transform.
  * @data:               the binary data for verification.
  * @dataSize:           the data size.
- * @transformCtx:       the transform's chaing processing context.
+ * @transformCtx:       the transform's chain processing context.
  *
  * Verifies the data with transform's processing results
  * (for digest, HMAC and signature transforms). The verification
@@ -1496,7 +1496,7 @@ xmlSecTransformVerify(xmlSecTransformPtr transform, const xmlSecByte* data,
  * xmlSecTransformVerifyNodeContent:
  * @transform:          the pointer to transform.
  * @node:               the pointer to node.
- * @transformCtx:       the transform's chaing processing context.
+ * @transformCtx:       the transform's chain processing context.
  *
  * Gets the @node content, base64 decodes it and calls #xmlSecTransformVerify
  * function to verify binary results.
@@ -1545,7 +1545,7 @@ xmlSecTransformVerifyNodeContent(xmlSecTransformPtr transform, xmlNodePtr node,
  * xmlSecTransformGetDataType:
  * @transform:          the pointer to transform.
  * @mode:               the data mode (push or pop).
- * @transformCtx:       the transform's chaing processing context.
+ * @transformCtx:       the transform's chain processing context.
  *
  * Gets transform input (@mode is "push") or output (@mode is "pop") data
  * type (binary or XML).
@@ -1655,7 +1655,7 @@ xmlSecTransformPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
  * xmlSecTransformExecute:
  * @transform:          the pointer to transform.
  * @last:               the flag: if set to 1 then it's the last data chunk.
- * @transformCtx:       the transform's chaing processing context.
+ * @transformCtx:       the transform's chain processing context.
  *
  * Executes transform (used by default popBin/pushBin/popXml/pushXml methods).
  *
@@ -1715,7 +1715,7 @@ xmlSecTransformDebugXmlDump(xmlSecTransformPtr transform, FILE* output) {
  * xmlSecTransformConnect:
  * @left:               the pointer to left (prev) transform.
  * @right:              the pointer to right (next) transform.
- * @transformCtx:       the transform's chaing processing context.
+ * @transformCtx:       the transform's chain processing context.
  *
  * If the data object is a node-set and the next transform requires octets,
  * the signature application MUST attempt to convert the node-set to an octet
@@ -1827,7 +1827,7 @@ xmlSecTransformRemove(xmlSecTransformPtr transform) {
  * xmlSecTransformDefaultGetDataType:
  * @transform:          the pointer to transform.
  * @mode:               the data mode (push or pop).
- * @transformCtx:       the transform's chaing processing context.
+ * @transformCtx:       the transform's chain processing context.
  *
  * Gets transform input (@mode is "push") or output (@mode is "pop") data
  * type (binary or XML) by analyzing available pushBin/popBin/pushXml/popXml
@@ -1937,7 +1937,7 @@ xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, const xmlSecByte* da
             finalData = 0;
         }
 
-        /* we don't want to puch too much */
+        /* we don't want to push too much */
         if(outSize > XMLSEC_TRANSFORM_BINARY_CHUNK) {
             outSize = XMLSEC_TRANSFORM_BINARY_CHUNK;
             finalData = 0;

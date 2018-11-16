@@ -2447,7 +2447,7 @@ xmlSecAppInit(void) {
     if(xmlSecCryptoDLLoadLibrary(BAD_CAST xmlsec_crypto) < 0) {
         fprintf(stderr, "Error: unable to load xmlsec-%s library. Make sure that you have\n"
                         "this it installed, check shared libraries path (LD_LIBRARY_PATH)\n"
-                        "envornment variable or use \"--crypto\" option to specify different\n"
+                        "environment variable or use \"--crypto\" option to specify different\n"
                         "crypto engine.\n",
                         ((xmlsec_crypto != NULL) ? BAD_CAST xmlsec_crypto : xmlSecGetDefaultCrypto())
         );

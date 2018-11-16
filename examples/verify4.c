@@ -1,7 +1,7 @@
 /** 
  * XML Security Library example: Verifying a simple SAML response with X509 certificate
  *
- * Verifies a simple SAML response. In addition to refular verification
+ * Verifies a simple SAML response. In addition to regular verification
  * we ensure that the signature has only one <dsig:Reference/> element
  * with an empty or NULL URI attribute and one enveloped signature transform
  * as it is required by SAML specification.
@@ -12,12 +12,12 @@
  * Usage: 
  *      verify4 <signed-file> <trusted-cert-pem-file1> [<trusted-cert-pem-file2> [...]]
  *
- * Example (sucecess):
+ * Example (success):
  *      ./verify4 verify4-res.xml ca2cert.pem cacert.pem
  *
  * Example (failure):
  *      ./verify4 verify4-bad-res.xml ca2cert.pem cacert.pem
- * In the same time, verify3 example successfuly verifies this signature:
+ * In the same time, verify3 example successfully verifies this signature:
  *      ./verify3 verify4-bad-res.xml ca2cert.pem cacert.pem
  *
  * This is free software; see Copyright file in the source
@@ -103,7 +103,7 @@ main(int argc, char **argv) {
     if(xmlSecCryptoDLLoadLibrary(NULL) < 0) {
         fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
                         "that you have it installed and check shared libraries path\n"
-                        "(LD_LIBRARY_PATH and/or LTDL_LIBRARY_PATH) envornment variables.\n");
+                        "(LD_LIBRARY_PATH and/or LTDL_LIBRARY_PATH) environment variables.\n");
         return(-1);     
     }
 #endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
@@ -160,7 +160,7 @@ main(int argc, char **argv) {
  * @files_size:         the number of filenames in #files.
  *
  * Creates simple keys manager and load trusted certificates from PEM #files.
- * The caller is responsible for destroing returned keys manager using
+ * The caller is responsible for destroying returned keys manager using
  * @xmlSecKeysMngrDestroy.
  *
  * Returns the pointer to newly created keys manager or NULL if an error

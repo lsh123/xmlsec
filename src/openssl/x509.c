@@ -30,7 +30,10 @@
 #include <openssl/x509_vfy.h>
 #include <openssl/x509v3.h>
 #include <openssl/asn1.h>
+
+#ifdef OPENSSL_IS_BORINGSSL 
 #include <openssl/mem.h>
+#endif /* OPENSSL_IS_BORINGSSL */
 
 #include <libxml/tree.h>
 

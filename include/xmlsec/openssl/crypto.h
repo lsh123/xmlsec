@@ -21,7 +21,7 @@ extern "C" {
 #include <openssl/err.h>
 #ifndef OPENSSL_IS_BORINGSSL
 #include <openssl/opensslconf.h>
-#endif
+#endif /* OPENSSL_IS_BORINGSSL */
 
 XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctions_openssl(void);
 

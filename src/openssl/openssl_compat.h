@@ -18,13 +18,12 @@
  *****************************************************************************/
 #if !defined(XMLSEC_OPENSSL_API_110)
 
-#ifndef OPENSSL_IS_BORINGSSL
 /* EVP_PKEY stuff */
 #define EVP_PKEY_up_ref(pKey)              CRYPTO_add(&((pKey)->references), 1, CRYPTO_LOCK_EVP_PKEY)
 #define EVP_PKEY_get0_DSA(pKey)            (((pKey) != NULL) ? ((pKey)->pkey.dsa) : (DSA*)NULL)
 #define EVP_PKEY_get0_RSA(pKey)            (((pKey) != NULL) ? ((pKey)->pkey.rsa) : (RSA*)NULL)
 #define EVP_PKEY_get0_EC_KEY(pKey)         (((pKey) != NULL) ? ((pKey)->pkey.ec)  : (EC_KEY*)NULL)
-#endif
+
 /* EVP_MD stuff */
 #define EVP_MD_CTX_new()                   EVP_MD_CTX_create()
 #define EVP_MD_CTX_free(x)                 EVP_MD_CTX_destroy((x))
@@ -56,22 +55,20 @@
  *
  *****************************************************************************/
 #ifdef OPENSSL_IS_BORINGSSL
-#include <openssl/mem.h>
 
-#define EVP_PKEY_base_id(pkey) EVP_PKEY_id(pkey)
+#define ENGINE_cleanup(...)                 {}
+#define CONF_modules_unload(...)            {}
+#define RAND_write_file(file)               (0)
+
+#define EVP_PKEY_base_id(pkey)             EVP_PKEY_id(pkey)
 #define EVP_CipherFinal(ctx, out, out_len) EVP_CipherFinal_ex(ctx, out, out_len)
-#define RSA_padding_add_PKCS1_OAEP(...) (0) // TODO
-//  RSA_padding_add_PKCS1_PSS_mgf1(rsa, EM, mHash, Hash, mgf1Hash, sLen)
+#define EVP_read_pw_string(...)             (-1)
 
-#define RSA_padding_check_PKCS1_OAEP(...) (-1) // TODO
-//  RSA_verify_PKCS1_PSS_mgf1(rsa, mHash, Hash, mgf1Hash, EM, sLen)
+#define X509_STORE_CTX_get_by_subject      X509_STORE_get_by_subject
+#define X509_OBJECT_new()                  (calloc(1, sizeof(X509_OBJECT)))
+#define X509_OBJECT_free(x)                { X509_OBJECT_free_contents(x); free(x); }
 
-#define EVP_read_pw_string(buf, len, prompt, verify) (-1) // TODO
-#define RAND_write_file(file) (0)                         // TODO
-#define OPENSSL_config(...)
-#define ENGINE_cleanup(...)
-#define CONF_modules_unload(...)
-#endif
+#endif /* OPENSSL_IS_BORINGSSL */
 
 /******************************************************************************
  *

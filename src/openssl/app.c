@@ -78,14 +78,15 @@ xmlSecOpenSSLAppInit(const char* config) {
 
 #else /* !defined(XMLSEC_OPENSSL_API_110) */
     int ret;
-
-    ret = OPENSSL_init_crypto(OPENSSL_INIT_LOAD_CRYPTO_STRINGS | 
+    uint64_t opts = OPENSSL_INIT_LOAD_CRYPTO_STRINGS |
                               OPENSSL_INIT_ADD_ALL_CIPHERS |
                               OPENSSL_INIT_ADD_ALL_DIGESTS |
-                              OPENSSL_INIT_LOAD_CONFIG |
-                              OPENSSL_INIT_ASYNC |
-                              OPENSSL_INIT_ENGINE_ALL_BUILTIN,
-                              NULL);
+                              OPENSSL_INIT_LOAD_CONFIG;
+#ifndef OPENSSL_IS_BORINGSSL
+    opts |= OPENSSL_INIT_ASYNC | OPENSSL_INIT_ENGINE_ALL_BUILTIN;
+#endif /* OPENSSL_IS_BORINGSSL */
+
+    ret = OPENSSL_init_crypto(opts, NULL);
     if(ret != 1) {
         xmlSecOpenSSLError("OPENSSL_init_crypto", NULL);
         return(-1);
@@ -128,10 +129,9 @@ xmlSecOpenSSLAppShutdown(void) {
     RAND_cleanup();
     EVP_cleanup();
 
-#ifndef OPENSSL_IS_BORINGSSL
     ENGINE_cleanup();
     CONF_modules_unload(1);
-#endif
+
     CRYPTO_cleanup_all_ex_data();
     ERR_remove_thread_state(NULL);
     ERR_free_strings();

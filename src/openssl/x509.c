@@ -25,6 +25,13 @@
 #include <errno.h>
 #include <time.h>
 
+#include <openssl/evp.h>
+#include <openssl/x509.h>
+#include <openssl/x509_vfy.h>
+#include <openssl/x509v3.h>
+#include <openssl/asn1.h>
+#include <openssl/mem.h>
+
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
@@ -42,20 +49,15 @@
 #include <xmlsec/openssl/x509.h>
 #include "openssl_compat.h"
 
-#include <openssl/evp.h>
-#include <openssl/x509.h>
-#include <openssl/x509_vfy.h>
-#include <openssl/x509v3.h>
-#include <openssl/asn1.h>
 
 /* The ASN1_TIME_check() function was changed from ASN1_TIME * to
  * const ASN1_TIME * in 1.1.0. To avoid compiler warnings, we use this hack.
  */
-#if !defined(XMLSEC_OPENSSL_API_110)
+#if !defined(XMLSEC_OPENSSL_API_110) || defined(OPENSSL_IS_BORINGSSL)
 typedef ASN1_TIME XMLSEC_CONST_ASN1_TIME;
-#else  /* !defined(XMLSEC_OPENSSL_API_110) */
+#else  /* !defined(XMLSEC_OPENSSL_API_110) || defined(OPENSSL_IS_BORINGSSL) */
 typedef const ASN1_TIME XMLSEC_CONST_ASN1_TIME;
-#endif /* !defined(XMLSEC_OPENSSL_API_110) */
+#endif /* !defined(XMLSEC_OPENSSL_API_110) || defined(OPENSSL_IS_BORINGSSL) */
 
 /*************************************************************************
  *

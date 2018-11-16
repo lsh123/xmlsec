@@ -765,7 +765,7 @@ if test "z$OPENSSL_FOUND" = "zyes" -a "z$OPENSSL_LIB_PATH" != "z" ; then
 fi
 
 dnl Check the OpenSSL version; if you change this code then you probably want to
-dnl change include/openssl/crypto.h as well.
+dnl change include/xmlsec/openssl/crypto.h as well.
 AC_MSG_CHECKING(for openssl library >= $OPENSSL_MIN_VERSION)
 if test "z$OPENSSL_FOUND" = "zyes" ; then
     OLD_CPPFLAGS=$CPPFLAGS
@@ -791,6 +791,24 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
             #endif
         ],[
             OPENSSL_VERSION="1.1.0 (LibreSSL >= 2.7)"
+        ],[
+            OPENSSL_VERSION=""
+        ])
+    fi
+
+    if test "z$OPENSSL_VERSION" = "z" ; then
+        AC_EGREP_CPP(greater-than-minvers, [
+            #include <openssl/opensslv.h>
+            #include <openssl/crypto.h>
+            #if OPENSSL_VERSION_NUMBER >= 0x10100000L
+            #ifdef OPENSSL_IS_BORINGSSL
+            greater-than-minvers
+            #endif
+            #endif
+        ],[
+            OPENSSL_VERSION="1.1.0 (BoringSSL)"
+            enable_ripemd160=no
+            enable_dsa=no
         ],[
             OPENSSL_VERSION=""
         ])

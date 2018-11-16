@@ -114,11 +114,7 @@ static inline void DSA_get0_key(const DSA *d, const BIGNUM **pub_key, const BIGN
 
 static inline ENGINE *DSA_get0_engine(DSA *d) {
     xmlSecAssert2(d != NULL, NULL);
-#ifndef OPENSSL_IS_BORINGSSL
     return(d->engine);
-#else
-    return NULL; // TODO
-#endif
 }
 
 static inline int DSA_set0_pqg(DSA *d, BIGNUM *p, BIGNUM *q, BIGNUM *g) {
@@ -163,6 +159,17 @@ static inline int DSA_set0_key(DSA *d, BIGNUM *pub_key, BIGNUM *priv_key) {
 #endif /* XMLSEC_NO_DSA */
 
 #endif /* !defined(XMLSEC_OPENSSL_API_110) */
+
+#ifdef OPENSSL_IS_BORINGSSL
+#ifndef XMLSEC_NO_RSA
+static inline int RSA_test_flags(const RSA *r, int flags) {
+    xmlSecAssert2(r != NULL, 0);
+    return(r->flags & flags);
+}
+#endif /* XMLSEC_NO_RSA */
+
+#endif /* OPENSSL_IS_BORINGSSL */
+
 
 /**************************************************************************
  *
@@ -319,7 +326,6 @@ xmlSecOpenSSLEvpKeyDup(EVP_PKEY* pKey) {
 
     xmlSecAssert2(pKey != NULL, NULL);
 
-#ifndef OPENSSL_IS_BORINGSSL
     ret = EVP_PKEY_up_ref(pKey);
     if(ret <= 0) {
         xmlSecOpenSSLError("EVP_PKEY_up_ref", NULL);
@@ -327,10 +333,6 @@ xmlSecOpenSSLEvpKeyDup(EVP_PKEY* pKey) {
     }
 
     return(pKey);
-#else
-    (void)ret;
-    return EVP_PKEY_up_ref(pKey);
-#endif
 }
 
 /**

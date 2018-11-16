@@ -18,6 +18,7 @@
 
 #include <string.h>
 
+#include <openssl/bn.h>
 #include <openssl/evp.h>
 #include <openssl/rand.h>
 #include <openssl/sha.h>

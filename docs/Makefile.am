@@ -15,7 +15,8 @@ EXTRA_DIST=\
 XMLSEC1_MAN=$(top_builddir)/man/xmlsec1.1
 XMLSEC_HTML=$(builddir)/xmlsec-man.html
 
-all: docs
+all:
+	@echo "======= Run 'nake docs' in the xmlsec/docs folder to rebuild docs" 
 
 # docs is legacy
 docs: docs-copy man-docs docs-format

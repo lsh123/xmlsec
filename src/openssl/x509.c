@@ -25,16 +25,6 @@
 #include <errno.h>
 #include <time.h>
 
-#include <openssl/evp.h>
-#include <openssl/x509.h>
-#include <openssl/x509_vfy.h>
-#include <openssl/x509v3.h>
-#include <openssl/asn1.h>
-
-#ifdef OPENSSL_IS_BORINGSSL
-#include <openssl/mem.h>
-#endif /* OPENSSL_IS_BORINGSSL */
-
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
@@ -50,6 +40,20 @@
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
 #include <xmlsec/openssl/x509.h>
+
+/* Windows overwrites X509_NAME and other things that break openssl */
+#include <openssl/evp.h>
+#include <openssl/x509.h>
+#include <openssl/x509_vfy.h>
+#include <openssl/x509v3.h>
+#include <openssl/asn1.h>
+
+#ifdef OPENSSL_IS_BORINGSSL
+#include <openssl/mem.h>
+#endif /* OPENSSL_IS_BORINGSSL */
+
+
+
 #include "openssl_compat.h"
 
 

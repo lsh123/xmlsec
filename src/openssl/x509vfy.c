@@ -44,6 +44,12 @@
 #include <openssl/x509_vfy.h>
 #include <openssl/x509v3.h>
 
+#ifdef OPENSSL_IS_BORINGSSL
+typedef size_t x509_size_t;
+#else /* OPENSSL_IS_BORINGSSL */
+typedef int x509_size_t;
+#endif /* OPENSSL_IS_BORINGSSL */
+
 /**************************************************************************
  *
  * Internal OpenSSL X509 store CTX
@@ -185,7 +191,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
     X509 * err_cert = NULL;
     X509_STORE_CTX *xsc;
     int err = 0;
-    size_t i;
+    x509_size_t i;
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId), NULL);
@@ -719,7 +725,7 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
                         xmlChar *issuerName, xmlChar *issuerSerial,
                         xmlChar *ski) {
     X509 *cert = NULL;
-    size_t i;
+    x509_size_t i;
 
     xmlSecAssert2(certs != NULL, NULL);
 
@@ -836,7 +842,7 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
 static X509*
 xmlSecOpenSSLX509FindNextChainCert(STACK_OF(X509) *chain, X509 *cert) {
     unsigned long certSubjHash;
-    size_t i;
+    x509_size_t i;
 
     xmlSecAssert2(chain != NULL, NULL);
     xmlSecAssert2(cert != NULL, NULL);
@@ -857,7 +863,7 @@ xmlSecOpenSSLX509VerifyCertAgainstCrls(STACK_OF(X509_CRL) *crls, X509* cert) {
     X509_NAME *issuer;
     X509_CRL *crl = NULL;
     X509_REVOKED *revoked;
-    size_t i, n;
+    x509_size_t i, n;
     int ret;
 
     xmlSecAssert2(crls != NULL, -1);

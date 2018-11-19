@@ -41,6 +41,40 @@
 #include <xmlsec/openssl/bn.h>
 #include "openssl_compat.h"
 
+#ifdef OPENSSL_IS_BORINGSSL
+
+/* defined in boringssl/crypto/fipsmodule/rsa/internal.h */
+int RSA_padding_check_PKCS1_OAEP_mgf1(uint8_t *out, size_t *out_len, size_t max_out,
+                                      const uint8_t *from, size_t from_len,
+                                      const uint8_t *param, size_t param_len,
+                                      const EVP_MD *md, const EVP_MD *mgf1md);
+
+static int RSA_padding_check_PKCS1_OAEP(unsigned char *to, int to_len,
+                                  unsigned char *from, int from_len,
+                                  int rsa_len,
+                                  unsigned char *param, int param_len) {
+    size_t out_len = 0;
+    int ret;
+
+    ret = RSA_padding_check_PKCS1_OAEP_mgf1(to, &out_len, to_len, from, from_len, param, param_len, NULL, NULL);
+    if(!ret) {
+        return(-1);
+    }
+    return((int)out_len);
+}
+
+
+int RSA_padding_add_PKCS1_OAEP(uint8_t *to, size_t to_len,
+                                              const uint8_t *from,
+                                              size_t from_len,
+                                              const uint8_t *param,
+                                              size_t param_len) {
+    return RSA_padding_add_PKCS1_OAEP_mgf1(to, to_len, from, from_len, param, param_len, NULL, NULL);
+}
+#endif /* OPENSSL_IS_BORINGSSL */
+
+
+
 /**************************************************************************
  *
  * Internal OpenSSL RSA PKCS1 CTX
@@ -692,8 +726,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
         /* add padding */
         ret = RSA_padding_add_PKCS1_OAEP(xmlSecBufferGetData(&tmp), keySize,
                                          xmlSecBufferGetData(in), inSize,
-                                         xmlSecBufferGetData(&(ctx->oaepParams)),
-                                         paramsSize);
+                                         xmlSecBufferGetData(&(ctx->oaepParams)), paramsSize);
         if(ret != 1) {
             xmlSecOpenSSLError("RSA_padding_add_PKCS1_OAEP",
                                xmlSecTransformGetName(transform));
@@ -726,29 +759,30 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
     } else if((transform->operation == xmlSecTransformOperationDecrypt) && (paramsSize != 0)) {
         BIGNUM * bn;
 
-        bn = BN_new();
-        if(bn == NULL) {
-            xmlSecOpenSSLError("BN_new()",
-                               xmlSecTransformGetName(transform));
-            return(-1);
-        }
         ret = RSA_private_decrypt(inSize, xmlSecBufferGetData(in),
                                 xmlSecBufferGetData(out),
                                 rsa, RSA_NO_PADDING);
         if(ret <= 0) {
             xmlSecOpenSSLError("RSA_private_decrypt(RSA_NO_PADDING)",
                                xmlSecTransformGetName(transform));
-            BN_free(bn);
             return(-1);
         }
         outSize = ret;
 
+#ifndef OPENSSL_IS_BORINGSSL 
         /*
          * the private decrypt w/o padding adds '0's at the beginning.
          * it's not clear for me can I simply skip all '0's from the
          * beggining so I have to do decode it back to BIGNUM and dump
          * buffer again
          */
+        bn = BN_new();
+        if(bn == NULL) {
+            xmlSecOpenSSLError("BN_new()",
+                               xmlSecTransformGetName(transform));
+            return(-1);
+        }
+
         if(BN_bin2bn(xmlSecBufferGetData(out), outSize, bn) == NULL) {
             xmlSecOpenSSLError2("BN_bin2bn",
                                 xmlSecTransformGetName(transform),
@@ -766,6 +800,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
         }
         BN_free(bn);
         outSize = ret;
+#endif /* OPENSSL_IS_BORINGSSL */
 
         ret = RSA_padding_check_PKCS1_OAEP(xmlSecBufferGetData(out), outSize,
                                            xmlSecBufferGetData(out), outSize,

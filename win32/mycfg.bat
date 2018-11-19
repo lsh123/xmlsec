@@ -8,8 +8,8 @@ REM
 REM Aleksey Sanin <aleksey@aleksey.com>
 REM 
 
-SET PREFIX=C:\Users\Aleksey\dev\local
-SET XMLSEC_CRYPTO=mscrypto
+SET PREFIX=C:\local
+SET XMLSEC_CRYPTO=openssl
 SET XMLSEC_INCLUDE=%PREFIX%\include;%MSSDK_INCLUDE%
 SET XMLSEC_LIB=%PREFIX%\lib;%MSSDK_LIB%
 SET XMLSEC_OPTIONS=static=yes iconv=no debug=yes xslt=yes crypto=%XMLSEC_CRYPTO% unicode=yes

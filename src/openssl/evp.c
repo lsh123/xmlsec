@@ -160,6 +160,17 @@ static inline int DSA_set0_key(DSA *d, BIGNUM *pub_key, BIGNUM *priv_key) {
 
 #endif /* !defined(XMLSEC_OPENSSL_API_110) */
 
+#ifdef OPENSSL_IS_BORINGSSL
+#ifndef XMLSEC_NO_RSA
+static inline int RSA_test_flags(const RSA *r, int flags) {
+    xmlSecAssert2(r != NULL, 0);
+    return(r->flags & flags);
+}
+#endif /* XMLSEC_NO_RSA */
+
+#endif /* OPENSSL_IS_BORINGSSL */
+
+
 /**************************************************************************
  *
  * Internal OpenSSL EVP key CTX

@@ -40,22 +40,31 @@
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
 #include <xmlsec/openssl/x509.h>
-#include "openssl_compat.h"
 
+/* Windows overwrites X509_NAME and other things that break openssl */
 #include <openssl/evp.h>
 #include <openssl/x509.h>
 #include <openssl/x509_vfy.h>
 #include <openssl/x509v3.h>
 #include <openssl/asn1.h>
 
+#ifdef OPENSSL_IS_BORINGSSL
+#include <openssl/mem.h>
+#endif /* OPENSSL_IS_BORINGSSL */
+
+
+
+#include "openssl_compat.h"
+
+
 /* The ASN1_TIME_check() function was changed from ASN1_TIME * to
  * const ASN1_TIME * in 1.1.0. To avoid compiler warnings, we use this hack.
  */
-#if !defined(XMLSEC_OPENSSL_API_110)
+#if !defined(XMLSEC_OPENSSL_API_110) || defined(OPENSSL_IS_BORINGSSL)
 typedef ASN1_TIME XMLSEC_CONST_ASN1_TIME;
-#else  /* !defined(XMLSEC_OPENSSL_API_110) */
+#else  /* !defined(XMLSEC_OPENSSL_API_110) || defined(OPENSSL_IS_BORINGSSL) */
 typedef const ASN1_TIME XMLSEC_CONST_ASN1_TIME;
-#endif /* !defined(XMLSEC_OPENSSL_API_110) */
+#endif /* !defined(XMLSEC_OPENSSL_API_110) || defined(OPENSSL_IS_BORINGSSL) */
 
 /*************************************************************************
  *
@@ -402,7 +411,7 @@ xmlSecOpenSSLKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
     ctx = xmlSecOpenSSLX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, NULL);
     xmlSecAssert2(ctx->certsList != NULL, NULL);
-    xmlSecAssert2((int)pos < sk_X509_num(ctx->certsList), NULL);
+    xmlSecAssert2(pos < (xmlSecSize)sk_X509_num(ctx->certsList), NULL);
 
     return(sk_X509_value(ctx->certsList, (int)pos));
 }
@@ -486,7 +495,7 @@ xmlSecOpenSSLKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecAssert2(ctx != NULL, NULL);
 
     xmlSecAssert2(ctx->crlsList != NULL, NULL);
-    xmlSecAssert2((int)pos < sk_X509_CRL_num(ctx->crlsList), NULL);
+    xmlSecAssert2(pos < (xmlSecSize)sk_X509_CRL_num(ctx->crlsList), NULL);
 
     return(sk_X509_CRL_value(ctx->crlsList, (int)pos));
 }

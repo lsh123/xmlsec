@@ -34,6 +34,7 @@
 #include <xmlsec/openssl/crypto.h>
 
 #include "../kw_aes_des.h"
+#include "openssl_compat.h"
 
 /*********************************************************************
  *

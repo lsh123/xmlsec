@@ -51,6 +51,27 @@
 
 /******************************************************************************
  *
+ * boringssl compatibility
+ *
+ *****************************************************************************/
+#ifdef OPENSSL_IS_BORINGSSL
+
+#define ENGINE_cleanup(...)                 {}
+#define CONF_modules_unload(...)            {}
+#define RAND_write_file(file)               (0)
+
+#define EVP_PKEY_base_id(pkey)             EVP_PKEY_id(pkey)
+#define EVP_CipherFinal(ctx, out, out_len) EVP_CipherFinal_ex(ctx, out, out_len)
+#define EVP_read_pw_string(...)             (-1)
+
+#define X509_STORE_CTX_get_by_subject      X509_STORE_get_by_subject
+#define X509_OBJECT_new()                  (calloc(1, sizeof(X509_OBJECT)))
+#define X509_OBJECT_free(x)                { X509_OBJECT_free_contents(x); free(x); }
+
+#endif /* OPENSSL_IS_BORINGSSL */
+
+/******************************************************************************
+ *
  * LibreSSL 2.7 compatibility (implements most of OpenSSL 1.1 API)
  *
  *****************************************************************************/

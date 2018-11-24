@@ -379,7 +379,8 @@ xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
     xmlSecAssert2(i < len, NULL);
 
     /* we might have '0' at the beggining, remove it but keep one zero */
-    for(len = i; (len > 1) && (res[len - 1] == '0'); len--);
+    for(len = i; (len > 1) && (res[len - 1] == '0'); len--) {
+    }
     res[len] = '\0';
 
     /* add "-" for negative numbers */

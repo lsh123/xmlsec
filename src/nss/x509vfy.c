@@ -715,7 +715,8 @@ xmlSecNssNumToItem(SECItem *it, PRUint64 ui)
     ** require progressively more space. Start from 1 because byte at 
     ** position 0 is zero
     */
-    for(zeros_len = 1; (zeros_len < sizeof(bb)) && (bb[zeros_len] == 0); ++zeros_len);
+    for(zeros_len = 1; (zeros_len < sizeof(bb)) && (bb[zeros_len] == 0); ++zeros_len) {
+    }
 
     it->len = sizeof(bb) - (zeros_len - 1);
     it->data = (unsigned char *)PORT_Alloc(it->len);

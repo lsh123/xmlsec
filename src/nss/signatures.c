@@ -335,8 +335,9 @@ xmlSecNssSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(value != NULL, -1);
 
     if (transform->operation == xmlSecTransformOperationSign) {
-        if (ctx->u.sig.privkey)
+        if (ctx->u.sig.privkey) {
             SECKEY_DestroyPrivateKey(ctx->u.sig.privkey);
+        }
         ctx->u.sig.privkey = xmlSecNssPKIKeyDataGetPrivKey(value);
         if(ctx->u.sig.privkey == NULL) {
             xmlSecInternalError("xmlSecNssPKIKeyDataGetPrivKey",
@@ -351,8 +352,9 @@ xmlSecNssSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
             return(-1);
         }
     } else {
-        if (ctx->u.vfy.pubkey)
+        if (ctx->u.vfy.pubkey) {
             SECKEY_DestroyPublicKey(ctx->u.vfy.pubkey);
+        }
         ctx->u.vfy.pubkey = xmlSecNssPKIKeyDataGetPubKey(value);
         if(ctx->u.vfy.pubkey == NULL) {
             xmlSecInternalError("xmlSecNssPKIKeyDataGetPubKey",

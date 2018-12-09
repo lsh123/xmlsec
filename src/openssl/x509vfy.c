@@ -1017,7 +1017,9 @@ xmlSecOpenSSLX509NameStringRead(xmlSecByte **str, int *strLen,
     nonSpace = q = res;
     while(((p - (*str)) < (*strLen)) && ((*p) != delim) && ((q - res) < resLen)) {
         if((*p) != '\\') {
-            if(ingoreTrailingSpaces && !isspace(*p)) nonSpace = q;
+            if(ingoreTrailingSpaces && !isspace(*p)) {
+                nonSpace = q;
+            }
             *(q++) = *(p++);
         } else {
             ++p;

@@ -972,7 +972,9 @@ xmlSecGnuTLSX509Trim(xmlChar * str) {
 
     /* skip spaces from the beggining */
     p = str;
-    while(XMLSEC_GNUTLS_IS_SPACE(*p) && ((*p) != '\0')) ++p;
+    while(XMLSEC_GNUTLS_IS_SPACE(*p) && ((*p) != '\0')) {
+        ++p;
+    }
     if(p != str) {
         for(q = str; ; ++q, ++p) {
             (*q) = (*p);
@@ -983,8 +985,12 @@ xmlSecGnuTLSX509Trim(xmlChar * str) {
     }
 
     /* skip spaces from the end */
-    for(p = str; (*p) != '\0'; ++p);
-    while((p > str) && (XMLSEC_GNUTLS_IS_SPACE(*(p - 1)))) *(--p) = '\0';
+    for(p = str; (*p) != '\0'; ++p) {
+        ;
+    }
+    while((p > str) && (XMLSEC_GNUTLS_IS_SPACE(*(p - 1)))) {
+        *(--p) = '\0';
+    }
 }
 
 static int

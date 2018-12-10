@@ -502,9 +502,15 @@ xmlSecXslProcess(xmlSecXsltCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) 
     res = 0;
 
 done:
-    if(output != NULL) xmlOutputBufferClose(output);
-    if(docIn != NULL) xmlFreeDoc(docIn);
-    if(docOut != NULL) xmlFreeDoc(docOut);
+    if(output != NULL) {
+        xmlOutputBufferClose(output);
+    }
+    if(docIn != NULL) {
+        xmlFreeDoc(docIn);
+    }
+    if(docOut != NULL) {
+        xmlFreeDoc(docOut);
+    }
     return(res);
 }
 
@@ -539,7 +545,9 @@ xmlSecXsApplyStylesheet(xmlSecXsltCtxPtr ctx, xmlDocPtr doc) {
     }
     
 done:
-    if(xsltCtx != NULL) xsltFreeTransformContext(xsltCtx);
+    if(xsltCtx != NULL) {
+        xsltFreeTransformContext(xsltCtx);
+    }
     return res;    
 }
 

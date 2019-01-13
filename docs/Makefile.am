@@ -24,7 +24,7 @@ docs: docs-copy man-docs docs-format
 docs-copy:
 	@( \
 		echo "Copying docs..."; \
-		if [ z"$(srcdir)" != z"$(builddir)" ]; \
+		if [ z"$(srcdir)" != z"$(builddir)" -a z"`uname`" != z"Darwin" ]; \
 		then \
 		    $(CP) -ru $(srcdir)/*.html $(srcdir)/*.ico $(srcdir)/images $(builddir)/  ; \
 		    chmod u+w $(builddir)/*.html ; \

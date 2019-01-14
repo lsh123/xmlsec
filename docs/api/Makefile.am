@@ -80,7 +80,7 @@ else
 docs:
 	@( \
 		echo "Copying api-docs..."; \
-		if [ z"$(srcdir)" != z"$(builddir)" ]; \
+		if [ z"$(srcdir)" != z"$(builddir)" -a z"`uname`" != z"Darwin" ]; \
 		then \
 		    $(CP) -ru $(SOURCE_FILES_TO_COPY) $(builddir)/ ; \
 		fi \

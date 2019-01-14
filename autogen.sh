@@ -14,9 +14,14 @@ DIE=0
 	DIE=1
 }
 
-(libtool --version) < /dev/null > /dev/null 2>&1 || {
+LIBTOOL="libtool"
+if [ "`uname`" = "Darwin" -a -n "`type -p glibtool`" ]; then
+	LIBTOOL=glibtool
+fi
+
+($LIBTOOL --version) < /dev/null > /dev/null 2>&1 || {
 	echo
-	echo "You must have libtool installed to compile xmlsec."
+	echo "You must have $LIBTOOL installed to compile xmlsec."
 	DIE=1
 }
 
@@ -51,10 +56,18 @@ if test -z "$*"; then
         echo "to pass any to it, please specify them on the $0 command line."
 fi
 
-echo "Running libtoolize..."
-libtoolize --copy --force
+LIBTOOLIZE="libtoolize"
+if [ "`uname`" = "Darwin" -a -n "`type -p glibtoolize`" ]; then
+	LIBTOOLIZE=glibtoolize
+fi
+echo "Running $LIBTOOLIZE..."
+$LIBTOOLIZE --copy --force
 echo "Running aclocal..."
-aclocal --force -I m4
+if [ -d /usr/local/share/aclocal ]; then
+	aclocal --force -I m4 -I /usr/local/share/aclocal
+else
+	aclocal --force -I m4
+fi
 echo "Running autoheader..."
 autoheader --force
 echo "Running autoconf..."

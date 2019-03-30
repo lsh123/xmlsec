@@ -9,10 +9,6 @@
 #ifndef __XMLSEC_OPENSSL_X509_H__
 #define __XMLSEC_OPENSSL_X509_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #ifndef XMLSEC_NO_X509
 
 #include <openssl/x509.h>
@@ -20,6 +16,10 @@ extern "C" {
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 /**
  * XMLSEC_STACK_OF_X509:
@@ -100,10 +100,10 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLX509StoreAddCertsPath(xmlSe
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLX509StoreAddCertsFile(xmlSecKeyDataStorePtr store,
                                                                          const char* filename);
 
-#endif /* XMLSEC_NO_X509 */
-
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+#endif /* XMLSEC_NO_X509 */
 
 #endif /* __XMLSEC_OPENSSL_X509_H__ */

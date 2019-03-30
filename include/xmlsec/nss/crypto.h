@@ -10,10 +10,6 @@
 #ifndef __XMLSEC_NSS_CRYPTO_H__
 #define __XMLSEC_NSS_CRYPTO_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #include <nspr.h>
 #include <nss.h>
 #include <pk11func.h>
@@ -22,6 +18,10 @@ extern "C" {
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/dl.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctions_nss(void);
 

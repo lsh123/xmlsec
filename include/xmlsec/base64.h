@@ -11,14 +11,14 @@
 #ifndef __XMLSEC_BASE64_H__
 #define __XMLSEC_BASE64_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/transforms.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 /**
  * XMLSEC_BASE64_LINESIZE:

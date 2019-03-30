@@ -16,10 +16,6 @@
 #error To use dynamic crypto engines loading define XMLSEC_CRYPTO_DYNAMIC_LOADING
 #endif /* !defined(IN_XMLSEC) && !defined(XMLSEC_CRYPTO_DYNAMIC_LOADING) */
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #include <libxml/tree.h>
 #include <libxml/xmlIO.h>
 
@@ -29,6 +25,10 @@ extern "C" {
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/dl.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 /**********************************************************************
  *

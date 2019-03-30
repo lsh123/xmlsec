@@ -9,14 +9,14 @@
 #ifndef __XMLSEC_GCRYPT_APP_H__
 #define __XMLSEC_GCRYPT_APP_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/transforms.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 /********************************************************************
  *

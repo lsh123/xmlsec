@@ -11,15 +11,19 @@
 #ifndef __XMLSEC_TREE_H__
 #define __XMLSEC_TREE_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #include <stdio.h>
 
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
 #include <xmlsec/xmlsec.h>
+
+#ifdef WIN32
+#include <windows.h>
+#endif /* WIN32 */
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 /**
  * xmlSecNodeGetName:
@@ -273,7 +277,6 @@ XMLSEC_EXPORT void              xmlSecQName2BitMaskDebugXmlDump(xmlSecQName2BitM
  *
  ************************************************************************/
 #ifdef WIN32
-#include <windows.h>
 XMLSEC_EXPORT LPWSTR             xmlSecWin32ConvertLocaleToUnicode(const char* str);
 
 XMLSEC_EXPORT LPWSTR             xmlSecWin32ConvertUtf8ToUnicode  (const xmlChar* str);

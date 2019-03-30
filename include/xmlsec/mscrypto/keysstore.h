@@ -11,11 +11,11 @@
 #ifndef __XMLSEC_MSCRYPTO_KEYSSTORE_H__
 #define __XMLSEC_MSCRYPTO_KEYSSTORE_H__
 
+#include <xmlsec/xmlsec.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
-
-#include <xmlsec/xmlsec.h>
 
 /****************************************************************************
  *

@@ -11,15 +11,15 @@
 #ifndef __XMLSEC_BN_H__
 #define __XMLSEC_BN_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #include <openssl/bn.h>
 
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 XMLSEC_CRYPTO_EXPORT BIGNUM*    xmlSecOpenSSLNodeGetBNValue     (const xmlNodePtr cur,
                                                                  BIGNUM **a);

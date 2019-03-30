@@ -9,10 +9,6 @@
 #ifndef __XMLSEC_MSCRYPTO_CRYPTO_H__
 #define __XMLSEC_MSCRYPTO_CRYPTO_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #include <windows.h>
 #include <wincrypt.h>
 
@@ -20,6 +16,10 @@ extern "C" {
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/dl.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctions_mscrypto(void);
 

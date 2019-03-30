@@ -11,15 +11,15 @@
 #ifndef __XMLSEC_KEYSMGMR_H__
 #define __XMLSEC_KEYSMGMR_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/list.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysdata.h>
 #include <xmlsec/keyinfo.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 typedef const struct _xmlSecKeyKlass                    xmlSecKeyKlass,
                                                         *xmlSecKeyId;

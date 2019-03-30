@@ -9,10 +9,6 @@
 #ifndef __XMLSEC_NSS_X509_H__
 #define __XMLSEC_NSS_X509_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #ifndef XMLSEC_NO_X509
 
 #include <nspr.h>
@@ -22,6 +18,10 @@ extern "C" {
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 /**
  * xmlSecNssKeyDataX509Id:
@@ -82,10 +82,10 @@ XMLSEC_CRYPTO_EXPORT int                        xmlSecNssX509StoreAdoptCert (xml
                                                                              xmlSecKeyDataType type);
 
 
-#endif /* XMLSEC_NO_X509 */
-
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+#endif /* XMLSEC_NO_X509 */
 
 #endif /* __XMLSEC_NSS_X509_H__ */

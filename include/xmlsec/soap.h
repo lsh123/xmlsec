@@ -13,13 +13,12 @@
 
 #ifndef XMLSEC_NO_SOAP
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #include <libxml/tree.h>
 #include <xmlsec/xmlsec.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 /***********************************************************************
  *

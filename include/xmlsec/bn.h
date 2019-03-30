@@ -11,13 +11,13 @@
 #ifndef __XMLSEC_BN_H__
 #define __XMLSEC_BN_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #include <libxml/tree.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 typedef xmlSecBuffer                                            xmlSecBn,
                                                                 *xmlSecBnPtr;

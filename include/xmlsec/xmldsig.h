@@ -15,10 +15,6 @@
 
 #ifndef XMLSEC_NO_XMLDSIG
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 
@@ -30,6 +26,10 @@ extern "C" {
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 typedef struct _xmlSecDSigReferenceCtx          xmlSecDSigReferenceCtx,
                                                 *xmlSecDSigReferenceCtxPtr;

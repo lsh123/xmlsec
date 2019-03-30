@@ -9,10 +9,6 @@
 #ifndef __XMLSEC_GNUTLS_X509_H__
 #define __XMLSEC_GNUTLS_X509_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #ifndef XMLSEC_NO_X509
 
 #include <gnutls/gnutls.h>
@@ -22,6 +18,9 @@ extern "C" {
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 /**************************************************************************
  *
@@ -101,10 +100,10 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSX509StoreAdoptCert  (xmlSecK
 
 
 
-#endif /* XMLSEC_NO_X509 */
-
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+#endif /* XMLSEC_NO_X509 */
 
 #endif /* __XMLSEC_GNUTLS_X509_H__ */

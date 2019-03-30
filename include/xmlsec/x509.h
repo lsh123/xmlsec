@@ -11,9 +11,6 @@
 
 #ifndef XMLSEC_NO_X509
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
 #include <stdio.h>
 
 #include <libxml/tree.h>
@@ -26,6 +23,10 @@ extern "C" {
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 /**
  * XMLSEC_X509DATA_CERTIFICATE_NODE:

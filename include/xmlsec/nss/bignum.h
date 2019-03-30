@@ -11,16 +11,16 @@
 #ifndef __XMLSEC_NSS_BIGNUM_H__
 #define __XMLSEC_NSS_BIGNUM_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #include <libxml/tree.h>
 
 #include <nspr.h>
 #include <nss.h>
 
 #include <xmlsec/xmlsec.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 XMLSEC_CRYPTO_EXPORT SECItem*   xmlSecNssNodeGetBigNumValue     (PRArenaPool *arena,
                                                                  const xmlNodePtr cur,

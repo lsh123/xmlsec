@@ -11,16 +11,15 @@
 #ifndef __XMLSEC_KEYS_H__
 #define __XMLSEC_KEYS_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #include <time.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/list.h>
 #include <xmlsec/keysdata.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 /**
  * xmlSecKeyUsage:

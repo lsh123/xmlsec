@@ -9,10 +9,6 @@
 #ifndef __XMLSEC_MSCRYPTO_X509_H__
 #define __XMLSEC_MSCRYPTO_X509_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #ifndef XMLSEC_NO_X509
 
 #include <xmlsec/xmlsec.h>
@@ -21,6 +17,10 @@ extern "C" {
 
 #include <windows.h>
 #include <wincrypt.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 /**
  * xmlSecMSCryptoKeyDataX509Id:
@@ -83,10 +83,10 @@ XMLSEC_CRYPTO_EXPORT void               xmlSecMSCryptoX509StoreEnableSystemTrust
 
 
 
-#endif /* XMLSEC_NO_X509 */
-
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+#endif /* XMLSEC_NO_X509 */
 
 #endif /* __XMLSEC_MSCRYPTO_X509_H__ */

@@ -11,10 +11,6 @@
 #ifndef __XMLSEC_TRANSFORMS_H__
 #define __XMLSEC_TRANSFORMS_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
 
@@ -23,6 +19,14 @@ extern "C" {
 #include <xmlsec/list.h>
 #include <xmlsec/nodeset.h>
 #include <xmlsec/keys.h>
+
+#ifndef XMLSEC_NO_XSLT
+#include <libxslt/security.h>
+#endif /* XMLSEC_NO_XSLT */
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 typedef const struct _xmlSecTransformKlass              xmlSecTransformKlass,
                                                         *xmlSecTransformId;
@@ -959,7 +963,6 @@ XMLSEC_EXPORT int               xmlSecTransformXPointerSetExpr          (xmlSecT
 XMLSEC_EXPORT xmlSecTransformId xmlSecTransformRelationshipGetKlass     (void);
 
 #ifndef XMLSEC_NO_XSLT
-#include <libxslt/security.h>
 
 /**
  * xmlSecTransformXsltId:

@@ -9,10 +9,6 @@
 #ifndef __XMLSEC_MSCRYPTO_APP_H__
 #define __XMLSEC_MSCRYPTO_APP_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
@@ -20,6 +16,10 @@ extern "C" {
 
 #include <windows.h>
 #include <wincrypt.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 /********************************************************************
  *

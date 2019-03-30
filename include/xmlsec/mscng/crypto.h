@@ -9,16 +9,16 @@
 #ifndef __XMLSEC_MSCNG_CRYPTO_H__
 #define __XMLSEC_MSCNG_CRYPTO_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #include <windows.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/dl.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctions_mscng(void);
 

@@ -11,15 +11,15 @@
 #ifndef __XMLSEC_H__
 #define __XMLSEC_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #include <libxml/tree.h>
 
 #include <xmlsec/version.h>
 #include <xmlsec/exports.h>
 #include <xmlsec/strings.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 /***********************************************************************
  *

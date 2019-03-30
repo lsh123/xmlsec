@@ -11,12 +11,12 @@
 #ifndef __XMLSEC_LIST_H__
 #define __XMLSEC_LIST_H__
 
+#include <xmlsec/xmlsec.h>
+#include <xmlsec/buffer.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
-
-#include <xmlsec/xmlsec.h>
-#include <xmlsec/buffer.h>
 
 typedef const struct _xmlSecPtrListKlass                        xmlSecPtrListKlass,
                                                                 *xmlSecPtrListId;

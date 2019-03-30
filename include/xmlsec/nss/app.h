@@ -10,10 +10,6 @@
 #ifndef __XMLSEC_NSS_APP_H__
 #define __XMLSEC_NSS_APP_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #include <nspr.h>
 #include <nss.h>
 
@@ -21,6 +17,10 @@ extern "C" {
 #include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/transforms.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 /********************************************************************
  *

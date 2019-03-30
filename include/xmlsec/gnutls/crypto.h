@@ -9,14 +9,22 @@
 #ifndef __XMLSEC_GNUTLS_CRYPTO_H__
 #define __XMLSEC_GNUTLS_CRYPTO_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/dl.h>
+#ifndef XMLSEC_NO_DSA
+#include <gnutls/gnutls.h>
+#include <gnutls/x509.h>
+#endif /* XMLSEC_NO_DSA */
+#ifndef XMLSEC_NO_RSA
+#include <gnutls/gnutls.h>
+#include <gnutls/x509.h>
+#endif /* XMLSEC_NO_RSA */
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctions_gnutls(void);
 
@@ -152,9 +160,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformKWDes3GetKlass(void)
  *******************************************************************/
 #ifndef XMLSEC_NO_DSA
 
-#include <gnutls/gnutls.h>
-#include <gnutls/x509.h>
-
 /**
  * xmlSecGnuTLSKeyDataDsaId:
  *
@@ -283,9 +288,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacSha512GetKlass(v
  *
  *******************************************************************/
 #ifndef XMLSEC_NO_RSA
-
-#include <gnutls/gnutls.h>
-#include <gnutls/x509.h>
 
 /**
  * xmlSecGnuTLSKeyDataRsaId:

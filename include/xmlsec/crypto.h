@@ -11,10 +11,6 @@
 #ifndef __XMLSEC_CRYPTO_H__
 #define __XMLSEC_CRYPTO_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #include <xmlsec/xmlsec.h>
 
 /* include nothing if we compile xmlsec library itself */
@@ -73,10 +69,6 @@ extern "C" {
 
 #endif /* IN_XMLSEC_CRYPTO */
 #endif /* IN_XMLSEC */
-
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
 
 #endif /* __XMLSEC_CRYPTO_H__ */
 

@@ -10,11 +10,11 @@
 #ifndef __XMLSEC_APPS_CMDLINE_H__
 #define __XMLSEC_APPS_CMDLINE_H__    
 
+#include <time.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */ 
-
-#include <time.h>
 
 typedef struct _xmlSecAppCmdLineParam           xmlSecAppCmdLineParam,
                                                 *xmlSecAppCmdLineParamPtr;

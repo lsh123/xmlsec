@@ -9,10 +9,6 @@
 #ifndef __XMLSEC_OPENSSL_EVP_H__
 #define __XMLSEC_OPENSSL_EVP_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #include <openssl/evp.h>
 
 #include <xmlsec/xmlsec.h>
@@ -21,6 +17,9 @@ extern "C" {
 
 #include <xmlsec/openssl/crypto.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLEvpKeyDataAdoptEvp (xmlSecKeyDataPtr data,
                                                                          EVP_PKEY* pKey);

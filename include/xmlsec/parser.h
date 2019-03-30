@@ -11,15 +11,14 @@
 #ifndef __XMLSEC_PARSER_H__
 #define __XMLSEC_PARSER_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/transforms.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 XMLSEC_EXPORT xmlDocPtr         xmlSecParseFile         (const char *filename);
 XMLSEC_EXPORT xmlDocPtr         xmlSecParseMemory       (const xmlSecByte *buffer,

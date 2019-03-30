@@ -9,11 +9,11 @@
 #ifndef __XMLSEC_MSCNG_KEYSSTORE_H__
 #define __XMLSEC_MSCNG_KEYSSTORE_H__
 
+#include <xmlsec/xmlsec.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
-
-#include <xmlsec/xmlsec.h>
 
 /**
  * xmlSecMSCngKeysStoreId:

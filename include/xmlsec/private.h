@@ -16,10 +16,6 @@
 #error "xmlsec/private.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
 #endif /* XMLSEC_PRIVATE */
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #include <libxml/tree.h>
 #include <libxml/xmlIO.h>
 
@@ -29,6 +25,19 @@ extern "C" {
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/transforms.h>
 
+#ifdef __GNUC__
+#ifdef HAVE_ANSIDECL_H
+#include <ansidecl.h>
+#endif
+#endif
+
+#ifdef WIN32
+#include <windows.h>
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 /*****************************************************************************
  *
@@ -503,9 +512,6 @@ struct _xmlSecCryptoDLFunctions {
  * Macro used to signal to GCC unused function parameters
  */
 #ifdef __GNUC__
-#ifdef HAVE_ANSIDECL_H
-#include <ansidecl.h>
-#endif
 #ifndef ATTRIBUTE_UNUSED
 #define ATTRIBUTE_UNUSED
 #endif
@@ -518,9 +524,6 @@ struct _xmlSecCryptoDLFunctions {
  *
  * Macro used to signal to MSVC unused function parameters
  */
-#ifdef WIN32
-#include <windows.h>
-#endif
 #ifndef UNREFERENCED_PARAMETER
 #define UNREFERENCED_PARAMETER(x)
 #endif /* UNREFERENCED_PARAMETER */

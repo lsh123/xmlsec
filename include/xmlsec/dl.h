@@ -10,6 +10,19 @@
 #ifndef __XMLSEC_DL_H__
 #define __XMLSEC_DL_H__
 
+#ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
+
+#include <libxml/tree.h>
+#include <libxml/xmlIO.h>
+
+#include <xmlsec/xmlsec.h>
+#include <xmlsec/keysdata.h>
+#include <xmlsec/keys.h>
+#include <xmlsec/keysmngr.h>
+#include <xmlsec/transforms.h>
+
+#endif /* XMLSEC_NO_CRYPTO_DYNAMIC_LOADING */
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -21,15 +34,6 @@ XMLSEC_EXPORT int                               xmlSecCryptoDLFunctionsRegisterK
                                                                             (xmlSecCryptoDLFunctionsPtr functions);
 
 #ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
-
-#include <libxml/tree.h>
-#include <libxml/xmlIO.h>
-
-#include <xmlsec/xmlsec.h>
-#include <xmlsec/keysdata.h>
-#include <xmlsec/keys.h>
-#include <xmlsec/keysmngr.h>
-#include <xmlsec/transforms.h>
 
 /****************************************************************************
  *

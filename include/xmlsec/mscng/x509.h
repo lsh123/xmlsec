@@ -9,10 +9,6 @@
 #ifndef __XMLSEC_MSCNG_X509_H__
 #define __XMLSEC_MSCNG_X509_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #ifndef XMLSEC_NO_X509
 
 #include <xmlsec/xmlsec.h>
@@ -20,6 +16,10 @@ extern "C" {
 #include <xmlsec/transforms.h>
 
 #include <windows.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 /**
  * xmlSecMSCngKeyDataX509Id:
@@ -74,10 +74,10 @@ PCCERT_CONTEXT                          xmlSecMSCngX509FindCertBySubject     (HC
                                                                               LPTSTR wcSubject,
                                                                               DWORD dwCertEncodingType);
 
-#endif /* XMLSEC_NO_X509 */
-
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+#endif /* XMLSEC_NO_X509 */
 
 #endif /* __XMLSEC_MSCNG_X509_H__ */

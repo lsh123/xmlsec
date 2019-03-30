@@ -9,10 +9,6 @@
 #ifndef __XMLSEC_NSS_PKIKEYS_H__
 #define __XMLSEC_NSS_PKIKEYS_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #include <nspr.h>
 #include <nss.h>
 
@@ -20,6 +16,9 @@ extern "C" {
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr   xmlSecNssPKIAdoptKey           (SECKEYPrivateKey *privkey,
                                                                         SECKEYPublicKey  *pubkey);

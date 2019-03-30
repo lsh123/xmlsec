@@ -9,16 +9,16 @@
 #ifndef __XMLSEC_APPS_CRYPTO_H__
 #define __XMLSEC_APPS_CRYPTO_H__    
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */ 
-
 #include <libxml/tree.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/crypto.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 int     xmlSecAppCryptoInit                                     (const char* config);
 int     xmlSecAppCryptoShutdown                                 (void);

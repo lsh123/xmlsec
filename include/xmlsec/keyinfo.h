@@ -12,10 +12,6 @@
 #ifndef __XMLSEC_KEYINFO_H__
 #define __XMLSEC_KEYINFO_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #include <time.h>
 
 #include <libxml/tree.h>
@@ -25,6 +21,10 @@ extern "C" {
 #include <xmlsec/keysdata.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 /****************************************************************************
  *

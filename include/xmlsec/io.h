@@ -11,15 +11,15 @@
 #ifndef __XMLSEC_IO_H__
 #define __XMLSEC_IO_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #include <libxml/tree.h>
 #include <libxml/xmlIO.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/transforms.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 XMLSEC_EXPORT int       xmlSecIOInit                            (void);
 XMLSEC_EXPORT void      xmlSecIOShutdown                        (void);

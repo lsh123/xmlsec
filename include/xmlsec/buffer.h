@@ -11,12 +11,12 @@
 #ifndef __XMLSEC_BUFFER_H__
 #define __XMLSEC_BUFFER_H__
 
+#include <libxml/tree.h>
+#include <xmlsec/xmlsec.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
-
-#include <libxml/tree.h>
-#include <xmlsec/xmlsec.h>
 
 typedef struct _xmlSecBuffer                                    xmlSecBuffer,
                                                                 *xmlSecBufferPtr;

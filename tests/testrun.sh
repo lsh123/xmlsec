@@ -59,7 +59,7 @@ if [ "z$XMLSEC_DEFAULT_CRYPTO" != "z" ] ; then
 elif [ "z$crypto" != "z" ] ; then
     xmlsec_params="$xmlsec_params --crypto $crypto"
 fi
-xmlsec_params="$xmlsec_params --crypto-config $crypto_config"
+xmlsec_params="$xmlsec_params --X509-skip-strict-checks --crypto-config $crypto_config"
 
 #
 # Setup keys config

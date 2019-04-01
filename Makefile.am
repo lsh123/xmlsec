@@ -5,8 +5,11 @@ SUBDIRS 	    = include src
 if XMLSEC_APPS
 SUBDIRS += apps
 endif
+if XMLSEC_MANS
+SUBDIRS += man
+endif
 if XMLSEC_DOCS
-SUBDIRS += man docs
+SUBDIRS += docs
 endif
 TEST_APP 	    = apps/xmlsec1$(EXEEXT)
 DEFAULT_CRYPTO	= @XMLSEC_DEFAULT_CRYPTO@

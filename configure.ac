@@ -2110,6 +2110,21 @@ fi
 AM_CONDITIONAL(XMLSEC_ENABLE_SOAP, test "z$XMLSEC_ENABLE_SOAP" = "z1")
 
 dnl ==========================================================================
+dnl See do we need mans
+dnl ==========================================================================
+AC_MSG_CHECKING(for mans)
+AC_ARG_ENABLE(mans,   [  --enable-mans         enable manual pages (yes)])
+if test "z$enable_mans" = "zno" ; then
+    XMLSEC_MANS="0"
+    AC_MSG_RESULT([disabled])
+else
+    XMLSEC_MANS="1"
+    AC_MSG_RESULT([yes])
+fi
+AM_CONDITIONAL(XMLSEC_MANS, test "z$XMLSEC_MANS" = "z1")
+AC_SUBST(XMLSEC_MANS)
+
+dnl ==========================================================================
 dnl See do we need docs
 dnl ==========================================================================
 AC_MSG_CHECKING(for docs)

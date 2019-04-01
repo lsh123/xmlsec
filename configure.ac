@@ -2218,7 +2218,9 @@ dnl ==========================================================================
 AC_MSG_CHECKING(for docs folder)
 AC_ARG_WITH([html-dir], [AC_HELP_STRING([--with-html-dir=PATH], [path to installed docs])])
 if test "z$with_html_dir" != "z" ; then
-    XMLSEC_DOCDIR=$with_html_dir
+    XMLSEC_DOCDIR="$with_html_dir"
+elif test "z$htmldir" != "z" ; then
+    XMLSEC_DOCDIR='$(htmldir)'
 else
     XMLSEC_DOCDIR='$(datadir)/doc/xmlsec1'
 fi

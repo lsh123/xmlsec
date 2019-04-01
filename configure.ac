@@ -96,7 +96,7 @@ dnl	- with static binaries
 dnl	- without dynamic xmlsec-crypto loading
 dnl ==========================================================================
 AC_MSG_CHECKING(for development environment)
-AC_ARG_ENABLE(development,   [  --enable-development    enable development environment (no)])
+AC_ARG_ENABLE([development], [AC_HELP_STRING([--enable-development], [enable development environment (no)])])
 if test "z$enable_development" = "zyes" ; then
     enable_debugging="yes"
     enable_pedantic="yes"
@@ -113,7 +113,7 @@ dnl ==========================================================================
 dnl Do we want to build manpages?
 dnl ==========================================================================
 AC_MSG_CHECKING(for man pages build)
-AC_ARG_ENABLE(manpages_build,[  --enable-manpages-build man pages build (no)])
+AC_ARG_ENABLE([manpages_build], [AC_HELP_STRING([--enable-manpages-build], [man pages build (no)])])
 if test "z$enable_manpages_build" = "zyes" ; then
     AM_CONDITIONAL(BUILD_MANPAGES, [test x"$HELP2MAN" != x])
     AC_MSG_RESULT([yes])
@@ -126,7 +126,7 @@ dnl ==========================================================================
 dnl Do we want to build docs?
 dnl ==========================================================================
 AC_MSG_CHECKING(for docs build)
-AC_ARG_ENABLE(docs_build,    [  --enable-docs-build     docs build (no)])
+AC_ARG_ENABLE([docs_build], [AC_HELP_STRING([--enable-docs-build], [docs build (no)])])
 if test "z$enable_docs_build" = "zyes" ; then
     AM_CONDITIONAL(BUILD_MAN_DOCS, [test x"$PERL" != x && test x"$XSLTPROC" != x && test x"$MAN2HTML" != x])
     AM_CONDITIONAL(BUILD_API_DOCS, [test x"$PERL" != x && test x"$XSLTPROC" != x && test x"$GTKDOC_MKHTML" != x && test x"$GTKDOC_MKDB" != x && test x"$GTKDOC_SCAN" != x])
@@ -217,8 +217,7 @@ dnl ==========================================================================
 dnl Check if pkg-config is enabled and installed
 dnl ==========================================================================
 PKGCONFIG_FOUND="no"
-AC_ARG_ENABLE(pkgconfig,
-    [  --enable-pkgconfig        enable pkgconfig for configuration (yes)])
+AC_ARG_ENABLE([pkgconfig], [AC_HELP_STRING([--enable-pkgconfig], [enable pkgconfig for configuration (yes)])])
 if test "z$enable_pkgconfig" != "zno" ; then
     PKG_PROG_PKG_CONFIG
     PKGCONFIG_FOUND="yes"
@@ -230,8 +229,7 @@ dnl ==========================================================================
 dnl Check if packages custom config scripts are enabled
 dnl ==========================================================================
 ENABLE_CUSTOM_CONFIGS="no"
-AC_ARG_ENABLE(custom-configs,
-    [  --enable-custom-configs   enable package-specific custom scripts for configuration (yes)])
+AC_ARG_ENABLE([custom-configs], [AC_HELP_STRING([--enable-custom-configs], [enable package-specific custom scripts for configuration (yes)])])
 if test "z$enable_custom_configs" != "zno" ; then
     ENABLE_CUSTOM_CONFIGS="yes"
 else
@@ -242,8 +240,7 @@ dnl ==========================================================================
 dnl Check searching for typical packages folders is enabled
 dnl ==========================================================================
 ENABLE_FOLDERS_SEARCH="no"
-AC_ARG_ENABLE(folders-search,
-    [  --enable-folders-search   enable searching for package installation in typical folders (yes)])
+AC_ARG_ENABLE([folders-search], [AC_HELP_STRING([--enable-folders-search], [enable searching for package installation in typical folders (yes)])])
 if test "z$enable_folders_search" != "zno" ; then
     ENABLE_FOLDERS_SEARCH="yes"
 else
@@ -287,12 +284,8 @@ LIBXML_INCLUDE_PATH=
 LIBXML_LIB_PATH=
 LIBXML_CONFIG_PATH=
 LIBXML_FOUND="no"
-AC_ARG_WITH(libxml,
-    [  --with-libxml=[PFX]       libxml2 location]
-)
-AC_ARG_WITH(libxml-src,
-    [  --with-libxml-src=[PFX]   libxml2 source tree location]
-)
+AC_ARG_WITH([libxml], [AC_HELP_STRING([--with-libxml@<:@=PFX@:>@], [libxml2 location])])
+AC_ARG_WITH([libxml-src], [AC_HELP_STRING([--with-libxml-src@<:@=PFX@:>@], [libxml2 source tree location])])
 
 dnl Priority 0: LibXML2 is disabled: hard error.
 if test "z$with_libxml" = "zno" -o "z$with_libxml_src" = "zno"; then
@@ -464,12 +457,8 @@ LIBXSLT_INCLUDE_PATH=
 LIBXSLT_LIB_PATH=
 LIBXSLT_CONFIG_PATH=
 LIBXSLT_FOUND="no"
-AC_ARG_WITH(libxslt,
-    [  --with-libxslt=[PFX]      libxslt location]
-)
-AC_ARG_WITH(libxslt-src,
-    [  --with-libxslt-src=[PFX]  libxslt source tree location]
-)
+AC_ARG_WITH([libxslt], [AC_HELP_STRING([--with-libxslt@<:@=PFX@:>@], [libxslt location])])
+AC_ARG_WITH([libxslt-src], [AC_HELP_STRING([--with-libxslt-src@<:@=PFX@:>@],[libxslt source tree location])])
 
 dnl Priority 0: Check if library is not needed
 if test "z$with_libxslt" = "zno" -o "z$with_libxslt_src" = "zno" ; then
@@ -661,8 +650,7 @@ OPENSSL_VERSION=""
 OPENSSL_INCLUDE_PATH=
 OPENSSL_LIB_PATH=
 OPENSSL_FOUND=no
-AC_ARG_WITH(openssl,
-    [  --with-openssl[=PFX]      openssl location])
+AC_ARG_WITH([openssl], [AC_HELP_STRING([--with-openssl@<:@=PFX@:>@], [openssl location])])
 
 dnl Priority 0: Check if library is disabled
 if test "z$with_openssl" = "zno" ; then
@@ -908,14 +896,10 @@ NSS_INCLUDE_PATH=
 NSS_LIB_PATH=
 NSS_FOUND="no"
 NSPR_FOUND="no"
-AC_ARG_WITH(nss,
-    [  --with-nss=[PFX]          nss location])
-AC_ARG_WITH(nspr,
-    [  --with-nspr=[PFX]         nspr location (needed for NSS)])
-AC_ARG_WITH(seamonkey_ver,
-    [  --with-seamonkey-ver=[VER]  mozilla version (alt to --with-nss, --with-nspr)])
-AC_ARG_WITH(mozilla_ver,
-    [  --with-mozilla-ver=[VER]  mozilla version (alt to --with-nss, --with-nspr)])
+AC_ARG_WITH([nss], [AC_HELP_STRING([--with-nss@<:@=PFX@:>@], [nss location])])
+AC_ARG_WITH([nspr], [AC_HELP_STRING([--with-nspr@<:@=PFX@:>@], [nspr location (needed for NSS)])])
+AC_ARG_WITH([seamonkey_ver], [AC_HELP_STRING([--with-seamonkey-ver@<:@=VER@:>@], [mozilla version (alt to --with-nss, --with-nspr)])])
+AC_ARG_WITH([mozilla_ver], [AC_HELP_STRING([--with-mozilla-ver@<:@=VER@:>@], [mozilla version (alt to --with-nss, --with-nspr)])])
 
 dnl Priority 0: Check if library is disabled
 if test "z$with_nss" = "zno" -o "z$with_nspr" = "zno" ; then
@@ -1208,8 +1192,7 @@ GCRYPT_VERSION=
 GCRYPT_INCLUDE_PATH=
 GCRYPT_LIB_PATH=
 GCRYPT_FOUND="no"
-AC_ARG_WITH(gcrypt,
-    [  --with-gcrypt=[PFX]       gcrypt location])
+AC_ARG_WITH([gcrypt], [AC_HELP_STRING([--with-gcrypt@<:@=PFX@:>@], [gcrypt location])])
 
 dnl Priority 0: Check if library is not needed
 if test "z$with_gcrypt" = "zno" ; then
@@ -1390,8 +1373,7 @@ XMLSEC_NO_GNUTLS="1"
 GNUTLS_INCLUDE_PATH=
 GNUTLS_LIB_PATH=
 GNUTLS_FOUND="no"
-AC_ARG_WITH(gnutls,
-    [  --with-gnutls=[PFX]       gnutls location])
+AC_ARG_WITH([gnutls], [AC_HELP_STRING([--with-gnutls@<:@=PFX@:>@], [gnutls location])])
 
 dnl Priority 0: Check if library is not needed
 if test "z$with_gnutls" = "zno" ; then
@@ -1553,8 +1535,7 @@ esac
 
 XMLSEC_NO_MSCRYPTO="1"
 MSCRYPTO_FOUND="no"
-AC_ARG_ENABLE(mscrypto,
-    [  --enable-mscrypto         enable mscrypto (no)])
+AC_ARG_ENABLE([mscrypto], [AC_HELP_STRING([--enable-mscrypto], [enable mscrypto (no)])])
 
 dnl Priority 0: Check if library is not needed
 if test "z$enable_mscrypto" = "zno" ; then
@@ -1625,8 +1606,7 @@ MSCNG_LIBS_LIST="-lcrypt32 -lbcrypt -lncrypt"
 
 XMLSEC_NO_MSCNG="1"
 MSCNG_FOUND="no"
-AC_ARG_ENABLE(mscng,
-    [  --enable-mscng          enable mscng (no)])
+AC_ARG_ENABLE([mscng], [AC_HELP_STRING([--enable-mscng], [enable mscng (no)])])
 
 dnl Priority 0: Check if library is not needed
 if test "z$enable_mscng" = "zno" ; then
@@ -1699,7 +1679,7 @@ XMLSEC_CRYPTO_LIB=""
 XMLSEC_CRYPTO_CFLAGS=""
 XMLSEC_CRYPTO_LIBS=""
 AC_MSG_CHECKING(for default crypto library)
-AC_ARG_WITH(default_crypto, [  --with-default-crypto=name default crypto name])
+AC_ARG_WITH([default_crypto], [AC_HELP_STRING([--with-default-crypto=name], [default crypto name])])
 
 # check the argument
 case "z$with_default_crypto" in
@@ -1811,7 +1791,7 @@ dnl Do we need to use Unicode (Windows build only)
 dnl ==========================================================================
 if test "z$build_windows" = "zyes" ; then
     AC_MSG_CHECKING(for Unicode support)
-    AC_ARG_ENABLE(unicode,   [  --enable-unicode    enable Unicode support on Windows (yes)])
+    AC_ARG_ENABLE([unicode], [AC_HELP_STRING([--enable-unicode], [enable Unicode support on Windows (yes)])])
     if test "z$enable_unicode" = "zyes" ; then
         XMLSEC_DEFINES="$XMLSEC_DEFINES -DUNICODE=1"
         AC_MSG_RESULT([yes])
@@ -1824,7 +1804,7 @@ dnl ==========================================================================
 dnl See do we need MD5 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for MD5 support)
-AC_ARG_ENABLE(md5,   [  --enable-md5            enable MD5 support (yes)])
+AC_ARG_ENABLE([md5], [AC_HELP_STRING([--enable-md5], [enable MD5 support (yes)])])
 if test "z$enable_md5" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_MD5=1"
     XMLSEC_NO_MD5="1"
@@ -1840,7 +1820,7 @@ dnl ==========================================================================
 dnl See do we need RIPEMD-160 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for RIPEMD-160 support)
-AC_ARG_ENABLE(ripemd160,   [  --enable-ripemd160      enable RIPEMD-160 support (yes)])
+AC_ARG_ENABLE([ripemd160], [AC_HELP_STRING([--enable-ripemd160], [enable RIPEMD-160 support (yes)])])
 if test "z$enable_ripemd160" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_RIPEMD160=1"
     XMLSEC_NO_RIPEMD160="1"
@@ -1856,7 +1836,7 @@ dnl ==========================================================================
 dnl See do we need SHA1 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for SHA1 support)
-AC_ARG_ENABLE(sha1,   [  --enable-sha1           enable SHA1 support (yes)])
+AC_ARG_ENABLE([sha1], [AC_HELP_STRING([--enable-sha1], [enable SHA1 support (yes)])])
 if test "z$enable_sha1" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_SHA1=1"
     XMLSEC_NO_SHA1="1"
@@ -1872,7 +1852,7 @@ dnl ==========================================================================
 dnl See do we need SHA224 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for SHA224 support)
-AC_ARG_ENABLE(sha224,   [  --enable-sha224         enable SHA224 support (yes)])
+AC_ARG_ENABLE([sha224], [AC_HELP_STRING([--enable-sha224], [enable SHA224 support (yes)])])
 if test "z$enable_sha224" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_SHA224=1"
     XMLSEC_NO_SHA224="1"
@@ -1888,7 +1868,7 @@ dnl ==========================================================================
 dnl See do we need SHA256 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for SHA256 support)
-AC_ARG_ENABLE(sha256,   [  --enable-sha256         enable SHA256 support (yes)])
+AC_ARG_ENABLE([sha256], [AC_HELP_STRING([--enable-sha256], [enable SHA256 support (yes)])])
 if test "z$enable_sha256" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_SHA256=1"
     XMLSEC_NO_SHA256="1"
@@ -1904,7 +1884,7 @@ dnl ==========================================================================
 dnl See do we need SHA384 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for SHA384 support)
-AC_ARG_ENABLE(sha384,   [  --enable-sha384         enable SHA384 support (yes)])
+AC_ARG_ENABLE([sha384], [AC_HELP_STRING([--enable-sha384], [enable SHA384 support (yes)])])
 if test "z$enable_sha384" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_SHA384=1"
     XMLSEC_NO_SHA384="1"
@@ -1920,7 +1900,7 @@ dnl ==========================================================================
 dnl See do we need SHA512 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for SHA512 support)
-AC_ARG_ENABLE(sha512,   [  --enable-sha512         enable SHA512 support (yes)])
+AC_ARG_ENABLE([sha512], [AC_HELP_STRING([--enable-sha512], [enable SHA512 support (yes)])])
 if test "z$enable_sha512" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_SHA512=1"
     XMLSEC_NO_SHA512="1"
@@ -1937,7 +1917,7 @@ dnl ==========================================================================
 dnl See do we need HMAC support
 dnl ==========================================================================
 AC_MSG_CHECKING(for HMAC support)
-AC_ARG_ENABLE(hmac,   [  --enable-hmac           enable HMAC support (yes)])
+AC_ARG_ENABLE([hmac], [AC_HELP_STRING([--enable-hmac], [enable HMAC support (yes)])])
 if test "z$enable_hmac" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_HMAC=1"
     XMLSEC_NO_HMAC="1"
@@ -1953,7 +1933,7 @@ dnl ==========================================================================
 dnl See do we need DSA support
 dnl ==========================================================================
 AC_MSG_CHECKING(for DSA support)
-AC_ARG_ENABLE(dsa,   [  --enable-dsa            enable DSA support (yes)])
+AC_ARG_ENABLE([dsa], [AC_HELP_STRING([--enable-dsa], [enable DSA support (yes)])])
 if test "z$enable_dsa" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_DSA=1"
     XMLSEC_NO_DSA="1"
@@ -1969,7 +1949,7 @@ dnl ==========================================================================
 dnl See do we need RSA support
 dnl ==========================================================================
 AC_MSG_CHECKING(for RSA support)
-AC_ARG_ENABLE(rsa,   [  --enable-rsa            enable RSA support (yes)])
+AC_ARG_ENABLE([rsa], [AC_HELP_STRING([--enable-rsa], [enable RSA support (yes)])])
 if test "z$enable_rsa" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_RSA=1"
     XMLSEC_NO_RSA="1"
@@ -1985,7 +1965,7 @@ dnl ==========================================================================
 dnl See do we need x509 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for x509 support)
-AC_ARG_ENABLE(x509,   [  --enable-x509           enable x509 support (yes)])
+AC_ARG_ENABLE([x509], [AC_HELP_STRING([--enable-x509], [enable x509 support (yes)])])
 if test "z$enable_x509" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_X509=1"
     XMLSEC_NO_X509="1"
@@ -2001,7 +1981,7 @@ dnl ==========================================================================
 dnl See do we need DES support
 dnl ==========================================================================
 AC_MSG_CHECKING(for DES support)
-AC_ARG_ENABLE(des,   [  --enable-des            enable DES support (yes)])
+AC_ARG_ENABLE([des], [AC_HELP_STRING([--enable-des], [enable DES support (yes)])])
 if test "z$enable_des" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_DES=1"
     XMLSEC_NO_DES="1"
@@ -2017,7 +1997,7 @@ dnl ==========================================================================
 dnl See do we need AES support
 dnl ==========================================================================
 AC_MSG_CHECKING(for AES support)
-AC_ARG_ENABLE(aes,   [  --enable-aes            enable AES support])
+AC_ARG_ENABLE([aes], [AC_HELP_STRING([--enable-aes], [enable AES support])])
 if test "z$enable_aes" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_AES=1"
     XMLSEC_NO_AES="1"
@@ -2033,7 +2013,7 @@ dnl ==========================================================================
 dnl See do we need GOST support
 dnl ==========================================================================
 AC_MSG_CHECKING(for GOST support)
-AC_ARG_ENABLE(gost,   [  --enable-gost           enable GOST support (no)])
+AC_ARG_ENABLE([gost], [AC_HELP_STRING([--enable-gost], [enable GOST support (no)])])
 if test "z$enable_gost" != "zyes" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_GOST=1"
     XMLSEC_NO_GOST="1"
@@ -2050,7 +2030,7 @@ dnl ==========================================================================
 dnl See do we need GOST2012 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for EXPERMIENTAL GOST2012 support)
-AC_ARG_ENABLE(gost2012,[  --enable-gost2012       enable EXPERMIENTAL GOST2012 support (no)])
+AC_ARG_ENABLE([gost2012], [AC_HELP_STRING([--enable-gost2012], [enable EXPERMIENTAL GOST2012 support (no)])])
 if test "z$enable_gost2012" != "zyes" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_GOST2012=1"
     XMLSEC_NO_GOST2012="1"
@@ -2067,7 +2047,7 @@ dnl ==========================================================================
 dnl See do we need XMLDSig support
 dnl ==========================================================================
 AC_MSG_CHECKING(for XMLDSig support)
-AC_ARG_ENABLE(xmldsig,   [  --enable-xmldsig        enable XMLDSig support (yes)])
+AC_ARG_ENABLE([xmldsig], [AC_HELP_STRING([--enable-xmldsig], [enable XMLDSig support (yes)])])
 if test "z$enable_xmldsig" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_XMLDSIG=1"
     XMLSEC_NO_XMLDSIG="1"
@@ -2083,7 +2063,7 @@ dnl ==========================================================================
 dnl See do we need XMLEnc support
 dnl ==========================================================================
 AC_MSG_CHECKING(for XMLEnc support)
-AC_ARG_ENABLE(xmlenc,   [  --enable-xmlenc         enable XMLEnc support (yes)])
+AC_ARG_ENABLE([xmlenc], [AC_HELP_STRING([--enable-xmlenc], [enable XMLEnc support (yes)])])
 if test "z$enable_xmlenc" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_XMLENC=1"
     XMLSEC_NO_XMLENC="1"
@@ -2099,7 +2079,7 @@ dnl ==========================================================================
 dnl See do we need soap support (deprecated)
 dnl ==========================================================================
 AC_MSG_CHECKING(for soap support)
-AC_ARG_ENABLE(soap,     [  --enable-soap           enable soap support (no)])
+AC_ARG_ENABLE([soap], [AC_HELP_STRING([--enable-soap], [enable soap support (no)])])
 if test "z$enable_soap" = "zyes" ; then
     XMLSEC_ENABLE_SOAP="1"
     AC_MSG_RESULT([yes])
@@ -2113,7 +2093,7 @@ dnl ==========================================================================
 dnl See do we need mans
 dnl ==========================================================================
 AC_MSG_CHECKING(for mans)
-AC_ARG_ENABLE(mans,   [  --enable-mans         enable manual pages (yes)])
+AC_ARG_ENABLE([mans], [AC_HELP_STRING([--enable-mans], [enable manual pages (yes)])])
 if test "z$enable_mans" = "zno" ; then
     XMLSEC_MANS="0"
     AC_MSG_RESULT([disabled])
@@ -2128,7 +2108,7 @@ dnl ==========================================================================
 dnl See do we need docs
 dnl ==========================================================================
 AC_MSG_CHECKING(for docs)
-AC_ARG_ENABLE(docs,   [  --enable-docs         enable documentation (yes)])
+AC_ARG_ENABLE([docs], [AC_HELP_STRING([--enable-docs], [enable documentation (yes)])])
 if test "z$enable_docs" = "zno" ; then
     XMLSEC_DOCS="0"
     AC_MSG_RESULT([disabled])
@@ -2143,7 +2123,7 @@ dnl ==========================================================================
 dnl See if we need apps
 dnl ==========================================================================
 AC_MSG_CHECKING(for apps)
-AC_ARG_ENABLE(apps,   [  --enable-apps         enable applications (yes)])
+AC_ARG_ENABLE([apps], [AC_HELP_STRING([--enable-apps], [enable applications (yes)])])
 if test "z$enable_apps" = "zno" ; then
     XMLSEC_APPS="0"
     AC_MSG_RESULT([disabled])
@@ -2159,7 +2139,7 @@ dnl Static linking (implies enable_crypto_dl="no")
 dnl ==========================================================================
 XMLSEC_STATIC_BINARIES=""
 AC_MSG_CHECKING(for static linking)
-AC_ARG_ENABLE(static_linking,   [  --enable-static-linking enable static linking (no)])
+AC_ARG_ENABLE([static_linking], [AC_HELP_STRING([--enable-static-linking], [enable static linking (no)])])
 if test "z$enable_static_linking" = "zyes" ; then
     XMLSEC_STATIC_BINARIES="-static"
     XMLSEC_APP_DEFINES="$XMLSEC_APP_DEFINES -DXMLSEC_STATIC=1"
@@ -2175,7 +2155,7 @@ dnl check if we need dynamic loading support
 dnl ==========================================================================
 XMLSEC_DL_INCLUDES=""
 XMLSEC_DL_LIBS=""
-AC_ARG_ENABLE(crypto_dl,   [  --enable-crypto-dl      enable dynamic loading support for xmlsec-crypto libraries (yes)])
+AC_ARG_ENABLE([crypto_dl], [AC_HELP_STRING([--enable-crypto-dl], [enable dynamic loading support for xmlsec-crypto libraries (yes)])])
 if test "z$enable_crypto_dl" = "zno" ; then
     AC_MSG_CHECKING(for xmlsec-crypto dynamic loading support)
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_CRYPTO_DYNAMIC_LOADING=1"
@@ -2213,7 +2193,7 @@ dnl ==========================================================================
 dnl check if we need dynamic loading in the xmlsec apps
 dnl ==========================================================================
 AC_MSG_CHECKING(for xmlsec-crypto dynamic loading support in command line tool)
-AC_ARG_ENABLE(apps_crypto_dl,   [  --enable-apps-crypto-dl  enable dynamic loading support for xmlsec-crypto libraries in xmlsec command line tool (yes)])
+AC_ARG_ENABLE([apps_crypto_dl], [AC_HELP_STRING([--enable-apps-crypto-dl], [ enable dynamic loading support for xmlsec-crypto libraries in xmlsec command line tool (yes)])])
 if test "z$enable_apps_crypto_dl" = "z" ; then
     enable_apps_crypto_dl="$enable_crypto_dl"
 fi
@@ -2236,9 +2216,11 @@ dnl ==========================================================================
 dnl Where do we want to install docs
 dnl ==========================================================================
 AC_MSG_CHECKING(for docs folder)
-AC_ARG_WITH(html-dir,           [  --with-html-dir=PATH    path to installed docs ])
+AC_ARG_WITH([html-dir], [AC_HELP_STRING([--with-html-dir=PATH], [path to installed docs])])
 if test "z$with_html_dir" != "z" ; then
-    XMLSEC_DOCDIR=$with_html_dir
+    XMLSEC_DOCDIR="$with_html_dir"
+elif test "z$htmldir" != "z" ; then
+    XMLSEC_DOCDIR='$(htmldir)'
 else
     XMLSEC_DOCDIR='$(datadir)/doc/xmlsec1'
 fi
@@ -2250,7 +2232,7 @@ dnl ==========================================================================
 dnl See do we need Simple Keys Manager
 dnl ==========================================================================
 AC_MSG_CHECKING(for Simple Keys Manager testing)
-AC_ARG_ENABLE(skm,   [  --enable-skm            enable Simple Keys Manager testing (yes)])
+AC_ARG_ENABLE([skm], [AC_HELP_STRING([--enable-skm], [enable Simple Keys Manager testing (yes)])])
 if test "z$enable_skm" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_SKM_TEST=1"
     AC_MSG_RESULT([disabled])
@@ -2262,7 +2244,7 @@ dnl ==========================================================================
 dnl See do we need templates tests
 dnl ==========================================================================
 AC_MSG_CHECKING(for templates testing)
-AC_ARG_ENABLE(tmpl_tests,   [  --enable-tmpl-tests     enable templates testing in xmlsec utility (yes)])
+AC_ARG_ENABLE([tmpl_tests], [AC_HELP_STRING([--enable-tmpl-tests], [enable templates testing in xmlsec utility (yes)])])
 if test "z$enable_tmpl_tests" = "zyes" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_TMPL_TEST=1"
     AC_MSG_RESULT([disabled])
@@ -2274,7 +2256,7 @@ dnl ==========================================================================
 dnl Debug
 dnl ==========================================================================
 AC_MSG_CHECKING(for debugging)
-AC_ARG_ENABLE(debugging,   [  --enable-debugging      enable debugging compilation flags (no)])
+AC_ARG_ENABLE([debugging], [AC_HELP_STRING([--enable-debugging], [enable debugging compilation flags (no)])])
 if test "z$enable_debugging" = "zyes" ; then
     CFLAGS="$CFLAGS -g"
     AC_MSG_RESULT([yes])
@@ -2286,7 +2268,7 @@ dnl ==========================================================================
 dnl Warnings as errors
 dnl ==========================================================================
 AC_MSG_CHECKING(for warnings as errors)
-AC_ARG_ENABLE(werror,   [  --enable-werror      handle warnings as errors (no)])
+AC_ARG_ENABLE([werror], [AC_HELP_STRING([--enable-werror], [handle warnings as errors (no)])])
 if test "z$enable_werror" = "zyes" ; then
     CFLAGS="$CFLAGS -Werror"
     AC_MSG_RESULT([yes])
@@ -2298,7 +2280,7 @@ dnl ==========================================================================
 dnl Profiling
 dnl ==========================================================================
 AC_MSG_CHECKING(for profiling)
-AC_ARG_ENABLE(profiling,   [  --enable-profiling      enable profiling compilation flags (no)])
+AC_ARG_ENABLE([profiling], [AC_HELP_STRING([--enable-profiling], [enable profiling compilation flags (no)])])
 if test "z$enable_profiling" = "zyes" ; then
     CFLAGS="$CFLAGS -pg"
     AC_MSG_RESULT([yes])
@@ -2310,7 +2292,7 @@ dnl ==========================================================================
 dnl Pedantic compilation
 dnl ==========================================================================
 AC_MSG_CHECKING(for pedantic)
-AC_ARG_ENABLE(pedantic,   [  --enable-pedantic       enable pedantic compilation flags (no)])
+AC_ARG_ENABLE([pedantic], [AC_HELP_STRING([--enable-pedantic], [enable pedantic compilation flags (no)])])
 if test "z$enable_pedantic" = "zyes" ; then
     dnl CFLAGS="$CFLAGS -pedantic -Wall -std=c99 -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wredundant-decls"
     CFLAGS="$CFLAGS -O -pedantic -Wall -std=c99 -fno-inline -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wmissing-prototypes -Wnested-externs -Wredundant-decls"

@@ -439,7 +439,18 @@ XML Security Library is released under the
 see the Copyright file in the distribution  for details.<br><br></p>
 <p><b>News</b></p>
 <ul>
-<li>October 23 2018<br>
+<li>April 16 2019<br>
+        The <a href="download.html">XML Security Library 1.2.28</a> release includes the following changes:
+        <ul>
+        <li>Added BoringSSL support (chenbd).</li>
+        <li>Added gnutls-3.6.x support (alonbl).</li>
+        <li>Added DSA EDCSA for MSCNG (vmiklos).</li>
+        <li>Added --enable-mans configuration option (alonbl).</li>
+        <li>Added coninuous build integration for MacOSX (vmiklos).</li>
+        <li>Several other small fixes (<a href="https://github.com/lsh123/xmlsec/commits/master">more details</a>).</li>
+        </ul>
+</li>
+<br><li>October 23 2018<br>
         The <a href="download.html">XML Security Library 1.2.27</a> release includes the following changes:
         <ul>
         <li>Added AES-GCM support for OpenSSL and MSCNG (snargit).</li>
@@ -465,28 +476,6 @@ see the Copyright file in the distribution  for details.<br><br></p>
         <li>Removed OpenSSL 0.9.8 support and several previously deprecated functions.</li>
         <li>Added SHA224 support for xmlsec-nss (vmiklos).</li>
         <li>Added configurable default linefeed for xmltree module (pablogallardo).</li>
-        <li>Several other small fixes (<a href="https://github.com/lsh123/xmlsec/commits/master">more details</a>).</li>
-        </ul>
-</li>
-<br><li>April 20 2017<br>
-        The <a href="download.html">XML Security Library 1.2.24</a> release includes the following changes:
-        <ul>
-        <li>Added ECDSA-SHA1, ECDSA-SHA256, ECDSA-SHA512 support for xmlsec-nss (vmiklos).</li>
-        <li>Fixed XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS handling (vmiklos).</li>
-        <li>Disabled external entities loading by xmlsec utility app by default to prevent XXE attacks (d-hat).</li>
-        <li>Improved OpenSSL version and features detection.</li>
-        <li>Cleaned up, simplified, and standardized internal error reporting.</li>
-        <li>Fixed a few Coverity-discovered bugs (<a href="https://scan.coverity.com/projects/xmlsec">report</a>).</li>
-        <li>Marked as deprecated all the functions in xmlsec/soap.h file and a couple other functions no longer
-        required by xmlsec. These functions will be removed in the future releases.</li>
-        <li>Several other small fixes (<a href="https://github.com/lsh123/xmlsec/commits/master">more details</a>).</li>
-        </ul>
-        Please note that OpenSSL 0.9.8 support will be removed in the next release of XMLSec library.
-</li>
-<br><li>October 16 2016<br>
-        The <a href="download.html">XML Security Library 1.2.23</a> release includes the following changes:
-        <ul>
-        <li>Full support for OpenSSL 1.1.0.</li>
         <li>Several other small fixes (<a href="https://github.com/lsh123/xmlsec/commits/master">more details</a>).</li>
         </ul>
 </li>

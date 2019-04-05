@@ -1,6 +1,7 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>x509: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
@@ -9,96 +10,11 @@
 <link rel="next" href="xmlsec-msccng-ref.html" title="XML Security Library for Microsoft Cryptography API: Next Generation (CNG) Reference.">
 <meta name="generator" content="GTK-Doc V1.27 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
 </head>
-<body><table width="100%" valign="top"><tr valign="top">
-<td valign="top" align="left" width="210">
-<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="../index.html">Home</a></li>
-<li><a href="../download.html">Download</a></li>
-<li><a href="../news.html">News</a></li>
-<li><a href="../documentation.html">Documentation</a></li>
-<ul>
-<li><a href="../faq.html">FAQ</a></li>
-<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
-<li><a href="../api/xmlsec-reference.html">API reference</a></li>
-<li><a href="../api/xmlsec-examples.html">Examples</a></li>
-</ul>
-<li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<ul><li><a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a></li></ul>
-<li><a href="../xmlenc.html">XML Encryption</a></li>
-<li><a href="../c14n.html">XML Canonicalization</a></li>
-<li><a href="../bugs.html">Reporting Bugs</a></li>
-<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
-<li><a href="../related.html">Related</a></li>
-<li><a href="../authors.html">Authors</a></li>
-</ul>
-<table width="100%">
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
-</tr>
-<!--Links - start--><!--Links - end-->
-</table>
-</td>
-<td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts">
-<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
                   <a href="#xmlsec-mscrypto-x509.description" class="shortcut">Description</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
@@ -111,7 +27,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="xmlsec-mscrypto-x509.top_of_page"></a>x509</span></h2>
-<p>x509 &#8212; X509 certificates implementation for Microsoft Crypto API.</p>
+<p>x509 — X509 certificates implementation for Microsoft Crypto API.</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -132,7 +48,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">xmlSecKeyDataId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoKeyDataX509GetKlass" title="xmlSecMSCryptoKeyDataX509GetKlass ()">xmlSecMSCryptoKeyDataX509GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoKeyDataX509GetKlass" title="xmlSecMSCryptoKeyDataX509GetKlass ()">xmlSecMSCryptoKeyDataX509GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -140,7 +56,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">PCCERT_CONTEXT</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoKeyDataX509GetKeyCert" title="xmlSecMSCryptoKeyDataX509GetKeyCert ()">xmlSecMSCryptoKeyDataX509GetKeyCert</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoKeyDataX509GetKeyCert" title="xmlSecMSCryptoKeyDataX509GetKeyCert ()">xmlSecMSCryptoKeyDataX509GetKeyCert</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -148,7 +64,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoKeyDataX509AdoptKeyCert" title="xmlSecMSCryptoKeyDataX509AdoptKeyCert ()">xmlSecMSCryptoKeyDataX509AdoptKeyCert</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoKeyDataX509AdoptKeyCert" title="xmlSecMSCryptoKeyDataX509AdoptKeyCert ()">xmlSecMSCryptoKeyDataX509AdoptKeyCert</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -156,7 +72,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoKeyDataX509AdoptCert" title="xmlSecMSCryptoKeyDataX509AdoptCert ()">xmlSecMSCryptoKeyDataX509AdoptCert</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoKeyDataX509AdoptCert" title="xmlSecMSCryptoKeyDataX509AdoptCert ()">xmlSecMSCryptoKeyDataX509AdoptCert</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -164,7 +80,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">PCCERT_CONTEXT</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoKeyDataX509GetCert" title="xmlSecMSCryptoKeyDataX509GetCert ()">xmlSecMSCryptoKeyDataX509GetCert</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoKeyDataX509GetCert" title="xmlSecMSCryptoKeyDataX509GetCert ()">xmlSecMSCryptoKeyDataX509GetCert</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -172,7 +88,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoKeyDataX509GetCertsSize" title="xmlSecMSCryptoKeyDataX509GetCertsSize ()">xmlSecMSCryptoKeyDataX509GetCertsSize</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoKeyDataX509GetCertsSize" title="xmlSecMSCryptoKeyDataX509GetCertsSize ()">xmlSecMSCryptoKeyDataX509GetCertsSize</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -180,7 +96,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoKeyDataX509AdoptCrl" title="xmlSecMSCryptoKeyDataX509AdoptCrl ()">xmlSecMSCryptoKeyDataX509AdoptCrl</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoKeyDataX509AdoptCrl" title="xmlSecMSCryptoKeyDataX509AdoptCrl ()">xmlSecMSCryptoKeyDataX509AdoptCrl</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -188,7 +104,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">PCCRL_CONTEXT</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoKeyDataX509GetCrl" title="xmlSecMSCryptoKeyDataX509GetCrl ()">xmlSecMSCryptoKeyDataX509GetCrl</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoKeyDataX509GetCrl" title="xmlSecMSCryptoKeyDataX509GetCrl ()">xmlSecMSCryptoKeyDataX509GetCrl</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -196,7 +112,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoKeyDataX509GetCrlsSize" title="xmlSecMSCryptoKeyDataX509GetCrlsSize ()">xmlSecMSCryptoKeyDataX509GetCrlsSize</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoKeyDataX509GetCrlsSize" title="xmlSecMSCryptoKeyDataX509GetCrlsSize ()">xmlSecMSCryptoKeyDataX509GetCrlsSize</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -204,7 +120,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">xmlSecKeyDataId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoKeyDataRawX509CertGetKlass" title="xmlSecMSCryptoKeyDataRawX509CertGetKlass ()">xmlSecMSCryptoKeyDataRawX509CertGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoKeyDataRawX509CertGetKlass" title="xmlSecMSCryptoKeyDataRawX509CertGetKlass ()">xmlSecMSCryptoKeyDataRawX509CertGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -212,7 +128,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">xmlSecKeyDataStoreId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoX509StoreGetKlass" title="xmlSecMSCryptoX509StoreGetKlass ()">xmlSecMSCryptoX509StoreGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoX509StoreGetKlass" title="xmlSecMSCryptoX509StoreGetKlass ()">xmlSecMSCryptoX509StoreGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -220,7 +136,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoX509StoreAdoptCert" title="xmlSecMSCryptoX509StoreAdoptCert ()">xmlSecMSCryptoX509StoreAdoptCert</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoX509StoreAdoptCert" title="xmlSecMSCryptoX509StoreAdoptCert ()">xmlSecMSCryptoX509StoreAdoptCert</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -228,7 +144,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoX509StoreAdoptKeyStore" title="xmlSecMSCryptoX509StoreAdoptKeyStore ()">xmlSecMSCryptoX509StoreAdoptKeyStore</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoX509StoreAdoptKeyStore" title="xmlSecMSCryptoX509StoreAdoptKeyStore ()">xmlSecMSCryptoX509StoreAdoptKeyStore</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -236,7 +152,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoX509StoreAdoptTrustedStore" title="xmlSecMSCryptoX509StoreAdoptTrustedStore ()">xmlSecMSCryptoX509StoreAdoptTrustedStore</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoX509StoreAdoptTrustedStore" title="xmlSecMSCryptoX509StoreAdoptTrustedStore ()">xmlSecMSCryptoX509StoreAdoptTrustedStore</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -244,7 +160,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoX509StoreAdoptUntrustedStore" title="xmlSecMSCryptoX509StoreAdoptUntrustedStore ()">xmlSecMSCryptoX509StoreAdoptUntrustedStore</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoX509StoreAdoptUntrustedStore" title="xmlSecMSCryptoX509StoreAdoptUntrustedStore ()">xmlSecMSCryptoX509StoreAdoptUntrustedStore</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -252,7 +168,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">void</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoX509StoreEnableSystemTrustedCerts" title="xmlSecMSCryptoX509StoreEnableSystemTrustedCerts ()">xmlSecMSCryptoX509StoreEnableSystemTrustedCerts</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscrypto-x509.html#xmlSecMSCryptoX509StoreEnableSystemTrustedCerts" title="xmlSecMSCryptoX509StoreEnableSystemTrustedCerts ()">xmlSecMSCryptoX509StoreEnableSystemTrustedCerts</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 </tbody>
@@ -288,7 +204,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <div class="refsect1">
 <a name="xmlsec-mscrypto-x509.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
-<a name="xmlSecMSCryptoKeyDataX509GetKlass"></a><h3>xmlSecMSCryptoKeyDataX509GetKlass ()</h3>
+<a name="xmlSecMSCryptoKeyDataX509GetKlass"></a><h3>xmlSecMSCryptoKeyDataX509GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
 xmlSecMSCryptoKeyDataX509GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The MSCrypto X509 key data klass (http://www.w3.org/TR/xmldsig-core/<font><span class="type">sec-X509Data</span></font>).</p>
@@ -299,7 +215,7 @@ xmlSecMSCryptoKeyDataX509GetKlass (<em class="parameter"><code><span class="type
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCryptoKeyDataX509GetKeyCert"></a><h3>xmlSecMSCryptoKeyDataX509GetKeyCert ()</h3>
+<a name="xmlSecMSCryptoKeyDataX509GetKeyCert"></a><h3>xmlSecMSCryptoKeyDataX509GetKeyCert ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">PCCERT_CONTEXT</span></font>
 xmlSecMSCryptoKeyDataX509GetKeyCert (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
 <p>Gets the certificate from which the key was extracted.</p>
@@ -314,7 +230,7 @@ xmlSecMSCryptoKeyDataX509GetKeyCert (<em class="parameter"><code><a class="link"
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to X509 key data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -326,7 +242,7 @@ extraction or an error occurs.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCryptoKeyDataX509AdoptKeyCert"></a><h3>xmlSecMSCryptoKeyDataX509AdoptKeyCert ()</h3>
+<a name="xmlSecMSCryptoKeyDataX509AdoptKeyCert"></a><h3>xmlSecMSCryptoKeyDataX509AdoptKeyCert ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecMSCryptoKeyDataX509AdoptKeyCert (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                                        <em class="parameter"><code><font><span class="type">PCCERT_CONTEXT</span></font> cert</code></em>);</pre>
@@ -344,12 +260,12 @@ xmlSecMSCryptoKeyDataX509AdoptKeyCert (<em class="parameter"><code><a class="lin
 <tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to X509 key data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>cert</p></td>
 <td class="parameter_description"><p>the pointer to MSCRYPTO X509 certificate.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -361,7 +277,7 @@ xmlSecMSCryptoKeyDataX509AdoptKeyCert (<em class="parameter"><code><a class="lin
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCryptoKeyDataX509AdoptCert"></a><h3>xmlSecMSCryptoKeyDataX509AdoptCert ()</h3>
+<a name="xmlSecMSCryptoKeyDataX509AdoptCert"></a><h3>xmlSecMSCryptoKeyDataX509AdoptCert ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecMSCryptoKeyDataX509AdoptCert (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                                     <em class="parameter"><code><font><span class="type">PCCERT_CONTEXT</span></font> cert</code></em>);</pre>
@@ -378,12 +294,12 @@ xmlSecMSCryptoKeyDataX509AdoptCert (<em class="parameter"><code><a class="link" 
 <tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to X509 key data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>cert</p></td>
 <td class="parameter_description"><p>the pointer to MSCRYPTO X509 certificate.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -395,7 +311,7 @@ xmlSecMSCryptoKeyDataX509AdoptCert (<em class="parameter"><code><a class="link" 
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCryptoKeyDataX509GetCert"></a><h3>xmlSecMSCryptoKeyDataX509GetCert ()</h3>
+<a name="xmlSecMSCryptoKeyDataX509GetCert"></a><h3>xmlSecMSCryptoKeyDataX509GetCert ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">PCCERT_CONTEXT</span></font>
 xmlSecMSCryptoKeyDataX509GetCert (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                                   <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> pos</code></em>);</pre>
@@ -412,12 +328,12 @@ xmlSecMSCryptoKeyDataX509GetCert (<em class="parameter"><code><a class="link" hr
 <tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to X509 key data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>pos</p></td>
 <td class="parameter_description"><p>the desired certificate position.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -432,7 +348,7 @@ or an error occurs.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCryptoKeyDataX509GetCertsSize"></a><h3>xmlSecMSCryptoKeyDataX509GetCertsSize ()</h3>
+<a name="xmlSecMSCryptoKeyDataX509GetCertsSize"></a><h3>xmlSecMSCryptoKeyDataX509GetCertsSize ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
 xmlSecMSCryptoKeyDataX509GetCertsSize (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
 <p>Gets the number of certificates in <em class="parameter"><code>data</code></em>
@@ -448,7 +364,7 @@ xmlSecMSCryptoKeyDataX509GetCertsSize (<em class="parameter"><code><a class="lin
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to X509 key data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -460,7 +376,7 @@ xmlSecMSCryptoKeyDataX509GetCertsSize (<em class="parameter"><code><a class="lin
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCryptoKeyDataX509AdoptCrl"></a><h3>xmlSecMSCryptoKeyDataX509AdoptCrl ()</h3>
+<a name="xmlSecMSCryptoKeyDataX509AdoptCrl"></a><h3>xmlSecMSCryptoKeyDataX509AdoptCrl ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecMSCryptoKeyDataX509AdoptCrl (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                                    <em class="parameter"><code><font><span class="type">PCCRL_CONTEXT</span></font> crl</code></em>);</pre>
@@ -477,12 +393,12 @@ xmlSecMSCryptoKeyDataX509AdoptCrl (<em class="parameter"><code><a class="link" h
 <tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to X509 key data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>crl</p></td>
 <td class="parameter_description"><p>the pointer to MSCrypto X509 CRL.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -494,7 +410,7 @@ xmlSecMSCryptoKeyDataX509AdoptCrl (<em class="parameter"><code><a class="link" h
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCryptoKeyDataX509GetCrl"></a><h3>xmlSecMSCryptoKeyDataX509GetCrl ()</h3>
+<a name="xmlSecMSCryptoKeyDataX509GetCrl"></a><h3>xmlSecMSCryptoKeyDataX509GetCrl ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">PCCRL_CONTEXT</span></font>
 xmlSecMSCryptoKeyDataX509GetCrl (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                                  <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> pos</code></em>);</pre>
@@ -511,12 +427,12 @@ xmlSecMSCryptoKeyDataX509GetCrl (<em class="parameter"><code><a class="link" hre
 <tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to X509 key data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>pos</p></td>
 <td class="parameter_description"><p>the desired CRL position.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -531,7 +447,7 @@ or an error occurs.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCryptoKeyDataX509GetCrlsSize"></a><h3>xmlSecMSCryptoKeyDataX509GetCrlsSize ()</h3>
+<a name="xmlSecMSCryptoKeyDataX509GetCrlsSize"></a><h3>xmlSecMSCryptoKeyDataX509GetCrlsSize ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
 xmlSecMSCryptoKeyDataX509GetCrlsSize (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
 <p>Gets the number of CRLs in <em class="parameter"><code>data</code></em>
@@ -547,7 +463,7 @@ xmlSecMSCryptoKeyDataX509GetCrlsSize (<em class="parameter"><code><a class="link
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to X509 key data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -559,7 +475,7 @@ xmlSecMSCryptoKeyDataX509GetCrlsSize (<em class="parameter"><code><a class="link
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCryptoKeyDataRawX509CertGetKlass"></a><h3>xmlSecMSCryptoKeyDataRawX509CertGetKlass ()</h3>
+<a name="xmlSecMSCryptoKeyDataRawX509CertGetKlass"></a><h3>xmlSecMSCryptoKeyDataRawX509CertGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
 xmlSecMSCryptoKeyDataRawX509CertGetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
@@ -571,7 +487,7 @@ xmlSecMSCryptoKeyDataRawX509CertGetKlass
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCryptoX509StoreGetKlass"></a><h3>xmlSecMSCryptoX509StoreGetKlass ()</h3>
+<a name="xmlSecMSCryptoX509StoreGetKlass"></a><h3>xmlSecMSCryptoX509StoreGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataStoreId</span></font>
 xmlSecMSCryptoX509StoreGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The MSCrypto X509 certificates key data store klass.</p>
@@ -582,7 +498,7 @@ xmlSecMSCryptoX509StoreGetKlass (<em class="parameter"><code><span class="type">
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCryptoX509StoreAdoptCert"></a><h3>xmlSecMSCryptoX509StoreAdoptCert ()</h3>
+<a name="xmlSecMSCryptoX509StoreAdoptCert"></a><h3>xmlSecMSCryptoX509StoreAdoptCert ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecMSCryptoX509StoreAdoptCert (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStore" title="struct xmlSecKeyDataStore"><span class="type">xmlSecKeyDataStorePtr</span></a> store</code></em>,
                                   <em class="parameter"><code><font><span class="type">PCCERT_CONTEXT</span></font> cert</code></em>,
@@ -600,17 +516,17 @@ xmlSecMSCryptoX509StoreAdoptCert (<em class="parameter"><code><a class="link" hr
 <tr>
 <td class="parameter_name"><p>store</p></td>
 <td class="parameter_description"><p>the pointer to X509 key data store klass.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>cert</p></td>
 <td class="parameter_description"><p>the pointer to PCCERT_CONTEXT X509 certificate.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>type</p></td>
 <td class="parameter_description"><p>the certificate type (trusted/untrusted).</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -622,7 +538,7 @@ xmlSecMSCryptoX509StoreAdoptCert (<em class="parameter"><code><a class="link" hr
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCryptoX509StoreAdoptKeyStore"></a><h3>xmlSecMSCryptoX509StoreAdoptKeyStore ()</h3>
+<a name="xmlSecMSCryptoX509StoreAdoptKeyStore"></a><h3>xmlSecMSCryptoX509StoreAdoptKeyStore ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecMSCryptoX509StoreAdoptKeyStore (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStore" title="struct xmlSecKeyDataStore"><span class="type">xmlSecKeyDataStorePtr</span></a> store</code></em>,
                                       <em class="parameter"><code><font><span class="type">HCERTSTORE</span></font> keyStore</code></em>);</pre>
@@ -640,12 +556,12 @@ xmlSecMSCryptoX509StoreAdoptKeyStore (<em class="parameter"><code><a class="link
 <tr>
 <td class="parameter_name"><p>store</p></td>
 <td class="parameter_description"><p>the pointer to X509 key data store klass.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>keyStore</p></td>
 <td class="parameter_description"><p>the pointer to keys store.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -657,7 +573,7 @@ xmlSecMSCryptoX509StoreAdoptKeyStore (<em class="parameter"><code><a class="link
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCryptoX509StoreAdoptTrustedStore"></a><h3>xmlSecMSCryptoX509StoreAdoptTrustedStore ()</h3>
+<a name="xmlSecMSCryptoX509StoreAdoptTrustedStore"></a><h3>xmlSecMSCryptoX509StoreAdoptTrustedStore ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecMSCryptoX509StoreAdoptTrustedStore
                                (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStore" title="struct xmlSecKeyDataStore"><span class="type">xmlSecKeyDataStorePtr</span></a> store</code></em>,
@@ -676,12 +592,12 @@ xmlSecMSCryptoX509StoreAdoptTrustedStore
 <tr>
 <td class="parameter_name"><p>store</p></td>
 <td class="parameter_description"><p>the pointer to X509 key data store klass.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>trustedStore</p></td>
 <td class="parameter_description"><p>the pointer to certs store.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -693,7 +609,7 @@ xmlSecMSCryptoX509StoreAdoptTrustedStore
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCryptoX509StoreAdoptUntrustedStore"></a><h3>xmlSecMSCryptoX509StoreAdoptUntrustedStore ()</h3>
+<a name="xmlSecMSCryptoX509StoreAdoptUntrustedStore"></a><h3>xmlSecMSCryptoX509StoreAdoptUntrustedStore ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecMSCryptoX509StoreAdoptUntrustedStore
                                (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStore" title="struct xmlSecKeyDataStore"><span class="type">xmlSecKeyDataStorePtr</span></a> store</code></em>,
@@ -712,12 +628,12 @@ xmlSecMSCryptoX509StoreAdoptUntrustedStore
 <tr>
 <td class="parameter_name"><p>store</p></td>
 <td class="parameter_description"><p>the pointer to X509 key data store klass.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>untrustedStore</p></td>
 <td class="parameter_description"><p>the pointer to certs store.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -729,7 +645,7 @@ xmlSecMSCryptoX509StoreAdoptUntrustedStore
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCryptoX509StoreEnableSystemTrustedCerts"></a><h3>xmlSecMSCryptoX509StoreEnableSystemTrustedCerts ()</h3>
+<a name="xmlSecMSCryptoX509StoreEnableSystemTrustedCerts"></a><h3>xmlSecMSCryptoX509StoreEnableSystemTrustedCerts ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
 xmlSecMSCryptoX509StoreEnableSystemTrustedCerts
                                (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStore" title="struct xmlSecKeyDataStore"><span class="type">xmlSecKeyDataStorePtr</span></a> store</code></em>,
@@ -747,12 +663,12 @@ xmlSecMSCryptoX509StoreEnableSystemTrustedCerts
 <tr>
 <td class="parameter_name"><p>store</p></td>
 <td class="parameter_description"><p>the pointer to X509 key data store klass.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>val</p></td>
 <td class="parameter_description"><p>the enable/disable flag</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -782,6 +698,5 @@ xmlSecMSCryptoX509StoreEnableSystemTrustedCerts
 </div>
 <div class="footer">
 <hr>Generated by GTK-Doc V1.27</div>
-</td></tr></table></td>
-</tr></table></body>
+</body>
 </html>

@@ -1,6 +1,7 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>xmltree: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
@@ -9,96 +10,11 @@
 <link rel="next" href="xmlsec-x509.html" title="x509">
 <meta name="generator" content="GTK-Doc V1.27 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
 </head>
-<body><table width="100%" valign="top"><tr valign="top">
-<td valign="top" align="left" width="210">
-<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="../index.html">Home</a></li>
-<li><a href="../download.html">Download</a></li>
-<li><a href="../news.html">News</a></li>
-<li><a href="../documentation.html">Documentation</a></li>
-<ul>
-<li><a href="../faq.html">FAQ</a></li>
-<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
-<li><a href="../api/xmlsec-reference.html">API reference</a></li>
-<li><a href="../api/xmlsec-examples.html">Examples</a></li>
-</ul>
-<li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<ul><li><a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a></li></ul>
-<li><a href="../xmlenc.html">XML Encryption</a></li>
-<li><a href="../c14n.html">XML Canonicalization</a></li>
-<li><a href="../bugs.html">Reporting Bugs</a></li>
-<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
-<li><a href="../related.html">Related</a></li>
-<li><a href="../authors.html">Authors</a></li>
-</ul>
-<table width="100%">
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
-</tr>
-<!--Links - start--><!--Links - end-->
-</table>
-</td>
-<td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts">
-<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
                   <a href="#xmlsec-xmltree.description" class="shortcut">Description</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
@@ -111,7 +27,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="xmlsec-xmltree.top_of_page"></a>xmltree</span></h2>
-<p>xmltree &#8212; XML tree functions.</p>
+<p>xmltree — XML tree functions.</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -134,10 +50,10 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 </td>
 </tr>
 <tr>
-<td class="function_type">const <font><span class="returnvalue">xmlChar</span></font> *
+<td class="function_type">const <font><span class="returnvalue">xmlChar</span></font> *
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecGetDefaultLineFeed" title="xmlSecGetDefaultLineFeed ()">xmlSecGetDefaultLineFeed</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecGetDefaultLineFeed" title="xmlSecGetDefaultLineFeed ()">xmlSecGetDefaultLineFeed</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -145,102 +61,14 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">void</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecSetDefaultLineFeed" title="xmlSecSetDefaultLineFeed ()">xmlSecSetDefaultLineFeed</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecSetDefaultLineFeed" title="xmlSecSetDefaultLineFeed ()">xmlSecSetDefaultLineFeed</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
-<td class="function_type">const <font><span class="returnvalue">xmlChar</span></font> *
+<td class="function_type">const <font><span class="returnvalue">xmlChar</span></font> *
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecGetNodeNsHref" title="xmlSecGetNodeNsHref ()">xmlSecGetNodeNsHref</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">int</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecCheckNodeName" title="xmlSecCheckNodeName ()">xmlSecCheckNodeName</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">xmlNodePtr</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecGetNextElementNode" title="xmlSecGetNextElementNode ()">xmlSecGetNextElementNode</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">xmlNodePtr</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecFindSibling" title="xmlSecFindSibling ()">xmlSecFindSibling</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">xmlNodePtr</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecFindChild" title="xmlSecFindChild ()">xmlSecFindChild</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">xmlNodePtr</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecFindParent" title="xmlSecFindParent ()">xmlSecFindParent</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">xmlNodePtr</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecFindNode" title="xmlSecFindNode ()">xmlSecFindNode</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">xmlNodePtr</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecAddChild" title="xmlSecAddChild ()">xmlSecAddChild</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">xmlNodePtr</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecEnsureEmptyChild" title="xmlSecEnsureEmptyChild ()">xmlSecEnsureEmptyChild</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">xmlNodePtr</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecAddChildNode" title="xmlSecAddChildNode ()">xmlSecAddChildNode</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">xmlNodePtr</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecAddNextSibling" title="xmlSecAddNextSibling ()">xmlSecAddNextSibling</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">xmlNodePtr</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecAddPrevSibling" title="xmlSecAddPrevSibling ()">xmlSecAddPrevSibling</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecGetNodeNsHref" title="xmlSecGetNodeNsHref ()">xmlSecGetNodeNsHref</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -248,7 +76,87 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecReplaceNode" title="xmlSecReplaceNode ()">xmlSecReplaceNode</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecCheckNodeName" title="xmlSecCheckNodeName ()">xmlSecCheckNodeName</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlNodePtr</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmltree.html#xmlSecGetNextElementNode" title="xmlSecGetNextElementNode ()">xmlSecGetNextElementNode</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlNodePtr</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmltree.html#xmlSecFindSibling" title="xmlSecFindSibling ()">xmlSecFindSibling</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlNodePtr</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmltree.html#xmlSecFindChild" title="xmlSecFindChild ()">xmlSecFindChild</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlNodePtr</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmltree.html#xmlSecFindParent" title="xmlSecFindParent ()">xmlSecFindParent</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlNodePtr</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmltree.html#xmlSecFindNode" title="xmlSecFindNode ()">xmlSecFindNode</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlNodePtr</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmltree.html#xmlSecAddChild" title="xmlSecAddChild ()">xmlSecAddChild</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlNodePtr</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmltree.html#xmlSecEnsureEmptyChild" title="xmlSecEnsureEmptyChild ()">xmlSecEnsureEmptyChild</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlNodePtr</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmltree.html#xmlSecAddChildNode" title="xmlSecAddChildNode ()">xmlSecAddChildNode</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlNodePtr</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmltree.html#xmlSecAddNextSibling" title="xmlSecAddNextSibling ()">xmlSecAddNextSibling</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlNodePtr</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmltree.html#xmlSecAddPrevSibling" title="xmlSecAddPrevSibling ()">xmlSecAddPrevSibling</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -256,7 +164,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecReplaceNodeAndReturn" title="xmlSecReplaceNodeAndReturn ()">xmlSecReplaceNodeAndReturn</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecReplaceNode" title="xmlSecReplaceNode ()">xmlSecReplaceNode</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -264,7 +172,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecReplaceContent" title="xmlSecReplaceContent ()">xmlSecReplaceContent</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecReplaceNodeAndReturn" title="xmlSecReplaceNodeAndReturn ()">xmlSecReplaceNodeAndReturn</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -272,7 +180,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecReplaceContentAndReturn" title="xmlSecReplaceContentAndReturn ()">xmlSecReplaceContentAndReturn</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecReplaceContent" title="xmlSecReplaceContent ()">xmlSecReplaceContent</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -280,7 +188,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecReplaceNodeBuffer" title="xmlSecReplaceNodeBuffer ()">xmlSecReplaceNodeBuffer</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecReplaceContentAndReturn" title="xmlSecReplaceContentAndReturn ()">xmlSecReplaceContentAndReturn</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -288,7 +196,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecReplaceNodeBufferAndReturn" title="xmlSecReplaceNodeBufferAndReturn ()">xmlSecReplaceNodeBufferAndReturn</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecReplaceNodeBuffer" title="xmlSecReplaceNodeBuffer ()">xmlSecReplaceNodeBuffer</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -296,7 +204,15 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecNodeEncodeAndSetContent" title="xmlSecNodeEncodeAndSetContent ()">xmlSecNodeEncodeAndSetContent</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecReplaceNodeBufferAndReturn" title="xmlSecReplaceNodeBufferAndReturn ()">xmlSecReplaceNodeBufferAndReturn</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmltree.html#xmlSecNodeEncodeAndSetContent" title="xmlSecNodeEncodeAndSetContent ()">xmlSecNodeEncodeAndSetContent</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -304,7 +220,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">void</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecAddIDs" title="xmlSecAddIDs ()">xmlSecAddIDs</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecAddIDs" title="xmlSecAddIDs ()">xmlSecAddIDs</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -312,7 +228,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">xmlDocPtr</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecCreateTree" title="xmlSecCreateTree ()">xmlSecCreateTree</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecCreateTree" title="xmlSecCreateTree ()">xmlSecCreateTree</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -320,7 +236,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecIsEmptyNode" title="xmlSecIsEmptyNode ()">xmlSecIsEmptyNode</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecIsEmptyNode" title="xmlSecIsEmptyNode ()">xmlSecIsEmptyNode</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -328,15 +244,15 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecIsEmptyString" title="xmlSecIsEmptyString ()">xmlSecIsEmptyString</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecIsEmptyString" title="xmlSecIsEmptyString ()">xmlSecIsEmptyString</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
 <td class="function_type">
-<font><span class="returnvalue">xmlChar</span></font> *
+<font><span class="returnvalue">xmlChar</span></font> *
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecGetQName" title="xmlSecGetQName ()">xmlSecGetQName</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecGetQName" title="xmlSecGetQName ()">xmlSecGetQName</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -344,7 +260,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecPrintXmlString" title="xmlSecPrintXmlString ()">xmlSecPrintXmlString</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecPrintXmlString" title="xmlSecPrintXmlString ()">xmlSecPrintXmlString</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -364,7 +280,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">xmlSecQName2IntegerInfoConstPtr</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecQName2IntegerGetInfo" title="xmlSecQName2IntegerGetInfo ()">xmlSecQName2IntegerGetInfo</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecQName2IntegerGetInfo" title="xmlSecQName2IntegerGetInfo ()">xmlSecQName2IntegerGetInfo</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -372,7 +288,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecQName2IntegerGetInteger" title="xmlSecQName2IntegerGetInteger ()">xmlSecQName2IntegerGetInteger</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecQName2IntegerGetInteger" title="xmlSecQName2IntegerGetInteger ()">xmlSecQName2IntegerGetInteger</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -380,23 +296,15 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecQName2IntegerGetIntegerFromString" title="xmlSecQName2IntegerGetIntegerFromString ()">xmlSecQName2IntegerGetIntegerFromString</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecQName2IntegerGetIntegerFromString" title="xmlSecQName2IntegerGetIntegerFromString ()">xmlSecQName2IntegerGetIntegerFromString</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
 <td class="function_type">
-<font><span class="returnvalue">xmlChar</span></font> *
+<font><span class="returnvalue">xmlChar</span></font> *
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecQName2IntegerGetStringFromInteger" title="xmlSecQName2IntegerGetStringFromInteger ()">xmlSecQName2IntegerGetStringFromInteger</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">int</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecQName2IntegerNodeRead" title="xmlSecQName2IntegerNodeRead ()">xmlSecQName2IntegerNodeRead</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecQName2IntegerGetStringFromInteger" title="xmlSecQName2IntegerGetStringFromInteger ()">xmlSecQName2IntegerGetStringFromInteger</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -404,7 +312,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecQName2IntegerNodeWrite" title="xmlSecQName2IntegerNodeWrite ()">xmlSecQName2IntegerNodeWrite</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecQName2IntegerNodeRead" title="xmlSecQName2IntegerNodeRead ()">xmlSecQName2IntegerNodeRead</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -412,7 +320,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecQName2IntegerAttributeRead" title="xmlSecQName2IntegerAttributeRead ()">xmlSecQName2IntegerAttributeRead</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecQName2IntegerNodeWrite" title="xmlSecQName2IntegerNodeWrite ()">xmlSecQName2IntegerNodeWrite</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -420,7 +328,15 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecQName2IntegerAttributeWrite" title="xmlSecQName2IntegerAttributeWrite ()">xmlSecQName2IntegerAttributeWrite</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecQName2IntegerAttributeRead" title="xmlSecQName2IntegerAttributeRead ()">xmlSecQName2IntegerAttributeRead</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmltree.html#xmlSecQName2IntegerAttributeWrite" title="xmlSecQName2IntegerAttributeWrite ()">xmlSecQName2IntegerAttributeWrite</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -428,7 +344,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">void</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecQName2IntegerDebugDump" title="xmlSecQName2IntegerDebugDump ()">xmlSecQName2IntegerDebugDump</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecQName2IntegerDebugDump" title="xmlSecQName2IntegerDebugDump ()">xmlSecQName2IntegerDebugDump</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -436,7 +352,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">void</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecQName2IntegerDebugXmlDump" title="xmlSecQName2IntegerDebugXmlDump ()">xmlSecQName2IntegerDebugXmlDump</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecQName2IntegerDebugXmlDump" title="xmlSecQName2IntegerDebugXmlDump ()">xmlSecQName2IntegerDebugXmlDump</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -444,7 +360,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">xmlSecQName2BitMaskInfoConstPtr</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecQName2BitMaskGetInfo" title="xmlSecQName2BitMaskGetInfo ()">xmlSecQName2BitMaskGetInfo</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecQName2BitMaskGetInfo" title="xmlSecQName2BitMaskGetInfo ()">xmlSecQName2BitMaskGetInfo</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -452,7 +368,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecQName2BitMaskGetBitMask" title="xmlSecQName2BitMaskGetBitMask ()">xmlSecQName2BitMaskGetBitMask</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecQName2BitMaskGetBitMask" title="xmlSecQName2BitMaskGetBitMask ()">xmlSecQName2BitMaskGetBitMask</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -460,7 +376,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecQName2BitMaskNodesRead" title="xmlSecQName2BitMaskNodesRead ()">xmlSecQName2BitMaskNodesRead</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecQName2BitMaskNodesRead" title="xmlSecQName2BitMaskNodesRead ()">xmlSecQName2BitMaskNodesRead</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -468,15 +384,15 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecQName2BitMaskGetBitMaskFromString" title="xmlSecQName2BitMaskGetBitMaskFromString ()">xmlSecQName2BitMaskGetBitMaskFromString</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecQName2BitMaskGetBitMaskFromString" title="xmlSecQName2BitMaskGetBitMaskFromString ()">xmlSecQName2BitMaskGetBitMaskFromString</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
 <td class="function_type">
-<font><span class="returnvalue">xmlChar</span></font> *
+<font><span class="returnvalue">xmlChar</span></font> *
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecQName2BitMaskGetStringFromBitMask" title="xmlSecQName2BitMaskGetStringFromBitMask ()">xmlSecQName2BitMaskGetStringFromBitMask</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecQName2BitMaskGetStringFromBitMask" title="xmlSecQName2BitMaskGetStringFromBitMask ()">xmlSecQName2BitMaskGetStringFromBitMask</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -484,7 +400,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecQName2BitMaskNodesWrite" title="xmlSecQName2BitMaskNodesWrite ()">xmlSecQName2BitMaskNodesWrite</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecQName2BitMaskNodesWrite" title="xmlSecQName2BitMaskNodesWrite ()">xmlSecQName2BitMaskNodesWrite</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -492,7 +408,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">void</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecQName2BitMaskDebugDump" title="xmlSecQName2BitMaskDebugDump ()">xmlSecQName2BitMaskDebugDump</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecQName2BitMaskDebugDump" title="xmlSecQName2BitMaskDebugDump ()">xmlSecQName2BitMaskDebugDump</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -500,7 +416,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">void</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecQName2BitMaskDebugXmlDump" title="xmlSecQName2BitMaskDebugXmlDump ()">xmlSecQName2BitMaskDebugXmlDump</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecQName2BitMaskDebugXmlDump" title="xmlSecQName2BitMaskDebugXmlDump ()">xmlSecQName2BitMaskDebugXmlDump</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -508,7 +424,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">LPWSTR</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecWin32ConvertLocaleToUnicode" title="xmlSecWin32ConvertLocaleToUnicode ()">xmlSecWin32ConvertLocaleToUnicode</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecWin32ConvertLocaleToUnicode" title="xmlSecWin32ConvertLocaleToUnicode ()">xmlSecWin32ConvertLocaleToUnicode</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -516,39 +432,39 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">LPWSTR</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecWin32ConvertUtf8ToUnicode" title="xmlSecWin32ConvertUtf8ToUnicode ()">xmlSecWin32ConvertUtf8ToUnicode</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecWin32ConvertUtf8ToUnicode" title="xmlSecWin32ConvertUtf8ToUnicode ()">xmlSecWin32ConvertUtf8ToUnicode</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
 <td class="function_type">
-<font><span class="returnvalue">xmlChar</span></font> *
+<font><span class="returnvalue">xmlChar</span></font> *
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecWin32ConvertUnicodeToUtf8" title="xmlSecWin32ConvertUnicodeToUtf8 ()">xmlSecWin32ConvertUnicodeToUtf8</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecWin32ConvertUnicodeToUtf8" title="xmlSecWin32ConvertUnicodeToUtf8 ()">xmlSecWin32ConvertUnicodeToUtf8</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
 <td class="function_type">
-<font><span class="returnvalue">xmlChar</span></font> *
+<font><span class="returnvalue">xmlChar</span></font> *
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecWin32ConvertLocaleToUtf8" title="xmlSecWin32ConvertLocaleToUtf8 ()">xmlSecWin32ConvertLocaleToUtf8</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecWin32ConvertLocaleToUtf8" title="xmlSecWin32ConvertLocaleToUtf8 ()">xmlSecWin32ConvertLocaleToUtf8</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
 <td class="function_type">
-<font><span class="returnvalue">char</span></font> *
+<font><span class="returnvalue">char</span></font> *
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecWin32ConvertUtf8ToLocale" title="xmlSecWin32ConvertUtf8ToLocale ()">xmlSecWin32ConvertUtf8ToLocale</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecWin32ConvertUtf8ToLocale" title="xmlSecWin32ConvertUtf8ToLocale ()">xmlSecWin32ConvertUtf8ToLocale</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
 <td class="function_type">
-<font><span class="returnvalue">xmlChar</span></font> *
+<font><span class="returnvalue">xmlChar</span></font> *
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecWin32ConvertTstrToUtf8" title="xmlSecWin32ConvertTstrToUtf8 ()">xmlSecWin32ConvertTstrToUtf8</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecWin32ConvertTstrToUtf8" title="xmlSecWin32ConvertTstrToUtf8 ()">xmlSecWin32ConvertTstrToUtf8</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -556,7 +472,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">LPTSTR</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmltree.html#xmlSecWin32ConvertUtf8ToTstr" title="xmlSecWin32ConvertUtf8ToTstr ()">xmlSecWin32ConvertUtf8ToTstr</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmltree.html#xmlSecWin32ConvertUtf8ToTstr" title="xmlSecWin32ConvertUtf8ToTstr ()">xmlSecWin32ConvertUtf8ToTstr</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 </tbody>
@@ -614,15 +530,15 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <tbody><tr>
 <td class="parameter_name"><p>node</p></td>
 <td class="parameter_description"><p>the pointer to node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecGetDefaultLineFeed"></a><h3>xmlSecGetDefaultLineFeed ()</h3>
-<pre class="programlisting">const <font><span class="returnvalue">xmlChar</span></font> *
+<a name="xmlSecGetDefaultLineFeed"></a><h3>xmlSecGetDefaultLineFeed ()</h3>
+<pre class="programlisting">const <font><span class="returnvalue">xmlChar</span></font> *
 xmlSecGetDefaultLineFeed (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Gets the current default linefeed.</p>
 <div class="refsect3">
@@ -632,7 +548,7 @@ xmlSecGetDefaultLineFeed (<em class="parameter"><code><span class="type">void</s
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecSetDefaultLineFeed"></a><h3>xmlSecSetDefaultLineFeed ()</h3>
+<a name="xmlSecSetDefaultLineFeed"></a><h3>xmlSecSetDefaultLineFeed ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
 xmlSecSetDefaultLineFeed (<em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *linefeed</code></em>);</pre>
 <p>Sets the current default linefeed. The caller must ensure that the linefeed
@@ -648,15 +564,15 @@ string exists for the lifetime of the program or until the new linefeed is set.<
 <tbody><tr>
 <td class="parameter_name"><p>linefeed</p></td>
 <td class="parameter_description"><p>default linefeed.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecGetNodeNsHref"></a><h3>xmlSecGetNodeNsHref ()</h3>
-<pre class="programlisting">const <font><span class="returnvalue">xmlChar</span></font> *
+<a name="xmlSecGetNodeNsHref"></a><h3>xmlSecGetNodeNsHref ()</h3>
+<pre class="programlisting">const <font><span class="returnvalue">xmlChar</span></font> *
 xmlSecGetNodeNsHref (<em class="parameter"><code>const <font><span class="type">xmlNodePtr</span></font> cur</code></em>);</pre>
 <p>Get's node's namespace href.</p>
 <div class="refsect3">
@@ -670,7 +586,7 @@ xmlSecGetNodeNsHref (<em class="parameter"><code>const <font><span class="type">
 <tbody><tr>
 <td class="parameter_name"><p>cur</p></td>
 <td class="parameter_description"><p>the pointer to node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -681,7 +597,7 @@ xmlSecGetNodeNsHref (<em class="parameter"><code>const <font><span class="type">
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecCheckNodeName"></a><h3>xmlSecCheckNodeName ()</h3>
+<a name="xmlSecCheckNodeName"></a><h3>xmlSecCheckNodeName ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecCheckNodeName (<em class="parameter"><code>const <font><span class="type">xmlNodePtr</span></font> cur</code></em>,
                      <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *name</code></em>,
@@ -699,17 +615,17 @@ xmlSecCheckNodeName (<em class="parameter"><code>const <font><span class="type">
 <tr>
 <td class="parameter_name"><p>cur</p></td>
 <td class="parameter_description"><p>the pointer to an XML node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>name</p></td>
 <td class="parameter_description"><p>the name,</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>ns</p></td>
 <td class="parameter_description"><p>the namespace href.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -721,7 +637,7 @@ xmlSecCheckNodeName (<em class="parameter"><code>const <font><span class="type">
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecGetNextElementNode"></a><h3>xmlSecGetNextElementNode ()</h3>
+<a name="xmlSecGetNextElementNode"></a><h3>xmlSecGetNextElementNode ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecGetNextElementNode (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> cur</code></em>);</pre>
 <p>Seraches for the next element node.</p>
@@ -736,7 +652,7 @@ xmlSecGetNextElementNode (<em class="parameter"><code><font><span class="type">x
 <tbody><tr>
 <td class="parameter_name"><p>cur</p></td>
 <td class="parameter_description"><p>the pointer to an XML node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -747,7 +663,7 @@ xmlSecGetNextElementNode (<em class="parameter"><code><font><span class="type">x
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecFindSibling"></a><h3>xmlSecFindSibling ()</h3>
+<a name="xmlSecFindSibling"></a><h3>xmlSecFindSibling ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecFindSibling (<em class="parameter"><code>const <font><span class="type">xmlNodePtr</span></font> cur</code></em>,
                    <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *name</code></em>,
@@ -768,17 +684,17 @@ namespace href.</p>
 <tr>
 <td class="parameter_name"><p>cur</p></td>
 <td class="parameter_description"><p>the pointer to XML node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>name</p></td>
 <td class="parameter_description"><p>the name.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>ns</p></td>
 <td class="parameter_description"><p>the namespace href (may be NULL).</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -791,7 +707,7 @@ node is not found.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecFindChild"></a><h3>xmlSecFindChild ()</h3>
+<a name="xmlSecFindChild"></a><h3>xmlSecFindChild ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecFindChild (<em class="parameter"><code>const <font><span class="type">xmlNodePtr</span></font> parent</code></em>,
                  <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *name</code></em>,
@@ -811,17 +727,17 @@ namespace href.</p>
 <tr>
 <td class="parameter_name"><p>parent</p></td>
 <td class="parameter_description"><p>the pointer to XML node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>name</p></td>
 <td class="parameter_description"><p>the name.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>ns</p></td>
 <td class="parameter_description"><p>the namespace href (may be NULL).</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -834,7 +750,7 @@ node is not found.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecFindParent"></a><h3>xmlSecFindParent ()</h3>
+<a name="xmlSecFindParent"></a><h3>xmlSecFindParent ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecFindParent (<em class="parameter"><code>const <font><span class="type">xmlNodePtr</span></font> cur</code></em>,
                   <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *name</code></em>,
@@ -854,17 +770,17 @@ and namespace href.</p>
 <tr>
 <td class="parameter_name"><p>cur</p></td>
 <td class="parameter_description"><p>the pointer to an XML node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>name</p></td>
 <td class="parameter_description"><p>the name.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>ns</p></td>
 <td class="parameter_description"><p>the namespace href (may be NULL).</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -877,7 +793,7 @@ node is not found.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecFindNode"></a><h3>xmlSecFindNode ()</h3>
+<a name="xmlSecFindNode"></a><h3>xmlSecFindNode ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecFindNode (<em class="parameter"><code>const <font><span class="type">xmlNodePtr</span></font> parent</code></em>,
                 <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *name</code></em>,
@@ -897,17 +813,17 @@ namespace href.</p>
 <tr>
 <td class="parameter_name"><p>parent</p></td>
 <td class="parameter_description"><p>the pointer to XML node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>name</p></td>
 <td class="parameter_description"><p>the name.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>ns</p></td>
 <td class="parameter_description"><p>the namespace href (may be NULL).</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -920,7 +836,7 @@ node is not found.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecAddChild"></a><h3>xmlSecAddChild ()</h3>
+<a name="xmlSecAddChild"></a><h3>xmlSecAddChild ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecAddChild (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> parent</code></em>,
                 <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *name</code></em>,
@@ -941,17 +857,17 @@ xmlSecAddChild (<em class="parameter"><code><font><span class="type">xmlNodePtr<
 <tr>
 <td class="parameter_name"><p>parent</p></td>
 <td class="parameter_description"><p>the pointer to an XML node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>name</p></td>
 <td class="parameter_description"><p>the new node name.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>ns</p></td>
 <td class="parameter_description"><p>the new node namespace.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -963,7 +879,7 @@ xmlSecAddChild (<em class="parameter"><code><font><span class="type">xmlNodePtr<
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecEnsureEmptyChild"></a><h3>xmlSecEnsureEmptyChild ()</h3>
+<a name="xmlSecEnsureEmptyChild"></a><h3>xmlSecEnsureEmptyChild ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecEnsureEmptyChild (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> parent</code></em>,
                         <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *name</code></em>,
@@ -984,17 +900,17 @@ is added.</p>
 <tr>
 <td class="parameter_name"><p>parent</p></td>
 <td class="parameter_description"><p>the pointer to XML node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>name</p></td>
 <td class="parameter_description"><p>the name.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>ns</p></td>
 <td class="parameter_description"><p>the namespace href (may be NULL).</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1006,7 +922,7 @@ is added.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecAddChildNode"></a><h3>xmlSecAddChildNode ()</h3>
+<a name="xmlSecAddChildNode"></a><h3>xmlSecAddChildNode ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecAddChildNode (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> parent</code></em>,
                     <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> child</code></em>);</pre>
@@ -1025,12 +941,12 @@ xmlSecAddChildNode (<em class="parameter"><code><font><span class="type">xmlNode
 <tr>
 <td class="parameter_name"><p>parent</p></td>
 <td class="parameter_description"><p>the pointer to an XML node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>child</p></td>
 <td class="parameter_description"><p>the new node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1042,7 +958,7 @@ xmlSecAddChildNode (<em class="parameter"><code><font><span class="type">xmlNode
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecAddNextSibling"></a><h3>xmlSecAddNextSibling ()</h3>
+<a name="xmlSecAddNextSibling"></a><h3>xmlSecAddNextSibling ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecAddNextSibling (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
                       <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *name</code></em>,
@@ -1063,17 +979,17 @@ xmlSecAddNextSibling (<em class="parameter"><code><font><span class="type">xmlNo
 <tr>
 <td class="parameter_name"><p>node</p></td>
 <td class="parameter_description"><p>the pointer to an XML node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>name</p></td>
 <td class="parameter_description"><p>the new node name.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>ns</p></td>
 <td class="parameter_description"><p>the new node namespace.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1085,7 +1001,7 @@ xmlSecAddNextSibling (<em class="parameter"><code><font><span class="type">xmlNo
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecAddPrevSibling"></a><h3>xmlSecAddPrevSibling ()</h3>
+<a name="xmlSecAddPrevSibling"></a><h3>xmlSecAddPrevSibling ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecAddPrevSibling (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
                       <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *name</code></em>,
@@ -1106,17 +1022,17 @@ xmlSecAddPrevSibling (<em class="parameter"><code><font><span class="type">xmlNo
 <tr>
 <td class="parameter_name"><p>node</p></td>
 <td class="parameter_description"><p>the pointer to an XML node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>name</p></td>
 <td class="parameter_description"><p>the new node name.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>ns</p></td>
 <td class="parameter_description"><p>the new node namespace.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1128,7 +1044,7 @@ xmlSecAddPrevSibling (<em class="parameter"><code><font><span class="type">xmlNo
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecReplaceNode"></a><h3>xmlSecReplaceNode ()</h3>
+<a name="xmlSecReplaceNode"></a><h3>xmlSecReplaceNode ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecReplaceNode (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
                    <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> newNode</code></em>);</pre>
@@ -1147,12 +1063,12 @@ xmlSecReplaceNode (<em class="parameter"><code><font><span class="type">xmlNodeP
 <tr>
 <td class="parameter_name"><p>node</p></td>
 <td class="parameter_description"><p>the current node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>newNode</p></td>
 <td class="parameter_description"><p>the new node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1164,7 +1080,7 @@ xmlSecReplaceNode (<em class="parameter"><code><font><span class="type">xmlNodeP
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecReplaceNodeAndReturn"></a><h3>xmlSecReplaceNodeAndReturn ()</h3>
+<a name="xmlSecReplaceNodeAndReturn"></a><h3>xmlSecReplaceNodeAndReturn ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecReplaceNodeAndReturn (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
                             <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> newNode</code></em>,
@@ -1184,17 +1100,17 @@ xmlSecReplaceNodeAndReturn (<em class="parameter"><code><font><span class="type"
 <tr>
 <td class="parameter_name"><p>node</p></td>
 <td class="parameter_description"><p>the current node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>newNode</p></td>
 <td class="parameter_description"><p>the new node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>replaced</p></td>
 <td class="parameter_description"><p>the replaced node, or release it if NULL is given</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1206,7 +1122,7 @@ xmlSecReplaceNodeAndReturn (<em class="parameter"><code><font><span class="type"
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecReplaceContent"></a><h3>xmlSecReplaceContent ()</h3>
+<a name="xmlSecReplaceContent"></a><h3>xmlSecReplaceContent ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecReplaceContent (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
                       <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> newNode</code></em>);</pre>
@@ -1225,12 +1141,12 @@ xmlSecReplaceContent (<em class="parameter"><code><font><span class="type">xmlNo
 <tr>
 <td class="parameter_name"><p>node</p></td>
 <td class="parameter_description"><p>the current node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>newNode</p></td>
 <td class="parameter_description"><p>the new node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1242,7 +1158,7 @@ xmlSecReplaceContent (<em class="parameter"><code><font><span class="type">xmlNo
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecReplaceContentAndReturn"></a><h3>xmlSecReplaceContentAndReturn ()</h3>
+<a name="xmlSecReplaceContentAndReturn"></a><h3>xmlSecReplaceContentAndReturn ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecReplaceContentAndReturn (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
                                <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> newNode</code></em>,
@@ -1262,17 +1178,17 @@ xmlSecReplaceContentAndReturn (<em class="parameter"><code><font><span class="ty
 <tr>
 <td class="parameter_name"><p>node</p></td>
 <td class="parameter_description"><p>the current node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>newNode</p></td>
 <td class="parameter_description"><p>the new node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>replaced</p></td>
 <td class="parameter_description"><p>the replaced nodes, or release them if NULL is given</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1284,7 +1200,7 @@ xmlSecReplaceContentAndReturn (<em class="parameter"><code><font><span class="ty
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecReplaceNodeBuffer"></a><h3>xmlSecReplaceNodeBuffer ()</h3>
+<a name="xmlSecReplaceNodeBuffer"></a><h3>xmlSecReplaceNodeBuffer ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecReplaceNodeBuffer (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
                          <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *buffer</code></em>,
@@ -1304,17 +1220,17 @@ xmlSecReplaceNodeBuffer (<em class="parameter"><code><font><span class="type">xm
 <tr>
 <td class="parameter_name"><p>node</p></td>
 <td class="parameter_description"><p>the current node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>buffer</p></td>
 <td class="parameter_description"><p>the XML data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>size</p></td>
 <td class="parameter_description"><p>the XML data size.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1326,7 +1242,7 @@ xmlSecReplaceNodeBuffer (<em class="parameter"><code><font><span class="type">xm
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecReplaceNodeBufferAndReturn"></a><h3>xmlSecReplaceNodeBufferAndReturn ()</h3>
+<a name="xmlSecReplaceNodeBufferAndReturn"></a><h3>xmlSecReplaceNodeBufferAndReturn ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecReplaceNodeBufferAndReturn (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
                                   <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *buffer</code></em>,
@@ -1347,22 +1263,22 @@ xmlSecReplaceNodeBufferAndReturn (<em class="parameter"><code><font><span class=
 <tr>
 <td class="parameter_name"><p>node</p></td>
 <td class="parameter_description"><p>the current node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>buffer</p></td>
 <td class="parameter_description"><p>the XML data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>size</p></td>
 <td class="parameter_description"><p>the XML data size.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>replaced</p></td>
 <td class="parameter_description"><p>the replaced nodes, or release them if NULL is given</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1374,7 +1290,7 @@ xmlSecReplaceNodeBufferAndReturn (<em class="parameter"><code><font><span class=
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecNodeEncodeAndSetContent"></a><h3>xmlSecNodeEncodeAndSetContent ()</h3>
+<a name="xmlSecNodeEncodeAndSetContent"></a><h3>xmlSecNodeEncodeAndSetContent ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecNodeEncodeAndSetContent (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
                                <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *buffer</code></em>);</pre>
@@ -1393,12 +1309,12 @@ as the node content.</p>
 <tr>
 <td class="parameter_name"><p>node</p></td>
 <td class="parameter_description"><p>the pointer to an XML node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>buffer</p></td>
 <td class="parameter_description"><p>the pointer to the node content.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1410,7 +1326,7 @@ as the node content.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecAddIDs"></a><h3>xmlSecAddIDs ()</h3>
+<a name="xmlSecAddIDs"></a><h3>xmlSecAddIDs ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
 xmlSecAddIDs (<em class="parameter"><code><font><span class="type">xmlDocPtr</span></font> doc</code></em>,
               <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> cur</code></em>,
@@ -1432,17 +1348,17 @@ from the <em class="parameter"><code>ids</code></em>
 <tr>
 <td class="parameter_name"><p>doc</p></td>
 <td class="parameter_description"><p>the pointer to an XML document.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>cur</p></td>
 <td class="parameter_description"><p>the pointer to an XML node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>ids</p></td>
 <td class="parameter_description"><p>the pointer to a NULL terminated list of ID attributes.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1450,7 +1366,7 @@ from the <em class="parameter"><code>ids</code></em>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecCreateTree"></a><h3>xmlSecCreateTree ()</h3>
+<a name="xmlSecCreateTree"></a><h3>xmlSecCreateTree ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlDocPtr</span></font>
 xmlSecCreateTree (<em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *rootNodeName</code></em>,
                   <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *rootNodeNs</code></em>);</pre>
@@ -1468,12 +1384,12 @@ xmlSecCreateTree (<em class="parameter"><code>const <font><span class="type">xml
 <tr>
 <td class="parameter_name"><p>rootNodeName</p></td>
 <td class="parameter_description"><p>the root node name.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>rootNodeNs</p></td>
-<td class="parameter_description"><p>the root node namespace (otpional).</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_description"><p>the root node namespace (optional).</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1485,7 +1401,7 @@ xmlSecCreateTree (<em class="parameter"><code>const <font><span class="type">xml
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecIsEmptyNode"></a><h3>xmlSecIsEmptyNode ()</h3>
+<a name="xmlSecIsEmptyNode"></a><h3>xmlSecIsEmptyNode ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecIsEmptyNode (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>);</pre>
 <p>Checks whether the <em class="parameter"><code>node</code></em>
@@ -1501,7 +1417,7 @@ xmlSecIsEmptyNode (<em class="parameter"><code><font><span class="type">xmlNodeP
 <tbody><tr>
 <td class="parameter_name"><p>node</p></td>
 <td class="parameter_description"><p>the node to check</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -1513,7 +1429,7 @@ is empty, 0 otherwise or a negative value if an error occurs.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecIsEmptyString"></a><h3>xmlSecIsEmptyString ()</h3>
+<a name="xmlSecIsEmptyString"></a><h3>xmlSecIsEmptyString ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecIsEmptyString (<em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *str</code></em>);</pre>
 <p>Checks whether the <em class="parameter"><code>str</code></em>
@@ -1529,7 +1445,7 @@ xmlSecIsEmptyString (<em class="parameter"><code>const <font><span class="type">
 <tbody><tr>
 <td class="parameter_name"><p>str</p></td>
 <td class="parameter_description"><p>the string to check</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -1541,8 +1457,8 @@ is empty, 0 otherwise or a negative value if an error occurs.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecGetQName"></a><h3>xmlSecGetQName ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">xmlChar</span></font> *
+<a name="xmlSecGetQName"></a><h3>xmlSecGetQName ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlChar</span></font> *
 xmlSecGetQName (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
                 <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *href</code></em>,
                 <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *local</code></em>);</pre>
@@ -1563,17 +1479,17 @@ Caller is responsible for freeing returned string with xmlFree.</p>
 <tr>
 <td class="parameter_name"><p>node</p></td>
 <td class="parameter_description"><p>the context node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>href</p></td>
 <td class="parameter_description"><p>the QName href (can be NULL).</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>local</p></td>
 <td class="parameter_description"><p>the QName local part.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1585,7 +1501,7 @@ Caller is responsible for freeing returned string with xmlFree.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecPrintXmlString"></a><h3>xmlSecPrintXmlString ()</h3>
+<a name="xmlSecPrintXmlString"></a><h3>xmlSecPrintXmlString ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecPrintXmlString (<em class="parameter"><code><font><span class="type">FILE</span></font> *fd</code></em>,
                       <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *str</code></em>);</pre>
@@ -1604,12 +1520,12 @@ xmlSecPrintXmlString (<em class="parameter"><code><font><span class="type">FILE<
 <tr>
 <td class="parameter_name"><p>fd</p></td>
 <td class="parameter_description"><p>the file descriptor to write the XML string to</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>str</p></td>
 <td class="parameter_description"><p>the string</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1636,7 +1552,7 @@ xmlSecPrintXmlString (<em class="parameter"><code><font><span class="type">FILE<
 <tbody><tr>
 <td class="parameter_name"><p>c</p></td>
 <td class="parameter_description"><p>the character.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -1658,14 +1574,14 @@ xmlSecPrintXmlString (<em class="parameter"><code><font><span class="type">FILE<
 <tbody><tr>
 <td class="parameter_name"><p>c</p></td>
 <td class="parameter_description"><p>the character,</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecQName2IntegerGetInfo"></a><h3>xmlSecQName2IntegerGetInfo ()</h3>
+<a name="xmlSecQName2IntegerGetInfo"></a><h3>xmlSecQName2IntegerGetInfo ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecQName2IntegerInfoConstPtr</span></font>
 xmlSecQName2IntegerGetInfo (<em class="parameter"><code><font><span class="type">xmlSecQName2IntegerInfoConstPtr</span></font> info</code></em>,
                             <em class="parameter"><code><font><span class="type">int</span></font> intValue</code></em>);</pre>
@@ -1683,12 +1599,12 @@ xmlSecQName2IntegerGetInfo (<em class="parameter"><code><font><span class="type"
 <tr>
 <td class="parameter_name"><p>info</p></td>
 <td class="parameter_description"><p>the qname&lt;-&gt;integer mapping information.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>intValue</p></td>
 <td class="parameter_description"><p>the integer value.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1702,7 +1618,7 @@ is not found.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecQName2IntegerGetInteger"></a><h3>xmlSecQName2IntegerGetInteger ()</h3>
+<a name="xmlSecQName2IntegerGetInteger"></a><h3>xmlSecQName2IntegerGetInteger ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecQName2IntegerGetInteger (<em class="parameter"><code><font><span class="type">xmlSecQName2IntegerInfoConstPtr</span></font> info</code></em>,
                                <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *qnameHref</code></em>,
@@ -1722,22 +1638,22 @@ xmlSecQName2IntegerGetInteger (<em class="parameter"><code><font><span class="ty
 <tr>
 <td class="parameter_name"><p>info</p></td>
 <td class="parameter_description"><p>the qname&lt;-&gt;integer mapping information.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>qnameHref</p></td>
 <td class="parameter_description"><p>the qname href value.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>qnameLocalPart</p></td>
 <td class="parameter_description"><p>the qname local part value.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>intValue</p></td>
 <td class="parameter_description"><p>the pointer to result integer value.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1749,7 +1665,7 @@ xmlSecQName2IntegerGetInteger (<em class="parameter"><code><font><span class="ty
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecQName2IntegerGetIntegerFromString"></a><h3>xmlSecQName2IntegerGetIntegerFromString ()</h3>
+<a name="xmlSecQName2IntegerGetIntegerFromString"></a><h3>xmlSecQName2IntegerGetIntegerFromString ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecQName2IntegerGetIntegerFromString
                                (<em class="parameter"><code><font><span class="type">xmlSecQName2IntegerInfoConstPtr</span></font> info</code></em>,
@@ -1771,22 +1687,22 @@ xmlSecQName2IntegerGetIntegerFromString
 <tr>
 <td class="parameter_name"><p>info</p></td>
 <td class="parameter_description"><p>the qname&lt;-&gt;integer mapping information.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>node</p></td>
 <td class="parameter_description"><p>the pointer to node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>qname</p></td>
 <td class="parameter_description"><p>the qname string.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>intValue</p></td>
 <td class="parameter_description"><p>the pointer to result integer value.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1798,8 +1714,8 @@ xmlSecQName2IntegerGetIntegerFromString
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecQName2IntegerGetStringFromInteger"></a><h3>xmlSecQName2IntegerGetStringFromInteger ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">xmlChar</span></font> *
+<a name="xmlSecQName2IntegerGetStringFromInteger"></a><h3>xmlSecQName2IntegerGetStringFromInteger ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlChar</span></font> *
 xmlSecQName2IntegerGetStringFromInteger
                                (<em class="parameter"><code><font><span class="type">xmlSecQName2IntegerInfoConstPtr</span></font> info</code></em>,
                                 <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
@@ -1821,17 +1737,17 @@ is responsible for freeing returned string with <em class="parameter"><code>xmlF
 <tr>
 <td class="parameter_name"><p>info</p></td>
 <td class="parameter_description"><p>the qname&lt;-&gt;integer mapping information.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>node</p></td>
 <td class="parameter_description"><p>the pointer to node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>intValue</p></td>
 <td class="parameter_description"><p>the integer value.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1843,7 +1759,7 @@ is responsible for freeing returned string with <em class="parameter"><code>xmlF
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecQName2IntegerNodeRead"></a><h3>xmlSecQName2IntegerNodeRead ()</h3>
+<a name="xmlSecQName2IntegerNodeRead"></a><h3>xmlSecQName2IntegerNodeRead ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecQName2IntegerNodeRead (<em class="parameter"><code><font><span class="type">xmlSecQName2IntegerInfoConstPtr</span></font> info</code></em>,
                              <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
@@ -1864,17 +1780,17 @@ from <em class="parameter"><code>info</code></em>
 <tr>
 <td class="parameter_name"><p>info</p></td>
 <td class="parameter_description"><p>the qname&lt;-&gt;integer mapping information.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>node</p></td>
 <td class="parameter_description"><p>the pointer to node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>intValue</p></td>
 <td class="parameter_description"><p>the pointer to result integer value.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1886,7 +1802,7 @@ from <em class="parameter"><code>info</code></em>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecQName2IntegerNodeWrite"></a><h3>xmlSecQName2IntegerNodeWrite ()</h3>
+<a name="xmlSecQName2IntegerNodeWrite"></a><h3>xmlSecQName2IntegerNodeWrite ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecQName2IntegerNodeWrite (<em class="parameter"><code><font><span class="type">xmlSecQName2IntegerInfoConstPtr</span></font> info</code></em>,
                               <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
@@ -1908,27 +1824,27 @@ xmlSecQName2IntegerNodeWrite (<em class="parameter"><code><font><span class="typ
 <tr>
 <td class="parameter_name"><p>info</p></td>
 <td class="parameter_description"><p>the qname&lt;-&gt;integer mapping information.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>node</p></td>
 <td class="parameter_description"><p>the parent node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>nodeName</p></td>
 <td class="parameter_description"><p>the child node name.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>nodeNs</p></td>
 <td class="parameter_description"><p>the child node namespace.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>intValue</p></td>
 <td class="parameter_description"><p>the integer value.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1940,7 +1856,7 @@ xmlSecQName2IntegerNodeWrite (<em class="parameter"><code><font><span class="typ
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecQName2IntegerAttributeRead"></a><h3>xmlSecQName2IntegerAttributeRead ()</h3>
+<a name="xmlSecQName2IntegerAttributeRead"></a><h3>xmlSecQName2IntegerAttributeRead ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecQName2IntegerAttributeRead (<em class="parameter"><code><font><span class="type">xmlSecQName2IntegerInfoConstPtr</span></font> info</code></em>,
                                   <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
@@ -1963,22 +1879,22 @@ according to <em class="parameter"><code>info</code></em>
 <tr>
 <td class="parameter_name"><p>info</p></td>
 <td class="parameter_description"><p>the qname&lt;-&gt;integer mapping information.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>node</p></td>
 <td class="parameter_description"><p>the element node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>attrName</p></td>
 <td class="parameter_description"><p>the attribute name.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>intValue</p></td>
 <td class="parameter_description"><p>the pointer to result integer value.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1990,7 +1906,7 @@ according to <em class="parameter"><code>info</code></em>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecQName2IntegerAttributeWrite"></a><h3>xmlSecQName2IntegerAttributeWrite ()</h3>
+<a name="xmlSecQName2IntegerAttributeWrite"></a><h3>xmlSecQName2IntegerAttributeWrite ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecQName2IntegerAttributeWrite (<em class="parameter"><code><font><span class="type">xmlSecQName2IntegerInfoConstPtr</span></font> info</code></em>,
                                    <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
@@ -2013,22 +1929,22 @@ attribute <em class="parameter"><code>attrName</code></em>
 <tr>
 <td class="parameter_name"><p>info</p></td>
 <td class="parameter_description"><p>the qname&lt;-&gt;integer mapping information.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>node</p></td>
 <td class="parameter_description"><p>the parent node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>attrName</p></td>
 <td class="parameter_description"><p>the name of attribute.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>intValue</p></td>
 <td class="parameter_description"><p>the integer value.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2040,7 +1956,7 @@ attribute <em class="parameter"><code>attrName</code></em>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecQName2IntegerDebugDump"></a><h3>xmlSecQName2IntegerDebugDump ()</h3>
+<a name="xmlSecQName2IntegerDebugDump"></a><h3>xmlSecQName2IntegerDebugDump ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
 xmlSecQName2IntegerDebugDump (<em class="parameter"><code><font><span class="type">xmlSecQName2IntegerInfoConstPtr</span></font> info</code></em>,
                               <em class="parameter"><code><font><span class="type">int</span></font> intValue</code></em>,
@@ -2061,22 +1977,22 @@ xmlSecQName2IntegerDebugDump (<em class="parameter"><code><font><span class="typ
 <tr>
 <td class="parameter_name"><p>info</p></td>
 <td class="parameter_description"><p>the qname&lt;-&gt;integer mapping information.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>intValue</p></td>
 <td class="parameter_description"><p>the integer value.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>name</p></td>
 <td class="parameter_description"><p>the value name to print.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>output</p></td>
 <td class="parameter_description"><p>the pointer to output FILE.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2084,7 +2000,7 @@ xmlSecQName2IntegerDebugDump (<em class="parameter"><code><font><span class="typ
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecQName2IntegerDebugXmlDump"></a><h3>xmlSecQName2IntegerDebugXmlDump ()</h3>
+<a name="xmlSecQName2IntegerDebugXmlDump"></a><h3>xmlSecQName2IntegerDebugXmlDump ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
 xmlSecQName2IntegerDebugXmlDump (<em class="parameter"><code><font><span class="type">xmlSecQName2IntegerInfoConstPtr</span></font> info</code></em>,
                                  <em class="parameter"><code><font><span class="type">int</span></font> intValue</code></em>,
@@ -2105,22 +2021,22 @@ xmlSecQName2IntegerDebugXmlDump (<em class="parameter"><code><font><span class="
 <tr>
 <td class="parameter_name"><p>info</p></td>
 <td class="parameter_description"><p>the qname&lt;-&gt;integer mapping information.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>intValue</p></td>
 <td class="parameter_description"><p>the integer value.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>name</p></td>
 <td class="parameter_description"><p>the value name to print.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>output</p></td>
 <td class="parameter_description"><p>the pointer to output FILE.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2128,7 +2044,7 @@ xmlSecQName2IntegerDebugXmlDump (<em class="parameter"><code><font><span class="
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecQName2BitMaskGetInfo"></a><h3>xmlSecQName2BitMaskGetInfo ()</h3>
+<a name="xmlSecQName2BitMaskGetInfo"></a><h3>xmlSecQName2BitMaskGetInfo ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecQName2BitMaskInfoConstPtr</span></font>
 xmlSecQName2BitMaskGetInfo (<em class="parameter"><code><font><span class="type">xmlSecQName2BitMaskInfoConstPtr</span></font> info</code></em>,
                             <em class="parameter"><code><a class="link" href="xmlsec-xmltree.html#xmlSecBitMask" title="xmlSecBitMask"><span class="type">xmlSecBitMask</span></a> mask</code></em>);</pre>
@@ -2146,12 +2062,12 @@ xmlSecQName2BitMaskGetInfo (<em class="parameter"><code><font><span class="type"
 <tr>
 <td class="parameter_name"><p>info</p></td>
 <td class="parameter_description"><p>the qname&lt;-&gt;bit mask mapping information.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>mask</p></td>
 <td class="parameter_description"><p>the bit mask.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2164,7 +2080,7 @@ or NULL if mask is unknown.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecQName2BitMaskGetBitMask"></a><h3>xmlSecQName2BitMaskGetBitMask ()</h3>
+<a name="xmlSecQName2BitMaskGetBitMask"></a><h3>xmlSecQName2BitMaskGetBitMask ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecQName2BitMaskGetBitMask (<em class="parameter"><code><font><span class="type">xmlSecQName2BitMaskInfoConstPtr</span></font> info</code></em>,
                                <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *qnameLocalPart</code></em>,
@@ -2185,22 +2101,22 @@ xmlSecQName2BitMaskGetBitMask (<em class="parameter"><code><font><span class="ty
 <tr>
 <td class="parameter_name"><p>info</p></td>
 <td class="parameter_description"><p>the qname&lt;-&gt;bit mask mapping information.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>qnameHref</p></td>
 <td class="parameter_description"><p>the qname Href value.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>qnameLocalPart</p></td>
 <td class="parameter_description"><p>the qname LocalPart value.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>mask</p></td>
 <td class="parameter_description"><p>the pointer to result mask.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2212,7 +2128,7 @@ xmlSecQName2BitMaskGetBitMask (<em class="parameter"><code><font><span class="ty
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecQName2BitMaskNodesRead"></a><h3>xmlSecQName2BitMaskNodesRead ()</h3>
+<a name="xmlSecQName2BitMaskNodesRead"></a><h3>xmlSecQName2BitMaskNodesRead ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecQName2BitMaskNodesRead (<em class="parameter"><code><font><span class="type">xmlSecQName2BitMaskInfoConstPtr</span></font> info</code></em>,
                               <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> *node</code></em>,
@@ -2241,33 +2157,33 @@ after all the &lt;<em class="parameter"><code>nodeNs</code></em>
 <tr>
 <td class="parameter_name"><p>info</p></td>
 <td class="parameter_description"><p>the qname&lt;-&gt;bit mask mapping information.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>node</p></td>
 <td class="parameter_description"><p>the start.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>nodeName</p></td>
 <td class="parameter_description"><p>the mask nodes name.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>nodeNs</p></td>
 <td class="parameter_description"><p>the mask nodes namespace.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>stopOnUnknown</p></td>
 <td class="parameter_description"><p>if this flag is set then function exits if unknown
 value was found.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>mask</p></td>
 <td class="parameter_description"><p>the pointer to result mask.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2279,7 +2195,7 @@ value was found.</p></td>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecQName2BitMaskGetBitMaskFromString"></a><h3>xmlSecQName2BitMaskGetBitMaskFromString ()</h3>
+<a name="xmlSecQName2BitMaskGetBitMaskFromString"></a><h3>xmlSecQName2BitMaskGetBitMaskFromString ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecQName2BitMaskGetBitMaskFromString
                                (<em class="parameter"><code><font><span class="type">xmlSecQName2BitMaskInfoConstPtr</span></font> info</code></em>,
@@ -2301,22 +2217,22 @@ xmlSecQName2BitMaskGetBitMaskFromString
 <tr>
 <td class="parameter_name"><p>info</p></td>
 <td class="parameter_description"><p>the qname&lt;-&gt;integer mapping information.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>node</p></td>
 <td class="parameter_description"><p>the pointer to node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>qname</p></td>
 <td class="parameter_description"><p>the qname string.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>mask</p></td>
 <td class="parameter_description"><p>the pointer to result msk value.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2328,8 +2244,8 @@ xmlSecQName2BitMaskGetBitMaskFromString
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecQName2BitMaskGetStringFromBitMask"></a><h3>xmlSecQName2BitMaskGetStringFromBitMask ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">xmlChar</span></font> *
+<a name="xmlSecQName2BitMaskGetStringFromBitMask"></a><h3>xmlSecQName2BitMaskGetStringFromBitMask ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlChar</span></font> *
 xmlSecQName2BitMaskGetStringFromBitMask
                                (<em class="parameter"><code><font><span class="type">xmlSecQName2BitMaskInfoConstPtr</span></font> info</code></em>,
                                 <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
@@ -2351,17 +2267,17 @@ is responsible for freeing returned string with <em class="parameter"><code>xmlF
 <tr>
 <td class="parameter_name"><p>info</p></td>
 <td class="parameter_description"><p>the qname&lt;-&gt;integer mapping information.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>node</p></td>
 <td class="parameter_description"><p>the pointer to node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>mask</p></td>
 <td class="parameter_description"><p>the mask.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2373,7 +2289,7 @@ is responsible for freeing returned string with <em class="parameter"><code>xmlF
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecQName2BitMaskNodesWrite"></a><h3>xmlSecQName2BitMaskNodesWrite ()</h3>
+<a name="xmlSecQName2BitMaskNodesWrite"></a><h3>xmlSecQName2BitMaskNodesWrite ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecQName2BitMaskNodesWrite (<em class="parameter"><code><font><span class="type">xmlSecQName2BitMaskInfoConstPtr</span></font> info</code></em>,
                                <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
@@ -2397,27 +2313,27 @@ xmlSecQName2BitMaskNodesWrite (<em class="parameter"><code><font><span class="ty
 <tr>
 <td class="parameter_name"><p>info</p></td>
 <td class="parameter_description"><p>the qname&lt;-&gt;bit mask mapping information.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>node</p></td>
 <td class="parameter_description"><p>the parent element for mask nodes.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>nodeName</p></td>
 <td class="parameter_description"><p>the mask nodes name.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>nodeNs</p></td>
 <td class="parameter_description"><p>the mask nodes namespace.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>mask</p></td>
 <td class="parameter_description"><p>the bit mask.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2429,7 +2345,7 @@ xmlSecQName2BitMaskNodesWrite (<em class="parameter"><code><font><span class="ty
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecQName2BitMaskDebugDump"></a><h3>xmlSecQName2BitMaskDebugDump ()</h3>
+<a name="xmlSecQName2BitMaskDebugDump"></a><h3>xmlSecQName2BitMaskDebugDump ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
 xmlSecQName2BitMaskDebugDump (<em class="parameter"><code><font><span class="type">xmlSecQName2BitMaskInfoConstPtr</span></font> info</code></em>,
                               <em class="parameter"><code><a class="link" href="xmlsec-xmltree.html#xmlSecBitMask" title="xmlSecBitMask"><span class="type">xmlSecBitMask</span></a> mask</code></em>,
@@ -2450,22 +2366,22 @@ xmlSecQName2BitMaskDebugDump (<em class="parameter"><code><font><span class="typ
 <tr>
 <td class="parameter_name"><p>info</p></td>
 <td class="parameter_description"><p>the qname&lt;-&gt;bit mask mapping information.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>mask</p></td>
 <td class="parameter_description"><p>the bit mask.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>name</p></td>
 <td class="parameter_description"><p>the value name to print.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>output</p></td>
 <td class="parameter_description"><p>the pointer to output FILE.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2473,7 +2389,7 @@ xmlSecQName2BitMaskDebugDump (<em class="parameter"><code><font><span class="typ
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecQName2BitMaskDebugXmlDump"></a><h3>xmlSecQName2BitMaskDebugXmlDump ()</h3>
+<a name="xmlSecQName2BitMaskDebugXmlDump"></a><h3>xmlSecQName2BitMaskDebugXmlDump ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
 xmlSecQName2BitMaskDebugXmlDump (<em class="parameter"><code><font><span class="type">xmlSecQName2BitMaskInfoConstPtr</span></font> info</code></em>,
                                  <em class="parameter"><code><a class="link" href="xmlsec-xmltree.html#xmlSecBitMask" title="xmlSecBitMask"><span class="type">xmlSecBitMask</span></a> mask</code></em>,
@@ -2494,22 +2410,22 @@ xmlSecQName2BitMaskDebugXmlDump (<em class="parameter"><code><font><span class="
 <tr>
 <td class="parameter_name"><p>info</p></td>
 <td class="parameter_description"><p>the qname&lt;-&gt;bit mask mapping information.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>mask</p></td>
 <td class="parameter_description"><p>the bit mask.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>name</p></td>
 <td class="parameter_description"><p>the value name to print.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>output</p></td>
 <td class="parameter_description"><p>the pointer to output FILE.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2517,7 +2433,7 @@ xmlSecQName2BitMaskDebugXmlDump (<em class="parameter"><code><font><span class="
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecWin32ConvertLocaleToUnicode"></a><h3>xmlSecWin32ConvertLocaleToUnicode ()</h3>
+<a name="xmlSecWin32ConvertLocaleToUnicode"></a><h3>xmlSecWin32ConvertLocaleToUnicode ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">LPWSTR</span></font>
 xmlSecWin32ConvertLocaleToUnicode (<em class="parameter"><code>const <font><span class="type">char</span></font> *str</code></em>);</pre>
 <p>Converts input string from current system locale to Unicode.</p>
@@ -2532,7 +2448,7 @@ xmlSecWin32ConvertLocaleToUnicode (<em class="parameter"><code>const <font><span
 <tbody><tr>
 <td class="parameter_name"><p>str</p></td>
 <td class="parameter_description"><p>the string to convert.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -2543,7 +2459,7 @@ xmlSecWin32ConvertLocaleToUnicode (<em class="parameter"><code>const <font><span
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecWin32ConvertUtf8ToUnicode"></a><h3>xmlSecWin32ConvertUtf8ToUnicode ()</h3>
+<a name="xmlSecWin32ConvertUtf8ToUnicode"></a><h3>xmlSecWin32ConvertUtf8ToUnicode ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">LPWSTR</span></font>
 xmlSecWin32ConvertUtf8ToUnicode (<em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *str</code></em>);</pre>
 <p>Converts input string from UTF8 to Unicode.</p>
@@ -2558,7 +2474,7 @@ xmlSecWin32ConvertUtf8ToUnicode (<em class="parameter"><code>const <font><span c
 <tbody><tr>
 <td class="parameter_name"><p>str</p></td>
 <td class="parameter_description"><p>the string to convert.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -2569,8 +2485,8 @@ xmlSecWin32ConvertUtf8ToUnicode (<em class="parameter"><code>const <font><span c
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecWin32ConvertUnicodeToUtf8"></a><h3>xmlSecWin32ConvertUnicodeToUtf8 ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">xmlChar</span></font> *
+<a name="xmlSecWin32ConvertUnicodeToUtf8"></a><h3>xmlSecWin32ConvertUnicodeToUtf8 ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlChar</span></font> *
 xmlSecWin32ConvertUnicodeToUtf8 (<em class="parameter"><code><font><span class="type">LPCWSTR</span></font> str</code></em>);</pre>
 <p>Converts input string from Unicode to UTF8.</p>
 <div class="refsect3">
@@ -2584,7 +2500,7 @@ xmlSecWin32ConvertUnicodeToUtf8 (<em class="parameter"><code><font><span class="
 <tbody><tr>
 <td class="parameter_name"><p>str</p></td>
 <td class="parameter_description"><p>the string to convert.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -2595,8 +2511,8 @@ xmlSecWin32ConvertUnicodeToUtf8 (<em class="parameter"><code><font><span class="
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecWin32ConvertLocaleToUtf8"></a><h3>xmlSecWin32ConvertLocaleToUtf8 ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">xmlChar</span></font> *
+<a name="xmlSecWin32ConvertLocaleToUtf8"></a><h3>xmlSecWin32ConvertLocaleToUtf8 ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlChar</span></font> *
 xmlSecWin32ConvertLocaleToUtf8 (<em class="parameter"><code>const <font><span class="type">char</span></font> *str</code></em>);</pre>
 <p>Converts input string from locale to UTF8.</p>
 <div class="refsect3">
@@ -2610,7 +2526,7 @@ xmlSecWin32ConvertLocaleToUtf8 (<em class="parameter"><code>const <font><span cl
 <tbody><tr>
 <td class="parameter_name"><p>str</p></td>
 <td class="parameter_description"><p>the string to convert.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -2621,8 +2537,8 @@ xmlSecWin32ConvertLocaleToUtf8 (<em class="parameter"><code>const <font><span cl
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecWin32ConvertUtf8ToLocale"></a><h3>xmlSecWin32ConvertUtf8ToLocale ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">char</span></font> *
+<a name="xmlSecWin32ConvertUtf8ToLocale"></a><h3>xmlSecWin32ConvertUtf8ToLocale ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">char</span></font> *
 xmlSecWin32ConvertUtf8ToLocale (<em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *str</code></em>);</pre>
 <p>Converts input string from UTF8 to locale.</p>
 <div class="refsect3">
@@ -2636,7 +2552,7 @@ xmlSecWin32ConvertUtf8ToLocale (<em class="parameter"><code>const <font><span cl
 <tbody><tr>
 <td class="parameter_name"><p>str</p></td>
 <td class="parameter_description"><p>the string to convert.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -2647,8 +2563,8 @@ xmlSecWin32ConvertUtf8ToLocale (<em class="parameter"><code>const <font><span cl
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecWin32ConvertTstrToUtf8"></a><h3>xmlSecWin32ConvertTstrToUtf8 ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">xmlChar</span></font> *
+<a name="xmlSecWin32ConvertTstrToUtf8"></a><h3>xmlSecWin32ConvertTstrToUtf8 ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlChar</span></font> *
 xmlSecWin32ConvertTstrToUtf8 (<em class="parameter"><code><font><span class="type">LPCTSTR</span></font> str</code></em>);</pre>
 <p>Converts input string from TSTR (locale or Unicode) to UTF8.</p>
 <div class="refsect3">
@@ -2662,7 +2578,7 @@ xmlSecWin32ConvertTstrToUtf8 (<em class="parameter"><code><font><span class="typ
 <tbody><tr>
 <td class="parameter_name"><p>str</p></td>
 <td class="parameter_description"><p>the string to convert.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -2673,7 +2589,7 @@ xmlSecWin32ConvertTstrToUtf8 (<em class="parameter"><code><font><span class="typ
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecWin32ConvertUtf8ToTstr"></a><h3>xmlSecWin32ConvertUtf8ToTstr ()</h3>
+<a name="xmlSecWin32ConvertUtf8ToTstr"></a><h3>xmlSecWin32ConvertUtf8ToTstr ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">LPTSTR</span></font>
 xmlSecWin32ConvertUtf8ToTstr (<em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *str</code></em>);</pre>
 <p>Converts input string from UTF8 to TSTR (locale or Unicode).</p>
@@ -2688,7 +2604,7 @@ xmlSecWin32ConvertUtf8ToTstr (<em class="parameter"><code>const <font><span clas
 <tbody><tr>
 <td class="parameter_name"><p>str</p></td>
 <td class="parameter_description"><p>the string to convert.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -2719,19 +2635,19 @@ xmlSecWin32ConvertUtf8ToTstr (<em class="parameter"><code>const <font><span clas
 </colgroup>
 <tbody>
 <tr>
-<td class="struct_member_name"><p>const <font><span class="type">xmlChar</span></font> *<em class="structfield"><code><a name="xmlSecQName2IntegerInfo.qnameHref"></a>qnameHref</code></em>;</p></td>
+<td class="struct_member_name"><p>const <font><span class="type">xmlChar</span></font> *<em class="structfield"><code><a name="xmlSecQName2IntegerInfo.qnameHref"></a>qnameHref</code></em>;</p></td>
 <td class="struct_member_description"><p>the QName href</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p>const <font><span class="type">xmlChar</span></font> *<em class="structfield"><code><a name="xmlSecQName2IntegerInfo.qnameLocalPart"></a>qnameLocalPart</code></em>;</p></td>
+<td class="struct_member_name"><p>const <font><span class="type">xmlChar</span></font> *<em class="structfield"><code><a name="xmlSecQName2IntegerInfo.qnameLocalPart"></a>qnameLocalPart</code></em>;</p></td>
 <td class="struct_member_description"><p>the QName local</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><font><span class="type">int</span></font> <em class="structfield"><code><a name="xmlSecQName2IntegerInfo.intValue"></a>intValue</code></em>;</p></td>
+<td class="struct_member_name"><p><font><span class="type">int</span></font> <em class="structfield"><code><a name="xmlSecQName2IntegerInfo.intValue"></a>intValue</code></em>;</p></td>
 <td class="struct_member_description"><p>the integer value</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2771,19 +2687,19 @@ xmlSecWin32ConvertUtf8ToTstr (<em class="parameter"><code>const <font><span clas
 </colgroup>
 <tbody>
 <tr>
-<td class="struct_member_name"><p>const <font><span class="type">xmlChar</span></font> *<em class="structfield"><code><a name="xmlSecQName2BitMaskInfo.qnameHref"></a>qnameHref</code></em>;</p></td>
+<td class="struct_member_name"><p>const <font><span class="type">xmlChar</span></font> *<em class="structfield"><code><a name="xmlSecQName2BitMaskInfo.qnameHref"></a>qnameHref</code></em>;</p></td>
 <td class="struct_member_description"><p>the QName href</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p>const <font><span class="type">xmlChar</span></font> *<em class="structfield"><code><a name="xmlSecQName2BitMaskInfo.qnameLocalPart"></a>qnameLocalPart</code></em>;</p></td>
+<td class="struct_member_name"><p>const <font><span class="type">xmlChar</span></font> *<em class="structfield"><code><a name="xmlSecQName2BitMaskInfo.qnameLocalPart"></a>qnameLocalPart</code></em>;</p></td>
 <td class="struct_member_description"><p>the QName local</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-xmltree.html#xmlSecBitMask" title="xmlSecBitMask"><span class="type">xmlSecBitMask</span></a> <em class="structfield"><code><a name="xmlSecQName2BitMaskInfo.mask"></a>mask</code></em>;</p></td>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-xmltree.html#xmlSecBitMask" title="xmlSecBitMask"><span class="type">xmlSecBitMask</span></a> <em class="structfield"><code><a name="xmlSecQName2BitMaskInfo.mask"></a>mask</code></em>;</p></td>
 <td class="struct_member_description"><p>the bitmask value</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2800,6 +2716,5 @@ xmlSecWin32ConvertUtf8ToTstr (<em class="parameter"><code>const <font><span clas
 </div>
 <div class="footer">
 <hr>Generated by GTK-Doc V1.27</div>
-</td></tr></table></td>
-</tr></table></body>
+</body>
 </html>

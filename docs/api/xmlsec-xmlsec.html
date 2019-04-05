@@ -1,6 +1,7 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>xmlsec: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
@@ -9,96 +10,11 @@
 <link rel="next" href="xmlsec-xmltree.html" title="xmltree">
 <meta name="generator" content="GTK-Doc V1.27 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
 </head>
-<body><table width="100%" valign="top"><tr valign="top">
-<td valign="top" align="left" width="210">
-<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="../index.html">Home</a></li>
-<li><a href="../download.html">Download</a></li>
-<li><a href="../news.html">News</a></li>
-<li><a href="../documentation.html">Documentation</a></li>
-<ul>
-<li><a href="../faq.html">FAQ</a></li>
-<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
-<li><a href="../api/xmlsec-reference.html">API reference</a></li>
-<li><a href="../api/xmlsec-examples.html">Examples</a></li>
-</ul>
-<li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<ul><li><a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a></li></ul>
-<li><a href="../xmlenc.html">XML Encryption</a></li>
-<li><a href="../c14n.html">XML Canonicalization</a></li>
-<li><a href="../bugs.html">Reporting Bugs</a></li>
-<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
-<li><a href="../related.html">Related</a></li>
-<li><a href="../authors.html">Authors</a></li>
-</ul>
-<table width="100%">
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
-</tr>
-<!--Links - start--><!--Links - end-->
-</table>
-</td>
-<td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts">
-<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
                   <a href="#xmlsec-xmlsec.description" class="shortcut">Description</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
@@ -111,7 +27,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="xmlsec-xmlsec.top_of_page"></a>xmlsec</span></h2>
-<p>xmlsec &#8212; Utility functions.</p>
+<p>xmlsec — Utility functions.</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -138,7 +54,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmlsec.html#xmlSecInit" title="xmlSecInit ()">xmlSecInit</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmlsec.html#xmlSecInit" title="xmlSecInit ()">xmlSecInit</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -146,14 +62,14 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmlsec.html#xmlSecShutdown" title="xmlSecShutdown ()">xmlSecShutdown</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmlsec.html#xmlSecShutdown" title="xmlSecShutdown ()">xmlSecShutdown</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
-<td class="function_type">const <font><span class="returnvalue">xmlChar</span></font> *
+<td class="function_type">const <font><span class="returnvalue">xmlChar</span></font> *
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmlsec.html#xmlSecGetDefaultCrypto" title="xmlSecGetDefaultCrypto ()">xmlSecGetDefaultCrypto</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmlsec.html#xmlSecGetDefaultCrypto" title="xmlSecGetDefaultCrypto ()">xmlSecGetDefaultCrypto</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -161,7 +77,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">void</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmlsec.html#xmlSecSetExternalEntityLoader" title="xmlSecSetExternalEntityLoader ()">xmlSecSetExternalEntityLoader</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmlsec.html#xmlSecSetExternalEntityLoader" title="xmlSecSetExternalEntityLoader ()">xmlSecSetExternalEntityLoader</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -177,7 +93,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-xmlsec.html#xmlSecCheckVersionExt" title="xmlSecCheckVersionExt ()">xmlSecCheckVersionExt</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-xmlsec.html#xmlSecCheckVersionExt" title="xmlSecCheckVersionExt ()">xmlSecCheckVersionExt</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 </tbody>
@@ -240,14 +156,14 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <tbody><tr>
 <td class="parameter_name"><p>val</p></td>
 <td class="parameter_description"><p>the value to cast</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecInit"></a><h3>xmlSecInit ()</h3>
+<a name="xmlSecInit"></a><h3>xmlSecInit ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecInit (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Initializes XML Security Library. The depended libraries
@@ -259,7 +175,7 @@ xmlSecInit (<em class="parameter"><code><span class="type">void</span></code></e
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecShutdown"></a><h3>xmlSecShutdown ()</h3>
+<a name="xmlSecShutdown"></a><h3>xmlSecShutdown ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecShutdown (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Gets the default crypto engine ("openssl", "nss", etc.) for the XML Security Library.</p>
@@ -270,13 +186,13 @@ xmlSecShutdown (<em class="parameter"><code><span class="type">void</span></code
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecGetDefaultCrypto"></a><h3>xmlSecGetDefaultCrypto ()</h3>
-<pre class="programlisting">const <font><span class="returnvalue">xmlChar</span></font> *
+<a name="xmlSecGetDefaultCrypto"></a><h3>xmlSecGetDefaultCrypto ()</h3>
+<pre class="programlisting">const <font><span class="returnvalue">xmlChar</span></font> *
 xmlSecGetDefaultCrypto (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecSetExternalEntityLoader"></a><h3>xmlSecSetExternalEntityLoader ()</h3>
+<a name="xmlSecSetExternalEntityLoader"></a><h3>xmlSecSetExternalEntityLoader ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
 xmlSecSetExternalEntityLoader (<em class="parameter"><code><font><span class="type">xmlExternalEntityLoader</span></font> Param1</code></em>);</pre>
 </div>
@@ -298,7 +214,7 @@ value if an error occurs.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecCheckVersionExt"></a><h3>xmlSecCheckVersionExt ()</h3>
+<a name="xmlSecCheckVersionExt"></a><h3>xmlSecCheckVersionExt ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecCheckVersionExt (<em class="parameter"><code><font><span class="type">int</span></font> major</code></em>,
                        <em class="parameter"><code><font><span class="type">int</span></font> minor</code></em>,
@@ -317,22 +233,22 @@ xmlSecCheckVersionExt (<em class="parameter"><code><font><span class="type">int<
 <tr>
 <td class="parameter_name"><p>major</p></td>
 <td class="parameter_description"><p>the major version number.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>minor</p></td>
 <td class="parameter_description"><p>the minor version number.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>subminor</p></td>
 <td class="parameter_description"><p>the subminor version number.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>mode</p></td>
 <td class="parameter_description"><p>the version check mode.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -374,7 +290,7 @@ but it will break ABI (todo).</p>
 <pre class="programlisting">#define XMLSEC_CRYPTO                          (xmlSecGetDefaultCrypto())
 </pre>
 <p>Macro. Deprecated. Defined for backward compatibility only. Do not use
-in your code and use <a class="link" href="xmlsec-xmlsec.html#xmlSecGetDefaultCrypto" title="xmlSecGetDefaultCrypto ()"><code class="function">xmlSecGetDefaultCrypto()</code></a> function instead.</p>
+in your code and use <a class="link" href="xmlsec-xmlsec.html#xmlSecGetDefaultCrypto" title="xmlSecGetDefaultCrypto ()"><code class="function">xmlSecGetDefaultCrypto()</code></a> function instead.</p>
 <p>Returns the default crypto engine.</p>
 </div>
 <hr>
@@ -399,12 +315,12 @@ in your code and use <a class="link" href="xmlsec-xmlsec.html#xmlSecGetDefaultCr
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecCheckVersionExactMatch"></a>xmlSecCheckVersionExactMatch</p></td>
 <td class="enum_member_description"><p>the version should match exactly.</p></td>
-<td class="enum_member_annotations"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecCheckVersionABICompatible"></a>xmlSecCheckVersionABICompatible</p></td>
 <td class="enum_member_description"><p>the version should be ABI compatible.</p></td>
-<td class="enum_member_annotations"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -414,6 +330,5 @@ in your code and use <a class="link" href="xmlsec-xmlsec.html#xmlSecGetDefaultCr
 </div>
 <div class="footer">
 <hr>Generated by GTK-Doc V1.27</div>
-</td></tr></table></td>
-</tr></table></body>
+</body>
 </html>

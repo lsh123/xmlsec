@@ -59,7 +59,7 @@ if [ "z$XMLSEC_DEFAULT_CRYPTO" != "z" ] ; then
 elif [ "z$crypto" != "z" ] ; then
     xmlsec_params="$xmlsec_params --crypto $crypto"
 fi
-xmlsec_params="$xmlsec_params --X509-skip-strict-checks --crypto-config $crypto_config"
+xmlsec_params="$xmlsec_params --crypto-config $crypto_config"
 
 #
 # Setup keys config
@@ -308,8 +308,8 @@ execDSigTest() {
     # run tests
     if [ -n "$params1" ] ; then
         printf "    Verify existing signature                            "
-        echo "$VALGRIND $xmlsec_app verify $xmlsec_params $params1 $full_file.xml" >> $curlogfile
-        $VALGRIND $xmlsec_app verify $xmlsec_params $params1 $full_file.xml >> $curlogfile 2>> $curlogfile
+        echo "$VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params $params1 $full_file.xml" >> $curlogfile
+        $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params $params1 $full_file.xml >> $curlogfile 2>> $curlogfile
         printRes $expected_res $?
         if [ $? != 0 ]; then
             failures=`expr $failures + 1`
@@ -328,8 +328,8 @@ execDSigTest() {
 
     if [ -n "$params3" -a -z "$PERF_TEST" ] ; then
         printf "    Verify new signature                                 "
-        echo "$VALGRIND $xmlsec_app verify $xmlsec_params $params3 $tmpfile" >> $curlogfile
-        $VALGRIND $xmlsec_app verify $xmlsec_params $params3 $tmpfile >> $curlogfile 2>> $curlogfile
+        echo "$VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params $params3 $tmpfile" >> $curlogfile
+        $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params $params3 $tmpfile >> $curlogfile 2>> $curlogfile
         printRes $res_success $?
         if [ $? != 0 ]; then
             failures=`expr $failures + 1`
@@ -406,8 +406,8 @@ execEncTest() {
     if [ -n "$params1" ] ; then
         rm -f $tmpfile
         printf "    Decrypt existing document                            "
-        echo "$VALGRIND $xmlsec_app decrypt $xmlsec_params $params1 $full_file.xml" >>  $curlogfile 
-        $VALGRIND $xmlsec_app decrypt $xmlsec_params $params1 --output $tmpfile $full_file.xml >> $curlogfile  2>> $curlogfile
+        echo "$VALGRIND $xmlsec_app decrypt --X509-skip-strict-checks $xmlsec_params $params1 $full_file.xml" >>  $curlogfile
+        $VALGRIND $xmlsec_app decrypt --X509-skip-strict-checks $xmlsec_params $params1 --output $tmpfile $full_file.xml >> $curlogfile  2>> $curlogfile
         res=$?
         echo "=== TEST RESULT: $res; expected: $expected_res" >> $curlogfile
         if [ $res = 0 -a "$expected_res" = "$res_success" ]; then
@@ -439,8 +439,8 @@ execEncTest() {
     if [ -n "$params3" -a -z "$PERF_TEST" ] ; then 
         rm -f $tmpfile.2
         printf "    Decrypt new document                                 "
-        echo "$VALGRIND $xmlsec_app decrypt $xmlsec_params $params3 --output $tmpfile.2 $tmpfile" >>  $curlogfile
-        $VALGRIND $xmlsec_app decrypt $xmlsec_params $params3 --output $tmpfile.2 $tmpfile >> $curlogfile 2>> $curlogfile
+        echo "$VALGRIND $xmlsec_app decrypt --X509-skip-strict-checks $xmlsec_params $params3 --output $tmpfile.2 $tmpfile" >>  $curlogfile
+        $VALGRIND $xmlsec_app decrypt --X509-skip-strict-checks $xmlsec_params $params3 --output $tmpfile.2 $tmpfile >> $curlogfile 2>> $curlogfile
         res=$?
         if [ $res = 0 ]; then
             if [ "z$outputTransform" != "z" ] ; then

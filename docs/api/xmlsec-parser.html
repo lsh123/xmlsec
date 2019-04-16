@@ -1,6 +1,7 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>parser: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
@@ -9,96 +10,11 @@
 <link rel="next" href="xmlsec-templates.html" title="templates">
 <meta name="generator" content="GTK-Doc V1.27 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
 </head>
-<body><table width="100%" valign="top"><tr valign="top">
-<td valign="top" align="left" width="210">
-<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="../index.html">Home</a></li>
-<li><a href="../download.html">Download</a></li>
-<li><a href="../news.html">News</a></li>
-<li><a href="../documentation.html">Documentation</a></li>
-<ul>
-<li><a href="../faq.html">FAQ</a></li>
-<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
-<li><a href="../api/xmlsec-reference.html">API reference</a></li>
-<li><a href="../api/xmlsec-examples.html">Examples</a></li>
-</ul>
-<li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<ul><li><a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a></li></ul>
-<li><a href="../xmlenc.html">XML Encryption</a></li>
-<li><a href="../c14n.html">XML Canonicalization</a></li>
-<li><a href="../bugs.html">Reporting Bugs</a></li>
-<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
-<li><a href="../related.html">Related</a></li>
-<li><a href="../authors.html">Authors</a></li>
-</ul>
-<table width="100%">
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
-</tr>
-<!--Links - start--><!--Links - end-->
-</table>
-</td>
-<td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts">
-<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
                   <a href="#xmlsec-parser.description" class="shortcut">Description</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
@@ -111,7 +27,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="xmlsec-parser.top_of_page"></a>parser</span></h2>
-<p>parser &#8212; XML parser functions and the XML parser transform implementation.</p>
+<p>parser — XML parser functions and the XML parser transform implementation.</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -132,7 +48,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">xmlDocPtr</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-parser.html#xmlSecParseFile" title="xmlSecParseFile ()">xmlSecParseFile</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-parser.html#xmlSecParseFile" title="xmlSecParseFile ()">xmlSecParseFile</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -140,7 +56,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">xmlDocPtr</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-parser.html#xmlSecParseMemory" title="xmlSecParseMemory ()">xmlSecParseMemory</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-parser.html#xmlSecParseMemory" title="xmlSecParseMemory ()">xmlSecParseMemory</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -148,7 +64,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">xmlDocPtr</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-parser.html#xmlSecParseMemoryExt" title="xmlSecParseMemoryExt ()">xmlSecParseMemoryExt</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-parser.html#xmlSecParseMemoryExt" title="xmlSecParseMemoryExt ()">xmlSecParseMemoryExt</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -156,7 +72,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-parser.html#xmlSecTransformXmlParserGetKlass" title="xmlSecTransformXmlParserGetKlass ()">xmlSecTransformXmlParserGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-parser.html#xmlSecTransformXmlParserGetKlass" title="xmlSecTransformXmlParserGetKlass ()">xmlSecTransformXmlParserGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 </tbody>
@@ -182,7 +98,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <div class="refsect1">
 <a name="xmlsec-parser.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
-<a name="xmlSecParseFile"></a><h3>xmlSecParseFile ()</h3>
+<a name="xmlSecParseFile"></a><h3>xmlSecParseFile ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlDocPtr</span></font>
 xmlSecParseFile (<em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>);</pre>
 <p>Loads XML Doc from file <em class="parameter"><code>filename</code></em>
@@ -199,7 +115,7 @@ c14n issue. The code is copied from <font><code class="function">xmlSAXParseFile
 <tbody><tr>
 <td class="parameter_name"><p>filename</p></td>
 <td class="parameter_description"><p>the filename.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -210,7 +126,7 @@ c14n issue. The code is copied from <font><code class="function">xmlSAXParseFile
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecParseMemory"></a><h3>xmlSecParseMemory ()</h3>
+<a name="xmlSecParseMemory"></a><h3>xmlSecParseMemory ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlDocPtr</span></font>
 xmlSecParseMemory (<em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *buffer</code></em>,
                    <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> size</code></em>,
@@ -229,17 +145,17 @@ c14n issue. The code is copied from <font><code class="function">xmlSAXParseMemo
 <tr>
 <td class="parameter_name"><p>buffer</p></td>
 <td class="parameter_description"><p>the input buffer.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>size</p></td>
 <td class="parameter_description"><p>the input buffer size.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>recovery</p></td>
 <td class="parameter_description"><p>the flag.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -251,7 +167,7 @@ c14n issue. The code is copied from <font><code class="function">xmlSAXParseMemo
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecParseMemoryExt"></a><h3>xmlSecParseMemoryExt ()</h3>
+<a name="xmlSecParseMemoryExt"></a><h3>xmlSecParseMemoryExt ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlDocPtr</span></font>
 xmlSecParseMemoryExt (<em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *prefix</code></em>,
                       <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> prefixSize</code></em>,
@@ -275,32 +191,32 @@ xmlSecParseMemoryExt (<em class="parameter"><code>const <a class="link" href="xm
 <tr>
 <td class="parameter_name"><p>prefix</p></td>
 <td class="parameter_description"><p>the first part of the input.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>prefixSize</p></td>
 <td class="parameter_description"><p>the size of the first part of the input.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>buffer</p></td>
 <td class="parameter_description"><p>the second part of the input.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>bufferSize</p></td>
 <td class="parameter_description"><p>the size of the second part of the input.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>postfix</p></td>
 <td class="parameter_description"><p>the third part of the input.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>postfixSize</p></td>
 <td class="parameter_description"><p>the size of the third part of the input.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -312,7 +228,7 @@ xmlSecParseMemoryExt (<em class="parameter"><code>const <a class="link" href="xm
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformXmlParserGetKlass"></a><h3>xmlSecTransformXmlParserGetKlass ()</h3>
+<a name="xmlSecTransformXmlParserGetKlass"></a><h3>xmlSecTransformXmlParserGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformXmlParserGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The XML parser transform.</p>
@@ -333,6 +249,5 @@ xmlSecTransformXmlParserGetKlass (<em class="parameter"><code><span class="type"
 </div>
 <div class="footer">
 <hr>Generated by GTK-Doc V1.27</div>
-</td></tr></table></td>
-</tr></table></body>
+</body>
 </html>

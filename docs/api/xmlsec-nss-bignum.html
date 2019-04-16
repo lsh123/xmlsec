@@ -1,6 +1,7 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>bignum: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
@@ -9,96 +10,11 @@
 <link rel="next" href="xmlsec-nss-crypto.html" title="crypto">
 <meta name="generator" content="GTK-Doc V1.27 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
 </head>
-<body><table width="100%" valign="top"><tr valign="top">
-<td valign="top" align="left" width="210">
-<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="../index.html">Home</a></li>
-<li><a href="../download.html">Download</a></li>
-<li><a href="../news.html">News</a></li>
-<li><a href="../documentation.html">Documentation</a></li>
-<ul>
-<li><a href="../faq.html">FAQ</a></li>
-<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
-<li><a href="../api/xmlsec-reference.html">API reference</a></li>
-<li><a href="../api/xmlsec-examples.html">Examples</a></li>
-</ul>
-<li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<ul><li><a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a></li></ul>
-<li><a href="../xmlenc.html">XML Encryption</a></li>
-<li><a href="../c14n.html">XML Canonicalization</a></li>
-<li><a href="../bugs.html">Reporting Bugs</a></li>
-<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
-<li><a href="../related.html">Related</a></li>
-<li><a href="../authors.html">Authors</a></li>
-</ul>
-<table width="100%">
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
-</tr>
-<!--Links - start--><!--Links - end-->
-</table>
-</td>
-<td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts">
-<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
                   <a href="#xmlsec-nss-bignum.description" class="shortcut">Description</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
@@ -111,7 +27,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="xmlsec-nss-bignum.top_of_page"></a>bignum</span></h2>
-<p>bignum &#8212; Big numbers support functions implementation for NSS.</p>
+<p>bignum — Big numbers support functions implementation for NSS.</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -129,10 +45,10 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <tbody>
 <tr>
 <td class="function_type">
-<font><span class="returnvalue">SECItem</span></font> *
+<font><span class="returnvalue">SECItem</span></font> *
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-nss-bignum.html#xmlSecNssNodeGetBigNumValue" title="xmlSecNssNodeGetBigNumValue ()">xmlSecNssNodeGetBigNumValue</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-nss-bignum.html#xmlSecNssNodeGetBigNumValue" title="xmlSecNssNodeGetBigNumValue ()">xmlSecNssNodeGetBigNumValue</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -140,7 +56,7 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-nss-bignum.html#xmlSecNssNodeSetBigNumValue" title="xmlSecNssNodeSetBigNumValue ()">xmlSecNssNodeSetBigNumValue</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-nss-bignum.html#xmlSecNssNodeSetBigNumValue" title="xmlSecNssNodeSetBigNumValue ()">xmlSecNssNodeSetBigNumValue</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 </tbody>
@@ -153,8 +69,8 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
 <div class="refsect1">
 <a name="xmlsec-nss-bignum.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
-<a name="xmlSecNssNodeGetBigNumValue"></a><h3>xmlSecNssNodeGetBigNumValue ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">SECItem</span></font> *
+<a name="xmlSecNssNodeGetBigNumValue"></a><h3>xmlSecNssNodeGetBigNumValue ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">SECItem</span></font> *
 xmlSecNssNodeGetBigNumValue (<em class="parameter"><code><font><span class="type">PRArenaPool</span></font> *arena</code></em>,
                              <em class="parameter"><code>const <font><span class="type">xmlNodePtr</span></font> cur</code></em>,
                              <em class="parameter"><code><font><span class="type">SECItem</span></font> *a</code></em>);</pre>
@@ -174,17 +90,17 @@ one is created (caller is responsible for freeing it).</p>
 <tr>
 <td class="parameter_name"><p>arena</p></td>
 <td class="parameter_description"><p>the arena from which to allocate memory</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>cur</p></td>
-<td class="parameter_description"><p>the poitner to an XML node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_description"><p>the pointer to an XML node.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>a</p></td>
 <td class="parameter_description"><p>a SECItem object to hold the BigNum value</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -197,7 +113,7 @@ or NULL if an error occurs.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecNssNodeSetBigNumValue"></a><h3>xmlSecNssNodeSetBigNumValue ()</h3>
+<a name="xmlSecNssNodeSetBigNumValue"></a><h3>xmlSecNssNodeSetBigNumValue ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecNssNodeSetBigNumValue (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> cur</code></em>,
                              <em class="parameter"><code>const <font><span class="type">SECItem</span></font> *a</code></em>,
@@ -219,19 +135,19 @@ before and after the CryptoBinary string.</p>
 <tr>
 <td class="parameter_name"><p>cur</p></td>
 <td class="parameter_description"><p>the pointer to an XML node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>a</p></td>
 <td class="parameter_description"><p>a SECItem containing the BigNum value.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>addLineBreaks</p></td>
 <td class="parameter_description"><p>if the flag is equal to 1 then
 linebreaks will be added before and after
 new buffer content.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -249,6 +165,5 @@ new buffer content.</p></td>
 </div>
 <div class="footer">
 <hr>Generated by GTK-Doc V1.27</div>
-</td></tr></table></td>
-</tr></table></body>
+</body>
 </html>

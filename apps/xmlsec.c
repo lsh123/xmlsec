@@ -127,20 +127,19 @@ static const char helpCheckTransforms[] =
     "Usage: xmlsec check-transforms <transform-name> [<transform-name> ... ]\n"
     "Checks the given transforms against the list of known transform klasses\n";
 
-#define xmlSecAppCmdLineTopicGeneral            0x00001
-#define xmlSecAppCmdLineTopicDSigCommon         0x00002
-#define xmlSecAppCmdLineTopicDSigSign           0x00004
-#define xmlSecAppCmdLineTopicDSigVerify         0x00008
-#define xmlSecAppCmdLineTopicEncCommon          0x00010
-#define xmlSecAppCmdLineTopicEncEncrypt         0x00020
-#define xmlSecAppCmdLineTopicEncDecrypt         0x00040
+#define xmlSecAppCmdLineTopicGeneral            0x0001
+#define xmlSecAppCmdLineTopicDSigCommon         0x0002
+#define xmlSecAppCmdLineTopicDSigSign           0x0004
+#define xmlSecAppCmdLineTopicDSigVerify         0x0008
+#define xmlSecAppCmdLineTopicEncCommon          0x0010
+#define xmlSecAppCmdLineTopicEncEncrypt         0x0020
+#define xmlSecAppCmdLineTopicEncDecrypt         0x0040
 /* #define UNUSED         0x0080 */
-#define xmlSecAppCmdLineTopicKeysMngr           0x01000
-#define xmlSecAppCmdLineTopicX509Certs          0x02000
-#define xmlSecAppCmdLineTopicVersion            0x04000
-#define xmlSecAppCmdLineTopicCryptoConfig       0x08000
-#define xmlSecAppCmdLineTopicX509CertsChecks    0x10000
-#define xmlSecAppCmdLineTopicAll                0xFFFFF
+#define xmlSecAppCmdLineTopicKeysMngr           0x1000
+#define xmlSecAppCmdLineTopicX509Certs          0x2000
+#define xmlSecAppCmdLineTopicVersion            0x4000
+#define xmlSecAppCmdLineTopicCryptoConfig       0x8000
+#define xmlSecAppCmdLineTopicAll                0xFFFF
 
 /****************************************************************
  *
@@ -772,7 +771,7 @@ static xmlSecAppCmdLineParam depthParam = {
 };
 
 static xmlSecAppCmdLineParam X509SkipStrictChecksParam = { 
-    xmlSecAppCmdLineTopicX509CertsChecks,
+    xmlSecAppCmdLineTopicX509Certs,
     "--X509-skip-strict-checks",
     NULL,    
     "--X509-skip-strict-checks"
@@ -2797,8 +2796,7 @@ xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics
                         xmlSecAppCmdLineTopicDSigCommon |
                         xmlSecAppCmdLineTopicDSigVerify |
                         xmlSecAppCmdLineTopicKeysMngr |
-                        xmlSecAppCmdLineTopicX509Certs |
-                        xmlSecAppCmdLineTopicX509CertsChecks;
+                        xmlSecAppCmdLineTopicX509Certs;
         return(xmlSecAppCommandVerify);
     } else 
 #ifndef XMLSEC_NO_TMPL_TEST
@@ -2835,8 +2833,7 @@ xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics
                         xmlSecAppCmdLineTopicEncCommon |
                         xmlSecAppCmdLineTopicEncDecrypt |
                         xmlSecAppCmdLineTopicKeysMngr |
-                        xmlSecAppCmdLineTopicX509Certs |
-                        xmlSecAppCmdLineTopicX509CertsChecks;
+                        xmlSecAppCmdLineTopicX509Certs;
         return(xmlSecAppCommandDecrypt);
     } else 
 

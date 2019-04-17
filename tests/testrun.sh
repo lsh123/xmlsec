@@ -407,7 +407,7 @@ execEncTest() {
         rm -f $tmpfile
         printf "    Decrypt existing document                            "
         echo "$VALGRIND $xmlsec_app decrypt $xmlsec_params $params1 $full_file.xml" >>  $curlogfile
-        $VALGRIND $xmlsec_app decrypt --X509-skip-strict-checks $xmlsec_params $params1 --output $tmpfile $full_file.xml >> $curlogfile  2>> $curlogfile
+        $VALGRIND $xmlsec_app decrypt $xmlsec_params $params1 --output $tmpfile $full_file.xml >> $curlogfile  2>> $curlogfile
         res=$?
         echo "=== TEST RESULT: $res; expected: $expected_res" >> $curlogfile
         if [ $res = 0 -a "$expected_res" = "$res_success" ]; then
@@ -440,7 +440,7 @@ execEncTest() {
         rm -f $tmpfile.2
         printf "    Decrypt new document                                 "
         echo "$VALGRIND $xmlsec_app decrypt $xmlsec_params $params3 --output $tmpfile.2 $tmpfile" >>  $curlogfile
-        $VALGRIND $xmlsec_app decrypt --X509-skip-strict-checks $xmlsec_params $params3 --output $tmpfile.2 $tmpfile >> $curlogfile 2>> $curlogfile
+        $VALGRIND $xmlsec_app decrypt $xmlsec_params $params3 --output $tmpfile.2 $tmpfile >> $curlogfile 2>> $curlogfile
         res=$?
         if [ $res = 0 ]; then
             if [ "z$outputTransform" != "z" ] ; then

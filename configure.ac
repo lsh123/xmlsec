@@ -641,6 +641,8 @@ case $host in
     *-*-osf5*)    OPENSSL_EXTRA_LIBS=;;
     *-*-openbsd*) OPENSSL_EXTRA_LIBS=;;
     *-*-netbsd*)  OPENSSL_EXTRA_LIBS=;;
+    *-*-freebsd*|*-*-dragonfly*) OPENSSL_EXTRA_LIBS=;;
+    *-*-darwin*) OPENSSL_EXTRA_LIBS=;;
     #FIXME: check if lib "dl" is required
     *)            OPENSSL_EXTRA_LIBS=-ldl;;
 esac

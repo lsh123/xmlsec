@@ -951,6 +951,11 @@ dnl     xulrunner-nspr and xulrunner-nss
 dnl     nspr and nss
 if test "z$NSPR_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" -a "z$with_mozilla_ver" = "z" -a "z$with_seamonkey_ver" ; then
     if test "z$NSPR_FOUND" = "zno" ; then
+        PKG_CHECK_MODULES(NSPR, nspr >= $NSPR_MIN_VERSION,
+           [NSPR_FOUND=yes NSPR_PACKAGE=nspr],
+           [NSPR_FOUND=no])
+    fi
+    if test "z$NSPR_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(NSPR, seamonkey-nspr >= $NSPR_MIN_VERSION,
            [NSPR_FOUND=yes NSPR_PACKAGE=seamonkey-nspr],
            [NSPR_FOUND=no])
@@ -965,13 +970,13 @@ if test "z$NSPR_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" -a "z$with_mozill
            [NSPR_FOUND=yes NSPR_PACKAGE=xulrunner-nspr],
            [NSPR_FOUND=no])
     fi
-    if test "z$NSPR_FOUND" = "zno" ; then
-        PKG_CHECK_MODULES(NSPR, nspr >= $NSPR_MIN_VERSION,
-           [NSPR_FOUND=yes NSPR_PACKAGE=nspr],
-           [NSPR_FOUND=no])
-    fi
 fi
 if test "z$NSS_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" -a "z$with_mozilla_ver" = "z" -a "z$with_seamonkey_ver" ; then
+    if test "z$NSS_FOUND" = "zno" ; then
+        PKG_CHECK_MODULES(NSS, nss >= $NSS_MIN_VERSION,
+    	   [NSS_FOUND=yes NSS_PACKAGE=nss],
+	       [NSS_FOUND=no])
+    fi
     if test "z$NSS_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(NSS, seamonkey-nss >= $SEAMONKEY_MIN_VERSION,
     	   [NSS_FOUND=yes NSS_PACKAGE=seamonkey-nss],
@@ -985,11 +990,6 @@ if test "z$NSS_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" -a "z$with_mozilla
     if test "z$NSS_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(NSS, xulrunner-nss >= $NSS_MIN_VERSION,
     	   [NSS_FOUND=yes NSS_PACKAGE=xulrunner-nss],
-	       [NSS_FOUND=no])
-    fi
-    if test "z$NSS_FOUND" = "zno" ; then
-        PKG_CHECK_MODULES(NSS, nss >= $NSS_MIN_VERSION,
-    	   [NSS_FOUND=yes NSS_PACKAGE=nss],
 	       [NSS_FOUND=no])
     fi
 fi

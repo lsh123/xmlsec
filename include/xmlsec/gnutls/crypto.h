@@ -13,12 +13,11 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/dl.h>
-#ifndef XMLSEC_NO_DSA
 #include <gnutls/gnutls.h>
+#ifndef XMLSEC_NO_DSA
 #include <gnutls/x509.h>
 #endif /* XMLSEC_NO_DSA */
 #ifndef XMLSEC_NO_RSA
-#include <gnutls/gnutls.h>
 #include <gnutls/x509.h>
 #endif /* XMLSEC_NO_RSA */
 

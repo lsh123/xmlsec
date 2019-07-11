@@ -276,7 +276,8 @@ LIBXML_MIN_VERSION="2.8.0"
 LIBXML_INCLUDE_DIR="$COMMON_INCLUDE_DIR /usr/include/libxml2 /usr/local/include/libxml2 /usr/local/libxml2/include"
 LIBXML_LIB_DIR="$COMMON_LIB_DIR /usr/local/libxml2/lib"
 LIBXML_INCLUDE_MARKER="libxml/xmlversion.h"
-LIBXML_LIB_MARKER="libxml2$shrext"
+LIBXML_SHARED_LIB_MARKER="libxml2$shrext"
+LIBXML_STATIC_LIB_MARKER="libxml2.$libext"
 LIBXML_LIBS_LIST="-lxml2"
 LIBXML_CONFIG="xml2-config"
 
@@ -295,13 +296,13 @@ fi
 dnl Priority 1: User specifies the path to source code
 if test "z$LIBXML_FOUND" = "zno" -a "z$with_libxml_src" != "z" -a "z$with_libxml_src" != "zyes" ; then
     AC_MSG_CHECKING(for libxml2 library source tree in "$with_libxml_src" folder)
-    if test -f "$with_libxml_src/include/$LIBXML_INCLUDE_MARKER" -a -f "$with_libxml_src/.libs/$LIBXML_LIB_MARKER" ; then
+    if test [ -f "$with_libxml_src/include/$LIBXML_INCLUDE_MARKER" ] -a [ -f "$with_libxml_src/.libs/$LIBXML_SHARED_LIB_MARKER" -o -f "$with_libxml_src/.libs/$LIBXML_STATIC_LIB_MARKER"] ; then
         LIBXML_INCLUDE_PATH="$with_libxml_src/include"
         LIBXML_LIB_PATH="$with_libxml_src/.libs"
         LIBXML_FOUND="yes"
         AC_MSG_RESULT([yes])
     else
-        AC_MSG_ERROR([not found: "$with_libxml_src/include/$LIBXML_INCLUDE_MARKER" or "$with_libxml_src/.libs/$LIBXML_LIB_MARKER" files don't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_libxml_src/include/$LIBXML_INCLUDE_MARKER" or "$with_libxml_src/.libs/$LIBXML_SHARED_LIB_MARKER" or "$with_libxml_src/.libs/$LIBXML_STATIC_LIB_MARKER" files don't exist), typo?])
     fi
 fi
 
@@ -312,13 +313,13 @@ if test "z$LIBXML_FOUND" = "zno" -a "z$with_libxml" != "z" -a "z$with_libxml" !=
         LIBXML_CONFIG_PATH="$with_libxml/bin/$LIBXML_CONFIG"
         LIBXML_FOUND="yes"
         AC_MSG_RESULT([yes])
-    elif test -f "$with_libxml/include/libxml2/$LIBXML_INCLUDE_MARKER" -a -f "$with_libxml/lib/$LIBXML_LIB_MARKER" ; then
+    elif test [ -f "$with_libxml/include/libxml2/$LIBXML_INCLUDE_MARKER" ] -a [ -f "$with_libxml/lib/$LIBXML_SHARED_LIB_MARKER" -o -f "$with_libxml/lib/$LIBXML_STATIC_LIB_MARKER" ] ; then
         LIBXML_INCLUDE_PATH="$with_libxml/include/libxml2"
         LIBXSLT_LIB_PATH="$with_libxml/lib"
         LIBXML_FOUND="yes"
         AC_MSG_RESULT([yes])
     else
-        AC_MSG_ERROR([not found: "$with_libxml/bin/$LIBXML_CONFIG" tool, or "$with_libxml/include/libxml2/$LIBXML_INCLUDE_MARKER" and/or "$with_libxml/lib/$LIBXML_LIB_MARKER" files don't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_libxml/bin/$LIBXML_CONFIG" tool, or "$with_libxml/include/libxml2/$LIBXML_INCLUDE_MARKER" and/or "$with_libxml/lib/$LIBXML_SHARED_LIB_MARKER" or "$with_libxml/lib/$LIBXML_STATIC_LIB_MARKER" files don't exist), typo?])
     fi
 fi
 
@@ -349,7 +350,10 @@ if test "z$LIBXML_FOUND" = "zno" -a "z$ENABLE_FOLDERS_SEARCH" = "zyes" ; then
         AX_FIND_FOLDER(LIBXML_INCLUDE_PATH, $LIBXML_INCLUDE_MARKER, $LIBXML_INCLUDE_DIR)
     fi
     if test "z$LIBXML_LIB_PATH" = "z" ; then
-        AX_FIND_FOLDER(LIBXML_LIB_PATH, $LIBXML_LIB_MARKER, $LIBXML_LIB_DIR)
+        AX_FIND_FOLDER(LIBXML_LIB_PATH, $LIBXML_SHARED_LIB_MARKER, $LIBXML_LIB_DIR)
+    fi
+    if test "z$LIBXML_LIB_PATH" = "z" ; then
+        AX_FIND_FOLDER(LIBXML_LIB_PATH, $LIBXML_STATIC_LIB_MARKER, $LIBXML_LIB_DIR)
     fi
     if test "z$LIBXML_INCLUDE_PATH" != "z" -a "z$LIBXML_LIB_PATH" != "z" ; then
         LIBXML_FOUND="yes"
@@ -449,7 +453,8 @@ LIBXSLT_INCLUDE_DIR="$COMMON_INCLUDE_DIR /usr/local/libxslt/include"
 LIBXSLT_LIB_DIR="$COMMON_LIB_DIR /usr/local/libxslt/lib"
 LIBXSLT_CONFIG="xslt-config"
 LIBXSLT_INCLUDE_MARKER="libxslt/xsltconfig.h"
-LIBXSLT_LIB_MARKER="libxslt$shrext"
+LIBXSLT_SHARED_LIB_MARKER="libxslt$shrext"
+LIBXSLT_STATIC_LIB_MARKER="libxslt.$libext"
 LIBXSLT_LIBS_LIST="-lxslt"
 
 XMLSEC_NO_LIBXSLT="1"
@@ -468,13 +473,13 @@ fi
 dnl Priority 1: User specifies the path to source code
 if test "z$LIBXSLT_FOUND" = "zno" -a "z$with_libxslt_src" != "z" -a "z$with_libxslt_src" != "zyes" ; then
     AC_MSG_CHECKING(for libxslt library source tree in "$with_libxslt_src" folder)
-    if test -f "$with_libxslt_src/$LIBXSLT_INCLUDE_MARKER" -a -f "$with_libxslt_src/libxslt/.libs/$LIBXSLT_LIB_MARKER" ; then
+    if test [ -f "$with_libxslt_src/$LIBXSLT_INCLUDE_MARKER" ] -a [ -f "$with_libxslt_src/libxslt/.libs/$LIBXSLT_SHARED_LIB_MARKER" -o -f "$with_libxslt_src/libxslt/.libs/$LIBXSLT_STATIC_LIB_MARKER" ] ; then
         LIBXSLT_INCLUDE_PATH="$with_libxslt_src"
         LIBXSLT_LIB_PATH="$with_libxslt_src/libxslt/.libs"
         LIBXSLT_FOUND="yes"
         AC_MSG_RESULT([yes])
     else
-        AC_MSG_ERROR([not found: "$with_libxslt_src/$LIBXSLT_INCLUDE_MARKER" and/or "$with_libxslt_src/libxslt/.libs/$LIBXSLT_LIB_MARKER" files don't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_libxslt_src/$LIBXSLT_INCLUDE_MARKER" and/or "$with_libxslt_src/libxslt/.libs/$LIBXSLT_SHARED_LIB_MARKER" or "$with_libxslt_src/libxslt/.libs/$LIBXSLT_STATIC_LIB_MARKER" files don't exist), typo?])
     fi
 fi
 
@@ -485,13 +490,13 @@ if test "z$LIBXSLT_FOUND" = "zno" -a "z$with_libxslt" != "z" -a "z$with_libxslt"
         LIBXSLT_CONFIG_PATH="$with_libxslt/bin/$LIBXSLT_CONFIG"
         LIBXSLT_FOUND="yes"
         AC_MSG_RESULT([yes])
-    elif test -f "$with_libxslt/include/$LIBXSLT_INCLUDE_MARKER" -a -f "$with_libxslt/lib/$LIBXSLT_LIB_MARKER" ; then
+    elif test [ -f "$with_libxslt/include/$LIBXSLT_INCLUDE_MARKER" ] -a [ -f "$with_libxslt/lib/$LIBXSLT_SHARED_LIB_MARKER" -o -f "$with_libxslt/lib/$LIBXSLT_STATIC_LIB_MARKER" ] ; then
         LIBXSLT_INCLUDE_PATH="$with_libxslt/include"
         LIBXSLT_LIB_PATH="$with_libxslt/lib"
         LIBXSLT_FOUND="yes"
         AC_MSG_RESULT([yes])
     else
-        AC_MSG_ERROR([not found: "$with_libxslt/bin/$LIBXSLT_CONFIG" tool, or "$with_libxslt/include/$LIBXSLT_INCLUDE_MARKER" and/or "$with_libxslt/lib/$LIBXSLT_LIB_MARKER" files don't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_libxslt/bin/$LIBXSLT_CONFIG" tool, or "$with_libxslt/include/$LIBXSLT_INCLUDE_MARKER" and/or "$with_libxslt/lib/$LIBXSLT_SHARED_LIB_MARKER" or "$with_libxslt/lib/$LIBXSLT_STATIC_LIB_MARKER" files don't exist), typo?])
     fi
 fi
 
@@ -522,7 +527,10 @@ if test "z$LIBXSLT_FOUND" = "zno" -a "z$ENABLE_FOLDERS_SEARCH" = "zyes" ; then
         AX_FIND_FOLDER(LIBXSLT_INCLUDE_PATH, $LIBXSLT_INCLUDE_MARKER, $LIBXSLT_INCLUDE_DIR)
     fi
     if test "z$LIBXSLT_LIB_PATH" = "z" ; then
-        AX_FIND_FOLDER(LIBXSLT_LIB_PATH, $LIBXSLT_LIB_MARKER, $LIBXSLT_LIB_DIR)
+        AX_FIND_FOLDER(LIBXSLT_LIB_PATH, $LIBXSLT_SHARED_LIB_MARKER, $LIBXSLT_LIB_DIR)
+    fi
+    if test "z$LIBXSLT_LIB_PATH" = "z" ; then
+        AX_FIND_FOLDER(LIBXSLT_LIB_PATH, $LIBXSLT_STATIC_LIB_MARKER, $LIBXSLT_LIB_DIR)
     fi
     if test "z$LIBXSLT_INCLUDE_PATH" != "z" -a "z$LIBXSLT_LIB_PATH" != "z" ; then
         LIBXSLT_FOUND="yes"

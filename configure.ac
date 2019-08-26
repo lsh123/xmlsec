@@ -2423,7 +2423,6 @@ include/xmlsec/version.h
 Makefile
 include/Makefile
 include/xmlsec/Makefile
-include/xmlsec/private/Makefile
 src/Makefile
 apps/Makefile
 docs/Makefile

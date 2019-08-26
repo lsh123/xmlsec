@@ -69,7 +69,7 @@
 #include <xmlsec/parser.h>
 #include <xmlsec/errors.h>
 
-#include <xmlsec/private/xslt.h>
+#include "xslt.h"
 
 /**************************************************************************
  *

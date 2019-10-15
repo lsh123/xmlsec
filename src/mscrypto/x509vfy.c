@@ -162,7 +162,7 @@ xmlSecMSCryptoUnixTimeToFileTime(time_t t, LPFILETIME pft) {
 }
 
 static BOOL
-xmlSecMSCrypoVerifyCertTime(PCCERT_CONTEXT pCert, LPFILETIME pft) {
+xmlSecMSCryptoVerifyCertTime(PCCERT_CONTEXT pCert, LPFILETIME pft) {
     xmlSecAssert2(pCert != NULL, FALSE);
     xmlSecAssert2(pCert->pCertInfo != NULL, FALSE);
     xmlSecAssert2(pft != NULL, FALSE);
@@ -341,7 +341,7 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT cert, LPFILETIME pfTime,
     PCCERT_CONTEXT issuerCert = NULL;
     DWORD flags;
 
-    if (!xmlSecMSCrypoVerifyCertTime(cert, pfTime)) {
+    if (!xmlSecMSCryptoVerifyCertTime(cert, pfTime)) {
         xmlSecMSCryptoX509StoreCertError(store, cert, CERT_STORE_TIME_VALIDITY_FLAG);
         return(FALSE);
     }

@@ -433,7 +433,7 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloped-ecdsa-java-bug" \
     "sha512 ecdsa-sha512" \
     "ecdsa x509" \
-    "--trusted-$cert_format $topfolder/keys/enveloped-ecdsa-java-bug-cert.$cert_format --enabled-key-data x509"
+    "--trusted-$cert_format $topfolder/keys/enveloped-ecdsa-java-bug-cert.$cert_format --enabled-key-data x509 --verification-time 2019-01-01+00:00:00"
 fi
 
 #

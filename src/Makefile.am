@@ -17,6 +17,7 @@ EXTRA_DIST = \
 	errors_helpers.h \
 	globals.h \
 	kw_aes_des.h \
+	xslt.h \
 	skeleton \
 	mscrypto \
 	$(XMLSEC_CRYPTO_DISABLED_LIST) \

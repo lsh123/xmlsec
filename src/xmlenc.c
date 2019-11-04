@@ -601,8 +601,8 @@ xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 
     /* decrypt the data */
     if(encCtx->cipherValueNode != NULL) {
-        xmlChar* data = NULL;
-        xmlSecSize dataSize = 0;
+        xmlChar* data;
+        xmlSecSize dataSize;
 
         data = xmlNodeGetContent(encCtx->cipherValueNode);
         if(data == NULL) {
@@ -612,15 +612,11 @@ xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
         dataSize = xmlStrlen(data);
 
         ret = xmlSecTransformCtxBinaryExecute(&(encCtx->transformCtx), data, dataSize);
+        xmlSecAssert2(data != NULL, NULL);
+        xmlFree(data);
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformCtxBinaryExecute", NULL);
-            if(data != NULL) {
-                xmlFree(data);
-            }
             return(NULL);
-        }
-        if(data != NULL) {
-            xmlFree(data);
         }
     } else {
         ret = xmlSecTransformCtxExecute(&(encCtx->transformCtx), node->doc);

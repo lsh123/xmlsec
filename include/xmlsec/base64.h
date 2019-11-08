@@ -25,7 +25,7 @@ extern "C" {
  *
  * The default maximum base64 encoded line size.
  */
-#define XMLSEC_BASE64_LINESIZE                          64
+#define XMLSEC_BASE64_LINESIZE                          20000
 
 XMLSEC_EXPORT int               xmlSecBase64GetDefaultLineSize  (void);
 XMLSEC_EXPORT void              xmlSecBase64SetDefaultLineSize  (int columns);

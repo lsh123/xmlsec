@@ -558,7 +558,17 @@ licensing then feel free to send these questions to the <a href="bugs.html">mail
 </p>
 <h4> <a name="section_2_2"></a>2.2. How to compile xmlsec?</h4>
 <p> On Unix just follow the "standard": </p>
-<blockquote> <code>gunzip -c xmlsec-xxx.tar.gz | tar xvf -</code><br><code>cd xmlsec-xxxx</code><br><code>./configure --help</code><br><code>./configure [possible options] </code><br><code>make</code><br><code>make check</code><br><code>make install</code> </blockquote>
+<blockquote><pre>
+$ gunzip -c xmlsec-xxx.tar.gz | tar xvf -
+$ cd xmlsec-xxxx
+$ ./autogen.sh
+I am going to run ./configure with no arguments - if you wish 
+to pass any to it, please specify them on the ./autogen.sh command line.
+[...]
+$ make
+$ make check
+$ make install
+</pre></blockquote>
 <p> At that point you may have to rerun ldconfig or similar
 utility to update your list of installed shared libs.<br>
 On Windows the process is more complicated. Please check readme file in

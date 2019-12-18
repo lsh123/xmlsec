@@ -40,13 +40,13 @@ script:
 - . scripts/travis-env.sh && mkdir build && cd build && ../autogen.sh --enable-werror && make && make check
 matrix:
   include:
-  - name: "linux"
+  - name: "linux-x86_64"
     os: linux
     dist: trusty
   - name: "osx"
     os: osx
     osx_image: xcode9.3
-  - name: "linux"
+  - name: "linux-s390x"
     os: linux
     arch: s390x
     dist: xenial

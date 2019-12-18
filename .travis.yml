@@ -35,8 +35,7 @@ install:
     else 
       sudo apt-get install libgnutls28 libgnutls-dev; 
     fi;
-  fi
-  
+  fi  
 script:
 - . scripts/travis-env.sh && mkdir build && cd build && ../autogen.sh --enable-werror && make && make check
 matrix:

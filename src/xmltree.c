@@ -605,7 +605,23 @@ xmlSecReplaceContentAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr *r
  */
 int
 xmlSecReplaceNodeBuffer(xmlNodePtr node, const xmlSecByte *buffer, xmlSecSize size) {
-    return xmlSecReplaceNodeBufferAndReturn(node, buffer, size, NULL);
+    return xmlSecReplaceNodeBufferExt(node, buffer, size, 0);
+}
+
+/**
+ * xmlSecReplaceNodeBufferExt:
+ * @node:               the current node.
+ * @buffer:             the XML data.
+ * @size:               the XML data size.
+ * @parserFlags:		the XML parser flags.
+ *
+ * Swaps the @node and the parsed XML data from the @buffer in the XML tree.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecReplaceNodeBufferExt(xmlNodePtr node, const xmlSecByte *buffer, xmlSecSize size, int parserFlags) {
+    return xmlSecReplaceNodeBufferAndReturnExt(node, buffer, size, NULL, parserFlags);
 }
 
 /**
@@ -613,7 +629,7 @@ xmlSecReplaceNodeBuffer(xmlNodePtr node, const xmlSecByte *buffer, xmlSecSize si
  * @node:               the current node.
  * @buffer:             the XML data.
  * @size:               the XML data size.
- * @replaced:           the replaced nodes, or release them if NULL is given
+ * @replaced:           the replaced nodes, or release them if NULL is given.
  *
  * Swaps the @node and the parsed XML data from the @buffer in the XML tree.
  *
@@ -621,6 +637,23 @@ xmlSecReplaceNodeBuffer(xmlNodePtr node, const xmlSecByte *buffer, xmlSecSize si
  */
 int
 xmlSecReplaceNodeBufferAndReturn(xmlNodePtr node, const xmlSecByte *buffer, xmlSecSize size, xmlNodePtr *replaced) {
+	return xmlSecReplaceNodeBufferAndReturnExt(node, buffer, size, replaced, 0);
+}
+
+/**
+ * xmlSecReplaceNodeBufferAndReturnExt:
+ * @node:               the current node.
+ * @buffer:             the XML data.
+ * @size:               the XML data size.
+ * @replaced:           the replaced nodes, or release them if NULL is given.
+ * @parserFlags:		the XML parser flags.
+ *
+ * Swaps the @node and the parsed XML data from the @buffer in the XML tree.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecReplaceNodeBufferAndReturnExt(xmlNodePtr node, const xmlSecByte *buffer, xmlSecSize size, xmlNodePtr *replaced, int parserFlags) {
     xmlNodePtr results = NULL;
     xmlNodePtr next = NULL;
     int ret;
@@ -629,7 +662,7 @@ xmlSecReplaceNodeBufferAndReturn(xmlNodePtr node, const xmlSecByte *buffer, xmlS
     xmlSecAssert2(node->parent != NULL, -1);
 
     /* parse buffer in the context of node's parent */
-    ret = xmlParseInNodeContext(node->parent, (const char*)buffer, size, XML_PARSE_NODICT, &results);
+    ret = xmlParseInNodeContext(node->parent, (const char*)buffer, size, parserFlags | XML_PARSE_NODICT, &results);
     if(ret != XML_ERR_OK) {
         xmlSecXmlError("xmlParseInNodeContext", NULL);
         return(-1);

@@ -515,6 +515,7 @@ xmlSecEncCtxUriEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, const xmlChar *u
 int
 xmlSecEncCtxDecrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     xmlSecBufferPtr buffer;
+    int parserFlags = 0;
     int ret;
 
     xmlSecAssert2(encCtx != NULL, -1);
@@ -527,42 +528,50 @@ xmlSecEncCtxDecrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
         return(-1);
     }
 
+    /* get parser flags */
+    if((encCtx->flags & XMLSEC_ENC_XML_PARSE_HUGE) != 0) {
+    	parserFlags |= XML_PARSE_HUGE;
+    }
+
     /* replace original node if requested */
     if((encCtx->type != NULL) && xmlStrEqual(encCtx->type, xmlSecTypeEncElement)) {
         /* check if we need to return the replaced node */
         if((encCtx->flags & XMLSEC_ENC_RETURN_REPLACED_NODE) != 0) {
-                ret = xmlSecReplaceNodeBufferAndReturn(node, xmlSecBufferGetData(buffer),  xmlSecBufferGetSize(buffer), &(encCtx->replacedNodeList));
+                ret = xmlSecReplaceNodeBufferAndReturnExt(node,
+                		xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer),
+						&(encCtx->replacedNodeList), parserFlags);
                 if(ret < 0) {
-                    xmlSecInternalError("xmlSecReplaceNodeBufferAndReturn",
-                                        xmlSecNodeGetName(node));
+                    xmlSecInternalError("xmlSecReplaceNodeBufferAndReturn", xmlSecNodeGetName(node));
                     return(-1);
                 }
         } else {
-                ret = xmlSecReplaceNodeBuffer(node, xmlSecBufferGetData(buffer),  xmlSecBufferGetSize(buffer));
+                ret = xmlSecReplaceNodeBufferExt(node,
+                		xmlSecBufferGetData(buffer),  xmlSecBufferGetSize(buffer),
+						parserFlags);
                 if(ret < 0) {
-                    xmlSecInternalError("xmlSecReplaceNodeBuffer",
-                                        xmlSecNodeGetName(node));
+                    xmlSecInternalError("xmlSecReplaceNodeBuffer", xmlSecNodeGetName(node));
                     return(-1);
                 }
         }
-
         encCtx->resultReplaced = 1;
     } else if((encCtx->type != NULL) && xmlStrEqual(encCtx->type, xmlSecTypeEncContent)) {
         /* replace the node with the buffer */
 
         /* check if we need to return the replaced node */
         if((encCtx->flags & XMLSEC_ENC_RETURN_REPLACED_NODE) != 0) {
-                ret = xmlSecReplaceNodeBufferAndReturn(node, xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer), &(encCtx->replacedNodeList));
+                ret = xmlSecReplaceNodeBufferAndReturnExt(node,
+                		xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer),
+						&(encCtx->replacedNodeList), parserFlags);
                 if(ret < 0) {
-                    xmlSecInternalError("xmlSecReplaceNodeBufferAndReturn",
-                                        xmlSecNodeGetName(node));
+                    xmlSecInternalError("xmlSecReplaceNodeBufferAndReturn", xmlSecNodeGetName(node));
                     return(-1);
                 }
         } else {
-            ret = xmlSecReplaceNodeBuffer(node, xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer));
+            ret = xmlSecReplaceNodeBufferExt(node,
+            		xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer),
+					parserFlags);
                 if(ret < 0) {
-                    xmlSecInternalError("xmlSecReplaceNodeBuffer",
-                                        xmlSecNodeGetName(node));
+                    xmlSecInternalError("xmlSecReplaceNodeBuffer", xmlSecNodeGetName(node));
                     return(-1);
                 }
         }

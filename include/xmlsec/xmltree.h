@@ -81,14 +81,25 @@ XMLSEC_EXPORT int               xmlSecReplaceContentAndReturn
                                                         (xmlNodePtr node,
                                                          xmlNodePtr newNode,
                                                          xmlNodePtr* replaced);
-XMLSEC_EXPORT int               xmlSecReplaceNodeBuffer (xmlNodePtr node,
+XMLSEC_DEPRECATED XMLSEC_EXPORT int xmlSecReplaceNodeBuffer (xmlNodePtr node,
                                                          const xmlSecByte *buffer,
                                                          xmlSecSize size);
-XMLSEC_EXPORT int               xmlSecReplaceNodeBufferAndReturn
+XMLSEC_EXPORT int               xmlSecReplaceNodeBufferExt
+														(xmlNodePtr node,
+                                                         const xmlSecByte *buffer,
+                                                         xmlSecSize size,
+														 int parserFlags);
+XMLSEC_DEPRECATED XMLSEC_EXPORT int xmlSecReplaceNodeBufferAndReturn
                                                         (xmlNodePtr node,
                                                          const xmlSecByte *buffer,
                                                          xmlSecSize size,
                                                          xmlNodePtr* replaced);
+XMLSEC_EXPORT int               xmlSecReplaceNodeBufferAndReturnExt
+                                                        (xmlNodePtr node,
+                                                         const xmlSecByte *buffer,
+                                                         xmlSecSize size,
+                                                         xmlNodePtr* replaced,
+														 int parserFlags);
 XMLSEC_EXPORT int               xmlSecNodeEncodeAndSetContent
                                                         (xmlNodePtr node,
                                                          const xmlChar *buffer);

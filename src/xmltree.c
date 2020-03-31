@@ -506,7 +506,7 @@ xmlSecReplaceNodeAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr* repl
 
     /* fix documents children if necessary first */
     if((node->doc != NULL) && (node->doc->children == node)) {
-        node->doc->children = node->next;
+    	node->doc->children = node->next;
         restoreRoot = 1;
     }
     if((newNode->doc != NULL) && (newNode->doc->children == newNode)) {
@@ -562,9 +562,6 @@ xmlSecReplaceContentAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr *r
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(newNode != NULL, -1);
 
-    xmlUnlinkNode(newNode);
-    xmlSetTreeDoc(newNode, node->doc);
-
     /* return the old nodes if requested */
     if(replaced != NULL) {
         xmlNodePtr cur, next, tail;
@@ -573,7 +570,7 @@ xmlSecReplaceContentAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr *r
         for(cur = node->children; (cur != NULL); cur = next) {
             next = cur->next;
             if((*replaced) != NULL) {
-                /* n is unlinked in this function */
+                /* cur is unlinked in this function */
                 xmlAddNextSibling(tail, cur);
                 tail = cur;
             } else {
@@ -587,8 +584,9 @@ xmlSecReplaceContentAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr *r
         xmlNodeSetContent(node, NULL);
     }
 
-    xmlAddChild(node, newNode);
-    xmlSetTreeDoc(newNode, node->doc);
+    /* swap nodes */
+    xmlUnlinkNode(newNode);
+    xmlAddChildList(node, newNode);
 
     return(0);
 }
@@ -661,7 +659,8 @@ xmlSecReplaceNodeBufferAndReturnExt(xmlNodePtr node, const xmlSecByte *buffer, x
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(node->parent != NULL, -1);
 
-    /* parse buffer in the context of node's parent */
+    /* parse buffer in the context of node's parent;
+     * XML_PARSE_NODICT is required to avoid problems with moving nodes around  */
     ret = xmlParseInNodeContext(node->parent, (const char*)buffer, size, parserFlags | XML_PARSE_NODICT, &results);
     if(ret != XML_ERR_OK) {
         xmlSecXmlError("xmlParseInNodeContext", NULL);
@@ -900,7 +899,6 @@ xmlSecPrintXmlString(FILE * fd, const xmlChar * str) {
     }
     return(res);
 }
-
 
 /**
  * xmlSecGetQName:

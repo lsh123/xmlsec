@@ -114,7 +114,6 @@ XMLSEC_EXPORT xmlChar*          xmlSecGetQName          (xmlNodePtr node,
                                                          const xmlChar* href,
                                                          const xmlChar* local);
 
-
 XMLSEC_EXPORT int               xmlSecPrintXmlString    (FILE * fd,
                                                          const xmlChar * str);
 

@@ -1699,9 +1699,6 @@ xmlSecAppDecryptFile(const char* filename) {
         goto done;
     }
 
-    /* allow parsing of huge files */
-    encCtx.flags |= XMLSEC_ENC_XML_PARSE_HUGE;
-
     /* parse template and select start node */
     data = xmlSecAppXmlDataCreate(filename, xmlSecNodeEncryptedData, xmlSecEncNs);
     if(data == NULL) {

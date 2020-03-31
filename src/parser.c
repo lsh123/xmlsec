@@ -577,11 +577,11 @@ xmlSecParsePrepareCtxt(xmlParserCtxtPtr ctxt) {
     ctxt->replaceEntities = 1;
 
     /*
+     * Also see xmlSecReplaceNodeBufferAndReturn:
+     *
      * XML_PARSE_NONET  to support c14n
      * XML_PARSE_NODICT to avoid problems with moving nodes around
-     * XML_PARSE_HUGE to enable parsing of XML documents with large text nodes
+     * XML_PARSE_HUGE   to enable parsing of XML documents with large text nodes
      */
     xmlCtxtUseOptions(ctxt, XML_PARSE_NONET | XML_PARSE_NODICT | XML_PARSE_HUGE);
 }
-
-

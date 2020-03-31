@@ -629,7 +629,7 @@ xmlSecReplaceNodeBufferAndReturn(xmlNodePtr node, const xmlSecByte *buffer, xmlS
     /* parse buffer in the context of node's parent (also see xmlSecParsePrepareCtxt):
      * XML_PARSE_NONET  to support c14n
      * XML_PARSE_NODICT to avoid problems with moving nodes around
-     * XML_PARSE_HUGE to enable parsing of XML documents with large text nodes
+     * XML_PARSE_HUGE   to enable parsing of XML documents with large text nodes
      */
     ret = xmlParseInNodeContext(node->parent, (const char*)buffer, size,
     		XML_PARSE_NONET | XML_PARSE_NODICT | XML_PARSE_HUGE, &results);

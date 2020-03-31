@@ -562,9 +562,6 @@ xmlSecReplaceContentAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr *r
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(newNode != NULL, -1);
 
-    xmlUnlinkNode(newNode);
-    xmlSetTreeDoc(newNode, node->doc);
-
     /* return the old nodes if requested */
     if(replaced != NULL) {
         xmlNodePtr cur, next, tail;
@@ -573,7 +570,7 @@ xmlSecReplaceContentAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr *r
         for(cur = node->children; (cur != NULL); cur = next) {
             next = cur->next;
             if((*replaced) != NULL) {
-                /* n is unlinked in this function */
+                /* cur is unlinked in this function */
                 xmlAddNextSibling(tail, cur);
                 tail = cur;
             } else {
@@ -587,8 +584,9 @@ xmlSecReplaceContentAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr *r
         xmlNodeSetContent(node, NULL);
     }
 
-    xmlAddChild(node, newNode);
-    xmlSetTreeDoc(newNode, node->doc);
+    /* swap nodes */
+    xmlUnlinkNode(newNode);
+    xmlAddChildList(node, newNode);
 
     return(0);
 }
@@ -628,8 +626,13 @@ xmlSecReplaceNodeBufferAndReturn(xmlNodePtr node, const xmlSecByte *buffer, xmlS
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(node->parent != NULL, -1);
 
-    /* parse buffer in the context of node's parent */
-    ret = xmlParseInNodeContext(node->parent, (const char*)buffer, size, XML_PARSE_NODICT, &results);
+    /* parse buffer in the context of node's parent (also see xmlSecParsePrepareCtxt):
+     * XML_PARSE_NONET  to support c14n
+     * XML_PARSE_NODICT to avoid problems with moving nodes around
+     * XML_PARSE_HUGE   to enable parsing of XML documents with large text nodes
+     */
+    ret = xmlParseInNodeContext(node->parent, (const char*)buffer, size,
+    		XML_PARSE_NONET | XML_PARSE_NODICT | XML_PARSE_HUGE, &results);
     if(ret != XML_ERR_OK) {
         xmlSecXmlError("xmlParseInNodeContext", NULL);
         return(-1);
@@ -867,7 +870,6 @@ xmlSecPrintXmlString(FILE * fd, const xmlChar * str) {
     }
     return(res);
 }
-
 
 /**
  * xmlSecGetQName:

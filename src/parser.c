@@ -143,7 +143,7 @@ xmlSecParserFinalize(xmlSecTransformPtr transform) {
 
 static int
 xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
-                                xmlSecSize dataSize, int final, xmlSecTransformCtxPtr transformCtx) {
+                    xmlSecSize dataSize, int final, xmlSecTransformCtxPtr transformCtx) {
     xmlSecParserCtxPtr ctx;
     int ret;
 
@@ -162,11 +162,7 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
             xmlSecXmlError("xmlCreatePushParserCtxt", xmlSecTransformGetName(transform));
             return(-1);
         }
-
-        /* required for c14n! */
-        ctx->parserCtx->loadsubset      = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
-        ctx->parserCtx->replaceEntities = 1;
-        ctx->parserCtx->options         = XML_PARSE_NONET;
+        xmlSecParsePrepareCtxt(ctx->parserCtx);
 
         transform->status = xmlSecTransformStatusWorking;
     } else if(transform->status == xmlSecTransformStatusFinished) {
@@ -283,6 +279,7 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
         xmlFreeParserInputBuffer(buf);
         return(-1);
     }
+    xmlSecParsePrepareCtxt(ctxt);
 
     input = xmlNewIOInputStream(ctxt, buf, XML_CHAR_ENCODING_NONE);
     if(input == NULL) {
@@ -305,10 +302,6 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
         xmlFreeParserCtxt(ctxt);
         return(-1);
     }
-
-    /* required for c14n! */
-    ctxt->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
-    ctxt->replaceEntities = 1;
 
     /* finaly do the parsing */
     ret = xmlParseDocument(ctxt);
@@ -380,9 +373,7 @@ xmlSecParseFile(const char *filename) {
                         "filename=%s", xmlSecErrorsSafeString(filename));
         return(NULL);
     }
-
-    /* enable parsing of XML documents with large text nodes */
-    /* crashes on x64 xmlCtxtUseOptions (ctxt, XML_PARSE_HUGE); */
+    xmlSecParsePrepareCtxt(ctxt);
 
     /* todo: set directories from current doc? */
     if ((ctxt->directory == NULL) && (directory == NULL)) {
@@ -402,10 +393,6 @@ xmlSecParseFile(const char *filename) {
             return(NULL);
         }
     }
-
-    /* required for c14n! */
-    ctxt->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
-    ctxt->replaceEntities = 1;
 
     ret = xmlParseDocument(ctxt);
     if(ret < 0) {
@@ -465,10 +452,7 @@ xmlSecParseMemoryExt(const xmlSecByte *prefix, xmlSecSize prefixSize,
         xmlSecXmlError("xmlCreatePushParserCtxt", NULL);
         goto done;
     }
-
-    /* required for c14n! */
-    ctxt->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
-    ctxt->replaceEntities = 1;
+    xmlSecParsePrepareCtxt(ctxt);
 
     /* prefix */
     if((prefix != NULL) && (prefixSize > 0)) {
@@ -548,10 +532,7 @@ xmlSecParseMemory(const xmlSecByte *buffer, xmlSecSize size, int recovery) {
         xmlSecXmlError("xmlCreateMemoryParserCtxt", NULL);
         return(NULL);
     }
-
-    /* required for c14n! */
-    ctxt->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
-    ctxt->replaceEntities = 1;
+    xmlSecParsePrepareCtxt(ctxt);
 
     ret = xmlParseDocument(ctxt);
     if(ret < 0) {
@@ -581,3 +562,26 @@ xmlSecParseMemory(const xmlSecByte *buffer, xmlSecSize size, int recovery) {
     return(res);
 }
 
+/**
+ * xmlSecParsePrepareCtxt:
+ * @ctxt:               the parser context
+ *
+ * Prepares parser context for parsing XML for XMLSec.
+ */
+void
+xmlSecParsePrepareCtxt(xmlParserCtxtPtr ctxt) {
+	xmlSecAssert(ctxt != NULL);
+
+    /* required for c14n! */
+    ctxt->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
+    ctxt->replaceEntities = 1;
+
+    /*
+     * Also see xmlSecReplaceNodeBufferAndReturn:
+     *
+     * XML_PARSE_NONET  to support c14n
+     * XML_PARSE_NODICT to avoid problems with moving nodes around
+     * XML_PARSE_HUGE   to enable parsing of XML documents with large text nodes
+     */
+    xmlCtxtUseOptions(ctxt, XML_PARSE_NONET | XML_PARSE_NODICT | XML_PARSE_HUGE);
+}

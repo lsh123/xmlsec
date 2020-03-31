@@ -506,7 +506,7 @@ xmlSecReplaceNodeAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr* repl
 
     /* fix documents children if necessary first */
     if((node->doc != NULL) && (node->doc->children == node)) {
-    	node->doc->children = node->next;
+        node->doc->children = node->next;
         restoreRoot = 1;
     }
     if((newNode->doc != NULL) && (newNode->doc->children == newNode)) {

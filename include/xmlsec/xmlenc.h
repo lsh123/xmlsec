@@ -51,14 +51,6 @@ typedef enum {
 #define XMLSEC_ENC_RETURN_REPLACED_NODE                 0x00000001
 
 /**
- * XMLSEC_ENC_XML_PARSE_HUGE:
- *
- * If this flag is set, then XML_PARSE_HUGE will be used for parsing de-crypted XML.
- */
-#define XMLSEC_ENC_XML_PARSE_HUGE                 		0x00000002
-
-
-/**
  * xmlSecEncCtx:
  * @userData:                   the pointer to user data (xmlsec and xmlsec-crypto libraries
  *                              never touches this).

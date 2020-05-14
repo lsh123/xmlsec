@@ -315,7 +315,7 @@ if test "z$LIBXML_FOUND" = "zno" -a "z$with_libxml" != "z" -a "z$with_libxml" !=
         AC_MSG_RESULT([yes])
     elif test [ -f "$with_libxml/include/libxml2/$LIBXML_INCLUDE_MARKER" ] -a [ -f "$with_libxml/lib/$LIBXML_SHARED_LIB_MARKER" -o -f "$with_libxml/lib/$LIBXML_STATIC_LIB_MARKER" ] ; then
         LIBXML_INCLUDE_PATH="$with_libxml/include/libxml2"
-        LIBXSLT_LIB_PATH="$with_libxml/lib"
+        LIBXML_LIB_PATH="$with_libxml/lib"
         LIBXML_FOUND="yes"
         AC_MSG_RESULT([yes])
     else

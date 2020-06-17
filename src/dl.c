@@ -148,8 +148,8 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
 #endif /* XMLSEC_DL_LIBLTDL */
 
 #ifdef XMLSEC_DL_WIN32
-#if !defined(WINAPI_FAMILY) || WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP
-	lib->handle = LoadLibraryA((char*)lib->filename);
+#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY != WINAPI_FAMILY_DESKTOP_APP)
+    lib->handle = LoadLibraryA((char*)lib->filename);
 #else
     LPTSTR wcLibFilename = xmlSecWin32ConvertUtf8ToTstr((char*)lib->filename);
     if(wcLibFilename == NULL) {

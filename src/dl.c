@@ -152,7 +152,7 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
 	lib->handle = LoadLibraryA((char*)lib->filename);
 #else
     LPTSTR wcLibFilename = xmlSecWin32ConvertUtf8ToTstr((char*)lib->filename);
-	if(wcLibFilename == NULL) {
+    if(wcLibFilename == NULL) {
         xmlSecIOError("xmlSecWin32ConvertUtf8ToTstr", lib->filename, NULL);
         xmlSecCryptoDLLibraryDestroy(lib);
         return(NULL);

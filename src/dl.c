@@ -151,7 +151,7 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
 #if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY != WINAPI_FAMILY_DESKTOP_APP)
     lib->handle = LoadLibraryA((char*)lib->filename);
 #else
-    LPTSTR wcLibFilename = xmlSecWin32ConvertUtf8ToTstr(lib->filename);
+    LPWSTR wcLibFilename = xmlSecWin32ConvertUtf8ToUnicode(lib->filename);
     if(wcLibFilename == NULL) {
         xmlSecIOError("xmlSecWin32ConvertUtf8ToTstr", lib->filename, NULL);
         xmlSecCryptoDLLibraryDestroy(lib);

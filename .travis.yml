@@ -6,40 +6,40 @@ before_install:
 - (case "${TRAVIS_OS_NAME}" in
     "linux")
         sudo apt-get update;
-        echo "=== install build tools"
+        echo "=== install build tools";
         sudo apt-get install automake autoconf libtool;
         if [ "$TRAVIS_ARCH" = "s390x" ]; then
             sudo apt-get install libtool-bin libltdl-dev libltdl7;
         fi;
-        echo "=== install libxml2/libxslt libraries"
+        echo "=== install libxml2/libxslt libraries";
         sudo apt-get install libxml2 libxml2-dev libxslt1.1 libxslt1-dev;
-        echo "=== install openssl libraries"
+        echo "=== install openssl libraries";
         sudo apt-get install libssl1.0.0 libssl-dev;
-        echo "=== install nspr/nss libraries"
+        echo "=== install nspr/nss libraries";
         sudo apt-get install libnspr4 libnspr4-dev libnss3 libnss3-dev libnss3-tools;
-        echo "=== install gcrypt libraries"
+        echo "=== install gcrypt libraries";
         sudo apt-get install libgcrypt20 libgcrypt20-dev;
-        echo "=== install gnutls libraries"
+        echo "=== install gnutls libraries";
         sudo apt-get install libgnutls-dev;
     ;;
     "osx")
         brew update;
-        echo "=== install build tools"
+        echo "=== install build tools";
         brew install libtool;
-        echo "=== install libxml2/libxslt libraries"
+        echo "=== install libxml2/libxslt libraries";
         echo "    skip"
-        echo "=== install openssl libraries"
+        echo "=== install openssl libraries";
         brew install openssl;
-        echo "=== install nspr/nss libraries"
+        echo "=== install nspr/nss libraries";
         brew install nss;
-        echo "=== install gcrypt libraries"
+        echo "=== install gcrypt libraries";
         brew install libgcrypt
-        echo "=== install gnutls libraries"
+        echo "=== install gnutls libraries";
         brew install gnutls
     ;;
     *)
-        echo "=== Unknown OS name '${TRAVIS_OS_NAME}', this is likely not going to work"
-        echo "=== do nothing and hope for the best"
+        echo "=== Unknown OS name '${TRAVIS_OS_NAME}', this is likely not going to work";
+        echo "=== do nothing and hope for the best";
     ;;
   esac);
 

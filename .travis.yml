@@ -24,7 +24,8 @@ addons:
     - libnss3-tools
     - libgcrypt20
     - libgcrypt20-dev
-    - libgnutls-dev
+    - libgnutls28
+    - libgnutls28-dev
   homebrew:
     packages:
     - libtool

@@ -2,8 +2,8 @@ language: c
 os: linux
 dist: xenial
 
-install:
-- case "${TRAVIS_OS_NAME}" in
+before_install:
+- (case "${TRAVIS_OS_NAME}" in
     "linux")
         sudo apt-get update;
 
@@ -53,7 +53,7 @@ install:
         echo "=== Unknown OS name '${TRAVIS_OS_NAME}', this is likely not going to work"
         echo "=== do nothing and hope for the best"
     ;;
-  esac
+  esac);
 
 script:
 - . scripts/travis-env.sh && mkdir build && cd build && ../autogen.sh --enable-werror && make && make check

@@ -1,6 +1,6 @@
 language: c
 os: linux
-dist: xenial
+dist: bionic
 
 addons:
   apt:
@@ -40,7 +40,6 @@ jobs:
   include:
   - name: "linux-x86_64"
     os: linux
-    dist: xenial
     arch: amd64
   - name: "osx"
     os: osx
@@ -48,4 +47,3 @@ jobs:
   - name: "linux-s390x"
     os: linux
     arch: s390x
-    dist: xenial

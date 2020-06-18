@@ -34,7 +34,7 @@
 #include <xmlsec/openssl/x509.h>
 
 static int              xmlSecOpenSSLErrorsInit                 (void);
-void xmlSecOpenSSLErrorsShutdown(void);
+static void             xmlSecOpenSSLErrorsShutdown             (void);
 
 static xmlSecCryptoDLFunctionsPtr gXmlSecOpenSSLFunctions = NULL;
 static xmlChar* gXmlSecOpenSSLTrustedCertsFolder = NULL;
@@ -348,18 +348,6 @@ xmlSecOpenSSLInit (void)  {
     return(0);
 }
 
-#ifndef OPENSSL_IS_BORINGSSL
-static ERR_STRING_DATA xmlSecOpenSSLStrReasons[XMLSEC_ERRORS_MAX_NUMBER + 1];
-static ERR_STRING_DATA xmlSecOpenSSLStrLib[]= {
-	{ ERR_PACK(XMLSEC_OPENSSL_ERRORS_LIB,0,0),      "xmlsec routines"},
-	{ 0,                                            NULL}
-};
-static ERR_STRING_DATA xmlSecOpenSSLStrDefReason[]= {
-	{ XMLSEC_OPENSSL_ERRORS_LIB,                    "xmlsec lib"},
-	{ 0,                                            NULL}
-};
-#endif /* OPENSSL_IS_BORINGSSL */
-
 /**
  * xmlSecOpenSSLShutdown:
  *
@@ -372,20 +360,6 @@ xmlSecOpenSSLShutdown(void) {
     xmlSecOpenSSLSetDefaultTrustedCertsFolder(NULL);
 	xmlSecOpenSSLErrorsShutdown();
     return(0);
-}
-
-/**
- * xmlSecOpenSSLErrorsShutdown:
- *
- * finally unload xmlsec strings in OpenSSL
- */
-void
-xmlSecOpenSSLErrorsShutdown(void) {
-#ifndef OPENSSL_IS_BORINGSSL
-    ERR_unload_strings(XMLSEC_OPENSSL_ERRORS_LIB, xmlSecOpenSSLStrLib); /* define xmlsec lib name */
-    ERR_unload_strings(XMLSEC_OPENSSL_ERRORS_LIB, xmlSecOpenSSLStrDefReason); /* define default reason */
-    ERR_unload_strings(XMLSEC_OPENSSL_ERRORS_LIB, xmlSecOpenSSLStrReasons);
-#endif /* OPENSSL_IS_BORINGSSL */
 }
 
 /**
@@ -480,6 +454,18 @@ xmlSecOpenSSLErrorsDefaultCallback(const char* file, int line, const char* func,
                 reason, msg);
 }
 
+#ifndef OPENSSL_IS_BORINGSSL
+static ERR_STRING_DATA xmlSecOpenSSLStrReasons[XMLSEC_ERRORS_MAX_NUMBER + 1];
+static ERR_STRING_DATA xmlSecOpenSSLStrLib[] = {
+    { ERR_PACK(XMLSEC_OPENSSL_ERRORS_LIB,0,0),      "xmlsec routines"},
+    { 0,                                            NULL}
+};
+static ERR_STRING_DATA xmlSecOpenSSLStrDefReason[]= {
+    { XMLSEC_OPENSSL_ERRORS_LIB,                    "xmlsec lib"},
+    { 0,                                            NULL}
+};
+#endif /* OPENSSL_IS_BORINGSSL */
+
 static int
 xmlSecOpenSSLErrorsInit(void) {
 #ifndef OPENSSL_IS_BORINGSSL
@@ -492,7 +478,7 @@ xmlSecOpenSSLErrorsInit(void) {
         xmlSecOpenSSLStrReasons[pos].string = xmlSecErrorsGetMsg(pos);
     }
 
-    /* finally load xmlsec strings in OpenSSL */
+    /* load xmlsec strings in OpenSSL */
     ERR_load_strings(XMLSEC_OPENSSL_ERRORS_LIB, xmlSecOpenSSLStrLib); /* define xmlsec lib name */
     ERR_load_strings(XMLSEC_OPENSSL_ERRORS_LIB, xmlSecOpenSSLStrDefReason); /* define default reason */
     ERR_load_strings(XMLSEC_OPENSSL_ERRORS_LIB, xmlSecOpenSSLStrReasons);
@@ -502,6 +488,20 @@ xmlSecOpenSSLErrorsInit(void) {
     xmlSecErrorsSetCallback(xmlSecOpenSSLErrorsDefaultCallback);
 
     return(0);
+}
+
+
+static void
+xmlSecOpenSSLErrorsShutdown(void) {
+    /* remove callback */
+    xmlSecErrorsSetCallback(NULL);
+
+#ifndef OPENSSL_IS_BORINGSSL
+    /* unload xmlsec strings from OpenSSL */
+    ERR_unload_strings(XMLSEC_OPENSSL_ERRORS_LIB, xmlSecOpenSSLStrLib);
+    ERR_unload_strings(XMLSEC_OPENSSL_ERRORS_LIB, xmlSecOpenSSLStrDefReason);
+    ERR_unload_strings(XMLSEC_OPENSSL_ERRORS_LIB, xmlSecOpenSSLStrReasons);
+#endif /* OPENSSL_IS_BORINGSSL */
 }
 
 /**

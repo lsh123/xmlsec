@@ -1,65 +1,69 @@
 language: c
-sudo: required
+os: linux
+dist: xenial
+
 install:
 - case "${TRAVIS_OS_NAME}" in
     "linux")
         sudo apt-get update;
 
-        # install build tools
+        echo "=== install build tools"
         sudo apt-get install automake autoconf libtool;
         if [ "$TRAVIS_ARCH" = "s390x" ]; then
             sudo apt-get install libtool-bin libltdl-dev libltdl7;
         fi;
 
-        # install libxml2/libxslt libraries
+        echo "=== install libxml2/libxslt libraries"
         sudo apt-get install libxml2 libxml2-dev libxslt1.1 libxslt1-dev;
 
-        # install openssl libraries
+        echo "=== install openssl libraries"
         sudo apt-get install libssl1.0.0 libssl-dev;
 
-        # install nspr/nss libraries
+        echo "=== install nspr/nss libraries"
         sudo apt-get install libnspr4 libnspr4-dev libnss3 libnss3-dev libnss3-tools;
 
-        # install gcrypt libraries
+        echo "=== install gcrypt libraries"
         sudo apt-get install libgcrypt20 libgcrypt20-dev;
 
-        # install gnutls libraries
+        echo "=== install gnutls libraries"
         sudo apt-get install libgnutls-dev;
     ;;
     "osx")
         brew update;
 
-        # install build tools
+        echo "=== install build tools"
         brew install libtool;
 
-        # install libxml2/libxslt libraries
-        # skip
+        echo "=== install libxml2/libxslt libraries"
+        echo "    skip"
 
-        # install openssl libraries
+        echo "=== install openssl libraries"
         brew install openssl;
 
-        # install nspr/nss libraries
+        echo "=== install nspr/nss libraries"
         brew install nss;
 
-        # install gcrypt libraries
+        echo "=== install gcrypt libraries"
         brew install libgcrypt
 
-        # install gnutls libraries
+        echo "=== install gnutls libraries"
         brew install gnutls
     ;;
     *)
-        # do nothing and hope for the best
-        echo "Unknown OS name '${TRAVIS_OS_NAME}', this is likely not going to work"
+        echo "=== Unknown OS name '${TRAVIS_OS_NAME}', this is likely not going to work"
+        echo "=== do nothing and hope for the best"
     ;;
   esac
 
 script:
 - . scripts/travis-env.sh && mkdir build && cd build && ../autogen.sh --enable-werror && make && make check
-matrix:
+
+jobs:
   include:
   - name: "linux-x86_64"
     os: linux
-    dist: trusty
+    dist: xenial
+    arch: amd64
   - name: "osx"
     os: osx
     osx_image: xcode9.3

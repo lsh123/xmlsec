@@ -7,10 +7,7 @@ before_install:
     "linux")
         sudo apt-get update;
         echo "=== install build tools";
-        sudo apt-get install automake autoconf libtool;
-        if [ "$TRAVIS_ARCH" = "s390x" ]; then
-            sudo apt-get install libtool-bin libltdl-dev libltdl7;
-        fi;
+        sudo apt-get install automake autoconf libtool libtool-bin libltdl-dev libltdl7;
         echo "=== install libxml2/libxslt libraries";
         sudo apt-get install libxml2 libxml2-dev libxslt1.1 libxslt1-dev;
         echo "=== install openssl libraries";

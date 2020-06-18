@@ -1,52 +1,49 @@
 language: c
-sudo: required
-install:
-- if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get update; fi
-- if [ "$TRAVIS_OS_NAME" == "osx" ]; then brew update; fi
-# install build tools
-- if [ "$TRAVIS_OS_NAME" = "linux" ]; then 
-    if [ "$TRAVIS_ARCH" = "s390x" ]; then 
-      sudo apt-get install automake autoconf libtool libtool-bin libltdl-dev libltdl7; 
-    else 
-      sudo apt-get install automake autoconf libtool; 
-    fi;
-  fi
-- if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew install libtool; fi
-# install libxml2/libxslt libraries
-- if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get install libxml2 libxml2-dev libxslt1.1 libxslt1-dev; fi
-# install openssl libraries
-- if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get install libssl1.0.0 libssl-dev; fi
-- if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew install openssl; fi
-# install nspr/nss libraries
-- if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get install libnspr4 libnspr4-dev libnss3 libnss3-dev libnss3-tools; fi
-- if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew install nss; fi
-# install gcrypt libraries
-- if [ "$TRAVIS_OS_NAME" = "linux" ]; then 
-    if [ "$TRAVIS_ARCH" = "s390x" ]; then 
-      sudo apt-get install libgcrypt20 libgcrypt20-dev; 
-    else 
-      sudo apt-get install libgcrypt11 libgcrypt11-dev; 
-    fi;
-  fi
-# install gnutls libraries
-- if [ "$TRAVIS_OS_NAME" = "linux" ]; then 
-    if [ "$TRAVIS_ARCH" = "s390x" ]; then
-      sudo apt-get install libgnutls-dev; 
-    else 
-      sudo apt-get install libgnutls28 libgnutls-dev; 
-    fi;
-  fi  
+os: linux
+dist: bionic
+
+addons:
+  apt:
+    packages:
+    - automake
+    - autoconf
+    - libtool
+    - libtool-bin
+    - libltdl-dev
+    - libltdl7
+    - libxml2
+    - libxml2-dev
+    - libxslt1.1
+    - libxslt1-dev
+    - libssl1.0.0
+    - libssl-dev
+    - libnspr4
+    - libnspr4-dev
+    - libnss3
+    - libnss3-dev
+    - libnss3-tools
+    - libgcrypt20
+    - libgcrypt20-dev
+    - libgnutls28-dev
+  homebrew:
+    packages:
+    - libtool
+    - openssl
+    - nss
+    - libgcrypt
+    - gnutls
+    
 script:
 - . scripts/travis-env.sh && mkdir build && cd build && ../autogen.sh --enable-werror && make && make check
-matrix:
+
+jobs:
   include:
   - name: "linux-x86_64"
     os: linux
-    dist: trusty
+    arch: amd64
   - name: "osx"
     os: osx
     osx_image: xcode9.3
   - name: "linux-s390x"
     os: linux
     arch: s390x
-    dist: xenial

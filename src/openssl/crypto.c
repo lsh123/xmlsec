@@ -34,6 +34,7 @@
 #include <xmlsec/openssl/x509.h>
 
 static int              xmlSecOpenSSLErrorsInit                 (void);
+void xmlSecOpenSSLErrorsShutdown(void);
 
 static xmlSecCryptoDLFunctionsPtr gXmlSecOpenSSLFunctions = NULL;
 static xmlChar* gXmlSecOpenSSLTrustedCertsFolder = NULL;
@@ -369,13 +370,22 @@ static ERR_STRING_DATA xmlSecOpenSSLStrDefReason[]= {
 int
 xmlSecOpenSSLShutdown(void) {
     xmlSecOpenSSLSetDefaultTrustedCertsFolder(NULL);
+	xmlSecOpenSSLErrorsShutdown();
+    return(0);
+}
+
+/**
+ * xmlSecOpenSSLErrorsShutdown:
+ *
+ * finally unload xmlsec strings in OpenSSL
+ */
+void
+xmlSecOpenSSLErrorsShutdown(void) {
 #ifndef OPENSSL_IS_BORINGSSL
-    /* finally unload xmlsec strings in OpenSSL */
     ERR_unload_strings(XMLSEC_OPENSSL_ERRORS_LIB, xmlSecOpenSSLStrLib); /* define xmlsec lib name */
     ERR_unload_strings(XMLSEC_OPENSSL_ERRORS_LIB, xmlSecOpenSSLStrDefReason); /* define default reason */
     ERR_unload_strings(XMLSEC_OPENSSL_ERRORS_LIB, xmlSecOpenSSLStrReasons);
 #endif /* OPENSSL_IS_BORINGSSL */
-    return(0);
 }
 
 /**

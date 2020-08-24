@@ -36,6 +36,11 @@ fi
 	echo "You must have autoconf installed to compile xmlsec."
 	DIE=1
 }
+(autoreconf --version) < /dev/null > /dev/null 2>&1 || {
+        echo
+        echo "You must have autoreconf installed to compile xmlsec."
+        DIE=1
+}
 (automake --version) < /dev/null > /dev/null 2>&1 || {
 	echo
 	echo "You must have automake installed to compile xmlsec."
@@ -76,6 +81,8 @@ echo "Running automake..."
 automake --gnu --add-missing
 echo "Running autoconf..."
 autoconf
+echo "Running autoreconf..."
+autoreconf -i
 
 cd $THEDIR
 

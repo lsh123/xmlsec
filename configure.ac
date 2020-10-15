@@ -1,10 +1,10 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT([xmlsec1],[1.2.29],[http://www.aleksey.com/xmlsec])
+AC_INIT([xmlsec1],[1.2.30],[http://www.aleksey.com/xmlsec])
 
 XMLSEC_PACKAGE=xmlsec1
 XMLSEC_VERSION_MAJOR=1
 XMLSEC_VERSION_MINOR=2
-XMLSEC_VERSION_SUBMINOR=29
+XMLSEC_VERSION_SUBMINOR=30
 XMLSEC_VERSION="$XMLSEC_VERSION_MAJOR.$XMLSEC_VERSION_MINOR.$XMLSEC_VERSION_SUBMINOR"
 XMLSEC_VERSION_INFO=`echo $XMLSEC_VERSION | awk -F. '{ printf "%d:%d:%d", $1+$2, $3, $2 }'`
 XMLSEC_VERSION_SAFE=`echo $XMLSEC_VERSION | sed 's/\./_/g'`
@@ -315,7 +315,7 @@ if test "z$LIBXML_FOUND" = "zno" -a "z$with_libxml" != "z" -a "z$with_libxml" !=
         AC_MSG_RESULT([yes])
     elif test [ -f "$with_libxml/include/libxml2/$LIBXML_INCLUDE_MARKER" ] -a [ -f "$with_libxml/lib/$LIBXML_SHARED_LIB_MARKER" -o -f "$with_libxml/lib/$LIBXML_STATIC_LIB_MARKER" ] ; then
         LIBXML_INCLUDE_PATH="$with_libxml/include/libxml2"
-        LIBXSLT_LIB_PATH="$with_libxml/lib"
+        LIBXML_LIB_PATH="$with_libxml/lib"
         LIBXML_FOUND="yes"
         AC_MSG_RESULT([yes])
     else

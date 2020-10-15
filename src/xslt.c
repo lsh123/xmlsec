@@ -284,7 +284,7 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransfor
 
 static int
 xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
-                                xmlSecSize dataSize, int final, xmlSecTransformCtxPtr transformCtx) {
+                  xmlSecSize dataSize, int final, xmlSecTransformCtxPtr transformCtx) {
     xmlSecXsltCtxPtr ctx;
     int ret;
 
@@ -305,10 +305,7 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
             xmlSecXmlError("xmlCreatePushParserCtxt", xmlSecTransformGetName(transform));
             return(-1);
         }
-
-        /* required for c14n! */
-        ctx->parserCtx->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
-        ctx->parserCtx->replaceEntities = 1;
+        xmlSecParsePrepareCtxt(ctx->parserCtx);
 
         transform->status = xmlSecTransformStatusWorking;
     } else if(transform->status == xmlSecTransformStatusFinished) {

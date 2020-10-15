@@ -1,6 +1,7 @@
 Compilation
 
 1. How to compile XMLSec?
+
 As most UNIX libraries XMLSec follows the "standard":
 
      gunzip -c xmlsec-xxx.tar.gz | tar xvf -
@@ -18,6 +19,14 @@ update your list of installed shared libs. At this point you can check
 that the library is compiled successfully by running
 
      make check
+
+Alternatively there are several community maintained ports to CMake
+build system:
+
+* https://github.com/vmiklos/odfsig/tree/master/extern/xmlsec
+
+* https://github.com/microsoft/vcpkg/tree/master/ports/xmlsec
+
 
 2.What other libraries are needed to compile/install XMLSec? 
 XMLSec requires following libraries:

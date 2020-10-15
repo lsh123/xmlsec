@@ -27,9 +27,9 @@ docs-copy:
 		if [ z"$(srcdir)" != z"$(builddir)" -a z"`uname`" != z"Darwin" ]; \
 		then \
 		    $(CP) -ru $(srcdir)/*.html $(srcdir)/*.ico $(srcdir)/images $(builddir)/  ; \
-		    chmod u+w $(builddir)/*.html ; \
-		    chmod u+w $(builddir)/*.ico ; \
-		    chmod -R u+w $(builddir)/images ; \
+		    (chmod u+w $(builddir)/*.html || true) ; \
+		    (chmod u+w $(builddir)/*.ico || true) ; \
+		    (chmod -R u+w $(builddir)/images || true) ; \
 		fi \
 	)
 
@@ -94,8 +94,8 @@ endif
 clean-local:
 	-rm -f *.stamp
 	( if [ z"$(srcdir)" != z"$(builddir)" ] ; then \
-		chmod -R u+w $(builddir)/images && rm -rf $(builddir)/images ; \
-		chmod -R u+w $(builddir)/src && rm -rf $(builddir)/src ; \
+		(chmod -R u+w $(builddir)/images || true) && rm -rf $(builddir)/images ; \
+		(chmod -R u+w $(builddir)/src || true) && rm -rf $(builddir)/src ; \
 		(for i in `find $(builddir) -name "*.html" -print` ; do \
 			echo "Removing files '$$i' ... " ; \
 			chmod -R u+w $$i && rm -f $$i ; \

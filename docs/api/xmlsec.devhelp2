@@ -681,6 +681,7 @@
     <keyword type="function" name="xmlSecParseFile ()" link="xmlsec-parser.html#xmlSecParseFile"/>
     <keyword type="function" name="xmlSecParseMemory ()" link="xmlsec-parser.html#xmlSecParseMemory"/>
     <keyword type="function" name="xmlSecParseMemoryExt ()" link="xmlsec-parser.html#xmlSecParseMemoryExt"/>
+    <keyword type="function" name="xmlSecParsePrepareCtxt ()" link="xmlsec-parser.html#xmlSecParsePrepareCtxt"/>
     <keyword type="function" name="xmlSecTransformXmlParserGetKlass ()" link="xmlsec-parser.html#xmlSecTransformXmlParserGetKlass"/>
     <keyword type="macro" name="xmlSecTransformXmlParserId" link="xmlsec-parser.html#xmlSecTransformXmlParserId"/>
     <keyword type="function" name="xmlSecTmplSignatureCreate ()" link="xmlsec-templates.html#xmlSecTmplSignatureCreate"/>

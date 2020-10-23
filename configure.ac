@@ -2304,12 +2304,24 @@ dnl ==========================================================================
 AC_MSG_CHECKING(for pedantic)
 AC_ARG_ENABLE([pedantic], [AC_HELP_STRING([--enable-pedantic], [enable pedantic compilation flags (no)])])
 if test "z$enable_pedantic" = "zyes" ; then
-    dnl CFLAGS="$CFLAGS -pedantic -Wall -std=c99 -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wredundant-decls"
     CFLAGS="$CFLAGS -O -pedantic -Wall -std=c99 -fno-inline -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wmissing-prototypes -Wnested-externs -Wredundant-decls"
     AC_MSG_RESULT([yes])
 else
     AC_MSG_RESULT([disabled])
 fi
+
+dnl ==========================================================================
+dnl Secure memset
+dnl ==========================================================================
+AC_MSG_CHECKING(for secure memset)
+AC_ARG_ENABLE([secure-memset], [AC_HELP_STRING([--enable-secure-memset], [enable secure memset compilation flags (yes)])])
+if test "z$enable_secure_memset" != "zno" ; then
+    CFLAGS="$CFLAGS -fno-builtin-memset"
+    AC_MSG_RESULT([yes])
+else
+    AC_MSG_RESULT([disabled])
+fi
+
 
 dnl ==========================================================================
 dnl Final steps: xmlsec config

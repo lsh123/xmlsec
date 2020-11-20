@@ -23,7 +23,7 @@ jobs:
       run: mkdir build
     - name: configure
       working-directory: build
-      run: ./autogen.sh --enable-werror
+      run: ../autogen.sh --enable-werror
     - name: make
       working-directory: build
       run: make

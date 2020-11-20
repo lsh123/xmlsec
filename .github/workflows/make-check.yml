@@ -21,7 +21,7 @@ jobs:
         - os: macos-latest
           BUILD_TOOLS_INSTALL: brew install automake autoconf libtool
           LIBXML2_INSTALL: brew install libxml2 libxslt
-          CRYPTO_LIBS_INSTALL: brew install openssl nss libgcrypt gnutls
+          CRYPTO_LIBS_INSTALL: brew install openssl libgcrypt gnutls
 
     steps:
     - uses: actions/checkout@v2

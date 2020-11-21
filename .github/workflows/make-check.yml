@@ -16,15 +16,14 @@ jobs:
           - static_linking: true
           - static_linking: false
     steps:
-    - uses: actions/checkout@v2
     - name: install dependencies
       run: |
           sudo apt update
           sudo apt install automake autoconf libtool libtool-bin libltdl-dev libltdl7
           sudo apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
           sudo apt install libssl1.0.0 libssl-dev libnspr4 libnspr4-dev libnss3 libnss3-dev libnss3-tools libgcrypt20 libgcrypt20-dev libgnutls28-dev
-    - name: mkdir build
-      run: mkdir build
+    - uses: actions/checkout@v2
+    - run: mkdir build
     - name: configure
       working-directory: build
       run: ../autogen.sh --enable-werror --enable-static-linking=${{ matrix.static_linking }}
@@ -44,7 +43,6 @@ jobs:
           - static_linking: true
           - static_linking: false
     steps:
-    - uses: actions/checkout@v2
     - name: install dependencies
       # nss is disabled for now          
       run: |
@@ -52,8 +50,8 @@ jobs:
           brew install automake autoconf libtool
           brew install libxml2 libxslt
           brew install openssl libgcrypt gnutls        
-    - name: mkdir build
-      run: mkdir build
+    - uses: actions/checkout@v2
+    - run: mkdir build
     - name: configure
       working-directory: build
       run: ../autogen.sh --enable-werror --enable-static-linking=${{ matrix.static_linking }}
@@ -73,17 +71,17 @@ jobs:
           - msystem: MINGW64
             arch: x86_64
             unicode: true
+            static_linking: true
+          - msystem: MINGW64
+            arch: x86_64
+            unicode: true
             static_linking: false
           - msystem: MINGW64
             arch: x86_64
             unicode: false
-            static_linking: false
-          - msystem: MINGW32
-            arch: i686
-            unicode: true
-            static_linking: false
-          - msystem: MINGW32
-            arch: i686
+            static_linking: true
+          - msystem: MINGW64
+            arch: x86_64
             unicode: false
             static_linking: false
     defaults:

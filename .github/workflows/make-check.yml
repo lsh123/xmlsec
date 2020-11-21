@@ -76,13 +76,17 @@ jobs:
         pacman -S --noconfirm --needed mingw-w64-${{ matrix.arch }}-{toolchain,libtool}
         pacman -S --noconfirm --needed mingw-w64-x86_64-{libxml2,libxslt,openssl,gnutls}
     - name: mkdir build
+      shell: msys2 {0}
       run: mkdir build
     - name: configure
+      shell: msys2 {0}
       working-directory: build
       run: ../autogen.sh --build="x86_64-w64-mingw32" --host="x86_64-w64-mingw32" --enable-unicode=true --enable-mscrypto --enable-mscng --enable-openssl --enable-gnutls --enable-static-linking=false
     - name: make
+      shell: msys2 {0}
       working-directory: build
       run: make
     - name: make check
+      shell: msys2 {0}
       working-directory: build
       run: make check

@@ -1,4 +1,4 @@
-name: Linux/MacOSX/MinGW Check
+name: Make Check
 
 on:
   push:
@@ -7,52 +7,47 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        include:
-        - os: ubuntu-latest
-          UPDATES_INSTALL: sudo apt update
-          BUILD_TOOLS_INSTALL: sudo apt install automake autoconf libtool libtool-bin libltdl-dev libltdl7
-          LIBXML2_INSTALL: sudo apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
-          CRYPTO_LIBS_INSTALL: sudo apt install libssl1.0.0 libssl-dev libnspr4 libnspr4-dev libnss3 libnss3-dev libnss3-tools libgcrypt20 libgcrypt20-dev libgnutls28-dev
-          AUTOGEN_OPTIONS: --enable-werror
-        - os: macos-latest
-          UPDATES_INSTALL: brew update
-          BUILD_TOOLS_INSTALL: brew install automake autoconf libtool
-          LIBXML2_INSTALL: brew install libxml2 libxslt
-          # nss is disabled for now
-          CRYPTO_LIBS_INSTALL: brew install openssl libgcrypt gnutls
-          AUTOGEN_OPTIONS: --enable-werror
-        - os: windows-latest
-          UPDATES_INSTALL: pacman --noconfirm --sync --refresh --refresh --sysupgrade --sysupgrade
-          BUILD_TOOLS_INSTALL: pacman -S --noconfirm --needed mingw-w64-x86_64-{toolchain,libtool}
-          LIBXML2_INSTALL: pacman -S --noconfirm --needed mingw-w64-x86_64-{libxml2,libxslt}
-          CRYPTO_LIBS_INSTALL: pacman -S --noconfirm --needed mingw-w64-x86_64-{openssl,gnutls}
-          AUTOGEN_OPTIONS: --build="x86_64-w64-mingw32" --host="x86_64-w64-mingw32" --enable-unicode=$UNICODE --enable-mscrypto --enable-mscng --enable-openssl --enable-gnutls
-
+  build-ubuntu:
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: fetch updates
-      run: ${{matrix.UPDATES_INSTALL}}
-    - name: install build tools
-      run: ${{matrix.BUILD_TOOLS_INSTALL}}
-    - name: install libxml2/libxslt
-      run: ${{matrix.LIBXML2_INSTALL}}
-    - name: install crypto libs
-      run: ${{matrix.CRYPTO_LIBS_INSTALL}}
+    - name: install dependencies
+    - run: |
+          sudo apt update
+          sudo apt install automake autoconf libtool libtool-bin libltdl-dev libltdl7
+          sudo apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
+          sudo apt install libssl1.0.0 libssl-dev libnspr4 libnspr4-dev libnss3 libnss3-dev libnss3-tools libgcrypt20 libgcrypt20-dev libgnutls28-dev
     - name: mkdir build
       run: mkdir build
     - name: configure
       working-directory: build
-      run: ../autogen.sh ${{matrix.AUTOGEN_OPTIONS}}
+      run: ../autogen.sh --enable-werror
     - name: make
       working-directory: build
       run: make
     - name: make check
       working-directory: build
       run: make check
-
+  
+  build-osx:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: install dependencies
+    # nss is disabled for now          
+    - run: |
+          brew update
+          brew install automake autoconf libtool
+          brew install libxml2 libxslt
+          brew install openssl libgcrypt gnutls        
+    - name: mkdir build
+      run: mkdir build
+    - name: configure
+      working-directory: build
+      run: ../autogen.sh --enable-werror
+    - name: make
+      working-directory: build
+      run: make
+    - name: make check
+      working-directory: build
+      run: make check

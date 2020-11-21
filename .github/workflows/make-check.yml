@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build-ubuntu:
+  check-ubuntu:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -29,7 +29,7 @@ jobs:
       working-directory: build
       run: make check
   
-  build-osx:
+  check-osx:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
@@ -45,6 +45,41 @@ jobs:
     - name: configure
       working-directory: build
       run: ../autogen.sh --enable-werror
+    - name: make
+      working-directory: build
+      run: make
+    - name: make check
+      working-directory: build
+      run: make check
+  
+  check-mingw:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - msystem: MINGW64
+            arch: x86_64
+          - msystem: MINGW32
+            arch: i686
+    steps:
+    - uses: actions/checkout@v2  
+    - uses: msys2/setup-msys2@v2
+      with:
+        msystem: ${{ matrix.msystem }}
+        install: git base-devel
+        update: true
+    - name: install dependencies
+      shell: msys2 {0}
+      run: |
+        pacman --noconfirm --sync --refresh --refresh --sysupgrade --sysupgrade
+        pacman -S --noconfirm --needed mingw-w64-${{ matrix.arch }}-{toolchain,libtool}
+        pacman -S --noconfirm --needed mingw-w64-x86_64-{libxml2,libxslt,openssl,gnutls}
+    - name: mkdir build
+      run: mkdir build
+    - name: configure
+      working-directory: build
+      run: ../autogen.sh --build="x86_64-w64-mingw32" --host="x86_64-w64-mingw32" --enable-unicode=true --enable-mscrypto --enable-mscng --enable-openssl --enable-gnutls --enable-static-linking=false
     - name: make
       working-directory: build
       run: make

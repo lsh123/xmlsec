@@ -85,7 +85,7 @@ jobs:
       run: mkdir build
     - name: configure
       working-directory: build
-      run: ../autogen.sh --build="${{ matrix.arch }}-w64-mingw32" --host="${{ matrix.arch }}-w64-mingw32" --enable-unicode=true --enable-mscrypto --enable-mscng --enable-openssl --enable-gnutls --enable-static-linking=false
+      run: pwd && ../autogen.sh --build="${{ matrix.arch }}-w64-mingw32" --host="${{ matrix.arch }}-w64-mingw32" --enable-unicode=true --enable-mscrypto --enable-mscng --enable-openssl --enable-gnutls --enable-static-linking=false
     - name: make
       working-directory: build
       run: make

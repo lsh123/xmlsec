@@ -12,7 +12,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install dependencies
-    - run: |
+      run: |
           sudo apt update
           sudo apt install automake autoconf libtool libtool-bin libltdl-dev libltdl7
           sudo apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
@@ -34,8 +34,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install dependencies
-    # nss is disabled for now          
-    - run: |
+      # nss is disabled for now          
+      run: |
           brew update
           brew install automake autoconf libtool
           brew install libxml2 libxslt

@@ -9,6 +9,12 @@ on:
 jobs:
   check-ubuntu:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - static_linking: true
+          - static_linking: false
     steps:
     - uses: actions/checkout@v2
     - name: install dependencies
@@ -21,7 +27,7 @@ jobs:
       run: mkdir build
     - name: configure
       working-directory: build
-      run: ../autogen.sh --enable-werror
+      run: ../autogen.sh --enable-werror --enable-static-linking=${{ matrix.static_linking }}
     - name: make
       working-directory: build
       run: make
@@ -31,6 +37,12 @@ jobs:
   
   check-osx:
     runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - static_linking: true
+          - static_linking: false
     steps:
     - uses: actions/checkout@v2
     - name: install dependencies
@@ -44,7 +56,7 @@ jobs:
       run: mkdir build
     - name: configure
       working-directory: build
-      run: ../autogen.sh --enable-werror
+      run: ../autogen.sh --enable-werror --enable-static-linking=${{ matrix.static_linking }}
     - name: make
       working-directory: build
       run: make
@@ -60,8 +72,20 @@ jobs:
         include:
           - msystem: MINGW64
             arch: x86_64
+            unicode: true
+            static_linking: false
+          - msystem: MINGW64
+            arch: x86_64
+            unicode: false
+            static_linking: false
           - msystem: MINGW32
             arch: i686
+            unicode: true
+            static_linking: false
+          - msystem: MINGW32
+            arch: i686
+            unicode: false
+            static_linking: false
     defaults:
       run:
         shell: msys2 {0}  
@@ -81,11 +105,11 @@ jobs:
           mingw-w64-${{ matrix.arch }}-libxslt
           mingw-w64-${{ matrix.arch }}-openssl
           mingw-w64-${{ matrix.arch }}-gnutls
-    - name: mkdir build
-      run: mkdir build
+    - run: git config --global core.autocrlf input
+    - run: mkdir build
     - name: configure
       working-directory: build
-      run: pwd && ../autogen.sh --build="${{ matrix.arch }}-w64-mingw32" --host="${{ matrix.arch }}-w64-mingw32" --enable-unicode=true --enable-mscrypto --enable-mscng --enable-openssl --enable-gnutls --enable-static-linking=false
+      run: pwd && ../autogen.sh --build="${{ matrix.arch }}-w64-mingw32" --host="${{ matrix.arch }}-w64-mingw32" --enable-unicode=${{ matrix.unicode }} --enable-static-linking=${{ matrix.static_linking }} --enable-mscrypto --enable-mscng 
     - name: make
       working-directory: build
       run: make

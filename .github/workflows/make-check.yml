@@ -90,7 +90,6 @@ jobs:
       run:
         shell: msys2 {0}  
     steps:
-    - uses: actions/checkout@v2  
     - uses: msys2/setup-msys2@v2
       with:
         msystem: ${{ matrix.msystem }}
@@ -106,6 +105,8 @@ jobs:
           mingw-w64-${{ matrix.arch }}-openssl
           mingw-w64-${{ matrix.arch }}-gnutls
     - run: git config --global core.autocrlf input
+      shell: bash
+    - uses: actions/checkout@v2      
     - run: mkdir build
     - name: configure
       working-directory: build

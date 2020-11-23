@@ -125,7 +125,7 @@ jobs:
         run: |
           echo EXTRAS_FOLDER=%EXTRAS_FOLDER%
           echo EXTRAS_URL=%EXTRAS_URL%
-          echo EXTRAS_URL=$EXTRAS_URL
+          echo EXTRAS_URL=${{ env.EXTRAS_URL }}
           mkdir %EXTRAS_FOLDER%
           dir
           cd %EXTRAS_FOLDER%

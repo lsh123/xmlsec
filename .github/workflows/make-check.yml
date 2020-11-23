@@ -159,6 +159,6 @@ jobs:
       run: |
         call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
         set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;;%PATH%
-        win32/binaries/xmlseca.exe check-key-data  --crypto openssl hmac
-        win32/binaries/xmlseca.exe check-key-data  --crypto openssl --crypto-config tmp/xmlsec-crypto-config hmac
+        win32\binaries\xmlseca.exe check-key-data  --crypto openssl hmac
+        win32\binaries\xmlseca.exe check-key-data  --crypto openssl --crypto-config tmp\xmlsec-crypto-config hmac
         # nmake check

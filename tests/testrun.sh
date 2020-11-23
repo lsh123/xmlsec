@@ -13,14 +13,9 @@ xmlsec_app="$4"
 file_format="$5"
 timestamp=`date +%Y%m%d_%H%M%S`
 
-echo "OS_ARCH: $OS_ARCH"
-
 if [ "z$OS_ARCH" = "zCygwin" ] ; then
     topfolder=`cygpath -wa "$topfolder"`
     xmlsec_app=`cygpath -a "$xmlsec_app"`
-elif [ "z$OS_ARCH" = "zMsys" ] ; then
-    topfolder=`pwd -W "$topfolder"`
-    xmlsec_app=`pwd -W "$xmlsec_app"`    
 fi
 
 #
@@ -39,11 +34,6 @@ if [ "z$OS_ARCH" = "zCygwin" ] ; then
     logfile=`cygpath -wa "$logfile"`
     curlogfile=`cygpath -wa "$curlogfile"`
     failedlogfile=`cygpath -wa "$failedlogfile"`
-elif [ "z$OS_ARCH" = "zMsys" ] ; then
-    tmpfile=`pwd -W "$tmpfile"`
-    logfile=`pwd -W "$logfile"`
-    curlogfile=`pwd -W "$curlogfile"`
-    failedlogfile=`pwd -W "$failedlogfile"`
 fi
 nssdbfolder=$topfolder/nssdb
 
@@ -67,6 +57,9 @@ if [ "z$XMLSEC_DEFAULT_CRYPTO" != "z" ] ; then
     xmlsec_params="$xmlsec_params --crypto $XMLSEC_DEFAULT_CRYPTO"
 elif [ "z$crypto" != "z" ] ; then
     xmlsec_params="$xmlsec_params --crypto $crypto"
+fi
+if [ "z$OS_ARCH" = "zMsys" ] ; then
+    crypto_config=`pwd -W "$crypto_config"` 
 fi
 xmlsec_params="$xmlsec_params --crypto-config $crypto_config"
 

@@ -136,6 +136,7 @@ jobs:
         7z x ${{ env.LIBXSLT_FILE }}
         Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.OPENSSL_FILE }} -O ${{ env.OPENSSL_FILE }}
         7z x ${{ env.OPENSSL_FILE }}
+    - uses: actions/checkout@v2
     - name: configure
       working-directory: win32
       shell: cmd

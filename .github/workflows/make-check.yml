@@ -124,7 +124,8 @@ jobs:
       - name: install dependencies
         run: |
           echo EXTRAS_FOLDER=%EXTRAS_FOLDER%
-          echo EXTRAS_URL=%EXTRAS_URL%
+          echo EXTRAS_URL=%INPUT_EXTRAS_URL%
+          echo EXTRAS_URL=$INPUT_EXTRAS_URL
           mkdir %EXTRAS_FOLDER%
           dir
           cd %EXTRAS_FOLDER%
@@ -132,7 +133,7 @@ jobs:
           dir
           7z x %LIBXML2_FILE%
           dir
-        env:
+        with:
           EXTRAS_URL: https://www.aleksey.com/xmlsec/download/extras
           LIBXML2_FILE: libxml2-2.9.8-noiconv-win-x64.7z
           LIBXSLT_FILE: libxslt-1.1.32-noiconv-win-x64.7z

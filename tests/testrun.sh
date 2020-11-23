@@ -25,15 +25,16 @@ if [ "z$TMPFOLDER" = "z" ] ; then
     TMPFOLDER=/tmp
 fi
 testname=`basename $testfile`
-tmpfile=$TMPFOLDER/$testname.$timestamp-$$.tmp
-logfile=$TMPFOLDER/$testname.$timestamp-$$.log
-curlogfile=$TMPFOLDER/$testname.$timestamp-$$.cur.log
-failedlogfile=$TMPFOLDER/$testname.$timestamp-$$.failed.log
 if [ "z$OS_ARCH" = "zCygwin" ] ; then
-    tmpfile=`cygpath -wa "$tmpfile"`
-    logfile=`cygpath -wa "$logfile"`
-    curlogfile=`cygpath -wa "$curlogfile"`
-    failedlogfile=`cygpath -wa "$failedlogfile"`
+    tmpfile=`cygpath -wa $TMPFOLDER/$testname.$timestamp-$$.tmp`
+    logfile=`cygpath -wa $TMPFOLDER/$testname.$timestamp-$$.log`
+    curlogfile=`cygpath -wa $TMPFOLDER/$testname.$timestamp-$$.cur.log`
+    failedlogfile=`cygpath -wa $TMPFOLDER/$testname.$timestamp-$$.failed.log`
+else
+    tmpfile=$TMPFOLDER/$testname.$timestamp-$$.tmp
+    logfile=$TMPFOLDER/$testname.$timestamp-$$.log
+    curlogfile=$TMPFOLDER/$testname.$timestamp-$$.cur.log
+    failedlogfile=$TMPFOLDER/$testname.$timestamp-$$.failed.log
 fi
 nssdbfolder=$topfolder/nssdb
 

@@ -123,7 +123,10 @@ jobs:
     steps:
       - name: install dependencies
         run: |
+          echo EXTRAS_FOLDER=%EXTRAS_FOLDER%
+          echo EXTRAS_URL=%EXTRAS_URL%
           mkdir %EXTRAS_FOLDER%
+          dir
           cd %EXTRAS_FOLDER%
           Invoke-WebRequest %EXTRAS_URL%/%LIBXML2_FILE% -O %LIBXML2_FILE%
           dir

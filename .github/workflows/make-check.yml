@@ -123,10 +123,11 @@ jobs:
     steps:
       - name: install dependencies
         run: |
-          mkdir $EXTRAS_FOLDER && cd $EXTRAS_FOLDER
-          Invoke-WebRequest $EXTRAS_URL/$LIBXML2_FILE -O $LIBXML2_FILE
+          mkdir %EXTRAS_FOLDER%
+          cd %EXTRAS_FOLDER%
+          Invoke-WebRequest %EXTRAS_URL%/%LIBXML2_FILE% -O %LIBXML2_FILE%
           dir
-          7z x $LIBXML2_FILE
+          7z x %LIBXML2_FILE%
           dir
         env:
           EXTRAS_URL: https://www.aleksey.com/xmlsec/download/extras

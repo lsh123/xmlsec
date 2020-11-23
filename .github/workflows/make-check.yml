@@ -1,4 +1,4 @@
-name: C/C++ CI
+name: Make Check
 
 on:
   push:
@@ -7,39 +7,111 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
-    runs-on: ${{ matrix.os }}
+  check-ubuntu:
+    runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest]
         include:
-        - os: ubuntu-latest
-          BUILD_TOOLS_INSTALL: sudo apt install automake autoconf libtool libtool-bin libltdl-dev libltdl7
-          LIBXML2_INSTALL: sudo apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
-          CRYPTO_LIBS_INSTALL: sudo apt install libssl1.0.0 libssl-dev libnspr4 libnspr4-dev libnss3 libnss3-dev libnss3-tools libgcrypt20 libgcrypt20-dev libgnutls28-dev
-        - os: macos-latest
-          BUILD_TOOLS_INSTALL: brew install automake autoconf libtool
-          LIBXML2_INSTALL: brew install libxml2 libxslt
-          CRYPTO_LIBS_INSTALL: brew install openssl libgcrypt gnutls
-
+          - static_linking: true
+          - static_linking: false
     steps:
+    - name: install dependencies
+      run: |
+          sudo apt update
+          sudo apt install automake autoconf libtool libtool-bin libltdl-dev libltdl7
+          sudo apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
+          sudo apt install libssl1.0.0 libssl-dev libnspr4 libnspr4-dev libnss3 libnss3-dev libnss3-tools libgcrypt20 libgcrypt20-dev libgnutls28-dev
     - uses: actions/checkout@v2
-    - name: install build tools
-      run: ${{matrix.BUILD_TOOLS_INSTALL}}
-    - name: install libxml2/libxslt
-      run: ${{matrix.LIBXML2_INSTALL}}
-    - name: install crypto libs
-      run: ${{matrix.CRYPTO_LIBS_INSTALL}}
-    - name: mkdir build
-      run: mkdir build
+    - run: mkdir build
     - name: configure
       working-directory: build
-      run: ../autogen.sh --enable-werror
+      run: ../autogen.sh --enable-werror --enable-static-linking=${{ matrix.static_linking }}
     - name: make
       working-directory: build
       run: make
     - name: make check
       working-directory: build
       run: make check
-
+  
+  check-osx:
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - static_linking: true
+          - static_linking: false
+    steps:
+    - name: install dependencies
+      # nss is disabled for now          
+      run: |
+          brew update
+          brew install automake autoconf libtool
+          brew install libxml2 libxslt
+          brew install openssl libgcrypt gnutls        
+    - uses: actions/checkout@v2
+    - run: mkdir build
+    - name: configure
+      working-directory: build
+      run: ../autogen.sh --enable-werror --enable-static-linking=${{ matrix.static_linking }}
+    - name: make
+      working-directory: build
+      run: make
+    - name: make check
+      working-directory: build
+      run: make check
+  
+  check-mingw:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - msystem: MINGW64
+            arch: x86_64
+            unicode: true
+            static_linking: true
+          - msystem: MINGW64
+            arch: x86_64
+            unicode: true
+            static_linking: false
+          - msystem: MINGW64
+            arch: x86_64
+            unicode: false
+            static_linking: true
+          - msystem: MINGW64
+            arch: x86_64
+            unicode: false
+            static_linking: false
+    defaults:
+      run:
+        shell: msys2 {0}  
+    steps:
+    - uses: msys2/setup-msys2@v2
+      with:
+        msystem: ${{ matrix.msystem }}
+        release: false  
+        update: false
+        install: >-
+          git
+          base-devel
+          mingw-w64-${{ matrix.arch }}-toolchain
+          mingw-w64-${{ matrix.arch }}-libtool
+          mingw-w64-${{ matrix.arch }}-libxml2
+          mingw-w64-${{ matrix.arch }}-libxslt
+          mingw-w64-${{ matrix.arch }}-openssl
+          mingw-w64-${{ matrix.arch }}-gnutls
+    - run: git config --global core.autocrlf input
+      shell: bash
+    - uses: actions/checkout@v2      
+    - run: mkdir build
+    - name: configure
+      working-directory: build
+      run: pwd && ../autogen.sh --build="${{ matrix.arch }}-w64-mingw32" --host="${{ matrix.arch }}-w64-mingw32" --enable-unicode=${{ matrix.unicode }} --enable-static-linking=${{ matrix.static_linking }} --enable-mscrypto --enable-mscng 
+    - name: make
+      working-directory: build
+      run: make
+    - name: make check
+      working-directory: build
+      run: make check

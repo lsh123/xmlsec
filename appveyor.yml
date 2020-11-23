@@ -64,43 +64,25 @@ environment:
       UNICODE: no
       WERROR: yes
 
-    - COMPILER: MinGW-w64
-      STATIC: no
-      UNICODE: yes
-    
-    - COMPILER: MinGW-w64
-      STATIC: yes
-      UNICODE: no
-
 init:
   - git config --global core.autocrlf input
-  - if [%COMPILER%]==[MinGW-w64] set PATH=C:\msys64\usr\bin;C:\msys64\mingw64\bin;%PATH%
-  - if [%COMPILER%]==[MSVC17] set PATH=%EXTRAS_FOLDER%\bin;%EXTRAS_FOLDER%\lib;;%PATH%
+  - set PATH=%EXTRAS_FOLDER%\bin;%EXTRAS_FOLDER%\lib;;%PATH%
     
 install:
-  - if [%COMPILER%]==[MinGW-w64] pacman --noconfirm --sync --refresh --refresh --sysupgrade --sysupgrade
-  - if [%COMPILER%]==[MinGW-w64] pacman -S --noconfirm --needed mingw-w64-x86_64-{toolchain,libtool}
-  - if [%COMPILER%]==[MinGW-w64] pacman -S --noconfirm --needed mingw-w64-x86_64-{libxml2,libxslt,openssl,gnutls}
-  - if [%COMPILER%]==[MSVC17] call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
-  - if [%COMPILER%]==[MSVC17] mkdir %EXTRAS_FOLDER% && cd %EXTRAS_FOLDER%
-  - if [%COMPILER%]==[MSVC17] appveyor DownloadFile %EXTRAS_URL%/%LIBXML2_FILE%
-  - if [%COMPILER%]==[MSVC17] 7z x %LIBXML2_FILE%
-  - if [%COMPILER%]==[MSVC17] appveyor DownloadFile %EXTRAS_URL%/%LIBXSLT_FILE%
-  - if [%COMPILER%]==[MSVC17] 7z x %LIBXSLT_FILE%
-  - if [%COMPILER%]==[MSVC17] appveyor DownloadFile %EXTRAS_URL%/%OPENSSL_FILE%
-  - if [%COMPILER%]==[MSVC17] 7z x %OPENSSL_FILE%
-  - if [%COMPILER%]==[MSVC17] cd %APPVEYOR_BUILD_FOLDER%
+  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+  - mkdir %EXTRAS_FOLDER% && cd %EXTRAS_FOLDER%
+  - appveyor DownloadFile %EXTRAS_URL%/%LIBXML2_FILE%
+  - 7z x %LIBXML2_FILE%
+  - appveyor DownloadFile %EXTRAS_URL%/%LIBXSLT_FILE%
+  - 7z x %LIBXSLT_FILE%
+  - appveyor DownloadFile %EXTRAS_URL%/%OPENSSL_FILE%
+  - 7z x %OPENSSL_FILE%
+  - cd %APPVEYOR_BUILD_FOLDER%
 
 build_script:
-  - if [%COMPILER%]==[MinGW-w64] mkdir build && cd build
-  - if [%COMPILER%]==[MinGW-w64] bash ../autogen.sh --build="x86_64-w64-mingw32" --host="x86_64-w64-mingw32" --enable-unicode=$UNICODE --enable-mscrypto --enable-mscng --enable-openssl --enable-gnutls --enable-static-linking=$STATIC
-  - if [%COMPILER%]==[MinGW-w64] make
-  - if [%COMPILER%]==[MSVC17] cd win32
-  - if [%COMPILER%]==[MSVC17] cscript configure.js static=%STATIC% crypto=%CRYPTO% werror=%WERROR% iconv=no unicode=%UNICODE% prefix=%EXTRAS_FOLDER% include=%EXTRAS_FOLDER%\include;%EXTRAS_FOLDER%\include\libxml2;%MSSDK_INCLUDE% lib=%EXTRAS_FOLDER%\bin;%EXTRAS_FOLDER%\lib;%MSSDK_LIB%
-  - if [%COMPILER%]==[MSVC17] nmake
+  - cd win32
+  - cscript configure.js static=%STATIC% crypto=%CRYPTO% werror=%WERROR% iconv=no unicode=%UNICODE% prefix=%EXTRAS_FOLDER% include=%EXTRAS_FOLDER%\include;%EXTRAS_FOLDER%\include\libxml2;%MSSDK_INCLUDE% lib=%EXTRAS_FOLDER%\bin;%EXTRAS_FOLDER%\lib;%MSSDK_LIB%
+  - nmake
  
 test_script:
-  - if [%COMPILER%]==[MinGW-w64] make check
-  - if [%COMPILER%]==[MSVC17] nmake check
-
-
+  - nmake check

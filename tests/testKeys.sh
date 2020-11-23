@@ -75,3 +75,4 @@ echo "--- testKeys finished ---"
 if [ -z "$XMLSEC_TEST_REPRODUCIBLE" ]; then
     echo "--- detailed log is written to  $logfile ---"
 fi
+cat $logfile

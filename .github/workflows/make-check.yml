@@ -1,4 +1,4 @@
-name: Make Check
+name: make check
 
 on:
   push:
@@ -106,7 +106,7 @@ jobs:
       shell: bash
     - uses: actions/checkout@v2      
     - run: mkdir build
-    - name: configure
+    - name: configur
       working-directory: build
       run: pwd && ../autogen.sh --build="${{ matrix.arch }}-w64-mingw32" --host="${{ matrix.arch }}-w64-mingw32" --enable-unicode=${{ matrix.unicode }} --enable-static-linking=${{ matrix.static_linking }} --enable-mscrypto --enable-mscng 
     - name: make
@@ -115,3 +115,27 @@ jobs:
     - name: make check
       working-directory: build
       run: make check
+
+  check-msvc:
+    runs-on: windows-latest
+    env:
+      EXTRAS_FOLDER: C:\extras
+    steps:
+      - name: install dependencies
+        run: |
+          mkdir $EXTRAS_FOLDER && cd $EXTRAS_FOLDER
+          Invoke-WebRequest $EXTRAS_URL/$LIBXML2_FILE -O $LIBXML2_FILE
+          dir
+          7z x $LIBXML2_FILE
+          dir
+        env:
+          EXTRAS_URL: https://www.aleksey.com/xmlsec/download/extras
+          LIBXML2_FILE: libxml2-2.9.8-noiconv-win-x64.7z
+          LIBXSLT_FILE: libxslt-1.1.32-noiconv-win-x64.7z
+          OPENSSL_FILE: openssl-1.1.0h-x64.7z
+#  - appveyor DownloadFile %EXTRAS_URL%/%LIBXML2_FILE%
+#  - 7z x %LIBXML2_FILE%
+#  - appveyor DownloadFile %EXTRAS_URL%/%LIBXSLT_FILE%
+#  - 7z x %LIBXSLT_FILE%
+#  - appveyor DownloadFile %EXTRAS_URL%/%OPENSSL_FILE%
+#  - 7z x %OPENSSL_FILE% 

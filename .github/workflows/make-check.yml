@@ -106,7 +106,7 @@ jobs:
       shell: bash
     - uses: actions/checkout@v2      
     - run: mkdir build
-    - name: configur
+    - name: configure
       working-directory: build
       run: pwd && ../autogen.sh --build="${{ matrix.arch }}-w64-mingw32" --host="${{ matrix.arch }}-w64-mingw32" --enable-unicode=${{ matrix.unicode }} --enable-static-linking=${{ matrix.static_linking }} --enable-mscrypto --enable-mscng 
     - name: make
@@ -119,24 +119,38 @@ jobs:
   check-msvc:
     runs-on: windows-latest
     env:
+      VISUAL_STUDIO_ROOT: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise"
       EXTRAS_FOLDER: C:\extras
+      EXTRAS_URL: https://www.aleksey.com/xmlsec/download/extras
+      LIBXML2_FILE: libxml2-2.9.8-noiconv-win-x64.7z
+      LIBXSLT_FILE: libxslt-1.1.32-noiconv-win-x64.7z
+      OPENSSL_FILE: openssl-1.1.0h-x64.7z
     steps:
-      - name: install dependencies
-        run: |
-          mkdir ${{ env.EXTRAS_FOLDER }}
-          cd ${{ env.EXTRAS_FOLDER }}
-          Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.LIBXML2_FILE }} -O ${{ env.LIBXML2_FILE }}
-          dir
-          7z x ${{ env.LIBXML2_FILE }}
-          dir
-        env:
-          EXTRAS_URL: https://www.aleksey.com/xmlsec/download/extras
-          LIBXML2_FILE: libxml2-2.9.8-noiconv-win-x64.7z
-          LIBXSLT_FILE: libxslt-1.1.32-noiconv-win-x64.7z
-          OPENSSL_FILE: openssl-1.1.0h-x64.7z
-#  - appveyor DownloadFile %EXTRAS_URL%/%LIBXML2_FILE%
-#  - 7z x %LIBXML2_FILE%
-#  - appveyor DownloadFile %EXTRAS_URL%/%LIBXSLT_FILE%
-#  - 7z x %LIBXSLT_FILE%
-#  - appveyor DownloadFile %EXTRAS_URL%/%OPENSSL_FILE%
-#  - 7z x %OPENSSL_FILE% 
+    - name: install dependencies
+      run: |
+        mkdir ${{ env.EXTRAS_FOLDER }}
+        cd ${{ env.EXTRAS_FOLDER }}
+        Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.LIBXML2_FILE }} -O ${{ env.LIBXML2_FILE }}
+        7z x ${{ env.LIBXML2_FILE }}
+        Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.LIBXSLT_FILE }} -O ${{ env.LIBXSLT_FILE }}
+        7z x ${{ env.LIBXSLT_FILE }}
+        Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.OPENSSL_FILE }} -O ${{ env.OPENSSL_FILE }}
+        7z x ${{ env.OPENSSL_FILE }}
+    - name: configure
+      working-directory: win32
+      shell: cmd
+      run: |
+        call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
+        cscript configure.js static=yes crypto=openssl werror=yes iconv=no unicode=yes prefix=${{ env.EXTRAS_FOLDER }} include=${{ env.EXTRAS_FOLDER }}\include;${{ env.EXTRAS_FOLDER }}\include\libxml2;%MSSDK_INCLUDE% lib=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;%MSSDK_LIB%
+    - name: make
+      working-directory: win32
+      shell: cmd
+      run: |
+        call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
+        nmake
+    - name: make check
+      working-directory: win32
+      shell: cmd
+      run: |
+        call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
+        nmake check

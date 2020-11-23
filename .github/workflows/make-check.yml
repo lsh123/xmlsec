@@ -136,22 +136,27 @@ jobs:
         7z x ${{ env.LIBXSLT_FILE }}
         Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.OPENSSL_FILE }} -O ${{ env.OPENSSL_FILE }}
         7z x ${{ env.OPENSSL_FILE }}
+    - run: git config --global core.autocrlf input
+      shell: bash
     - uses: actions/checkout@v2
     - name: configure
       working-directory: win32
       shell: cmd
       run: |
         call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
+        set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;;%PATH%
         cscript configure.js static=yes crypto=openssl werror=yes iconv=no unicode=yes prefix=${{ env.EXTRAS_FOLDER }} include=${{ env.EXTRAS_FOLDER }}\include;${{ env.EXTRAS_FOLDER }}\include\libxml2;%MSSDK_INCLUDE% lib=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;%MSSDK_LIB%
     - name: make
       working-directory: win32
       shell: cmd
       run: |
         call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
+        set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;;%PATH%
         nmake
     - name: make check
       working-directory: win32
       shell: cmd
       run: |
         call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
+        set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;;%PATH%
         nmake check

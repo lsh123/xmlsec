@@ -24,6 +24,11 @@
 /* Include common error helper macros. */
 #include "../errors_helpers.h"
 
+/* MD5 was removed from NSS */
+#if (NSS_VMAJOR > 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR > 58))
+#define XMLSEC_NO_MD5 1
+#endif /* (NSS_VMAJOR > 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR > 58)) */
+
 /**
  * xmlSecNssError:
  * @errorFunction:      the failed function name.

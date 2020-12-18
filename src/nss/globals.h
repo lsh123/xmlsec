@@ -25,7 +25,6 @@
 #include "../errors_helpers.h"
 
 /* MD5 was removed from NSS */
-#warning "NSS globals"
 #if (NSS_VMAJOR > 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR > 58))
 #warning "NSS MD5 disabled"
 #define XMLSEC_NO_MD5 1

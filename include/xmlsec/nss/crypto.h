@@ -19,6 +19,12 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/dl.h>
 
+
+/* MD5 was removed from NSS */
+#if (NSS_VMAJOR > 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR > 58))
+#define XMLSEC_NO_MD5 1
+#endif /* (NSS_VMAJOR > 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR > 58)) */
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */

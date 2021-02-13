@@ -1,10 +1,10 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT([xmlsec1],[1.2.30],[http://www.aleksey.com/xmlsec])
+AC_INIT([xmlsec1],[1.2.31],[http://www.aleksey.com/xmlsec])
 
 XMLSEC_PACKAGE=xmlsec1
 XMLSEC_VERSION_MAJOR=1
 XMLSEC_VERSION_MINOR=2
-XMLSEC_VERSION_SUBMINOR=30
+XMLSEC_VERSION_SUBMINOR=31
 XMLSEC_VERSION="$XMLSEC_VERSION_MAJOR.$XMLSEC_VERSION_MINOR.$XMLSEC_VERSION_SUBMINOR"
 XMLSEC_VERSION_INFO=`echo $XMLSEC_VERSION | awk -F. '{ printf "%d:%d:%d", $1+$2, $3, $2 }'`
 XMLSEC_VERSION_SAFE=`echo $XMLSEC_VERSION | sed 's/\./_/g'`
@@ -2304,12 +2304,24 @@ dnl ==========================================================================
 AC_MSG_CHECKING(for pedantic)
 AC_ARG_ENABLE([pedantic], [AC_HELP_STRING([--enable-pedantic], [enable pedantic compilation flags (no)])])
 if test "z$enable_pedantic" = "zyes" ; then
-    dnl CFLAGS="$CFLAGS -pedantic -Wall -std=c99 -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wredundant-decls"
     CFLAGS="$CFLAGS -O -pedantic -Wall -std=c99 -fno-inline -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wmissing-prototypes -Wnested-externs -Wredundant-decls"
     AC_MSG_RESULT([yes])
 else
     AC_MSG_RESULT([disabled])
 fi
+
+dnl ==========================================================================
+dnl Secure memset
+dnl ==========================================================================
+AC_MSG_CHECKING(for secure memset)
+AC_ARG_ENABLE([secure-memset], [AC_HELP_STRING([--enable-secure-memset], [enable secure memset compilation flags (yes)])])
+if test "z$enable_secure_memset" != "zno" ; then
+    CFLAGS="$CFLAGS -fno-builtin-memset"
+    AC_MSG_RESULT([yes])
+else
+    AC_MSG_RESULT([disabled])
+fi
+
 
 dnl ==========================================================================
 dnl Final steps: xmlsec config
@@ -2428,7 +2440,6 @@ apps/Makefile
 docs/Makefile
 docs/api/Makefile
 man/Makefile
-
 xmlsec1-openssl.pc:xmlsec-openssl.pc.in
 xmlsec1-gnutls.pc:xmlsec-gnutls.pc.in
 xmlsec1-gcrypt.pc:xmlsec-gcrypt.pc.in

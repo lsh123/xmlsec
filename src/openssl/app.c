@@ -629,7 +629,7 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
     }
 
     ret = PKCS12_parse(p12, pwd, &pKey, &cert, &chain);
-    if(ret < 0) {
+    if(ret != 1) {
         xmlSecOpenSSLError("PKCS12_parse", NULL);
         goto done;
     }

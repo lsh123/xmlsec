@@ -726,7 +726,7 @@ if test "z$OPENSSL_FOUND" = "zno" ; then
     LIBS="$LIBS $OPENSSL_LIBS $OPENSSL_LIBS_LIST"
     AC_LINK_IFELSE([
         AC_LANG_PROGRAM([[
-            #include <openssl/opensslv.h>
+            #include <openssl/ssl.h>
         ]],[[
             int main () {
                 #if OPENSSL_VERSION_NUMBER < 0x10100000L

@@ -1486,6 +1486,7 @@
     <keyword type="function" name="xmlSecNssTransformSha384GetKlass ()" link="xmlsec-nss-crypto.html#xmlSecNssTransformSha384GetKlass"/>
     <keyword type="function" name="xmlSecNssTransformSha512GetKlass ()" link="xmlsec-nss-crypto.html#xmlSecNssTransformSha512GetKlass"/>
     <keyword type="function" name="xmlSecNssTransformMd5GetKlass ()" link="xmlsec-nss-crypto.html#xmlSecNssTransformMd5GetKlass"/>
+    <keyword type="macro" name="XMLSEC_NO_MD5" link="xmlsec-nss-crypto.html#XMLSEC-NO-MD5:CAPS"/>
     <keyword type="macro" name="xmlSecNssKeyDataAesId" link="xmlsec-nss-crypto.html#xmlSecNssKeyDataAesId"/>
     <keyword type="macro" name="xmlSecNssTransformAes128CbcId" link="xmlsec-nss-crypto.html#xmlSecNssTransformAes128CbcId"/>
     <keyword type="macro" name="xmlSecNssTransformAes192CbcId" link="xmlsec-nss-crypto.html#xmlSecNssTransformAes192CbcId"/>

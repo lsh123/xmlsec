@@ -21,7 +21,7 @@ jobs:
           sudo apt update
           sudo apt install automake autoconf libtool libtool-bin libltdl-dev libltdl7
           sudo apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
-          sudo apt install libssl1.0.0 libssl-dev libnspr4 libnspr4-dev libnss3 libnss3-dev libnss3-tools libgcrypt20 libgcrypt20-dev libgnutls28-dev
+          sudo apt install libssl1.1 libssl-dev libnspr4 libnspr4-dev libnss3 libnss3-dev libnss3-tools libgcrypt20 libgcrypt20-dev libgnutls28-dev
     - uses: actions/checkout@v2
     - run: mkdir build
     - name: configure

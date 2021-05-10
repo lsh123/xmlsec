@@ -1,4 +1,4 @@
-name: Make Check
+name: make check
 
 on:
   push:
@@ -116,3 +116,48 @@ jobs:
     - name: make check
       working-directory: build
       run: make check
+
+  check-msvc:
+    runs-on: windows-latest
+    env:
+      VISUAL_STUDIO_ROOT: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise"
+      EXTRAS_FOLDER: C:\extras
+      EXTRAS_URL: https://www.aleksey.com/xmlsec/download/extras
+      LIBXML2_FILE: libxml2-2.9.8-noiconv-win-x64.7z
+      LIBXSLT_FILE: libxslt-1.1.32-noiconv-win-x64.7z
+      OPENSSL_FILE: openssl-1.1.0h-x64.7z
+    steps:
+    - name: install dependencies
+      run: |
+        mkdir ${{ env.EXTRAS_FOLDER }}
+        cd ${{ env.EXTRAS_FOLDER }}
+        Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.LIBXML2_FILE }} -O ${{ env.LIBXML2_FILE }}
+        7z x ${{ env.LIBXML2_FILE }}
+        Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.LIBXSLT_FILE }} -O ${{ env.LIBXSLT_FILE }}
+        7z x ${{ env.LIBXSLT_FILE }}
+        Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.OPENSSL_FILE }} -O ${{ env.OPENSSL_FILE }}
+        7z x ${{ env.OPENSSL_FILE }}
+    - run: git config --global core.autocrlf input
+      shell: bash
+    - uses: actions/checkout@v2
+    - name: configure
+      working-directory: win32
+      shell: cmd
+      run: |
+        call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
+        set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;;%PATH%
+        cscript configure.js static=yes crypto=openssl werror=yes iconv=no unicode=yes prefix=${{ env.EXTRAS_FOLDER }} include=${{ env.EXTRAS_FOLDER }}\include;${{ env.EXTRAS_FOLDER }}\include\libxml2;%MSSDK_INCLUDE% lib=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;%MSSDK_LIB%
+    - name: make
+      working-directory: win32
+      shell: cmd
+      run: |
+        call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
+        set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;;%PATH%
+        nmake
+    - name: make check
+      working-directory: win32
+      shell: cmd
+      run: |
+        call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
+        set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;%PATH%
+        nmake check

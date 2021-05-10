@@ -59,6 +59,9 @@ if [ "z$XMLSEC_DEFAULT_CRYPTO" != "z" ] ; then
 elif [ "z$crypto" != "z" ] ; then
     xmlsec_params="$xmlsec_params --crypto $crypto"
 fi
+if [ "z$OS_ARCH" = "zMsys" ] ; then
+    crypto_config=`pwd -W "$crypto_config"` 
+fi
 xmlsec_params="$xmlsec_params --crypto-config $crypto_config"
 
 #

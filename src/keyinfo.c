@@ -1342,6 +1342,7 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
         if(ret < 0) {
             xmlSecInternalError("xmlSecKeyInfoCtxCreateEncCtx",
                                 xmlSecKeyDataKlassGetName(id));
+            --keyInfoCtx->curEncryptedKeyLevel;
             return(-1);
         }
     }
@@ -1356,8 +1357,10 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION) != 0) {
             xmlSecInternalError("xmlSecEncCtxDecryptToBuffer",
                                 xmlSecKeyDataKlassGetName(id));
+            --keyInfoCtx->curEncryptedKeyLevel;
             return(-1);
         }
+        --keyInfoCtx->curEncryptedKeyLevel;
         return(0);
     }
 
@@ -1368,6 +1371,7 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyDataBinRead",
                             xmlSecKeyDataKlassGetName(id));
+        --keyInfoCtx->curEncryptedKeyLevel;
         return(-1);
     }
     --keyInfoCtx->curEncryptedKeyLevel;

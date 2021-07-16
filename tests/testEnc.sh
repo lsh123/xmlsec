@@ -29,6 +29,23 @@ echo "--------- Positive Testing ----------"
 #
 ##########################################################################
 
+# same test but decrypt using two different keys
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc-two-recipients" \
+    "tripledes-cbc rsa-1_5" \
+    "$priv_key_option:pub1 $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
+    "--pubkey-cert-$cert_format:pub1 $topfolder/keys/rsacert.$cert_format --pubkey-cert-$cert_format:pub2 $topfolder/keys/largersacert.$cert_format --session-key des-192 --xml-data $topfolder/aleksey-xmlenc-01/enc-two-recipients.data" \
+    "$priv_key_option:pub1 $topfolder/keys/rsakey.$priv_key_format --pwd secret123"
+
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc-two-recipients" \
+    "tripledes-cbc rsa-1_5" \
+    "$priv_key_option:pub1 $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+    "--pubkey-cert-$cert_format:pub1 $topfolder/keys/rsacert.$cert_format --pubkey-cert-$cert_format:pub2 $topfolder/keys/largersacert.$cert_format --session-key des-192 --xml-data $topfolder/aleksey-xmlenc-01/enc-two-recipients.data" \
+    "$priv_key_option:pub1 $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+
 execEncTest $res_success \
     "" \
     "aleksey-xmlenc-01/enc-des3cbc-keyname" \

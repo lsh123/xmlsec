@@ -57,7 +57,6 @@ static int      xmlSecOpenSSLDummyPasswordCallback      (char *buf,
 XMLSEC_PTR_TO_FUNC_IMPL(pem_password_cb)
 XMLSEC_FUNC_TO_PTR_IMPL(pem_password_cb)
 
-
 /**
  * xmlSecOpenSSLAppInit:
  * @config:             the path to certs.
@@ -162,6 +161,17 @@ xmlSecOpenSSLAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
 
     xmlSecAssert2(filename != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
+
+    if (format == xmlSecKeyDataFormatOpensslEngine) {
+        key = xmlSecOpenSSLAppKeyLoadENGINE (filename, format, pwd, pwdCallback, pwdCallbackCtx);
+        if(key == NULL) {
+            xmlSecInternalError2("xmlSecOpenSSLAppKeyLoadENGINE", NULL,
+                                 "filename=%s", xmlSecErrorsSafeString(filename));
+            return(NULL);
+        }
+
+        return(key);
+    }
 
     bio = BIO_new_file(filename, "rb");
     if(bio == NULL) {
@@ -355,6 +365,131 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
         xmlSecKeyDataDestroy(data);
         return(NULL);
     }
+
+    return(key);
+}
+
+
+/**
+ * xmlSecOpenSSLAppKeyLoadENGINE:
+ * @options:            the key filename.
+ * @format:             the key file format.
+ * @pwd:                the key file password.
+ * @pwdCallback:        the key password callback.
+ * @pwdCallbackCtx:     the user context for password callback.
+ *
+ * Reads key from the a OpenSSL Engine.
+ *
+ * Returns: pointer to the key or NULL if an error occurs.
+ */
+xmlSecKeyPtr
+xmlSecOpenSSLAppKeyLoadENGINE(const char *options, xmlSecKeyDataFormat format,
+                        const char *pwd, void* pwdCallback,
+                        void* pwdCallbackCtx) {
+
+    const char *engine = NULL, *keyid  = NULL;
+    char *p;
+    ENGINE *e = NULL;
+    xmlSecKeyPtr key = NULL;
+    xmlSecKeyDataPtr data;
+    EVP_PKEY* pKey = NULL;
+    int ret;
+    static BIO *bio_null = NULL;
+
+# ifndef OPENSSL_NO_ENGINE
+
+    p = strchr (options, ';');
+    if (p != NULL) {
+        *p = '\0';
+        engine = options;
+	keyid = p+1;
+    }
+
+    xmlSecAssert2(engine != NULL, NULL);
+    xmlSecAssert2(keyid != NULL, NULL);
+    xmlSecAssert2(format == xmlSecKeyDataFormatOpensslEngine, NULL);
+
+    e = ENGINE_by_id(engine);
+    if (e == NULL) {
+        e = ENGINE_by_id("dynamic");
+        if (e) {
+            if (!ENGINE_ctrl_cmd_string(e, "SO_PATH", engine, 0)
+                || !ENGINE_ctrl_cmd_string(e, "LOAD", NULL, 0)) {
+                ENGINE_free(e);
+                e = NULL;
+            }
+        }
+
+        if (e == NULL) {
+            xmlSecOpenSSLError("try_load_engine", NULL);
+            *p = ';';
+            return NULL;
+        }
+    }
+    *p = ';';
+
+/*
+    if (1) {
+        bio_null = BIO_new_file("/dev/null", "wb");
+        if(bio_null == NULL) {
+            xmlSecOpenSSLError("BIO_new_file", NULL);
+            return(NULL);
+        }
+        ENGINE_ctrl(e, ENGINE_CTRL_SET_LOGSTREAM, 0, bio_null, 0);
+    }
+*/
+
+/*
+    ENGINE_ctrl_cmd(e, "SET_USER_INTERFACE", 0, (void *)get_ui_method(), 0, 1);
+    pkey = ENGINE_load_private_key(e, file, (UI_METHOD *)get_ui_method(), &cb_data);
+*/
+    ENGINE_ctrl_cmd(e, "SET_USER_INTERFACE", 0, (void *)UI_null(),
+                        0, 1);
+    if (!ENGINE_set_default(e, ENGINE_METHOD_ALL)) {
+        xmlSecOpenSSLError("ENGINE_set_default", NULL);
+        ENGINE_free(e);
+        return NULL;
+    }
+
+    if (ENGINE_init(e)) {
+        pKey = ENGINE_load_private_key(e, keyid,
+                                      (UI_METHOD *)UI_null(),
+                                      NULL);
+                                      //(UI_METHOD *)XMLSEC_PTR_TO_FUNC(pem_password_cb, pwdCallback),
+                                      //pwdCallbackCtx);
+        ENGINE_finish(e);
+    }
+    if (pKey == NULL) {
+        xmlSecOpenSSLError("ENGINE_load_private_key", NULL);
+        return(NULL);
+    }
+
+    data = xmlSecOpenSSLEvpKeyAdopt(pKey);
+    if(data == NULL) {
+        xmlSecInternalError("xmlSecOpenSSLEvpKeyAdopt", NULL);
+        EVP_PKEY_free(pKey);
+        return(NULL);
+    }
+
+    key = xmlSecKeyCreate();
+    if(key == NULL) {
+        xmlSecInternalError("xmlSecKeyCreate",
+                            xmlSecKeyDataGetName(data));
+        xmlSecKeyDataDestroy(data);
+        return(NULL);
+    }
+
+    ret = xmlSecKeySetValue(key, data);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeySetValue",
+                            xmlSecKeyDataGetName(data));
+        xmlSecKeyDestroy(key);
+        xmlSecKeyDataDestroy(data);
+        return(NULL);
+    }
+
+    ENGINE_free(e);
+# endif /* OPENSSL_NO_ENGINE */
 
     return(key);
 }

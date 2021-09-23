@@ -142,6 +142,64 @@ xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
     return(0);
 }
 
+int 
+xmlSecAppCryptoSimpleKeysMngrKeyAndCertsSeparedLoad(xmlSecKeysMngrPtr mngr, 
+                                             const char* files, const char* pwd, 
+                                             const char* name, 
+                                             xmlSecKeyDataFormat keyFormat,
+                                             xmlSecKeyDataFormat certFormat) {
+    xmlSecKeyPtr key;
+    int ret;
+
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(files != NULL, -1);
+
+    /* first is the key file */
+    key = xmlSecCryptoAppKeyLoad(files, keyFormat, pwd, 
+                xmlSecCryptoAppGetDefaultPwdCallback(), (void*)files);
+    if(key == NULL) {
+        fprintf(stderr, "Error: xmlSecCryptoAppKeyLoad failed: file=%s\n",
+                xmlSecErrorsSafeString(files));
+        return(-1);
+    }
+
+    if(name != NULL) {
+        ret = xmlSecKeySetName(key, BAD_CAST name);
+        if(ret < 0) {
+            fprintf(stderr, "Error: xmlSecKeySetName failed: name=%s\n",
+                    xmlSecErrorsSafeString(name));
+            xmlSecKeyDestroy(key);
+            return(-1);
+        }
+    }
+
+#ifndef XMLSEC_NO_X509     
+    for(files += strlen(files) + 1; (files[0] != '\0'); files += strlen(files) + 1) {
+        ret = xmlSecCryptoAppKeyCertLoad(key, files, certFormat);
+        if(ret < 0) {
+            fprintf(stderr, "Error: xmlSecCryptoAppKeyCertLoad failed: file=%s\n",
+                    xmlSecErrorsSafeString(files));
+            xmlSecKeyDestroy(key);
+            return(-1);
+        }
+    }
+#else /* XMLSEC_NO_X509 */
+    files += strlen(files) + 1;
+    if(files[0] != '\0') {
+        fprintf(stderr, "Error: X509 support is disabled\n");
+        return(-1);
+    }
+#endif /* XMLSEC_NO_X509 */        
+
+    ret = xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key);
+    if(ret < 0) {
+        fprintf(stderr, "Error: xmlSecCryptoAppDefaultKeysMngrAdoptKey failed\n");
+        xmlSecKeyDestroy(key);
+        return(-1);
+    }
+
+    return(0);
+}
 
 int 
 xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *filename, const char* pwd, const char *name) {

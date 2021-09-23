@@ -393,6 +393,20 @@ static xmlSecAppCmdLineParam enabledRetrievalMethodUrisParam = {
     NULL
 };
 
+static xmlSecAppCmdLineParam privkeyOpensslEngineParam = { 
+    xmlSecAppCmdLineTopicKeysMngr,
+    "--privkey-openssl-engine",
+    NULL,
+    "--privkey-openssl-engine[:<name>] <openssl-engine>;<openssl-key-id>,[,<crtfile>[,<cafile>[...]]]"
+    "\n\tload private key by OpenSSL ENGINE interface; specify the name of engine"
+    "\n\t(like with -engine params), the key specs (like with -inkey or -key params)"
+    "\n\tand certificates that verify this key",
+    xmlSecAppCmdLineParamTypeStringList,
+    xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
+
+
 /****************************************************************
  *
  * Common params
@@ -856,6 +870,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &X509SkipStrictChecksParam,    
     &X509DontVerifyCerts,
 #endif /* XMLSEC_NO_X509 */    
+    &privkeyOpensslEngineParam,
     
     /* General configuration params */
     &cryptoParam,
@@ -2265,6 +2280,24 @@ xmlSecAppLoadKeys(void) {
     }
 
 #endif /* XMLSEC_NO_X509 */    
+
+    for(value = privkeyOpensslEngineParam.value; value != NULL; value = value->next) {
+        if(value->strValue == NULL) {
+            fprintf(stderr, "Error: invalid value for option \"%s\".\n", 
+                    privkeyOpensslEngineParam.fullName);
+            return(-1);
+        } else if(xmlSecAppCryptoSimpleKeysMngrKeyAndCertsSeparedLoad(gKeysMngr, 
+                    value->strListValue, 
+                    xmlSecAppCmdLineParamGetString(&pwdParam),
+                    value->paramNameValue,
+                    xmlSecKeyDataFormatOpensslEngine,
+                    xmlSecKeyDataFormatPem) < 0) {
+            fprintf(stderr, "Error: failed to load private key from \"%s\".\n", 
+                    value->strListValue);
+            return(-1);
+        }
+    }
+
 
     return(0);
 }

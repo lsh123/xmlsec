@@ -86,12 +86,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr       xmlSecOpenSSLAppKeyLoadBIO      (BIO* bi
                                                                          const char *pwd,
                                                                          void* pwdCallback,
                                                                          void* pwdCallbackCtx);
-XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr       xmlSecOpenSSLAppKeyLoadENGINE   (const char *engineName,
-                                                                         const char *engineKeyId,
-                                                                         xmlSecKeyDataFormat format,
-                                                                         const char *pwd,
-                                                                         void* pwdCallback,
-                                                                         void* pwdCallbackCtx);
 
 #ifndef XMLSEC_NO_X509
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr       xmlSecOpenSSLAppPkcs12Load      (const char* filename,

@@ -2282,7 +2282,7 @@ xmlSecAppLoadKeys(void) {
 #endif /* XMLSEC_NO_X509 */    
 
     for(value = privkeyOpensslEngineParam.value; value != NULL; value = value->next) {
-        /* we expect at least one parameter for engine+id */
+        /* we expect at least one parameter for the key's engine+id */
         if(value->strListValue == NULL || value->strListValue[0] == '\0') {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n", privkeyOpensslEngineParam.fullName);
             return(-1);

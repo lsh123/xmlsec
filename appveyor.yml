@@ -31,7 +31,7 @@ environment:
     EXTRAS_URL: https://www.aleksey.com/xmlsec/download/extras
     LIBXML2_FILE: libxml2-2.9.8-noiconv-win-x64.7z
     LIBXSLT_FILE: libxslt-1.1.32-noiconv-win-x64.7z
-    OPENSSL_FILE: openssl-1.1.0h-x64.7z
+    OPENSSL_FILE: openssl-1.1.1l-x64.7z
 
   matrix:
     - COMPILER: MSVC17
@@ -71,11 +71,11 @@ init:
 install:
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
   - mkdir %EXTRAS_FOLDER% && cd %EXTRAS_FOLDER%
-  - appveyor DownloadFile %EXTRAS_URL%/%LIBXML2_FILE%
+  - appveyor DownloadFile "%EXTRAS_URL%/%LIBXML2_FILE%"
   - 7z x %LIBXML2_FILE%
-  - appveyor DownloadFile %EXTRAS_URL%/%LIBXSLT_FILE%
+  - appveyor DownloadFile "%EXTRAS_URL%/%LIBXSLT_FILE%"
   - 7z x %LIBXSLT_FILE%
-  - appveyor DownloadFile %EXTRAS_URL%/%OPENSSL_FILE%
+  - appveyor DownloadFile "%EXTRAS_URL%/%OPENSSL_FILE%"
   - 7z x %OPENSSL_FILE%
   - cd %APPVEYOR_BUILD_FOLDER%
 

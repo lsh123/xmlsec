@@ -157,54 +157,65 @@ xmlSecKeyPtr
 xmlSecOpenSSLAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
                         const char *pwd, void* pwdCallback,
                         void* pwdCallbackCtx) {
-    BIO* bio;
     xmlSecKeyPtr key;
-    char *engineName, *engineKeyId;
 
     xmlSecAssert2(filename != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
-    if (format == xmlSecKeyDataFormatOpensslEngine) {
-        engineKeyId = strchr(filename, ';');
+    if(format == xmlSecKeyDataFormatEngine) {
+        char *buffer = NULL;
+        char* engineName;
+        char* engineKeyId;
 
-	xmlSecAssert2(engineKeyId != NULL, NULL);
-
-        ++engineKeyId;
-        engineName = (char*)malloc(engineKeyId - filename);
-        if(engineName == NULL) {
-            xmlSecMallocError(engineKeyId - filename, NULL);
+        /* for loading key from an engine, the filename format is:
+         *    <openssl-engine>;<openssl-key-id>
+         */
+        buffer = (char*)xmlStrdup(BAD_CAST filename);
+        if(buffer == NULL) {
+            xmlSecStrdupError(BAD_CAST filename, NULL);
             return(NULL);
         }
-        memset(engineName, 0, sizeof(engineName));
-        memcpy(engineName, filename, engineKeyId - filename - 1);
 
-        key = xmlSecOpenSSLAppKeyLoadENGINE (engineName, engineKeyId, format, pwd, pwdCallback, pwdCallbackCtx);
-        free(engineName);
+        engineName = buffer;
+        engineKeyId = strchr(buffer, ';');
+        if(engineKeyId == NULL) {
+            xmlSecInvalidStringDataError("openssl-engine-and-key", buffer, "<openssl-engine>;<openssl-key-id>", NULL);
+            xmlFree(buffer);
+            return(NULL);
+        }
+        (*engineKeyId) = '\0';
+        ++engineKeyId;
+
+        key = xmlSecOpenSSLAppKeyLoadENGINE(engineName, engineKeyId, format, pwd, pwdCallback, pwdCallbackCtx);
         if(key == NULL) {
             xmlSecInternalError2("xmlSecOpenSSLAppKeyLoadENGINE", NULL,
                                  "filename=%s", xmlSecErrorsSafeString(filename));
+            xmlFree(buffer);
             return(NULL);
         }
 
-        return(key);
-    }
+        xmlFree(buffer);
+    } else {
+        BIO* bio;
 
-    bio = BIO_new_file(filename, "rb");
-    if(bio == NULL) {
-        xmlSecOpenSSLError2("BIO_new_file", NULL,
-                            "filename=%s", xmlSecErrorsSafeString(filename));
-        return(NULL);
-    }
+        bio = BIO_new_file(filename, "rb");
+        if(bio == NULL) {
+            xmlSecOpenSSLError2("BIO_new_file", NULL,
+                                "filename=%s", xmlSecErrorsSafeString(filename));
+            return(NULL);
+        }
 
-    key = xmlSecOpenSSLAppKeyLoadBIO (bio, format, pwd, pwdCallback, pwdCallbackCtx);
-    if(key == NULL) {
-        xmlSecInternalError2("xmlSecOpenSSLAppKeyLoadBIO", NULL,
-                            "filename=%s", xmlSecErrorsSafeString(filename));
+        key = xmlSecOpenSSLAppKeyLoadBIO (bio, format, pwd, pwdCallback, pwdCallbackCtx);
+        if(key == NULL) {
+            xmlSecInternalError2("xmlSecOpenSSLAppKeyLoadBIO", NULL,
+                                "filename=%s", xmlSecErrorsSafeString(filename));
+            BIO_free(bio);
+            return(NULL);
+        }
+
         BIO_free(bio);
-        return(NULL);
     }
 
-    BIO_free(bio);
     return(key);
 }
 
@@ -400,81 +411,99 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
  * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
-xmlSecOpenSSLAppKeyLoadENGINE(const char *engineName, const char *engineKeyId, xmlSecKeyDataFormat format,
-                        const char *pwd, void* pwdCallback,
-                        void* pwdCallbackCtx) {
+xmlSecOpenSSLAppKeyLoadENGINE(const char *engineName, const char *engineKeyId, 
+                        xmlSecKeyDataFormat format, const char *pwd ATTRIBUTE_UNUSED, 
+                        void* pwdCallback ATTRIBUTE_UNUSED, void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
 
     ENGINE *e = NULL;
     xmlSecKeyPtr key = NULL;
-    xmlSecKeyDataPtr data;
+    xmlSecKeyDataPtr data = NULL;
     EVP_PKEY* pKey = NULL;
+    int engineInit = 0;
     int ret;
-    static BIO *bio_null = NULL;
 
-# ifndef OPENSSL_NO_ENGINE
-
+#ifndef OPENSSL_NO_ENGINE
     xmlSecAssert2(engineName != NULL, NULL);
     xmlSecAssert2(engineKeyId != NULL, NULL);
-    xmlSecAssert2(format == xmlSecKeyDataFormatOpensslEngine, NULL);
+    xmlSecAssert2(format == xmlSecKeyDataFormatEngine, NULL);
 
+    /* load and initialize the engine */
     e = ENGINE_by_id(engineName);
-    if (e == NULL) {
+    if(e == NULL) {
         e = ENGINE_by_id("dynamic");
-        if (e) {
-            if (!ENGINE_ctrl_cmd_string(e, "SO_PATH", engineName, 0)
-                || !ENGINE_ctrl_cmd_string(e, "LOAD", NULL, 0)) {
-                ENGINE_free(e);
-                xmlSecOpenSSLError("ENGINE_ctrl_cmd_string or ENGINE_ctrl_cmd_string", NULL);
-                return NULL;
+        if(e != NULL) {
+            if(ENGINE_ctrl_cmd_string(e, "SO_PATH", engineName, 0) <= 0) {
+                xmlSecOpenSSLError("ENGINE_ctrl_cmd_string(SO_PATH)", NULL);
+                goto done;
+            }
+            if(ENGINE_ctrl_cmd_string(e, "LOAD", NULL, 0) <= 0) {
+                xmlSecOpenSSLError("ENGINE_ctrl_cmd_string(LOAD)", NULL);
+                goto done;
             }
         }
     }
 
-    ENGINE_ctrl_cmd(e, "SET_USER_INTERFACE", 0, (void *)UI_null(),
-                        0, 1);
-    if (!ENGINE_set_default(e, ENGINE_METHOD_ALL)) {
+    if(ENGINE_ctrl_cmd(e, "SET_USER_INTERFACE", 0, (void *)UI_null(), 0, 1) < 0) {
+        xmlSecOpenSSLError("ENGINE_ctrl_cmd_string(SET_USER_INTERFACE)", NULL);
+        goto done;
+    }
+    if(!ENGINE_set_default(e, ENGINE_METHOD_ALL)) {
         xmlSecOpenSSLError("ENGINE_set_default", NULL);
-        ENGINE_free(e);
-        return NULL;
+        goto done;
     }
+    if(!ENGINE_init(e)) {
+        xmlSecOpenSSLError("ENGINE_init", NULL);
+        goto done;
+    }
+    engineInit = 1;
 
-    if (ENGINE_init(e)) {
-        pKey = ENGINE_load_private_key(e, engineKeyId,
-                                      (UI_METHOD *)UI_null(),
-                                      NULL);
-        ENGINE_finish(e);
-    }
-    if (pKey == NULL) {
+    /* load private key */
+    pKey = ENGINE_load_private_key(e, engineKeyId,
+                                   (UI_METHOD *)UI_null(),
+                                   NULL);
+    if(pKey == NULL) {
         xmlSecOpenSSLError("ENGINE_load_private_key", NULL);
-        return(NULL);
+        goto done;
     }
 
+    /* create xmlsec key */
     data = xmlSecOpenSSLEvpKeyAdopt(pKey);
     if(data == NULL) {
         xmlSecInternalError("xmlSecOpenSSLEvpKeyAdopt", NULL);
-        EVP_PKEY_free(pKey);
-        return(NULL);
+        goto done;
     }
+    pKey = NULL;
 
     key = xmlSecKeyCreate();
     if(key == NULL) {
-        xmlSecInternalError("xmlSecKeyCreate",
-                            xmlSecKeyDataGetName(data));
-        xmlSecKeyDataDestroy(data);
-        return(NULL);
+        xmlSecInternalError("xmlSecKeyCreate", xmlSecKeyDataGetName(data));
+        goto done;
     }
 
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeySetValue",
-                            xmlSecKeyDataGetName(data));
+        xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyDataGetName(data));
         xmlSecKeyDestroy(key);
-        xmlSecKeyDataDestroy(data);
-        return(NULL);
+        key = NULL;
+        goto done;
     }
+    data = NULL;
 
-    ENGINE_free(e);
-# endif /* OPENSSL_NO_ENGINE */
+done:
+    /* cleanup */
+    if(pKey != NULL) {
+        EVP_PKEY_free(pKey);
+    }
+    if(data != NULL) {
+        xmlSecKeyDataDestroy(data);
+    }
+    if(e !=NULL) {
+        if(engineInit != 0) {
+            ENGINE_finish(e);
+        }
+        ENGINE_free(e);
+    }
+#endif /* OPENSSL_NO_ENGINE */
 
     return(key);
 }

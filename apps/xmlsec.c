@@ -397,10 +397,10 @@ static xmlSecAppCmdLineParam privkeyOpensslEngineParam = {
     xmlSecAppCmdLineTopicKeysMngr,
     "--privkey-openssl-engine",
     NULL,
-    "--privkey-openssl-engine[:<name>] <openssl-engine>;<openssl-key-id>,[,<crtfile>[,<cafile>[...]]]"
+    "--privkey-openssl-engine[:<name>] <openssl-engine>;<openssl-key-id>[,<crtfile>[,<crtfile>[...]]]"
     "\n\tload private key by OpenSSL ENGINE interface; specify the name of engine"
     "\n\t(like with -engine params), the key specs (like with -inkey or -key params)"
-    "\n\tand certificates that verify this key",
+    "\n\tand optionally certificates that verify this key",
     xmlSecAppCmdLineParamTypeStringList,
     xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
     NULL
@@ -2029,7 +2029,7 @@ xmlSecAppLoadKeys(void) {
 
     /* read all private keys */
     for(value = privkeyParam.value; value != NULL; value = value->next) {
-        if(value->strValue == NULL) {
+        if(value->strListValue == NULL) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n", 
                     privkeyParam.fullName);
             return(-1);
@@ -2045,7 +2045,7 @@ xmlSecAppLoadKeys(void) {
     }
 
     for(value = privkeyDerParam.value; value != NULL; value = value->next) {
-        if(value->strValue == NULL) {
+        if(value->strListValue == NULL) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n", 
                     privkeyDerParam.fullName);
             return(-1);
@@ -2061,7 +2061,7 @@ xmlSecAppLoadKeys(void) {
     }
 
     for(value = pkcs8PemParam.value; value != NULL; value = value->next) {
-        if(value->strValue == NULL) {
+        if(value->strListValue == NULL) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n", 
                     pkcs8PemParam.fullName);
             return(-1);
@@ -2077,7 +2077,7 @@ xmlSecAppLoadKeys(void) {
     }
 
     for(value = pkcs8DerParam.value; value != NULL; value = value->next) {
-        if(value->strValue == NULL) {
+        if(value->strListValue == NULL) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n", 
                     pkcs8DerParam.fullName);
             return(-1);
@@ -2094,7 +2094,7 @@ xmlSecAppLoadKeys(void) {
 
     /* read all public keys */
     for(value = pubkeyParam.value; value != NULL; value = value->next) {
-        if(value->strValue == NULL) {
+        if(value->strListValue == NULL) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n", 
                     pubkeyParam.fullName);
             return(-1);
@@ -2110,7 +2110,7 @@ xmlSecAppLoadKeys(void) {
     }
 
     for(value = pubkeyDerParam.value; value != NULL; value = value->next) {
-        if(value->strValue == NULL) {
+        if(value->strListValue == NULL) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n", 
                     pubkeyDerParam.fullName);
             return(-1);
@@ -2221,7 +2221,7 @@ xmlSecAppLoadKeys(void) {
 
     /* read all public keys in certs */
     for(value = pubkeyCertParam.value; value != NULL; value = value->next) {
-        if(value->strValue == NULL) {
+        if(value->strListValue == NULL) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n", 
                     pubkeyCertParam.fullName);
             return(-1);
@@ -2237,7 +2237,7 @@ xmlSecAppLoadKeys(void) {
     }
 
     for(value = pubkeyCertDerParam.value; value != NULL; value = value->next) {
-        if(value->strValue == NULL) {
+        if(value->strListValue == NULL) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n", 
                     pubkeyCertDerParam.fullName);
             return(-1);
@@ -2282,15 +2282,19 @@ xmlSecAppLoadKeys(void) {
 #endif /* XMLSEC_NO_X509 */    
 
     for(value = privkeyOpensslEngineParam.value; value != NULL; value = value->next) {
-        if(value->strValue == NULL) {
-            fprintf(stderr, "Error: invalid value for option \"%s\".\n", 
-                    privkeyOpensslEngineParam.fullName);
+        /* we expect at least one parameter for engine+id */
+        if(value->strListValue == NULL || value->strListValue[0] == '\0') {
+            fprintf(stderr, "Error: invalid value for option \"%s\".\n", privkeyOpensslEngineParam.fullName);
             return(-1);
-        } else if(xmlSecAppCryptoSimpleKeysMngrKeyAndCertsSeparedLoad(gKeysMngr, 
-                    value->strListValue, 
+        }
+
+        /* the params format is: <openssl-engine>;<openssl-key-id>[,<crtfile>[,<crtfile>[...]]] */
+        if(xmlSecAppCryptoSimpleKeysMngrEngineKeyAndCertsLoad(gKeysMngr,
+                    value->strListValue,
+                    value->strListValue + strlen(value->strListValue) + 1,
                     xmlSecAppCmdLineParamGetString(&pwdParam),
                     value->paramNameValue,
-                    xmlSecKeyDataFormatOpensslEngine,
+                    xmlSecKeyDataFormatEngine,
                     xmlSecKeyDataFormatPem) < 0) {
             fprintf(stderr, "Error: failed to load private key from \"%s\".\n", 
                     value->strListValue);

@@ -142,6 +142,69 @@ xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
     return(0);
 }
 
+int 
+xmlSecAppCryptoSimpleKeysMngrEngineKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
+                                             const char* engineAndKeyId,
+                                             const char* certFiles,
+                                             const char* pwd,
+                                             const char* name,
+                                             xmlSecKeyDataFormat keyFormat,
+                                             xmlSecKeyDataFormat certFormat) {
+    xmlSecKeyPtr key;
+    int ret;
+
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(engineAndKeyId != NULL, -1);
+    xmlSecAssert2(certFiles != NULL, -1);
+
+    /* load key */
+    key = xmlSecCryptoAppKeyLoad(engineAndKeyId, keyFormat, pwd,
+                xmlSecCryptoAppGetDefaultPwdCallback(), (void*)engineAndKeyId);
+    if(key == NULL) {
+        fprintf(stderr, "Error: xmlSecCryptoAppKeyLoad failed: file=%s\n",
+                xmlSecErrorsSafeString(engineAndKeyId));
+        return(-1);
+    }
+
+    if(name != NULL) {
+        ret = xmlSecKeySetName(key, BAD_CAST name);
+        if(ret < 0) {
+            fprintf(stderr, "Error: xmlSecKeySetName failed: name=%s\n",
+                    xmlSecErrorsSafeString(name));
+            xmlSecKeyDestroy(key);
+            return(-1);
+        }
+    }
+
+    /* load certs (if any) */
+#ifndef XMLSEC_NO_X509     
+    for(const char *file = certFiles; (file[0] != '\0'); file += strlen(file) + 1) {
+        ret = xmlSecCryptoAppKeyCertLoad(key, file, certFormat);
+        if(ret < 0) {
+            fprintf(stderr, "Error: xmlSecCryptoAppKeyCertLoad failed: file=%s\n",
+                    xmlSecErrorsSafeString(file));
+            xmlSecKeyDestroy(key);
+            return(-1);
+        }
+    }
+#else /* XMLSEC_NO_X509 */
+    if(certFiles[0] != '\0') {
+        fprintf(stderr, "Error: X509 support is disabled\n");
+        xmlSecKeyDestroy(key);
+        return(-1);
+    }
+#endif /* XMLSEC_NO_X509 */        
+
+    /* add key to KM */
+    ret = xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key);
+    if(ret < 0) {
+        fprintf(stderr, "Error: xmlSecCryptoAppDefaultKeysMngrAdoptKey failed\n");
+        xmlSecKeyDestroy(key);
+        return(-1);
+    }
+
+    return(0);
+}
 
 int 
 xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *filename, const char* pwd, const char *name) {

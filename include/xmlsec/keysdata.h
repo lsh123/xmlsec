@@ -220,6 +220,7 @@ typedef unsigned int                            xmlSecKeyDataType;
  * @xmlSecKeyDataFormatPkcs12:          the PKCS12 format (bag of keys and certs)
  * @xmlSecKeyDataFormatCertPem:         the PEM cert.
  * @xmlSecKeyDataFormatCertDer:         the DER cert.
+ * @xmlSecKeyDataFormatEngine:          the crypto engine (e.g. OpenSSL ENGINE).
  *
  * The key data format (binary, der, pem, etc.).
  */
@@ -232,7 +233,8 @@ typedef enum {
     xmlSecKeyDataFormatPkcs8Der,
     xmlSecKeyDataFormatPkcs12,
     xmlSecKeyDataFormatCertPem,
-    xmlSecKeyDataFormatCertDer
+    xmlSecKeyDataFormatCertDer,
+    xmlSecKeyDataFormatEngine
 } xmlSecKeyDataFormat;
 
 /**************************************************************************

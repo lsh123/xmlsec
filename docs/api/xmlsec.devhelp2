@@ -1839,6 +1839,7 @@
     <keyword type="constant" name="xmlSecKeyDataFormatPkcs12" link="xmlsec-keysdata.html#xmlSecKeyDataFormatPkcs12"/>
     <keyword type="constant" name="xmlSecKeyDataFormatCertPem" link="xmlsec-keysdata.html#xmlSecKeyDataFormatCertPem"/>
     <keyword type="constant" name="xmlSecKeyDataFormatCertDer" link="xmlsec-keysdata.html#xmlSecKeyDataFormatCertDer"/>
+    <keyword type="constant" name="xmlSecKeyDataFormatEngine" link="xmlsec-keysdata.html#xmlSecKeyDataFormatEngine"/>
     <keyword type="constant" name="xmlSecNodeSetNormal" link="xmlsec-nodeset.html#xmlSecNodeSetNormal"/>
     <keyword type="constant" name="xmlSecNodeSetInvert" link="xmlsec-nodeset.html#xmlSecNodeSetInvert"/>
     <keyword type="constant" name="xmlSecNodeSetTree" link="xmlsec-nodeset.html#xmlSecNodeSetTree"/>

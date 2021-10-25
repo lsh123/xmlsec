@@ -35,6 +35,7 @@
 #include <xmlsec/bn.h>
 
 #include <xmlsec/mscng/crypto.h>
+#include <xmlsec/mscng/certkeys.h>
 
 typedef struct _xmlSecMSCngKeyDataCtx xmlSecMSCngKeyDataCtx,
                                       *xmlSecMSCngKeyDataCtxPtr;

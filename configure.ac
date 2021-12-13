@@ -1569,7 +1569,7 @@ if test "z$MSCRYPTO_FOUND" = "zno" ; then
             #include <windows.h>
             #include <wincrypt.h>
         ]],[[
-            int main () { CertOpenStore(0,0,0,0,0);; return(0); }
+            CertOpenStore(0,0,0,0,0);
         ]])
     ],[
         MSCRYPTO_FOUND=yes
@@ -1640,11 +1640,8 @@ if test "z$MSCNG_FOUND" = "zno" ; then
             #include <windows.h>
             #include <wincrypt.h>
         ]],[[
-            int main () {
-                BCRYPT_ALG_HANDLE hAlg;
-                BCryptOpenAlgorithmProvider(&hAlg, BCRYPT_SHA256_ALGORITHM, NULL, 0);
-                return(0);
-            }
+            BCRYPT_ALG_HANDLE hAlg;
+            BCryptOpenAlgorithmProvider(&hAlg, BCRYPT_SHA256_ALGORITHM, NULL, 0);
         ]])
     ],[
         MSCNG_FOUND=yes

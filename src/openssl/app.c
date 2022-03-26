@@ -416,7 +416,7 @@ xmlSecOpenSSLAppEngineKeyLoad(const char *engineName, const char *engineKeyId,
     int engineInit = 0;
     int ret;
 
-#ifndef OPENSSL_NO_ENGINE
+#if !defined(OPENSSL_NO_ENGINE) && !defined(XMLSEC_OPENSSL_API_300)
     xmlSecAssert2(engineName != NULL, NULL);
     xmlSecAssert2(engineKeyId != NULL, NULL);
     xmlSecAssert2(format == xmlSecKeyDataFormatEngine, NULL);
@@ -497,7 +497,7 @@ done:
         }
         ENGINE_free(engine);
     }
-#endif /* OPENSSL_NO_ENGINE */
+#endif /* !defined(OPENSSL_NO_ENGINE) && !defined(XMLSEC_OPENSSL_API_300) */
 
     return(key);
 }

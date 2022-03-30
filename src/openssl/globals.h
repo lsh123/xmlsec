@@ -30,20 +30,6 @@
  *
  *************************************************************/
 /**
- * XMLSEC_OPENSSL_ERRORS_LIB:
- *
- * Macro. The XMLSec library klass for OpenSSL errors reporting functions.
- */
-#define XMLSEC_OPENSSL_ERRORS_LIB                       (ERR_LIB_USER + 57)
-
-/**
- * XMLSEC_OPENSSL_ERRORS_FUNCTION:
- *
- * Macro. The XMLSec library functions OpenSSL errors reporting functions.
- */
-#define XMLSEC_OPENSSL_ERRORS_FUNCTION                  0
-
-/**
  * xmlSecOpenSSLError:
  * @errorFunction:      the failed function name.
  * @errorObject:        the error specific error object (e.g. transform, key data, etc).

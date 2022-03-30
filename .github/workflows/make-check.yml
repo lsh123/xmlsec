@@ -95,8 +95,8 @@ jobs:
         install: >-
           git
           base-devel
-          mingw-w64-${{ matrix.arch }}-toolchain
-          mingw-w64-${{ matrix.arch }}-libtool
+          toolchain
+          libtool
           mingw-w64-${{ matrix.arch }}-libxml2
           mingw-w64-${{ matrix.arch }}-libxslt
           mingw-w64-${{ matrix.arch }}-openssl

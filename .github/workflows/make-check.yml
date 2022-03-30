@@ -93,12 +93,15 @@ jobs:
         release: false  
         update: false
         install: >-
-          git
+          autoconf
+          automake
           base-devel
+          git
+          libtool
           mingw-w64-${{ matrix.arch }}-toolchain
-          mingw-w64-${{ matrix.arch }}-libtool
           mingw-w64-${{ matrix.arch }}-libxml2
           mingw-w64-${{ matrix.arch }}-libxslt
+          mingw-w64-${{ matrix.arch }}-libltdl
           mingw-w64-${{ matrix.arch }}-openssl
           mingw-w64-${{ matrix.arch }}-nspr
           mingw-w64-${{ matrix.arch }}-nss

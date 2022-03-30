@@ -94,9 +94,7 @@ jobs:
         update: false
         install: >-
           autoconf
-          autoheader
           automake
-          autoreconf
           base-devel
           git
           libtool

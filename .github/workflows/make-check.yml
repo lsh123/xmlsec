@@ -96,7 +96,7 @@ jobs:
           git
           base-devel
           toolchain
-          libtool
+          mingw-w64-${{ matrix.arch }}-libtool
           mingw-w64-${{ matrix.arch }}-libxml2
           mingw-w64-${{ matrix.arch }}-libxslt
           mingw-w64-${{ matrix.arch }}-openssl

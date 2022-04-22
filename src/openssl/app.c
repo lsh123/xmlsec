@@ -90,7 +90,7 @@ xmlSecOpenSSLAppInit(const char* config) {
                               OPENSSL_INIT_ADD_ALL_DIGESTS |
                               OPENSSL_INIT_LOAD_CONFIG;
 #ifndef OPENSSL_IS_BORINGSSL
-    opts |= OPENSSL_INIT_ASYNC
+    opts |= OPENSSL_INIT_ASYNC;
 #ifndef XMLSEC_OPENSSL_API_300
     opts |= OPENSSL_INIT_ENGINE_ALL_BUILTIN;
 #endif

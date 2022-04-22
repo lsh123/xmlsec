@@ -15,6 +15,7 @@
 #include <xmlsec/dl.h>
 
 #include <openssl/err.h>
+#include <openssl/opensslv.h>
 #ifndef OPENSSL_IS_BORINGSSL
 #include <openssl/opensslconf.h>
 #endif /* OPENSSL_IS_BORINGSSL */
@@ -67,6 +68,8 @@ XMLSEC_CRYPTO_EXPORT const xmlChar*     xmlSecOpenSSLGetDefaultTrustedCertsFolde
 #elif defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER >= 0x20700000L
 /* LibreSSL 2.7 implements (most of) OpenSSL 1.1 API */
 #define XMLSEC_OPENSSL_API_110      1
+#elif OPENSSL_VERSION_NUMBER >= 0x30000000L
+#define XMLSEC_OPENSSL_API_300      1
 #elif OPENSSL_VERSION_NUMBER >= 0x10100000L
 #define XMLSEC_OPENSSL_API_110      1
 #elif OPENSSL_VERSION_NUMBER >= 0x10000000L

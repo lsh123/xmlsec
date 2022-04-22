@@ -39,7 +39,7 @@ static void             xmlSecOpenSSLErrorsShutdown             (void);
 static xmlSecCryptoDLFunctionsPtr gXmlSecOpenSSLFunctions = NULL;
 static xmlChar* gXmlSecOpenSSLTrustedCertsFolder = NULL;
 
-#if !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_NO_ERR)
+#if !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_NO_ERR) && (OPENSSL_VERSION_NUMBER < 0x30000000L)
 
 #define XMLSEC_OPENSSL_ERRORS_FUNCTION                  0
 
@@ -371,7 +371,7 @@ xmlSecOpenSSLInit (void)  {
 int
 xmlSecOpenSSLShutdown(void) {
     xmlSecOpenSSLSetDefaultTrustedCertsFolder(NULL);
-	xmlSecOpenSSLErrorsShutdown();
+    xmlSecOpenSSLErrorsShutdown();
     return(0);
 }
 
@@ -459,7 +459,7 @@ void
 xmlSecOpenSSLErrorsDefaultCallback(const char* file, int line, const char* func,
                                 const char* errorObject, const char* errorSubject,
                                 int reason, const char* msg) {
-#if !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_NO_ERR)
+#if !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_NO_ERR) && (OPENSSL_VERSION_NUMBER < 0x30000000L)
     ERR_put_error(gXmlSecOpenSSLErrorsLib,
                 XMLSEC_OPENSSL_ERRORS_FUNCTION,
                 reason, file, line);
@@ -472,7 +472,7 @@ xmlSecOpenSSLErrorsDefaultCallback(const char* file, int line, const char* func,
 
 static int
 xmlSecOpenSSLErrorsInit(void) {
-#if !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_NO_ERR)
+#if !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_NO_ERR) && (OPENSSL_VERSION_NUMBER < 0x30000000L)
     xmlSecSize pos;
 
     /* get XMLSec library id */
@@ -513,7 +513,7 @@ xmlSecOpenSSLErrorsShutdown(void) {
     /* remove callback */
     xmlSecErrorsSetCallback(NULL);
 
-#if !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_NO_ERR)
+#if !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_NO_ERR) && (OPENSSL_VERSION_NUMBER < 0x30000000L)
     /* unload xmlsec strings from OpenSSL */
     ERR_unload_strings(gXmlSecOpenSSLErrorsLib, xmlSecOpenSSLStrLib);
     ERR_unload_strings(gXmlSecOpenSSLErrorsLib, xmlSecOpenSSLStrDefReason);

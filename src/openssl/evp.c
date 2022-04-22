@@ -1330,7 +1330,7 @@ xmlSecOpenSSLKeyDataDsaGetType(xmlSecKeyDataPtr data) {
 
     pctx = EVP_PKEY_CTX_new_from_pkey(NULL, pkey, NULL);
     if (pctx == NULL) {
-        xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_name",
+        xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_pkey",
             xmlSecKeyDataGetName(data));
         goto err_cleanup;
     }
@@ -1352,9 +1352,9 @@ xmlSecOpenSSLKeyDataDsaGetType(xmlSecKeyDataPtr data) {
         goto err_cleanup;
     }
 
-    ret = EVP_PKEY_get_params(pkey, params);
+    ret = EVP_PKEY_CTX_get_params(pctx, params);
     if (ret <= 0) {
-        xmlSecOpenSSLError("EVP_PKEY_get_params",
+        xmlSecOpenSSLError("EVP_PKEY_CTX_get_params",
             xmlSecKeyDataGetName(data));
         goto err_cleanup;
     }

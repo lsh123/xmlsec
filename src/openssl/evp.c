@@ -934,21 +934,6 @@ err_cleanup:
     if (param_bld != NULL) {
         OSSL_PARAM_BLD_free(param_bld);
     }
-    if (p != NULL) {
-        BN_free(p);
-    }
-    if (q != NULL) {
-        BN_free(q);
-    }
-    if (g != NULL) {
-        BN_free(g);
-    }
-    if (priv_key != NULL) {
-        BN_free(priv_key);
-    }
-    if (pub_key != NULL) {
-        BN_free(pub_key);
-    }
 #else
     if (dsa != NULL) {
         DSA_free(dsa);
@@ -1299,6 +1284,7 @@ static xmlSecKeyDataType
 xmlSecOpenSSLKeyDataDsaGetType(xmlSecKeyDataPtr data) {
 #ifndef XMLSEC_OPENSSL_API_300
     DSA* dsa;
+    const ENGINE* dsa_eng = NULL;
 #else
     const EVP_PKEY* pkey;
     OSSL_PARAM_BLD* param_bld;
@@ -1307,7 +1293,6 @@ xmlSecOpenSSLKeyDataDsaGetType(xmlSecKeyDataPtr data) {
 #endif
     const BIGNUM* p = NULL, * q = NULL, * g = NULL;
     const BIGNUM* priv_key = NULL, * pub_key = NULL;
-    const ENGINE* dsa_eng = NULL;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId), xmlSecKeyDataTypeUnknown);
 

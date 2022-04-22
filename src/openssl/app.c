@@ -77,20 +77,23 @@ XMLSEC_FUNC_TO_PTR_IMPL(pem_password_cb)
  */
 int
 xmlSecOpenSSLAppInit(const char* config) {
-#if !defined(XMLSEC_OPENSSL_API_110)
+#if !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300)
 
     ERR_load_crypto_strings();
     OPENSSL_config(NULL);
     OpenSSL_add_all_algorithms();
 
-#else /* !defined(XMLSEC_OPENSSL_API_110) */
+#else /* !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300) */
     int ret;
     uint64_t opts = OPENSSL_INIT_LOAD_CRYPTO_STRINGS |
                               OPENSSL_INIT_ADD_ALL_CIPHERS |
                               OPENSSL_INIT_ADD_ALL_DIGESTS |
                               OPENSSL_INIT_LOAD_CONFIG;
 #ifndef OPENSSL_IS_BORINGSSL
-    opts |= OPENSSL_INIT_ASYNC | OPENSSL_INIT_ENGINE_ALL_BUILTIN;
+    opts |= OPENSSL_INIT_ASYNC
+#ifndef XMLSEC_OPENSSL_API_300
+    opts |= OPENSSL_INIT_ENGINE_ALL_BUILTIN;
+#endif
 #endif /* OPENSSL_IS_BORINGSSL */
 
     ret = OPENSSL_init_crypto(opts, NULL);
@@ -98,7 +101,7 @@ xmlSecOpenSSLAppInit(const char* config) {
         xmlSecOpenSSLError("OPENSSL_init_crypto", NULL);
         return(-1);
     }
-#endif /* !defined(XMLSEC_OPENSSL_API_110) */
+#endif /* !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300) */
 
     if((RAND_status() != 1) && (xmlSecOpenSSLAppLoadRANDFile(NULL) != 1)) {
         xmlSecInternalError("xmlSecOpenSSLAppLoadRANDFile", NULL);
@@ -127,7 +130,7 @@ xmlSecOpenSSLAppShutdown(void) {
     xmlSecOpenSSLAppSaveRANDFile(NULL);
 
     /* OpenSSL 1.1.0+ does not require explicit cleanup */
-#if !defined(XMLSEC_OPENSSL_API_110)
+#if !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300))
 
 #ifndef XMLSEC_NO_X509
     X509_TRUST_cleanup();
@@ -142,7 +145,7 @@ xmlSecOpenSSLAppShutdown(void) {
     CRYPTO_cleanup_all_ex_data();
     ERR_remove_thread_state(NULL);
     ERR_free_strings();
-#endif /* !defined(XMLSEC_OPENSSL_API_110) */
+#endif /* !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300) */
 
     /* done */
     return(0);
@@ -405,8 +408,8 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
 
 
 static xmlSecKeyPtr
-xmlSecOpenSSLAppEngineKeyLoad(const char *engineName, const char *engineKeyId, 
-                        xmlSecKeyDataFormat format, const char *pwd ATTRIBUTE_UNUSED, 
+xmlSecOpenSSLAppEngineKeyLoad(const char *engineName, const char *engineKeyId,
+                        xmlSecKeyDataFormat format, const char *pwd ATTRIBUTE_UNUSED,
                         void* pwdCallback ATTRIBUTE_UNUSED, void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
 
     ENGINE* engine = NULL;

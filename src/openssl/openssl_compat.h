@@ -13,10 +13,10 @@
 
 /******************************************************************************
  *
- * OpenSSL 1.1.0 compatibility
+ * OpenSSL 1.1.0 and 3.0.0 compatibility
  *
  *****************************************************************************/
-#if !defined(XMLSEC_OPENSSL_API_110)
+#if !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300)
 
 /* EVP_PKEY stuff */
 #define EVP_PKEY_up_ref(pKey)              CRYPTO_add(&((pKey)->references), 1, CRYPTO_LOCK_EVP_PKEY)
@@ -47,7 +47,7 @@
 #define X509_OBJECT_free(x)                { X509_OBJECT_free_contents(x); free(x); }
 #define X509_OBJECT_get0_X509(x)           (((x) != NULL) ? ((x)->data.x509) : (X509 *)NULL)
 
-#endif /* !defined(XMLSEC_OPENSSL_API_110) */
+#endif /* !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300) */
 
 /******************************************************************************
  *

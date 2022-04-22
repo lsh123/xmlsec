@@ -60,7 +60,7 @@
 /* The ASN1_TIME_check() function was changed from ASN1_TIME * to
  * const ASN1_TIME * in 1.1.0. To avoid compiler warnings, we use this hack.
  */
-#if !defined(XMLSEC_OPENSSL_API_110) || defined(OPENSSL_IS_BORINGSSL)
+#if (!defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300)) || defined(OPENSSL_IS_BORINGSSL)
 typedef ASN1_TIME XMLSEC_CONST_ASN1_TIME;
 #else  /* !defined(XMLSEC_OPENSSL_API_110) || defined(OPENSSL_IS_BORINGSSL) */
 typedef const ASN1_TIME XMLSEC_CONST_ASN1_TIME;

@@ -20,6 +20,10 @@
 
 #include <openssl/evp.h>
 #include <openssl/rand.h>
+#if OPENSSL_VERSION_NUMBER >= 0x30000000L
+#include <openssl/core_names.h>
+#include <openssl/param_build.h>
+#endif
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
@@ -39,7 +43,7 @@
  * OpenSSL 1.1.0 compatibility
  *
  *****************************************************************************/
-#if !defined(XMLSEC_OPENSSL_API_110)
+#if !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300)
 
 #ifndef XMLSEC_NO_RSA
 
@@ -158,7 +162,7 @@ static inline int DSA_set0_key(DSA *d, BIGNUM *pub_key, BIGNUM *priv_key) {
 }
 #endif /* XMLSEC_NO_DSA */
 
-#endif /* !defined(XMLSEC_OPENSSL_API_110) */
+#endif /* !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300) */
 
 #ifdef OPENSSL_IS_BORINGSSL
 #ifndef XMLSEC_NO_RSA
@@ -570,6 +574,7 @@ xmlSecOpenSSLKeyDataDsaGetKlass(void) {
     return(&xmlSecOpenSSLKeyDataDsaKlass);
 }
 
+#ifndef XMLSEC_OPENSSL_API_300
 /**
  * xmlSecOpenSSLKeyDataDsaAdoptDsa:
  * @data:               the pointer to DSA key data.
@@ -594,7 +599,6 @@ xmlSecOpenSSLKeyDataDsaAdoptDsa(xmlSecKeyDataPtr data, DSA* dsa) {
                                xmlSecKeyDataGetName(data));
             return(-1);
         }
-
         ret = EVP_PKEY_assign_DSA(pKey, dsa);
         if(ret != 1) {
             xmlSecOpenSSLError("EVP_PKEY_assign_DSA",
@@ -635,6 +639,7 @@ xmlSecOpenSSLKeyDataDsaGetDsa(xmlSecKeyDataPtr data) {
 
     return((pKey != NULL) ? EVP_PKEY_get0_DSA(pKey) : NULL);
 }
+#endif /* XMLSEC_OPENSSL_API_300 */
 
 /**
  * xmlSecOpenSSLKeyDataDsaAdoptEvp:
@@ -693,12 +698,19 @@ xmlSecOpenSSLKeyDataDsaFinalize(xmlSecKeyDataPtr data) {
 
 static int
 xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
-                                    xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyDataPtr data = NULL;
     xmlNodePtr cur;
-    DSA *dsa = NULL;
-    BIGNUM *p = NULL, *q = NULL, *g = NULL;
-    BIGNUM *priv_key = NULL, *pub_key = NULL;
+#ifndef XMLSEC_OPENSSL_API_300
+    DSA* dsa = NULL;
+#else
+    EVP_PKEY* pkey = NULL;
+    EVP_PKEY_CTX* ctx = NULL;
+    OSSL_PARAM_BLD* param_bld;
+    OSSL_PARAM* params = NULL;
+#endif
+    BIGNUM* p = NULL, * q = NULL, * g = NULL;
+    BIGNUM* priv_key = NULL, * pub_key = NULL;
     int ret;
 
     xmlSecAssert2(id == xmlSecOpenSSLKeyDataDsaId, -1);
@@ -706,118 +718,121 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    if(xmlSecKeyGetValue(key) != NULL) {
+    if (xmlSecKeyGetValue(key) != NULL) {
         xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_KEY_DATA,
-                xmlSecKeyDataKlassGetName(id),
-                "Key data value is already set");
+            xmlSecKeyDataKlassGetName(id),
+            "Key data value is already set");
         return(-1);
     }
 
+#ifndef XMLSEC_OPENSSL_API_300
     dsa = DSA_new();
-    if(dsa == NULL) {
+    if (dsa == NULL) {
         xmlSecOpenSSLError("DSA_new",
-                           xmlSecKeyDataKlassGetName(id));
+            xmlSecKeyDataKlassGetName(id));
         goto err_cleanup;
     }
+#endif
 
     cur = xmlSecGetNextElementNode(node->children);
 
     /* first is P node. It is REQUIRED because we do not support Seed and PgenCounter*/
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur,  xmlSecNodeDSAP, xmlSecDSigNs))) {
+    if ((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeDSAP, xmlSecDSigNs))) {
         xmlSecInvalidNodeError(cur, xmlSecNodeDSAP, xmlSecKeyDataKlassGetName(id));
         goto err_cleanup;
     }
 
-    if(xmlSecOpenSSLNodeGetBNValue(cur, &p) == NULL) {
+    if (xmlSecOpenSSLNodeGetBNValue(cur, &p) == NULL) {
         xmlSecInternalError2("xmlSecOpenSSLNodeGetBNValue",
-                             xmlSecKeyDataKlassGetName(id),
-                             "node=%s", xmlSecErrorsSafeString(xmlSecNodeDSAP));
+            xmlSecKeyDataKlassGetName(id),
+            "node=%s", xmlSecErrorsSafeString(xmlSecNodeDSAP));
         goto err_cleanup;
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* next is Q node. It is REQUIRED because we do not support Seed and PgenCounter*/
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeDSAQ, xmlSecDSigNs))) {
+    if ((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeDSAQ, xmlSecDSigNs))) {
         xmlSecInvalidNodeError(cur, xmlSecNodeDSAQ, xmlSecKeyDataKlassGetName(id));
         goto err_cleanup;
     }
-    if(xmlSecOpenSSLNodeGetBNValue(cur, &q) == NULL) {
+    if (xmlSecOpenSSLNodeGetBNValue(cur, &q) == NULL) {
         xmlSecInternalError2("xmlSecOpenSSLNodeGetBNValue",
-                             xmlSecKeyDataKlassGetName(id),
-                            "node=%s", xmlSecErrorsSafeString(xmlSecNodeDSAQ));
+            xmlSecKeyDataKlassGetName(id),
+            "node=%s", xmlSecErrorsSafeString(xmlSecNodeDSAQ));
         goto err_cleanup;
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* next is G node. It is REQUIRED because we do not support Seed and PgenCounter*/
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeDSAG, xmlSecDSigNs))) {
+    if ((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeDSAG, xmlSecDSigNs))) {
         xmlSecInvalidNodeError(cur, xmlSecNodeDSAG, xmlSecKeyDataKlassGetName(id));
         goto err_cleanup;
     }
-    if(xmlSecOpenSSLNodeGetBNValue(cur, &g) == NULL) {
+    if (xmlSecOpenSSLNodeGetBNValue(cur, &g) == NULL) {
         xmlSecInternalError2("xmlSecOpenSSLNodeGetBNValue",
-                             xmlSecKeyDataKlassGetName(id),
-                            "node=%s", xmlSecErrorsSafeString(xmlSecNodeDSAG));
+            xmlSecKeyDataKlassGetName(id),
+            "node=%s", xmlSecErrorsSafeString(xmlSecNodeDSAG));
         goto err_cleanup;
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSAX, xmlSecNs))) {
+    if ((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSAX, xmlSecNs))) {
         /* next is X node. It is REQUIRED for private key but
          * we are not sure exactly what do we read */
-        if(xmlSecOpenSSLNodeGetBNValue(cur, &priv_key) == NULL) {
+        if (xmlSecOpenSSLNodeGetBNValue(cur, &priv_key) == NULL) {
             xmlSecInternalError2("xmlSecOpenSSLNodeGetBNValue",
-                                 xmlSecKeyDataKlassGetName(id),
-                                "node=%s", xmlSecErrorsSafeString(xmlSecNodeDSAX));
+                xmlSecKeyDataKlassGetName(id),
+                "node=%s", xmlSecErrorsSafeString(xmlSecNodeDSAX));
             goto err_cleanup;
         }
         cur = xmlSecGetNextElementNode(cur->next);
     }
 
     /* next is Y node. */
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeDSAY, xmlSecDSigNs))) {
+    if ((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeDSAY, xmlSecDSigNs))) {
         xmlSecInvalidNodeError(cur, xmlSecNodeDSAY, xmlSecKeyDataKlassGetName(id));
         goto err_cleanup;
     }
-    if(xmlSecOpenSSLNodeGetBNValue(cur, &pub_key) == NULL) {
+    if (xmlSecOpenSSLNodeGetBNValue(cur, &pub_key) == NULL) {
         xmlSecInternalError2("xmlSecOpenSSLNodeGetBNValue",
-                             xmlSecKeyDataKlassGetName(id),
-                            "node=%s", xmlSecErrorsSafeString(xmlSecNodeDSAY));
+            xmlSecKeyDataKlassGetName(id),
+            "node=%s", xmlSecErrorsSafeString(xmlSecNodeDSAY));
         goto err_cleanup;
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* todo: add support for J */
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSAJ, xmlSecDSigNs))) {
+    if ((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSAJ, xmlSecDSigNs))) {
         cur = xmlSecGetNextElementNode(cur->next);
     }
 
     /* todo: add support for seed */
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSASeed, xmlSecDSigNs))) {
+    if ((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSASeed, xmlSecDSigNs))) {
         cur = xmlSecGetNextElementNode(cur->next);
     }
 
     /* todo: add support for pgencounter */
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSAPgenCounter, xmlSecDSigNs))) {
+    if ((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSAPgenCounter, xmlSecDSigNs))) {
         cur = xmlSecGetNextElementNode(cur->next);
     }
 
-    if(cur != NULL) {
+    if (cur != NULL) {
         xmlSecUnexpectedNodeError(cur, xmlSecKeyDataKlassGetName(id));
         goto err_cleanup;
     }
 
     data = xmlSecKeyDataCreate(id);
-    if(data == NULL ) {
+    if (data == NULL) {
         xmlSecInternalError("xmlSecKeyDataCreate",
-                            xmlSecKeyDataKlassGetName(id));
+            xmlSecKeyDataKlassGetName(id));
         goto err_cleanup;
     }
-
+#ifndef XMLSEC_OPENSSL_API_300
     ret = DSA_set0_pqg(dsa, p, q, g);
-    if(ret != 1) {
+
+    if (ret != 1) {
         xmlSecOpenSSLError("DSA_set0_pqg",
-                           xmlSecKeyDataKlassGetName(id));
+            xmlSecKeyDataKlassGetName(id));
         goto err_cleanup;
     }
     p = NULL;
@@ -825,22 +840,67 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     g = NULL;
 
     ret = DSA_set0_key(dsa, pub_key, priv_key);
-    if(ret != 1) {
+    if (ret != 1) {
         xmlSecOpenSSLError("DSA_set0_key",
-                           xmlSecKeyDataKlassGetName(id));
+            xmlSecKeyDataKlassGetName(id));
         goto err_cleanup;
     }
     pub_key = NULL;
     priv_key = NULL;
 
     ret = xmlSecOpenSSLKeyDataDsaAdoptDsa(data, dsa);
-    if(ret < 0) {
+    if (ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLKeyDataDsaAdoptDsa",
-                            xmlSecKeyDataGetName(data));
+            xmlSecKeyDataGetName(data));
         goto err_cleanup;
     }
     dsa = NULL;
+#else
+    param_bld = OSSL_PARAM_BLD_new();
+    if (param_bld == NULL) {
+        xmlSecOpenSSLError("OSSL_PARAM_BLD_new",
+            xmlSecKeyDataKlassGetName(id));
+        goto err_cleanup;
+    }
+    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_FFC_P, p);
+    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_FFC_Q, q);
+    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_FFC_G, g);
+    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_PUB_KEY, pub_key);
+    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_PUB_KEY, priv_key);
 
+    params = OSSL_PARAM_BLD_to_param(param_bld);
+    if (params == NULL) {
+        xmlSecOpenSSLError("OSSL_PARAM_BLD_to_param",
+            xmlSecKeyDataKlassGetName(id));
+        goto err_cleanup;
+    }
+    ctx = EVP_PKEY_CTX_new_from_name(NULL, "DSA", NULL);
+    if (ctx == NULL) {
+        xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_name",
+            xmlSecKeyDataKlassGetName(id));
+        goto err_cleanup;
+    }
+
+    ret = EVP_PKEY_fromdata_init(ctx);
+    if (ret <= 0) {
+        xmlSecOpenSSLError("EVP_PKEY_fromdata_init",
+            xmlSecKeyDataKlassGetName(id));
+        goto err_cleanup;
+    }
+    ret = EVP_PKEY_fromdata(ctx, &pkey, EVP_PKEY_KEYPAIR, params);
+    if (ret <= 0) {
+        xmlSecOpenSSLError("EVP_PKEY_fromdata",
+            xmlSecKeyDataKlassGetName(id));
+        goto err_cleanup;
+    }
+    ret = xmlSecOpenSSLKeyDataDsaAdoptEvp(data, pkey);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLKeyDataDsaAdoptEvp",
+            xmlSecKeyDataGetName(data));
+        data = NULL;
+        goto err_cleanup;
+    }
+#endif
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeySetValue",
@@ -849,15 +909,66 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         goto err_cleanup;
     }
 
+#ifdef XMLSEC_OPENSSL_API_300
+    if (ctx != NULL) {
+        EVP_PKEY_CTX_free(ctx);
+    }
+    if (params != NULL) {
+        OSSL_PARAM_free(params);
+    }
+    if (param_bld != NULL) {
+        OSSL_PARAM_BLD_free(param_bld);
+    }
+#endif
+
     return(0);
 
 err_cleanup:
-    DSA_free(dsa);
-    BN_free(p);
-    BN_free(q);
-    BN_free(g);
-    BN_free(priv_key);
-    BN_free(pub_key);
+#ifdef XMLSEC_OPENSSL_API_300
+    if (ctx != NULL) {
+        EVP_PKEY_CTX_free(ctx);
+    }
+    if (params != NULL) {
+        OSSL_PARAM_free(params);
+    }
+    if (param_bld != NULL) {
+        OSSL_PARAM_BLD_free(param_bld);
+    }
+    if (p != NULL) {
+        BN_free(p);
+    }
+    if (q != NULL) {
+        BN_free(q);
+    }
+    if (g != NULL) {
+        BN_free(g);
+    }
+    if (priv_key != NULL) {
+        BN_free(priv_key);
+    }
+    if (pub_key != NULL) {
+        BN_free(pub_key);
+    }
+#else
+    if (dsa != NULL) {
+        DSA_free(dsa);
+    }
+#endif
+    if (p != NULL) {
+        BN_free(p);
+    }
+    if (q != NULL) {
+        BN_free(q);
+    }
+    if (g != NULL) {
+        BN_free(g);
+    }
+    if (priv_key != NULL) {
+        BN_free(priv_key);
+    }
+    if (pub_key != NULL) {
+        BN_free(pub_key);
+    }
     if(data != NULL) {
         xmlSecKeyDataDestroy(data);
     }
@@ -868,7 +979,13 @@ static int
 xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                                 xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlNodePtr cur;
+#ifdef XMLSEC_OPENSSL_API_300
+    const EVP_PKEY* pkey;
+    OSSL_PARAM_BLD* param_bld;
+    OSSL_PARAM* params = NULL;
+#else
     DSA* dsa;
+#endif
     int ret;
     const BIGNUM *p = NULL, *q = NULL, *g = NULL;
     const BIGNUM *priv_key = NULL, *pub_key = NULL;
@@ -879,6 +996,7 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
+#ifndef XMLSEC_OPENSSL_API_300
     dsa = xmlSecOpenSSLKeyDataDsaGetDsa(xmlSecKeyGetValue(key));
     xmlSecAssert2(dsa != NULL, -1);
 
@@ -888,7 +1006,35 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     }
 
     DSA_get0_pqg(dsa, &p, &q, &g);
+#else
+    param_bld = OSSL_PARAM_BLD_new();
+    if (param_bld == NULL) {
+        xmlSecOpenSSLError("OSSL_PARAM_BLD_new",
+            xmlSecKeyDataKlassGetName(id));
+        goto err_cleanup;
+    }
+    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_FFC_P, p);
+    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_FFC_Q, q);
+    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_FFC_G, g);
+    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_PUB_KEY, pub_key);
+    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_PRIV_KEY, priv_key);
+    params = OSSL_PARAM_BLD_to_param(param_bld);
+    if (params == NULL) {
+        xmlSecOpenSSLError("OSSL_PARAM_BLD_to_param",
+            xmlSecKeyDataKlassGetName(id));
+        goto err_cleanup;
+    }
 
+    pkey = xmlSecOpenSSLKeyDataDsaGetEvp(xmlSecKeyGetValue(key));
+    xmlSecAssert2(pkey != NULL, -1);
+
+    ret = EVP_PKEY_get_params(pkey, params);
+    if (ret <= 0) {
+        xmlSecOpenSSLError("EVP_PKEY_get_params",
+            xmlSecKeyDataKlassGetName(id));
+        goto err_cleanup;
+    }
+#endif
     /* first is P node */
     xmlSecAssert2(p != NULL, -1);
     cur = xmlSecAddChild(node, xmlSecNodeDSAP, xmlSecDSigNs);
@@ -940,7 +1086,9 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
         return(-1);
     }
 
+#ifndef XMLSEC_OPENSSL_API_300
     DSA_get0_key(dsa, &pub_key, &priv_key);
+#endif
 
     /* next is X node: write it ONLY for private keys and ONLY if it is requested */
     if(((keyInfoCtx->keyReq.keyType & xmlSecKeyDataTypePrivate) != 0) && (priv_key != NULL)) {
@@ -976,12 +1124,69 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                              "node=%s", xmlSecErrorsSafeString(xmlSecNodeDSAY));
         return(-1);
     }
+#ifdef XMLSEC_OPENSSL_API_300
+    if (p != NULL) {
+        BN_free(p);
+    }
+    if (q != NULL) {
+        BN_free(q);
+    }
+    if (g != NULL) {
+        BN_free(g);
+    }
+    if (priv_key != NULL) {
+        BN_free(priv_key);
+    }
+    if (pub_key != NULL) {
+        BN_free(pub_key);
+    }
+    if (params != NULL) {
+        OSSL_PARAM_free(params);
+    }
+    if (param_bld != NULL) {
+        OSSL_PARAM_BLD_free(param_bld);
+    }
+#endif
     return(0);
+
+#ifdef XMLSEC_OPENSSL_API_300
+err_cleanup:
+    if (p != NULL) {
+        BN_free(p);
+    }
+    if (q != NULL) {
+        BN_free(q);
+    }
+    if (g != NULL) {
+        BN_free(g);
+    }
+    if (priv_key != NULL) {
+        BN_free(priv_key);
+    }
+    if (pub_key != NULL) {
+        BN_free(pub_key);
+    }
+    if (params != NULL) {
+        OSSL_PARAM_free(params);
+    }
+    if (param_bld != NULL) {
+        OSSL_PARAM_BLD_free(param_bld);
+    }
+    return(-1);
+#endif
 }
 
 static int
 xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+#ifndef XMLSEC_OPENSSL_API_300
     DSA* dsa;
+#else
+    EVP_PKEY_CTX* pctx = NULL;
+    OSSL_PARAM_BLD* param_bld;
+    OSSL_PARAM* params = NULL;
+    EVP_PKEY* pkey = NULL;
+#endif
+
     int counter_ret;
     unsigned long h_ret;
     int ret;
@@ -990,6 +1195,7 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     xmlSecAssert2(sizeBits > 0, -1);
     UNREFERENCED_PARAMETER(type);
 
+#ifndef XMLSEC_OPENSSL_API_300
     dsa = DSA_new();
     if(dsa == NULL) {
         xmlSecOpenSSLError("DSA_new",
@@ -1021,21 +1227,93 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
         DSA_free(dsa);
         return(-1);
     }
+#else
+    pctx = EVP_PKEY_CTX_new_from_name(NULL, "DSA", NULL);
+    if (pctx == NULL) {
+        xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_name",
+            xmlSecKeyDataGetName(data));
+        goto err_cleanup;
+    }
+    ret = EVP_PKEY_paramgen_init(pctx);
+    if (ret <= 0) {
+        xmlSecOpenSSLError("EVP_PKEY_paramgen_init",
+            xmlSecKeyDataGetName(data));
+        goto err_cleanup;
+    }
+    param_bld = OSSL_PARAM_BLD_new();
+    if (param_bld == NULL) {
+        xmlSecOpenSSLError("OSSL_PARAM_BLD_new",
+            xmlSecKeyDataGetName(data));
+        goto err_cleanup;
+    }
+    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_BITS, &sizeBits);
+    params = OSSL_PARAM_BLD_to_param(param_bld);
+    if (params == NULL) {
+        xmlSecOpenSSLError("OSSL_PARAM_BLD_to_param",
+            xmlSecKeyDataGetName(data));
+        goto err_cleanup;
+    }
+    ret = EVP_PKEY_CTX_set_params(pctx, params);
+    if (ret <= 0) {
+        xmlSecOpenSSLError("EVP_PKEY_CTX_set_params",
+            xmlSecKeyDataGetName(data));
+        goto err_cleanup;
+    }
+    ret = EVP_PKEY_generate(pctx, &pkey);
+    if (ret <= 0) {
+        xmlSecOpenSSLError2("EVP_PKEY_generate",
+            xmlSecKeyDataGetName(data),
+            "sizeBits=%lu", (unsigned long)sizeBits);
+        goto err_cleanup;
+    }
+    ret = xmlSecOpenSSLKeyDataDsaAdoptEvp(data, pkey);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLKeyDataDsaAdoptEvp",
+            xmlSecKeyDataGetName(data));
+        goto err_cleanup;
+    }
+
+#endif
 
     return(0);
+
+#ifdef XMLSEC_OPENSSL_API_300
+err_cleanup:
+    if (pkey != NULL) {
+        EVP_PKEY_free(pkey);
+    }
+    if (params != NULL) {
+        OSSL_PARAM_free(params);
+    }
+    if (param_bld != NULL) {
+        OSSL_PARAM_BLD_free(param_bld);
+    }
+    if (pctx != NULL) {
+        EVP_PKEY_CTX_free(pctx);
+    }
+    return(-1);
+#endif
 }
 
 static xmlSecKeyDataType
 xmlSecOpenSSLKeyDataDsaGetType(xmlSecKeyDataPtr data) {
+#ifndef XMLSEC_OPENSSL_API_300
     DSA* dsa;
-    const BIGNUM *p = NULL, *q = NULL, *g = NULL;
-    const BIGNUM *priv_key = NULL, *pub_key = NULL;
-    const ENGINE *dsa_eng = NULL;
+#else
+    const EVP_PKEY* pkey;
+    OSSL_PARAM_BLD* param_bld;
+    OSSL_PARAM* params = NULL;
+    int ret;
+#endif
+    const BIGNUM* p = NULL, * q = NULL, * g = NULL;
+    const BIGNUM* priv_key = NULL, * pub_key = NULL;
+    const ENGINE* dsa_eng = NULL;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId), xmlSecKeyDataTypeUnknown);
 
+#ifndef XMLSEC_OPENSSL_API_300
     dsa = xmlSecOpenSSLKeyDataDsaGetDsa(data);
-    if(dsa == NULL) {
+    if (dsa == NULL) {
         return(xmlSecKeyDataTypeUnknown);
     }
 
@@ -1043,10 +1321,11 @@ xmlSecOpenSSLKeyDataDsaGetType(xmlSecKeyDataPtr data) {
     DSA_get0_key(dsa, &pub_key, &priv_key);
     dsa_eng = DSA_get0_engine(dsa);
 
-    if(p != NULL && q != NULL && g != NULL && pub_key != NULL) {
-        if(priv_key != NULL) {
+    if (p != NULL && q != NULL && g != NULL && pub_key != NULL) {
+        if (priv_key != NULL) {
             return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
-        } else if(dsa_eng != NULL) {
+        }
+        else if (dsa_eng != NULL) {
             /*
              * !!! HACK !!! Also see RSA key
              * We assume here that engine *always* has private key.
@@ -1054,21 +1333,104 @@ xmlSecOpenSSLKeyDataDsaGetType(xmlSecKeyDataPtr data) {
              * way to ask engine if given key is private or not.
              */
             return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
-        } else {
+        }
+        else {
             return(xmlSecKeyDataTypePublic);
         }
     }
+#else
+    param_bld = OSSL_PARAM_BLD_new();
+    if (param_bld == NULL) {
+        xmlSecOpenSSLError("OSSL_PARAM_BLD_new",
+            xmlSecKeyDataGetName(data));
+        goto err_cleanup;
+    }
+    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_FFC_P, p);
+    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_FFC_Q, q);
+    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_FFC_G, g);
+    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_PUB_KEY, pub_key);
+    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_PRIV_KEY, priv_key);
+    params = OSSL_PARAM_BLD_to_param(param_bld);
+    if (params == NULL) {
+        xmlSecOpenSSLError("OSSL_PARAM_BLD_to_param",
+            xmlSecKeyDataGetName(data));
+        goto err_cleanup;
+    }
 
+    pkey = xmlSecOpenSSLKeyDataDsaGetEvp(data);
+    xmlSecAssert2(pkey != NULL, -1);
+
+    ret = EVP_PKEY_get_params(pkey, params);
+    if (ret <= 0) {
+        xmlSecOpenSSLError("EVP_PKEY_get_params",
+            xmlSecKeyDataGetName(data));
+        goto err_cleanup;
+    }
+    if (p != NULL && q != NULL && g != NULL && pub_key != NULL) {
+        if (priv_key != NULL) {
+            BN_free(p);
+            BN_free(q);
+            BN_free(g);
+            BN_free(priv_key);
+            BN_free(pub_key);
+            OSSL_PARAM_free(params);
+            OSSL_PARAM_BLD_free(param_bld);
+            return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
+        } else {
+            BN_free(p);
+            BN_free(q);
+            BN_free(g);
+            BN_free(pub_key);
+            OSSL_PARAM_free(params);
+            OSSL_PARAM_BLD_free(param_bld);
+            return(xmlSecKeyDataTypePublic);
+        }
+    }
+#endif
     return(xmlSecKeyDataTypeUnknown);
+#ifdef XMLSEC_OPENSSL_API_300
+err_cleanup:
+    if (p != NULL) {
+        BN_free(p);
+    }
+    if (q != NULL) {
+        BN_free(q);
+    }
+    if (g != NULL) {
+        BN_free(g);
+    }
+    if (priv_key != NULL) {
+        BN_free(priv_key);
+    }
+    if (pub_key != NULL) {
+        BN_free(pub_key);
+    }
+    if (params != NULL) {
+        OSSL_PARAM_free(params);
+    }
+    if (param_bld != NULL) {
+        OSSL_PARAM_BLD_free(param_bld);
+    }
+    return(xmlSecKeyDataTypeUnknown);
+#endif
 }
 
 static xmlSecSize
 xmlSecOpenSSLKeyDataDsaGetSize(xmlSecKeyDataPtr data) {
+#ifndef XMLSEC_OPENSSL_API_300
     DSA* dsa;
+#else
+    const EVP_PKEY* pkey;
+    OSSL_PARAM_BLD* param_bld;
+    OSSL_PARAM* params = NULL;
+    xmlSecSize sz;
+    int ret;
+#endif
     const BIGNUM *p;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId), 0);
 
+#ifndef XMLSEC_OPENSSL_API_300
     dsa = xmlSecOpenSSLKeyDataDsaGetDsa(data);
     if(dsa == NULL) {
         return(0);
@@ -1079,6 +1441,52 @@ xmlSecOpenSSLKeyDataDsaGetSize(xmlSecKeyDataPtr data) {
         return(0);
     }
     return(BN_num_bits(p));
+#else
+    param_bld = OSSL_PARAM_BLD_new();
+    if (param_bld == NULL) {
+        xmlSecOpenSSLError("OSSL_PARAM_BLD_new",
+            xmlSecKeyDataGetName(data));
+        goto err_cleanup;
+    }
+    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_FFC_P, p);
+    params = OSSL_PARAM_BLD_to_param(param_bld);
+    if (params == NULL) {
+        xmlSecOpenSSLError("OSSL_PARAM_BLD_to_param",
+            xmlSecKeyDataGetName(data));
+        goto err_cleanup;
+    }
+
+    pkey = xmlSecOpenSSLKeyDataDsaGetEvp(data);
+    xmlSecAssert2(pkey != NULL, -1);
+
+    ret = EVP_PKEY_get_params(pkey, params);
+    if (ret <= 0) {
+        xmlSecOpenSSLError("EVP_PKEY_get_params",
+            xmlSecKeyDataGetName(data));
+        goto err_cleanup;
+    }
+    if (p == NULL) {
+        sz = 0;
+    } else {
+        sz = BN_num_bits(p);
+    }
+    BN_free(p);
+    OSSL_PARAM_free(params);
+    OSSL_PARAM_BLD_free(param_bld);
+    return(sz);
+
+err_cleanup :
+    if (p != NULL) {
+        BN_free(p);
+    }
+    if (params != NULL) {
+        OSSL_PARAM_free(params);
+    }
+    if (param_bld != NULL) {
+        OSSL_PARAM_BLD_free(param_bld);
+    }
+    return(0);
+#endif
 }
 
 static void
@@ -1607,7 +2015,14 @@ xmlSecOpenSSLKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                                     xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyDataPtr data = NULL;
     xmlNodePtr cur;
+#ifndef XMLSEC_OPENSSL_API_300
     RSA *rsa = NULL;
+#else XMLSEC_OPENSSL_API_300
+    EVP_PKEY* pkey = NULL;
+    EVP_PKEY_CTX* ctx = NULL;
+    OSSL_PARAM_BLD* param_bld;
+    OSSL_PARAM* params = NULL;
+#endif
     BIGNUM *n = NULL, *e = NULL, *d = NULL;
     int ret;
 
@@ -1623,13 +2038,14 @@ xmlSecOpenSSLKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         return(-1);
     }
 
+#ifndef XMLSEC_OPENSSL_API_300
     rsa = RSA_new();
     if(rsa == NULL) {
         xmlSecOpenSSLError("RSA_new",
                            xmlSecKeyDataGetName(data));
         return(-1);
     }
-
+#endif
     cur = xmlSecGetNextElementNode(node->children);
 
     /* first is Modulus node. It is REQUIRED because we do not support Seed and PgenCounter*/
@@ -1675,6 +2091,13 @@ xmlSecOpenSSLKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         goto err_cleanup;
     }
 
+    data = xmlSecKeyDataCreate(id);
+    if(data == NULL ) {
+        xmlSecInternalError("xmlSecKeyDataCreate",
+                            xmlSecKeyDataKlassGetName(id));
+        goto err_cleanup;
+    }
+#ifndef XMLSEC_OPENSSL_API_300
     ret = RSA_set0_key(rsa, n, e, d);
     if(ret == 0) {
         xmlSecOpenSSLError("RSA_set0_key",
@@ -1685,20 +2108,56 @@ xmlSecOpenSSLKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     e = NULL;
     d = NULL;
 
-    data = xmlSecKeyDataCreate(id);
-    if(data == NULL ) {
-        xmlSecInternalError("xmlSecKeyDataCreate",
-                            xmlSecKeyDataKlassGetName(id));
-        goto err_cleanup;
-    }
-
     ret = xmlSecOpenSSLKeyDataRsaAdoptRsa(data, rsa);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLKeyDataRsaAdoptRsa",
                             xmlSecKeyDataKlassGetName(id));
         goto err_cleanup;
     }
+#else
+    param_bld = OSSL_PARAM_BLD_new();
+    if (param_bld == NULL) {
+        xmlSecOpenSSLError("OSSL_PARAM_BLD_new",
+            xmlSecKeyDataKlassGetName(id));
+        goto err_cleanup;
+    }
+    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_RSA_N, n);
+    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_RSA_E, e);
+    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_RSA_D, d);
 
+    params = OSSL_PARAM_BLD_to_param(param_bld);
+    if (params == NULL) {
+        xmlSecOpenSSLError("OSSL_PARAM_BLD_to_param",
+            xmlSecKeyDataKlassGetName(id));
+        goto err_cleanup;
+    }
+    ctx = EVP_PKEY_CTX_new_from_name(NULL, "RSA", NULL);
+    if (ctx == NULL) {
+        xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_name",
+            xmlSecKeyDataKlassGetName(id));
+        goto err_cleanup;
+    }
+
+    ret = EVP_PKEY_fromdata_init(ctx);
+    if (ret <= 0) {
+        xmlSecOpenSSLError("EVP_PKEY_fromdata_init",
+            xmlSecKeyDataKlassGetName(id));
+        goto err_cleanup;
+    }
+    ret = EVP_PKEY_fromdata(ctx, &pkey, EVP_PKEY_KEYPAIR, params);
+    if (ret <= 0) {
+        xmlSecOpenSSLError("EVP_PKEY_fromdata",
+            xmlSecKeyDataKlassGetName(id));
+        goto err_cleanup;
+    }
+    ret = xmlSecOpenSSLKeyDataRsaAdoptEvp(data, pkey);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLKeyDataDsaAdoptEvp",
+            xmlSecKeyDataGetName(data));
+        data = NULL;
+        goto err_cleanup;
+    }
+#endif
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeySetValue",
@@ -1706,14 +2165,54 @@ xmlSecOpenSSLKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         data = NULL;
         goto err_cleanup;
     }
+#ifdef XMLSEC_OPENSSL_API_300
+    if (ctx != NULL) {
+        EVP_PKEY_CTX_free(ctx);
+    }
+    if (params != NULL) {
+        OSSL_PARAM_free(params);
+    }
+    if (param_bld != NULL) {
+        OSSL_PARAM_BLD_free(param_bld);
+    }
+    if (n != NULL) {
+        BN_free(n);
+    }
+    if (e != NULL) {
+        BN_free(e);
+    }
+    if (d != NULL) {
+        BN_free(d);
+    }
+#endif
 
     return(0);
 
 err_cleanup:
-    RSA_free(rsa);
-    BN_free(n);
-    BN_free(e);
-    BN_free(d);
+#ifdef XMLSEC_OPENSSL_API_300
+    if (ctx != NULL) {
+        EVP_PKEY_CTX_free(ctx);
+    }
+    if (params != NULL) {
+        OSSL_PARAM_free(params);
+    }
+    if (param_bld != NULL) {
+        OSSL_PARAM_BLD_free(param_bld);
+    }
+#else
+    if (rsa != NULL) {
+        RSA_free(rsa);
+    }
+#endif
+    if (n != NULL) {
+        BN_free(n);
+    }
+    if (e != NULL) {
+        BN_free(e);
+    }
+    if (d != NULL) {
+        BN_free(d);
+    }
     if(data != NULL) {
         xmlSecKeyDataDestroy(data);
     }
@@ -2019,7 +2518,7 @@ xmlSecOpenSSLKeyDataGost2001Finalize(xmlSecKeyDataPtr data) {
 
 static xmlSecKeyDataType
 xmlSecOpenSSLKeyDataGost2001GetType(xmlSecKeyDataPtr data) {
-    /* Now I don't know how to find whether we have both private and public key 
+    /* Now I don't know how to find whether we have both private and public key
     or the public only*/
     return(xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate);
 }
@@ -2145,9 +2644,9 @@ xmlSecOpenSSLKeyDataGostR3410_2012_256Finalize(xmlSecKeyDataPtr data) {
 
 static xmlSecKeyDataType
 xmlSecOpenSSLKeyDataGostR3410_2012_256GetType(xmlSecKeyDataPtr data) {
-	/* Now I don't know how to find whether we have both private and public key
-	or the public only*/
-	return(xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate);
+    /* Now I don't know how to find whether we have both private and public key
+    or the public only*/
+    return(xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate);
 }
 
 static xmlSecSize
@@ -2271,9 +2770,9 @@ xmlSecOpenSSLKeyDataGostR3410_2012_512Finalize(xmlSecKeyDataPtr data) {
 
 static xmlSecKeyDataType
 xmlSecOpenSSLKeyDataGostR3410_2012_512GetType(xmlSecKeyDataPtr data) {
-	/* Now I don't know how to find whether we have both private and public key
-	or the public only*/
-	return(xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate);
+    /* Now I don't know how to find whether we have both private and public key
+    or the public only*/
+    return(xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate);
 }
 
 static xmlSecSize

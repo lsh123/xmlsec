@@ -34,10 +34,10 @@
 
 /******************************************************************************
  *
- * OpenSSL 1.1.0 compatibility
+ * OpenSSL 1.1.0 and 3.0.0 compatibility
  *
  *****************************************************************************/
-#if !defined(XMLSEC_OPENSSL_API_110)
+#if !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300)
 
 #ifndef XMLSEC_NO_ECDSA
 

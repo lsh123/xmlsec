@@ -95,6 +95,17 @@ xmlSecOpenSSLAppInit(const char* config) {
     opts |= OPENSSL_INIT_ENGINE_ALL_BUILTIN;
 #endif
 #endif /* OPENSSL_IS_BORINGSSL */
+#ifdef XMLSEC_OPENSSL_API_300
+    /* Load Multiple providers into the default (NULL) library context */
+    if (OSSL_PROVIDER_load(NULL, "legacy") == NULL) {
+        xmlSecOpenSSLError("OSSL_PROVIDER_load", NULL);
+        return(-1);
+    }
+    if (OSSL_PROVIDER_load(NULL, "default") == NULL) {
+        xmlSecOpenSSLError("OSSL_PROVIDER_load", NULL);
+        return(-1);
+    }
+#endif
 
     ret = OPENSSL_init_crypto(opts, NULL);
     if(ret != 1) {

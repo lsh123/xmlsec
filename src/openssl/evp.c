@@ -1006,14 +1006,14 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
         xmlSecInternalError2("xmlSecAddChild",
                              xmlSecKeyDataKlassGetName(id),
                             "node=%s", xmlSecErrorsSafeString(xmlSecNodeDSAP));
-        return(-1);
+        goto err_cleanup;
     }
     ret = xmlSecOpenSSLNodeSetBNValue(cur, p, 1);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecOpenSSLNodeSetBNValue",
                              xmlSecKeyDataKlassGetName(id),
                              "node=%s", xmlSecErrorsSafeString(xmlSecNodeDSAP));
-        return(-1);
+        goto err_cleanup;
     }
 
     /* next is Q node. */
@@ -1023,14 +1023,14 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
         xmlSecInternalError2("xmlSecAddChild",
                              xmlSecKeyDataKlassGetName(id),
                              "node=%s", xmlSecErrorsSafeString(xmlSecNodeDSAQ));
-        return(-1);
+        goto err_cleanup;
     }
     ret = xmlSecOpenSSLNodeSetBNValue(cur, q, 1);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecOpenSSLNodeSetBNValue",
                              xmlSecKeyDataKlassGetName(id),
                              "node=%s", xmlSecErrorsSafeString(xmlSecNodeDSAQ));
-        return(-1);
+        goto err_cleanup;
     }
 
     /* next is G node. */
@@ -1040,14 +1040,14 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
         xmlSecInternalError2("xmlSecAddChild",
                              xmlSecKeyDataKlassGetName(id),
                              "node=%s", xmlSecErrorsSafeString(xmlSecNodeDSAG));
-        return(-1);
+        goto err_cleanup;
     }
     ret = xmlSecOpenSSLNodeSetBNValue(cur, g, 1);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecOpenSSLNodeSetBNValue",
                              xmlSecKeyDataKlassGetName(id),
                              "node=%s", xmlSecErrorsSafeString(xmlSecNodeDSAG));
-        return(-1);
+        goto err_cleanup;
     }
 
 #ifndef XMLSEC_OPENSSL_API_300
@@ -1064,14 +1064,14 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
             xmlSecInternalError2("xmlSecAddChild",
                                  xmlSecKeyDataKlassGetName(id),
                                  "node=%s", xmlSecErrorsSafeString(xmlSecNodeDSAX));
-            return(-1);
+            goto err_cleanup;
         }
         ret = xmlSecOpenSSLNodeSetBNValue(cur, priv_key, 1);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecOpenSSLNodeSetBNValue",
                                  xmlSecKeyDataKlassGetName(id),
                                   "node=%s", xmlSecErrorsSafeString(xmlSecNodeDSAX));
-            return(-1);
+            goto err_cleanup;
         }
     }
 
@@ -1082,14 +1082,14 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
         xmlSecInternalError2("xmlSecAddChild",
                              xmlSecKeyDataKlassGetName(id),
                              "node=%s", xmlSecErrorsSafeString(xmlSecNodeDSAY));
-        return(-1);
+        goto err_cleanup;
     }
     ret = xmlSecOpenSSLNodeSetBNValue(cur, pub_key, 1);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecOpenSSLNodeSetBNValue",
                              xmlSecKeyDataKlassGetName(id),
                              "node=%s", xmlSecErrorsSafeString(xmlSecNodeDSAY));
-        return(-1);
+        goto err_cleanup;
     }
 #ifdef XMLSEC_OPENSSL_API_300
     if (p != NULL) {
@@ -1109,6 +1109,26 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     }
 #endif
     return(0);
+
+err_cleanup:
+#ifdef XMLSEC_OPENSSL_API_300
+    if (p != NULL) {
+        BN_free(p);
+    }
+    if (q != NULL) {
+        BN_free(q);
+    }
+    if (g != NULL) {
+        BN_free(g);
+    }
+    if (priv_key != NULL) {
+        BN_free(priv_key);
+    }
+    if (pub_key != NULL) {
+        BN_free(pub_key);
+    }
+#endif
+    return(-1);
 }
 
 static int

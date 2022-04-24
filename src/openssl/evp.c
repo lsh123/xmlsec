@@ -1328,7 +1328,7 @@ xmlSecOpenSSLKeyDataDsaGetType(xmlSecKeyDataPtr data) {
     if (!EVP_PKEY_get_bn_param(pkey, OSSL_PKEY_PARAM_FFC_P, &p) ||
         !EVP_PKEY_get_bn_param(param_bld, OSSL_PKEY_PARAM_FFC_Q, &q) ||
         !EVP_PKEY_get_bn_param(param_bld, OSSL_PKEY_PARAM_FFC_G, &g) ||
-        !EVP_PKEY_get_bn_paramN(param_bld, OSSL_PKEY_PARAM_PUB_KEY, &pub_key) ||
+        !EVP_PKEY_get_bn_param(param_bld, OSSL_PKEY_PARAM_PUB_KEY, &pub_key) ||
         !EVP_PKEY_get_bn_param(param_bld, OSSL_PKEY_PARAM_PRIV_KEY, &priv_key)) {
         goto err_cleanup;
     }

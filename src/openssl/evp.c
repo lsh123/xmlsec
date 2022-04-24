@@ -1286,10 +1286,7 @@ xmlSecOpenSSLKeyDataDsaGetType(xmlSecKeyDataPtr data) {
     DSA* dsa;
     const ENGINE* dsa_eng = NULL;
 #else
-    EVP_PKEY_CTX* pctx = NULL;
     const EVP_PKEY* pkey;
-    OSSL_PARAM_BLD* param_bld;
-    OSSL_PARAM* params = NULL;
     int ret;
 #endif
     const BIGNUM* p = NULL, * q = NULL, * g = NULL;
@@ -1328,35 +1325,12 @@ xmlSecOpenSSLKeyDataDsaGetType(xmlSecKeyDataPtr data) {
     pkey = xmlSecOpenSSLKeyDataDsaGetEvp(data);
     xmlSecAssert2(pkey != NULL, -1);
 
-    pctx = EVP_PKEY_CTX_new_from_pkey(NULL, pkey, NULL);
-    if (pctx == NULL) {
-        xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_pkey",
-            xmlSecKeyDataGetName(data));
-        goto err_cleanup;
-    }
-    param_bld = OSSL_PARAM_BLD_new();
-    if (param_bld == NULL) {
-        xmlSecOpenSSLError("OSSL_PARAM_BLD_new",
-            xmlSecKeyDataGetName(data));
-        goto err_cleanup;
-    }
-    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_FFC_P, &p);
-    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_FFC_Q, &q);
-    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_FFC_G, &g);
-    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_PUB_KEY, &pub_key);
-    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_PRIV_KEY, &priv_key);
-    params = OSSL_PARAM_BLD_to_param(param_bld);
-    if (params == NULL) {
-        xmlSecOpenSSLError("OSSL_PARAM_BLD_to_param",
-            xmlSecKeyDataGetName(data));
-        goto err_cleanup;
-    }
-
-    ret = EVP_PKEY_CTX_get_params(pctx, params);
-    if (ret <= 0) {
-        xmlSecOpenSSLError("EVP_PKEY_CTX_get_params",
-            xmlSecKeyDataGetName(data));
-        goto err_cleanup;
+    if (!EVP_PKEY_get_bn_param(pkey, OSSL_PKEY_PARAM_FFC_P, &p) ||
+        !EVP_PKEY_get_bn_param(param_bld, OSSL_PKEY_PARAM_FFC_Q, &q) ||
+        !EVP_PKEY_get_bn_param(param_bld, OSSL_PKEY_PARAM_FFC_G, &g) ||
+        !EVP_PKEY_get_bn_paramN(param_bld, OSSL_PKEY_PARAM_PUB_KEY, &pub_key) ||
+        !EVP_PKEY_get_bn_param(param_bld, OSSL_PKEY_PARAM_PRIV_KEY, &priv_key)) {
+        goto error_cleanup;
     }
     if (p != NULL && q != NULL && g != NULL && pub_key != NULL) {
         if (priv_key != NULL) {
@@ -1365,18 +1339,12 @@ xmlSecOpenSSLKeyDataDsaGetType(xmlSecKeyDataPtr data) {
             BN_free(g);
             BN_free(priv_key);
             BN_free(pub_key);
-            OSSL_PARAM_free(params);
-            OSSL_PARAM_BLD_free(param_bld);
-            EVP_PKEY_CTX_free(pctx);
             return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
         } else {
             BN_free(p);
             BN_free(q);
             BN_free(g);
             BN_free(pub_key);
-            OSSL_PARAM_free(params);
-            OSSL_PARAM_BLD_free(param_bld);
-            EVP_PKEY_CTX_free(pctx);
             return(xmlSecKeyDataTypePublic);
         }
     }
@@ -1398,15 +1366,6 @@ err_cleanup:
     }
     if (pub_key != NULL) {
         BN_free(pub_key);
-    }
-    if (params != NULL) {
-        OSSL_PARAM_free(params);
-    }
-    if (param_bld != NULL) {
-        OSSL_PARAM_BLD_free(param_bld);
-    }
-    if (pctx != NULL) {
-        EVP_PKEY_CTX_free(pctx);
     }
     return(xmlSecKeyDataTypeUnknown);
 #endif

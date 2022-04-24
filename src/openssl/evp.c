@@ -966,14 +966,14 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlNodePtr cur;
 #ifdef XMLSEC_OPENSSL_API_300
     const EVP_PKEY* pkey;
-    OSSL_PARAM_BLD* param_bld;
-    OSSL_PARAM* params = NULL;
+    BIGNUM *p = NULL, *q = NULL, *g = NULL;
+    BIGNUM *priv_key = NULL, *pub_key = NULL;
 #else
     DSA* dsa;
-#endif
-    int ret;
     const BIGNUM *p = NULL, *q = NULL, *g = NULL;
     const BIGNUM *priv_key = NULL, *pub_key = NULL;
+#endif
+    int ret;
 
     xmlSecAssert2(id == xmlSecOpenSSLKeyDataDsaId, -1);
     xmlSecAssert2(key != NULL, -1);
@@ -992,33 +992,12 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     DSA_get0_pqg(dsa, &p, &q, &g);
 #else
-    param_bld = OSSL_PARAM_BLD_new();
-    if (param_bld == NULL) {
-        xmlSecOpenSSLError("OSSL_PARAM_BLD_new",
-            xmlSecKeyDataKlassGetName(id));
-        goto err_cleanup;
-    }
-    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_FFC_P, p);
-    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_FFC_Q, q);
-    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_FFC_G, g);
-    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_PUB_KEY, pub_key);
-    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_PRIV_KEY, priv_key);
-    params = OSSL_PARAM_BLD_to_param(param_bld);
-    if (params == NULL) {
-        xmlSecOpenSSLError("OSSL_PARAM_BLD_to_param",
-            xmlSecKeyDataKlassGetName(id));
-        goto err_cleanup;
-    }
-
     pkey = xmlSecOpenSSLKeyDataDsaGetEvp(xmlSecKeyGetValue(key));
     xmlSecAssert2(pkey != NULL, -1);
 
-    ret = EVP_PKEY_get_params(pkey, params);
-    if (ret <= 0) {
-        xmlSecOpenSSLError("EVP_PKEY_get_params",
-            xmlSecKeyDataKlassGetName(id));
-        goto err_cleanup;
-    }
+    EVP_PKEY_get_bn_param(pkey, OSSL_PKEY_PARAM_FFC_P, &p);
+    EVP_PKEY_get_bn_param(pkey, OSSL_PKEY_PARAM_FFC_Q, &q);
+    EVP_PKEY_get_bn_param(pkey, OSSL_PKEY_PARAM_FFC_G, &g);
 #endif
     /* first is P node */
     xmlSecAssert2(p != NULL, -1);
@@ -1073,6 +1052,9 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
 #ifndef XMLSEC_OPENSSL_API_300
     DSA_get0_key(dsa, &pub_key, &priv_key);
+#else
+    EVP_PKEY_get_bn_param(pkey, OSSL_PKEY_PARAM_PUB_KEY, &pub_key);
+    EVP_PKEY_get_bn_param(pkey, OSSL_PKEY_PARAM_PRIV_KEY, &priv_key);
 #endif
 
     /* next is X node: write it ONLY for private keys and ONLY if it is requested */
@@ -1125,40 +1107,8 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     if (pub_key != NULL) {
         BN_free(pub_key);
     }
-    if (params != NULL) {
-        OSSL_PARAM_free(params);
-    }
-    if (param_bld != NULL) {
-        OSSL_PARAM_BLD_free(param_bld);
-    }
 #endif
     return(0);
-
-#ifdef XMLSEC_OPENSSL_API_300
-err_cleanup:
-    if (p != NULL) {
-        BN_free(p);
-    }
-    if (q != NULL) {
-        BN_free(q);
-    }
-    if (g != NULL) {
-        BN_free(g);
-    }
-    if (priv_key != NULL) {
-        BN_free(priv_key);
-    }
-    if (pub_key != NULL) {
-        BN_free(pub_key);
-    }
-    if (params != NULL) {
-        OSSL_PARAM_free(params);
-    }
-    if (param_bld != NULL) {
-        OSSL_PARAM_BLD_free(param_bld);
-    }
-    return(-1);
-#endif
 }
 
 static int

@@ -1327,15 +1327,11 @@ xmlSecOpenSSLKeyDataDsaGetType(xmlSecKeyDataPtr data) {
     pkey = xmlSecOpenSSLKeyDataDsaGetEvp(data);
     xmlSecAssert2(pkey != NULL, -1);
 
-    if (!EVP_PKEY_get_bn_param(pkey, OSSL_PKEY_PARAM_FFC_P, &p) ||
-        !EVP_PKEY_get_bn_param(pkey, OSSL_PKEY_PARAM_FFC_Q, &q) ||
-        !EVP_PKEY_get_bn_param(pkey, OSSL_PKEY_PARAM_FFC_G, &g) ||
-        !EVP_PKEY_get_bn_param(pkey, OSSL_PKEY_PARAM_PUB_KEY, &pub_key) ||
-        !EVP_PKEY_get_bn_param(pkey, OSSL_PKEY_PARAM_PRIV_KEY, &priv_key)) {
-        xmlSecOpenSSLError("EVP_PKEY_get_bn_param",
-            xmlSecKeyDataGetName(data));
-        goto err_cleanup;
-    }
+    EVP_PKEY_get_bn_param(pkey, OSSL_PKEY_PARAM_FFC_P, &p);
+    EVP_PKEY_get_bn_param(pkey, OSSL_PKEY_PARAM_FFC_Q, &q);
+    EVP_PKEY_get_bn_param(pkey, OSSL_PKEY_PARAM_FFC_G, &g);
+    EVP_PKEY_get_bn_param(pkey, OSSL_PKEY_PARAM_PUB_KEY, &pub_key);
+    EVP_PKEY_get_bn_param(pkey, OSSL_PKEY_PARAM_PRIV_KEY, &priv_key);
     if (p != NULL && q != NULL && g != NULL && pub_key != NULL) {
         if (priv_key != NULL) {
             BN_free(p);
@@ -1354,25 +1350,6 @@ xmlSecOpenSSLKeyDataDsaGetType(xmlSecKeyDataPtr data) {
     }
 #endif
     return(xmlSecKeyDataTypeUnknown);
-#ifdef XMLSEC_OPENSSL_API_300
-err_cleanup:
-    if (p != NULL) {
-        BN_free(p);
-    }
-    if (q != NULL) {
-        BN_free(q);
-    }
-    if (g != NULL) {
-        BN_free(g);
-    }
-    if (priv_key != NULL) {
-        BN_free(priv_key);
-    }
-    if (pub_key != NULL) {
-        BN_free(pub_key);
-    }
-    return(xmlSecKeyDataTypeUnknown);
-#endif
 }
 
 static xmlSecSize

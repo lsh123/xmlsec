@@ -1285,12 +1285,14 @@ xmlSecOpenSSLKeyDataDsaGetType(xmlSecKeyDataPtr data) {
 #ifndef XMLSEC_OPENSSL_API_300
     DSA* dsa;
     const ENGINE* dsa_eng = NULL;
+    const BIGNUM* p = NULL, * q = NULL, * g = NULL;
+    const BIGNUM* priv_key = NULL, * pub_key = NULL;
 #else
     const EVP_PKEY* pkey;
     int ret;
+    BIGNUM* p = NULL, * q = NULL, * g = NULL;
+    BIGNUM* priv_key = NULL, * pub_key = NULL;
 #endif
-    const BIGNUM* p = NULL, * q = NULL, * g = NULL;
-    const BIGNUM* priv_key = NULL, * pub_key = NULL;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId), xmlSecKeyDataTypeUnknown);
 
@@ -1326,10 +1328,10 @@ xmlSecOpenSSLKeyDataDsaGetType(xmlSecKeyDataPtr data) {
     xmlSecAssert2(pkey != NULL, -1);
 
     if (!EVP_PKEY_get_bn_param(pkey, OSSL_PKEY_PARAM_FFC_P, &p) ||
-        !EVP_PKEY_get_bn_param(param_bld, OSSL_PKEY_PARAM_FFC_Q, &q) ||
-        !EVP_PKEY_get_bn_param(param_bld, OSSL_PKEY_PARAM_FFC_G, &g) ||
-        !EVP_PKEY_get_bn_param(param_bld, OSSL_PKEY_PARAM_PUB_KEY, &pub_key) ||
-        !EVP_PKEY_get_bn_param(param_bld, OSSL_PKEY_PARAM_PRIV_KEY, &priv_key)) {
+        !EVP_PKEY_get_bn_param(pkey, OSSL_PKEY_PARAM_FFC_Q, &q) ||
+        !EVP_PKEY_get_bn_param(pkey, OSSL_PKEY_PARAM_FFC_G, &g) ||
+        !EVP_PKEY_get_bn_param(pkey, OSSL_PKEY_PARAM_PUB_KEY, &pub_key) ||
+        !EVP_PKEY_get_bn_param(pkey, OSSL_PKEY_PARAM_PRIV_KEY, &priv_key)) {
         goto err_cleanup;
     }
     if (p != NULL && q != NULL && g != NULL && pub_key != NULL) {

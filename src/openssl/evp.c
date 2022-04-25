@@ -1326,14 +1326,12 @@ static xmlSecSize
 xmlSecOpenSSLKeyDataDsaGetSize(xmlSecKeyDataPtr data) {
 #ifndef XMLSEC_OPENSSL_API_300
     DSA* dsa;
+    const BIGNUM *p;
 #else
-    const EVP_PKEY* pkey;
-    OSSL_PARAM_BLD* param_bld;
-    OSSL_PARAM* params = NULL;
     xmlSecSize sz;
     int ret;
+    BIGNUM *p = NULL;
 #endif
-    const BIGNUM *p;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId), 0);
 
@@ -1349,50 +1347,24 @@ xmlSecOpenSSLKeyDataDsaGetSize(xmlSecKeyDataPtr data) {
     }
     return(BN_num_bits(p));
 #else
-    param_bld = OSSL_PARAM_BLD_new();
-    if (param_bld == NULL) {
-        xmlSecOpenSSLError("OSSL_PARAM_BLD_new",
-            xmlSecKeyDataGetName(data));
-        goto err_cleanup;
-    }
-    OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_FFC_P, p);
-    params = OSSL_PARAM_BLD_to_param(param_bld);
-    if (params == NULL) {
-        xmlSecOpenSSLError("OSSL_PARAM_BLD_to_param",
-            xmlSecKeyDataGetName(data));
-        goto err_cleanup;
-    }
 
     pkey = xmlSecOpenSSLKeyDataDsaGetEvp(data);
     xmlSecAssert2(pkey != NULL, -1);
 
-    ret = EVP_PKEY_get_params(pkey, params);
+    ret = EVP_PKEY_get_bn_param(pkey, OSSL_PKEY_PARAM_FFC_P, &p);
     if (ret <= 0) {
-        xmlSecOpenSSLError("EVP_PKEY_get_params",
+        xmlSecOpenSSLError("EVP_PKEY_get_bn_param",
             xmlSecKeyDataGetName(data));
-        goto err_cleanup;
+        return(0);
     }
+
     if (p == NULL) {
         sz = 0;
     } else {
         sz = BN_num_bits(p);
-    }
-    BN_free(p);
-    OSSL_PARAM_free(params);
-    OSSL_PARAM_BLD_free(param_bld);
-    return(sz);
-
-err_cleanup :
-    if (p != NULL) {
         BN_free(p);
     }
-    if (params != NULL) {
-        OSSL_PARAM_free(params);
-    }
-    if (param_bld != NULL) {
-        OSSL_PARAM_BLD_free(param_bld);
-    }
-    return(0);
+    return(sz);
 #endif
 }
 

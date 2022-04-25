@@ -1342,6 +1342,7 @@ xmlSecOpenSSLKeyDataDsaGetSize(xmlSecKeyDataPtr data) {
     DSA* dsa;
     const BIGNUM *p;
 #else
+    const EVP_PKEY* pkey;
     xmlSecSize sz;
     int ret;
     BIGNUM *p = NULL;
@@ -1365,20 +1366,16 @@ xmlSecOpenSSLKeyDataDsaGetSize(xmlSecKeyDataPtr data) {
     pkey = xmlSecOpenSSLKeyDataDsaGetEvp(data);
     xmlSecAssert2(pkey != NULL, -1);
 
-    ret = EVP_PKEY_get_bn_param(pkey, OSSL_PKEY_PARAM_FFC_P, &p);
-    if (ret <= 0) {
-        xmlSecOpenSSLError("EVP_PKEY_get_bn_param",
-            xmlSecKeyDataGetName(data));
-        return(0);
-    }
+    EVP_PKEY_get_bn_param(pkey, OSSL_PKEY_PARAM_FFC_P, &p);
 
     if (p == NULL) {
         sz = 0;
     } else {
         sz = BN_num_bits(p);
         BN_free(p);
-    }
+   }
     return(sz);
+
 #endif
 }
 

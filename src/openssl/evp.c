@@ -1227,7 +1227,9 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
             xmlSecKeyDataGetName(data));
         goto err_cleanup;
     }
-
+    OSSL_PARAM_free(params);
+    OSSL_PARAM_BLD_free(param_bld);
+    EVP_PKEY_CTX_free(pctx);
 #endif
 
     return(0);
@@ -1303,19 +1305,31 @@ xmlSecOpenSSLKeyDataDsaGetType(xmlSecKeyDataPtr data) {
     EVP_PKEY_get_bn_param(pkey, OSSL_PKEY_PARAM_PUB_KEY, &pub_key);
     EVP_PKEY_get_bn_param(pkey, OSSL_PKEY_PARAM_PRIV_KEY, &priv_key);
     if (p != NULL && q != NULL && g != NULL && pub_key != NULL) {
+        BN_free(p);
+        BN_free(q);
+        BN_free(g);
+        BN_free(pub_key);
         if (priv_key != NULL) {
-            BN_free(p);
-            BN_free(q);
-            BN_free(g);
             BN_free(priv_key);
-            BN_free(pub_key);
             return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
         } else {
-            BN_free(p);
-            BN_free(q);
-            BN_free(g);
-            BN_free(pub_key);
             return(xmlSecKeyDataTypePublic);
+        }
+    } else {
+        if (p != NULL) {
+            BN_free(p);
+        }
+        if (q != NULL) {
+            BN_free(q);
+        }
+        if (g != NULL) {
+            BN_free(g);
+        }
+        if (priv_key != NULL) {
+            BN_free(priv_key);
+        }
+        if (pub_key != NULL) {
+            BN_free(pub_key);
         }
     }
 #endif

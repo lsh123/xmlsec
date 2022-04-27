@@ -2292,7 +2292,7 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
             xmlSecKeyDataGetName(data));
         goto err_cleanup;
     }
-    ret = EVP_PKEY_paramgen_init(pctx);
+    ret = EVP_PKEY_keygen_init(pctx);
     if (ret <= 0) {
         xmlSecOpenSSLError("EVP_PKEY_paramgen_init",
             xmlSecKeyDataGetName(data));
@@ -2485,7 +2485,7 @@ xmlSecOpenSSLKeyDataRsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     fprintf(output, "=== rsa key: size = %d\n",
             xmlSecOpenSSLKeyDataRsaGetSize(data));
 }
- 
+
 static void
 xmlSecOpenSSLKeyDataRsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId));

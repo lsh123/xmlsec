@@ -365,14 +365,14 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
             EVP_PKEY_CTX_free(ctx);
             xmlSecOpenSSLError("EVP_PKEY_encrypt_init",
                 xmlSecTransformGetName(transform));
-            return (-1)
+            return (-1);
         }
         ret = EVP_PKEY_CTX_set_rsa_padding(ctx, RSA_PKCS1_PADDING);
         if (ret <= 0) {
             EVP_PKEY_CTX_free(ctx);
             xmlSecOpenSSLError("EVP_PKEY_CTX_set_rsa_padding",
                 xmlSecTransformGetName(transform));
-            return (-1)
+            return (-1);
         }
         ret = EVP_PKEY_encrypt(ctx, xmlSecBufferGetData(out), &outSize,
                                xmlSecBufferGetData(in), inSize);
@@ -402,14 +402,14 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
             EVP_PKEY_CTX_free(ctx);
             xmlSecOpenSSLError("EVP_PKEY_decrypt_init",
                                xmlSecTransformGetName(transform));
-            return (-1)
+            return (-1);
         }
         ret = EVP_PKEY_CTX_set_rsa_padding(ctx, RSA_PKCS1_PADDING);
         if (ret <= 0) {
             EVP_PKEY_CTX_free(ctx);
             xmlSecOpenSSLError("EVP_PKEY_CTX_set_rsa_padding",
                                xmlSecTransformGetName(transform));
-            return (-1)
+            return (-1);
         }
         ret = EVP_PKEY_decrypt(ctx, xmlSecBufferGetData(out), &outSize,
                                xmlSecBufferGetData(in), inSize);

@@ -287,7 +287,7 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
 #ifndef XMLSEC_OPENSSL_API_300
     RSA *rsa;
 #else
-    EVP_PKEY_CTX* ctx = NULL;
+    EVP_PKEY_CTX* pctx = NULL;
 #endif
     int ret;
 
@@ -339,8 +339,8 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
     }
 
 #ifdef XMLSEC_OPENSSL_API_300
-    ctx = EVP_PKEY_CTX_new_from_pkey(NULL, ctx->pKey, NULL);
-    if (ctx == NULL) {
+    pctx = EVP_PKEY_CTX_new_from_pkey(NULL, ctx->pKey, NULL);
+    if (pctx == NULL) {
         xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_pkey",
             xmlSecTransformGetName(transform));
         return (-1);
@@ -360,24 +360,24 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
         }
         outSize = ret;
 #else
-        ret = EVP_PKEY_encrypt_init(ctx);
+        ret = EVP_PKEY_encrypt_init(pctx);
         if (ret <= 0) {
-            EVP_PKEY_CTX_free(ctx);
+            EVP_PKEY_CTX_free(pctx);
             xmlSecOpenSSLError("EVP_PKEY_encrypt_init",
                 xmlSecTransformGetName(transform));
             return (-1);
         }
-        ret = EVP_PKEY_CTX_set_rsa_padding(ctx, RSA_PKCS1_PADDING);
+        ret = EVP_PKEY_CTX_set_rsa_padding(pctx, RSA_PKCS1_PADDING);
         if (ret <= 0) {
-            EVP_PKEY_CTX_free(ctx);
+            EVP_PKEY_CTX_free(pctx);
             xmlSecOpenSSLError("EVP_PKEY_CTX_set_rsa_padding",
                 xmlSecTransformGetName(transform));
             return (-1);
         }
-        ret = EVP_PKEY_encrypt(ctx, xmlSecBufferGetData(out), &outSize,
+        ret = EVP_PKEY_encrypt(pctx, xmlSecBufferGetData(out), &outSize,
                                xmlSecBufferGetData(in), inSize);
         if(ret <= 0) {
-            EVP_PKEY_CTX_free(ctx);
+            EVP_PKEY_CTX_free(pctx);
             xmlSecOpenSSLError2("EVP_PKEY_encrypt",
                                 xmlSecTransformGetName(transform),
                                 "size=%lu", (unsigned long)inSize);
@@ -397,24 +397,24 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
         }
         outSize = ret;
 #else
-        ret = EVP_PKEY_decrypt_init(ctx);
+        ret = EVP_PKEY_decrypt_init(pctx);
         if (ret <= 0) {
-            EVP_PKEY_CTX_free(ctx);
+            EVP_PKEY_CTX_free(pctx);
             xmlSecOpenSSLError("EVP_PKEY_decrypt_init",
                                xmlSecTransformGetName(transform));
             return (-1);
         }
-        ret = EVP_PKEY_CTX_set_rsa_padding(ctx, RSA_PKCS1_PADDING);
+        ret = EVP_PKEY_CTX_set_rsa_padding(pctx, RSA_PKCS1_PADDING);
         if (ret <= 0) {
-            EVP_PKEY_CTX_free(ctx);
+            EVP_PKEY_CTX_free(pctx);
             xmlSecOpenSSLError("EVP_PKEY_CTX_set_rsa_padding",
                                xmlSecTransformGetName(transform));
             return (-1);
         }
-        ret = EVP_PKEY_decrypt(ctx, xmlSecBufferGetData(out), &outSize,
+        ret = EVP_PKEY_decrypt(pctx, xmlSecBufferGetData(out), &outSize,
                                xmlSecBufferGetData(in), inSize);
         if (ret <= 0) {
-            EVP_PKEY_CTX_free(ctx);
+            EVP_PKEY_CTX_free(pctx);
             xmlSecOpenSSLError2("EVP_PKEY_decrypt",
                                 xmlSecTransformGetName(transform),
                                 "size=%lu", (unsigned long)inSize);
@@ -424,7 +424,7 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
     }
 
 #ifdef XMLSEC_OPENSSL_API_300
-    EVP_PKEY_CTX_free(ctx);
+    EVP_PKEY_CTX_free(pctx);
 #endif
 
     ret = xmlSecBufferSetSize(out, outSize);

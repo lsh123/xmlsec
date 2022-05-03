@@ -17,7 +17,7 @@ tar_file="xmlsec1-$version.tar.gz"
 sig_file="xmlsec1-$version.sig"
 rc_tar_file="xmlsec1-$version-$rc.tar.gz"
 rc_sig_file="xmlsec1-$version-$rc.sig"
-git_release_branch="xmlsec-$version-release"
+git_release_branch=`echo "xmlsec-$version" | sed 's/\./_/g'`
 git_version_tag=`echo $version | sed 's/\./_/g'`
 
 if [ x"$version" = x ]; then

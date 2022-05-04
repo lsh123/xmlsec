@@ -746,7 +746,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
     xmlSecAssert2(ctx->pKey != NULL, -1);
     xmlSecAssert2(EVP_PKEY_base_id(ctx->pKey) == EVP_PKEY_RSA, -1);
 
-#ifndef XMLSEC_OPENSSL_AIP_300
+#ifndef XMLSEC_OPENSSL_API_300
     rsa = EVP_PKEY_get0_RSA(ctx->pKey);
     xmlSecAssert2(rsa != NULL, -1);
 

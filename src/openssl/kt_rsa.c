@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <openssl/core_names.h>
 #include <openssl/rsa.h>
 #include <openssl/evp.h>
 #include <openssl/sha.h>

@@ -901,7 +901,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
                                          xmlSecBufferGetData(&(ctx->oaepParams)), paramsSize);
         params = OSSL_PARAM_BLD_to_param(param_bld);
         if (params == NULL) {
-            OSSL_PARAM_BUILD_free(param_bld);
+            OSSL_PARAM_BLD_free(param_bld);
             EVP_PKEY_CTX_free(pctx);
             xmlSecOpenSSLError("OSSL_PARAM_BLD_to_param",
                                xmlSecTransformGetName(transform));
@@ -911,14 +911,14 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
                                xmlSecBufferGetData(in), inSize);
         if (ret <= 0) {
             OSSL_PARAM_free(params);
-            OSSL_PARAM_BUILD_free(param_bld);
+            OSSL_PARAM_BLD_free(param_bld);
             EVP_PKEY_CTX_free(pctx);
             xmlSecOpenSSLError("EVP_PKEY_encrypt(RSA_PKCS1_OAEP_PADDING)",
                                xmlSecTransformGetName(transform));
             return(-1);
         }
         OSSL_PARAM_free(params);
-        OSSL_PARAM_BUILD_free(param_bld);
+        OSSL_PARAM_BLD_free(param_bld);
 #endif
     } else if((transform->operation == xmlSecTransformOperationDecrypt) && (paramsSize == 0)) {
 #ifndef XMLSEC_OPENSSL_API_300
@@ -1011,7 +1011,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
                                          xmlSecBufferGetData(&(ctx->oaepParams)), paramsSize);
         params = OSSL_PARAM_BLD_to_param(param_bld);
         if (params == NULL) {
-            OSSL_PARAM_BUILD_free(param_bld);
+            OSSL_PARAM_BLD_free(param_bld);
             EVP_PKEY_CTX_free(pctx);
             xmlSecOpenSSLError("OSSL_PARAM_BLD_to_param",
                                xmlSecTransformGetName(transform));
@@ -1021,14 +1021,14 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
                                xmlSecBufferGetData(in), inSize);
         if (ret <= 0) {
             OSSL_PARAM_free(params);
-            OSSL_PARAM_BUILD_free(param_bld);
+            OSSL_PARAM_BLD_free(param_bld);
             EVP_PKEY_CTX_free(pctx);
             xmlSecOpenSSLError("EVP_PKEY_decrypt(RSA_PKCS1_OAEP_PADDING)",
                                xmlSecTransformGetName(transform));
             return(-1);
         }
         OSSL_PARAM_free(params);
-        OSSL_PARAM_BUILD_free(param_bld);
+        OSSL_PARAM_BLD_free(param_bld);
 #endif
     }
 #ifndef XMLSEC_OPENSSL_API_300

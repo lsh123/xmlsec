@@ -903,17 +903,17 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
             OSSL_PARAM_BUILD_free(param_bld);
             EVP_PKEY_CTX_free(pctx);
             xmlSecOpenSSLError("OSSL_PARAM_BLD_to_param",
-                xmlSecTransformGetName(transform));
+                               xmlSecTransformGetName(transform));
             return (-1);
         }
         ret = EVP_PKEY_encrypt(pctx, xmlSecBufferGetData(out), &outSize,
-            xmlSecBufferGetData(in), inSize);
+                               xmlSecBufferGetData(in), inSize);
         if (ret <= 0) {
             OSSL_PARAM_free(params);
             OSSL_PARAM_BUILD_free(param_bld);
             EVP_PKEY_CTX_free(pctx);
             xmlSecOpenSSLError("EVP_PKEY_encrypt(RSA_PKCS1_OAEP_PADDING)",
-                xmlSecTransformGetName(transform));
+                               xmlSecTransformGetName(transform));
             return(-1);
         }
         OSSL_PARAM_free(params);
@@ -932,7 +932,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
         outSize = ret;
 #else
         ret = EVP_PKEY_decrypt(pctx, xmlSecBufferGetData(out), &outSize,
-            xmlSecBufferGetData(in), inSize);
+                               xmlSecBufferGetData(in), inSize);
         if (ret <= 0) {
             EVP_PKEY_CTX_free(pctx);
             xmlSecOpenSSLError("EVP_PKEY_decrypt(RSA_PKCS1_OAEP_PADDING)",
@@ -1007,32 +1007,23 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
             return (-1);
         }
         OSSL_PARAM_BLD_push_octet_string(param_bld, OSSL_ASYM_CIPHER_PARAM_OAEP_LABEL,
-            xmlSecBufferGetData(&(ctx->oaepParams)), paramsSize);
+                                         xmlSecBufferGetData(&(ctx->oaepParams)), paramsSize);
         params = OSSL_PARAM_BLD_to_param(param_bld);
         if (params == NULL) {
             OSSL_PARAM_BUILD_free(param_bld);
             EVP_PKEY_CTX_free(pctx);
             xmlSecOpenSSLError("OSSL_PARAM_BLD_to_param",
-                xmlSecTransformGetName(transform));
+                               xmlSecTransformGetName(transform));
             return (-1);
         }
         ret = EVP_PKEY_decrypt(pctx, xmlSecBufferGetData(out), &outSize,
-            xmlSecBufferGetData(in), inSize);
+                               xmlSecBufferGetData(in), inSize);
         if (ret <= 0) {
             OSSL_PARAM_free(params);
             OSSL_PARAM_BUILD_free(param_bld);
             EVP_PKEY_CTX_free(pctx);
             xmlSecOpenSSLError("EVP_PKEY_decrypt(RSA_PKCS1_OAEP_PADDING)",
-                xmlSecTransformGetName(transform));
-            return(-1);
-        }
-        ret = EVP_PKEY_get0_rsa_oaep_label(pctx, &label);
-        if (ret <= 0) {
-            OSSL_PARAM_free(params);
-            OSSL_PARAM_BUILD_free(param_bld);
-            EVP_PKEY_CTX_free(pctx);
-            xmlSecOpenSSLError("EVP_PKEY_get0_rsa_oaep_label",
-                xmlSecTransformGetName(transform));
+                               xmlSecTransformGetName(transform));
             return(-1);
         }
         OSSL_PARAM_free(params);

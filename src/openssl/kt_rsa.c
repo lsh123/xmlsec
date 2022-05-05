@@ -26,6 +26,7 @@
 #include <openssl/evp.h>
 #include <openssl/sha.h>
 #include <openssl/objects.h>
+#include <openssl/param_build.h>
 
 #include <libxml/tree.h>
 

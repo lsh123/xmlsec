@@ -444,11 +444,13 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         OSSL_PARAM_BLD_free(param_bld);
         xmlSecOpenSSLError("OSSL_PARAM_BLD_to_param",
                            xmlSecTransformGetName(transform));
-        goto err_cleanup;
+        return(-1);
     }
     ret = EVP_MAC_init(ctx->hmacCtx, xmlSecBufferGetData(buffer),
                        xmlSecBufferGetSize(buffer), params);
     if (ret != 1) {
+        OSSL_PARAM_free(params);
+        OSSL_PARAM_BLD_free(param_bld);
         xmlSecOpenSSLError("EVP_MAC_init",
             xmlSecTransformGetName(transform));
         return(-1);

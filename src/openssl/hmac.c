@@ -89,8 +89,8 @@ struct _xmlSecOpenSSLHmacCtx {
     HMAC_CTX*           hmacCtx;
 #else
     const char*         hmacDgst;
-    EVP_MAC*            hmac = NULL;
-    EVP_MAC_CTX*        hmacCtx = NULL;
+    EVP_MAC*            hmac;
+    EVP_MAC_CTX*        hmacCtx;
 #endif
     int                 ctxInitialized;
     xmlSecByte          dgst[XMLSEC_OPENSSL_MAX_HMAC_SIZE];
@@ -576,9 +576,9 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
                 return(-1);
             }
 #else
-            ret = EVP_MAC_Final(ctx->hmacCtx, ctx->dgst, &dgstSize, sizeof(dgst));
+            ret = EVP_MAC_final(ctx->hmacCtx, ctx->dgst, &dgstSize, sizeof(dgst));
             if(ret != 1) {
-                xmlSecOpenSSLError("EVP_MAC_Final",
+                xmlSecOpenSSLError("EVP_MAC_final",
                                    xmlSecTransformGetName(transform));
                 return(-1);
             }

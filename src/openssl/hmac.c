@@ -580,7 +580,7 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
                 return(-1);
             }
 #else
-            ret = EVP_MAC_final(ctx->hmacCtx, ctx->dgst, &dgstSize, sizeof(dgst));
+            ret = EVP_MAC_final(ctx->hmacCtx, ctx->dgst, &dgstSize, sizeof(ctx->dgst));
             if(ret != 1) {
                 xmlSecOpenSSLError("EVP_MAC_final",
                                    xmlSecTransformGetName(transform));

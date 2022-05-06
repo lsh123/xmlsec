@@ -907,6 +907,15 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
                                xmlSecTransformGetName(transform));
             return (-1);
         }
+        ret = EVP_PKEY_CTX_set_params(pctx, params);
+        if (ret <= 0) {
+            OSSL_PARAM_free(params);
+            OSSL_PARAM_BLD_free(param_bld);
+            EVP_PKEY_CTX_free(pctx);
+            xmlSecOpenSSLError("OSSL_PARAM_BLD_to_param",
+                               xmlSecTransformGetName(transform));
+            return (-1);
+        }
         ret = EVP_PKEY_encrypt(pctx, xmlSecBufferGetData(out), &outSize,
                                xmlSecBufferGetData(in), inSize);
         if (ret <= 0) {
@@ -1017,6 +1026,15 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
                                xmlSecTransformGetName(transform));
             return (-1);
         }
+        ret = EVP_PKEY_CTX_set_params(pctx, params);
+        if (ret <= 0) {
+            OSSL_PARAM_free(params);
+            OSSL_PARAM_BLD_free(param_bld);
+            EVP_PKEY_CTX_free(pctx);
+            xmlSecOpenSSLError("OSSL_PARAM_BLD_to_param",
+                               xmlSecTransformGetName(transform));
+            return (-1);
+    }
         ret = EVP_PKEY_decrypt(pctx, xmlSecBufferGetData(out), &outSize,
                                xmlSecBufferGetData(in), inSize);
         if (ret <= 0) {

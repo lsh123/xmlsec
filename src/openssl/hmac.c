@@ -281,7 +281,7 @@ xmlSecOpenSSLHmacInitialize(xmlSecTransformPtr transform) {
 #else
     ctx->hmac = EVP_MAC_fetch(NULL, OSSL_MAC_NAME_HMAC, NULL);
     if (ctx->hmac == NULL) {
-        xmlSecOpenSSLError("HMAC_CTX_new",
+        xmlSecOpenSSLError("EVP_MAC_fetch",
                            xmlSecTransformGetName(transform));
         return(-1);
     }

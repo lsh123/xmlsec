@@ -40,14 +40,14 @@
  * AES KW implementation
  *
  *********************************************************************/
-static int        xmlSecOpenSSLKWAesBlockEncrypt                (const xmlSecByte * in, 
+static int        xmlSecOpenSSLKWAesBlockEncrypt                (const xmlSecByte * in,
                                                                  xmlSecSize inSize,
-                                                                 xmlSecByte * out, 
+                                                                 xmlSecByte * out,
                                                                  xmlSecSize outSize,
                                                                  void * context);
-static int        xmlSecOpenSSLKWAesBlockDecrypt                (const xmlSecByte * in, 
+static int        xmlSecOpenSSLKWAesBlockDecrypt                (const xmlSecByte * in,
                                                                  xmlSecSize inSize,
-                                                                 xmlSecByte * out, 
+                                                                 xmlSecByte * out,
                                                                  xmlSecSize outSize,
                                                                  void * context);
 static xmlSecKWAesKlass xmlSecOpenSSLKWAesKlass = {
@@ -204,7 +204,9 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
     xmlSecOpenSSLKWAesCtxPtr ctx;
     xmlSecBufferPtr in, out;
     xmlSecSize inSize, outSize, keySize;
+#ifndef XMLSEC_OPENSSL_API_300
     AES_KEY aesKey;
+#endif
     int ret;
 
     xmlSecAssert2(xmlSecOpenSSLKWAesCheckId(transform), -1);
@@ -254,19 +256,24 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
         }
 
         if(transform->operation == xmlSecTransformOperationEncrypt) {
+#ifndef XMLSEC_OPENSSL_API_300
             /* prepare key */
             ret = AES_set_encrypt_key(xmlSecBufferGetData(&(ctx->keyBuffer)),
                                       8 * keySize,
                                       &aesKey);
             if(ret != 0) {
-                xmlSecOpenSSLError("AES_set_decrypt_key",
+                xmlSecOpenSSLError("AES_set_encrypt_key",
                                    xmlSecTransformGetName(transform));
                 return(-1);
             }
-
             ret = xmlSecKWAesEncode(&xmlSecOpenSSLKWAesKlass, &aesKey,
                                     xmlSecBufferGetData(in), inSize,
                                     xmlSecBufferGetData(out), outSize);
+#else
+            ret = xmlSecKWAesEncode(&xmlSecOpenSSLKWAesKlass, ctx,
+                                    xmlSecBufferGetData(in), inSize,
+                                    xmlSecBufferGetData(out), outSize);
+#endif
             if(ret < 0) {
                 xmlSecInternalError("xmlSecKWAesEncode",
                                     xmlSecTransformGetName(transform));
@@ -274,6 +281,7 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
             }
             outSize = ret;
         } else {
+#ifndef XMLSEC_OPENSSL_API_300
             /* prepare key */
             ret = AES_set_decrypt_key(xmlSecBufferGetData(&(ctx->keyBuffer)),
                                       8 * keySize,
@@ -287,6 +295,11 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
             ret = xmlSecKWAesDecode(&xmlSecOpenSSLKWAesKlass, &aesKey,
                                     xmlSecBufferGetData(in), inSize,
                                     xmlSecBufferGetData(out), outSize);
+#else
+            ret = xmlSecKWAesDecode(&xmlSecOpenSSLKWAesKlass, ctx,
+                                    xmlSecBufferGetData(in), inSize,
+                                    xmlSecBufferGetData(out), outSize);
+#endif
             if(ret < 0) {
                 xmlSecInternalError("xmlSecKWAesEncode",
                                     xmlSecTransformGetName(transform));
@@ -449,14 +462,35 @@ static int
 xmlSecOpenSSLKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
                                xmlSecByte * out, xmlSecSize outSize,
                                void * context) {
+#ifdef XMLSEC_OPENSSL_API_300
+    EVP_CIPHER*     cipher;
+    EVP_CIPHER_CTX* cctx;
+#endif
+
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize >= AES_BLOCK_SIZE, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= AES_BLOCK_SIZE, -1);
     xmlSecAssert2(context != NULL, -1);
+#ifndef XMLSEC_OPENSSL_API_300
 
     AES_encrypt(in, out, (AES_KEY*)context);
     return(AES_BLOCK_SIZE);
+#else
+    ctx = (xmlSecOpenSSLKWAesCtxPtr)context;
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(xmlSecBufferGetSize(&ctx->keyBuffer) == ctx->keySize, -1);
+
+    cipher = EVP_CIPHER_fetch(NULL, "AES", NULL);
+
+    cctx = EVP_CIPER_CTX_new();
+    if (cctx == NULL) {
+        xmlSecOpenSSLError("EVP_CIPER_CTX_new", NULL);
+        return(-1);
+    }
+    ret = EVP_EncryptInit(cctx, )
+
+#endif
 }
 
 static int
@@ -469,8 +503,11 @@ xmlSecOpenSSLKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
     xmlSecAssert2(outSize >= AES_BLOCK_SIZE, -1);
     xmlSecAssert2(context != NULL, -1);
 
+#ifndef XMLSEC_OPENSSL_API_300
     AES_decrypt(in, out, (AES_KEY*)context);
     return(AES_BLOCK_SIZE);
+#else
+#endif
 }
 
 #endif /* XMLSEC_NO_AES */

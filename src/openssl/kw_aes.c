@@ -498,8 +498,8 @@ xmlSecOpenSSLKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
         xmlSecOpenSSLError("EVP_CIPER_CTX_new", NULL);
         return(-1);
     }
-    ret = EVP_CIPHER_init_ex2(cctx, ctx->cipher, xmlSecBufferGetData(&ctx->keyBuffer),
-                              NULL /*default iv*/, 1 /* encrypt */, NULL);
+    ret = EVP_CipherInit_ex2(cctx, ctx->cipher, xmlSecBufferGetData(&ctx->keyBuffer),
+                             NULL /*default iv*/, 1 /* encrypt */, NULL);
     if (ret != 1) {
         EVP_CIPHER_CTX_free(cctx);
         xmlSecOpenSSLError("EVP_CIPHER_init_ex2(encrypt)", NULL);
@@ -551,8 +551,8 @@ xmlSecOpenSSLKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
         xmlSecOpenSSLError("EVP_CIPER_CTX_new", NULL);
         return(-1);
     }
-    ret = EVP_CIPHER_init_ex2(cctx, ctx->cipher, xmlSecBufferGetData(&ctx->keyBuffer),
-                              NULL /*default iv*/, 0 /* decrypt */, NULL);
+    ret = EVP_CipherInit_ex2(cctx, ctx->cipher, xmlSecBufferGetData(&ctx->keyBuffer),
+                             NULL /*default iv*/, 0 /* decrypt */, NULL);
     if (ret != 1) {
         EVP_CIPHER_CTX_free(cctx);
         xmlSecOpenSSLError("EVP_CIPHER_init_ex2(decrypt)", NULL);

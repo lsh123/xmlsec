@@ -494,7 +494,7 @@ xmlSecOpenSSLKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(xmlSecBufferGetSize(&ctx->keyBuffer) == ctx->keyExpectedSize, -1);
 
-    cctx = EVP_CIPER_CTX_new();
+    cctx = EVP_CIPHER_CTX_new();
     if (cctx == NULL) {
         xmlSecOpenSSLError("EVP_CIPER_CTX_new", NULL);
         return(-1);
@@ -548,7 +548,7 @@ xmlSecOpenSSLKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(xmlSecBufferGetSize(&ctx->keyBuffer) == ctx->keyExpectedSize, -1);
 
-    cctx = EVP_CIPER_CTX_new();
+    cctx = EVP_CIPHER_CTX_new();
     if (cctx == NULL) {
         xmlSecOpenSSLError("EVP_CIPER_CTX_new", NULL);
         return(-1);

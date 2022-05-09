@@ -477,6 +477,7 @@ xmlSecOpenSSLKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
 #ifdef XMLSEC_OPENSSL_API_300
     xmlSecOpenSSLKWAesCtxPtr ctx;
     EVP_CIPHER_CTX* cctx;
+    int ret;
 #endif
 
     xmlSecAssert2(in != NULL, -1);
@@ -531,6 +532,7 @@ xmlSecOpenSSLKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
 #ifdef XMLSEC_OPENSSL_API_300
     xmlSecOpenSSLKWAesCtxPtr ctx;
     EVP_CIPHER_CTX* cctx;
+    int ret;
 #endif
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize >= AES_BLOCK_SIZE, -1);

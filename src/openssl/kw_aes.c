@@ -72,7 +72,7 @@ struct _xmlSecOpenSSLKWAesCtx {
     xmlSecBuffer        keyBuffer;
     xmlSecSize          keyExpectedSize;
 #ifdef XMLSEC_OPENSSL_API_300
-    EVP_CIPHER*         cipher
+    EVP_CIPHER*         cipher;
 #endif
 };
 #define xmlSecOpenSSLKWAesSize     \

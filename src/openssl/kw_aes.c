@@ -146,6 +146,10 @@ xmlSecOpenSSLKWAesFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     xmlSecBufferFinalize(&(ctx->keyBuffer));
+
+#ifdef XMLSEC_OPENSSL_API_300
+    EVP_CIPHER_free(ctx->cipher);
+#endif
 }
 
 static int

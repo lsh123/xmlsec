@@ -108,17 +108,17 @@ xmlSecOpenSSLKWAesInitialize(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWAes128Id)) {
         ctx->keyExpectedSize = XMLSEC_KW_AES128_KEY_SIZE;
 #ifdef XMLSEC_OPENSSL_API_300
-        ctx->cipher = EVP_CIPHER_fetch(NULL, "aes128-ecb", NULL);
+        ctx->cipher = EVP_CIPHER_fetch(NULL, "aes-128-ecb", NULL);
 #endif
     } else if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWAes192Id)) {
         ctx->keyExpectedSize = XMLSEC_KW_AES192_KEY_SIZE;
 #ifdef XMLSEC_OPENSSL_API_300
-        ctx->cipher = EVP_CIPHER_fetch(NULL, "aes192-ecb", NULL);
+        ctx->cipher = EVP_CIPHER_fetch(NULL, "aes-192-ecb", NULL);
 #endif
     } else if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWAes256Id)) {
         ctx->keyExpectedSize = XMLSEC_KW_AES256_KEY_SIZE;
 #ifdef XMLSEC_OPENSSL_API_300
-        ctx->cipher = EVP_CIPHER_fetch(NULL, "aes256-ecb", NULL);
+        ctx->cipher = EVP_CIPHER_fetch(NULL, "aes-256-ecb", NULL);
 #endif
     } else {
         xmlSecInvalidTransfromError(transform)

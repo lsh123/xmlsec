@@ -645,12 +645,6 @@ xmlSecOpenSSLSignatureDsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr 
         xmlSecOpenSSLError("DSA_do_sign", NULL);
         goto done;
     }
-    /* get signature components */
-    DSA_SIG_get0(sig, &rr, &ss);
-    if((rr == NULL) || (ss == NULL)) {
-        xmlSecOpenSSLError("DSA_SIG_get0", NULL);
-        goto done;
-    }
 #else
     /* calculate signature */
     pctx = EVP_PKEY_CTX_new_from_pkey(NULL, ctx->pKey, NULL);
@@ -680,19 +674,19 @@ xmlSecOpenSSLSignatureDsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr 
         goto done;
     }
 
-    /* get signature components */
     bufptr = xmlSecBufferGetData(sigbuf);
     sig = d2i_DSA_SIG(NULL, &bufptr, dsaSignSize);
     if (sig == NULL) {
         xmlSecOpenSSLError("d2i_DSA_SIG", NULL);
         goto done;
     }
+#endif
+    /* get signature components */
     DSA_SIG_get0(sig, &rr, &ss);
     if((rr == NULL) || (ss == NULL)) {
         xmlSecOpenSSLError("DSA_SIG_get0", NULL);
         goto done;
     }
-#endif
     rSize = BN_num_bytes(rr);
     if(rSize > signHalfSize) {
         xmlSecInvalidSizeMoreThanError("DSA signature r",
@@ -725,7 +719,7 @@ xmlSecOpenSSLSignatureDsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr 
 #ifdef XMLSEC_OPENSSL_API_300
     EVP_PKEY_CTX_free(pctx);
     DSA_SIG_free(sig);
-    xmlSecBufferFinalize(sigbuf);
+    xmlSecBufferDestroy(sigbuf);
 #endif
 
     /* success */
@@ -745,7 +739,7 @@ done:
         EVP_PKEY_CTX_free(pctx);
     }
     if (sigbuf != NULL) {
-        xmlSecBufferFinalize(sigbuf);
+        xmlSecBufferDestroy(sigbuf);
     }
 #endif
     /* done */

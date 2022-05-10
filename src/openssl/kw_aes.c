@@ -513,6 +513,8 @@ xmlSecOpenSSLKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
         return(-1);
     }
 
+    EVP_CIPHER_CTX_set_padding(cctx, 0);
+
     ret = EVP_CipherUpdate(cctx, out, &nOut, in, inSize);
     if (ret != 1) {
         EVP_CIPHER_CTX_free(cctx);
@@ -569,6 +571,8 @@ xmlSecOpenSSLKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
         xmlSecOpenSSLError("EVP_CIPHER_init_ex2(decrypt)", NULL);
         return(-1);
     }
+
+    EVP_CIPHER_CTX_set_padding(cctx, 0);
 
     ret = EVP_CipherUpdate(cctx, out, &nOut, in, inSize);
     if (ret != 1) {

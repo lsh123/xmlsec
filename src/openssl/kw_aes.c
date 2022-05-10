@@ -482,6 +482,7 @@ xmlSecOpenSSLKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
     xmlSecOpenSSLKWAesCtxPtr ctx;
     EVP_CIPHER_CTX* cctx;
     int ret;
+    xmlSecSize nOut, outLen;
 #endif
 
     xmlSecAssert2(in != NULL, -1);
@@ -512,21 +513,22 @@ xmlSecOpenSSLKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
         return(-1);
     }
 
-    ret = EVP_CipherUpdate(cctx, out, &outSize, in, inSize);
+    ret = EVP_CipherUpdate(cctx, out, &nOut, in, inSize);
     if (ret != 1) {
         EVP_CIPHER_CTX_free(cctx);
         xmlSecOpenSSLError("EVP_CipherUpdate(encrypt)", NULL);
         return(-1);
     }
-
-    ret = EVP_CipherFinal_ex(cctx, out, &outSize);
+    outLen = nOut;
+    ret = EVP_CipherFinal_ex(cctx, out + outLen, &nOut);
     if (ret != 1) {
         EVP_CIPHER_CTX_free(cctx);
         xmlSecOpenSSLError("EVP_CipherFinal_ex(encrypt)", NULL);
         return(-1);
     }
+    outLen += nOut;
     EVP_CIPHER_CTX_free(cctx);
-    return (int)outSize;
+    return (int)outLen;
 #endif
 }
 
@@ -538,6 +540,7 @@ xmlSecOpenSSLKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
     xmlSecOpenSSLKWAesCtxPtr ctx;
     EVP_CIPHER_CTX* cctx;
     int ret;
+    xmlSecSize nOut, outLen;
 #endif
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize >= AES_BLOCK_SIZE, -1);
@@ -554,6 +557,8 @@ xmlSecOpenSSLKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
     xmlSecAssert2(ctx->cipher != NULL, -1);
     xmlSecAssert2(xmlSecBufferGetSize(&ctx->keyBuffer) == ctx->keyExpectedSize, -1);
 
+    outBufferSize = outSize;
+
     cctx = EVP_CIPHER_CTX_new();
     if (cctx == NULL) {
         xmlSecOpenSSLError("EVP_CIPHER_CTX_new", NULL);
@@ -567,21 +572,22 @@ xmlSecOpenSSLKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
         return(-1);
     }
 
-    ret = EVP_CipherUpdate(cctx, out, &outSize, in, inSize);
+    ret = EVP_CipherUpdate(cctx, out, &nOut, in, inSize);
     if (ret != 1) {
         EVP_CIPHER_CTX_free(cctx);
         xmlSecOpenSSLError("EVP_CipherUpdate(decrypt)", NULL);
         return(-1);
     }
-
-    ret = EVP_CipherFinal_ex(cctx, out, &outSize);
+    outLen = nOut;
+    ret = EVP_CipherFinal_ex(cctx, out + outLen, &nOut);
     if (ret != 1) {
         EVP_CIPHER_CTX_free(cctx);
         xmlSecOpenSSLError("EVP_CipherFinal_ex(decrypt)", NULL);
         return(-1);
     }
+    outLen += nOut;
     EVP_CIPHER_CTX_free(cctx);
-    return (int)outSize;
+    return (int)outLen;
 #endif
 }
 

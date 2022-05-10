@@ -676,13 +676,17 @@ xmlSecOpenSSLSignatureDsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr 
     }
     ret = EVP_PKEY_sign(pctx, xmlSecBufferGetData(sigbuf), &dsaSignSize, ctx->dgst, ctx->dgstSize);
     if (ret <= 0) {
-        xmlSecOpenSSLError("EVP_PKEY_sign(1)", NULL);
+        xmlSecOpenSSLError("EVP_PKEY_sign(2)", NULL);
         goto done;
     }
 
     /* get signature components */
     bufptr = xmlSecBufferGetData(sigbuf);
     sig = d2i_DSA_SIG(NULL, &bufptr, dsaSignSize);
+    if (sig == NULL) {
+        xmlSecOpenSSLError("d2i_DSA_SIG", NULL);
+        goto done;
+    }
     DSA_SIG_get0(sig, &rr, &ss);
     if((rr == NULL) || (ss == NULL)) {
         xmlSecOpenSSLError("DSA_SIG_get0", NULL);

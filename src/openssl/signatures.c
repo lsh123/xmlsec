@@ -600,7 +600,7 @@ xmlSecOpenSSLSignatureDsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr 
 #else
     EVP_PKEY_CTX* pctx = NULL;
     xmlSecBufferPtr sigbuf = NULL;
-    const char* bufptr;
+    const unsigned char* bufptr;
 #endif
     DSA_SIG *sig = NULL;
     const BIGNUM *rr = NULL, *ss = NULL;

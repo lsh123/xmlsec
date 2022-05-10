@@ -663,12 +663,14 @@ xmlSecOpenSSLSignatureDsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr 
         goto done;
     }
 
-    xmlSecAssert(dsaSignSize != 0, -1);
+    xmlSecAssert2(dsaSignSize != 0, -1);
 
     signHalfSize = (dsaSignSize - 8) / 2;
     sigbuf = xmlSecBufferCreate(dsaSignSize);
     if (sigbuf == NULL) {
-        xmlSecOpenSSLError("xmlSecBufferCreate", NULL);
+        xmlSecInternalError2("xmlSecBufferCreate",
+                             NULL,
+                             "size=%d", dsaSignSize);
         goto done;
     }
     ret = EVP_PKEY_sign(pctx, xmlSecBufferGetData(sigbuf), &dsaSignSize, ctx->dgst, ctx->dgstSize);
@@ -718,12 +720,6 @@ xmlSecOpenSSLSignatureDsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr 
     memset(outData, 0, 2 * signHalfSize);
     BN_bn2bin(rr, outData + signHalfSize - rSize);
     BN_bn2bin(ss, outData + 2 * signHalfSize - sSize);
-
-#ifdef XMLSEC_OPENSSL_API_300
-    EVP_PKEY_CTX_free(pctx);
-    DSA_SIG_free(sig);
-    xmlSecBufferDestroy(sigbuf);
-#endif
 
     /* success */
     res = 0;

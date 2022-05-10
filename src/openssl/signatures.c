@@ -861,7 +861,7 @@ done:
     if (sig != NULL) {
         DSA_SIG_free(sig);
     }
-#ifndef XMLSEC_OPNESSL_API_300
+#ifndef XMLSEC_OPENSSL_API_300
     DSA_free(dsaKey);
 #else
     if (pout != NULL) {

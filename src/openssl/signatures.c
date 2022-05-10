@@ -682,7 +682,7 @@ xmlSecOpenSSLSignatureDsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr 
 
     /* get signature components */
     bufptr = xmlSecBufferGetData(sigbuf);
-    sig = d2i_DSA_SIG(NULL, &bufptr, dsaSignSize);)
+    sig = d2i_DSA_SIG(NULL, &bufptr, dsaSignSize);
     DSA_SIG_get0(sig, &rr, &ss);
     if((rr == NULL) || (ss == NULL)) {
         xmlSecOpenSSLError("DSA_SIG_get0", NULL);

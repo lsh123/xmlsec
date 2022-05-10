@@ -108,17 +108,17 @@ xmlSecOpenSSLKWAesInitialize(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWAes128Id)) {
         ctx->keyExpectedSize = XMLSEC_KW_AES128_KEY_SIZE;
 #ifdef XMLSEC_OPENSSL_API_300
-        ctx->cipher = EVP_CIPHER_fetch(NULL, "aes128-wrap", NULL);
+        ctx->cipher = EVP_CIPHER_fetch(NULL, "aes128-ecb", NULL);
 #endif
     } else if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWAes192Id)) {
         ctx->keyExpectedSize = XMLSEC_KW_AES192_KEY_SIZE;
 #ifdef XMLSEC_OPENSSL_API_300
-        ctx->cipher = EVP_CIPHER_fetch(NULL, "aes192-wrap", NULL);
+        ctx->cipher = EVP_CIPHER_fetch(NULL, "aes192-ecb", NULL);
 #endif
     } else if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWAes256Id)) {
         ctx->keyExpectedSize = XMLSEC_KW_AES256_KEY_SIZE;
 #ifdef XMLSEC_OPENSSL_API_300
-        ctx->cipher = EVP_CIPHER_fetch(NULL, "aes256-wrap", NULL);
+        ctx->cipher = EVP_CIPHER_fetch(NULL, "aes256-ecb", NULL);
 #endif
     } else {
         xmlSecInvalidTransfromError(transform)
@@ -500,7 +500,7 @@ xmlSecOpenSSLKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
 
     cctx = EVP_CIPHER_CTX_new();
     if (cctx == NULL) {
-        xmlSecOpenSSLError("EVP_CIPER_CTX_new", NULL);
+        xmlSecOpenSSLError("EVP_CIPHER_CTX_new", NULL);
         return(-1);
     }
     ret = EVP_CipherInit_ex2(cctx, ctx->cipher, xmlSecBufferGetData(&ctx->keyBuffer),
@@ -554,7 +554,7 @@ xmlSecOpenSSLKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
 
     cctx = EVP_CIPHER_CTX_new();
     if (cctx == NULL) {
-        xmlSecOpenSSLError("EVP_CIPER_CTX_new", NULL);
+        xmlSecOpenSSLError("EVP_CIPHER_CTX_new", NULL);
         return(-1);
     }
     ret = EVP_CipherInit_ex2(cctx, ctx->cipher, xmlSecBufferGetData(&ctx->keyBuffer),

@@ -747,7 +747,12 @@ done:
 
 static int
 xmlSecOpenSSLSignatureDsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSecByte* signData, xmlSecSize signSize) {
+#ifndef XMLSEC_OPENSSL_API_300
     DSA * dsaKey = NULL;
+#else
+    EVP_PKEY_CTX* pctx = NULL;
+    const unsigned char* pout = NULL;
+#endif
     DSA_SIG *sig = NULL;
     BIGNUM *rr = NULL, *ss = NULL;
     xmlSecSize dsaSignSize, signHalfSize;
@@ -759,6 +764,7 @@ xmlSecOpenSSLSignatureDsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSecBy
     xmlSecAssert2(ctx->dgstSize > 0, -1);
     xmlSecAssert2(signData != NULL, -1);
 
+#ifndef XMLSEC_OPENSSL_API_300
     /* get key */
     dsaKey = EVP_PKEY_get1_DSA(ctx->pKey);
     if(dsaKey == NULL) {
@@ -773,7 +779,9 @@ xmlSecOpenSSLSignatureDsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSecBy
                                        dsaSignSize, 8, NULL);
         goto done;
     }
-
+#else
+    dsaSignSize = EVP_PKEY_get_size(ctx->pKey);
+#endif
     signHalfSize = (dsaSignSize - 8) /  2;
     if(signHalfSize < 4) {
         xmlSecInvalidSizeLessThanError("DSA signatue (half size)",
@@ -816,11 +824,30 @@ xmlSecOpenSSLSignatureDsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSecBy
     ss = NULL;
 
     /* verify signature */
+#ifndef XMLSEC_OPENSSL_API_300
     ret = DSA_do_verify(ctx->dgst, ctx->dgstSize, sig, dsaKey);
     if(ret < 0) {
         xmlSecOpenSSLError("DSA_do_verify", NULL);
         goto done;
     }
+#else
+    pctx = EVP_PKEY_CTX_new_from_pkey(NULL, ctx->pKey, NULL);
+    if (pctx == NULL) {
+        xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_pkey", NULL);
+        goto done;
+    }
+    ret = EVP_PKEY_verify_init(pctx);
+    if (ret <= 0) {
+        xmlSecOpenSSLError("EVP_PKEY_verify_init", NULL);
+        goto done;
+    }
+    ret = i2d_DSA_SIG(sig, &pout); /* ret is size of signature on success */
+    if (ret < 0) {
+        xmlSecOpenSSLError("i2d_DSA_SIG", NULL);
+        goto done;
+    }
+    ret = EVP_PKEY_verify(pctx, pout, ret, ctx->dgst, ctx->dgstSize);
+#endif
 
     /* return 1 for good signatures and 0 for bad */
     if(ret > 0) {
@@ -831,8 +858,19 @@ xmlSecOpenSSLSignatureDsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSecBy
 
 done:
     /* cleanup */
-    DSA_SIG_free(sig);
+    if (sig != NULL) {
+        DSA_SIG_free(sig);
+    }
+#ifndef XMLSEC_OPNESSL_API_300
     DSA_free(dsaKey);
+#else
+    if (pout != NULL) {
+        OPENSSL_free(pout);
+    }
+    if (pctx != NULL) {
+        EVP_PKEY_CTX_free(pctx);
+    }
+#endif
     BN_clear_free(rr);
     BN_clear_free(ss);
     /* done */

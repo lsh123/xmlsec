@@ -597,11 +597,12 @@ static int
 xmlSecOpenSSLSignatureDsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr out) {
 #ifndef XMLSEC_OPENSSL_API_300
     DSA * dsaKey = NULL;
-    DSA_SIG *sig = NULL;
 #else
     EVP_PKEY_CTX* pctx = NULL;
-    xmlSecBufferPtr sig = NULL;
+    xmlSecBufferPtr sigbuf = NULL;
+    const char* bufptr;
 #endif
+    DSA_SIG *sig = NULL;
     const BIGNUM *rr = NULL, *ss = NULL;
     xmlSecByte *outData;
     xmlSecSize dsaSignSize, signHalfSize, rSize, sSize;
@@ -668,22 +669,22 @@ xmlSecOpenSSLSignatureDsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr 
         goto done;
     }
     signHalfSize = (dsaSignSize - 8) / 2;
-    sig = xmlSecBufferCreate(dsaSignSize);
-    if (sig == NULL) {
+    sigbuf = xmlSecBufferCreate(dsaSignSize);
+    if (sigbuf == NULL) {
         xmlSecOpenSSLError("xmlSecBufferCreate", NULL);
         goto done;
     }
-    ret = EVP_PKEY_sign(pctx, xmlSecBufferGetData(sig), &dsaSignSize, ctx->dgst, ctx->dgstSize);
+    ret = EVP_PKEY_sign(pctx, xmlSecBufferGetData(sigbuf), &dsaSignSize, ctx->dgst, ctx->dgstSize);
     if (ret <= 0) {
-        xmlSecBufferFinalize(sig);
         xmlSecOpenSSLError("EVP_PKEY_sign(1)", NULL);
         goto done;
     }
 
     /* get signature components */
+    bufptr = xmlSecBufferGetData(sigbuf);
+    sig = d2i_DSA_SIG(NULL, &bufptr, dsaSignSize);)
     DSA_SIG_get0(sig, &rr, &ss);
     if((rr == NULL) || (ss == NULL)) {
-        xmlSecBufferFinalize(sig);
         xmlSecOpenSSLError("DSA_SIG_get0", NULL);
         goto done;
     }
@@ -719,18 +720,19 @@ xmlSecOpenSSLSignatureDsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr 
 
 #ifdef XMLSEC_OPENSSL_API_300
     EVP_PKEY_CTX_free(pctx);
-    xmlSecBufferFinalize(sig);
+    DSA_SIG_free(sig);
+    xmlSecBufferFinalize(sigbuf);
 #endif
 
     /* success */
     res = 0;
 
 done:
-#ifndef XMLSEC_OPENSSL_API_300
     /* cleanup */
     if(sig != NULL) {
         DSA_SIG_free(sig);
     }
+#ifndef XMLSEC_OPENSSL_API_300
     if(dsaKey != NULL) {
         DSA_free(dsaKey);
     }
@@ -738,8 +740,8 @@ done:
     if (pctx != NULL) {
         EVP_PKEY_CTX_free(pctx);
     }
-    if (sig != NULL) {
-        xmlSecBufferFinalize(sig);
+    if (sigbuf != NULL) {
+        xmlSecBufferFinalize(sigbuf);
     }
 #endif
     /* done */

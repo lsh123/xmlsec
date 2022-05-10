@@ -662,6 +662,9 @@ xmlSecOpenSSLSignatureDsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr 
         xmlSecOpenSSLError("EVP_PKEY_sign(1)", NULL);
         goto done;
     }
+
+    xmlSecAssert(dsaSignSize != 0, -1);
+
     signHalfSize = (dsaSignSize - 8) / 2;
     sigbuf = xmlSecBufferCreate(dsaSignSize);
     if (sigbuf == NULL) {

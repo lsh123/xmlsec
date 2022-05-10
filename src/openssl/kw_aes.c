@@ -557,8 +557,6 @@ xmlSecOpenSSLKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
     xmlSecAssert2(ctx->cipher != NULL, -1);
     xmlSecAssert2(xmlSecBufferGetSize(&ctx->keyBuffer) == ctx->keyExpectedSize, -1);
 
-    outBufferSize = outSize;
-
     cctx = EVP_CIPHER_CTX_new();
     if (cctx == NULL) {
         xmlSecOpenSSLError("EVP_CIPHER_CTX_new", NULL);

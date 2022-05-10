@@ -751,7 +751,7 @@ xmlSecOpenSSLSignatureDsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSecBy
     DSA * dsaKey = NULL;
 #else
     EVP_PKEY_CTX* pctx = NULL;
-    const unsigned char* pout = NULL;
+    unsigned char* pout = NULL;
 #endif
     DSA_SIG *sig = NULL;
     BIGNUM *rr = NULL, *ss = NULL;

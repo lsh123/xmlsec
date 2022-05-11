@@ -1119,7 +1119,7 @@ xmlSecOpenSSLSignatureEcdsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPt
         goto done;
     }
     bufptr = xmlSecBufferGetData(sigbuf);
-    sig = d2i_ECDSA_SIG(NULL, &bufptr, dsaSignSize);
+    sig = d2i_ECDSA_SIG(NULL, &bufptr, ecSignSize);
     if (sig == NULL) {
         xmlSecOpenSSLError("d2i_ECDSA_SIG", NULL);
         goto done;

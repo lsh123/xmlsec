@@ -27,6 +27,9 @@
 #include <openssl/pkcs12.h>
 #include <openssl/conf.h>
 #include <openssl/engine.h>
+#if OPENSSL_VERSION_NUMBER >= 0x30000000L
+#include <openssl/provider.h>
+#endif
 #include <openssl/ui.h>
 
 #include <xmlsec/xmlsec.h>

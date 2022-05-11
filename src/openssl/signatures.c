@@ -1027,7 +1027,7 @@ xmlSecOpenSSLSignatureEcdsaSignatureHalfSize(EVP_PKEY * ecKey) {
         goto done;
     }
 #else
-    if (!EVP_PKEY_get_bn_param(ecKey, OSSL_PKEY_PARAM_EC_ORDER, &order)) {
+    if (0 == EVP_PKEY_get_bn_param(ecKey, OSSL_PKEY_PARAM_EC_ORDER, &order)) {
         xmlSecOpenSSLError("EVP_PKEY_get_bn_param", NULL);
         goto done;
     }

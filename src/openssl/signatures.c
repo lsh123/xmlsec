@@ -1196,7 +1196,12 @@ done:
 
 static int
 xmlSecOpenSSLSignatureEcdsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSecByte* signData, xmlSecSize signSize) {
+#ifndef XMLSEC_OPENSSL_API_300
     EC_KEY * ecKey = NULL;
+#else
+    EVP_PKEY_CTX* pctx = NULL;
+    unsigned char* pout = NULL;
+#endif
     ECDSA_SIG *sig = NULL;
     BIGNUM *rr = NULL, *ss = NULL;
     xmlSecSize signHalfSize;
@@ -1209,6 +1214,7 @@ xmlSecOpenSSLSignatureEcdsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSec
     xmlSecAssert2(ctx->dgstSize <= sizeof(ctx->dgst), -1);
     xmlSecAssert2(signData != NULL, -1);
 
+#ifndef XMLSEC_OPENSSL_API_300
     /* get key */
     ecKey = EVP_PKEY_get1_EC_KEY(ctx->pKey);
     if(ecKey == NULL) {
@@ -1222,7 +1228,10 @@ xmlSecOpenSSLSignatureEcdsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSec
         xmlSecInternalError("xmlSecOpenSSLSignatureEcdsaSignatureHalfSize", NULL);
         goto done;
     }
-
+#else
+    /* calculate signature size */
+    signHalfSize = xmlSecOpenSSLSignatureEcdsaSignatureHalfSize(ctx->pKey);
+#endif
     /* check size: we expect the r and s to be the same size and match the size of
      * the key (RFC 6931); however some  implementations (e.g. Java) cut leading zeros:
      * https://github.com/lsh123/xmlsec/issues/228 */
@@ -1261,12 +1270,30 @@ xmlSecOpenSSLSignatureEcdsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSec
     ss = NULL;
 
     /* verify signature */
+#ifndef XMLSEC_OPENSSL_API_300
     ret = ECDSA_do_verify(ctx->dgst, ctx->dgstSize, sig, ecKey);
     if(ret < 0) {
         xmlSecOpenSSLError("ECDSA_do_verify", NULL);
         goto done;
     }
-
+#else
+    pctx = EVP_PKEY_CTX_new_from_pkey(NULL, ctx->pKey, NULL);
+    if (pctx == NULL) {
+        xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_pkey", NULL);
+        goto done;
+    }
+    ret = EVP_PKEY_verify_init(pctx);
+    if (ret <= 0) {
+        xmlSecOpenSSLError("EVP_PKEY_verify_init", NULL);
+        goto done;
+    }
+    ret = i2d_ECDSA_SIG(sig, &pout); /* ret is size of signature on success */
+    if (ret < 0) {
+        xmlSecOpenSSLError("i2d_ECDSA_SIG", NULL);
+        goto done;
+    }
+    ret = EVP_PKEY_verify(pctx, pout, ret, ctx->dgst, ctx->dgstSize);
+#endif
     /* return 1 for good signatures and 0 for bad */
     if(ret > 0) {
         res = 1;
@@ -1276,8 +1303,19 @@ xmlSecOpenSSLSignatureEcdsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSec
 
 done:
     /* cleanup */
-    ECDSA_SIG_free(sig);
+    if (sig != NULL) {
+        ECDSA_SIG_free(sig);
+    }
+#ifndef XMLSEC_OPENSSL_API_300
     EC_KEY_free(ecKey);
+#else
+    if (pout != NULL) {
+        OPENSSL_free(pout);
+    }
+    if (pctx != NULL) {
+        EVP_PKEY_CTX_free(pctx);
+    }
+#endif
     BN_clear_free(rr);
     BN_clear_free(ss);
     /* done */

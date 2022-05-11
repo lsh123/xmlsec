@@ -1073,11 +1073,12 @@ xmlSecOpenSSLSignatureEcdsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPt
         xmlSecOpenSSLError("EVP_PKEY_get1_DSA", NULL);
         goto done;
     }
-#else
-    ecKey = ctx->pKey;
-#endif
     /* calculate signature size */
     signHalfSize = xmlSecOpenSSLSignatureEcdsaSignatureHalfSize(ecKey);
+#else
+    /* calculate signature size */
+    signHalfSize = xmlSecOpenSSLSignatureEcdsaSignatureHalfSize(ctx->pKey);
+#endif
     if(signHalfSize <= 0) {
         xmlSecInternalError("xmlSecOpenSSLSignatureEcdsaSignatureHalfSize", NULL);
         goto done;
@@ -1085,13 +1086,13 @@ xmlSecOpenSSLSignatureEcdsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPt
 
     /* sign */
 #ifndef XMLSEC_OPENSSL_API_300
-    sig = ECDSA_do_sign(ctx->dgst, ctx->dgstSize, ecKey);
+    sig = ECDSA_do_sign(ctx->dgst, ctx->dgstSize, ctx->pKey);
     if(sig == NULL) {
         xmlSecOpenSSLError("ECDSA_do_sign", NULL);
         goto done;
     }
 #else
-    pctx = EVP_PKEY_CTX_new_from_pkey(NULL, ecKey, NULL);
+    pctx = EVP_PKEY_CTX_new_from_pkey(NULL, ctx->pKey, NULL);
     if (pctx == NULL) {
         xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_pkey", NULL);
         goto done;

@@ -34,9 +34,9 @@
 #include <openssl/opensslv.h>
 #if OPENSSL_VERSION_NUMBER >= 0x30000000L
 #include <openssl/core_names.h>
+#include <openssl/param_build.h>
 #endif
 #include <openssl/hmac.h>
-#include <openssl/param_build.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>

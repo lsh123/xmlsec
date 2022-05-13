@@ -1090,7 +1090,7 @@ xmlSecOpenSSLSignatureEcdsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPt
 
     /* sign */
 #ifndef XMLSEC_OPENSSL_API_300
-    sig = ECDSA_do_sign(ctx->dgst, ctx->dgstSize, ctx->pKey);
+    sig = ECDSA_do_sign(ctx->dgst, ctx->dgstSize, ecKey);
     if(sig == NULL) {
         xmlSecOpenSSLError("ECDSA_do_sign", NULL);
         goto done;

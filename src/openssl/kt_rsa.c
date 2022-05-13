@@ -915,7 +915,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
             OSSL_PARAM_free(params);
             OSSL_PARAM_BLD_free(param_bld);
             EVP_PKEY_CTX_free(pctx);
-            xmlSecOpenSSLError("OSSL_PARAM_BLD_to_param",
+            xmlSecOpenSSLError("EVP_PKEY_CTX_set_params",
                                xmlSecTransformGetName(transform));
             return (-1);
         }
@@ -1034,7 +1034,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
             OSSL_PARAM_free(params);
             OSSL_PARAM_BLD_free(param_bld);
             EVP_PKEY_CTX_free(pctx);
-            xmlSecOpenSSLError("OSSL_PARAM_BLD_to_param",
+            xmlSecOpenSSLError("EVP_PKEY_CTX_set_params",
                                xmlSecTransformGetName(transform));
             return (-1);
     }

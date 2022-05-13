@@ -638,7 +638,7 @@ dnl OpenSSL
 dnl ==========================================================================
 OPENSSL_MIN_VERSION="1.0.0"
 OPENSSL_INCLUDE_DIR="$COMMON_INCLUDE_DIR /usr/local/ssl/include"
-OPENSSL_LIB_DIR="$COMMON_LIB_DIR /usr/local/ssl/lib"
+OPENSSL_LIB_DIR="$COMMON_LIB_DIR /usr/local/ssl/lib /usr/local/ssl/lib64"
 OPENSSL_CRYPTO_LIB="$XMLSEC_PACKAGE-openssl"
 OPENSSL_INCLUDE_MARKER="openssl/opensslv.h"
 OPENSSL_LIB_SHARED_MARKER="libcrypto$shrext"

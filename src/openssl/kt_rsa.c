@@ -24,12 +24,12 @@
 #include <openssl/opensslv.h>
 #if OPENSSL_VERSION_NUMBER >= 0x30000000L
 #include <openssl/core_names.h>
+#include <openssl/param_build.h>
 #endif
 #include <openssl/rsa.h>
 #include <openssl/evp.h>
 #include <openssl/sha.h>
 #include <openssl/objects.h>
-#include <openssl/param_build.h>
 
 #include <libxml/tree.h>
 

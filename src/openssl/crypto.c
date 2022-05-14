@@ -50,7 +50,7 @@ static char gXmlSecOpenSSLErrorsDefault[] = "xmlsec routines";
 static ERR_STRING_DATA xmlSecOpenSSLStrLib[2];
 static ERR_STRING_DATA xmlSecOpenSSLStrDefReason[2];
 static ERR_STRING_DATA xmlSecOpenSSLStrReasons[XMLSEC_ERRORS_MAX_NUMBER + 1];
-#endif /* !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_NO_ERR) */
+#endif /* !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_NO_ERR) && (OPENSSL_VERSION_NUMBER < 0x30000000L) */
 
 /**
  * xmlSecCryptoGetFunctions_openssl:

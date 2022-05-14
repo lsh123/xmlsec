@@ -68,6 +68,11 @@ static xmlSecKeyPtr xmlSecOpenSSLAppEngineKeyLoad       (const char *engineName,
 XMLSEC_PTR_TO_FUNC_IMPL(pem_password_cb)
 XMLSEC_FUNC_TO_PTR_IMPL(pem_password_cb)
 
+#ifdef XMLSEC_OPENSSL_API_300
+static OSSL_PROVIDER* legacyProvider = NULL;
+static OSSL_PROVIDER* defaultProvider = NULL;
+#endif
+
 /**
  * xmlSecOpenSSLAppInit:
  * @config:             the path to certs.
@@ -100,11 +105,13 @@ xmlSecOpenSSLAppInit(const char* config) {
 #endif /* OPENSSL_IS_BORINGSSL */
 #ifdef XMLSEC_OPENSSL_API_300
     /* Load Multiple providers into the default (NULL) library context */
-    if (OSSL_PROVIDER_load(NULL, "legacy") == NULL) {
+    legacyProvider = OSSL_PROVIDER_load(NULL, "legacy");
+    if (legacyProvider == NULL) {
         xmlSecOpenSSLError("OSSL_PROVIDER_load", NULL);
         return(-1);
     }
-    if (OSSL_PROVIDER_load(NULL, "default") == NULL) {
+    defaultProvider = OSSL_PROVIDER_load(NULL, "default");
+    if (defaultProvider == NULL) {
         xmlSecOpenSSLError("OSSL_PROVIDER_load", NULL);
         return(-1);
     }
@@ -159,7 +166,14 @@ xmlSecOpenSSLAppShutdown(void) {
     CRYPTO_cleanup_all_ex_data();
     ERR_remove_thread_state(NULL);
     ERR_free_strings();
-#endif /* !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300) */
+#elif defined(XMLSEC_OPENSLL_API_300)
+    if (defaultProvider != NULL) {
+        OSSL_PROVIDER_unload(defaultProvider);
+    }
+    if (legacyProvider != NULL) {
+        OSSL_PROVIDER_unload(legacyProvider);
+    }
+#endif
 
     /* done */
     return(0);

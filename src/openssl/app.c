@@ -112,6 +112,7 @@ xmlSecOpenSSLAppInit(const char* config) {
     }
     defaultProvider = OSSL_PROVIDER_load(NULL, "default");
     if (defaultProvider == NULL) {
+        OSSL_PROVIDER_unload(legacyProvider);
         xmlSecOpenSSLError("OSSL_PROVIDER_load", NULL);
         return(-1);
     }
@@ -119,17 +120,29 @@ xmlSecOpenSSLAppInit(const char* config) {
 
     ret = OPENSSL_init_crypto(opts, NULL);
     if(ret != 1) {
+#ifdef XMLSEC_OPENSSL_API_300
+        OSSL_PROVIDER_unload(defaultProvider);
+        OSSL_PROVIDER_unload(legacyProvider);
+#endif
         xmlSecOpenSSLError("OPENSSL_init_crypto", NULL);
         return(-1);
     }
-#endif /* !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300) */
+#endif
 
     if((RAND_status() != 1) && (xmlSecOpenSSLAppLoadRANDFile(NULL) != 1)) {
+#ifdef XMLSEC_OPENSSL_API_300
+        OSSL_PROVIDER_unload(defaultProvider);
+        OSSL_PROVIDER_unload(legacyProvider);
+#endif
         xmlSecInternalError("xmlSecOpenSSLAppLoadRANDFile", NULL);
         return(-1);
     }
 
     if((config != NULL) && (xmlSecOpenSSLSetDefaultTrustedCertsFolder(BAD_CAST config) < 0)) {
+#ifdef XMLSEC_OPENSSL_API_300
+        OSSL_PROVIDER_unload(defaultProvider);
+        OSSL_PROVIDER_unload(legacyProvider);
+#endif
         xmlSecInternalError("xmlSecOpenSSLSetDefaultTrustedCertsFolder", NULL);
         return(-1);
     }

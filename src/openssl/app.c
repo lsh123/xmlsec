@@ -29,11 +29,6 @@
 #include <openssl/engine.h>
 #include <openssl/ui.h>
 
-#if OPENSSL_VERSION_NUMBER >= 0x30000000L
-#include <openssl/provider.h>
-#endif /* XMLSEC_OPENSSL_API_300 */
-
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
@@ -47,6 +42,11 @@
 #include <xmlsec/openssl/x509.h>
 
 #include "openssl_compat.h"
+
+#ifdef XMLSEC_OPENSSL_API_300
+#include <openssl/provider.h>
+#endif /* XMLSEC_OPENSSL_API_300 */
+
 
 static int      xmlSecOpenSSLAppLoadRANDFile            (const char *filename);
 static int      xmlSecOpenSSLAppSaveRANDFile            (const char *filename);

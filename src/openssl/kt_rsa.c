@@ -22,10 +22,6 @@
 #include <string.h>
 
 #include <openssl/opensslv.h>
-#if OPENSSL_VERSION_NUMBER >= 0x30000000L
-#include <openssl/core_names.h>
-#include <openssl/param_build.h>
-#endif
 #include <openssl/rsa.h>
 #include <openssl/evp.h>
 #include <openssl/sha.h>
@@ -45,6 +41,11 @@
 #include <xmlsec/openssl/evp.h>
 #include <xmlsec/openssl/bn.h>
 #include "openssl_compat.h"
+
+#ifdef XMLSEC_OPENSSL_API_300
+#include <openssl/core_names.h>
+#include <openssl/param_build.h>
+#endif /* XMLSEC_OPENSSL_API_300 */
 
 #ifdef OPENSSL_IS_BORINGSSL
 

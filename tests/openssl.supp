@@ -60,4 +60,64 @@
    fun:RSA_padding_add_PKCS1_type_2
    fun:RSA_eay_public_encrypt
 }
+{
+   ossl_provider_set_operation_bit->malloc
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:ossl_provider_set_operation_bit
+   ...
+}
+{
+   ossl_provider_set_operation_bit->calloc
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   fun:ossl_provider_set_operation_bit
+   ...
+}
+{
+   ossl_provider_set_operation_bit->realloc
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:realloc
+   fun:ossl_provider_set_operation_bit
+   ...
+}
+{
+   OSSL_PROVIDER_try_load->malloc
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   fun:OSSL_PROVIDER_try_load
+   fun:xmlSecOpenSSLAppInit
+   fun:xmlSecAppCryptoInit
+   fun:xmlSecAppInit
+   fun:main
+}
+{
+   OSSL_PROVIDER_try_load->realloc
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:realloc
+   ...
+   fun:OSSL_PROVIDER_try_load
+   fun:xmlSecOpenSSLAppInit
+   fun:xmlSecAppCryptoInit
+   fun:xmlSecAppInit
+   fun:main
+}
+{
+   OSSL_PROVIDER_try_load->calloc
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   ...
+   fun:OSSL_PROVIDER_try_load
+   fun:xmlSecOpenSSLAppInit
+   fun:xmlSecAppCryptoInit
+   fun:xmlSecAppInit
+   fun:main
+}
 

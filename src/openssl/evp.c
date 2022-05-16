@@ -927,6 +927,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     /* done */
     res = 0;
 
+    printf("DEBUG: DSA\n\n");
 done:
 #ifndef XMLSEC_OPENSSL_API_300
     if (dsa != NULL) {

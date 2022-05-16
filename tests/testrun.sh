@@ -44,7 +44,7 @@ nssdbfolder=$topfolder/nssdb
 valgrind_suppression="--suppressions=$topfolder/openssl.supp --suppressions=$topfolder/nss.supp"
 valgrind_options="--leak-check=yes --show-reachable=yes --num-callers=32 -v"
 if [ -n "$DEBUG_MEMORY" ] ; then 
-    export VALGRIND="valgrind $valgrind_options"
+    export VALGRIND="valgrind $valgrind_options $valgrind_suppression"
     export REPEAT=3
     xmlsec_params="$xmlsec_params --repeat $REPEAT"
 fi

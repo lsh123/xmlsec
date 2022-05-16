@@ -820,6 +820,19 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
     if test "z$OPENSSL_VERSION" = "z" ; then
         AC_EGREP_CPP(greater-than-minvers, [
             #include <openssl/opensslv.h>
+            #if OPENSSL_VERSION_NUMBER >= 0x30000000L
+            greater-than-minvers
+            #endif
+        ],[
+            OPENSSL_VERSION="3.0.0"
+        ],[
+            OPENSSL_VERSION=""
+        ])
+    fi
+
+    if test "z$OPENSSL_VERSION" = "z" ; then
+        AC_EGREP_CPP(greater-than-minvers, [
+            #include <openssl/opensslv.h>
             #if OPENSSL_VERSION_NUMBER >= 0x10100000L
             greater-than-minvers
             #endif

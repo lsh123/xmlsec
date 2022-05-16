@@ -28,7 +28,7 @@
 
 #ifndef XMLSEC_NO_DES
 
-static int      xmlSecKWDes3BufferReverse                       (xmlSecByte *buf, 
+static int      xmlSecKWDes3BufferReverse                       (xmlSecByte *buf,
                                                                  xmlSecSize size);
 
 /********************************************************************
@@ -153,7 +153,7 @@ xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, void *context,
 int
 xmlSecKWDes3Decode(xmlSecKWDes3Id kwDes3Id, void *context,
                   const xmlSecByte *in, xmlSecSize inSize,
-                  xmlSecByte *out, xmlSecSize outSize) 
+                  xmlSecByte *out, xmlSecSize outSize)
 {
     xmlSecByte sha1[XMLSEC_KW_DES3_SHA_DIGEST_LENGTH];
     xmlSecBufferPtr tmp;
@@ -174,10 +174,10 @@ xmlSecKWDes3Decode(xmlSecKWDes3Id kwDes3Id, void *context,
         xmlSecInternalError2("xmlSecBufferCreate", NULL, "inSize=%d", (int)inSize);
         return(-1);
     }
-    
+
     ret = kwDes3Id->decrypt(context,
                            xmlSecKWDes3Iv, sizeof(xmlSecKWDes3Iv),
-                           in, inSize, 
+                           in, inSize,
                            xmlSecBufferGetData(tmp), xmlSecBufferGetMaxSize(tmp));
     if((ret < 0) || (ret < XMLSEC_KW_DES3_IV_LENGTH)) {
         xmlSecInternalError("kwDes3Id->decrypt", NULL);
@@ -230,7 +230,7 @@ xmlSecKWDes3Decode(xmlSecKWDes3Id kwDes3Id, void *context,
 }
 
 static int
-xmlSecKWDes3BufferReverse(xmlSecByte *buf, xmlSecSize size) 
+xmlSecKWDes3BufferReverse(xmlSecByte *buf, xmlSecSize size)
 {
     xmlSecByte * p;
     xmlSecByte ch;

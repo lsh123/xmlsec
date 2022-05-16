@@ -685,8 +685,13 @@ if test "z$OPENSSL_FOUND" = "zno" -a "z$with_openssl" != "z" -a "z$with_openssl"
         OPENSSL_LIB_PATH="$with_openssl/lib"
         OPENSSL_FOUND="yes"
         AC_MSG_RESULT([yes])
+    elif test -f "$with_openssl/include/$OPENSSL_INCLUDE_MARKER" -a -f "$with_openssl/libi64/$OPENSSL_LIB_STATIC_MARKER" ; then
+        OPENSSL_INCLUDE_PATH="$with_openssl/include"
+        OPENSSL_LIB_PATH="$with_openssl/lib64"
+        OPENSSL_FOUND="yes"
+        AC_MSG_RESULT([yes])
     else
-        AC_MSG_ERROR([not found: "$with_openssl/include/$OPENSSL_INCLUDE_MARKER" or "$with_openssl/lib/$OPENSSL_LIB_SHARED_MARKER" or "$with_openssl/lib/$OPENSSL_LIB_STATIC_MARKER" files don't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_openssl/include/$OPENSSL_INCLUDE_MARKER" or "$with_openssl/libi[64]/$OPENSSL_LIB_SHARED_MARKER" or "$with_openssl/lib[64]/$OPENSSL_LIB_STATIC_MARKER" files don't exist), typo?])
     fi
 fi
 

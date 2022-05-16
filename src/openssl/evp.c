@@ -914,7 +914,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         xmlSecInternalError("xmlSecOpenSSLKeyDataDsaAdoptEvp", xmlSecKeyDataGetName(data));
         goto done;
     }
-    data = NULL;
+    pkey = NULL;
 #endif /* XMLSEC_OPENSSL_API_300 */
 
     ret = xmlSecKeySetValue(key, data);
@@ -922,6 +922,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyDataGetName(data));
         goto done;
     }
+    data = NULL;
 
     /* done */
     res = 0;

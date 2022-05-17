@@ -34,6 +34,33 @@ jobs:
       working-directory: build
       run: make check
   
+  check-ubuntu-openssl3:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - static_linking: true
+          - static_linking: false
+    steps:
+    - name: install dependencies
+      run: |
+          sudo apt update
+          sudo apt install automake autoconf libtool libtool-bin libltdl-dev libltdl7
+          sudo apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
+          sudo apt install libssl1.1 libssl-dev
+    - uses: actions/checkout@v2
+    - run: mkdir build
+    - name: configure
+      working-directory: build
+      run: ../autogen.sh --enable-werror --enable-static-linking=${{ matrix.static_linking }}
+    - name: make
+      working-directory: build
+      run: make
+    - name: make check
+      working-directory: build
+      run: make check
+      
   check-osx:
     runs-on: macos-latest
     strategy:

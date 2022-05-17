@@ -161,49 +161,112 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_MD5
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaMd5Id)) {
-        ctx->digest     = EVP_md5();
+#ifndef XMLSEC_OPENSSL_API_300
+        ctx->digest = EVP_md5();
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "MD5", NULL);
+        if(ctx->digest == NULL) {
+            xmlSecOpenSSLError("EVP_MD_fetch(MD5)", xmlSecTransformGetName(transform));
+            xmlSecOpenSSLEvpSignatureFinalize(transform);
+            return(-1);
+        }
+#endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId      = xmlSecOpenSSLKeyDataRsaId;
     } else
 #endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_RIPEMD160
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaRipemd160Id)) {
-        ctx->digest     = EVP_ripemd160();
+#ifndef XMLSEC_OPENSSL_API_300
+        ctx->digest = EVP_ripemd160();
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "RIPEMD-160", NULL);
+        if(ctx->digest == NULL) {
+            xmlSecOpenSSLError("EVP_MD_fetch(RIPEMD-160)", xmlSecTransformGetName(transform));
+            xmlSecOpenSSLEvpSignatureFinalize(transform);
+            return(-1);
+        }
+#endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId      = xmlSecOpenSSLKeyDataRsaId;
     } else
 #endif /* XMLSEC_NO_RIPEMD160 */
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaSha1Id)) {
-        ctx->digest     = EVP_sha1();
+#ifndef XMLSEC_OPENSSL_API_300
+        ctx->digest = EVP_sha1();
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "SHA-1", NULL);
+        if(ctx->digest == NULL) {
+            xmlSecOpenSSLError("EVP_MD_fetch(SHA-1)", xmlSecTransformGetName(transform));
+            xmlSecOpenSSLEvpSignatureFinalize(transform);
+            return(-1);
+        }
+#endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId      = xmlSecOpenSSLKeyDataRsaId;
     } else
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA224
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaSha224Id)) {
-        ctx->digest     = EVP_sha224();
+#ifndef XMLSEC_OPENSSL_API_300
+        ctx->digest = EVP_sha224();
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "SHA-224", NULL);
+        if(ctx->digest == NULL) {
+            xmlSecOpenSSLError("EVP_MD_fetch(SHA-224)", xmlSecTransformGetName(transform));
+            xmlSecOpenSSLEvpSignatureFinalize(transform);
+            return(-1);
+        }
+#endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId      = xmlSecOpenSSLKeyDataRsaId;
     } else
 #endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaSha256Id)) {
-        ctx->digest     = EVP_sha256();
+#ifndef XMLSEC_OPENSSL_API_300
+        ctx->digest = EVP_sha256();
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "SHA-256", NULL);
+        if(ctx->digest == NULL) {
+            xmlSecOpenSSLError("EVP_MD_fetch(SHA-256)", xmlSecTransformGetName(transform));
+            xmlSecOpenSSLEvpSignatureFinalize(transform);
+            return(-1);
+        }
+#endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId      = xmlSecOpenSSLKeyDataRsaId;
     } else
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaSha384Id)) {
-        ctx->digest     = EVP_sha384();
+#ifndef XMLSEC_OPENSSL_API_300
+        ctx->digest = EVP_sha384();
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "SHA-384", NULL);
+        if(ctx->digest == NULL) {
+            xmlSecOpenSSLError("EVP_MD_fetch(SHA-384)", xmlSecTransformGetName(transform));
+            xmlSecOpenSSLEvpSignatureFinalize(transform);
+            return(-1);
+        }
+#endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId      = xmlSecOpenSSLKeyDataRsaId;
     } else
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaSha512Id)) {
-        ctx->digest     = EVP_sha512();
+#ifndef XMLSEC_OPENSSL_API_300
+        ctx->digest = EVP_sha512();
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "SHA-512", NULL);
+        if(ctx->digest == NULL) {
+            xmlSecOpenSSLError("EVP_MD_fetch(SHA-512)", xmlSecTransformGetName(transform));
+            xmlSecOpenSSLEvpSignatureFinalize(transform);
+            return(-1);
+        }
+#endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId      = xmlSecOpenSSLKeyDataRsaId;
     } else
 #endif /* XMLSEC_NO_SHA512 */
@@ -212,37 +275,68 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_GOST
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGost2001GostR3411_94Id)) {
-        ctx->keyId  = xmlSecOpenSSLKeyDataGost2001Id;
+#ifndef XMLSEC_OPENSSL_API_300
         ctx->digest = EVP_get_digestbyname("md_gost94");
-        if (!ctx->digest) {
-        	xmlSecInvalidTransfromError(transform)
-        	return(-1);
+        if (ctx->digest == NULL) {
+            xmlSecOpenSSLError("EVP_get_digestbyname(md_gost94)", xmlSecTransformGetName(transform));
+            xmlSecOpenSSLEvpSignatureFinalize(transform);
+            return(-1);
         }
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "GOST-94", NULL);
+        if(ctx->digest == NULL) {
+            xmlSecOpenSSLError("EVP_MD_fetch(GOST-94)", xmlSecTransformGetName(transform));
+            xmlSecOpenSSLEvpSignatureFinalize(transform);
+            return(-1);
+        }
+#endif /* XMLSEC_OPENSSL_API_300 */
+        ctx->keyId  = xmlSecOpenSSLKeyDataGost2001Id;
     } else
 #endif /* XMLSEC_NO_GOST */
 
 #ifndef XMLSEC_NO_GOST2012
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_256Id)) {
-        ctx->keyId  = xmlSecOpenSSLKeyDataGostR3410_2012_256Id;
+#ifndef XMLSEC_OPENSSL_API_300
         ctx->digest = EVP_get_digestbyname("md_gost12_256");
-		if (!ctx->digest) {
-			xmlSecInvalidTransfromError(transform)
-			return(-1);
-		}
+        if (ctx->digest == NULL) {
+            xmlSecOpenSSLError("EVP_get_digestbyname(md_gost12_256)", xmlSecTransformGetName(transform));
+            xmlSecOpenSSLEvpSignatureFinalize(transform);
+            return(-1);
+        }
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "GOST12-256", NULL);
+        if(ctx->digest == NULL) {
+            xmlSecOpenSSLError("EVP_MD_fetch(GOST12-256)", xmlSecTransformGetName(transform));
+            xmlSecOpenSSLEvpSignatureFinalize(transform);
+            return(-1);
+        }
+#endif /* XMLSEC_OPENSSL_API_300 */
+        ctx->keyId  = xmlSecOpenSSLKeyDataGostR3410_2012_256Id;
     } else
 
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_512Id)) {
-        ctx->keyId  = xmlSecOpenSSLKeyDataGostR3410_2012_512Id;
+#ifndef XMLSEC_OPENSSL_API_300
         ctx->digest = EVP_get_digestbyname("md_gost12_512");
-		if (!ctx->digest) {
-			xmlSecInvalidTransfromError(transform)
-			return(-1);
-		}
+        if (ctx->digest == NULL) {
+            xmlSecOpenSSLError("EVP_get_digestbyname(md_gost12_512)", xmlSecTransformGetName(transform));
+            xmlSecOpenSSLEvpSignatureFinalize(transform);
+            return(-1);
+        }
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "GOST12-512", NULL);
+        if(ctx->digest == NULL) {
+            xmlSecOpenSSLError("EVP_MD_fetch(GOST12-512)", xmlSecTransformGetName(transform));
+            xmlSecOpenSSLEvpSignatureFinalize(transform);
+            return(-1);
+        }
+#endif /* XMLSEC_OPENSSL_API_300 */
+        ctx->keyId  = xmlSecOpenSSLKeyDataGostR3410_2012_512Id;
     } else
 #endif /* XMLSEC_NO_GOST2012 */
 
     if(1) {
-        xmlSecInvalidTransfromError(transform)
+        xmlSecInvalidTransfromError(transform);
+        xmlSecOpenSSLEvpSignatureFinalize(transform);
         return(-1);
     }
 
@@ -368,7 +462,11 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->digestCtx != NULL, -1);
 
+#ifndef XMLSEC_OPENSSL_API_300
     ret = EVP_VerifyFinal(ctx->digestCtx, (xmlSecByte*)data, dataSize, ctx->pKey);
+#else /* XMLSEC_OPENSSL_API_300 */
+    ret = EVP_VerifyFinal_ex(ctx->digestCtx, (xmlSecByte*)data, dataSize, ctx->pKey, xmlSecOpenSSLGetLibCtx(), NULL);
+#endif /* XMLSEC_OPENSSL_API_300 */
     if(ret < 0) {
         xmlSecOpenSSLError("EVP_VerifyFinal",
                            xmlSecTransformGetName(transform));
@@ -474,13 +572,22 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
                                      "size=%u", signSize);
                 return(-1);
             }
-
+#ifndef XMLSEC_OPENSSL_API_300
             ret = EVP_SignFinal(ctx->digestCtx, xmlSecBufferGetData(out), &signSize, ctx->pKey);
             if(ret != 1) {
                 xmlSecOpenSSLError("EVP_SignFinal",
                                    xmlSecTransformGetName(transform));
                 return(-1);
             }
+#else /* XMLSEC_OPENSSL_API_300 */
+            ret = EVP_SignFinal_ex(ctx->digestCtx, xmlSecBufferGetData(out), &signSize, ctx->pKey,
+                               xmlSecOpenSSLGetLibCtx(), NULL);
+            if(ret != 1) {
+                xmlSecOpenSSLError("EVP_SignFinal",
+                                   xmlSecTransformGetName(transform));
+                return(-1);
+            }
+#endif /* XMLSEC_OPENSSL_API_300 */
 
             ret = xmlSecBufferSetSize(out, signSize);
             if(ret < 0) {

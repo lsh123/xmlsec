@@ -39,23 +39,6 @@
 extern "C" {
 #endif /* __cplusplus */
 
-XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctions_openssl(void);
-
-/********************************************************************
- *
- * Init shutdown
- *
- ********************************************************************/
-XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLInit               (void);
-XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLShutdown           (void);
-
-XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeysMngrInit       (xmlSecKeysMngrPtr mngr);
-XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLGenerateRandom     (xmlSecBufferPtr buffer,
-                                                                         xmlSecSize size);
-
-XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLSetDefaultTrustedCertsFolder(const xmlChar* path);
-XMLSEC_CRYPTO_EXPORT const xmlChar*     xmlSecOpenSSLGetDefaultTrustedCertsFolder(void);
-
 /********************************************************************
  *
  * What version of the openssl API do we have? (also see configure.ac)
@@ -77,6 +60,29 @@ XMLSEC_CRYPTO_EXPORT const xmlChar*     xmlSecOpenSSLGetDefaultTrustedCertsFolde
 #else  /* OPENSSL_VERSION_NUMBER */
 #error "This version of OpenSSL library is not supported"
 #endif /* OPENSSL_VERSION_NUMBER */
+
+
+/********************************************************************
+ *
+ * Common functions
+ *
+ ********************************************************************/
+XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctions_openssl(void);
+
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLInit               (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLShutdown           (void);
+
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeysMngrInit       (xmlSecKeysMngrPtr mngr);
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLGenerateRandom     (xmlSecBufferPtr buffer,
+                                                                         xmlSecSize size);
+
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLSetDefaultTrustedCertsFolder(const xmlChar* path);
+XMLSEC_CRYPTO_EXPORT const xmlChar*     xmlSecOpenSSLGetDefaultTrustedCertsFolder(void);
+
+#ifdef XMLSEC_OPENSSL_API_300
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLSetLibCtx(OSSL_LIB_CTX* libctx);
+XMLSEC_CRYPTO_EXPORT OSSL_LIB_CTX*      xmlSecOpenSSLGetLibCtx(void);
+#endif /* XMLSEC_OPENSSL_API_300 */
 
 /********************************************************************
  *
@@ -137,6 +143,7 @@ XMLSEC_CRYPTO_EXPORT const xmlChar*     xmlSecOpenSSLGetDefaultTrustedCertsFolde
 #if defined(OPENSSL_NO_X509) || defined(OPENSSL_NO_X509_VERIFY)
 #define XMLSEC_NO_X509      1
 #endif /* defined(OPENSSL_NO_X509) || defined(OPENSSL_NO_X509_VERIFY) */
+
 
 /********************************************************************
  *

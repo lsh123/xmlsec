@@ -71,6 +71,7 @@ XMLSEC_PTR_TO_FUNC_IMPL(pem_password_cb)
 XMLSEC_FUNC_TO_PTR_IMPL(pem_password_cb)
 
 #ifdef XMLSEC_OPENSSL_API_300
+static OSSL_LIB_CTX* g_default_libctx = NULL;
 static OSSL_PROVIDER* g_legacy_provider = NULL;
 static OSSL_PROVIDER* g_default_provider = NULL;
 #endif /* XMLSEC_OPENSSL_API_300 */
@@ -108,15 +109,26 @@ xmlSecOpenSSLAppInit(const char* config) {
 
 
 #ifdef XMLSEC_OPENSSL_API_300
-    /* Load Multiple providers into the default (NULL) library context */
-    g_legacy_provider = OSSL_PROVIDER_load(NULL, "legacy");
+    /* Create default OSSL_LIB_CTX (applications can overwrite it with xmlSecOpenSSLSetLibCtx */
+    g_default_libctx = OSSL_LIB_CTX_new();
+    if(g_default_libctx == NULL) {
+        xmlSecOpenSSLError("OSSL_LIB_CTX_new", NULL);
+        goto error;
+    }
+    /* Load default/legacy providers */
+    g_legacy_provider = OSSL_PROVIDER_load(g_default_libctx, "legacy");
     if (g_legacy_provider == NULL) {
         xmlSecOpenSSLError("OSSL_PROVIDER_load", NULL);
         goto error;
     }
-    g_default_provider = OSSL_PROVIDER_load(NULL, "default");
+    g_default_provider = OSSL_PROVIDER_load(g_default_libctx, "default");
     if (g_default_provider == NULL) {
         xmlSecOpenSSLError("OSSL_PROVIDER_load", NULL);
+        goto error;
+    }
+    ret = xmlSecOpenSSLSetLibCtx(g_default_libctx);
+    if(ret != 0) {
+        xmlSecInternalError("xmlSecOpenSSLSetLibCtx", NULL);
         goto error;
     }
 #endif /* XMLSEC_OPENSSL_API_300 */
@@ -126,7 +138,7 @@ xmlSecOpenSSLAppInit(const char* config) {
         xmlSecOpenSSLError("OPENSSL_init_crypto", NULL);
         goto error;
     }
-#endif /* defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300) */
+#endif /* !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300) */
 
     if((RAND_status() != 1) && (xmlSecOpenSSLAppLoadRANDFile(NULL) != 1)) {
         xmlSecInternalError("xmlSecOpenSSLAppLoadRANDFile", NULL);
@@ -151,6 +163,10 @@ error:
     if(g_legacy_provider != NULL) {
         OSSL_PROVIDER_unload(g_legacy_provider);
         g_legacy_provider = NULL;
+    }
+    if(g_default_libctx != NULL) {
+        OSSL_LIB_CTX_free(g_default_libctx);
+        g_default_libctx = NULL;
     }
 #endif /* XMLSEC_OPENSSL_API_300 */
     return(-1);
@@ -193,6 +209,10 @@ xmlSecOpenSSLAppShutdown(void) {
     if (g_legacy_provider != NULL) {
         OSSL_PROVIDER_unload(g_legacy_provider);
         g_legacy_provider = NULL;
+    }
+    if(g_default_libctx != NULL) {
+        OSSL_LIB_CTX_free(g_default_libctx);
+        g_default_libctx = NULL;
     }
 #endif /* XMLSEC_OPENSLL_API_300 */
 
@@ -798,7 +818,10 @@ xmlSecKeyPtr
 xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
                            void* pwdCallback ATTRIBUTE_UNUSED,
                            void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
-
+    
+#ifdef XMLSEC_OPENSSL_API_300
+    OSSL_LIB_CTX* savedDefaultLibCtx = NULL;
+#endif /* XMLSEC_OPENSSL_API_300 */
     PKCS12 *p12 = NULL;
     EVP_PKEY *pKey = NULL;
     STACK_OF(X509) *chain = NULL;
@@ -814,6 +837,14 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
     xmlSecAssert2(bio != NULL, NULL);
     UNREFERENCED_PARAMETER(pwdCallback);
     UNREFERENCED_PARAMETER(pwdCallbackCtx);
+
+#ifdef XMLSEC_OPENSSL_API_300
+    savedDefaultLibCtx = OSSL_LIB_CTX_set0_default(xmlSecOpenSSLGetLibCtx());
+    if(savedDefaultLibCtx == NULL) {
+        xmlSecOpenSSLError("OSSL_LIB_CTX_set0_default", NULL);
+        goto done;
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
 
     p12 = d2i_PKCS12_bio(bio, NULL);
     if(p12 == NULL) {
@@ -964,6 +995,11 @@ done:
     if(p12 != NULL) {
         PKCS12_free(p12);
     }
+#ifdef XMLSEC_OPENSSL_API_300
+    if(savedDefaultLibCtx != NULL) {
+    	OSSL_LIB_CTX_set0_default(savedDefaultLibCtx);
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
     return(key);
 }
 

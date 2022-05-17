@@ -283,7 +283,7 @@ xmlSecOpenSSLHmacInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 #else /* XMLSEC_OPENSSL_API_300 */
-    ctx->evpHmac = EVP_MAC_fetch(NULL, OSSL_MAC_NAME_HMAC, NULL);
+    ctx->evpHmac = EVP_MAC_fetch(xmlSecOpenSSLGetLibCtx(), OSSL_MAC_NAME_HMAC, NULL);
     if (ctx->evpHmac == NULL) {
         xmlSecOpenSSLError("EVP_MAC_fetch",
                            xmlSecTransformGetName(transform));

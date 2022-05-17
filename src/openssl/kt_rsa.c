@@ -440,6 +440,7 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
         }
         outSize = ret;
 #else /* XMLSEC_OPENSSL_API_300 */
+        outLen = outSize;
         ret = EVP_PKEY_decrypt(ctx->pKeyCtx, xmlSecBufferGetData(out), &outLen,
                                xmlSecBufferGetData(in), inSize);
         if (ret <= 0) {
@@ -882,7 +883,6 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
     xmlSecSize paramsSize;
     xmlSecBufferPtr in, out;
     xmlSecSize inSize, outSize;
-    xmlSecSize keySize;
     int ret;
 #ifndef XMLSEC_OPENSSL_API_300
     RSA* rsa;
@@ -919,17 +919,17 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
 
     /* the encoded size is equal to the keys size so we could not
      * process more than that */
-    if((transform->operation == xmlSecTransformOperationEncrypt) && (inSize >= keySize)) {
-        xmlSecInvalidSizeLessThanError("Input data", inSize, keySize,
+    if((transform->operation == xmlSecTransformOperationEncrypt) && (inSize >= ctx->keySize)) {
+        xmlSecInvalidSizeLessThanError("Input data", inSize, ctx->keySize,
                                        xmlSecTransformGetName(transform));
         return(-1);
-    } else if((transform->operation == xmlSecTransformOperationDecrypt) && (inSize != keySize)) {
-        xmlSecInvalidSizeError("Input data", inSize, keySize,
+    } else if((transform->operation == xmlSecTransformOperationDecrypt) && (inSize != ctx->keySize)) {
+        xmlSecInvalidSizeError("Input data", inSize, ctx->keySize,
                                xmlSecTransformGetName(transform));
         return(-1);
     }
 
-    outSize = keySize;
+    outSize = ctx->keySize;
     ret = xmlSecBufferSetMaxSize(out, outSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetMaxSize",
@@ -1026,6 +1026,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
         }
         outSize = ret;
 #else /* XMLSEC_OPENSSL_API_300 */
+        outLen = outSize;
         ret = EVP_PKEY_decrypt(ctx->pKeyCtx, xmlSecBufferGetData(out), &outLen,
                                xmlSecBufferGetData(in), inSize);
         if (ret <= 0) {
@@ -1100,6 +1101,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
             return(-1);
         }
 
+        outLen = outSize;
         ret = EVP_PKEY_decrypt(ctx->pKeyCtx, xmlSecBufferGetData(out), &outLen,
                                xmlSecBufferGetData(in), inSize);
         if (ret <= 0) {

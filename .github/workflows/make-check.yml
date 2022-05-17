@@ -57,7 +57,7 @@ jobs:
           wget  https://www.openssl.org/source/openssl-3.0.3.tar.gz
           tar xfvz openssl-3.0.3.tar.gz
           cd openssl-3.0.3
-          ./Configure --prefix /usr/local/openssl3
+          ./Configure --prefix=/usr/local/openssl3
           make
           sudo make install
     - name: configure

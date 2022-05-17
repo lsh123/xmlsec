@@ -426,6 +426,8 @@ xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
         xmlSecKeyDataDestroy(data);
         return(NULL);
     }
+    pKey = NULL;
+
     return(data);
 }
 
@@ -863,6 +865,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         goto done;
     }
     dsa = NULL;
+
 #else /* XMLSEC_OPENSSL_API_300 */
     param_bld = OSSL_PARAM_BLD_new();
     if(param_bld == NULL) {
@@ -926,7 +929,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     }
     data = NULL;
 
-    /* done */
+    /* success */
     res = 0;
 
     printf("DEBUG: DSA\n\n");
@@ -1121,7 +1124,7 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
         goto done;
     }
 
-    /* done */
+    /* success */
     res = 0;
 
 done:
@@ -1194,6 +1197,8 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
                             xmlSecKeyDataGetName(data));
         goto done;
     }
+    dsa = NULL;
+
 #else /* XMLSEC_OPENSSL_API_300 */
     pctx = EVP_PKEY_CTX_new_from_name(NULL, "DSA", NULL);
     if(pctx == NULL) {
@@ -1254,7 +1259,7 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     pKey = NULL;
 #endif /* XMLSEC_OPENSSL_API_300 */
 
-    /* done */
+    /* success */
     res = 0;
 
 done:
@@ -2277,7 +2282,7 @@ xmlSecOpenSSLKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
         }
     }
 
-    /* done */
+    /* success */
     res = 0;
 
 done:
@@ -2348,6 +2353,8 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
                             xmlSecKeyDataGetName(data));
         goto done;
     }
+    rsa = NULL;
+
 #else /* XMLSEC_OPENSSL_API_300 */
     pctx = EVP_PKEY_CTX_new_from_name(NULL, "RSA", NULL);
     if(pctx == NULL) {
@@ -2410,7 +2417,7 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     pKey = NULL;
 #endif /* XMLSEC_OPENSSL_API_300 */
 
-    /* done */
+    /* success */
     res = 0;
 
 done:

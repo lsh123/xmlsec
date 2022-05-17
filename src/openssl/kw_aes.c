@@ -572,7 +572,7 @@ xmlSecOpenSSLKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
         return(-1);
     }
 
-    AES_decrypt(in, out, (AES_KEY*)context);
+    AES_decrypt(in, out, &aesKey);
     return(AES_BLOCK_SIZE);
 #else /* XMLSEC_OPENSSL_API_300 */
     ctx = (xmlSecOpenSSLKWAesCtxPtr)context;

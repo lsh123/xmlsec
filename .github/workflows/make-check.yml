@@ -34,6 +34,42 @@ jobs:
       working-directory: build
       run: make check
   
+  check-ubuntu-openssl3:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - static_linking: true
+          - static_linking: false
+    steps:
+    - name: install dependencies
+      run: |
+          sudo apt update
+          sudo apt install automake autoconf libtool libtool-bin libltdl-dev libltdl7
+          sudo apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
+          sudo apt install wget
+    - uses: actions/checkout@v2
+    - run: mkdir openssl3-build build
+    - name: build-openssl3
+      working-directory: openssl3-build
+      run: |
+          wget  https://www.openssl.org/source/openssl-3.0.3.tar.gz
+          tar xfvz openssl-3.0.3.tar.gz
+          cd openssl-3.0.3
+          ./Configure --prefix=/usr/local/openssl3
+          make
+          sudo make install
+    - name: configure
+      working-directory: build
+      run: LD_LIBRARY_PATH="/usr/local/openssl3/lib:/usr/local/openssl3/lib64:$LD_LIBRARY_PATH" ../autogen.sh --with-openssl=/usr/local/openssl3 --enable-werror --enable-static-linking=${{ matrix.static_linking }}
+    - name: make
+      working-directory: build
+      run: make
+    - name: make check
+      working-directory: build
+      run: LD_LIBRARY_PATH="/usr/local/openssl3/lib:/usr/local/openssl3/lib64:$LD_LIBRARY_PATH" make check
+      
   check-osx:
     runs-on: macos-latest
     strategy:

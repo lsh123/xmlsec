@@ -38,7 +38,7 @@ typedef struct _xmlSecOpenSSLDigestCtx          xmlSecOpenSSLDigestCtx, *xmlSecO
 struct _xmlSecOpenSSLDigestCtx {
 #ifndef XMLSEC_OPENSSL_API_300
     const EVP_MD*       digest;
-#else /*#ifndef XMLSEC_OPENSSL_API_300 */
+#else /* XMLSEC_OPENSSL_API_300 */
     EVP_MD*             digest;
 #endif /* XMLSEC_OPENSSL_API_300 */
     EVP_MD_CTX*         digestCtx;
@@ -156,7 +156,7 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
 #else /* XMLSEC_OPENSSL_API_300 */
         ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "MD5", NULL);
         if(ctx->digest == NULL) {
-            xmlSecOpenSSLError("EVP_MD_fetch(MD5)", NULL);
+            xmlSecOpenSSLError("EVP_MD_fetch(MD5)", xmlSecTransformGetName(transform));
             xmlSecOpenSSLEvpDigestFinalize(transform);
             return(-1);
         }
@@ -171,7 +171,7 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
 #else /* XMLSEC_OPENSSL_API_300 */
         ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "RIPEMD-160", NULL);
         if(ctx->digest == NULL) {
-            xmlSecOpenSSLError("EVP_MD_fetch(RIPEMD-160)", NULL);
+            xmlSecOpenSSLError("EVP_MD_fetch(RIPEMD-160)", xmlSecTransformGetName(transform));
             xmlSecOpenSSLEvpDigestFinalize(transform);
             return(-1);
         }
@@ -186,7 +186,7 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
 #else /* XMLSEC_OPENSSL_API_300 */
         ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "SHA-1", NULL);
         if(ctx->digest == NULL) {
-            xmlSecOpenSSLError("EVP_MD_fetch(SHA-1)", NULL);
+            xmlSecOpenSSLError("EVP_MD_fetch(SHA-1)", xmlSecTransformGetName(transform));
             xmlSecOpenSSLEvpDigestFinalize(transform);
             return(-1);
         }
@@ -201,7 +201,7 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
 #else /* XMLSEC_OPENSSL_API_300 */
         ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "SHA-224", NULL);
         if(ctx->digest == NULL) {
-            xmlSecOpenSSLError("EVP_MD_fetch(SHA-224)", NULL);
+            xmlSecOpenSSLError("EVP_MD_fetch(SHA-224)", xmlSecTransformGetName(transform));
             xmlSecOpenSSLEvpDigestFinalize(transform);
             return(-1);
         }
@@ -216,7 +216,7 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
 #else /* XMLSEC_OPENSSL_API_300 */
         ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "SHA-256", NULL);
         if(ctx->digest == NULL) {
-            xmlSecOpenSSLError("EVP_MD_fetch(SHA-256)", NULL);
+            xmlSecOpenSSLError("EVP_MD_fetch(SHA-256)", xmlSecTransformGetName(transform));
             xmlSecOpenSSLEvpDigestFinalize(transform);
             return(-1);
         }
@@ -231,7 +231,7 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
 #else /* XMLSEC_OPENSSL_API_300 */
         ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "SHA-384", NULL);
         if(ctx->digest == NULL) {
-            xmlSecOpenSSLError("EVP_MD_fetch(SHA-384)", NULL);
+            xmlSecOpenSSLError("EVP_MD_fetch(SHA-384)", xmlSecTransformGetName(transform));
             xmlSecOpenSSLEvpDigestFinalize(transform);
             return(-1);
         }
@@ -246,7 +246,7 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
 #else /* XMLSEC_OPENSSL_API_300 */
         ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "SHA-512", NULL);
         if(ctx->digest == NULL) {
-            xmlSecOpenSSLError("EVP_MD_fetch(SHA-512)", NULL);
+            xmlSecOpenSSLError("EVP_MD_fetch(SHA-512)", xmlSecTransformGetName(transform));
             xmlSecOpenSSLEvpDigestFinalize(transform);
             return(-1);
         }
@@ -259,14 +259,14 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->digest = EVP_get_digestbyname("md_gost94");
         if (ctx->digest == NULL) {
-            xmlSecOpenSSLError("EVP_get_digestbyname(md_gost94)", NULL);
+            xmlSecOpenSSLError("EVP_get_digestbyname(md_gost94)", xmlSecTransformGetName(transform));
             xmlSecOpenSSLEvpDigestFinalize(transform);
             return(-1);
         }
 #else /* XMLSEC_OPENSSL_API_300 */
         ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "GOST-94", NULL);
         if(ctx->digest == NULL) {
-            xmlSecOpenSSLError("EVP_MD_fetch(GOST-94)", NULL);
+            xmlSecOpenSSLError("EVP_MD_fetch(GOST-94)", xmlSecTransformGetName(transform));
             xmlSecOpenSSLEvpDigestFinalize(transform);
             return(-1);
         }
@@ -279,14 +279,14 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->digest = EVP_get_digestbyname("md_gost12_256");
         if (ctx->digest == NULL) {
-            xmlSecOpenSSLError("EVP_get_digestbyname(md_gost12_256)", NULL);
+            xmlSecOpenSSLError("EVP_get_digestbyname(md_gost12_256)", xmlSecTransformGetName(transform));
             xmlSecOpenSSLEvpDigestFinalize(transform);
             return(-1);
         }
 #else /* XMLSEC_OPENSSL_API_300 */
         ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "GOST12-256", NULL);
         if(ctx->digest == NULL) {
-            xmlSecOpenSSLError("EVP_MD_fetch(GOST12-256)", NULL);
+            xmlSecOpenSSLError("EVP_MD_fetch(GOST12-256)", xmlSecTransformGetName(transform));
             xmlSecOpenSSLEvpDigestFinalize(transform);
             return(-1);
         }
@@ -297,14 +297,14 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->digest = EVP_get_digestbyname("md_gost12_512");
         if (ctx->digest == NULL) {
-            xmlSecOpenSSLError("EVP_get_digestbyname(md_gost12_512)", NULL);
+            xmlSecOpenSSLError("EVP_get_digestbyname(md_gost12_512)", xmlSecTransformGetName(transform));
             xmlSecOpenSSLEvpDigestFinalize(transform);
             return(-1);
         }
 #else /* XMLSEC_OPENSSL_API_300 */
         ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "GOST12-512", NULL);
         if(ctx->digest == NULL) {
-            xmlSecOpenSSLError("EVP_MD_fetch(GOST12-512)", NULL);
+            xmlSecOpenSSLError("EVP_MD_fetch(GOST12-512)", xmlSecTransformGetName(transform));
             xmlSecOpenSSLEvpDigestFinalize(transform);
             return(-1);
         }

@@ -39,7 +39,11 @@
 typedef struct _xmlSecOpenSSLEvpSignatureCtx    xmlSecOpenSSLEvpSignatureCtx,
                                                 *xmlSecOpenSSLEvpSignatureCtxPtr;
 struct _xmlSecOpenSSLEvpSignatureCtx {
+#ifndef XMLSEC_OPENSSL_API_300
     const EVP_MD*       digest;
+#else /* XMLSEC_OPENSSL_API_300 */
+    EVP_MD*             digest;
+#endif /* XMLSEC_OPENSSL_API_300 */
     EVP_MD_CTX*         digestCtx;
     xmlSecKeyDataId     keyId;
     EVP_PKEY*           pKey;
@@ -245,8 +249,8 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
     /* create digest CTX */
     ctx->digestCtx = EVP_MD_CTX_new();
     if(ctx->digestCtx == NULL) {
-        xmlSecOpenSSLError("EVP_MD_CTX_new",
-                           xmlSecTransformGetName(transform));
+        xmlSecOpenSSLError("EVP_MD_CTX_new", xmlSecTransformGetName(transform));
+        xmlSecOpenSSLEvpSignatureFinalize(transform);
         return(-1);
     }
 
@@ -271,6 +275,11 @@ xmlSecOpenSSLEvpSignatureFinalize(xmlSecTransformPtr transform) {
     if(ctx->digestCtx != NULL) {
         EVP_MD_CTX_free(ctx->digestCtx);
     }
+#ifdef XMLSEC_OPENSSL_API_300
+    if(ctx->digest != NULL) {
+        EVP_MD_free(ctx->digest);
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
 
     memset(ctx, 0, sizeof(xmlSecOpenSSLEvpSignatureCtx));
 }

@@ -1922,10 +1922,10 @@ xmlSecOpenSSLASN1IntegerWrite(ASN1_INTEGER *asni) {
     p = BN_bn2dec(bn);
     if (p == NULL) {
         xmlSecOpenSSLError("BN_bn2dec", NULL);
-        BN_free(bn);
+        BN_clear_free(bn);
         return(NULL);
     }
-    BN_free(bn);
+    BN_clear_free(bn);
     bn = NULL;
 
     /* OpenSSL and LibXML2 can have different memory callbacks, i.e.
@@ -1998,7 +1998,7 @@ xmlSecOpenSSLX509CertDebugDump(X509* cert, FILE* output) {
     bn = ASN1_INTEGER_to_BN(X509_get_serialNumber(cert),NULL);
     if(bn != NULL) {
         BN_print_fp(output, bn);
-        BN_free(bn);
+        BN_clear_free(bn);
         fprintf(output, "\n");
     } else {
         fprintf(output, "unknown\n");
@@ -2030,7 +2030,7 @@ xmlSecOpenSSLX509CertDebugXmlDump(X509* cert, FILE* output) {
     bn = ASN1_INTEGER_to_BN(X509_get_serialNumber(cert),NULL);
     if(bn != NULL) {
         BN_print_fp(output, bn);
-        BN_free(bn);
+        BN_clear_free(bn);
     }
     fprintf(output, "</SerialNumber>\n");
 }

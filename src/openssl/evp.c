@@ -1145,7 +1145,7 @@ done:
         BN_clear_free(pub_key);
     }
 #endif /* XMLSEC_OPENSSL_API_300 */
-    
+
     return(res);
 }
 
@@ -1412,7 +1412,6 @@ xmlSecOpenSSLKeyDataDsaGetSize(xmlSecKeyDataPtr data) {
     }
     res = BN_num_bits(p);
 #else /* XMLSEC_OPENSSL_API_300 */
-
     pKey = xmlSecOpenSSLKeyDataDsaGetEvp(data);
     xmlSecAssert2(pKey != NULL, -1);
 
@@ -1447,7 +1446,6 @@ xmlSecOpenSSLKeyDataDsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     fprintf(output, "<DSAKeyValue size=\"%d\" />\n",
             xmlSecOpenSSLKeyDataDsaGetSize(data));
 }
-
 #endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_ECDSA
@@ -1526,7 +1524,6 @@ xmlSecOpenSSLKeyDataEcdsaGetKlass(void) {
     return(&xmlSecOpenSSLKeyDataEcdsaKlass);
 }
 
-#ifndef XMLSEC_OPENSSL_API_300
 /**
  * xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa:
  * @data:               the pointer to ECDSA key data.
@@ -1538,6 +1535,7 @@ xmlSecOpenSSLKeyDataEcdsaGetKlass(void) {
  */
 int
 xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa(xmlSecKeyDataPtr data, EC_KEY* ecdsa) {
+#ifndef XMLSEC_OPENSSL_API_300
     EVP_PKEY* pKey = NULL;
     int ret;
 
@@ -1571,6 +1569,10 @@ xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa(xmlSecKeyDataPtr data, EC_KEY* ecdsa) {
         return(-1);
     }
     return(0);
+#else /* XMLSEC_OPENSSL_API_300 */
+    xmlSecNotImplementedError("OpenSSL 3.0 does not support direct access to ECDSA key");
+    return(-1);
+#endif /* XMLSEC_OPENSSL_API_300 */
 }
 
 /**
@@ -1583,6 +1585,7 @@ xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa(xmlSecKeyDataPtr data, EC_KEY* ecdsa) {
  */
 EC_KEY*
 xmlSecOpenSSLKeyDataEcdsaGetEcdsa(xmlSecKeyDataPtr data) {
+#ifndef XMLSEC_OPENSSL_API_300
     EVP_PKEY* pKey;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId), NULL);
@@ -1591,8 +1594,11 @@ xmlSecOpenSSLKeyDataEcdsaGetEcdsa(xmlSecKeyDataPtr data) {
     xmlSecAssert2((pKey == NULL) || (EVP_PKEY_base_id(pKey) == EVP_PKEY_EC), NULL);
 
     return((pKey != NULL) ? EVP_PKEY_get0_EC_KEY(pKey) : NULL);
+#else /* XMLSEC_OPENSSL_API_300 */
+    xmlSecNotImplementedError("OpenSSL 3.0 does not support direct access to ECDSA key");
+    return(NULL);
+#endif /* XMLSEC_OPENSSL_API_300 */
 }
-#endif
 
 /**
  * xmlSecOpenSSLKeyDataEcdsaAdoptEvp:
@@ -1661,9 +1667,9 @@ xmlSecOpenSSLKeyDataEcdsaGetSize(xmlSecKeyDataPtr data) {
 #ifndef XMLSEC_OPENSSL_API_300
     const EC_GROUP *group;
     const EC_KEY *ecdsa;
-#else
+#else /* XMLSEC_OPENSSL_API_300 */
     const EVP_PKEY* pKey;
-#endif
+#endif /* XMLSEC_OPENSSL_API_300 */
     BIGNUM * order = NULL;
     xmlSecSize res;
     int ret;
@@ -1678,38 +1684,37 @@ xmlSecOpenSSLKeyDataEcdsaGetSize(xmlSecKeyDataPtr data) {
 
     group = EC_KEY_get0_group(ecdsa);
     if(group == NULL) {
-        xmlSecOpenSSLError("EC_KEY_get0_group", NULL);
+        xmlSecOpenSSLError("EC_KEY_get0_group", xmlSecKeyDataGetName(data));
         return(0);
     }
 
     order = BN_new();
     if(order == NULL) {
-        xmlSecOpenSSLError("BN_new", NULL);
+        xmlSecOpenSSLError("BN_new", xmlSecKeyDataGetName(data));
         return(0);
     }
 
     ret = EC_GROUP_get_order(group, order, NULL);
     if(ret != 1) {
-        xmlSecOpenSSLError("EC_GROUP_get_order", NULL);
+        xmlSecOpenSSLError("EC_GROUP_get_order", xmlSecKeyDataGetName(data));
         BN_free(order);
         return(0);
     }
-#else
+#else /* XMLSEC_OPENSSL_API_300 */
     pKey = xmlSecOpenSSLKeyDataEcdsaGetEvp(data);
     if(pKey == NULL) {
         return(0);
     }
 
-    EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_EC_ORDER, &order);
-    if(order == NULL) {
-        xmlSecOpenSSLError("EVP_PKEY_get_bn_param", NULL);
+    if(EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_EC_ORDER, &order) != 1) {
+        xmlSecOpenSSLError("EVP_PKEY_get_bn_param(ec_order)", xmlSecKeyDataGetName(data));
         return(0);
     }
+#endif /* XMLSEC_OPENSSL_API_300 */
 
-#endif
+    xmlSecAssert2(order != NULL, 0);
     res = BN_num_bytes(order);
     BN_free(order);
-
     return(res);
 }
 

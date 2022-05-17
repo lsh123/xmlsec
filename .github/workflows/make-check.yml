@@ -57,18 +57,18 @@ jobs:
           wget  https://www.openssl.org/source/openssl-3.0.3.tar.gz
           tar xfvz openssl-3.0.3.tar.gz
           cd openssl-3.0.3
-          ./Configure --prefix /usr
+          ./Configure --prefix /usr/local/openssl3
           make
           sudo make install
     - name: configure
       working-directory: build
-      run: ../autogen.sh --enable-werror --enable-static-linking=${{ matrix.static_linking }}
+      run: LD_LIBRARY_PATH="/usr/local/openssl3/lib:/usr/local/openssl3/lib64:$LD_LIBRARY_PATH" ../autogen.sh --with-openssl=/usr/local/openssl3 --enable-werror --enable-static-linking=${{ matrix.static_linking }}
     - name: make
       working-directory: build
       run: make
     - name: make check
       working-directory: build
-      run: make check
+      run: LD_LIBRARY_PATH="/usr/local/openssl3/lib:/usr/local/openssl3/lib64:$LD_LIBRARY_PATH" make check
       
   check-osx:
     runs-on: macos-latest

@@ -43,6 +43,11 @@
 
 #include "openssl_compat.h"
 
+#ifdef XMLSEC_OPENSSL_API_300
+#include <openssl/provider.h>
+#endif /* XMLSEC_OPENSSL_API_300 */
+
+
 static int      xmlSecOpenSSLAppLoadRANDFile            (const char *filename);
 static int      xmlSecOpenSSLAppSaveRANDFile            (const char *filename);
 static int      xmlSecOpenSSLDefaultPasswordCallback    (char *buf,
@@ -65,6 +70,11 @@ static xmlSecKeyPtr xmlSecOpenSSLAppEngineKeyLoad       (const char *engineName,
 XMLSEC_PTR_TO_FUNC_IMPL(pem_password_cb)
 XMLSEC_FUNC_TO_PTR_IMPL(pem_password_cb)
 
+#ifdef XMLSEC_OPENSSL_API_300
+static OSSL_PROVIDER* g_legacy_provider = NULL;
+static OSSL_PROVIDER* g_default_provider = NULL;
+#endif /* XMLSEC_OPENSSL_API_300 */
+
 /**
  * xmlSecOpenSSLAppInit:
  * @config:             the path to certs.
@@ -77,40 +87,73 @@ XMLSEC_FUNC_TO_PTR_IMPL(pem_password_cb)
  */
 int
 xmlSecOpenSSLAppInit(const char* config) {
-#if !defined(XMLSEC_OPENSSL_API_110)
+#if !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300)
 
     ERR_load_crypto_strings();
     OPENSSL_config(NULL);
     OpenSSL_add_all_algorithms();
 
-#else /* !defined(XMLSEC_OPENSSL_API_110) */
+#else /* !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300) */
     int ret;
     uint64_t opts = OPENSSL_INIT_LOAD_CRYPTO_STRINGS |
                               OPENSSL_INIT_ADD_ALL_CIPHERS |
                               OPENSSL_INIT_ADD_ALL_DIGESTS |
                               OPENSSL_INIT_LOAD_CONFIG;
-#ifndef OPENSSL_IS_BORINGSSL
-    opts |= OPENSSL_INIT_ASYNC | OPENSSL_INIT_ENGINE_ALL_BUILTIN;
-#endif /* OPENSSL_IS_BORINGSSL */
+#if !defined(OPENSSL_IS_BORINGSSL)
+    opts |= OPENSSL_INIT_ASYNC;
+#endif /* !defined(OPENSSL_IS_BORINGSSL) */
+#if !defined(OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_API_300)
+    opts |= OPENSSL_INIT_ENGINE_ALL_BUILTIN;
+#endif /* !defined(OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_API_300) */
+
+
+#ifdef XMLSEC_OPENSSL_API_300
+    /* Load Multiple providers into the default (NULL) library context */
+    g_legacy_provider = OSSL_PROVIDER_load(NULL, "legacy");
+    if (g_legacy_provider == NULL) {
+        xmlSecOpenSSLError("OSSL_PROVIDER_load", NULL);
+        goto error;
+    }
+    g_default_provider = OSSL_PROVIDER_load(NULL, "default");
+    if (g_default_provider == NULL) {
+        xmlSecOpenSSLError("OSSL_PROVIDER_load", NULL);
+        goto error;
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
 
     ret = OPENSSL_init_crypto(opts, NULL);
     if(ret != 1) {
         xmlSecOpenSSLError("OPENSSL_init_crypto", NULL);
-        return(-1);
+        goto error;
     }
-#endif /* !defined(XMLSEC_OPENSSL_API_110) */
+#endif /* defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300) */
 
     if((RAND_status() != 1) && (xmlSecOpenSSLAppLoadRANDFile(NULL) != 1)) {
         xmlSecInternalError("xmlSecOpenSSLAppLoadRANDFile", NULL);
-        return(-1);
+        goto error;
     }
 
     if((config != NULL) && (xmlSecOpenSSLSetDefaultTrustedCertsFolder(BAD_CAST config) < 0)) {
         xmlSecInternalError("xmlSecOpenSSLSetDefaultTrustedCertsFolder", NULL);
-        return(-1);
+        goto error;
     }
 
+    /* done! */
     return(0);
+
+error:
+    /* cleanup */
+#ifdef XMLSEC_OPENSSL_API_300
+    if(g_default_provider != NULL) {
+        OSSL_PROVIDER_unload(g_default_provider);
+        g_default_provider = NULL;
+    }
+    if(g_legacy_provider != NULL) {
+        OSSL_PROVIDER_unload(g_legacy_provider);
+        g_legacy_provider = NULL;
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
+    return(-1);
 }
 
 /**
@@ -127,7 +170,7 @@ xmlSecOpenSSLAppShutdown(void) {
     xmlSecOpenSSLAppSaveRANDFile(NULL);
 
     /* OpenSSL 1.1.0+ does not require explicit cleanup */
-#if !defined(XMLSEC_OPENSSL_API_110)
+#if !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300)
 
 #ifndef XMLSEC_NO_X509
     X509_TRUST_cleanup();
@@ -142,7 +185,16 @@ xmlSecOpenSSLAppShutdown(void) {
     CRYPTO_cleanup_all_ex_data();
     ERR_remove_thread_state(NULL);
     ERR_free_strings();
-#endif /* !defined(XMLSEC_OPENSSL_API_110) */
+#elif defined(XMLSEC_OPENSLL_API_300)
+    if (g_default_provider != NULL) {
+        OSSL_PROVIDER_unload(g_default_provider);
+        g_default_provider = NULL;
+    }
+    if (g_legacy_provider != NULL) {
+        OSSL_PROVIDER_unload(g_legacy_provider);
+        g_legacy_provider = NULL;
+    }
+#endif /* XMLSEC_OPENSLL_API_300 */
 
     /* done */
     return(0);
@@ -405,10 +457,11 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
 
 
 static xmlSecKeyPtr
-xmlSecOpenSSLAppEngineKeyLoad(const char *engineName, const char *engineKeyId, 
-                        xmlSecKeyDataFormat format, const char *pwd ATTRIBUTE_UNUSED, 
+xmlSecOpenSSLAppEngineKeyLoad(const char *engineName, const char *engineKeyId,
+                        xmlSecKeyDataFormat format, const char *pwd ATTRIBUTE_UNUSED,
                         void* pwdCallback ATTRIBUTE_UNUSED, void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
 
+#if !defined(OPENSSL_NO_ENGINE) && !defined(XMLSEC_OPENSSL_API_300)
     ENGINE* engine = NULL;
     xmlSecKeyPtr key = NULL;
     xmlSecKeyDataPtr data = NULL;
@@ -416,7 +469,6 @@ xmlSecOpenSSLAppEngineKeyLoad(const char *engineName, const char *engineKeyId,
     int engineInit = 0;
     int ret;
 
-#ifndef OPENSSL_NO_ENGINE
     xmlSecAssert2(engineName != NULL, NULL);
     xmlSecAssert2(engineKeyId != NULL, NULL);
     xmlSecAssert2(format == xmlSecKeyDataFormatEngine, NULL);
@@ -497,9 +549,13 @@ done:
         }
         ENGINE_free(engine);
     }
-#endif /* OPENSSL_NO_ENGINE */
 
     return(key);
+
+#else /* !defined(OPENSSL_NO_ENGINE) && !defined(XMLSEC_OPENSSL_API_300) */
+    xmlSecNotImplementedError("OpenSSL Engine interface is not enabled");
+    return (NULL);
+#endif /* !defined(OPENSSL_NO_ENGINE) && !defined(XMLSEC_OPENSSL_API_300) */
 }
 
 

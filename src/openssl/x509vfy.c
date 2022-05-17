@@ -771,7 +771,7 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
         }
         if(BN_dec2bn(&bn, (char*)issuerSerial) == 0) {
             xmlSecOpenSSLError("BN_dec2bn", NULL);
-            BN_free(bn);
+            BN_clear_free(bn);
             X509_NAME_free(nm);
             return(NULL);
         }
@@ -779,11 +779,11 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
         serial = BN_to_ASN1_INTEGER(bn, NULL);
         if(serial == NULL) {
             xmlSecOpenSSLError("BN_to_ASN1_INTEGER", NULL);
-            BN_free(bn);
+            BN_clear_free(bn);
             X509_NAME_free(nm);
             return(NULL);
         }
-        BN_free(bn);
+        BN_clear_free(bn);
 
 
         for(i = 0; i < sk_X509_num(certs); ++i) {

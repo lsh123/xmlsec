@@ -60,7 +60,7 @@
 /* The ASN1_TIME_check() function was changed from ASN1_TIME * to
  * const ASN1_TIME * in 1.1.0. To avoid compiler warnings, we use this hack.
  */
-#if !defined(XMLSEC_OPENSSL_API_110) || defined(OPENSSL_IS_BORINGSSL)
+#if (!defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300)) || defined(OPENSSL_IS_BORINGSSL)
 typedef ASN1_TIME XMLSEC_CONST_ASN1_TIME;
 #else  /* !defined(XMLSEC_OPENSSL_API_110) || defined(OPENSSL_IS_BORINGSSL) */
 typedef const ASN1_TIME XMLSEC_CONST_ASN1_TIME;
@@ -1922,10 +1922,10 @@ xmlSecOpenSSLASN1IntegerWrite(ASN1_INTEGER *asni) {
     p = BN_bn2dec(bn);
     if (p == NULL) {
         xmlSecOpenSSLError("BN_bn2dec", NULL);
-        BN_free(bn);
+        BN_clear_free(bn);
         return(NULL);
     }
-    BN_free(bn);
+    BN_clear_free(bn);
     bn = NULL;
 
     /* OpenSSL and LibXML2 can have different memory callbacks, i.e.
@@ -1998,7 +1998,7 @@ xmlSecOpenSSLX509CertDebugDump(X509* cert, FILE* output) {
     bn = ASN1_INTEGER_to_BN(X509_get_serialNumber(cert),NULL);
     if(bn != NULL) {
         BN_print_fp(output, bn);
-        BN_free(bn);
+        BN_clear_free(bn);
         fprintf(output, "\n");
     } else {
         fprintf(output, "unknown\n");
@@ -2030,7 +2030,7 @@ xmlSecOpenSSLX509CertDebugXmlDump(X509* cert, FILE* output) {
     bn = ASN1_INTEGER_to_BN(X509_get_serialNumber(cert),NULL);
     if(bn != NULL) {
         BN_print_fp(output, bn);
-        BN_free(bn);
+        BN_clear_free(bn);
     }
     fprintf(output, "</SerialNumber>\n");
 }

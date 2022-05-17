@@ -32,12 +32,17 @@
 #include <xmlsec/openssl/evp.h>
 #include "openssl_compat.h"
 
+#ifdef XMLSEC_OPENSSL_API_300
+#include <openssl/core_names.h>
+#include <openssl/param_build.h>
+#endif /* XMLSEC_OPENSSL_API_300 */
+
 /******************************************************************************
  *
- * OpenSSL 1.1.0 compatibility
+ * OpenSSL 1.1.0 and 3.0.0 compatibility
  *
  *****************************************************************************/
-#if !defined(XMLSEC_OPENSSL_API_110)
+#if !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300)
 
 #ifndef XMLSEC_NO_ECDSA
 
@@ -95,7 +100,7 @@ static inline int DSA_SIG_set0(DSA_SIG *sig, BIGNUM *r, BIGNUM *s) {
 
 #endif /* XMLSEC_NO_DSA */
 
-#endif /* !defined(XMLSEC_OPENSSL_API_110) */
+#endif /* !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300) */
 
 
 /**************************************************************************
@@ -125,8 +130,6 @@ static int  xmlSecOpenSSLSignatureEcdsaVerify                (xmlSecOpenSSLSigna
 
 
 #endif /* XMLSEC_NO_ECDSA */
-
-
 
 
 /**************************************************************************
@@ -595,11 +598,21 @@ xmlSecOpenSSLSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTran
  ***************************************************************************/
 static int
 xmlSecOpenSSLSignatureDsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr out) {
+#ifndef XMLSEC_OPENSSL_API_300
     DSA * dsaKey = NULL;
-    DSA_SIG *sig = NULL;
-    const BIGNUM *rr = NULL, *ss = NULL;
-    xmlSecByte *outData;
-    xmlSecSize dsaSignSize, signHalfSize, rSize, sSize;
+    int dsaKeySize, signHalfSize;
+#else /* XMLSEC_OPENSSL_API_300 */
+    EVP_PKEY_CTX* pKeyCtx = NULL;
+    size_t dsaSignBufSize = 0;
+    xmlSecBufferPtr dsaSignBuf = NULL;
+    const unsigned char* dsaSignBufPtr = NULL;
+    size_t dsaKeySize, signHalfSize;
+#endif /* XMLSEC_OPENSSL_API_300 */
+    DSA_SIG* sig = NULL;
+    const BIGNUM* rr = NULL;
+    const BIGNUM* ss = NULL;
+    xmlSecByte* outData = NULL;
+    xmlSecSize rSize, sSize;
     int res = -1;
     int ret;
 
@@ -609,32 +622,75 @@ xmlSecOpenSSLSignatureDsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr 
     xmlSecAssert2(ctx->dgstSize <= sizeof(ctx->dgst), -1);
     xmlSecAssert2(out != NULL, -1);
 
-    /* get key */
+    /* calculate signature */
+#ifndef XMLSEC_OPENSSL_API_300
     dsaKey = EVP_PKEY_get1_DSA(ctx->pKey);
     if(dsaKey == NULL) {
         xmlSecOpenSSLError("EVP_PKEY_get1_DSA", NULL);
         goto done;
     }
 
-    /* signature size = r + s + 8 bytes, we just need r+s */
-    dsaSignSize = DSA_size(dsaKey);
-    if(dsaSignSize < 8) {
-        xmlSecInvalidSizeLessThanError("DSA signature", dsaSignSize, 8, NULL);
-        goto done;
-    }
-
-    signHalfSize = (dsaSignSize - 8) /  2;
-    if(signHalfSize < 4) {
-        xmlSecInvalidSizeLessThanError("DSA signature (half)", signHalfSize, 4, NULL);
-        goto done;
-    }
-
-    /* calculate signature */
     sig = DSA_do_sign(ctx->dgst, ctx->dgstSize, dsaKey);
     if(sig == NULL) {
         xmlSecOpenSSLError("DSA_do_sign", NULL);
         goto done;
     }
+
+    dsaKeySize = DSA_size(dsaKey);
+#else /* XMLSEC_OPENSSL_API_300 */
+    pKeyCtx = EVP_PKEY_CTX_new_from_pkey(NULL, ctx->pKey, NULL);
+    if (pKeyCtx == NULL) {
+        xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_pkey", NULL);
+        goto done;
+    }
+    ret = EVP_PKEY_sign_init(pKeyCtx);
+    if (ret <= 0) {
+        xmlSecOpenSSLError("EVP_PKEY_sign_init", NULL);
+        goto done;
+    }
+    ret = EVP_PKEY_sign(pKeyCtx, NULL, &dsaSignBufSize, ctx->dgst, ctx->dgstSize);
+    if (ret <= 0) {
+        xmlSecOpenSSLError("EVP_PKEY_sign(1)", NULL);
+        goto done;
+    }
+    dsaSignBuf = xmlSecBufferCreate(dsaSignBufSize);
+    if (dsaSignBuf == NULL) {
+        xmlSecInternalError2("xmlSecBufferCreate",
+                             NULL,
+                             "size=%lu", (unsigned long)dsaSignBufSize);
+        goto done;
+    }
+    ret = EVP_PKEY_sign(pKeyCtx, xmlSecBufferGetData(dsaSignBuf), &dsaSignBufSize, ctx->dgst, ctx->dgstSize);
+    if (ret <= 0) {
+        xmlSecOpenSSLError("EVP_PKEY_sign(2)", NULL);
+        goto done;
+    }
+
+    dsaSignBufPtr = xmlSecBufferGetData(dsaSignBuf);
+    sig = d2i_DSA_SIG(NULL, &dsaSignBufPtr, dsaSignBufSize);
+    if (sig == NULL) {
+        xmlSecOpenSSLError("d2i_DSA_SIG", NULL);
+        goto done;
+    }
+
+    dsaKeySize = EVP_PKEY_get_size(ctx->pKey);
+    if(dsaKeySize == 0) {
+        xmlSecOpenSSLError("EVP_PKEY_get_size", NULL);
+        goto done;
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
+
+    /* signature size = r + s + 8 bytes, we just need r+s */
+    if(dsaKeySize < 8) {
+        xmlSecInvalidSizeLessThanError("DSA signature", dsaKeySize, 8, NULL);
+        goto done;
+    }
+    signHalfSize = (dsaKeySize - 8) /  2;
+    if(signHalfSize < 4) {
+        xmlSecInvalidSizeLessThanError("DSA signature (half)", signHalfSize, 4, NULL);
+        goto done;
+    }
+
 
     /* get signature components */
     DSA_SIG_get0(sig, &rr, &ss);
@@ -679,20 +735,35 @@ done:
     if(sig != NULL) {
         DSA_SIG_free(sig);
     }
+#ifndef XMLSEC_OPENSSL_API_300
     if(dsaKey != NULL) {
         DSA_free(dsaKey);
     }
-
-    /* done */
+#else /* XMLSEC_OPENSSL_API_300 */
+    if (pKeyCtx != NULL) {
+        EVP_PKEY_CTX_free(pKeyCtx);
+    }
+    if (dsaSignBuf != NULL) {
+        xmlSecBufferDestroy(dsaSignBuf);
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
+    
     return(res);
 }
 
 static int
 xmlSecOpenSSLSignatureDsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSecByte* signData, xmlSecSize signSize) {
+#ifndef XMLSEC_OPENSSL_API_300
     DSA * dsaKey = NULL;
-    DSA_SIG *sig = NULL;
-    BIGNUM *rr = NULL, *ss = NULL;
-    xmlSecSize dsaSignSize, signHalfSize;
+    int dsaKeySize, signHalfSize;
+#else /* XMLSEC_OPENSSL_API_300 */
+    EVP_PKEY_CTX* pKeyCtx = NULL;
+    unsigned char* pout = NULL;
+    size_t dsaKeySize, signHalfSize;
+#endif /* XMLSEC_OPENSSL_API_300 */
+    DSA_SIG* sig = NULL;
+    BIGNUM* rr = NULL;
+    BIGNUM* ss = NULL;
     int res = -1;
     int ret;
 
@@ -701,6 +772,7 @@ xmlSecOpenSSLSignatureDsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSecBy
     xmlSecAssert2(ctx->dgstSize > 0, -1);
     xmlSecAssert2(signData != NULL, -1);
 
+#ifndef XMLSEC_OPENSSL_API_300
     /* get key */
     dsaKey = EVP_PKEY_get1_DSA(ctx->pKey);
     if(dsaKey == NULL) {
@@ -708,15 +780,22 @@ xmlSecOpenSSLSignatureDsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSecBy
         goto done;
     }
 
-    /* signature size = r + s + 8 bytes, we just need r+s */
-    dsaSignSize = DSA_size(dsaKey);
-    if(dsaSignSize < 8) {
-        xmlSecInvalidSizeLessThanError("DSA signatue",
-                                       dsaSignSize, 8, NULL);
+    dsaKeySize = DSA_size(dsaKey);
+#else /* XMLSEC_OPENSSL_API_300 */
+    dsaKeySize = EVP_PKEY_get_size(ctx->pKey);
+    if(dsaKeySize == 0) {
+        xmlSecOpenSSLError("EVP_PKEY_get_size", NULL);
         goto done;
     }
+#endif /* XMLSEC_OPENSSL_API_300 */
 
-    signHalfSize = (dsaSignSize - 8) /  2;
+    /* signature size = r + s + 8 bytes, we just need r+s */
+    if(dsaKeySize < 8) {
+        xmlSecInvalidSizeLessThanError("DSA signatue",
+                                       dsaKeySize, 8, NULL);
+        goto done;
+    }
+    signHalfSize = (dsaKeySize - 8) /  2;
     if(signHalfSize < 4) {
         xmlSecInvalidSizeLessThanError("DSA signatue (half size)",
                                        signHalfSize, 4, NULL);
@@ -753,16 +832,34 @@ xmlSecOpenSSLSignatureDsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSecBy
         xmlSecOpenSSLError("DSA_SIG_set0", NULL);
         goto done;
     }
-
     rr = NULL;
     ss = NULL;
 
     /* verify signature */
+#ifndef XMLSEC_OPENSSL_API_300
     ret = DSA_do_verify(ctx->dgst, ctx->dgstSize, sig, dsaKey);
     if(ret < 0) {
         xmlSecOpenSSLError("DSA_do_verify", NULL);
         goto done;
     }
+#else /* XMLSEC_OPENSSL_API_300 */
+    pKeyCtx = EVP_PKEY_CTX_new_from_pkey(NULL, ctx->pKey, NULL);
+    if (pKeyCtx == NULL) {
+        xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_pkey", NULL);
+        goto done;
+    }
+    ret = EVP_PKEY_verify_init(pKeyCtx);
+    if (ret <= 0) {
+        xmlSecOpenSSLError("EVP_PKEY_verify_init", NULL);
+        goto done;
+    }
+    ret = i2d_DSA_SIG(sig, &pout); /* ret is size of signature on success */
+    if (ret < 0) {
+        xmlSecOpenSSLError("i2d_DSA_SIG", NULL);
+        goto done;
+    }
+    ret = EVP_PKEY_verify(pKeyCtx, pout, ret, ctx->dgst, ctx->dgstSize);
+#endif
 
     /* return 1 for good signatures and 0 for bad */
     if(ret > 0) {
@@ -773,10 +870,28 @@ xmlSecOpenSSLSignatureDsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSecBy
 
 done:
     /* cleanup */
-    DSA_SIG_free(sig);
-    DSA_free(dsaKey);
-    BN_clear_free(rr);
-    BN_clear_free(ss);
+#ifndef XMLSEC_OPENSSL_API_300
+    if(dsaKey != NULL) {
+        DSA_free(dsaKey);
+    }
+#else /* XMLSEC_OPENSSL_API_300 */
+    if (pout != NULL) {
+        OPENSSL_free(pout);
+    }
+    if (pKeyCtx != NULL) {
+        EVP_PKEY_CTX_free(pKeyCtx);
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
+    if (sig != NULL) {
+        DSA_SIG_free(sig);
+    }
+    if(rr != NULL) {
+        BN_clear_free(rr);
+    }
+    if(ss != NULL) {
+        BN_clear_free(ss);
+    }
+
     /* done */
     return(res);
 }
@@ -899,6 +1014,7 @@ xmlSecOpenSSLTransformDsaSha256GetKlass(void) {
  * P-256 curve and 66 for the P-521 curve).
  *
  ***************************************************************************/
+#ifndef XMLSEC_OPENSSL_API_300
 static xmlSecSize
 xmlSecOpenSSLSignatureEcdsaSignatureHalfSize(EC_KEY * ecKey) {
     const EC_GROUP *group;
@@ -912,13 +1028,11 @@ xmlSecOpenSSLSignatureEcdsaSignatureHalfSize(EC_KEY * ecKey) {
         xmlSecOpenSSLError("EC_KEY_get0_group", NULL);
         goto done;
     }
-
     order = BN_new();
     if(order == NULL) {
         xmlSecOpenSSLError("BN_new", NULL);
         goto done;
     }
-
     if(EC_GROUP_get_order(group, order, NULL) != 1) {
         xmlSecOpenSSLError("EC_GROUP_get_order", NULL);
         goto done;
@@ -937,13 +1051,49 @@ done:
     return(signHalfSize);
 }
 
+#else /* XMLSEC_OPENSSL_API_300 */
+
+static xmlSecSize
+xmlSecOpenSSLSignatureEcdsaSignatureHalfSize(EVP_PKEY * ecKey) {
+    BIGNUM *order = NULL;
+    xmlSecSize signHalfSize = 0;
+
+    xmlSecAssert2(ecKey != NULL, 0);
+
+    if(EVP_PKEY_get_bn_param(ecKey, OSSL_PKEY_PARAM_EC_ORDER, &order) != 1) {
+        xmlSecOpenSSLError("EVP_PKEY_get_bn_parami(order)", NULL);
+        goto done;
+    }
+
+    /* result */
+    signHalfSize = BN_num_bytes(order);
+
+done:
+    /* cleanup */
+    if(order != NULL) {
+        BN_clear_free(order);
+    }
+
+    /* done */
+    return(signHalfSize);
+}
+
+#endif /* XMLSEC_OPENSSL_API_300 */
 
 static int
 xmlSecOpenSSLSignatureEcdsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr out) {
-    EC_KEY * ecKey = NULL;
-    ECDSA_SIG *sig = NULL;
-    const BIGNUM *rr = NULL, *ss = NULL;
-    xmlSecByte *outData;
+#ifndef XMLSEC_OPENSSL_API_300
+    EC_KEY* ecKey = NULL;
+#else /* XMLSEC_OPENSSL_API_300 */
+    EVP_PKEY_CTX* pKeyCtx = NULL;
+    size_t ecSignBufSize = 0;
+    xmlSecBufferPtr ecSignBuf = NULL;
+    const unsigned char* ecSignBufPtr = NULL;
+#endif /* XMLSEC_OPENSSL_API_300 */
+    ECDSA_SIG* sig = NULL;
+    const BIGNUM* rr = NULL;
+    const BIGNUM* ss = NULL;
+    xmlSecByte* outData = NULL;
     xmlSecSize signHalfSize, rSize, sSize;
     int res = -1;
     int ret;
@@ -954,10 +1104,17 @@ xmlSecOpenSSLSignatureEcdsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPt
     xmlSecAssert2(ctx->dgstSize <= sizeof(ctx->dgst), -1);
     xmlSecAssert2(out != NULL, -1);
 
-    /* get key */
+#ifndef XMLSEC_OPENSSL_API_300
+    /* sign */
     ecKey = EVP_PKEY_get1_EC_KEY(ctx->pKey);
     if(ecKey == NULL) {
         xmlSecOpenSSLError("EVP_PKEY_get1_DSA", NULL);
+        goto done;
+    }
+    
+    sig = ECDSA_do_sign(ctx->dgst, ctx->dgstSize, ecKey);
+    if(sig == NULL) {
+        xmlSecOpenSSLError("ECDSA_do_sign", NULL);
         goto done;
     }
 
@@ -967,13 +1124,49 @@ xmlSecOpenSSLSignatureEcdsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPt
         xmlSecInternalError("xmlSecOpenSSLSignatureEcdsaSignatureHalfSize", NULL);
         goto done;
     }
-
+#else /* XMLSEC_OPENSSL_API_300 */
     /* sign */
-    sig = ECDSA_do_sign(ctx->dgst, ctx->dgstSize, ecKey);
-    if(sig == NULL) {
-        xmlSecOpenSSLError("ECDSA_do_sign", NULL);
+    pKeyCtx = EVP_PKEY_CTX_new_from_pkey(NULL, ctx->pKey, NULL);
+    if (pKeyCtx == NULL) {
+        xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_pkey", NULL);
         goto done;
     }
+    ret = EVP_PKEY_sign_init(pKeyCtx);
+    if (ret <= 0) {
+        xmlSecOpenSSLError("EVP_PKEY_sign_init", NULL);
+        goto done;
+    }
+    ret = EVP_PKEY_sign(pKeyCtx, NULL, &ecSignBufSize, ctx->dgst, ctx->dgstSize);
+    if (ret <= 0) {
+        xmlSecOpenSSLError("EVP_PKEY_sign(1)", NULL);
+        goto done;
+    }
+    ecSignBuf = xmlSecBufferCreate(ecSignBufSize);
+    if (ecSignBuf == NULL) {
+        xmlSecInternalError2("xmlSecBufferCreate",
+            NULL,
+            "size=%lu", (unsigned long)ecSignBufSize);
+        goto done;
+    }
+    ret = EVP_PKEY_sign(pKeyCtx, xmlSecBufferGetData(ecSignBuf), &ecSignBufSize, ctx->dgst, ctx->dgstSize);
+    if (ret <= 0) {
+        xmlSecOpenSSLError("EVP_PKEY_sign(2)", NULL);
+        goto done;
+    }
+    ecSignBufPtr = xmlSecBufferGetData(ecSignBuf);
+    sig = d2i_ECDSA_SIG(NULL, &ecSignBufPtr, ecSignBufSize);
+    if (sig == NULL) {
+        xmlSecOpenSSLError("d2i_ECDSA_SIG", NULL);
+        goto done;
+    }
+
+    /* calculate signature size */
+    signHalfSize = xmlSecOpenSSLSignatureEcdsaSignatureHalfSize(ctx->pKey);
+    if(signHalfSize <= 0) {
+        xmlSecInternalError("xmlSecOpenSSLSignatureEcdsaSignatureHalfSize", NULL);
+        goto done;
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
 
     /* get signature components */
     ECDSA_SIG_get0(sig, &rr, &ss);
@@ -1018,11 +1211,20 @@ xmlSecOpenSSLSignatureEcdsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPt
 
 done:
     /* cleanup */
-    if(sig != NULL) {
-        ECDSA_SIG_free(sig);
-    }
+#ifndef XMLSEC_OPENSSL_API_300
     if(ecKey != NULL) {
         EC_KEY_free(ecKey);
+    }
+#else /* XMLSEC_OPENSSL_API_300 */
+    if (pKeyCtx != NULL) {
+        EVP_PKEY_CTX_free(pKeyCtx);
+    }
+    if (ecSignBuf != NULL) {
+        xmlSecBufferDestroy(ecSignBuf);
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
+    if(sig != NULL) {
+        ECDSA_SIG_free(sig);
     }
 
     /* done */
@@ -1031,9 +1233,15 @@ done:
 
 static int
 xmlSecOpenSSLSignatureEcdsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSecByte* signData, xmlSecSize signSize) {
-    EC_KEY * ecKey = NULL;
-    ECDSA_SIG *sig = NULL;
-    BIGNUM *rr = NULL, *ss = NULL;
+#ifndef XMLSEC_OPENSSL_API_300
+    EC_KEY* ecKey = NULL;
+#else /* XMLSEC_OPENSSL_API_300 */
+    EVP_PKEY_CTX* pKeyCtx = NULL;
+    unsigned char* pout = NULL;
+#endif /* XMLSEC_OPENSSL_API_300 */
+    ECDSA_SIG* sig = NULL;
+    BIGNUM* rr = NULL;
+    BIGNUM* ss = NULL;
     xmlSecSize signHalfSize;
     int res = -1;
     int ret;
@@ -1044,6 +1252,7 @@ xmlSecOpenSSLSignatureEcdsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSec
     xmlSecAssert2(ctx->dgstSize <= sizeof(ctx->dgst), -1);
     xmlSecAssert2(signData != NULL, -1);
 
+#ifndef XMLSEC_OPENSSL_API_300
     /* get key */
     ecKey = EVP_PKEY_get1_EC_KEY(ctx->pKey);
     if(ecKey == NULL) {
@@ -1057,6 +1266,14 @@ xmlSecOpenSSLSignatureEcdsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSec
         xmlSecInternalError("xmlSecOpenSSLSignatureEcdsaSignatureHalfSize", NULL);
         goto done;
     }
+#else /* XMLSEC_OPENSSL_API_300 */
+    /* calculate signature size */
+    signHalfSize = xmlSecOpenSSLSignatureEcdsaSignatureHalfSize(ctx->pKey);
+    if(signHalfSize <= 0) {
+        xmlSecInternalError("xmlSecOpenSSLSignatureEcdsaSignatureHalfSize", NULL);
+        goto done;
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
 
     /* check size: we expect the r and s to be the same size and match the size of
      * the key (RFC 6931); however some  implementations (e.g. Java) cut leading zeros:
@@ -1096,11 +1313,30 @@ xmlSecOpenSSLSignatureEcdsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSec
     ss = NULL;
 
     /* verify signature */
+#ifndef XMLSEC_OPENSSL_API_300
     ret = ECDSA_do_verify(ctx->dgst, ctx->dgstSize, sig, ecKey);
     if(ret < 0) {
         xmlSecOpenSSLError("ECDSA_do_verify", NULL);
         goto done;
     }
+#else /* XMLSEC_OPENSSL_API_300 */
+    pKeyCtx = EVP_PKEY_CTX_new_from_pkey(NULL, ctx->pKey, NULL);
+    if (pKeyCtx == NULL) {
+        xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_pkey", NULL);
+        goto done;
+    }
+    ret = EVP_PKEY_verify_init(pKeyCtx);
+    if (ret <= 0) {
+        xmlSecOpenSSLError("EVP_PKEY_verify_init", NULL);
+        goto done;
+    }
+    ret = i2d_ECDSA_SIG(sig, &pout); /* ret is size of signature on success */
+    if (ret < 0) {
+        xmlSecOpenSSLError("i2d_ECDSA_SIG", NULL);
+        goto done;
+    }
+    ret = EVP_PKEY_verify(pKeyCtx, pout, ret, ctx->dgst, ctx->dgstSize);
+#endif /* XMLSEC_OPENSSL_API_300 */
 
     /* return 1 for good signatures and 0 for bad */
     if(ret > 0) {
@@ -1111,10 +1347,27 @@ xmlSecOpenSSLSignatureEcdsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSec
 
 done:
     /* cleanup */
-    ECDSA_SIG_free(sig);
-    EC_KEY_free(ecKey);
-    BN_clear_free(rr);
-    BN_clear_free(ss);
+#ifndef XMLSEC_OPENSSL_API_300
+    if(ecKey != NULL) {
+        EC_KEY_free(ecKey);
+    }
+#else /* XMLSEC_OPENSSL_API_300 */
+    if (pout != NULL) {
+        OPENSSL_free(pout);
+    }
+    if (pKeyCtx != NULL) {
+        EVP_PKEY_CTX_free(pKeyCtx);
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
+    if (sig != NULL) {
+        ECDSA_SIG_free(sig);
+    }
+    if(rr != NULL) {
+        BN_clear_free(rr);
+    }
+    if(ss != NULL) {
+        BN_clear_free(ss);
+    }
     /* done */
     return(res);
 }

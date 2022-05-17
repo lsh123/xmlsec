@@ -31,7 +31,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <openssl/opensslv.h>
 #include <openssl/hmac.h>
 
 #include <xmlsec/xmlsec.h>
@@ -93,11 +92,11 @@ struct _xmlSecOpenSSLHmacCtx {
 #ifndef XMLSEC_OPENSSL_API_300
     const EVP_MD*       hmacDgst;
     HMAC_CTX*           hmacCtx;
-#else
-    const char*         hmacDgst;
-    EVP_MAC*            hmac;
-    EVP_MAC_CTX*        hmacCtx;
-#endif
+#else /* XMLSEC_OPENSSL_API_300 */
+    const char*         evpHmacDgst;
+    EVP_MAC*            evpHmac;
+    EVP_MAC_CTX*        evpHmacCtx;
+#endif /* XMLSEC_OPENSSL_API_300 */
     int                 ctxInitialized;
     xmlSecByte          dgst[XMLSEC_OPENSSL_MAX_HMAC_SIZE];
     xmlSecSize          dgstSize;       /* dgst size in bits */
@@ -204,9 +203,9 @@ xmlSecOpenSSLHmacInitialize(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacSha1Id)) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->hmacDgst = EVP_sha1();
-#else
-        ctx->hmacDgst = OSSL_DIGEST_NAME_SHA1;
-#endif
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->evpHmacDgst = OSSL_DIGEST_NAME_SHA1;
+#endif /* XMLSEC_OPENSSL_API_300 */
     } else
 #endif /* XMLSEC_NO_SHA1 */
 
@@ -214,9 +213,9 @@ xmlSecOpenSSLHmacInitialize(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacSha224Id)) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->hmacDgst = EVP_sha224();
-#else
-        ctx->hmacDgst = OSSL_DIGEST_NAME_SHA2_224;
-#endif
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->evpHmacDgst = OSSL_DIGEST_NAME_SHA2_224;
+#endif /* XMLSEC_OPENSSL_API_300 */
     } else
 #endif /* XMLSEC_NO_SHA224 */
 
@@ -224,9 +223,9 @@ xmlSecOpenSSLHmacInitialize(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacSha256Id)) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->hmacDgst = EVP_sha256();
-#else
-        ctx->hmacDgst = OSSL_DIGEST_NAME_SHA2_256;
-#endif
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->evpHmacDgst = OSSL_DIGEST_NAME_SHA2_256;
+#endif /* XMLSEC_OPENSSL_API_300 */
     } else
 #endif /* XMLSEC_NO_SHA256 */
 
@@ -234,9 +233,9 @@ xmlSecOpenSSLHmacInitialize(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacSha384Id)) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->hmacDgst = EVP_sha384();
-#else
-        ctx->hmacDgst = OSSL_DIGEST_NAME_SHA2_384;
-#endif
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->evpHmacDgst = OSSL_DIGEST_NAME_SHA2_384;
+#endif /* XMLSEC_OPENSSL_API_300 */
     } else
 #endif /* XMLSEC_NO_SHA384 */
 
@@ -244,9 +243,9 @@ xmlSecOpenSSLHmacInitialize(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacSha512Id)) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->hmacDgst = EVP_sha512();
-#else
-        ctx->hmacDgst = OSSL_DIGEST_NAME_SHA2_512;
-#endif
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->evpHmacDgst = OSSL_DIGEST_NAME_SHA2_512;
+#endif /* XMLSEC_OPENSSL_API_300 */
     } else
 #endif /* XMLSEC_NO_SHA512 */
 
@@ -254,9 +253,9 @@ xmlSecOpenSSLHmacInitialize(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacRipemd160Id)) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->hmacDgst = EVP_ripemd160();
-#else
-        ctx->hmacDgst = OSSL_DIGEST_NAME_RIPEMD160;
-#endif
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->evpHmacDgst = OSSL_DIGEST_NAME_RIPEMD160;
+#endif /* XMLSEC_OPENSSL_API_300 */
     } else
 #endif /* XMLSEC_NO_RIPEMD160 */
 
@@ -264,9 +263,9 @@ xmlSecOpenSSLHmacInitialize(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacMd5Id)) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->hmacDgst = EVP_md5();
-#else
-        ctx->hmacDgst = OSSL_DIGEST_NAME_MD5;
-#endif
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->evpHmacDgst = OSSL_DIGEST_NAME_MD5;
+#endif /* XMLSEC_OPENSSL_API_300 */
     } else
 #endif /* XMLSEC_NO_MD5 */
 
@@ -274,6 +273,7 @@ xmlSecOpenSSLHmacInitialize(xmlSecTransformPtr transform) {
         xmlSecInvalidTransfromError(transform)
         return(-1);
     }
+
 #ifndef XMLSEC_OPENSSL_API_300
     /* create hmac CTX */
     ctx->hmacCtx = HMAC_CTX_new();
@@ -282,21 +282,24 @@ xmlSecOpenSSLHmacInitialize(xmlSecTransformPtr transform) {
                            xmlSecTransformGetName(transform));
         return(-1);
     }
-#else
-    ctx->hmac = EVP_MAC_fetch(NULL, OSSL_MAC_NAME_HMAC, NULL);
-    if (ctx->hmac == NULL) {
+#else /* XMLSEC_OPENSSL_API_300 */
+    ctx->evpHmac = EVP_MAC_fetch(NULL, OSSL_MAC_NAME_HMAC, NULL);
+    if (ctx->evpHmac == NULL) {
         xmlSecOpenSSLError("EVP_MAC_fetch",
                            xmlSecTransformGetName(transform));
         return(-1);
     }
-    ctx->hmacCtx = EVP_MAC_CTX_new(ctx->hmac);
-    if (ctx->hmacCtx == NULL) {
-        EVP_MAC_free(ctx->hmac);
+    ctx->evpHmacCtx = EVP_MAC_CTX_new(ctx->evpHmac);
+    if (ctx->evpHmacCtx == NULL) {
+        EVP_MAC_free(ctx->evpHmac);
+        ctx->evpHmac = NULL;
+
         xmlSecOpenSSLError("EVP_MAC_CTX_new",
                            xmlSecTransformGetName(transform));
         return(-1);
     }
-#endif
+#endif /* XMLSEC_OPENSSL_API_300 */
+
     /* done */
     return(0);
 }
@@ -311,18 +314,18 @@ xmlSecOpenSSLHmacFinalize(xmlSecTransformPtr transform) {
     ctx = xmlSecOpenSSLHmacGetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
-    if(ctx->hmacCtx != NULL) {
 #ifndef XMLSEC_OPENSSL_API_300
+    if(ctx->hmacCtx != NULL) {
         HMAC_CTX_free(ctx->hmacCtx);
-#else
-        EVP_MAC_CTX_free(ctx->hmacCtx);
-#endif
     }
-#ifdef XMLSEC_OPENSSL_API_300
-    if (ctx->hmac != NULL) {
-        EVP_MAC_free(ctx->hmac);
+#else /* XMLSEC_OPENSSL_API_300 */
+    if(ctx->evpHmacCtx != NULL) { 
+        EVP_MAC_CTX_free(ctx->evpHmacCtx);
     }
-#endif
+    if (ctx->evpHmac != NULL) {
+        EVP_MAC_free(ctx->evpHmac);
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
 
     memset(ctx, 0, sizeof(xmlSecOpenSSLHmacCtx));
 }
@@ -394,11 +397,12 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecOpenSSLHmacCtxPtr ctx;
     xmlSecKeyDataPtr value;
     xmlSecBufferPtr buffer;
-    int ret;
 #ifdef XMLSEC_OPENSSL_API_300
-    OSSL_PARAM_BLD* param_bld;
+    OSSL_PARAM_BLD* param_bld = NULL;
     OSSL_PARAM* params = NULL;
-#endif
+#endif /* XMLSEC_OPENSSL_API_300 */
+    int res = -1;
+    int ret;
 
     xmlSecAssert2(xmlSecOpenSSLHmacCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationSign) || (transform->operation == xmlSecTransformOperationVerify), -1);
@@ -407,8 +411,6 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     ctx = xmlSecOpenSSLHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->hmacCtx != NULL, -1);
-    xmlSecAssert2(ctx->hmacDgst != NULL, -1);
     xmlSecAssert2(ctx->ctxInitialized == 0, -1);
 
     value = xmlSecKeyGetValue(key);
@@ -419,52 +421,67 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     if(xmlSecBufferGetSize(buffer) == 0) {
         xmlSecInvalidZeroKeyDataSizeError(xmlSecTransformGetName(transform));
-        return(-1);
+        goto done;
     }
 
     xmlSecAssert2(xmlSecBufferGetData(buffer) != NULL, -1);
+
 #ifndef XMLSEC_OPENSSL_API_300
+    xmlSecAssert2(ctx->hmacCtx != NULL, -1);
+    xmlSecAssert2(ctx->hmacDgst != NULL, -1);
+
     ret = HMAC_Init_ex(ctx->hmacCtx,
                 xmlSecBufferGetData(buffer),
                 xmlSecBufferGetSize(buffer),
                 ctx->hmacDgst,
                 NULL);
     if(ret != 1) {
-        xmlSecOpenSSLError("HMAC_Init_ex",
-                           xmlSecTransformGetName(transform));
-        return(-1);
+        xmlSecOpenSSLError("HMAC_Init_ex", xmlSecTransformGetName(transform));
+        goto done;
     }
-#else
+#else /* XMLSEC_OPENSSL_API_300 */
+    xmlSecAssert2(ctx->evpHmacCtx != NULL, -1);
+    xmlSecAssert2(ctx->evpHmacDgst != NULL, -1);
+
     param_bld = OSSL_PARAM_BLD_new();
     if (param_bld == NULL) {
-        xmlSecOpenSSLError("OSSL_PARAM_BLD_new",
-            xmlSecTransformGetName(transform));
-        return(-1);
+        xmlSecOpenSSLError("OSSL_PARAM_BLD_new", xmlSecTransformGetName(transform));
+        goto done;
     }
-    OSSL_PARAM_BLD_push_utf8_string(param_bld, OSSL_MAC_PARAM_DIGEST,
-                                    ctx->hmacDgst, strlen(ctx->hmacDgst));
+    if(OSSL_PARAM_BLD_push_utf8_string(param_bld, OSSL_MAC_PARAM_DIGEST,
+                                       ctx->evpHmacDgst, strlen(ctx->evpHmacDgst)) != 1) {
+        xmlSecOpenSSLError("OSSL_PARAM_BLD_push_utf8_string", xmlSecTransformGetName(transform));
+        goto done;
+    }
     params = OSSL_PARAM_BLD_to_param(param_bld);
     if (params == NULL) {
-        OSSL_PARAM_BLD_free(param_bld);
         xmlSecOpenSSLError("OSSL_PARAM_BLD_to_param",
                            xmlSecTransformGetName(transform));
-        return(-1);
+        goto done;
     }
-    ret = EVP_MAC_init(ctx->hmacCtx, xmlSecBufferGetData(buffer),
+    ret = EVP_MAC_init(ctx->evpHmacCtx, xmlSecBufferGetData(buffer),
                        xmlSecBufferGetSize(buffer), params);
     if (ret != 1) {
-        OSSL_PARAM_free(params);
-        OSSL_PARAM_BLD_free(param_bld);
-        xmlSecOpenSSLError("EVP_MAC_init",
-            xmlSecTransformGetName(transform));
-        return(-1);
+        xmlSecOpenSSLError("EVP_MAC_init", xmlSecTransformGetName(transform));
+        goto done;
     }
-    OSSL_PARAM_free(params);
-    OSSL_PARAM_BLD_free(param_bld);
-#endif
+#endif /* XMLSEC_OPENSSL_API_300 */
 
+    /* done */
     ctx->ctxInitialized = 1;
-    return(0);
+    res = 0;
+
+done:
+#ifdef XMLSEC_OPENSSL_API_300
+    if(params != NULL) {
+        OSSL_PARAM_free(params);
+    }
+    if(param_bld != NULL) {
+        OSSL_PARAM_BLD_free(param_bld);
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
+
+    return(res);
 }
 
 static int
@@ -538,7 +555,6 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
     ctx = xmlSecOpenSSLHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->ctxInitialized != 0, -1);
-    xmlSecAssert2(ctx->hmacCtx != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
         /* we should be already initialized when we set key */
@@ -551,20 +567,25 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
         inSize = xmlSecBufferGetSize(in);
         if(inSize > 0) {
 #ifndef XMLSEC_OPENSSL_API_300
+            xmlSecAssert2(ctx->hmacCtx != NULL, -1);
+
             ret = HMAC_Update(ctx->hmacCtx, xmlSecBufferGetData(in), inSize);
             if(ret != 1) {
                 xmlSecOpenSSLError("HMAC_Update",
                                    xmlSecTransformGetName(transform));
                 return(-1);
             }
-#else
-            ret = EVP_MAC_update(ctx->hmacCtx, xmlSecBufferGetData(in), inSize);
+#else /* XMLSEC_OPENSSL_API_300 */
+            xmlSecAssert2(ctx->evpHmacCtx != NULL, -1);
+
+            ret = EVP_MAC_update(ctx->evpHmacCtx, xmlSecBufferGetData(in), inSize);
             if(ret != 1) {
                 xmlSecOpenSSLError("EVP_MAC_update",
                                    xmlSecTransformGetName(transform));
                 return(-1);
             }
-#endif
+#endif /* XMLSEC_OPENSSL_API_300 */
+            
             ret = xmlSecBufferRemoveHead(in, inSize);
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecBufferRemoveHead",
@@ -575,22 +596,27 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
         }
 
         if(last) {
-            unsigned int dgstSize = 0;
 #ifndef XMLSEC_OPENSSL_API_300
+            unsigned int dgstSize = 0;
+
+            xmlSecAssert2(ctx->hmacCtx != NULL, -1);
             ret = HMAC_Final(ctx->hmacCtx, ctx->dgst, &dgstSize);
             if(ret != 1) {
                 xmlSecOpenSSLError("HMAC_Final",
                                    xmlSecTransformGetName(transform));
                 return(-1);
             }
-#else
-            ret = EVP_MAC_final(ctx->hmacCtx, ctx->dgst, &dgstSize, sizeof(ctx->dgst));
+#else /* XMLSEC_OPENSSL_API_300 */
+            size_t dgstSize = 0;
+
+            xmlSecAssert2(ctx->evpHmacCtx != NULL, -1);
+            ret = EVP_MAC_final(ctx->evpHmacCtx, ctx->dgst, &dgstSize, sizeof(ctx->dgst));
             if(ret != 1) {
                 xmlSecOpenSSLError("EVP_MAC_final",
                                    xmlSecTransformGetName(transform));
                 return(-1);
             }
-#endif
+#endif /* XMLSEC_OPENSSL_API_300 */
             xmlSecAssert2(dgstSize > 0, -1);
 
             /* check/set the result digest size */
@@ -611,7 +637,7 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
                 if(ret < 0) {
                     xmlSecInternalError2("xmlSecBufferAppend",
                                          xmlSecTransformGetName(transform),
-                                         "size=%d", dgstSize);
+                                         "size=%lu", (unsigned long)dgstSize);
                     return(-1);
                 }
             }

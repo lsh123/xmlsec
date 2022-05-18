@@ -659,6 +659,7 @@ XMLSEC_NO_OPENSSL="1"
 OPENSSL_VERSION=""
 OPENSSL_INCLUDE_PATH=
 OPENSSL_LIB_PATH=
+OPENSSL_TEST_CONFIG=
 OPENSSL_FOUND=no
 AC_ARG_WITH([openssl], [AC_HELP_STRING([--with-openssl@<:@=PFX@:>@], [openssl location])])
 
@@ -830,6 +831,7 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
             #endif
         ],[
             OPENSSL_VERSION="3.0.0"
+            OPENSSL_TEST_CONFIG="openssl3.cnf"
         ],[
             OPENSSL_VERSION=""
         ])
@@ -888,6 +890,7 @@ AC_SUBST(XMLSEC_NO_OPENSSL)
 AC_SUBST(OPENSSL_CFLAGS)
 AC_SUBST(OPENSSL_LIBS)
 AC_SUBST(OPENSSL_CRYPTO_LIB)
+AC_SUBST(OPENSSL_TEST_CONFIG)
 AC_SUBST(OPENSSL_MIN_VERSION)
 
 dnl ==========================================================================

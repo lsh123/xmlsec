@@ -70,12 +70,6 @@ static xmlSecKeyPtr xmlSecOpenSSLAppEngineKeyLoad       (const char *engineName,
 XMLSEC_PTR_TO_FUNC_IMPL(pem_password_cb)
 XMLSEC_FUNC_TO_PTR_IMPL(pem_password_cb)
 
-#ifdef XMLSEC_OPENSSL_API_300
-static OSSL_LIB_CTX* g_default_libctx = NULL;
-static OSSL_PROVIDER* g_legacy_provider = NULL;
-static OSSL_PROVIDER* g_default_provider = NULL;
-#endif /* XMLSEC_OPENSSL_API_300 */
-
 /**
  * xmlSecOpenSSLAppInit:
  * @config:             the path to certs.
@@ -107,32 +101,6 @@ xmlSecOpenSSLAppInit(const char* config) {
     opts |= OPENSSL_INIT_ENGINE_ALL_BUILTIN;
 #endif /* !defined(OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_API_300) */
 
-
-#ifdef XMLSEC_OPENSSL_API_300
-    /* Create default OSSL_LIB_CTX (applications can overwrite it with xmlSecOpenSSLSetLibCtx */
-    g_default_libctx = OSSL_LIB_CTX_new();
-    if(g_default_libctx == NULL) {
-        xmlSecOpenSSLError("OSSL_LIB_CTX_new", NULL);
-        goto error;
-    }
-    /* Load default/legacy providers */
-    g_legacy_provider = OSSL_PROVIDER_load(g_default_libctx, "legacy");
-    if (g_legacy_provider == NULL) {
-        xmlSecOpenSSLError("OSSL_PROVIDER_load", NULL);
-        goto error;
-    }
-    g_default_provider = OSSL_PROVIDER_load(g_default_libctx, "default");
-    if (g_default_provider == NULL) {
-        xmlSecOpenSSLError("OSSL_PROVIDER_load", NULL);
-        goto error;
-    }
-    ret = xmlSecOpenSSLSetLibCtx(g_default_libctx);
-    if(ret != 0) {
-        xmlSecInternalError("xmlSecOpenSSLSetLibCtx", NULL);
-        goto error;
-    }
-#endif /* XMLSEC_OPENSSL_API_300 */
-
     ret = OPENSSL_init_crypto(opts, NULL);
     if(ret != 1) {
         xmlSecOpenSSLError("OPENSSL_init_crypto", NULL);
@@ -155,20 +123,6 @@ xmlSecOpenSSLAppInit(const char* config) {
 
 error:
     /* cleanup */
-#ifdef XMLSEC_OPENSSL_API_300
-    if(g_default_provider != NULL) {
-        OSSL_PROVIDER_unload(g_default_provider);
-        g_default_provider = NULL;
-    }
-    if(g_legacy_provider != NULL) {
-        OSSL_PROVIDER_unload(g_legacy_provider);
-        g_legacy_provider = NULL;
-    }
-    if(g_default_libctx != NULL) {
-        OSSL_LIB_CTX_free(g_default_libctx);
-        g_default_libctx = NULL;
-    }
-#endif /* XMLSEC_OPENSSL_API_300 */
     return(-1);
 }
 
@@ -201,20 +155,7 @@ xmlSecOpenSSLAppShutdown(void) {
     CRYPTO_cleanup_all_ex_data();
     ERR_remove_thread_state(NULL);
     ERR_free_strings();
-#elif defined(XMLSEC_OPENSLL_API_300)
-    if (g_default_provider != NULL) {
-        OSSL_PROVIDER_unload(g_default_provider);
-        g_default_provider = NULL;
-    }
-    if (g_legacy_provider != NULL) {
-        OSSL_PROVIDER_unload(g_legacy_provider);
-        g_legacy_provider = NULL;
-    }
-    if(g_default_libctx != NULL) {
-        OSSL_LIB_CTX_free(g_default_libctx);
-        g_default_libctx = NULL;
-    }
-#endif /* XMLSEC_OPENSLL_API_300 */
+#endif /* !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300) */
 
     /* done */
     return(0);

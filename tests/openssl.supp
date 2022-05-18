@@ -120,4 +120,40 @@
    fun:xmlSecAppInit
    fun:main
 }
+{
+   OPENSSL_init_crypto->malloc
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   fun:OPENSSL_init_crypto
+   fun:xmlSecOpenSSLAppInit
+   fun:xmlSecAppCryptoInit
+   fun:xmlSecAppInit
+   fun:main
+}
+{
+   OPENSSL_init_crypto->realloc
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:realloc
+   ...
+   fun:OPENSSL_init_crypto
+   fun:xmlSecOpenSSLAppInit
+   fun:xmlSecAppCryptoInit
+   fun:xmlSecAppInit
+   fun:main
+}
+{
+   OPENSSL_init_crypto->calloc
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   ...
+   fun:OPENSSL_init_crypto
+   fun:xmlSecOpenSSLAppInit
+   fun:xmlSecAppCryptoInit
+   fun:xmlSecAppInit
+   fun:main
+}
 

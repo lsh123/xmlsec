@@ -64,6 +64,7 @@ xmlsec_params="$xmlsec_params --crypto-config $crypto_config"
 #
 # Setup extra vars
 #
+echo "--- DEBUG: crypto=$crypto XMLSEC_OPENSSL_TEST_CONFIG=$XMLSEC_OPENSSL_TEST_CONFIG ---"
 extra_vars=
 if [ "z$crypto" = "zopenssl" -a "z$XMLSEC_OPENSSL_TEST_CONFIG" != "z" ] ; then
     extra_vars="$extra_vars OPENSSL_CONF=$topfolder/$XMLSEC_OPENSSL_TEST_CONFIG"

@@ -169,7 +169,7 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->digest = EVP_ripemd160();
 #else /* XMLSEC_OPENSSL_API_300 */
-        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "RIPEMD-160", NULL);
+        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), OSSL_DIGEST_NAME_RIPEMD160, NULL);
         if(ctx->digest == NULL) {
             xmlSecOpenSSLError("EVP_MD_fetch(RIPEMD-160)", xmlSecTransformGetName(transform));
             xmlSecOpenSSLEvpDigestFinalize(transform);
@@ -184,9 +184,9 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->digest = EVP_sha1();
 #else /* XMLSEC_OPENSSL_API_300 */
-        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "SHA-1", NULL);
+        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), OSSL_DIGEST_NAME_SHA1, NULL);
         if(ctx->digest == NULL) {
-            xmlSecOpenSSLError("EVP_MD_fetch(SHA-1)", xmlSecTransformGetName(transform));
+            xmlSecOpenSSLError("EVP_MD_fetch(SHA1)", xmlSecTransformGetName(transform));
             xmlSecOpenSSLEvpDigestFinalize(transform);
             return(-1);
         }
@@ -199,9 +199,9 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->digest = EVP_sha224();
 #else /* XMLSEC_OPENSSL_API_300 */
-        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "SHA-224", NULL);
+        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), OSSL_DIGEST_NAME_SHA2_224, NULL);
         if(ctx->digest == NULL) {
-            xmlSecOpenSSLError("EVP_MD_fetch(SHA-224)", xmlSecTransformGetName(transform));
+            xmlSecOpenSSLError("EVP_MD_fetch(SHA2-224)", xmlSecTransformGetName(transform));
             xmlSecOpenSSLEvpDigestFinalize(transform);
             return(-1);
         }
@@ -214,9 +214,9 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->digest = EVP_sha256();
 #else /* XMLSEC_OPENSSL_API_300 */
-        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "SHA-256", NULL);
+        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), OSSL_DIGEST_NAME_SHA2_256, NULL);
         if(ctx->digest == NULL) {
-            xmlSecOpenSSLError("EVP_MD_fetch(SHA-256)", xmlSecTransformGetName(transform));
+            xmlSecOpenSSLError("EVP_MD_fetch(SHA2-256)", xmlSecTransformGetName(transform));
             xmlSecOpenSSLEvpDigestFinalize(transform);
             return(-1);
         }
@@ -229,9 +229,9 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->digest = EVP_sha384();
 #else /* XMLSEC_OPENSSL_API_300 */
-        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "SHA-384", NULL);
+        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), OSSL_DIGEST_NAME_SHA2_384, NULL);
         if(ctx->digest == NULL) {
-            xmlSecOpenSSLError("EVP_MD_fetch(SHA-384)", xmlSecTransformGetName(transform));
+            xmlSecOpenSSLError("EVP_MD_fetch(SHA2-384)", xmlSecTransformGetName(transform));
             xmlSecOpenSSLEvpDigestFinalize(transform);
             return(-1);
         }
@@ -244,9 +244,9 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->digest = EVP_sha512();
 #else /* XMLSEC_OPENSSL_API_300 */
-        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "SHA-512", NULL);
+        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), OSSL_DIGEST_NAME_SHA2_512, NULL);
         if(ctx->digest == NULL) {
-            xmlSecOpenSSLError("EVP_MD_fetch(SHA-512)", xmlSecTransformGetName(transform));
+            xmlSecOpenSSLError("EVP_MD_fetch(SHA2-512)", xmlSecTransformGetName(transform));
             xmlSecOpenSSLEvpDigestFinalize(transform);
             return(-1);
         }

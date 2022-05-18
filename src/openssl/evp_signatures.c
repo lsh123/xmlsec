@@ -31,6 +31,11 @@
 #include <xmlsec/openssl/evp.h>
 #include "openssl_compat.h"
 
+
+#ifdef XMLSEC_OPENSSL_API_300
+#include <openssl/core_names.h>
+#endif /* XMLSEC_OPENSSL_API_300 */
+
 /**************************************************************************
  *
  * Internal OpenSSL evp signatures ctx
@@ -42,6 +47,7 @@ struct _xmlSecOpenSSLEvpSignatureCtx {
 #ifndef XMLSEC_OPENSSL_API_300
     const EVP_MD*       digest;
 #else /* XMLSEC_OPENSSL_API_300 */
+    const char*         digestName;
     EVP_MD*             digest;
 #endif /* XMLSEC_OPENSSL_API_300 */
     EVP_MD_CTX*         digestCtx;
@@ -164,12 +170,7 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->digest = EVP_md5();
 #else /* XMLSEC_OPENSSL_API_300 */
-        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "MD5", NULL);
-        if(ctx->digest == NULL) {
-            xmlSecOpenSSLError("EVP_MD_fetch(MD5)", xmlSecTransformGetName(transform));
-            xmlSecOpenSSLEvpSignatureFinalize(transform);
-            return(-1);
-        }
+        ctx->digestName = OSSL_DIGEST_NAME_MD5;
 #endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId      = xmlSecOpenSSLKeyDataRsaId;
     } else
@@ -180,12 +181,7 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->digest = EVP_ripemd160();
 #else /* XMLSEC_OPENSSL_API_300 */
-        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), OSSL_DIGEST_NAME_RIPEMD160, NULL);
-        if(ctx->digest == NULL) {
-            xmlSecOpenSSLError("EVP_MD_fetch(RIPEMD-160)", xmlSecTransformGetName(transform));
-            xmlSecOpenSSLEvpSignatureFinalize(transform);
-            return(-1);
-        }
+        ctx->digestName = OSSL_DIGEST_NAME_RIPEMD160;
 #endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId      = xmlSecOpenSSLKeyDataRsaId;
     } else
@@ -196,12 +192,7 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->digest = EVP_sha1();
 #else /* XMLSEC_OPENSSL_API_300 */
-        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), OSSL_DIGEST_NAME_SHA1, NULL);
-        if(ctx->digest == NULL) {
-            xmlSecOpenSSLError("EVP_MD_fetch(SHA1)", xmlSecTransformGetName(transform));
-            xmlSecOpenSSLEvpSignatureFinalize(transform);
-            return(-1);
-        }
+        ctx->digestName = OSSL_DIGEST_NAME_SHA1;
 #endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId      = xmlSecOpenSSLKeyDataRsaId;
     } else
@@ -212,12 +203,7 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->digest = EVP_sha224();
 #else /* XMLSEC_OPENSSL_API_300 */
-        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), OSSL_DIGEST_NAME_SHA2_224, NULL);
-        if(ctx->digest == NULL) {
-            xmlSecOpenSSLError("EVP_MD_fetch(SHA2-224)", xmlSecTransformGetName(transform));
-            xmlSecOpenSSLEvpSignatureFinalize(transform);
-            return(-1);
-        }
+        ctx->digestName = OSSL_DIGEST_NAME_SHA2_224;
 #endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId      = xmlSecOpenSSLKeyDataRsaId;
     } else
@@ -228,12 +214,7 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->digest = EVP_sha256();
 #else /* XMLSEC_OPENSSL_API_300 */
-        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), OSSL_DIGEST_NAME_SHA2_256, NULL);
-        if(ctx->digest == NULL) {
-            xmlSecOpenSSLError("EVP_MD_fetch(SHA2-256)", xmlSecTransformGetName(transform));
-            xmlSecOpenSSLEvpSignatureFinalize(transform);
-            return(-1);
-        }
+        ctx->digestName = OSSL_DIGEST_NAME_SHA2_256;
 #endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId      = xmlSecOpenSSLKeyDataRsaId;
     } else
@@ -244,12 +225,7 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->digest = EVP_sha384();
 #else /* XMLSEC_OPENSSL_API_300 */
-        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), OSSL_DIGEST_NAME_SHA2_384, NULL);
-        if(ctx->digest == NULL) {
-            xmlSecOpenSSLError("EVP_MD_fetch(SHA2-384)", xmlSecTransformGetName(transform));
-            xmlSecOpenSSLEvpSignatureFinalize(transform);
-            return(-1);
-        }
+        ctx->digestName = OSSL_DIGEST_NAME_SHA2_384;
 #endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId      = xmlSecOpenSSLKeyDataRsaId;
     } else
@@ -260,12 +236,7 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->digest = EVP_sha512();
 #else /* XMLSEC_OPENSSL_API_300 */
-        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), OSSL_DIGEST_NAME_SHA2_512, NULL);
-        if(ctx->digest == NULL) {
-            xmlSecOpenSSLError("EVP_MD_fetch(SHA2-512)", xmlSecTransformGetName(transform));
-            xmlSecOpenSSLEvpSignatureFinalize(transform);
-            return(-1);
-        }
+        ctx->digestName = OSSL_DIGEST_NAME_SHA2_512;
 #endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId      = xmlSecOpenSSLKeyDataRsaId;
     } else
@@ -283,12 +254,7 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
             return(-1);
         }
 #else /* XMLSEC_OPENSSL_API_300 */
-        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "GOST-94", NULL);
-        if(ctx->digest == NULL) {
-            xmlSecOpenSSLError("EVP_MD_fetch(GOST-94)", xmlSecTransformGetName(transform));
-            xmlSecOpenSSLEvpSignatureFinalize(transform);
-            return(-1);
-        }
+        ctx->digestName = "GOST-94";
 #endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId  = xmlSecOpenSSLKeyDataGost2001Id;
     } else
@@ -304,12 +270,7 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
             return(-1);
         }
 #else /* XMLSEC_OPENSSL_API_300 */
-        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "GOST12-256", NULL);
-        if(ctx->digest == NULL) {
-            xmlSecOpenSSLError("EVP_MD_fetch(GOST12-256)", xmlSecTransformGetName(transform));
-            xmlSecOpenSSLEvpSignatureFinalize(transform);
-            return(-1);
-        }
+        ctx->digestName = "GOST12-256";
 #endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId  = xmlSecOpenSSLKeyDataGostR3410_2012_256Id;
     } else
@@ -323,12 +284,7 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
             return(-1);
         }
 #else /* XMLSEC_OPENSSL_API_300 */
-        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), "GOST12-512", NULL);
-        if(ctx->digest == NULL) {
-            xmlSecOpenSSLError("EVP_MD_fetch(GOST12-512)", xmlSecTransformGetName(transform));
-            xmlSecOpenSSLEvpSignatureFinalize(transform);
-            return(-1);
-        }
+        ctx->digestName = "GOST12-512";
 #endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId  = xmlSecOpenSSLKeyDataGostR3410_2012_512Id;
     } else
@@ -339,6 +295,19 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
         xmlSecOpenSSLEvpSignatureFinalize(transform);
         return(-1);
     }
+
+#ifdef XMLSEC_OPENSSL_API_300
+    /* fetch digest */
+    xmlSecAssert2(ctx->digestName != NULL, -1);
+    ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), ctx->digestName, NULL);
+    if(ctx->digest == NULL) {
+        xmlSecOpenSSLError2("EVP_MD_fetch", xmlSecTransformGetName(transform),
+            "digestName=%s", xmlSecErrorsSafeString(ctx->digestName));
+        xmlSecOpenSSLEvpSignatureFinalize(transform);
+        return(-1);
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
+
 
     /* create digest CTX */
     ctx->digestCtx = EVP_MD_CTX_new();

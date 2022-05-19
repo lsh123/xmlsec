@@ -703,7 +703,7 @@ xmlSecOpenSSLSignatureDsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr 
         xmlSecOpenSSLError("EVP_PKEY_sign(1)", NULL);
         goto done;
     }
-    dsaSignBuf = xmlSecBufferCreate(dsaSignBufSize);
+    dsaSignBuf = xmlSecBufferCreate(XMLSEC_SIZE_BAD_CAST(dsaSignBufSize));
     if (dsaSignBuf == NULL) {
         xmlSecInternalError2("xmlSecBufferCreate",
                              NULL,
@@ -762,7 +762,7 @@ xmlSecOpenSSLSignatureDsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr 
     }
 
     /* allocate buffer */
-    ret = xmlSecBufferSetSize(out, 2 * signHalfSize);
+    ret = xmlSecBufferSetSize(out, XMLSEC_SIZE_BAD_CAST(2 * signHalfSize));
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL,
                              "size=%d", (int)(2 * signHalfSize));
@@ -1191,7 +1191,7 @@ xmlSecOpenSSLSignatureEcdsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPt
         xmlSecOpenSSLError("EVP_PKEY_sign(1)", NULL);
         goto done;
     }
-    ecSignBuf = xmlSecBufferCreate(ecSignBufSize);
+    ecSignBuf = xmlSecBufferCreate(XMLSEC_SIZE_BAD_CAST(ecSignBufSize));
     if (ecSignBuf == NULL) {
         xmlSecInternalError2("xmlSecBufferCreate",
             NULL,

@@ -1152,14 +1152,14 @@ static int
 xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
 #ifndef XMLSEC_OPENSSL_API_300
     DSA* dsa = NULL;
+    int counter_ret;
+    unsigned long h_ret;
 #else /* XMLSEC_OPENSSL_API_300 */
     EVP_PKEY_CTX* pctx = NULL;
     OSSL_PARAM_BLD* param_bld = NULL;
     OSSL_PARAM* params = NULL;
     EVP_PKEY* pKey = NULL;
 #endif /* XMLSEC_OPENSSL_API_300 */
-    int counter_ret;
-    unsigned long h_ret;
     int ret;
     int res = -1;
 
@@ -1301,7 +1301,6 @@ xmlSecOpenSSLKeyDataDsaGetType(xmlSecKeyDataPtr data) {
     BIGNUM* g = NULL;
     BIGNUM* priv_key = NULL;
     BIGNUM* pub_key = NULL;
-    int ret;
 #endif /* XMLSEC_OPENSSL_API_300 */
     xmlSecKeyDataType res = xmlSecKeyDataTypeUnknown;
 
@@ -1394,7 +1393,6 @@ xmlSecOpenSSLKeyDataDsaGetSize(xmlSecKeyDataPtr data) {
     const BIGNUM *p = NULL;
 #else /* XMLSEC_OPENSSL_API_300 */
     const EVP_PKEY* pKey = NULL;
-    int ret;
     BIGNUM *p = NULL;
 #endif /* XMLSEC_OPENSSL_API_300 */
     xmlSecSize res = 0;
@@ -1673,7 +1671,6 @@ xmlSecOpenSSLKeyDataEcdsaGetSize(xmlSecKeyDataPtr data) {
 #endif /* XMLSEC_OPENSSL_API_300 */
     BIGNUM * order = NULL;
     xmlSecSize res;
-    int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId), 0);
 

@@ -630,7 +630,7 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
 
             /* finally write result to output */
             if(transform->operation == xmlSecTransformOperationSign) {
-                ret = xmlSecBufferAppend(out, ctx->dgst, dgstSize);
+                ret = xmlSecBufferAppend(out, ctx->dgst, XMLSEC_SIZE_BAD_CAST(dgstSize));
                 if(ret < 0) {
                     xmlSecInternalError2("xmlSecBufferAppend",
                                          xmlSecTransformGetName(transform),

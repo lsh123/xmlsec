@@ -13,6 +13,8 @@ xmlsec_app="$4"
 file_format="$5"
 timestamp=`date +%Y%m%d_%H%M%S`
 
+
+echo "DEBUG: ARCH: $OS_ARCH"
 if [ "z$OS_ARCH" = "zCygwin" ] ; then
     topfolder=`cygpath -wa "$topfolder"`
     xmlsec_app=`cygpath -a "$xmlsec_app"`

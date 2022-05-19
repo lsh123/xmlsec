@@ -23,7 +23,7 @@ skip_commits:
     - man/*
 
 image:
-- Visual Studio 2017
+- Visual Studio 2022
 
 environment:
   global:
@@ -35,37 +35,37 @@ environment:
     OPENSSL300_FILE: openssl-3.0.3-win-x64.7z
 
   matrix:
-    - COMPILER: MSVC17
+    - COMPILER: MSVC22
       CRYPTO: openssl
       STATIC: no
       UNICODE: yes
       WERROR: no
 
-    - COMPILER: MSVC17
+    - COMPILER: MSVC22
       CRYPTO: openssl=300
       STATIC: no
       UNICODE: yes
       WERROR: no
 
-    - COMPILER: MSVC17
+    - COMPILER: MSVC22
       CRYPTO: mscrypto
       STATIC: no
       UNICODE: yes
       WERROR: yes
 
-    - COMPILER: MSVC17
+    - COMPILER: MSVC22
       CRYPTO: mscrypto
       STATIC: no
       UNICODE: no
       WERROR: yes
  
-    - COMPILER: MSVC17
+    - COMPILER: MSVC22
       CRYPTO: mscng
       STATIC: no
       UNICODE: yes
       WERROR: yes
 
-    - COMPILER: MSVC17
+    - COMPILER: MSVC22
       CRYPTO: mscng
       STATIC: no
       UNICODE: no
@@ -73,7 +73,7 @@ environment:
 
 init:
   - git config --global core.autocrlf input
-  - set PATH=%EXTRAS_FOLDER%\bin;%EXTRAS_FOLDER%\lib;;%PATH%
+  - set PATH=C:\cygwin64\bin;%EXTRAS_FOLDER%\bin;%EXTRAS_FOLDER%\lib;;%PATH%
   - set XMLSEC_INCLUDE=%EXTRAS_FOLDER%\include;%EXTRAS_FOLDER%\include\libxml2;%MSSDK_INCLUDE%
   - set XMLSEC_LIB=%EXTRAS_FOLDER%\bin;%EXTRAS_FOLDER%\lib;%MSSDK_LIB%
     

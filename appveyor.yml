@@ -67,6 +67,9 @@ environment:
 init:
   - git config --global core.autocrlf input
   - set PATH=%EXTRAS_FOLDER%\bin;%EXTRAS_FOLDER%\lib;;%PATH%
+  - set XMLSEC_INCLUDE=%EXTRAS_FOLDER%\include;%EXTRAS_FOLDER%\include\libxml2;%MSSDK_INCLUDE%
+  - set XMLSEC_LIB=%EXTRAS_FOLDER%\bin;%EXTRAS_FOLDER%\lib;%MSSDK_LIB%
+  - echo CRYPTO=%CRYPTO%
     
 install:
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
@@ -81,7 +84,7 @@ install:
 
 build_script:
   - cd win32
-  - cscript configure.js static=%STATIC% crypto=%CRYPTO% werror=%WERROR% iconv=no unicode=%UNICODE% prefix=%EXTRAS_FOLDER% include=%EXTRAS_FOLDER%\include;%EXTRAS_FOLDER%\include\libxml2;%MSSDK_INCLUDE% lib=%EXTRAS_FOLDER%\bin;%EXTRAS_FOLDER%\lib;%MSSDK_LIB%
+  - cscript configure.js static=%STATIC% crypto=%CRYPTO% werror=%WERROR% iconv=no unicode=%UNICODE% prefix=%EXTRAS_FOLDER% include=%XMLSEC_INCLUDE% lib=%XMLSEC_LIB%
   - nmake
  
 test_script:

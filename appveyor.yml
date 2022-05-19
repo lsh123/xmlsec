@@ -42,7 +42,7 @@ environment:
       WERROR: no
 
     - COMPILER: MSVC22
-      CRYPTO: openssl=300
+      CRYPTO: openssl-300
       STATIC: no
       UNICODE: yes
       WERROR: no
@@ -89,7 +89,7 @@ install:
       if ($Env:CRYPTO -eq "openssl") {
          Start-FileDownload $Env:EXTRAS_URL/$Env:OPENSSL110_FILE -FileName $Env:OPENSSL110_FILE
          & 7z x $Env:OPENSSL110_FILE
-      } elseif($Env:CRYPTO -eq "openssl=300") {
+      } elseif($Env:CRYPTO -eq "openssl-300") {
          Start-FileDownload $Env:EXTRAS_URL/$Env:OPENSSL300_FILE -FileName $Env:OPENSSL300_FILE
          & 7z x $Env:OPENSSL300_FILE
       }

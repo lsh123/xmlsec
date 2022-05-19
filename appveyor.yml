@@ -89,7 +89,7 @@ install:
   - ps: |
       if ($Env:CRYPTO -eq "openssl") {
          & 7z x %OPENSSL110_FILE%
-      }  elseif($Env:CRYPTO -eq "openssl=300"){
+      }  elseif($Env:CRYPTO -eq "openssl=300") {
          & 7z x %OPENSSL300_FILE%
       }
   - cd %APPVEYOR_BUILD_FOLDER%

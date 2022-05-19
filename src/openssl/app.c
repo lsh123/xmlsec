@@ -83,6 +83,14 @@ XMLSEC_FUNC_TO_PTR_IMPL(pem_password_cb)
 int
 xmlSecOpenSSLAppInit(const char* config) {
 
+#ifdef XMLSEC_OPENSSL_API_300
+    /* Load Multiple providers into the default (NULL) library context */
+    OSSL_PROVIDER * legacyProvider = OSSL_PROVIDER_load(NULL, "legacy");
+    if (legacyProvider == NULL) {
+        xmlSecOpenSSLError("OSSL_PROVIDER_load", NULL);
+    }
+#endif
+
 #if !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300)
 
     ERR_load_crypto_strings();

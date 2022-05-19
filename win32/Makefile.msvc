@@ -564,7 +564,7 @@ check-keys : $(BINDIR)\$(APP_NAME)
 	cd ..
 	if not exist %MAKEDIR%\tmp mkdir %MAKEDIR%\tmp
 	set TMPFOLDER=%MAKEDIR%\tmp
-        set XMLSEC_OPENSSL_TEST_CONFIG=$(XMLSEC_OPENSSL_TEST_CONFIG)
+	set XMLSEC_OPENSSL_TEST_CONFIG=$(XMLSEC_OPENSSL_TEST_CONFIG)
 	sh ./tests/testrun.sh ./tests/testKeys.sh "$(WITH_DEFAULT_CRYPTO)" ./tests win32/$(BINDIR)/$(APP_NAME) der
 	cd win32
 
@@ -572,7 +572,7 @@ check-dsig : $(BINDIR)\$(APP_NAME)
 	cd ..
 	if not exist %MAKEDIR%\tmp mkdir %MAKEDIR%\tmp
 	set TMPFOLDER=%MAKEDIR%\tmp
-        set XMLSEC_OPENSSL_TEST_CONFIG=$(XMLSEC_OPENSSL_TEST_CONFIG)
+	set XMLSEC_OPENSSL_TEST_CONFIG=$(XMLSEC_OPENSSL_TEST_CONFIG)
 	sh ./tests/testrun.sh ./tests/testDSig.sh "$(WITH_DEFAULT_CRYPTO)" ./tests win32/$(BINDIR)/$(APP_NAME) der
 	cd win32
 

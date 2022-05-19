@@ -384,9 +384,9 @@ for (j = 0; j < crlist.length; j++) {
 		withOpenSSL = 1;
 		withOpenSSLVersion = "110";
         } else if (crlist[j] == "openssl=300") {
-                curcrypto="openssl";
-                withOpenSSL = 1;
-                withOpenSSLVersion = "300";
+		curcrypto="openssl";
+		withOpenSSL = 1;
+		withOpenSSLVersion = "300";
 	} else if (crlist[j] == "nss") {
 		curcrypto="nss";
 		withNss = 1;

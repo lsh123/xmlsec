@@ -119,6 +119,11 @@ xmlSecOpenSSLAppInit(const char* config) {
     }
 
     printf("DEBUG: default config file: %s\n", CONF_get1_default_config_file());
+ if (CONF_modules_load_file_ex(libctx, NULL, NULL, 0) <= 0) {
+     fprintf(stderr, "FATAL: error loading configuration file\n");
+     ERR_print_errors_fp(stderr);
+     exit(1);
+ }
 
     /* done! */
     return(0);

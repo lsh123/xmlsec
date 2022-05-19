@@ -31,7 +31,8 @@ environment:
     EXTRAS_URL: https://www.aleksey.com/xmlsec/download/extras
     LIBXML2_FILE: libxml2-2.9.8-noiconv-win-x64.7z
     LIBXSLT_FILE: libxslt-1.1.32-noiconv-win-x64.7z
-    OPENSSL_FILE: openssl-1.1.1l-x64.7z
+    OPENSSL110_FILE: openssl-1.1.1o-win-x64.7z
+    OPENSSL300_FILE: openssl-3.0.3-win-x64.7z
 
   matrix:
     - COMPILER: MSVC17
@@ -53,6 +54,12 @@ environment:
       WERROR: no
 
     - COMPILER: MSVC17
+      CRYPTO: openssl=300
+      STATIC: no
+      UNICODE: yes
+      WERROR: no
+
+    - COMPILER: MSVC17
       CRYPTO: mscrypto
       STATIC: no
       UNICODE: no
@@ -69,7 +76,6 @@ init:
   - set PATH=%EXTRAS_FOLDER%\bin;%EXTRAS_FOLDER%\lib;;%PATH%
   - set XMLSEC_INCLUDE=%EXTRAS_FOLDER%\include;%EXTRAS_FOLDER%\include\libxml2;%MSSDK_INCLUDE%
   - set XMLSEC_LIB=%EXTRAS_FOLDER%\bin;%EXTRAS_FOLDER%\lib;%MSSDK_LIB%
-  - echo CRYPTO=%CRYPTO%
     
 install:
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
@@ -78,8 +84,14 @@ install:
   - 7z x %LIBXML2_FILE%
   - appveyor DownloadFile "%EXTRAS_URL%/%LIBXSLT_FILE%"
   - 7z x %LIBXSLT_FILE%
-  - appveyor DownloadFile "%EXTRAS_URL%/%OPENSSL_FILE%"
-  - 7z x %OPENSSL_FILE%
+  - appveyor DownloadFile "%EXTRAS_URL%/%OPENSSL110_FILE%"
+  - appveyor DownloadFile "%EXTRAS_URL%/%OPENSSL300_FILE%"
+  - ps: |
+      if ($Env:CRYPTO -eq "openssl") {
+         & 7z x %OPENSSL110_FILE%
+      }  elseif($Env:CRYPTO -eq "openssl=300"){
+         & 7z x %OPENSSL300_FILE%
+      }
   - cd %APPVEYOR_BUILD_FOLDER%
 
 build_script:

@@ -84,13 +84,13 @@ install:
   - 7z x %LIBXML2_FILE%
   - appveyor DownloadFile "%EXTRAS_URL%/%LIBXSLT_FILE%"
   - 7z x %LIBXSLT_FILE%
-  - appveyor DownloadFile "%EXTRAS_URL%/%OPENSSL110_FILE%"
-  - appveyor DownloadFile "%EXTRAS_URL%/%OPENSSL300_FILE%"
   - ps: |
       if ($Env:CRYPTO -eq "openssl") {
-         & 7z x %OPENSSL110_FILE%
-      }  elseif($Env:CRYPTO -eq "openssl=300") {
-         & 7z x %OPENSSL300_FILE%
+         & curl -fsS -o $Env:OPENSSL110_FILE $Env:EXTRAS_URL/$Env:OPENSSL110_FILE
+         & 7z x $Env:OPENSSL110_FILE
+      } elseif($Env:CRYPTO -eq "openssl=300") {
+         & curl -fsS -o $Env:OPENSSL300_FILE $Env:EXTRAS_URL/$Env:OPENSSL300_FILE
+         & 7z x $Env:OPENSSL300_FILE
       }
   - cd %APPVEYOR_BUILD_FOLDER%
 

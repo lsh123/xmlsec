@@ -86,10 +86,10 @@ install:
   - 7z x %LIBXSLT_FILE%
   - ps: |
       if ($Env:CRYPTO -eq "openssl") {
-         & curl -fsS -o $Env:OPENSSL110_FILE $Env:EXTRAS_URL/$Env:OPENSSL110_FILE
+         Start-FileDownload $Env:EXTRAS_URL/$Env:OPENSSL110_FILE -FileName $Env:OPENSSL110_FILE 
          & 7z x $Env:OPENSSL110_FILE
       } elseif($Env:CRYPTO -eq "openssl=300") {
-         & curl -fsS -o $Env:OPENSSL300_FILE $Env:EXTRAS_URL/$Env:OPENSSL300_FILE
+         Start-FileDownload $Env:EXTRAS_URL/$Env:OPENSSL300_FILE -FileName $Env:OPENSSL300_FILE 
          & 7z x $Env:OPENSSL300_FILE
       }
   - cd %APPVEYOR_BUILD_FOLDER%

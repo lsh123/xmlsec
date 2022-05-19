@@ -23,7 +23,7 @@ skip_commits:
     - man/*
 
 image:
-- Visual Studio 2017
+- Visual Studio 2022
 
 environment:
   global:
@@ -35,37 +35,37 @@ environment:
     OPENSSL300_FILE: openssl-3.0.3-win-x64.7z
 
   matrix:
-    - COMPILER: MSVC17
+    - COMPILER: MSVC22
       CRYPTO: openssl
       STATIC: no
       UNICODE: yes
       WERROR: no
 
-    - COMPILER: MSVC17
+    - COMPILER: MSVC22
       CRYPTO: openssl=300
       STATIC: no
       UNICODE: yes
       WERROR: no
 
-    - COMPILER: MSVC17
+    - COMPILER: MSVC22
       CRYPTO: mscrypto
       STATIC: no
       UNICODE: yes
       WERROR: yes
 
-    - COMPILER: MSVC17
+    - COMPILER: MSVC22
       CRYPTO: mscrypto
       STATIC: no
       UNICODE: no
       WERROR: yes
  
-    - COMPILER: MSVC17
+    - COMPILER: MSVC22
       CRYPTO: mscng
       STATIC: no
       UNICODE: yes
       WERROR: yes
 
-    - COMPILER: MSVC17
+    - COMPILER: MSVC22
       CRYPTO: mscng
       STATIC: no
       UNICODE: no
@@ -78,7 +78,7 @@ init:
   - set XMLSEC_LIB=%EXTRAS_FOLDER%\bin;%EXTRAS_FOLDER%\lib;%MSSDK_LIB%
     
 install:
-  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+  - call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
   - mkdir %EXTRAS_FOLDER% && cd %EXTRAS_FOLDER%
   - appveyor DownloadFile "%EXTRAS_URL%/%LIBXML2_FILE%"
   - 7z x %LIBXML2_FILE%

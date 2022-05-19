@@ -323,7 +323,6 @@ execDSigTest() {
     if [ -n "$params1" ] ; then
         printf "    Verify existing signature                            "
         echo "$extra_vars $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params $params1 $full_file.xml" >> $curlogfile
-        cmd.exe /C dir "C:\\projects\\xmlsec\\tests"
         $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params $params1 $full_file.xml >> $curlogfile 2>> $curlogfile
         printRes $expected_res $?
         if [ $? != 0 ]; then

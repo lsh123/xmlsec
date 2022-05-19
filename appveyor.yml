@@ -23,7 +23,7 @@ skip_commits:
     - man/*
 
 image:
-- Visual Studio 2022
+- Visual Studio 2017
 
 environment:
   global:
@@ -35,37 +35,37 @@ environment:
     OPENSSL300_FILE: openssl-3.0.3-win-x64.7z
 
   matrix:
-    - COMPILER: MSVC22
+    - COMPILER: MSVC17
       CRYPTO: openssl
       STATIC: no
       UNICODE: yes
       WERROR: no
 
-    - COMPILER: MSVC22
+    - COMPILER: MSVC17
       CRYPTO: openssl=300
       STATIC: no
       UNICODE: yes
       WERROR: no
 
-    - COMPILER: MSVC22
+    - COMPILER: MSVC17
       CRYPTO: mscrypto
       STATIC: no
       UNICODE: yes
       WERROR: yes
 
-    - COMPILER: MSVC22
+    - COMPILER: MSVC17
       CRYPTO: mscrypto
       STATIC: no
       UNICODE: no
       WERROR: yes
  
-    - COMPILER: MSVC22
+    - COMPILER: MSVC17
       CRYPTO: mscng
       STATIC: no
       UNICODE: yes
       WERROR: yes
 
-    - COMPILER: MSVC22
+    - COMPILER: MSVC17
       CRYPTO: mscng
       STATIC: no
       UNICODE: no

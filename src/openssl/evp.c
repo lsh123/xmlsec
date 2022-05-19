@@ -1666,6 +1666,7 @@ xmlSecOpenSSLKeyDataEcdsaGetSize(xmlSecKeyDataPtr data) {
 #ifndef XMLSEC_OPENSSL_API_300
     const EC_GROUP *group;
     const EC_KEY *ecdsa;
+    int ret;
 #else /* XMLSEC_OPENSSL_API_300 */
     const EVP_PKEY* pKey;
 #endif /* XMLSEC_OPENSSL_API_300 */

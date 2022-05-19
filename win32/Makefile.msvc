@@ -455,7 +455,10 @@ APP_LIBS  		= $(SOLIBS) $(XMLSEC_CRYPTO_SOLIBS)
 !else
 !endif
 
-!if "$(WITH_OPENSSL_VERSION)" == "XMLSEC_OPENSSL_110"
+!if "$(WITH_OPENSSL_VERSION)" == "XMLSEC_OPENSSL_300"
+XMLSEC_OPENSSL_SOLIBS   = libcrypto.lib wsock32.lib kernel32.lib user32.lib gdi32.lib crypt32.lib advapi32.lib ws2_32.lib
+XMLSEC_OPENSSL_ALIBS    = libcrypto.lib wsock32.lib kernel32.lib user32.lib gdi32.lib crypt32.lib advapi32.lib ws2_32.lib
+!elseif "$(WITH_OPENSSL_VERSION)" == "XMLSEC_OPENSSL_110"
 XMLSEC_OPENSSL_SOLIBS   = libcrypto.lib wsock32.lib kernel32.lib user32.lib gdi32.lib crypt32.lib advapi32.lib ws2_32.lib
 XMLSEC_OPENSSL_ALIBS    = libcrypto.lib wsock32.lib kernel32.lib user32.lib gdi32.lib crypt32.lib advapi32.lib ws2_32.lib
 !else
@@ -524,6 +527,13 @@ XMLSEC_CRYPTO_IMP	    = $(XMLSEC_MSCNG_IMP)
 XMLSEC_CRYPTO_A		    = $(XMLSEC_MSCNG_A)
 !endif
 
+
+!if "$(WITH_OPENSSL_VERSION)" == "XMLSEC_OPENSSL_300"
+XMLSEC_OPENSSL_TEST_CONFIG = openssl3.cnf
+!else
+XMLSEC_OPENSSL_TEST_CONFIG =
+!endif
+
 #
 # Build rules
 #
@@ -554,6 +564,7 @@ check-keys : $(BINDIR)\$(APP_NAME)
 	cd ..
 	if not exist %MAKEDIR%\tmp mkdir %MAKEDIR%\tmp
 	set TMPFOLDER=%MAKEDIR%\tmp
+	set XMLSEC_OPENSSL_TEST_CONFIG=$(XMLSEC_OPENSSL_TEST_CONFIG)
 	sh ./tests/testrun.sh ./tests/testKeys.sh "$(WITH_DEFAULT_CRYPTO)" ./tests win32/$(BINDIR)/$(APP_NAME) der
 	cd win32
 
@@ -561,6 +572,7 @@ check-dsig : $(BINDIR)\$(APP_NAME)
 	cd ..
 	if not exist %MAKEDIR%\tmp mkdir %MAKEDIR%\tmp
 	set TMPFOLDER=%MAKEDIR%\tmp
+	set XMLSEC_OPENSSL_TEST_CONFIG=$(XMLSEC_OPENSSL_TEST_CONFIG)
 	sh ./tests/testrun.sh ./tests/testDSig.sh "$(WITH_DEFAULT_CRYPTO)" ./tests win32/$(BINDIR)/$(APP_NAME) der
 	cd win32
 
@@ -568,6 +580,7 @@ check-enc : $(BINDIR)\$(APP_NAME)
 	cd ..
 	if not exist %MAKEDIR%\tmp mkdir %MAKEDIR%\tmp
 	set TMPFOLDER=%MAKEDIR%\tmp
+	set XMLSEC_OPENSSL_TEST_CONFIG=$(XMLSEC_OPENSSL_TEST_CONFIG)
 	sh ./tests/testrun.sh ./tests/testEnc.sh "$(WITH_DEFAULT_CRYPTO)" ./tests win32/$(BINDIR)/$(APP_NAME) der
 	cd win32
 

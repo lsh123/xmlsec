@@ -466,7 +466,7 @@ xmlSecOpenSSLKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
     AES_KEY aesKey;
 #else /* XMLSEC_OPENSSL_API_300 */
     EVP_CIPHER_CTX* cctx;
-    xmlSecSize nOut, outLen;
+    int nOut, outLen;
 #endif /* XMLSEC_OPENSSL_API_300 */
     int ret;
 
@@ -547,7 +547,7 @@ xmlSecOpenSSLKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
     AES_KEY aesKey;
 #else /* XMLSEC_OPENSSL_API_300 */
     EVP_CIPHER_CTX* cctx;
-    xmlSecSize nOut, outLen;
+    int nOut, outLen;
 #endif /* XMLSEC_OPENSSL_API_300 */
     int ret;
 

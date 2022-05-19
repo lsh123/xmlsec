@@ -1,0 +1,43 @@
+*** Pre-requisites
+1) Install Cygwin with git, vim, wget, ...
+2) Add c:\Cygwin64\bin and c:\Cygwin64\lib to the PATH environment variable
+3) Install Strawberry Perl
+4) Install Visual Studio with C++ 
+
+
+*** LibXML2
+1) Inside Cygwin prompt:
+$ cd /cygdrive/c/local/dev
+$ git clone git@github.com:GNOME/libxml2.git
+
+2) Inside  "x64 Native tools command prompt":
+> cd c:\local\dev\libxml2\win32
+> cscript configure.js prefix=c:\local static=no iconv=no debug=yes
+> nmake
+> nmake install
+
+*** LibXSLT
+1) Inside Cygwin prompt:
+$ cd /cygdrive/c/local/dev
+$ git clone git@github.com:GNOME/libxslt.git
+
+2) Inside  "x64 Native tools command prompt":
+> cd c:\local\dev\libxslt\win32
+> cscript configure.js prefix=c:\local static=no iconv=no debug=yes include=c:\local\include\libxml2 lib=c:\local\lib
+> nmake
+> nmake install
+
+
+*** OpenSSL
+----------
+1) Inside Cygwin prompt:
+$ cd /cygdrive/c/local/dev
+$ wget <openssl-source-url>
+$ tar xfvz <openssl-tar-file>
+
+2) Inside "x64 Native tools command prompt":
+> cd c:\local\dev\<openssl-dir>
+> perl Configure no-asm --prefix=c:\local\openssl-<version> VC-WIN64A
+> nmake
+> nmake install
+

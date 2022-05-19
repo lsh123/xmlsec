@@ -149,7 +149,12 @@ typedef int  (*xmlSecOpenSSLSignatureVerifyCallback)         (xmlSecOpenSSLSigna
  *
  *****************************************************************************/
 struct _xmlSecOpenSSLSignatureCtx {
+#ifndef XMLSEC_OPENSSL_API_300
     const EVP_MD*                        digest;
+#else /* XMLSEC_OPENSSL_API_300 */
+    const char*                          digestName;
+    EVP_MD*                              digest;
+#endif /* XMLSEC_OPENSSL_API_300 */
     EVP_MD_CTX*                          digestCtx;
     xmlSecKeyDataId                      keyId;
     xmlSecOpenSSLSignatureSignCallback   signCallback;
@@ -262,7 +267,11 @@ xmlSecOpenSSLSignatureInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformDsaSha1Id)) {
+#ifndef XMLSEC_OPENSSL_API_300
         ctx->digest         = EVP_sha1();
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->digestName     = OSSL_DIGEST_NAME_SHA1;
+#endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId          = xmlSecOpenSSLKeyDataDsaId;
         ctx->signCallback   = xmlSecOpenSSLSignatureDsaSign;
         ctx->verifyCallback = xmlSecOpenSSLSignatureDsaVerify;
@@ -271,7 +280,11 @@ xmlSecOpenSSLSignatureInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformDsaSha256Id)) {
+#ifndef XMLSEC_OPENSSL_API_300
         ctx->digest         = EVP_sha256();
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->digestName     = OSSL_DIGEST_NAME_SHA2_256;
+#endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId          = xmlSecOpenSSLKeyDataDsaId;
         ctx->signCallback   = xmlSecOpenSSLSignatureDsaSign;
         ctx->verifyCallback = xmlSecOpenSSLSignatureDsaVerify;
@@ -284,7 +297,11 @@ xmlSecOpenSSLSignatureInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEcdsaSha1Id)) {
+#ifndef XMLSEC_OPENSSL_API_300
         ctx->digest         = EVP_sha1();
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->digestName     = OSSL_DIGEST_NAME_SHA1;
+#endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId          = xmlSecOpenSSLKeyDataEcdsaId;
         ctx->signCallback   = xmlSecOpenSSLSignatureEcdsaSign;
         ctx->verifyCallback = xmlSecOpenSSLSignatureEcdsaVerify;
@@ -293,7 +310,11 @@ xmlSecOpenSSLSignatureInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_SHA224
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEcdsaSha224Id)) {
+#ifndef XMLSEC_OPENSSL_API_300
         ctx->digest         = EVP_sha224();
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->digestName     = OSSL_DIGEST_NAME_SHA2_224;
+#endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId          = xmlSecOpenSSLKeyDataEcdsaId;
         ctx->signCallback   = xmlSecOpenSSLSignatureEcdsaSign;
         ctx->verifyCallback = xmlSecOpenSSLSignatureEcdsaVerify;
@@ -302,7 +323,11 @@ xmlSecOpenSSLSignatureInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEcdsaSha256Id)) {
+#ifndef XMLSEC_OPENSSL_API_300
         ctx->digest         = EVP_sha256();
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->digestName     = OSSL_DIGEST_NAME_SHA2_256;
+#endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId          = xmlSecOpenSSLKeyDataEcdsaId;
         ctx->signCallback   = xmlSecOpenSSLSignatureEcdsaSign;
         ctx->verifyCallback = xmlSecOpenSSLSignatureEcdsaVerify;
@@ -311,7 +336,11 @@ xmlSecOpenSSLSignatureInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_SHA384
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEcdsaSha384Id)) {
+#ifndef XMLSEC_OPENSSL_API_300
         ctx->digest         = EVP_sha384();
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->digestName     = OSSL_DIGEST_NAME_SHA2_384;
+#endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId          = xmlSecOpenSSLKeyDataEcdsaId;
         ctx->signCallback   = xmlSecOpenSSLSignatureEcdsaSign;
         ctx->verifyCallback = xmlSecOpenSSLSignatureEcdsaVerify;
@@ -320,7 +349,11 @@ xmlSecOpenSSLSignatureInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_SHA512
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEcdsaSha512Id)) {
+#ifndef XMLSEC_OPENSSL_API_300
         ctx->digest         = EVP_sha512();
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->digestName     = OSSL_DIGEST_NAME_SHA2_512;
+#endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId          = xmlSecOpenSSLKeyDataEcdsaId;
         ctx->signCallback   = xmlSecOpenSSLSignatureEcdsaSign;
         ctx->verifyCallback = xmlSecOpenSSLSignatureEcdsaVerify;
@@ -334,18 +367,30 @@ xmlSecOpenSSLSignatureInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
+#ifdef XMLSEC_OPENSSL_API_300
+    /* fetch digest */
+    xmlSecAssert2(ctx->digestName != NULL, -1);
+    ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), ctx->digestName, NULL);
+    if(ctx->digest == NULL) {
+        xmlSecOpenSSLError2("EVP_MD_fetch", xmlSecTransformGetName(transform), 
+            "digestName=%s", xmlSecErrorsSafeString(ctx->digestName));
+        xmlSecOpenSSLSignatureFinalize(transform);
+        return(-1);
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
+
     /* create/init digest CTX */
     ctx->digestCtx = EVP_MD_CTX_new();
     if(ctx->digestCtx == NULL) {
-        xmlSecOpenSSLError("EVP_MD_CTX_new",
-                           xmlSecTransformGetName(transform));
+        xmlSecOpenSSLError("EVP_MD_CTX_new", xmlSecTransformGetName(transform));
+        xmlSecOpenSSLSignatureFinalize(transform);
         return(-1);
     }
 
     ret = EVP_DigestInit(ctx->digestCtx, ctx->digest);
     if(ret != 1) {
-        xmlSecOpenSSLError("EVP_DigestInit",
-                           xmlSecTransformGetName(transform));
+        xmlSecOpenSSLError("EVP_DigestInit", xmlSecTransformGetName(transform));
+        xmlSecOpenSSLSignatureFinalize(transform);
         return(-1);
     }
 
@@ -370,6 +415,11 @@ xmlSecOpenSSLSignatureFinalize(xmlSecTransformPtr transform) {
     if(ctx->digestCtx != NULL) {
         EVP_MD_CTX_free(ctx->digestCtx);
     }
+#ifdef XMLSEC_OPENSSL_API_300
+    if(ctx->digest != NULL) {
+        EVP_MD_free(ctx->digest);
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
 
     memset(ctx, 0, sizeof(xmlSecOpenSSLSignatureCtx));
 }

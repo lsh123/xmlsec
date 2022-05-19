@@ -62,6 +62,15 @@ fi
 xmlsec_params="$xmlsec_params --crypto-config $crypto_config"
 
 #
+# Setup extra vars
+#
+extra_vars=
+if [ "z$crypto" = "zopenssl" -a "z$XMLSEC_OPENSSL_TEST_CONFIG" != "z" ] ; then
+    extra_vars="$extra_vars OPENSSL_CONF=$topfolder/$XMLSEC_OPENSSL_TEST_CONFIG"
+    export OPENSSL_CONF="$topfolder/$XMLSEC_OPENSSL_TEST_CONFIG"
+fi
+
+#
 # Setup keys config
 #
 pub_key_format=$file_format
@@ -201,7 +210,7 @@ execKeysTest() {
     # check key data
     if [ -n "$req_key_data" ] ; then
         printf "    Checking required key data                            "
-        echo "$xmlsec_app check-key-data $xmlsec_params $req_key_data" >> $curlogfile
+        echo "$extra_vars $xmlsec_app check-key-data $xmlsec_params $req_key_data" >> $curlogfile
         $xmlsec_app check-key-data $xmlsec_params $req_key_data >> $curlogfile 2>> $curlogfile
         printCheckStatus $?
         res=$?
@@ -218,7 +227,7 @@ execKeysTest() {
     if [ -f $keysfile ] ; then
         params="$params --keys-file $keysfile"
     fi
-    echo "$VALGRIND $xmlsec_app keys $params $xmlsec_params $keysfile" >>  $curlogfile 
+    echo "$extra_vars $VALGRIND $xmlsec_app keys $params $xmlsec_params $keysfile" >>  $curlogfile
     $VALGRIND $xmlsec_app keys $params $xmlsec_params $keysfile >> $curlogfile 2>> $curlogfile
     printRes $expected_res $?
     if [ $? != 0 ]; then
@@ -280,7 +289,7 @@ execDSigTest() {
     # check transforms
     if [ -n "$req_transforms" ] ; then
         printf "    Checking required transforms                         "
-        echo "$xmlsec_app check-transforms $xmlsec_params $req_transforms" >> $curlogfile
+        echo "$extra_vars $xmlsec_app check-transforms $xmlsec_params $req_transforms" >> $curlogfile
         $xmlsec_app check-transforms $xmlsec_params $req_transforms >> $curlogfile 2>> $curlogfile
         printCheckStatus $?
         res=$?
@@ -294,7 +303,7 @@ execDSigTest() {
     # check key data
     if [ -n "$req_key_data" ] ; then
         printf "    Checking required key data                           "
-        echo "$xmlsec_app check-key-data $xmlsec_params $req_key_data" >> $curlogfile
+        echo "$extra_vars $xmlsec_app check-key-data $xmlsec_params $req_key_data" >> $curlogfile
         $xmlsec_app check-key-data $xmlsec_params $req_key_data >> $curlogfile 2>> $curlogfile
         printCheckStatus $?
         res=$?
@@ -308,7 +317,7 @@ execDSigTest() {
     # run tests
     if [ -n "$params1" ] ; then
         printf "    Verify existing signature                            "
-        echo "$VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params $params1 $full_file.xml" >> $curlogfile
+        echo "$extra_vars $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params $params1 $full_file.xml" >> $curlogfile
         $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params $params1 $full_file.xml >> $curlogfile 2>> $curlogfile
         printRes $expected_res $?
         if [ $? != 0 ]; then
@@ -318,7 +327,7 @@ execDSigTest() {
 
     if [ -n "$params2" -a -z "$PERF_TEST" ] ; then
         printf "    Create new signature                                 "
-        echo "$VALGRIND $xmlsec_app sign $xmlsec_params $params2 --output $tmpfile $full_file.tmpl" >> $curlogfile
+        echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params $params2 --output $tmpfile $full_file.tmpl" >> $curlogfile
         $VALGRIND $xmlsec_app sign $xmlsec_params $params2 --output $tmpfile $full_file.tmpl >> $curlogfile 2>> $curlogfile
         printRes $res_success $?
         if [ $? != 0 ]; then
@@ -328,7 +337,7 @@ execDSigTest() {
 
     if [ -n "$params3" -a -z "$PERF_TEST" ] ; then
         printf "    Verify new signature                                 "
-        echo "$VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params $params3 $tmpfile" >> $curlogfile
+        echo "$extra_vars $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params $params3 $tmpfile" >> $curlogfile
         $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params $params3 $tmpfile >> $curlogfile 2>> $curlogfile
         printRes $res_success $?
         if [ $? != 0 ]; then
@@ -391,7 +400,7 @@ execEncTest() {
     # check transforms
     if [ -n "$req_transforms" ] ; then
         printf "    Checking required transforms                         "
-        echo "$xmlsec_app check-transforms $xmlsec_params $req_transforms" >> $curlogfile
+        echo "$extra_vars $xmlsec_app check-transforms $xmlsec_params $req_transforms" >> $curlogfile
         $xmlsec_app check-transforms $xmlsec_params $req_transforms >> $curlogfile 2>> $curlogfile
         printCheckStatus $?
         res=$?
@@ -406,7 +415,7 @@ execEncTest() {
     if [ -n "$params1" ] ; then
         rm -f $tmpfile
         printf "    Decrypt existing document                            "
-        echo "$VALGRIND $xmlsec_app decrypt $xmlsec_params $params1 $full_file.xml" >>  $curlogfile
+        echo "$extra_vars $VALGRIND $xmlsec_app decrypt $xmlsec_params $params1 $full_file.xml" >>  $curlogfile
         $VALGRIND $xmlsec_app decrypt $xmlsec_params $params1 --output $tmpfile $full_file.xml >> $curlogfile  2>> $curlogfile
         res=$?
         echo "=== TEST RESULT: $res; expected: $expected_res" >> $curlogfile
@@ -428,7 +437,7 @@ execEncTest() {
     if [ -n "$params2" -a -z "$PERF_TEST" ] ; then
         rm -f $tmpfile
         printf "    Encrypt document                                     "
-        echo "$VALGRIND $xmlsec_app encrypt $xmlsec_params $params2 --output $tmpfile $full_file.tmpl" >>  $curlogfile 
+        echo "$extra_vars $VALGRIND $xmlsec_app encrypt $xmlsec_params $params2 --output $tmpfile $full_file.tmpl" >>  $curlogfile
         $VALGRIND $xmlsec_app encrypt $xmlsec_params $params2 --output $tmpfile $full_file.tmpl >> $curlogfile 2>> $curlogfile
         printRes $res_success $?
         if [ $? != 0 ]; then
@@ -439,7 +448,7 @@ execEncTest() {
     if [ -n "$params3" -a -z "$PERF_TEST" ] ; then 
         rm -f $tmpfile.2
         printf "    Decrypt new document                                 "
-        echo "$VALGRIND $xmlsec_app decrypt $xmlsec_params $params3 --output $tmpfile.2 $tmpfile" >>  $curlogfile
+        echo "$extra_vars $VALGRIND $xmlsec_app decrypt $xmlsec_params $params3 --output $tmpfile.2 $tmpfile" >>  $curlogfile
         $VALGRIND $xmlsec_app decrypt $xmlsec_params $params3 --output $tmpfile.2 $tmpfile >> $curlogfile 2>> $curlogfile
         res=$?
         if [ $res = 0 ]; then

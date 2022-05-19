@@ -558,3 +558,39 @@ const xmlChar*
 xmlSecOpenSSLGetDefaultTrustedCertsFolder(void) {
     return(gXmlSecOpenSSLTrustedCertsFolder);
 }
+
+#ifdef XMLSEC_OPENSSL_API_300
+
+static OSSL_LIB_CTX* gXmlSecOpenSSLLibCtx = NULL;
+
+/**
+ * xmlSecOpenSSLSetLibCtx:
+ * @libctx:           the OSSL_LIB_CTX object to be used by xmlsec-openssl 
+ *                    or NULL to use default.
+ *
+ * Sets the OSSL_LIB_CTX object to be used by xmlsec-openssl. The caller is 
+ * responsible for lifetime of this object.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */ 
+int
+xmlSecOpenSSLSetLibCtx(OSSL_LIB_CTX* libctx) {
+    gXmlSecOpenSSLLibCtx = libctx;
+    return(0);
+}
+
+/**
+ * xmlSecOpenSSLGetLibCtx:
+ *
+ * Gets the current OSSL_LIB_CTX object to be used by xmlsec-openssl or
+ * NULL if the default one is used.
+ *
+ * Returns: the current OSSL_LIB_CTX object or NULL if default is used.
+ */
+OSSL_LIB_CTX*
+xmlSecOpenSSLGetLibCtx(void) {
+    return(gXmlSecOpenSSLLibCtx);
+}
+#endif /* XMLSEC_OPENSSL_API_300 */
+
+

@@ -69,15 +69,18 @@ EXTRA_CLEAN = \
 
 ABS_SRCDIR=@abs_srcdir@
 ABS_BUILDDIR=@abs_builddir@
+XMLSEC_OPENSSL_TEST_CONFIG=@OPENSSL_TEST_CONFIG@
 if XMLSEC_NO_APPS_CRYPTO_DYNAMIC_LOADING
 PRECHECK_COMMANDS = \
+	export XMLSEC_OPENSSL_TEST_CONFIG="$(XMLSEC_OPENSSL_TEST_CONFIG)" && \
 	cd $(ABS_SRCDIR) \
 	$(NULL)
 else
 PRECHECK_COMMANDS= \
-	export LD_LIBRARY_PATH="$(ABS_BUILDDIR)/src/.libs:$$LD_LIBRARY_PATH" ; \
+	export XMLSEC_OPENSSL_TEST_CONFIG="$(XMLSEC_OPENSSL_TEST_CONFIG)" && \
+	export LD_LIBRARY_PATH="$(ABS_BUILDDIR)/src/.libs:$$LD_LIBRARY_PATH" && \
 	for i in $(XMLSEC_CRYPTO_LIST) ; do \
-	    export LTDL_LIBRARY_PATH="$(ABS_BUILDDIR)/src/$$i/.libs:$$LTDL_LIBRARY_PATH" ; \
+		export LTDL_LIBRARY_PATH="$(ABS_BUILDDIR)/src/$$i/.libs:$$LTDL_LIBRARY_PATH" ; \
 	done && \
 	cd $(ABS_SRCDIR) \
 	$(NULL)	
@@ -104,27 +107,27 @@ check-all: $(TEST_APP)
 
 check-crypto-%: $(TEST_APP) 
 	@($(PRECHECK_COMMANDS) && \
-    echo "=================== Checking xmlsec-$* =================================" && \
-    $(SHELL) ./tests/testrun.sh \
-        $(ABS_SRCDIR)/tests/testKeys.sh \
-        $* \
-        $(ABS_SRCDIR)/tests \
-        $(ABS_BUILDDIR)/$(TEST_APP) der \
-    && \
-    $(SHELL) ./tests/testrun.sh \
-        $(ABS_SRCDIR)/tests/testDSig.sh \
-        $* \
-        $(ABS_SRCDIR)/tests \
-        $(ABS_BUILDDIR)/$(TEST_APP) \
-        der \
-    && \
-    $(SHELL) ./tests/testrun.sh \
-        $(ABS_SRCDIR)/tests/testEnc.sh \
-        $* \
-        $(ABS_SRCDIR)/tests \
-        $(ABS_BUILDDIR)/$(TEST_APP) \
-        der \
-    ; \
+	echo "=================== Checking xmlsec-$* =================================" && \
+	$(SHELL) ./tests/testrun.sh \
+		$(ABS_SRCDIR)/tests/testKeys.sh \
+		$* \
+		$(ABS_SRCDIR)/tests \
+		$(ABS_BUILDDIR)/$(TEST_APP) der \
+	&& \
+	$(SHELL) ./tests/testrun.sh \
+		$(ABS_SRCDIR)/tests/testDSig.sh \
+		$* \
+		$(ABS_SRCDIR)/tests \
+		$(ABS_BUILDDIR)/$(TEST_APP) \
+		der \
+	&& \
+	$(SHELL) ./tests/testrun.sh \
+		$(ABS_SRCDIR)/tests/testEnc.sh \
+		$* \
+		$(ABS_SRCDIR)/tests \
+		$(ABS_BUILDDIR)/$(TEST_APP) \
+		der \
+	; \
 	)
 	
 check-info:

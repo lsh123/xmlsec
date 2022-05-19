@@ -72,6 +72,7 @@ struct _xmlSecOpenSSLKWAesCtx {
     xmlSecBuffer        keyBuffer;
     xmlSecSize          keyExpectedSize;
 #ifdef XMLSEC_OPENSSL_API_300
+    const char*         cipherName;
     EVP_CIPHER*         cipher;
 #endif /* XMLSEC_OPENSSL_API_300 */
 };
@@ -109,39 +110,39 @@ xmlSecOpenSSLKWAesInitialize(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWAes128Id)) {
         ctx->keyExpectedSize = XMLSEC_KW_AES128_KEY_SIZE;
 #ifdef XMLSEC_OPENSSL_API_300
-        ctx->cipher = EVP_CIPHER_fetch(NULL, "aes-128-ecb", NULL);
-        if(ctx->cipher == NULL) {
-            xmlSecOpenSSLError("EVP_CIPHER_fetch(aes-128-ecb)", xmlSecTransformGetName(transform));
-            return(-1);
-        }
+        ctx->cipherName = "AES-128-CBC";
 #endif /* XMLSEC_OPENSSL_API_300 */
     } else if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWAes192Id)) {
         ctx->keyExpectedSize = XMLSEC_KW_AES192_KEY_SIZE;
 #ifdef XMLSEC_OPENSSL_API_300
-        ctx->cipher = EVP_CIPHER_fetch(NULL, "aes-192-ecb", NULL);
-        if(ctx->cipher == NULL) {
-            xmlSecOpenSSLError("EVP_CIPHER_fetch(aes-192-ecb)", xmlSecTransformGetName(transform));
-            return(-1);
-        }
+        ctx->cipherName = "AES-192-CBC";
 #endif /* XMLSEC_OPENSSL_API_300 */
     } else if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWAes256Id)) {
         ctx->keyExpectedSize = XMLSEC_KW_AES256_KEY_SIZE;
 #ifdef XMLSEC_OPENSSL_API_300
-        ctx->cipher = EVP_CIPHER_fetch(NULL, "aes-256-ecb", NULL);
-        if(ctx->cipher == NULL) {
-            xmlSecOpenSSLError("EVP_CIPHER_fetch(aes-256-ecb)", xmlSecTransformGetName(transform));
-            return(-1);
-        }
+        ctx->cipherName = "AES-256-CBC";
 #endif /* XMLSEC_OPENSSL_API_300 */
     } else {
         xmlSecInvalidTransfromError(transform)
         return(-1);
     }
 
+#ifdef XMLSEC_OPENSSL_API_300
+    /* fetch cipher */
+    xmlSecAssert2(ctx->cipherName != NULL, -1);
+    ctx->cipher = EVP_CIPHER_fetch(xmlSecOpenSSLGetLibCtx(), ctx->cipherName, NULL);
+    if(ctx->cipher == NULL) {
+        xmlSecOpenSSLError2("EVP_CIPHER_fetch", xmlSecTransformGetName(transform),
+            "cipherName=%s", xmlSecErrorsSafeString(ctx->cipherName));
+        xmlSecOpenSSLKWAesFinalize(transform);
+        return(-1);
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
+
     ret = xmlSecBufferInitialize(&(ctx->keyBuffer), 0);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKWAesGetKey",
-                            xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecOpenSSLKWAesGetKey", xmlSecTransformGetName(transform));
+        xmlSecOpenSSLKWAesFinalize(transform);
         return(-1);
     }
 

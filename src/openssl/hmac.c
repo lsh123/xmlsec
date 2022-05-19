@@ -278,24 +278,21 @@ xmlSecOpenSSLHmacInitialize(xmlSecTransformPtr transform) {
     /* create hmac CTX */
     ctx->hmacCtx = HMAC_CTX_new();
     if(ctx->hmacCtx == NULL) {
-        xmlSecOpenSSLError("HMAC_CTX_new",
-                           xmlSecTransformGetName(transform));
+        xmlSecOpenSSLError("HMAC_CTX_new", xmlSecTransformGetName(transform));
+        xmlSecOpenSSLHmacFinalize(transform);
         return(-1);
     }
 #else /* XMLSEC_OPENSSL_API_300 */
-    ctx->evpHmac = EVP_MAC_fetch(NULL, OSSL_MAC_NAME_HMAC, NULL);
+    ctx->evpHmac = EVP_MAC_fetch(xmlSecOpenSSLGetLibCtx(), OSSL_MAC_NAME_HMAC, NULL);
     if (ctx->evpHmac == NULL) {
-        xmlSecOpenSSLError("EVP_MAC_fetch",
-                           xmlSecTransformGetName(transform));
+        xmlSecOpenSSLError("EVP_MAC_fetch", xmlSecTransformGetName(transform));
+        xmlSecOpenSSLHmacFinalize(transform);
         return(-1);
     }
     ctx->evpHmacCtx = EVP_MAC_CTX_new(ctx->evpHmac);
     if (ctx->evpHmacCtx == NULL) {
-        EVP_MAC_free(ctx->evpHmac);
-        ctx->evpHmac = NULL;
-
-        xmlSecOpenSSLError("EVP_MAC_CTX_new",
-                           xmlSecTransformGetName(transform));
+        xmlSecOpenSSLError("EVP_MAC_CTX_new", xmlSecTransformGetName(transform));
+        xmlSecOpenSSLHmacFinalize(transform);
         return(-1);
     }
 #endif /* XMLSEC_OPENSSL_API_300 */

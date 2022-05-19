@@ -41,7 +41,12 @@
 typedef struct _xmlSecOpenSSLEvpBlockCipherCtx          xmlSecOpenSSLEvpBlockCipherCtx,
                                                         *xmlSecOpenSSLEvpBlockCipherCtxPtr;
 struct _xmlSecOpenSSLEvpBlockCipherCtx {
+#ifndef XMLSEC_OPENSSL_API_300
     const EVP_CIPHER*   cipher;
+#else /* XMLSEC_OPENSSL_API_300 */
+    const char*         cipherName;
+    EVP_CIPHER*         cipher;
+#endif /* XMLSEC_OPENSSL_API_300 */
     xmlSecKeyDataId     keyId;
     EVP_CIPHER_CTX*     cipherCtx;
     int                 keyInitialized;
@@ -650,7 +655,11 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_DES
     if(transform->id == xmlSecOpenSSLTransformDes3CbcId) {
+#ifndef XMLSEC_OPENSSL_API_300
         ctx->cipher     = EVP_des_ede3_cbc();
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->cipherName = "DES3";
+#endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId      = xmlSecOpenSSLKeyDataDesId;
         ctx->cbcMode    = 1;
     } else
@@ -658,27 +667,51 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_AES
     if(transform->id == xmlSecOpenSSLTransformAes128CbcId) {
+#ifndef XMLSEC_OPENSSL_API_300
         ctx->cipher     = EVP_aes_128_cbc();
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->cipherName = "AES-128-CBC";
+#endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
         ctx->cbcMode    = 1;
     } else if(transform->id == xmlSecOpenSSLTransformAes192CbcId) {
+#ifndef XMLSEC_OPENSSL_API_300
         ctx->cipher     = EVP_aes_192_cbc();
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->cipherName = "AES-192-CBC";
+#endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
         ctx->cbcMode    = 1;
     } else if(transform->id == xmlSecOpenSSLTransformAes256CbcId) {
+#ifndef XMLSEC_OPENSSL_API_300
         ctx->cipher     = EVP_aes_256_cbc();
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->cipherName = "AES-256-CBC";
+#endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
         ctx->cbcMode    = 1;
     } else if(transform->id == xmlSecOpenSSLTransformAes128GcmId) {
+#ifndef XMLSEC_OPENSSL_API_300
         ctx->cipher     = EVP_aes_128_gcm();
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->cipherName = "AES-128-GCM";
+#endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
         ctx->cbcMode    = 0;
     } else if(transform->id == xmlSecOpenSSLTransformAes192GcmId) {
+#ifndef XMLSEC_OPENSSL_API_300
         ctx->cipher     = EVP_aes_192_gcm();
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->cipherName = "AES-192-GCM";
+#endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
         ctx->cbcMode    = 0;
     } else if(transform->id == xmlSecOpenSSLTransformAes256GcmId) {
+#ifndef XMLSEC_OPENSSL_API_300
         ctx->cipher     = EVP_aes_256_gcm();
+#else /* XMLSEC_OPENSSL_API_300 */
+        ctx->cipherName = "AES-256-GCM";
+#endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
         ctx->cbcMode    = 0;
     } else
@@ -689,11 +722,23 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
+#ifdef XMLSEC_OPENSSL_API_300
+    /* fetch cipher */
+    xmlSecAssert2(ctx->cipherName != NULL, -1);
+    ctx->cipher = EVP_CIPHER_fetch(xmlSecOpenSSLGetLibCtx(), ctx->cipherName, NULL);
+    if(ctx->cipher == NULL) {
+        xmlSecOpenSSLError2("EVP_CIPHER_fetch", xmlSecTransformGetName(transform), 
+            "cipherName=%s", xmlSecErrorsSafeString(ctx->cipherName));
+        xmlSecOpenSSLEvpBlockCipherFinalize(transform);
+        return(-1);
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
+
     /* create cipher ctx */
     ctx->cipherCtx = EVP_CIPHER_CTX_new();
     if(ctx->cipherCtx == NULL) {
-        xmlSecOpenSSLError("EVP_CIPHER_CTX_new",
-            xmlSecTransformGetName(transform));
+        xmlSecOpenSSLError("EVP_CIPHER_CTX_new", xmlSecTransformGetName(transform));
+        xmlSecOpenSSLEvpBlockCipherFinalize(transform);
         return(-1);
     }
 
@@ -714,7 +759,11 @@ xmlSecOpenSSLEvpBlockCipherFinalize(xmlSecTransformPtr transform) {
     if(ctx->cipherCtx != NULL) {
         EVP_CIPHER_CTX_free(ctx->cipherCtx);
     }
-
+#ifdef XMLSEC_OPENSSL_API_300
+    if(ctx->cipher != NULL) {
+        EVP_CIPHER_free(ctx->cipher);
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
     memset(ctx, 0, sizeof(xmlSecOpenSSLEvpBlockCipherCtx));
 }
 

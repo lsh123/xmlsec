@@ -73,7 +73,7 @@ environment:
 
 init:
   - git config --global core.autocrlf input
-  - set PATH=C:\cygwin64\bin;%EXTRAS_FOLDER%\bin;%EXTRAS_FOLDER%\lib;;%PATH%
+  - set PATH=C:\cygwin64\bin;%EXTRAS_FOLDER%\bin;%EXTRAS_FOLDER%\lib;%EXTRAS_FOLDER%\lib\engines-3;%PATH%
   - set XMLSEC_INCLUDE=%EXTRAS_FOLDER%\include;%EXTRAS_FOLDER%\include\libxml2;%MSSDK_INCLUDE%
   - set XMLSEC_LIB=%EXTRAS_FOLDER%\bin;%EXTRAS_FOLDER%\lib;%MSSDK_LIB%
     

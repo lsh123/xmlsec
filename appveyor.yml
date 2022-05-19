@@ -36,18 +36,6 @@ environment:
 
   matrix:
     - COMPILER: MSVC17
-      CRYPTO: mscrypto
-      STATIC: no
-      UNICODE: yes
-      WERROR: yes
-
-    - COMPILER: MSVC17
-      CRYPTO: mscng
-      STATIC: no
-      UNICODE: yes
-      WERROR: yes
-
-    - COMPILER: MSVC17
       CRYPTO: openssl
       STATIC: no
       UNICODE: yes
@@ -62,7 +50,19 @@ environment:
     - COMPILER: MSVC17
       CRYPTO: mscrypto
       STATIC: no
+      UNICODE: yes
+      WERROR: yes
+
+    - COMPILER: MSVC17
+      CRYPTO: mscrypto
+      STATIC: no
       UNICODE: no
+      WERROR: yes
+ 
+    - COMPILER: MSVC17
+      CRYPTO: mscng
+      STATIC: no
+      UNICODE: yes
       WERROR: yes
 
     - COMPILER: MSVC17

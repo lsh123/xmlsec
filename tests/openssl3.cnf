@@ -8,12 +8,16 @@ providers = provider_sect
 
 # List of providers to load
 [provider_sect]
-default = default_sect
-legacy = legacy_sect
+#default = default_sect
+#legacy = legacy_sect
+null = null_sect
 
 [default_sect]
 activate = 1
 
 [legacy_sect]
+activate = 1
+
+[null_sect]
 activate = 1
 

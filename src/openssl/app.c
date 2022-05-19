@@ -87,7 +87,6 @@ xmlSecOpenSSLAppInit(const char* config) {
     OSSL_PROVIDER * legacyProvider = OSSL_PROVIDER_load(NULL, "legacy");
     if (legacyProvider == NULL) {
         xmlSecOpenSSLError("OSSL_PROVIDER_load", NULL);
-        return(-1);
     }
 #endif
 

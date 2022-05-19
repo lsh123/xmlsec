@@ -118,6 +118,8 @@ xmlSecOpenSSLAppInit(const char* config) {
         goto error;
     }
 
+    printf("DEBUG: default config file: %s\n", CONF_get1_default_config_file());
+
     /* done! */
     return(0);
 

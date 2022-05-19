@@ -216,7 +216,6 @@ execKeysTest() {
     if [ -n "$req_key_data" ] ; then
         printf "    Checking required key data                            "
         echo "$extra_vars $xmlsec_app check-key-data $xmlsec_params $req_key_data" >> $curlogfile
-        cmd.exe /C echo %OPENSSL_CONF%
         $xmlsec_app check-key-data $xmlsec_params $req_key_data >> $curlogfile 2>> $curlogfile
         printCheckStatus $?
         res=$?
@@ -234,7 +233,6 @@ execKeysTest() {
         params="$params --keys-file $keysfile"
     fi
     echo "$extra_vars $VALGRIND $xmlsec_app keys $params $xmlsec_params $keysfile" >>  $curlogfile
-    cmd.exe /C echo %OPENSSL_CONF%
     $VALGRIND $xmlsec_app keys $params $xmlsec_params $keysfile >> $curlogfile 2>> $curlogfile
     printRes $expected_res $?
     if [ $? != 0 ]; then
@@ -325,6 +323,7 @@ execDSigTest() {
     if [ -n "$params1" ] ; then
         printf "    Verify existing signature                            "
         echo "$extra_vars $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params $params1 $full_file.xml" >> $curlogfile
+        cmd.exe /C dir "C:\\projects\\xmlsec\\tests"
         $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params $params1 $full_file.xml >> $curlogfile 2>> $curlogfile
         printRes $expected_res $?
         if [ $? != 0 ]; then

@@ -66,8 +66,13 @@ xmlsec_params="$xmlsec_params --crypto-config $crypto_config"
 #
 extra_vars=
 if [ "z$crypto" = "zopenssl" -a "z$XMLSEC_OPENSSL_TEST_CONFIG" != "z" ] ; then
-    extra_vars="$extra_vars OPENSSL_CONF=$topfolder/$XMLSEC_OPENSSL_TEST_CONFIG"
-    export OPENSSL_CONF="$topfolder/$XMLSEC_OPENSSL_TEST_CONFIG"
+    if [ "z$OS_ARCH" = "zCygwin" ] ; then
+        opensslconf=`cygpath -wa $topfolder/$XMLSEC_OPENSSL_TEST_CONFIG`
+    else
+        opensslconf=$topfolder/$XMLSEC_OPENSSL_TEST_CONFIG
+    fi
+    extra_vars="$extra_vars OPENSSL_CONF=$opensslconf"
+    export OPENSSL_CONF="$opensslconf"
 fi
 
 #

@@ -36,6 +36,11 @@
 #include "../kw_aes_des.h"
 #include "openssl_compat.h"
 
+#ifdef XMLSEC_OPENSSL_API_300
+#include <openssl/core_names.h>
+#endif /* XMLSEC_OPENSSL_API_300 */
+
+
 /*********************************************************************
  *
  * DES KW implementation
@@ -361,6 +366,11 @@ static int
 xmlSecOpenSSLKWDes3Sha1(void * context,
                        const xmlSecByte * in, xmlSecSize inSize, 
                        xmlSecByte * out, xmlSecSize outSize) {
+#ifdef XMLSEC_OPENSSL_API_300
+    size_t outLen = XMLSEC_SIZE_BAD_CAST(outSize);
+    int ret;
+#endif /* XMLSEC_OPENSSL_API_300 */
+
     xmlSecOpenSSLKWDes3CtxPtr ctx = (xmlSecOpenSSLKWDes3CtxPtr)context;
 
     xmlSecAssert2(ctx != NULL, -1);
@@ -369,11 +379,21 @@ xmlSecOpenSSLKWDes3Sha1(void * context,
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= SHA_DIGEST_LENGTH, -1);
 
+#ifndef XMLSEC_OPENSSL_API_300
     if(SHA1(in, inSize, out) == NULL) {
         xmlSecOpenSSLError("SHA1", NULL);
         return(-1);
     }
     return(SHA_DIGEST_LENGTH);
+#else /* XMLSEC_OPENSSL_API_300 */
+    ret = EVP_Q_digest(xmlSecOpenSSLGetLibCtx(), OSSL_DIGEST_NAME_SHA1, NULL,
+                       in, inSize, out, &outLen);
+    if(ret != 1) {
+        xmlSecOpenSSLError("EVP_Q_digest(SHA1)", NULL);
+        return(-1);
+    }
+    return(outLen);
+#endif /* XMLSEC_OPENSSL_API_300 */
 }
 
 static int
@@ -386,7 +406,11 @@ xmlSecOpenSSLKWDes3GenerateRandom(void * context,
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize > 0, -1);
 
+#ifndef XMLSEC_OPENSSL_API_300
     ret = RAND_bytes(out, outSize);
+#else /* XMLSEC_OPENSSL_API_300 */
+    ret = RAND_bytes_ex(xmlSecOpenSSLGetLibCtx(), out, outSize, XMLSEEC_OPENSSL_RAND_BYTES_STRENGTH);
+#endif /* XMLSEC_OPENSSL_API_300 */
     if(ret != 1) {
         xmlSecOpenSSLError2("RAND_bytes", NULL,
                             "size=%lu", (unsigned long)outSize);

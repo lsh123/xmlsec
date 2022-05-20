@@ -82,16 +82,19 @@ XMLSEC_FUNC_TO_PTR_IMPL(pem_password_cb)
  */
 int
 xmlSecOpenSSLAppInit(const char* config) {
-    /**** DEBUG: DO NOT MERGE ***/
 #ifdef XMLSEC_OPENSSL_API_300
-     OSSL_LIB_CTX * libCtx = OSSL_LIB_CTX_new();
-     OSSL_PROVIDER * legacyProvider = OSSL_PROVIDER_load(libCtx, "legacy");
-     OSSL_PROVIDER * defaultProvider = OSSL_PROVIDER_load(libCtx, "default");
-     if(!libCtx || !legacyProvider || !defaultProvider) {
-         xmlSecOpenSSLError("OSSL_LIB_CTX_new or OSSL_PROVIDER_load", NULL);
-         goto error;
-     }
-     xmlSecOpenSSLSetLibCtx(libCtx);
+    /** This code can be used to check that custom xmlsec LibCtx is propagated
+     everywhere as expected (see https://github.com/lsh123/xmlsec/issues/346) */
+    /**
+    OSSL_LIB_CTX * libCtx = OSSL_LIB_CTX_new();
+    OSSL_PROVIDER * legacyProvider = OSSL_PROVIDER_load(libCtx, "legacy");
+    OSSL_PROVIDER * defaultProvider = OSSL_PROVIDER_load(libCtx, "default");
+    if(!libCtx || !legacyProvider || !defaultProvider) {
+        xmlSecOpenSSLError("OSSL_LIB_CTX_new or OSSL_PROVIDER_load", NULL);
+        goto error;
+    }
+    xmlSecOpenSSLSetLibCtx(libCtx);
+    **/
 #endif /* XMLSEC_OPENSSL_API_300 */
 
 

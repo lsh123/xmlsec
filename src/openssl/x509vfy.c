@@ -862,7 +862,7 @@ xmlSecOpenSSLX509GetSubjectHash(X509* x) {
     xmlSecAssert2(x != NULL, 0);
 
 #ifndef XMLSEC_OPENSSL_API_300
-    res = X509_subject_name_hash(cert);
+    res = X509_subject_name_hash(x);
     if(res == 0) {
         xmlSecOpenSSLError("X509_subject_name_hash", NULL);
         return(0);
@@ -894,7 +894,7 @@ xmlSecOpenSSLX509GetIssuerHash(X509* x) {
     xmlSecAssert2(x != NULL, 0);
 
 #ifndef XMLSEC_OPENSSL_API_300
-    res = X509_issuer_name_hash(cert);
+    res = X509_issuer_name_hash(x);
     if(res == 0) {
         xmlSecOpenSSLError("X509_issuer_name_hash", NULL);
         return(0);

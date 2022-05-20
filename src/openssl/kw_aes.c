@@ -33,7 +33,7 @@
 #include <xmlsec/openssl/crypto.h>
 
 #include "../kw_aes_des.h"
-
+#include "openssl_compat.h"
 
 /*********************************************************************
  *
@@ -110,17 +110,17 @@ xmlSecOpenSSLKWAesInitialize(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWAes128Id)) {
         ctx->keyExpectedSize = XMLSEC_KW_AES128_KEY_SIZE;
 #ifdef XMLSEC_OPENSSL_API_300
-        ctx->cipherName = "AES-128-CBC";
+        ctx->cipherName = XMLSEEC_OPENSSL_CIPHER_NAME_AES128_CBC;
 #endif /* XMLSEC_OPENSSL_API_300 */
     } else if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWAes192Id)) {
         ctx->keyExpectedSize = XMLSEC_KW_AES192_KEY_SIZE;
 #ifdef XMLSEC_OPENSSL_API_300
-        ctx->cipherName = "AES-192-CBC";
+        ctx->cipherName = XMLSEEC_OPENSSL_CIPHER_NAME_AES192_CBC;
 #endif /* XMLSEC_OPENSSL_API_300 */
     } else if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWAes256Id)) {
         ctx->keyExpectedSize = XMLSEC_KW_AES256_KEY_SIZE;
 #ifdef XMLSEC_OPENSSL_API_300
-        ctx->cipherName = "AES-256-CBC";
+        ctx->cipherName = XMLSEEC_OPENSSL_CIPHER_NAME_AES256_CBC;
 #endif /* XMLSEC_OPENSSL_API_300 */
     } else {
         xmlSecInvalidTransfromError(transform)

@@ -667,7 +667,7 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->cipher     = EVP_des_ede3_cbc();
 #else /* XMLSEC_OPENSSL_API_300 */
-        ctx->cipherName = "DES3";
+        ctx->cipherName = XMLSEEC_OPENSSL_CIPHER_NAME_DES3_EDE;
 #endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId      = xmlSecOpenSSLKeyDataDesId;
         ctx->cbcMode    = 1;
@@ -679,7 +679,7 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->cipher     = EVP_aes_128_cbc();
 #else /* XMLSEC_OPENSSL_API_300 */
-        ctx->cipherName = "AES-128-CBC";
+        ctx->cipherName = XMLSEEC_OPENSSL_CIPHER_NAME_AES128_CBC;
 #endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
         ctx->cbcMode    = 1;
@@ -687,7 +687,7 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->cipher     = EVP_aes_192_cbc();
 #else /* XMLSEC_OPENSSL_API_300 */
-        ctx->cipherName = "AES-192-CBC";
+        ctx->cipherName = XMLSEEC_OPENSSL_CIPHER_NAME_AES192_CBC;
 #endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
         ctx->cbcMode    = 1;
@@ -695,7 +695,7 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->cipher     = EVP_aes_256_cbc();
 #else /* XMLSEC_OPENSSL_API_300 */
-        ctx->cipherName = "AES-256-CBC";
+        ctx->cipherName = XMLSEEC_OPENSSL_CIPHER_NAME_AES256_CBC;
 #endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
         ctx->cbcMode    = 1;
@@ -703,7 +703,7 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->cipher     = EVP_aes_128_gcm();
 #else /* XMLSEC_OPENSSL_API_300 */
-        ctx->cipherName = "AES-128-GCM";
+        ctx->cipherName = XMLSEEC_OPENSSL_CIPHER_NAME_AES128_GCM;
 #endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
         ctx->cbcMode    = 0;
@@ -711,7 +711,7 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->cipher     = EVP_aes_192_gcm();
 #else /* XMLSEC_OPENSSL_API_300 */
-        ctx->cipherName = "AES-192-GCM";
+        ctx->cipherName = XMLSEEC_OPENSSL_CIPHER_NAME_AES192_GCM;
 #endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
         ctx->cbcMode    = 0;
@@ -719,7 +719,7 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_OPENSSL_API_300
         ctx->cipher     = EVP_aes_256_gcm();
 #else /* XMLSEC_OPENSSL_API_300 */
-        ctx->cipherName = "AES-256-GCM";
+        ctx->cipherName = XMLSEEC_OPENSSL_CIPHER_NAME_AES256_GCM;
 #endif /* XMLSEC_OPENSSL_API_300 */
         ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
         ctx->cbcMode    = 0;

@@ -1232,6 +1232,9 @@ xmlSecOpenSSLAppKeysMngrAddCertsFile(xmlSecKeysMngrPtr mngr, const char *filenam
 static X509*
 xmlSecOpenSSLAppCertLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
     X509 *cert;
+#ifdef XMLSEC_OPENSSL_API_300
+    X509 *tmpCert = NULL;
+#endif /* XMLSEC_OPENSSL_API_300 */
 
     xmlSecAssert2(bio != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
@@ -1247,11 +1250,25 @@ xmlSecOpenSSLAppCertLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
         break;
     case xmlSecKeyDataFormatDer:
     case xmlSecKeyDataFormatCertDer:
+#ifndef XMLSEC_OPENSSL_API_300
         cert = d2i_X509_bio(bio, NULL);
         if(cert == NULL) {
             xmlSecOpenSSLError("d2i_X509_bio", NULL);
             return(NULL);
         }
+#else /* XMLSEC_OPENSSL_API_300 */
+        tmpCert = X509_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);
+        if(tmpCert == NULL) {
+            xmlSecOpenSSLError("X509_new_ex", NULL);
+            return(NULL);
+        }
+        cert = d2i_X509_bio(bio, &tmpCert);
+        if(cert == NULL) {
+            xmlSecOpenSSLError("d2i_X509_bio", NULL);
+            X509_free(tmpCert);
+            return(NULL);
+        }
+#endif /* XMLSEC_OPENSSL_API_300 */
         break;
     default:
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,

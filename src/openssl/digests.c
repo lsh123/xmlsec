@@ -45,6 +45,7 @@ struct _xmlSecOpenSSLDigestCtx {
 #else /* XMLSEC_OPENSSL_API_300 */
     const char*         digestName;
     EVP_MD*             digest;
+    int                 legacyDigest;
 #endif /* XMLSEC_OPENSSL_API_300 */
     EVP_MD_CTX*         digestCtx;
     xmlSecByte          dgst[EVP_MAX_MD_SIZE];
@@ -227,14 +228,15 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_GOST
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGostR3411_94Id)) {
 #ifndef XMLSEC_OPENSSL_API_300
-        ctx->digest = EVP_get_digestbyname("md_gost94");
+        ctx->digest = EVP_get_digestbyname(XMLSEC_OPENSSL_DIGEST_NAME_GOST94);
         if (ctx->digest == NULL) {
             xmlSecOpenSSLError("EVP_get_digestbyname(md_gost94)", xmlSecTransformGetName(transform));
             xmlSecOpenSSLEvpDigestFinalize(transform);
             return(-1);
         }
 #else /* XMLSEC_OPENSSL_API_300 */
-        ctx->digestName = "GOST-94";
+        ctx->digestName = XMLSEC_OPENSSL_DIGEST_NAME_GOST94;
+        ctx->legacyDigest = 1;
 #endif /* XMLSEC_OPENSSL_API_300 */
     } else
 #endif /* XMLSEC_NO_GOST */
@@ -242,27 +244,29 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_GOST2012
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGostR3411_2012_256Id)) {
 #ifndef XMLSEC_OPENSSL_API_300
-        ctx->digest = EVP_get_digestbyname("md_gost12_256");
+        ctx->digest = EVP_get_digestbyname(XMLSEC_OPENSSL_DIGEST_NAME_GOST12_256);
         if (ctx->digest == NULL) {
             xmlSecOpenSSLError("EVP_get_digestbyname(md_gost12_256)", xmlSecTransformGetName(transform));
             xmlSecOpenSSLEvpDigestFinalize(transform);
             return(-1);
         }
 #else /* XMLSEC_OPENSSL_API_300 */
-        ctx->digestName = "GOST12-256";
+        ctx->digestName = XMLSEC_OPENSSL_DIGEST_NAME_GOST12_256;
+        ctx->legacyDigest = 1;
 #endif /* XMLSEC_OPENSSL_API_300 */
     } else
 
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGostR3411_2012_512Id)) {
 #ifndef XMLSEC_OPENSSL_API_300
-        ctx->digest = EVP_get_digestbyname("md_gost12_512");
+        ctx->digest = EVP_get_digestbyname(XMLSEC_OPENSSL_DIGEST_NAME_GOST12_512);
         if (ctx->digest == NULL) {
             xmlSecOpenSSLError("EVP_get_digestbyname(md_gost12_512)", xmlSecTransformGetName(transform));
             xmlSecOpenSSLEvpDigestFinalize(transform);
             return(-1);
         }
 #else /* XMLSEC_OPENSSL_API_300 */
-        ctx->digestName = "GOST12-512";
+        ctx->digestName = XMLSEC_OPENSSL_DIGEST_NAME_GOST12_512;
+        ctx->legacyDigest = 1;
 #endif /* XMLSEC_OPENSSL_API_300 */
     } else
 #endif /* XMLSEC_NO_GOST2012 */
@@ -283,12 +287,23 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
 
 #ifdef XMLSEC_OPENSSL_API_300
     xmlSecAssert2(ctx->digestName != NULL, -1);
-    ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), ctx->digestName, NULL);
-    if(ctx->digest == NULL) {
-        xmlSecOpenSSLError2("EVP_MD_fetch", xmlSecTransformGetName(transform),
-            "digestName=%s", xmlSecErrorsSafeString(ctx->digestName));
-        xmlSecOpenSSLEvpDigestFinalize(transform);
-        return(-1);
+    if(ctx->legacyDigest == 0) {
+        ctx->digest = EVP_MD_fetch(xmlSecOpenSSLGetLibCtx(), ctx->digestName, NULL);
+        if(ctx->digest == NULL) {
+            xmlSecOpenSSLError2("EVP_MD_fetch", xmlSecTransformGetName(transform),
+                                "digestName=%s", xmlSecErrorsSafeString(ctx->digestName));
+            xmlSecOpenSSLEvpDigestFinalize(transform);
+            return(-1);
+        }
+    } else {
+        /* Not all algorithms have been converted to the new providers design (e.g. GOST) */
+        ctx->digest = (EVP_MD*)EVP_get_digestbyname(ctx->digestName);
+        if (ctx->digest == NULL) {
+            xmlSecOpenSSLError2("EVP_get_digestbyname", xmlSecTransformGetName(transform),
+                                "digestName=%s", xmlSecErrorsSafeString(ctx->digestName));
+            xmlSecOpenSSLEvpDigestFinalize(transform);
+            return(-1);
+        }
     }
 #endif /* XMLSEC_OPENSSL_API_300 */
 
@@ -311,7 +326,7 @@ xmlSecOpenSSLEvpDigestFinalize(xmlSecTransformPtr transform) {
         EVP_MD_CTX_free(ctx->digestCtx);
     }
 #ifdef XMLSEC_OPENSSL_API_300
-    if(ctx->digest != NULL) {
+    if(ctx->digest != NULL && ctx->legacyDigest == 0) {
         EVP_MD_free(ctx->digest);
     }
 #endif /* XMLSEC_OPENSSL_API_300 */

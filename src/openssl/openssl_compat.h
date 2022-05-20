@@ -85,4 +85,23 @@
 #define X509_OBJECT_free(x)                { X509_OBJECT_free_contents(x); free(x); }
 #endif /* defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER < 0x30500000L && defined(XMLSEC_OPENSSL_API_110) */
 
+
+/******************************************************************************
+ *
+ * Common constants that aren't defined anywhere.
+ *
+ *****************************************************************************/
+#ifndef XMLSEC_NO_GOST
+#define XMLSEC_OPENSSL_DIGEST_NAME_GOST94       "md_gost94"
+#endif /* XMLSEC_NO_GOST*/
+
+#ifndef XMLSEC_NO_GOST2012
+#define XMLSEC_OPENSSL_DIGEST_NAME_GOST12_256   "md_gost12_256"
+#define XMLSEC_OPENSSL_DIGEST_NAME_GOST12_512   "md_gost12_512"
+#endif /* XMLSEC_NO_GOST2012 */
+
+
+
+
+
 #endif /* __XMLSEC_OPENSSL_OPENSSL_COMPAT_H__ */

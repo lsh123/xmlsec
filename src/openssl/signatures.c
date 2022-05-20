@@ -688,7 +688,7 @@ xmlSecOpenSSLSignatureDsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr 
 
     dsaKeySize = DSA_size(dsaKey);
 #else /* XMLSEC_OPENSSL_API_300 */
-    pKeyCtx = EVP_PKEY_CTX_new_from_pkey(NULL, ctx->pKey, NULL);
+    pKeyCtx = EVP_PKEY_CTX_new_from_pkey(xmlSecOpenSSLGetLibCtx(), ctx->pKey, NULL);
     if (pKeyCtx == NULL) {
         xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_pkey", NULL);
         goto done;
@@ -893,7 +893,7 @@ xmlSecOpenSSLSignatureDsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSecBy
         goto done;
     }
 #else /* XMLSEC_OPENSSL_API_300 */
-    pKeyCtx = EVP_PKEY_CTX_new_from_pkey(NULL, ctx->pKey, NULL);
+    pKeyCtx = EVP_PKEY_CTX_new_from_pkey(xmlSecOpenSSLGetLibCtx(), ctx->pKey, NULL);
     if (pKeyCtx == NULL) {
         xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_pkey", NULL);
         goto done;
@@ -1176,7 +1176,7 @@ xmlSecOpenSSLSignatureEcdsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPt
     }
 #else /* XMLSEC_OPENSSL_API_300 */
     /* sign */
-    pKeyCtx = EVP_PKEY_CTX_new_from_pkey(NULL, ctx->pKey, NULL);
+    pKeyCtx = EVP_PKEY_CTX_new_from_pkey(xmlSecOpenSSLGetLibCtx(), ctx->pKey, NULL);
     if (pKeyCtx == NULL) {
         xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_pkey", NULL);
         goto done;
@@ -1370,7 +1370,7 @@ xmlSecOpenSSLSignatureEcdsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSec
         goto done;
     }
 #else /* XMLSEC_OPENSSL_API_300 */
-    pKeyCtx = EVP_PKEY_CTX_new_from_pkey(NULL, ctx->pKey, NULL);
+    pKeyCtx = EVP_PKEY_CTX_new_from_pkey(xmlSecOpenSSLGetLibCtx(), ctx->pKey, NULL);
     if (pKeyCtx == NULL) {
         xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_pkey", NULL);
         goto done;

@@ -111,7 +111,11 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 
     if(encrypt) {
         /* generate random iv */
+#ifndef XMLSEC_OPENSSL_API_300
         ret = RAND_bytes(ctx->iv, ivLen);
+#else /* XMLSEC_OPENSSL_API_300 */
+        ret = RAND_bytes_ex(xmlSecOpenSSLGetLibCtx(), ctx->iv, ivLen, XMLSEEC_OPENSSL_RAND_BYTES_STRENGTH);
+#endif /* XMLSEC_OPENSSL_API_300 */
         if(ret != 1) {
             xmlSecOpenSSLError2("RAND_bytes", cipherName,
                                 "size=%lu", (unsigned long)ivLen);
@@ -427,7 +431,12 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 
         /* generate random padding */
         if(padLen > 1) {
+#ifndef XMLSEC_OPENSSL_API_300
             ret = RAND_bytes(ctx->pad + inSize, (int)(padLen - 1));
+#else /* XMLSEC_OPENSSL_API_300 */
+            ret = RAND_bytes_ex(xmlSecOpenSSLGetLibCtx(), ctx->pad + inSize, (int)(padLen - 1), 
+                                XMLSEEC_OPENSSL_RAND_BYTES_STRENGTH);
+#endif /* XMLSEC_OPENSSL_API_300 */
             if (ret != 1) {
                 xmlSecOpenSSLError("RAND_bytes", cipherName);
                 return(-1);

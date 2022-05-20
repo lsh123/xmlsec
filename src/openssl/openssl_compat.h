@@ -49,6 +49,7 @@
 
 #endif /* !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300) */
 
+
 /******************************************************************************
  *
  * boringssl compatibility
@@ -101,7 +102,9 @@
 #endif /* XMLSEC_NO_GOST2012 */
 
 
-
+#ifdef XMLSEC_OPENSSL_API_300
+#define XMLSEEC_OPENSSL_RAND_BYTES_STRENGTH     0
+#endif /* XMLSEC_OPENSSL_API_300 */
 
 
 #endif /* __XMLSEC_OPENSSL_OPENSSL_COMPAT_H__ */

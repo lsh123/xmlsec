@@ -33,6 +33,8 @@
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/x509.h>
 
+#include "openssl_compat.h"
+
 static int              xmlSecOpenSSLErrorsInit                 (void);
 static void             xmlSecOpenSSLErrorsShutdown             (void);
 
@@ -434,7 +436,12 @@ xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
     }
 
     /* get random data */
+#ifndef XMLSEC_OPENSSL_API_300
     ret = RAND_bytes((xmlSecByte*)xmlSecBufferGetData(buffer), size);
+#else /* XMLSEC_OPENSSL_API_300 */
+    ret = RAND_bytes_ex(xmlSecOpenSSLGetLibCtx(), (xmlSecByte*)xmlSecBufferGetData(buffer), size, 
+                        XMLSEEC_OPENSSL_RAND_BYTES_STRENGTH);
+#endif /* XMLSEC_OPENSSL_API_300 */
     if(ret != 1) {
         xmlSecOpenSSLError2("RAND_bytes", NULL,
                             "size=%lu", (unsigned long)size);

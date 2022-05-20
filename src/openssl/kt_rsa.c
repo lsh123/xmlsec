@@ -273,7 +273,7 @@ xmlSecOpenSSLRsaPkcs1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         return (-1);
     }
 
-    ctx->pKeyCtx = EVP_PKEY_CTX_new_from_pkey(NULL, pKey, NULL);
+    ctx->pKeyCtx = EVP_PKEY_CTX_new_from_pkey(xmlSecOpenSSLGetLibCtx(), pKey, NULL);
     if (ctx->pKeyCtx == NULL) {
         xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_pkey",
                            xmlSecTransformGetName(transform));
@@ -736,7 +736,7 @@ xmlSecOpenSSLRsaOaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         return (-1);
     }
 
-    ctx->pKeyCtx = EVP_PKEY_CTX_new_from_pkey(NULL, pKey, NULL);
+    ctx->pKeyCtx = EVP_PKEY_CTX_new_from_pkey(xmlSecOpenSSLGetLibCtx(), pKey, NULL);
     if (ctx->pKeyCtx == NULL) {
         xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_pkey",
                            xmlSecTransformGetName(transform));

@@ -97,7 +97,6 @@ xmlSecOpenSSLAppInit(const char* config) {
     **/
 #endif /* XMLSEC_OPENSSL_API_300 */
 
-
 #if !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300)
     ERR_load_crypto_strings();
     OPENSSL_config(NULL);
@@ -278,9 +277,9 @@ xmlSecOpenSSLAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
     /* this would be a read only BIO, cast from const is ok */
-    bio = BIO_new_mem_buf((void*)data, dataSize);
+    bio = xmlSecOpenSSLCreateMemBufBio((void*)data, dataSize);
     if(bio == NULL) {
-        xmlSecOpenSSLError2("BIO_new_mem_buf", NULL,
+        xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
                             "dataSize=%lu", (unsigned long)dataSize);
         return(NULL);
     }
@@ -598,9 +597,9 @@ xmlSecOpenSSLAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlS
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
     /* this would be a read only BIO, cast from const is ok */
-    bio = BIO_new_mem_buf((void*)data, dataSize);
+    bio = xmlSecOpenSSLCreateMemBufBio((void*)data, dataSize);
     if(bio == NULL) {
-        xmlSecOpenSSLError2("BIO_new_mem_buf", NULL,
+        xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
                             "dataSize=%lu", (unsigned long)dataSize);
         return(-1);
     }
@@ -739,9 +738,9 @@ xmlSecOpenSSLAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     xmlSecAssert2(data != NULL, NULL);
 
     /* this would be a read only BIO, cast from const is ok */
-    bio = BIO_new_mem_buf((void*)data, dataSize);
+    bio = xmlSecOpenSSLCreateMemBufBio((void*)data, dataSize);
     if(bio == NULL) {
-        xmlSecOpenSSLError2("BIO_new_mem_buf", NULL,
+        xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
                             "dataSize=%lu", (unsigned long)dataSize);
         return(NULL);
     }
@@ -1102,9 +1101,9 @@ xmlSecOpenSSLAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte*
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
     /* this would be a read only BIO, cast from const is ok */
-    bio = BIO_new_mem_buf((void*)data, dataSize);
+    bio = xmlSecOpenSSLCreateMemBufBio((void*)data, dataSize);
     if(bio == NULL) {
-        xmlSecOpenSSLError2("BIO_new_mem_buf", NULL,
+        xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
                             "dataSize=%lu", (unsigned long)dataSize);
         return(-1);
     }
@@ -1594,5 +1593,53 @@ xmlSecOpenSSLDummyPasswordCallback(char *buf, int bufsize,
 #endif /* WIN32 */
 
     return (passwordlen);
+}
+
+
+/********************************************************************
+ *
+ * BIO helpers
+ *
+ ********************************************************************/
+
+/**
+ * xmlSecOpenSSLCreateMemBufBio:
+ * @buf:      the data
+ * @len:      the data len
+ *
+ * Creates a read-only memory BIO using @len bytes of data at @buf using
+ * xmlSecOpenSSLGetLibCtx() for OpenSSL 3.0
+ *
+ * Returns: the pointer to BIO object or NULL if an error occurs/
+ */
+BIO*
+xmlSecOpenSSLCreateMemBufBio(const void *buf, int len) {
+    BIO* bio = NULL;
+    xmlSecAssert2(buf != NULL, NULL);
+    xmlSecAssert2(len >= 0, NULL);
+
+#ifndef XMLSEC_OPENSSL_API_300
+    bio = BIO_new_mem_buf(buf, len);
+    if(bio == NULL) {
+        xmlSecOpenSSLError2("BIO_new_mem_buf", NULL,
+                            "dataSize=%lu", (unsigned long)len);
+        return(NULL);
+    }
+#else /* XMLSEC_OPENSSL_API_300 */
+    bio = BIO_new_ex(xmlSecOpenSSLGetLibCtx(), BIO_s_mem());
+    if(bio == NULL) {
+        xmlSecOpenSSLError("BIO_new_ex(BIO_s_mem())", NULL);
+        return(NULL);
+    }
+    if(BIO_write(bio, buf, len) != len) {
+        xmlSecOpenSSLError2("BIO_write", NULL,
+                            "dataSize=%lu", (unsigned long)len);
+        BIO_free(bio);
+        return(NULL);
+    }
+    BIO_set_flags(bio, BIO_FLAGS_MEM_RDONLY);
+#endif /* XMLSEC_OPENSSL_API_300 */
+
+    return(bio);
 }
 

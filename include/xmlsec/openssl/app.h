@@ -119,6 +119,15 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr       xmlSecOpenSSLAppKeyFromCertLoadBIO(BIO* 
 XMLSEC_CRYPTO_EXPORT void*              xmlSecOpenSSLAppGetDefaultPwdCallback(void);
 
 
+/********************************************************************
+ *
+ * BIO helpers
+ *
+ ********************************************************************/
+XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateMemBufBio   (const void *buf,
+                                                                        int len);
+
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

@@ -49,6 +49,7 @@
 
 #endif /* !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300) */
 
+
 /******************************************************************************
  *
  * boringssl compatibility
@@ -101,7 +102,20 @@
 #endif /* XMLSEC_NO_GOST2012 */
 
 
+#ifdef XMLSEC_OPENSSL_API_300
+#define XMLSEEC_OPENSSL_RAND_BYTES_STRENGTH     0
 
+/* Cipher names, hopefully OpenSSL defines them one day */
+#define XMLSEEC_OPENSSL_CIPHER_NAME_DES3_EDE    "DES3"
+#define XMLSEEC_OPENSSL_CIPHER_NAME_AES128_CBC  "AES-128-CBC"       
+#define XMLSEEC_OPENSSL_CIPHER_NAME_AES192_CBC  "AES-192-CBC"
+#define XMLSEEC_OPENSSL_CIPHER_NAME_AES256_CBC  "AES-256-CBC"
+#define XMLSEEC_OPENSSL_CIPHER_NAME_AES128_GCM  "AES-128-GCM"
+#define XMLSEEC_OPENSSL_CIPHER_NAME_AES192_GCM  "AES-192-GCM"
+#define XMLSEEC_OPENSSL_CIPHER_NAME_AES256_GCM  "AES-256-GCM"
+
+
+#endif /* XMLSEC_OPENSSL_API_300 */
 
 
 #endif /* __XMLSEC_OPENSSL_OPENSSL_COMPAT_H__ */

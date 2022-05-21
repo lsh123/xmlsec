@@ -82,9 +82,23 @@ XMLSEC_FUNC_TO_PTR_IMPL(pem_password_cb)
  */
 int
 xmlSecOpenSSLAppInit(const char* config) {
+#ifdef XMLSEC_OPENSSL_API_300
+    /** This code can be used to check that custom xmlsec LibCtx is propagated
+     everywhere as expected (see https://github.com/lsh123/xmlsec/issues/346) */
+    /**
+    OSSL_LIB_CTX * libCtx = OSSL_LIB_CTX_new();
+    OSSL_PROVIDER * legacyProvider = OSSL_PROVIDER_load(libCtx, "legacy");
+    OSSL_PROVIDER * defaultProvider = OSSL_PROVIDER_load(libCtx, "default");
+    if(!libCtx || !legacyProvider || !defaultProvider) {
+        xmlSecOpenSSLError("OSSL_LIB_CTX_new or OSSL_PROVIDER_load", NULL);
+        goto error;
+    }
+    xmlSecOpenSSLSetLibCtx(libCtx);
+    **/
+#endif /* XMLSEC_OPENSSL_API_300 */
+
 
 #if !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300)
-
     ERR_load_crypto_strings();
     OPENSSL_config(NULL);
     OpenSSL_add_all_algorithms();
@@ -1221,6 +1235,9 @@ xmlSecOpenSSLAppKeysMngrAddCertsFile(xmlSecKeysMngrPtr mngr, const char *filenam
 static X509*
 xmlSecOpenSSLAppCertLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
     X509 *cert;
+#ifdef XMLSEC_OPENSSL_API_300
+    X509 *tmpCert = NULL;
+#endif /* XMLSEC_OPENSSL_API_300 */
 
     xmlSecAssert2(bio != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
@@ -1236,11 +1253,25 @@ xmlSecOpenSSLAppCertLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
         break;
     case xmlSecKeyDataFormatDer:
     case xmlSecKeyDataFormatCertDer:
+#ifndef XMLSEC_OPENSSL_API_300
         cert = d2i_X509_bio(bio, NULL);
         if(cert == NULL) {
             xmlSecOpenSSLError("d2i_X509_bio", NULL);
             return(NULL);
         }
+#else /* XMLSEC_OPENSSL_API_300 */
+        tmpCert = X509_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);
+        if(tmpCert == NULL) {
+            xmlSecOpenSSLError("X509_new_ex", NULL);
+            return(NULL);
+        }
+        cert = d2i_X509_bio(bio, &tmpCert);
+        if(cert == NULL) {
+            xmlSecOpenSSLError("d2i_X509_bio", NULL);
+            X509_free(tmpCert);
+            return(NULL);
+        }
+#endif /* XMLSEC_OPENSSL_API_300 */
         break;
     default:
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,

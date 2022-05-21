@@ -198,7 +198,11 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
     xmlSecAssert2(certs != NULL, NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
+#ifndef XMLSEC_OPENSSL_API_300
     xsc = X509_STORE_CTX_new();
+#else /* XMLSEC_OPENSSL_API_300 */
+    xsc = X509_STORE_CTX_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);
+#endif /* XMLSEC_OPENSSL_API_300 */
     if(xsc == NULL) {
         xmlSecOpenSSLError("X509_STORE_CTX_new",
                            xmlSecKeyDataStoreGetName(store));
@@ -286,7 +290,6 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
     for(i = 0; i < sk_X509_num(certs2); ++i) {
         cert = sk_X509_value(certs2, i);
         if(xmlSecOpenSSLX509FindNextChainCert(certs2, cert) == NULL) {
-
             ret = X509_STORE_CTX_init(xsc, ctx->xst, cert, certs2);
             if(ret != 1) {
                 xmlSecOpenSSLError("X509_STORE_CTX_init",
@@ -563,6 +566,7 @@ static int
 xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
     const xmlChar* path;
     X509_LOOKUP *lookup = NULL;
+    int ret;
 
     xmlSecOpenSSLX509StoreCtxPtr ctx;
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId), -1);
@@ -579,7 +583,12 @@ xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
         return(-1);
     }
 
-    if(!X509_STORE_set_default_paths(ctx->xst)) {
+#ifndef XMLSEC_OPENSSL_API_300
+    ret = X509_STORE_set_default_paths(ctx->xst);
+#else /* XMLSEC_OPENSSL_API_300 */
+    ret = X509_STORE_set_default_paths_ex(ctx->xst, xmlSecOpenSSLGetLibCtx(), NULL);
+#endif /* XMLSEC_OPENSSL_API_300 */
+    if(ret != 1) {
         xmlSecOpenSSLError("X509_STORE_set_default_paths",
                            xmlSecKeyDataStoreGetName(store));
         return(-1);
@@ -678,7 +687,11 @@ xmlSecOpenSSLX509VerifyCRL(X509_STORE* xst, X509_CRL *crl ) {
     xmlSecAssert2(xst != NULL, -1);
     xmlSecAssert2(crl != NULL, -1);
 
+#ifndef XMLSEC_OPENSSL_API_300
     xsc = X509_STORE_CTX_new();
+#else /* XMLSEC_OPENSSL_API_300 */
+    xsc = X509_STORE_CTX_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);
+#endif /* XMLSEC_OPENSSL_API_300 */
     if(xsc == NULL) {
         xmlSecOpenSSLError("X509_STORE_CTX_new", NULL);
         goto err;
@@ -839,21 +852,116 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
     return(NULL);
 }
 
+static unsigned long
+xmlSecOpenSSLX509GetSubjectHash(X509* x) {
+#ifdef XMLSEC_OPENSSL_API_300
+    X509_NAME* name;
+#endif /* XMLSEC_OPENSSL_API_300 */
+    unsigned long res;
+
+    xmlSecAssert2(x != NULL, 0);
+
+#ifndef XMLSEC_OPENSSL_API_300
+    res = X509_subject_name_hash(x);
+    if(res == 0) {
+        xmlSecOpenSSLError("X509_subject_name_hash", NULL);
+        return(0);
+    }
+#else /* XMLSEC_OPENSSL_API_300 */
+    name = X509_get_subject_name(x);
+    if(name == NULL) {
+        xmlSecOpenSSLError("X509_get_subject_name", NULL);
+        return(0);
+    }
+
+    res = X509_NAME_hash_ex(name, xmlSecOpenSSLGetLibCtx(), NULL, NULL);
+    if(res == 0) {
+        xmlSecOpenSSLError("X509_NAME_hash_ex", NULL);
+        return(0);
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
+
+    return(res);
+}
+
+static unsigned long
+xmlSecOpenSSLX509GetIssuerHash(X509* x) {
+#ifdef XMLSEC_OPENSSL_API_300
+    X509_NAME* name;
+#endif /* XMLSEC_OPENSSL_API_300 */
+    unsigned long res;
+
+    xmlSecAssert2(x != NULL, 0);
+
+#ifndef XMLSEC_OPENSSL_API_300
+    res = X509_issuer_name_hash(x);
+    if(res == 0) {
+        xmlSecOpenSSLError("X509_issuer_name_hash", NULL);
+        return(0);
+    }
+#else /* XMLSEC_OPENSSL_API_300 */
+    name = X509_get_issuer_name(x);
+    if(name == NULL) {
+        xmlSecOpenSSLError("X509_get_issuer_name", NULL);
+        return(0);
+    }
+
+    res = X509_NAME_hash_ex(name, xmlSecOpenSSLGetLibCtx(), NULL, NULL);
+    if(res == 0) {
+        xmlSecOpenSSLError("X509_NAME_hash_ex", NULL);
+        return(0);
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
+
+    return(res);
+}
+
+/* Try to find cert "up-the-chain" (i.e. with issuer matching given cert) */
 static X509*
 xmlSecOpenSSLX509FindNextChainCert(STACK_OF(X509) *chain, X509 *cert) {
-    unsigned long certSubjHash;
-    x509_size_t i;
+    unsigned long certNameHash;
+    unsigned long certNameHash2;
+    x509_size_t ii;
 
     xmlSecAssert2(chain != NULL, NULL);
     xmlSecAssert2(cert != NULL, NULL);
 
-    certSubjHash = X509_subject_name_hash(cert);
-    for(i = 0; i < sk_X509_num(chain); ++i) {
-        if((sk_X509_value(chain, i) != cert) &&
-           (X509_issuer_name_hash(sk_X509_value(chain, i)) == certSubjHash)) {
+    certNameHash = xmlSecOpenSSLX509GetSubjectHash(cert);
+    if(certNameHash == 0) {
+        xmlSecInternalError("xmlSecOpenSSLX509GetSubjectHash", NULL);
+        return(NULL);
+    }
+    for(ii = 0; ii < sk_X509_num(chain); ++ii) {
+        X509* cert_ii = sk_X509_value(chain, ii);
+        xmlSecAssert2(cert_ii != NULL, NULL);
 
-            return(sk_X509_value(chain, i));
+        if(cert == cert_ii) {
+            /* same cert, skip for self-signed certs */
+            continue;
         }
+
+        certNameHash2 = xmlSecOpenSSLX509GetSubjectHash(cert_ii);
+        if(certNameHash2 == 0) {
+            xmlSecInternalError("xmlSecOpenSSLX509GetSubjectHash", NULL);
+            return(NULL);
+        }
+        if(certNameHash == certNameHash2) {
+            /* same cert but different copy, skip for self-signed certs */
+            continue;
+        }
+
+        certNameHash2 = xmlSecOpenSSLX509GetIssuerHash(cert_ii);
+        if(certNameHash2 == 0) {
+            xmlSecInternalError("xmlSecOpenSSLX509GetIssuerHash", NULL);
+            return(NULL);
+        }
+        if(certNameHash != certNameHash2) {
+            /* issuer doesn't match */
+            continue;
+        }
+
+        /* found it! cert_ii issuer matches cert */
+        return(cert_ii);
     }
     return(NULL);
 }

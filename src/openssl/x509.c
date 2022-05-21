@@ -1713,6 +1713,9 @@ static X509*
 xmlSecOpenSSLX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
     X509 *cert = NULL;
     BIO *mem = NULL;
+#ifdef XMLSEC_OPENSSL_API_300
+    X509 *tmpCert = NULL;
+#endif /* XMLSEC_OPENSSL_API_300 */
     int ret;
 
     xmlSecAssert2(buf != NULL, NULL);
@@ -1732,6 +1735,7 @@ xmlSecOpenSSLX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
         return(NULL);
     }
 
+#ifndef XMLSEC_OPENSSL_API_300
     cert = d2i_X509_bio(mem, NULL);
     if(cert == NULL) {
         xmlSecOpenSSLError2("d2i_X509_bio", NULL,
@@ -1739,6 +1743,22 @@ xmlSecOpenSSLX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
         BIO_free_all(mem);
         return(NULL);
     }
+#else /* XMLSEC_OPENSSL_API_300 */
+    tmpCert = X509_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);
+    if(tmpCert == NULL) {
+        xmlSecOpenSSLError("X509_new_ex", NULL);
+        BIO_free_all(mem);
+        return(NULL);
+    }
+    cert = d2i_X509_bio(mem, &tmpCert);
+    if(cert == NULL) {
+        xmlSecOpenSSLError2("d2i_X509_bio", NULL,
+                            "size=%lu", (unsigned long)size);
+        X509_free(tmpCert);
+        BIO_free_all(mem);
+        return(NULL);
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
 
     BIO_free_all(mem);
     return(cert);
@@ -1799,6 +1819,9 @@ xmlSecOpenSSLX509CrlBase64DerRead(xmlChar* buf) {
 
 static X509_CRL*
 xmlSecOpenSSLX509CrlDerRead(xmlSecByte* buf, xmlSecSize size) {
+#ifdef XMLSEC_OPENSSL_API_300
+    X509_CRL *tmpCrl = NULL;
+#endif /* XMLSEC_OPENSSL_API_300 */
     X509_CRL *crl = NULL;
     BIO *mem = NULL;
     int ret;
@@ -1820,12 +1843,28 @@ xmlSecOpenSSLX509CrlDerRead(xmlSecByte* buf, xmlSecSize size) {
         return(NULL);
     }
 
+#ifndef XMLSEC_OPENSSL_API_300
     crl = d2i_X509_CRL_bio(mem, NULL);
     if(crl == NULL) {
         xmlSecOpenSSLError("d2i_X509_CRL_bio", NULL);
         BIO_free_all(mem);
         return(NULL);
     }
+#else /* XMLSEC_OPENSSL_API_300 */
+    tmpCrl = X509_CRL_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);
+    if(tmpCrl == NULL) {
+        xmlSecOpenSSLError("X509_CRL_new_ex", NULL);
+        BIO_free_all(mem);
+        return(NULL);
+    }
+    crl = d2i_X509_CRL_bio(mem, &tmpCrl);
+    if(crl == NULL) {
+        xmlSecOpenSSLError("d2i_X509_CRL_bio", NULL);
+        X509_CRL_free(tmpCrl);
+        BIO_free_all(mem);
+        return(NULL);
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
 
     BIO_free_all(mem);
     return(crl);

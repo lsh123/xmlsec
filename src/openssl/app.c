@@ -413,9 +413,15 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
         break;
     case xmlSecKeyDataFormatPkcs8Der:
         /* read private key */
+#ifndef XMLSEC_OPENSSL_API_300
         pKey = d2i_PKCS8PrivateKey_bio(bio, NULL, pwdCb, pwdCbCtx);
+#else /* XMLSEC_OPENSSL_API_300 */
+        XMLSEC_OPENSSL_PUSH_LIB_CTX(return(NULL));
+        pKey = d2i_PKCS8PrivateKey_bio(bio, NULL, pwdCb, pwdCbCtx);
+        XMLSEC_OPENSSL_POP_LIB_CTX();
+#endif /* XMLSEC_OPENSSL_API_300 */
         if(pKey == NULL) {
-            xmlSecOpenSSLError("d2i_PrivateKey_bio and d2i_PUBKEY_bio", NULL);
+            xmlSecOpenSSLError("d2i_PKCS8PrivateKey_bio", NULL);
             return(NULL);
         }
         break;
@@ -839,7 +845,7 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
     XMLSEC_OPENSSL_POP_LIB_CTX();
 #endif /* XMLSEC_OPENSSL_API_300 */
     if(p12 == NULL) {
-        xmlSecOpenSSLError("d2i_PKCS12_fp", NULL);
+        xmlSecOpenSSLError("d2i_PKCS12_bio", NULL);
         goto done;
     }
 #ifndef XMLSEC_OPENSSL_API_300
@@ -1310,10 +1316,6 @@ xmlSecOpenSSLAppCertLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
             return(NULL);
         }
 #endif /* XMLSEC_OPENSSL_API_300 */
-        if(cert == NULL) {
-            xmlSecOpenSSLError("PEM_read_bio_X509_AUX", NULL);
-            return(NULL);
-        }
         break;
     case xmlSecKeyDataFormatDer:
     case xmlSecKeyDataFormatCertDer:

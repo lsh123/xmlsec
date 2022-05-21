@@ -677,3 +677,40 @@ xmlSecOpenSSLCreateMemBufBio(const xmlSecByte *buf, xmlSecSize len) {
     return(bio);
 }
 
+/**
+ * xmlSecOpenSSLCreateReadFileBio:
+ * @path:     the file path
+ *
+ * Creates a read-only file BIO using xmlSecOpenSSLGetLibCtx() for
+ * OpenSSL 3.0.
+ *
+ * Returns: the pointer to BIO object or NULL if an error occurs/
+ */
+BIO*
+xmlSecOpenSSLCreateReadFileBio(const char* path) {
+    BIO* bio = NULL;
+    xmlSecAssert2(path != NULL, NULL);
+
+#ifndef XMLSEC_OPENSSL_API_300
+    bio = BIO_new_file(path, "rb");
+    if(bio == NULL) {
+        xmlSecOpenSSLError2("BIO_new_file", NULL,
+                            "path=%s", xmlSecErrorsSafeString(path));
+        return(NULL);
+    }
+#else /* XMLSEC_OPENSSL_API_300 */
+    bio = BIO_new_ex(xmlSecOpenSSLGetLibCtx(), BIO_s_file());
+    if(bio == NULL) {
+        xmlSecOpenSSLError("BIO_new_ex(BIO_s_file())", NULL);
+        return(NULL);
+    }
+    if(BIO_read_filename(bio, path) != 1) {
+        xmlSecOpenSSLError2("BIO_read_filename", NULL,
+                            "path=%s", xmlSecErrorsSafeString(path));
+        return(NULL);
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
+
+    return(bio);
+}
+

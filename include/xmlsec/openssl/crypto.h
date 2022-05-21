@@ -92,7 +92,7 @@ XMLSEC_CRYPTO_EXPORT OSSL_LIB_CTX*      xmlSecOpenSSLGetLibCtx(void);
 XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateMemBio      (void);
 XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateMemBufBio   (const xmlSecByte* buf,
                                                                         xmlSecSize len);
-
+XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateReadFileBio (const char* path);
 /********************************************************************
  *
  * What is supported by the openssl?

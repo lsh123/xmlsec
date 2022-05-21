@@ -232,9 +232,9 @@ xmlSecOpenSSLAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
     } else {
         BIO* bio;
 
-        bio = BIO_new_file(filename, "rb");
+        bio = xmlSecOpenSSLCreateReadFileBio(filename);
         if(bio == NULL) {
-            xmlSecOpenSSLError2("BIO_new_file", NULL,
+            xmlSecInternalError2("xmlSecOpenSSLCreateReadFileBio", NULL,
                                 "filename=%s", xmlSecErrorsSafeString(filename));
             return(NULL);
         }
@@ -556,10 +556,10 @@ xmlSecOpenSSLAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDat
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    bio = BIO_new_file(filename, "rb");
+    bio = xmlSecOpenSSLCreateReadFileBio(filename);
     if(bio == NULL) {
-        xmlSecOpenSSLError2("BIO_new_file", NULL,
-                            "filename=%s", xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecOpenSSLCreateReadFileBio", NULL,
+                             "filename=%s", xmlSecErrorsSafeString(filename));
         return(-1);
     }
 
@@ -695,10 +695,10 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd,
 
     xmlSecAssert2(filename != NULL, NULL);
 
-    bio = BIO_new_file(filename, "rb");
+    bio = xmlSecOpenSSLCreateReadFileBio(filename);
     if(bio == NULL) {
-        xmlSecOpenSSLError2("BIO_new_file", NULL,
-                            "filename=%s", xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecOpenSSLCreateReadFileBio", NULL,
+                             "filename=%s", xmlSecErrorsSafeString(filename));
         return(NULL);
     }
 
@@ -1057,10 +1057,10 @@ xmlSecOpenSSLAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    bio = BIO_new_file(filename, "rb");
+    bio = xmlSecOpenSSLCreateReadFileBio(filename);
     if(bio == NULL) {
-        xmlSecOpenSSLError2("BIO_new_file", NULL,
-                            "filename=%s", xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecOpenSSLCreateReadFileBio", NULL,
+                             "filename=%s", xmlSecErrorsSafeString(filename));
         return(-1);
     }
 

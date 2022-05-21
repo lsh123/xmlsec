@@ -103,6 +103,7 @@ xmlSecOpenSSLAppInit(const char* config) {
 #ifdef XMLSEC_OPENSSL_API_300
     /** This code can be used to check that custom xmlsec LibCtx is propagated
      everywhere as expected (see https://github.com/lsh123/xmlsec/issues/346) */
+    /**
     OSSL_LIB_CTX * libCtx = OSSL_LIB_CTX_new();
     OSSL_PROVIDER * legacyProvider = OSSL_PROVIDER_load(libCtx, "legacy");
     OSSL_PROVIDER * defaultProvider = OSSL_PROVIDER_load(libCtx, "default");
@@ -111,6 +112,7 @@ xmlSecOpenSSLAppInit(const char* config) {
         goto error;
     }
     xmlSecOpenSSLSetLibCtx(libCtx);
+    */
 #endif /* XMLSEC_OPENSSL_API_300 */
 
 #if !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300)
@@ -358,12 +360,9 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
 #endif /* XMLSEC_OPENSSL_API_300 */
 
         if(pKey == NULL) {
-            /* go to start of the file and try to read public key */
-            ret = BIO_reset(bio);
-            if(ret != 1) {
-                xmlSecOpenSSLError("BIO_reset", NULL);
-                return(NULL);
-            }
+            /* go to start of the file and try to read public key;
+               intentionally ignore any errors and hope for the best. */
+            (void)BIO_reset(bio);
 #ifndef XMLSEC_OPENSSL_API_300
             pKey = PEM_read_bio_PUBKEY(bio, NULL, pwdCb, pwdCbCtx);
 #else /* XMLSEC_OPENSSL_API_300 */
@@ -384,12 +383,9 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
 #endif /* XMLSEC_OPENSSL_API_300 */
 
         if(pKey == NULL) {
-            /* go to start of the file and try to read public key */
-            ret = BIO_reset(bio);
-            if(ret != 1) {
-                xmlSecOpenSSLError("BIO_reset", NULL);
-                return(NULL);
-            }
+            /* go to start of the file and try to read public key;
+               intentionally ignore any errors and hope for the best. */
+            (void)BIO_reset(bio);
 #ifndef XMLSEC_OPENSSL_API_300
             pKey = d2i_PUBKEY_bio(bio, NULL);
 #else /* XMLSEC_OPENSSL_API_300 */

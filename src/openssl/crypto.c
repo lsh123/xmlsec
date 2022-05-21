@@ -671,7 +671,6 @@ xmlSecOpenSSLCreateMemBufBio(const xmlSecByte *buf, xmlSecSize len) {
         BIO_free_all(bio);
         return(NULL);
     }
-    BIO_set_flags(bio, BIO_FLAGS_MEM_RDONLY);
 #endif /* XMLSEC_OPENSSL_API_300 */
 
     return(bio);

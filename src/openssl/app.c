@@ -70,6 +70,24 @@ static xmlSecKeyPtr xmlSecOpenSSLAppEngineKeyLoad       (const char *engineName,
 XMLSEC_PTR_TO_FUNC_IMPL(pem_password_cb)
 XMLSEC_FUNC_TO_PTR_IMPL(pem_password_cb)
 
+/* helpers to overwrite global context temporarily */
+#ifdef XMLSEC_OPENSSL_API_300
+#define XMLSEC_OPENSSL_PUSH_LIB_CTX(on_error)      \
+    {                                              \
+        OSSL_LIB_CTX* savedDefaultLibCtx = NULL;   \
+        savedDefaultLibCtx = OSSL_LIB_CTX_set0_default(xmlSecOpenSSLGetLibCtx()); \
+        if(savedDefaultLibCtx == NULL) {           \
+            xmlSecOpenSSLError("OSSL_LIB_CTX_set0_default", NULL);  \
+            on_error;                              \
+        }
+
+#define XMLSEC_OPENSSL_POP_LIB_CTX()               \
+        if(savedDefaultLibCtx != NULL) {           \
+            OSSL_LIB_CTX_set0_default(savedDefaultLibCtx); \
+        }                                          \
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
+
 /**
  * xmlSecOpenSSLAppInit:
  * @config:             the path to certs.
@@ -85,7 +103,6 @@ xmlSecOpenSSLAppInit(const char* config) {
 #ifdef XMLSEC_OPENSSL_API_300
     /** This code can be used to check that custom xmlsec LibCtx is propagated
      everywhere as expected (see https://github.com/lsh123/xmlsec/issues/346) */
-    /**
     OSSL_LIB_CTX * libCtx = OSSL_LIB_CTX_new();
     OSSL_PROVIDER * legacyProvider = OSSL_PROVIDER_load(libCtx, "legacy");
     OSSL_PROVIDER * defaultProvider = OSSL_PROVIDER_load(libCtx, "default");
@@ -94,7 +111,6 @@ xmlSecOpenSSLAppInit(const char* config) {
         goto error;
     }
     xmlSecOpenSSLSetLibCtx(libCtx);
-    **/
 #endif /* XMLSEC_OPENSSL_API_300 */
 
 #if !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300)
@@ -316,29 +332,44 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
     xmlSecKeyPtr key = NULL;
     xmlSecKeyDataPtr data;
     EVP_PKEY* pKey = NULL;
+    pem_password_cb* pwdCb = NULL;
+    void* pwdCbCtx = NULL;
     int ret;
 
     xmlSecAssert2(bio != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
+    /* prep pwd callbacks */
+    if(pwd != NULL) {
+        pwdCb = xmlSecOpenSSLDummyPasswordCallback;
+        pwdCbCtx = (void*)pwd;
+     } else {
+        pwdCb = XMLSEC_PTR_TO_FUNC(pem_password_cb, pwdCallback);
+        pwdCbCtx = pwdCallbackCtx;
+    }
+
+    printf("DEBUG: xmlSecOpenSSLAppKeyLoadBIO(format=%d)\n", (int)format);
     switch(format) {
     case xmlSecKeyDataFormatPem:
         /* try to read private key first */
-        if(pwd != NULL) {
-            pKey = PEM_read_bio_PrivateKey(bio, NULL,
-                        xmlSecOpenSSLDummyPasswordCallback,
-                        (void*)pwd);
-        } else {
-            pKey = PEM_read_bio_PrivateKey(bio, NULL,
-                            XMLSEC_PTR_TO_FUNC(pem_password_cb, pwdCallback),
-                            pwdCallbackCtx);
-        }
+#ifndef XMLSEC_OPENSSL_API_300
+        pKey = PEM_read_bio_PrivateKey(bio, NULL, pwdCb, pwdCbCtx);
+#else /* XMLSEC_OPENSSL_API_300 */
+        pKey = PEM_read_bio_PrivateKey_ex(bio, NULL, pwdCb, pwdCbCtx, xmlSecOpenSSLGetLibCtx(), NULL);
+#endif /* XMLSEC_OPENSSL_API_300 */
+
         if(pKey == NULL) {
             /* go to start of the file and try to read public key */
-            (void)BIO_reset(bio);
-            pKey = PEM_read_bio_PUBKEY(bio, NULL,
-                            XMLSEC_PTR_TO_FUNC(pem_password_cb, pwdCallback),
-                            pwdCallbackCtx);
+            ret = BIO_reset(bio);
+            if(ret != 1) {
+                xmlSecOpenSSLError("BIO_reset", NULL);
+                return(NULL);
+            }
+#ifndef XMLSEC_OPENSSL_API_300
+            pKey = PEM_read_bio_PUBKEY(bio, NULL, pwdCb, pwdCbCtx);
+#else /* XMLSEC_OPENSSL_API_300 */
+            pKey = PEM_read_bio_PUBKEY_ex(bio, NULL, pwdCb, pwdCbCtx, xmlSecOpenSSLGetLibCtx(), NULL);
+#endif /* XMLSEC_OPENSSL_API_300 */
             if(pKey == NULL) {
                 xmlSecOpenSSLError("PEM_read_bio_PrivateKey and PEM_read_bio_PUBKEY", NULL);
                 return(NULL);
@@ -347,11 +378,26 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
         break;
     case xmlSecKeyDataFormatDer:
         /* try to read private key first */
+#ifndef XMLSEC_OPENSSL_API_300
         pKey = d2i_PrivateKey_bio(bio, NULL);
+#else /* XMLSEC_OPENSSL_API_300 */
+        pKey = d2i_PrivateKey_ex_bio(bio, NULL, xmlSecOpenSSLGetLibCtx(), NULL);
+#endif /* XMLSEC_OPENSSL_API_300 */
+
         if(pKey == NULL) {
             /* go to start of the file and try to read public key */
-            (void)BIO_reset(bio);
+            ret = BIO_reset(bio);
+            if(ret != 1) {
+                xmlSecOpenSSLError("BIO_reset", NULL);
+                return(NULL);
+            }
+#ifndef XMLSEC_OPENSSL_API_300
             pKey = d2i_PUBKEY_bio(bio, NULL);
+#else /* XMLSEC_OPENSSL_API_300 */
+            XMLSEC_OPENSSL_PUSH_LIB_CTX(return(NULL));
+            pKey = d2i_PUBKEY_bio(bio, NULL);
+            XMLSEC_OPENSSL_POP_LIB_CTX();
+#endif /* XMLSEC_OPENSSL_API_300 */
             if(pKey == NULL) {
                 xmlSecOpenSSLError("d2i_PrivateKey_bio and d2i_PUBKEY_bio", NULL);
                 return(NULL);
@@ -359,20 +405,20 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
         }
         break;
     case xmlSecKeyDataFormatPkcs8Pem:
-        /* try to read private key first */
-        pKey = PEM_read_bio_PrivateKey(bio, NULL,
-                            XMLSEC_PTR_TO_FUNC(pem_password_cb, pwdCallback),
-                            pwdCallbackCtx);
+        /* read private key */
+#ifndef XMLSEC_OPENSSL_API_300
+        pKey = PEM_read_bio_PrivateKey(bio, NULL, pwdCb, pwdCbCtx);
+#else /* XMLSEC_OPENSSL_API_300 */
+        pKey = PEM_read_bio_PrivateKey_ex(bio, NULL, pwdCb, pwdCbCtx, xmlSecOpenSSLGetLibCtx(), NULL);
+#endif /* XMLSEC_OPENSSL_API_300 */
         if(pKey == NULL) {
             xmlSecOpenSSLError("PEM_read_bio_PrivateKey", NULL);
             return(NULL);
         }
         break;
     case xmlSecKeyDataFormatPkcs8Der:
-        /* try to read private key first */
-        pKey = d2i_PKCS8PrivateKey_bio(bio, NULL,
-                            XMLSEC_PTR_TO_FUNC(pem_password_cb, pwdCallback),
-                            pwdCallbackCtx);
+        /* read private key */
+        pKey = d2i_PKCS8PrivateKey_bio(bio, NULL, pwdCb, pwdCbCtx);
         if(pKey == NULL) {
             xmlSecOpenSSLError("d2i_PrivateKey_bio and d2i_PUBKEY_bio", NULL);
             return(NULL);
@@ -774,9 +820,6 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
                            void* pwdCallback ATTRIBUTE_UNUSED,
                            void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
     
-#ifdef XMLSEC_OPENSSL_API_300
-    OSSL_LIB_CTX* savedDefaultLibCtx = NULL;
-#endif /* XMLSEC_OPENSSL_API_300 */
     PKCS12 *p12 = NULL;
     EVP_PKEY *pKey = NULL;
     STACK_OF(X509) *chain = NULL;
@@ -793,27 +836,36 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
     UNREFERENCED_PARAMETER(pwdCallback);
     UNREFERENCED_PARAMETER(pwdCallbackCtx);
 
-#ifdef XMLSEC_OPENSSL_API_300
-    savedDefaultLibCtx = OSSL_LIB_CTX_set0_default(xmlSecOpenSSLGetLibCtx());
-    if(savedDefaultLibCtx == NULL) {
-        xmlSecOpenSSLError("OSSL_LIB_CTX_set0_default", NULL);
-        goto done;
-    }
-#endif /* XMLSEC_OPENSSL_API_300 */
-
+#ifndef XMLSEC_OPENSSL_API_300
     p12 = d2i_PKCS12_bio(bio, NULL);
+#else /* XMLSEC_OPENSSL_API_300 */
+    XMLSEC_OPENSSL_PUSH_LIB_CTX(goto done);
+    p12 = d2i_PKCS12_bio(bio, NULL);
+    XMLSEC_OPENSSL_POP_LIB_CTX();
+#endif /* XMLSEC_OPENSSL_API_300 */
     if(p12 == NULL) {
         xmlSecOpenSSLError("d2i_PKCS12_fp", NULL);
         goto done;
     }
-
+#ifndef XMLSEC_OPENSSL_API_300
     ret = PKCS12_verify_mac(p12, pwd, (pwd != NULL) ? (int)strlen(pwd) : 0);
+#else /* XMLSEC_OPENSSL_API_300 */
+    XMLSEC_OPENSSL_PUSH_LIB_CTX(goto done);
+    ret = PKCS12_verify_mac(p12, pwd, (pwd != NULL) ? (int)strlen(pwd) : 0);
+    XMLSEC_OPENSSL_POP_LIB_CTX();
+#endif /* XMLSEC_OPENSSL_API_300 */
     if(ret != 1) {
         xmlSecOpenSSLError("PKCS12_verify_mac", NULL);
         goto done;
     }
 
+#ifndef XMLSEC_OPENSSL_API_300
     ret = PKCS12_parse(p12, pwd, &pKey, &cert, &chain);
+#else /* XMLSEC_OPENSSL_API_300 */
+    XMLSEC_OPENSSL_PUSH_LIB_CTX(goto done);
+    ret = PKCS12_parse(p12, pwd, &pKey, &cert, &chain);
+    XMLSEC_OPENSSL_POP_LIB_CTX();
+#endif /* XMLSEC_OPENSSL_API_300 */
     if(ret != 1) {
         xmlSecOpenSSLError("PKCS12_parse", NULL);
         goto done;
@@ -950,11 +1002,6 @@ done:
     if(p12 != NULL) {
         PKCS12_free(p12);
     }
-#ifdef XMLSEC_OPENSSL_API_300
-    if(savedDefaultLibCtx != NULL) {
-    	OSSL_LIB_CTX_set0_default(savedDefaultLibCtx);
-    }
-#endif /* XMLSEC_OPENSSL_API_300 */
     return(key);
 }
 

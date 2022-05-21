@@ -91,6 +91,15 @@ XMLSEC_CRYPTO_EXPORT OSSL_LIB_CTX*      xmlSecOpenSSLGetLibCtx(void);
 
 /********************************************************************
  *
+ * BIO helpers
+ *
+ ********************************************************************/
+XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateMemBio      (void);
+XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateMemBufBio   (const xmlSecByte* buf,
+                                                                        xmlSecSize len);
+XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateReadFileBio (const char* path);
+/********************************************************************
+ *
  * What is supported by the openssl?
  *
  *******************************************************************/
@@ -861,7 +870,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformSha384GetKlass(void
         xmlSecOpenSSLTransformSha512GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformSha512GetKlass(void);
 #endif /* XMLSEC_NO_SHA512 */
-
 
 XMLSEC_CRYPTO_EXPORT void       xmlSecOpenSSLErrorsDefaultCallback      (const char* file,
                                                                          int line,

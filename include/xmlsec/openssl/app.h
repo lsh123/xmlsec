@@ -118,7 +118,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr       xmlSecOpenSSLAppKeyFromCertLoadBIO(BIO* 
 
 XMLSEC_CRYPTO_EXPORT void*              xmlSecOpenSSLAppGetDefaultPwdCallback(void);
 
-
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

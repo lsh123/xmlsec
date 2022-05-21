@@ -97,7 +97,6 @@ xmlSecOpenSSLAppInit(const char* config) {
     **/
 #endif /* XMLSEC_OPENSSL_API_300 */
 
-
 #if !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300)
     ERR_load_crypto_strings();
     OPENSSL_config(NULL);
@@ -233,9 +232,9 @@ xmlSecOpenSSLAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
     } else {
         BIO* bio;
 
-        bio = BIO_new_file(filename, "rb");
+        bio = xmlSecOpenSSLCreateReadFileBio(filename);
         if(bio == NULL) {
-            xmlSecOpenSSLError2("BIO_new_file", NULL,
+            xmlSecInternalError2("xmlSecOpenSSLCreateReadFileBio", NULL,
                                 "filename=%s", xmlSecErrorsSafeString(filename));
             return(NULL);
         }
@@ -278,9 +277,9 @@ xmlSecOpenSSLAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
     /* this would be a read only BIO, cast from const is ok */
-    bio = BIO_new_mem_buf((void*)data, dataSize);
+    bio = xmlSecOpenSSLCreateMemBufBio((void*)data, dataSize);
     if(bio == NULL) {
-        xmlSecOpenSSLError2("BIO_new_mem_buf", NULL,
+        xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
                             "dataSize=%lu", (unsigned long)dataSize);
         return(NULL);
     }
@@ -557,10 +556,10 @@ xmlSecOpenSSLAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDat
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    bio = BIO_new_file(filename, "rb");
+    bio = xmlSecOpenSSLCreateReadFileBio(filename);
     if(bio == NULL) {
-        xmlSecOpenSSLError2("BIO_new_file", NULL,
-                            "filename=%s", xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecOpenSSLCreateReadFileBio", NULL,
+                             "filename=%s", xmlSecErrorsSafeString(filename));
         return(-1);
     }
 
@@ -598,9 +597,9 @@ xmlSecOpenSSLAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlS
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
     /* this would be a read only BIO, cast from const is ok */
-    bio = BIO_new_mem_buf((void*)data, dataSize);
+    bio = xmlSecOpenSSLCreateMemBufBio((void*)data, dataSize);
     if(bio == NULL) {
-        xmlSecOpenSSLError2("BIO_new_mem_buf", NULL,
+        xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
                             "dataSize=%lu", (unsigned long)dataSize);
         return(-1);
     }
@@ -696,10 +695,10 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd,
 
     xmlSecAssert2(filename != NULL, NULL);
 
-    bio = BIO_new_file(filename, "rb");
+    bio = xmlSecOpenSSLCreateReadFileBio(filename);
     if(bio == NULL) {
-        xmlSecOpenSSLError2("BIO_new_file", NULL,
-                            "filename=%s", xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecOpenSSLCreateReadFileBio", NULL,
+                             "filename=%s", xmlSecErrorsSafeString(filename));
         return(NULL);
     }
 
@@ -739,9 +738,9 @@ xmlSecOpenSSLAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     xmlSecAssert2(data != NULL, NULL);
 
     /* this would be a read only BIO, cast from const is ok */
-    bio = BIO_new_mem_buf((void*)data, dataSize);
+    bio = xmlSecOpenSSLCreateMemBufBio((void*)data, dataSize);
     if(bio == NULL) {
-        xmlSecOpenSSLError2("BIO_new_mem_buf", NULL,
+        xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
                             "dataSize=%lu", (unsigned long)dataSize);
         return(NULL);
     }
@@ -1058,10 +1057,10 @@ xmlSecOpenSSLAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    bio = BIO_new_file(filename, "rb");
+    bio = xmlSecOpenSSLCreateReadFileBio(filename);
     if(bio == NULL) {
-        xmlSecOpenSSLError2("BIO_new_file", NULL,
-                            "filename=%s", xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecOpenSSLCreateReadFileBio", NULL,
+                             "filename=%s", xmlSecErrorsSafeString(filename));
         return(-1);
     }
 
@@ -1102,9 +1101,9 @@ xmlSecOpenSSLAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte*
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
     /* this would be a read only BIO, cast from const is ok */
-    bio = BIO_new_mem_buf((void*)data, dataSize);
+    bio = xmlSecOpenSSLCreateMemBufBio((void*)data, dataSize);
     if(bio == NULL) {
-        xmlSecOpenSSLError2("BIO_new_mem_buf", NULL,
+        xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
                             "dataSize=%lu", (unsigned long)dataSize);
         return(-1);
     }

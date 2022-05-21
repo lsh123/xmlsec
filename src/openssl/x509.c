@@ -1721,16 +1721,10 @@ xmlSecOpenSSLX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
     xmlSecAssert2(buf != NULL, NULL);
     xmlSecAssert2(size > 0, NULL);
 
-    mem = BIO_new(BIO_s_mem());
+    mem = xmlSecOpenSSLCreateMemBufBio(buf, size);
     if(mem == NULL) {
-        xmlSecOpenSSLError("BIO_new", NULL);
-        return(NULL);
-    }
-
-    ret = BIO_write(mem, buf, size);
-    if(ret <= 0) {
-        xmlSecOpenSSLError2("BIO_write", NULL,
-                            "size=%lu", (unsigned long)size);
+        xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
+                             "size=%lu", (unsigned long)size);
         BIO_free_all(mem);
         return(NULL);
     }
@@ -1770,34 +1764,43 @@ xmlSecOpenSSLX509CertBase64DerWrite(X509* cert, int base64LineWrap) {
     BIO *mem = NULL;
     xmlSecByte *p = NULL;
     long size;
+    int ret;
 
     xmlSecAssert2(cert != NULL, NULL);
 
-    mem = BIO_new(BIO_s_mem());
+    mem = xmlSecOpenSSLCreateMemBio();
     if(mem == NULL) {
-        xmlSecOpenSSLError("BIO_new", NULL);
-        return(NULL);
+        xmlSecInternalError("xmlSecOpenSSLCreateMemBio", NULL);
+        goto done;
     }
 
-    /* todo: add error checks */
-    i2d_X509_bio(mem, cert);
-    (void)BIO_flush(mem);
+    ret = i2d_X509_bio(mem, cert);
+    if(ret != 1) {
+        xmlSecOpenSSLError("i2d_X509_bio", NULL);
+        goto done;
+    }
+    ret = BIO_flush(mem);
+    if(ret != 1) {
+        xmlSecOpenSSLError("BIO_flush", NULL);
+        goto done;
+    }
 
     size = BIO_get_mem_data(mem, &p);
     if((size <= 0) || (p == NULL)){
         xmlSecOpenSSLError("BIO_get_mem_data", NULL);
-        BIO_free_all(mem);
-        return(NULL);
+        goto done;
     }
 
     res = xmlSecBase64Encode(p, size, base64LineWrap);
     if(res == NULL) {
         xmlSecInternalError("xmlSecBase64Encode", NULL);
-        BIO_free_all(mem);
-        return(NULL);
+        goto done;
     }
 
-    BIO_free_all(mem);
+done:
+    if(mem != NULL) {
+        BIO_free_all(mem);
+    }
     return(res);
 }
 
@@ -1829,16 +1832,10 @@ xmlSecOpenSSLX509CrlDerRead(xmlSecByte* buf, xmlSecSize size) {
     xmlSecAssert2(buf != NULL, NULL);
     xmlSecAssert2(size > 0, NULL);
 
-    mem = BIO_new(BIO_s_mem());
+    mem = xmlSecOpenSSLCreateMemBufBio(buf, size);
     if(mem == NULL) {
-        xmlSecOpenSSLError("BIO_new", NULL);
-        return(NULL);
-    }
-
-    ret = BIO_write(mem, buf, size);
-    if(ret <= 0) {
-        xmlSecOpenSSLError2("BIO_write", NULL,
-                            "size=%lu", (unsigned long)size);
+        xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
+                             "size=%lu", (unsigned long)size);
         BIO_free_all(mem);
         return(NULL);
     }
@@ -1876,34 +1873,43 @@ xmlSecOpenSSLX509CrlBase64DerWrite(X509_CRL* crl, int base64LineWrap) {
     BIO *mem = NULL;
     xmlSecByte *p = NULL;
     long size;
+    int ret;
 
     xmlSecAssert2(crl != NULL, NULL);
 
-    mem = BIO_new(BIO_s_mem());
+    mem = xmlSecOpenSSLCreateMemBio();
     if(mem == NULL) {
-        xmlSecOpenSSLError("BIO_new", NULL);
-        return(NULL);
+        xmlSecInternalError("xmlSecOpenSSLCreateMemBio", NULL);
+        goto done;
     }
 
-    /* todo: add error checks */
-    i2d_X509_CRL_bio(mem, crl);
-    (void)BIO_flush(mem);
+    ret = i2d_X509_CRL_bio(mem, crl);
+    if(ret != 1) {
+        xmlSecOpenSSLError("i2d_X509_CRL_bio", NULL);
+        goto done;
+    }
+    ret = BIO_flush(mem);
+    if(ret != 1) {
+        xmlSecOpenSSLError("BIO_flush", NULL);
+        goto done;
+    }
 
     size = BIO_get_mem_data(mem, &p);
     if((size <= 0) || (p == NULL)){
         xmlSecOpenSSLError("BIO_get_mem_data", NULL);
-        BIO_free_all(mem);
-        return(NULL);
+        goto done;
     }
 
     res = xmlSecBase64Encode(p, size, base64LineWrap);
     if(res == NULL) {
         xmlSecInternalError("xmlSecBase64Encode", NULL);
-        BIO_free_all(mem);
-        return(NULL);
+        goto done;
     }
 
-    BIO_free_all(mem);
+done:
+    if(mem != NULL) {
+        BIO_free_all(mem);
+    }
     return(res);
 }
 
@@ -1911,36 +1917,53 @@ static xmlChar*
 xmlSecOpenSSLX509NameWrite(X509_NAME* nm) {
     xmlChar *res = NULL;
     BIO *mem = NULL;
-    long size;
+    long size, sizeRead;
+    int ret;
 
     xmlSecAssert2(nm != NULL, NULL);
 
-    mem = BIO_new(BIO_s_mem());
+    mem = xmlSecOpenSSLCreateMemBio();
     if(mem == NULL) {
-        xmlSecOpenSSLError("BIO_new", NULL);
-        return(NULL);
+        xmlSecInternalError("xmlSecOpenSSLCreateMemBio", NULL);
+        goto done;
     }
 
     if (X509_NAME_print_ex(mem, nm, 0, XN_FLAG_RFC2253) <=0) {
         xmlSecOpenSSLError("X509_NAME_print_ex", NULL);
-        BIO_free_all(mem);
-        return(NULL);
+        goto done;
     }
 
-    (void)BIO_flush(mem); /* should call flush ? */
+    ret = BIO_flush(mem);
+    if(ret != 1) {
+        xmlSecOpenSSLError("BIO_flush", NULL);
+        goto done;
+    }
 
     size = BIO_pending(mem);
+    if(size <= 0) {
+        xmlSecOpenSSLError("BIO_pending", NULL);
+        goto done;
+    }
     res = (xmlChar *)xmlMalloc(size + 1);
     if(res == NULL) {
         xmlSecMallocError(size + 1, NULL);
-        BIO_free_all(mem);
-        return(NULL);
+        goto done;
     }
 
-    size = BIO_read(mem, res, size);
+    sizeRead = BIO_read(mem, res, size);
+    if(size != sizeRead) {
+        xmlSecOpenSSLError("BIO_read", NULL);
+        xmlFree(res);
+        goto done;
+    }
+
+    /* success */
     res[size] = '\0';
 
-    BIO_free_all(mem);
+done:
+    if(mem != NULL) {
+        BIO_free_all(mem);
+    }
     return(res);
 }
 

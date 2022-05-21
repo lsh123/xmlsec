@@ -600,4 +600,80 @@ xmlSecOpenSSLGetLibCtx(void) {
 }
 #endif /* XMLSEC_OPENSSL_API_300 */
 
+/********************************************************************
+ *
+ * BIO helpers
+ *
+ ********************************************************************/
+
+/**
+ * xmlSecOpenSSLCreateMemBio:
+ * @buf:      the data
+ * @len:      the data len
+ *
+ * Creates a memory BIO using xmlSecOpenSSLGetLibCtx() for OpenSSL 3.0.
+ *
+ * Returns: the pointer to BIO object or NULL if an error occurs/
+ */
+BIO*
+xmlSecOpenSSLCreateMemBio(void) {
+    BIO* bio = NULL;
+
+#ifndef XMLSEC_OPENSSL_API_300
+    bio = BIO_new(BIO_s_mem());
+    if(bio == NULL) {
+        xmlSecOpenSSLError("BIO_new(BIO_s_mem())", NULL);
+        return(NULL);
+    }
+#else /* XMLSEC_OPENSSL_API_300 */
+    bio = BIO_new_ex(xmlSecOpenSSLGetLibCtx(), BIO_s_mem());
+    if(bio == NULL) {
+        xmlSecOpenSSLError("BIO_new_ex(BIO_s_mem())", NULL);
+        return(NULL);
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
+
+    return(bio);
+}
+
+/**
+ * xmlSecOpenSSLCreateMemBufBio:
+ * @buf:      the data
+ * @len:      the data len
+ *
+ * Creates a read-only memory BIO using xmlSecOpenSSLGetLibCtx() for
+ * OpenSSL 3.0 containing @len bytes of data from @buf.
+ *
+ * Returns: the pointer to BIO object or NULL if an error occurs/
+ */
+BIO*
+xmlSecOpenSSLCreateMemBufBio(const xmlSecByte *buf, xmlSecSize len) {
+    BIO* bio = NULL;
+    xmlSecAssert2(buf != NULL, NULL);
+    xmlSecAssert2(len >= 0, NULL);
+
+#ifndef XMLSEC_OPENSSL_API_300
+    bio = BIO_new_mem_buf((const void*)buf, len);
+    if(bio == NULL) {
+        xmlSecOpenSSLError2("BIO_new_mem_buf", NULL,
+                            "dataSize=%lu", (unsigned long)len);
+        return(NULL);
+    }
+#else /* XMLSEC_OPENSSL_API_300 */
+    bio = BIO_new_ex(xmlSecOpenSSLGetLibCtx(), BIO_s_mem());
+    if(bio == NULL) {
+        xmlSecOpenSSLError("BIO_new_ex(BIO_s_mem())", NULL);
+        return(NULL);
+    }
+    if(BIO_write(bio, (const void*)buf, len) != len) {
+        xmlSecOpenSSLError2("BIO_write", NULL,
+                            "dataSize=%lu", (unsigned long)len);
+        BIO_free_all(bio);
+        return(NULL);
+    }
+    BIO_set_flags(bio, BIO_FLAGS_MEM_RDONLY);
+#endif /* XMLSEC_OPENSSL_API_300 */
+
+    return(bio);
+}
 

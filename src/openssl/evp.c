@@ -623,6 +623,8 @@ xmlSecOpenSSLKeyDataDsaAdoptDsa(xmlSecKeyDataPtr data, DSA* dsa) {
     }
     return(0);
 #else /* XMLSEC_OPENSSL_API_300 */
+    UNREFERENCED_PARAMETER(data);
+    UNREFERENCED_PARAMETER(dsa);
     xmlSecNotImplementedError("OpenSSL 3.0 does not support direct access to DSA key");
     return(-1);
 #endif /* XMLSEC_OPENSSL_API_300 */
@@ -648,6 +650,7 @@ xmlSecOpenSSLKeyDataDsaGetDsa(xmlSecKeyDataPtr data) {
 
     return((pKey != NULL) ? EVP_PKEY_get0_DSA(pKey) : NULL);
 #else /* XMLSEC_OPENSSL_API_300 */
+    UNREFERENCED_PARAMETER(data);
     xmlSecNotImplementedError("OpenSSL 3.0 does not support direct access to DSA key");
     return(NULL);
 #endif /* XMLSEC_OPENSSL_API_300 */
@@ -1569,6 +1572,8 @@ xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa(xmlSecKeyDataPtr data, EC_KEY* ecdsa) {
     }
     return(0);
 #else /* XMLSEC_OPENSSL_API_300 */
+    UNREFERENCED_PARAMETER(data);
+    UNREFERENCED_PARAMETER(ecdsa);
     xmlSecNotImplementedError("OpenSSL 3.0 does not support direct access to ECDSA key");
     return(-1);
 #endif /* XMLSEC_OPENSSL_API_300 */
@@ -1594,6 +1599,7 @@ xmlSecOpenSSLKeyDataEcdsaGetEcdsa(xmlSecKeyDataPtr data) {
 
     return((pKey != NULL) ? EVP_PKEY_get0_EC_KEY(pKey) : NULL);
 #else /* XMLSEC_OPENSSL_API_300 */
+    UNREFERENCED_PARAMETER(data);
     xmlSecNotImplementedError("OpenSSL 3.0 does not support direct access to ECDSA key");
     return(NULL);
 #endif /* XMLSEC_OPENSSL_API_300 */
@@ -1897,6 +1903,8 @@ xmlSecOpenSSLKeyDataRsaAdoptRsa(xmlSecKeyDataPtr data, RSA* rsa) {
     }
     return(0);
 #else /* XMLSEC_OPENSSL_API_300 */
+    UNREFERENCED_PARAMETER(data);
+    UNREFERENCED_PARAMETER(rsa);
     xmlSecNotImplementedError("OpenSSL 3.0 does not support direct access to RSA key");
     return(-1);
 #endif /* XMLSEC_OPENSSL_API_300 */
@@ -1922,6 +1930,7 @@ xmlSecOpenSSLKeyDataRsaGetRsa(xmlSecKeyDataPtr data) {
 
     return((pKey != NULL) ? EVP_PKEY_get0_RSA(pKey) : NULL);
 #else /* XMLSEC_OPENSSL_API_300 */
+    UNREFERENCED_PARAMETER(data);
     xmlSecNotImplementedError("OpenSSL 3.0 does not support direct access to RSA key");
     return(NULL);
 #endif /* XMLSEC_OPENSSL_API_300 */

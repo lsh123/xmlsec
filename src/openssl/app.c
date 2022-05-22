@@ -494,6 +494,10 @@ xmlSecOpenSSLAppEngineKeyLoad(const char *engineName, const char *engineKeyId,
     xmlSecAssert2(engineKeyId != NULL, NULL);
     xmlSecAssert2(format == xmlSecKeyDataFormatEngine, NULL);
 
+    UNREFERENCED_PARAMETER(pwd);
+    UNREFERENCED_PARAMETER(pwdCallback);
+    UNREFERENCED_PARAMETER(pwdCallbackCtx);
+
     /* load and initialize the engine */
     engine = ENGINE_by_id(engineName);
     if(engine == NULL) {
@@ -574,6 +578,12 @@ done:
     return(key);
 
 #else /* !defined(OPENSSL_NO_ENGINE) && !defined(XMLSEC_OPENSSL_API_300) */
+    UNREFERENCED_PARAMETER(engineName);
+    UNREFERENCED_PARAMETER(engineKeyId);
+    UNREFERENCED_PARAMETER(format);
+    UNREFERENCED_PARAMETER(pwd);
+    UNREFERENCED_PARAMETER(pwdCallback);
+    UNREFERENCED_PARAMETER(pwdCallbackCtx);
     xmlSecNotImplementedError("OpenSSL Engine interface is not enabled");
     return (NULL);
 #endif /* !defined(OPENSSL_NO_ENGINE) && !defined(XMLSEC_OPENSSL_API_300) */

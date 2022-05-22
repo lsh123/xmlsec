@@ -268,20 +268,20 @@ xmlSecNssKeyTransportCtxInit(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr in
     ctx->material = xmlSecBufferCreate(blockSize);
     if(ctx->material == NULL) {
         xmlSecInternalError2("xmlSecBufferSetData", NULL,
-                             "size=%lu", (long unsigned)blockSize);
+                             "size=%lu", XMLSEC_UL_BAD_CAST(blockSize));
         return(-1);
     }
 
     /* read raw key material into context */
     if(xmlSecBufferSetData(ctx->material, xmlSecBufferGetData(in), xmlSecBufferGetSize(in)) < 0) {
         xmlSecInternalError2("xmlSecBufferSetData", NULL,
-                             "size=%lu", (long unsigned)xmlSecBufferGetSize(in));
+                             "size=%lu", XMLSEC_UL_BAD_CAST(xmlSecBufferGetSize(in)));
         return(-1);
     }
 
     if(xmlSecBufferRemoveHead(in, xmlSecBufferGetSize(in)) < 0) {
         xmlSecInternalError2("xmlSecBufferRemoveHead", NULL,
-                             "size=%lu", (long unsigned)xmlSecBufferGetSize(in));
+                             "size=%lu", XMLSEC_UL_BAD_CAST(xmlSecBufferGetSize(in)));
         return(-1);
     }
 
@@ -303,13 +303,13 @@ xmlSecNssKeyTransportCtxUpdate(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr 
     /* read raw key material and append into context */
     if(xmlSecBufferAppend(ctx->material, xmlSecBufferGetData(in), xmlSecBufferGetSize(in)) < 0) {
         xmlSecInternalError2("xmlSecBufferAppend", NULL,
-                             "size=%lu", (long unsigned)xmlSecBufferGetSize(in));
+                             "size=%lu", XMLSEC_UL_BAD_CAST(xmlSecBufferGetSize(in)));
         return(-1);
     }
 
     if(xmlSecBufferRemoveHead(in, xmlSecBufferGetSize(in)) < 0) {
         xmlSecInternalError2("xmlSecBufferRemoveHead", NULL,
-                             "size=%lu", (long unsigned)xmlSecBufferGetSize(in));
+                             "size=%lu", XMLSEC_UL_BAD_CAST(xmlSecBufferGetSize(in)));
         return(-1);
     }
     return(0);
@@ -336,13 +336,13 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
     /* read raw key material and append into context */
     if(xmlSecBufferAppend(ctx->material, xmlSecBufferGetData(in), xmlSecBufferGetSize(in)) < 0) {
         xmlSecInternalError2("xmlSecBufferAppend", NULL,
-                             "size=%lu", (unsigned long)xmlSecBufferGetSize(in));
+                             "size=%lu", XMLSEC_UL_BAD_CAST(xmlSecBufferGetSize(in)));
         return(-1);
     }
 
     if(xmlSecBufferRemoveHead(in, xmlSecBufferGetSize(in)) < 0) {
         xmlSecInternalError2("xmlSecBufferRemoveHead", NULL,
-                             "size=%lu", (unsigned long)xmlSecBufferGetSize(in));
+                             "size=%lu", XMLSEC_UL_BAD_CAST(xmlSecBufferGetSize(in)));
         return(-1);
     }
 
@@ -422,7 +422,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
 
         if(xmlSecBufferSetSize(result, wrpskv.len) < 0) {
             xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-                                 "size=%lu", (unsigned long)wrpskv.len);
+                                 "size=%lu", XMLSEC_UL_BAD_CAST(wrpskv.len));
             PK11_FreeSymKey(symKey);
             xmlSecBufferDestroy(result);
             PK11_FreeSlot(slot);
@@ -459,7 +459,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
 
         if(xmlSecBufferSetData(result, keyItem->data, keyItem->len) < 0) {
             xmlSecInternalError2("xmlSecBufferSetData", NULL,
-                                 "size=%lu", (unsigned long)keyItem->len);
+                                 "size=%lu", XMLSEC_UL_BAD_CAST(keyItem->len));
             PK11_FreeSymKey(symKey);
             xmlSecBufferDestroy(result);
             return(-1);
@@ -470,7 +470,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
     /* Write output */
     if(xmlSecBufferAppend(out, xmlSecBufferGetData(result), xmlSecBufferGetSize(result)) < 0) {
         xmlSecInternalError2("xmlSecBufferAppend", NULL,
-                             "size=%lu", (unsigned long)xmlSecBufferGetSize(result));
+                             "size=%lu", XMLSEC_UL_BAD_CAST(xmlSecBufferGetSize(result)));
         xmlSecBufferDestroy(result);
         return(-1);
     }

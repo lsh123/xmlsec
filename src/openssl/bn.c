@@ -67,7 +67,7 @@ xmlSecOpenSSLNodeGetBNValue(const xmlNodePtr cur, BIGNUM **a) {
     (*a) = BN_bin2bn(xmlSecBufferGetData(&buf), xmlSecBufferGetSize(&buf), (*a));
     if( (*a) == NULL) {
         xmlSecOpenSSLError2("BN_bin2bn", NULL,
-                            "size=%lu", (unsigned long)(xmlSecBufferGetSize(&buf)));
+                            "size=%lu", XMLSEC_UL_BAD_CAST(xmlSecBufferGetSize(&buf)));
         xmlSecBufferFinalize(&buf);
         return(NULL);
     }

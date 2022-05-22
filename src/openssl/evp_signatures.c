@@ -323,7 +323,6 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
     }
 #endif /* XMLSEC_OPENSSL_API_300 */
 
-
     /* create digest CTX */
     ctx->digestCtx = EVP_MD_CTX_new();
     if(ctx->digestCtx == NULL) {

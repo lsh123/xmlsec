@@ -1182,7 +1182,7 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     if(ret != 1) {
         xmlSecOpenSSLError2("DSA_generate_parameters_ex",
                             xmlSecKeyDataGetName(data),
-                            "sizeBits=%lu", (unsigned long)sizeBits);
+                            "sizeBits=%lu", XMLSEC_UL_BAD_CAST(sizeBits));
         goto done;
     }
 
@@ -1249,7 +1249,7 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     if(ret <= 0) {
         xmlSecOpenSSLError2("EVP_PKEY_generate",
             xmlSecKeyDataGetName(data),
-            "sizeBits=%lu", (unsigned long)sizeBits);
+            "sizeBits=%lu", XMLSEC_UL_BAD_CAST(sizeBits));
         goto done;
     }
     ret = xmlSecOpenSSLKeyDataDsaAdoptEvp(data, pKey);
@@ -2349,7 +2349,7 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     if(ret != 1) {
         xmlSecOpenSSLError2("RSA_generate_key_ex",
                             xmlSecKeyDataGetName(data),
-                            "sizeBits=%lu", (unsigned long)sizeBits);
+                            "sizeBits=%lu", XMLSEC_UL_BAD_CAST(sizeBits));
         goto done;
     }
 
@@ -2411,7 +2411,7 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     if(ret <= 0) {
         xmlSecOpenSSLError2("EVP_PKEY_generate",
             xmlSecKeyDataGetName(data),
-            "sizeBits=%lu", (unsigned long)sizeBits);
+            "sizeBits=%lu", XMLSEC_UL_BAD_CAST(sizeBits));
         goto done;
     }
     ret = xmlSecOpenSSLKeyDataRsaAdoptEvp(data, pKey);

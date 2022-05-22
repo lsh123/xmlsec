@@ -533,7 +533,7 @@ xmlSecOpenSSLKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
     }
     outLen += nOut;
     EVP_CIPHER_CTX_free(cctx);
-    return (int)outLen;
+    return outLen;
 #endif /* XMLSEC_OPENSSL_API_300 */
 }
 
@@ -611,7 +611,7 @@ xmlSecOpenSSLKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
     }
     outLen += nOut;
     EVP_CIPHER_CTX_free(cctx);
-    return (int)outLen;
+    return outLen;
 #endif /* XMLSEC_OPENSSL_API_300 */
 }
 

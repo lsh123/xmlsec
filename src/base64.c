@@ -620,7 +620,8 @@ xmlSecBase64Encode(const xmlSecByte *buf, xmlSecSize len, int columns) {
     if(ret < 0) {
         xmlSecInternalError3("xmlSecBase64CtxUpdate", NULL,
                              "len=%lu;size=%lu",
-                             (unsigned long)len, (unsigned long)size);
+                             XMLSEC_UL_BAD_CAST(len),
+                             XMLSEC_UL_BAD_CAST(size));
         xmlFree(ptr);
         xmlSecBase64CtxFinalize(&ctx);
         return(NULL);

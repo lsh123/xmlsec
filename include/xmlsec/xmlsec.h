@@ -54,6 +54,15 @@ typedef void*                                   xmlSecPtr;
 #define XMLSEC_SIZE_BAD_CAST(val)               ((xmlSecSize)(val))
 
 /**
+ * XMLSEC_UL_BAD_CAST:
+ * @val:        the value to cast
+ *
+ * Bad cast to 'unsigned long' (very useful for printing with '%lu').
+ */
+#define XMLSEC_UL_BAD_CAST(val)               ((unsigned long)(val))
+
+
+/**
  * xmlSecByte:
  *
  * One byte. Should be typedef instead of define

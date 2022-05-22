@@ -634,7 +634,7 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
                 if(ret < 0) {
                     xmlSecInternalError2("xmlSecBufferAppend",
                                          xmlSecTransformGetName(transform),
-                                         "size=%lu", (unsigned long)dgstSize);
+                                         "size=%lu", XMLSEC_UL_BAD_CAST(dgstSize));
                     return(-1);
                 }
             }

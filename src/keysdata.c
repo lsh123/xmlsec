@@ -602,8 +602,8 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
             xmlSecOtherError3(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
                               xmlSecKeyDataGetName(data),
                               "cur-data-size=%lu;new-data-size=%lu",
-                              (unsigned long)xmlSecBufferGetSize(buffer),
-                              (unsigned long)len);
+                              XMLSEC_UL_BAD_CAST(xmlSecBufferGetSize(buffer)),
+                              XMLSEC_UL_BAD_CAST(len));
             xmlFree(str);
             return(-1);
         }
@@ -752,8 +752,8 @@ xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
             xmlSecOtherError3(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
                               xmlSecKeyDataGetName(data),
                               "cur-data-size=%lu;new-data-size=%lu",
-                              (unsigned long)xmlSecBufferGetSize(buffer),
-                              (unsigned long)bufSize);
+                              XMLSEC_UL_BAD_CAST(xmlSecBufferGetSize(buffer)),
+                              XMLSEC_UL_BAD_CAST(bufSize));
             return(-1);
         }
         if((buffer != NULL) && (bufSize > 0) && (memcmp(xmlSecBufferGetData(buffer), buf, bufSize) != 0)) {

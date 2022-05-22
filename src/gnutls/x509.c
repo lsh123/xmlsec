@@ -1510,16 +1510,16 @@ xmlSecGnuTLSKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr k
             if(key->notValidBefore == (time_t)-1) {
                 xmlSecGnuTLSError2("gnutls_x509_crt_get_activation_time", GNUTLS_E_SUCCESS,
                                    xmlSecKeyDataGetName(data),
-                                   "cert activation time is invalid: %ld",
-                                   (unsigned long)key->notValidBefore);
+                                   "cert activation time is invalid: %lu",
+                                   XMLSEC_UL_BAD_CAST(key->notValidBefore));
                 return(-1);
             }
             key->notValidAfter = gnutls_x509_crt_get_expiration_time(ctx->keyCert);
             if(key->notValidAfter == (time_t)-1) {
                 xmlSecGnuTLSError2("gnutls_x509_crt_get_expiration_time", GNUTLS_E_SUCCESS,
                                    xmlSecKeyDataGetName(data),
-                                   "cert expiration time is invalid: %ld",
-                                   (unsigned long)key->notValidAfter);
+                                   "cert expiration time is invalid: %lu",
+                                   XMLSEC_UL_BAD_CAST(key->notValidAfter));
                 return(-1);
             }
         } else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT) != 0) {

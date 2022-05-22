@@ -65,7 +65,7 @@ static int      xmlSecOpenSSLEvpBlockCipherCtxInit      (xmlSecOpenSSLEvpBlockCi
                                                          xmlSecTransformCtxPtr transformCtx);
 static int      xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
                                                          const xmlSecByte * in,
-                                                         int inSize,
+                                                         xmlSecSize inSize,
                                                          xmlSecBufferPtr out,
                                                          const xmlChar* cipherName,
                                                          int final,
@@ -118,7 +118,7 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 #endif /* XMLSEC_OPENSSL_API_300 */
         if(ret != 1) {
             xmlSecOpenSSLError2("RAND_bytes", cipherName,
-                                "size=%lu", (unsigned long)ivLen);
+                                "size=%lu",XMLSEC_UL_BAD_CAST(ivLen));
             return(-1);
         }
 
@@ -174,14 +174,15 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 static int
 xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         const xmlSecByte * in,
-        int inSize,
+        xmlSecSize inSize,
         xmlSecBufferPtr out,
         const xmlChar* cipherName,
         int final,
         xmlSecByte *tagData) {
     xmlSecByte* outBuf;
     xmlSecSize outSize;
-    int blockLen, outLen = 0;
+    xmlSecSize blockLen;
+    int outLen = 0;
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
@@ -232,7 +233,7 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     outBuf  = xmlSecBufferGetData(out) + outSize;
 
     /* encrypt/decrypt */
-    ret = EVP_CipherUpdate(ctx->cipherCtx, outBuf, &outLen, in, inSize);
+    ret = EVP_CipherUpdate(ctx->cipherCtx, outBuf, &outLen, in, (int)inSize);
     if(ret != 1) {
         xmlSecOpenSSLError("EVP_CipherUpdate", cipherName);
         return(-1);
@@ -347,7 +348,7 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdate(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     xmlSecAssert2(inBlocksLen > 0, -1);
 
     inBuf  = xmlSecBufferGetData(in);
-    ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, inBuf, (int)inBlocksLen, out, cipherName, 0,
+    ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, inBuf, inBlocksLen, out, cipherName, 0,
                                                     NULL); /* not final */
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock", cipherName);
@@ -357,7 +358,8 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdate(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     /* remove the processed block from input */
     ret = xmlSecBufferRemoveHead(in, inBlocksLen);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName, "size=%d", (int)inSize);
+        xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName,
+                             "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
         return(-1);
     }
 
@@ -447,7 +449,7 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         ctx->pad[inSize + padLen - 1] = (xmlSecByte)padLen;
 
         /* update the last 1 or 2 blocks with padding */
-        ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, ctx->pad, (int)(inSize + padLen), out,
+        ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, ctx->pad, inSize + padLen, out,
                                                         cipherName, 1, NULL); /* final */
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock", cipherName);
@@ -457,7 +459,7 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         xmlSecSize padLen;
 
         /* update the last one block with padding */
-        ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, inBuf, (int)inSize, out, cipherName, 1, NULL); /* final */
+        ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, inBuf, inSize, out, cipherName, 1, NULL); /* final */
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock", cipherName);
             return(-1);
@@ -531,7 +533,7 @@ xmlSecOpenSSLEvpBlockCipherGCMCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     inBuf = xmlSecBufferGetData(in);
 
     if(EVP_CIPHER_CTX_encrypting(ctx->cipherCtx)) {
-        ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, inBuf, (int)inSize, out, cipherName,
+        ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, inBuf, inSize, out, cipherName,
             1, tag); /* final */
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock", cipherName);
@@ -565,7 +567,7 @@ xmlSecOpenSSLEvpBlockCipherGCMCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         inSize = xmlSecBufferGetSize(in);
 
         /* Decrypt anything remaining and verify the tag */
-        ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, inBuf, (int)inSize, out, cipherName,
+        ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, inBuf, inSize, out, cipherName,
             1, tag); /* final */
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock", cipherName);

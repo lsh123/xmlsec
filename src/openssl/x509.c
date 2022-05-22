@@ -1724,7 +1724,7 @@ xmlSecOpenSSLX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
     mem = xmlSecOpenSSLCreateMemBufBio(buf, size);
     if(mem == NULL) {
         xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
-                             "size=%lu", (unsigned long)size);
+                             "size=%lu", XMLSEC_UL_BAD_CAST(size));
         BIO_free_all(mem);
         return(NULL);
     }
@@ -1733,7 +1733,7 @@ xmlSecOpenSSLX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
     cert = d2i_X509_bio(mem, NULL);
     if(cert == NULL) {
         xmlSecOpenSSLError2("d2i_X509_bio", NULL,
-                            "size=%lu", (unsigned long)size);
+                            "size=%lu", XMLSEC_UL_BAD_CAST(size));
         BIO_free_all(mem);
         return(NULL);
     }
@@ -1747,7 +1747,7 @@ xmlSecOpenSSLX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
     cert = d2i_X509_bio(mem, &tmpCert);
     if(cert == NULL) {
         xmlSecOpenSSLError2("d2i_X509_bio", NULL,
-                            "size=%lu", (unsigned long)size);
+                            "size=%lu", XMLSEC_UL_BAD_CAST(size));
         X509_free(tmpCert);
         BIO_free_all(mem);
         return(NULL);
@@ -1835,7 +1835,7 @@ xmlSecOpenSSLX509CrlDerRead(xmlSecByte* buf, xmlSecSize size) {
     mem = xmlSecOpenSSLCreateMemBufBio(buf, size);
     if(mem == NULL) {
         xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
-                             "size=%lu", (unsigned long)size);
+                             "size=%lu", XMLSEC_UL_BAD_CAST(size));
         BIO_free_all(mem);
         return(NULL);
     }

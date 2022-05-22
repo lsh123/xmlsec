@@ -261,8 +261,7 @@ xmlSecOpenSSLRsaPkcs1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         xmlSecInternalError("xmlSecOpenSSLEvpKeyDup",
                             xmlSecTransformGetName(transform));
         return(-1);
-    }
-    
+    }    
 #else /* XMLSEC_OPENSSL_API_300 */
     xmlSecAssert2(ctx->pKeyCtx == NULL, -1);
 
@@ -400,7 +399,7 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetMaxSize",
                              xmlSecTransformGetName(transform),
-                             "size=%d", outSize);
+                             "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
         return(-1);
     }
 
@@ -412,7 +411,7 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
         if(ret <= 0) {
             xmlSecOpenSSLError2("RSA_public_encrypt",
                                 xmlSecTransformGetName(transform),
-                                "size=%lu", (unsigned long)inSize);
+                                "size=%lu",XMLSEC_UL_BAD_CAST(inSize));
             return(-1);
         }
         outSize = ret;
@@ -422,7 +421,7 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
         if(ret <= 0) {
             xmlSecOpenSSLError2("EVP_PKEY_encrypt",
                                 xmlSecTransformGetName(transform),
-                                "size=%lu", (unsigned long)inSize);
+                                "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
             return(-1);
         }
         outSize = XMLSEC_SIZE_BAD_CAST(outLen);
@@ -435,7 +434,7 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
         if(ret <= 0) {
             xmlSecOpenSSLError2("RSA_private_decrypt",
                                 xmlSecTransformGetName(transform),
-                                "size=%lu", (unsigned long)inSize);
+                                "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
             return(-1);
         }
         outSize = ret;
@@ -446,7 +445,7 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
         if (ret <= 0) {
             xmlSecOpenSSLError2("EVP_PKEY_decrypt",
                                 xmlSecTransformGetName(transform),
-                                "size=%lu", (unsigned long)inSize);
+                                "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
             return(-1);
         }
         outSize = XMLSEC_SIZE_BAD_CAST(outLen);
@@ -973,7 +972,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferInitialize",
                                  xmlSecTransformGetName(transform),
-                                 "size=%lu", (unsigned long)ctx->keySize);
+                                 "size=%lu", XMLSEC_UL_BAD_CAST(ctx->keySize));
             return(-1);
         }
         /* add padding */
@@ -1067,7 +1066,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
         if(BN_bin2bn(xmlSecBufferGetData(out), outSize, bn) == NULL) {
             xmlSecOpenSSLError2("BN_bin2bn",
                                 xmlSecTransformGetName(transform),
-                                "size=%lu", (unsigned long)outSize);
+                                "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
             BN_clear_free(bn);
             return(-1);
         }

@@ -915,8 +915,8 @@ xmlSecKeyDebugDump(xmlSecKeyPtr key, FILE *output) {
     }
     fprintf(output, "=== key usage: %d\n", key->usage);
     if(key->notValidBefore < key->notValidAfter) {
-        fprintf(output, "=== key not valid before: %ld\n", (unsigned long)key->notValidBefore);
-        fprintf(output, "=== key not valid after: %ld\n", (unsigned long)key->notValidAfter);
+        fprintf(output, "=== key not valid before: %lu\n", XMLSEC_UL_BAD_CAST(key->notValidBefore));
+        fprintf(output, "=== key not valid after: %lu\n", XMLSEC_UL_BAD_CAST(key->notValidAfter));
     }
     if(key->value != NULL) {
         xmlSecKeyDataDebugDump(key->value, output);
@@ -961,9 +961,9 @@ xmlSecKeyDebugXmlDump(xmlSecKeyPtr key, FILE *output) {
     fprintf(output, "</KeyName>\n");
 
     if(key->notValidBefore < key->notValidAfter) {
-        fprintf(output, "<KeyValidity notValidBefore=\"%ld\" notValidAfter=\"%ld\"/>\n",
-                (unsigned long)key->notValidBefore,
-                (unsigned long)key->notValidAfter);
+        fprintf(output, "<KeyValidity notValidBefore=\"%lu\" notValidAfter=\"%lu\"/>\n",
+                XMLSEC_UL_BAD_CAST(key->notValidBefore),
+                XMLSEC_UL_BAD_CAST(key->notValidAfter));
     }
 
     if(key->value != NULL) {

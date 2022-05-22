@@ -413,7 +413,7 @@ xmlSecOpenSSLKWDes3GenerateRandom(void * context,
 #endif /* XMLSEC_OPENSSL_API_300 */
     if(ret != 1) {
         xmlSecOpenSSLError2("RAND_bytes", NULL,
-                            "size=%lu", (unsigned long)outSize);
+                            "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
         return(-1);
     }
 

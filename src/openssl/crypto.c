@@ -431,7 +431,8 @@ xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
 
     ret = xmlSecBufferSetSize(buffer, size);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=%d", size);
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
+                             "size=%lu", XMLSEC_UL_BAD_CAST(size));
         return(-1);
     }
 
@@ -444,7 +445,7 @@ xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
 #endif /* XMLSEC_OPENSSL_API_300 */
     if(ret != 1) {
         xmlSecOpenSSLError2("RAND_bytes", NULL,
-                            "size=%lu", (unsigned long)size);
+                            "size=%lu", XMLSEC_UL_BAD_CAST(size));
         return(-1);
     }
     return(0);
@@ -656,7 +657,7 @@ xmlSecOpenSSLCreateMemBufBio(const xmlSecByte *buf, xmlSecSize len) {
     bio = BIO_new_mem_buf((const void*)buf, len);
     if(bio == NULL) {
         xmlSecOpenSSLError2("BIO_new_mem_buf", NULL,
-                            "dataSize=%lu", (unsigned long)len);
+                            "dataSize=%lu", XMLSEC_UL_BAD_CAST(len));
         return(NULL);
     }
 #else /* XMLSEC_OPENSSL_API_300 */
@@ -667,7 +668,7 @@ xmlSecOpenSSLCreateMemBufBio(const xmlSecByte *buf, xmlSecSize len) {
     }
     if(BIO_write(bio, (const void*)buf, len) != len) {
         xmlSecOpenSSLError2("BIO_write", NULL,
-                            "dataSize=%lu", (unsigned long)len);
+                            "dataSize=%lu", XMLSEC_UL_BAD_CAST(len));
         BIO_free_all(bio);
         return(NULL);
     }

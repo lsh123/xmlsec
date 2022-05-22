@@ -298,7 +298,7 @@ xmlSecOpenSSLAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     bio = xmlSecOpenSSLCreateMemBufBio((void*)data, dataSize);
     if(bio == NULL) {
         xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
-                            "dataSize=%lu", (unsigned long)dataSize);
+                            "dataSize=%lu", XMLSEC_UL_BAD_CAST(dataSize));
         return(NULL);
     }
 
@@ -656,7 +656,7 @@ xmlSecOpenSSLAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlS
     bio = xmlSecOpenSSLCreateMemBufBio((void*)data, dataSize);
     if(bio == NULL) {
         xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
-                            "dataSize=%lu", (unsigned long)dataSize);
+                            "dataSize=%lu", XMLSEC_UL_BAD_CAST(dataSize));
         return(-1);
     }
 
@@ -797,7 +797,7 @@ xmlSecOpenSSLAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     bio = xmlSecOpenSSLCreateMemBufBio((void*)data, dataSize);
     if(bio == NULL) {
         xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
-                            "dataSize=%lu", (unsigned long)dataSize);
+                            "dataSize=%lu", XMLSEC_UL_BAD_CAST(dataSize));
         return(NULL);
     }
 
@@ -1167,7 +1167,7 @@ xmlSecOpenSSLAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte*
     bio = xmlSecOpenSSLCreateMemBufBio((void*)data, dataSize);
     if(bio == NULL) {
         xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
-                            "dataSize=%lu", (unsigned long)dataSize);
+                            "dataSize=%lu", XMLSEC_UL_BAD_CAST(dataSize));
         return(-1);
     }
 

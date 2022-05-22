@@ -180,7 +180,7 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         if(ret != 0) {
             xmlSecXmlParserError2("xmlParseChunk", ctx->parserCtx,
                                   xmlSecTransformGetName(transform),
-                                  "size=%lu", (unsigned long)dataSize);
+                                  "size=%lu", XMLSEC_UL_BAD_CAST(dataSize));
             return(-1);
         }
     }

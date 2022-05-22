@@ -588,7 +588,7 @@ xmlSecNssKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     pubkey = (SECKEYPublicKey *)PORT_ArenaZAlloc(arena, sizeof(SECKEYPublicKey));
     if(pubkey == NULL) {
         xmlSecNssError2("PORT_ArenaZAlloc", xmlSecKeyDataKlassGetName(id),
-                        "size=%lu", (unsigned long)sizeof(SECKEYPublicKey));
+                        "size=%lu", XMLSEC_UL_BAD_CAST(sizeof(SECKEYPublicKey)));
         PORT_FreeArena(arena, PR_FALSE);
         ret = -1;
         goto done;
@@ -835,14 +835,14 @@ xmlSecNssKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKe
     rv = PK11_PQG_ParamGen(j, &pqgParams, &pqgVerify);
     if (rv != SECSuccess) {
         xmlSecNssError2("PK11_PQG_ParamGen", xmlSecKeyDataGetName(data),
-                        "size=%lu", (unsigned long)sizeBits);
+                        "size=%lu", XMLSEC_UL_BAD_CAST(sizeBits));
         goto done;
     }
 
     rv = PK11_PQG_VerifyParams(pqgParams, pqgVerify, &res);
     if (rv != SECSuccess || res != SECSuccess) {
         xmlSecNssError2("PK11_PQG_VerifyParams", xmlSecKeyDataGetName(data),
-                        "size=%lu", (unsigned long)sizeBits);
+                        "size=%lu", XMLSEC_UL_BAD_CAST(sizeBits));
         goto done;
     }
 

@@ -48,8 +48,6 @@
 #endif /* XMLSEC_OPENSSL_API_300 */
 
 
-static int      xmlSecOpenSSLAppLoadRANDFile            (const char *filename);
-static int      xmlSecOpenSSLAppSaveRANDFile            (const char *filename);
 static int      xmlSecOpenSSLDefaultPasswordCallback    (char *buf,
                                                          int bufsiz,
                                                          int verify,
@@ -140,11 +138,6 @@ xmlSecOpenSSLAppInit(const char* config) {
     }
 #endif /* !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300) */
 
-    if((RAND_status() != 1) && (xmlSecOpenSSLAppLoadRANDFile(NULL) != 1)) {
-        xmlSecInternalError("xmlSecOpenSSLAppLoadRANDFile", NULL);
-        goto error;
-    }
-
     if((config != NULL) && (xmlSecOpenSSLSetDefaultTrustedCertsFolder(BAD_CAST config) < 0)) {
         xmlSecInternalError("xmlSecOpenSSLSetDefaultTrustedCertsFolder", NULL);
         goto error;
@@ -169,8 +162,6 @@ error:
  */
 int
 xmlSecOpenSSLAppShutdown(void) {
-    xmlSecOpenSSLAppSaveRANDFile(NULL);
-
     /* OpenSSL 1.1.0+ does not require explicit cleanup */
 #if !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300)
 
@@ -1494,64 +1485,6 @@ xmlSecOpenSSLAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename
     }
 
     return(0);
-}
-
-
-/*
- * Random numbers initialization from openssl (apps/app_rand.c)
- */
-static int seeded = 0;
-static int egdsocket = 0;
-
-static int
-xmlSecOpenSSLAppLoadRANDFile(const char *filename) {
-    char buffer[1024];
-
-    if(filename == NULL) {
-        filename = RAND_file_name(buffer, sizeof(buffer));
-#ifndef OPENSSL_NO_EGD
-    }else if(RAND_egd(filename) > 0) {
-        /* we try if the given filename is an EGD socket.
-         * if it is, we don't write anything back to the file. */
-        egdsocket = 1;
-        return 1;
-#endif /* OPENSSL_NO_EGD */
-    }
-
-    if((filename == NULL) || !RAND_load_file(filename, -1)) {
-        if(RAND_status() == 0) {
-            xmlSecOpenSSLError2("RAND_load_file", NULL,
-                                "filename=%s",
-                                xmlSecErrorsSafeString(filename));
-            return 0;
-        }
-    }
-    seeded = 1;
-    return 1;
-}
-
-static int
-xmlSecOpenSSLAppSaveRANDFile(const char *filename) {
-    char buffer[1024];
-
-    if(egdsocket || !seeded) {
-        /* If we did not manage to read the seed file,
-         * we should not write a low-entropy seed file back --
-         * it would suppress a crucial warning the next time
-         * we want to use it. */
-        return 0;
-    }
-
-    if(filename == NULL) {
-        filename = RAND_file_name(buffer, sizeof(buffer));
-    }
-    if((filename == NULL) || !RAND_write_file(filename)) {
-        xmlSecOpenSSLError2("RAND_write_file", NULL,
-                            "filename=%s", xmlSecErrorsSafeString(filename));
-        return 0;
-    }
-
-    return 1;
 }
 
 /**

@@ -818,7 +818,7 @@ xmlSecOpenSSLSignatureDsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSecBy
     unsigned char* pout = NULL;
     size_t keySize;
 #endif /* XMLSEC_OPENSSL_API_300 */
-    int dsaKeyLen, signHalfLen;
+    int dsaKeyLen, signLen, signHalfLen;
     DSA_SIG* sig = NULL;
     BIGNUM* rr = NULL;
     BIGNUM* ss = NULL;
@@ -862,8 +862,9 @@ xmlSecOpenSSLSignatureDsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSecBy
     }
 
     /* check size */
-    if(signSize != 2 * signHalfLen) {
-        xmlSecInvalidSizeError("DSA signature", signSize, 2 * signHalfLen,
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(signSize, signLen, goto done, NULL);
+    if(signLen != 2 * signHalfLen) {
+        xmlSecInvalidSizeError("DSA signature", signLen, 2 * signHalfLen,
                                NULL);
         goto done;
     }
@@ -1210,6 +1211,7 @@ xmlSecOpenSSLSignatureEcdsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPt
         goto done;
     }
     XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(ecSignBufSize, ecSignBufSize2, goto done, NULL);
+    ecSignBuf = xmlSecBufferCreate(ecSignBufSize2);
     if (ecSignBuf == NULL) {
         xmlSecInternalError2("xmlSecBufferCreate", NULL,
                              "size=%lu", XMLSEC_UL_BAD_CAST(ecSignBufSize2));
@@ -1311,7 +1313,7 @@ xmlSecOpenSSLSignatureEcdsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSec
     ECDSA_SIG* sig = NULL;
     BIGNUM* rr = NULL;
     BIGNUM* ss = NULL;
-    int signHalfLen;
+    int signLen, signHalfLen;
     int res = -1;
     int ret;
 
@@ -1347,10 +1349,11 @@ xmlSecOpenSSLSignatureEcdsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSec
     /* check size: we expect the r and s to be the same size and match the size of
      * the key (RFC 6931); however some  implementations (e.g. Java) cut leading zeros:
      * https://github.com/lsh123/xmlsec/issues/228 */
-    if((signSize < 2 * signHalfLen) && (signSize % 2 == 0)) {
-        signHalfLen = signSize / 2;
-    } else if(signSize != 2 * signHalfLen) {
-        xmlSecInvalidSizeError("ECDSA signature", signSize, 2 * signHalfLen,
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(signSize, signLen, goto done, NULL);
+    if((signLen < 2 * signHalfLen) && (signLen % 2 == 0)) {
+        signHalfLen = signLen / 2;
+    } else if(signLen != 2 * signHalfLen) {
+        xmlSecInvalidSizeError("ECDSA signature", signLen, 2 * signHalfLen,
                                NULL);
         goto done;
     }

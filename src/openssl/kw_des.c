@@ -370,8 +370,8 @@ xmlSecOpenSSLKWDes3Sha1(void * context,
 #ifdef XMLSEC_OPENSSL_API_300
     size_t outLen = XMLSEC_SIZE_BAD_CAST(outSize);
     int ret;
-#endif /* XMLSEC_OPENSSL_API_300 */
     int res;
+#endif /* XMLSEC_OPENSSL_API_300 */
 
     xmlSecOpenSSLKWDes3CtxPtr ctx = (xmlSecOpenSSLKWDes3CtxPtr)context;
 

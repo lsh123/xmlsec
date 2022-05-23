@@ -585,7 +585,8 @@ xmlSecOpenSSLEvpBlockCipherGCMCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     /* remove the processed data from input */
     ret = xmlSecBufferRemoveHead(in, inSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName, "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
+        xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName,
+                             "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
         return(-1);
     }
 

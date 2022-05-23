@@ -1119,9 +1119,7 @@ xmlSecOpenSSLX509NameStringRead(xmlSecByte **str, int *strLen,
                         xmlSecByte delim, int ingoreTrailingSpaces) {
     xmlSecByte *p, *q;
     xmlSecByte ch;
-    size_t sz;
     int plen, qlen, nonSpaceLen;
-    int res;
 
     xmlSecAssert2(str != NULL, -1);
     xmlSecAssert2(strLen != NULL, -1);

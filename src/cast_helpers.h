@@ -17,6 +17,12 @@
 #include "errors_helpers.h"
 
 
+/* if it is missing */
+#ifndef SIZE_MAX
+#define SIZE_MAX (~(size_t)0)
+#endif /* SIZE_MAX */
+
+
 /* Safe cast with limits check: xmlSecSize -> int */
 #define XMLSEC_SAFE_CAST_SIZE_TO_INT(srcVal, dstVal, errorAction, errorObject) \
     if((srcVal) > INT_MAX) {                                                   \
@@ -35,6 +41,15 @@
     }                                                                          \
     dstVal = (int)(srcVal);                                                    \
 
+
+/* Safe cast with limits check: size_t -> long */
+#define XMLSEC_SAFE_CAST_SIZE_T_TO_LONG(srcVal, dstVal, errorAction, errorObject) \
+    if((srcVal) > LONG_MAX) {                                                  \
+        xmlSecImpossibleCastError(size_t, (unsigned long)(srcVal), "%lu",      \
+                                 long, LONG_MIN, LONG_MAX,"%ld", (errorObject)); \
+        errorAction;                                                           \
+    }                                                                          \
+    dstVal = (int)(srcVal);                                                    \
 
 
 #endif /* __XMLSEC_CAST_HELPERS_H__ */

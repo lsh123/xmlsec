@@ -52,8 +52,7 @@
 #include <openssl/mem.h>
 #endif /* OPENSSL_IS_BORINGSSL */
 
-
-
+#include "../cast_helpers.h"
 #include "openssl_compat.h"
 
 
@@ -405,6 +404,7 @@ xmlSecOpenSSLKeyDataX509AdoptCert(xmlSecKeyDataPtr data, X509* cert) {
 X509*
 xmlSecOpenSSLKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecOpenSSLX509DataCtxPtr ctx;
+    int iPos;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), NULL);
 
@@ -413,7 +413,8 @@ xmlSecOpenSSLKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecAssert2(ctx->certsList != NULL, NULL);
     xmlSecAssert2(pos < (xmlSecSize)sk_X509_num(ctx->certsList), NULL);
 
-    return(sk_X509_value(ctx->certsList, (int)pos));
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(pos, iPos, return(NULL), NULL);
+    return(sk_X509_value(ctx->certsList, iPos));
 }
 
 /**
@@ -488,6 +489,7 @@ xmlSecOpenSSLKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, X509_CRL* crl) {
 X509_CRL*
 xmlSecOpenSSLKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecOpenSSLX509DataCtxPtr ctx;
+    int iPos;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), NULL);
 
@@ -497,7 +499,8 @@ xmlSecOpenSSLKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecAssert2(ctx->crlsList != NULL, NULL);
     xmlSecAssert2(pos < (xmlSecSize)sk_X509_CRL_num(ctx->crlsList), NULL);
 
-    return(sk_X509_CRL_value(ctx->crlsList, (int)pos));
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(pos, iPos, return(NULL), NULL);
+    return(sk_X509_CRL_value(ctx->crlsList, iPos));
 }
 
 /**
@@ -1716,7 +1719,6 @@ xmlSecOpenSSLX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
 #ifdef XMLSEC_OPENSSL_API_300
     X509 *tmpCert = NULL;
 #endif /* XMLSEC_OPENSSL_API_300 */
-    int ret;
 
     xmlSecAssert2(buf != NULL, NULL);
     xmlSecAssert2(size > 0, NULL);
@@ -1827,7 +1829,6 @@ xmlSecOpenSSLX509CrlDerRead(xmlSecByte* buf, xmlSecSize size) {
 #endif /* XMLSEC_OPENSSL_API_300 */
     X509_CRL *crl = NULL;
     BIO *mem = NULL;
-    int ret;
 
     xmlSecAssert2(buf != NULL, NULL);
     xmlSecAssert2(size > 0, NULL);

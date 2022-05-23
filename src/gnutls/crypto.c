@@ -330,7 +330,7 @@ xmlSecGnuTLSGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
     ret = xmlSecBufferSetSize(buffer, size);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-                             "size=%d", size);
+                             "size=%lu", XMLSEC_UL_BAD_CAST(size));
         return(-1);
     }
 

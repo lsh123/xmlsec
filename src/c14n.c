@@ -333,7 +333,7 @@ xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecBufferRemoveHead",
                                      xmlSecTransformGetName(transform),
-                                     "size=%d", outSize);
+                                     "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
                 return(-1);
             }
         } else if(xmlSecBufferGetSize(out) == 0) {

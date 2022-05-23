@@ -365,7 +365,7 @@ xmlSecMSCryptoKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransf
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetMaxSize",
                                  xmlSecTransformGetName(transform),
-                                 "size=%d", outSize);
+                                 "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
             return(-1);
         }
 
@@ -397,7 +397,7 @@ xmlSecMSCryptoKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransf
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetSize",
                                  xmlSecTransformGetName(transform),
-                                 "size=%d", outSize);
+                                 "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
             return(-1);
         }
 
@@ -405,7 +405,7 @@ xmlSecMSCryptoKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransf
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferRemoveHead",
                                  xmlSecTransformGetName(transform),
-                                 "size=%d", inSize);
+                                 "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
             return(-1);
         }
 
@@ -460,7 +460,7 @@ xmlSecMSCryptoKWDes3Sha1(void * context,
         0);
     if(ret == 0) {
         xmlSecMSCryptoError2("CryptHashData", NULL,
-                             "size=%d", inSize);
+                             "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
         CryptDestroyHash(mscHash);
         return(-1);
     }
@@ -474,7 +474,7 @@ xmlSecMSCryptoKWDes3Sha1(void * context,
         0);
     if (ret == 0) {
         xmlSecMSCryptoError2("CryptGetHashParam(HP_HASHVAL)", NULL,
-                             "size=%d", outSize);
+                             "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
         CryptDestroyHash(mscHash);
         return(-1);
     }

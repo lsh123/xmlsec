@@ -304,7 +304,7 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfo
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetMaxSize",
                                  xmlSecTransformGetName(transform),
-                                 "size=%d", outSize);
+                                 "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
             return(-1);
         }
 
@@ -334,7 +334,7 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfo
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetSize",
                                  xmlSecTransformGetName(transform),
-                                 "size=%d", outSize);
+                                 "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
             return(-1);
         }
 
@@ -342,7 +342,7 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfo
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferRemoveHead",
                                  xmlSecTransformGetName(transform),
-                                 "size=%d", inSize);
+                                 "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
             return(-1);
         }
 

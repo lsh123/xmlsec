@@ -715,8 +715,8 @@ extern "C" {
                    (const char*)xmlSecTransformGetName(transform), \
                    NULL,                              \
                    XMLSEC_ERRORS_R_INVALID_STATUS,    \
-                   "transformStatus=%d",              \
-                   (int)((transform)->status)         \
+                   "transformStatus=%lu",             \
+                   XMLSEC_UL_BAD_CAST((transform)->status) \
         );                                            \
     }
 
@@ -778,11 +778,11 @@ extern "C" {
  *
  * @srcType:            the source value type.
  * @srcVal:             the source value.
- * @srcPrintf:          the source type printf code (e.g. "%d").
+ * @srcPrintf:          the source type printf code (e.g. "%lu").
  * @dstType:            the destination cast type.
  * @dstMinVal:          the destination type min value.
  * @dstMaxVal:          the destination type max value.
- * @dstPrintf:          the destination type printf code (e.g. "%d").
+ * @dstPrintf:          the destination type printf code (e.g. "%lu").
  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
  *
  * Macro. The XMLSec library macro for reporting impossible cast errors.

@@ -240,7 +240,7 @@ xmlSecNssBlockCipherCtxUpdate(xmlSecNssBlockCipherCtxPtr ctx,
     ret = xmlSecBufferRemoveHead(in, inSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName,
-                             "size=%d", inSize);
+                             "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
         return(-1);
     }
     return(0);
@@ -343,7 +343,7 @@ xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
     ret = xmlSecBufferRemoveHead(in, inSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName,
-                            "size=%d", inSize);
+                            "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
         return(-1);
     }
 

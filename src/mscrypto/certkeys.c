@@ -1206,7 +1206,7 @@ xmlSecMSCryptoKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize",
                              xmlSecKeyDataKlassGetName(id),
-                             "size=%d", blobBufferLen);
+                             "size=%lu", XMLSEC_UL_BAD_CAST(blobBufferLen));
         goto done;
     }
 
@@ -1511,16 +1511,16 @@ xmlSecMSCryptoKeyDataRsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataRsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== rsa key: size = %d\n",
-            xmlSecMSCryptoKeyDataRsaGetSize(data));
+    fprintf(output, "=== rsa key: size = %lu\n",
+            XMLSEC_UL_BAD_CAST(xmlSecMSCryptoKeyDataRsaGetSize(data)));
 }
 
 static void xmlSecMSCryptoKeyDataRsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataRsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<RSAKeyValue size=\"%d\" />\n",
-            xmlSecMSCryptoKeyDataRsaGetSize(data));
+    fprintf(output, "<RSAKeyValue size=\"%lu\" />\n",
+            XMLSEC_UL_BAD_CAST(xmlSecMSCryptoKeyDataRsaGetSize(data)));
 }
 
 #endif /* XMLSEC_NO_RSA */
@@ -1882,7 +1882,7 @@ xmlSecMSCryptoKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     blobBufferLen = sizeof(PUBLICKEYSTRUC) + sizeof(DSSPUBKEY) + 3 * xmlSecBnGetSize(&p) + 0x14 + sizeof(DSSSEED);
     ret = xmlSecBufferSetSize(&blob, blobBufferLen);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=%d", blobBufferLen);
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=%lu", XMLSEC_UL_BAD_CAST(blobBufferLen));
         goto done;
     }
 
@@ -2274,8 +2274,8 @@ xmlSecMSCryptoKeyDataDsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataDsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== dsa key: size = %d\n",
-            xmlSecMSCryptoKeyDataDsaGetSize(data));
+    fprintf(output, "=== dsa key: size = %lu\n",
+            XMLSEC_UL_BAD_CAST(xmlSecMSCryptoKeyDataDsaGetSize(data)));
 }
 
 static void
@@ -2283,8 +2283,8 @@ xmlSecMSCryptoKeyDataDsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataDsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<DSAKeyValue size=\"%d\" />\n",
-            xmlSecMSCryptoKeyDataDsaGetSize(data));
+    fprintf(output, "<DSAKeyValue size=\"%lu\" />\n",
+            XMLSEC_UL_BAD_CAST(xmlSecMSCryptoKeyDataDsaGetSize(data)));
 }
 
 #endif /* XMLSEC_NO_DSA */
@@ -2433,8 +2433,8 @@ xmlSecMSCryptoKeyDataGost2001DebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2001Id));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== dsa key: size = %d\n",
-            xmlSecMSCryptoKeyDataGost2001GetSize(data));
+    fprintf(output, "=== dsa key: size = %lu\n",
+            XMLSEC_UL_BAD_CAST(xmlSecMSCryptoKeyDataGost2001GetSize(data)));
 }
 
 static void
@@ -2442,8 +2442,8 @@ xmlSecMSCryptoKeyDataGost2001DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2001Id));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<GOST2001KeyValue size=\"%d\" />\n",
-            xmlSecMSCryptoKeyDataGost2001GetSize(data));
+    fprintf(output, "<GOST2001KeyValue size=\"%lu\" />\n",
+            XMLSEC_UL_BAD_CAST(xmlSecMSCryptoKeyDataGost2001GetSize(data)));
 }
 
 #endif /* XMLSEC_NO_GOST */
@@ -2592,8 +2592,8 @@ xmlSecMSCryptoKeyDataGost2012_256DebugDump(xmlSecKeyDataPtr data, FILE* output) 
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2012_256Id));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== dsa key: size = %d\n",
-            xmlSecMSCryptoKeyDataGost2012_256GetSize(data));
+    fprintf(output, "=== dsa key: size = %lu\n",
+            XMLSEC_UL_BAD_CAST(xmlSecMSCryptoKeyDataGost2012_256GetSize(data)));
 }
 
 static void
@@ -2601,8 +2601,8 @@ xmlSecMSCryptoKeyDataGost2012_256DebugXmlDump(xmlSecKeyDataPtr data, FILE* outpu
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2012_256Id));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<GOST2012_256KeyValue size=\"%d\" />\n",
-            xmlSecMSCryptoKeyDataGost2012_256GetSize(data));
+    fprintf(output, "<GOST2012_256KeyValue size=\"%lu\" />\n",
+            XMLSEC_UL_BAD_CAST(xmlSecMSCryptoKeyDataGost2012_256GetSize(data)));
 }
 
 
@@ -2747,8 +2747,8 @@ xmlSecMSCryptoKeyDataGost2012_512DebugDump(xmlSecKeyDataPtr data, FILE* output) 
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2012_512Id));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== dsa key: size = %d\n",
-            xmlSecMSCryptoKeyDataGost2012_512GetSize(data));
+    fprintf(output, "=== dsa key: size = %lu\n",
+            XMLSEC_UL_BAD_CAST(xmlSecMSCryptoKeyDataGost2012_512GetSize(data)));
 }
 
 static void
@@ -2756,8 +2756,8 @@ xmlSecMSCryptoKeyDataGost2012_512DebugXmlDump(xmlSecKeyDataPtr data, FILE* outpu
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2012_512Id));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<GOST2012_512KeyValue size=\"%d\" />\n",
-            xmlSecMSCryptoKeyDataGost2012_512GetSize(data));
+    fprintf(output, "<GOST2012_512KeyValue size=\"%lu\" />\n",
+            XMLSEC_UL_BAD_CAST(xmlSecMSCryptoKeyDataGost2012_512GetSize(data)));
 }
 
 #endif /* XMLSEC_NO_GOST2012 */

@@ -353,7 +353,7 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
             if(ret == 0) {
                 xmlSecMSCryptoError2("CryptHashData",
                                      xmlSecTransformGetName(transform),
-                                     "size=%d", inSize);
+                                     "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
                 return(-1);
             }
 
@@ -361,7 +361,7 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecBufferRemoveHead",
                                      xmlSecTransformGetName(transform),
-                                     "size=%d", inSize);
+                                     "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
                 return(-1);
             }
         }
@@ -379,7 +379,7 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
             if (ret == 0) {
                 xmlSecMSCryptoError2("CryptGetHashParam(HP_HASHVAL)",
                                      xmlSecTransformGetName(transform),
-                                     "size=%d", MSCRYPTO_MAX_HASH_SIZE);
+                                     "size=%lu", XMLSEC_UL_BAD_CAST(MSCRYPTO_MAX_HASH_SIZE));
                 return(-1);
             }
 
@@ -393,7 +393,7 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
                 if(ret < 0) {
                     xmlSecInternalError2("xmlSecBufferAppend",
                                          xmlSecTransformGetName(transform),
-                                         "size=%d", ctx->dgstSize);
+                                         "size=%lu", XMLSEC_UL_BAD_CAST(ctx->dgstSize));
                     return(-1);
                 }
             }

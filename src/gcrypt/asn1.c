@@ -211,7 +211,7 @@ xmlSecGCryptAsn1ParseIntegerSequence(xmlSecByte const **buffer, xmlSecSize *bufl
     ret = xmlSecGCryptAsn1ParseTag (&buf, &length, &ti);
     if((ret != 0)  || (ti.tag != TAG_SEQUENCE) || ti.class || !ti.cons || ti.ndef) {
         xmlSecInternalError2("xmlSecGCryptAsn1ParseTag", NULL,
-                            "TAG_SEQUENCE is expected: tag=%d", (int)ti.tag);
+                            "TAG_SEQUENCE is expected: tag=%lu", XMLSEC_UL_BAD_CAST(ti.tag));
         return(-1);
     }
 
@@ -222,8 +222,8 @@ xmlSecGCryptAsn1ParseIntegerSequence(xmlSecByte const **buffer, xmlSecSize *bufl
         if((ret != 0) || (ti.tag != TAG_INTEGER) || ti.class || ti.cons || ti.ndef)
         {
             xmlSecInternalError3("xmlSecGCryptAsn1ParseTag", NULL,
-                                 "TAG_INTEGER is expected - index=%d, tag=%d",
-                                 (int)idx, (int)ti.tag);
+                                 "TAG_INTEGER is expected - index=%lu, tag=%lu",
+                                 XMLSEC_UL_BAD_CAST(idx), XMLSEC_UL_BAD_CAST(ti.tag));
             return(-1);
         }
 
@@ -239,8 +239,8 @@ xmlSecGCryptAsn1ParseIntegerSequence(xmlSecByte const **buffer, xmlSecSize *bufl
     /* did we parse everything? */
     if(length > 0) {
         xmlSecInternalError3("xmlSecGCryptAsn1ParseTag", NULL,
-                             "too many params - cur=%d, expected=%d",
-                             (int)(idx - 1), (int)params_size);
+                             "too many params - cur=%lu, expected=%lu",
+                             XMLSEC_UL_BAD_CAST(idx - 1), XMLSEC_UL_BAD_CAST(params_size));
         return(-1);
     }
 
@@ -280,7 +280,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
     /* The value of the first integer should be 0. */
     if ((keyparms_num < 1) || (gcry_mpi_cmp_ui(keyparms[0], 0) != 0)) {
         xmlSecInternalError2("xmlSecGCryptAsn1ParseTag", NULL,
-                             "num=%d", (int)keyparms_num);
+                             "num=%lu", XMLSEC_UL_BAD_CAST(keyparms_num));
         goto done;
     }
 

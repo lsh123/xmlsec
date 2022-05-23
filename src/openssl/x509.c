@@ -555,7 +555,7 @@ xmlSecOpenSSLKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
         if(certSrc == NULL) {
             xmlSecInternalError2("xmlSecOpenSSLKeyDataX509GetCert",
                                  xmlSecErrorsSafeString(xmlSecKeyDataGetName(src)),
-                                 "pos=%d", pos);
+                                 "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
             return(-1);
         }
 
@@ -582,7 +582,7 @@ xmlSecOpenSSLKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
         if(crlSrc == NULL) {
             xmlSecInternalError2("xmlSecOpenSSLKeyDataX509GetCrl",
                                  xmlSecKeyDataGetName(src),
-                                 "pos=%d", pos);
+                                 "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
             return(-1);
         }
 
@@ -692,7 +692,7 @@ xmlSecOpenSSLKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    content = xmlSecX509DataGetNodeContent (node, keyInfoCtx);
+    content = xmlSecX509DataGetNodeContent(node, keyInfoCtx);
     if (content < 0) {
         xmlSecInternalError2("xmlSecX509DataGetNodeContent",
                              xmlSecKeyDataKlassGetName(id),
@@ -717,7 +717,7 @@ xmlSecOpenSSLKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
         if(cert == NULL) {
             xmlSecInternalError2("xmlSecOpenSSLKeyDataX509GetCert",
                                  xmlSecKeyDataKlassGetName(id),
-                                 "pos=%d", pos);
+                                 "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
             return(-1);
         }
 
@@ -726,7 +726,7 @@ xmlSecOpenSSLKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecOpenSSLX509CertificateNodeWrite",
                                      xmlSecKeyDataKlassGetName(id),
-                                     "pos=%d", pos);
+                                     "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
                 return(-1);
             }
         }
@@ -736,7 +736,7 @@ xmlSecOpenSSLKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecOpenSSLX509SubjectNameNodeWrite",
                                      xmlSecKeyDataKlassGetName(id),
-                                     "pos=%d", pos);
+                                     "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
                 return(-1);
             }
         }
@@ -746,7 +746,7 @@ xmlSecOpenSSLKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecOpenSSLX509IssuerSerialNodeWrite",
                                      xmlSecKeyDataKlassGetName(id),
-                                     "pos=%d", pos);
+                                     "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
                 return(-1);
             }
         }
@@ -756,7 +756,7 @@ xmlSecOpenSSLKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecOpenSSLX509SKINodeWrite",
                                      xmlSecKeyDataKlassGetName(id),
-                                     "pos=%d", pos);
+                                     "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
                 return(-1);
             }
         }
@@ -770,7 +770,7 @@ xmlSecOpenSSLKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
             if(crl == NULL) {
                 xmlSecInternalError2("xmlSecOpenSSLKeyDataX509GetCrl",
                                      xmlSecKeyDataKlassGetName(id),
-                                     "pos=%d", pos);
+                                     "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
                 return(-1);
             }
 
@@ -778,7 +778,7 @@ xmlSecOpenSSLKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecOpenSSLX509CRLNodeWrite",
                                      xmlSecKeyDataKlassGetName(id),
-                                     "pos=%d", pos);
+                                     "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
                 return(-1);
             }
         }
@@ -825,7 +825,7 @@ xmlSecOpenSSLKeyDataX509DebugDump(xmlSecKeyDataPtr data, FILE* output) {
         if(cert == NULL) {
             xmlSecInternalError2("xmlSecOpenSSLKeyDataX509GetCert",
                                  xmlSecKeyDataGetName(data),
-                                 "pos=%d", pos);
+                                 "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
             return;
         }
         fprintf(output, "==== Certificate:\n");
@@ -857,7 +857,7 @@ xmlSecOpenSSLKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
         if(cert == NULL) {
             xmlSecInternalError2("xmlSecOpenSSLKeyDataX509GetCert",
                                  xmlSecKeyDataGetName(data),
-                                 "pos=%d", pos);
+                                 "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
             return;
         }
         fprintf(output, "<Certificate>\n");

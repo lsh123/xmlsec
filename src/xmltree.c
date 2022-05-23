@@ -1489,9 +1489,9 @@ xmlSecQName2BitMaskGetStringFromBitMask(xmlSecQName2BitMaskInfoConstPtr info,
     qnameInfo = xmlSecQName2BitMaskGetInfo(info, mask);
     if(qnameInfo == NULL) {
         xmlSecInternalError3("xmlSecQName2BitMaskGetInfo", NULL,
-                             "node=%s,mask=%d",
+                             "node=%s,mask=%lu",
                              xmlSecErrorsSafeString(node->name),
-                             mask);
+                             XMLSEC_UL_BAD_CAST(mask));
         return(NULL);
     }
 

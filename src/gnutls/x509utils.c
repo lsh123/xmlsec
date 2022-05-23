@@ -391,7 +391,7 @@ xmlSecGnuTLSX509CertRead(const xmlSecByte* buf, xmlSecSize size, xmlSecKeyDataFo
         break;
     default:
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-                         "format=%d", (int)format);
+                         "format=%lu", XMLSEC_UL_BAD_CAST(format));
         return(NULL);
     }
 
@@ -627,7 +627,7 @@ xmlSecGnuTLSX509CrlRead(const xmlSecByte* buf, xmlSecSize size, xmlSecKeyDataFor
         break;
     default:
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-                         "format=%d", (int)format);
+                         "format=%lu", XMLSEC_UL_BAD_CAST(format));
         return(NULL);
     }
 

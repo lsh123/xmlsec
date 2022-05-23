@@ -581,8 +581,8 @@ xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
                 /* allocate the signature buffer on the heap */
                 ret = xmlSecBufferSetSize(&transform->outBuf, outSize);
                 if(ret < 0) {
-                    xmlSecInternalError2("xmlSecBufferSetSize",
-                        xmlSecTransformGetName(transform), "size=%d", outSize);
+                    xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform),
+                            "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
                     return(-1);
                 }
 

@@ -96,7 +96,7 @@ XMLSEC_CRYPTO_EXPORT OSSL_LIB_CTX*      xmlSecOpenSSLGetLibCtx(void);
  ********************************************************************/
 XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateMemBio      (void);
 XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateMemBufBio   (const xmlSecByte* buf,
-                                                                        xmlSecSize len);
+                                                                        xmlSecSize bufSize);
 XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateReadFileBio (const char* path);
 /********************************************************************
  *

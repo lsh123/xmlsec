@@ -30,6 +30,8 @@
 #include <xmlsec/openssl/evp.h>
 #include "openssl_compat.h"
 
+#include "../cast_helpers.h"
+
 #define xmlSecOpenSSLAesGcmNonceLengthInBytes 12
 #define xmlSecOpenSSLAesGcmTagLengthInBytes 16
 
@@ -182,6 +184,7 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     xmlSecByte* outBuf;
     xmlSecSize outSize;
     xmlSecSize blockLen;
+    int inLen;
     int outLen = 0;
     int ret;
 
@@ -216,7 +219,7 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetMaxSize",
                 xmlSecErrorsSafeString(cipherName),
-                "size=%d", (int)(outSize + inSize + blockLen));
+                "size=%lu", XMLSEC_UL_BAD_CAST(outSize + inSize + blockLen));
             return(-1);
         }
     } else {
@@ -225,7 +228,7 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetMaxSize",
                 xmlSecErrorsSafeString(cipherName),
-                "size=%d", (int)(outSize + inSize + blockLen));
+                "size=%lu", XMLSEC_UL_BAD_CAST(outSize + inSize));
             return(-1);
         }
     }
@@ -233,12 +236,13 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     outBuf  = xmlSecBufferGetData(out) + outSize;
 
     /* encrypt/decrypt */
-    ret = EVP_CipherUpdate(ctx->cipherCtx, outBuf, &outLen, in, (int)inSize);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), cipherName);
+    ret = EVP_CipherUpdate(ctx->cipherCtx, outBuf, &outLen, in, inLen);
     if(ret != 1) {
         xmlSecOpenSSLError("EVP_CipherUpdate", cipherName);
         return(-1);
     }
-    xmlSecAssert2(outLen == inSize, -1);
+    xmlSecAssert2(outLen == inLen, -1);
 
     /* finalize transform if needed */
     if(final != 0) {
@@ -279,7 +283,7 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     ret = xmlSecBufferSetSize(out, outSize + outLen);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", cipherName,
-                             "size=%d", (int)(outSize + outLen));
+                             "size=%lu", XMLSEC_UL_BAD_CAST(outSize + outLen));
         return(-1);
     }
 
@@ -382,7 +386,8 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         const xmlChar* cipherName,
         xmlSecTransformCtxPtr transformCtx)
 {
-    xmlSecSize inSize, outSize, blockLen;
+    xmlSecSize inSize, outSize;
+    int inLen, blockLen;
     xmlSecByte* inBuf;
     xmlSecByte* outBuf;
     int ret;
@@ -406,7 +411,8 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     /* not more than one block left */
     inSize = xmlSecBufferGetSize(in);
     inBuf = xmlSecBufferGetData(in);
-    xmlSecAssert2(inSize <= blockLen, -1);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), NULL);
+    xmlSecAssert2(inLen <= blockLen, -1);
 
     /*
     * The padding used in XML Enc does not follow RFC 1423
@@ -416,27 +422,27 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     * https://www.w3.org/TR/2002/REC-xmlenc-core-20021210/Overview.html#sec-Alg-Block
     */
     if(EVP_CIPHER_CTX_encrypting(ctx->cipherCtx)) {
-        xmlSecSize padLen;
+        int padLen;
 
-        /* figure out pad length, if it is 0 (i.e. inSize == blockLen) then set it to blockLen */
-        padLen = blockLen - inSize;
+        /* figure out pad length, if it is 0 (i.e. inLen == blockLen) then set it to blockLen */
+        padLen = blockLen - inLen;
         if(padLen == 0) {
             padLen = blockLen;
         }
         xmlSecAssert2(padLen > 0, -1);
-        xmlSecAssert2(inSize + padLen <= sizeof(ctx->pad), -1);
+        xmlSecAssert2(inLen + padLen <= sizeof(ctx->pad), -1);
 
-        /* we can have inSize == 0 if there were no data at all, otherwise -- copy the data */
-        if(inSize > 0) {
-            memcpy(ctx->pad, inBuf, inSize);
+        /* we can have inLen == 0 if there were no data at all, otherwise -- copy the data */
+        if(inLen > 0) {
+            memcpy(ctx->pad, inBuf, inLen);
         }
 
         /* generate random padding */
         if(padLen > 1) {
 #ifndef XMLSEC_OPENSSL_API_300
-            ret = RAND_bytes(ctx->pad + inSize, (int)(padLen - 1));
+            ret = RAND_bytes(ctx->pad + inLen, padLen - 1);
 #else /* XMLSEC_OPENSSL_API_300 */
-            ret = RAND_bytes_ex(xmlSecOpenSSLGetLibCtx(), ctx->pad + inSize, (int)(padLen - 1), 
+            ret = RAND_bytes_ex(xmlSecOpenSSLGetLibCtx(), ctx->pad + inLen, padLen - 1, 
                                 XMLSEEC_OPENSSL_RAND_BYTES_STRENGTH);
 #endif /* XMLSEC_OPENSSL_API_300 */
             if (ret != 1) {
@@ -446,20 +452,20 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         }
 
         /* set the last byte to the pad length */
-        ctx->pad[inSize + padLen - 1] = (xmlSecByte)padLen;
+        ctx->pad[inLen + padLen - 1] = (xmlSecByte)padLen;
 
         /* update the last 1 or 2 blocks with padding */
-        ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, ctx->pad, inSize + padLen, out,
+        ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, ctx->pad, inLen + padLen, out,
                                                         cipherName, 1, NULL); /* final */
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock", cipherName);
             return(-1);
         }
     } else {
-        xmlSecSize padLen;
+        int outLen, padLen;
 
         /* update the last one block with padding */
-        ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, inBuf, inSize, out, cipherName, 1, NULL); /* final */
+        ret = xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(ctx, inBuf, inLen, out, cipherName, 1, NULL); /* final */
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock", cipherName);
             return(-1);
@@ -468,33 +474,34 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         /* we expect at least one block in the output -- the one we just decrypted */
         outBuf = xmlSecBufferGetData(out);
         outSize = xmlSecBufferGetSize(out);
-        if(outSize < blockLen) {
-            xmlSecInvalidIntegerDataError2("outSize", outSize, "blockLen", blockLen,
-                "outSize >= blockLen", cipherName);
+        XMLSEC_SAFE_CAST_SIZE_TO_INT(outSize, outLen, return(-1), NULL);
+        if(outLen < blockLen) {
+            xmlSecInvalidIntegerDataError2("outLen", outLen, "blockLen", blockLen,
+                "outLen >= blockLen", cipherName);
             return(-1);
         }
 
         /* get the pad length from the last byte */
-        padLen = (xmlSecSize)(outBuf[outSize - 1]);
+        padLen = (xmlSecSize)(outBuf[outLen - 1]);
         if(padLen > blockLen) {
             xmlSecInvalidIntegerDataError2("padLen", padLen, "blockLen", blockLen,
                 "padLen <= blockLen", cipherName);
             return(-1);
         }
-        xmlSecAssert2(padLen <= outSize, -1);
+        xmlSecAssert2(padLen <= outLen, -1);
 
         /* remove the padding */
         ret = xmlSecBufferRemoveTail(out, padLen);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferRemoveTail", cipherName, "size=%d", (int)padLen);
+            xmlSecInternalError2("xmlSecBufferRemoveTail", cipherName, "size=%d", padLen);
             return(-1);
         }
     }
 
     /* remove the processed block from input */
-    ret = xmlSecBufferRemoveHead(in, inSize);
+    ret = xmlSecBufferRemoveHead(in, inLen);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName, "size=%d", (int)inSize);
+        xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName, "size=%d", inLen);
         return(-1);
     }
 
@@ -578,7 +585,7 @@ xmlSecOpenSSLEvpBlockCipherGCMCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     /* remove the processed data from input */
     ret = xmlSecBufferRemoveHead(in, inSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName, "size=%d", (int)inSize);
+        xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName, "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
         return(-1);
     }
 

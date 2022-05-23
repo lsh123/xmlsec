@@ -773,6 +773,30 @@ extern "C" {
                     "invalid zero key data size"            \
         )
 
+/**
+ * xmlSecImpossibleCastError:
+ *
+ * @srcType:            the source value type.
+ * @srcVal:             the source value.
+ * @srcPrintf:          the source type printf code (e.g. "%d").
+ * @dstType:            the destination cast type.
+ * @dstMinVal:          the destination type min value.
+ * @dstMaxVal:          the destination type max value.
+ * @dstPrintf:          the destination type printf code (e.g. "%d").
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting impossible cast errors.
+ */
+#define xmlSecImpossibleCastError(srcType, srcVal, srcPrintf, dstType, dstMinVal, dstMaxVal, dstPrintf, errorObject) \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    NULL,                                   \
+                    XMLSEC_ERROR_R_CAST_IMPOSSIBLE,         \
+                    "src type=" #srcType "; src val=" #srcPrintf      \
+                    ";dst type=" #dstType "; dst min val=" #dstPrintf \
+                    ";dst max val=" #dstPrintf,             \
+                    srcVal, dstMinVal, dstMaxVal            \
+        )
 
 /**
  * xmlSecOtherError:

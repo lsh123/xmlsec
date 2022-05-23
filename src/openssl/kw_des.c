@@ -34,6 +34,7 @@
 #include <xmlsec/openssl/crypto.h>
 
 #include "../kw_aes_des.h"
+#include "../cast_helpers.h"
 #include "openssl_compat.h"
 
 #ifdef XMLSEC_OPENSSL_API_300
@@ -370,6 +371,7 @@ xmlSecOpenSSLKWDes3Sha1(void * context,
     size_t outLen = XMLSEC_SIZE_BAD_CAST(outSize);
     int ret;
 #endif /* XMLSEC_OPENSSL_API_300 */
+    int res;
 
     xmlSecOpenSSLKWDes3CtxPtr ctx = (xmlSecOpenSSLKWDes3CtxPtr)context;
 
@@ -392,7 +394,8 @@ xmlSecOpenSSLKWDes3Sha1(void * context,
         xmlSecOpenSSLError("EVP_Q_digest(SHA1)", NULL);
         return(-1);
     }
-    return(outLen);
+    XMLSEC_SAFE_CAST_SIZE_T_TO_INT(outLen, res, return(-1), NULL);
+    return(res);
 #endif /* XMLSEC_OPENSSL_API_300 */
 }
 
@@ -401,6 +404,7 @@ xmlSecOpenSSLKWDes3GenerateRandom(void * context,
                                  xmlSecByte * out, xmlSecSize outSize) {
     xmlSecOpenSSLKWDes3CtxPtr ctx = (xmlSecOpenSSLKWDes3CtxPtr)context;
     int ret;
+    int res;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
@@ -417,7 +421,8 @@ xmlSecOpenSSLKWDes3GenerateRandom(void * context,
         return(-1);
     }
 
-    return((int)outSize);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(outSize, res, return(-1), NULL);
+    return(res);
 }
 
 static int

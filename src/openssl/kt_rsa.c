@@ -60,12 +60,14 @@ static int RSA_padding_check_PKCS1_OAEP(unsigned char *to, int to_len,
                                   unsigned char *param, int param_len) {
     size_t out_len = 0;
     int ret;
+    int res;
 
     ret = RSA_padding_check_PKCS1_OAEP_mgf1(to, &out_len, to_len, from, from_len, param, param_len, NULL, NULL);
     if(!ret) {
         return(-1);
     }
-    return((int)out_len);
+    XMLSEC_SAFE_CAST_SIZE_T_TO_INT(out_len, res, return(-1), NULL);
+    return(res);
 }
 
 

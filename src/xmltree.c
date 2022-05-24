@@ -32,6 +32,8 @@
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
 
+#include "cast_helpers.h"
+
 static const xmlChar*	g_xmlsec_xmltree_default_linefeed = xmlSecStringCR;
 
 /**
@@ -621,6 +623,7 @@ int
 xmlSecReplaceNodeBufferAndReturn(xmlNodePtr node, const xmlSecByte *buffer, xmlSecSize size, xmlNodePtr *replaced) {
     xmlNodePtr results = NULL;
     xmlNodePtr next = NULL;
+    int len;
     int ret;
 
     xmlSecAssert2(node != NULL, -1);
@@ -631,7 +634,8 @@ xmlSecReplaceNodeBufferAndReturn(xmlNodePtr node, const xmlSecByte *buffer, xmlS
      * XML_PARSE_NODICT to avoid problems with moving nodes around
      * XML_PARSE_HUGE   to enable parsing of XML documents with large text nodes
      */
-    ret = xmlParseInNodeContext(node->parent, (const char*)buffer, size,
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(size, len, return(-1), NULL);
+    ret = xmlParseInNodeContext(node->parent, (const char*)buffer, len,
     		XML_PARSE_NONET | XML_PARSE_NODICT | XML_PARSE_HUGE, &results);
     if(ret != XML_ERR_OK) {
         xmlSecXmlError("xmlParseInNodeContext", NULL);
@@ -901,12 +905,15 @@ xmlSecGetQName(xmlNodePtr node, const xmlChar* href, const xmlChar* local) {
     }
 
     if((ns != NULL) && (ns->prefix != NULL)) {
-        xmlSecSize len;
+        xmlSecSize size;
+        int len;
 
         len = xmlStrlen(local) + xmlStrlen(ns->prefix) + 4;
-        qname = (xmlChar *)xmlMalloc(len);
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(NULL), NULL);
+
+        qname = (xmlChar *)xmlMalloc(size);
         if(qname == NULL) {
-            xmlSecMallocError(len, NULL);
+            xmlSecMallocError(size, NULL);
             return(NULL);
         }
 

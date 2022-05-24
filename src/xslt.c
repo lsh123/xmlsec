@@ -37,6 +37,8 @@
 #include <xmlsec/errors.h>
 #include "xslt.h"
 
+#include "cast_helpers.h"
+
 /**************************************************************************
  *
  * Internal xslt ctx
@@ -231,9 +233,13 @@ xmlSecXsltFinalize(xmlSecTransformPtr transform) {
 static int
 xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
     xmlSecXsltCtxPtr ctx;
-    xmlBufferPtr buffer;
-    xmlDocPtr doc;
+    xmlBufferPtr buffer = NULL;
+    xmlDocPtr doc = NULL;
     xmlNodePtr cur;
+    const xmlChar* buf;
+    xmlSecSize bufSize;
+    int bufLen;
+    int res = -1;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXsltId), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecXsltSize), -1);
@@ -248,7 +254,7 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransfor
     buffer = xmlBufferCreate();
     if(buffer == NULL) {
         xmlSecXmlError("xmlBufferCreate", xmlSecTransformGetName(transform));
-        return(-1);
+        goto done;
     }
     cur = node->children;
     while(cur != NULL) {
@@ -257,13 +263,14 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransfor
     }
 
     /* parse the buffer */
-    doc = xmlSecParseMemory(xmlBufferContent(buffer),
-                             xmlBufferLength(buffer), 1);
+    buf = xmlBufferContent(buffer);
+    bufLen = xmlBufferLength(buffer);
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(bufLen, bufSize, goto done, xmlSecTransformGetName(transform)); 
+    doc = xmlSecParseMemory(buf, bufSize, 1);
     if(doc == NULL) {
         xmlSecInternalError("xmlSecParseMemory",
                             xmlSecTransformGetName(transform));
-        xmlBufferFree(buffer);
-        return(-1);
+        goto done;
     }
 
     /* pre-process stylesheet */
@@ -271,15 +278,21 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransfor
     if(ctx->xslt == NULL) {
         xmlSecXsltError("xsltParseStylesheetDoc", NULL, xmlSecTransformGetName(transform));
 
-        /* after parsing stylesheet doc is assigned
-         * to it and will be freed by xsltFreeStylesheet() */
-        xmlFreeDoc(doc);
-        xmlBufferFree(buffer);
-        return(-1);
+        goto done;
     }
+    doc = NULL; /* owned by ctx->xslt and will be freed by xsltFreeStylesheet() */
 
-    xmlBufferFree(buffer);
-    return(0);
+    /* success */
+    res = 0;
+
+done:
+    if(doc != NULL) {
+        xmlFreeDoc(doc);
+    }
+    if(buffer != NULL) {
+        xmlBufferFree(buffer);
+    }
+    return(res);
 }
 
 static int
@@ -319,7 +332,10 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
 
     /* push data to the input buffer */
     if((data != NULL) && (dataSize > 0)) {
-        ret = xmlParseChunk(ctx->parserCtx, (const char*)data, dataSize, 0);
+        int dataLen;
+
+        XMLSEC_SAFE_CAST_SIZE_TO_INT(dataSize, dataLen, return(-1), xmlSecTransformGetName(transform));
+        ret = xmlParseChunk(ctx->parserCtx, (const char*)data, dataLen, 0);
         if(ret != 0) {
             xmlSecXmlParserError2("xmlParseChunk", ctx->parserCtx,
                                   xmlSecTransformGetName(transform),

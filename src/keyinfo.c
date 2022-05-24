@@ -65,6 +65,7 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/errors.h>
 
+#include "cast_helpers.h"
 
 /**************************************************************************
  *
@@ -1169,6 +1170,7 @@ xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId, xmlSecKeyPtr k
     const xmlChar* nodeName;
     const xmlChar* nodeNs;
     xmlSecKeyDataId dataId;
+    int bufferLen;
     int ret;
 
     xmlSecAssert2(key != NULL, -1);
@@ -1177,7 +1179,8 @@ xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId, xmlSecKeyPtr k
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeRead, -1);
 
-    doc = xmlRecoverMemory((const char*)buffer, bufferSize);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(bufferSize, bufferLen, return(-1), NULL);
+    doc = xmlRecoverMemory((const char*)buffer, bufferLen);
     if(doc == NULL) {
         xmlSecXmlError("xmlRecoverMemory", xmlSecKeyDataKlassGetName(typeId));
         return(-1);

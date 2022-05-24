@@ -39,6 +39,7 @@
 #include <xmlsec/io.h>
 #include <xmlsec/errors.h>
 
+#include "cast_helpers.h"
 
 /*******************************************************************
  *
@@ -485,7 +486,6 @@ xmlSecTransformInputURIPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
                               xmlSecSize maxDataSize, xmlSecSize* dataSize,
                               xmlSecTransformCtxPtr transformCtx) {
     xmlSecInputURICtxPtr ctx;
-
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformInputURIId), -1);
@@ -502,7 +502,7 @@ xmlSecTransformInputURIPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
             xmlSecInternalError("ctx->clbks->readcallback", xmlSecTransformGetName(transform));
             return(-1);
         }
-        (*dataSize) = ret;
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, (*dataSize), return(-1), NULL);
     } else {
         (*dataSize) = 0;
     }

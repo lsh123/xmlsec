@@ -17,6 +17,7 @@
 #include <string.h>
 #include <assert.h>
 
+#include <xmlsec/xmlsec.h>
 #include "cmdline.h"
 
 static int                      xmlSecAppCmdLineMatchParam      (const char* argvParam,
@@ -150,7 +151,7 @@ xmlSecAppCmdLineValueCreate(xmlSecAppCmdLineParamPtr param, int pos) {
     assert(param != NULL);
     value = (xmlSecAppCmdLineValuePtr) malloc(sizeof(xmlSecAppCmdLineValue));
     if(value == NULL) {
-        fprintf(stderr, "Error: malloc failed (%d bytes).\n", (int)sizeof(xmlSecAppCmdLineValue));
+        fprintf(stderr, "Error: malloc failed (%lu bytes).\n", XMLSEC_UL_BAD_CAST(sizeof(xmlSecAppCmdLineValue)));
         return(NULL);
     }
     memset(value, 0, sizeof(xmlSecAppCmdLineValue));
@@ -281,7 +282,7 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
             value->strValue = argv[++pos];
             buf = (char*)malloc(strlen(value->strValue) + 2);
             if(buf == NULL) {
-                fprintf(stderr, "Error: failed to allocate memory (%d bytes).\n", (int)strlen(value->strValue) + 2);
+                fprintf(stderr, "Error: failed to allocate memory (%lu bytes).\n", XMLSEC_UL_BAD_CAST(strlen(value->strValue) + 2));
                 return(-1);
             }
             memset(buf, 0, strlen(value->strValue) + 2);

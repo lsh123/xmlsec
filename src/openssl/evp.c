@@ -623,6 +623,8 @@ xmlSecOpenSSLKeyDataDsaAdoptDsa(xmlSecKeyDataPtr data, DSA* dsa) {
     }
     return(0);
 #else /* XMLSEC_OPENSSL_API_300 */
+    UNREFERENCED_PARAMETER(data);
+    UNREFERENCED_PARAMETER(dsa);
     xmlSecNotImplementedError("OpenSSL 3.0 does not support direct access to DSA key");
     return(-1);
 #endif /* XMLSEC_OPENSSL_API_300 */
@@ -648,6 +650,7 @@ xmlSecOpenSSLKeyDataDsaGetDsa(xmlSecKeyDataPtr data) {
 
     return((pKey != NULL) ? EVP_PKEY_get0_DSA(pKey) : NULL);
 #else /* XMLSEC_OPENSSL_API_300 */
+    UNREFERENCED_PARAMETER(data);
     xmlSecNotImplementedError("OpenSSL 3.0 does not support direct access to DSA key");
     return(NULL);
 #endif /* XMLSEC_OPENSSL_API_300 */
@@ -1179,7 +1182,7 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     if(ret != 1) {
         xmlSecOpenSSLError2("DSA_generate_parameters_ex",
                             xmlSecKeyDataGetName(data),
-                            "sizeBits=%lu", (unsigned long)sizeBits);
+                            "sizeBits=%lu", XMLSEC_UL_BAD_CAST(sizeBits));
         goto done;
     }
 
@@ -1246,7 +1249,7 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     if(ret <= 0) {
         xmlSecOpenSSLError2("EVP_PKEY_generate",
             xmlSecKeyDataGetName(data),
-            "sizeBits=%lu", (unsigned long)sizeBits);
+            "sizeBits=%lu", XMLSEC_UL_BAD_CAST(sizeBits));
         goto done;
     }
     ret = xmlSecOpenSSLKeyDataDsaAdoptEvp(data, pKey);
@@ -1433,8 +1436,8 @@ xmlSecOpenSSLKeyDataDsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== dsa key: size = %d\n",
-            xmlSecOpenSSLKeyDataDsaGetSize(data));
+    fprintf(output, "=== dsa key: size = %lu\n",
+            XMLSEC_UL_BAD_CAST(xmlSecOpenSSLKeyDataDsaGetSize(data)));
 }
 
 static void
@@ -1442,8 +1445,8 @@ xmlSecOpenSSLKeyDataDsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<DSAKeyValue size=\"%d\" />\n",
-            xmlSecOpenSSLKeyDataDsaGetSize(data));
+    fprintf(output, "<DSAKeyValue size=\"%lu\" />\n",
+            XMLSEC_UL_BAD_CAST(xmlSecOpenSSLKeyDataDsaGetSize(data)));
 }
 #endif /* XMLSEC_NO_DSA */
 
@@ -1569,6 +1572,8 @@ xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa(xmlSecKeyDataPtr data, EC_KEY* ecdsa) {
     }
     return(0);
 #else /* XMLSEC_OPENSSL_API_300 */
+    UNREFERENCED_PARAMETER(data);
+    UNREFERENCED_PARAMETER(ecdsa);
     xmlSecNotImplementedError("OpenSSL 3.0 does not support direct access to ECDSA key");
     return(-1);
 #endif /* XMLSEC_OPENSSL_API_300 */
@@ -1594,6 +1599,7 @@ xmlSecOpenSSLKeyDataEcdsaGetEcdsa(xmlSecKeyDataPtr data) {
 
     return((pKey != NULL) ? EVP_PKEY_get0_EC_KEY(pKey) : NULL);
 #else /* XMLSEC_OPENSSL_API_300 */
+    UNREFERENCED_PARAMETER(data);
     xmlSecNotImplementedError("OpenSSL 3.0 does not support direct access to ECDSA key");
     return(NULL);
 #endif /* XMLSEC_OPENSSL_API_300 */
@@ -1720,8 +1726,8 @@ xmlSecOpenSSLKeyDataEcdsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== ecdsa key: size = %d\n",
-            xmlSecOpenSSLKeyDataEcdsaGetSize(data));
+    fprintf(output, "=== ecdsa key: size = %lu\n",
+            XMLSEC_UL_BAD_CAST(xmlSecOpenSSLKeyDataEcdsaGetSize(data)));
 }
 
 static void
@@ -1729,8 +1735,8 @@ xmlSecOpenSSLKeyDataEcdsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<ECDSAKeyValue size=\"%d\" />\n",
-            xmlSecOpenSSLKeyDataEcdsaGetSize(data));
+    fprintf(output, "<ECDSAKeyValue size=\"%lu\" />\n",
+            XMLSEC_UL_BAD_CAST(xmlSecOpenSSLKeyDataEcdsaGetSize(data)));
 }
 
 #endif /* XMLSEC_NO_ECDSA */
@@ -1897,6 +1903,8 @@ xmlSecOpenSSLKeyDataRsaAdoptRsa(xmlSecKeyDataPtr data, RSA* rsa) {
     }
     return(0);
 #else /* XMLSEC_OPENSSL_API_300 */
+    UNREFERENCED_PARAMETER(data);
+    UNREFERENCED_PARAMETER(rsa);
     xmlSecNotImplementedError("OpenSSL 3.0 does not support direct access to RSA key");
     return(-1);
 #endif /* XMLSEC_OPENSSL_API_300 */
@@ -1922,6 +1930,7 @@ xmlSecOpenSSLKeyDataRsaGetRsa(xmlSecKeyDataPtr data) {
 
     return((pKey != NULL) ? EVP_PKEY_get0_RSA(pKey) : NULL);
 #else /* XMLSEC_OPENSSL_API_300 */
+    UNREFERENCED_PARAMETER(data);
     xmlSecNotImplementedError("OpenSSL 3.0 does not support direct access to RSA key");
     return(NULL);
 #endif /* XMLSEC_OPENSSL_API_300 */
@@ -2340,7 +2349,7 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     if(ret != 1) {
         xmlSecOpenSSLError2("RSA_generate_key_ex",
                             xmlSecKeyDataGetName(data),
-                            "sizeBits=%lu", (unsigned long)sizeBits);
+                            "sizeBits=%lu", XMLSEC_UL_BAD_CAST(sizeBits));
         goto done;
     }
 
@@ -2402,7 +2411,7 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     if(ret <= 0) {
         xmlSecOpenSSLError2("EVP_PKEY_generate",
             xmlSecKeyDataGetName(data),
-            "sizeBits=%lu", (unsigned long)sizeBits);
+            "sizeBits=%lu", XMLSEC_UL_BAD_CAST(sizeBits));
         goto done;
     }
     ret = xmlSecOpenSSLKeyDataRsaAdoptEvp(data, pKey);
@@ -2566,8 +2575,8 @@ xmlSecOpenSSLKeyDataRsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== rsa key: size = %d\n",
-            xmlSecOpenSSLKeyDataRsaGetSize(data));
+    fprintf(output, "=== rsa key: size = %lu\n",
+            XMLSEC_UL_BAD_CAST(xmlSecOpenSSLKeyDataRsaGetSize(data)));
 }
 
 static void
@@ -2575,8 +2584,8 @@ xmlSecOpenSSLKeyDataRsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<RSAKeyValue size=\"%d\" />\n",
-            xmlSecOpenSSLKeyDataRsaGetSize(data));
+    fprintf(output, "<RSAKeyValue size=\"%lu\" />\n",
+            XMLSEC_UL_BAD_CAST(xmlSecOpenSSLKeyDataRsaGetSize(data)));
 }
 #endif /* XMLSEC_NO_RSA */
 
@@ -2690,8 +2699,8 @@ xmlSecOpenSSLKeyDataGost2001DebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataGost2001Id));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== gost key: size = %d\n",
-            xmlSecOpenSSLKeyDataGost2001GetSize(data));
+    fprintf(output, "=== gost key: size = %lu\n",
+            XMLSEC_UL_BAD_CAST(xmlSecOpenSSLKeyDataGost2001GetSize(data)));
 }
 
 static void
@@ -2699,8 +2708,8 @@ xmlSecOpenSSLKeyDataGost2001DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataGost2001Id));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<GOST2001KeyValue size=\"%d\" />\n",
-            xmlSecOpenSSLKeyDataGost2001GetSize(data));
+    fprintf(output, "<GOST2001KeyValue size=\"%lu\" />\n",
+            XMLSEC_UL_BAD_CAST(xmlSecOpenSSLKeyDataGost2001GetSize(data)));
 }
 #endif /* XMLSEC_NO_GOST */
 
@@ -2816,8 +2825,8 @@ xmlSecOpenSSLKeyDataGostR3410_2012_256DebugDump(xmlSecKeyDataPtr data, FILE* out
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataGostR3410_2012_256Id));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== gost key: size = %d\n",
-            xmlSecOpenSSLKeyDataGostR3410_2012_256GetSize(data));
+    fprintf(output, "=== gost key: size = %lu\n",
+            XMLSEC_UL_BAD_CAST(xmlSecOpenSSLKeyDataGostR3410_2012_256GetSize(data)));
 }
 
 static void
@@ -2825,8 +2834,8 @@ xmlSecOpenSSLKeyDataGostR3410_2012_256DebugXmlDump(xmlSecKeyDataPtr data, FILE* 
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataGostR3410_2012_256Id));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<GOST2012_256KeyValue size=\"%d\" />\n",
-            xmlSecOpenSSLKeyDataGostR3410_2012_256GetSize(data));
+    fprintf(output, "<GOST2012_256KeyValue size=\"%lu\" />\n",
+            XMLSEC_UL_BAD_CAST(xmlSecOpenSSLKeyDataGostR3410_2012_256GetSize)(data));
 }
 
 
@@ -2942,8 +2951,8 @@ xmlSecOpenSSLKeyDataGostR3410_2012_512DebugDump(xmlSecKeyDataPtr data, FILE* out
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataGostR3410_2012_512Id));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== gost key: size = %d\n",
-            xmlSecOpenSSLKeyDataGostR3410_2012_512GetSize(data));
+    fprintf(output, "=== gost key: size = %lu\n",
+            XMLSEC_UL_BAD_CAST(xmlSecOpenSSLKeyDataGostR3410_2012_512GetSize(data)));
 }
 
 static void
@@ -2951,8 +2960,8 @@ xmlSecOpenSSLKeyDataGostR3410_2012_512DebugXmlDump(xmlSecKeyDataPtr data, FILE* 
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataGostR3410_2012_512Id));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<GOST2012_512KeyValue size=\"%d\" />\n",
-            xmlSecOpenSSLKeyDataGostR3410_2012_512GetSize(data));
+    fprintf(output, "<GOST2012_512KeyValue size=\"%lu\" />\n",
+            XMLSEC_UL_BAD_CAST(xmlSecOpenSSLKeyDataGostR3410_2012_512GetSize(data)));
 }
 
 #endif /* XMLSEC_NO_GOST2012 */

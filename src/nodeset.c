@@ -246,7 +246,7 @@ xmlSecNodeSetContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent)
             break;
         default:
             xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_OPERATION, NULL,
-                              "node set operation=%d", (int)cur->op);
+                              "node set operation=%lu", XMLSEC_UL_BAD_CAST(cur->op));
             return(-1);
         }
         cur = cur->next;
@@ -574,7 +574,7 @@ xmlSecNodeSetDebugDump(xmlSecNodeSetPtr nset, FILE *output) {
         fprintf(output, "<<<\n");
         return;
     default:
-        fprintf(output, "(unknown=%d)\n", nset->type);
+        fprintf(output, "(unknown=%lu)\n", XMLSEC_UL_BAD_CAST(nset->type));
         xmlSecInvalidIntegerTypeError("node set type", nset->type,
                 "supported nodeset type", NULL);
     }
@@ -583,11 +583,11 @@ xmlSecNodeSetDebugDump(xmlSecNodeSetPtr nset, FILE *output) {
     for(i = 0; i < l; ++i) {
         cur = xmlXPathNodeSetItem(nset->nodes, i);
         if(cur->type != XML_NAMESPACE_DECL) {
-            fprintf(output, "%d: %s\n", cur->type,
+            fprintf(output, "%lu: %s\n", XMLSEC_UL_BAD_CAST(cur->type),
                 (cur->name) ? cur->name : BAD_CAST "null");
         } else {
             xmlNsPtr ns = (xmlNsPtr)cur;
-            fprintf(output, "%d: %s=%s (%s:%s)\n", cur->type,
+            fprintf(output, "%lu: %s=%s (%s:%s)\n", XMLSEC_UL_BAD_CAST(cur->type),
                 (ns->prefix) ? ns->prefix : BAD_CAST "null",
                 (ns->href) ? ns->href : BAD_CAST "null",
                 (((xmlNodePtr)ns->next)->ns &&

@@ -365,7 +365,7 @@ xmlSecKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
     if(ret < 0) {
         xmlSecInternalError2("id->generate",
                              xmlSecKeyDataGetName(data),
-                             "size=%d", sizeBits);
+                             "size=%lu", XMLSEC_UL_BAD_CAST(sizeBits));
         return(-1);
     }
     return(0);
@@ -602,8 +602,8 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
             xmlSecOtherError3(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
                               xmlSecKeyDataGetName(data),
                               "cur-data-size=%lu;new-data-size=%lu",
-                              (unsigned long)xmlSecBufferGetSize(buffer),
-                              (unsigned long)len);
+                              XMLSEC_UL_BAD_CAST(xmlSecBufferGetSize(buffer)),
+                              XMLSEC_UL_BAD_CAST(len));
             xmlFree(str);
             return(-1);
         }
@@ -636,7 +636,7 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     if(ret < 0) {
         xmlSecInternalError2("xmlSecKeyDataBinaryValueSetBuffer",
                              xmlSecKeyDataKlassGetName(id),
-                             "size=%d", len);
+                             "size=%lu", XMLSEC_UL_BAD_CAST(len));
         xmlSecKeyDataDestroy(data);
         xmlFree(str);
         return(-1);
@@ -752,8 +752,8 @@ xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
             xmlSecOtherError3(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
                               xmlSecKeyDataGetName(data),
                               "cur-data-size=%lu;new-data-size=%lu",
-                              (unsigned long)xmlSecBufferGetSize(buffer),
-                              (unsigned long)bufSize);
+                              XMLSEC_UL_BAD_CAST(xmlSecBufferGetSize(buffer)),
+                              XMLSEC_UL_BAD_CAST(bufSize));
             return(-1);
         }
         if((buffer != NULL) && (bufSize > 0) && (memcmp(xmlSecBufferGetData(buffer), buf, bufSize) != 0)) {
@@ -781,7 +781,7 @@ xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     if(ret < 0) {
         xmlSecInternalError2("xmlSecKeyDataBinaryValueSetBuffer",
                              xmlSecKeyDataKlassGetName(id),
-                             "size=%d", bufSize);
+                             "size=%lu", XMLSEC_UL_BAD_CAST(bufSize));
         xmlSecKeyDataDestroy(data);
         return(-1);
     }
@@ -871,8 +871,8 @@ xmlSecKeyDataBinaryValueDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(buffer != NULL);
 
     /* print only size, everything else is sensitive */
-    fprintf(output, "=== %s: size=%d\n", data->id->dataNodeName,
-                                         xmlSecKeyDataGetSize(data));
+    fprintf(output, "=== %s: size=%lu\n", data->id->dataNodeName,
+                                          XMLSEC_UL_BAD_CAST(xmlSecKeyDataGetSize(data)));
 }
 
 /**
@@ -895,8 +895,8 @@ xmlSecKeyDataBinaryValueDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(buffer != NULL);
 
     /* print only size, everything else is sensitive */
-    fprintf(output, "<%s size=\"%d\" />\n", data->id->dataNodeName,
-                                            xmlSecKeyDataGetSize(data));
+    fprintf(output, "<%s size=\"%lu\" />\n", data->id->dataNodeName,
+                                             XMLSEC_UL_BAD_CAST(xmlSecKeyDataGetSize(data)));
 }
 
 /**
@@ -1292,10 +1292,25 @@ xmlSecKeyDataStorePtrListGetKlass(void) {
     return(&xmlSecKeyDataStorePtrListKlass);
 }
 
+/**
+ * xmlSecImportSetPersistKey:
+ *
+ * Sets global flag to import keys to persistent storage (MSCrypto and MSCNG).
+ * Also see PKCS12_NO_PERSIST_KEY.
+ *
+ */
 void xmlSecImportSetPersistKey(void) {
     xmlSecImportPersistKey = 1;
 }
 
+/**
+ * xmlSecImportGetPersistKey:
+ *
+ * Gets global flag to import keys to persistent storage (MSCrypto and MSCNG).
+ * Also see PKCS12_NO_PERSIST_KEY.
+ *
+ * Returns: 1 if keys should be imported into persistent storage and 0 otherwise.
+ */
 int xmlSecImportGetPersistKey(void) {
     return xmlSecImportPersistKey;
 }

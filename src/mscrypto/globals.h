@@ -51,8 +51,10 @@ void xmlSecMSCryptoGetErrorMessage      (DWORD dwError,
                     (const char*)(errorObject),                   \
                     (errorFunction),                              \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,                \
-                    "MSCrypto error: %ld: 0x%08lx: %s",           \
-                    (long int)dwLastError, (long int)dwLastError, errBuf \
+                    "MSCrypto error: %lu: 0x%08lx: %s",           \
+                    XMLSEC_UL_BAD_CAST(dwLastError),              \
+                    XMLSEC_UL_BAD_CAST(dwLastError),              \
+                    errBuf                                        \
         );                                                        \
     }
 
@@ -74,9 +76,11 @@ void xmlSecMSCryptoGetErrorMessage      (DWORD dwError,
                     (const char*)(errorObject),                   \
                     (errorFunction),                              \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,                \
-                    msg  "MSCrypto error: %ld: 0x%08lx: %s",      \
+                    msg  "MSCrypto error: %lu: 0x%08lx: %s",      \
                     (param),                                      \
-                    (long int)dwLastError, (long int)dwLastError, errBuf \
+                    XMLSEC_UL_BAD_CAST(dwLastError),              \
+                    XMLSEC_UL_BAD_CAST(dwLastError),              \
+                    errBuf                                        \
         );                                                        \
     }
 

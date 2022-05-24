@@ -48,6 +48,8 @@
 #include <openssl/param_build.h>
 #endif /* XMLSEC_OPENSSL_API_300 */
 
+#include "../cast_helpers.h"
+
 /* sizes in bits */
 #define XMLSEC_OPENSSL_MIN_HMAC_SIZE            80
 #define XMLSEC_OPENSSL_MAX_HMAC_SIZE            (EVP_MAX_MD_SIZE * 8)
@@ -343,6 +345,7 @@ xmlSecOpenSSLHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecT
     cur = xmlSecGetNextElementNode(node->children);
     if((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeHMACOutputLength, xmlSecDSigNs)) {
         xmlChar *content;
+        int dgstSize;
 
         content = xmlNodeGetContent(cur);
         if(content != NULL) {
@@ -354,7 +357,8 @@ xmlSecOpenSSLHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecT
            Otherwise, an attacker can set this length to 0 or very
            small value
         */
-        if((int)ctx->dgstSize < xmlSecOpenSSLHmacGetMinOutputLength()) {
+        XMLSEC_SAFE_CAST_SIZE_TO_INT(ctx->dgstSize, dgstSize, return(-1), xmlSecTransformGetName(transform));
+        if(dgstSize < xmlSecOpenSSLHmacGetMinOutputLength()) {
             xmlSecInvalidNodeContentError(cur, xmlSecTransformGetName(transform),
                                           "HMAC output length is too small");
            return(-1);
@@ -587,7 +591,7 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecBufferRemoveHead",
                                      xmlSecTransformGetName(transform),
-                                     "size=%d", inSize);
+                                     "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
                 return(-1);
             }
         }
@@ -634,7 +638,7 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
                 if(ret < 0) {
                     xmlSecInternalError2("xmlSecBufferAppend",
                                          xmlSecTransformGetName(transform),
-                                         "size=%lu", (unsigned long)dgstSize);
+                                         "size=%lu", XMLSEC_UL_BAD_CAST(dgstSize));
                     return(-1);
                 }
             }

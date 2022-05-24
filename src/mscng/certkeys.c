@@ -661,7 +661,7 @@ xmlSecMSCngKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     ret = xmlSecBufferSetSize(&blob, blobLen);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=%d", blobLen);
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=%lu", XMLSEC_UL_BAD_CAST(blobLen));
         goto done;
     }
 
@@ -801,8 +801,8 @@ xmlSecMSCngKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     ret = xmlSecBufferInitialize(&buf, bufLen);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferInitialize",
-            xmlSecKeyDataKlassGetName(id), "size=%ld", bufLen);
+        xmlSecInternalError2("xmlSecBufferInitialize", xmlSecKeyDataKlassGetName(id),
+            "size=%lu", XMLSEC_UL_BAD_CAST(bufLen));
         return(-1);
     }
 
@@ -909,16 +909,16 @@ xmlSecMSCngKeyDataDsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataDsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== rsa key: size = %d\n",
-            (int)xmlSecMSCngKeyDataDsaGetSize(data));
+    fprintf(output, "=== rsa key: size = %lu\n",
+            XMLSEC_UL_BAD_CAST(xmlSecMSCngKeyDataDsaGetSize(data)));
 }
 
 static void xmlSecMSCngKeyDataDsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataDsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<DSAKeyValue size=\"%d\" />\n",
-            (int)xmlSecMSCngKeyDataDsaGetSize(data));
+    fprintf(output, "<DSAKeyValue size=\"%lu\" />\n",
+            XMLSEC_UL_BAD_CAST(xmlSecMSCngKeyDataDsaGetSize(data)));
 }
 
 static int
@@ -1121,16 +1121,16 @@ xmlSecMSCngKeyDataRsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataRsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== rsa key: size = %d\n",
-            (int)xmlSecMSCngKeyDataRsaGetSize(data));
+    fprintf(output, "=== rsa key: size = %lu\n",
+            XMLSEC_UL_BAD_CAST(xmlSecMSCngKeyDataRsaGetSize(data)));
 }
 
 static void xmlSecMSCngKeyDataRsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataRsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<RSAKeyValue size=\"%d\" />\n",
-            (int)xmlSecMSCngKeyDataRsaGetSize(data));
+    fprintf(output, "<RSAKeyValue size=\"%lu\" />\n",
+            XMLSEC_UL_BAD_CAST(xmlSecMSCngKeyDataRsaGetSize(data)));
 }
 
 static int
@@ -1239,7 +1239,7 @@ xmlSecMSCngKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     ret = xmlSecBufferSetSize(&blob, blobBufferLen);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize",
-            xmlSecKeyDataKlassGetName(id), "size=%d", blobBufferLen);
+            xmlSecKeyDataKlassGetName(id), "size=%lu", XMLSEC_UL_BAD_CAST(blobBufferLen));
         goto done;
     }
 
@@ -1358,8 +1358,8 @@ xmlSecMSCngKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     ret = xmlSecBufferInitialize(&buf, bufLen);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferInitialize",
-            xmlSecKeyDataKlassGetName(id), "size=%ld", bufLen);
+        xmlSecInternalError2("xmlSecBufferInitialize", xmlSecKeyDataKlassGetName(id),
+            "size=%lu", XMLSEC_UL_BAD_CAST(bufLen));
         return(-1);
     }
 
@@ -1586,16 +1586,16 @@ xmlSecMSCngKeyDataEcdsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataEcdsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== rsa key: size = %d\n",
-            (int)xmlSecMSCngKeyDataEcdsaGetSize(data));
+    fprintf(output, "=== rsa key: size = %lu\n",
+            XMLSEC_UL_BAD_CAST(xmlSecMSCngKeyDataEcdsaGetSize(data)));
 }
 
 static void xmlSecMSCngKeyDataEcdsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataEcdsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<ECDSAKeyValue size=\"%d\" />\n",
-            (int)xmlSecMSCngKeyDataEcdsaGetSize(data));
+    fprintf(output, "<ECDSAKeyValue size=\"%lu\" />\n",
+            XMLSEC_UL_BAD_CAST(xmlSecMSCngKeyDataEcdsaGetSize(data)));
 }
 
 static xmlSecKeyDataKlass xmlSecMSCngKeyDataEcdsaKlass = {

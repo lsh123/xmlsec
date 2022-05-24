@@ -265,7 +265,7 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
 
     nodes = xmlSecNodeSetCreate(doc, xpathObj->nodesetval, data->nodeSetType);
     if(nodes == NULL) {
-        xmlSecInternalError2("xmlSecNodeSetCreate", NULL, "type=%d", data->nodeSetType);
+        xmlSecInternalError2("xmlSecNodeSetCreate", NULL, "type=%lu", XMLSEC_UL_BAD_CAST(data->nodeSetType));
         xmlXPathFreeObject(xpathObj);
         return(NULL);
     }
@@ -318,7 +318,7 @@ xmlSecXPathDataListExecute(xmlSecPtrListPtr dataList, xmlDocPtr doc,
     for(pos = 0; pos < xmlSecPtrListGetSize(dataList); ++pos) {
         data = (xmlSecXPathDataPtr)xmlSecPtrListGetItem(dataList, pos);
         if(data == NULL) {
-            xmlSecInternalError2("xmlSecPtrListGetItem", NULL, "pos=%d", pos);
+            xmlSecInternalError2("xmlSecPtrListGetItem", NULL, "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
             if((res != NULL) && (res != nodes)) {
                 xmlSecNodeSetDestroy(res);
             }
@@ -337,7 +337,7 @@ xmlSecXPathDataListExecute(xmlSecPtrListPtr dataList, xmlDocPtr doc,
         tmp2 = xmlSecNodeSetAdd(res, tmp, data->nodeSetOp);
         if(tmp2 == NULL) {
             xmlSecInternalError2("xmlSecNodeSetAdd", NULL,
-                                 "nodeSetOp=%d", (int)data->nodeSetOp);
+                                 "nodeSetOp=%lu", XMLSEC_UL_BAD_CAST(data->nodeSetOp));
             if((res != NULL) && (res != nodes)) {
                 xmlSecNodeSetDestroy(res);
             }

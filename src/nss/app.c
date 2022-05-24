@@ -371,7 +371,7 @@ xmlSecNssAppKeyLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format,
         break;
     default:
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-                         "format=%d", (int)format);
+                         "format=%lu", XMLSEC_UL_BAD_CAST(format));
         return(NULL);
     }
 
@@ -586,13 +586,13 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
                                          secItem, NULL, PR_FALSE, PR_TRUE);
         if(cert == NULL) {
             xmlSecNssError2("__CERT_NewTempCertificate", NULL,
-                            "format=%d", (int)format);
+                            "format=%lu", XMLSEC_UL_BAD_CAST(format));
             return(-1);
         }
         break;
     default:
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-                         "format=%d", (int)format);
+                         "format=%lu", XMLSEC_UL_BAD_CAST(format));
         return(-1);
     }
 
@@ -949,13 +949,13 @@ xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format)
                                          secItem, NULL, PR_FALSE, PR_TRUE);
         if(cert == NULL) {
             xmlSecNssError2("__CERT_NewTempCertificate", NULL,
-                            "format=%d", (int)format);
+                            "format=%lu", XMLSEC_UL_BAD_CAST(format));
             return(NULL);
         }
         break;
     default:
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-                         "format=%d", (int)format);
+                          "format=%lu", XMLSEC_UL_BAD_CAST(format));
         return(NULL);
     }
 
@@ -1128,13 +1128,13 @@ xmlSecNssAppKeysMngrCertLoadSECItem(xmlSecKeysMngrPtr mngr, SECItem* secItem,
                                          secItem, NULL, PR_FALSE, PR_TRUE);
         if(cert == NULL) {
             xmlSecNssError2("__CERT_NewTempCertificate", NULL,
-                            "format=%d", (int)format);
+                            "format=%lu", XMLSEC_UL_BAD_CAST(format));
             return(-1);
         }
         break;
     default:
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-                         "format=%d", (int)format);
+                          "format=%lu", XMLSEC_UL_BAD_CAST(format));
         return(-1);
     }
 

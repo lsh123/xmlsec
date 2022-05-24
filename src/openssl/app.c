@@ -47,6 +47,7 @@
 #include <openssl/provider.h>
 #endif /* XMLSEC_OPENSSL_API_300 */
 
+#include "../cast_helpers.h"
 
 static int      xmlSecOpenSSLDefaultPasswordCallback    (char *buf,
                                                          int bufsiz,
@@ -289,7 +290,7 @@ xmlSecOpenSSLAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     bio = xmlSecOpenSSLCreateMemBufBio((void*)data, dataSize);
     if(bio == NULL) {
         xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
-                            "dataSize=%lu", (unsigned long)dataSize);
+                            "dataSize=%lu", XMLSEC_UL_BAD_CAST(dataSize));
         return(NULL);
     }
 
@@ -437,7 +438,7 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
 
     default:
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-                         "format=%d", (int)format);
+                         "format=%lu", XMLSEC_UL_BAD_CAST(format));
         return(NULL);
     }
 
@@ -484,6 +485,10 @@ xmlSecOpenSSLAppEngineKeyLoad(const char *engineName, const char *engineKeyId,
     xmlSecAssert2(engineName != NULL, NULL);
     xmlSecAssert2(engineKeyId != NULL, NULL);
     xmlSecAssert2(format == xmlSecKeyDataFormatEngine, NULL);
+
+    UNREFERENCED_PARAMETER(pwd);
+    UNREFERENCED_PARAMETER(pwdCallback);
+    UNREFERENCED_PARAMETER(pwdCallbackCtx);
 
     /* load and initialize the engine */
     engine = ENGINE_by_id(engineName);
@@ -565,6 +570,12 @@ done:
     return(key);
 
 #else /* !defined(OPENSSL_NO_ENGINE) && !defined(XMLSEC_OPENSSL_API_300) */
+    UNREFERENCED_PARAMETER(engineName);
+    UNREFERENCED_PARAMETER(engineKeyId);
+    UNREFERENCED_PARAMETER(format);
+    UNREFERENCED_PARAMETER(pwd);
+    UNREFERENCED_PARAMETER(pwdCallback);
+    UNREFERENCED_PARAMETER(pwdCallbackCtx);
     xmlSecNotImplementedError("OpenSSL Engine interface is not enabled");
     return (NULL);
 #endif /* !defined(OPENSSL_NO_ENGINE) && !defined(XMLSEC_OPENSSL_API_300) */
@@ -637,7 +648,7 @@ xmlSecOpenSSLAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlS
     bio = xmlSecOpenSSLCreateMemBufBio((void*)data, dataSize);
     if(bio == NULL) {
         xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
-                            "dataSize=%lu", (unsigned long)dataSize);
+                            "dataSize=%lu", XMLSEC_UL_BAD_CAST(dataSize));
         return(-1);
     }
 
@@ -778,7 +789,7 @@ xmlSecOpenSSLAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     bio = xmlSecOpenSSLCreateMemBufBio((void*)data, dataSize);
     if(bio == NULL) {
         xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
-                            "dataSize=%lu", (unsigned long)dataSize);
+                            "dataSize=%lu", XMLSEC_UL_BAD_CAST(dataSize));
         return(NULL);
     }
 
@@ -820,6 +831,8 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
     xmlSecKeyDataPtr x509Data = NULL;
     X509 *cert = NULL;
     X509 *tmpcert = NULL;
+    size_t pwdSize;
+    int pwdLen;
     int i;
     int has_cert;
     int ret;
@@ -827,6 +840,9 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
     xmlSecAssert2(bio != NULL, NULL);
     UNREFERENCED_PARAMETER(pwdCallback);
     UNREFERENCED_PARAMETER(pwdCallbackCtx);
+
+    pwdSize = (pwd != NULL) ? strlen(pwd) : 0;
+    XMLSEC_SAFE_CAST_SIZE_T_TO_INT(pwdSize, pwdLen, return(NULL), NULL);
 
 #ifndef XMLSEC_OPENSSL_API_300
     p12 = d2i_PKCS12_bio(bio, NULL);
@@ -839,11 +855,12 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
         xmlSecOpenSSLError("d2i_PKCS12_bio", NULL);
         goto done;
     }
+
 #ifndef XMLSEC_OPENSSL_API_300
-    ret = PKCS12_verify_mac(p12, pwd, (pwd != NULL) ? (int)strlen(pwd) : 0);
+    ret = PKCS12_verify_mac(p12, pwd, pwdLen);
 #else /* XMLSEC_OPENSSL_API_300 */
     XMLSEC_OPENSSL_PUSH_LIB_CTX(goto done);
-    ret = PKCS12_verify_mac(p12, pwd, (pwd != NULL) ? (int)strlen(pwd) : 0);
+    ret = PKCS12_verify_mac(p12, pwd, pwdLen);
     XMLSEC_OPENSSL_POP_LIB_CTX();
 #endif /* XMLSEC_OPENSSL_API_300 */
     if(ret != 1) {
@@ -1148,7 +1165,7 @@ xmlSecOpenSSLAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte*
     bio = xmlSecOpenSSLCreateMemBufBio((void*)data, dataSize);
     if(bio == NULL) {
         xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
-                            "dataSize=%lu", (unsigned long)dataSize);
+                            "dataSize=%lu", XMLSEC_UL_BAD_CAST(dataSize));
         return(-1);
     }
 
@@ -1332,7 +1349,7 @@ xmlSecOpenSSLAppCertLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
         break;
     default:
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-                         "format=%d", (int)format);
+                         "format=%lu", XMLSEC_UL_BAD_CAST(format));
         return(NULL);
     }
 
@@ -1528,7 +1545,11 @@ xmlSecOpenSSLDefaultPasswordCallback(char *buf, int bufsize, int verify, void *u
 
         /* if we don't need to verify password then we are done */
         if(verify == 0) {
-            return((int)strlen(buf));
+            size_t sz;
+            int len;
+            sz = strlen(buf);
+            XMLSEC_SAFE_CAST_SIZE_T_TO_INT(sz, len, return(-1), NULL);
+            return(len);
         }
 
         if(filename != NULL) {
@@ -1556,9 +1577,14 @@ xmlSecOpenSSLDefaultPasswordCallback(char *buf, int bufsize, int verify, void *u
 
         /* check if passwords match */
         if(strcmp(buf, buf2) == 0) {
+            size_t sz;
+            int len;
+            sz = strlen(buf);
+
             memset(buf2, 0, bufsize);
             xmlFree(buf2);
-            return((int)strlen(buf));
+            XMLSEC_SAFE_CAST_SIZE_T_TO_INT(sz, len, return(-1), NULL);
+            return(len);
         }
 
         /* try again */
@@ -1574,15 +1600,18 @@ xmlSecOpenSSLDummyPasswordCallback(char *buf, int bufsize,
                                    int verify ATTRIBUTE_UNUSED,
                                    void *userdata) {
     char* password;
-    int passwordlen;
+    size_t passwordSize;
+    int passwordLen;
     UNREFERENCED_PARAMETER(verify);
 
     password = (char*)userdata;
     if(password == NULL) {
         return(-1);
     }
-    passwordlen = (int)strlen(password);
-    if(passwordlen + 1 > bufsize) {
+  
+    passwordSize = strlen(password);
+    XMLSEC_SAFE_CAST_SIZE_T_TO_INT(passwordSize, passwordLen, return(-1), NULL);
+    if(passwordLen + 1 > bufsize) {
         return(-1);
     }
 
@@ -1592,6 +1621,6 @@ xmlSecOpenSSLDummyPasswordCallback(char *buf, int bufsize,
     strcpy(buf, password);
 #endif /* WIN32 */
 
-    return (passwordlen);
+    return (passwordLen);
 }
 

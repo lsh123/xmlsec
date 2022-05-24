@@ -328,7 +328,7 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferInitialize",
                              xmlSecTransformGetName(transform),
-                             "dataSize=%d", dataSize);
+                             "dataSize=%lu", XMLSEC_UL_BAD_CAST(dataSize));
         return(-1);
     }
 
@@ -567,7 +567,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecBufferSetMaxSize",
                                      xmlSecTransformGetName(transform),
-                                     "size=%d", outSize);
+                                     "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
                 return(-1);
             }
             tmpBuf = xmlSecBufferGetData(&tmp);
@@ -584,7 +584,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecBufferSetSize",
                                      xmlSecTransformGetName(transform),
-                                     "size=%d", outSize);
+                                     "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
                 xmlSecBufferFinalize(&tmp);
                 return(-1);
             }

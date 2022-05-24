@@ -367,6 +367,13 @@ extern "C" {
 #define XMLSEC_ERRORS_R_ASSERTION                       100
 
 /**
+ * XMLSEC_ERRORS_R_CAST_IMPOSSIBLE:
+ *
+ * Impossible to cast from one type to another.
+ */
+#define XMLSEC_ERROR_R_CAST_IMPOSSIBLE                  101
+
+/**
  * XMLSEC_ERRORS_MAX_NUMBER:
  *
  * The maximum xmlsec errors number.

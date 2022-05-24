@@ -31,6 +31,8 @@
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/bn.h>
 
+#include "../cast_helpers.h"
+
 /**
  * xmlSecOpenSSLNodeGetBNValue:
  * @cur: the pointer to an XML node.
@@ -67,7 +69,7 @@ xmlSecOpenSSLNodeGetBNValue(const xmlNodePtr cur, BIGNUM **a) {
     (*a) = BN_bin2bn(xmlSecBufferGetData(&buf), xmlSecBufferGetSize(&buf), (*a));
     if( (*a) == NULL) {
         xmlSecOpenSSLError2("BN_bin2bn", NULL,
-                            "size=%lu", (unsigned long)(xmlSecBufferGetSize(&buf)));
+                            "size=%lu", XMLSEC_UL_BAD_CAST(xmlSecBufferGetSize(&buf)));
         xmlSecBufferFinalize(&buf);
         return(NULL);
     }
@@ -94,33 +96,41 @@ xmlSecOpenSSLNodeGetBNValue(const xmlNodePtr cur, BIGNUM **a) {
 int
 xmlSecOpenSSLNodeSetBNValue(xmlNodePtr cur, const BIGNUM *a, int addLineBreaks) {
     xmlSecBuffer buf;
+    int bufInitialized = 0;
     xmlSecSize size;
     int ret;
+    int res = -1;
 
     xmlSecAssert2(a != NULL, -1);
     xmlSecAssert2(cur != NULL, -1);
 
-    ret = xmlSecBufferInitialize(&buf, BN_num_bytes(a) + 1);
+    ret = BN_num_bytes(a);
+    if(ret < 0) {
+        xmlSecOpenSSLError("BN_num_bytes", NULL);
+        goto done;
+    }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, goto done, NULL);
+
+    ret = xmlSecBufferInitialize(&buf, size + 1);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferInitialize", NULL,
-                             "size=%d", BN_num_bytes(a) + 1);
+                             "size=%lu", XMLSEC_UL_BAD_CAST(size + 1));
         return(-1);
     }
+    bufInitialized = 1;
 
     ret = BN_bn2bin(a, xmlSecBufferGetData(&buf));
     if(ret < 0) {
         xmlSecOpenSSLError("BN_bn2bin", NULL);
-        xmlSecBufferFinalize(&buf);
-        return(-1);
+        goto done;
     }
-    size = ret;
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, goto done, NULL);
 
     ret = xmlSecBufferSetSize(&buf, size);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-                             "size=%d", size);
-        xmlSecBufferFinalize(&buf);
-        return(-1);
+                             "size=%lu", XMLSEC_UL_BAD_CAST(size));
+        goto done;
     }
 
     if(addLineBreaks) {
@@ -132,15 +142,20 @@ xmlSecOpenSSLNodeSetBNValue(xmlNodePtr cur, const BIGNUM *a, int addLineBreaks) 
     ret = xmlSecBufferBase64NodeContentWrite(&buf, cur, xmlSecBase64GetDefaultLineSize());
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferBase64NodeContentWrite", NULL);
-        xmlSecBufferFinalize(&buf);
-        return(-1);
+        goto done;
     }
 
     if(addLineBreaks) {
         xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
     }
 
-    xmlSecBufferFinalize(&buf);
-    return(0);
+    /* success */
+    res = 0;
+
+done:
+    if(bufInitialized != 0) {
+        xmlSecBufferFinalize(&buf);
+    }
+    return(res);
 }
 

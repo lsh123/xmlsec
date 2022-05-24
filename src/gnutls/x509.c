@@ -627,7 +627,7 @@ xmlSecGnuTLSKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
         if(cert == NULL) {
             xmlSecInternalError2("xmlSecGnuTLSKeyDataX509GetCert",
                                  xmlSecKeyDataKlassGetName(id),
-                                 "pos=%d", pos);
+                                 "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
             return(-1);
         }
 
@@ -636,7 +636,7 @@ xmlSecGnuTLSKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecGnuTLSX509CertificateNodeWrite",
                                      xmlSecKeyDataKlassGetName(id),
-                                     "pos=%d", pos);
+                                     "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
                 return(-1);
             }
         }
@@ -646,7 +646,7 @@ xmlSecGnuTLSKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecGnuTLSX509SubjectNameNodeWrite",
                                      xmlSecKeyDataKlassGetName(id),
-                                     "pos=%d", pos);
+                                     "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
                 return(-1);
             }
         }
@@ -656,7 +656,7 @@ xmlSecGnuTLSKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecGnuTLSX509IssuerSerialNodeWrite",
                                      xmlSecKeyDataKlassGetName(id),
-                                     "pos=%d", pos);
+                                     "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
                 return(-1);
             }
         }
@@ -666,7 +666,7 @@ xmlSecGnuTLSKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecGnuTLSX509SKINodeWrite",
                                      xmlSecKeyDataKlassGetName(id),
-                                     "pos=%d", pos);
+                                     "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
                 return(-1);
             }
         }
@@ -680,7 +680,7 @@ xmlSecGnuTLSKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
             if(crl == NULL) {
                 xmlSecInternalError2("xmlSecGnuTLSKeyDataX509GetCrl",
                                      xmlSecKeyDataKlassGetName(id),
-                                     "pos=%d", pos);
+                                     "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
                 return(-1);
             }
 
@@ -688,7 +688,7 @@ xmlSecGnuTLSKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecGnuTLSX509CRLNodeWrite",
                                      xmlSecKeyDataKlassGetName(id),
-                                     "pos=%d", pos);
+                                     "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
                 return(-1);
             }
         }
@@ -744,7 +744,7 @@ xmlSecGnuTLSKeyDataX509DebugDump(xmlSecKeyDataPtr data, FILE* output) {
         if(cert == NULL) {
             xmlSecInternalError2("xmlSecGnuTLSKeyDataX509GetCert",
                                  xmlSecKeyDataGetName(data),
-                                 "pos=%d", pos);
+                                 "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
             return;
         }
         fprintf(output, "==== Certificate:\n");
@@ -760,7 +760,7 @@ xmlSecGnuTLSKeyDataX509DebugDump(xmlSecKeyDataPtr data, FILE* output) {
         if(crl == NULL) {
             xmlSecInternalError2("xmlSecGnuTLSKeyDataX509GetCrl",
                                  xmlSecKeyDataGetName(data),
-                                 "pos=%d", pos);
+                                 "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
             return;
         }
         fprintf(output, "==== Crl:\n");
@@ -798,7 +798,7 @@ xmlSecGnuTLSKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
         if(cert == NULL) {
             xmlSecInternalError2("xmlSecGnuTLSKeyDataX509GetCert",
                                  xmlSecKeyDataGetName(data),
-                                 "pos=%d", pos);
+                                 "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
             return;
         }
         fprintf(output, "<Certificate>\n");
@@ -815,7 +815,7 @@ xmlSecGnuTLSKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
         if(crl == NULL) {
             xmlSecInternalError2("xmlSecGnuTLSKeyDataX509GetCrl",
                                  xmlSecKeyDataGetName(data),
-                                 "pos=%d", pos);
+                                 "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
             return;
         }
         fprintf(output, "<CRL>\n");
@@ -1510,16 +1510,16 @@ xmlSecGnuTLSKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr k
             if(key->notValidBefore == (time_t)-1) {
                 xmlSecGnuTLSError2("gnutls_x509_crt_get_activation_time", GNUTLS_E_SUCCESS,
                                    xmlSecKeyDataGetName(data),
-                                   "cert activation time is invalid: %ld",
-                                   (unsigned long)key->notValidBefore);
+                                   "cert activation time is invalid: %lu",
+                                   XMLSEC_UL_BAD_CAST(key->notValidBefore));
                 return(-1);
             }
             key->notValidAfter = gnutls_x509_crt_get_expiration_time(ctx->keyCert);
             if(key->notValidAfter == (time_t)-1) {
                 xmlSecGnuTLSError2("gnutls_x509_crt_get_expiration_time", GNUTLS_E_SUCCESS,
                                    xmlSecKeyDataGetName(data),
-                                   "cert expiration time is invalid: %ld",
-                                   (unsigned long)key->notValidAfter);
+                                   "cert expiration time is invalid: %lu",
+                                   XMLSEC_UL_BAD_CAST(key->notValidAfter));
                 return(-1);
             }
         } else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT) != 0) {

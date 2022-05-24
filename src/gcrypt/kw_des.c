@@ -238,7 +238,7 @@ xmlSecGCryptKWDes3SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetData",
                              xmlSecTransformGetName(transform),
-                             "size=%d", XMLSEC_KW_DES3_KEY_LENGTH);
+                             "size=%lu", XMLSEC_UL_BAD_CAST(XMLSEC_KW_DES3_KEY_LENGTH));
         return(-1);
     }
 
@@ -297,7 +297,7 @@ xmlSecGCryptKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfor
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetMaxSize",
                                  xmlSecTransformGetName(transform),
-                                 "size=%d", outSize);
+                                 "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
             return(-1);
         }
 
@@ -307,7 +307,8 @@ xmlSecGCryptKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
                 xmlSecInternalError4("xmlSecKWDes3Encode", xmlSecTransformGetName(transform),
-                                     "key=%d,in=%d,out=%d", keySize, inSize, outSize);
+                                     "keySize=%lu;inSize=%lu,outSize=%lu",
+                                     XMLSEC_UL_BAD_CAST(keySize), XMLSEC_UL_BAD_CAST(inSize), XMLSEC_UL_BAD_CAST(outSize));
                 return(-1);
             }
             outSize = ret;
@@ -317,7 +318,8 @@ xmlSecGCryptKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
                 xmlSecInternalError4("xmlSecKWDes3Decode", xmlSecTransformGetName(transform),
-                                     "key=%d,in=%d,out=%d", keySize, inSize, outSize);
+                                     "keySize=%lu;inSize=%lu,outSize=%lu",
+                                     XMLSEC_UL_BAD_CAST(keySize), XMLSEC_UL_BAD_CAST(inSize), XMLSEC_UL_BAD_CAST(outSize));
                 return(-1);
             }
             outSize = ret;
@@ -327,7 +329,7 @@ xmlSecGCryptKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfor
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetSize",
                                  xmlSecTransformGetName(transform),
-                                 "size=%d", outSize);
+                                 "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
             return(-1);
         }
 
@@ -335,7 +337,7 @@ xmlSecGCryptKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfor
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferRemoveHead",
                                  xmlSecTransformGetName(transform),
-                                 "size=%d", inSize);
+                                 "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
             return(-1);
         }
 

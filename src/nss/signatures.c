@@ -602,7 +602,7 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                 if(ret < 0) {
                     xmlSecInternalError2("xmlSecBufferSetData",
                                          xmlSecTransformGetName(transform),
-                                         "size=%d", signatureClr->len);
+                                         "size=%lu", XMLSEC_UL_BAD_CAST(signatureClr->len));
                     SECITEM_FreeItem(&signature, PR_FALSE);
                     return(-1);
                 }
@@ -614,7 +614,7 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                 if(ret < 0) {
                     xmlSecInternalError2("xmlSecBufferSetData",
                                          xmlSecTransformGetName(transform),
-                                         "size=%d", signature.len);
+                                         "size=%lu", XMLSEC_UL_BAD_CAST(signature.len));
                     SECITEM_FreeItem(&signature, PR_FALSE);
                     return(-1);
                 }

@@ -323,7 +323,7 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         if(ret != 0) {
             xmlSecXmlParserError2("xmlParseChunk", ctx->parserCtx,
                                   xmlSecTransformGetName(transform),
-                                  "size=%d", dataSize);
+                                  "size=%lu", XMLSEC_UL_BAD_CAST(dataSize));
 
             return(-1);
         }
@@ -437,7 +437,7 @@ xmlSecXsltExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr 
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferRemoveHead",
                                  xmlSecTransformGetName(transform),
-                                 "size=%d", inSize);
+                                 "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
             return(-1);
         }
 

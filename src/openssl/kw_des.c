@@ -34,6 +34,7 @@
 #include <xmlsec/openssl/crypto.h>
 
 #include "../kw_aes_des.h"
+#include "../cast_helpers.h"
 #include "openssl_compat.h"
 
 #ifdef XMLSEC_OPENSSL_API_300
@@ -244,7 +245,7 @@ xmlSecOpenSSLKWDes3SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetData",
                              xmlSecTransformGetName(transform),
-                             "size=%d", XMLSEC_KW_DES3_KEY_LENGTH);
+                             "size=%lu", XMLSEC_UL_BAD_CAST(XMLSEC_KW_DES3_KEY_LENGTH));
         return(-1);
     }
 
@@ -303,7 +304,7 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfo
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetMaxSize",
                                  xmlSecTransformGetName(transform),
-                                 "size=%d", outSize);
+                                 "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
             return(-1);
         }
 
@@ -313,7 +314,9 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfo
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
                 xmlSecInternalError4("xmlSecKWDes3Encode", xmlSecTransformGetName(transform),
-                                     "key=%d,in=%d,out=%d", keySize, inSize, outSize);
+                                     "keySize=%lu;inSize=%lu;outSize=%lu",
+                                     XMLSEC_UL_BAD_CAST(keySize), XMLSEC_UL_BAD_CAST(inSize), XMLSEC_UL_BAD_CAST(outSize));
+
                 return(-1);
             }
             outSize = ret;
@@ -323,7 +326,9 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfo
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
                 xmlSecInternalError4("xmlSecKWDes3Decode", xmlSecTransformGetName(transform),
-                                     "key=%d,in=%d,out=%d", keySize, inSize, outSize);
+                                     "keySize=%lu;inSize=%lu;outSize=%lu",
+                                     XMLSEC_UL_BAD_CAST(keySize), XMLSEC_UL_BAD_CAST(inSize), XMLSEC_UL_BAD_CAST(outSize));
+
                 return(-1);
             }
             outSize = ret;
@@ -333,7 +338,7 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfo
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetSize",
                                  xmlSecTransformGetName(transform),
-                                 "size=%d", outSize);
+                                 "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
             return(-1);
         }
 
@@ -341,7 +346,7 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfo
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferRemoveHead",
                                  xmlSecTransformGetName(transform),
-                                 "size=%d", inSize);
+                                 "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
             return(-1);
         }
 
@@ -369,6 +374,7 @@ xmlSecOpenSSLKWDes3Sha1(void * context,
 #ifdef XMLSEC_OPENSSL_API_300
     size_t outLen = XMLSEC_SIZE_BAD_CAST(outSize);
     int ret;
+    int res;
 #endif /* XMLSEC_OPENSSL_API_300 */
 
     xmlSecOpenSSLKWDes3CtxPtr ctx = (xmlSecOpenSSLKWDes3CtxPtr)context;
@@ -392,7 +398,8 @@ xmlSecOpenSSLKWDes3Sha1(void * context,
         xmlSecOpenSSLError("EVP_Q_digest(SHA1)", NULL);
         return(-1);
     }
-    return(outLen);
+    XMLSEC_SAFE_CAST_SIZE_T_TO_INT(outLen, res, return(-1), NULL);
+    return(res);
 #endif /* XMLSEC_OPENSSL_API_300 */
 }
 
@@ -401,6 +408,7 @@ xmlSecOpenSSLKWDes3GenerateRandom(void * context,
                                  xmlSecByte * out, xmlSecSize outSize) {
     xmlSecOpenSSLKWDes3CtxPtr ctx = (xmlSecOpenSSLKWDes3CtxPtr)context;
     int ret;
+    int res;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
@@ -413,11 +421,12 @@ xmlSecOpenSSLKWDes3GenerateRandom(void * context,
 #endif /* XMLSEC_OPENSSL_API_300 */
     if(ret != 1) {
         xmlSecOpenSSLError2("RAND_bytes", NULL,
-                            "size=%lu", (unsigned long)outSize);
+                            "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
         return(-1);
     }
 
-    return((int)outSize);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(outSize, res, return(-1), NULL);
+    return(res);
 }
 
 static int

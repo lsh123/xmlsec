@@ -176,7 +176,7 @@ xmlSecMSCryptoAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
     default:
         /* Any other format like PEM keys is currently not supported */
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-                         "format=%d", (int)format);
+                         "format=%lu", XMLSEC_UL_BAD_CAST(format));
         return(NULL);
     }
 
@@ -385,7 +385,7 @@ xmlSecMSCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xml
         pCert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, data, dataSize);
         if (NULL == pCert) {
             xmlSecInternalError2("CertCreateCertificateContext", NULL,
-                                 "format=%d", format);
+                                 "format=%lu", XMLSEC_UL_BAD_CAST(format));
             return(-1);
         }
 
@@ -399,7 +399,7 @@ xmlSecMSCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xml
         break;
     default:
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-                         "format=%d", (int)format);
+                         "format=%lu", XMLSEC_UL_BAD_CAST(format));
         return(-1);
     }
 
@@ -504,7 +504,7 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
 
     if(FALSE == PFXIsPFXBlob(&pfx)) {
         xmlSecMSCryptoError2("PFXIsPFXBlob", NULL,
-                             "size=%ld", (long int)pfx.cbData);
+                             "size=%lu", XMLSEC_UL_BAD_CAST(pfx.cbData));
         goto done;
     }
 
@@ -743,7 +743,7 @@ xmlSecMSCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte
             break;
         default:
             xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-                             "format=%d", (int)format);
+                             "format=%lu", XMLSEC_UL_BAD_CAST(format));
             return(-1);
     }
 

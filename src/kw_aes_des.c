@@ -171,7 +171,8 @@ xmlSecKWDes3Decode(xmlSecKWDes3Id kwDes3Id, void *context,
     /* step 2: first decryption with static IV, result is TEMP3 */
     tmp = xmlSecBufferCreate(inSize);
     if(tmp == NULL) {
-        xmlSecInternalError2("xmlSecBufferCreate", NULL, "inSize=%d", (int)inSize);
+        xmlSecInternalError2("xmlSecBufferCreate", NULL,
+                             "inSize=%lu", XMLSEC_UL_BAD_CAST(inSize));
         return(-1);
     }
 

@@ -509,7 +509,7 @@ xmlSecMSCryptoHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
             if(ret == 0) {
                 xmlSecMSCryptoError2("CryptHashData",
                                     xmlSecTransformGetName(transform),
-                                    "size=%d", inSize);
+                                    "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
                 return(-1);
             }
 
@@ -517,7 +517,7 @@ xmlSecMSCryptoHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecBufferRemoveHead",
                                      xmlSecTransformGetName(transform),
-                                     "size=%d", inSize);
+                                     "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
                 return(-1);
             }
         }
@@ -537,7 +537,7 @@ xmlSecMSCryptoHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
             if (ret == 0) {
                 xmlSecInternalError2("CryptGetHashParam",
                                      xmlSecTransformGetName(transform),
-                                     "size=%d", inSize);
+                                     "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
                 return(-1);
             }
             xmlSecAssert2(retLen > 0, -1);
@@ -560,7 +560,7 @@ xmlSecMSCryptoHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                 if(ret < 0) {
                     xmlSecInternalError2("xmlSecBufferAppend",
                                          xmlSecTransformGetName(transform),
-                                         "size=%d", ctx->dgstSize);
+                                         "size=%lu", XMLSEC_UL_BAD_CAST(ctx->dgstSize));
                     return(-1);
                 }
             }

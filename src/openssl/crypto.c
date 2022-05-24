@@ -34,6 +34,7 @@
 #include <xmlsec/openssl/x509.h>
 
 #include "openssl_compat.h"
+#include "../cast_helpers.h"
 
 static int              xmlSecOpenSSLErrorsInit                 (void);
 static void             xmlSecOpenSSLErrorsShutdown             (void);
@@ -431,7 +432,8 @@ xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
 
     ret = xmlSecBufferSetSize(buffer, size);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=%d", size);
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
+                             "size=%lu", XMLSEC_UL_BAD_CAST(size));
         return(-1);
     }
 
@@ -444,7 +446,7 @@ xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
 #endif /* XMLSEC_OPENSSL_API_300 */
     if(ret != 1) {
         xmlSecOpenSSLError2("RAND_bytes", NULL,
-                            "size=%lu", (unsigned long)size);
+                            "size=%lu", XMLSEC_UL_BAD_CAST(size));
         return(-1);
     }
     return(0);
@@ -639,7 +641,7 @@ xmlSecOpenSSLCreateMemBio(void) {
 /**
  * xmlSecOpenSSLCreateMemBufBio:
  * @buf:      the data
- * @len:      the data len
+ * @bufSize:  the data size
  *
  * Creates a read-only memory BIO using xmlSecOpenSSLGetLibCtx() for
  * OpenSSL 3.0 containing @len bytes of data from @buf.
@@ -647,16 +649,19 @@ xmlSecOpenSSLCreateMemBio(void) {
  * Returns: the pointer to BIO object or NULL if an error occurs/
  */
 BIO*
-xmlSecOpenSSLCreateMemBufBio(const xmlSecByte *buf, xmlSecSize len) {
+xmlSecOpenSSLCreateMemBufBio(const xmlSecByte *buf, xmlSecSize bufSize) {
     BIO* bio = NULL;
+    int bufLen;
+
     xmlSecAssert2(buf != NULL, NULL);
-    xmlSecAssert2(len >= 0, NULL);
+
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(bufSize, bufLen, return(NULL), NULL);
 
 #ifndef XMLSEC_OPENSSL_API_300
-    bio = BIO_new_mem_buf((const void*)buf, len);
+    bio = BIO_new_mem_buf((const void*)buf, bufLen);
     if(bio == NULL) {
         xmlSecOpenSSLError2("BIO_new_mem_buf", NULL,
-                            "dataSize=%lu", (unsigned long)len);
+                            "dataSize=%d", bufLen);
         return(NULL);
     }
 #else /* XMLSEC_OPENSSL_API_300 */
@@ -665,9 +670,9 @@ xmlSecOpenSSLCreateMemBufBio(const xmlSecByte *buf, xmlSecSize len) {
         xmlSecOpenSSLError("BIO_new_ex(BIO_s_mem())", NULL);
         return(NULL);
     }
-    if(BIO_write(bio, (const void*)buf, len) != len) {
+    if(BIO_write(bio, (const void*)buf, bufLen) != bufLen) {
         xmlSecOpenSSLError2("BIO_write", NULL,
-                            "dataSize=%lu", (unsigned long)len);
+                            "dataSize=%d", bufLen);
         BIO_free_all(bio);
         return(NULL);
     }

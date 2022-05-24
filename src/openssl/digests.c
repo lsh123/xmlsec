@@ -410,7 +410,7 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
             if(ret != 1) {
                 xmlSecOpenSSLError2("EVP_DigestUpdate",
                                     xmlSecTransformGetName(transform),
-                                    "size=%lu", (unsigned long)inSize);
+                                    "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
                 return(-1);
             }
 
@@ -418,7 +418,7 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecBufferRemoveHead",
                                      xmlSecTransformGetName(transform),
-                                     "size=%d", inSize);
+                                     "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
                 return(-1);
             }
         }
@@ -442,7 +442,7 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
                 if(ret < 0) {
                     xmlSecInternalError2("xmlSecBufferAppend",
                                          xmlSecTransformGetName(transform),
-                                         "size=%d", ctx->dgstSize);
+                                         "size=%lu", XMLSEC_UL_BAD_CAST(ctx->dgstSize));
                     return(-1);
                 }
             }

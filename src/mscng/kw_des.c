@@ -269,8 +269,8 @@ xmlSecMSCngKWDes3BlockEncrypt(void * context, const xmlSecByte * iv,
     blobHeaderLen = sizeof(BCRYPT_KEY_DATA_BLOB_HEADER) + xmlSecBufferGetSize(&ctx->keyBuffer);
     ret = xmlSecBufferSetSize(&blob, blobHeaderLen);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=%d",
-            blobHeaderLen);
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=%lu",
+            XMLSEC_UL_BAD_CAST(blobHeaderLen));
         goto done;
     }
 
@@ -323,8 +323,8 @@ xmlSecMSCngKWDes3BlockEncrypt(void * context, const xmlSecByte * iv,
     /* caller handles iv manually, so let CNG work on a copy */
     ret = xmlSecBufferInitialize(&ivCopy, ivSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferInitialize", NULL, "size=%d",
-            ivSize);
+        xmlSecInternalError2("xmlSecBufferInitialize", NULL, "size=%lu",
+            XMLSEC_UL_BAD_CAST(ivSize));
         goto done;
     }
 
@@ -434,8 +434,8 @@ xmlSecMSCngKWDes3BlockDecrypt(void * context, const xmlSecByte * iv,
     blobHeaderLen = sizeof(BCRYPT_KEY_DATA_BLOB_HEADER) + xmlSecBufferGetSize(&ctx->keyBuffer);
     ret = xmlSecBufferSetSize(&blob, blobHeaderLen);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=%d",
-            blobHeaderLen);
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=%lu",
+            XMLSEC_UL_BAD_CAST(blobHeaderLen));
         goto done;
     }
 
@@ -636,7 +636,7 @@ xmlSecMSCngKWDes3SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         ctx->keySize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetData",
-            xmlSecTransformGetName(transform), "size=%d", ctx->keySize);
+            xmlSecTransformGetName(transform), "size=%lu", XMLSEC_UL_BAD_CAST(ctx->keySize));
         return(-1);
     }
 
@@ -694,7 +694,7 @@ xmlSecMSCngKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransform
         ret = xmlSecBufferSetMaxSize(out, outSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetMaxSize",
-                xmlSecTransformGetName(transform), "size=%d", outSize);
+                xmlSecTransformGetName(transform), "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
             return(-1);
         }
 
@@ -703,9 +703,9 @@ xmlSecMSCngKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransform
                 xmlSecBufferGetData(in), inSize, xmlSecBufferGetData(out),
                 outSize);
             if(ret < 0) {
-                xmlSecInternalError4("xmlSecKWDes3Encode",
-                    xmlSecTransformGetName(transform), "key=%d,in=%d,out=%d",
-                    keySize, inSize, outSize);
+                xmlSecInternalError4("xmlSecKWDes3Encode", xmlSecTransformGetName(transform), 
+                    "keySize=%lu;inSize=%lu;outSize=%lu",
+                    XMLSEC_UL_BAD_CAST(keySize), XMLSEC_UL_BAD_CAST(inSize), XMLSEC_UL_BAD_CAST(outSize));
                 return(-1);
             }
 
@@ -716,7 +716,8 @@ xmlSecMSCngKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransform
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
                 xmlSecInternalError4("xmlSecKWDes3Decode", xmlSecTransformGetName(transform),
-                     "key=%d,in=%d,out=%d", keySize, inSize, outSize);
+                    "keySize=%lu;inSize=%lu;outSize=%lu",
+                    XMLSEC_UL_BAD_CAST(keySize), XMLSEC_UL_BAD_CAST(inSize), XMLSEC_UL_BAD_CAST(outSize));
                 return(-1);
             }
             outSize = ret;
@@ -724,15 +725,15 @@ xmlSecMSCngKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransform
 
         ret = xmlSecBufferSetSize(out, outSize);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferSetSize",
-                 xmlSecTransformGetName(transform), "size=%d", outSize);
+            xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform),
+                    "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
             return(-1);
         }
 
         ret = xmlSecBufferRemoveHead(in, inSize);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferRemoveHead",
-                 xmlSecTransformGetName(transform), "size=%d", inSize);
+            xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform),
+                    "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
             return(-1);
         }
 

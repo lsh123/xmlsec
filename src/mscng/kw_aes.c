@@ -130,8 +130,8 @@ xmlSecMSCngKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
     blobHeaderLen = sizeof(BCRYPT_KEY_DATA_BLOB_HEADER) + xmlSecBufferGetSize(&ctx->keyBuffer);
     ret = xmlSecBufferSetSize(&blob, blobHeaderLen);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=%d",
-            blobHeaderLen);
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=%lu",
+            XMLSEC_UL_BAD_CAST(blobHeaderLen));
         goto done;
     }
 
@@ -260,8 +260,8 @@ xmlSecMSCngKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
     blobHeaderLen = sizeof(BCRYPT_KEY_DATA_BLOB_HEADER) + xmlSecBufferGetSize(&ctx->keyBuffer);
     ret = xmlSecBufferSetSize(&blob, blobHeaderLen);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=%d",
-            blobHeaderLen);
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=%lu",
+            XMLSEC_UL_BAD_CAST(blobHeaderLen));
         goto done;
     }
 
@@ -466,7 +466,7 @@ xmlSecMSCngKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         ctx->keySize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetData",
-            xmlSecTransformGetName(transform), "size=%d", ctx->keySize);
+            xmlSecTransformGetName(transform), "size=%lu", XMLSEC_UL_BAD_CAST(ctx->keySize));
         return(-1);
     }
 
@@ -520,7 +520,7 @@ xmlSecMSCngKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
         ret = xmlSecBufferSetMaxSize(out, outSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetMaxSize",
-                xmlSecTransformGetName(transform), "size=%d", outSize);
+                xmlSecTransformGetName(transform), "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
             return(-1);
         }
 
@@ -550,14 +550,14 @@ xmlSecMSCngKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
         ret = xmlSecBufferSetSize(out, outSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetSize",
-                xmlSecTransformGetName(transform), "size=%d", outSize);
+                xmlSecTransformGetName(transform), "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
             return(-1);
         }
 
         ret = xmlSecBufferRemoveHead(in, inSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferRemoveHead",
-                xmlSecTransformGetName(transform), "size=%d", inSize);
+                xmlSecTransformGetName(transform), "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
             return(-1);
         }
 

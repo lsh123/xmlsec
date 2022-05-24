@@ -460,7 +460,7 @@ xmlSecKeyReqDebugDump(xmlSecKeyReqPtr keyReq, FILE* output) {
                 BAD_CAST "NULL");
     fprintf(output, "==== keyType: 0x%08x\n", keyReq->keyType);
     fprintf(output, "==== keyUsage: 0x%08x\n", keyReq->keyUsage);
-    fprintf(output, "==== keyBitsSize: %d\n", keyReq->keyBitsSize);
+    fprintf(output, "==== keyBitsSize: %lu\n", XMLSEC_UL_BAD_CAST(keyReq->keyBitsSize));
     xmlSecPtrListDebugDump(&(keyReq->keyUseWithList), output);
 }
 
@@ -484,7 +484,7 @@ xmlSecKeyReqDebugXmlDump(xmlSecKeyReqPtr keyReq, FILE* output) {
 
     fprintf(output, "<KeyType>0x%08x</KeyType>\n", keyReq->keyType);
     fprintf(output, "<KeyUsage>0x%08x</KeyUsage>\n", keyReq->keyUsage);
-    fprintf(output, "<KeyBitsSize>%d</KeyBitsSize>\n", keyReq->keyBitsSize);
+    fprintf(output, "<KeyBitsSize>%lu</KeyBitsSize>\n", XMLSEC_UL_BAD_CAST(keyReq->keyBitsSize));
     xmlSecPtrListDebugXmlDump(&(keyReq->keyUseWithList), output);
     fprintf(output, "</KeyReq>\n");
 }
@@ -913,10 +913,10 @@ xmlSecKeyDebugDump(xmlSecKeyPtr key, FILE *output) {
     if(key->name != NULL) {
         fprintf(output, "=== key name: %s\n", key->name);
     }
-    fprintf(output, "=== key usage: %d\n", key->usage);
+    fprintf(output, "=== key usage: %lu\n", XMLSEC_UL_BAD_CAST(key->usage));
     if(key->notValidBefore < key->notValidAfter) {
-        fprintf(output, "=== key not valid before: %ld\n", (unsigned long)key->notValidBefore);
-        fprintf(output, "=== key not valid after: %ld\n", (unsigned long)key->notValidAfter);
+        fprintf(output, "=== key not valid before: %lu\n", XMLSEC_UL_BAD_CAST(key->notValidBefore));
+        fprintf(output, "=== key not valid after: %lu\n", XMLSEC_UL_BAD_CAST(key->notValidAfter));
     }
     if(key->value != NULL) {
         xmlSecKeyDataDebugDump(key->value, output);
@@ -961,9 +961,9 @@ xmlSecKeyDebugXmlDump(xmlSecKeyPtr key, FILE *output) {
     fprintf(output, "</KeyName>\n");
 
     if(key->notValidBefore < key->notValidAfter) {
-        fprintf(output, "<KeyValidity notValidBefore=\"%ld\" notValidAfter=\"%ld\"/>\n",
-                (unsigned long)key->notValidBefore,
-                (unsigned long)key->notValidAfter);
+        fprintf(output, "<KeyValidity notValidBefore=\"%lu\" notValidAfter=\"%lu\"/>\n",
+                XMLSEC_UL_BAD_CAST(key->notValidBefore),
+                XMLSEC_UL_BAD_CAST(key->notValidAfter));
     }
 
     if(key->value != NULL) {
@@ -1005,7 +1005,7 @@ xmlSecKeyGenerate(xmlSecKeyDataId dataId, xmlSecSize sizeBits, xmlSecKeyDataType
     if(ret < 0) {
         xmlSecInternalError3("xmlSecKeyDataGenerate",
                              xmlSecKeyDataKlassGetName(dataId),
-                             "size=%d;type=%d", sizeBits, type);
+                             "size=%lu;type=%lu", XMLSEC_UL_BAD_CAST(sizeBits), XMLSEC_UL_BAD_CAST(type));
         xmlSecKeyDataDestroy(data);
         return(NULL);
     }

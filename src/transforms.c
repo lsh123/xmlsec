@@ -939,7 +939,7 @@ xmlSecTransformCtxBinaryExecute(xmlSecTransformCtxPtr ctx,
     ret = xmlSecTransformPushBin(ctx->first, data, dataSize, 1, ctx);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecTransformPushBin", NULL,
-                             "dataSize=%d", dataSize);
+                             "dataSize=%lu", XMLSEC_UL_BAD_CAST(dataSize));
         return(-1);
     }
 
@@ -1120,7 +1120,7 @@ xmlSecTransformCtxDebugDump(xmlSecTransformCtxPtr ctx, FILE* output) {
     xmlSecAssert(ctx != NULL);
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "== TRANSFORMS CTX (status=%d)\n", ctx->status);
+    fprintf(output, "== TRANSFORMS CTX (status=%lu)\n", XMLSEC_UL_BAD_CAST(ctx->status));
 
     fprintf(output, "== flags: 0x%08x\n", ctx->flags);
     fprintf(output, "== flags2: 0x%08x\n", ctx->flags2);
@@ -1154,7 +1154,7 @@ xmlSecTransformCtxDebugXmlDump(xmlSecTransformCtxPtr ctx, FILE* output) {
     xmlSecAssert(ctx != NULL);
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<TransformCtx status=\"%d\">\n", ctx->status);
+    fprintf(output, "<TransformCtx status=\"%lu\">\n", XMLSEC_UL_BAD_CAST(ctx->status));
 
     fprintf(output, "<Flags>%08x</Flags>\n", ctx->flags);
     fprintf(output, "<Flags2>%08x</Flags2>\n", ctx->flags2);
@@ -1912,7 +1912,7 @@ xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, const xmlSecByte* da
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecBufferAppend",
                                      xmlSecTransformGetName(transform),
-                                     "size=%d", chunkSize);
+                                     "size=%lu", XMLSEC_UL_BAD_CAST(chunkSize));
                 return(-1);
             }
 
@@ -1926,7 +1926,7 @@ xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, const xmlSecByte* da
         if(ret < 0) {
             xmlSecInternalError2("xmlSecTransformExecute",
                                  xmlSecTransformGetName(transform),
-                                 "final=%d", final);
+                                 "final=%lu", XMLSEC_UL_BAD_CAST(final));
             return(-1);
         }
 
@@ -1951,7 +1951,7 @@ xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, const xmlSecByte* da
             if(ret < 0) {
                 xmlSecInternalError3("xmlSecTransformPushBin",
                                      xmlSecTransformGetName(transform->next),
-                                     "final=%d;outSize=%d", final, outSize);
+                                     "final=%lu;outSize=%lu", XMLSEC_UL_BAD_CAST(final), XMLSEC_UL_BAD_CAST(outSize));
                 return(-1);
             }
         }
@@ -1962,7 +1962,7 @@ xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, const xmlSecByte* da
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecBufferRemoveHead",
                                      xmlSecTransformGetName(transform),
-                                     "size=%d", outSize);
+                                     "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
                 return(-1);
             }
         }
@@ -2011,7 +2011,7 @@ xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecBufferSetMaxSize",
                                      xmlSecTransformGetName(transform),
-                                     "size=%d", inSize + chunkSize);
+                                     "size=%lu", XMLSEC_UL_BAD_CAST(inSize + chunkSize));
                 return(-1);
             }
 
@@ -2031,7 +2031,7 @@ xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
                 if(ret < 0) {
                     xmlSecInternalError2("xmlSecBufferSetSize",
                                          xmlSecTransformGetName(transform),
-                                         "size=%d", inSize + chunkSize);
+                                         "size=%lu", XMLSEC_UL_BAD_CAST(inSize + chunkSize));
                     return(-1);
                 }
                 final = 0; /* the previous transform returned some data..*/
@@ -2070,7 +2070,7 @@ xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferRemoveHead",
                                  xmlSecTransformGetName(transform),
-                                 "size=%d", outSize);
+                                 "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
             return(-1);
         }
     }
@@ -2397,8 +2397,8 @@ xmlSecTransformCreateOutputBuffer(xmlSecTransformPtr transform, xmlSecTransformC
     type = xmlSecTransformDefaultGetDataType(transform, xmlSecTransformModePush, transformCtx);
     if((type & xmlSecTransformDataTypeBin) == 0) {
         xmlSecInvalidTransfromError2(transform,
-                            "push binary data not supported, type=\"%d\"",
-                            (int)type);
+                            "push binary data not supported, type=\"%lu\"",
+                            XMLSEC_UL_BAD_CAST(type));
         return(NULL);
     }
 
@@ -2444,8 +2444,8 @@ xmlSecTransformCreateInputBuffer(xmlSecTransformPtr transform, xmlSecTransformCt
     type = xmlSecTransformDefaultGetDataType(transform, xmlSecTransformModePop, transformCtx);
     if((type & xmlSecTransformDataTypeBin) == 0) {
         xmlSecInvalidTransfromError2(transform,
-                            "pop binary data not supported, type=\"%d\"",
-                            (int)type);
+                            "pop binary data not supported, type=\"%lu\"",
+                            XMLSEC_UL_BAD_CAST(type));
         return(NULL);
     }
 

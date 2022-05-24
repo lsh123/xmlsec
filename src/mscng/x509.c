@@ -992,8 +992,8 @@ xmlSecMSCngASN1IntegerWrite(xmlNodePtr node, PCRYPT_INTEGER_BLOB num) {
 
     ret = xmlSecBnInitialize(&bn, num->cbData + 1);
     if(ret < 0) {
-	xmlSecInternalError2("xmlSecBnInitialize", NULL, "size=%ld",
-	    num->cbData + 1);
+	xmlSecInternalError2("xmlSecBnInitialize", NULL,
+        "size=%lu", XMLSEC_UL_BAD_CAST(num->cbData + 1));
         return(-1);
     }
 

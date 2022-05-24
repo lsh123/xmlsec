@@ -44,6 +44,8 @@
 #include <openssl/x509_vfy.h>
 #include <openssl/x509v3.h>
 
+#include "../cast_helpers.h"
+
 #ifdef OPENSSL_IS_BORINGSSL
 typedef size_t x509_size_t;
 #else /* OPENSSL_IS_BORINGSSL */
@@ -1113,48 +1115,72 @@ xmlSecOpenSSLX509NameRead(xmlSecByte *str, int len) {
 
 static int
 xmlSecOpenSSLX509NameStringRead(xmlSecByte **str, int *strLen,
-                        xmlSecByte *res, int resLen,
+                        xmlSecByte *out, int outLen,
                         xmlSecByte delim, int ingoreTrailingSpaces) {
-    xmlSecByte *p, *q, *nonSpace;
+    xmlSecByte *p, *q;
+    xmlSecByte ch;
+    int plen, qlen, nonSpaceLen;
 
     xmlSecAssert2(str != NULL, -1);
     xmlSecAssert2(strLen != NULL, -1);
-    xmlSecAssert2(res != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
 
     p = (*str);
-    nonSpace = q = res;
-    while(((p - (*str)) < (*strLen)) && ((*p) != delim) && ((q - res) < resLen)) {
+    q = out;
+    plen = qlen = nonSpaceLen = 0;
+    while((plen < (*strLen)) && ((*p) != delim) && (qlen < outLen)) {
         if((*p) != '\\') {
             if(ingoreTrailingSpaces && !isspace(*p)) {
-                nonSpace = q;
+                nonSpaceLen = qlen + 1;
             }
             *(q++) = *(p++);
-        } else {
-            ++p;
-            nonSpace = q;
-            if(xmlSecIsHex((*p))) {
-                if((p - (*str) + 1) >= (*strLen)) {
-                    xmlSecInvalidDataError("two hex digits expected", NULL);
-                    return(-1);
-                }
-                *(q++) = xmlSecGetHex(p[0]) * 16 + xmlSecGetHex(p[1]);
-                p += 2;
-            } else {
-                if(((++p) - (*str)) >= (*strLen)) {
-                    xmlSecInvalidDataError("escaped symbol missed", NULL);
-                    return(-1);
-                }
-                *(q++) = *(p++);
-            }
+            ++plen;
+            ++qlen;
+            continue;
         }
+ 
+        /* handle escale character */
+        ++p;
+        ++plen;
+        if(plen >= (*strLen)) {
+            xmlSecInvalidDataError("string ends with escape symbol", NULL);
+            return(-1);
+        }
+
+        /* if it is not hex, then just remove the escape symbol in the output */
+        if(!xmlSecIsHex((*p))) {
+            if(ingoreTrailingSpaces && !isspace(*p)) {
+                nonSpaceLen = qlen + 1;
+            }
+            *(q++) = *(p++);
+            ++plen;
+            ++qlen;
+            continue;
+        }
+
+        /* true escape: \<hex><hex> */
+        if(((plen + 1) >= (*strLen)) || !xmlSecIsHex(*(p + 1))) {
+            xmlSecInvalidDataError("two hex digits expected after escape symbol", NULL);
+            return(-1);
+        }
+        ch = xmlSecGetHex(p[0]) * 16 + xmlSecGetHex(p[1]);
+        if(ingoreTrailingSpaces && !isspace(ch)) {
+            nonSpaceLen = qlen + 1;
+        }
+
+        *(q++) = ch;
+        p += 2;
+        plen += 2;
+        ++qlen;
     }
-    if(((p - (*str)) < (*strLen)) && ((*p) != delim)) {
-        xmlSecInvalidSizeOtherError("buffer is too small", NULL);
+    if(qlen >= outLen) {
+        xmlSecInvalidSizeOtherError("output buffer is too small", NULL);
         return(-1);
     }
-    (*strLen) -= (int)(p - (*str));
+
     (*str) = p;
-    return(int)((ingoreTrailingSpaces) ? nonSpace - res + 1 : q - res);
+    (*strLen) -= plen; 
+    return((ingoreTrailingSpaces) ? nonSpaceLen : qlen);
 }
 
 /*

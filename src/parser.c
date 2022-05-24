@@ -30,6 +30,8 @@
 #include <xmlsec/parser.h>
 #include <xmlsec/errors.h>
 
+#include "cast_helpers.h"
+
 /**************************************************************************
  *
  * Internal parser
@@ -145,6 +147,7 @@ static int
 xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
                     xmlSecSize dataSize, int final, xmlSecTransformCtxPtr transformCtx) {
     xmlSecParserCtxPtr ctx;
+    int dataLen;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXmlParserId), -1);
@@ -176,11 +179,12 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
 
     /* push data to the input buffer */
     if((data != NULL) && (dataSize > 0)) {
-        ret = xmlParseChunk(ctx->parserCtx, (const char*)data, dataSize, 0);
+        XMLSEC_SAFE_CAST_SIZE_TO_INT(dataSize, dataLen, return(-1), xmlSecTransformGetName(transform));
+        ret = xmlParseChunk(ctx->parserCtx, (const char*)data, dataLen, 0);
         if(ret != 0) {
             xmlSecXmlParserError2("xmlParseChunk", ctx->parserCtx,
                                   xmlSecTransformGetName(transform),
-                                  "size=%lu", XMLSEC_UL_BAD_CAST(dataSize));
+                                  "size=%lu", XMLSEC_UL_BAD_CAST(dataLen));
             return(-1);
         }
     }
@@ -444,6 +448,7 @@ xmlSecParseMemoryExt(const xmlSecByte *prefix, xmlSecSize prefixSize,
                      const xmlSecByte *postfix, xmlSecSize postfixSize) {
     xmlParserCtxtPtr ctxt = NULL;
     xmlDocPtr doc = NULL;
+    int prefixLen, bufferLen, postfixLen;
     int ret;
 
     /* create context */
@@ -456,10 +461,11 @@ xmlSecParseMemoryExt(const xmlSecByte *prefix, xmlSecSize prefixSize,
 
     /* prefix */
     if((prefix != NULL) && (prefixSize > 0)) {
-        ret = xmlParseChunk(ctxt, (const char*)prefix, prefixSize, 0);
+        XMLSEC_SAFE_CAST_SIZE_TO_INT(prefixSize, prefixLen, goto done, NULL);
+        ret = xmlParseChunk(ctxt, (const char*)prefix, prefixLen, 0);
         if(ret != 0) {
             xmlSecXmlParserError2("xmlParseChunk", ctxt, NULL,
-                                  "chunkSize=%lu", XMLSEC_UL_BAD_CAST(prefixSize));
+                                  "chunkSize=%lu", XMLSEC_UL_BAD_CAST(prefixLen));
 
             goto done;
         }
@@ -467,10 +473,11 @@ xmlSecParseMemoryExt(const xmlSecByte *prefix, xmlSecSize prefixSize,
 
     /* buffer */
     if((buffer != NULL) && (bufferSize > 0)) {
-        ret = xmlParseChunk(ctxt, (const char*)buffer, bufferSize, 0);
+        XMLSEC_SAFE_CAST_SIZE_TO_INT(bufferSize, bufferLen, goto done, NULL);
+        ret = xmlParseChunk(ctxt, (const char*)buffer, bufferLen, 0);
         if(ret != 0) {
             xmlSecXmlParserError2("xmlParseChunk", ctxt, NULL,
-                                  "chunkSize=%lu", XMLSEC_UL_BAD_CAST(bufferSize));
+                                  "chunkSize=%lu", XMLSEC_UL_BAD_CAST(bufferLen));
 
             goto done;
         }
@@ -478,10 +485,11 @@ xmlSecParseMemoryExt(const xmlSecByte *prefix, xmlSecSize prefixSize,
 
     /* postfix */
     if((postfix != NULL) && (postfixSize > 0)) {
-        ret = xmlParseChunk(ctxt, (const char*)postfix, postfixSize, 0);
+        XMLSEC_SAFE_CAST_SIZE_TO_INT(postfixSize, postfixLen, goto done, NULL);
+        ret = xmlParseChunk(ctxt, (const char*)postfix, postfixLen, 0);
         if(ret != 0) {
             xmlSecXmlParserError2("xmlParseChunk", ctxt, NULL,
-                                  "chunkSize=%lu", XMLSEC_UL_BAD_CAST(postfixSize));
+                                  "chunkSize=%lu", XMLSEC_UL_BAD_CAST(postfixLen));
 
             goto done;
         }
@@ -523,11 +531,13 @@ xmlDocPtr
 xmlSecParseMemory(const xmlSecByte *buffer, xmlSecSize size, int recovery) {
     xmlParserCtxtPtr ctxt;
     xmlDocPtr res = NULL;
+    int len;
     int ret;
 
     xmlSecAssert2(buffer != NULL, NULL);
 
-    ctxt = xmlCreateMemoryParserCtxt((char*)buffer, size);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(size, len, return(NULL), NULL);
+    ctxt = xmlCreateMemoryParserCtxt((char*)buffer, len);
     if (ctxt == NULL) {
         xmlSecXmlError("xmlCreateMemoryParserCtxt", NULL);
         return(NULL);

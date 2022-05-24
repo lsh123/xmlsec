@@ -32,6 +32,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
 
+#include "cast_helpers.h"
 
 /**************************************************************************
  *
@@ -491,7 +492,8 @@ xmlSecTransformXPathNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
     xmlSecXPathDataPtr data;
     xmlNodePtr cur;
     xmlChar* tmp;
-    int tmpSize;
+    xmlSecSize tmpSize;
+    int tmpLen;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXPathId), -1);
@@ -537,14 +539,16 @@ xmlSecTransformXPathNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
 
     /* create full XPath expression */
     xmlSecAssert2(data->expr != NULL, -1);
-    tmpSize = xmlStrlen(data->expr) + xmlStrlen(BAD_CAST xpathPattern) + 1;
+    tmpLen = xmlStrlen(data->expr) + xmlStrlen(BAD_CAST xpathPattern) + 1;
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(tmpLen, tmpSize, return(-1), NULL);
+
     tmp = (xmlChar*) xmlMalloc(sizeof(xmlChar) * tmpSize);
     if(tmp == NULL) {
         xmlSecMallocError(sizeof(xmlChar) * tmpSize,
                           xmlSecTransformGetName(transform));
         return(-1);
     }
-    ret = xmlStrPrintf(tmp, tmpSize, xpathPattern, (char*)data->expr);
+    ret = xmlStrPrintf(tmp, tmpLen, xpathPattern, (char*)data->expr);
     if(ret < 0) {
        xmlSecXmlError("xmlStrPrintf", xmlSecTransformGetName(transform));
        xmlFree(tmp);

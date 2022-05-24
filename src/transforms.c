@@ -70,6 +70,7 @@
 #include <xmlsec/errors.h>
 
 #include "xslt.h"
+#include "cast_helpers.h"
 
 /**************************************************************************
  *
@@ -763,16 +764,18 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
     } else {
         static const char tmpl[] = "xpointer(id(\'%s\'))";
         xmlSecSize size;
+        int len;
 
         /* we need to add "xpointer(id('..')) because otherwise we have
          * problems with numeric ("111" and so on) and other "strange" ids */
-        size = xmlStrlen(BAD_CAST tmpl) + xmlStrlen(xptr) + 2;
+        len = xmlStrlen(BAD_CAST tmpl) + xmlStrlen(xptr) + 2;
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(-1), NULL);
         buf = (xmlChar*)xmlMalloc(size * sizeof(xmlChar));
         if(buf == NULL) {
             xmlSecMallocError(size * sizeof(xmlChar), NULL);
             return(-1);
         }
-        ret = xmlStrPrintf(buf, size, tmpl, xptr + 1);
+        ret = xmlStrPrintf(buf, len, tmpl, xptr + 1);
         if(ret < 0) {
             xmlSecXmlError("xmlStrPrintf", NULL);
              xmlFree(buf);
@@ -2503,6 +2506,7 @@ static int
 xmlSecTransformIOBufferRead(xmlSecTransformIOBufferPtr buffer,
                             xmlSecByte *buf, xmlSecSize size) {
     int ret;
+    int res;
 
     xmlSecAssert2(buffer != NULL, -1);
     xmlSecAssert2(buffer->mode == xmlSecTransformIOBufferModeRead, -1);
@@ -2516,13 +2520,15 @@ xmlSecTransformIOBufferRead(xmlSecTransformIOBufferPtr buffer,
                             xmlSecTransformGetName(buffer->transform));
         return(-1);
     }
-    return(size);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(size, res, return(-1), NULL);
+    return(res);
 }
 
 static int
 xmlSecTransformIOBufferWrite(xmlSecTransformIOBufferPtr buffer,
                             const xmlSecByte *buf, xmlSecSize size) {
     int ret;
+    int res;
 
     xmlSecAssert2(buffer != NULL, -1);
     xmlSecAssert2(buffer->mode == xmlSecTransformIOBufferModeWrite, -1);
@@ -2536,7 +2542,8 @@ xmlSecTransformIOBufferWrite(xmlSecTransformIOBufferPtr buffer,
                             xmlSecTransformGetName(buffer->transform));
         return(-1);
     }
-    return(size);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(size, res, return(-1), NULL);
+    return(res);
 }
 
 static int

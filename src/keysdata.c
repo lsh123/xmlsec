@@ -30,6 +30,8 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/errors.h>
 
+#include "cast_helpers.h"
+
 /**************************************************************************
  *
  * Global xmlSecKeyDataIds list functions
@@ -557,10 +559,12 @@ xmlSecKeyDataBinaryValueFinalize(xmlSecKeyDataPtr data) {
 int
 xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                                 xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlChar* str;
-    xmlSecSize len;
-    xmlSecKeyDataPtr data;
+    xmlChar* str = NULL;
+    xmlSecKeyDataPtr data = NULL;
+    xmlSecSize strSize;
+    int strLen;
     int ret;
+    int res = -1;
 
     xmlSecAssert2(id != xmlSecKeyDataIdUnknown, -1);
     xmlSecAssert2(key != NULL, -1);
@@ -570,18 +574,23 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     str = xmlNodeGetContent(node);
     if(str == NULL) {
         xmlSecInvalidNodeContentError(node, xmlSecKeyDataKlassGetName(id), "empty");
-        return(-1);
+        goto done;
     }
 
-    /* usual trick: decode into the same buffer */
-    ret = xmlSecBase64Decode(str, (xmlSecByte*)str, xmlStrlen(str));
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecBase64Decode",
-                            xmlSecKeyDataKlassGetName(id));
-        xmlFree(str);
-        return(-1);
+    strLen = xmlStrlen(str);
+    if(strLen < 0) {
+        xmlSecInternalError("xmlStrlen", xmlSecKeyDataKlassGetName(id));
+        goto done;
     }
-    len = ret;
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(strLen, strSize, goto done, xmlSecKeyDataKlassGetName(id));
+
+    /* usual trick: decode into the same buffer */
+    ret = xmlSecBase64Decode(str, (xmlSecByte*)str, strSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBase64Decode", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, strSize, goto done, xmlSecKeyDataKlassGetName(id));
 
     /* check do we have a key already */
     data = xmlSecKeyGetValue(key);
@@ -593,31 +602,28 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                               xmlSecKeyDataGetName(data),
                               "id=%s",
                               xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)));
-            xmlFree(str);
-            return(-1);
+            goto done;
         }
 
         buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
-        if((buffer != NULL) && (xmlSecBufferGetSize(buffer) != len)) {
+        if((buffer != NULL) && (xmlSecBufferGetSize(buffer) != strSize)) {
             xmlSecOtherError3(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
                               xmlSecKeyDataGetName(data),
                               "cur-data-size=%lu;new-data-size=%lu",
                               XMLSEC_UL_BAD_CAST(xmlSecBufferGetSize(buffer)),
-                              XMLSEC_UL_BAD_CAST(len));
-            xmlFree(str);
-            return(-1);
+                              XMLSEC_UL_BAD_CAST(strSize));
+            goto done;
         }
-        if((buffer != NULL) && (len > 0) && (memcmp(xmlSecBufferGetData(buffer), str, len) != 0)) {
+        if((buffer != NULL) && (strSize > 0) && (memcmp(xmlSecBufferGetData(buffer), str, strSize) != 0)) {
             xmlSecOtherError(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
                              xmlSecKeyDataGetName(data),
                              "key already has a different value");
-            xmlFree(str);
-            return(-1);
+            goto done;
         }
         if(buffer != NULL) {
             /* we already have exactly the same key */
-            xmlFree(str);
-            return(0);
+            res = 0;
+            goto done;
         }
 
         /* we have binary key value with empty buffer */
@@ -626,39 +632,40 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     data = xmlSecKeyDataCreate(id);
     if(data == NULL ) {
-        xmlSecInternalError("xmlSecKeyDataCreate",
-                            xmlSecKeyDataKlassGetName(id));
-        xmlFree(str);
-        return(-1);
+        xmlSecInternalError("xmlSecKeyDataCreate", xmlSecKeyDataKlassGetName(id));
+        goto done;
     }
 
-    ret = xmlSecKeyDataBinaryValueSetBuffer(data, (xmlSecByte*)str, len);
+    ret = xmlSecKeyDataBinaryValueSetBuffer(data, (xmlSecByte*)str, strSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecKeyDataBinaryValueSetBuffer",
-                             xmlSecKeyDataKlassGetName(id),
-                             "size=%lu", XMLSEC_UL_BAD_CAST(len));
-        xmlSecKeyDataDestroy(data);
-        xmlFree(str);
-        return(-1);
+        xmlSecInternalError2("xmlSecKeyDataBinaryValueSetBuffer", xmlSecKeyDataKlassGetName(id),
+                             "size=%lu", XMLSEC_UL_BAD_CAST(strSize));
+        goto done;
     }
-    xmlFree(str);
 
     if(xmlSecKeyReqMatchKeyValue(&(keyInfoCtx->keyReq), data) != 1) {
-        xmlSecInternalError("xmlSecKeyReqMatchKeyValue",
-                            xmlSecKeyDataKlassGetName(id));
-        xmlSecKeyDataDestroy(data);
-        return(0);
+        xmlSecInternalError("xmlSecKeyReqMatchKeyValue", xmlSecKeyDataKlassGetName(id));
+        goto done;
     }
 
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeySetValue",
-                            xmlSecKeyDataKlassGetName(id));
-        xmlSecKeyDataDestroy(data);
-        return(-1);
+        xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyDataKlassGetName(id));
+        goto done;
     }
+    data = NULL; /* data is owned by key */
+ 
+    /* success */
+    res = 0;
 
-    return(0);
+done:
+    if(data != NULL) {
+        xmlSecKeyDataDestroy(data);
+    }
+    if(str != NULL) {
+        xmlFree(str);
+    }
+    return(res);
 }
 
 /**

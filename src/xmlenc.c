@@ -36,6 +36,8 @@
 #include <xmlsec/xmlenc.h>
 #include <xmlsec/errors.h>
 
+#include "cast_helpers.h"
+
 static int      xmlSecEncCtxEncDataNodeRead             (xmlSecEncCtxPtr encCtx,
                                                          xmlNodePtr node);
 static int      xmlSecEncCtxEncDataNodeWrite            (xmlSecEncCtxPtr encCtx);
@@ -581,7 +583,9 @@ xmlSecEncCtxDecrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
  */
 xmlSecBufferPtr
 xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
+    xmlChar* data = NULL;
     int ret;
+    xmlSecBufferPtr res = NULL;
 
     xmlSecAssert2(encCtx != NULL, NULL);
     xmlSecAssert2(encCtx->result == NULL, NULL);
@@ -594,44 +598,48 @@ xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     ret = xmlSecEncCtxEncDataNodeRead(encCtx, node);
     if(ret < 0) {
         xmlSecInternalError("xmlSecEncCtxEncDataNodeRead", NULL);
-        return(NULL);
+        goto done;
     }
 
     /* decrypt the data */
     if(encCtx->cipherValueNode != NULL) {
-        xmlChar* data = NULL;
         xmlSecSize dataSize = 0;
+        int dataLen;
 
         data = xmlNodeGetContent(encCtx->cipherValueNode);
         if(data == NULL) {
             xmlSecInvalidNodeContentError(encCtx->cipherValueNode, NULL, "empty");
-            return(NULL);
+            goto done;
         }
-        dataSize = xmlStrlen(data);
+        dataLen = xmlStrlen(data);
+        if(dataLen < 0) {
+            xmlSecInternalError("xmlStrlen", NULL);
+            goto done;
+        }
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(dataLen, dataSize, goto done, NULL);
 
         ret = xmlSecTransformCtxBinaryExecute(&(encCtx->transformCtx), data, dataSize);
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformCtxBinaryExecute", NULL);
-            if(data != NULL) {
-                xmlFree(data);
-            }
-            return(NULL);
-        }
-        if(data != NULL) {
-            xmlFree(data);
+            goto done;
         }
     } else {
         ret = xmlSecTransformCtxExecute(&(encCtx->transformCtx), node->doc);
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformCtxExecute", NULL);
-            return(NULL);
+            goto done;
         }
     }
 
-    encCtx->result = encCtx->transformCtx.result;
+    /* success  */
+    res = encCtx->result = encCtx->transformCtx.result;
     xmlSecAssert2(encCtx->result != NULL, NULL);
 
-    return(encCtx->result);
+done:
+    if(data != NULL) {
+        xmlFree(data);
+    }
+    return(res);
 }
 
 static int
@@ -817,11 +825,16 @@ xmlSecEncCtxEncDataNodeWrite(xmlSecEncCtxPtr encCtx) {
 
     /* write encrypted data to xml (if requested) */
     if(encCtx->cipherValueNode != NULL) {
-        xmlSecAssert2(xmlSecBufferGetData(encCtx->result) != NULL, -1);
+        xmlSecByte* inBuf;
+        xmlSecSize inSize;
+        int inLen;
 
-        xmlNodeSetContentLen(encCtx->cipherValueNode,
-                            xmlSecBufferGetData(encCtx->result),
-                            xmlSecBufferGetSize(encCtx->result));
+        inBuf = xmlSecBufferGetData(encCtx->result);
+        inSize = xmlSecBufferGetSize(encCtx->result);
+        xmlSecAssert2(inBuf != NULL, -1);
+        XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), NULL);
+
+        xmlNodeSetContentLen(encCtx->cipherValueNode, inBuf, inLen);
         encCtx->resultReplaced = 1;
     }
 

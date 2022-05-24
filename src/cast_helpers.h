@@ -38,7 +38,7 @@
                                   "%lu", (errorObject));                       \
         errorAction;                                                           \
     }                                                                          \
-    dstVal = (int)(srcVal);                                                    \
+    dstVal = (xmlSecSize)(srcVal);                                             \
 
 
 /* Safe cast with limits check: size_t -> int */
@@ -58,7 +58,7 @@
                                  long, LONG_MIN, LONG_MAX, "%ld", (errorObject)); \
         errorAction;                                                           \
     }                                                                          \
-    dstVal = (int)(srcVal);                                                    \
+    dstVal = (long)(srcVal);                                                    \
 
 
 /* Safe cast with limits check: int -> xmlSecSize */
@@ -70,7 +70,7 @@
                                   "%lu", (errorObject));                       \
         errorAction;                                                           \
     }                                                                          \
-    dstVal = (int)(srcVal);                                                    \
+    dstVal = (xmlSecSize)(srcVal);                                             \
 
 
 /* Safe cast with limits check: int -> size_t */
@@ -82,6 +82,6 @@
                                  "%lu", (errorObject));                        \
         errorAction;                                                           \
     }                                                                          \
-    dstVal = (int)(srcVal);                                                    \
+    dstVal = (size_t)(srcVal);                                                 \
 
 #endif /* __XMLSEC_CAST_HELPERS_H__ */

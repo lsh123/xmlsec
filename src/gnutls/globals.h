@@ -40,8 +40,8 @@
                     (const char*)(errorObject),             \
                     (errorFunction),                        \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
-                    "gcrypt error: %ld: %s: %s",            \
-                    (long)(errCode),                        \
+                    "gcrypt error: %lu: %s: %s",            \
+                    XMLSEC_UL_BAD_CAST(errCode),            \
                     xmlSecErrorsSafeString(source),         \
                     xmlSecErrorsSafeString(message)         \
         );                                                  \
@@ -62,8 +62,8 @@
                     (const char*)(errorObject),             \
                     (errorFunction),                        \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
-                    "gnutls error: %ld: %s",                \
-                    (long)(errCode),                        \
+                    "gnutls error: %lu: %s",                \
+                    XMLSEC_UL_BAD_CAST(errCode),            \
                     xmlSecErrorsSafeString(message)         \
         );                                                  \
     }
@@ -85,9 +85,9 @@
                     (const char*)(errorObject),             \
                     (errorFunction),                        \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
-                    msg  "gnutls error: %ld: %s",           \
+                    msg  "gnutls error: %lu: %s",           \
                     (param),                                \
-                    (long)(errCode),                        \
+                    XMLSEC_UL_BAD_CAST(errCode),            \
                     xmlSecErrorsSafeString(message)         \
         );                                                  \
     }

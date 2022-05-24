@@ -29,6 +29,8 @@
 #include <xmlsec/errors.h>
 
 #include <xmlsec/gcrypt/crypto.h>
+#include "../cast_helpers.h"
+
 
 /**************************************************************************
  *
@@ -266,6 +268,7 @@ xmlSecGCryptAsymKeyDataGenerate(xmlSecKeyDataPtr data, const char * alg, xmlSecS
     gcry_sexp_t key_spec = NULL;
     gcry_sexp_t key_pair = NULL;
     gcry_error_t err;
+    int key_len;
     int ret;
     int res = -1;
 
@@ -277,9 +280,11 @@ xmlSecGCryptAsymKeyDataGenerate(xmlSecKeyDataPtr data, const char * alg, xmlSecS
     ctx = xmlSecGCryptAsymKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(key_size, key_len, goto done, NULL);
+
     err = gcry_sexp_build(&key_spec, NULL,
-                          "(genkey (%s (nbits %lu)(transient-key)))",
-                          alg, XMLSEC_UL_BAD_CAST(key_size));
+                          "(genkey (%s (nbits %d)(transient-key)))",
+                          alg, key_len);
     if((err != GPG_ERR_NO_ERROR) || (key_spec == NULL)) {
         xmlSecGCryptError("gcry_sexp_build(genkey)", err, NULL);
         goto done;

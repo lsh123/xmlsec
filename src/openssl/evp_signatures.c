@@ -552,7 +552,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecBufferSetMaxSize",
                                      xmlSecTransformGetName(transform),
-                                     "size=%u", signSize);
+                                     "size=%lu", XMLSEC_UL_BAD_CAST(signSize));
                 return(-1);
             }
 #ifndef XMLSEC_OPENSSL_API_300
@@ -576,7 +576,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecBufferSetSize",
                                      xmlSecTransformGetName(transform),
-                                    "size=%u", signSize);
+                                    "size=%lu", XMLSEC_UL_BAD_CAST(signSize));
                 return(-1);
             }
         }

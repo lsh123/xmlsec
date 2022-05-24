@@ -504,7 +504,7 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
 
     if(FALSE == PFXIsPFXBlob(&pfx)) {
         xmlSecMSCryptoError2("PFXIsPFXBlob", NULL,
-                             "size=%ld", (long int)pfx.cbData);
+                             "size=%lu", XMLSEC_UL_BAD_CAST(pfx.cbData));
         goto done;
     }
 

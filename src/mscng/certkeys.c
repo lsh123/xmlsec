@@ -801,8 +801,8 @@ xmlSecMSCngKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     ret = xmlSecBufferInitialize(&buf, bufLen);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferInitialize",
-            xmlSecKeyDataKlassGetName(id), "size=%ld", bufLen);
+        xmlSecInternalError2("xmlSecBufferInitialize", xmlSecKeyDataKlassGetName(id),
+            "size=%lu", XMLSEC_UL_BAD_CAST(bufLen));
         return(-1);
     }
 
@@ -1358,8 +1358,8 @@ xmlSecMSCngKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     ret = xmlSecBufferInitialize(&buf, bufLen);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferInitialize",
-            xmlSecKeyDataKlassGetName(id), "size=%ld", bufLen);
+        xmlSecInternalError2("xmlSecBufferInitialize", xmlSecKeyDataKlassGetName(id),
+            "size=%lu", XMLSEC_UL_BAD_CAST(bufLen));
         return(-1);
     }
 

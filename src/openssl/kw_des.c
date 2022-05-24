@@ -245,7 +245,7 @@ xmlSecOpenSSLKWDes3SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetData",
                              xmlSecTransformGetName(transform),
-                             "size=%d", XMLSEC_KW_DES3_KEY_LENGTH);
+                             "size=%lu", XMLSEC_UL_BAD_CAST(XMLSEC_KW_DES3_KEY_LENGTH));
         return(-1);
     }
 

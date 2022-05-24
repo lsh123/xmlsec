@@ -267,21 +267,21 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
     /* Get the bit length of the key */
     if(keyBlobLen < sizeof(PUBLICKEYSTRUC) + sizeof(RSAPUBKEY)) {
         xmlSecMSCryptoError2("CryptExportKey", NULL,
-                             "len=%ld",
-                             (long int)keyBlobLen);
+                             "len=%lu",
+                             XMLSEC_UL_BAD_CAST(keyBlobLen));
         goto done;
     }
     pubKeyStruc = (PUBLICKEYSTRUC*)keyBlob;
     if(pubKeyStruc->bVersion != 0x02) {
         xmlSecMSCryptoError2("CryptExportKey", NULL,
-                             "pubKeyStruc->bVersion=%ld",
-                             (long int)pubKeyStruc->bVersion);
+                             "pubKeyStruc->bVersion=%lu",
+                             XMLSEC_UL_BAD_CAST(pubKeyStruc->bVersion));
         goto done;
     }
     if(pubKeyStruc->bType != PRIVATEKEYBLOB) {
         xmlSecMSCryptoError2("CryptExportKey", NULL,
-                             "pubKeyStruc->bType=%ld",
-                             (long int)pubKeyStruc->bType);
+                             "pubKeyStruc->bType=%lu",
+                             XMLSEC_UL_BAD_CAST(pubKeyStruc->bType));
         goto done;
     }
 
@@ -292,7 +292,7 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
     if(rsaPubKey->magic != 0x32415352) {
         xmlSecMSCryptoError2("CryptExportKey", NULL,
                              "rsaPubKey->magic=0x%08lx",
-                             (long int)rsaPubKey->magic);
+                             XMLSEC_UL_BAD_CAST(rsaPubKey->magic));
         goto done;
     }
     bitLen = rsaPubKey->bitlen;
@@ -315,7 +315,7 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
      */
     if(keyBlobLen < sizeof(PUBLICKEYSTRUC) + sizeof(RSAPUBKEY) + bitLen / 2 + bitLen / 16) {
         xmlSecMSCryptoError2("CryptExportKey", NULL,
-                             "keBlobLen=%ld", keyBlobLen);
+                             "keBlobLen=%lu", XMLSEC_UL_BAD_CAST(keyBlobLen));
         goto done;
     }
     ptr = (BYTE*)(keyBlob + sizeof(PUBLICKEYSTRUC) + sizeof(RSAPUBKEY));
@@ -407,8 +407,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
     }
     if(!fFound) {
         xmlSecMSCryptoError2("CryptGetProvParam", NULL,
-                             "algId=%ld is not supported",
-                             (long int)dwAlgId);
+            "algId=%lu is not supported", XMLSEC_UL_BAD_CAST(dwAlgId));
         goto done;
     }
 
@@ -418,15 +417,14 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
          */
         if(!CryptGenKey(hProv, dwAlgId, 0, &hTempKey)) {
             xmlSecMSCryptoError2("CryptGenKey", NULL,
-                                 "algId=%ld",
-                                 (long int)dwAlgId);
+                "algId=%lu", XMLSEC_UL_BAD_CAST(dwAlgId));
             goto done;
         }
 
         dwSize = sizeof(DWORD);
         if(!CryptGetKeyParam(hTempKey, KP_KEYLEN, (LPBYTE)&dwProvSessionKeySize, &dwSize, 0)) {
             xmlSecMSCryptoError2("CryptGetKeyParam(KP_KEYLEN)", NULL,
-                                 "algId=%ld", (long int)dwAlgId);
+                "algId=%lu", XMLSEC_UL_BAD_CAST(dwAlgId));
             goto done;
         }
         CryptDestroyKey(hTempKey);
@@ -447,8 +445,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
     dwSize = sizeof(ALG_ID);
     if(!CryptGetKeyParam(hPrivateKey, KP_ALGID, (LPBYTE)&dwPrivKeyAlg, &dwSize, 0)) {
         xmlSecMSCryptoError2("CryptGetKeyParam(KP_ALGID)", NULL,
-                             "algId=%ld",
-                             (long int)dwAlgId);
+            "algId=%lu", XMLSEC_UL_BAD_CAST(dwAlgId));
         goto done;
     }
 
@@ -456,8 +453,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
     dwSize = sizeof(DWORD);
     if(!CryptGetKeyParam(hPrivateKey, KP_KEYLEN, (LPBYTE)&dwPublicKeySize, &dwSize, 0)) {
         xmlSecMSCryptoError2("CryptGetKeyParam(KP_KEYLEN)", NULL,
-                             "algId=%ld",
-                             (long int)dwAlgId);
+            "algId=%lu", XMLSEC_UL_BAD_CAST(dwAlgId));
         goto done;
     }
 
@@ -512,8 +508,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
     /* Generate random data for the rest of the buffer */
     if((rndBlobSize > 0) && !CryptGenRandom(hProv, rndBlobSize, pbPtr)) {
         xmlSecMSCryptoError2("CryptGenRandom", NULL,
-                             "rndBlobSize=%ld",
-                             (long int)rndBlobSize);
+            "rndBlobSize=%lu", XMLSEC_UL_BAD_CAST(rndBlobSize));
         goto done;
     }
     /* aleksey: why are we doing this? */
@@ -526,8 +521,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
 
     if(!CryptImportKey(hProv, keyBlob , keyBlobLen, hPrivateKey, CRYPT_EXPORTABLE, hSessionKey)) {
         xmlSecMSCryptoError2("CryptImportKey", NULL,
-                             "algId=%ld",
-                             (long int)dwAlgId);
+            "algId=%lu", XMLSEC_UL_BAD_CAST(dwAlgId));
         goto done;
     }
 

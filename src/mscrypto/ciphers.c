@@ -319,7 +319,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     /* Check if we really have de/encrypted the numbers of bytes that we requested */
     if (dwCLen != inSize) {
         xmlSecInternalError2("CryptEn/Decrypt", cipherName,
-                             "size=%ld", dwCLen);
+                             "size=%lu", XMLSEC_UL_BAD_CAST(dwCLen));
         return(-1);
     }
 

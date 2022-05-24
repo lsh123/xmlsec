@@ -431,7 +431,7 @@ extern "C" {
                     (const char*)(errorObject),             \
                     NULL,                                   \
                     XMLSEC_ERRORS_R_INVALID_DATA,           \
-                    "invalid data for '%s': actual=%ld and expected %s", \
+                    "invalid data for '%s': actual=%lu and expected %s", \
                     xmlSecErrorsSafeString(name),           \
                     XMLSEC_UL_BAD_CAST(actual),             \
                     (expected)                              \
@@ -453,7 +453,7 @@ extern "C" {
                     (const char*)(errorObject),             \
                     NULL,                                   \
                     XMLSEC_ERRORS_R_INVALID_DATA,           \
-                    "invalid data: actual value '%s'=%ld, actual value '%s'=%ld and expected %s", \
+                    "invalid data: actual value '%s'=%lu, actual value '%s'=%lu and expected %s", \
                     xmlSecErrorsSafeString(name1),          \
                     XMLSEC_UL_BAD_CAST(actual1),            \
                     xmlSecErrorsSafeString(name2),          \
@@ -511,7 +511,7 @@ extern "C" {
                     (const char*)(errorObject),             \
                     NULL,                                   \
                     XMLSEC_ERRORS_R_INVALID_TYPE,           \
-                    "invalid type for '%s': actual=%ld and expected %s", \
+                    "invalid type for '%s': actual=%lu and expected %s", \
                     xmlSecErrorsSafeString(name),           \
                     XMLSEC_UL_BAD_CAST(actual),             \
                     (expected)                              \
@@ -533,7 +533,7 @@ extern "C" {
                     (const char*)(errorObject),             \
                     NULL,                                   \
                     XMLSEC_ERRORS_R_INVALID_TYPE,           \
-                    "invalid type: actual value '%s'=%ld, actual value '%s'=%ld and expected %s", \
+                    "invalid type: actual value '%s'=%lu, actual value '%s'=%lu and expected %s", \
                     xmlSecErrorsSafeString(name1),          \
                     XMLSEC_UL_BAD_CAST(actual1),            \
                     xmlSecErrorsSafeString(name2),          \
@@ -733,8 +733,8 @@ extern "C" {
                    (const char*)xmlSecTransformGetName(transform), \
                    NULL,                              \
                    XMLSEC_ERRORS_R_INVALID_STATUS,    \
-                   "transformStatus=%ld, msg=%s",     \
-                   (long int)((transform)->status),   \
+                   "transformStatus=%lu, msg=%s",     \
+                   XMLSEC_UL_BAD_CAST((transform)->status), \
                    msg                                \
         );                                            \
     }
@@ -753,7 +753,7 @@ extern "C" {
                     (const char*)(errorObject),             \
                     NULL,                                   \
                     XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE,  \
-                    "invalid key data size: actual=%ld and expected=%ld", \
+                    "invalid key data size: actual=%lu and expected=%lu", \
                     XMLSEC_UL_BAD_CAST(actual),             \
                     XMLSEC_UL_BAD_CAST(expected)            \
         )

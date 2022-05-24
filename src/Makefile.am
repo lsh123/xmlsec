@@ -14,7 +14,8 @@ AM_CFLAGS = \
 	$(NULL)
 
 EXTRA_DIST = \
-	errors_helpers.h \
+	cast_helpers.h \
+        errors_helpers.h \
 	globals.h \
 	kw_aes_des.h \
 	xslt.h \

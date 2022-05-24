@@ -80,7 +80,7 @@ void xmlSecMSCryptoGetErrorMessage      (DWORD dwError,
                     (param),                                      \
                     XMLSEC_UL_BAD_CAST(dwLastError),              \
                     XMLSEC_UL_BAD_CAST(dwLastError),              \
-                    errBuf)                                       \
+                    errBuf                                        \
         );                                                        \
     }
 

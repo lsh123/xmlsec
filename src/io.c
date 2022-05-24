@@ -486,6 +486,7 @@ xmlSecTransformInputURIPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
                               xmlSecSize maxDataSize, xmlSecSize* dataSize,
                               xmlSecTransformCtxPtr transformCtx) {
     xmlSecInputURICtxPtr ctx;
+    int maxDataLen;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformInputURIId), -1);
@@ -497,7 +498,8 @@ xmlSecTransformInputURIPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
     xmlSecAssert2(ctx != NULL, -1);
 
     if((ctx->clbksCtx != NULL) && (ctx->clbks != NULL) && (ctx->clbks->readcallback != NULL)) {
-        ret = (ctx->clbks->readcallback)(ctx->clbksCtx, (char*)data, (int)maxDataSize);
+        XMLSEC_SAFE_CAST_SIZE_TO_INT(maxDataSize, maxDataLen, return(-1), xmlSecTransformGetName(transform));
+        ret = (ctx->clbks->readcallback)(ctx->clbksCtx, (char*)data, maxDataLen);
         if(ret < 0) {
             xmlSecInternalError("ctx->clbks->readcallback", xmlSecTransformGetName(transform));
             return(-1);

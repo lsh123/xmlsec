@@ -446,8 +446,10 @@ int
 xmlSecBufferReadFile(xmlSecBufferPtr buf, const char* filename) {
     xmlSecByte buffer[1024];
     FILE* f = NULL;
+    xmlSecSize size;
     size_t len;
     int ret;
+    int res = -1;
 
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
@@ -459,27 +461,32 @@ xmlSecBufferReadFile(xmlSecBufferPtr buf, const char* filename) {
 #endif /* _MSC_VER */
     if(f == NULL) {
         xmlSecIOError("fopen", filename, NULL);
-        return(-1);
+        goto done;
     }
 
     while(!feof(f)) {
         len = fread(buffer, 1, sizeof(buffer), f);
         if(ferror(f)) {
             xmlSecIOError("fread", filename, NULL);
-            fclose(f);
-            return(-1);
+            goto done;
         }
-
-        ret = xmlSecBufferAppend(buf, buffer, XMLSEC_SIZE_BAD_CAST(len));
+        
+        XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(len, size, goto done, NULL);
+        ret = xmlSecBufferAppend(buf, buffer, size);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferAppend", NULL, "size=%lu", XMLSEC_UL_BAD_CAST(len));
-            fclose(f);
-            return(-1);
+            goto done;
         }
     }
 
-    fclose(f);
-    return(0);
+    /* success */
+    res = 0;
+
+done:
+    if(f != NULL) {
+        fclose(f);
+    }
+    return(res);
 }
 
 /**

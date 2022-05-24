@@ -120,11 +120,16 @@ xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, void *context,
                            iv, sizeof(iv),
                            out, inSize + XMLSEC_KW_DES3_BLOCK_LENGTH,
                            out, outSize);
-    if((ret < 0) || ((xmlSecSize)ret != inSize + XMLSEC_KW_DES3_BLOCK_LENGTH)) {
+    if(ret < 0) {
         xmlSecInternalError("kwDes3Id->encrypt", NULL);
         return(-1);
     }
-
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outSz, return(-1), NULL);
+    if((inSize + XMLSEC_KW_DES3_BLOCK_LENGTH) != outSz) {
+        xmlSecInvalidSizeError("kwDes3Id->encrypt", outSz, (inSize + XMLSEC_KW_DES3_BLOCK_LENGTH), NULL);
+        return(-1);
+    }
+    
     /* step 6: construct TEMP2=IV || TEMP1 */
     memmove(out + XMLSEC_KW_DES3_IV_LENGTH, out, inSize + XMLSEC_KW_DES3_BLOCK_LENGTH);
     memcpy(out, iv, XMLSEC_KW_DES3_IV_LENGTH);

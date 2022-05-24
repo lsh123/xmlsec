@@ -57,6 +57,7 @@ static const xmlChar xmlSecBnRevLookupTable[] =
     '0', '1', '2', '3', '4', '5', '6', '7',
     '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
 };
+#define XMLSEC_BN_REV_MAX (sizeof(xmlSecBnRevLookupTable) / sizeof(xmlSecBnRevLookupTable[0]))
 
 /*****************************************************************************
  *
@@ -188,7 +189,7 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
     xmlSecAssert2(bn != NULL, -1);
     xmlSecAssert2(str != NULL, -1);
     xmlSecAssert2(base > 1, -1);
-    xmlSecAssert2(base <= sizeof(xmlSecBnRevLookupTable), -1);
+    xmlSecAssert2(base <= XMLSEC_BN_REV_MAX, -1);
 
     /* trivial case */
     strLen = xmlStrlen(str);
@@ -318,7 +319,7 @@ xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
 
     xmlSecAssert2(bn != NULL, NULL);
     xmlSecAssert2(base > 1, NULL);
-    xmlSecAssert2(base <= sizeof(xmlSecBnRevLookupTable), NULL);
+    xmlSecAssert2(base <= XMLSEC_BN_REV_MAX, NULL);
 
     XMLSEC_SAFE_CAST_SIZE_TO_INT(base, baseInt, return(NULL), NULL);
 
@@ -379,7 +380,8 @@ xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
             xmlSecBnFinalize(&bn2);
             return (NULL);
         }
-        xmlSecAssert2((size_t)nn < sizeof(xmlSecBnRevLookupTable), NULL);
+        xmlSecAssert2(0 <= nn, NULL);
+        xmlSecAssert2(XMLSEC_UL_BAD_CAST(nn) < XMLSEC_UL_BAD_CAST(XMLSEC_BN_REV_MAX), NULL);
         res[ii] = xmlSecBnRevLookupTable[nn];
     }
     xmlSecAssert2(ii < len, NULL);

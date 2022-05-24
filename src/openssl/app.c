@@ -54,7 +54,7 @@ static int      xmlSecOpenSSLDefaultPasswordCallback    (char *buf,
                                                          int verify,
                                                          void *userdata);
 static int      xmlSecOpenSSLDummyPasswordCallback      (char *buf,
-                                                         int bufsize,
+                                                         int buflen,
                                                          int verify,
                                                          void *userdata);
 static xmlSecKeyPtr xmlSecOpenSSLAppEngineKeyLoad       (const char *engineName,
@@ -1517,27 +1517,28 @@ xmlSecOpenSSLAppGetDefaultPwdCallback(void) {
 }
 
 static int
-xmlSecOpenSSLDefaultPasswordCallback(char *buf, int bufsize, int verify, void *userdata) {
+xmlSecOpenSSLDefaultPasswordCallback(char *buf, int buflen, int verify, void *userdata) {
     char* filename = (char*)userdata;
     char* buf2;
-    xmlChar prompt[2048];
-    int i, ret;
+    xmlSecSize bufsize;
+    char prompt[2048];
+    int ii, ret;
 
     xmlSecAssert2(buf != NULL, -1);
 
     /* try 3 times */
-    for(i = 0; i < 3; i++) {
+    for(ii = 0; ii < 3; ii++) {
         if(filename != NULL) {
-            ret = xmlStrPrintf(prompt, sizeof(prompt), "Enter password for \"%s\" file: ", filename);
+            ret = xmlStrPrintf(BAD_CAST prompt, sizeof(prompt), "Enter password for \"%s\" file: ", filename);
         } else {
-            ret = xmlStrPrintf(prompt, sizeof(prompt), "Enter password: ");
+            ret = xmlStrPrintf(BAD_CAST prompt, sizeof(prompt), "Enter password: ");
         }
         if(ret < 0) {
             xmlSecXmlError("xmlStrPrintf", NULL);
             return(-1);
         }
 
-        ret = EVP_read_pw_string(buf, bufsize, (char*)prompt, 0);
+        ret = EVP_read_pw_string(buf, buflen, prompt, 0);
         if(ret != 0) {
             xmlSecOpenSSLError("EVP_read_pw_string", NULL);
             return(-1);
@@ -1553,21 +1554,22 @@ xmlSecOpenSSLDefaultPasswordCallback(char *buf, int bufsize, int verify, void *u
         }
 
         if(filename != NULL) {
-            ret = xmlStrPrintf(prompt, sizeof(prompt), "Enter password for \"%s\" file again: ", filename);
+            ret = xmlStrPrintf(BAD_CAST prompt, sizeof(prompt), "Enter password for \"%s\" file again: ", filename);
         } else {
-            ret = xmlStrPrintf(prompt, sizeof(prompt), "Enter password again: ");
+            ret = xmlStrPrintf(BAD_CAST prompt, sizeof(prompt), "Enter password again: ");
         }
         if(ret < 0) {
             xmlSecXmlError("xmlStrPrintf", NULL);
             return(-1);
         }
 
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(buflen, bufsize, return(-1), NULL);
         buf2 = (char*)xmlMalloc(bufsize);
         if(buf2 == NULL) {
             xmlSecMallocError(bufsize, NULL);
             return(-1);
         }
-        ret = EVP_read_pw_string(buf2, bufsize, (char*)prompt, 0);
+        ret = EVP_read_pw_string(buf2, buflen, (char*)prompt, 0);
         if(ret != 0) {
             xmlSecOpenSSLError("EVP_read_pw_string", NULL);
             memset(buf2, 0, bufsize);
@@ -1583,6 +1585,7 @@ xmlSecOpenSSLDefaultPasswordCallback(char *buf, int bufsize, int verify, void *u
 
             memset(buf2, 0, bufsize);
             xmlFree(buf2);
+
             XMLSEC_SAFE_CAST_SIZE_T_TO_INT(sz, len, return(-1), NULL);
             return(len);
         }
@@ -1596,7 +1599,7 @@ xmlSecOpenSSLDefaultPasswordCallback(char *buf, int bufsize, int verify, void *u
 }
 
 static int
-xmlSecOpenSSLDummyPasswordCallback(char *buf, int bufsize,
+xmlSecOpenSSLDummyPasswordCallback(char *buf, int buflen,
                                    int verify ATTRIBUTE_UNUSED,
                                    void *userdata) {
     char* password;
@@ -1611,12 +1614,12 @@ xmlSecOpenSSLDummyPasswordCallback(char *buf, int bufsize,
   
     passwordSize = strlen(password);
     XMLSEC_SAFE_CAST_SIZE_T_TO_INT(passwordSize, passwordLen, return(-1), NULL);
-    if(passwordLen + 1 > bufsize) {
+    if(passwordLen + 1 > buflen) {
         return(-1);
     }
 
 #ifdef WIN32
-    strcpy_s(buf, bufsize, password);
+    strcpy_s(buf, buflen, password);
 #else  /* WIN32 */
     strcpy(buf, password);
 #endif /* WIN32 */

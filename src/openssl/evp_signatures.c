@@ -36,6 +36,8 @@
 #include <openssl/core_names.h>
 #endif /* XMLSEC_OPENSSL_API_300 */
 
+#include "../cast_helpers.h"
+
 /**************************************************************************
  *
  * Internal OpenSSL evp signatures ctx
@@ -544,10 +546,18 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
     if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
         xmlSecAssert2(outSize == 0, -1);
         if(transform->operation == xmlSecTransformOperationSign) {
-            unsigned int signSize;
+            int signLen;
+            xmlSecSize signSize;
 
             /* for rsa signatures we get size from EVP_PKEY_size() */
-            signSize = EVP_PKEY_size(ctx->pKey);
+            signLen = EVP_PKEY_size(ctx->pKey);
+            if(signLen <= 0) {
+                xmlSecOpenSSLError("EVP_PKEY_size",
+                                   xmlSecTransformGetName(transform));
+                return(-1);
+            }
+            XMLSEC_SAFE_CAST_INT_TO_SIZE(signLen, signSize, return(-1), xmlSecTransformGetName(transform));
+
             ret = xmlSecBufferSetMaxSize(out, signSize);
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecBufferSetMaxSize",
@@ -555,6 +565,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
                                      "size=%lu", XMLSEC_UL_BAD_CAST(signSize));
                 return(-1);
             }
+
 #ifndef XMLSEC_OPENSSL_API_300
             ret = EVP_SignFinal(ctx->digestCtx, xmlSecBufferGetData(out), &signSize, ctx->pKey);
             if(ret != 1) {

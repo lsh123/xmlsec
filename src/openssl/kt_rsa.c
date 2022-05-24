@@ -46,6 +46,8 @@
 #include <openssl/param_build.h>
 #endif /* XMLSEC_OPENSSL_API_300 */
 
+#include "../cast_helpers.h"
+
 #ifdef OPENSSL_IS_BORINGSSL
 
 /* defined in boringssl/crypto/fipsmodule/rsa/internal.h */
@@ -226,6 +228,7 @@ static int
 xmlSecOpenSSLRsaPkcs1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecOpenSSLRsaPkcs1CtxPtr ctx;
     EVP_PKEY* pKey;
+    int keyLen;
 #ifndef XMLSEC_OPENSSL_API_300
     RSA *rsa = NULL;
 #else /* XMLSEC_OPENSSL_API_300 */
@@ -256,7 +259,14 @@ xmlSecOpenSSLRsaPkcs1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     rsa = EVP_PKEY_get0_RSA(pKey);
     xmlSecAssert2(rsa != NULL, -1);
-    ctx->keySize = RSA_size(rsa);
+
+    keyLen = RSA_size(rsa);
+    if(keyLen <= 0) {
+        xmlSecOpenSSLError("RSA_size",
+                           xmlSecTransformGetName(transform));
+        return (-1);
+    }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(keyLen, ctx->keySize, return(-1), xmlSecTransformGetName(transform));
 
     ctx->pKey = xmlSecOpenSSLEvpKeyDup(pKey);
     if(ctx->pKey == NULL) {
@@ -267,12 +277,13 @@ xmlSecOpenSSLRsaPkcs1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 #else /* XMLSEC_OPENSSL_API_300 */
     xmlSecAssert2(ctx->pKeyCtx == NULL, -1);
 
-    ctx->keySize = EVP_PKEY_get_size(pKey);
-    if(ctx->keySize == 0) {
+    keyLen = EVP_PKEY_get_size(pKey);
+    if(keyLen <= 0) {
         xmlSecOpenSSLError("EVP_PKEY_get_size",
                            xmlSecTransformGetName(transform));
         return (-1);
     }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(keyLen, ctx->keySize, return(-1), xmlSecTransformGetName(transform));
 
     ctx->pKeyCtx = EVP_PKEY_CTX_new_from_pkey(xmlSecOpenSSLGetLibCtx(), pKey, NULL);
     if (ctx->pKeyCtx == NULL) {
@@ -689,6 +700,7 @@ static int
 xmlSecOpenSSLRsaOaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecOpenSSLRsaOaepCtxPtr ctx;
     EVP_PKEY* pKey;
+    int keyLen;
 #ifndef XMLSEC_OPENSSL_API_300
     RSA *rsa;
 #else /* XMLSEC_OPENSSL_API_300 */
@@ -719,7 +731,15 @@ xmlSecOpenSSLRsaOaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     rsa = EVP_PKEY_get0_RSA(pKey);
     xmlSecAssert2(rsa != NULL, -1);
-    ctx->keySize = RSA_size(rsa);
+
+    keyLen = RSA_size(rsa);
+    if(keyLen <= 0) {
+        xmlSecOpenSSLError("RSA_size",
+                           xmlSecTransformGetName(transform));
+        return (-1);
+    }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(keyLen, ctx->keySize, return(-1), xmlSecTransformGetName(transform));
+
 
     ctx->pKey = xmlSecOpenSSLEvpKeyDup(pKey);
     if(ctx->pKey == NULL) {
@@ -730,12 +750,13 @@ xmlSecOpenSSLRsaOaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 #else /* XMLSEC_OPENSSL_API_300 */
     xmlSecAssert2(ctx->pKeyCtx == NULL, -1);
 
-    ctx->keySize = EVP_PKEY_get_size(pKey);
-    if(ctx->keySize == 0) {
+    keyLen = EVP_PKEY_get_size(pKey);
+    if(keyLen <= 0) {
         xmlSecOpenSSLError("EVP_PKEY_get_size",
                            xmlSecTransformGetName(transform));
         return (-1);
     }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(keyLen, ctx->keySize, return(-1), xmlSecTransformGetName(transform));
 
     ctx->pKeyCtx = EVP_PKEY_CTX_new_from_pkey(xmlSecOpenSSLGetLibCtx(), pKey, NULL);
     if (ctx->pKeyCtx == NULL) {

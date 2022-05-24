@@ -664,7 +664,7 @@ done:
     if(ptr != NULL) {
         xmlFree(ptr);
     }
-    if(ctx_initialized != 0) {    
+    if(ctx_initialized != 0) {
         xmlSecBase64CtxFinalize(&ctx);
     }
     return(res);

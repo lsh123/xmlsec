@@ -29,6 +29,8 @@
 #include <xmlsec/bn.h>
 #include <xmlsec/errors.h>
 
+#include "cast_helpers.h"
+
 /* table for converting hex digits back to bytes */
 static const int xmlSecBnLookupTable[] =
 {
@@ -50,7 +52,7 @@ static const int xmlSecBnLookupTable[] =
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1
 };
 
-static const char xmlSecBnRevLookupTable[] =
+static const xmlChar xmlSecBnRevLookupTable[] =
 {
     '0', '1', '2', '3', '4', '5', '6', '7',
     '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
@@ -176,11 +178,11 @@ xmlSecBnZero(xmlSecBnPtr bn) {
  */
 int
 xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
-    xmlSecSize i, len, size;
+    int strLen, baseInt, nn;
+    xmlSecSize ii, strSize, size;
     xmlSecByte ch;
     xmlSecByte* data;
     int positive;
-    int nn;
     int ret;
 
     xmlSecAssert2(bn != NULL, -1);
@@ -189,10 +191,11 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
     xmlSecAssert2(base <= sizeof(xmlSecBnRevLookupTable), -1);
 
     /* trivial case */
-    len = xmlStrlen(str);
-    if(len <= 0) {
+    strLen = xmlStrlen(str);
+    if(strLen <= 0) {
         return(0);
     }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(strLen, strSize, return(0), NULL);
 
     /* The result size could not exceed the input string length
      * because each char fits inside a byte in all cases :)
@@ -201,17 +204,17 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
      * buffer size would be increased by Mul/Add functions.
      * Finally, we can add one byte for 00 or 10 prefix.
      */
-    ret = xmlSecBufferSetMaxSize(bn, xmlSecBufferGetSize(bn) + len / 2 + 1 + 1);
+    ret = xmlSecBufferSetMaxSize(bn, xmlSecBufferGetSize(bn) + strSize / 2 + 1 + 1);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetMaxSize", NULL, "size=%lu", XMLSEC_UL_BAD_CAST(len / 2 + 1));
+        xmlSecInternalError2("xmlSecBufferSetMaxSize", NULL, "size=%lu", XMLSEC_UL_BAD_CAST(strSize / 2 + 1));
         return (-1);
     }
 
     /* figure out if it is positive or negative number */
     positive = 1; /* no sign, positive by default */
-    i = 0;
-    while(i < len) {
-        ch = str[i++];
+    ii = 0;
+    while(ii < strSize) {
+        ch = str[ii++];
 
         /* skip spaces */
         if(isspace(ch)) {
@@ -229,25 +232,26 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
 
         /* otherwise, it must be start of the number, make sure that we will look
          * at this character in next loop */
-        xmlSecAssert2(i > 0, -1);
-        --i;
+        xmlSecAssert2(ii > 0, -1);
+        --ii;
         break;
     }
 
     /* now parse the number itself */
-    while(i < len) {
-        ch = str[i++];
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(base, baseInt, return(-1), NULL);
+    while(ii < strSize) {
+        ch = str[ii++];
         if(isspace(ch)) {
             continue;
         }
 
         nn = xmlSecBnLookupTable[ch];
-        if((nn < 0) || ((xmlSecSize)nn >= base)) {
-            xmlSecInvalidIntegerDataError2("char", nn, "base", base, "0 <= char < base", NULL);
+        if((nn < 0) || (nn >= baseInt)) {
+            xmlSecInvalidIntegerDataError2("char", nn, "base", baseInt, "0 <= char < base", NULL);
             return (-1);
         }
 
-        ret = xmlSecBnMul(bn, base);
+        ret = xmlSecBnMul(bn, baseInt);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBnMul", NULL, "base=%lu", XMLSEC_UL_BAD_CAST(base));
             return (-1);
@@ -276,8 +280,8 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
     if(positive == 0) {
         data = xmlSecBufferGetData(bn);
         size = xmlSecBufferGetSize(bn);
-        for(i = 0; i < size; ++i) {
-            data[i] ^= 0xFF;
+        for(ii = 0; ii < size; ++ii) {
+            data[ii] ^= 0xFF;
         }
 
         ret = xmlSecBnAdd(bn, 1);
@@ -305,8 +309,9 @@ xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
     xmlSecBn bn2;
     int positive = 1;
     xmlChar* res;
-    xmlSecSize i, len, size;
+    xmlSecSize ii, len, size;
     xmlSecByte* data;
+    int baseInt;
     int ret;
     int nn;
     xmlChar ch;
@@ -315,6 +320,7 @@ xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
     xmlSecAssert2(base > 1, NULL);
     xmlSecAssert2(base <= sizeof(xmlSecBnRevLookupTable), NULL);
 
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(base, baseInt, return(NULL), NULL);
 
     /* copy bn */
     data = xmlSecBufferGetData(bn);
@@ -343,8 +349,8 @@ xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
             xmlSecBnFinalize(&bn2);
             return (NULL);
         }
-        for(i = 0; i < size; ++i) {
-            data[i] ^= 0xFF;
+        for(ii = 0; ii < size; ++ii) {
+            data[ii] ^= 0xFF;
         }
 
         positive = 0;
@@ -366,20 +372,20 @@ xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
     }
     memset(res, 0, len + 1);
 
-    for(i = 0; (xmlSecBufferGetSize(&bn2) > 0) && (i < len); i++) {
-        if(xmlSecBnDiv(&bn2, base, &nn) < 0) {
+    for(ii = 0; (xmlSecBufferGetSize(&bn2) > 0) && (ii < len); ii++) {
+        if(xmlSecBnDiv(&bn2, baseInt, &nn) < 0) {
             xmlSecInternalError2("xmlSecBnDiv", NULL, "base=%lu", XMLSEC_UL_BAD_CAST(base));
             xmlFree(res);
             xmlSecBnFinalize(&bn2);
             return (NULL);
         }
         xmlSecAssert2((size_t)nn < sizeof(xmlSecBnRevLookupTable), NULL);
-        res[i] = xmlSecBnRevLookupTable[nn];
+        res[ii] = xmlSecBnRevLookupTable[nn];
     }
-    xmlSecAssert2(i < len, NULL);
+    xmlSecAssert2(ii < len, NULL);
 
     /* we might have '0' at the beggining, remove it but keep one zero */
-    for(len = i; (len > 1) && (res[len - 1] == '0'); len--) {
+    for(len = ii; (len > 1) && (res[len - 1] == '0'); len--) {
     }
     res[len] = '\0';
 
@@ -390,10 +396,10 @@ xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
     }
 
     /* swap the string because we wrote it in reverse order */
-    for(i = 0; i < len / 2; i++) {
-        ch = res[i];
-        res[i] = res[len - i - 1];
-        res[len - i - 1] = ch;
+    for(ii = 0; ii < len / 2; ii++) {
+        ch = res[ii];
+        res[ii] = res[len - ii - 1];
+        res[len - ii - 1] = ch;
     }
 
     xmlSecBnFinalize(&bn2);
@@ -469,7 +475,7 @@ int
 xmlSecBnMul(xmlSecBnPtr bn, int multiplier) {
     xmlSecByte* data;
     int over;
-    xmlSecSize i;
+    xmlSecSize ii;
     xmlSecByte ch;
     int ret;
 
@@ -481,18 +487,18 @@ xmlSecBnMul(xmlSecBnPtr bn, int multiplier) {
     }
 
     data = xmlSecBufferGetData(bn);
-    i = xmlSecBufferGetSize(bn);
+    ii = xmlSecBufferGetSize(bn);
     over = 0;
-    while(i > 0) {
+    while(ii > 0) {
         xmlSecAssert2(data != NULL, -1);
 
-        over    = over + multiplier * data[--i];
-        data[i] = over % 256;
-        over    = over / 256;
+        over     = over + multiplier * data[--ii];
+        data[ii] = (xmlSecByte)(over % 256);
+        over     = over / 256;
     }
 
     while(over > 0) {
-        ch      = over % 256;
+        ch      = (xmlSecByte)(over % 256);
         over    = over / 256;
 
         ret = xmlSecBufferPrepend(bn, &ch, 1);
@@ -518,7 +524,7 @@ xmlSecBnMul(xmlSecBnPtr bn, int multiplier) {
 int
 xmlSecBnDiv(xmlSecBnPtr bn, int divider, int* mod) {
     int over;
-    xmlSecSize i, size;
+    xmlSecSize ii, size;
     xmlSecByte* data;
     int ret;
 
@@ -532,27 +538,27 @@ xmlSecBnDiv(xmlSecBnPtr bn, int divider, int* mod) {
 
     data = xmlSecBufferGetData(bn);
     size = xmlSecBufferGetSize(bn);
-    for(over = 0, i = 0; i < size; i++) {
+    for(over = 0, ii = 0; ii < size; ii++) {
         xmlSecAssert2(data != NULL, -1);
 
-        over    = over * 256 + data[i];
-        data[i] = (xmlSecByte)(over / divider);
-        over    = over % divider;
+        over     = over * 256 + data[ii];
+        data[ii] = (xmlSecByte)(over / divider);
+        over     = over % divider;
     }
     (*mod) = over;
 
     /* remove leading zeros */
-    for(i = 0; i < size; i++) {
+    for(ii = 0; ii < size; ii++) {
         xmlSecAssert2(data != NULL, -1);
 
-        if(data[i] != 0) {
+        if(data[ii] != 0) {
             break;
         }
     }
-    if(i > 0) {
-        ret = xmlSecBufferRemoveHead(bn, i);
+    if(ii > 0) {
+        ret = xmlSecBufferRemoveHead(bn, ii);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferRemoveHead", NULL, "size=%lu", XMLSEC_UL_BAD_CAST(i));
+            xmlSecInternalError2("xmlSecBufferRemoveHead", NULL, "size=%lu", XMLSEC_UL_BAD_CAST(ii));
             return (-1);
         }
     }
@@ -572,7 +578,7 @@ int
 xmlSecBnAdd(xmlSecBnPtr bn, int delta) {
     int over, tmp;
     xmlSecByte* data;
-    xmlSecSize i;
+    xmlSecSize ii;
     xmlSecByte ch;
     int ret;
 
@@ -584,35 +590,33 @@ xmlSecBnAdd(xmlSecBnPtr bn, int delta) {
 
     data = xmlSecBufferGetData(bn);
     if(delta > 0) {
-        for(over = delta, i = xmlSecBufferGetSize(bn); (i > 0) && (over > 0) ;) {
-                xmlSecAssert2(data != NULL, -1);
-
-            tmp     = data[--i];
-                over   += tmp;
-                data[i] = over % 256;
-                over    = over / 256;
+        for(over = delta, ii = xmlSecBufferGetSize(bn); (ii > 0) && (over > 0) ;) {
+            xmlSecAssert2(data != NULL, -1);
+            tmp      = data[--ii];
+            over    += tmp;
+            data[ii] = (xmlSecByte)(over % 256);
+            over     = over / 256;
         }
 
         while(over > 0) {
-                ch      = over % 256;
-                over    = over / 256;
+            ch       = (xmlSecByte)(over % 256);
+            over     = over / 256;
 
-                ret = xmlSecBufferPrepend(bn, &ch, 1);
-                if(ret < 0) {
-                    xmlSecInternalError2("xmlSecBufferPrepend", NULL, "size=%lu", XMLSEC_UL_BAD_CAST(1));
-                    return (-1);
-                }
+            ret = xmlSecBufferPrepend(bn, &ch, 1);
+            if(ret < 0) {
+                xmlSecInternalError2("xmlSecBufferPrepend", NULL, "size=%lu", XMLSEC_UL_BAD_CAST(1));
+                return (-1);
+            }
         }
     } else {
-        for(over = -delta, i = xmlSecBufferGetSize(bn); (i > 0) && (over > 0);) {
-                xmlSecAssert2(data != NULL, -1);
-
-            tmp     = data[--i];
+        for(over = -delta, ii = xmlSecBufferGetSize(bn); (ii > 0) && (over > 0);) {
+            xmlSecAssert2(data != NULL, -1);
+            tmp = data[--ii];
             if(tmp < over) {
-                data[i] = 0;
+                data[ii] = 0;
                 over = (over - tmp) / 256;
             } else {
-                data[i] = (xmlSecByte)(tmp - over);
+                data[ii] = (xmlSecByte)(tmp - over);
                 over = 0;
             }
         }
@@ -631,19 +635,19 @@ xmlSecBnAdd(xmlSecBnPtr bn, int delta) {
 int
 xmlSecBnReverse(xmlSecBnPtr bn) {
     xmlSecByte* data;
-    xmlSecSize i, j, size;
+    xmlSecSize ii, jj, size;
     xmlSecByte ch;
 
     xmlSecAssert2(bn != NULL, -1);
 
     data = xmlSecBufferGetData(bn);
     size = xmlSecBufferGetSize(bn);
-    for(i = 0, j = size - 1; i < size / 2; ++i, --j) {
+    for(ii = 0, jj = size - 1; ii < size / 2; ++ii, --jj) {
         xmlSecAssert2(data != NULL, -1);
 
-        ch       = data[i];
-        data[i]  = data[j];
-        data[j]  = ch;
+        ch       = data[ii];
+        data[ii]  = data[jj];
+        data[jj]  = ch;
     }
 
     return(0);
@@ -714,7 +718,7 @@ int
 xmlSecBnCompareReverse(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize dataSize) {
     xmlSecByte* bnData;
     xmlSecSize bnSize;
-    xmlSecSize i, j;
+    xmlSecSize ii, jj;
 
     xmlSecAssert2(bn != NULL, -1);
 
@@ -745,10 +749,10 @@ xmlSecBnCompareReverse(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize dataSi
     xmlSecAssert2(bnData != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(bnSize == dataSize, -1);
-    for(i = 0, j = dataSize - 1; i < dataSize; ++i, --j) {
-        if(bnData[i] < data[j]) {
+    for(ii = 0, jj = dataSize - 1; ii < dataSize; ++ii, --jj) {
+        if(bnData[ii] < data[jj]) {
             return(-1);
-        } else if(data[j] < bnData[i]) {
+        } else if(data[jj] < bnData[ii]) {
             return(1);
         }
     }

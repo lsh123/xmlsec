@@ -44,7 +44,7 @@ typedef void*                                   xmlSecPtr;
 #define XMLSEC_SIZE_MAX                         UINT_MAX
 #else  /* XMLSEC_NO_SIZE_T */
 #define xmlSecSize                              size_t
-#define XMLSEC_SIZE_MAX                         MAX_SIZE
+#define XMLSEC_SIZE_MAX                         SIZE_MAX
 #endif /* XMLSEC_NO_SIZE_T */
 
 /**

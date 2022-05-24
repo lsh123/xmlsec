@@ -28,6 +28,8 @@
 #include <xmlsec/buffer.h>
 #include <xmlsec/errors.h>
 
+#include "cast_helpers.h"
+
 /*****************************************************************************
  *
  * xmlSecBuffer
@@ -492,9 +494,11 @@ xmlSecBufferReadFile(xmlSecBufferPtr buf, const char* filename) {
  */
 int
 xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
-    xmlChar* content;
+    xmlChar* content = NULL;
     xmlSecSize size;
+    int len;
     int ret;
+    int res = -1;
 
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
@@ -502,34 +506,44 @@ xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
     content = xmlNodeGetContent(node);
     if(content == NULL) {
         xmlSecInvalidNodeContentError(node, NULL, "empty");
-        return(-1);
+        goto done;
     }
 
+    len = xmlStrlen(content);
+    if(len < 0) {
+        xmlSecInternalError("xmlStrlen", NULL);
+        goto done;
+    }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, goto done, NULL);
+
     /* base64 decode size is less than input size */
-    ret = xmlSecBufferSetMaxSize(buf, xmlStrlen(content));
+    ret = xmlSecBufferSetMaxSize(buf, size);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferSetMaxSize", NULL);
-        xmlFree(content);
-        return(-1);
+        goto done;
     }
 
     ret = xmlSecBase64Decode(content, xmlSecBufferGetData(buf), xmlSecBufferGetMaxSize(buf));
     if(ret < 0) {
         xmlSecInternalError("xmlSecBase64Decode", NULL);
-        xmlFree(content);
-        return(-1);
+        goto done;
     }
-    size = ret;
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, goto done, NULL);
 
     ret = xmlSecBufferSetSize(buf, size);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=%lu", XMLSEC_UL_BAD_CAST(size));
-        xmlFree(content);
-        return(-1);
+        goto done;
     }
-    xmlFree(content);
 
-    return(0);
+    /* success */
+    res = 0;
+
+done:
+    if(content != NULL) {
+        xmlFree(content);
+    }
+    return(res);
 }
 
 /**
@@ -591,6 +605,7 @@ xmlSecBufferCreateOutputBuffer(xmlSecBufferPtr buf) {
 static int
 xmlSecBufferIOWrite(xmlSecBufferPtr buf, const xmlSecByte *data, xmlSecSize size) {
     int ret;
+    int res;
 
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
@@ -600,8 +615,9 @@ xmlSecBufferIOWrite(xmlSecBufferPtr buf, const xmlSecByte *data, xmlSecSize size
         xmlSecInternalError2("xmlSecBufferAppend", NULL, "size=%lu", XMLSEC_UL_BAD_CAST(size));
         return(-1);
     }
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(size, res, return(-1), NULL);
 
-    return(size);
+    return(res);
 }
 
 static int

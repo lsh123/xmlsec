@@ -519,7 +519,7 @@ xmlSecNssHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxP
                 if(ret < 0) {
                     xmlSecInternalError2("xmlSecBufferAppend",
                                          xmlSecTransformGetName(transform),
-                                         "size=%d", dgstSize);
+                                         "size=%lu", XMLSEC_UL_BAD_CAST(dgstSize));
                     return(-1);
                 }
             }

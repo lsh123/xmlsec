@@ -269,7 +269,7 @@ xmlSecMSCryptoKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetData",
                              xmlSecTransformGetName(transform),
-                             "size=%d", ctx->keySize);
+                             "size=%lu", XMLSEC_UL_BAD_CAST(ctx->keySize));
         return(-1);
     }
 

@@ -932,8 +932,8 @@ xmlSecNssKeyDataDsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataDsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== dsa key: size = %d\n",
-            xmlSecNssKeyDataDsaGetSize(data));
+    fprintf(output, "=== dsa key: size = %lu\n",
+            XMLSEC_UL_BAD_CAST(xmlSecNssKeyDataDsaGetSize(data)));
 }
 
 static void
@@ -941,8 +941,8 @@ xmlSecNssKeyDataDsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataDsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<DSAKeyValue size=\"%d\" />\n",
-            xmlSecNssKeyDataDsaGetSize(data));
+    fprintf(output, "<DSAKeyValue size=\"%lu\" />\n",
+            XMLSEC_UL_BAD_CAST(xmlSecNssKeyDataDsaGetSize(data)));
 }
 
 #endif /* XMLSEC_NO_DSA */
@@ -1372,8 +1372,8 @@ xmlSecNssKeyDataRsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataRsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== rsa key: size = %d\n",
-            xmlSecNssKeyDataRsaGetSize(data));
+    fprintf(output, "=== rsa key: size = %lu\n",
+            XMLSEC_UL_BAD_CAST(xmlSecNssKeyDataRsaGetSize(data)));
 }
 
 static void
@@ -1381,8 +1381,8 @@ xmlSecNssKeyDataRsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataRsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<RSAKeyValue size=\"%d\" />\n",
-            xmlSecNssKeyDataRsaGetSize(data));
+    fprintf(output, "<RSAKeyValue size=\"%lu\" />\n",
+            XMLSEC_UL_BAD_CAST(xmlSecNssKeyDataRsaGetSize(data)));
 }
 
 #endif /* XMLSEC_NO_RSA */
@@ -1504,8 +1504,8 @@ xmlSecNssKeyDataEcdsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataEcdsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== ecdsa key: size = %d\n",
-            xmlSecNssKeyDataEcdsaGetSize(data));
+    fprintf(output, "=== ecdsa key: size = %lu\n",
+            XMLSEC_UL_BAD_CAST(xmlSecNssKeyDataEcdsaGetSize(data)));
 }
 
 static void
@@ -1513,7 +1513,7 @@ xmlSecNssKeyDataEcdsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataEcdsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<ECDSAKeyValue size=\"%d\" />\n",
-            xmlSecNssKeyDataEcdsaGetSize(data));
+    fprintf(output, "<ECDSAKeyValue size=\"%lu\" />\n",
+            XMLSEC_UL_BAD_CAST(xmlSecNssKeyDataEcdsaGetSize(data)));
 }
 #endif /* XMLSEC_NO_ECDSA */

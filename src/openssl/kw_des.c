@@ -314,7 +314,9 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfo
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
                 xmlSecInternalError4("xmlSecKWDes3Encode", xmlSecTransformGetName(transform),
-                                     "key=%d,in=%d,out=%d", keySize, inSize, outSize);
+                                     "keySize=%lu;inSize=%lu;outSize=%lu",
+                                     XMLSEC_UL_BAD_CAST(keySize), XMLSEC_UL_BAD_CAST(inSize), XMLSEC_UL_BAD_CAST(outSize));
+
                 return(-1);
             }
             outSize = ret;
@@ -324,7 +326,9 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfo
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
                 xmlSecInternalError4("xmlSecKWDes3Decode", xmlSecTransformGetName(transform),
-                                     "key=%d,in=%d,out=%d", keySize, inSize, outSize);
+                                     "keySize=%lu;inSize=%lu;outSize=%lu",
+                                     XMLSEC_UL_BAD_CAST(keySize), XMLSEC_UL_BAD_CAST(inSize), XMLSEC_UL_BAD_CAST(outSize));
+
                 return(-1);
             }
             outSize = ret;

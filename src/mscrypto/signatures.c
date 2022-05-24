@@ -328,7 +328,7 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferInitialize",
                              xmlSecTransformGetName(transform),
-                             "dataSize=%d", dataSize);
+                             "dataSize=%lu", XMLSEC_UL_BAD_CAST(dataSize));
         return(-1);
     }
 

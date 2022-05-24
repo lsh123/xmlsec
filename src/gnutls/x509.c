@@ -606,7 +606,7 @@ xmlSecGnuTLSKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     if (content < 0) {
         xmlSecInternalError2("xmlSecX509DataGetNodeContent",
                              xmlSecKeyDataKlassGetName(id),
-                             "content=%lu", XMLSEC_UL_BAD_CAST(content));
+                             "content=%d", content);
         return(-1);
     } else if(content == 0) {
         /* by default we are writing certificates and crls */

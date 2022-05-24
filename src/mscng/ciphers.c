@@ -835,7 +835,7 @@ xmlSecMSCngGCMBlockCipherCtxUpdate(xmlSecMSCngBlockCipherCtxPtr ctx,
     ret = xmlSecBufferSetSize(out, outSize + dwCLen);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", cipherName, "size=%lu",
-            XMLSEC_UL_BAD_CAST(utSize + dwCLen));
+            XMLSEC_UL_BAD_CAST(outSize + dwCLen));
         return(-1);
     }
 

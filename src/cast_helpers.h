@@ -121,23 +121,4 @@
     dstVal = (xmlSecSize)(srcVal);                                             \
 
 
-/******************************************************************************
- *
- *  TO_SIZE_T
- * 
- *****************************************************************************/
-
-/* Safe cast with limits check: int -> size_t (assume size_t >= 0) */
-#define XMLSEC_SAFE_CAST_INT_TO_SIZE_T(srcVal, dstVal, errorAction, errorObject) \
-    if(((srcVal) < 0) || (XMLSEC_UL_BAD_CAST(SIZE_MAX) < XMLSEC_UL_BAD_CAST(srcVal))) { \
-        xmlSecImpossibleCastError(int, (srcVal), "%d",                         \
-                                 size_t,XMLSEC_UL_BAD_CAST(0),                 \
-                                 XMLSEC_UL_BAD_CAST(SIZE_MAX),                 \
-                                 "%lu", (errorObject));                        \
-        errorAction;                                                           \
-    }                                                                          \
-    dstVal = (size_t)(srcVal);                                                 \
-
-
-
 #endif /* __XMLSEC_CAST_HELPERS_H__ */

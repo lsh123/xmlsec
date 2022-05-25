@@ -91,7 +91,6 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
                                 xmlSecTransformCtxPtr transformCtx) {
     int ivLen;
     xmlSecSize ivSize;
-    size_t ivSizeT;
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
@@ -113,14 +112,13 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     xmlSecAssert2(ivLen > 0, -1);
     xmlSecAssert2((xmlSecSize)ivLen <= sizeof(ctx->iv), -1);
     XMLSEC_SAFE_CAST_INT_TO_SIZE(ivLen, ivSize, return(-1), NULL);
-    XMLSEC_SAFE_CAST_INT_TO_SIZE_T(ivLen, ivSizeT, return(-1), NULL);
 
     if(encrypt) {
         /* generate random iv */
 #ifndef XMLSEC_OPENSSL_API_300
         ret = RAND_bytes(ctx->iv, ivLen);
 #else /* XMLSEC_OPENSSL_API_300 */
-        ret = RAND_bytes_ex(xmlSecOpenSSLGetLibCtx(), ctx->iv, ivSizeT, XMLSEEC_OPENSSL_RAND_BYTES_STRENGTH);
+        ret = RAND_bytes_ex(xmlSecOpenSSLGetLibCtx(), ctx->iv, ivSize, XMLSEEC_OPENSSL_RAND_BYTES_STRENGTH);
 #endif /* XMLSEC_OPENSSL_API_300 */
         if(ret != 1) {
             xmlSecOpenSSLError2("RAND_bytes", cipherName,
@@ -144,7 +142,7 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 
         /* copy iv to our buffer*/
         xmlSecAssert2(xmlSecBufferGetData(in) != NULL, -1);
-        memcpy(ctx->iv, xmlSecBufferGetData(in), ivSizeT);
+        memcpy(ctx->iv, xmlSecBufferGetData(in), ivSize);
 
         /* and remove from input */
         ret = xmlSecBufferRemoveHead(in, ivSize);
@@ -395,7 +393,7 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         const xmlChar* cipherName,
         xmlSecTransformCtxPtr transformCtx)
 {
-    xmlSecSize inSize, outSize;
+    xmlSecSize size, inSize, outSize;
     int inLen, outLen, padLen, blockLen;
     xmlSecByte* inBuf;
     xmlSecByte* outBuf;
@@ -441,9 +439,8 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 
         /* we can have inLen == 0 if there were no data at all, otherwise -- copy the data */
         if(inLen > 0) {
-            size_t inSizeT;
-            XMLSEC_SAFE_CAST_INT_TO_SIZE_T(inLen, inSizeT, return(-1), NULL);
-            memcpy(ctx->pad, inBuf, inSizeT);
+            XMLSEC_SAFE_CAST_INT_TO_SIZE(inLen, size, return(-1), NULL);
+            memcpy(ctx->pad, inBuf, size);
         }
 
         /* generate random padding */
@@ -451,9 +448,8 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 #ifndef XMLSEC_OPENSSL_API_300
             ret = RAND_bytes(ctx->pad + inLen, padLen - 1);
 #else /* XMLSEC_OPENSSL_API_300 */
-            size_t padSizeT;
-            XMLSEC_SAFE_CAST_INT_TO_SIZE_T(padLen, padSizeT, return(-1), NULL);
-            ret = RAND_bytes_ex(xmlSecOpenSSLGetLibCtx(), ctx->pad + inLen, padSizeT - 1, 
+            XMLSEC_SAFE_CAST_INT_TO_SIZE(padLen, size, return(-1), NULL);
+            ret = RAND_bytes_ex(xmlSecOpenSSLGetLibCtx(), ctx->pad + inLen, size - 1, 
                                 XMLSEEC_OPENSSL_RAND_BYTES_STRENGTH);
 #endif /* XMLSEC_OPENSSL_API_300 */
             if (ret != 1) {
@@ -833,7 +829,7 @@ static int
 xmlSecOpenSSLEvpBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecOpenSSLEvpBlockCipherCtxPtr ctx;
     xmlSecBufferPtr buffer;
-    size_t cipherKeySize;
+    xmlSecSize cipherKeySize;
     int cipherKeyLen;
 
     xmlSecAssert2(xmlSecOpenSSLEvpBlockCipherCheckId(transform), -1);
@@ -862,7 +858,7 @@ xmlSecOpenSSLEvpBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key
     }
 
     xmlSecAssert2(xmlSecBufferGetData(buffer) != NULL, -1);
-    XMLSEC_SAFE_CAST_INT_TO_SIZE_T(cipherKeyLen, cipherKeySize, return(-1), xmlSecTransformGetName(transform));
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(cipherKeyLen, cipherKeySize, return(-1), xmlSecTransformGetName(transform));
     memcpy(ctx->key, xmlSecBufferGetData(buffer), cipherKeySize);
 
     ctx->keyInitialized = 1;

@@ -53,6 +53,10 @@
 #include <string.h>
 #include <stddef.h>
 
+#if defined(__APPLE__)
+#include <stdint.h>
+#endif /* defined(__APPLE__) */
+
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
 #include <libxml/xpointer.h>

@@ -1318,8 +1318,8 @@ xmlSecOpenSSLX509_NAME_ENTRY_cmp(const X509_NAME_ENTRY * const *a, const X509_NA
     }
 
     if(a_len > 0) {
-        size_t a_size;
-        XMLSEC_SAFE_CAST_INT_TO_SIZE_T(a_len, a_size, return(-1), NULL);
+        xmlSecSize a_size;
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(a_len, a_size, return(-1), NULL);
         ret = memcmp(ASN1_STRING_get0_data(a_value), ASN1_STRING_get0_data(b_value), a_size);
         if(ret != 0) {
             return(ret);

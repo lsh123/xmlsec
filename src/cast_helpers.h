@@ -44,16 +44,30 @@
     }                                                                          \
     dstVal = (int)(srcVal);                                                    \
 
-
-/* Safe cast with limits check: ptrdiff_t -> int (assume ptrdiff_t >= int) */
-#define XMLSEC_SAFE_CAST_PTRDIFF_T_TO_INT(srcVal, dstVal, errorAction, errorObject) \
-    if(((srcVal) < (ptrdiff_t)INT_MIN) || ((ptrdiff_t)INT_MAX < (srcVal))) {   \
-        xmlSecImpossibleCastError(size_t, (long)(srcVal), "%ld",               \
+/* Safe cast with limits check: long -> int */
+#define XMLSEC_SAFE_CAST_LONG_TO_INT(srcVal, dstVal, errorAction, errorObject) \
+    if(((srcVal) < (long)INT_MIN) || ((long)INT_MAX < (srcVal))) {   \
+        xmlSecImpossibleCastError(long, XMLSEC_UL_BAD_CAST(srcVal), "%ld",     \
                                  int, INT_MIN, INT_MAX, "%d", (errorObject));  \
         errorAction;                                                           \
     }                                                                          \
     dstVal = (int)(srcVal);                                                    \
 
+
+/* Safe cast with limits check: ptrdiff_t -> int (assume ptrdiff_t >= int) */
+#if defined(__APPLE__)
+#define XMLSEC_SAFE_CAST_PTRDIFF_T_TO_INT(srcVal, dstVal, errorAction, errorObject) \
+    if(((srcVal) < (ptrdiff_t)INT_MIN) || ((ptrdiff_t)INT_MAX < (srcVal))) {   \
+        xmlSecImpossibleCastError(ptrdiff_t, (long)(srcVal), "%ld",            \
+                                 int, INT_MIN, INT_MAX, "%d", (errorObject));  \
+        errorAction;                                                           \
+    }                                                                          \
+    dstVal = (int)(srcVal);                                                    \
+
+#else /* defined(__APPLE__) */
+#define XMLSEC_SAFE_CAST_PTRDIFF_T_TO_INT(srcVal, dstVal, errorAction, errorObject) \
+    XMLSEC_SAFE_CAST_LONG_TO_INT(srcVal, dstVal, errorAction, errorObject)
+#endif /* defined(__APPLE__) */
 
 /******************************************************************************
  *

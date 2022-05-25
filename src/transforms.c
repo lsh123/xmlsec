@@ -51,9 +51,17 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <stddef.h>
 
 #if defined(__APPLE__)
+#if defined(__cplusplus)
+#include <cstddef>
+#include <cstdint>
+#else /* defined(__cplusplus) */
+#include <stddef.h>
+#include <stdint.h>
+#endif /* defined(__cplusplus) */
+#else /* defined(__APPLE__) */
+#include <stddef.h>
 #include <stdint.h>
 #endif /* defined(__APPLE__) */
 

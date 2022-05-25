@@ -51,19 +51,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
-#if defined(__APPLE__)
-#if defined(__cplusplus)
-#include <cstddef>
-#include <cstdint>
-#else /* defined(__cplusplus) */
 #include <stddef.h>
-#include <stdint.h>
-#endif /* defined(__cplusplus) */
-#else /* defined(__APPLE__) */
-#include <stddef.h>
-#include <stdint.h>
-#endif /* defined(__APPLE__) */
 
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
@@ -712,7 +700,11 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
     xmlSecNodeSetType nodeSetType = xmlSecNodeSetTree;
     const xmlChar* xptr;
     xmlChar* buf = NULL;
+#if defined(__APPLE__)
+    long uriDiff;
+#else /* defined(__APPLE__) */
     ptrdiff_t uriDiff;
+#endif /* defined(__APPLE__) */
     int uriLen;
     int useVisa3DHack = 0;
     int ret;

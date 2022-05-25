@@ -1026,7 +1026,11 @@ xmlSecQName2IntegerGetIntegerFromString(xmlSecQName2IntegerInfoConstPtr info,
 
     qnameLocalPart = xmlStrchr(qname, ':');
     if(qnameLocalPart != NULL) {
+#if defined(__APPLE__)
+        long qnameDiff;
+#else /* defined(__APPLE__) */
         ptrdiff_t qnameDiff;
+#endif /* defined(__APPLE__) */
         int qnameLen;
         
         qnameDiff = (qnameLocalPart - qname);
@@ -1435,7 +1439,11 @@ xmlSecQName2BitMaskGetBitMaskFromString(xmlSecQName2BitMaskInfoConstPtr info,
 
     qnameLocalPart = xmlStrchr(qname, ':');
     if(qnameLocalPart != NULL) {
+#if defined(__APPLE__)
+        long qnameDiff;
+#else /* defined(__APPLE__) */
         ptrdiff_t qnameDiff;
+#endif /* defined(__APPLE__) */
         int qnameLen;
         
         qnameDiff = (qnameLocalPart - qname);

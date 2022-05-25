@@ -234,10 +234,10 @@ xmlSecNssBlockCipherCtxUpdate(xmlSecNssBlockCipherCtxPtr ctx,
         xmlSecNssError("PK11_CipherOp", cipherName);
         return(-1);
     }
-    xmlSecAssert2((xmlSecSize)outLen == inSize, -1);
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(outLen, outSize2, return(-1), NULL);
+    xmlSecAssert2(outSize2 == inSize, -1);
 
     /* set correct output buffer size */
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(outLen, outSize2, return(-1), NULL);
     ret = xmlSecBufferSetSize(out, outSize + outSize2);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", cipherName,
@@ -339,7 +339,7 @@ xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
         return(-1);
     }
     XMLSEC_SAFE_CAST_INT_TO_SIZE(outLen, outSize2, return(-1), NULL);
-    xmlSecAssert2(outSize == inSize, -1);
+    xmlSecAssert2(outSize2 == inSize, -1);
 
     if(encrypt == 0) {
         /* check padding */

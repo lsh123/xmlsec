@@ -41,6 +41,8 @@
 #include <xmlsec/nss/pkikeys.h>
 #include <xmlsec/nss/keysstore.h>
 
+#include "../cast_helpers.h"
+
 /* workaround - NSS exports this but doesn't declare it */
 extern CERTCertificate * __CERT_NewTempCertificate              (CERTCertDBHandle *handle,
                                                                  SECItem *derCert,
@@ -164,6 +166,7 @@ xmlSecNssAppReadSECItem(SECItem *contents, const char *fn) {
     PRFileDesc *file = NULL;
     PRInt32 numBytes;
     PRStatus prStatus;
+    unsigned int ulen;
     int ret = -1;
 
     xmlSecAssert2(contents != NULL, -1);
@@ -182,9 +185,10 @@ xmlSecNssAppReadSECItem(SECItem *contents, const char *fn) {
                         "filename=%s", xmlSecErrorsSafeString(fn));
         goto done;
     }
+    XMLSEC_SAFE_CAST_INT_TO_UINT(info.size, ulen, goto done, NULL);
 
     contents->data = 0;
-    if (!SECITEM_AllocItem(NULL, contents, info.size)) {
+    if (!SECITEM_AllocItem(NULL, contents, ulen)) {
         xmlSecNssError("SECITEM_AllocItem", NULL);
         goto done;
     }
@@ -725,7 +729,7 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
     CERTCertificate     *cert = NULL;
     CERTCertificate     *tmpcert = NULL;
     SEC_PKCS12DecoderContext *p12ctx = NULL;
-
+    size_t pwdSize;
 
     xmlSecAssert2((secItem != NULL), NULL);
 
@@ -744,7 +748,9 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
     }
 
     pwditem.data = (unsigned char *)pwd;
-    pwditem.len = strlen(pwd)+1;
+    pwdSize = strlen(pwd) + 1;
+    XMLSEC_SAFE_CAST_SIZE_T_TO_UINT(pwdSize, pwditem.len, goto done, NULL);
+
     if (!SECITEM_AllocItem(NULL, &uc2_pwditem, 2*pwditem.len)) {
         xmlSecNssError("SECITEM_AllocItem", NULL);
         goto done;

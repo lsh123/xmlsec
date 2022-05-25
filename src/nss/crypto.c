@@ -37,6 +37,8 @@
 #include <xmlsec/nss/crypto.h>
 #include <xmlsec/nss/x509.h>
 
+#include "../cast_helpers.h"
+
 static xmlSecCryptoDLFunctionsPtr gXmlSecNssFunctions = NULL;
 
 /**
@@ -409,6 +411,7 @@ xmlSecNssGetInternalKeySlot()
 int
 xmlSecNssGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
     SECStatus rv;
+    int len;
     int ret;
 
     xmlSecAssert2(buffer != NULL, -1);
@@ -422,7 +425,8 @@ xmlSecNssGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
     }
 
     /* get random data */
-    rv = PK11_GenerateRandom((xmlSecByte*)xmlSecBufferGetData(buffer), size);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(size, len, return(-1), NULL);
+    rv = PK11_GenerateRandom((xmlSecByte*)xmlSecBufferGetData(buffer), len);
     if(rv != SECSuccess) {
         xmlSecNssError2("PK11_GenerateRandom", NULL,
                         "size=%lu", XMLSEC_UL_BAD_CAST(size));

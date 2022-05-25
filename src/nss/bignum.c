@@ -33,6 +33,8 @@
 #include <xmlsec/nss/crypto.h>
 #include <xmlsec/nss/bignum.h>
 
+#include "../cast_helpers.h"
+
 /**
  * xmlSecNssNodeGetBigNumValue:
  * @arena: the arena from which to allocate memory
@@ -51,8 +53,11 @@ SECItem *
 xmlSecNssNodeGetBigNumValue(PRArenaPool *arena, const xmlNodePtr cur,
                             SECItem *a) {
     xmlSecBuffer buf;
+    int buf_initialized = 0;
     int ret;
-    SECItem *rv;
+    SECItem *rv = NULL;
+    xmlSecSize size;
+    unsigned int ulen;
     int len;
 
     xmlSecAssert2(arena != NULL, NULL);
@@ -61,30 +66,34 @@ xmlSecNssNodeGetBigNumValue(PRArenaPool *arena, const xmlNodePtr cur,
     ret = xmlSecBufferInitialize(&buf, 128);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize", NULL);
-        return(NULL);
+        goto done;
     }
+    buf_initialized = 1;
 
     ret = xmlSecBufferBase64NodeContentRead(&buf, cur);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferBase64NodeContentRead", NULL);
-        xmlSecBufferFinalize(&buf);
-        return(NULL);
+        xmlSecInternalError("xmlSecBufferBase66NodeContentRead", NULL);
+        goto done;
     }
 
-    len = xmlSecBufferGetSize(&buf);
+    size = xmlSecBufferGetSize(&buf);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(size, len, goto done, NULL);
+    XMLSEC_SAFE_CAST_INT_TO_UINT(len, ulen, goto done, NULL);
 
     if (a == NULL) {
-        rv = SECITEM_AllocItem(arena, NULL, len);
+        rv = SECITEM_AllocItem(arena, NULL, ulen);
     } else {
         rv = a;
         xmlSecAssert2(rv->data == NULL, NULL);
-        rv->len = len;
-        rv->data = PORT_ArenaZAlloc(arena, len);
+        rv->len = ulen;
+        rv->data = PORT_ArenaZAlloc(arena, ulen);
     }
+    PORT_Memcpy(rv->data, xmlSecBufferGetData(&buf), ulen);
 
-    PORT_Memcpy(rv->data, xmlSecBufferGetData(&buf), len);
-
-    xmlSecBufferFinalize(&buf);
+done:
+    if(buf_initialized) {
+        xmlSecBufferFinalize(&buf);
+    }
     return(rv);
 }
 

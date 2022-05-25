@@ -343,12 +343,12 @@ xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
 
     if(encrypt == 0) {
         /* check padding */
-        if(outLen < outBuf[blockLen - 1]) {
+        if(outSize2 < outBuf[blockLen - 1]) {
             xmlSecInvalidSizeLessThanError("Input data padding",
                     inSize, outBuf[blockLen - 1], cipherName);
             return(-1);
         }
-        outLen -= outBuf[blockLen - 1];
+        outSize2 -= outBuf[blockLen - 1];
     }
 
     /* set correct output buffer size */

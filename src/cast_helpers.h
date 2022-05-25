@@ -20,7 +20,13 @@
 #define SIZE_MAX (~(size_t)0)
 #endif /* SIZE_MAX */
 
-/* Safe cast with limits check: xmlSecSize -> int */
+/******************************************************************************
+ *
+ *  TO_INT
+ * 
+ *****************************************************************************/
+
+/* Safe cast with limits check: xmlSecSize -> int (assume xmlSecSize >= 0) */
 #define XMLSEC_SAFE_CAST_SIZE_TO_INT(srcVal, dstVal, errorAction, errorObject) \
     if(XMLSEC_UL_BAD_CAST(srcVal) > XMLSEC_UL_BAD_CAST(INT_MAX)) {             \
         xmlSecImpossibleCastError(xmlSecSize, XMLSEC_UL_BAD_CAST(srcVal), "%lu", \
@@ -29,7 +35,75 @@
     }                                                                          \
     dstVal = (int)(srcVal);                                                    \
 
-/* Safe cast with limits check: size_t -> xmlSecSize */
+/* Safe cast with limits check: size_t -> int (assume size_t >= 0) */
+#define XMLSEC_SAFE_CAST_SIZE_T_TO_INT(srcVal, dstVal, errorAction, errorObject) \
+    if(XMLSEC_UL_BAD_CAST(srcVal) > XMLSEC_UL_BAD_CAST(INT_MAX)) {             \
+        xmlSecImpossibleCastError(size_t, XMLSEC_UL_BAD_CAST(srcVal), "%lu",   \
+                                 int, INT_MIN, INT_MAX, "%d", (errorObject));  \
+        errorAction;                                                           \
+    }                                                                          \
+    dstVal = (int)(srcVal);                                                    \
+
+/* Safe cast with limits check: long -> int */
+#define XMLSEC_SAFE_CAST_LONG_TO_INT(srcVal, dstVal, errorAction, errorObject) \
+    if(((srcVal) < (long)INT_MIN) || ((long)INT_MAX < (srcVal))) {   \
+        xmlSecImpossibleCastError(long, XMLSEC_UL_BAD_CAST(srcVal), "%ld",     \
+                                 int, INT_MIN, INT_MAX, "%d", (errorObject));  \
+        errorAction;                                                           \
+    }                                                                          \
+    dstVal = (int)(srcVal);                                                    \
+
+
+/* Safe cast with limits check: ptrdiff_t -> int (assume ptrdiff_t >= int) */
+#if defined(__APPLE__)
+
+#define XMLSEC_SAFE_CAST_PTRDIFF_T_TO_INT(srcVal, dstVal, errorAction, errorObject) \
+    XMLSEC_SAFE_CAST_LONG_TO_INT(srcVal, dstVal, errorAction, errorObject)
+
+#else /* defined(__APPLE__) */
+
+#define XMLSEC_SAFE_CAST_PTRDIFF_T_TO_INT(srcVal, dstVal, errorAction, errorObject) \
+    if(((srcVal) < (ptrdiff_t)INT_MIN) || ((ptrdiff_t)INT_MAX < (srcVal))) {   \
+        xmlSecImpossibleCastError(ptrdiff_t, (long)(srcVal), "%ld",            \
+                                 int, INT_MIN, INT_MAX, "%d", (errorObject));  \
+        errorAction;                                                           \
+    }                                                                          \
+    dstVal = (int)(srcVal);                                                    \
+
+#endif /* defined(__APPLE__) */
+
+/******************************************************************************
+ *
+ *  TO_LONG
+ * 
+ *****************************************************************************/
+
+/* Safe cast with limits check: xmlSecSize -> long (assume xmlSecSize >= 0) */
+#define XMLSEC_SAFE_CAST_SIZE_TO_LONG(srcVal, dstVal, errorAction, errorObject)   \
+    if(XMLSEC_UL_BAD_CAST(srcVal) > XMLSEC_UL_BAD_CAST(LONG_MAX)) {            \
+        xmlSecImpossibleCastError(xmlSecSize, XMLSEC_UL_BAD_CAST(srcVal), "%lu",  \
+                                 long, LONG_MIN, LONG_MAX, "%ld", (errorObject)); \
+        errorAction;                                                           \
+    }                                                                          \
+    dstVal = (long)(srcVal);                                                   \
+
+/* Safe cast with limits check: size_t -> long (assume size_t >= 0) */
+#define XMLSEC_SAFE_CAST_SIZE_T_TO_LONG(srcVal, dstVal, errorAction, errorObject) \
+    if(XMLSEC_UL_BAD_CAST(srcVal) > XMLSEC_UL_BAD_CAST(LONG_MAX)) {            \
+        xmlSecImpossibleCastError(size_t, XMLSEC_UL_BAD_CAST(srcVal), "%lu",   \
+                                 long, LONG_MIN, LONG_MAX, "%ld", (errorObject)); \
+        errorAction;                                                           \
+    }                                                                          \
+    dstVal = (long)(srcVal);                                                   \
+
+
+/******************************************************************************
+ *
+ *  TO_SIZE (to xmlSecSize)
+ * 
+ *****************************************************************************/
+
+/* Safe cast with limits check: size_t -> xmlSecSize (assume size_t >= 0) */
 #define XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
     if(XMLSEC_UL_BAD_CAST(srcVal) > XMLSEC_UL_BAD_CAST(XMLSEC_SIZE_MAX)) {     \
         xmlSecImpossibleCastError(size_t, XMLSEC_UL_BAD_CAST(srcVal), "%lu",   \
@@ -40,31 +114,10 @@
     }                                                                          \
     dstVal = (xmlSecSize)(srcVal);                                             \
 
-
-/* Safe cast with limits check: size_t -> int */
-#define XMLSEC_SAFE_CAST_SIZE_T_TO_INT(srcVal, dstVal, errorAction, errorObject) \
-    if(XMLSEC_UL_BAD_CAST(srcVal) > XMLSEC_UL_BAD_CAST(INT_MAX)) {             \
-        xmlSecImpossibleCastError(size_t, XMLSEC_UL_BAD_CAST(srcVal), "%lu",   \
-                                 int, INT_MIN, INT_MAX, "%d", (errorObject));  \
-        errorAction;                                                           \
-    }                                                                          \
-    dstVal = (int)(srcVal);                                                    \
-
-
-/* Safe cast with limits check: size_t -> long */
-#define XMLSEC_SAFE_CAST_SIZE_T_TO_LONG(srcVal, dstVal, errorAction, errorObject) \
-    if(XMLSEC_UL_BAD_CAST(srcVal) > XMLSEC_UL_BAD_CAST(LONG_MAX)) {            \
-        xmlSecImpossibleCastError(size_t, XMLSEC_UL_BAD_CAST(srcVal), "%lu",   \
-                                 long, LONG_MIN, LONG_MAX, "%ld", (errorObject)); \
-        errorAction;                                                           \
-    }                                                                          \
-    dstVal = (long)(srcVal);                                                    \
-
-
-/* Safe cast with limits check: int -> xmlSecSize */
-#define XMLSEC_SAFE_CAST_INT_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
-    if((srcVal) < 0) {                                                         \
-        xmlSecImpossibleCastError(int, (srcVal), "%d",                         \
+/* Safe cast with limits check: long -> xmlSecSize (assume xmlSecSize >= 0) */
+#define XMLSEC_SAFE_CAST_LONG_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
+    if(((srcVal) < 0) || (XMLSEC_UL_BAD_CAST(XMLSEC_SIZE_MAX) < XMLSEC_UL_BAD_CAST(srcVal))) { \
+        xmlSecImpossibleCastError(long, (srcVal), "%ld",                       \
                                   xmlSecSize, XMLSEC_UL_BAD_CAST(0),           \
                                   XMLSEC_UL_BAD_CAST(XMLSEC_SIZE_MAX),         \
                                   "%lu", (errorObject));                       \
@@ -73,15 +126,16 @@
     dstVal = (xmlSecSize)(srcVal);                                             \
 
 
-/* Safe cast with limits check: int -> size_t */
-#define XMLSEC_SAFE_CAST_INT_TO_SIZE_T(srcVal, dstVal, errorAction, errorObject) \
-    if((srcVal) < 0) {                                                         \
+/* Safe cast with limits check: int -> xmlSecSize (assume xmlSecSize >= 0) */
+#define XMLSEC_SAFE_CAST_INT_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
+    if(((srcVal) < 0) || (XMLSEC_UL_BAD_CAST(XMLSEC_SIZE_MAX) < XMLSEC_UL_BAD_CAST(srcVal))) { \
         xmlSecImpossibleCastError(int, (srcVal), "%d",                         \
-                                 size_t,XMLSEC_UL_BAD_CAST(0),                 \
-                                 XMLSEC_UL_BAD_CAST(SIZE_MAX),                 \
-                                 "%lu", (errorObject));                        \
+                                  xmlSecSize, XMLSEC_UL_BAD_CAST(0),           \
+                                  XMLSEC_UL_BAD_CAST(XMLSEC_SIZE_MAX),         \
+                                  "%lu", (errorObject));                       \
         errorAction;                                                           \
     }                                                                          \
-    dstVal = (size_t)(srcVal);                                                 \
+    dstVal = (xmlSecSize)(srcVal);                                             \
+
 
 #endif /* __XMLSEC_CAST_HELPERS_H__ */

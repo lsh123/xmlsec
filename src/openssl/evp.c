@@ -39,6 +39,7 @@
 #include <openssl/param_build.h>
 #endif /* XMLSEC_OPENSSL_API_300 */
 
+#include "../cast_helpers.h"
 
 /******************************************************************************
  *
@@ -1398,6 +1399,7 @@ xmlSecOpenSSLKeyDataDsaGetSize(xmlSecKeyDataPtr data) {
     const EVP_PKEY* pKey = NULL;
     BIGNUM *p = NULL;
 #endif /* XMLSEC_OPENSSL_API_300 */
+    int numBits;
     xmlSecSize res = 0;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId), 0);
@@ -1412,7 +1414,7 @@ xmlSecOpenSSLKeyDataDsaGetSize(xmlSecKeyDataPtr data) {
     if(p == NULL) {
         return(0);
     }
-    res = BN_num_bits(p);
+    numBits = BN_num_bits(p);
 #else /* XMLSEC_OPENSSL_API_300 */
     pKey = xmlSecOpenSSLKeyDataDsaGetEvp(data);
     xmlSecAssert2(pKey != NULL, 0);
@@ -1424,10 +1426,16 @@ xmlSecOpenSSLKeyDataDsaGetSize(xmlSecKeyDataPtr data) {
     if(p == NULL) {
         return(0);
     } 
-    res = BN_num_bits(p);
+    numBits = BN_num_bits(p);
     BN_clear_free(p);
 #endif /* XMLSEC_OPENSSL_API_300 */
 
+    if(numBits < 0) {
+        xmlSecOpenSSLError("BN_num_bits", xmlSecKeyDataGetName(data));
+        return(0);
+    }
+
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(numBits, res, return(0), xmlSecKeyDataGetName(data));
     return(res);
 }
 
@@ -1677,6 +1685,7 @@ xmlSecOpenSSLKeyDataEcdsaGetSize(xmlSecKeyDataPtr data) {
     const EVP_PKEY* pKey;
 #endif /* XMLSEC_OPENSSL_API_300 */
     BIGNUM * order = NULL;
+    int numBits;
     xmlSecSize res;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId), 0);
@@ -1716,8 +1725,15 @@ xmlSecOpenSSLKeyDataEcdsaGetSize(xmlSecKeyDataPtr data) {
 #endif /* XMLSEC_OPENSSL_API_300 */
 
     xmlSecAssert2(order != NULL, 0);
-    res = BN_num_bytes(order);
+    numBits = BN_num_bytes(order);
     BN_clear_free(order);
+
+    if(numBits < 0) {
+        xmlSecOpenSSLError("BN_num_bits", xmlSecKeyDataGetName(data));
+        return(0);
+    }
+
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(numBits, res, return(0), xmlSecKeyDataGetName(data));
     return(res);
 }
 
@@ -2539,7 +2555,8 @@ xmlSecOpenSSLKeyDataRsaGetSize(xmlSecKeyDataPtr data) {
     EVP_PKEY* pKey = NULL;
     BIGNUM* n = NULL;
 #endif /* XMLSEC_OPENSSL_API_300 */
-    xmlSecSize res = 0;
+    int numBits;
+    xmlSecSize res;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId), 0);
 
@@ -2553,7 +2570,7 @@ xmlSecOpenSSLKeyDataRsaGetSize(xmlSecKeyDataPtr data) {
     if(n == NULL) {
         return(0);
     }
-    res = BN_num_bits(n);
+    numBits = BN_num_bits(n);
 #else /* XMLSEC_OPENSSL_API_300 */
     pKey = xmlSecOpenSSLKeyDataRsaGetEvp(data);
     xmlSecAssert2(pKey != NULL, 0);
@@ -2563,10 +2580,16 @@ xmlSecOpenSSLKeyDataRsaGetSize(xmlSecKeyDataPtr data) {
         return(0);
     }
 
-    res = BN_num_bits(n);
+    numBits = BN_num_bits(n);
     BN_clear_free(n);
 #endif /* XMLSEC_OPENSSL_API_300 */
 
+    if(numBits < 0) {
+        xmlSecOpenSSLError("BN_num_bits", xmlSecKeyDataGetName(data));
+        return(0);
+    }
+
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(numBits, res, return(0), xmlSecKeyDataGetName(data));
     return(res);
 }
 

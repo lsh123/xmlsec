@@ -51,6 +51,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <stddef.h>
 
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
@@ -699,6 +700,12 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
     xmlSecNodeSetType nodeSetType = xmlSecNodeSetTree;
     const xmlChar* xptr;
     xmlChar* buf = NULL;
+#if defined(__APPLE__)
+    long uriDiff;
+#else /* defined(__APPLE__) */
+    ptrdiff_t uriDiff;
+#endif /* defined(__APPLE__) */
+    int uriLen;
     int useVisa3DHack = 0;
     int ret;
 
@@ -740,7 +747,10 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
         return(0);
     }
 
-    ctx->uri = xmlStrndup(uri, (int)(xptr - uri));
+    uriDiff = (xptr - uri);
+    XMLSEC_SAFE_CAST_PTRDIFF_T_TO_INT(uriDiff, uriLen, return(-1), NULL);
+
+    ctx->uri = xmlStrndup(uri, uriLen);
     if(ctx->uri == NULL) {
         xmlSecStrdupError(uri, NULL);
         return(-1);

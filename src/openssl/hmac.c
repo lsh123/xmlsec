@@ -30,6 +30,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 #include <openssl/hmac.h>
 
@@ -349,8 +350,27 @@ xmlSecOpenSSLHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecT
 
         content = xmlNodeGetContent(cur);
         if(content != NULL) {
-            ctx->dgstSize = atoi((char*)content);
+            long int val;
+            char* endptr = NULL;
+
+            val = strtol((char*)content, &endptr, 10);
+            if((val <= 0) || (val == LONG_MAX) || (endptr == NULL)) {
+                xmlSecInvalidNodeContentError(cur, xmlSecTransformGetName(transform),
+                                              "can't parse hmac output length");
+                xmlFree(content);
+                return(-1);
+           }
+           /* skip spaces at the end */
+           while(isspace(*endptr)) { ++endptr; }
+           if(((char*)content + xmlStrlen(content)) != endptr) {
+                xmlSecInvalidNodeContentError(cur, xmlSecTransformGetName(transform),
+                                              "invalid hmac output length");
+                xmlFree(content);
+                return(-1);
+           }
+
             xmlFree(content);
+            XMLSEC_SAFE_CAST_LONG_TO_SIZE(val, ctx->dgstSize, return(-1), xmlSecTransformGetName(transform));
         }
 
         /* Ensure that HMAC length is greater than min specified.

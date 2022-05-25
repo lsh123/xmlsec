@@ -319,7 +319,7 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfo
 
                 return(-1);
             }
-            outSize = ret;
+            XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outSize, return(-1), xmlSecTransformGetName(transform));
         } else {
             ret = xmlSecKWDes3Decode(&xmlSecOpenSSLKWDes3ImplKlass, ctx,
                                     xmlSecBufferGetData(in), inSize,
@@ -331,7 +331,7 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfo
 
                 return(-1);
             }
-            outSize = ret;
+            XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outSize, return(-1), xmlSecTransformGetName(transform));
         }
 
         ret = xmlSecBufferSetSize(out, outSize);
@@ -505,8 +505,7 @@ xmlSecOpenSSLKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
     EVP_CIPHER*         cipher = NULL;
 #endif /* XMLSEC_OPENSSL_API_300 */
     EVP_CIPHER_CTX* cipherCtx = NULL;
-    int updateLen;
-    int finalLen;
+    int inLen, updateLen, finalLen;
     int ret;
     int res = -1;
 
@@ -544,7 +543,8 @@ xmlSecOpenSSLKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
 
     EVP_CIPHER_CTX_set_padding(cipherCtx, 0);
 
-    ret = EVP_CipherUpdate(cipherCtx, out, &updateLen, in, inSize);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, goto done, NULL);
+    ret = EVP_CipherUpdate(cipherCtx, out, &updateLen, in, inLen);
     if(ret != 1) {
         xmlSecOpenSSLError("EVP_CipherUpdate", NULL);
         goto done;

@@ -314,7 +314,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
                     goto done;
                 }
                 vpm_flags = X509_VERIFY_PARAM_get_flags(vpm);
-                vpm_flags &= (~X509_V_FLAG_CRL_CHECK);
+                vpm_flags &= (~((unsigned long)X509_V_FLAG_CRL_CHECK));
 
                 if(keyInfoCtx->certsVerificationTime > 0) {
                     vpm_flags |= X509_V_FLAG_USE_CHECK_TIME;
@@ -735,12 +735,13 @@ err:
     return(-1);
 }
 
+
 static X509*
 xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
                         xmlChar *issuerName, xmlChar *issuerSerial,
                         xmlChar *ski) {
     X509 *cert = NULL;
-    x509_size_t i;
+    x509_size_t ii;
 
     xmlSecAssert2(certs != NULL, NULL);
 
@@ -756,8 +757,8 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
             return(NULL);
         }
 
-        for(i = 0; i < sk_X509_num(certs); ++i) {
-            cert = sk_X509_value(certs, i);
+        for(ii = 0; ii < sk_X509_num(certs); ++ii) {
+            cert = sk_X509_value(certs, ii);
             subj = X509_get_subject_name(cert);
             if(xmlSecOpenSSLX509NamesCompare(nm, subj) == 0) {
                 X509_NAME_free(nm);
@@ -801,8 +802,8 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
         BN_clear_free(bn);
 
 
-        for(i = 0; i < sk_X509_num(certs); ++i) {
-            cert = sk_X509_value(certs, i);
+        for(ii = 0; ii < sk_X509_num(certs); ++ii) {
+            cert = sk_X509_value(certs, ii);
             if(ASN1_INTEGER_cmp(X509_get_serialNumber(cert), serial) != 0) {
                 continue;
             }
@@ -818,19 +819,29 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
         ASN1_INTEGER_free(serial);
     } else if(ski != NULL) {
         int len;
+        xmlSecSize size;
         int index;
         X509_EXTENSION *ext;
         ASN1_OCTET_STRING *keyId;
 
+        len = xmlStrlen(ski);
+        if(len <= 0) {
+            xmlSecInternalError("xmlStrlen", NULL);
+            return(NULL);
+        }
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(NULL), NULL);
+
         /* our usual trick with base64 decode */
-        len = xmlSecBase64Decode(ski, (xmlSecByte*)ski, xmlStrlen(ski));
+        len = xmlSecBase64Decode(ski, (xmlSecByte*)ski, size);
         if(len < 0) {
             xmlSecInternalError2("xmlSecBase64Decode", NULL,
                                  "ski=%s", xmlSecErrorsSafeString(ski));
             return(NULL);
         }
-        for(i = 0; i < sk_X509_num(certs); ++i) {
-            cert = sk_X509_value(certs, i);
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(NULL), NULL);
+
+        for(ii = 0; ii < sk_X509_num(certs); ++ii) {
+            cert = sk_X509_value(certs, ii);
             index = X509_get_ext_by_NID(cert, NID_subject_key_identifier, -1);
             if(index < 0) {
                 continue;
@@ -843,7 +854,8 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
             if(keyId == NULL) {
                 continue;
             }
-            if((keyId->length == len) && (memcmp(keyId->data, ski, len) == 0)) {
+            
+            if((keyId->length == len) && (memcmp(keyId->data, ski, size) == 0)) {
                 ASN1_OCTET_STRING_free(keyId);
                 return(cert);
             }
@@ -1163,7 +1175,7 @@ xmlSecOpenSSLX509NameStringRead(xmlSecByte **str, int *strLen,
             xmlSecInvalidDataError("two hex digits expected after escape symbol", NULL);
             return(-1);
         }
-        ch = xmlSecGetHex(p[0]) * 16 + xmlSecGetHex(p[1]);
+        ch = (xmlSecByte)(xmlSecGetHex(p[0]) * 16 + xmlSecGetHex(p[1]));
         if(ingoreTrailingSpaces && !isspace(ch)) {
             nonSpaceLen = qlen + 1;
         }
@@ -1306,7 +1318,9 @@ xmlSecOpenSSLX509_NAME_ENTRY_cmp(const X509_NAME_ENTRY * const *a, const X509_NA
     }
 
     if(a_len > 0) {
-        ret = memcmp(ASN1_STRING_get0_data(a_value), ASN1_STRING_get0_data(b_value), a_len);
+        xmlSecSize a_size;
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(a_len, a_size, return(-1), NULL);
+        ret = memcmp(ASN1_STRING_get0_data(a_value), ASN1_STRING_get0_data(b_value), a_size);
         if(ret != 0) {
             return(ret);
         }

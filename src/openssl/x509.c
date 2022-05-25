@@ -428,13 +428,26 @@ xmlSecOpenSSLKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
 xmlSecSize
 xmlSecOpenSSLKeyDataX509GetCertsSize(xmlSecKeyDataPtr data) {
     xmlSecOpenSSLX509DataCtxPtr ctx;
+    int ret;
+    xmlSecSize res;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), 0);
 
     ctx = xmlSecOpenSSLX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, 0);
 
-    return((ctx->certsList != NULL) ? sk_X509_num(ctx->certsList) : 0);
+    if(ctx->certsList == NULL) {
+        return(0);
+    }
+
+    ret = sk_X509_num(ctx->certsList);
+    if(ret < 0) {
+        xmlSecOpenSSLError("sk_X509_num", NULL);
+        return(0);
+    }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, res, return(0), NULL);
+
+    return(res);
 }
 
 /**
@@ -514,13 +527,26 @@ xmlSecOpenSSLKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
 xmlSecSize
 xmlSecOpenSSLKeyDataX509GetCrlsSize(xmlSecKeyDataPtr data) {
     xmlSecOpenSSLX509DataCtxPtr ctx;
+    int ret;
+    xmlSecSize res;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), 0);
 
     ctx = xmlSecOpenSSLX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, 0);
 
-    return((ctx->crlsList != NULL) ? sk_X509_CRL_num(ctx->crlsList) : 0);
+    if(ctx->crlsList == NULL) {
+        return(0);
+    }
+
+    ret = sk_X509_CRL_num(ctx->crlsList);
+    if(ret < 0) {
+        xmlSecOpenSSLError("sk_X509_CRL_num", NULL);
+        return(0);
+    }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, res, return(0), NULL);
+
+    return(res);
 }
 
 static int
@@ -1698,18 +1724,27 @@ xmlSecOpenSSLX509CertGetKey(X509* cert) {
 
 static X509*
 xmlSecOpenSSLX509CertBase64DerRead(xmlChar* buf) {
+    xmlSecSize size;
     int ret;
 
     xmlSecAssert2(buf != NULL, NULL);
 
+    ret = xmlStrlen(buf);
+    if(ret < 0) {
+        xmlSecInternalError("xmlStrlen", NULL);
+        return(NULL);
+    }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
+
     /* usual trick with base64 decoding "in-place" */
-    ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, xmlStrlen(buf));
+    ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, size);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBase64Decode", NULL);
         return(NULL);
     }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
 
-    return(xmlSecOpenSSLX509CertDerRead((xmlSecByte*)buf, ret));
+    return(xmlSecOpenSSLX509CertDerRead((xmlSecByte*)buf, size));
 }
 
 static X509*
@@ -1765,7 +1800,8 @@ xmlSecOpenSSLX509CertBase64DerWrite(X509* cert, int base64LineWrap) {
     xmlChar *res = NULL;
     BIO *mem = NULL;
     xmlSecByte *p = NULL;
-    long size;
+    xmlSecSize size;
+    long len;
     int ret;
 
     xmlSecAssert2(cert != NULL, NULL);
@@ -1787,12 +1823,13 @@ xmlSecOpenSSLX509CertBase64DerWrite(X509* cert, int base64LineWrap) {
         goto done;
     }
 
-    size = BIO_get_mem_data(mem, &p);
-    if((size <= 0) || (p == NULL)){
+    len = BIO_get_mem_data(mem, &p);
+    if((len <= 0) || (p == NULL)){
         xmlSecOpenSSLError("BIO_get_mem_data", NULL);
         goto done;
     }
 
+    XMLSEC_SAFE_CAST_LONG_TO_SIZE(len, size, goto done, NULL);
     res = xmlSecBase64Encode(p, size, base64LineWrap);
     if(res == NULL) {
         xmlSecInternalError("xmlSecBase64Encode", NULL);
@@ -1808,18 +1845,27 @@ done:
 
 static X509_CRL*
 xmlSecOpenSSLX509CrlBase64DerRead(xmlChar* buf) {
+    xmlSecSize size;
     int ret;
 
     xmlSecAssert2(buf != NULL, NULL);
 
+    ret = xmlStrlen(buf);
+    if(ret < 0) {
+        xmlSecInternalError("xmlStrlen", NULL);
+        return(NULL);
+    }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
+
     /* usual trick with base64 decoding "in-place" */
-    ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, xmlStrlen(buf));
+    ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, size);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBase64Decode", NULL);
         return(NULL);
     }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
 
-    return(xmlSecOpenSSLX509CrlDerRead((xmlSecByte*)buf, ret));
+    return(xmlSecOpenSSLX509CrlDerRead((xmlSecByte*)buf, size));
 }
 
 static X509_CRL*
@@ -1873,7 +1919,8 @@ xmlSecOpenSSLX509CrlBase64DerWrite(X509_CRL* crl, int base64LineWrap) {
     xmlChar *res = NULL;
     BIO *mem = NULL;
     xmlSecByte *p = NULL;
-    long size;
+    xmlSecSize size;
+    long len;
     int ret;
 
     xmlSecAssert2(crl != NULL, NULL);
@@ -1895,11 +1942,12 @@ xmlSecOpenSSLX509CrlBase64DerWrite(X509_CRL* crl, int base64LineWrap) {
         goto done;
     }
 
-    size = BIO_get_mem_data(mem, &p);
-    if((size <= 0) || (p == NULL)){
+    len = BIO_get_mem_data(mem, &p);
+    if((len <= 0) || (p == NULL)){
         xmlSecOpenSSLError("BIO_get_mem_data", NULL);
         goto done;
     }
+    XMLSEC_SAFE_CAST_LONG_TO_SIZE(len, size, goto done, NULL);
 
     res = xmlSecBase64Encode(p, size, base64LineWrap);
     if(res == NULL) {
@@ -1916,9 +1964,11 @@ done:
 
 static xmlChar*
 xmlSecOpenSSLX509NameWrite(X509_NAME* nm) {
-    xmlChar *res = NULL;
+    xmlChar* res = NULL;
     BIO *mem = NULL;
-    long size, sizeRead;
+    xmlChar* buf = NULL;
+    xmlSecSize sizeBuf;
+    int lenBuf, lenRead;
     int ret;
 
     xmlSecAssert2(nm != NULL, NULL);
@@ -1940,28 +1990,35 @@ xmlSecOpenSSLX509NameWrite(X509_NAME* nm) {
         goto done;
     }
 
-    size = BIO_pending(mem);
-    if(size <= 0) {
+    lenBuf = BIO_pending(mem);
+    if(lenBuf <= 0) {
         xmlSecOpenSSLError("BIO_pending", NULL);
         goto done;
     }
-    res = (xmlChar *)xmlMalloc(size + 1);
-    if(res == NULL) {
-        xmlSecMallocError(size + 1, NULL);
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(lenBuf, sizeBuf, goto done, NULL);
+
+    buf = (xmlChar *)xmlMalloc(sizeBuf + 1);
+    if(buf == NULL) {
+        xmlSecMallocError(sizeBuf + 1, NULL);
         goto done;
     }
+    memset(buf, 0, sizeBuf + 1);
 
-    sizeRead = BIO_read(mem, res, size);
-    if(size != sizeRead) {
+    lenRead = BIO_read(mem, buf, lenBuf);
+    if(lenRead != lenBuf) {
         xmlSecOpenSSLError("BIO_read", NULL);
-        xmlFree(res);
         goto done;
     }
 
     /* success */
-    res[size] = '\0';
+    buf[sizeBuf] = '\0';
+    res = buf;
+    buf = NULL;
 
 done:
+    if(buf != NULL) {
+        xmlFree(buf);
+    }
     if(mem != NULL) {
         BIO_free_all(mem);
     }
@@ -2011,37 +2068,54 @@ xmlSecOpenSSLX509SKIWrite(X509* cert) {
     xmlChar *res = NULL;
     int index;
     X509_EXTENSION *ext;
-    ASN1_OCTET_STRING *keyId;
+    ASN1_OCTET_STRING *keyId = NULL;
+    const xmlSecByte* keyData;
+    int keyLen;
+    xmlSecSize keySize;
 
     xmlSecAssert2(cert != NULL, NULL);
 
     index = X509_get_ext_by_NID(cert, NID_subject_key_identifier, -1);
     if (index < 0) {
         xmlSecOpenSSLError("X509_get_ext_by_NID(): Certificate without SubjectKeyIdentifier extension", NULL);
-        return(NULL);
+        goto done;
     }
 
     ext = X509_get_ext(cert, index);
     if (ext == NULL) {
         xmlSecOpenSSLError("X509_get_ext", NULL);
-        return(NULL);
+        goto done;
     }
 
     keyId = (ASN1_OCTET_STRING *)X509V3_EXT_d2i(ext);
     if (keyId == NULL) {
         xmlSecOpenSSLError("X509V3_EXT_d2i", NULL);
-        ASN1_OCTET_STRING_free(keyId);
-        return(NULL);
+        goto done;
     }
 
-    res = xmlSecBase64Encode(ASN1_STRING_get0_data(keyId), ASN1_STRING_length(keyId), 0);
+    keyData = ASN1_STRING_get0_data(keyId);
+    if(keyData == NULL) {
+        xmlSecOpenSSLError("ASN1_STRING_get0_data", NULL);
+        goto done;
+    }
+    keyLen = ASN1_STRING_length(keyId);
+    if(keyLen <= 0) {
+        xmlSecOpenSSLError("ASN1_STRING_length", NULL);
+        goto done;
+    }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(keyLen, keySize, goto done, NULL);
+
+    res = xmlSecBase64Encode(keyData, keySize, 0);
     if(res == NULL) {
         xmlSecInternalError("xmlSecBase64Encode", NULL);
-        ASN1_OCTET_STRING_free(keyId);
-        return(NULL);
+        goto done;
     }
-    ASN1_OCTET_STRING_free(keyId);
+    /* success */
 
+done:
+    if(keyId != NULL) {
+        ASN1_OCTET_STRING_free(keyId);
+    }
     return(res);
 }
 

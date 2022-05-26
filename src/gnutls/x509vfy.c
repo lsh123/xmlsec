@@ -38,6 +38,7 @@
 #include <xmlsec/gnutls/x509.h>
 
 #include "x509utils.h"
+#include "../cast_helpers.h"
 
 /**************************************************************************
  *
@@ -339,9 +340,9 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
         /* try to verify */
 	if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) == 0) {
             err = gnutls_x509_crt_list_verify(
-                    cert_list, (int)cert_list_cur_length, /* certs chain */
-                    ca_list, (int)ca_list_length, /* trusted cas */
-                    crl_list, (int)crl_list_length, /* crls */
+                    cert_list, cert_list_cur_length, /* certs chain */
+                    ca_list, ca_list_length, /* trusted cas */
+                    crl_list, crl_list_length, /* crls */
                     flags, /* flags */
                     &verify);
         } else {

@@ -61,7 +61,7 @@ static int xmlSecGnuTLSConvertParamsToMpis(gnutls_datum_t * params, xmlSecSize p
                                            gcry_mpi_t * mpis, xmlSecSize mpisNum) {
 
     xmlSecSize ii;
-    int rc;
+    gcry_error_t rc;
 
     xmlSecAssert2(params != NULL, -1);
     xmlSecAssert2(mpis != NULL, -1);
@@ -110,7 +110,7 @@ xmlSecGnuTLSKeyDataDsaAdoptPrivateKey(xmlSecKeyDataPtr data, gnutls_x509_privkey
     gcry_mpi_t mpis[5];
     gcry_sexp_t priv_key = NULL;
     gcry_sexp_t pub_key = NULL;
-    int rc;
+    gcry_error_t rc;
     int err;
     int ret;
 
@@ -195,7 +195,7 @@ xmlSecGnuTLSKeyDataDsaAdoptPublicKey(xmlSecKeyDataPtr data,
     gnutls_datum_t params[4];
     gcry_mpi_t mpis[4];
     gcry_sexp_t pub_key = NULL;
-    int rc;
+    gcry_error_t rc;
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataDsaId), -1);
@@ -278,7 +278,7 @@ xmlSecGnuTLSKeyDataRsaAdoptPrivateKey(xmlSecKeyDataPtr data, gnutls_x509_privkey
     gcry_mpi_t mpis[6];
     gcry_sexp_t priv_key = NULL;
     gcry_sexp_t pub_key = NULL;
-    int rc;
+    gcry_error_t rc;
     int err;
     int ret;
 
@@ -363,7 +363,7 @@ xmlSecGnuTLSKeyDataRsaAdoptPublicKey(xmlSecKeyDataPtr data,
     gnutls_datum_t params[2];
     gcry_mpi_t mpis[2];
     gcry_sexp_t pub_key = NULL;
-    int rc;
+    gcry_error_t rc;
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId), -1);

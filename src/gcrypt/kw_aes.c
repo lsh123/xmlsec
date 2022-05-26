@@ -32,7 +32,7 @@
 #include <xmlsec/gcrypt/crypto.h>
 
 #include "../kw_aes_des.h"
-
+#include "../cast_helpers.h"
 
 /*********************************************************************
  *
@@ -70,7 +70,7 @@ typedef struct _xmlSecGCryptKWAesCtx              xmlSecGCryptKWAesCtx,
 struct _xmlSecGCryptKWAesCtx {
     int                 cipher;
     int                 mode;
-    int                 flags;
+    unsigned int        flags;
     xmlSecSize          blockSize;
     xmlSecSize          keyExpectedSize;
 
@@ -98,6 +98,7 @@ static int      xmlSecGCryptKWAesExecute                        (xmlSecTransform
 static int
 xmlSecGCryptKWAesInitialize(xmlSecTransformPtr transform) {
     xmlSecGCryptKWAesCtxPtr ctx;
+    size_t blockSize;
     int ret;
 
     xmlSecAssert2(xmlSecGCryptKWAesCheckId(transform), -1);
@@ -119,10 +120,16 @@ xmlSecGCryptKWAesInitialize(xmlSecTransformPtr transform) {
         xmlSecInvalidTransfromError(transform)
         return(-1);
     }
+
+    blockSize = gcry_cipher_get_algo_blklen(ctx->cipher);
+    if(blockSize <= 0) {
+        xmlSecGCryptError("gcry_cipher_get_algo_blklen", 0, NULL);
+        return(-1);
+    }
+
     ctx->mode           = GCRY_CIPHER_MODE_CBC;
     ctx->flags          = GCRY_CIPHER_SECURE; /* we are paranoid */
-    ctx->blockSize      = gcry_cipher_get_algo_blklen(ctx->cipher);
-    xmlSecAssert2(ctx->blockSize > 0, -1);
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(blockSize, ctx->blockSize, return(-1), NULL);
 
     ret = xmlSecBufferInitialize(&(ctx->keyBuffer), 0);
     if(ret < 0) {
@@ -272,7 +279,7 @@ xmlSecGCryptKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
                                     xmlSecTransformGetName(transform));
                 return(-1);
             }
-            outSize = ret;
+            XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outSize, return(-1), xmlSecTransformGetName(transform));
         } else {
             ret = xmlSecKWAesDecode(&xmlSecGCryptKWAesKlass, ctx,
                                     xmlSecBufferGetData(in), inSize,
@@ -282,7 +289,7 @@ xmlSecGCryptKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
                                     xmlSecTransformGetName(transform));
                 return(-1);
             }
-            outSize = ret;
+            XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outSize, return(-1), xmlSecTransformGetName(transform));
         }
 
         ret = xmlSecBufferSetSize(out, outSize);
@@ -445,6 +452,7 @@ xmlSecGCryptKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
     xmlSecGCryptKWAesCtxPtr ctx = (xmlSecGCryptKWAesCtxPtr)context;
     gcry_cipher_hd_t cipherCtx;
     gcry_error_t err;
+    int res;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(in != NULL, -1);
@@ -483,7 +491,9 @@ xmlSecGCryptKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
     }
     gcry_cipher_close(cipherCtx);
 
-    return(ctx->blockSize);
+    /* success */
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(ctx->blockSize, res, return(-1), NULL);
+    return(res);
 }
 
 static int
@@ -493,6 +503,7 @@ xmlSecGCryptKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
     xmlSecGCryptKWAesCtxPtr ctx = (xmlSecGCryptKWAesCtxPtr)context;
     gcry_cipher_hd_t cipherCtx;
     gcry_error_t err;
+    int res;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(in != NULL, -1);
@@ -531,7 +542,9 @@ xmlSecGCryptKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
     }
     gcry_cipher_close(cipherCtx);
 
-    return(ctx->blockSize);
+    /* success */
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(ctx->blockSize, res, return(-1), NULL);
+    return(res);
 }
 
 #endif /* XMLSEC_NO_AES */

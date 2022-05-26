@@ -31,7 +31,6 @@
 #include <xmlsec/gcrypt/crypto.h>
 #include "../cast_helpers.h"
 
-
 /**************************************************************************
  *
  * Helpers
@@ -464,27 +463,35 @@ xmlSecGCryptNodeGetMpiValue(const xmlNodePtr cur) {
 static int
 xmlSecGCryptNodeSetMpiValue(xmlNodePtr cur, const gcry_mpi_t a, int addLineBreaks) {
     xmlSecBuffer buf;
+    int buf_initialized = 0;
     gcry_error_t err;
     size_t written = 0;
+    xmlSecSize writtenSize;
     int ret;
+    int res = -1;
 
     xmlSecAssert2(a != NULL, -1);
     xmlSecAssert2(cur != NULL, -1);
 
+    /* get the estimated size for output buffer */
     written = 0;
     err = gcry_mpi_print(GCRYMPI_FMT_USG, NULL, 0, &written, a);
     if((err != GPG_ERR_NO_ERROR) || (written == 0)) {
         xmlSecGCryptError("gcry_mpi_print", err, NULL);
-        return(-1);
+        goto done;
     }
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(written, writtenSize, goto done, NULL);
 
-    ret = xmlSecBufferInitialize(&buf, written + 1);
+    /* allocate the output buffer */
+    ret = xmlSecBufferInitialize(&buf, writtenSize + 1);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferInitialize", NULL,
-                             "size=%lu", XMLSEC_UL_BAD_CAST(written + 1));
-        return(-1);
+                             "size=%lu", XMLSEC_UL_BAD_CAST(writtenSize + 1));
+        goto done;
     }
+    buf_initialized = 1;
 
+    /* write to the buffer */
     written = 0;
     err = gcry_mpi_print(GCRYMPI_FMT_USG,
             xmlSecBufferGetData(&buf),
@@ -492,37 +499,40 @@ xmlSecGCryptNodeSetMpiValue(xmlNodePtr cur, const gcry_mpi_t a, int addLineBreak
             &written, a);
     if((err != GPG_ERR_NO_ERROR) || (written == 0)) {
         xmlSecGCryptError("gcry_mpi_print", err, NULL);
-        xmlSecBufferFinalize(&buf);
-        return(-1);
+        goto done;
     }
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(written, writtenSize, goto done, NULL);
 
-    ret = xmlSecBufferSetSize(&buf, written);
+    ret = xmlSecBufferSetSize(&buf, writtenSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-                             "size=%lu", XMLSEC_UL_BAD_CAST(written));
-        xmlSecBufferFinalize(&buf);
-        return(-1);
+                             "size=%lu", XMLSEC_UL_BAD_CAST(writtenSize));
+        goto done;
     }
 
+    /* write out to XML */
     if(addLineBreaks) {
         xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
     } else {
         xmlNodeSetContent(cur, xmlSecStringEmpty);
     }
-
     ret = xmlSecBufferBase64NodeContentWrite(&buf, cur, xmlSecBase64GetDefaultLineSize());
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferBase64NodeContentWrite", NULL);
-        xmlSecBufferFinalize(&buf);
-        return(-1);
+        goto done;
     }
-
     if(addLineBreaks) {
         xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
     }
 
-    xmlSecBufferFinalize(&buf);
-    return(0);
+    /* success */
+    res = 0;
+
+done:
+    if(buf_initialized != 0) {
+        xmlSecBufferFinalize(&buf);
+    }
+    return(res);
 }
 
 /**

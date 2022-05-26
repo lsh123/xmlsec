@@ -27,6 +27,7 @@
 
 #include <xmlsec/gcrypt/crypto.h>
 
+#include "../cast_helpers.h"
 
 /**************************************************************************
  *
@@ -504,6 +505,7 @@ static int
 xmlSecGCryptAppendMpi(gcry_mpi_t a, xmlSecBufferPtr out, xmlSecSize min_size) {
     xmlSecSize outSize;
     size_t written;
+    xmlSecSize writtenSize;
     gpg_error_t err;
     int ret;
 
@@ -520,27 +522,28 @@ xmlSecGCryptAppendMpi(gcry_mpi_t a, xmlSecBufferPtr out, xmlSecSize min_size) {
         xmlSecGCryptError("gcry_mpi_print", err, NULL);
         return(-1);
     }
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(written, writtenSize, return(-1), NULL);
 
     /* add zeros at the beggining (if needed) */
-    if((min_size > 0) && (written < min_size)) {
-        outSize += (min_size - written);
+    if((min_size > 0) && (writtenSize < min_size)) {
+        outSize += (min_size - writtenSize);
     }
 
     /* allocate space */
-    ret = xmlSecBufferSetMaxSize(out, outSize + written + 1);
+    ret = xmlSecBufferSetMaxSize(out, outSize + writtenSize + 1);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetMaxSize", NULL,
-                             "size=%lu", XMLSEC_UL_BAD_CAST(outSize + written + 1));
+                             "size=%lu", XMLSEC_UL_BAD_CAST(outSize + writtenSize + 1));
         return(-1);
     }
     xmlSecAssert2(xmlSecBufferGetMaxSize(out) > outSize, -1);
 
     /* add zeros at the beggining (if needed) */
-    if((min_size > 0) && (written < min_size)) {
+    if((min_size > 0) && (writtenSize < min_size)) {
         xmlSecSize ii;
         xmlSecByte * p = xmlSecBufferGetData(out);
 
-        for(ii = 0; ii < (min_size - written); ++ii) {
+        for(ii = 0; ii < (min_size - writtenSize); ++ii) {
             p[outSize - ii - 1] = 0;
         }
     }
@@ -555,12 +558,13 @@ xmlSecGCryptAppendMpi(gcry_mpi_t a, xmlSecBufferPtr out, xmlSecSize min_size) {
         xmlSecGCryptError("gcry_mpi_print", err, NULL);
         return(-1);
     }
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(written, writtenSize, return(-1), NULL);
 
     /* reset size */
-    ret = xmlSecBufferSetSize(out, outSize + written);
+    ret = xmlSecBufferSetSize(out, outSize + writtenSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-                            "size=%lu", XMLSEC_UL_BAD_CAST(outSize + written));
+                            "size=%lu", XMLSEC_UL_BAD_CAST(outSize + writtenSize));
         return(-1);
     }
 

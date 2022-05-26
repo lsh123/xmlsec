@@ -27,6 +27,7 @@
 #include <xmlsec/gcrypt/crypto.h>
 
 #include "asn1.h"
+#include "../cast_helpers.h"
 
 /**************************************************************************
  *
@@ -95,12 +96,12 @@ struct tag_info
    that the encoded length does not exhaust the length of the provided
    buffer. */
 static int
-xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, xmlSecSize *buflen, struct tag_info *ti)
+xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, struct tag_info *ti)
 {
-    int c;
+    unsigned long c;
     unsigned long tag;
     const xmlSecByte *buf;
-    xmlSecSize length;
+    unsigned long length;
 
     xmlSecAssert2(buffer != NULL, -1);
     xmlSecAssert2((*buffer) != NULL, -1);
@@ -157,7 +158,7 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, xmlSecSize *buflen, struct 
     } else if (c == 0xff) {
         return -1; /* Forbidden length value.  */
     } else {
-        xmlSecSize len = 0;
+        unsigned long len = 0;
         int count = c & 0x7f;
 
         for (; count; count--) {
@@ -187,10 +188,10 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, xmlSecSize *buflen, struct 
 }
 
 static int
-xmlSecGCryptAsn1ParseIntegerSequence(xmlSecByte const **buffer, xmlSecSize *buflen,
+xmlSecGCryptAsn1ParseIntegerSequence(xmlSecByte const **buffer, xmlSecSize* buflen,
                                      gcry_mpi_t * params, int params_size) {
     const xmlSecByte *buf;
-    xmlSecSize length;
+    unsigned long length;
     struct tag_info ti;
     gcry_error_t err;
     int idx = 0;
@@ -246,7 +247,7 @@ xmlSecGCryptAsn1ParseIntegerSequence(xmlSecByte const **buffer, xmlSecSize *bufl
 
     /* done */
     *buffer = buf;
-    *buflen = length;
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(length, (*buflen), return(-1), NULL);
     return(idx);
 }
 

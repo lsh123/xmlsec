@@ -31,6 +31,7 @@
 #include <xmlsec/nss/crypto.h>
 #include <xmlsec/nss/pkikeys.h>
 
+#include "../cast_helpers.h"
 
 /**************************************************************************
  *
@@ -475,6 +476,52 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
     return(0);
 }
 
+/* This creates a signature which is ASN1 encoded */
+static SECItem*
+xmlSecNssSignatureDecode(xmlSecNssSignatureCtxPtr ctx, SECItem* signature) {
+    int signatureLen;
+    unsigned int signatureSize;
+    SECItem* res = NULL;
+
+    xmlSecAssert2(ctx != NULL, NULL);
+    xmlSecAssert2(signature != NULL, NULL);
+
+    switch(ctx->alg) {
+    case SEC_OID_ANSIX9_DSA_SIGNATURE_WITH_SHA1_DIGEST:
+        res = DSAU_DecodeDerSig(signature);
+        if(res == NULL) {
+            xmlSecNssError("DSAU_DecodeDerSig", NULL);
+            return(NULL);
+        }
+        break;
+     case SEC_OID_NIST_DSA_SIGNATURE_WITH_SHA256_DIGEST:
+     case SEC_OID_ANSIX962_ECDSA_SHA1_SIGNATURE:
+     case SEC_OID_ANSIX962_ECDSA_SHA224_SIGNATURE:
+     case SEC_OID_ANSIX962_ECDSA_SHA256_SIGNATURE:
+     case SEC_OID_ANSIX962_ECDSA_SHA384_SIGNATURE:
+     case SEC_OID_ANSIX962_ECDSA_SHA512_SIGNATURE:
+        /* In these cases the signature length depends on the key parameters. */
+        signatureLen = PK11_SignatureLen(ctx->u.sig.privkey);
+        if(signatureLen < 1) {
+            xmlSecNssError("PK11_SignatureLen", NULL);
+            return(NULL);
+        }
+        XMLSEC_SAFE_CAST_INT_TO_UINT(signatureLen, signatureSize, return(NULL), NULL);
+
+        res = DSAU_DecodeDerSigToLen(signature, signatureSize);
+        if(res == NULL) {
+            xmlSecNssError("DSAU_DecodeDerSigToLen", NULL);
+            return(NULL);
+        }
+        break;
+    default:
+        xmlSecInternalError2("xmlSecNssSignatureDecode", NULL,
+            "unknown algorithm=%lu", XMLSEC_UL_BAD_CAST(ctx->alg));
+        return(NULL);
+    }
+    return(res);
+}
+
 static int
 xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecNssSignatureCtxPtr ctx;
@@ -570,34 +617,14 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                 /* This creates a signature which is ASN1 encoded */
                 SECItem * signatureClr;
 
-                if(ctx->alg == SEC_OID_ANSIX9_DSA_SIGNATURE_WITH_SHA1_DIGEST) {
-                    signatureClr = DSAU_DecodeDerSig(&signature);
-                    if(signatureClr == NULL) {
-                        xmlSecNssError("DSAU_DecodeDerSig",
-                                       xmlSecTransformGetName(transform));
-                        SECITEM_FreeItem(&signature, PR_FALSE);
-                        return(-1);
-                    }
-                } else {
-                    /* In the ECDSA case the signature length depends on the
-                     * key parameters. */
-                    int signatureSize = PK11_SignatureLen(ctx->u.sig.privkey);
-                    if(signatureSize < 1) {
-                        xmlSecNssError("PK11_SignatureLen",
-                                       xmlSecTransformGetName(transform));
-                        SECITEM_FreeItem(&signature, PR_FALSE);
-                        return(-1);
-                    }
-
-                    signatureClr = DSAU_DecodeDerSigToLen(&signature, signatureSize);
-                    if(signatureClr == NULL) {
-                        xmlSecNssError("DSAU_DecodeDerSigToLen",
-                                       xmlSecTransformGetName(transform));
-                        SECITEM_FreeItem(&signature, PR_FALSE);
-                        return(-1);
-                    }
+                signatureClr = xmlSecNssSignatureDecode(ctx, &signature);
+                if(signatureClr == NULL) {
+                    xmlSecInternalError("xmlSecNssSignatureDecode",
+                        xmlSecTransformGetName(transform));
+                    SECITEM_FreeItem(&signature, PR_FALSE);
+                    return(-1);
                 }
-
+                
                 ret = xmlSecBufferSetData(out, signatureClr->data, signatureClr->len);
                 if(ret < 0) {
                     xmlSecInternalError2("xmlSecBufferSetData",

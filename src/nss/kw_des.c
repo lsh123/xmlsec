@@ -35,6 +35,7 @@
 #include <xmlsec/nss/crypto.h>
 
 #include "../kw_aes_des.h"
+#include "../cast_helpers.h"
 
 /*********************************************************************
  *
@@ -312,7 +313,7 @@ xmlSecNssKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
                                      XMLSEC_UL_BAD_CAST(keySize), XMLSEC_UL_BAD_CAST(inSize), XMLSEC_UL_BAD_CAST(outSize));
                 return(-1);
             }
-            outSize = ret;
+            XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outSize, return(-1), xmlSecTransformGetName(transform));
         } else {
             ret = xmlSecKWDes3Decode(&xmlSecNssKWDes3ImplKlass, ctx,
                                     xmlSecBufferGetData(in), inSize,
@@ -323,7 +324,7 @@ xmlSecNssKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
                                      XMLSEC_UL_BAD_CAST(keySize), XMLSEC_UL_BAD_CAST(inSize), XMLSEC_UL_BAD_CAST(outSize));
                 return(-1);
             }
-            outSize = ret;
+            XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outSize, return(-1), xmlSecTransformGetName(transform));
         }
 
         ret = xmlSecBufferSetSize(out, outSize);
@@ -366,6 +367,7 @@ xmlSecNssKWDes3Sha1(void * context,
     PK11Context *pk11ctx = NULL;
     unsigned int outLen = 0;
     SECStatus status;
+    int res;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(in != NULL, -1);
@@ -404,7 +406,8 @@ xmlSecNssKWDes3Sha1(void * context,
     /* done */
     PK11_DestroyContext(pk11ctx, PR_TRUE);
     xmlSecAssert2(outLen == SHA1_LENGTH, -1);
-    return(outLen);
+    XMLSEC_SAFE_CAST_UINT_TO_INT(outLen, res, return(-1), NULL);
+    return(res);
 }
 
 static int
@@ -412,18 +415,20 @@ xmlSecNssKWDes3GenerateRandom(void * context,
                               xmlSecByte * out, xmlSecSize outSize) {
     xmlSecNssKWDes3CtxPtr ctx = (xmlSecNssKWDes3CtxPtr)context;
     SECStatus status;
+    int outLen;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize > 0, -1);
 
-    status = PK11_GenerateRandom(out, outSize);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(outSize, outLen, return(-1), NULL);
+    status = PK11_GenerateRandom(out, outLen);
     if(status != SECSuccess) {
         xmlSecNssError("PK11_GenerateRandom", NULL);
         return(-1);
     }
 
-    return((int)outSize);
+    return(outLen);
 }
 
 static int
@@ -503,9 +508,7 @@ xmlSecNssKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
     PK11Context* pk11ctx = NULL;
     SECItem keyItem, ivItem;
     SECStatus status;
-    int result_len = -1;
-    int tmp1_outlen;
-    unsigned int tmp2_outlen;
+    int inLen, outLen, maxOutLen;
 
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(keySize == XMLSEC_KW_DES3_KEY_LENGTH, -1);
@@ -549,22 +552,20 @@ xmlSecNssKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
         goto done;
     }
 
-    tmp1_outlen = tmp2_outlen = 0;
-    status = PK11_CipherOp(pk11ctx, out, &tmp1_outlen, outSize,
-                       (unsigned char *)in, inSize);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, goto done, NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(outSize, maxOutLen, goto done, NULL);
+    outLen = 0;
+    status = PK11_CipherOp(pk11ctx, out, &outLen, maxOutLen, (unsigned char *)in, inLen);
     if (status != SECSuccess) {
         xmlSecNssError("PK11_CipherOp", NULL);
         goto done;
     }
 
-    status = PK11_DigestFinal(pk11ctx, out+tmp1_outlen,
-                          &tmp2_outlen, outSize-tmp1_outlen);
+    status = PK11_Finalize(pk11ctx);
     if (status != SECSuccess) {
-        xmlSecNssError("PK11_DigestFinal", NULL);
+        xmlSecNssError("PK11_Finalize", NULL);
         goto done;
     }
-
-    result_len = tmp1_outlen + tmp2_outlen;
 
 done:
     if (slot) {
@@ -580,7 +581,7 @@ done:
         PK11_DestroyContext(pk11ctx, PR_TRUE);
     }
 
-    return(result_len);
+    return(outLen);
 }
 
 

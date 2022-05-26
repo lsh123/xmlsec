@@ -38,6 +38,9 @@ XMLSEC_EXPORT const xmlChar*	xmlSecGetDefaultLineFeed(void);
 XMLSEC_EXPORT void		xmlSecSetDefaultLineFeed(const xmlChar *linefeed);
 
 XMLSEC_EXPORT const xmlChar*    xmlSecGetNodeNsHref     (const xmlNodePtr cur);
+XMLSEC_EXPORT int               xmlSecGetNodeContentAsSize(const xmlNodePtr cur,
+                                                         xmlSecSize* res,
+                                                         xmlSecSize defValue);
 XMLSEC_EXPORT int               xmlSecCheckNodeName     (const xmlNodePtr cur,
                                                          const xmlChar *name,
                                                          const xmlChar *ns);

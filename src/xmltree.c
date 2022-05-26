@@ -62,6 +62,53 @@ xmlSecSetDefaultLineFeed(const xmlChar *linefeed)
     g_xmlsec_xmltree_default_linefeed = linefeed;
 }
 
+
+/**
+ * xmlSecGetNodeContentAsSize:
+ * @cur:                the pointer to XML node.
+ * @res:                the pointer to the result value.
+ * @defaultValue:       the default value that will be returned in @res if there is no node content.
+ *
+ * Reads @cur node content and converts it to xmlSecSize value.
+ *
+ * Returns: 0 on success or -1 on error.
+ */
+
+int
+xmlSecGetNodeContentAsSize(const xmlNodePtr cur, xmlSecSize* res, xmlSecSize defaultValue) {
+    xmlChar *content;
+    long int val;
+    char* endptr = NULL;
+
+    xmlSecAssert2(cur != NULL, -1);
+    xmlSecAssert2(res != NULL, -1);
+
+    content = xmlNodeGetContent(cur);
+    if(content == NULL) {
+        (*res) = defaultValue;
+        return(0);
+    }
+
+    val = strtol((char*)content, &endptr, 10);
+    if((val < 0) || (val == LONG_MAX) || (endptr == NULL)) {
+        xmlSecInvalidNodeContentError(cur, NULL, "can't parse node content as size");
+        xmlFree(content);
+        return(-1);
+    }
+
+    /* skip spaces at the end */
+    while(isspace(*endptr)) { ++endptr; }
+    if((content + xmlStrlen(content)) != BAD_CAST endptr) {
+        xmlSecInvalidNodeContentError(cur, NULL, "can't parse node content as size (extra characters at the end)");
+        xmlFree(content);
+        return(-1);
+    }
+
+    /* success */
+    XMLSEC_SAFE_CAST_LONG_TO_SIZE(val, (*res), return(-1), NULL);
+    return(0);
+}
+
 /**
  * xmlSecFindSibling:
  * @cur:                the pointer to XML node.

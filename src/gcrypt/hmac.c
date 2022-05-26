@@ -30,6 +30,8 @@
 #include <xmlsec/gcrypt/app.h>
 #include <xmlsec/gcrypt/crypto.h>
 
+#include "../cast_helpers.h"
+
 /* sizes in bits */
 #define XMLSEC_GCRYPT_MIN_HMAC_SIZE             80
 #define XMLSEC_GCRYPT_MAX_HMAC_SIZE             (128 * 8)
@@ -275,21 +277,31 @@ xmlSecGCryptHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTr
 
     cur = xmlSecGetNextElementNode(node->children);
     if((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeHMACOutputLength, xmlSecDSigNs)) {
-        xmlChar *content;
+        xmlSecSize minDgstSize;
+        int ret;
 
-        content = xmlNodeGetContent(cur);
-        if(content != NULL) {
-            ctx->dgstSize = atoi((char*)content);
-            xmlFree(content);
+        ret = xmlSecGetNodeContentAsSize(cur, &ctx->dgstSize, ctx->dgstSize);
+        if(ret != 0) {
+            xmlSecInternalError("xmlSecGetNodeContentAsSize(HMACOutputLength)",
+                xmlSecTransformGetName(transform));
+            return(-1);
         }
 
         /* Ensure that HMAC length is greater than min specified.
            Otherwise, an attacker can set this length to 0 or very
            small value
         */
-        if((int)ctx->dgstSize < xmlSecGCryptHmacGetMinOutputLength()) {
-           xmlSecInvalidNodeContentError(cur, xmlSecTransformGetName(transform),
-                                         "HMAC output length is too small");
+        ret = xmlSecGCryptHmacGetMinOutputLength();
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecOpenSSLHmacGetMinOutputLength",
+                xmlSecTransformGetName(transform));
+            return(-1);
+        }
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, minDgstSize, return(-1), xmlSecTransformGetName(transform));
+
+        if(ctx->dgstSize < minDgstSize) {
+            xmlSecInvalidNodeContentError(cur, xmlSecTransformGetName(transform),
+                                          "HMAC output length is too small");
            return(-1);
         }
 

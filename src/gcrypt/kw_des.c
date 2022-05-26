@@ -34,6 +34,7 @@
 #include <xmlsec/gcrypt/crypto.h>
 
 #include "../kw_aes_des.h"
+#include "../cast_helpers.h"
 
 /*********************************************************************
  *
@@ -311,7 +312,7 @@ xmlSecGCryptKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                                      XMLSEC_UL_BAD_CAST(keySize), XMLSEC_UL_BAD_CAST(inSize), XMLSEC_UL_BAD_CAST(outSize));
                 return(-1);
             }
-            outSize = ret;
+            XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outSize, return(-1), xmlSecTransformGetName(transform));
         } else {
             ret = xmlSecKWDes3Decode(&xmlSecGCryptKWDes3ImplKlass, ctx,
                                     xmlSecBufferGetData(in), inSize,
@@ -322,7 +323,7 @@ xmlSecGCryptKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                                      XMLSEC_UL_BAD_CAST(keySize), XMLSEC_UL_BAD_CAST(inSize), XMLSEC_UL_BAD_CAST(outSize));
                 return(-1);
             }
-            outSize = ret;
+            XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outSize, return(-1), xmlSecTransformGetName(transform));
         }
 
         ret = xmlSecBufferSetSize(out, outSize);
@@ -363,9 +364,10 @@ xmlSecGCryptKWDes3Sha1(void * context,
                        xmlSecByte * out, xmlSecSize outSize) {
     xmlSecGCryptKWDes3CtxPtr ctx = (xmlSecGCryptKWDes3CtxPtr)context;
     gcry_md_hd_t digestCtx;
-    unsigned char * res;
-    unsigned int len;
+    xmlSecByte* outBuf;
+    unsigned int outBufSize;
     gcry_error_t err;
+    int res;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(in != NULL, -1);
@@ -373,8 +375,8 @@ xmlSecGCryptKWDes3Sha1(void * context,
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize > 0, -1);
 
-    len = gcry_md_get_algo_dlen(GCRY_MD_SHA1);
-    xmlSecAssert2(outSize >= len, -1);
+    outBufSize = gcry_md_get_algo_dlen(GCRY_MD_SHA1);
+    xmlSecAssert2(outSize >= outBufSize, -1);
 
     err = gcry_md_open(&digestCtx, GCRY_MD_SHA1, GCRY_MD_FLAG_SECURE); /* we are paranoid */
     if(err != GPG_ERR_NO_ERROR) {
@@ -391,18 +393,19 @@ xmlSecGCryptKWDes3Sha1(void * context,
         return(-1);
     }
 
-    res = gcry_md_read(digestCtx, GCRY_MD_SHA1);
-    if(res == NULL) {
+    outBuf = gcry_md_read(digestCtx, GCRY_MD_SHA1);
+    if(outBuf == NULL) {
         xmlSecGCryptError("gcry_md_read", GPG_ERR_NO_ERROR, NULL);
         gcry_md_close(digestCtx);
         return(-1);
     }
 
     /* done */
-    xmlSecAssert2(outSize >= len, -1);
-    memcpy(out, res, len);
+    memcpy(out, outBuf, outBufSize);
     gcry_md_close(digestCtx);
-    return(len);
+
+    XMLSEC_SAFE_CAST_UINT_TO_INT(outBufSize, res, return(-1), NULL);
+    return(res);
 }
 
 static int

@@ -152,6 +152,18 @@
     }                                                                          \
     dstVal = (xmlSecSize)(srcVal);                                             \
 
+/* Safe cast with limits check: unsigned long -> xmlSecSize (assume ulong >= 0) */
+#define XMLSEC_SAFE_CAST_ULONG_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
+    if(XMLSEC_UL_BAD_CAST(srcVal) > XMLSEC_UL_BAD_CAST(XMLSEC_SIZE_MAX)) {     \
+        xmlSecImpossibleCastError(unsigned long, (srcVal), "%lu",              \
+                                  xmlSecSize, XMLSEC_UL_BAD_CAST(0),           \
+                                  XMLSEC_UL_BAD_CAST(XMLSEC_SIZE_MAX),         \
+                                  "%lu", (errorObject));                       \
+        errorAction;                                                           \
+    }                                                                          \
+    dstVal = (xmlSecSize)(srcVal);                                             \
+
+
 /* Safe cast with limits check: long -> xmlSecSize (assume xmlSecSize >= 0) */
 #define XMLSEC_SAFE_CAST_LONG_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
     if(((srcVal) < 0) || (XMLSEC_UL_BAD_CAST(XMLSEC_SIZE_MAX) < XMLSEC_UL_BAD_CAST(srcVal))) { \

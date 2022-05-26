@@ -377,6 +377,7 @@ xmlSecGnuTLSX509CertBase64DerRead(xmlChar* buf) {
         xmlSecInternalError("xmlSecBase64Decode", NULL);
         return(NULL);
     }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
 
     res = xmlSecGnuTLSX509CertRead((const xmlSecByte*)buf, size, xmlSecKeyDataFormatCertDer);
     if(res == NULL) {
@@ -631,6 +632,7 @@ xmlSecGnuTLSX509CrlBase64DerRead(xmlChar* buf) {
         xmlSecInternalError("xmlSecBase64Decode", NULL);
         return(NULL);
     }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
 
     res = xmlSecGnuTLSX509CrlRead((const xmlSecByte*)buf, size, xmlSecKeyDataFormatCertDer);
     if(res == NULL) {

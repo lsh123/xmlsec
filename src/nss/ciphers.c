@@ -341,6 +341,12 @@ xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
     XMLSEC_SAFE_CAST_INT_TO_SIZE(outLen, outSize2, return(-1), NULL);
     xmlSecAssert2(outSize2 == inSize, -1);
 
+    rv = PK11_Finalize(ctx->cipherCtx);
+    if(rv != SECSuccess) {
+        xmlSecNssError("PK11_Finalize", cipherName);
+        return(-1);
+    }
+
     if(encrypt == 0) {
         /* check padding */
         if(outSize2 < outBuf[blockLen - 1]) {

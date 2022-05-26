@@ -33,6 +33,8 @@
 #include <xmlsec/nss/bignum.h>
 #include <xmlsec/nss/pkikeys.h>
 
+#include "../cast_helpers.h"
+
 /**************************************************************************
  *
  * Internal NSS PKI key CTX
@@ -826,13 +828,21 @@ xmlSecNssKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKe
     SECKEYPrivateKey *privkey = NULL;
     SECKEYPublicKey  *pubkey = NULL;
     int               ret = -1;
-    int               j;
+    int               index;
+    unsigned int      uIndex;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataDsaId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
 
-    j = PQG_PBITS_TO_INDEX(sizeBits);
-    rv = PK11_PQG_ParamGen(j, &pqgParams, &pqgVerify);
+    index = PQG_PBITS_TO_INDEX(sizeBits);
+    if(index < 0) {
+        xmlSecNssError2("PQG_PBITS_TO_INDEX", xmlSecKeyDataGetName(data),
+                        "size=%lu", XMLSEC_UL_BAD_CAST(sizeBits));
+        goto done;
+    }
+    XMLSEC_SAFE_CAST_INT_TO_UINT(index, uIndex, goto done, xmlSecKeyDataGetName(data));
+
+    rv = PK11_PQG_ParamGen(uIndex, &pqgParams, &pqgVerify);
     if (rv != SECSuccess) {
         xmlSecNssError2("PK11_PQG_ParamGen", xmlSecKeyDataGetName(data),
                         "size=%lu", XMLSEC_UL_BAD_CAST(sizeBits));
@@ -903,9 +913,11 @@ xmlSecNssKeyDataDsaGetType(xmlSecKeyDataPtr data) {
     xmlSecNssPKIKeyDataCtxPtr ctx;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataDsaId), xmlSecKeyDataTypeUnknown);
+
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
-    xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(SECKEY_GetPublicKeyType(ctx->pubkey) == dsaKey, -1);
+    xmlSecAssert2(ctx != NULL, xmlSecKeyDataTypeUnknown);
+    xmlSecAssert2(SECKEY_GetPublicKeyType(ctx->pubkey) == dsaKey, xmlSecKeyDataTypeUnknown);
+
     if (ctx->privkey != NULL) {
         return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
     } else {
@@ -920,9 +932,11 @@ xmlSecNssKeyDataDsaGetSize(xmlSecKeyDataPtr data) {
     xmlSecNssPKIKeyDataCtxPtr ctx;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataDsaId), 0);
+    
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
-    xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(SECKEY_GetPublicKeyType(ctx->pubkey) == dsaKey, -1);
+    xmlSecAssert2(ctx != NULL, 0);
+    xmlSecAssert2(ctx->pubkey != NULL, 0);
+    xmlSecAssert2(SECKEY_GetPublicKeyType(ctx->pubkey) == dsaKey, 0);
 
     return(8 * SECKEY_PublicKeyStrength(ctx->pubkey));
 }
@@ -1287,7 +1301,7 @@ xmlSecNssKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKe
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataRsaId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
 
-    params.keySizeInBits = sizeBits;
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(sizeBits, params.keySizeInBits, return(-1), xmlSecKeyDataGetName(data));
     params.pe = 65537;
 
     slot = PK11_GetBestSlot(CKM_RSA_PKCS_KEY_PAIR_GEN, NULL);
@@ -1343,8 +1357,9 @@ xmlSecNssKeyDataRsaGetType(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataRsaId), xmlSecKeyDataTypeUnknown);
 
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
-    xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->pubkey == NULL || SECKEY_GetPublicKeyType(ctx->pubkey) == rsaKey, -1);
+    xmlSecAssert2(ctx != NULL, xmlSecKeyDataTypeUnknown);
+    xmlSecAssert2(ctx->pubkey == NULL || SECKEY_GetPublicKeyType(ctx->pubkey) == rsaKey, xmlSecKeyDataTypeUnknown);
+
     if (ctx->privkey != NULL) {
         return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
     } else {
@@ -1361,8 +1376,9 @@ xmlSecNssKeyDataRsaGetSize(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataRsaId), 0);
 
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
-    xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(SECKEY_GetPublicKeyType(ctx->pubkey) == rsaKey, -1);
+    xmlSecAssert2(ctx != NULL, 0);
+    xmlSecAssert2(ctx->pubkey != NULL, 0);
+    xmlSecAssert2(SECKEY_GetPublicKeyType(ctx->pubkey) == rsaKey, 0);
 
     return(8 * SECKEY_PublicKeyStrength(ctx->pubkey));
 }
@@ -1477,9 +1493,11 @@ xmlSecNssKeyDataEcdsaGetType(xmlSecKeyDataPtr data) {
     xmlSecNssPKIKeyDataCtxPtr ctx;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataEcdsaId), xmlSecKeyDataTypeUnknown);
+    
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
-    xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->pubkey == NULL || SECKEY_GetPublicKeyType(ctx->pubkey) == ecKey, -1);
+    xmlSecAssert2(ctx != NULL, xmlSecKeyDataTypeUnknown);
+    xmlSecAssert2(ctx->pubkey == NULL || SECKEY_GetPublicKeyType(ctx->pubkey) == ecKey, xmlSecKeyDataTypeUnknown);
+
     if (ctx->privkey != NULL) {
         return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
     } else {
@@ -1492,9 +1510,11 @@ xmlSecNssKeyDataEcdsaGetSize(xmlSecKeyDataPtr data) {
     xmlSecNssPKIKeyDataCtxPtr ctx;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataEcdsaId), 0);
+
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
-    xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(SECKEY_GetPublicKeyType(ctx->pubkey) == ecKey, -1);
+    xmlSecAssert2(ctx != NULL, 0);
+    xmlSecAssert2(ctx->pubkey != NULL, 0);
+    xmlSecAssert2(SECKEY_GetPublicKeyType(ctx->pubkey) == ecKey, 0);
 
     return(SECKEY_SignatureLen(ctx->pubkey));
 }

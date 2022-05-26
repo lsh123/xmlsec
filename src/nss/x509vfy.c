@@ -40,6 +40,8 @@
 #include <xmlsec/nss/crypto.h>
 #include <xmlsec/nss/x509.h>
 
+#include "../cast_helpers.h"
+
 /**************************************************************************
  *
  * Internal NSS X509 store CTX
@@ -498,17 +500,26 @@ xmlSecNssX509FindCert(CERTCertList* certsList, const xmlChar *subjectName,
 
     if((cert == NULL) && (ski != NULL)) {
         SECItem subjKeyID;
+        xmlSecSize size;
         int len;
 
-        len = xmlSecBase64Decode(ski, (xmlSecByte*)ski, xmlStrlen(ski));
+        len = xmlStrlen(ski);
+        if(len < 0) {
+            xmlSecInternalError("xmlStrlen(ski)", NULL);
+            goto done;
+        }
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, goto done, NULL);
+
+        len = xmlSecBase64Decode(ski, (xmlSecByte*)ski, size);
         if(len < 0) {
             xmlSecInternalError("xmlSecBase64Decode", NULL);
             goto done;
         }
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, goto done, NULL);
 
         memset(&subjKeyID, 0, sizeof(subjKeyID));
         subjKeyID.data = ski;
-        subjKeyID.len = len;
+        subjKeyID.len = size;
         cert = CERT_FindCertBySubjectKeyID(CERT_GetDefaultCertDB(),
                                            &subjKeyID);
 
@@ -564,14 +575,18 @@ xmlSecNssX509NameRead(xmlSecByte *str, int len) {
     xmlSecByte *retval = NULL;
     xmlSecByte *p = NULL;
     int nameLen, valueLen;
+    xmlSecSize size;
 
     xmlSecAssert2(str != NULL, NULL);
+    xmlSecAssert2(len >= 0, NULL);
+
 
     /* return string should be no longer than input string */
-    retval = (xmlSecByte *)PORT_Alloc(len+1);
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(NULL), NULL);
+    retval = (xmlSecByte *)PORT_Alloc(size + 1);
     if(retval == NULL) {
         xmlSecNssError2("PORT_Alloc", NULL,
-                        "size=%d", (len+1));
+                        "size=%lu", XMLSEC_UL_BAD_CAST(size + 1));
         return(NULL);
     }
     p = retval;
@@ -587,7 +602,9 @@ xmlSecNssX509NameRead(xmlSecByte *str, int len) {
             xmlSecInternalError("xmlSecNssX509NameStringRead", NULL);
             goto done;
         }
-        memcpy(p, name, nameLen);
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(nameLen, size, goto done, NULL);
+
+        memcpy(p, name, size);
         p+=nameLen;
         *p++='=';
         if(len > 0) {
@@ -611,7 +628,9 @@ xmlSecNssX509NameRead(xmlSecByte *str, int len) {
                     ++str; --len;
                 }
                 *p++='\"';
-                memcpy(p, value, valueLen);
+
+                XMLSEC_SAFE_CAST_INT_TO_SIZE(valueLen, size, goto done, NULL);
+                memcpy(p, value, size);
                 p+=valueLen;
                 *p++='\"';
             } else if((*str) == '#') {
@@ -625,7 +644,9 @@ xmlSecNssX509NameRead(xmlSecByte *str, int len) {
                     xmlSecInternalError("xmlSecNssX509NameStringRead", NULL);
                     goto done;
                 }
-                memcpy(p, value, valueLen);
+
+                XMLSEC_SAFE_CAST_INT_TO_SIZE(valueLen, size, goto done, NULL);
+                memcpy(p, value, size);
                 p+=valueLen;
                 if (len > 0) {
                     *p++=',';
@@ -650,6 +671,12 @@ xmlSecNssX509NameStringRead(xmlSecByte **str, int *strLen,
                             xmlSecByte *res, int resLen,
                             xmlSecByte delim, int ingoreTrailingSpaces) {
     xmlSecByte *p, *q, *nonSpace;
+#if defined(__APPLE__)
+    long diff;
+#else /* defined(__APPLE__) */
+    ptrdiff_t diff;
+#endif /* defined(__APPLE__) */
+    int delta;
 
     xmlSecAssert2(str != NULL, -1);
     xmlSecAssert2(strLen != NULL, -1);
@@ -671,7 +698,7 @@ xmlSecNssX509NameStringRead(xmlSecByte **str, int *strLen,
                     xmlSecInvalidDataError("two hex digits expected", NULL);
                     return(-1);
                 }
-                *(q++) = xmlSecGetHex(p[0]) * 16 + xmlSecGetHex(p[1]);
+                *(q++) = (xmlSecByte)(xmlSecGetHex(p[0]) * 16 + xmlSecGetHex(p[1]));
                 p += 2;
             } else {
                 if(((++p) - (*str)) >= (*strLen)) {
@@ -682,13 +709,19 @@ xmlSecNssX509NameStringRead(xmlSecByte **str, int *strLen,
             }
         }
     }
-    if(((p - (*str)) < (*strLen)) && ((*p) != delim)) {
+    
+    diff = (p - (*str));
+    XMLSEC_SAFE_CAST_PTRDIFF_T_TO_INT(diff, delta, return(-1), NULL);
+    if((delta < (*strLen)) && ((*p) != delim)) {
         xmlSecInvalidSizeOtherError("buffer is too small", NULL);
         return(-1);
     }
-    (*strLen) -= (p - (*str));
+    (*strLen) -= delta;
     (*str) = p;
-    return((ingoreTrailingSpaces) ? nonSpace - res + 1 : q - res);
+
+    diff = ((ingoreTrailingSpaces) ? nonSpace - res + 1 : q - res);
+    XMLSEC_SAFE_CAST_PTRDIFF_T_TO_INT(diff, delta, return(-1), NULL);
+    return(delta);
 }
 
 /* code lifted from NSS */
@@ -697,6 +730,7 @@ xmlSecNssNumToItem(SECItem *it, PRUint64 ui)
 {
     unsigned char bb[9];
     unsigned int zeros_len;
+    int res;
 
     xmlSecAssert2(it != NULL, -1);
 
@@ -726,7 +760,9 @@ xmlSecNssNumToItem(SECItem *it, PRUint64 ui)
     }
 
     PORT_Memcpy(it->data, bb + (zeros_len - 1), it->len);
-    return(it->len);
+    XMLSEC_SAFE_CAST_UINT_TO_INT(it->len, res, return(-1), NULL);
+
+    return(res);
 }
 #endif /* XMLSEC_NO_X509 */
 

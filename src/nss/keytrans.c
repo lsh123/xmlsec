@@ -23,7 +23,6 @@
 #include <nss.h>
 #include <pk11func.h>
 #include <keyhi.h>
-#include <key.h>
 #include <hasht.h>
 
 #include <xmlsec/xmlsec.h>
@@ -34,6 +33,8 @@
 
 #include <xmlsec/nss/crypto.h>
 #include <xmlsec/nss/pkikeys.h>
+
+#include "../cast_helpers.h"
 
 /*********************************************************************
  *
@@ -232,7 +233,7 @@ xmlSecNssKeyTransportSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 static int
 xmlSecNssKeyTransportCtxInit(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out,
                              int encrypt, xmlSecTransformCtxPtr transformCtx) {
-    int blockSize;
+    xmlSecSize blockSize;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->cipher != CKM_INVALID_MECHANISM, -1);
@@ -254,11 +255,14 @@ xmlSecNssKeyTransportCtxInit(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr in
             return(-1);
         }
     } else if(ctx->prikey != NULL) {
-        blockSize = PK11_SignatureLen(ctx->prikey);
-        if(blockSize <= 0) {
+        int blockLen;
+
+        blockLen = PK11_SignatureLen(ctx->prikey);
+        if(blockLen <= 0) {
             xmlSecNssError("PK11_SignatureLen", NULL);
             return(-1);
         }
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(blockLen, blockSize, return(-1), NULL);
     } else {
         xmlSecOtherError(XMLSEC_ERRORS_R_KEY_NOT_FOUND, NULL,
                          "neither public or private keys are set");
@@ -321,7 +325,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
     PK11SymKey*  symKey;
     PK11SlotInfo* slot;
     SECItem oriskv;
-    int blockSize;
+    xmlSecSize blockSize;
     xmlSecBufferPtr result;
 
     xmlSecAssert2(ctx != NULL, -1);
@@ -355,11 +359,14 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
             return(-1);
         }
     } else if(ctx->prikey != NULL) {
-        blockSize = PK11_SignatureLen(ctx->prikey);
-        if(blockSize <= 0) {
+        int blockLen;
+
+        blockLen = PK11_SignatureLen(ctx->prikey);
+        if(blockLen <= 0) {
             xmlSecNssError("PK11_SignatureLen", NULL);
             return(-1);
         }
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(blockLen, blockSize, return(-1), NULL);
     } else {
         xmlSecOtherError(XMLSEC_ERRORS_R_KEY_NOT_FOUND, NULL,
                          "neither public or private keys are set");

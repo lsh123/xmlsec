@@ -47,6 +47,7 @@
 #include <xmlsec/nss/x509.h>
 #include <xmlsec/nss/pkikeys.h>
 
+#include "../cast_helpers.h"
 
 /* workaround - NSS exports this but doesn't declare it */
 extern CERTCertificate * __CERT_NewTempCertificate(CERTCertDBHandle *handle,
@@ -1564,18 +1565,34 @@ xmlSecNssX509CertGetKey(CERTCertificate* cert) {
 
 static CERTCertificate*
 xmlSecNssX509CertBase64DerRead(xmlChar* buf) {
+    CERTCertificate* res;
+    xmlSecSize size;
     int ret;
 
     xmlSecAssert2(buf != NULL, NULL);
 
+    ret = xmlStrlen(buf);
+    if(ret < 0) {
+        xmlSecInternalError("xmlStrlen", NULL);
+        return(NULL);
+    }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
+
     /* usual trick with base64 decoding "in-place" */
-    ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, xmlStrlen(buf));
+    ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, size);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBase64Decode", NULL);
         return(NULL);
     }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
 
-    return(xmlSecNssX509CertDerRead((xmlSecByte*)buf, ret));
+    res = xmlSecNssX509CertDerRead((xmlSecByte*)buf, size);
+    if(res == NULL) {
+        xmlSecInternalError("xmlSecNssX509CertDerRead", NULL);
+        return(NULL);
+    }
+
+    return(res);
 }
 
 
@@ -1606,15 +1623,17 @@ static xmlChar*
 xmlSecNssX509CertBase64DerWrite(CERTCertificate* cert, int base64LineWrap) {
     xmlChar *res = NULL;
     xmlSecByte *p = NULL;
-    long size;
+    xmlSecSize size;
+    long len;
 
     xmlSecAssert2(cert != NULL, NULL);
 
     p = cert->derCert.data;
     xmlSecAssert2(p != NULL, NULL);
 
-    size = cert->derCert.len;
-    xmlSecAssert2(size > 0, NULL);
+    len = cert->derCert.len;
+    xmlSecAssert2(len > 0, NULL);
+    XMLSEC_SAFE_CAST_LONG_TO_SIZE(len, size, return(NULL), NULL);
 
     res = xmlSecBase64Encode(p, size, base64LineWrap);
     if(res == NULL) {
@@ -1628,18 +1647,34 @@ xmlSecNssX509CertBase64DerWrite(CERTCertificate* cert, int base64LineWrap) {
 static CERTSignedCrl*
 xmlSecNssX509CrlBase64DerRead(xmlChar* buf,
                               xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    CERTSignedCrl* res;
+    xmlSecSize size;
     int ret;
 
     xmlSecAssert2(buf != NULL, NULL);
 
+    ret = xmlStrlen(buf);
+    if(ret < 0) {
+        xmlSecInternalError("xmlStrlen", NULL);
+        return(NULL);
+    }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
+
     /* usual trick with base64 decoding "in-place" */
-    ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, xmlStrlen(buf));
+    ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, size);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBase64Decode", NULL);
         return(NULL);
     }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
 
-    return(xmlSecNssX509CrlDerRead((xmlSecByte*)buf, ret, keyInfoCtx));
+    res = xmlSecNssX509CrlDerRead((xmlSecByte*)buf, size, keyInfoCtx);
+    if(res == NULL) {
+        xmlSecInternalError("xmlSecNssX509CrlDerRead", NULL);
+        return(NULL);
+    }
+
+    return(res);
 }
 
 
@@ -1688,15 +1723,17 @@ static xmlChar*
 xmlSecNssX509CrlBase64DerWrite(CERTSignedCrl* crl, int base64LineWrap) {
     xmlChar *res = NULL;
     xmlSecByte *p = NULL;
-    long size;
+    xmlSecSize size;
+    long len;
 
     xmlSecAssert2(crl != NULL && crl->derCrl != NULL, NULL);
 
     p = crl->derCrl->data;
     xmlSecAssert2(p != NULL, NULL);
 
-    size = crl->derCrl->len;
-    xmlSecAssert2(size > 0, NULL);
+    len = crl->derCrl->len;
+    xmlSecAssert2(len > 0, NULL);
+    XMLSEC_SAFE_CAST_LONG_TO_SIZE(len, size, return(NULL), NULL);
 
     res = xmlSecBase64Encode(p, size, base64LineWrap);
     if(res == NULL) {
@@ -1730,10 +1767,13 @@ xmlSecNssX509NameWrite(CERTName* nm) {
     return(res);
 }
 
+
+/* not more than 64 chars */
+#define XMLSEC_NSS_INT_TO_STR_MAX_SIZE     64
+
 static xmlChar*
 xmlSecNssASN1IntegerWrite(SECItem *num) {
     xmlChar *res = NULL;
-    int resLen = 64; /* not more than 64 chars */
     PRUint64 val = 0;
     unsigned int ii = 0;
     int shift = 0;
@@ -1752,13 +1792,13 @@ xmlSecNssASN1IntegerWrite(SECItem *num) {
         }
     }
 
-    res = (xmlChar*)xmlMalloc(resLen + 1);
+    res = (xmlChar*)xmlMalloc(XMLSEC_NSS_INT_TO_STR_MAX_SIZE + 1);
     if(res == NULL) {
-        xmlSecMallocError(resLen + 1, NULL);
+        xmlSecMallocError(XMLSEC_NSS_INT_TO_STR_MAX_SIZE + 1, NULL);
         return (NULL);
     }
 
-    PR_snprintf((char*)res, resLen, "%llu", val);
+    PR_snprintf((char*)res, XMLSEC_NSS_INT_TO_STR_MAX_SIZE, "%llu", val);
     return(res);
 }
 

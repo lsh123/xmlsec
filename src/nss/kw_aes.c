@@ -35,6 +35,7 @@
 #include <xmlsec/nss/crypto.h>
 
 #include "../kw_aes_des.h"
+#include "../cast_helpers.h"
 
 /*
  * NSS needs to implement AES KW internally and then the code
@@ -417,9 +418,9 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
                 PK11_FreeSymKey(aeskey);
                 return(-1);
             }
-
-            outSize = ret;
             PK11_FreeSymKey(aeskey);
+
+            XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outSize, return(-1), xmlSecTransformGetName(transform));
         } else {
             PK11SymKey *aeskey = NULL;
 
@@ -445,9 +446,9 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
                 PK11_FreeSymKey(aeskey);
                 return(-1);
             }
-
-            outSize = ret;
             PK11_FreeSymKey(aeskey);
+
+            XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outSize, return(-1), xmlSecTransformGetName(transform));
         }
 
         ret = xmlSecBufferSetSize(out, outSize);
@@ -565,44 +566,41 @@ static int
 xmlSecNssAesOp(PK11SymKey *aeskey, const xmlSecByte *in, xmlSecByte *out, int enc) {
 
     CK_MECHANISM_TYPE  cipherMech;
-    SECItem*           SecParam = NULL;
-    PK11Context*       EncContext = NULL;
+    SECItem*           secParam = NULL;
+    PK11Context*       ctxt = NULL;
     SECStatus          rv;
-    int                tmp1_outlen;
-    unsigned int       tmp2_outlen;
+    int                outlen;
     int                ret = -1;
 
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
 
     cipherMech = CKM_AES_ECB;
-    SecParam = PK11_ParamFromIV(cipherMech, NULL);
-    if (SecParam == NULL) {
+    secParam = PK11_ParamFromIV(cipherMech, NULL);
+    if (secParam == NULL) {
         xmlSecNssError("PK11_ParamFromIV", NULL);
         goto done;
     }
 
-    EncContext = PK11_CreateContextBySymKey(cipherMech,
-                                            enc ? CKA_ENCRYPT : CKA_DECRYPT,
-                                            aeskey, SecParam);
-    if (EncContext == NULL) {
+    ctxt = PK11_CreateContextBySymKey(cipherMech, enc ? CKA_ENCRYPT : CKA_DECRYPT,
+        aeskey, secParam);
+    if (ctxt == NULL) {
         xmlSecNssError("PK11_CreateContextBySymKey", NULL);
         goto done;
     }
 
-    tmp1_outlen = tmp2_outlen = 0;
-    rv = PK11_CipherOp(EncContext, out, &tmp1_outlen,
+    outlen = 0;
+    rv = PK11_CipherOp(ctxt, out, &outlen,
                        XMLSEC_KW_AES_BLOCK_SIZE, (unsigned char *)in,
                        XMLSEC_KW_AES_BLOCK_SIZE);
-    if (rv != SECSuccess) {
+    if ((rv != SECSuccess) || (outlen != XMLSEC_KW_AES_BLOCK_SIZE)) {
         xmlSecNssError("PK11_CipherOp", NULL);
         goto done;
     }
 
-    rv = PK11_DigestFinal(EncContext, out+tmp1_outlen,
-                          &tmp2_outlen, XMLSEC_KW_AES_BLOCK_SIZE-tmp1_outlen);
+    rv = PK11_Finalize(ctxt);
     if (rv != SECSuccess) {
-        xmlSecNssError("PK11_DigestFinal", NULL);
+        xmlSecNssError("PK11_Finalize", NULL);
         goto done;
     }
 
@@ -610,11 +608,11 @@ xmlSecNssAesOp(PK11SymKey *aeskey, const xmlSecByte *in, xmlSecByte *out, int en
     ret = 0;
 
 done:
-    if (SecParam) {
-        SECITEM_FreeItem(SecParam, PR_TRUE);
+    if (secParam) {
+        SECITEM_FreeItem(secParam, PR_TRUE);
     }
-    if (EncContext) {
-        PK11_DestroyContext(EncContext, PR_TRUE);
+    if (ctxt) {
+        PK11_DestroyContext(ctxt, PR_TRUE);
     }
 
     return (ret);

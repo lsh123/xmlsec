@@ -91,6 +91,7 @@ struct _xmlSecNssHmacCtx {
  *
  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(NssHmac, xmlSecNssHmacCtx)
+#define xmlSecNssHmacSize XMLSEC_TRANSFORM_SIZE(NssHmac)
 
 static int      xmlSecNssHmacCheckId                    (xmlSecTransformPtr transform);
 static int      xmlSecNssHmacInitialize                 (xmlSecTransformPtr transform);

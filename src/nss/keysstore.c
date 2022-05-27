@@ -56,6 +56,7 @@
  *
  ***************************************************************************/
 XMLSEC_KEY_STORE_DECLARE(NssKeysStore, xmlSecKeyStorePtr)
+#define xmlSecNssKeysStoreSize XMLSEC_KEY_STORE_SIZE(NssKeysStore)
 
 static int                      xmlSecNssKeysStoreInitialize    (xmlSecKeyStorePtr store);
 static void                     xmlSecNssKeysStoreFinalize      (xmlSecKeyStorePtr store);

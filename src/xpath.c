@@ -359,6 +359,7 @@ xmlSecXPathDataListExecute(xmlSecPtrListPtr dataList, xmlDocPtr doc,
  *
  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(XPath, xmlSecPtrList)
+#define xmlSecXPathSize XMLSEC_TRANSFORM_SIZE(XPath)
 
 #define xmlSecTransformXPathCheckId(transform) \
     (xmlSecTransformCheckId((transform), xmlSecTransformXPathId) || \
@@ -878,6 +879,7 @@ xmlSecTransformXPointerNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, x
  * 
  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(Visa3DHack, xmlChar*)
+#define xmlSecVisa3DHackSize XMLSEC_TRANSFORM_SIZE(Visa3DHack)
 
 #define xmlSecTransformVisa3DHackCheckId(transform) \
     (xmlSecTransformCheckId((transform), xmlSecTransformVisa3DHackId))

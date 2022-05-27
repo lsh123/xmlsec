@@ -106,6 +106,7 @@ struct _xmlSecOpenSSLRsaPkcs1Ctx {
  *
  ********************************************************************/
 XMLSEC_TRANSFORM_DECLARE(OpenSSLRsaPkcs1, xmlSecOpenSSLRsaPkcs1Ctx)
+#define xmlSecOpenSSLRsaPkcs1Size XMLSEC_TRANSFORM_SIZE(OpenSSLRsaPkcs1)
 
 static int      xmlSecOpenSSLRsaPkcs1Initialize                 (xmlSecTransformPtr transform);
 static void     xmlSecOpenSSLRsaPkcs1Finalize                   (xmlSecTransformPtr transform);
@@ -505,6 +506,7 @@ struct _xmlSecOpenSSLRsaOaepCtx {
  *
  ********************************************************************/
 XMLSEC_TRANSFORM_DECLARE(OpenSSLRsaOaep, xmlSecOpenSSLRsaOaepCtx)
+#define xmlSecOpenSSLRsaOaepSize XMLSEC_TRANSFORM_SIZE(OpenSSLRsaOaep)
 
 static int      xmlSecOpenSSLRsaOaepInitialize                  (xmlSecTransformPtr transform);
 static void     xmlSecOpenSSLRsaOaepFinalize                    (xmlSecTransformPtr transform);

@@ -111,6 +111,7 @@ struct _xmlSecOpenSSLHmacCtx {
  *
  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(OpenSSLHmac, xmlSecOpenSSLHmacCtx)
+#define xmlSecOpenSSLHmacSize XMLSEC_TRANSFORM_SIZE(OpenSSLHmac)
 
 static int      xmlSecOpenSSLHmacCheckId                        (xmlSecTransformPtr transform);
 static int      xmlSecOpenSSLHmacInitialize                     (xmlSecTransformPtr transform);

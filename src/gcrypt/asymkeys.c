@@ -57,6 +57,7 @@ struct _xmlSecGCryptAsymKeyDataCtx {
  *
  *****************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(GCryptAsymKeyData, xmlSecGCryptAsymKeyDataCtx)
+#define xmlSecGCryptAsymKeyDataSize XMLSEC_KEY_DATA_SIZE(GCryptAsymKeyData)
 
 static int              xmlSecGCryptAsymKeyDataInitialize       (xmlSecKeyDataPtr data);
 static int              xmlSecGCryptAsymKeyDataDuplicate        (xmlSecKeyDataPtr dst,

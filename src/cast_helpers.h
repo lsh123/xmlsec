@@ -199,15 +199,16 @@ typedef struct _ ## xmlSec ## name ## postfix {                                 
     ctxType ctx;                                                                   \
 } xmlSec ## name ## postfix;                                                       \
                                                                                    \
-static const xmlSecSize xmlSec ## name ## Size = (sizeof(xmlSec ## name ## postfix)); \
-                                                                                   \
 static inline ctxType* xmlSec ## name ## GetCtx(baseType* obj) {                   \
-    if(checkSizeFunc(obj, xmlSec ## name ## Size)) {                               \
+    if(checkSizeFunc(obj, sizeof(xmlSec ## name ## postfix))) {                    \
         return((ctxType *)(&( ((xmlSec ## name ## postfix *)obj)->ctx )));         \
     } else {                                                                       \
         return(NULL);                                                              \
     }                                                                              \
 }                                                                                  \
+
+#define XMLSEC_CHILD_STRUCT_SIZE(name, postfix)                                    \
+    (sizeof(xmlSec ## name ## postfix))                                            \
 
 /******************************************************************************
  *
@@ -216,6 +217,8 @@ static inline ctxType* xmlSec ## name ## GetCtx(baseType* obj) {                
  *****************************************************************************/
 #define XMLSEC_TRANSFORM_DECLARE(name, ctxType)  \
     XMLSEC_CHILD_STRUCT_DECLARE(name, Transform, xmlSecTransform, ctxType, xmlSecTransformCheckSize)
+#define XMLSEC_TRANSFORM_SIZE(name) \
+    XMLSEC_CHILD_STRUCT_SIZE(name, Transform)
 
 /******************************************************************************
  *
@@ -224,6 +227,8 @@ static inline ctxType* xmlSec ## name ## GetCtx(baseType* obj) {                
  *****************************************************************************/
 #define XMLSEC_KEY_DATA_DECLARE(name, ctxType)  \
     XMLSEC_CHILD_STRUCT_DECLARE(name, KeyData, xmlSecKeyData, ctxType, xmlSecKeyDataCheckSize)
+#define XMLSEC_KEY_DATA_SIZE(name) \
+    XMLSEC_CHILD_STRUCT_SIZE(name, KeyData)
 
 /******************************************************************************
  *
@@ -232,6 +237,8 @@ static inline ctxType* xmlSec ## name ## GetCtx(baseType* obj) {                
  *****************************************************************************/
 #define XMLSEC_KEY_DATA_STORE_DECLARE(name, ctxType)  \
     XMLSEC_CHILD_STRUCT_DECLARE(name, KeyDataStore, xmlSecKeyDataStore, ctxType, xmlSecKeyDataStoreCheckSize)
+#define XMLSEC_KEY_DATA_STORE_SIZE(name) \
+    XMLSEC_CHILD_STRUCT_SIZE(name, KeyDataStore)
 
 /******************************************************************************
  *
@@ -240,5 +247,7 @@ static inline ctxType* xmlSec ## name ## GetCtx(baseType* obj) {                
  *****************************************************************************/
 #define XMLSEC_KEY_STORE_DECLARE(name, ctxType) \
     XMLSEC_CHILD_STRUCT_DECLARE(name, KeyStore, xmlSecKeyStore, ctxType, xmlSecKeyStoreCheckSize)
+#define XMLSEC_KEY_STORE_SIZE(name) \
+    XMLSEC_CHILD_STRUCT_SIZE(name, KeyStore)
 
 #endif /* __XMLSEC_CAST_HELPERS_H__ */

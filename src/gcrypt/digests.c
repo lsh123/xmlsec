@@ -51,6 +51,7 @@ struct _xmlSecGCryptDigestCtx {
  *
  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GCryptDigest, xmlSecGCryptDigestCtx)
+#define xmlSecGCryptDigestSize XMLSEC_TRANSFORM_SIZE(GCryptDigest)
 
 static int      xmlSecGCryptDigestInitialize            (xmlSecTransformPtr transform);
 static void     xmlSecGCryptDigestFinalize              (xmlSecTransformPtr transform);

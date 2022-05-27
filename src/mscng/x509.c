@@ -47,6 +47,7 @@ struct _xmlSecMSCngX509DataCtx {
 };
 
 XMLSEC_KEY_DATA_DECLARE(MSCngX509Data, xmlSecMSCngX509DataCtx)
+#define xmlSecMSCngX509DataSize XMLSEC_KEY_DATA_SIZE(MSCngX509Data)
 
 static int
 xmlSecMSCngKeyDataX509Initialize(xmlSecKeyDataPtr data) {

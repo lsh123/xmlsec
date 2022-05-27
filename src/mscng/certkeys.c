@@ -49,6 +49,7 @@ struct _xmlSecMSCngKeyDataCtx {
 };
 
 XMLSEC_KEY_DATA_DECLARE(MSCngKeyData, xmlSecMSCngKeyDataCtx)
+#define xmlSecMSCngKeyDataSize XMLSEC_KEY_DATA_SIZE(MSCngKeyData)
 
 static int xmlSecMSCngKeyDataGetSize(xmlSecKeyDataPtr data);
 

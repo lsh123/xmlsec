@@ -87,6 +87,7 @@ struct _xmlSecGCryptHmacCtx {
  *
  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GCryptHmac, xmlSecGCryptHmacCtx)
+#define xmlSecGCryptHmacSize XMLSEC_TRANSFORM_SIZE(GCryptHmac)
 
 static int      xmlSecGCryptHmacCheckId                 (xmlSecTransformPtr transform);
 static int      xmlSecGCryptHmacInitialize              (xmlSecTransformPtr transform);

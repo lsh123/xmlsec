@@ -385,6 +385,7 @@ xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
  *
  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(NssBlockCipher, xmlSecNssBlockCipherCtx)
+#define xmlSecNssBlockCipherSize XMLSEC_TRANSFORM_SIZE(NssBlockCipher)
 
 static int      xmlSecNssBlockCipherInitialize  (xmlSecTransformPtr transform);
 static void     xmlSecNssBlockCipherFinalize            (xmlSecTransformPtr transform);

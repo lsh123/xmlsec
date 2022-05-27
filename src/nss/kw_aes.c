@@ -98,6 +98,7 @@ struct _xmlSecNssKWAesCtx {
  *
  ********************************************************************/
 XMLSEC_TRANSFORM_DECLARE(NssKWAes, xmlSecNssKWAesCtx)
+#define xmlSecNssKWAesSize XMLSEC_TRANSFORM_SIZE(NssKWAes)
 
 #define xmlSecNssKWAesCheckId(transform) \
     (xmlSecTransformCheckId((transform), xmlSecNssTransformKWAes128Id) || \

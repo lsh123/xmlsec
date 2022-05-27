@@ -58,6 +58,7 @@ struct _xmlSecXsltCtx {
  *
  ***************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(Xslt, xmlSecXsltCtx)
+#define xmlSecXsltSize XMLSEC_TRANSFORM_SIZE(Xslt)
 
 static int              xmlSecXsltInitialize                    (xmlSecTransformPtr transform);
 static void             xmlSecXsltFinalize                      (xmlSecTransformPtr transform);

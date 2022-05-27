@@ -37,11 +37,11 @@
 
 /**************************************************************************
  *
- * Internal OpenSSL Digest CTX
+ * Internal OpenSSL EVP Digest CTX
  *
  *****************************************************************************/
-typedef struct _xmlSecOpenSSLDigestCtx          xmlSecOpenSSLDigestCtx, *xmlSecOpenSSLDigestCtxPtr;
-struct _xmlSecOpenSSLDigestCtx {
+typedef struct _xmlSecOpenSSLEvpDigestCtx xmlSecOpenSSLEvpDigestCtx, *xmlSecOpenSSLEvpDigestCtxPtr;
+struct _xmlSecOpenSSLEvpDigestCtx {
 #ifndef XMLSEC_OPENSSL_API_300
     const EVP_MD*       digest;
 #else /* XMLSEC_OPENSSL_API_300 */
@@ -59,7 +59,8 @@ struct _xmlSecOpenSSLDigestCtx {
  * EVP Digest transforms
  *
  *****************************************************************************/
-XMLSEC_TRANSFORM_DECLARE(OpenSSLEvpDigest, xmlSecOpenSSLDigestCtx)
+XMLSEC_TRANSFORM_DECLARE(OpenSSLEvpDigest, xmlSecOpenSSLEvpDigestCtx)
+#define xmlSecOpenSSLEvpDigestSize XMLSEC_TRANSFORM_SIZE(OpenSSLEvpDigest)
 
 static int      xmlSecOpenSSLEvpDigestInitialize        (xmlSecTransformPtr transform);
 static void     xmlSecOpenSSLEvpDigestFinalize          (xmlSecTransformPtr transform);
@@ -140,7 +141,7 @@ xmlSecOpenSSLEvpDigestCheckId(xmlSecTransformPtr transform) {
 
 static int
 xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
-    xmlSecOpenSSLDigestCtxPtr ctx;
+    xmlSecOpenSSLEvpDigestCtxPtr ctx;
 
     xmlSecAssert2(xmlSecOpenSSLEvpDigestCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpDigestSize), -1);
@@ -149,7 +150,7 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
     xmlSecAssert2(ctx != NULL, -1);
 
     /* initialize context */
-    memset(ctx, 0, sizeof(xmlSecOpenSSLDigestCtx));
+    memset(ctx, 0, sizeof(xmlSecOpenSSLEvpDigestCtx));
 
 #ifndef XMLSEC_NO_MD5
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformMd5Id)) {
@@ -310,7 +311,7 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
 
 static void
 xmlSecOpenSSLEvpDigestFinalize(xmlSecTransformPtr transform) {
-    xmlSecOpenSSLDigestCtxPtr ctx;
+    xmlSecOpenSSLEvpDigestCtxPtr ctx;
 
     xmlSecAssert(xmlSecOpenSSLEvpDigestCheckId(transform));
     xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpDigestSize));
@@ -327,14 +328,14 @@ xmlSecOpenSSLEvpDigestFinalize(xmlSecTransformPtr transform) {
     }
 #endif /* XMLSEC_OPENSSL_API_300 */
 
-    memset(ctx, 0, sizeof(xmlSecOpenSSLDigestCtx));
+    memset(ctx, 0, sizeof(xmlSecOpenSSLEvpDigestCtx));
 }
 
 static int
 xmlSecOpenSSLEvpDigestVerify(xmlSecTransformPtr transform,
                         const xmlSecByte* data, xmlSecSize dataSize,
                         xmlSecTransformCtxPtr transformCtx) {
-    xmlSecOpenSSLDigestCtxPtr ctx;
+    xmlSecOpenSSLEvpDigestCtxPtr ctx;
 
     xmlSecAssert2(xmlSecOpenSSLEvpDigestCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpDigestSize), -1);
@@ -367,7 +368,7 @@ xmlSecOpenSSLEvpDigestVerify(xmlSecTransformPtr transform,
 
 static int
 xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
-    xmlSecOpenSSLDigestCtxPtr ctx;
+    xmlSecOpenSSLEvpDigestCtxPtr ctx;
     xmlSecBufferPtr in, out;
     int ret;
 

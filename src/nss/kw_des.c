@@ -104,6 +104,7 @@ struct _xmlSecNssKWDes3Ctx {
  *
  ********************************************************************/
 XMLSEC_TRANSFORM_DECLARE(NssKWDes3, xmlSecNssKWDes3Ctx)
+#define xmlSecNssKWDes3Size XMLSEC_TRANSFORM_SIZE(NssKWDes3)
 
 static int      xmlSecNssKWDes3Initialize                       (xmlSecTransformPtr transform);
 static void     xmlSecNssKWDes3Finalize                         (xmlSecTransformPtr transform);

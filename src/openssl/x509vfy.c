@@ -72,6 +72,7 @@ struct _xmlSecOpenSSLX509StoreCtx {
  *
  ***************************************************************************/
 XMLSEC_KEY_DATA_STORE_DECLARE(OpenSSLX509Store, xmlSecOpenSSLX509StoreCtx)
+#define xmlSecOpenSSLX509StoreSize XMLSEC_KEY_DATA_STORE_SIZE(OpenSSLX509Store)
 
 static int              xmlSecOpenSSLX509StoreInitialize        (xmlSecKeyDataStorePtr store);
 static void             xmlSecOpenSSLX509StoreFinalize          (xmlSecKeyDataStorePtr store);

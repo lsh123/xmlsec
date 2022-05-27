@@ -84,6 +84,7 @@ struct _xmlSecOpenSSLKWAesCtx {
  *
  ********************************************************************/
 XMLSEC_TRANSFORM_DECLARE(OpenSSLKWAes, xmlSecOpenSSLKWAesCtx)
+#define xmlSecOpenSSLKWAesSize XMLSEC_TRANSFORM_SIZE(OpenSSLKWAes)
 
 #define xmlSecOpenSSLKWAesCheckId(transform) \
     (xmlSecTransformCheckId((transform), xmlSecOpenSSLTransformKWAes128Id) || \

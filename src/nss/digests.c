@@ -57,6 +57,7 @@ struct _xmlSecNssDigestCtx {
  *
  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(NssDigest, xmlSecNssDigestCtx)
+#define xmlSecNssDigestSize XMLSEC_TRANSFORM_SIZE(NssDigest)
 
 static int      xmlSecNssDigestCheckId                  (xmlSecTransformPtr transform);
 static int      xmlSecNssDigestInitialize               (xmlSecTransformPtr transform);

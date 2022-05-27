@@ -40,6 +40,7 @@
  *
  ****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MemBuf, xmlSecBuffer)
+#define xmlSecMemBufSize XMLSEC_TRANSFORM_SIZE(MemBuf)
 
 static int              xmlSecTransformMemBufInitialize         (xmlSecTransformPtr transform);
 static void             xmlSecTransformMemBufFinalize           (xmlSecTransformPtr transform);

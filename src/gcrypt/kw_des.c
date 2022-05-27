@@ -106,6 +106,7 @@ struct _xmlSecGCryptKWDes3Ctx {
  *
  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GCryptKWDes3, xmlSecGCryptKWDes3Ctx)
+#define xmlSecGCryptKWDes3Size XMLSEC_TRANSFORM_SIZE(GCryptKWDes3)
 
 static int      xmlSecGCryptKWDes3Initialize                    (xmlSecTransformPtr transform);
 static void     xmlSecGCryptKWDes3Finalize                      (xmlSecTransformPtr transform);

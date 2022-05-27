@@ -39,6 +39,7 @@
  *
  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(C14N, xmlSecPtrList)
+#define xmlSecC14NSize XMLSEC_TRANSFORM_SIZE(C14N)
 
 #define xmlSecTransformC14NCheckId(transform) \
     (xmlSecTransformInclC14NCheckId((transform)) || \

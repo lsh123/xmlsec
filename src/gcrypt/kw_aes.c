@@ -85,6 +85,7 @@ struct _xmlSecGCryptKWAesCtx {
  *
  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GCryptKWAes, xmlSecGCryptKWAesCtx)
+#define xmlSecGCryptKWAesSize XMLSEC_TRANSFORM_SIZE(GCryptKWAes)
 
 #define xmlSecGCryptKWAesCheckId(transform) \
     (xmlSecTransformCheckId((transform), xmlSecGCryptTransformKWAes128Id) || \

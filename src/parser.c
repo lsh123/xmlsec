@@ -51,6 +51,7 @@ struct _xmlSecParserCtx {
  *
  ***************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(Parser, xmlSecParserCtx)
+#define xmlSecParserSize XMLSEC_TRANSFORM_SIZE(Parser)
 
 static int              xmlSecParserInitialize                  (xmlSecTransformPtr transform);
 static void             xmlSecParserFinalize                    (xmlSecTransformPtr transform);

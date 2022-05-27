@@ -627,6 +627,7 @@ xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
  *
  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(OpenSSLEvpBlockCipher, xmlSecOpenSSLEvpBlockCipherCtx)
+#define xmlSecOpenSSLEvpBlockCipherSize XMLSEC_TRANSFORM_SIZE(OpenSSLEvpBlockCipher)
 
 static int      xmlSecOpenSSLEvpBlockCipherInitialize   (xmlSecTransformPtr transform);
 static void     xmlSecOpenSSLEvpBlockCipherFinalize     (xmlSecTransformPtr transform);

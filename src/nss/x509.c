@@ -230,6 +230,7 @@ struct _xmlSecNssX509DataCtx {
  *
  *************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(NssX509Data, xmlSecNssX509DataCtx)
+#define xmlSecNssX509DataSize XMLSEC_KEY_DATA_SIZE(NssX509Data)
 
 static int              xmlSecNssKeyDataX509Initialize  (xmlSecKeyDataPtr data);
 static int              xmlSecNssKeyDataX509Duplicate   (xmlSecKeyDataPtr dst,

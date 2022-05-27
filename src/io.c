@@ -302,6 +302,7 @@ struct _xmlSecInputURICtx {
 };
 
 XMLSEC_TRANSFORM_DECLARE(InputUri, xmlSecInputURICtx)
+#define xmlSecInputUriSize XMLSEC_TRANSFORM_SIZE(InputUri)
 
 static int              xmlSecTransformInputURIInitialize       (xmlSecTransformPtr transform);
 static void             xmlSecTransformInputURIFinalize         (xmlSecTransformPtr transform);

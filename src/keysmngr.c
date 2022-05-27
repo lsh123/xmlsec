@@ -306,6 +306,7 @@ xmlSecKeyStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKeyInf
  *
  ***************************************************************************/
 XMLSEC_KEY_STORE_DECLARE(SimpleKeysStore, xmlSecPtrList)
+#define xmlSecSimpleKeysStoreSize XMLSEC_KEY_STORE_SIZE(SimpleKeysStore)
 
 static int                      xmlSecSimpleKeysStoreInitialize (xmlSecKeyStorePtr store);
 static void                     xmlSecSimpleKeysStoreFinalize   (xmlSecKeyStorePtr store);

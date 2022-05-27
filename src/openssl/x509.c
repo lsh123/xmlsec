@@ -225,6 +225,7 @@ struct _xmlSecOpenSSLX509DataCtx {
  *
  *************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(OpenSSLX509Data, xmlSecOpenSSLX509DataCtx)
+#define xmlSecOpenSSLX509DataSize XMLSEC_KEY_DATA_SIZE(OpenSSLX509Data)
 
 static int              xmlSecOpenSSLKeyDataX509Initialize      (xmlSecKeyDataPtr data);
 static int              xmlSecOpenSSLKeyDataX509Duplicate       (xmlSecKeyDataPtr dst,

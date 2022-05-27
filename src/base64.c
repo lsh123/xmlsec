@@ -740,6 +740,7 @@ done:
  *
  **************************************************************/
 XMLSEC_TRANSFORM_DECLARE(Base64, xmlSecBase64Ctx)
+#define xmlSecBase64Size XMLSEC_TRANSFORM_SIZE(Base64)
 
 static int              xmlSecBase64Initialize          (xmlSecTransformPtr transform);
 static void             xmlSecBase64Finalize            (xmlSecTransformPtr transform);

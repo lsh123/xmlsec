@@ -110,6 +110,7 @@ struct _xmlSecOpenSSLKWDes3Ctx {
  *
  ********************************************************************/
 XMLSEC_TRANSFORM_DECLARE(OpenSSLKWDes3, xmlSecOpenSSLKWDes3Ctx)
+#define xmlSecOpenSSLKWDes3Size XMLSEC_TRANSFORM_SIZE(OpenSSLKWDes3)
 
 static int      xmlSecOpenSSLKWDes3Initialize                   (xmlSecTransformPtr transform);
 static void     xmlSecOpenSSLKWDes3Finalize                     (xmlSecTransformPtr transform);

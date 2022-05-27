@@ -348,6 +348,7 @@ xmlSecGCryptBlockCipherCtxFinal(xmlSecGCryptBlockCipherCtxPtr ctx,
  *
  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GCryptBlockCipher, xmlSecGCryptBlockCipherCtx)
+#define xmlSecGCryptBlockCipherSize XMLSEC_TRANSFORM_SIZE(GCryptBlockCipher)
 
 static int      xmlSecGCryptBlockCipherInitialize       (xmlSecTransformPtr transform);
 static void     xmlSecGCryptBlockCipherFinalize         (xmlSecTransformPtr transform);

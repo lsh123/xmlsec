@@ -106,6 +106,7 @@ struct _xmlSecRelationshipCtx {
 };
 
 XMLSEC_TRANSFORM_DECLARE(Relationship, xmlSecRelationshipCtx)
+#define xmlSecRelationshipSize XMLSEC_TRANSFORM_SIZE(Relationship)
 
 static int              xmlSecRelationshipInitialize      (xmlSecTransformPtr transform);
 static void             xmlSecRelationshipFinalize        (xmlSecTransformPtr transform);

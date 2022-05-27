@@ -106,6 +106,7 @@ struct _xmlSecGCryptPkSignatureCtx {
  *
  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GCryptPkSignature, xmlSecGCryptPkSignatureCtx)
+#define xmlSecGCryptPkSignatureSize XMLSEC_TRANSFORM_SIZE(GCryptPkSignature)
 
 static int      xmlSecGCryptPkSignatureCheckId                  (xmlSecTransformPtr transform);
 static int      xmlSecGCryptPkSignatureInitialize               (xmlSecTransformPtr transform);

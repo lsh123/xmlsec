@@ -53,6 +53,7 @@ struct _xmlSecNssPKIKeyDataCtx {
  *
  *****************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(NssPKIKeyData, xmlSecNssPKIKeyDataCtx)
+#define xmlSecNssPKIKeyDataSize XMLSEC_KEY_DATA_SIZE(NssPKIKeyData)
 
 static int              xmlSecNssPKIKeyDataInitialize   (xmlSecKeyDataPtr data);
 static void             xmlSecNssPKIKeyDataFinalize     (xmlSecKeyDataPtr data);

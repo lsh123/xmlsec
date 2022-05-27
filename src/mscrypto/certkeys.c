@@ -405,6 +405,7 @@ xmlSecMSCryptoKeyDataCtxDuplicateCert(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xmlSec
  *
  *****************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(MSCryptoKeyData, xmlSecMSCryptoKeyDataCtx)
+#define xmlSecMSCryptoKeyDataSize XMLSEC_KEY_DATA_SIZE(MSCryptoKeyData)
 
 static int      xmlSecMSCryptoKeyDataDuplicate  (xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src);
 static void             xmlSecMSCryptoKeyDataFinalize   (xmlSecKeyDataPtr data);

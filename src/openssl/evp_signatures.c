@@ -64,6 +64,7 @@ struct _xmlSecOpenSSLEvpSignatureCtx {
  *
  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(OpenSSLEvpSignature, xmlSecOpenSSLEvpSignatureCtx)
+#define xmlSecOpenSSLEvpSignatureSize XMLSEC_TRANSFORM_SIZE(OpenSSLEvpSignature)
 
 static int      xmlSecOpenSSLEvpSignatureCheckId                (xmlSecTransformPtr transform);
 static int      xmlSecOpenSSLEvpSignatureInitialize             (xmlSecTransformPtr transform);

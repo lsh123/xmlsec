@@ -195,6 +195,7 @@ struct _xmlSecOpenSSLEvpKeyDataCtx {
  *
  *****************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(OpenSSLEvpKeyData, xmlSecOpenSSLEvpKeyDataCtx)
+#define xmlSecOpenSSLEvpKeyDataSize XMLSEC_KEY_DATA_SIZE(OpenSSLEvpKeyData)
 
 static int              xmlSecOpenSSLEvpKeyDataInitialize       (xmlSecKeyDataPtr data);
 static int              xmlSecOpenSSLEvpKeyDataDuplicate        (xmlSecKeyDataPtr dst,

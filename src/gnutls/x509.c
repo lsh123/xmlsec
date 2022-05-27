@@ -186,6 +186,7 @@ struct _xmlSecGnuTLSX509DataCtx {
  *
  *************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(GnuTLSX509Data, xmlSecGnuTLSX509DataCtx)
+#define xmlSecGnuTLSX509DataSize XMLSEC_KEY_DATA_SIZE(GnuTLSX509Data)
 
 static int              xmlSecGnuTLSKeyDataX509Initialize      (xmlSecKeyDataPtr data);
 static int              xmlSecGnuTLSKeyDataX509Duplicate       (xmlSecKeyDataPtr dst,

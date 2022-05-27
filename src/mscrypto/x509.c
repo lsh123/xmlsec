@@ -215,6 +215,7 @@ struct _xmlSecMSCryptoX509DataCtx {
  *
  *************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(MSCryptoX509Data, xmlSecMSCryptoX509DataCtx)
+#define xmlSecMSCryptoX509DataSize XMLSEC_KEY_DATA_SIZE(MSCryptoX509Data)
 
 static int              xmlSecMSCryptoKeyDataX509Initialize     (xmlSecKeyDataPtr data);
 static int              xmlSecMSCryptoKeyDataX509Duplicate      (xmlSecKeyDataPtr dst,

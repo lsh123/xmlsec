@@ -58,6 +58,7 @@ struct _xmlSecNssKeyTransportCtx {
  *
  ********************************************************************/
 XMLSEC_TRANSFORM_DECLARE(NssKeyTransport, xmlSecNssKeyTransportCtx)
+#define xmlSecNssKeyTransportSize XMLSEC_TRANSFORM_SIZE(NssKeyTransport)
 
 static int      xmlSecNssKeyTransportInitialize         (xmlSecTransformPtr transform);
 static void     xmlSecNssKeyTransportFinalize           (xmlSecTransformPtr transform);

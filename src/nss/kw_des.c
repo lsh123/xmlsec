@@ -90,20 +90,21 @@ static int      xmlSecNssKWDes3Encrypt                          (const xmlSecByt
 
 /*********************************************************************
  *
- * Triple DES Key Wrap transform
- *
- * key (xmlSecBuffer) is located after xmlSecTransform structure
+ * Triple DES Key Wrap transform context
  *
  ********************************************************************/
-typedef struct _xmlSecNssKWDes3Ctx                      xmlSecNssKWDes3Ctx,
-                                                        *xmlSecNssKWDes3CtxPtr;
+typedef struct _xmlSecNssKWDes3Ctx  xmlSecNssKWDes3Ctx, *xmlSecNssKWDes3CtxPtr;
 struct _xmlSecNssKWDes3Ctx {
     xmlSecBuffer        keyBuffer;
 };
-#define xmlSecNssKWDes3Size     \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecNssKWDes3Ctx))
-#define xmlSecNssKWDes3GetCtx(transform) \
-    ((xmlSecNssKWDes3CtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+
+/*********************************************************************
+ *
+ * Triple DES Key Wrap transform
+ *
+ ********************************************************************/
+XMLSEC_TRANSFORM_DECLARE(NssKWDes3, xmlSecNssKWDes3Ctx)
+#define xmlSecNssKWDes3Size XMLSEC_TRANSFORM_SIZE(NssKWDes3)
 
 static int      xmlSecNssKWDes3Initialize                       (xmlSecTransformPtr transform);
 static void     xmlSecNssKWDes3Finalize                         (xmlSecTransformPtr transform);
@@ -493,8 +494,6 @@ xmlSecNssKWDes3BlockDecrypt(void * context,
     return(ret);
 }
 
-
-
 static int
 xmlSecNssKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
                        const xmlSecByte *iv, xmlSecSize ivSize,
@@ -509,6 +508,7 @@ xmlSecNssKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
     SECItem keyItem, ivItem;
     SECStatus status;
     int inLen, outLen, maxOutLen;
+    int res = -1;
 
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(keySize == XMLSEC_KW_DES3_KEY_LENGTH, -1);
@@ -567,6 +567,9 @@ xmlSecNssKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
         goto done;
     }
 
+    /* success */
+    res = outLen;
+
 done:
     if (slot) {
         PK11_FreeSlot(slot);
@@ -581,7 +584,7 @@ done:
         PK11_DestroyContext(pk11ctx, PR_TRUE);
     }
 
-    return(outLen);
+    return(res);
 }
 
 

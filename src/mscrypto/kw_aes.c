@@ -29,8 +29,10 @@
 
 #include <xmlsec/mscrypto/crypto.h>
 
-#include "../kw_aes_des.h"
 #include "private.h"
+
+#include "../kw_aes_des.h"
+#include "../cast_helpers.h"
 
 
 #ifndef XMLSEC_NO_AES
@@ -84,13 +86,9 @@ struct _xmlSecMSCryptoKWAesCtx {
  *
  *  KW AES transforms
  *
- * xmlSecMSCryptoKWAesCtx block is located after xmlSecTransform structure
- *
  *****************************************************************************/
-#define xmlSecMSCryptoKWAesSize   \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecMSCryptoKWAesCtx))
-#define xmlSecMSCryptoKWAesGetCtx(transform) \
-    ((xmlSecMSCryptoKWAesCtxPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
+XMLSEC_TRANSFORM_DECLARE(MSCryptoKWAes, xmlSecMSCryptoKWAesCtx)
+#define xmlSecMSCryptoKWAesSize XMLSEC_TRANSFORM_SIZE(MSCryptoKWAes)
 
 static int      xmlSecMSCryptoKWAesInitialize       (xmlSecTransformPtr transform);
 static void     xmlSecMSCryptoKWAesFinalize         (xmlSecTransformPtr transform);

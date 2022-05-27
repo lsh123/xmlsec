@@ -32,6 +32,8 @@
 #include <xmlsec/mscng/crypto.h>
 #include <xmlsec/mscng/certkeys.h>
 
+#include "../cast_helpers.h"
+
 /**************************************************************************
  *
  * Internal MSCng signatures ctx
@@ -54,13 +56,9 @@ struct _xmlSecMSCngSignatureCtx {
  *
  * Signature transforms
  *
- * xmlSecMSCngSignatureCtx is located after xmlSecTransform
- *
  *****************************************************************************/
-#define xmlSecMSCngSignatureSize     \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecMSCngSignatureCtx))
-#define xmlSecMSCngSignatureGetCtx(transform) \
-    ((xmlSecMSCngSignatureCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+XMLSEC_TRANSFORM_DECLARE(MSCngSignature, xmlSecMSCngSignatureCtx)
+#define xmlSecMSCngSignatureSize XMLSEC_TRANSFORM_SIZE(MSCngSignature)
 
 static int      xmlSecMSCngSignatureCheckId             (xmlSecTransformPtr transform);
 static int      xmlSecMSCngSignatureInitialize          (xmlSecTransformPtr transform);

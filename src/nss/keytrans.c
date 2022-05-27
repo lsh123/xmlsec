@@ -38,16 +38,11 @@
 
 /*********************************************************************
  *
- * Key transport transforms
+ * Key transport transforms context
  *
  ********************************************************************/
-typedef struct _xmlSecNssKeyTransportCtx                        xmlSecNssKeyTransportCtx;
-typedef struct _xmlSecNssKeyTransportCtx*                   xmlSecNssKeyTransportCtxPtr;
-
-#define xmlSecNssKeyTransportSize       \
-        (sizeof(xmlSecTransform) + sizeof(xmlSecNssKeyTransportCtx))
-#define xmlSecNssKeyTransportGetCtx(transform) \
-        ((xmlSecNssKeyTransportCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+typedef struct _xmlSecNssKeyTransportCtx       xmlSecNssKeyTransportCtx;
+typedef struct _xmlSecNssKeyTransportCtx*      xmlSecNssKeyTransportCtxPtr;
 
 struct _xmlSecNssKeyTransportCtx {
         CK_MECHANISM_TYPE               cipher;
@@ -56,6 +51,14 @@ struct _xmlSecNssKeyTransportCtx {
         xmlSecKeyDataId                 keyId;
         xmlSecBufferPtr                 material; /* to be encrypted/decrypted material */
 };
+
+/*********************************************************************
+ *
+ * Key transport transform
+ *
+ ********************************************************************/
+XMLSEC_TRANSFORM_DECLARE(NssKeyTransport, xmlSecNssKeyTransportCtx)
+#define xmlSecNssKeyTransportSize XMLSEC_TRANSFORM_SIZE(NssKeyTransport)
 
 static int      xmlSecNssKeyTransportInitialize         (xmlSecTransformPtr transform);
 static void     xmlSecNssKeyTransportFinalize           (xmlSecTransformPtr transform);

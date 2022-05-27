@@ -62,7 +62,7 @@ static xmlSecKWAesKlass xmlSecGCryptKWAesKlass = {
 
 /*********************************************************************
  *
- * AES KW transforms
+ * AES KW transform context
  *
  ********************************************************************/
 typedef struct _xmlSecGCryptKWAesCtx              xmlSecGCryptKWAesCtx,
@@ -76,10 +76,17 @@ struct _xmlSecGCryptKWAesCtx {
 
     xmlSecBuffer        keyBuffer;
 };
-#define xmlSecGCryptKWAesSize     \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecGCryptKWAesCtx))
-#define xmlSecGCryptKWAesGetCtx(transform) \
-    ((xmlSecGCryptKWAesCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+
+/******************************************************************************
+ *
+ * AES KW transforms
+ *
+ * xmlSecTransform + xmlSecGCryptKWAesCtx
+ *
+ *****************************************************************************/
+XMLSEC_TRANSFORM_DECLARE(GCryptKWAes, xmlSecGCryptKWAesCtx)
+#define xmlSecGCryptKWAesSize XMLSEC_TRANSFORM_SIZE(GCryptKWAes)
+
 #define xmlSecGCryptKWAesCheckId(transform) \
     (xmlSecTransformCheckId((transform), xmlSecGCryptTransformKWAes128Id) || \
      xmlSecTransformCheckId((transform), xmlSecGCryptTransformKWAes192Id) || \

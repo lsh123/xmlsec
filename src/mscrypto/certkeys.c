@@ -40,6 +40,8 @@
 #include <xmlsec/mscrypto/x509.h>
 #include "private.h"
 
+#include "../cast_helpers.h"
+
 // GOST CSP don't support keys duplicating, so we use NT4 analogs for these...
 #ifndef XMLSEC_NO_GOST
 #ifndef XMLSEC_MSCRYPTO_NT4
@@ -399,13 +401,11 @@ xmlSecMSCryptoKeyDataCtxDuplicateCert(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xmlSec
 
 /******************************************************************************
  *
- * xmlSecMSCryptoKeyDataCtx is located after xmlSecTransform
+ * xmlSecMSCryptoKeyData 
  *
  *****************************************************************************/
-#define xmlSecMSCryptoKeyDataSize       \
-    (sizeof(xmlSecKeyData) + sizeof(xmlSecMSCryptoKeyDataCtx))
-#define xmlSecMSCryptoKeyDataGetCtx(data) \
-    ((xmlSecMSCryptoKeyDataCtxPtr)(((xmlSecByte*)(data)) + sizeof(xmlSecKeyData)))
+XMLSEC_KEY_DATA_DECLARE(MSCryptoKeyData, xmlSecMSCryptoKeyDataCtx)
+#define xmlSecMSCryptoKeyDataSize XMLSEC_KEY_DATA_SIZE(MSCryptoKeyData)
 
 static int      xmlSecMSCryptoKeyDataDuplicate  (xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src);
 static void             xmlSecMSCryptoKeyDataFinalize   (xmlSecKeyDataPtr data);

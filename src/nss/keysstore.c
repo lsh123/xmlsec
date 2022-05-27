@@ -47,20 +47,16 @@
 #include <xmlsec/nss/x509.h>
 #include <xmlsec/nss/pkikeys.h>
 
+#include "../cast_helpers.h"
 /****************************************************************************
  *
  * Nss Keys Store. Uses Simple Keys Store under the hood
  *
- * Simple Keys Store ptr is located after xmlSecKeyStore
+ * xmlSecKeyStore +  xmlSecKeyStorePtr(Simple Keys Store ptr)
  *
  ***************************************************************************/
-#define xmlSecNssKeysStoreSize \
-        (sizeof(xmlSecKeyStore) + sizeof(xmlSecKeyStorePtr))
-
-#define xmlSecNssKeysStoreGetSS(store) \
-    ((xmlSecKeyStoreCheckSize((store), xmlSecNssKeysStoreSize)) ? \
-     (xmlSecKeyStorePtr*)(((xmlSecByte*)(store)) + sizeof(xmlSecKeyStore)) : \
-     (xmlSecKeyStorePtr*)NULL)
+XMLSEC_KEY_STORE_DECLARE(NssKeysStore, xmlSecKeyStorePtr)
+#define xmlSecNssKeysStoreSize XMLSEC_KEY_STORE_SIZE(NssKeysStore)
 
 static int                      xmlSecNssKeysStoreInitialize    (xmlSecKeyStorePtr store);
 static void                     xmlSecNssKeysStoreFinalize      (xmlSecKeyStorePtr store);
@@ -113,7 +109,7 @@ xmlSecNssKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecNssKeysStoreId), -1);
     xmlSecAssert2((key != NULL), -1);
 
-    ss = xmlSecNssKeysStoreGetSS(store);
+    ss = xmlSecNssKeysStoreGetCtx(store);
     xmlSecAssert2(((ss != NULL) && (*ss != NULL) &&
                    (xmlSecKeyStoreCheckId(*ss, xmlSecSimpleKeysStoreId))), -1);
 
@@ -238,7 +234,7 @@ xmlSecNssKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecKeyD
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecNssKeysStoreId), -1);
     xmlSecAssert2((filename != NULL), -1);
 
-    ss = xmlSecNssKeysStoreGetSS(store);
+    ss = xmlSecNssKeysStoreGetCtx(store);
     xmlSecAssert2(((ss != NULL) && (*ss != NULL) &&
                    (xmlSecKeyStoreCheckId(*ss, xmlSecSimpleKeysStoreId))), -1);
 
@@ -251,7 +247,7 @@ xmlSecNssKeysStoreInitialize(xmlSecKeyStorePtr store) {
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecNssKeysStoreId), -1);
 
-    ss = xmlSecNssKeysStoreGetSS(store);
+    ss = xmlSecNssKeysStoreGetCtx(store);
     xmlSecAssert2(((ss == NULL) || (*ss == NULL)), -1);
 
     *ss = xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId);
@@ -270,7 +266,7 @@ xmlSecNssKeysStoreFinalize(xmlSecKeyStorePtr store) {
 
     xmlSecAssert(xmlSecKeyStoreCheckId(store, xmlSecNssKeysStoreId));
 
-    ss = xmlSecNssKeysStoreGetSS(store);
+    ss = xmlSecNssKeysStoreGetCtx(store);
     xmlSecAssert((ss != NULL) && (*ss != NULL));
 
     xmlSecKeyStoreDestroy(*ss);
@@ -293,7 +289,7 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecNssKeysStoreId), NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
-    ss = xmlSecNssKeysStoreGetSS(store);
+    ss = xmlSecNssKeysStoreGetCtx(store);
     xmlSecAssert2(((ss != NULL) && (*ss != NULL)), NULL);
 
     key = xmlSecKeyStoreFindKey(*ss, name, keyInfoCtx);

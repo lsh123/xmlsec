@@ -37,6 +37,8 @@
 #include <xmlsec/mscng/crypto.h>
 #include <xmlsec/mscng/certkeys.h>
 
+#include "../cast_helpers.h"
+
 typedef struct _xmlSecMSCngKeyDataCtx xmlSecMSCngKeyDataCtx,
                                       *xmlSecMSCngKeyDataCtxPtr;
 
@@ -46,10 +48,8 @@ struct _xmlSecMSCngKeyDataCtx {
     BCRYPT_KEY_HANDLE pubkey;
 };
 
-#define xmlSecMSCngKeyDataSize       \
-    (sizeof(xmlSecKeyData) + sizeof(xmlSecMSCngKeyDataCtx))
-#define xmlSecMSCngKeyDataGetCtx(data) \
-    ((xmlSecMSCngKeyDataCtxPtr)(((xmlSecByte*)(data)) + sizeof(xmlSecKeyData)))
+XMLSEC_KEY_DATA_DECLARE(MSCngKeyData, xmlSecMSCngKeyDataCtx)
+#define xmlSecMSCngKeyDataSize XMLSEC_KEY_DATA_SIZE(MSCngKeyData)
 
 static int xmlSecMSCngKeyDataGetSize(xmlSecKeyDataPtr data);
 

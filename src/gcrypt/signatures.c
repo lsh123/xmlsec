@@ -102,13 +102,11 @@ struct _xmlSecGCryptPkSignatureCtx {
  *
  * Pk Signature transforms
  *
- * xmlSecGCryptPkSignatureCtx is located after xmlSecTransform
+ * xmlSecTransform + xmlSecGCryptPkSignatureCtx 
  *
  *****************************************************************************/
-#define xmlSecGCryptPkSignatureSize   \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecGCryptPkSignatureCtx))
-#define xmlSecGCryptPkSignatureGetCtx(transform) \
-    ((xmlSecGCryptPkSignatureCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+XMLSEC_TRANSFORM_DECLARE(GCryptPkSignature, xmlSecGCryptPkSignatureCtx)
+#define xmlSecGCryptPkSignatureSize XMLSEC_TRANSFORM_SIZE(GCryptPkSignature)
 
 static int      xmlSecGCryptPkSignatureCheckId                  (xmlSecTransformPtr transform);
 static int      xmlSecGCryptPkSignatureInitialize               (xmlSecTransformPtr transform);

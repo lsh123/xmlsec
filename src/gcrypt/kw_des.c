@@ -89,9 +89,7 @@ static int      xmlSecGCryptKWDes3Encrypt                       (const xmlSecByt
 
 /*********************************************************************
  *
- * Triple DES Key Wrap transform
- *
- * key (xmlSecBuffer) is located after xmlSecTransform structure
+ * Triple DES Key Wrap transform context
  *
  ********************************************************************/
 typedef struct _xmlSecGCryptKWDes3Ctx              xmlSecGCryptKWDes3Ctx,
@@ -99,10 +97,16 @@ typedef struct _xmlSecGCryptKWDes3Ctx              xmlSecGCryptKWDes3Ctx,
 struct _xmlSecGCryptKWDes3Ctx {
     xmlSecBuffer        keyBuffer;
 };
-#define xmlSecGCryptKWDes3Size     \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecGCryptKWDes3Ctx))
-#define xmlSecGCryptKWDes3GetCtx(transform) \
-    ((xmlSecGCryptKWDes3CtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+
+/******************************************************************************
+ *
+ * Tripple DES KW transforms
+ *
+ * xmlSecTransform + xmlSecGCryptKWDes3Ctx
+ *
+ *****************************************************************************/
+XMLSEC_TRANSFORM_DECLARE(GCryptKWDes3, xmlSecGCryptKWDes3Ctx)
+#define xmlSecGCryptKWDes3Size XMLSEC_TRANSFORM_SIZE(GCryptKWDes3)
 
 static int      xmlSecGCryptKWDes3Initialize                    (xmlSecTransformPtr transform);
 static void     xmlSecGCryptKWDes3Finalize                      (xmlSecTransformPtr transform);

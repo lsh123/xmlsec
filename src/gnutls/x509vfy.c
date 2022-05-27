@@ -56,14 +56,9 @@ struct _xmlSecGnuTLSX509StoreCtx {
  *
  * xmlSecGnuTLSKeyDataStoreX509Id:
  *
- * xmlSecGnuTLSX509StoreCtx is located after xmlSecTransform
- *
  ***************************************************************************/
-#define xmlSecGnuTLSX509StoreGetCtx(store) \
-    ((xmlSecGnuTLSX509StoreCtxPtr)(((xmlSecByte*)(store)) + \
-                                    sizeof(xmlSecKeyDataStoreKlass)))
-#define xmlSecGnuTLSX509StoreSize      \
-    (sizeof(xmlSecKeyDataStoreKlass) + sizeof(xmlSecGnuTLSX509StoreCtx))
+XMLSEC_KEY_DATA_STORE_DECLARE(GnuTLSX509Store, xmlSecGnuTLSX509StoreCtx)
+#define xmlSecGnuTLSX509StoreSize XMLSEC_KEY_DATA_STORE_SIZE(GnuTLSX509Store)
 
 static int              xmlSecGnuTLSX509StoreInitialize                 (xmlSecKeyDataStorePtr store);
 static void             xmlSecGnuTLSX509StoreFinalize                   (xmlSecKeyDataStorePtr store);

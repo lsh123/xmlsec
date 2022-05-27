@@ -61,13 +61,9 @@ struct _xmlSecNssSignatureCtx {
  *
  * Signature transforms
  *
- * xmlSecNssSignatureCtx is located after xmlSecTransform
- *
  *****************************************************************************/
-#define xmlSecNssSignatureSize  \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecNssSignatureCtx))
-#define xmlSecNssSignatureGetCtx(transform) \
-    ((xmlSecNssSignatureCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+XMLSEC_TRANSFORM_DECLARE(NssSignature, xmlSecNssSignatureCtx)
+#define xmlSecNssSignatureSize XMLSEC_TRANSFORM_SIZE(NssSignature)
 
 static int      xmlSecNssSignatureCheckId               (xmlSecTransformPtr transform);
 static int      xmlSecNssSignatureInitialize            (xmlSecTransformPtr transform);

@@ -42,7 +42,9 @@
 #include <xmlsec/errors.h>
 
 #include <xmlsec/mscrypto/crypto.h>
+
 #include "private.h"
+#include "../cast_helpers.h"
 
 /* sizes in bits */
 #define XMLSEC_MSCRYPTO_MIN_HMAC_SIZE            80
@@ -100,13 +102,9 @@ struct _xmlSecMSCryptoHmacCtx {
  *
  * HMAC transforms
  *
- * xmlSecMSCryptoHmacCtx is located after xmlSecTransform
- *
  *****************************************************************************/
-#define xmlSecMSCryptoHmacGetCtx(transform) \
-    ((xmlSecMSCryptoHmacCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
-#define xmlSecMSCryptoHmacSize   \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecMSCryptoHmacCtx))
+XMLSEC_TRANSFORM_DECLARE(MSCryptoHmac, xmlSecMSCryptoHmacCtx)
+#define xmlSecMSCryptoHmacSize XMLSEC_TRANSFORM_SIZE(MSCryptoHmac)
 
 static int      xmlSecMSCryptoHmacCheckId                        (xmlSecTransformPtr transform);
 static int      xmlSecMSCryptoHmacInitialize                     (xmlSecTransformPtr transform);

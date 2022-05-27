@@ -35,7 +35,9 @@
 #include <xmlsec/mscrypto/symbols.h>
 #include <xmlsec/mscrypto/certkeys.h>
 #include <xmlsec/mscrypto/x509.h>
+
 #include "private.h"
+#include "../cast_helpers.h"
 
 
 /**************************************************************************
@@ -57,13 +59,9 @@ struct _xmlSecMSCryptoSignatureCtx {
  *
  * Signature transforms
  *
- * xmlSecMSCryptoSignatureCtx is located after xmlSecTransform
- *
  *****************************************************************************/
-#define xmlSecMSCryptoSignatureSize     \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecMSCryptoSignatureCtx))
-#define xmlSecMSCryptoSignatureGetCtx(transform) \
-    ((xmlSecMSCryptoSignatureCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+XMLSEC_TRANSFORM_DECLARE(MSCryptoSignature, xmlSecMSCryptoSignatureCtx)
+#define xmlSecMSCryptoSignatureSize XMLSEC_TRANSFORM_SIZE(MSCryptoSignature)
 
 static int      xmlSecMSCryptoSignatureCheckId          (xmlSecTransformPtr transform);
 static int      xmlSecMSCryptoSignatureInitialize       (xmlSecTransformPtr transform);

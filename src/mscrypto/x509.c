@@ -46,6 +46,7 @@
 #include <xmlsec/mscrypto/certkeys.h>
 #include "private.h"
 
+#include "../cast_helpers.h"
 
 /*************************************************************************
  *
@@ -212,15 +213,9 @@ struct _xmlSecMSCryptoX509DataCtx {
  *    <!ELEMENT X509Certificate (#PCDATA) >
  *    <!ELEMENT X509CRL (#PCDATA) >
  *
- * -----------------------------------------------------------------------
- *
- * xmlSecMSCryptoX509DataCtx is located after xmlSecTransform
- *
  *************************************************************************/
-#define xmlSecMSCryptoX509DataSize      \
-    (sizeof(xmlSecKeyData) + sizeof(xmlSecMSCryptoX509DataCtx))
-#define xmlSecMSCryptoX509DataGetCtx(data) \
-    ((xmlSecMSCryptoX509DataCtxPtr)(((xmlSecByte*)(data)) + sizeof(xmlSecKeyData)))
+XMLSEC_KEY_DATA_DECLARE(MSCryptoX509Data, xmlSecMSCryptoX509DataCtx)
+#define xmlSecMSCryptoX509DataSize XMLSEC_KEY_DATA_SIZE(MSCryptoX509Data)
 
 static int              xmlSecMSCryptoKeyDataX509Initialize     (xmlSecKeyDataPtr data);
 static int              xmlSecMSCryptoKeyDataX509Duplicate      (xmlSecKeyDataPtr dst,

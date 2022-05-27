@@ -32,6 +32,8 @@
 #include <xmlsec/nss/app.h>
 #include <xmlsec/nss/crypto.h>
 
+#include "../cast_helpers.h"
+
 #define XMLSEC_NSS_MAX_DIGEST_SIZE              64
 
 /**************************************************************************
@@ -51,13 +53,11 @@ struct _xmlSecNssDigestCtx {
  *
  * Digest transforms
  *
- * xmlSecNssDigestCtx is located after xmlSecTransform
+ * xmlSecTransform + xmlSecNssDigestCtx
  *
  *****************************************************************************/
-#define xmlSecNssDigestSize     \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecNssDigestCtx))
-#define xmlSecNssDigestGetCtx(transform) \
-    ((xmlSecNssDigestCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+XMLSEC_TRANSFORM_DECLARE(NssDigest, xmlSecNssDigestCtx)
+#define xmlSecNssDigestSize XMLSEC_TRANSFORM_SIZE(NssDigest)
 
 static int      xmlSecNssDigestCheckId                  (xmlSecTransformPtr transform);
 static int      xmlSecNssDigestInitialize               (xmlSecTransformPtr transform);

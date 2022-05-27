@@ -30,7 +30,9 @@
 #include <xmlsec/errors.h>
 
 #include <xmlsec/mscrypto/crypto.h>
+
 #include "private.h"
+#include "../cast_helpers.h"
 
 #define MSCRYPTO_MAX_HASH_SIZE 256
 
@@ -48,14 +50,9 @@ struct _xmlSecMSCryptoDigestCtx {
  *
  * MSCrypto Digest transforms
  *
- * xmlSecMSCryptoDigestCtx is located after xmlSecTransform
- *
  *****************************************************************************/
-#define xmlSecMSCryptoDigestSize        \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecMSCryptoDigestCtx))
-#define xmlSecMSCryptoDigestGetCtx(transform) \
-    ((xmlSecMSCryptoDigestCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
-
+XMLSEC_TRANSFORM_DECLARE(MSCryptoDigest, xmlSecMSCryptoDigestCtx)
+#define xmlSecMSCryptoDigestSize XMLSEC_TRANSFORM_SIZE(MSCryptoDigest)
 
 static int      xmlSecMSCryptoDigestInitialize  (xmlSecTransformPtr transform);
 static void     xmlSecMSCryptoDigestFinalize    (xmlSecTransformPtr transform);

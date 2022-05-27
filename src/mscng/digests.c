@@ -32,6 +32,8 @@
 
 #include <xmlsec/mscng/crypto.h>
 
+#include "../cast_helpers.h"
+
 typedef struct _xmlSecMSCngDigestCtx xmlSecMSCngDigestCtx, *xmlSecMSCngDigestCtxPtr;
 struct _xmlSecMSCngDigestCtx {
     LPCWSTR pszAlgId;
@@ -46,14 +48,9 @@ struct _xmlSecMSCngDigestCtx {
  *
  * MSCng Digest transforms
  *
- * xmlSecMSCngDigestCtx is located after xmlSecTransform
- *
  *****************************************************************************/
-#define xmlSecMSCngDigestSize        \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecMSCngDigestCtx))
-#define xmlSecMSCngDigestGetCtx(transform) \
-    ((xmlSecMSCngDigestCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
-
+XMLSEC_TRANSFORM_DECLARE(MSCngDigest, xmlSecMSCngDigestCtx)
+#define xmlSecMSCngDigestSize XMLSEC_TRANSFORM_SIZE(MSCngDigest)
 
 static int      xmlSecMSCngDigestInitialize  (xmlSecTransformPtr transform);
 static void     xmlSecMSCngDigestFinalize    (xmlSecTransformPtr transform);

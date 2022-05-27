@@ -191,15 +191,11 @@ struct _xmlSecOpenSSLEvpKeyDataCtx {
 
 /******************************************************************************
  *
- * EVP key (dsa/rsa)
- *
- * xmlSecOpenSSLEvpKeyDataCtx is located after xmlSecTransform
+ * EVP key data (dsa/rsa)
  *
  *****************************************************************************/
-#define xmlSecOpenSSLEvpKeyDataSize     \
-    (sizeof(xmlSecKeyData) + sizeof(xmlSecOpenSSLEvpKeyDataCtx))
-#define xmlSecOpenSSLEvpKeyDataGetCtx(data) \
-    ((xmlSecOpenSSLEvpKeyDataCtxPtr)(((xmlSecByte*)(data)) + sizeof(xmlSecKeyData)))
+XMLSEC_KEY_DATA_DECLARE(OpenSSLEvpKeyData, xmlSecOpenSSLEvpKeyDataCtx)
+#define xmlSecOpenSSLEvpKeyDataSize XMLSEC_KEY_DATA_SIZE(OpenSSLEvpKeyData)
 
 static int              xmlSecOpenSSLEvpKeyDataInitialize       (xmlSecKeyDataPtr data);
 static int              xmlSecOpenSSLEvpKeyDataDuplicate        (xmlSecKeyDataPtr dst,

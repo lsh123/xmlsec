@@ -287,14 +287,11 @@ xmlSecIORegisterDefaultCallbacks(void) {
     return(0);
 }
 
-
-
-
 /**************************************************************
  *
  * Input URI Transform
  *
- * xmlSecInputURICtx is located after xmlSecTransform
+ * xmlSecTransform + xmlSecInputURICtx
  *
  **************************************************************/
 typedef struct _xmlSecInputURICtx                               xmlSecInputURICtx,
@@ -303,12 +300,9 @@ struct _xmlSecInputURICtx {
     xmlSecIOCallbackPtr         clbks;
     void*                       clbksCtx;
 };
-#define xmlSecTransformInputUriSize \
-        (sizeof(xmlSecTransform) + sizeof(xmlSecInputURICtx))
-#define xmlSecTransformInputUriGetCtx(transform) \
-    ((xmlSecTransformCheckSize((transform), xmlSecTransformInputUriSize)) ? \
-        (xmlSecInputURICtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)) : \
-        (xmlSecInputURICtxPtr)NULL)
+
+XMLSEC_TRANSFORM_DECLARE(InputUri, xmlSecInputURICtx)
+#define xmlSecInputUriSize XMLSEC_TRANSFORM_SIZE(InputUri)
 
 static int              xmlSecTransformInputURIInitialize       (xmlSecTransformPtr transform);
 static void             xmlSecTransformInputURIFinalize         (xmlSecTransformPtr transform);
@@ -321,7 +315,7 @@ static int              xmlSecTransformInputURIPopBin           (xmlSecTransform
 static xmlSecTransformKlass xmlSecTransformInputURIKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecTransformInputUriSize,                /* xmlSecSize objSize */
+    xmlSecInputUriSize,                         /* xmlSecSize objSize */
 
     BAD_CAST "input-uri",                       /* const xmlChar* name; */
     NULL,                                       /* const xmlChar* href; */
@@ -373,7 +367,7 @@ xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformInputURIId), -1);
     xmlSecAssert2(uri != NULL, -1);
 
-    ctx = xmlSecTransformInputUriGetCtx(transform);
+    ctx = xmlSecInputUriGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->clbks == NULL, -1);
     xmlSecAssert2(ctx->clbksCtx == NULL, -1);
@@ -431,7 +425,7 @@ xmlSecTransformInputURIClose(xmlSecTransformPtr transform) {
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformInputURIId), -1);
 
-    ctx = xmlSecTransformInputUriGetCtx(transform);
+    ctx = xmlSecInputUriGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
     /* close if still open and mark as closed */
@@ -451,7 +445,7 @@ xmlSecTransformInputURIInitialize(xmlSecTransformPtr transform) {
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformInputURIId), -1);
 
-    ctx = xmlSecTransformInputUriGetCtx(transform);
+    ctx = xmlSecInputUriGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
     memset(ctx, 0, sizeof(xmlSecInputURICtx));
@@ -465,7 +459,7 @@ xmlSecTransformInputURIFinalize(xmlSecTransformPtr transform) {
 
     xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecTransformInputURIId));
 
-    ctx = xmlSecTransformInputUriGetCtx(transform);
+    ctx = xmlSecInputUriGetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
     ret = xmlSecTransformInputURIClose(transform);
@@ -494,7 +488,7 @@ xmlSecTransformInputURIPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
     xmlSecAssert2(dataSize != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    ctx = xmlSecTransformInputUriGetCtx(transform);
+    ctx = xmlSecInputUriGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
     if((ctx->clbksCtx != NULL) && (ctx->clbks != NULL) && (ctx->clbks->readcallback != NULL)) {

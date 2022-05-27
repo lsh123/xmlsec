@@ -39,21 +39,17 @@
 #include <xmlsec/mscng/x509.h>
 #include <xmlsec/mscng/certkeys.h>
 
+#include "../cast_helpers.h"
+
 #define XMLSEC_MSCNG_APP_DEFAULT_CERT_STORE_NAME TEXT("MY")
 
 /****************************************************************************
  *
  * MSCng Keys Store. Uses Simple Keys Store under the hood
  *
- * Simple Keys Store ptr is located after xmlSecKeyStore
- *
  ***************************************************************************/
-#define xmlSecMSCngKeysStoreSize (sizeof(xmlSecKeyStore) + sizeof(xmlSecKeyStorePtr))
-
-#define xmlSecMSCngKeysStoreGetSS(store) \
-    ((xmlSecKeyStoreCheckSize((store), xmlSecMSCngKeysStoreSize)) ? \
-     (xmlSecKeyStorePtr*)(((xmlSecByte*)(store)) + sizeof(xmlSecKeyStore)) : \
-     (xmlSecKeyStorePtr*)NULL)
+XMLSEC_KEY_STORE_DECLARE(MSCngKeysStore, xmlSecKeyStorePtr)
+#define xmlSecMSCngKeysStoreSize XMLSEC_KEY_STORE_SIZE(MSCngKeysStore)
 
 static int
 xmlSecMSCngKeysStoreInitialize(xmlSecKeyStorePtr store) {
@@ -61,7 +57,7 @@ xmlSecMSCngKeysStoreInitialize(xmlSecKeyStorePtr store) {
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCngKeysStoreId), -1);
 
-    ss = xmlSecMSCngKeysStoreGetSS(store);
+    ss = xmlSecMSCngKeysStoreGetCtx(store);
     xmlSecAssert2(*ss == NULL, -1);
 
     *ss = xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId);
@@ -80,7 +76,7 @@ xmlSecMSCngKeysStoreFinalize(xmlSecKeyStorePtr store) {
 
     xmlSecAssert(xmlSecKeyStoreCheckId(store, xmlSecMSCngKeysStoreId));
 
-    ss = xmlSecMSCngKeysStoreGetSS(store);
+    ss = xmlSecMSCngKeysStoreGetCtx(store);
     xmlSecAssert((ss != NULL) && (*ss != NULL));
 
     xmlSecKeyStoreDestroy(*ss);
@@ -209,7 +205,7 @@ xmlSecMSCngKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCngKeysStoreId), NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
-    ss = xmlSecMSCngKeysStoreGetSS(store);
+    ss = xmlSecMSCngKeysStoreGetCtx(store);
     xmlSecAssert2(((ss != NULL) && (*ss != NULL)), NULL);
 
     /* look for the key in the simple store */
@@ -383,7 +379,7 @@ xmlSecMSCngKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCngKeysStoreId), -1);
     xmlSecAssert2((key != NULL), -1);
 
-    ss = xmlSecMSCngKeysStoreGetSS(store);
+    ss = xmlSecMSCngKeysStoreGetCtx(store);
     xmlSecAssert2(ss != NULL, -1);
     xmlSecAssert2(*ss != NULL, -1);
     xmlSecAssert2(xmlSecKeyStoreCheckId(*ss, xmlSecSimpleKeysStoreId), -1);
@@ -510,7 +506,7 @@ xmlSecMSCngKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecKe
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCngKeysStoreId), -1);
     xmlSecAssert2((filename != NULL), -1);
 
-    ss = xmlSecMSCngKeysStoreGetSS(store);
+    ss = xmlSecMSCngKeysStoreGetCtx(store);
     xmlSecAssert2(ss != NULL, -1);
     xmlSecAssert2(*ss != NULL, -1);
     xmlSecAssert2(xmlSecKeyStoreCheckId(*ss, xmlSecSimpleKeysStoreId), -1);

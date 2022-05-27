@@ -47,15 +47,11 @@ struct _xmlSecParserCtx {
  *
  * XML Parser transform
  *
- * xmlSecParserCtx is located after xmlSecTransform
+ * xmlSecTransform + xmlSecParserCtx
  *
  ***************************************************************************/
-#define xmlSecParserSize        \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecParserCtx))
-#define xmlSecParserGetCtx(transform) \
-    ((xmlSecTransformCheckSize((transform), xmlSecParserSize)) ? \
-        ((xmlSecParserCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform))) : \
-        (xmlSecParserCtxPtr)NULL)
+XMLSEC_TRANSFORM_DECLARE(Parser, xmlSecParserCtx)
+#define xmlSecParserSize XMLSEC_TRANSFORM_SIZE(Parser)
 
 static int              xmlSecParserInitialize                  (xmlSecTransformPtr transform);
 static void             xmlSecParserFinalize                    (xmlSecTransformPtr transform);

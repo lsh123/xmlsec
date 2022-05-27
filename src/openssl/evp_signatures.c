@@ -62,13 +62,9 @@ struct _xmlSecOpenSSLEvpSignatureCtx {
  *
  * EVP Signature transforms
  *
- * xmlSecOpenSSLEvpSignatureCtx is located after xmlSecTransform
- *
  *****************************************************************************/
-#define xmlSecOpenSSLEvpSignatureSize   \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecOpenSSLEvpSignatureCtx))
-#define xmlSecOpenSSLEvpSignatureGetCtx(transform) \
-    ((xmlSecOpenSSLEvpSignatureCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+XMLSEC_TRANSFORM_DECLARE(OpenSSLEvpSignature, xmlSecOpenSSLEvpSignatureCtx)
+#define xmlSecOpenSSLEvpSignatureSize XMLSEC_TRANSFORM_SIZE(OpenSSLEvpSignature)
 
 static int      xmlSecOpenSSLEvpSignatureCheckId                (xmlSecTransformPtr transform);
 static int      xmlSecOpenSSLEvpSignatureInitialize             (xmlSecTransformPtr transform);

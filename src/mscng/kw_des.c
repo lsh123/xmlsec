@@ -38,12 +38,11 @@
 #include <xmlsec/mscng/crypto.h>
 
 #include "../kw_aes_des.h"
+#include "../cast_helpers.h"
 
 /*********************************************************************
  *
- * Triple DES Key Wrap transform
- *
- * key (xmlSecBuffer) is located after xmlSecTransform structure
+ * Triple DES Key Wrap transform context
  *
  ********************************************************************/
 typedef struct _xmlSecMSCngKWDes3Ctx xmlSecMSCngKWDes3Ctx, *xmlSecMSCngKWDes3CtxPtr;
@@ -55,10 +54,13 @@ struct _xmlSecMSCngKWDes3Ctx {
     xmlSecBuffer keyBuffer;
 };
 
-#define xmlSecMSCngKWDes3Size \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecMSCngKWDes3Ctx))
-#define xmlSecMSCngKWDes3GetCtx(transform) \
-    ((xmlSecMSCngKWDes3CtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+/*********************************************************************
+ *
+ * Triple DES Key Wrap transform
+ *
+ ********************************************************************/
+XMLSEC_TRANSFORM_DECLARE(MSCngKWDes3, xmlSecMSCngKWDes3Ctx)
+#define xmlSecMSCngKWDes3Size XMLSEC_TRANSFORM_SIZE(MSCngKWDes3)
 
 static int
 xmlSecMSCngKWDes3GenerateRandom(void * context, xmlSecByte * out,

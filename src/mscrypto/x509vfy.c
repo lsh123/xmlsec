@@ -38,7 +38,10 @@
 
 #include <xmlsec/mscrypto/crypto.h>
 #include <xmlsec/mscrypto/x509.h>
+
 #include "private.h"
+#include "../cast_helpers.h"
+
 
 /**************************************************************************
  *
@@ -57,14 +60,9 @@ struct _xmlSecMSCryptoX509StoreCtx {
  *
  * xmlSecMSCryptoKeyDataStoreX509Id:
  *
- * xmlSecMSCryptoX509StoreCtx is located after xmlSecTransform
- *
  ***************************************************************************/
-#define xmlSecMSCryptoX509StoreGetCtx(store) \
-    ((xmlSecMSCryptoX509StoreCtxPtr)(((xmlSecByte*)(store)) + \
-                    sizeof(xmlSecKeyDataStoreKlass)))
-#define xmlSecMSCryptoX509StoreSize    \
-    (sizeof(xmlSecKeyDataStoreKlass) + sizeof(xmlSecMSCryptoX509StoreCtx))
+XMLSEC_KEY_DATA_STORE_DECLARE(MSCryptoX509Store, xmlSecMSCryptoX509StoreCtx)
+#define xmlSecMSCryptoX509StoreSize XMLSEC_KEY_DATA_STORE_SIZE(MSCryptoX509Store)
 
 static int         xmlSecMSCryptoX509StoreInitialize    (xmlSecKeyDataStorePtr store);
 static void        xmlSecMSCryptoX509StoreFinalize      (xmlSecKeyDataStorePtr store);

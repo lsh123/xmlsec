@@ -103,6 +103,7 @@ xmlSecGetNodeContentAsSize(const xmlNodePtr cur, xmlSecSize* res, xmlSecSize def
         xmlFree(content);
         return(-1);
     }
+    xmlFree(content);
 
     /* success */
     XMLSEC_SAFE_CAST_LONG_TO_SIZE(val, (*res), return(-1), NULL);
@@ -671,7 +672,7 @@ xmlSecReplaceNodeBufferAndReturn(xmlNodePtr node, const xmlSecByte *buffer, xmlS
     xmlNodePtr results = NULL;
     xmlNodePtr next = NULL;
     int len;
-    int ret;
+    xmlParserErrors ret;
 
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(node->parent != NULL, -1);

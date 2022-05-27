@@ -83,19 +83,22 @@ static int              xmlSecNssAesOp                          (PK11SymKey *aes
 
 /*********************************************************************
  *
- * AES KW transforms
+ * AES KW transforms context
  *
  ********************************************************************/
-typedef struct _xmlSecNssKWAesCtx                       xmlSecNssKWAesCtx,
-                                                        *xmlSecNssKWAesCtxPtr;
+typedef struct _xmlSecNssKWAesCtx xmlSecNssKWAesCtx, *xmlSecNssKWAesCtxPtr;
 struct _xmlSecNssKWAesCtx {
     xmlSecBuffer        keyBuffer;
     xmlSecSize          keyExpectedSize;
 };
-#define xmlSecNssKWAesSize     \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecNssKWAesCtx))
-#define xmlSecNssKWAesGetCtx(transform) \
-    ((xmlSecNssKWAesCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+
+/*********************************************************************
+ *
+ * AES KW transform
+ *
+ ********************************************************************/
+XMLSEC_TRANSFORM_DECLARE(NssKWAes, xmlSecNssKWAesCtx)
+#define xmlSecNssKWAesSize XMLSEC_TRANSFORM_SIZE(NssKWAes)
 
 #define xmlSecNssKWAesCheckId(transform) \
     (xmlSecTransformCheckId((transform), xmlSecNssTransformKWAes128Id) || \

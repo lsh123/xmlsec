@@ -64,7 +64,7 @@ static xmlSecKWAesKlass xmlSecOpenSSLKWAesKlass = {
 
 /*********************************************************************
  *
- * AES KW transforms
+ * AES KW transforms context
  *
  ********************************************************************/
 typedef struct _xmlSecOpenSSLKWAesCtx              xmlSecOpenSSLKWAesCtx,
@@ -78,10 +78,14 @@ struct _xmlSecOpenSSLKWAesCtx {
 #endif /* XMLSEC_OPENSSL_API_300 */
 };
 
-#define xmlSecOpenSSLKWAesSize     \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecOpenSSLKWAesCtx))
-#define xmlSecOpenSSLKWAesGetCtx(transform) \
-    ((xmlSecOpenSSLKWAesCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+/*********************************************************************
+ *
+ * AES KW transforms
+ *
+ ********************************************************************/
+XMLSEC_TRANSFORM_DECLARE(OpenSSLKWAes, xmlSecOpenSSLKWAesCtx)
+#define xmlSecOpenSSLKWAesSize XMLSEC_TRANSFORM_SIZE(OpenSSLKWAes)
+
 #define xmlSecOpenSSLKWAesCheckId(transform) \
     (xmlSecTransformCheckId((transform), xmlSecOpenSSLTransformKWAes128Id) || \
      xmlSecTransformCheckId((transform), xmlSecOpenSSLTransformKWAes192Id) || \

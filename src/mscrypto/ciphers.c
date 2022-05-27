@@ -30,7 +30,7 @@
 #include <xmlsec/mscrypto/crypto.h>
 
 #include "private.h"
-
+#include "../cast_helpers.h"
 
 /**************************************************************************
  *
@@ -358,13 +358,9 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
  *
  *  Block Cipher transforms
  *
- * xmlSecMSCryptoBlockCipherCtx block is located after xmlSecTransform structure
- *
  *****************************************************************************/
-#define xmlSecMSCryptoBlockCipherSize   \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecMSCryptoBlockCipherCtx))
-#define xmlSecMSCryptoBlockCipherGetCtx(transform) \
-    ((xmlSecMSCryptoBlockCipherCtxPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
+XMLSEC_TRANSFORM_DECLARE(MSCryptoBlockCipher, xmlSecMSCryptoBlockCipherCtx)
+#define xmlSecMSCryptoBlockCipherSize XMLSEC_TRANSFORM_SIZE(MSCryptoBlockCipher)
 
 static int      xmlSecMSCryptoBlockCipherInitialize     (xmlSecTransformPtr transform);
 static void     xmlSecMSCryptoBlockCipherFinalize       (xmlSecTransformPtr transform);

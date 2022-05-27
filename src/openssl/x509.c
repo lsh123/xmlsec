@@ -223,15 +223,9 @@ struct _xmlSecOpenSSLX509DataCtx {
  *    <!ELEMENT X509Certificate (#PCDATA) >
  *    <!ELEMENT X509CRL (#PCDATA) >
  *
- * -----------------------------------------------------------------------
- *
- * xmlSecOpenSSLX509DataCtx is located after xmlSecTransform
- *
  *************************************************************************/
-#define xmlSecOpenSSLX509DataSize       \
-    (sizeof(xmlSecKeyData) + sizeof(xmlSecOpenSSLX509DataCtx))
-#define xmlSecOpenSSLX509DataGetCtx(data) \
-    ((xmlSecOpenSSLX509DataCtxPtr)(((xmlSecByte*)(data)) + sizeof(xmlSecKeyData)))
+XMLSEC_KEY_DATA_DECLARE(OpenSSLX509Data, xmlSecOpenSSLX509DataCtx)
+#define xmlSecOpenSSLX509DataSize XMLSEC_KEY_DATA_SIZE(OpenSSLX509Data)
 
 static int              xmlSecOpenSSLKeyDataX509Initialize      (xmlSecKeyDataPtr data);
 static int              xmlSecOpenSSLKeyDataX509Duplicate       (xmlSecKeyDataPtr dst,

@@ -87,13 +87,11 @@ struct _xmlSecNssHmacCtx {
  *
  * HMAC transforms
  *
- * xmlSecNssHmacCtx is located after xmlSecTransform
+ * xmlSecTransform + xmlSecNssHmacCtx
  *
  *****************************************************************************/
-#define xmlSecNssHmacGetCtx(transform) \
-    ((xmlSecNssHmacCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
-#define xmlSecNssHmacSize       \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecNssHmacCtx))
+XMLSEC_TRANSFORM_DECLARE(NssHmac, xmlSecNssHmacCtx)
+#define xmlSecNssHmacSize XMLSEC_TRANSFORM_SIZE(NssHmac)
 
 static int      xmlSecNssHmacCheckId                    (xmlSecTransformPtr transform);
 static int      xmlSecNssHmacInitialize                 (xmlSecTransformPtr transform);

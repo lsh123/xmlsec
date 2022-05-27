@@ -407,7 +407,10 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecOpenSSLHmacCtxPtr ctx;
     xmlSecKeyDataPtr value;
     xmlSecBufferPtr buffer;
-#ifdef XMLSEC_OPENSSL_API_300
+#ifndef XMLSEC_OPENSSL_API_300
+    xmlSecSize bufSize;
+    int bufLen;
+#else /* XMLSEC_OPENSSL_API_300 */
     OSSL_PARAM_BLD* param_bld = NULL;
     OSSL_PARAM* params = NULL;
 #endif /* XMLSEC_OPENSSL_API_300 */
@@ -440,9 +443,12 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(ctx->hmacCtx != NULL, -1);
     xmlSecAssert2(ctx->hmacDgst != NULL, -1);
 
+    bufSize = xmlSecBufferGetSize(buffer);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(bufSize, bufLen, goto done, xmlSecTransformGetName(transform));
+
     ret = HMAC_Init_ex(ctx->hmacCtx,
                 xmlSecBufferGetData(buffer),
-                xmlSecBufferGetSize(buffer),
+                bufLen,
                 ctx->hmacDgst,
                 NULL);
     if(ret != 1) {

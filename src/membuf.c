@@ -30,6 +30,8 @@
 #include <xmlsec/membuf.h>
 #include <xmlsec/errors.h>
 
+#include "cast_helpers.h"
+
 /*****************************************************************************
  *
  * Memory Buffer Transform
@@ -37,12 +39,13 @@
  * xmlSecBuffer is located after xmlSecTransform
  *
  ****************************************************************************/
+XMLSEC_DEFINE_TRANSFORM(MemBuf, xmlSecBuffer)
+
 #define xmlSecTransformMemBufSize \
-        (sizeof(xmlSecTransform) + sizeof(xmlSecBuffer))
+    XMLSEC_DEFINE_TRANSFORM_SIZE(MemBuf)
+
 #define xmlSecTransformMemBufGetBuf(transform) \
-    ((xmlSecTransformCheckSize((transform), xmlSecTransformMemBufSize)) ? \
-        (xmlSecBufferPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)) : \
-        (xmlSecBufferPtr)NULL)
+    XMLSEC_DEFINE_TRANSFORM_GET_CTX(MemBuf, xmlSecBuffer, (transform))
 
 static int              xmlSecTransformMemBufInitialize         (xmlSecTransformPtr transform);
 static void             xmlSecTransformMemBufFinalize           (xmlSecTransformPtr transform);

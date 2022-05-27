@@ -465,6 +465,7 @@ xmlSecOpenSSLKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
     xmlSecSize keySize;
 #ifndef XMLSEC_OPENSSL_API_300
     AES_KEY aesKey;
+    int keyLen;
 #else /* XMLSEC_OPENSSL_API_300 */
     EVP_CIPHER_CTX* cctx = NULL;
     int nOut, inLen, outLen;
@@ -486,8 +487,9 @@ xmlSecOpenSSLKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
 
 #ifndef XMLSEC_OPENSSL_API_300
     /* prepare key */
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(keySize, keyLen, return(-1), NULL);
     ret = AES_set_encrypt_key(xmlSecBufferGetData(&(ctx->keyBuffer)),
-                                      8 * keySize,
+                                      8 * keyLen,
                                       &aesKey);
     if(ret != 0) {
         xmlSecOpenSSLError("AES_set_encrypt_key", NULL);
@@ -550,6 +552,7 @@ xmlSecOpenSSLKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
     xmlSecSize keySize;
 #ifndef XMLSEC_OPENSSL_API_300
     AES_KEY aesKey;
+    int keyLen;
 #else /* XMLSEC_OPENSSL_API_300 */
     EVP_CIPHER_CTX* cctx = NULL;
     int nOut, inLen, outLen;
@@ -571,8 +574,9 @@ xmlSecOpenSSLKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
 
 #ifndef XMLSEC_OPENSSL_API_300
     /* prepare key */
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(keySize, keyLen, return(-1), NULL);
     ret = AES_set_decrypt_key(xmlSecBufferGetData(&(ctx->keyBuffer)),
-                                      8 * keySize,
+                                      8 * keyLen,
                                       &aesKey);
     if(ret != 0) {
         xmlSecOpenSSLError("AES_set_decrypt_key", NULL);

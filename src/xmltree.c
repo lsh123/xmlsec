@@ -1769,7 +1769,7 @@ xmlSecQName2BitMaskDebugXmlDump(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitM
 LPWSTR
 xmlSecWin32ConvertUtf8ToUnicode(const xmlChar* str) {
     LPWSTR res = NULL;
-    int len;
+    xmlSecSize size;
     int ret;
 
     xmlSecAssert2(str != NULL, NULL);
@@ -1779,17 +1779,17 @@ xmlSecWin32ConvertUtf8ToUnicode(const xmlChar* str) {
     if(ret <= 0) {
         return(NULL);
     }
-    len = ret + 1;
+    XMLSEC_SAFE_CAST_INT_TO_SIZE((ret + 1), size, return(NULL), NULL);
 
     /* allocate buffer */
-    res = (LPWSTR)xmlMalloc(sizeof(WCHAR) * len);
+    res = (LPWSTR)xmlMalloc(sizeof(WCHAR) * size);
     if(res == NULL) {
-        xmlSecMallocError(sizeof(WCHAR) * len, NULL);
+        xmlSecMallocError(sizeof(WCHAR) * size, NULL);
         return(NULL);
     }
 
     /* convert */
-    ret = MultiByteToWideChar(CP_UTF8, 0, (LPCCH)str, -1, res, len);
+    ret = MultiByteToWideChar(CP_UTF8, 0, (LPCCH)str, -1, res, size);
     if(ret <= 0) {
         xmlFree(res);
         return(NULL);
@@ -1810,7 +1810,7 @@ xmlSecWin32ConvertUtf8ToUnicode(const xmlChar* str) {
 xmlChar*
 xmlSecWin32ConvertUnicodeToUtf8(LPCWSTR str) {
     xmlChar * res = NULL;
-    int len;
+    xmlSecSize size;
     int ret;
 
     xmlSecAssert2(str != NULL, NULL);
@@ -1820,17 +1820,17 @@ xmlSecWin32ConvertUnicodeToUtf8(LPCWSTR str) {
     if(ret <= 0) {
         return(NULL);
     }
-    len = ret + 1;
+    XMLSEC_SAFE_CAST_INT_TO_SIZE((ret + 1), size, return(NULL), NULL);
 
     /* allocate buffer */
-    res = (xmlChar*)xmlMalloc(sizeof(xmlChar) * len);
+    res = (xmlChar*)xmlMalloc(sizeof(xmlChar) * size);
     if(res == NULL) {
-        xmlSecMallocError(sizeof(xmlChar) * len, NULL);
+        xmlSecMallocError(sizeof(xmlChar) * size, NULL);
         return(NULL);
     }
 
     /* convert */
-    ret = WideCharToMultiByte(CP_UTF8, 0, str, -1, (LPSTR)res, len, NULL, NULL);
+    ret = WideCharToMultiByte(CP_UTF8, 0, str, -1, (LPSTR)res, size, NULL, NULL);
     if(ret <= 0) {
         xmlFree(res);
         return(NULL);
@@ -1851,7 +1851,7 @@ xmlSecWin32ConvertUnicodeToUtf8(LPCWSTR str) {
 LPWSTR
 xmlSecWin32ConvertLocaleToUnicode(const char* str) {
     LPWSTR res = NULL;
-    int len;
+    xmlSecSize size;
     int ret;
 
     xmlSecAssert2(str != NULL, NULL);
@@ -1861,17 +1861,17 @@ xmlSecWin32ConvertLocaleToUnicode(const char* str) {
     if(ret <= 0) {
         return(NULL);
     }
-    len = ret;
+    XMLSEC_SAFE_CAST_INT_TO_SIZE((ret + 1), size, return(NULL), NULL);
 
     /* allocate buffer */
-    res = (LPWSTR)xmlMalloc(sizeof(WCHAR) * len);
+    res = (LPWSTR)xmlMalloc(sizeof(WCHAR) * size);
     if(res == NULL) {
-        xmlSecMallocError(sizeof(WCHAR) * len, NULL);
+        xmlSecMallocError(sizeof(WCHAR) * size, NULL);
         return(NULL);
     }
 
     /* convert */
-    ret = MultiByteToWideChar(CP_ACP, 0, str, -1, res, len);
+    ret = MultiByteToWideChar(CP_ACP, 0, str, -1, res, size);
     if(ret <= 0) {
         xmlFree(res);
         return(NULL);
@@ -1893,7 +1893,7 @@ xmlChar*
 xmlSecWin32ConvertLocaleToUtf8(const char * str) {
     LPWSTR strW = NULL;
     xmlChar * res = NULL;
-    int len;
+    xmlSecSize size;
     int ret;
 
     xmlSecAssert2(str != NULL, NULL);
@@ -1909,18 +1909,18 @@ xmlSecWin32ConvertLocaleToUtf8(const char * str) {
         xmlFree(strW);
         return(NULL);
     }
-    len = ret + 1;
+    XMLSEC_SAFE_CAST_INT_TO_SIZE((ret + 1), size, return(NULL), NULL);
 
     /* allocate buffer */
-    res = (xmlChar*)xmlMalloc(sizeof(xmlChar) * len);
+    res = (xmlChar*)xmlMalloc(sizeof(xmlChar) * size);
     if(res == NULL) {
-        xmlSecMallocError(sizeof(xmlChar) * len, NULL);
+        xmlSecMallocError(sizeof(xmlChar) * size, NULL);
         xmlFree(strW);
         return(NULL);
     }
 
     /* convert */
-    ret = WideCharToMultiByte(CP_ACP, 0, strW, -1, (LPSTR)res, len, NULL, NULL);
+    ret = WideCharToMultiByte(CP_ACP, 0, strW, -1, (LPSTR)res, size, NULL, NULL);
     if(ret <= 0) {
         xmlFree(strW);
         xmlFree(res);
@@ -1944,7 +1944,7 @@ char *
 xmlSecWin32ConvertUtf8ToLocale(const xmlChar* str) {
     LPWSTR strW = NULL;
     char * res = NULL;
-    int len;
+    xmlSecSize size;
     int ret;
 
     xmlSecAssert2(str != NULL, NULL);
@@ -1960,18 +1960,18 @@ xmlSecWin32ConvertUtf8ToLocale(const xmlChar* str) {
         xmlFree(strW);
         return(NULL);
     }
-    len = ret + 1;
+    XMLSEC_SAFE_CAST_INT_TO_SIZE((ret + 1), size, return(NULL), NULL);
 
     /* allocate buffer */
-    res = (char*)xmlMalloc(sizeof(char) * len);
+    res = (char*)xmlMalloc(sizeof(char) * size);
     if(res == NULL) {
-        xmlSecMallocError(sizeof(char) * len, NULL);
+        xmlSecMallocError(sizeof(char) * size, NULL);
         xmlFree(strW);
         return(NULL);
     }
 
     /* convert */
-    ret = WideCharToMultiByte(CP_ACP, 0, strW, -1, res, len, NULL, NULL);
+    ret = WideCharToMultiByte(CP_ACP, 0, strW, -1, res, size, NULL, NULL);
     if(ret <= 0) {
         xmlFree(strW);
         xmlFree(res);

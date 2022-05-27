@@ -89,16 +89,21 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
 
+#include "cast_helpers.h"
 
 typedef struct _xmlSecRelationshipCtx           xmlSecRelationshipCtx,
                                                 *xmlSecRelationshipCtxPtr;
 struct _xmlSecRelationshipCtx {
     xmlSecPtrListPtr                    sourceIdList;
 };
-#define xmlSecRelationshipSize        \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecRelationshipCtx))
-#define xmlSecRelationshipGetCtx(transform)        \
-    ((xmlSecRelationshipCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+
+XMLSEC_DEFINE_TRANSFORM(Relationship, xmlSecRelationshipCtx)
+
+#define xmlSecRelationshipSize \
+    XMLSEC_DEFINE_TRANSFORM_SIZE(Relationship)
+
+#define xmlSecRelationshipGetCtx(transform) \
+    XMLSEC_DEFINE_TRANSFORM_GET_CTX(Relationship, xmlSecRelationshipCtx, (transform))
 
 static int              xmlSecRelationshipInitialize      (xmlSecTransformPtr transform);
 static void             xmlSecRelationshipFinalize        (xmlSecTransformPtr transform);

@@ -303,12 +303,14 @@ struct _xmlSecInputURICtx {
     xmlSecIOCallbackPtr         clbks;
     void*                       clbksCtx;
 };
+
+XMLSEC_DEFINE_TRANSFORM(InputUri, xmlSecInputURICtx)
+
 #define xmlSecTransformInputUriSize \
-        (sizeof(xmlSecTransform) + sizeof(xmlSecInputURICtx))
+    XMLSEC_DEFINE_TRANSFORM_SIZE(InputUri)
+
 #define xmlSecTransformInputUriGetCtx(transform) \
-    ((xmlSecTransformCheckSize((transform), xmlSecTransformInputUriSize)) ? \
-        (xmlSecInputURICtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)) : \
-        (xmlSecInputURICtxPtr)NULL)
+    XMLSEC_DEFINE_TRANSFORM_GET_CTX(InputUri, xmlSecInputURICtx, (transform))
 
 static int              xmlSecTransformInputURIInitialize       (xmlSecTransformPtr transform);
 static void             xmlSecTransformInputURIFinalize         (xmlSecTransformPtr transform);

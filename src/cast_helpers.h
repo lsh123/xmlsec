@@ -188,4 +188,25 @@
     dstVal = (xmlSecSize)(srcVal);                                             \
 
 
+
+/******************************************************************************
+ *
+ *  Cast to transfor specific CTX
+ * 
+ *****************************************************************************/
+#define XMLSEC_DEFINE_TRANSFORM(name, ctxType)           \
+typedef struct _ ## xmlSec ## name ## Transform {        \
+    xmlSecTransform transform;                           \
+    ctxType ctx;                                         \
+} xmlSec ## name ## Transform;                           \
+
+#define XMLSEC_DEFINE_TRANSFORM_SIZE(name)               \
+   (sizeof(xmlSec ## name ## Transform))
+
+#define XMLSEC_DEFINE_TRANSFORM_GET_CTX(name, ctxType, transform) \
+    ((xmlSecTransformCheckSize((transform), XMLSEC_DEFINE_TRANSFORM_SIZE(name))) ? \
+        (ctxType *)(&( ((xmlSec ## name ## Transform *)transform)->ctx )) : \
+        (ctxType *)NULL)
+
+
 #endif /* __XMLSEC_CAST_HELPERS_H__ */

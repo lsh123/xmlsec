@@ -739,21 +739,11 @@ done:
  * xmlSecBase64Ctx is located after xmlSecTransform
  *
  **************************************************************/
-typedef struct _xmlSecBase64Transform {
-     xmlSecTransform transform;
-     xmlSecBase64Ctx ctx;
-} xmlSecBase64Transform;
-#define xmlSecBase64Size (sizeof(xmlSecBase64Transform))
-#define xmlSecBase64GetCtx(transform) (&(((xmlSecBase64Transform*)(transform))->ctx))
-
-/**
+XMLSEC_DEFINE_TRANSFORM(Base64, xmlSecBase64Ctx)
 #define xmlSecBase64Size \
-        (sizeof(xmlSecTransform) + sizeof(xmlSecBase64Ctx))
+    XMLSEC_DEFINE_TRANSFORM_SIZE(Base64)
 #define xmlSecBase64GetCtx(transform) \
-    ((xmlSecTransformCheckSize((transform), xmlSecBase64Size)) ? \
-        (xmlSecBase64CtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)) : \
-        (xmlSecBase64CtxPtr)NULL)
-*/
+    XMLSEC_DEFINE_TRANSFORM_GET_CTX(Base64, xmlSecBase64Ctx, (transform))
 
 static int              xmlSecBase64Initialize          (xmlSecTransformPtr transform);
 static void             xmlSecBase64Finalize            (xmlSecTransformPtr transform);

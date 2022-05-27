@@ -104,13 +104,8 @@ struct _xmlSecOpenSSLRsaPkcs1Ctx {
  *
  * RSA PKCS1 key transport transform
  *
- * xmlSecOpenSSLRsaPkcs1Ctx is located after xmlSecTransform
- *
  ********************************************************************/
-#define xmlSecOpenSSLRsaPkcs1Size       \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecOpenSSLRsaPkcs1Ctx))
-#define xmlSecOpenSSLRsaPkcs1GetCtx(transform) \
-    ((xmlSecOpenSSLRsaPkcs1CtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+XMLSEC_TRANSFORM_DECLARE(OpenSSLRsaPkcs1, xmlSecOpenSSLRsaPkcs1Ctx)
 
 static int      xmlSecOpenSSLRsaPkcs1Initialize                 (xmlSecTransformPtr transform);
 static void     xmlSecOpenSSLRsaPkcs1Finalize                   (xmlSecTransformPtr transform);
@@ -508,13 +503,8 @@ struct _xmlSecOpenSSLRsaOaepCtx {
  *
  * RSA OAEP key transport transform
  *
- * xmlSecOpenSSLRsaOaepCtx is located after xmlSecTransform
- *
  ********************************************************************/
-#define xmlSecOpenSSLRsaOaepSize        \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecOpenSSLRsaOaepCtx))
-#define xmlSecOpenSSLRsaOaepGetCtx(transform) \
-    ((xmlSecOpenSSLRsaOaepCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+XMLSEC_TRANSFORM_DECLARE(OpenSSLRsaOaep, xmlSecOpenSSLRsaOaepCtx)
 
 static int      xmlSecOpenSSLRsaOaepInitialize                  (xmlSecTransformPtr transform);
 static void     xmlSecOpenSSLRsaOaepFinalize                    (xmlSecTransformPtr transform);

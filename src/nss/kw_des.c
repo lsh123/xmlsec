@@ -90,20 +90,20 @@ static int      xmlSecNssKWDes3Encrypt                          (const xmlSecByt
 
 /*********************************************************************
  *
- * Triple DES Key Wrap transform
- *
- * key (xmlSecBuffer) is located after xmlSecTransform structure
+ * Triple DES Key Wrap transform context
  *
  ********************************************************************/
-typedef struct _xmlSecNssKWDes3Ctx                      xmlSecNssKWDes3Ctx,
-                                                        *xmlSecNssKWDes3CtxPtr;
+typedef struct _xmlSecNssKWDes3Ctx  xmlSecNssKWDes3Ctx, *xmlSecNssKWDes3CtxPtr;
 struct _xmlSecNssKWDes3Ctx {
     xmlSecBuffer        keyBuffer;
 };
-#define xmlSecNssKWDes3Size     \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecNssKWDes3Ctx))
-#define xmlSecNssKWDes3GetCtx(transform) \
-    ((xmlSecNssKWDes3CtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+
+/*********************************************************************
+ *
+ * Triple DES Key Wrap transform
+ *
+ ********************************************************************/
+XMLSEC_TRANSFORM_DECLARE(NssKWDes3, xmlSecNssKWDes3Ctx)
 
 static int      xmlSecNssKWDes3Initialize                       (xmlSecTransformPtr transform);
 static void     xmlSecNssKWDes3Finalize                         (xmlSecTransformPtr transform);

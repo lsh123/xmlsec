@@ -36,16 +36,10 @@
  *
  * Memory Buffer Transform
  *
- * xmlSecBuffer is located after xmlSecTransform
+ * xmlSecTransform + xmlSecBuffer 
  *
  ****************************************************************************/
-XMLSEC_DEFINE_TRANSFORM(MemBuf, xmlSecBuffer)
-
-#define xmlSecTransformMemBufSize \
-    XMLSEC_DEFINE_TRANSFORM_SIZE(MemBuf)
-
-#define xmlSecTransformMemBufGetBuf(transform) \
-    XMLSEC_DEFINE_TRANSFORM_GET_CTX(MemBuf, xmlSecBuffer, (transform))
+XMLSEC_TRANSFORM_DECLARE(MemBuf, xmlSecBuffer)
 
 static int              xmlSecTransformMemBufInitialize         (xmlSecTransformPtr transform);
 static void             xmlSecTransformMemBufFinalize           (xmlSecTransformPtr transform);
@@ -55,7 +49,7 @@ static int              xmlSecTransformMemBufExecute            (xmlSecTransform
 static xmlSecTransformKlass xmlSecTransformMemBufKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecTransformMemBufSize,                  /* xmlSecSize objSize */
+    xmlSecMemBufSize,                           /* xmlSecSize objSize */
 
     xmlSecNameMemBuf,                           /* const xmlChar* name; */
     NULL,                                       /* const xmlChar* href; */
@@ -105,7 +99,7 @@ xmlSecTransformMemBufGetBuffer(xmlSecTransformPtr transform) {
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformMemBufId), NULL);
 
-    buffer = xmlSecTransformMemBufGetBuf(transform);
+    buffer = xmlSecMemBufGetCtx(transform);
     xmlSecAssert2(buffer != NULL, NULL);
 
     return(buffer);
@@ -118,7 +112,7 @@ xmlSecTransformMemBufInitialize(xmlSecTransformPtr transform) {
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformMemBufId), -1);
 
-    buffer = xmlSecTransformMemBufGetBuf(transform);
+    buffer = xmlSecMemBufGetCtx(transform);
     xmlSecAssert2(buffer != NULL, -1);
 
     ret = xmlSecBufferInitialize(buffer, 0);
@@ -136,10 +130,10 @@ xmlSecTransformMemBufFinalize(xmlSecTransformPtr transform) {
 
     xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecTransformMemBufId));
 
-    buffer = xmlSecTransformMemBufGetBuf(transform);
+    buffer = xmlSecMemBufGetCtx(transform);
     xmlSecAssert(buffer != NULL);
 
-    xmlSecBufferFinalize(xmlSecTransformMemBufGetBuf(transform));
+    xmlSecBufferFinalize(xmlSecMemBufGetCtx(transform));
 }
 
 static int
@@ -152,7 +146,7 @@ xmlSecTransformMemBufExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformMemBufId), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    buffer = xmlSecTransformMemBufGetBuf(transform);
+    buffer = xmlSecMemBufGetCtx(transform);
     xmlSecAssert2(buffer != NULL, -1);
 
     in = &(transform->inBuf);

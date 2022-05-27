@@ -188,25 +188,26 @@
     dstVal = (xmlSecSize)(srcVal);                                             \
 
 
-
 /******************************************************************************
  *
- *  Cast to transfor specific CTX
+ *  Helpers to create transform struct and cast to transform context
  * 
  *****************************************************************************/
-#define XMLSEC_DEFINE_TRANSFORM(name, ctxType)           \
-typedef struct _ ## xmlSec ## name ## Transform {        \
-    xmlSecTransform transform;                           \
-    ctxType ctx;                                         \
-} xmlSec ## name ## Transform;                           \
-
-#define XMLSEC_DEFINE_TRANSFORM_SIZE(name)               \
-   (sizeof(xmlSec ## name ## Transform))
-
-#define XMLSEC_DEFINE_TRANSFORM_GET_CTX(name, ctxType, transform) \
-    ((xmlSecTransformCheckSize((transform), XMLSEC_DEFINE_TRANSFORM_SIZE(name))) ? \
-        (ctxType *)(&( ((xmlSec ## name ## Transform *)transform)->ctx )) : \
-        (ctxType *)NULL)
+#define XMLSEC_TRANSFORM_DECLARE(name, ctxType)                                    \
+typedef struct _ ## xmlSec ## name ## Transform {                                  \
+    xmlSecTransform base;                                                          \
+    ctxType ctx;                                                                   \
+} xmlSec ## name ## Transform;                                                     \
+                                                                                   \
+static const xmlSecSize xmlSec ## name ## Size = (sizeof(xmlSec ## name ## Transform)); \
+                                                                                   \
+static inline ctxType* xmlSec ## name ## GetCtx(xmlSecTransformPtr transform) {    \
+    if(xmlSecTransformCheckSize(transform, xmlSec ## name ## Size)) {              \
+        return((ctxType *)(&( ((xmlSec ## name ## Transform *)transform)->ctx ))); \
+    } else {                                                                       \
+        return(NULL);                                                              \
+    }                                                                              \
+}                                                                                  \
 
 
 #endif /* __XMLSEC_CAST_HELPERS_H__ */

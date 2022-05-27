@@ -652,7 +652,7 @@ XMLSEC_EXPORT void              xmlSecKeyDataIdListDebugXmlDump (xmlSecPtrListPt
  */
 typedef struct _xmlSecKeyDataBinary {
     xmlSecKeyData  keyData;
-    xmlSecBuffer   buffer;  
+    xmlSecBuffer   buffer;
 } xmlSecKeyDataBinary;
 
 /**

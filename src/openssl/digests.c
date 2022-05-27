@@ -33,6 +33,8 @@
 #include <openssl/core_names.h>
 #endif /* XMLSEC_OPENSSL_API_300 */
 
+#include "../cast_helpers.h"
+
 /**************************************************************************
  *
  * Internal OpenSSL Digest CTX
@@ -56,14 +58,8 @@ struct _xmlSecOpenSSLDigestCtx {
  *
  * EVP Digest transforms
  *
- * xmlSecOpenSSLDigestCtx is located after xmlSecTransform
- *
  *****************************************************************************/
-#define xmlSecOpenSSLEvpDigestSize      \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecOpenSSLDigestCtx))
-#define xmlSecOpenSSLEvpDigestGetCtx(transform) \
-    ((xmlSecOpenSSLDigestCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
-
+XMLSEC_TRANSFORM_DECLARE(OpenSSLEvpDigest, xmlSecOpenSSLDigestCtx)
 
 static int      xmlSecOpenSSLEvpDigestInitialize        (xmlSecTransformPtr transform);
 static void     xmlSecOpenSSLEvpDigestFinalize          (xmlSecTransformPtr transform);

@@ -172,13 +172,8 @@ struct _xmlSecOpenSSLSignatureCtx {
  *
  * Signature transforms
  *
- * xmlSecOpenSSLSignatureCtx is located after xmlSecTransform
- *
  *****************************************************************************/
-#define xmlSecOpenSSLSignatureSize   \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecOpenSSLSignatureCtx))
-#define xmlSecOpenSSLSignatureGetCtx(transform) \
-    ((xmlSecOpenSSLSignatureCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+XMLSEC_TRANSFORM_DECLARE(OpenSSLSignature, xmlSecOpenSSLSignatureCtx)
 
 static int      xmlSecOpenSSLSignatureCheckId                (xmlSecTransformPtr transform);
 static int      xmlSecOpenSSLSignatureInitialize             (xmlSecTransformPtr transform);

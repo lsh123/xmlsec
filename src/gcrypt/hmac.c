@@ -83,16 +83,10 @@ struct _xmlSecGCryptHmacCtx {
  *
  * HMAC transforms
  *
- * xmlSecGCryptHmacCtx is located after xmlSecTransform
+ * xmlSecTransform + xmlSecGCryptHmacCtx
  *
  *****************************************************************************/
-XMLSEC_DEFINE_TRANSFORM(GCryptHmac, xmlSecGCryptHmacCtx)
-
-#define xmlSecGCryptHmacSize \
-    XMLSEC_DEFINE_TRANSFORM_SIZE(GCryptHmac)
-
-#define xmlSecGCryptHmacGetCtx(transform) \
-    XMLSEC_DEFINE_TRANSFORM_GET_CTX(GCryptHmac, xmlSecGCryptHmacCtx, (transform))
+XMLSEC_TRANSFORM_DECLARE(GCryptHmac, xmlSecGCryptHmacCtx)
 
 static int      xmlSecGCryptHmacCheckId                 (xmlSecTransformPtr transform);
 static int      xmlSecGCryptHmacInitialize              (xmlSecTransformPtr transform);

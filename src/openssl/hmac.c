@@ -109,13 +109,8 @@ struct _xmlSecOpenSSLHmacCtx {
  *
  * HMAC transforms
  *
- * xmlSecOpenSSLHmacCtx is located after xmlSecTransform
- *
  *****************************************************************************/
-#define xmlSecOpenSSLHmacGetCtx(transform) \
-    ((xmlSecOpenSSLHmacCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
-#define xmlSecOpenSSLHmacSize   \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecOpenSSLHmacCtx))
+XMLSEC_TRANSFORM_DECLARE(OpenSSLHmac, xmlSecOpenSSLHmacCtx)
 
 static int      xmlSecOpenSSLHmacCheckId                        (xmlSecTransformPtr transform);
 static int      xmlSecOpenSSLHmacInitialize                     (xmlSecTransformPtr transform);

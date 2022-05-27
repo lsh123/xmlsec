@@ -54,16 +54,10 @@ struct _xmlSecXsltCtx {
  *
  * XSLT transform
  *
- * xmlSecXsltCtx is located after xmlSecTransform
+ * xmlSecTransform + xmlSecXsltCtx
  *
  ***************************************************************************/
-XMLSEC_DEFINE_TRANSFORM(Xslt, xmlSecXsltCtx)
-
-#define xmlSecXsltSize \
-    XMLSEC_DEFINE_TRANSFORM_SIZE(Xslt)
-
-#define xmlSecXsltGetCtx(transform) \
-    XMLSEC_DEFINE_TRANSFORM_GET_CTX(Xslt, xmlSecXsltCtx, (transform))
+XMLSEC_TRANSFORM_DECLARE(Xslt, xmlSecXsltCtx)
 
 static int              xmlSecXsltInitialize                    (xmlSecTransformPtr transform);
 static void             xmlSecXsltFinalize                      (xmlSecTransformPtr transform);

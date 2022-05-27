@@ -381,13 +381,10 @@ xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
  *
  * EVP Block Cipher transforms
  *
- * xmlSecNssBlockCipherCtx block is located after xmlSecTransform structure
+ * xmlSecTransform + xmlSecNssBlockCipherCtx
  *
  *****************************************************************************/
-#define xmlSecNssBlockCipherSize        \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecNssBlockCipherCtx))
-#define xmlSecNssBlockCipherGetCtx(transform) \
-    ((xmlSecNssBlockCipherCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+XMLSEC_TRANSFORM_DECLARE(NssBlockCipher, xmlSecNssBlockCipherCtx)
 
 static int      xmlSecNssBlockCipherInitialize  (xmlSecTransformPtr transform);
 static void     xmlSecNssBlockCipherFinalize            (xmlSecTransformPtr transform);

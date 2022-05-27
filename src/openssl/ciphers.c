@@ -625,13 +625,8 @@ xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
  *
  * EVP Block Cipher transforms
  *
- * xmlSecOpenSSLEvpBlockCipherCtx block is located after xmlSecTransform structure
- *
  *****************************************************************************/
-#define xmlSecOpenSSLEvpBlockCipherSize \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecOpenSSLEvpBlockCipherCtx))
-#define xmlSecOpenSSLEvpBlockCipherGetCtx(transform) \
-    ((xmlSecOpenSSLEvpBlockCipherCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+XMLSEC_TRANSFORM_DECLARE(OpenSSLEvpBlockCipher, xmlSecOpenSSLEvpBlockCipherCtx)
 
 static int      xmlSecOpenSSLEvpBlockCipherInitialize   (xmlSecTransformPtr transform);
 static void     xmlSecOpenSSLEvpBlockCipherFinalize     (xmlSecTransformPtr transform);

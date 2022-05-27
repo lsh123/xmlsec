@@ -47,16 +47,10 @@ struct _xmlSecGCryptDigestCtx {
  *
  * Digest transforms
  *
- * xmlSecGCryptDigestCtx is located after xmlSecTransform
+ * xmlSecTransform + xmlSecGCryptDigestCtx 
  *
  *****************************************************************************/
-XMLSEC_DEFINE_TRANSFORM(GCryptDigest, xmlSecGCryptDigestCtx)
-
-#define xmlSecGCryptDigestSize \
-    XMLSEC_DEFINE_TRANSFORM_SIZE(GCryptDigest)
-
-#define xmlSecGCryptDigestGetCtx(transform) \
-    XMLSEC_DEFINE_TRANSFORM_GET_CTX(GCryptDigest, xmlSecGCryptDigestCtx, (transform))
+XMLSEC_TRANSFORM_DECLARE(GCryptDigest, xmlSecGCryptDigestCtx)
 
 static int      xmlSecGCryptDigestInitialize            (xmlSecTransformPtr transform);
 static void     xmlSecGCryptDigestFinalize              (xmlSecTransformPtr transform);

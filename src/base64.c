@@ -736,16 +736,10 @@ done:
  *
  * Base64 Transform
  *
- * xmlSecBase64Ctx is located after xmlSecTransform
+ * xmlSecTransform + xmlSecBase64Ctx
  *
  **************************************************************/
-XMLSEC_DEFINE_TRANSFORM(Base64, xmlSecBase64Ctx)
-
-#define xmlSecBase64Size \
-    XMLSEC_DEFINE_TRANSFORM_SIZE(Base64)
-
-#define xmlSecBase64GetCtx(transform) \
-    XMLSEC_DEFINE_TRANSFORM_GET_CTX(Base64, xmlSecBase64Ctx, (transform))
+XMLSEC_TRANSFORM_DECLARE(Base64, xmlSecBase64Ctx)
 
 static int              xmlSecBase64Initialize          (xmlSecTransformPtr transform);
 static void             xmlSecBase64Finalize            (xmlSecTransformPtr transform);

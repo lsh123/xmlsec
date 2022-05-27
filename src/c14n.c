@@ -35,17 +35,10 @@
  *
  * C14N transforms
  *
- * Inclusive namespaces list for ExclC14N (xmlSecStringList) is located
- * after xmlSecTransform structure
+ * xmlSecTransform + xmlSecStringList (inclusive namespaces list for ExclC14N).
  *
  *****************************************************************************/
-XMLSEC_DEFINE_TRANSFORM(C14N, xmlSecPtrList)
-
-#define xmlSecTransformC14NSize \
-    XMLSEC_DEFINE_TRANSFORM_SIZE(C14N)
-
-#define xmlSecTransformC14NGetNsList(transform) \
-    XMLSEC_DEFINE_TRANSFORM_GET_CTX(C14N, xmlSecPtrList, (transform))
+XMLSEC_TRANSFORM_DECLARE(C14N, xmlSecPtrList)
 
 #define xmlSecTransformC14NCheckId(transform) \
     (xmlSecTransformInclC14NCheckId((transform)) || \
@@ -90,7 +83,7 @@ xmlSecTransformC14NInitialize(xmlSecTransformPtr transform) {
 
     xmlSecAssert2(xmlSecTransformC14NCheckId(transform), -1);
 
-    nsList = xmlSecTransformC14NGetNsList(transform);
+    nsList = xmlSecC14NGetCtx(transform);
     xmlSecAssert2(nsList != NULL, -1);
 
     ret = xmlSecPtrListInitialize(nsList, xmlSecStringListId);
@@ -108,7 +101,7 @@ xmlSecTransformC14NFinalize(xmlSecTransformPtr transform) {
 
     xmlSecAssert(xmlSecTransformC14NCheckId(transform));
 
-    nsList = xmlSecTransformC14NGetNsList(transform);
+    nsList = xmlSecC14NGetCtx(transform);
     xmlSecAssert(xmlSecPtrListCheckId(nsList, xmlSecStringListId));
 
     xmlSecPtrListFinalize(nsList);
@@ -127,7 +120,7 @@ xmlSecTransformC14NNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSe
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    nsList = xmlSecTransformC14NGetNsList(transform);
+    nsList = xmlSecC14NGetCtx(transform);
     xmlSecAssert2(xmlSecPtrListCheckId(nsList, xmlSecStringListId), -1);
     xmlSecAssert2(xmlSecPtrListGetSize(nsList) == 0, -1);
 
@@ -238,7 +231,7 @@ xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
 
     /* we are using a semi-hack here: we know that xmlSecPtrList keeps
      * all pointers in the big array */
-    nsList = xmlSecTransformC14NGetNsList(transform);
+    nsList = xmlSecC14NGetCtx(transform);
     xmlSecAssert2(xmlSecPtrListCheckId(nsList, xmlSecStringListId), -1);
 
     ret = xmlSecTransformC14NExecute(transform->id, nodes, (xmlChar**)(nsList->data), buf);
@@ -302,7 +295,7 @@ xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
 
         /* we are using a semi-hack here: we know that xmlSecPtrList keeps
          * all pointers in the big array */
-        nsList = xmlSecTransformC14NGetNsList(transform);
+        nsList = xmlSecC14NGetCtx(transform);
         xmlSecAssert2(xmlSecPtrListCheckId(nsList, xmlSecStringListId), -1);
 
         ret = xmlSecTransformC14NExecute(transform->id, transform->inNodes, (xmlChar**)(nsList->data), buf);
@@ -418,7 +411,7 @@ xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlChar
 static xmlSecTransformKlass xmlSecTransformInclC14NKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecTransformC14NSize,                    /* xmlSecSize objSize */
+    xmlSecC14NSize,                             /* xmlSecSize objSize */
 
     xmlSecNameC14N,                             /* const xmlChar* name; */
     xmlSecHrefC14N,                             /* const xmlChar* href; */
@@ -465,7 +458,7 @@ xmlSecTransformInclC14NGetKlass(void) {
 static xmlSecTransformKlass xmlSecTransformInclC14NWithCommentsKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecTransformC14NSize,                    /* xmlSecSize objSize */
+    xmlSecC14NSize,                             /* xmlSecSize objSize */
 
     /* same as xmlSecTransformId */
     xmlSecNameC14NWithComments,                 /* const xmlChar* name; */
@@ -513,7 +506,7 @@ xmlSecTransformInclC14NWithCommentsGetKlass(void) {
 static xmlSecTransformKlass xmlSecTransformInclC14N11Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecTransformC14NSize,                    /* xmlSecSize objSize */
+    xmlSecC14NSize,                             /* xmlSecSize objSize */
 
     xmlSecNameC14N11,                           /* const xmlChar* name; */
     xmlSecHrefC14N11,                           /* const xmlChar* href; */
@@ -558,7 +551,7 @@ xmlSecTransformInclC14N11GetKlass(void) {
 static xmlSecTransformKlass xmlSecTransformInclC14N11WithCommentsKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecTransformC14NSize,                    /* xmlSecSize objSize */
+    xmlSecC14NSize,                             /* xmlSecSize objSize */
 
     /* same as xmlSecTransformId */
     xmlSecNameC14N11WithComments,               /* const xmlChar* name; */
@@ -605,7 +598,7 @@ xmlSecTransformInclC14N11WithCommentsGetKlass(void) {
 static xmlSecTransformKlass xmlSecTransformExclC14NKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecTransformC14NSize,                    /* xmlSecSize objSize */
+    xmlSecC14NSize,                             /* xmlSecSize objSize */
 
     xmlSecNameExcC14N,                          /* const xmlChar* name; */
     xmlSecHrefExcC14N,                          /* const xmlChar* href; */
@@ -651,7 +644,7 @@ xmlSecTransformExclC14NGetKlass(void) {
 static xmlSecTransformKlass xmlSecTransformExclC14NWithCommentsKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecTransformC14NSize,                    /* xmlSecSize objSize */
+    xmlSecC14NSize,                             /* xmlSecSize objSize */
 
     xmlSecNameExcC14NWithComments,              /* const xmlChar* name; */
     xmlSecHrefExcC14NWithComments,              /* const xmlChar* href; */
@@ -697,7 +690,7 @@ xmlSecTransformExclC14NWithCommentsGetKlass(void) {
 static xmlSecTransformKlass xmlSecTransformRemoveXmlTagsC14NKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecTransformC14NSize,                    /* xmlSecSize objSize */
+    xmlSecC14NSize,                             /* xmlSecSize objSize */
 
     BAD_CAST "remove-xml-tags-transform",       /* const xmlChar* name; */
     NULL,                                       /* const xmlChar* href; */

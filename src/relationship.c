@@ -91,19 +91,21 @@
 
 #include "cast_helpers.h"
 
+
+/**************************************************************************
+ *
+ * XML Relationshi transform
+ *
+ * xmlSecTransform + xmlSecRelationshipCtx
+ *
+ ***************************************************************************/
 typedef struct _xmlSecRelationshipCtx           xmlSecRelationshipCtx,
                                                 *xmlSecRelationshipCtxPtr;
 struct _xmlSecRelationshipCtx {
     xmlSecPtrListPtr                    sourceIdList;
 };
 
-XMLSEC_DEFINE_TRANSFORM(Relationship, xmlSecRelationshipCtx)
-
-#define xmlSecRelationshipSize \
-    XMLSEC_DEFINE_TRANSFORM_SIZE(Relationship)
-
-#define xmlSecRelationshipGetCtx(transform) \
-    XMLSEC_DEFINE_TRANSFORM_GET_CTX(Relationship, xmlSecRelationshipCtx, (transform))
+XMLSEC_TRANSFORM_DECLARE(Relationship, xmlSecRelationshipCtx)
 
 static int              xmlSecRelationshipInitialize      (xmlSecTransformPtr transform);
 static void             xmlSecRelationshipFinalize        (xmlSecTransformPtr transform);

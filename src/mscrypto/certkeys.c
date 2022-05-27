@@ -40,6 +40,8 @@
 #include <xmlsec/mscrypto/x509.h>
 #include "private.h"
 
+#include "../cast_helpers.h"
+
 // GOST CSP don't support keys duplicating, so we use NT4 analogs for these...
 #ifndef XMLSEC_NO_GOST
 #ifndef XMLSEC_MSCRYPTO_NT4

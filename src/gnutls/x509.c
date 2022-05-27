@@ -183,15 +183,8 @@ struct _xmlSecGnuTLSX509DataCtx {
  *    <!ELEMENT X509Certificate (#PCDATA) >
  *    <!ELEMENT X509CRL (#PCDATA) >
  *
- * -----------------------------------------------------------------------
- *
- * xmlSecGnuTLSX509DataCtx is located after xmlSecTransform
- *
  *************************************************************************/
-#define xmlSecGnuTLSX509DataSize       \
-    (sizeof(xmlSecKeyData) + sizeof(xmlSecGnuTLSX509DataCtx))
-#define xmlSecGnuTLSX509DataGetCtx(data) \
-    ((xmlSecGnuTLSX509DataCtxPtr)(((xmlSecByte*)(data)) + sizeof(xmlSecKeyData)))
+XMLSEC_KEY_DATA_DECLARE(GnuTLSX509Data, xmlSecGnuTLSX509DataCtx)
 
 static int              xmlSecGnuTLSKeyDataX509Initialize      (xmlSecKeyDataPtr data);
 static int              xmlSecGnuTLSKeyDataX509Duplicate       (xmlSecKeyDataPtr dst,

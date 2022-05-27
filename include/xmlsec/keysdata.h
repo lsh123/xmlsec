@@ -639,7 +639,7 @@ XMLSEC_EXPORT void              xmlSecKeyDataIdListDebugXmlDump (xmlSecPtrListPt
  *
  * xmlSecKeyDataBinary
  *
- * key (xmlSecBuffer) is located after xmlSecKeyData structure
+ * xmlSecKeyData + xmlSecBuffer (key)
  *
  *************************************************************************/
 

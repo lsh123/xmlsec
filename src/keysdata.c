@@ -457,9 +457,8 @@ xmlSecKeyDataDebugXmlDump(xmlSecKeyDataPtr data, FILE *output) {
  *
  * xmlSecKeyDataBinary methods
  *
- * key (xmlSecBuffer) is located after xmlSecKeyData structure
- *
  *************************************************************************/
+
 /**
  * xmlSecKeyDataBinaryValueInitialize:
  * @data:               the pointer to binary key data.

@@ -89,7 +89,7 @@ jobs:
     - run: mkdir build
     - name: configure
       working-directory: build
-      run: ../autogen.sh --enable-pedantic --enable-static-linking=${{ matrix.static_linking }}
+      run: ../autogen.sh --enable-werror --enable-pedantic --enable-static-linking=${{ matrix.static_linking }}
     - name: make
       working-directory: build
       run: make

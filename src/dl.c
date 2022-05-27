@@ -249,9 +249,9 @@ xmlSecCryptoDLLibraryDuplicate(xmlSecCryptoDLLibraryPtr lib) {
     return(xmlSecCryptoDLLibraryCreate(lib->name));
 }
 
+#define XMLSEC_CRYPTO_DL_LIB_TMPL   "lib%s-%s"
 static xmlChar*
 xmlSecCryptoDLLibraryConstructFilename(const xmlChar* name) {
-    static char tmpl[] = "lib%s-%s";
     xmlChar* res;
     int len;
     xmlSecSize size;
@@ -259,7 +259,7 @@ xmlSecCryptoDLLibraryConstructFilename(const xmlChar* name) {
 
     xmlSecAssert2(name != NULL, NULL);
 
-    len = xmlStrlen(BAD_CAST PACKAGE) + xmlStrlen(name) + xmlStrlen(BAD_CAST tmpl) + 1;
+    len = xmlStrlen(BAD_CAST PACKAGE) + xmlStrlen(name) + xmlStrlen(BAD_CAST XMLSEC_CRYPTO_DL_LIB_TMPL) + 1;
     XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(NULL), -1);
 
     res = (xmlChar*)xmlMalloc(size + 1);
@@ -268,7 +268,7 @@ xmlSecCryptoDLLibraryConstructFilename(const xmlChar* name) {
         return(NULL);
     }
 
-    ret = xmlStrPrintf(res, len, tmpl, PACKAGE, name);
+    ret = xmlStrPrintf(res, len, XMLSEC_CRYPTO_DL_LIB_TMPL, PACKAGE, name);
     if(ret < 0) {
         xmlSecXmlError("xmlStrPrintf", NULL);
         xmlFree(res);
@@ -278,9 +278,10 @@ xmlSecCryptoDLLibraryConstructFilename(const xmlChar* name) {
     return(res);
 }
 
+#define XMLSEC_CRYPTO_DL_GET_FUNCTIONS_TMPL  "xmlSecCryptoGetFunctions_%s"
+
 static xmlChar*
 xmlSecCryptoDLLibraryConstructGetFunctionsName(const xmlChar* name) {
-    static char tmpl[] = "xmlSecCryptoGetFunctions_%s";
     xmlChar* res;
     int len;
     xmlSecSize size;
@@ -288,7 +289,7 @@ xmlSecCryptoDLLibraryConstructGetFunctionsName(const xmlChar* name) {
 
     xmlSecAssert2(name != NULL, NULL);
 
-    len = xmlStrlen(name) + xmlStrlen(BAD_CAST tmpl) + 1;
+    len = xmlStrlen(name) + xmlStrlen(BAD_CAST XMLSEC_CRYPTO_DL_GET_FUNCTIONS_TMPL) + 1;
     XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(NULL), -1);
 
     res = (xmlChar*)xmlMalloc(size + 1);
@@ -297,7 +298,7 @@ xmlSecCryptoDLLibraryConstructGetFunctionsName(const xmlChar* name) {
         return(NULL);
     }
 
-    ret = xmlStrPrintf(res, len, tmpl, name);
+    ret = xmlStrPrintf(res, len, XMLSEC_CRYPTO_DL_GET_FUNCTIONS_TMPL, name);
     if(ret < 0) {
         xmlSecXmlError("xmlStrPrintf", NULL);
         xmlFree(res);

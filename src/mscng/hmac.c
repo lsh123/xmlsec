@@ -36,6 +36,8 @@
 
 #include <xmlsec/mscng/crypto.h>
 
+#include "../cast_helpers.h"
+
 typedef struct _xmlSecMSCngHmacCtx xmlSecMSCngHmacCtx, *xmlSecMSCngHmacCtxPtr;
 
 struct _xmlSecMSCngHmacCtx {
@@ -49,10 +51,8 @@ struct _xmlSecMSCngHmacCtx {
     BCRYPT_HASH_HANDLE hHash;
 };
 
-#define xmlSecMSCngHmacGetCtx(data) \
-    ((xmlSecMSCngHmacCtxPtr)(((xmlSecByte*)(data)) + sizeof(xmlSecTransform)))
-#define xmlSecMSCngHmacSize \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecMSCngHmacCtx))
+XMLSEC_TRANSFORM_DECLARE(MSCngHmac, xmlSecMSCngHmacCtx)
+#define xmlSecMSCngHmacSize XMLSEC_TRANSFORM_SIZE(MSCngHmac)
 
 static int
 xmlSecMSCngHmacCheckId(xmlSecTransformPtr transform) {

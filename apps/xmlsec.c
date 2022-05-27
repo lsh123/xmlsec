@@ -996,7 +996,7 @@ int main(int argc, const char **argv) {
 
 #if defined(WIN32)
     /* convert command line to UTF8 from locale or UNICODE */
-    utf8_argv = (char**)xmlMalloc(sizeof(char*) * argc);
+    utf8_argv = (const char**)xmlMalloc(sizeof(char*) * argc);
     if(utf8_argv == NULL) {
         fprintf(stderr, "Error: can not allocate memory (%lu bytes)\n", XMLSEC_UL_BAD_CAST(sizeof(char*) * argc));
         goto fail;

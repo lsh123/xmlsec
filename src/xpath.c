@@ -249,6 +249,9 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
             return(NULL);
         }
         break;
+    default:
+        xmlSecInternalError("Invalid XPath transform type", NULL);
+        return(NULL);
     }
 
     /* sometime LibXML2 returns an empty nodeset or just NULL, we want
@@ -482,7 +485,8 @@ xmlSecTransformXPathGetKlass(void) {
     return(&xmlSecTransformXPathKlass);
 }
 
-static const char xpathPattern[] = "(//. | //@* | //namespace::*)[boolean(%s)]";
+#define XMLSEC_TRANSFORM_XPATH_TMPL "(//. | //@* | //namespace::*)[boolean(%s)]"
+
 static int
 xmlSecTransformXPathNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
     xmlSecPtrListPtr dataList;
@@ -536,7 +540,7 @@ xmlSecTransformXPathNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
 
     /* create full XPath expression */
     xmlSecAssert2(data->expr != NULL, -1);
-    tmpLen = xmlStrlen(data->expr) + xmlStrlen(BAD_CAST xpathPattern) + 1;
+    tmpLen = xmlStrlen(data->expr) + xmlStrlen(BAD_CAST XMLSEC_TRANSFORM_XPATH_TMPL) + 1;
     XMLSEC_SAFE_CAST_INT_TO_SIZE(tmpLen, tmpSize, return(-1), NULL);
 
     tmp = (xmlChar*) xmlMalloc(sizeof(xmlChar) * tmpSize);
@@ -545,7 +549,7 @@ xmlSecTransformXPathNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
                           xmlSecTransformGetName(transform));
         return(-1);
     }
-    ret = xmlStrPrintf(tmp, tmpLen, xpathPattern, (char*)data->expr);
+    ret = xmlStrPrintf(tmp, tmpLen, XMLSEC_TRANSFORM_XPATH_TMPL, (char*)data->expr);
     if(ret < 0) {
        xmlSecXmlError("xmlStrPrintf", xmlSecTransformGetName(transform));
        xmlFree(tmp);

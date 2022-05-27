@@ -190,20 +190,20 @@
 
 /******************************************************************************
  *
- *  Helpers to create transform struct and cast to transform context
+ *  Helpers to create child struct with context
  * 
  *****************************************************************************/
-#define XMLSEC_TRANSFORM_DECLARE(name, ctxType)                                    \
-typedef struct _ ## xmlSec ## name ## Transform {                                  \
-    xmlSecTransform base;                                                          \
+#define XMLSEC_CHILD_STRUCT_DECLARE(name, postfix, baseType, ctxType, checkSizeFunc) \
+typedef struct _ ## xmlSec ## name ## postfix {                                    \
+    baseType base;                                                                 \
     ctxType ctx;                                                                   \
-} xmlSec ## name ## Transform;                                                     \
+} xmlSec ## name ## postfix;                                                       \
                                                                                    \
-static const xmlSecSize xmlSec ## name ## Size = (sizeof(xmlSec ## name ## Transform)); \
+static const xmlSecSize xmlSec ## name ## Size = (sizeof(xmlSec ## name ## postfix)); \
                                                                                    \
-static inline ctxType* xmlSec ## name ## GetCtx(xmlSecTransformPtr transform) {    \
-    if(xmlSecTransformCheckSize(transform, xmlSec ## name ## Size)) {              \
-        return((ctxType *)(&( ((xmlSec ## name ## Transform *)transform)->ctx ))); \
+static inline ctxType* xmlSec ## name ## GetCtx(baseType* obj) {                   \
+    if(checkSizeFunc(obj, xmlSec ## name ## Size)) {                               \
+        return((ctxType *)(&( ((xmlSec ## name ## postfix *)obj)->ctx )));         \
     } else {                                                                       \
         return(NULL);                                                              \
     }                                                                              \
@@ -211,22 +211,34 @@ static inline ctxType* xmlSec ## name ## GetCtx(xmlSecTransformPtr transform) { 
 
 /******************************************************************************
  *
+ *  Helpers to create transform struct and cast to transform context
+ * 
+ *****************************************************************************/
+#define XMLSEC_TRANSFORM_DECLARE(name, ctxType)  \
+    XMLSEC_CHILD_STRUCT_DECLARE(name, Transform, xmlSecTransform, ctxType, xmlSecTransformCheckSize)
+
+/******************************************************************************
+ *
  *  Helpers to create key data struct and cast to key data context
  * 
  *****************************************************************************/
-#define XMLSEC_KEY_DATA_DECLARE(name, ctxType)                                     \
-typedef struct _ ## xmlSec ## name ## KeyData {                                    \
-    xmlSecKeyData base;                                                            \
-    ctxType ctx;                                                                   \
-} xmlSec ## name ## KeyData;                                                       \
-                                                                                   \
-static const xmlSecSize xmlSec ## name ## Size = (sizeof(xmlSec ## name ## KeyData)); \
-static inline ctxType* xmlSec ## name ## GetCtx(xmlSecKeyDataPtr data) {           \
-    if(xmlSecKeyDataCheckSize(data, xmlSec ## name ## Size)) {                     \
-        return((ctxType *)(&( ((xmlSec ## name ## KeyData *)data)->ctx )));        \
-    } else {                                                                       \
-        return(NULL);                                                              \
-    }                                                                              \
-}
+#define XMLSEC_KEY_DATA_DECLARE(name, ctxType)  \
+    XMLSEC_CHILD_STRUCT_DECLARE(name, KeyData, xmlSecKeyData, ctxType, xmlSecKeyDataCheckSize)
+
+/******************************************************************************
+ *
+ *  Helpers to create key data store struct and cast to key store context
+ * 
+ *****************************************************************************/
+#define XMLSEC_KEY_DATA_STORE_DECLARE(name, ctxType)  \
+    XMLSEC_CHILD_STRUCT_DECLARE(name, KeyDataStore, xmlSecKeyDataStore, ctxType, xmlSecKeyDataStoreCheckSize)
+
+/******************************************************************************
+ *
+ *  Helpers to create key store struct and cast to key store context
+ * 
+ *****************************************************************************/
+#define XMLSEC_KEY_STORE_DECLARE(name, ctxType) \
+    XMLSEC_CHILD_STRUCT_DECLARE(name, KeyStore, xmlSecKeyStore, ctxType, xmlSecKeyStoreCheckSize)
 
 #endif /* __XMLSEC_CAST_HELPERS_H__ */

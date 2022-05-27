@@ -70,14 +70,8 @@ struct _xmlSecOpenSSLX509StoreCtx {
  *
  * xmlSecOpenSSLKeyDataStoreX509Id:
  *
- * xmlSecOpenSSLX509StoreCtx is located after xmlSecTransform
- *
  ***************************************************************************/
-#define xmlSecOpenSSLX509StoreGetCtx(store) \
-    ((xmlSecOpenSSLX509StoreCtxPtr)(((xmlSecByte*)(store)) + \
-                                    sizeof(xmlSecKeyDataStoreKlass)))
-#define xmlSecOpenSSLX509StoreSize      \
-    (sizeof(xmlSecKeyDataStoreKlass) + sizeof(xmlSecOpenSSLX509StoreCtx))
+XMLSEC_KEY_DATA_STORE_DECLARE(OpenSSLX509Store, xmlSecOpenSSLX509StoreCtx)
 
 static int              xmlSecOpenSSLX509StoreInitialize        (xmlSecKeyDataStorePtr store);
 static void             xmlSecOpenSSLX509StoreFinalize          (xmlSecKeyDataStorePtr store);

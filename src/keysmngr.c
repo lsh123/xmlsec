@@ -32,6 +32,7 @@
 #include <xmlsec/errors.h>
 #include <xmlsec/private.h>
 
+#include "cast_helpers.h"
 
 /****************************************************************************
  *
@@ -301,15 +302,10 @@ xmlSecKeyStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKeyInf
  *
  * Simple Keys Store
  *
- * keys list (xmlSecPtrList) is located after xmlSecKeyStore
+ * xmlSecKeyStore + xmlSecPtrList (keys list)
  *
  ***************************************************************************/
-#define xmlSecSimpleKeysStoreSize \
-        (sizeof(xmlSecKeyStore) + sizeof(xmlSecPtrList))
-#define xmlSecSimpleKeysStoreGetList(store) \
-    ((xmlSecKeyStoreCheckSize((store), xmlSecSimpleKeysStoreSize)) ? \
-        (xmlSecPtrListPtr)(((xmlSecByte*)(store)) + sizeof(xmlSecKeyStore)) : \
-        (xmlSecPtrListPtr)NULL)
+XMLSEC_KEY_STORE_DECLARE(SimpleKeysStore, xmlSecPtrList)
 
 static int                      xmlSecSimpleKeysStoreInitialize (xmlSecKeyStorePtr store);
 static void                     xmlSecSimpleKeysStoreFinalize   (xmlSecKeyStorePtr store);
@@ -363,7 +359,7 @@ xmlSecSimpleKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecSimpleKeysStoreId), -1);
     xmlSecAssert2(key != NULL, -1);
 
-    list = xmlSecSimpleKeysStoreGetList(store);
+    list = xmlSecSimpleKeysStoreGetCtx(store);
     xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecKeyPtrListId), -1);
 
     ret = xmlSecPtrListAdd(list, key);
@@ -507,7 +503,7 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecK
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecSimpleKeysStoreId), -1);
     xmlSecAssert2(filename != NULL, -1);
 
-    list = xmlSecSimpleKeysStoreGetList(store);
+    list = xmlSecSimpleKeysStoreGetCtx(store);
     xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecKeyPtrListId), -1);
 
     /* create doc */
@@ -625,7 +621,7 @@ xmlSecSimpleKeysStoreGetKeys(xmlSecKeyStorePtr store) {
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecSimpleKeysStoreId), NULL);
 
-    list = xmlSecSimpleKeysStoreGetList(store);
+    list = xmlSecSimpleKeysStoreGetCtx(store);
     xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecKeyPtrListId), NULL);
 
     return list;
@@ -638,7 +634,7 @@ xmlSecSimpleKeysStoreInitialize(xmlSecKeyStorePtr store) {
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecSimpleKeysStoreId), -1);
 
-    list = xmlSecSimpleKeysStoreGetList(store);
+    list = xmlSecSimpleKeysStoreGetCtx(store);
     xmlSecAssert2(list != NULL, -1);
 
     ret = xmlSecPtrListInitialize(list, xmlSecKeyPtrListId);
@@ -657,7 +653,7 @@ xmlSecSimpleKeysStoreFinalize(xmlSecKeyStorePtr store) {
 
     xmlSecAssert(xmlSecKeyStoreCheckId(store, xmlSecSimpleKeysStoreId));
 
-    list = xmlSecSimpleKeysStoreGetList(store);
+    list = xmlSecSimpleKeysStoreGetCtx(store);
     xmlSecAssert(list != NULL);
 
     xmlSecPtrListFinalize(list);
@@ -673,7 +669,7 @@ xmlSecSimpleKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecSimpleKeysStoreId), NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
-    list = xmlSecSimpleKeysStoreGetList(store);
+    list = xmlSecSimpleKeysStoreGetCtx(store);
     xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecKeyPtrListId), NULL);
 
     size = xmlSecPtrListGetSize(list);

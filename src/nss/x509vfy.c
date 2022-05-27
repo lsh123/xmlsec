@@ -66,14 +66,8 @@ struct _xmlSecNssX509StoreCtx {
  *
  * xmlSecNssKeyDataStoreX509Id:
  *
- * xmlSecNssX509StoreCtx is located after xmlSecTransform
- *
  ***************************************************************************/
-#define xmlSecNssX509StoreGetCtx(store) \
-    ((xmlSecNssX509StoreCtxPtr)(((xmlSecByte*)(store)) + \
-                                    sizeof(xmlSecKeyDataStoreKlass)))
-#define xmlSecNssX509StoreSize  \
-    (sizeof(xmlSecKeyDataStoreKlass) + sizeof(xmlSecNssX509StoreCtx))
+XMLSEC_KEY_DATA_STORE_DECLARE(NssX509Store, xmlSecNssX509StoreCtx)
 
 static int              xmlSecNssX509StoreInitialize    (xmlSecKeyDataStorePtr store);
 static void             xmlSecNssX509StoreFinalize      (xmlSecKeyDataStorePtr store);

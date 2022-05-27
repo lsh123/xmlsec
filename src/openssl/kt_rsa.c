@@ -912,7 +912,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
     RSA* rsa;
     int inLen;
 #else /* XMLSEC_OPENSSL_API_300 */
-    size_t outLen;
+    size_t outSizeT;
 #endif /* XMLSEC_OPENSSL_API_300 */
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaOaepId), -1);
@@ -1075,8 +1075,8 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
             BN_clear_free(bn);
             return(-1);
         }
-        BN_clear_free(bn);
         outLen = ret;
+        BN_clear_free(bn);
 #endif /* OPENSSL_IS_BORINGSSL */
 
         ret = RSA_padding_check_PKCS1_OAEP(xmlSecBufferGetData(out), outLen,
@@ -1088,43 +1088,43 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
                     xmlSecTransformGetName(transform));
             return(-1);
         }
-        XMLSEC_SAFE_CAST_INT_TO_SIZE(outLen, outSize, return(-1), xmlSecTransformGetName(transform));
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outSize, return(-1), xmlSecTransformGetName(transform));
     }
 #else /* XMLSEC_OPENSSL_API_300 */
     if((transform->operation == xmlSecTransformOperationEncrypt) && (paramsSize == 0)) {
         /* encode w/o OAEPParams --> simple */
-        ret = EVP_PKEY_encrypt(ctx->pKeyCtx, xmlSecBufferGetData(out), &outLen,
+        ret = EVP_PKEY_encrypt(ctx->pKeyCtx, xmlSecBufferGetData(out), &outSizeT,
                                xmlSecBufferGetData(in), inSize);
         if (ret <= 0) {
             xmlSecOpenSSLError("EVP_PKEY_encrypt(RSA_PKCS1_OAEP_PADDING)",
                                xmlSecTransformGetName(transform));
             return(-1);
         }
-        outSize = XMLSEC_SIZE_BAD_CAST(outLen);
+        XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(outSizeT, outSize, return(-1), xmlSecTransformGetName(transform));
     } else if((transform->operation == xmlSecTransformOperationEncrypt) && (paramsSize > 0)) {
         ret = xmlSecOpenSSSLRsaOaepEnsureParamsSet(transform);
         if(ret != 0) {
             xmlSecInternalError("xmlSecOpenSSSLRsaOaepEnsureParamsSet", xmlSecTransformGetName(transform));
             return(-1);
         }
-        ret = EVP_PKEY_encrypt(ctx->pKeyCtx, xmlSecBufferGetData(out), &outLen,
+        ret = EVP_PKEY_encrypt(ctx->pKeyCtx, xmlSecBufferGetData(out), &outSizeT,
                                xmlSecBufferGetData(in), inSize);
         if (ret <= 0) {
             xmlSecOpenSSLError("EVP_PKEY_encrypt(RSA_PKCS1_OAEP_PADDING)",
                                xmlSecTransformGetName(transform));
             return(-1);
         }
-        outSize = XMLSEC_SIZE_BAD_CAST(outLen);
+        XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(outSizeT, outSize, return(-1), xmlSecTransformGetName(transform));
     } else if((transform->operation == xmlSecTransformOperationDecrypt) && (paramsSize == 0)) {
-        outLen = outSize;
-        ret = EVP_PKEY_decrypt(ctx->pKeyCtx, xmlSecBufferGetData(out), &outLen,
+        outSizeT = outSize;
+        ret = EVP_PKEY_decrypt(ctx->pKeyCtx, xmlSecBufferGetData(out), &outSizeT,
                                xmlSecBufferGetData(in), inSize);
         if (ret <= 0) {
             xmlSecOpenSSLError("EVP_PKEY_decrypt(RSA_PKCS1_OAEP_PADDING)",
                                xmlSecTransformGetName(transform));
             return(-1);
         }
-        outSize = XMLSEC_SIZE_BAD_CAST(outLen);
+        XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(outSizeT, outSize, return(-1), xmlSecTransformGetName(transform));
     } else if((transform->operation == xmlSecTransformOperationDecrypt) && (paramsSize != 0)) {
         ret = xmlSecOpenSSSLRsaOaepEnsureParamsSet(transform);
         if(ret != 0) {
@@ -1132,15 +1132,15 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
             return(-1);
         }
 
-        outLen = outSize;
-        ret = EVP_PKEY_decrypt(ctx->pKeyCtx, xmlSecBufferGetData(out), &outLen,
+        outSizeT = outSize;
+        ret = EVP_PKEY_decrypt(ctx->pKeyCtx, xmlSecBufferGetData(out), &outSizeT,
                                xmlSecBufferGetData(in), inSize);
         if (ret <= 0) {
             xmlSecOpenSSLError("EVP_PKEY_decrypt(RSA_PKCS1_OAEP_PADDING)",
                                xmlSecTransformGetName(transform));
             return(-1);
         }
-        outSize = XMLSEC_SIZE_BAD_CAST(outLen);
+        XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(outSizeT, outSize, return(-1), xmlSecTransformGetName(transform));
     }
 #endif /* XMLSEC_OPENSSL_API_300 */
     else {

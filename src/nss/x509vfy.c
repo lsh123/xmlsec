@@ -729,7 +729,7 @@ static int
 xmlSecNssNumToItem(SECItem *it, PRUint64 ui)
 {
     unsigned char bb[9];
-    unsigned int zeros_len;
+    unsigned int bb_len, zeros_len;
     int res;
 
     xmlSecAssert2(it != NULL, -1);
@@ -749,11 +749,12 @@ xmlSecNssNumToItem(SECItem *it, PRUint64 ui)
     ** require progressively more space. Start from 1 because byte at 
     ** position 0 is zero
     */
-    for(zeros_len = 1; (zeros_len < sizeof(bb)) && (bb[zeros_len] == 0); ++zeros_len) {
+    bb_len = sizeof(bb) / sizeof(bb[0]);
+    for(zeros_len = 1; (zeros_len < bb_len) && (bb[zeros_len] == 0); ++zeros_len) {
     }
 
-    it->len = sizeof(bb) - (zeros_len - 1);
-    it->data = (unsigned char *)PORT_Alloc(it->len);
+    it->len = bb_len - (zeros_len - 1);
+    it->data = (unsigned char *)PORT_Alloc(it->len * sizeof(bb[0]));
     if (it->data == NULL) {
         it->len = 0;
         return (-1);

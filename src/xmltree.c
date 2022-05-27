@@ -1766,7 +1766,7 @@ xmlSecQName2BitMaskDebugXmlDump(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitM
  *
  * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
  */
-XMLSEC_EXPORT LPWSTR
+LPWSTR
 xmlSecWin32ConvertUtf8ToUnicode(const xmlChar* str) {
     LPWSTR res = NULL;
     xmlSecSize size;

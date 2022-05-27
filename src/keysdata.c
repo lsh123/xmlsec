@@ -941,8 +941,7 @@ xmlSecKeyDataBinaryValueGetBuffer(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataIsValid(data), NULL);
     xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecKeyDataBinarySize), NULL);
 
-    /* key (xmlSecBuffer) is located after xmlSecKeyData structure */
-    return((xmlSecBufferPtr)(((xmlSecByte*)data) + sizeof(xmlSecKeyData)));
+    return(&(((xmlSecKeyDataBinary *)data)->buffer));
 }
 
 /**

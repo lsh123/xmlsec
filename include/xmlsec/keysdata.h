@@ -642,13 +642,25 @@ XMLSEC_EXPORT void              xmlSecKeyDataIdListDebugXmlDump (xmlSecPtrListPt
  * key (xmlSecBuffer) is located after xmlSecKeyData structure
  *
  *************************************************************************/
+
+/**
+ * xmlSecKeyDataiBinary:
+ * @keyData:            the key data (#xmlSecKeyData).
+ * @buffer:             the key's binary (#xmlSecBuffer).
+ *
+ * The binary key data (e.g. HMAC key).
+ */
+typedef struct _xmlSecKeyDataBinary {
+    xmlSecKeyData  keyData;
+    xmlSecBuffer   buffer;  
+} xmlSecKeyDataBinary;
+
 /**
  * xmlSecKeyDataBinarySize:
  *
  * The binary key data object size.
  */
-#define xmlSecKeyDataBinarySize \
-    (sizeof(xmlSecKeyData) + sizeof(xmlSecBuffer))
+#define xmlSecKeyDataBinarySize (sizeof(xmlSecKeyDataBinary))
 
 XMLSEC_EXPORT int               xmlSecKeyDataBinaryValueInitialize      (xmlSecKeyDataPtr data);
 XMLSEC_EXPORT int               xmlSecKeyDataBinaryValueDuplicate       (xmlSecKeyDataPtr dst,

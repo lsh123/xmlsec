@@ -494,8 +494,6 @@ xmlSecNssKWDes3BlockDecrypt(void * context,
     return(ret);
 }
 
-
-
 static int
 xmlSecNssKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
                        const xmlSecByte *iv, xmlSecSize ivSize,
@@ -510,6 +508,7 @@ xmlSecNssKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
     SECItem keyItem, ivItem;
     SECStatus status;
     int inLen, outLen, maxOutLen;
+    int res = -1;
 
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(keySize == XMLSEC_KW_DES3_KEY_LENGTH, -1);
@@ -568,6 +567,9 @@ xmlSecNssKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
         goto done;
     }
 
+    /* success */
+    res = outLen;
+
 done:
     if (slot) {
         PK11_FreeSlot(slot);
@@ -582,7 +584,7 @@ done:
         PK11_DestroyContext(pk11ctx, PR_TRUE);
     }
 
-    return(outLen);
+    return(res);
 }
 
 

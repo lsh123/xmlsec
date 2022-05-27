@@ -76,10 +76,15 @@ struct _xmlSecGCryptKWAesCtx {
 
     xmlSecBuffer        keyBuffer;
 };
-#define xmlSecGCryptKWAesSize     \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecGCryptKWAesCtx))
+
+XMLSEC_DEFINE_TRANSFORM(GCryptKWAes, xmlSecGCryptKWAesCtx)
+
+#define xmlSecGCryptKWAesSize \
+    XMLSEC_DEFINE_TRANSFORM_SIZE(GCryptKWAes)
+
 #define xmlSecGCryptKWAesGetCtx(transform) \
-    ((xmlSecGCryptKWAesCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+    XMLSEC_DEFINE_TRANSFORM_GET_CTX(GCryptKWAes, xmlSecGCryptKWAesCtx, (transform))
+
 #define xmlSecGCryptKWAesCheckId(transform) \
     (xmlSecTransformCheckId((transform), xmlSecGCryptTransformKWAes128Id) || \
      xmlSecTransformCheckId((transform), xmlSecGCryptTransformKWAes192Id) || \

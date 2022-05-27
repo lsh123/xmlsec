@@ -99,10 +99,14 @@ typedef struct _xmlSecGCryptKWDes3Ctx              xmlSecGCryptKWDes3Ctx,
 struct _xmlSecGCryptKWDes3Ctx {
     xmlSecBuffer        keyBuffer;
 };
-#define xmlSecGCryptKWDes3Size     \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecGCryptKWDes3Ctx))
+
+XMLSEC_DEFINE_TRANSFORM(GCryptKWDes, xmlSecGCryptKWDes3Ctx)
+
+#define xmlSecGCryptKWDes3Size \
+    XMLSEC_DEFINE_TRANSFORM_SIZE(GCryptKWDes)
+
 #define xmlSecGCryptKWDes3GetCtx(transform) \
-    ((xmlSecGCryptKWDes3CtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+    XMLSEC_DEFINE_TRANSFORM_GET_CTX(GCryptKWDes, xmlSecGCryptKWDes3Ctx, (transform))
 
 static int      xmlSecGCryptKWDes3Initialize                    (xmlSecTransformPtr transform);
 static void     xmlSecGCryptKWDes3Finalize                      (xmlSecTransformPtr transform);

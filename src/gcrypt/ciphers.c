@@ -347,10 +347,13 @@ xmlSecGCryptBlockCipherCtxFinal(xmlSecGCryptBlockCipherCtxPtr ctx,
  * xmlSecGCryptBlockCipherCtx block is located after xmlSecTransform structure
  *
  *****************************************************************************/
-#define xmlSecGCryptBlockCipherSize     \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecGCryptBlockCipherCtx))
+XMLSEC_DEFINE_TRANSFORM(GCryptBlockCipher, xmlSecGCryptBlockCipherCtx)
+
+#define xmlSecGCryptBlockCipherSize \
+    XMLSEC_DEFINE_TRANSFORM_SIZE(GCryptBlockCipher)
+
 #define xmlSecGCryptBlockCipherGetCtx(transform) \
-    ((xmlSecGCryptBlockCipherCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+    XMLSEC_DEFINE_TRANSFORM_GET_CTX(GCryptBlockCipher, xmlSecGCryptBlockCipherCtx, (transform))
 
 static int      xmlSecGCryptBlockCipherInitialize       (xmlSecTransformPtr transform);
 static void     xmlSecGCryptBlockCipherFinalize         (xmlSecTransformPtr transform);

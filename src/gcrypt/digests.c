@@ -28,6 +28,8 @@
 #include <xmlsec/gcrypt/app.h>
 #include <xmlsec/gcrypt/crypto.h>
 
+#include "../cast_helpers.h"
+
 /**************************************************************************
  *
  * Internal GCRYPT Digest CTX
@@ -48,10 +50,13 @@ struct _xmlSecGCryptDigestCtx {
  * xmlSecGCryptDigestCtx is located after xmlSecTransform
  *
  *****************************************************************************/
-#define xmlSecGCryptDigestSize  \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecGCryptDigestCtx))
+XMLSEC_DEFINE_TRANSFORM(GCryptDigest, xmlSecGCryptDigestCtx)
+
+#define xmlSecGCryptDigestSize \
+    XMLSEC_DEFINE_TRANSFORM_SIZE(GCryptDigest)
+
 #define xmlSecGCryptDigestGetCtx(transform) \
-    ((xmlSecGCryptDigestCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+    XMLSEC_DEFINE_TRANSFORM_GET_CTX(GCryptDigest, xmlSecGCryptDigestCtx, (transform))
 
 static int      xmlSecGCryptDigestInitialize            (xmlSecTransformPtr transform);
 static void     xmlSecGCryptDigestFinalize              (xmlSecTransformPtr transform);

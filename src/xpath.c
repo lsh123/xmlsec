@@ -358,12 +358,14 @@ xmlSecXPathDataListExecute(xmlSecPtrListPtr dataList, xmlDocPtr doc,
  * xmlSecXPathDataList is located after xmlSecTransform structure
  *
  *****************************************************************************/
-#define xmlSecXPathTransformSize        \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecPtrList))
+XMLSEC_DEFINE_TRANSFORM(XPath, xmlSecPtrList)
+
+#define xmlSecXPathTransformSize \
+    XMLSEC_DEFINE_TRANSFORM_SIZE(XPath)
+
 #define xmlSecXPathTransformGetDataList(transform) \
-    ((xmlSecTransformCheckSize((transform), xmlSecXPathTransformSize)) ? \
-        (xmlSecPtrListPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)) : \
-        (xmlSecPtrListPtr)NULL)
+    XMLSEC_DEFINE_TRANSFORM_GET_CTX(XPath, xmlSecPtrList, (transform))
+
 #define xmlSecTransformXPathCheckId(transform) \
     (xmlSecTransformCheckId((transform), xmlSecTransformXPathId) || \
      xmlSecTransformCheckId((transform), xmlSecTransformXPath2Id) || \
@@ -879,12 +881,14 @@ xmlSecTransformXPointerNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, x
  * Visa3DHack transform
  *
  *****************************************************************************/
-#define xmlSecVisa3DHackTransformSize   \
-    (sizeof(xmlSecTransform) + sizeof(xmlChar*))
+XMLSEC_DEFINE_TRANSFORM(Visa3DHack, xmlChar*)
+
+#define xmlSecVisa3DHackTransformSize \
+    XMLSEC_DEFINE_TRANSFORM_SIZE(Visa3DHack)
+
 #define xmlSecVisa3DHackTransformGetIDPtr(transform) \
-    ((xmlSecTransformCheckSize((transform), xmlSecVisa3DHackTransformSize)) ? \
-        (xmlChar**)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)) : \
-        (xmlChar**)NULL)
+    XMLSEC_DEFINE_TRANSFORM_GET_CTX(Visa3DHack, xmlChar*, (transform))
+
 #define xmlSecTransformVisa3DHackCheckId(transform) \
     (xmlSecTransformCheckId((transform), xmlSecTransformVisa3DHackId))
 

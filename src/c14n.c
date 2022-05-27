@@ -29,6 +29,8 @@
 #include <xmlsec/xmltree.h>
 #include <xmlsec/errors.h>
 
+#include "cast_helpers.h"
+
 /******************************************************************************
  *
  * C14N transforms
@@ -37,24 +39,28 @@
  * after xmlSecTransform structure
  *
  *****************************************************************************/
+XMLSEC_DEFINE_TRANSFORM(C14N, xmlSecPtrList)
+
 #define xmlSecTransformC14NSize \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecPtrList))
+    XMLSEC_DEFINE_TRANSFORM_SIZE(C14N)
+
 #define xmlSecTransformC14NGetNsList(transform) \
-    ((xmlSecTransformCheckSize((transform), xmlSecTransformC14NSize)) ? \
-        (xmlSecPtrListPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)) : \
-        (xmlSecPtrListPtr)NULL)
+    XMLSEC_DEFINE_TRANSFORM_GET_CTX(C14N, xmlSecPtrList, (transform))
 
 #define xmlSecTransformC14NCheckId(transform) \
     (xmlSecTransformInclC14NCheckId((transform)) || \
      xmlSecTransformInclC14N11CheckId((transform)) || \
      xmlSecTransformExclC14NCheckId((transform)) || \
      xmlSecTransformCheckId((transform), xmlSecTransformRemoveXmlTagsC14NId))
+
 #define xmlSecTransformInclC14NCheckId(transform) \
     (xmlSecTransformCheckId((transform), xmlSecTransformInclC14NId) || \
      xmlSecTransformCheckId((transform), xmlSecTransformInclC14NWithCommentsId))
+
 #define xmlSecTransformInclC14N11CheckId(transform) \
     (xmlSecTransformCheckId((transform), xmlSecTransformInclC14N11Id) || \
      xmlSecTransformCheckId((transform), xmlSecTransformInclC14N11WithCommentsId))
+
 #define xmlSecTransformExclC14NCheckId(transform) \
     (xmlSecTransformCheckId((transform), xmlSecTransformExclC14NId) || \
      xmlSecTransformCheckId((transform), xmlSecTransformExclC14NWithCommentsId) )

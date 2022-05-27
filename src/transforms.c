@@ -73,6 +73,9 @@
 #include "xslt.h"
 #include "cast_helpers.h"
 
+
+#define XMLSEC_TRANSFORM_XPOINTER_TMPL "xpointer(id(\'%s\'))"
+
 /**************************************************************************
  *
  * Global xmlSecTransformIds list functions
@@ -772,20 +775,19 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
         nodeSetType = xmlSecNodeSetTreeWithoutComments;
         useVisa3DHack = 1;
     } else {
-        static const char tmpl[] = "xpointer(id(\'%s\'))";
         xmlSecSize size;
         int len;
 
         /* we need to add "xpointer(id('..')) because otherwise we have
          * problems with numeric ("111" and so on) and other "strange" ids */
-        len = xmlStrlen(BAD_CAST tmpl) + xmlStrlen(xptr) + 2;
+        len = xmlStrlen(BAD_CAST XMLSEC_TRANSFORM_XPOINTER_TMPL) + xmlStrlen(xptr) + 2;
         XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(-1), NULL);
         buf = (xmlChar*)xmlMalloc(size * sizeof(xmlChar));
         if(buf == NULL) {
             xmlSecMallocError(size * sizeof(xmlChar), NULL);
             return(-1);
         }
-        ret = xmlStrPrintf(buf, len, tmpl, xptr + 1);
+        ret = xmlStrPrintf(buf, len, XMLSEC_TRANSFORM_XPOINTER_TMPL, xptr + 1);
         if(ret < 0) {
             xmlSecXmlError("xmlStrPrintf", NULL);
              xmlFree(buf);

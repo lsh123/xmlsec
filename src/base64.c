@@ -413,15 +413,15 @@ xmlSecBase64CtxDecodeByte(xmlSecBase64CtxPtr ctx, xmlSecByte inByte, xmlSecByte*
 
     /* convert from character to position in base64 array */
     if((inByte >= 'A') && (inByte <= 'Z')) {
-        inByte = (inByte - 'A');
+        inByte = (xmlSecByte)(inByte - 'A');
     } else if((inByte >= 'a') && (inByte <= 'z')) {
-        inByte = 26 + (inByte - 'a');
+        inByte = (xmlSecByte)(26 + (inByte - 'a'));
     } else if((inByte >= '0') && (inByte <= '9')) {
-        inByte = 52 + (inByte - '0');
+        inByte = (xmlSecByte)(52 + (inByte - '0'));
     } else if(inByte == '+') {
-        inByte = 62;
+        inByte = (xmlSecByte)62;
     } else if(inByte == '/') {
-        inByte = 63;
+        inByte = (xmlSecByte)63;
     }
 
     if(ctx->inPos == 0) {

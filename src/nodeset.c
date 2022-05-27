@@ -541,7 +541,7 @@ xmlSecNodeSetDumpTextNodes(xmlSecNodeSetPtr nset, xmlOutputBufferPtr out) {
  */
 void
 xmlSecNodeSetDebugDump(xmlSecNodeSetPtr nset, FILE *output) {
-    int i, l;
+    int ii, len;
     xmlNodePtr cur;
 
     xmlSecAssert(nset != NULL);
@@ -579,9 +579,11 @@ xmlSecNodeSetDebugDump(xmlSecNodeSetPtr nset, FILE *output) {
                 "supported nodeset type", NULL);
     }
 
-    l = xmlXPathNodeSetGetLength(nset->nodes);
-    for(i = 0; i < l; ++i) {
-        cur = xmlXPathNodeSetItem(nset->nodes, i);
+    len = xmlXPathNodeSetGetLength(nset->nodes);
+    for(ii = 0; ii < len; ++ii) {
+        cur = xmlXPathNodeSetItem(nset->nodes, ii);
+        xmlSecAssert(cur != NULL);
+        
         if(cur->type != XML_NAMESPACE_DECL) {
             fprintf(output, "%lu: %s\n", XMLSEC_UL_BAD_CAST(cur->type),
                 (cur->name) ? cur->name : BAD_CAST "null");

@@ -34,6 +34,8 @@
 #include <xmlsec/mscng/crypto.h>
 #include <xmlsec/mscng/x509.h>
 
+#include "../cast_helpers.h"
+
 typedef struct _xmlSecMSCngX509StoreCtx xmlSecMSCngX509StoreCtx,
                                        *xmlSecMSCngX509StoreCtxPtr;
 struct _xmlSecMSCngX509StoreCtx {
@@ -43,11 +45,8 @@ struct _xmlSecMSCngX509StoreCtx {
     HCERTSTORE untrustedMemStore;
 };
 
-#define xmlSecMSCngX509StoreGetCtx(store) \
-    ((xmlSecMSCngX509StoreCtxPtr)(((xmlSecByte*)(store)) + \
-                 sizeof(xmlSecKeyDataStoreKlass)))
-#define xmlSecMSCngX509StoreSize \
-    (sizeof(xmlSecKeyDataStoreKlass) + sizeof(xmlSecMSCngX509StoreCtx))
+XMLSEC_KEY_DATA_STORE_DECLARE(MSCngX509Store, xmlSecMSCngX509StoreCtx)
+#define xmlSecMSCngX509StoreSize XMLSEC_KEY_DATA_STORE_SIZE(MSCngX509Store)
 
 static void
 xmlSecMSCngX509StoreFinalize(xmlSecKeyDataStorePtr store) {

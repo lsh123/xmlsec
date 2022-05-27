@@ -34,6 +34,8 @@
 
 #include <xmlsec/mscng/crypto.h>
 
+#include "../cast_helpers.h"
+
 /**************************************************************************
  *
  * Internal MSCng Block cipher CTX
@@ -56,10 +58,8 @@ struct _xmlSecMSCngBlockCipherCtx {
     int ctxInitialized;
 };
 
-#define xmlSecMSCngBlockCipherSize   \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecMSCngBlockCipherCtx))
-#define xmlSecMSCngBlockCipherGetCtx(transform) \
-    ((xmlSecMSCngBlockCipherCtxPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
+XMLSEC_TRANSFORM_DECLARE(MSCngBlockCipher, xmlSecMSCngBlockCipherCtx)
+#define xmlSecMSCngBlockCipherSize XMLSEC_TRANSFORM_SIZE(MSCngBlockCipher)
 
 #define xmlSecMSCngAesGcmNonceLengthInBytes 12
 #define xmlSecMSCngAesGcmTagLengthInBytes 16

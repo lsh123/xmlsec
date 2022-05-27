@@ -249,6 +249,9 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
             return(NULL);
         }
         break;
+    default:
+        xmlSecInternalError("Invalid XPath transform type", NULL);
+        return(NULL);
     }
 
     /* sometime LibXML2 returns an empty nodeset or just NULL, we want

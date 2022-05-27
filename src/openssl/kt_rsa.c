@@ -910,6 +910,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
     int ret;
 #ifndef XMLSEC_OPENSSL_API_300
     RSA* rsa;
+    int inLen;
 #else /* XMLSEC_OPENSSL_API_300 */
     size_t outLen;
 #endif /* XMLSEC_OPENSSL_API_300 */
@@ -940,7 +941,6 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
     outSize = xmlSecBufferGetSize(out);
     xmlSecAssert2(outSize == 0, -1);
 
-
     /* the encoded size is equal to the keys size so we could not
      * process more than that */
     if((transform->operation == xmlSecTransformOperationEncrypt) && (inSize >= ctx->keySize)) {
@@ -966,9 +966,10 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
     paramsSize = xmlSecBufferGetSize(&(ctx->oaepParams));
 
 #ifndef XMLSEC_OPENSSL_API_300
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), xmlSecTransformGetName(transform));
     if((transform->operation == xmlSecTransformOperationEncrypt) && (paramsSize == 0)) {
         /* encode w/o OAEPParams --> simple */
-        ret = RSA_public_encrypt(inSize, xmlSecBufferGetData(in),
+        ret = RSA_public_encrypt(inLen, xmlSecBufferGetData(in),
                                 xmlSecBufferGetData(out),
                                 rsa, RSA_PKCS1_OAEP_PADDING);
         if(ret <= 0) {
@@ -976,11 +977,14 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
                                xmlSecTransformGetName(transform));
             return(-1);
         }
-        outSize = ret;
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outSize, return(-1), xmlSecTransformGetName(transform));
     } else if((transform->operation == xmlSecTransformOperationEncrypt) && (paramsSize > 0)) {
         xmlSecBuffer tmp;
+        int keyLen, paramLen;
 
         xmlSecAssert2(xmlSecBufferGetData(&(ctx->oaepParams)) != NULL, -1);
+        XMLSEC_SAFE_CAST_SIZE_TO_INT(ctx->keySize, keyLen, return(-1), xmlSecTransformGetName(transform));
+        XMLSEC_SAFE_CAST_SIZE_TO_INT(paramsSize, paramLen, return(-1), xmlSecTransformGetName(transform));
 
         /* allocate space for temp buffer */
         ret = xmlSecBufferInitialize(&tmp, ctx->keySize);
@@ -991,9 +995,9 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
             return(-1);
         }
         /* add padding */
-        ret = RSA_padding_add_PKCS1_OAEP(xmlSecBufferGetData(&tmp), ctx->keySize,
-                                         xmlSecBufferGetData(in), inSize,
-                                         xmlSecBufferGetData(&(ctx->oaepParams)), paramsSize);
+        ret = RSA_padding_add_PKCS1_OAEP(xmlSecBufferGetData(&tmp), keyLen,
+                                         xmlSecBufferGetData(in), inLen ,
+                                         xmlSecBufferGetData(&(ctx->oaepParams)), paramLen);
         if(ret != 1) {
             xmlSecOpenSSLError("RSA_padding_add_PKCS1_OAEP",
                                xmlSecTransformGetName(transform));
@@ -1002,7 +1006,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
         }
 
         /* encode with OAEPParams */
-        ret = RSA_public_encrypt(ctx->keySize, xmlSecBufferGetData(&tmp),
+        ret = RSA_public_encrypt(keyLen, xmlSecBufferGetData(&tmp),
                                 xmlSecBufferGetData(out),
                                 rsa, RSA_NO_PADDING);
         if(ret <= 0) {
@@ -1011,10 +1015,11 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
             xmlSecBufferFinalize(&tmp);
             return(-1);
         }
-        outSize = ret;
         xmlSecBufferFinalize(&tmp);
+
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outSize, return(-1), xmlSecTransformGetName(transform));
     } else if((transform->operation == xmlSecTransformOperationDecrypt) && (paramsSize == 0)) {
-        ret = RSA_private_decrypt(inSize, xmlSecBufferGetData(in),
+        ret = RSA_private_decrypt(inLen, xmlSecBufferGetData(in),
                                 xmlSecBufferGetData(out),
                                 rsa, RSA_PKCS1_OAEP_PADDING);
         if(ret <= 0) {
@@ -1022,11 +1027,16 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
                                xmlSecTransformGetName(transform));
             return(-1);
         }
-        outSize = ret;
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outSize, return(-1), xmlSecTransformGetName(transform));
     } else if((transform->operation == xmlSecTransformOperationDecrypt) && (paramsSize != 0)) {
         BIGNUM * bn;
+        int outLen, keyLen, paramLen;
 
-        ret = RSA_private_decrypt(inSize, xmlSecBufferGetData(in),
+        xmlSecAssert2(xmlSecBufferGetData(&(ctx->oaepParams)) != NULL, -1);
+        XMLSEC_SAFE_CAST_SIZE_TO_INT(ctx->keySize, keyLen, return(-1), xmlSecTransformGetName(transform));
+        XMLSEC_SAFE_CAST_SIZE_TO_INT(paramsSize, paramLen, return(-1), xmlSecTransformGetName(transform));
+
+        ret = RSA_private_decrypt(inLen, xmlSecBufferGetData(in),
                                 xmlSecBufferGetData(out),
                                 rsa, RSA_NO_PADDING);
         if(ret <= 0) {
@@ -1034,7 +1044,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
                                xmlSecTransformGetName(transform));
             return(-1);
         }
-        outSize = ret;
+        outLen = ret;
 
 #ifndef OPENSSL_IS_BORINGSSL
         /*
@@ -1050,10 +1060,10 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
             return(-1);
         }
 
-        if(BN_bin2bn(xmlSecBufferGetData(out), outSize, bn) == NULL) {
+        if(BN_bin2bn(xmlSecBufferGetData(out), outLen, bn) == NULL) {
             xmlSecOpenSSLError2("BN_bin2bn",
                                 xmlSecTransformGetName(transform),
-                                "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
+                                "size=%lu", XMLSEC_UL_BAD_CAST(outLen));
             BN_clear_free(bn);
             return(-1);
         }
@@ -1066,20 +1076,19 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
             return(-1);
         }
         BN_clear_free(bn);
-        outSize = ret;
+        outLen = ret;
 #endif /* OPENSSL_IS_BORINGSSL */
 
-        ret = RSA_padding_check_PKCS1_OAEP(xmlSecBufferGetData(out), outSize,
-                                           xmlSecBufferGetData(out), outSize,
-                                           ctx->keySize,
-                                           xmlSecBufferGetData(&(ctx->oaepParams)),
-                                           paramsSize);
+        ret = RSA_padding_check_PKCS1_OAEP(xmlSecBufferGetData(out), outLen,
+                                           xmlSecBufferGetData(out), outLen,
+                                           keyLen,
+                                           xmlSecBufferGetData(&(ctx->oaepParams)), paramLen);
         if(ret < 0) {
             xmlSecOpenSSLError("RSA_padding_check_PKCS1_OAEP",
                     xmlSecTransformGetName(transform));
             return(-1);
         }
-        outSize = ret;
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(outLen, outSize, return(-1), xmlSecTransformGetName(transform));
     }
 #else /* XMLSEC_OPENSSL_API_300 */
     if((transform->operation == xmlSecTransformOperationEncrypt) && (paramsSize == 0)) {

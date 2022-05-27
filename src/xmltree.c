@@ -672,7 +672,7 @@ xmlSecReplaceNodeBufferAndReturn(xmlNodePtr node, const xmlSecByte *buffer, xmlS
     xmlNodePtr results = NULL;
     xmlNodePtr next = NULL;
     int len;
-    int ret;
+    xmlParserErrors ret;
 
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(node->parent != NULL, -1);

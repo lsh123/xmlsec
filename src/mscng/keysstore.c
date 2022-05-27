@@ -48,7 +48,9 @@
  * MSCng Keys Store. Uses Simple Keys Store under the hood
  *
  ***************************************************************************/
-c
+XMLSEC_KEY_STORE_DECLARE(MSCngKeysStore, xmlSecKeyStorePtr)
+#define xmlSecMSCngKeysStoreSize XMLSEC_KEY_STORE_SIZE(MSCngKeysStore)
+
 static int
 xmlSecMSCngKeysStoreInitialize(xmlSecKeyStorePtr store) {
     xmlSecKeyStorePtr *ss;

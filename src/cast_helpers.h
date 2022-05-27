@@ -221,19 +221,12 @@ typedef struct _ ## xmlSec ## name ## KeyData {                                 
 } xmlSec ## name ## KeyData;                                                       \
                                                                                    \
 static const xmlSecSize xmlSec ## name ## Size = (sizeof(xmlSec ## name ## KeyData)); \
-                                                                                   \
 static inline ctxType* xmlSec ## name ## GetCtx(xmlSecKeyDataPtr data) {           \
     if(xmlSecKeyDataCheckSize(data, xmlSec ## name ## Size)) {                     \
         return((ctxType *)(&( ((xmlSec ## name ## KeyData *)data)->ctx )));        \
     } else {                                                                       \
         return(NULL);                                                              \
     }                                                                              \
-}                                                                                  \
-
-
-#define xmlSecOpenSSLX509DataSize       \
-    (sizeof(xmlSecKeyData) + sizeof(xmlSecOpenSSLX509DataCtx))
-#define xmlSecOpenSSLX509DataGetCtx(data) \
-    ((xmlSecOpenSSLX509DataCtxPtr)(((xmlSecByte*)(data)) + sizeof(xmlSecKeyData)))
+}
 
 #endif /* __XMLSEC_CAST_HELPERS_H__ */

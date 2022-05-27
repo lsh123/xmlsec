@@ -32,7 +32,7 @@
 
 #include <xmlsec/mscng/crypto.h>
 
-#include "../.cast_helpers.h"
+#include "../cast_helpers.h"
 
 typedef struct _xmlSecMSCngDigestCtx xmlSecMSCngDigestCtx, *xmlSecMSCngDigestCtxPtr;
 struct _xmlSecMSCngDigestCtx {

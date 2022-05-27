@@ -125,7 +125,7 @@ xmlSecMSCngRsaPkcs1OaepSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr 
 
     xmlSecAssert2(xmlSecMSCngRsaPkcs1OaepCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngRsaxmlSeccMSCngRsaPkcs1OaepSizePkcs1OaepCtx), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSeccMSCngRsaPkcs1OaepSize), -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
     ctx = xmlSecMSCngRsaPkcs1OaepGetCtx(transform);

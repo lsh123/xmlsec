@@ -45,7 +45,9 @@
 #include <xmlsec/mscrypto/keysstore.h>
 #include <xmlsec/mscrypto/x509.h>
 #include <xmlsec/mscrypto/certkeys.h>
+
 #include "private.h"
+#include "../cast_helpers.h"
 
 #define XMLSEC_MSCRYPTO_APP_DEFAULT_CERT_STORE_NAME_A     "MY"
 #define XMLSEC_MSCRYPTO_APP_DEFAULT_CERT_STORE_NAME_W     L"MY"
@@ -59,16 +61,9 @@
  *
  * MSCrypto Keys Store. Uses Simple Keys Store under the hood
  *
- * Simple Keys Store ptr is located after xmlSecKeyStore
- *
  ***************************************************************************/
-#define xmlSecMSCryptoKeysStoreSize \
-        (sizeof(xmlSecKeyStore) + sizeof(xmlSecKeyStorePtr))
-
-#define xmlSecMSCryptoKeysStoreGetSS(store) \
-    ((xmlSecKeyStoreCheckSize((store), xmlSecMSCryptoKeysStoreSize)) ? \
-     (xmlSecKeyStorePtr*)(((xmlSecByte*)(store)) + sizeof(xmlSecKeyStore)) : \
-     (xmlSecKeyStorePtr*)NULL)
+XMLSEC_KEY_STORE_DECLARE(MSCryptoKeysStore, xmlSecKeyStorePtr)
+#define xmlSecMSCryptoKeysStoreSize XMLSEC_KEY_STORE_SIZE(MSCryptoKeysStore)
 
 static int                      xmlSecMSCryptoKeysStoreInitialize   (xmlSecKeyStorePtr store);
 static void                     xmlSecMSCryptoKeysStoreFinalize     (xmlSecKeyStorePtr store);
@@ -121,7 +116,7 @@ xmlSecMSCryptoKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCryptoKeysStoreId), -1);
     xmlSecAssert2((key != NULL), -1);
 
-    ss = xmlSecMSCryptoKeysStoreGetSS(store);
+    ss = xmlSecMSCryptoKeysStoreGetCtx(store);
     xmlSecAssert2(((ss != NULL) && (*ss != NULL) &&
         (xmlSecKeyStoreCheckId(*ss, xmlSecSimpleKeysStoreId))), -1);
 
@@ -247,7 +242,7 @@ xmlSecMSCryptoKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSe
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCryptoKeysStoreId), -1);
     xmlSecAssert2((filename != NULL), -1);
 
-    ss = xmlSecMSCryptoKeysStoreGetSS(store);
+    ss = xmlSecMSCryptoKeysStoreGetCtx(store);
     xmlSecAssert2(((ss != NULL) && (*ss != NULL) &&
                    (xmlSecKeyStoreCheckId(*ss, xmlSecSimpleKeysStoreId))), -1);
 
@@ -260,7 +255,7 @@ xmlSecMSCryptoKeysStoreInitialize(xmlSecKeyStorePtr store) {
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCryptoKeysStoreId), -1);
 
-    ss = xmlSecMSCryptoKeysStoreGetSS(store);
+    ss = xmlSecMSCryptoKeysStoreGetCtx(store);
     xmlSecAssert2((*ss == NULL), -1);
 
     *ss = xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId);
@@ -279,7 +274,7 @@ xmlSecMSCryptoKeysStoreFinalize(xmlSecKeyStorePtr store) {
 
     xmlSecAssert(xmlSecKeyStoreCheckId(store, xmlSecMSCryptoKeysStoreId));
 
-    ss = xmlSecMSCryptoKeysStoreGetSS(store);
+    ss = xmlSecMSCryptoKeysStoreGetCtx(store);
     xmlSecAssert((ss != NULL) && (*ss != NULL));
 
     xmlSecKeyStoreDestroy(*ss);
@@ -423,7 +418,7 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCryptoKeysStoreId), NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
-    ss = xmlSecMSCryptoKeysStoreGetSS(store);
+    ss = xmlSecMSCryptoKeysStoreGetCtx(store);
     xmlSecAssert2(((ss != NULL) && (*ss != NULL)), NULL);
 
     /* first try to find key in the simple keys store */

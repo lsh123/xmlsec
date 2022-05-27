@@ -38,6 +38,7 @@
 #include <xmlsec/mscng/crypto.h>
 
 #include "../kw_aes_des.h"
+#include "../cast_helpers.h"
 
 /**************************************************************************
  *
@@ -56,13 +57,9 @@ struct _xmlSecMSCngKWAesCtx {
  *
  *  KW AES transforms
  *
- * xmlSecMSCngKWAesCtx block is located after xmlSecTransform structure
- *
  *****************************************************************************/
-#define xmlSecMSCngKWAesSize \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecMSCngKWAesCtx))
-#define xmlSecMSCngKWAesGetCtx(transform) \
-    ((xmlSecMSCngKWAesCtxPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
+XMLSEC_TRANSFORM_DECLARE(MSCngKWAes, xmlSecMSCngKWAesCtx)
+#define xmlSecMSCngKWAesSize XMLSEC_TRANSFORM_SIZE(MSCngKWAes)
 
 /*********************************************************************
  *

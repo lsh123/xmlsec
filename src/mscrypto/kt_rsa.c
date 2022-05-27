@@ -34,7 +34,9 @@
 
 #include <xmlsec/mscrypto/crypto.h>
 #include <xmlsec/mscrypto/certkeys.h>
+
 #include "private.h"
+#include "../cast_helpers.h"
 
 /**************************************************************************
  *
@@ -53,13 +55,9 @@ struct _xmlSecMSCryptoRsaPkcs1OaepCtx {
  *
  * RSA PKCS1 key transport transform
  *
- * xmlSecMSCryptoRsaPkcs1OaepCtx is located after xmlSecTransform
- *
  ********************************************************************/
-#define xmlSecMSCryptoRsaPkcs1OaepCtx      \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecMSCryptoRsaPkcs1OaepCtx))
-#define xmlSecMSCryptoRsaPkcs1OaepGetCtx(transform) \
-    ((xmlSecMSCryptoRsaPkcs1OaepCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+XMLSEC_TRANSFORM_DECLARE(MSCryptoRsaPkcs1Oaep, xmlSecMSCryptoRsaPkcs1OaepCtx)
+#define xmlSecMSCryptoRsaPkcs1OaepSize XMLSEC_TRANSFORM_SIZE(MSCryptoRsaPkcs1Oaep)
 
 static int      xmlSecMSCryptoRsaPkcs1OaepCheckId               (xmlSecTransformPtr transform);
 static int      xmlSecMSCryptoRsaPkcs1OaepInitialize            (xmlSecTransformPtr transform);
@@ -418,25 +416,25 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformC
 static xmlSecTransformKlass xmlSecMSCryptoRsaPkcs1Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecMSCryptoRsaPkcs1OaepCtx,                 /* xmlSecSize objSize */
+    xmlSecMSCryptoRsaPkcs1OaepSize,             /* xmlSecSize objSize */
 
     xmlSecNameRsaPkcs1,                         /* const xmlChar* name; */
     xmlSecHrefRsaPkcs1,                         /* const xmlChar* href; */
     xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
 
-    xmlSecMSCryptoRsaPkcs1OaepInitialize,           /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCryptoRsaPkcs1OaepFinalize,             /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecMSCryptoRsaPkcs1OaepInitialize,       /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCryptoRsaPkcs1OaepFinalize,         /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCryptoRsaPkcs1OaepSetKeyReq,            /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecMSCryptoRsaPkcs1OaepSetKey,               /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecMSCryptoRsaPkcs1OaepSetKeyReq,        /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecMSCryptoRsaPkcs1OaepSetKey,           /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformValidateMethod validate; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCryptoRsaPkcs1OaepExecute,              /* xmlSecTransformExecuteMethod execute; */
+    xmlSecMSCryptoRsaPkcs1OaepExecute,          /* xmlSecTransformExecuteMethod execute; */
 
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
@@ -469,25 +467,25 @@ static int          xmlSecMSCryptoRsaOaepNodeRead               (xmlSecTransform
 static xmlSecTransformKlass xmlSecMSCryptoRsaOaepKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecMSCryptoRsaPkcs1OaepCtx,                 /* xmlSecSize objSize */
+    xmlSecMSCryptoRsaPkcs1OaepSize,             /* xmlSecSize objSize */
 
     xmlSecNameRsaOaep,                          /* const xmlChar* name; */
     xmlSecHrefRsaOaep,                          /* const xmlChar* href; */
     xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
 
-    xmlSecMSCryptoRsaPkcs1OaepInitialize,           /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCryptoRsaPkcs1OaepFinalize,             /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecMSCryptoRsaPkcs1OaepInitialize,       /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCryptoRsaPkcs1OaepFinalize,         /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecMSCryptoRsaOaepNodeRead,              /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCryptoRsaPkcs1OaepSetKeyReq,            /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecMSCryptoRsaPkcs1OaepSetKey,               /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecMSCryptoRsaPkcs1OaepSetKeyReq,        /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecMSCryptoRsaPkcs1OaepSetKey,           /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformValidateMethod validate; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCryptoRsaPkcs1OaepExecute,              /* xmlSecTransformExecuteMethod execute; */
+    xmlSecMSCryptoRsaPkcs1OaepExecute,          /* xmlSecTransformExecuteMethod execute; */
 
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */

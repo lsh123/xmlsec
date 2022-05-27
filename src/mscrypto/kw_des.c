@@ -32,9 +32,10 @@
 
 #include <xmlsec/mscrypto/crypto.h>
 
-#include "../kw_aes_des.h"
 #include "private.h"
 
+#include "../kw_aes_des.h"
+#include "../cast_helpers.h"
 
 /*********************************************************************
  *
@@ -78,9 +79,7 @@ static xmlSecKWDes3Klass xmlSecMSCryptoKWDes3ImplKlass = {
 
 /*********************************************************************
  *
- * Triple DES Key Wrap transform
- *
- * key (xmlSecBuffer) is located after xmlSecTransform structure
+ * Triple DES Key Wrap transform context
  *
  ********************************************************************/
 typedef struct _xmlSecMSCryptoKWDes3Ctx              xmlSecMSCryptoKWDes3Ctx,
@@ -98,10 +97,14 @@ struct _xmlSecMSCryptoKWDes3Ctx {
     HCRYPTKEY                           pubPrivKey;
     xmlSecBuffer                        keyBuffer;
 };
-#define xmlSecMSCryptoKWDes3Size     \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecMSCryptoKWDes3Ctx))
-#define xmlSecMSCryptoKWDes3GetCtx(transform) \
-    ((xmlSecMSCryptoKWDes3CtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+
+/*********************************************************************
+ *
+ * Triple DES Key Wrap transform
+ *
+ ********************************************************************/
+XMLSEC_TRANSFORM_DECLARE(MSCryptoKWDes3, xmlSecMSCryptoKWDes3Ctx)
+#define xmlSecMSCryptoKWDes3Size XMLSEC_TRANSFORM_SIZE(MSCryptoKWDes3)
 
 static int      xmlSecMSCryptoKWDes3Initialize                   (xmlSecTransformPtr transform);
 static void     xmlSecMSCryptoKWDes3Finalize                     (xmlSecTransformPtr transform);

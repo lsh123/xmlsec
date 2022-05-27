@@ -38,6 +38,8 @@
 #include <xmlsec/mscng/crypto.h>
 #include <xmlsec/mscng/certkeys.h>
 
+#include "../cast_helpers.h"
+
 /**************************************************************************
  *
  * Internal MSCNG RSA PKCS1 CTX
@@ -55,13 +57,9 @@ struct _xmlSecMSCngRsaPkcs1OaepCtx {
  *
  * RSA PKCS1 key transport transform
  *
- * xmlSecMSCngRsaPkcs1OaepCtx is located after xmlSecTransform
- *
  ********************************************************************/
-#define xmlSecMSCngRsaPkcs1OaepCtx      \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecMSCngRsaPkcs1OaepCtx))
-#define xmlSecMSCngRsaPkcs1OaepGetCtx(transform) \
-    ((xmlSecMSCngRsaPkcs1OaepCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+XMLSEC_TRANSFORM_DECLARE(MSCngRsaPkcs1Oaep, xmlSecMSCngRsaPkcs1OaepCtx)
+#define xmlSeccMSCngRsaPkcs1OaepSize XMLSEC_TRANSFORM_SIZE(MSCngRsaPkcs1Oaep)
 
 static int
 xmlSecMSCngRsaPkcs1OaepCheckId(xmlSecTransformPtr transform) {
@@ -408,7 +406,7 @@ xmlSecMSCngRsaPkcs1OaepExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 static xmlSecTransformKlass xmlSecMSCngRsaPkcs1Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecMSCngRsaPkcs1OaepCtx,                 /* xmlSecSize objSize */
+    xmlSeccMSCngRsaPkcs1OaepSize,               /* xmlSecSize objSize */
 
     xmlSecNameRsaPkcs1,                         /* const xmlChar* name; */
     xmlSecHrefRsaPkcs1,                         /* const xmlChar* href; */
@@ -505,7 +503,7 @@ xmlSecMSCngRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 static xmlSecTransformKlass xmlSecMSCngRsaOaepKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecMSCngRsaPkcs1OaepCtx,                 /* xmlSecSize objSize */
+    xmlSeccMSCngRsaPkcs1OaepSize,               /* xmlSecSize objSize */
 
     xmlSecNameRsaOaep,                          /* const xmlChar* name; */
     xmlSecHrefRsaOaep,                          /* const xmlChar* href; */

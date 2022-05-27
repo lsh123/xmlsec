@@ -1156,7 +1156,7 @@ static int
 xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
 #ifndef XMLSEC_OPENSSL_API_300
     DSA* dsa = NULL;
-    int counter_ret;
+    int counter_ret, bitsLen;
     unsigned long h_ret;
 #else /* XMLSEC_OPENSSL_API_300 */
     EVP_PKEY_CTX* pctx = NULL;
@@ -1179,7 +1179,8 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
         goto done;
     }
 
-    ret = DSA_generate_parameters_ex(dsa, sizeBits, NULL, 0, &counter_ret, &h_ret, NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(sizeBits, bitsLen, goto done, NULL);
+    ret = DSA_generate_parameters_ex(dsa, bitsLen, NULL, 0, &counter_ret, &h_ret, NULL);
     if(ret != 1) {
         xmlSecOpenSSLError2("DSA_generate_parameters_ex",
                             xmlSecKeyDataGetName(data),
@@ -2327,6 +2328,7 @@ static int
 xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
 #ifndef XMLSEC_OPENSSL_API_300
     RSA* rsa = NULL;
+    int lenBits;
 #else /* XMLSEC_OPENSSL_API_300 */
     EVP_PKEY_CTX* pctx = NULL;
     OSSL_PARAM_BLD* param_bld = NULL;
@@ -2361,7 +2363,8 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
         goto done;
     }
 
-    ret = RSA_generate_key_ex(rsa, sizeBits, e, NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(sizeBits, lenBits, goto done, NULL);
+    ret = RSA_generate_key_ex(rsa, lenBits, e, NULL);
     if(ret != 1) {
         xmlSecOpenSSLError2("RSA_generate_key_ex",
                             xmlSecKeyDataGetName(data),

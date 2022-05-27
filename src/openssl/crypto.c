@@ -425,6 +425,9 @@ xmlSecOpenSSLKeysMngrInit(xmlSecKeysMngrPtr mngr) {
  */
 int
 xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
+#ifndef XMLSEC_OPENSSL_API_300
+    int len;
+#endif /* XMLSEC_OPENSSL_API_300 */
     int ret;
 
     xmlSecAssert2(buffer != NULL, -1);
@@ -439,7 +442,8 @@ xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
 
     /* get random data */
 #ifndef XMLSEC_OPENSSL_API_300
-    ret = RAND_bytes((xmlSecByte*)xmlSecBufferGetData(buffer), size);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(size, len, return(-1), NULL);
+    ret = RAND_bytes((xmlSecByte*)xmlSecBufferGetData(buffer), len);
 #else /* XMLSEC_OPENSSL_API_300 */
     ret = RAND_bytes_ex(xmlSecOpenSSLGetLibCtx(), (xmlSecByte*)xmlSecBufferGetData(buffer), size, 
                         XMLSEEC_OPENSSL_RAND_BYTES_STRENGTH);
@@ -489,7 +493,7 @@ xmlSecOpenSSLErrorsInit(void) {
 
     /* initialize xmlsec lib name array */
     memset(xmlSecOpenSSLStrLib, 0, sizeof(xmlSecOpenSSLStrLib));
-    xmlSecOpenSSLStrLib[0].error = gXmlSecOpenSSLErrorsLib;
+    xmlSecOpenSSLStrLib[0].error = ERR_PACK(gXmlSecOpenSSLErrorsLib, 0, 0);
     xmlSecOpenSSLStrLib[0].string = gXmlSecOpenSSLErrorsLibName;
 
     /* initialize xmlsec default error array */

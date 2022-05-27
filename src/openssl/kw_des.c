@@ -406,6 +406,9 @@ xmlSecOpenSSLKWDes3Sha1(void * context,
 static int
 xmlSecOpenSSLKWDes3GenerateRandom(void * context,
                                  xmlSecByte * out, xmlSecSize outSize) {
+#ifndef XMLSEC_OPENSSL_API_300
+    int outLen;
+#endif /* XMLSEC_OPENSSL_API_300 */
     xmlSecOpenSSLKWDes3CtxPtr ctx = (xmlSecOpenSSLKWDes3CtxPtr)context;
     int ret;
     int res;
@@ -415,7 +418,8 @@ xmlSecOpenSSLKWDes3GenerateRandom(void * context,
     xmlSecAssert2(outSize > 0, -1);
 
 #ifndef XMLSEC_OPENSSL_API_300
-    ret = RAND_bytes(out, outSize);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(outSize, outLen, return(-1), NULL);
+    ret = RAND_bytes(out, outLen);
 #else /* XMLSEC_OPENSSL_API_300 */
     ret = RAND_bytes_ex(xmlSecOpenSSLGetLibCtx(), out, outSize, XMLSEEC_OPENSSL_RAND_BYTES_STRENGTH);
 #endif /* XMLSEC_OPENSSL_API_300 */

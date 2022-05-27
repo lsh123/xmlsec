@@ -343,8 +343,14 @@ xmlSecAppCryptoKeyGenerate(const char* keyKlassAndSize, const char* name, xmlSec
     }
     *(p++) = '\0';
     size = atoi(p);
+    if(size <= 0) {
+       fprintf(stderr, "Error: key size should be greater than zero \"%s\"\n",
+                    xmlSecErrorsSafeString(buf));
+        xmlFree(buf);
+        return(NULL);
+    }
 
-    key = xmlSecKeyGenerateByName(BAD_CAST buf, size, type);
+    key = xmlSecKeyGenerateByName(BAD_CAST buf, (xmlSecSize)size, type);
     if(key == NULL) {
         fprintf(stderr, "Error: xmlSecKeyGenerateByName() failed: name=%s;size=%lu;type=%lu\n",
                 xmlSecErrorsSafeString(buf), XMLSEC_UL_BAD_CAST(size), XMLSEC_UL_BAD_CAST(type));

@@ -26,7 +26,7 @@ jobs:
     - run: mkdir build
     - name: configure
       working-directory: build
-      run: ../autogen.sh --enable-werror --enable-static-linking=${{ matrix.static_linking }}
+      run: ../autogen.sh --enable-werror --enable-pedantic --enable-static-linking=${{ matrix.static_linking }}
     - name: make
       working-directory: build
       run: make
@@ -62,7 +62,7 @@ jobs:
           sudo make install
     - name: configure
       working-directory: build
-      run: LD_LIBRARY_PATH="/usr/local/openssl3/lib:/usr/local/openssl3/lib64:$LD_LIBRARY_PATH" ../autogen.sh --with-openssl=/usr/local/openssl3 --enable-werror --enable-static-linking=${{ matrix.static_linking }}
+      run: LD_LIBRARY_PATH="/usr/local/openssl3/lib:/usr/local/openssl3/lib64:$LD_LIBRARY_PATH" ../autogen.sh --with-openssl=/usr/local/openssl3 --enable-werror --enable-pedantic --enable-static-linking=${{ matrix.static_linking }}
     - name: make
       working-directory: build
       run: make
@@ -148,7 +148,7 @@ jobs:
     - run: mkdir build
     - name: configure
       working-directory: build
-      run: pwd && ../autogen.sh --build="${{ matrix.arch }}-w64-mingw32" --host="${{ matrix.arch }}-w64-mingw32" --enable-unicode=${{ matrix.unicode }} --enable-static-linking=${{ matrix.static_linking }} --enable-mscrypto --enable-mscng 
+      run: pwd && ../autogen.sh --build="${{ matrix.arch }}-w64-mingw32" --host="${{ matrix.arch }}-w64-mingw32" --enable-unicode=${{ matrix.unicode }} --enable-static-linking=${{ matrix.static_linking }} --enable-mscrypto --enable-mscng
     - name: make
       working-directory: build
       run: make

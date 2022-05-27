@@ -290,8 +290,6 @@ XMLSEC_EXPORT char*              xmlSecWin32ConvertUtf8ToLocale   (const xmlChar
 
 XMLSEC_EXPORT xmlChar*           xmlSecWin32ConvertTstrToUtf8     (LPCTSTR str);
 XMLSEC_EXPORT LPTSTR             xmlSecWin32ConvertUtf8ToTstr     (const xmlChar*  str);
-
-
 #endif /* WIN32 */
 
 

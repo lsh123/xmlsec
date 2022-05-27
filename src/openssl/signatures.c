@@ -652,6 +652,7 @@ static int
 xmlSecOpenSSLSignatureDsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr out) {
 #ifndef XMLSEC_OPENSSL_API_300
     DSA * dsaKey = NULL;
+    int dgstLen;
 #else /* XMLSEC_OPENSSL_API_300 */
     EVP_PKEY_CTX* pKeyCtx = NULL;
     size_t dsaSignBufSizeT = 0;
@@ -684,7 +685,8 @@ xmlSecOpenSSLSignatureDsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr 
         goto done;
     }
 
-    sig = DSA_do_sign(ctx->dgst, ctx->dgstSize, dsaKey);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(ctx->dgstSize, dgstLen, goto done, NULL);
+    sig = DSA_do_sign(ctx->dgst, dgstLen, dsaKey);
     if(sig == NULL) {
         xmlSecOpenSSLError("DSA_do_sign", NULL);
         goto done;
@@ -1161,6 +1163,7 @@ static int
 xmlSecOpenSSLSignatureEcdsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr out) {
 #ifndef XMLSEC_OPENSSL_API_300
     EC_KEY* ecKey = NULL;
+    int dgstLen;
 #else /* XMLSEC_OPENSSL_API_300 */
     EVP_PKEY_CTX* pKeyCtx = NULL;
     size_t ecSignBufSize = 0;
@@ -1191,8 +1194,9 @@ xmlSecOpenSSLSignatureEcdsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPt
         xmlSecOpenSSLError("EVP_PKEY_get1_DSA", NULL);
         goto done;
     }
-    
-    sig = ECDSA_do_sign(ctx->dgst, ctx->dgstSize, ecKey);
+
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(ctx->dgstSize, dgstLen, goto done, NULL);
+    sig = ECDSA_do_sign(ctx->dgst, dgstLen, ecKey);
     if(sig == NULL) {
         xmlSecOpenSSLError("ECDSA_do_sign", NULL);
         goto done;

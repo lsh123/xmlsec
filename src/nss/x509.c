@@ -1624,16 +1624,14 @@ xmlSecNssX509CertBase64DerWrite(CERTCertificate* cert, int base64LineWrap) {
     xmlChar *res = NULL;
     xmlSecByte *p = NULL;
     xmlSecSize size;
-    long len;
 
     xmlSecAssert2(cert != NULL, NULL);
 
     p = cert->derCert.data;
     xmlSecAssert2(p != NULL, NULL);
 
-    len = cert->derCert.len;
-    xmlSecAssert2(len > 0, NULL);
-    XMLSEC_SAFE_CAST_LONG_TO_SIZE(len, size, return(NULL), NULL);
+    size = cert->derCert.len;
+    xmlSecAssert2(size > 0, NULL);
 
     res = xmlSecBase64Encode(p, size, base64LineWrap);
     if(res == NULL) {
@@ -1724,16 +1722,14 @@ xmlSecNssX509CrlBase64DerWrite(CERTSignedCrl* crl, int base64LineWrap) {
     xmlChar *res = NULL;
     xmlSecByte *p = NULL;
     xmlSecSize size;
-    long len;
 
     xmlSecAssert2(crl != NULL && crl->derCrl != NULL, NULL);
 
     p = crl->derCrl->data;
     xmlSecAssert2(p != NULL, NULL);
 
-    len = crl->derCrl->len;
-    xmlSecAssert2(len > 0, NULL);
-    XMLSEC_SAFE_CAST_LONG_TO_SIZE(len, size, return(NULL), NULL);
+    size = crl->derCrl->len;
+    xmlSecAssert2(size > 0, NULL);
 
     res = xmlSecBase64Encode(p, size, base64LineWrap);
     if(res == NULL) {

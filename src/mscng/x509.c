@@ -36,6 +36,8 @@
 #include <xmlsec/mscng/x509.h>
 #include <xmlsec/mscng/certkeys.h>
 
+#include "../cast_helpers.h"
+
 typedef struct _xmlSecMSCngX509DataCtx xmlSecMSCngX509DataCtx,
                                        *xmlSecMSCngX509DataCtxPtr;
 
@@ -44,10 +46,7 @@ struct _xmlSecMSCngX509DataCtx {
     PCCERT_CONTEXT cert;
 };
 
-#define xmlSecMSCngX509DataSize      \
-    (sizeof(xmlSecKeyData) + sizeof(xmlSecMSCngX509DataCtx))
-#define xmlSecMSCngX509DataGetCtx(data) \
-    ((xmlSecMSCngX509DataCtxPtr)(((xmlSecByte*)(data)) + sizeof(xmlSecKeyData)))
+XMLSEC_KEY_DATA_DECLARE(MSCngX509Data, xmlSecMSCngX509DataCtx)
 
 static int
 xmlSecMSCngKeyDataX509Initialize(xmlSecKeyDataPtr data) {

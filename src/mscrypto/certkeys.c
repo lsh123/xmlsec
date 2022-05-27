@@ -401,13 +401,10 @@ xmlSecMSCryptoKeyDataCtxDuplicateCert(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xmlSec
 
 /******************************************************************************
  *
- * xmlSecMSCryptoKeyDataCtx is located after xmlSecTransform
+ * xmlSecMSCryptoKeyData 
  *
  *****************************************************************************/
-#define xmlSecMSCryptoKeyDataSize       \
-    (sizeof(xmlSecKeyData) + sizeof(xmlSecMSCryptoKeyDataCtx))
-#define xmlSecMSCryptoKeyDataGetCtx(data) \
-    ((xmlSecMSCryptoKeyDataCtxPtr)(((xmlSecByte*)(data)) + sizeof(xmlSecKeyData)))
+XMLSEC_KEY_DATA_DECLARE(MSCryptoKeyData, xmlSecMSCryptoKeyDataCtx)
 
 static int      xmlSecMSCryptoKeyDataDuplicate  (xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src);
 static void             xmlSecMSCryptoKeyDataFinalize   (xmlSecKeyDataPtr data);

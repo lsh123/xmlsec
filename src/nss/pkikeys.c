@@ -49,16 +49,10 @@ struct _xmlSecNssPKIKeyDataCtx {
 
 /******************************************************************************
  *
- * PKI key (dsa/rsa)
- *
- * xmlSecNssPKIKeyDataCtx is located after xmlSecTransform
+ * PKI key data (dsa/rsa)
  *
  *****************************************************************************/
-#define xmlSecNssPKIKeyDataSize \
-    (sizeof(xmlSecKeyData) + sizeof(xmlSecNssPKIKeyDataCtx))
-#define xmlSecNssPKIKeyDataGetCtx(data) \
-    ((xmlSecNssPKIKeyDataCtxPtr)(((xmlSecByte*)(data)) + sizeof(xmlSecKeyData)))
-
+XMLSEC_KEY_DATA_DECLARE(NssPKIKeyData, xmlSecNssPKIKeyDataCtx)
 
 static int              xmlSecNssPKIKeyDataInitialize   (xmlSecKeyDataPtr data);
 static void             xmlSecNssPKIKeyDataFinalize     (xmlSecKeyDataPtr data);

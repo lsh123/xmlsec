@@ -42,6 +42,7 @@
 #include <xmlsec/gnutls/x509.h>
 
 #include "x509utils.h"
+#include "../cast_helpers.h"
 
 /*************************************************************************
  *

@@ -1010,7 +1010,7 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataDsaKlass = {
     xmlSecMSCngKeyDataFinalize,                 /* xmlSecKeyDataFinalizeMethod finalize; */
     xmlSecMSCngKeyDataDsaGenerate,              /* xmlSecKeyDataGenerateMethod generate; */
 
-    /* get info */
+    /* get info */xmlSecMSCngKeyDataGetSize
     xmlSecMSCngKeyDataDsaGetType,               /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecMSCngKeyDataDsaGetSize,               /* xmlSecKeyDataGetSizeMethod getSize; */
     NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */

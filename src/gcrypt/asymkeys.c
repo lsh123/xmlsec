@@ -53,15 +53,10 @@ struct _xmlSecGCryptAsymKeyDataCtx {
 
 /******************************************************************************
  *
- * Asym key (dsa/rsa)
- *
- * xmlSecGCryptAsymKeyDataCtx is located after xmlSecTransform
+ * GCrypt asym key data (dsa/rsa)
  *
  *****************************************************************************/
-#define xmlSecGCryptAsymKeyDataSize     \
-    (sizeof(xmlSecKeyData) + sizeof(xmlSecGCryptAsymKeyDataCtx))
-#define xmlSecGCryptAsymKeyDataGetCtx(data) \
-    ((xmlSecGCryptAsymKeyDataCtxPtr)(((xmlSecByte*)(data)) + sizeof(xmlSecKeyData)))
+XMLSEC_KEY_DATA_DECLARE(GCryptAsymKeyData, xmlSecGCryptAsymKeyDataCtx)
 
 static int              xmlSecGCryptAsymKeyDataInitialize       (xmlSecKeyDataPtr data);
 static int              xmlSecGCryptAsymKeyDataDuplicate        (xmlSecKeyDataPtr dst,

@@ -368,7 +368,7 @@ CFLAGS = $(CFLAGS) /I$(INCPREFIX)
 !if "$(PEDANTIC)" == "1"
 CFLAGS = $(CFLAGS) /W4
 !else
-CFLAGS = $(CFLAGS)
+CFLAGS = $(CFLAGS) /W1
 !endif
 
 # C4127: conditional expression is constant
@@ -380,7 +380,6 @@ CFLAGS = $(CFLAGS)
 # C4232: nonstandard extension, address of dllimport is not static
 #     this generates a false warning for functions used in structs
 CFLAGS = $(CFLAGS) /wd4127 /wd4130 /wd4152 /wd4232
-
 
 !if "$(WERROR)" == "1"
 CFLAGS = $(CFLAGS) /WX

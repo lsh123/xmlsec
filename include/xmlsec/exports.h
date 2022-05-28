@@ -19,7 +19,7 @@ extern "C" {
    Windows platform. */
 
 #if !defined XMLSEC_EXPORT
-#  if defined(_WIN32)
+#  if defined(WIN32)
      /* if we compile libxmlsec itself: */
 #    if defined(IN_XMLSEC)
 #      if !defined(XMLSEC_STATIC)
@@ -28,22 +28,22 @@ extern "C" {
 #        define XMLSEC_EXPORT extern
 #      endif
      /* if a client program includes this file: */
-#    else
+#    else /* defined(IN_XMLSEC) */
 #      if !defined(XMLSEC_STATIC)
 #        define XMLSEC_EXPORT __declspec(dllimport)
 #      else
 #        define XMLSEC_EXPORT
 #      endif
-#    endif
+#    endif /* defined(IN_XMLSEC) */
    /* This holds on all other platforms/compilers, which are easier to
       handle in regard to this. */
-#  else
+#  else /* defined(WIN32) */
 #    define XMLSEC_EXPORT
-#  endif
-#endif
+#  endif /* defined(WIN32) */
+#endif /* !defined XMLSEC_EXPORT */
 
 #if !defined XMLSEC_CRYPTO_EXPORT
-#  if defined(_WIN32)
+#  if defined(WIN32)
      /* if we compile libxmlsec itself: */
 #    if defined(IN_XMLSEC_CRYPTO)
 #      if !defined(XMLSEC_STATIC)
@@ -52,22 +52,22 @@ extern "C" {
 #        define XMLSEC_CRYPTO_EXPORT extern
 #      endif
      /* if a client program includes this file: */
-#    else
+#    else /* defined(IN_XMLSEC_CRYPTO) */
 #      if !defined(XMLSEC_STATIC)
 #        define XMLSEC_CRYPTO_EXPORT __declspec(dllimport)
 #      else
 #        define XMLSEC_CRYPTO_EXPORT
 #      endif
-#    endif
+#    endif /* defined(IN_XMLSEC_CRYPTO) */
    /* This holds on all other platforms/compilers, which are easier to
       handle in regard to this. */
-#  else
+#  else  /* defined(WIN32) */
 #    define XMLSEC_CRYPTO_EXPORT
-#  endif
-#endif
+#  endif  /* defined(WIN32) */
+#endif /* !defined XMLSEC_CRYPTO_EXPORT */
 
 #if !defined XMLSEC_EXPORT_VAR
-#  if defined(_WIN32)
+#  if defined(WIN32)
      /* if we compile libxmlsec itself: */
 #    if defined(IN_XMLSEC)
 #      if !defined(XMLSEC_STATIC)
@@ -88,9 +88,9 @@ extern "C" {
 #    endif
    /* This holds on all other platforms/compilers, which are easier to
       handle in regard to this. */
-#  else
+#  else /* defined(WIN32) */
 #    define XMLSEC_EXPORT_VAR extern
-#  endif
+#  endif  /* defined(WIN32) */
 #endif
 
 #ifdef __cplusplus

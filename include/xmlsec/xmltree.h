@@ -279,7 +279,7 @@ XMLSEC_EXPORT void              xmlSecQName2BitMaskDebugXmlDump(xmlSecQName2BitM
  * Windows string conversions
  *
  ************************************************************************/
-#ifdef WIN32
+#ifdef _WIN32
 XMLSEC_EXPORT LPWSTR             xmlSecWin32ConvertLocaleToUnicode(const char* str);
 
 XMLSEC_EXPORT LPWSTR             xmlSecWin32ConvertUtf8ToUnicode  (const xmlChar* str);
@@ -290,7 +290,7 @@ XMLSEC_EXPORT char*              xmlSecWin32ConvertUtf8ToLocale   (const xmlChar
 
 XMLSEC_EXPORT xmlChar*           xmlSecWin32ConvertTstrToUtf8     (LPCTSTR str);
 XMLSEC_EXPORT LPTSTR             xmlSecWin32ConvertUtf8ToTstr     (const xmlChar*  str);
-#endif /* WIN32 */
+#endif /* _WIN32 */
 
 
 #ifdef __cplusplus

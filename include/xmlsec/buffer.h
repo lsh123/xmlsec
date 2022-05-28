@@ -12,6 +12,8 @@
 #define __XMLSEC_BUFFER_H__
 
 #include <libxml/tree.h>
+
+#include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 
 #ifdef __cplusplus

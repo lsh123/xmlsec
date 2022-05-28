@@ -11,6 +11,8 @@
 #ifndef __XMLSEC_ERRORS_H__
 #define __XMLSEC_ERRORS_H__
 
+#include <xmlsec/exports.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */

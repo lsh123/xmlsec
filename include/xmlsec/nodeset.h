@@ -14,6 +14,7 @@
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
 
+#include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 
 #ifdef __cplusplus

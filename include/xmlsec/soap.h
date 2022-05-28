@@ -14,6 +14,8 @@
 #ifndef XMLSEC_NO_SOAP
 
 #include <libxml/tree.h>
+
+#include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 
 #ifdef __cplusplus

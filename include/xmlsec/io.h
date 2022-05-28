@@ -14,6 +14,7 @@
 #include <libxml/tree.h>
 #include <libxml/xmlIO.h>
 
+#include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/transforms.h>
 

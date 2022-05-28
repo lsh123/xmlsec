@@ -9,6 +9,7 @@
 #ifndef __XMLSEC_MSCNG_KEYSSTORE_H__
 #define __XMLSEC_MSCNG_KEYSSTORE_H__
 
+#include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 
 #ifdef __cplusplus

@@ -1602,9 +1602,9 @@ static int
 xmlSecOpenSSLDummyPasswordCallback(char *buf, int bufLen,
                                    int verify ATTRIBUTE_UNUSED,
                                    void *userdata) {
-#ifdef _WIN32
+#if defined(XMLSEC_WINDOWS)
     xmlSecSize bufSize;
-#endif /* _WIN32 */
+#endif /* defined(XMLSEC_WINDOWS) */
     char* password;
     size_t passwordSize;
     int passwordLen;
@@ -1621,12 +1621,12 @@ xmlSecOpenSSLDummyPasswordCallback(char *buf, int bufLen,
         return(-1);
     }
 
-#ifdef _WIN32
+#if defined(XMLSEC_WINDOWS)
     XMLSEC_SAFE_CAST_INT_TO_SIZE(bufLen, bufSize, return(-1), NULL);
     strcpy_s(buf, bufSize, password);
-#else  /* _WIN32 */
+#else  /* defined(XMLSEC_WINDOWS) */
     strcpy(buf, password);
-#endif /* _WIN32 */
+#endif /* defined(XMLSEC_WINDOWS) */
 
     return (passwordLen);
 }

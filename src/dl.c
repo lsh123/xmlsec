@@ -41,9 +41,9 @@
 #include <ltdl.h>
 #endif /* XMLSEC_DL_LIBLTDL */
 
-#ifdef XMLSEC_DL_WIN32
+#if defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32)
 #include <windows.h>
-#endif /* XMLSEC_DL_WIN32 */
+#endif /* defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32) */
 
 #include "cast_helpers.h"
 
@@ -64,9 +64,9 @@ struct _xmlSecCryptoDLLibrary {
     lt_dlhandle handle;
 #endif /* XMLSEC_DL_LIBLTDL */
 
-#ifdef XMLSEC_DL_WIN32
+#if defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32)
     HINSTANCE   handle;
-#endif /* XMLSEC_DL_WIN32 */
+#endif /* defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32) */
 };
 
 static xmlSecCryptoDLLibraryPtr xmlSecCryptoDLLibraryCreate             (const xmlChar* name);
@@ -149,7 +149,7 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
     }
 #endif /* XMLSEC_DL_LIBLTDL */
 
-#ifdef XMLSEC_DL_WIN32
+#if defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32)
 #if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
     lib->handle = LoadLibraryA((char*)lib->filename);
 #else
@@ -179,7 +179,7 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
         xmlSecCryptoDLLibraryDestroy(lib);
         return(NULL);
     }
-#endif /* XMLSEC_DL_WIN32 */
+#endif /* defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32) */
 
     if(getFunctions == NULL) {
         xmlSecInternalError("invalid configuration: no way to load library", NULL);
@@ -226,7 +226,7 @@ xmlSecCryptoDLLibraryDestroy(xmlSecCryptoDLLibraryPtr lib) {
     }
 #endif /* XMLSEC_DL_LIBLTDL */
 
-#ifdef XMLSEC_DL_WIN32
+#if defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32)
     if(lib->handle != NULL) {
         BOOL res;
 
@@ -235,7 +235,7 @@ xmlSecCryptoDLLibraryDestroy(xmlSecCryptoDLLibraryPtr lib) {
             xmlSecIOError("FreeLibrary", NULL, NULL);
         }
         }
-#endif /* XMLSEC_DL_WIN32*/
+#endif /* defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32)*/
 
     memset(lib, 0, sizeof(xmlSecCryptoDLLibrary));
     xmlFree(lib);

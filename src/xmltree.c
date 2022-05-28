@@ -1757,7 +1757,7 @@ xmlSecQName2BitMaskDebugXmlDump(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitM
  * Windows string conversions
  *
  ************************************************************************/
-#ifdef _WIN32
+#if defined(XMLSEC_WINDOWS)
 
 /**
  * xmlSecWin32ConvertUtf8ToUnicode:
@@ -2028,7 +2028,7 @@ xmlSecWin32ConvertUtf8ToTstr(const xmlChar*  str) {
 #endif /* UNICODE */
 }
 
-#endif /* _WIN32 */
+#endif /* defined(XMLSEC_WINDOWS) */
 
 
 

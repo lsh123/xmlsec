@@ -31,9 +31,9 @@
 #endif
 #endif
 
-#ifdef _WIN32
+#if defined(XMLSEC_WINDOWS)
 #include <windows.h>
-#endif
+#endif /* defined(XMLSEC_WINDOWS) */
 
 #ifdef __cplusplus
 extern "C" {

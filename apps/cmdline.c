@@ -301,11 +301,11 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
                 return(-1);
             }    
             value->strValue = argv[++pos];
-#ifdef _WIN32
+#if defined(XMLSEC_WINDOWS)
             if(sscanf_s(value->strValue, "%d", &(value->intValue)) != 1) {
-#else /* _WIN32 */
+#else /* defined(XMLSEC_WINDOWS) */
             if(sscanf(value->strValue, "%d", &(value->intValue)) != 1) {
-#endif /* _WIN32 */
+#endif /* defined(XMLSEC_WINDOWS) */
                 fprintf(stderr, "Error: integer argument \"%s\" is invalid.\n", value->strValue);
                 return(-1);
             }    
@@ -336,15 +336,15 @@ xmlSecAppCmdLineTimeParamRead(const char* str, time_t* t) {
     memset(&tm, 0, sizeof(tm));
     tm.tm_isdst = -1;
 
-#ifdef _WIN32
+#if defined(XMLSEC_WINDOWS)
     n = sscanf_s(str, "%4d-%2d-%2d%*c%2d:%2d:%2d",
                             &tm.tm_year, &tm.tm_mon, &tm.tm_mday,
                             &tm.tm_hour, &tm.tm_min, &tm.tm_sec);    
-#else /* _WIN32 */
+#else /* defined(XMLSEC_WINDOWS) */
     n = sscanf(str, "%4d-%2d-%2d%*c%2d:%2d:%2d", 
                             &tm.tm_year, &tm.tm_mon, &tm.tm_mday,
                             &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
-#endif /* _WIN32 */
+#endif /* defined(XMLSEC_WINDOWS) */
     if((n != 6) || (tm.tm_year < 1900) 
                 || (tm.tm_mon  < 1) || (tm.tm_mon  > 12) 
                 || (tm.tm_mday < 1) || (tm.tm_mday > 31)

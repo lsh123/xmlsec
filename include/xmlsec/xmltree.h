@@ -13,13 +13,15 @@
 
 #include <stdio.h>
 
-#ifdef _WIN32
-#include <windows.h>
-#endif /* _WIN32 */
-
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
+
 #include <xmlsec/xmlsec.h>
+
+
+#if defined(XMLSEC_WINDOWS)
+#include <windows.h>
+#endif /* defined(XMLSEC_WINDOWS) */
 
 #ifdef __cplusplus
 extern "C" {
@@ -279,7 +281,7 @@ XMLSEC_EXPORT void              xmlSecQName2BitMaskDebugXmlDump(xmlSecQName2BitM
  * Windows string conversions
  *
  ************************************************************************/
-#ifdef _WIN32
+#if defined(XMLSEC_WINDOWS)
 XMLSEC_EXPORT LPWSTR             xmlSecWin32ConvertLocaleToUnicode(const char* str);
 
 XMLSEC_EXPORT LPWSTR             xmlSecWin32ConvertUtf8ToUnicode  (const xmlChar* str);
@@ -290,7 +292,7 @@ XMLSEC_EXPORT char*              xmlSecWin32ConvertUtf8ToLocale   (const xmlChar
 
 XMLSEC_EXPORT xmlChar*           xmlSecWin32ConvertTstrToUtf8     (LPCTSTR str);
 XMLSEC_EXPORT LPTSTR             xmlSecWin32ConvertUtf8ToTstr     (const xmlChar*  str);
-#endif /* _WIN32 */
+#endif /* defined(XMLSEC_WINDOWS) */
 
 
 #ifdef __cplusplus

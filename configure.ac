@@ -1826,7 +1826,7 @@ if test "z$build_windows" = "zyes" ; then
     AC_MSG_CHECKING(for Unicode support)
     AC_ARG_ENABLE([unicode], [AC_HELP_STRING([--enable-unicode], [enable Unicode support on Windows (yes)])])
     if test "z$enable_unicode" = "zyes" -o "z$enable_unicode" = "ztrue" ; then
-        XMLSEC_DEFINES="$XMLSEC_DEFINES -DUNICODE=1"
+        XMLSEC_DEFINES="$XMLSEC_DEFINES -DUNICODE=1 -D_UNICODE=1"
         AC_MSG_RESULT([yes])
     else
         AC_MSG_RESULT([no])

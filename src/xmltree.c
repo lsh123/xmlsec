@@ -34,10 +34,6 @@
 
 #include "cast_helpers.h"
 
-#ifdef WIN32
-#include <windows.h>
-#endif /* WIN32 */
-
 static const xmlChar*	g_xmlsec_xmltree_default_linefeed = xmlSecStringCR;
 
 /**
@@ -1761,7 +1757,7 @@ xmlSecQName2BitMaskDebugXmlDump(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitM
  * Windows string conversions
  *
  ************************************************************************/
-#ifdef WIN32
+#ifdef _WIN32
 
 /**
  * xmlSecWin32ConvertUtf8ToUnicode:
@@ -2032,7 +2028,7 @@ xmlSecWin32ConvertUtf8ToTstr(const xmlChar*  str) {
 #endif /* UNICODE */
 }
 
-#endif /* WIN32 */
+#endif /* _WIN32 */
 
 
 

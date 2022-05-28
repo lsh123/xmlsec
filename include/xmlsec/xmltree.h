@@ -13,13 +13,13 @@
 
 #include <stdio.h>
 
+#ifdef _WIN32
+#include <windows.h>
+#endif /* _WIN32 */
+
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
 #include <xmlsec/xmlsec.h>
-
-#ifdef WIN32
-#include <windows.h>
-#endif /* WIN32 */
 
 #ifdef __cplusplus
 extern "C" {

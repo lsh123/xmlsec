@@ -982,19 +982,19 @@ const char* xmlsec_crypto = NULL;
 const char* tmp = NULL;
 const char** utf8_argv = NULL; /* TODO: this should be xmlChar** but it will break things downstream */
 
-#if defined(WIN32) && defined(UNICODE)
+#if defined(_WIN32) && defined(UNICODE)
 int wmain(int argc, wchar_t *argv[ ], wchar_t *envp[ ]) {
     UNREFERENCED_PARAMETER(envp);
 
-#else /* defined(WIN32) && defined(UNICODE) */
+#else /* defined(_WIN32) && defined(UNICODE) */
 int main(int argc, const char **argv) {
-#endif /* defined(WIN32) && defined(UNICODE) */
+#endif /* defined(_WIN32) && defined(UNICODE) */
     xmlSecAppCmdLineParamTopic cmdLineTopics;
     xmlSecAppCommand command, subCommand;
     int pos, ii;
     int res = 1;
 
-#if defined(WIN32)
+#if defined(_WIN32)
     /* convert command line to UTF8 from locale or UNICODE */
     utf8_argv = (const char**)xmlMalloc(sizeof(char*) * argc);
     if(utf8_argv == NULL) {
@@ -1009,9 +1009,9 @@ int main(int argc, const char **argv) {
             goto fail;
         }
     }
-#else /* defined(WIN32) */
+#else /* defined(_WIN32) */
     utf8_argv = argv;
-#endif /* defined(WIN32) */
+#endif /* defined(_WIN32) */
 
     /* read the command (first argument) */
     if(argc < 2) {
@@ -1222,7 +1222,7 @@ fail:
     }
     xmlSecAppShutdown();
     xmlSecAppCmdLineParamsListClean(parameters);
-#if defined(WIN32)
+#if defined(_WIN32)
     if(utf8_argv != NULL) {
         for(ii = 0; ii < argc; ++ii) {
            if(utf8_argv[ii] != NULL) {
@@ -1233,7 +1233,7 @@ fail:
         xmlFree(BAD_CAST utf8_argv);
         utf8_argv = NULL;
     }
-#endif /* defined(WIN32) */
+#endif /* defined(_WIN32) */
     return(res);
 }
 
@@ -2377,11 +2377,11 @@ xmlSecAppInputOpenCallback(char const* filename) {
         }
         if(strcmp(filename, value->paramNameValue) == 0) {
             FILE * f = NULL;
-#ifdef WIN32
+#ifdef _WIN32
             fopen_s(&f, value->strValue, "rb");
-#else /* WIN32 */
+#else /* _WIN32 */
             f = fopen(value->strValue, "rb");
-#endif /* WIN32 */
+#endif /* _WIN32 */
             if(f == NULL) {
                 fprintf(stdout, "Error: can not open file \"%s\" for url \"%s\"\n", value->strValue, filename);
                 return(NULL);
@@ -2987,11 +2987,11 @@ xmlSecAppOpenFile(const char* filename) {
     if((filename == NULL) || (strcmp(filename, XMLSEC_STDOUT_FILENAME) == 0)) {
         return(stdout);
     }
-#ifdef WIN32
+#ifdef _WIN32
     fopen_s(&file, filename, "wb");
-#else /* WIN32 */
+#else /* _WIN32 */
     file = fopen(filename, "wb");
-#endif /* WIN32 */
+#endif /* _WIN32 */
     if(file == NULL) {
         fprintf(stderr, "Error: failed to open file \"%s\"\n", filename);
         return(NULL);

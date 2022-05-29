@@ -13,7 +13,7 @@
 #define __XMLSEC_PRIVATE_H__
 
 #ifndef XMLSEC_PRIVATE
-#error "xmlsec/private.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
+#error "this file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
 #endif /* XMLSEC_PRIVATE */
 
 #include <libxml/tree.h>
@@ -31,9 +31,9 @@
 #endif
 #endif
 
-#ifdef WIN32
+#if defined(XMLSEC_WINDOWS)
 #include <windows.h>
-#endif
+#endif /* defined(XMLSEC_WINDOWS) */
 
 #ifdef __cplusplus
 extern "C" {

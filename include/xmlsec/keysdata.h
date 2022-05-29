@@ -13,6 +13,7 @@
 
 #include <libxml/tree.h>
 
+#include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
 #include <xmlsec/list.h>

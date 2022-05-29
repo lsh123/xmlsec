@@ -11,6 +11,8 @@
 #ifndef __XMLSEC_ERRORS_H__
 #define __XMLSEC_ERRORS_H__
 
+#include <xmlsec/exports.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -426,14 +428,21 @@ XMLSEC_EXPORT const char*       xmlSecErrorsGetMsg              (xmlSecSize pos)
 
 
 
+#if !defined(__XMLSEC_FUNCTION__)
+
 /* __FUNCTION__ is defined for MSC compiler < MS VS .NET 2003 */
 #if defined(_MSC_VER) && (_MSC_VER >= 1300)
 #define __XMLSEC_FUNCTION__ __FUNCTION__
-#endif /* _MSC_VER */
+
+/* and for GCC too */
+#elif defined(__GNUC__)
+#define __XMLSEC_FUNCTION__ __func__
 
 /* fallback for __FUNCTION__ */
-#if !defined(__XMLSEC_FUNCTION__)
+#else 
 #define __XMLSEC_FUNCTION__  ""
+#endif 
+
 #endif /*!defined(__XMLSEC_FUNCTION__) */
 
 /**

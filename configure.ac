@@ -158,13 +158,13 @@ case "${host}" in
 	dnl use libtool flags "-avoid-version" to create shared
 	dnl libraries without version suffix, i.e. libxmlsec1.dll
 	dnl instead libxmlsec1-NN.dll, where NN is a number.
-	XMLSEC_EXTRA_LDFLAGS="-no-undefined -avoid-version"
-	XMLSEC_CRYPTO_EXTRA_LDFLAGS="-no-undefined -avoid-version"
+	XMLSEC_EXTRA_LDFLAGS="$XMLSEC_EXTRA_LDFLAGS -no-undefined -avoid-version"
+	XMLSEC_CRYPTO_EXTRA_LDFLAGS="$XMLSEC_CRYPTO_EXTRA_LDFLAGS -no-undefined -avoid-version"
 	XMLSEC_SHLIBSFX=".dll.a"
 	;;
  *-*-cygwin*)
-	XMLSEC_EXTRA_LDFLAGS="-no-undefined"
-	XMLSEC_CRYPTO_EXTRA_LDFLAGS="-no-undefined"
+	XMLSEC_EXTRA_LDFLAGS="$XMLSEC_EXTRA_LDFLAGS -no-undefined"
+	XMLSEC_CRYPTO_EXTRA_LDFLAGS="$XMLSEC_CRYPTO_EXTRA_LDFLAGS -no-undefined"
 	;;
  *-*-darwin*)
     XMLSEC_SHLIBSFX=".dylib"
@@ -1825,8 +1825,16 @@ dnl ==========================================================================
 if test "z$build_windows" = "zyes" ; then
     AC_MSG_CHECKING(for Unicode support)
     AC_ARG_ENABLE([unicode], [AC_HELP_STRING([--enable-unicode], [enable Unicode support on Windows (yes)])])
-    if test "z$enable_unicode" = "zyes" ; then
-        XMLSEC_DEFINES="$XMLSEC_DEFINES -DUNICODE=1"
+    if test "z$enable_unicode" = "zyes" -o "z$enable_unicode" = "ztrue" ; then
+        XMLSEC_DEFINES="$XMLSEC_DEFINES -DUNICODE=1 -D_UNICODE=1"
+        case "${host}" in
+         *-*-mingw*)
+	        XMLSEC_EXTRA_LDFLAGS="$XMLSEC_EXTRA_LDFLAGS -municode"
+	        XMLSEC_CRYPTO_EXTRA_LDFLAGS="$XMLSEC_CRYPTO_EXTRA_LDFLAGS -municode"
+	        ;;
+        *)
+            ;;
+        esac
         AC_MSG_RESULT([yes])
     else
         AC_MSG_RESULT([no])
@@ -2173,7 +2181,7 @@ dnl ==========================================================================
 XMLSEC_STATIC_BINARIES=""
 AC_MSG_CHECKING(for static linking)
 AC_ARG_ENABLE([static_linking], [AC_HELP_STRING([--enable-static-linking], [enable static linking (no)])])
-if test "z$enable_static_linking" = "zyes" ; then
+if test "z$enable_static_linking" = "zyes" -o "z$enable_static_linking" = "ztrue" ; then
     XMLSEC_STATIC_BINARIES="-static"
     XMLSEC_APP_DEFINES="$XMLSEC_APP_DEFINES -DXMLSEC_STATIC=1"
     enable_crypto_dl="no"

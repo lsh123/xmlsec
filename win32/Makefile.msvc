@@ -42,6 +42,8 @@ AUTOCONF = .\configure.txt
 #WITH_LIBXSLT=1
 #STATIC = 0
 #WITH_DL = 1
+#WERROR = 0
+#PEDANTIC = 1
 #PREFIX = . # set this to the right value.
 #BINPREFIX = $(PREFIX)\bin
 #INCPREFIX = $(PREFIX)\include
@@ -346,69 +348,76 @@ XMLSEC_MSCNG_OBJS_A = \
 #
 # The preprocessor and its options.
 #
-CPP 			= cl.exe /EP
-CPPFLAGS 		= /nologo
+CPP      = cl.exe /EP
+CPPFLAGS = /nologo
 
 #
 # The compiler and its options.
 #
-CFLAGS 			= $(CFLAGS) /nologo /D "WIN32" /D "_WINDOWS" /D inline=__inline
-# C4130: '!=': logical operation on address of string constant:
-#     this generates a false warning inside macros
-# C4127: conditional expression is constant
-#     this generates a false warning inside asserts
-# C4152: nonstandard extension, function/data pointer conversion in expression
-#     this generates a false warning for XMLSEC_PTR_TO_FUNC
-CFLAGS 			= $(CFLAGS) /D "_MBCS" /D "_REENTRANT"  /W4 /wd4130
-CFLAGS                  = $(CFLAGS) /wd4127 /wd4152
+CFLAGS = $(CFLAGS) /nologo /D "WIN32" /D "_WINDOWS" /D inline=__inline
+CFLAGS = $(CFLAGS) /D "_MBCS" /D "_REENTRANT" 
+CFLAGS = $(CFLAGS) /D PACKAGE=\"$(XMLSEC_NAME)\"
+CFLAGS = $(CFLAGS) /D "HAVE_STDIO_H" /D "HAVE_STDLIB_H"
+CFLAGS = $(CFLAGS) /D "HAVE_STRING_H" /D "HAVE_CTYPE_H"
+CFLAGS = $(CFLAGS) /D "HAVE_MALLOC_H" /D "HAVE_MEMORY_H"
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_GOST" /D "XMLSEC_NO_GOST2012"
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_SIZE_T"
+CFLAGS = $(CFLAGS) /I$(BASEDIR) /I$(BASEDIR)\include
+CFLAGS = $(CFLAGS) /I$(INCPREFIX)
 
-!if "$(WERROR)" == "1"
-CFLAGS 			= $(CFLAGS) /WX
+!if "$(PEDANTIC)" == "1"
+CFLAGS = $(CFLAGS) /W4
+!else
+CFLAGS = $(CFLAGS) /W1
 !endif
 
-CFLAGS 			= $(CFLAGS) /I$(BASEDIR) /I$(BASEDIR)\include
-CFLAGS 			= $(CFLAGS) /I$(INCPREFIX)
-CFLAGS 			= $(CFLAGS) /D PACKAGE=\"$(XMLSEC_NAME)\"
-CFLAGS 			= $(CFLAGS) /D "HAVE_STDIO_H" /D "HAVE_STDLIB_H"
-CFLAGS 			= $(CFLAGS) /D "HAVE_STRING_H" /D "HAVE_CTYPE_H"
-CFLAGS 			= $(CFLAGS) /D "HAVE_MALLOC_H" /D "HAVE_MEMORY_H"
-CFLAGS 			= $(CFLAGS) /D "XMLSEC_NO_GOST" /D "XMLSEC_NO_GOST2012"
-CFLAGS                  = $(CFLAGS) /D "XMLSEC_NO_SIZE_T"
+# C4127: conditional expression is constant
+#     this generates a false warning inside asserts
+# C4130: '!=': logical operation on address of string constant:
+#     this generates a false warning inside macros
+# C4152: nonstandard extension, function/data pointer conversion in expression
+#     this generates a false warning for XMLSEC_PTR_TO_FUNC
+# C4232: nonstandard extension, address of dllimport is not static
+#     this generates a false warning for functions used in structs
+CFLAGS = $(CFLAGS) /wd4127 /wd4130 /wd4152 /wd4232
 
+!if "$(WERROR)" == "1"
+CFLAGS = $(CFLAGS) /WX
+!endif
 
 !if "$(UNICODE)" == "1"
-CFLAGS 			= $(CFLAGS) /D "UNICODE" /D "_UNICODE"
+CFLAGS = $(CFLAGS) /D "UNICODE" /D "_UNICODE"
 !endif
 
 # Optimisation and debug symbols.
 !if "$(DEBUG)" == "1"
-CFLAGS 			= $(CFLAGS) /D "_DEBUG" /Od /Zi
+CFLAGS = $(CFLAGS) /D "_DEBUG" /Od /Zi
 !else
-CFLAGS 			= $(CFLAGS) /D "NDEBUG" /O2 /Zi
+CFLAGS = $(CFLAGS) /D "NDEBUG" /O2 /Zi
 !endif
 
-CFLAGS 			= $(CFLAGS) $(CRUNTIME)
+CFLAGS = $(CFLAGS) $(CRUNTIME)
 
 # configurable options
 !if "$(WITH_LIBXSLT)" == "1"
 !else
-CFLAGS 			= $(CFLAGS) /DXMLSEC_NO_XSLT=1
+CFLAGS = $(CFLAGS) /DXMLSEC_NO_XSLT=1
 !endif
 
 !if "$(WITH_NT4)" == "1"
-CFLAGS 			= $(CFLAGS) /DXMLSEC_MSCRYPTO_NT4=1
+CFLAGS = $(CFLAGS) /DXMLSEC_MSCRYPTO_NT4=1
 !else
 !endif
 
-CFLAGS			= $(CFLAGS) /D "XMLSEC_DEFAULT_CRYPTO=\"$(XMLSEC_DEFAULT_CRYPTO)\""
+CFLAGS = $(CFLAGS) /D "XMLSEC_DEFAULT_CRYPTO=\"$(XMLSEC_DEFAULT_CRYPTO)\""
 !if "$(WITH_DL)" == "1"
-CFLAGS			= $(CFLAGS) /D "XMLSEC_DL_WIN32"
-APP_CFLAGS		= $(APP_CFLAGS) /D "XMLSEC_CRYPTO_DYNAMIC_LOADING"
+CFLAGS = $(CFLAGS) /D "XMLSEC_DL_WIN32"
+APP_CFLAGS = $(APP_CFLAGS) /D "XMLSEC_CRYPTO_DYNAMIC_LOADING"
 !else
-CFLAGS 			= $(CFLAGS) /D "XMLSEC_NO_CRYPTO_DYNAMIC_LOADING"
-APP_CFLAGS		= $(APP_CFLAGS) $(XMLSEC_CRYPTO_CFLAGS)
+CFLAGS 	= $(CFLAGS) /D "XMLSEC_NO_CRYPTO_DYNAMIC_LOADING"
+APP_CFLAGS = $(APP_CFLAGS) $(XMLSEC_CRYPTO_CFLAGS)
 # this disables TEMPLATE tests and helps with missing algorithms (hmac) in mscrypto
-APP_CFLAGS		= $(APP_CFLAGS) /D "XMLSEC_NO_TMPL_TEST"
+APP_CFLAGS = $(APP_CFLAGS) /D "XMLSEC_NO_TMPL_TEST"
 !endif
 
 XMLSEC_OPENSSL_CFLAGS   = /D "XMLSEC_CRYPTO_OPENSSL" /D "XMLSEC_DEFAULT_CRYPTO=\"openssl\""

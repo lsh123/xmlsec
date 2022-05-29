@@ -11,6 +11,7 @@
 #ifndef __XMLSEC_KEYSMGMR_H__
 #define __XMLSEC_KEYSMGMR_H__
 
+#include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/list.h>
 #include <xmlsec/keys.h>

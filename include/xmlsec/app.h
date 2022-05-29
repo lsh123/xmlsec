@@ -19,6 +19,7 @@
 #include <libxml/tree.h>
 #include <libxml/xmlIO.h>
 
+#include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keysdata.h>
 #include <xmlsec/keys.h>

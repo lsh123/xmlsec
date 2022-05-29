@@ -1462,11 +1462,11 @@ xmlSecTmplTransformAddHmacOutputLength(xmlNodePtr transformNode, xmlSecSize bits
         return(-1);
     }
 
-#ifdef WIN32
+#if defined(_MSC_VER)
     sprintf_s(buf, sizeof(buf), "%lu", XMLSEC_UL_BAD_CAST(bitsLen));
-#else  /* WIN32 */
+#else  /* defined(_MSC_VER) */
     sprintf(buf, "%lu", XMLSEC_UL_BAD_CAST(bitsLen));
-#endif /* WIN32 */
+#endif /* defined(_MSC_VER) */
     xmlNodeSetContent(cur, BAD_CAST buf);
     return(0);
 }

@@ -105,20 +105,10 @@ jobs:
         include:
           - msystem: MINGW64
             arch: x86_64
-            unicode: true
-            static_linking: true
+            extra_options: --enable-unicode=yes
           - msystem: MINGW64
             arch: x86_64
-            unicode: true
-            static_linking: false
-          - msystem: MINGW64
-            arch: x86_64
-            unicode: false
-            static_linking: true
-          - msystem: MINGW64
-            arch: x86_64
-            unicode: false
-            static_linking: false
+            extra_options: --enable-unicode=no
     defaults:
       run:
         shell: msys2 {0}  
@@ -148,7 +138,7 @@ jobs:
     - run: mkdir build
     - name: configure
       working-directory: build
-      run: pwd && ../autogen.sh --build="${{ matrix.arch }}-w64-mingw32" --host="${{ matrix.arch }}-w64-mingw32" --enable-unicode=${{ matrix.unicode }} --enable-static-linking=${{ matrix.static_linking }} --enable-mscrypto --enable-mscng
+      run: pwd && ../autogen.sh --build="${{ matrix.arch }}-w64-mingw32" --host="${{ matrix.arch }}-w64-mingw32" --enable-pedantic --enable-mscrypto --enable-mscng ${{ matrix.extra_options }}
     - name: make
       working-directory: build
       run: make

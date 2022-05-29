@@ -11,6 +11,7 @@
 #ifndef __XMLSEC_LIST_H__
 #define __XMLSEC_LIST_H__
 
+#include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
 

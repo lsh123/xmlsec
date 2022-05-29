@@ -138,7 +138,7 @@ void xmlSecTransformXsltShutdown(void) {
  * Sets the new default security preferences. The xmlsec default security policy is 
  * to disable everything.
  */
-XMLSEC_EXPORT void
+void
 xmlSecTransformXsltSetDefaultSecurityPrefs(xsltSecurityPrefsPtr sec) {
     xmlSecAssert(sec != NULL);
     xmlSecAssert(g_xslt_default_security_prefs != NULL);

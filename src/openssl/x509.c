@@ -1560,7 +1560,7 @@ xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr 
 extern time_t timegm (struct tm *tm);
 #else  /* HAVE_TIMEGM */
 
-#ifdef WIN32
+#if defined(XMLSEC_WINDOWS)
 
 #ifdef _MSC_VER
 static time_t
@@ -1579,7 +1579,7 @@ my_timegm(struct tm *t) {
 
 #endif /* _MSC_VER */
 
-#else /* WIN32 */
+#else /* defined(XMLSEC_WINDOWS) */
 
 /* Absolutely not the best way but it's the only ANSI compatible way I know.
  * If you system has a native struct tm --> GMT time_t conversion function
@@ -1615,7 +1615,7 @@ my_timegm(struct tm *t) {
 
 #define timegm(tm) my_timegm(tm)
 
-#endif /* WIN32 */
+#endif /* defined(XMLSEC_WINDOWS) */
 #endif /* HAVE_TIMEGM */
 
 static int

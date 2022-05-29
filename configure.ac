@@ -158,13 +158,13 @@ case "${host}" in
 	dnl use libtool flags "-avoid-version" to create shared
 	dnl libraries without version suffix, i.e. libxmlsec1.dll
 	dnl instead libxmlsec1-NN.dll, where NN is a number.
-	XMLSEC_EXTRA_LDFLAGS="$(XMLSEC_EXTRA_LDFLAGS) -no-undefined -avoid-version"
-	XMLSEC_CRYPTO_EXTRA_LDFLAGS="$(XMLSEC_CRYPTO_EXTRA_LDFLAGS) -no-undefined -avoid-version"
+	XMLSEC_EXTRA_LDFLAGS="$XMLSEC_EXTRA_LDFLAGS -no-undefined -avoid-version"
+	XMLSEC_CRYPTO_EXTRA_LDFLAGS="$XMLSEC_CRYPTO_EXTRA_LDFLAGS -no-undefined -avoid-version"
 	XMLSEC_SHLIBSFX=".dll.a"
 	;;
  *-*-cygwin*)
-	XMLSEC_EXTRA_LDFLAGS="$(XMLSEC_EXTRA_LDFLAGS) -no-undefined"
-	XMLSEC_CRYPTO_EXTRA_LDFLAGS="$(XMLSEC_CRYPTO_EXTRA_LDFLAGS) -no-undefined"
+	XMLSEC_EXTRA_LDFLAGS="$XMLSEC_EXTRA_LDFLAGS -no-undefined"
+	XMLSEC_CRYPTO_EXTRA_LDFLAGS="$XMLSEC_CRYPTO_EXTRA_LDFLAGS -no-undefined"
 	;;
  *-*-darwin*)
     XMLSEC_SHLIBSFX=".dylib"
@@ -1829,9 +1829,11 @@ if test "z$build_windows" = "zyes" ; then
         XMLSEC_DEFINES="$XMLSEC_DEFINES -DUNICODE=1 -D_UNICODE=1"
         case "${host}" in
          *-*-mingw*)
-	        XMLSEC_EXTRA_LDFLAGS="$(XMLSEC_EXTRA_LDFLAGS) -municode"
-	        XMLSEC_CRYPTO_EXTRA_LDFLAGS="$(XMLSEC_CRYPTO_EXTRA_LDFLAGS) -municode"
+	        XMLSEC_EXTRA_LDFLAGS="$XMLSEC_EXTRA_LDFLAGS -municode"
+	        XMLSEC_CRYPTO_EXTRA_LDFLAGS="$XMLSEC_CRYPTO_EXTRA_LDFLAGS -municode"
 	        ;;
+        *)
+            ;;
         esac
         AC_MSG_RESULT([yes])
     else

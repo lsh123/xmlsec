@@ -18,13 +18,6 @@
 
 #include <string.h>
 
-#include <openssl/x509.h>
-#include <openssl/evp.h>
-#include <openssl/rand.h>
-#include <xmlsec/openssl/app.h>
-#include <xmlsec/openssl/crypto.h>
-#include <xmlsec/openssl/x509.h>
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
@@ -32,6 +25,13 @@
 #include <xmlsec/errors.h>
 #include <xmlsec/dl.h>
 #include <xmlsec/private.h>
+
+#include <openssl/x509.h>
+#include <openssl/evp.h>
+#include <openssl/rand.h>
+#include <xmlsec/openssl/app.h>
+#include <xmlsec/openssl/crypto.h>
+#include <xmlsec/openssl/x509.h>
 
 #include "openssl_compat.h"
 #include "../cast_helpers.h"

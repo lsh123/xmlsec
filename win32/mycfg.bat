@@ -13,7 +13,7 @@ SET XMLSEC_CRYPTO=openssl-300,mscrypto,mscng
 SET OPENSSL_PREFIX=%PREFIX%\openssl-3.0.3
 SET XMLSEC_INCLUDE=%PREFIX%\include;%PREFIX%\include\libxml2;%OPENSSL_PREFIX%\include;%MSSDK_INCLUDE%
 SET XMLSEC_LIB=%PREFIX%\lib;%OPENSSL_PREFIX%\lib;%MSSDK_LIB%
-SET XMLSEC_OPTIONS=static=no iconv=no debug=yes xslt=yes crypto=%XMLSEC_CRYPTO% unicode=yes
+SET XMLSEC_OPTIONS=static=no iconv=no debug=yes xslt=yes crypto=%XMLSEC_CRYPTO% unicode=no
 
 del /F Makefile configure.txt
 cscript configure.js pedantic=yes prefix=%PREFIX% %XMLSEC_OPTIONS% include=%XMLSEC_INCLUDE% lib=%XMLSEC_LIB%

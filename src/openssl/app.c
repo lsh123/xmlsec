@@ -1602,9 +1602,9 @@ static int
 xmlSecOpenSSLDummyPasswordCallback(char *buf, int bufLen,
                                    int verify ATTRIBUTE_UNUSED,
                                    void *userdata) {
-#if defined(XMLSEC_WINDOWS)
+#if defined(_MSC_VER)
     xmlSecSize bufSize;
-#endif /* defined(XMLSEC_WINDOWS) */
+#endif /* defined(_MSC_VER) */
     char* password;
     size_t passwordSize;
     int passwordLen;

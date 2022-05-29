@@ -1827,6 +1827,11 @@ if test "z$build_windows" = "zyes" ; then
     AC_ARG_ENABLE([unicode], [AC_HELP_STRING([--enable-unicode], [enable Unicode support on Windows (yes)])])
     if test "z$enable_unicode" = "zyes" -o "z$enable_unicode" = "ztrue" ; then
         XMLSEC_DEFINES="$XMLSEC_DEFINES -DUNICODE=1 -D_UNICODE=1"
+        case "${host}" in
+         *-*-mingw*)
+	        XMLSEC_EXTRA_LDFLAGS=" -municode"
+	        ;;
+        esac
         AC_MSG_RESULT([yes])
     else
         AC_MSG_RESULT([no])

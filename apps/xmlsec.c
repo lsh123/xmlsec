@@ -983,18 +983,17 @@ const char* tmp = NULL;
 const char** utf8_argv = NULL; /* TODO: this should be xmlChar** but it will break things downstream */
 
 #if defined(XMLSEC_WINDOWS) && defined(UNICODE)
-int wmain(int argc, wchar_t *argv[ ], wchar_t *envp[ ]) {
-    UNREFERENCED_PARAMETER(envp);
-
+int wmain(int argc, wchar_t *argv[ ]) {
 #else /* defined(XMLSEC_WINDOWS) && defined(UNICODE) */
 int main(int argc, const char **argv) {
 #endif /* defined(XMLSEC_WINDOWS) && defined(UNICODE) */
+
     xmlSecAppCmdLineParamTopic cmdLineTopics;
     xmlSecAppCommand command, subCommand;
     int pos, ii;
     int res = 1;
 
-#if defined(XMLSEC_WINDOWS)
+#if defined(XMLSEC_WINDOWS) 
     /* convert command line to UTF8 from locale or UNICODE */
     utf8_argv = (const char**)xmlMalloc(sizeof(char*) * argc);
     if(utf8_argv == NULL) {

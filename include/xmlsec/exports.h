@@ -20,6 +20,8 @@ extern "C" {
 
 #if defined(WIN32) || defined(_WIN32) || defined(WINDOWS) || defined(_WINDOWS)
 #define XMLSEC_WINDOWS 1
+#elif defined(_MSC_VER)
+#define XMLSEC_WINDOWS 1
 #elif defined(__MINGW32__) || defined(__MINGW64__)
 #define XMLSEC_WINDOWS 1
 #elif defined(__CYGWIN__)

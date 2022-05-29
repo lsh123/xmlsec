@@ -2377,11 +2377,11 @@ xmlSecAppInputOpenCallback(char const* filename) {
         }
         if(strcmp(filename, value->paramNameValue) == 0) {
             FILE * f = NULL;
-#if defined(XMLSEC_WINDOWS)
+#if defined(_MSC_VER)
             fopen_s(&f, value->strValue, "rb");
-#else /* defined(XMLSEC_WINDOWS) */
+#else /* defined(_MSC_VER) */
             f = fopen(value->strValue, "rb");
-#endif /* defined(XMLSEC_WINDOWS) */
+#endif /* defined(_MSC_VER) */
             if(f == NULL) {
                 fprintf(stdout, "Error: can not open file \"%s\" for url \"%s\"\n", value->strValue, filename);
                 return(NULL);
@@ -2987,11 +2987,11 @@ xmlSecAppOpenFile(const char* filename) {
     if((filename == NULL) || (strcmp(filename, XMLSEC_STDOUT_FILENAME) == 0)) {
         return(stdout);
     }
-#if defined(XMLSEC_WINDOWS)
+#if defined(_MSC_VER)
     fopen_s(&file, filename, "wb");
-#else /* defined(XMLSEC_WINDOWS) */
+#else /* defined(_MSC_VER) */
     file = fopen(filename, "wb");
-#endif /* defined(XMLSEC_WINDOWS) */
+#endif /* defined(_MSC_VER) */
     if(file == NULL) {
         fprintf(stderr, "Error: failed to open file \"%s\"\n", filename);
         return(NULL);

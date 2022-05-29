@@ -790,6 +790,8 @@ xmlSecMSCryptoKeyDataFinalize(xmlSecKeyDataPtr data) {
 static int
 xmlSecMSCryptoKeyDataGetSize(xmlSecKeyDataPtr data) {
     xmlSecMSCryptoKeyDataCtxPtr ctx;
+    DWORD length = 0;
+    int res;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), 0);
     xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCryptoKeyDataSize), 0);
@@ -798,21 +800,24 @@ xmlSecMSCryptoKeyDataGetSize(xmlSecKeyDataPtr data) {
     xmlSecAssert2(ctx != NULL, 0);
 
     if(xmlSecMSCryptoKeyDataCtxGetCert(ctx) != NULL) {
-        xmlSecAssert2(xmlSecMSCryptoKeyDataCtxGetCert(ctx)->pCertInfo != NULL, 0);
-        return (CertGetPublicKeyLength(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-                    &(xmlSecMSCryptoKeyDataCtxGetCert(ctx)->pCertInfo->SubjectPublicKeyInfo)));
-    } else if (xmlSecMSCryptoKeyDataCtxGetKey(ctx) != 0) {
-        DWORD length = 0;
-            DWORD lenlen = sizeof(DWORD);
+        PCCERT_CONTEXT pCertCtx = xmlSecMSCryptoKeyDataCtxGetCert(ctx);
 
-        if (!CryptGetKeyParam(xmlSecMSCryptoKeyDataCtxGetKey(ctx), KP_KEYLEN, (BYTE *)&length, &lenlen, 0)) {
+        xmlSecAssert2(pCertCtx->pCertInfo != NULL, 0);
+        length = CertGetPublicKeyLength(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, 
+            &(pCertCtx->pCertInfo->SubjectPublicKeyInfo));
+    } else if (xmlSecMSCryptoKeyDataCtxGetKey(ctx) != 0) {
+        HCRYPTKEY cryptKey = xmlSecMSCryptoKeyDataCtxGetKey(ctx);
+        DWORD lenlen = sizeof(DWORD);
+
+        if (!CryptGetKeyParam(cryptKey, KP_KEYLEN, (BYTE *)&length, &lenlen, 0)) {
             xmlSecMSCryptoError("CertDuplicateCertificateContext", NULL);
             return(0);
         }
-        return(length);
+        xmlSecAssert2(lenlen == sizeof(DWORD), 0);
     }
 
-    return (0);
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(length, res, return(0), NULL);
+    return(res);
 }
 
 static xmlSecKeyDataType

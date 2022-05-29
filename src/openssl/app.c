@@ -1621,12 +1621,12 @@ xmlSecOpenSSLDummyPasswordCallback(char *buf, int bufLen,
         return(-1);
     }
 
-#if defined(XMLSEC_WINDOWS)
+#if defined(_MSC_VER)
     XMLSEC_SAFE_CAST_INT_TO_SIZE(bufLen, bufSize, return(-1), NULL);
     strcpy_s(buf, bufSize, password);
-#else  /* defined(XMLSEC_WINDOWS) */
+#else  /* defined(_MSC_VER) */
     strcpy(buf, password);
-#endif /* defined(XMLSEC_WINDOWS) */
+#endif /* defined(_MSC_VER) */
 
     return (passwordLen);
 }

@@ -32,7 +32,7 @@
 
 void xmlSecMSCryptoGetErrorMessage      (DWORD dwError,
                                          xmlChar * out,
-                                         xmlSecSize outSize);
+                                         int outLen);
 
 
 /**

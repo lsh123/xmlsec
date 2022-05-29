@@ -333,7 +333,7 @@ xmlSecMSCryptoKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfo
                                     xmlSecTransformGetName(transform));
                 return(-1);
             }
-            outSize = ret;
+            XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outSize, return(-1), xmlSecTransformGetName(transform));
         } else {
             ret = xmlSecKWAesDecode(&xmlSecMSCryptoKWAesKlass, ctx,
                                     xmlSecBufferGetData(in), inSize,
@@ -343,7 +343,7 @@ xmlSecMSCryptoKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfo
                                     xmlSecTransformGetName(transform));
                 return(-1);
             }
-            outSize = ret;
+            XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outSize, return(-1), xmlSecTransformGetName(transform));
         }
 
         ret = xmlSecBufferSetSize(out, outSize);
@@ -386,6 +386,7 @@ xmlSecMSCryptoKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
     xmlSecMSCryptoKWAesCtxPtr ctx = (xmlSecMSCryptoKWAesCtxPtr)context;
     HCRYPTKEY cryptKey = 0;
     DWORD dwCLen;
+    int res;
 
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize >= XMLSEC_KW_AES_BLOCK_SIZE, -1);
@@ -423,8 +424,9 @@ xmlSecMSCryptoKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
     }
 
     /* cleanup */
-    CryptDestroyKey(cryptKey);    
-    return(dwCLen);
+    CryptDestroyKey(cryptKey);
+    XMLSEC_SAFE_CAST_ULONG_TO_INT(dwCLen, res, return(-1), NULL);
+    return(res);
 }
 
 static int
@@ -434,6 +436,7 @@ xmlSecMSCryptoKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
     xmlSecMSCryptoKWAesCtxPtr ctx = (xmlSecMSCryptoKWAesCtxPtr)context;
     HCRYPTKEY cryptKey = 0;
     DWORD dwCLen;
+    int res;
 
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize >= XMLSEC_KW_AES_BLOCK_SIZE, -1);
@@ -472,7 +475,8 @@ xmlSecMSCryptoKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
 
     /* cleanup */
     CryptDestroyKey(cryptKey);
-    return(dwCLen);
+    XMLSEC_SAFE_CAST_ULONG_TO_INT(dwCLen, res, return(-1), NULL);
+    return(res);
 }
 
 /*********************************************************************

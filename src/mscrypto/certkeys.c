@@ -407,9 +407,9 @@ xmlSecMSCryptoKeyDataCtxDuplicateCert(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xmlSec
 XMLSEC_KEY_DATA_DECLARE(MSCryptoKeyData, xmlSecMSCryptoKeyDataCtx)
 #define xmlSecMSCryptoKeyDataSize XMLSEC_KEY_DATA_SIZE(MSCryptoKeyData)
 
-static int      xmlSecMSCryptoKeyDataDuplicate  (xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src);
-static void             xmlSecMSCryptoKeyDataFinalize   (xmlSecKeyDataPtr data);
-static int              xmlSecMSCryptoKeyDataGetSize    (xmlSecKeyDataPtr data);
+static int        xmlSecMSCryptoKeyDataDuplicate  (xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src);
+static void       xmlSecMSCryptoKeyDataFinalize   (xmlSecKeyDataPtr data);
+static xmlSecSize xmlSecMSCryptoKeyDataGetSize    (xmlSecKeyDataPtr data);
 
 /**
  * xmlSecMSCryptoKeyDataAdoptCert:
@@ -787,11 +787,11 @@ xmlSecMSCryptoKeyDataFinalize(xmlSecKeyDataPtr data) {
     memset(ctx, 0, sizeof(xmlSecMSCryptoKeyDataCtx));
 }
 
-static int
+static xmlSecSize
 xmlSecMSCryptoKeyDataGetSize(xmlSecKeyDataPtr data) {
     xmlSecMSCryptoKeyDataCtxPtr ctx;
     DWORD length = 0;
-    int res;
+    xmlSecSize res;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), 0);
     xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCryptoKeyDataSize), 0);

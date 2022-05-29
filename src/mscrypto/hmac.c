@@ -290,21 +290,31 @@ xmlSecMSCryptoHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSec
 
     cur = xmlSecGetNextElementNode(node->children);
     if((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeHMACOutputLength, xmlSecDSigNs)) {
-        xmlChar *content;
+        xmlSecSize minDgstSize;
+        int ret;
 
-        content = xmlNodeGetContent(cur);
-        if(content != NULL) {
-            ctx->dgstSize = atoi((char*)content);
-            xmlFree(content);
+        ret = xmlSecGetNodeContentAsSize(cur, &ctx->dgstSize, ctx->dgstSize);
+        if (ret != 0) {
+            xmlSecInternalError("xmlSecGetNodeContentAsSize(HMACOutputLength)",
+                xmlSecTransformGetName(transform));
+            return(-1);
         }
 
         /* Ensure that HMAC length is greater than min specified.
            Otherwise, an attacker can set this length to 0 or very
            small value
         */
-        if((int)ctx->dgstSize < xmlSecMSCryptoHmacGetMinOutputLength()) {
+        ret = xmlSecMSCryptoHmacGetMinOutputLength();
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecOpenSSLHmacGetMinOutputLength",
+                xmlSecTransformGetName(transform));
+            return(-1);
+        }
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, minDgstSize, return(-1), xmlSecTransformGetName(transform));
+
+        if (ctx->dgstSize < minDgstSize) {
             xmlSecInvalidNodeContentError(cur, xmlSecTransformGetName(transform),
-                                          "HMAC output length is too small");
+                "HMAC output length is too small");
             return(-1);
         }
 

@@ -39,13 +39,13 @@ environment:
       CRYPTO: openssl
       STATIC: no
       UNICODE: yes
-      WERROR: no
+      WERROR: yes
 
     - COMPILER: MSVC22
       CRYPTO: openssl-300
       STATIC: no
       UNICODE: yes
-      WERROR: no
+      WERROR: yes
 
     - COMPILER: MSVC22
       CRYPTO: mscrypto

@@ -368,13 +368,12 @@ xmlSecMSCryptoGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
                              "size=%lu", XMLSEC_UL_BAD_CAST(size));
         return(-1);
     }
-
     hProv = xmlSecMSCryptoFindProvider(xmlSecMSCryptoProviderInfo_Random, NULL, CRYPT_VERIFYCONTEXT, FALSE);
     if (0 == hProv) {
         xmlSecInternalError("xmlSecMSCryptoFindProvider", NULL);
         return(-1);
     }
-    if (FALSE == CryptGenRandom(hProv, (DWORD)size, xmlSecBufferGetData(buffer))) {
+    if (FALSE == CryptGenRandom(hProv, size, xmlSecBufferGetData(buffer))) {
         xmlSecMSCryptoError("CryptGenRandom", NULL);
         CryptReleaseContext(hProv,0);
         return(-1);

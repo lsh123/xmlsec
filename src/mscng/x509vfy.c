@@ -681,8 +681,8 @@ xmlSecMSCngUnixTimeToFileTime(time_t in, LPFILETIME out) {
     /* seconds -> 100 nanoseconds */
     /* 1970-01-01 epoch -> 1601-01-01 epoch */
     ll = Int32x32To64(in, 10000000) + 116444736000000000;
-    out->dwLowDateTime = (DWORD)ll;
-    out->dwHighDateTime = ll >> 32;
+    out->dwLowDateTime  = (DWORD)ll;
+    out->dwHighDateTime = (DWORD)(ll >> 32);
 
     return(0);
 }

@@ -545,7 +545,7 @@ xmlSecMSCryptoKWDes3BlockEncrypt(void * context,
     xmlSecAssert2(cryptKey != 0, -1);
 
     /* iv len == block len */
-    dwBlockLenLen = sizeof(DWORD);
+    dwBlockLenLen = sizeof(dwBlockLen);
     if (!CryptGetKeyParam(cryptKey, KP_BLOCKLEN, (BYTE *)&dwBlockLen, &dwBlockLenLen, 0)) {
         xmlSecMSCryptoError("CryptGetKeyParam", NULL);
         CryptDestroyKey(cryptKey);
@@ -619,7 +619,7 @@ xmlSecMSCryptoKWDes3BlockDecrypt(void * context,
     xmlSecAssert2(cryptKey != 0, -1);
 
     /* iv len == block len */
-    dwBlockLenLen = sizeof(DWORD);
+    dwBlockLenLen = sizeof(dwBlockLen);
     if (!CryptGetKeyParam(cryptKey, KP_BLOCKLEN, (BYTE *)&dwBlockLen, &dwBlockLenLen, 0)) {
         xmlSecMSCryptoError("CryptGetKeyParam", NULL);
         CryptDestroyKey(cryptKey);

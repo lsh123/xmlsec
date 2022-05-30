@@ -300,7 +300,7 @@ xmlSecMSCngKWDes3BlockEncrypt(void * context, const xmlSecByte * iv,
     }
 
     /* iv len == block len */
-    dwBlockLenLen = sizeof(DWORD);
+    dwBlockLenLen = sizeof(dwBlockLen);
     status = BCryptGetProperty(hAlg,
         BCRYPT_BLOCK_LENGTH,
         (PUCHAR)&dwBlockLen,
@@ -465,7 +465,7 @@ xmlSecMSCngKWDes3BlockDecrypt(void * context, const xmlSecByte * iv,
     }
 
     /* iv len == block len */
-    dwBlockLenLen = sizeof(DWORD);
+    dwBlockLenLen = sizeof(dwBlockLen);
     status = BCryptGetProperty(hAlg,
         BCRYPT_BLOCK_LENGTH,
         (PUCHAR)&dwBlockLen,

@@ -51,7 +51,7 @@ struct _xmlSecMSCngKeyDataCtx {
 XMLSEC_KEY_DATA_DECLARE(MSCngKeyData, xmlSecMSCngKeyDataCtx)
 #define xmlSecMSCngKeyDataSize XMLSEC_KEY_DATA_SIZE(MSCngKeyData)
 
-static int xmlSecMSCngKeyDataGetSize(xmlSecKeyDataPtr data);
+static xmlSecSize xmlSecMSCngKeyDataGetSize(xmlSecKeyDataPtr data);
 
 static int
 xmlSecMSCngKeyDataCertGetPubkey(PCCERT_CONTEXT cert, BCRYPT_KEY_HANDLE* key) {
@@ -1069,10 +1069,12 @@ xmlSecMSCngKeyDataRsaGetType(xmlSecKeyDataPtr data) {
     return(xmlSecKeyDataTypePublic);
 }
 
-static int
+static xmlSecSize
 xmlSecMSCngKeyDataGetSize(xmlSecKeyDataPtr data) {
     NTSTATUS status;
     xmlSecMSCngKeyDataCtxPtr ctx;
+    DWORD length = 0;
+    xmlSecSize res;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), 0);
     xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCngKeyDataSize), 0);
@@ -1082,12 +1084,10 @@ xmlSecMSCngKeyDataGetSize(xmlSecKeyDataPtr data) {
 
     if(ctx->cert != NULL) {
         xmlSecAssert2(ctx->cert->pCertInfo != NULL, 0);
-        return(CertGetPublicKeyLength(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-            &ctx->cert->pCertInfo->SubjectPublicKeyInfo));
+        length = CertGetPublicKeyLength(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+            &ctx->cert->pCertInfo->SubjectPublicKeyInfo);
     } else if(ctx->pubkey != 0) {
-        DWORD length = 0;
-        DWORD lenlen = sizeof(DWORD);
-
+        DWORD lenlen = sizeof(length);
         status = BCryptGetProperty(ctx->pubkey,
             BCRYPT_KEY_STRENGTH,
             (PUCHAR)&length,
@@ -1098,14 +1098,14 @@ xmlSecMSCngKeyDataGetSize(xmlSecKeyDataPtr data) {
             xmlSecMSCngNtError("BCryptGetproperty", NULL, status);
             return(0);
         }
-
-        return(length);
+        xmlSecAssert2(lenlen == sizeof(length), 0);
     } else if(ctx->privkey != 0) {
         xmlSecNotImplementedError(NULL);
         return(0);
     }
 
-    return(0);
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(length, res, return(0), NULL);
+    return(res);
 }
 
 static xmlSecSize
@@ -1138,7 +1138,7 @@ xmlSecMSCngKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecBn modulus, exponent;
     xmlSecBuffer blob;
-    xmlSecSize blobBufferLen;
+    xmlSecSize blobBufferSize;
     xmlSecSize offset;
     BCRYPT_RSAKEY_BLOB* rsakey;
     LPCWSTR lpszBlobType;
@@ -1146,9 +1146,10 @@ xmlSecMSCngKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecKeyDataPtr keyData = NULL;
     BCRYPT_KEY_HANDLE hKey = 0;
     xmlNodePtr cur;
-    int res = -1;
+    size_t size;
     NTSTATUS status;
     int ret;
+    int res = -1;
 
     xmlSecAssert2(id == xmlSecMSCngKeyDataRsaId, -1);
     xmlSecAssert2(key != NULL, -1);
@@ -1234,12 +1235,13 @@ xmlSecMSCngKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     /* turn the read data into a public key blob, as documented at
      * <https://msdn.microsoft.com/en-us/library/windows/desktop/aa375531(v=vs.85).aspx>:
      * need to write exponent and modulus after the struct */
-    blobBufferLen = sizeof(BCRYPT_RSAKEY_BLOB) + xmlSecBnGetSize(&exponent) +
-        xmlSecBnGetSize(&modulus);
-    ret = xmlSecBufferSetSize(&blob, blobBufferLen);
+    size = sizeof(BCRYPT_RSAKEY_BLOB);
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(size, blobBufferSize, goto done, xmlSecKeyDataKlassGetName(id));
+    blobBufferSize += xmlSecBnGetSize(&exponent) + xmlSecBnGetSize(&modulus);
+    ret = xmlSecBufferSetSize(&blob, blobBufferSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize",
-            xmlSecKeyDataKlassGetName(id), "size=%lu", XMLSEC_UL_BAD_CAST(blobBufferLen));
+        xmlSecInternalError2("xmlSecBufferSetSize", xmlSecKeyDataKlassGetName(id), 
+            "size=%lu", XMLSEC_UL_BAD_CAST(blobBufferSize));
         goto done;
     }
 

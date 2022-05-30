@@ -450,7 +450,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
     }
 
     /* Get private key's length in bits */
-    dwSize = sizeof(DWORD);
+    dwSize = sizeof(dwPublicKeySize);
     if(!CryptGetKeyParam(hPrivateKey, KP_KEYLEN, (LPBYTE)&dwPublicKeySize, &dwSize, 0)) {
         xmlSecMSCryptoError2("CryptGetKeyParam(KP_KEYLEN)", NULL,
             "algId=%lu", XMLSEC_UL_BAD_CAST(dwAlgId));

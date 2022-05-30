@@ -965,6 +965,53 @@ xmlSecMSCngX509FindCertByIssuer(HCERTSTORE store, LPTSTR wcIssuer,
 
     return (res);
 }
+static PCCERT_CONTEXT
+xmlSecMSCngX509FindCertBySki(HCERTSTORE store, xmlChar* ski) {
+    PCCERT_CONTEXT cert = NULL;
+    xmlChar* binSki = NULL;
+    CRYPT_HASH_BLOB blob;
+    xmlSecSize size;
+    int ret;
+
+    xmlSecAssert2(store != 0, NULL);
+    xmlSecAssert2(ski != NULL, NULL);
+
+    binSki = xmlStrdup(ski);
+    if (binSki == NULL) {
+        xmlSecStrdupError(ski, NULL);
+        goto done;
+    }
+
+    ret = xmlStrlen(binSki);
+    if (ret < 0) {
+        xmlSecInternalError("xmlStrlen", NULL);
+        goto done;
+    }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, goto done, NULL);
+
+    /* base64 decode "in place" */
+    ret = xmlSecBase64Decode(binSki, (xmlSecByte*)binSki, size);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecBase64Decode", NULL);
+        goto done;
+    }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, goto done, NULL);
+
+    blob.pbData = binSki;
+    blob.cbData = size;
+    cert = CertFindCertificateInStore(store,
+        PKCS_7_ASN_ENCODING | X509_ASN_ENCODING,
+        0,
+        CERT_FIND_KEY_IDENTIFIER,
+        &blob,
+        NULL);
+
+done:
+    if (binSki != NULL) {
+        xmlFree(binSki);
+    }
+    return(cert);
+}
 
 static PCCERT_CONTEXT
 xmlSecMSCngX509FindCert(HCERTSTORE store, xmlChar* subjectName,
@@ -1031,35 +1078,7 @@ xmlSecMSCngX509FindCert(HCERTSTORE store, xmlChar* subjectName,
     }
 
     if(ski != NULL) {
-        CRYPT_HASH_BLOB blob;
-        xmlChar* binSki;
-        int binSkiLen;
-
-        binSki = xmlStrdup(ski);
-        if(binSki == NULL) {
-            xmlSecStrdupError(ski, NULL);
-            return (NULL);
-        }
-
-        /* base64 decode "in place" */
-        binSkiLen = xmlSecBase64Decode(binSki, (xmlSecByte*)binSki, xmlStrlen(binSki));
-        if(binSkiLen < 0) {
-            xmlSecInternalError("xmlSecBase64Decode", NULL);
-            xmlFree(binSki);
-            return(NULL);
-        }
-
-        blob.pbData = binSki;
-        blob.cbData = binSkiLen;
-        cert = CertFindCertificateInStore(store,
-                        PKCS_7_ASN_ENCODING | X509_ASN_ENCODING,
-                        0,
-                        CERT_FIND_KEY_IDENTIFIER,
-                        &blob,
-                        NULL);
-        xmlFree(binSki);
-
-	return(cert);
+        cert = xmlSecMSCngX509FindCertBySki(store, ski);
     }
 
     return(NULL);

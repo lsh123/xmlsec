@@ -174,7 +174,6 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxP
     xmlSecSize keySize;
     BCRYPT_KEY_HANDLE hPubKey;
     NCRYPT_KEY_HANDLE hPrivKey;
-    DWORD dwInLen;
     DWORD dwOutLen;
     xmlSecByte * outBuf;
     xmlSecByte * inBuf;
@@ -227,8 +226,6 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxP
                 xmlSecTransformGetName(transform));
             return(-1);
         }
-        dwInLen = inSize;
-
         inBuf   = xmlSecBufferGetData(in);
         outBuf  = xmlSecBufferGetData(out);
 

@@ -733,7 +733,7 @@ xmlSecMSCngGCMBlockCipherCtxUpdate(xmlSecMSCngBlockCipherCtxPtr ctx,
         const xmlChar* cipherName, xmlSecTransformCtxPtr transformCtx) {
 
     NTSTATUS status;
-    xmlSecSize inSize, outSize;
+    xmlSecSize inSize, outSize, blockSize;
     xmlSecByte *inBuf, *outBuf;
     DWORD dwCLen;
     int ret;
@@ -756,21 +756,22 @@ xmlSecMSCngGCMBlockCipherCtxUpdate(xmlSecMSCngBlockCipherCtxPtr ctx,
     inBuf = xmlSecBufferGetData(in);
     xmlSecAssert2(inBuf != NULL, -1);
 
-    if(xmlSecBufferGetSize(in) < ctx->dwBlockLen) {
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(ctx->dwBlockLen, blockSize, return(-1), cipherName);
+    if(xmlSecBufferGetSize(in) < blockSize) {
         return 0;
     }
 
     if(encrypt) {
         /* Round to the block size. We will finalize this later */
-        inSize = (xmlSecBufferGetSize(in) / XMLSEC_SIZE_BAD_CAST(ctx->dwBlockLen)) * XMLSEC_SIZE_BAD_CAST(ctx->dwBlockLen);
+        inSize = (xmlSecBufferGetSize(in) / blockSize) * blockSize;
     } else {
         /* If we've been called here, we know there is more data
          * to come, but we don't know how much. The spec tells us that
          * the tag is the last 16 bytes of the data when decrypting, so to make sure
          * we don't try to decrypt it, we leave at least 16 bytes in the buffer
          * until we know we're processing the last one */
-        inSize = ((xmlSecBufferGetSize(in) - xmlSecMSCngAesGcmTagLengthInBytes) / XMLSEC_SIZE_BAD_CAST(ctx->dwBlockLen)) * XMLSEC_SIZE_BAD_CAST(ctx->dwBlockLen);
-        if (inSize < ctx->dwBlockLen) {
+        inSize = ((xmlSecBufferGetSize(in) - xmlSecMSCngAesGcmTagLengthInBytes) / blockSize) * blockSize;
+        if (inSize < blockSize) {
             return 0;
         }
     }
@@ -942,7 +943,7 @@ xmlSecMSCngCBCBlockCipherCtxFinal(xmlSecMSCngBlockCipherCtxPtr ctx,
             ctx->pbIV,
             ctx->cbIV,
             outBuf,
-            (inSize + ctx->dwBlockLen),
+            (inSize + blockSize),
             &dwCLen,
             0);
         if(status != STATUS_SUCCESS) {
@@ -984,12 +985,11 @@ xmlSecMSCngCBCBlockCipherCtxFinal(xmlSecMSCngBlockCipherCtxPtr ctx,
 
     if(encrypt == 0) {
         /* check padding */
-        if(inSize < outBuf[ctx->dwBlockLen - 1]) {
-            xmlSecInvalidSizeLessThanError("Input data padding", inSize,
-                outBuf[ctx->dwBlockLen - 1], cipherName);
+        if(inSize < outBuf[blockSize - 1]) {
+            xmlSecInvalidSizeLessThanError("Input data padding", inSize, outBuf[blockSize - 1], cipherName);
             return(-1);
         }
-        outSize += (inSize - outBuf[ctx->dwBlockLen - 1]);
+        outSize += (inSize - outBuf[blockSize - 1]);
     } else {
         outSize += inSize;
     }

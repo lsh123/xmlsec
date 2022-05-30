@@ -531,11 +531,7 @@ xmlSecMSCryptoHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
         }
 
         if(last) {
-            /* TODO: make a MSCrypto compatible assert here */
-            /* xmlSecAssert2((xmlSecSize)EVP_MD_size(ctx->digest) <= sizeof(ctx->dgst), -1); */
-            DWORD retLen;
-            retLen = XMLSEC_MSCRYPTO_MAX_HMAC_SIZE;
-
+            DWORD retLen = XMLSEC_MSCRYPTO_MAX_HMAC_SIZE;
             ret = CryptGetHashParam(ctx->mscHash,
                 HP_HASHVAL,
                 ctx->dgst,

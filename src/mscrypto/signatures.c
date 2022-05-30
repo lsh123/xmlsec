@@ -559,7 +559,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
                 xmlSecMSCryptoError("CryptSignHash", NULL);
                 return(-1);
             }
-            outSize = (xmlSecSize)dwSigLen;
+            XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwSigLen, outSize, return(-1), NULL);
 
             ret = xmlSecBufferInitialize(&tmp, outSize);
             if(ret < 0) {
@@ -576,7 +576,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
                 xmlSecBufferFinalize(&tmp);
                 return(-1);
             }
-            outSize = (xmlSecSize)dwSigLen;
+            XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwSigLen, outSize, return(-1), NULL);
 
             ret = xmlSecBufferSetSize(out, outSize);
             if(ret < 0) {

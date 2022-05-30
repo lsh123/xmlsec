@@ -570,11 +570,10 @@ xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
                     &cbSignature,
                     0);
                 if(status != STATUS_SUCCESS) {
-                    xmlSecMSCngNtError("NCryptSignHash",
-                        xmlSecTransformGetName(transform), status);
+                    xmlSecMSCngNtError("NCryptSignHash", xmlSecTransformGetName(transform), status);
                     return(-1);
                 }
-                outSize = (xmlSecSize)cbSignature;
+                XMLSEC_SAFE_CAST_ULONG_TO_SIZE(cbSignature, outSize, return(-1), xmlSecTransformGetName(transform));
 
                 /* allocate the signature buffer on the heap */
                 ret = xmlSecBufferSetSize(&transform->outBuf, outSize);

@@ -363,34 +363,26 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
             }
         }
         if(last) {
-            /* TODO: make a MSCrypto compatible assert here */
-            /* xmlSecAssert2((xmlSecSize)EVP_MD_size(ctx->digest) <= sizeof(ctx->dgst), -1); */
-            DWORD retLen;
-            retLen = MSCRYPTO_MAX_HASH_SIZE;
-
+            DWORD retLen = MSCRYPTO_MAX_HASH_SIZE;
             ret = CryptGetHashParam(ctx->mscHash,
                                     HP_HASHVAL,
                                     ctx->dgst,
                                     &retLen,
                                     0);
             if (ret == 0) {
-                xmlSecMSCryptoError2("CryptGetHashParam(HP_HASHVAL)",
-                                     xmlSecTransformGetName(transform),
-                                     "size=%lu", XMLSEC_UL_BAD_CAST(MSCRYPTO_MAX_HASH_SIZE));
+                xmlSecMSCryptoError2("CryptGetHashParam(HP_HASHVAL)", xmlSecTransformGetName(transform),
+                    "size=%lu", XMLSEC_UL_BAD_CAST(MSCRYPTO_MAX_HASH_SIZE));
                 return(-1);
             }
-
-            ctx->dgstSize = XMLSEC_SIZE_BAD_CAST(retLen);
-
-            xmlSecAssert2(ctx->dgstSize > 0, -1);
+            xmlSecAssert2(retLen > 0, -1);
+            XMLSEC_SAFE_CAST_ULONG_TO_SIZE(retLen, ctx->dgstSize, return(-1), xmlSecTransformGetName(transform));
 
             /* copy result to output */
             if(transform->operation == xmlSecTransformOperationSign) {
                 ret = xmlSecBufferAppend(out, ctx->dgst, ctx->dgstSize);
                 if(ret < 0) {
-                    xmlSecInternalError2("xmlSecBufferAppend",
-                                         xmlSecTransformGetName(transform),
-                                         "size=%lu", XMLSEC_UL_BAD_CAST(ctx->dgstSize));
+                    xmlSecInternalError2("xmlSecBufferAppend", xmlSecTransformGetName(transform),
+                        "size=%lu", XMLSEC_UL_BAD_CAST(ctx->dgstSize));
                     return(-1);
                 }
             }

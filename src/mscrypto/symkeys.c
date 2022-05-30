@@ -421,7 +421,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
             goto done;
         }
 
-        dwSize = sizeof(DWORD);
+        dwSize = sizeof(dwProvSessionKeySize);
         if(!CryptGetKeyParam(hTempKey, KP_KEYLEN, (LPBYTE)&dwProvSessionKeySize, &dwSize, 0)) {
             xmlSecMSCryptoError2("CryptGetKeyParam(KP_KEYLEN)", NULL,
                 "algId=%lu", XMLSEC_UL_BAD_CAST(dwAlgId));

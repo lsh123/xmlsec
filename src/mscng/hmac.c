@@ -47,12 +47,15 @@ struct _xmlSecMSCngHmacCtx {
     PBYTE hash;
     DWORD hashLength;
     /* truncation length in bits */
-    DWORD truncationLength;
+    xmlSecSize dgstSize;
     BCRYPT_HASH_HANDLE hHash;
 };
 
 XMLSEC_TRANSFORM_DECLARE(MSCngHmac, xmlSecMSCngHmacCtx)
 #define xmlSecMSCngHmacSize XMLSEC_TRANSFORM_SIZE(MSCngHmac)
+
+/* 80 is a minimum value from: https://www.w3.org/TR/xmldsig-core1/#sec-SignatureMethod */
+#define XMLSEC_MSCNG_HMAC_MIN_LENGTH                     80
 
 static int
 xmlSecMSCngHmacCheckId(xmlSecTransformPtr transform) {
@@ -184,19 +187,18 @@ xmlSecMSCngHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTra
 
     cur = xmlSecGetNextElementNode(node->children);
     if((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeHMACOutputLength, xmlSecDSigNs)) {
-        xmlChar *content;
+        int ret;
 
-        content = xmlNodeGetContent(cur);
-        if(content != NULL) {
-            ctx->truncationLength = atoi((char*)content);
-            xmlFree(content);
+        ret = xmlSecGetNodeContentAsSize(cur, &ctx->dgstSize, ctx->dgstSize);
+        if (ret != 0) {
+            xmlSecInternalError("xmlSecGetNodeContentAsSize(HMACOutputLength)",
+                xmlSecTransformGetName(transform));
+            return(-1);
         }
 
-	/* 80 is a minimum value from
-	 * <https://www.w3.org/TR/xmldsig-core1/#sec-SignatureMethod> */
-        if((int)ctx->truncationLength < 80) {
+        if (ctx->dgstSize < XMLSEC_MSCNG_HMAC_MIN_LENGTH) {
             xmlSecInvalidNodeContentError(cur, xmlSecTransformGetName(transform),
-                                          "HMAC output length is too small");
+                "HMAC output length is too small");
             return(-1);
         }
 
@@ -303,9 +305,9 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         return(-1);
     }
 
-    if (ctx->truncationLength == 0) {
+    if (ctx->dgstSize == 0) {
         /* no custom value is requested, then default to the full length */
-        ctx->truncationLength = ctx->hashLength * 8;
+        ctx->dgstSize = ctx->hashLength * 8;
     }
 
     ctx->initialized = 1;
@@ -331,10 +333,10 @@ xmlSecMSCngHmacVerify(xmlSecTransformPtr transform, const xmlSecByte* data,
 
     ctx = xmlSecMSCngHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->truncationLength > 0, -1);
+    xmlSecAssert2(ctx->dgstSize > 0, -1);
 
     /* round up */
-    truncationBytes = (ctx->truncationLength + 7) / 8;
+    truncationBytes = (ctx->dgstSize + 7) / 8;
 
     /* compare the digest size in bytes */
     if(dataSize != truncationBytes) {
@@ -347,7 +349,7 @@ xmlSecMSCngHmacVerify(xmlSecTransformPtr transform, const xmlSecByte* data,
 
     /* we check the last byte separately as possibly not all bits should be
      * compared */
-    mask = lastByteMasks[ctx->truncationLength % 8];
+    mask = lastByteMasks[ctx->dgstSize % 8];
     if((ctx->hash[dataSize - 1] & mask) != (data[dataSize - 1]  & mask)) {
         xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
             xmlSecTransformGetName(transform),
@@ -430,7 +432,7 @@ xmlSecMSCngHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
             /* copy result to output */
             if(transform->operation == xmlSecTransformOperationSign) {
                 /* round up */
-                xmlSecSize truncationBytes = (ctx->truncationLength + 7) / 8;
+                xmlSecSize truncationBytes = (ctx->dgstSize + 7) / 8;
 
                 ret = xmlSecBufferAppend(out, ctx->hash, truncationBytes);
                 if(ret < 0) {

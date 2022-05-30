@@ -493,6 +493,8 @@ static int
 xmlSecMSCryptoKWDes3GenerateRandom(void * context,
                                    xmlSecByte * out, xmlSecSize outSize) 
 {
+    int res;
+
     xmlSecMSCryptoKWDes3CtxPtr ctx = (xmlSecMSCryptoKWDes3CtxPtr)context;
 
     xmlSecAssert2(ctx != NULL, -1);
@@ -506,7 +508,9 @@ xmlSecMSCryptoKWDes3GenerateRandom(void * context,
         return(-1);
     }
 
-    return((int)outSize);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(outSize, res, return(-1), NULL);
+    return(res);
+
 }
 
 static int

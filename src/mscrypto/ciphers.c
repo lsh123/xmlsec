@@ -68,7 +68,7 @@ xmlSecMSCryptoBlockCipherCtxInit(xmlSecMSCryptoBlockCipherCtxPtr ctx,
                                  xmlSecTransformCtxPtr transformCtx) {
     int ret;
     DWORD dwBlockLen, dwBlockLenBits, dwBlockLenBitsLen;
-    xmlSecSize blockSize, outSize;
+    xmlSecSize blockSize, inSize, outSize;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->cryptKey != 0, -1);
@@ -88,6 +88,7 @@ xmlSecMSCryptoBlockCipherCtxInit(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     xmlSecAssert2(dwBlockLen > 0, -1);
     XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwBlockLen, blockSize, return(-1), cipherName);
 
+    inSize = xmlSecBufferGetSize(in);
     outSize = xmlSecBufferGetSize(out);
 
     if(encrypt) {
@@ -116,7 +117,7 @@ xmlSecMSCryptoBlockCipherCtxInit(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     } else {
         /* if we don't have enough data, exit and hope that
         * we'll have iv next time */
-        if(outSize < blockSize) {
+        if(inSize < blockSize) {
             return(0);
         }
         xmlSecAssert2(xmlSecBufferGetData(in) != NULL, -1);

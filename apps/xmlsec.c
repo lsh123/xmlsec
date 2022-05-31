@@ -970,7 +970,9 @@ static int                      xmlSecAppInputReadCallback      (void * context,
                                                                  int len);
 static int                      xmlSecAppInputCloseCallback     (void * context);
 
-
+#if defined(XMLSEC_WINDOWS) && defined(UNICODE) && defined(__MINGW32__)
+int wmain(int argc, wchar_t* argv[]);
+#endif /* defined(XMLSEC_WINDOWS) && defined(UNICODE) && defined(__MINGW32__) */
 
 xmlSecKeysMngrPtr gKeysMngr = NULL;
 int repeats = 1;
@@ -980,13 +982,16 @@ int block_network_io = 0;
 clock_t total_time = 0;
 const char* xmlsec_crypto = NULL;
 const char* tmp = NULL;
-const char** utf8_argv = NULL; /* TODO: this should be xmlChar** but it will break things downstream */
 
 #if defined(XMLSEC_WINDOWS) && defined(UNICODE)
-int wmain(int argc, wchar_t *argv[ ]) {
+int wmain(int argc, wchar_t *argv[]) {
 #else /* defined(XMLSEC_WINDOWS) && defined(UNICODE) */
 int main(int argc, const char **argv) {
 #endif /* defined(XMLSEC_WINDOWS) && defined(UNICODE) */
+    const char** utf8_argv = NULL; /* TODO: this should be xmlChar** but it will break things downstream */
+#if defined(XMLSEC_WINDOWS)
+    size_t utf8_argv_size;
+#endif /* defined(XMLSEC_WINDOWS) */
 
     xmlSecAppCmdLineParamTopic cmdLineTopics;
     xmlSecAppCommand command, subCommand;
@@ -995,12 +1000,13 @@ int main(int argc, const char **argv) {
 
 #if defined(XMLSEC_WINDOWS) 
     /* convert command line to UTF8 from locale or UNICODE */
-    utf8_argv = (const char**)xmlMalloc(sizeof(char*) * argc);
+    utf8_argv_size = sizeof(char*) * (size_t)argc;
+    utf8_argv = (const char**)xmlMalloc(utf8_argv_size);
     if(utf8_argv == NULL) {
-        fprintf(stderr, "Error: can not allocate memory (%lu bytes)\n", XMLSEC_UL_BAD_CAST(sizeof(char*) * argc));
+        fprintf(stderr, "Error: can not allocate memory (%lu bytes)\n", XMLSEC_UL_BAD_CAST(utf8_argv_size));
         goto fail;
     }
-    memset((char**)utf8_argv, 0, sizeof(char*) * argc);
+    memset((char**)utf8_argv, 0, utf8_argv_size);
     for(ii = 0; ii < argc; ++ii) {
         utf8_argv[ii] = (const char*)xmlSecWin32ConvertTstrToUtf8(argv[ii]);
         if(utf8_argv[ii] == NULL) {

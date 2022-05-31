@@ -53,6 +53,12 @@ environment:
       UNICODE: yes
       WERROR: yes
 
+    - COMPILER: MSVC22
+      CRYPTO: mscrypto
+      STATIC: yes
+      UNICODE: yes
+      WERROR: yes
+
 init:
   - git config --global core.autocrlf input
   - set PATH=C:\cygwin64\bin;%EXTRAS_FOLDER%\bin;%EXTRAS_FOLDER%\lib;%EXTRAS_FOLDER%\lib\ossl-modules;%PATH%

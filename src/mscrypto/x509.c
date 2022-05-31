@@ -1517,7 +1517,7 @@ xmlSecMSCryptoX509CertGetTime(FILETIME t, time_t* res) {
     result |= t.dwLowDateTime;
     result /= 10000;    /* Convert from 100 nano-sec periods to seconds. */
 #if defined(__MINGW32__)
-    result -= 11644473600000ULL;  /* Convert from Windows epoch to Unix epoch */
+    result -= 11644473600000LL;  /* Convert from Windows epoch to Unix epoch */
 #else
     result -= 11644473600000;  /* Convert from Windows epoch to Unix epoch */
 #endif
@@ -1529,18 +1529,27 @@ xmlSecMSCryptoX509CertGetTime(FILETIME t, time_t* res) {
 
 static PCCERT_CONTEXT
 xmlSecMSCryptoX509CertBase64DerRead(xmlChar* buf) {
+    xmlSecSize size;
     int ret;
 
     xmlSecAssert2(buf != NULL, NULL);
 
+    ret = xmlStrlen(buf);
+    if(ret < 0) {
+        xmlSecInternalError("xmlStrlen", NULL);
+        return(NULL);
+    }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
+
     /* usual trick with base64 decoding "in-place" */
-    ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, xmlStrlen(buf));
+    ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, size);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBase64Decode", NULL);
         return(NULL);
     }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
 
-    return(xmlSecMSCryptoX509CertDerRead((xmlSecByte*)buf, ret));
+    return(xmlSecMSCryptoX509CertDerRead((xmlSecByte*)buf, size));
 }
 
 
@@ -1563,19 +1572,14 @@ xmlSecMSCryptoX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
 static xmlChar*
 xmlSecMSCryptoX509CertBase64DerWrite(PCCERT_CONTEXT cert, int base64LineWrap) {
     xmlChar *res = NULL;
-    xmlSecByte *p = NULL;
-    long size;
+    xmlSecSize size;
 
     xmlSecAssert2(cert != NULL, NULL);
+    xmlSecAssert2(cert->pbCertEncoded != NULL, NULL);
+    xmlSecAssert2(cert->cbCertEncoded > 0, NULL);
 
-    p = cert->pbCertEncoded;
-    size = cert->cbCertEncoded;
-    if((size <= 0) || (p == NULL)){
-        xmlSecMSCryptoError("cert->pbCertEncoded", NULL);
-        return(NULL);
-    }
-
-    res = xmlSecBase64Encode(p, size, base64LineWrap);
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(cert->cbCertEncoded, size, return(NULL), NULL);
+    res = xmlSecBase64Encode(cert->pbCertEncoded, size, base64LineWrap);
     if(res == NULL) {
         xmlSecInternalError("xmlSecBase64Encode", NULL);
         return(NULL);
@@ -1587,18 +1591,27 @@ xmlSecMSCryptoX509CertBase64DerWrite(PCCERT_CONTEXT cert, int base64LineWrap) {
 static PCCRL_CONTEXT
 xmlSecMSCryptoX509CrlBase64DerRead(xmlChar* buf,
                                    xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecSize size;
     int ret;
 
     xmlSecAssert2(buf != NULL, NULL);
 
+    ret = xmlStrlen(buf);
+    if (ret < 0) {
+        xmlSecInternalError("xmlStrlen", NULL);
+        return(NULL);
+    }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
+
     /* usual trick with base64 decoding "in-place" */
-    ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, xmlStrlen(buf));
+    ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, size);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBase64Decode", NULL);
         return(NULL);
     }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
 
-    return(xmlSecMSCryptoX509CrlDerRead((xmlSecByte*)buf, ret, keyInfoCtx));
+    return(xmlSecMSCryptoX509CrlDerRead((xmlSecByte*)buf, size, keyInfoCtx));
 }
 
 
@@ -1624,19 +1637,14 @@ xmlSecMSCryptoX509CrlDerRead(xmlSecByte* buf, xmlSecSize size,
 static xmlChar*
 xmlSecMSCryptoX509CrlBase64DerWrite(PCCRL_CONTEXT crl, int base64LineWrap) {
     xmlChar *res = NULL;
-    xmlSecByte *p = NULL;
-    long size;
+    xmlSecSize size;
 
     xmlSecAssert2(crl != NULL, NULL);
+    xmlSecAssert2(crl->pbCrlEncoded != NULL, NULL);
+    xmlSecAssert2(crl->cbCrlEncoded > 0, NULL);
 
-    p = crl->pbCrlEncoded;
-    size = crl->cbCrlEncoded;
-    if((size <= 0) || (p == NULL)){
-        xmlSecMSCryptoError("crl->pbCrlEncoded", NULL);
-        return(NULL);
-    }
-
-    res = xmlSecBase64Encode(p, size, base64LineWrap);
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(crl->cbCrlEncoded, size, return(NULL), NULL);
+    res = xmlSecBase64Encode(crl->pbCrlEncoded, size, base64LineWrap);
     if(res == NULL) {
         xmlSecInternalError("xmlSecBase64Encode", NULL);
         return(NULL);

@@ -15,6 +15,7 @@ SET XMLSEC_INCLUDE=%PREFIX%\include;%PREFIX%\include\libxml2;%OPENSSL_PREFIX%\in
 SET XMLSEC_LIB=%PREFIX%\lib;%OPENSSL_PREFIX%\lib;%MSSDK_LIB%
 SET XMLSEC_OPTIONS=static=no iconv=no debug=yes xslt=yes crypto=%XMLSEC_CRYPTO% unicode=no
 
+nmake clean
 del /F Makefile configure.txt
 cscript configure.js pedantic=yes prefix=%PREFIX% %XMLSEC_OPTIONS% include=%XMLSEC_INCLUDE% lib=%XMLSEC_LIB%
 

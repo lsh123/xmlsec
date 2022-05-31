@@ -364,7 +364,7 @@ xmlSecMSCngGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
     status = BCryptGenRandom(
         NULL,
         (PBYTE)xmlSecBufferGetData(buffer),
-        (ULONG)size,
+        size,
         BCRYPT_USE_SYSTEM_PREFERRED_RNG);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptGenRandom", NULL, status);

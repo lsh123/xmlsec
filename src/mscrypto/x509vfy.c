@@ -151,12 +151,12 @@ xmlSecMSCryptoUnixTimeToFileTime(time_t t, LPFILETIME pft) {
     xmlSecAssert(pft != NULL);
 
 #if defined( __MINGW32__)
-    ll = Int32x32To64(t, 10000000) + 116444736000000000ULL;
+    ll = Int32x32To64(t, 10000000) + 116444736000000000LL;
 #else
     ll = Int32x32To64(t, 10000000) + 116444736000000000;
 #endif
-    pft->dwLowDateTime = (DWORD)ll;
-    pft->dwHighDateTime = ll >> 32;
+    pft->dwLowDateTime  = (DWORD)ll;
+    pft->dwHighDateTime = (DWORD)(ll >> 32);
 }
 
 static BOOL
@@ -1111,6 +1111,55 @@ xmlSecMSCryptoX509GetCertName(const xmlChar * name) {
     return(res);
 }
 
+
+static PCCERT_CONTEXT
+xmlSecMSCryptoX509FindCertBySki(HCERTSTORE store, const xmlChar* ski) {
+    PCCERT_CONTEXT res = NULL;
+    xmlChar* binSki = NULL;
+    CRYPT_HASH_BLOB blob;
+    xmlSecSize size;
+    int ret;
+
+    xmlSecAssert2(store != 0, NULL);
+    xmlSecAssert2(ski != NULL, NULL);
+
+    binSki = xmlStrdup(ski);
+    if (binSki == NULL) {
+        xmlSecStrdupError(ski, NULL);
+        goto done;
+    }
+
+    ret = xmlStrlen(binSki);
+    if (ret < 0) {
+        xmlSecInternalError("xmlStrlen", NULL);
+        goto done;
+    }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, goto done, NULL);
+
+    /* trick: base64 decode "in place" */
+    ret = xmlSecBase64Decode(binSki, (xmlSecByte*)binSki, size);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecBase64Decode", NULL);
+        goto done;
+    }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, goto done, NULL);
+
+    blob.pbData = binSki;
+    blob.cbData = size;
+    res = CertFindCertificateInStore(store,
+        PKCS_7_ASN_ENCODING | X509_ASN_ENCODING,
+        0,
+        CERT_FIND_KEY_IDENTIFIER,
+        &blob,
+        NULL);
+
+done:
+    if (binSki != NULL) {
+        xmlFree(binSki);
+    }
+    return(res);
+}
+
 static PCCERT_CONTEXT
 xmlSecMSCryptoX509FindCert(HCERTSTORE store,
                 const xmlChar *subjectName,
@@ -1192,33 +1241,7 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store,
     }
 
     if((pCert == NULL) && (ski != NULL)) {
-        CRYPT_HASH_BLOB blob;
-        xmlChar* binSki;
-        int binSkiLen;
-
-        binSki = xmlStrdup(ski);
-        if(binSki == NULL) {
-            xmlSecStrdupError(ski, NULL);
-            return (NULL);
-        }
-
-        /* trick: base64 decode "in place" */
-        binSkiLen = xmlSecBase64Decode(binSki, (xmlSecByte*)binSki, xmlStrlen(binSki));
-        if(binSkiLen < 0) {
-            xmlSecInternalError("xmlSecBase64Decode", NULL);
-            xmlFree(binSki);
-            return(NULL);
-        }
-
-        blob.pbData = binSki;
-        blob.cbData = binSkiLen;
-        pCert = CertFindCertificateInStore(store,
-                        PKCS_7_ASN_ENCODING | X509_ASN_ENCODING,
-                        0,
-                        CERT_FIND_KEY_IDENTIFIER,
-                        &blob,
-                        NULL);
-        xmlFree(binSki);
+        pCert = xmlSecMSCryptoX509FindCertBySki(store, ski);
     }
 
     return(pCert);

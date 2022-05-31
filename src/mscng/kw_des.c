@@ -67,6 +67,7 @@ xmlSecMSCngKWDes3GenerateRandom(void * context, xmlSecByte * out,
         xmlSecSize outSize)
 {
     NTSTATUS status;
+    int res;
 
     UNREFERENCED_PARAMETER(context);
     xmlSecAssert2(out != NULL, -1);
@@ -81,8 +82,8 @@ xmlSecMSCngKWDes3GenerateRandom(void * context, xmlSecByte * out,
         xmlSecMSCngNtError("BCryptGenRandom", NULL, status);
         return(-1);
     }
-
-    return((int)outSize);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(outSize, res, return(-1), NULL);
+    return(res);
 }
 
 static int
@@ -181,7 +182,7 @@ xmlSecMSCngKWDes3Sha1(void * context, const xmlSecByte * in, xmlSecSize inSize,
         goto done;
     }
     memcpy(out, pbHash, outSize);
-    res = cbHash;
+    XMLSEC_SAFE_CAST_ULONG_TO_INT(cbHash, res, goto done, NULL);
 
 done:
 
@@ -300,7 +301,7 @@ xmlSecMSCngKWDes3BlockEncrypt(void * context, const xmlSecByte * iv,
     }
 
     /* iv len == block len */
-    dwBlockLenLen = sizeof(DWORD);
+    dwBlockLenLen = sizeof(dwBlockLen);
     status = BCryptGetProperty(hAlg,
         BCRYPT_BLOCK_LENGTH,
         (PUCHAR)&dwBlockLen,
@@ -347,8 +348,7 @@ xmlSecMSCngKWDes3BlockEncrypt(void * context, const xmlSecByte * iv,
         xmlSecMSCngNtError("BCryptEncrypt", NULL, status);
         goto done;
     }
-
-    res = cbData;
+    XMLSEC_SAFE_CAST_ULONG_TO_INT(cbData, res, goto done, NULL);
 
 done:
     xmlSecBufferFinalize(&ivCopy);
@@ -465,7 +465,7 @@ xmlSecMSCngKWDes3BlockDecrypt(void * context, const xmlSecByte * iv,
     }
 
     /* iv len == block len */
-    dwBlockLenLen = sizeof(DWORD);
+    dwBlockLenLen = sizeof(dwBlockLen);
     status = BCryptGetProperty(hAlg,
         BCRYPT_BLOCK_LENGTH,
         (PUCHAR)&dwBlockLen,
@@ -502,8 +502,7 @@ xmlSecMSCngKWDes3BlockDecrypt(void * context, const xmlSecByte * iv,
         xmlSecMSCngNtError("BCryptDecrypt", NULL, status);
         goto done;
     }
-
-    res = cbData;
+    XMLSEC_SAFE_CAST_ULONG_TO_INT(cbData, res, goto done, NULL);
 
 done:
     if (hKey != NULL) {
@@ -710,8 +709,7 @@ xmlSecMSCngKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransform
                     XMLSEC_UL_BAD_CAST(keySize), XMLSEC_UL_BAD_CAST(inSize), XMLSEC_UL_BAD_CAST(outSize));
                 return(-1);
             }
-
-            outSize = ret;
+            XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outSize, return(-1), xmlSecTransformGetName(transform));
         } else {
             ret = xmlSecKWDes3Decode(&xmlSecMSCngKWDesKlass, ctx,
                                     xmlSecBufferGetData(in), inSize,
@@ -722,7 +720,7 @@ xmlSecMSCngKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransform
                     XMLSEC_UL_BAD_CAST(keySize), XMLSEC_UL_BAD_CAST(inSize), XMLSEC_UL_BAD_CAST(outSize));
                 return(-1);
             }
-            outSize = ret;
+            XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outSize, return(-1), xmlSecTransformGetName(transform));
         }
 
         ret = xmlSecBufferSetSize(out, outSize);

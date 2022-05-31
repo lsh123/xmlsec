@@ -465,7 +465,7 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
     /* enumerate over certifiates in the store */
     while((cert = CertEnumCertificatesInStore(certStore, cert)) != NULL) {
         DWORD dwData = 0;
-        DWORD dwDataLen = sizeof(DWORD);
+        DWORD dwDataLen = sizeof(dwData);
 
         ret = CertGetCertificateContextProperty(cert, CERT_KEY_SPEC_PROP_ID,
             &dwData, &dwDataLen);
@@ -503,8 +503,7 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
 
     /* at this point we should have a private key */
     if(privKeyData == NULL) {
-        xmlSecInternalError2("xmlSecMSCngAppPkcs12LoadMemory",
-            xmlSecKeyDataGetName(keyData), "privKeyData is NULL", NULL);
+        xmlSecInternalError("privKeyData is NULL", NULL);
         goto cleanup;
     }
 

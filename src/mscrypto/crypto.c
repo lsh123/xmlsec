@@ -31,8 +31,9 @@
 #include <xmlsec/mscrypto/app.h>
 #include <xmlsec/mscrypto/crypto.h>
 #include <xmlsec/mscrypto/x509.h>
-#include "private.h"
 
+#include "private.h"
+#include "../cast_helpers.h"
 
 #define XMLSEC_CONTAINER_NAME_A "xmlsec-key-container"
 #define XMLSEC_CONTAINER_NAME_W L"xmlsec-key-container"
@@ -367,13 +368,12 @@ xmlSecMSCryptoGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
                              "size=%lu", XMLSEC_UL_BAD_CAST(size));
         return(-1);
     }
-
     hProv = xmlSecMSCryptoFindProvider(xmlSecMSCryptoProviderInfo_Random, NULL, CRYPT_VERIFYCONTEXT, FALSE);
     if (0 == hProv) {
         xmlSecInternalError("xmlSecMSCryptoFindProvider", NULL);
         return(-1);
     }
-    if (FALSE == CryptGenRandom(hProv, (DWORD)size, xmlSecBufferGetData(buffer))) {
+    if (FALSE == CryptGenRandom(hProv, size, xmlSecBufferGetData(buffer))) {
         xmlSecMSCryptoError("CryptGenRandom", NULL);
         CryptReleaseContext(hProv,0);
         return(-1);
@@ -392,19 +392,21 @@ xmlSecMSCryptoGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
  * Returns the system error message for the give error code.
  */
 void
-xmlSecMSCryptoGetErrorMessage(DWORD dwError, xmlChar * out, xmlSecSize outSize) {
-    LPTSTR errorText = NULL;
-    DWORD ret;
+xmlSecMSCryptoGetErrorMessage(DWORD dwError, xmlChar * out, int outLen) {
 #ifndef UNICODE
     WCHAR errorTextW[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE];
 #endif /* UNICODE */
+    LPTSTR errorText = NULL;
+    DWORD dwRet;
+    int ret;
 
     xmlSecAssert(out != NULL);
-    xmlSecAssert(outSize > 0);
+    xmlSecAssert(outLen > 0);
+    out[0] = '\0';
 
     /* Use system message tables to retrieve error text, allocate buffer on local
        heap for error text, don't use any inserts/parameters */
-    ret = FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM
+    dwRet = FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM
                       | FORMAT_MESSAGE_ALLOCATE_BUFFER
                       | FORMAT_MESSAGE_IGNORE_INSERTS,
                       NULL,
@@ -413,26 +415,22 @@ xmlSecMSCryptoGetErrorMessage(DWORD dwError, xmlChar * out, xmlSecSize outSize) 
                       (LPTSTR)&errorText,
                       0,
                       NULL);
-    if((ret <= 0) || (errorText == NULL)) {
-        out[0] = '\0';
+    if((dwRet <= 0) || (errorText == NULL)) {
         goto done;
     }
 
 #ifdef UNICODE
-    ret = WideCharToMultiByte(CP_UTF8, 0, errorText, -1, (LPSTR)out, outSize, NULL, NULL);
+    ret = WideCharToMultiByte(CP_UTF8, 0, errorText, -1, (LPSTR)out, outLen, NULL, NULL);
     if(ret <= 0) {
-        out[0] = '\0';
         goto done;
     }
 #else /* UNICODE */
     ret = MultiByteToWideChar(CP_ACP, 0, errorText, -1, errorTextW, XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE);
     if(ret <= 0) {
-        out[0] = '\0';
         goto done;
     }
-    ret = WideCharToMultiByte(CP_UTF8, 0, errorTextW, -1, (LPSTR)out, outSize, NULL, NULL);
+    ret = WideCharToMultiByte(CP_UTF8, 0, errorTextW, -1, (LPSTR)out, outLen, NULL, NULL);
     if(ret <= 0) {
-        out[0] = '\0';
         goto done;
     }
 #endif /* UNICODE */
@@ -597,7 +595,7 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
 
         /* check errors */
         dwLastError = GetLastError();
-        switch(dwLastError) {
+        switch(HRESULT_FROM_WIN32(dwLastError)) {
         case NTE_BAD_KEYSET:
             /* This error can indicate that a newly installed provider
              * does not have a usable key container yet. It needs to be

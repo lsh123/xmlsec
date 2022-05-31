@@ -290,21 +290,31 @@ xmlSecMSCryptoHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSec
 
     cur = xmlSecGetNextElementNode(node->children);
     if((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeHMACOutputLength, xmlSecDSigNs)) {
-        xmlChar *content;
+        xmlSecSize minDgstSize;
+        int ret;
 
-        content = xmlNodeGetContent(cur);
-        if(content != NULL) {
-            ctx->dgstSize = atoi((char*)content);
-            xmlFree(content);
+        ret = xmlSecGetNodeContentAsSize(cur, &ctx->dgstSize, ctx->dgstSize);
+        if (ret != 0) {
+            xmlSecInternalError("xmlSecGetNodeContentAsSize(HMACOutputLength)",
+                xmlSecTransformGetName(transform));
+            return(-1);
         }
 
         /* Ensure that HMAC length is greater than min specified.
            Otherwise, an attacker can set this length to 0 or very
            small value
         */
-        if((int)ctx->dgstSize < xmlSecMSCryptoHmacGetMinOutputLength()) {
+        ret = xmlSecMSCryptoHmacGetMinOutputLength();
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecOpenSSLHmacGetMinOutputLength",
+                xmlSecTransformGetName(transform));
+            return(-1);
+        }
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, minDgstSize, return(-1), xmlSecTransformGetName(transform));
+
+        if (ctx->dgstSize < minDgstSize) {
             xmlSecInvalidNodeContentError(cur, xmlSecTransformGetName(transform),
-                                          "HMAC output length is too small");
+                "HMAC output length is too small");
             return(-1);
         }
 
@@ -521,11 +531,7 @@ xmlSecMSCryptoHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
         }
 
         if(last) {
-            /* TODO: make a MSCrypto compatible assert here */
-            /* xmlSecAssert2((xmlSecSize)EVP_MD_size(ctx->digest) <= sizeof(ctx->dgst), -1); */
-            DWORD retLen;
-            retLen = XMLSEC_MSCRYPTO_MAX_HMAC_SIZE;
-
+            DWORD retLen = XMLSEC_MSCRYPTO_MAX_HMAC_SIZE;
             ret = CryptGetHashParam(ctx->mscHash,
                 HP_HASHVAL,
                 ctx->dgst,

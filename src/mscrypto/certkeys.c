@@ -407,9 +407,9 @@ xmlSecMSCryptoKeyDataCtxDuplicateCert(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xmlSec
 XMLSEC_KEY_DATA_DECLARE(MSCryptoKeyData, xmlSecMSCryptoKeyDataCtx)
 #define xmlSecMSCryptoKeyDataSize XMLSEC_KEY_DATA_SIZE(MSCryptoKeyData)
 
-static int      xmlSecMSCryptoKeyDataDuplicate  (xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src);
-static void             xmlSecMSCryptoKeyDataFinalize   (xmlSecKeyDataPtr data);
-static int              xmlSecMSCryptoKeyDataGetSize    (xmlSecKeyDataPtr data);
+static int        xmlSecMSCryptoKeyDataDuplicate  (xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src);
+static void       xmlSecMSCryptoKeyDataFinalize   (xmlSecKeyDataPtr data);
+static xmlSecSize xmlSecMSCryptoKeyDataGetSize    (xmlSecKeyDataPtr data);
 
 /**
  * xmlSecMSCryptoKeyDataAdoptCert:
@@ -787,11 +787,11 @@ xmlSecMSCryptoKeyDataFinalize(xmlSecKeyDataPtr data) {
     memset(ctx, 0, sizeof(xmlSecMSCryptoKeyDataCtx));
 }
 
-static int
+static xmlSecSize
 xmlSecMSCryptoKeyDataGetSize(xmlSecKeyDataPtr data) {
     xmlSecMSCryptoKeyDataCtxPtr ctx;
     DWORD length = 0;
-    int res;
+    xmlSecSize res;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), 0);
     xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCryptoKeyDataSize), 0);
@@ -807,13 +807,13 @@ xmlSecMSCryptoKeyDataGetSize(xmlSecKeyDataPtr data) {
             &(pCertCtx->pCertInfo->SubjectPublicKeyInfo));
     } else if (xmlSecMSCryptoKeyDataCtxGetKey(ctx) != 0) {
         HCRYPTKEY cryptKey = xmlSecMSCryptoKeyDataCtxGetKey(ctx);
-        DWORD lenlen = sizeof(DWORD);
+        DWORD lenlen = sizeof(length);
 
         if (!CryptGetKeyParam(cryptKey, KP_KEYLEN, (BYTE *)&length, &lenlen, 0)) {
             xmlSecMSCryptoError("CertDuplicateCertificateContext", NULL);
             return(0);
         }
-        xmlSecAssert2(lenlen == sizeof(DWORD), 0);
+        xmlSecAssert2(lenlen == sizeof(length), 0);
     }
 
     XMLSEC_SAFE_CAST_ULONG_TO_SIZE(length, res, return(0), NULL);

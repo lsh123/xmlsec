@@ -128,10 +128,6 @@ jobs:
           mingw-w64-${{ matrix.arch }}-libxml2
           mingw-w64-${{ matrix.arch }}-libxslt
           mingw-w64-${{ matrix.arch }}-libltdl
-          mingw-w64-${{ matrix.arch }}-openssl
-          mingw-w64-${{ matrix.arch }}-nspr
-          mingw-w64-${{ matrix.arch }}-nss
-          mingw-w64-${{ matrix.arch }}-gnutls
     - run: git config --global core.autocrlf input
       shell: bash
     - uses: actions/checkout@v2      

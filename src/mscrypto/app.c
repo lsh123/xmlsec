@@ -540,8 +540,8 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
         if(pCert == NULL) {
             break;
         }
-        dwDataLen = sizeof(DWORD);
-
+        
+        dwDataLen = sizeof(dwData);
         dwData = 0;
         /* Find the certificate that has the private key */
         if((TRUE == CertGetCertificateContextProperty(pCert, CERT_KEY_SPEC_PROP_ID, &dwData, &dwDataLen)) && (dwData > 0)) {

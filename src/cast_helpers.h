@@ -56,8 +56,17 @@
 
 /* Safe cast with limits check: long -> int */
 #define XMLSEC_SAFE_CAST_LONG_TO_INT(srcVal, dstVal, errorAction, errorObject) \
-    if(((srcVal) < (long)INT_MIN) || ((long)INT_MAX < (srcVal))) {   \
-        xmlSecImpossibleCastError(long, XMLSEC_UL_BAD_CAST(srcVal), "%ld",     \
+    if(((srcVal) < (long)INT_MIN) || ((long)INT_MAX < (srcVal))) {             \
+        xmlSecImpossibleCastError(long, (srcVal), "%ld",                       \
+                                 int, INT_MIN, INT_MAX, "%d", (errorObject));  \
+        errorAction;                                                           \
+    }                                                                          \
+    dstVal = (int)(srcVal);                                                    \
+
+/* Safe cast with limits check: unsigned long -> int  (assume ulong >= 0) */
+#define XMLSEC_SAFE_CAST_ULONG_TO_INT(srcVal, dstVal, errorAction, errorObject) \
+    if(XMLSEC_UL_BAD_CAST(INT_MAX) < XMLSEC_UL_BAD_CAST(srcVal)) {             \
+        xmlSecImpossibleCastError(unsigned long, XMLSEC_UL_BAD_CAST(srcVal), "%lu", \
                                  int, INT_MIN, INT_MAX, "%d", (errorObject));  \
         errorAction;                                                           \
     }                                                                          \

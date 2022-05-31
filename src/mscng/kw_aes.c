@@ -175,8 +175,7 @@ xmlSecMSCngKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
         xmlSecMSCngNtError("BCryptEncrypt", NULL, status);
         goto done;
     }
-
-    res = cbData;
+    XMLSEC_SAFE_CAST_ULONG_TO_INT(cbData, res, goto done, NULL);
 
 done:
     if (hKey != NULL) {
@@ -305,8 +304,7 @@ xmlSecMSCngKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
         xmlSecMSCngNtError("BCryptDecrypt", NULL, status);
         goto done;
     }
-
-    res = cbData;
+    XMLSEC_SAFE_CAST_ULONG_TO_INT(cbData, res, goto done, NULL);
 
 done:
     if (hKey != NULL) {
@@ -530,8 +528,7 @@ xmlSecMSCngKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
                     xmlSecTransformGetName(transform));
                 return(-1);
             }
-
-            outSize = ret;
+            XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outSize, return(-1), xmlSecTransformGetName(transform));
         } else {
             ret = xmlSecKWAesDecode(&xmlSecMSCngKWAesKlass, ctx,
                 xmlSecBufferGetData(in), inSize, xmlSecBufferGetData(out),
@@ -541,7 +538,7 @@ xmlSecMSCngKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
                     xmlSecTransformGetName(transform));
                 return(-1);
             }
-            outSize = ret;
+            XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outSize, return(-1), xmlSecTransformGetName(transform));
         }
 
         ret = xmlSecBufferSetSize(out, outSize);

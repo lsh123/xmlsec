@@ -328,7 +328,8 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
     PK11SymKey*  symKey;
     PK11SlotInfo* slot;
     SECItem oriskv;
-    xmlSecSize blockSize;
+    xmlSecSize blockSize, materialSize, resultSize;
+    unsigned int resultLen;
     xmlSecBufferPtr result;
 
     xmlSecAssert2(ctx != NULL, -1);
@@ -346,6 +347,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
                              "size=%lu", XMLSEC_UL_BAD_CAST(xmlSecBufferGetSize(in)));
         return(-1);
     }
+    materialSize = xmlSecBufferGetSize(ctx->material);
 
     if(xmlSecBufferRemoveHead(in, xmlSecBufferGetSize(in)) < 0) {
         xmlSecInternalError2("xmlSecBufferRemoveHead", NULL,
@@ -381,10 +383,12 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
         xmlSecInternalError("xmlSecBufferCreate", NULL);
         return(-1);
     }
+    resultSize = xmlSecBufferGetMaxSize(result);
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(resultSize, resultLen, return(-1), NULL);
 
     oriskv.type = siBuffer;
     oriskv.data = xmlSecBufferGetData(ctx->material);
-    oriskv.len = xmlSecBufferGetSize(ctx->material);
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(materialSize, oriskv.len, return(-1), NULL);
 
     if(encrypt != 0) {
         CK_OBJECT_HANDLE id;
@@ -420,7 +424,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
 
         wrpskv.type = siBuffer;
         wrpskv.data = xmlSecBufferGetData(result);
-        wrpskv.len = xmlSecBufferGetMaxSize(result);
+        wrpskv.len  = resultLen;
 
         if(PK11_PubWrapSymKey(ctx->cipher, ctx->pubkey, symKey, &wrpskv) != SECSuccess) {
             xmlSecNssError("PK11_PubWrapSymKey", NULL);

@@ -514,7 +514,8 @@ xmlSecNssX509FindCert(CERTCertList* certsList, const xmlChar *subjectName,
 
         memset(&subjKeyID, 0, sizeof(subjKeyID));
         subjKeyID.data = ski;
-        subjKeyID.len = size;
+        XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, subjKeyID.len, goto done, NULL);
+
         cert = CERT_FindCertBySubjectKeyID(CERT_GetDefaultCertDB(),
                                            &subjKeyID);
 

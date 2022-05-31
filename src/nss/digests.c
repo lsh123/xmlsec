@@ -265,17 +265,20 @@ xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
 
         inSize = xmlSecBufferGetSize(in);
         if(inSize > 0) {
-            rv = PK11_DigestOp(ctx->digestCtx, xmlSecBufferGetData(in), inSize);
+            unsigned int inLen;
+
+            XMLSEC_SAFE_CAST_SIZE_TO_UINT(inSize, inLen, return(-1), xmlSecTransformGetName(transform));
+            rv = PK11_DigestOp(ctx->digestCtx, xmlSecBufferGetData(in), inLen);
             if (rv != SECSuccess) {
                 xmlSecNssError("PK11_DigestOp", xmlSecTransformGetName(transform));
                 return(-1);
             }
 
-            ret = xmlSecBufferRemoveHead(in, inSize);
+            ret = xmlSecBufferRemoveHead(in, inLen);
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecBufferRemoveHead",
                                      xmlSecTransformGetName(transform),
-                                     "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
+                                     "size=%du", inLen);
                 return(-1);
             }
         }

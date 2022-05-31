@@ -430,6 +430,7 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
                         const xmlSecByte* data, xmlSecSize dataSize,
                         xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLEvpSignatureCtxPtr ctx;
+    unsigned int dataLen;
     int ret;
 
     xmlSecAssert2(xmlSecOpenSSLEvpSignatureCheckId(transform), -1);
@@ -443,10 +444,12 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->digestCtx != NULL, -1);
 
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, dataLen, return(-1), xmlSecTransformGetName(transform));
+
 #ifndef XMLSEC_OPENSSL_API_300
-    ret = EVP_VerifyFinal(ctx->digestCtx, (xmlSecByte*)data, dataSize, ctx->pKey);
+    ret = EVP_VerifyFinal(ctx->digestCtx, (xmlSecByte*)data, dataLen, ctx->pKey);
 #else /* XMLSEC_OPENSSL_API_300 */
-    ret = EVP_VerifyFinal_ex(ctx->digestCtx, (xmlSecByte*)data, dataSize, ctx->pKey, xmlSecOpenSSLGetLibCtx(), NULL);
+    ret = EVP_VerifyFinal_ex(ctx->digestCtx, (xmlSecByte*)data, dataLen, ctx->pKey, xmlSecOpenSSLGetLibCtx(), NULL);
 #endif /* XMLSEC_OPENSSL_API_300 */
     if(ret < 0) {
         xmlSecOpenSSLError("EVP_VerifyFinal",
@@ -543,7 +546,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
         xmlSecAssert2(outSize == 0, -1);
         if(transform->operation == xmlSecTransformOperationSign) {
             int signLen;
-            xmlSecSize signSize;
+            unsigned int signSize;
 
             /* for rsa signatures we get size from EVP_PKEY_size() */
             signLen = EVP_PKEY_size(ctx->pKey);
@@ -552,13 +555,13 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
                                    xmlSecTransformGetName(transform));
                 return(-1);
             }
-            XMLSEC_SAFE_CAST_INT_TO_SIZE(signLen, signSize, return(-1), xmlSecTransformGetName(transform));
+            XMLSEC_SAFE_CAST_INT_TO_UINT(signLen, signSize, return(-1), xmlSecTransformGetName(transform));
 
             ret = xmlSecBufferSetMaxSize(out, signSize);
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecBufferSetMaxSize",
                                      xmlSecTransformGetName(transform),
-                                     "size=%lu", XMLSEC_UL_BAD_CAST(signSize));
+                                     "size=%du", signSize);
                 return(-1);
             }
 
@@ -583,7 +586,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecBufferSetSize",
                                      xmlSecTransformGetName(transform),
-                                    "size=%lu", XMLSEC_UL_BAD_CAST(signSize));
+                                    "size=%du", signSize);
                 return(-1);
             }
         }

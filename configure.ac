@@ -204,16 +204,6 @@ else
 fi
 
 dnl ==========================================================================
-dnl check do we have size_t and its size,
-dnl TODO: will need to replace this and the xmlSecSize define with
-dnl typedef on next ABI refresh
-dnl ==========================================================================
-AC_CHECK_SIZEOF(size_t)
-if test "$ac_cv_sizeof_size_t" -ne "4" ; then
-    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_SIZE_T"
-fi
-
-dnl ==========================================================================
 dnl Check if pkg-config is enabled and installed
 dnl ==========================================================================
 PKGCONFIG_FOUND="no"
@@ -268,6 +258,28 @@ AC_DEFUN([AX_FIND_FOLDER],[
         fi
     done
 ])
+
+dnl ==========================================================================
+dnl check do we have size_t and its size,
+dnl TODO: will need to replace this and the xmlSecSize define with
+dnl typedef on next ABI refresh
+dnl ==========================================================================
+AC_CHECK_SIZEOF(size_t)
+
+XMLSEC_USE_SIZE_T="no"
+AC_ARG_ENABLE([size-t], [AC_HELP_STRING([--enable-size-t], [enable xmsSecSize typedef to size_t (no)])])
+AC_MSG_CHECKING(for using size_t)
+if test "z$enable_size_t" = "zyes" ; then
+    XMLSEC_USE_SIZE_T="yes"
+    AC_MSG_RESULT([yes])
+else
+    XMLSEC_USE_SIZE_T="no"
+    AC_MSG_RESULT([no])
+fi
+
+if test "z$XMLSEC_USE_SIZE_T" != "zyes" -a "$ac_cv_sizeof_size_t" -ne "4" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_SIZE_T"
+fi
 
 dnl ==========================================================================
 dnl find libxml
@@ -1572,20 +1584,22 @@ esac
 XMLSEC_NO_MSCRYPTO="1"
 MSCRYPTO_FOUND="no"
 AC_ARG_ENABLE([mscrypto], [AC_HELP_STRING([--enable-mscrypto], [enable mscrypto (no)])])
+AC_MSG_CHECKING(for mscrypto)
 
 dnl Priority 0: Check if library is not needed
-if test "z$enable_mscrypto" = "zno" ; then
+if test "z$enable_mscrypto" != "zyes" ; then
     MSCRYPTO_FOUND="disabled"
+    AC_MSG_RESULT([disabled])
 fi
 
 dnl Priority 1: User sets both CFLAGS and LIBS flags
 if test "z$MSCRYPTO_FOUND" = "zno" -a "z$MSCRYPTO_CFLAGS" != "z" -a "z$MSCRYPTO_LIBS" != "z" ; then
     MSCRYPTO_FOUND=yes
+    AC_MSG_RESULT([yes])
 fi
 
 dnl Priority 2: Just try to compile/link and hope for the best
 if test "z$MSCRYPTO_FOUND" = "zno" ; then
-    AC_MSG_CHECKING(for mscrypto)
     OLD_CPPFLAGS=$CPPFLAGS
     CPPFLAGS="$CPPFLAGS $MSCRYPTO_CFLAGS"
     OLD_LIBS=$LIBS
@@ -1643,20 +1657,22 @@ MSCNG_LIBS_LIST="-lcrypt32 -lbcrypt -lncrypt"
 XMLSEC_NO_MSCNG="1"
 MSCNG_FOUND="no"
 AC_ARG_ENABLE([mscng], [AC_HELP_STRING([--enable-mscng], [enable mscng (no)])])
+AC_MSG_CHECKING(for mscng)
 
 dnl Priority 0: Check if library is not needed
-if test "z$enable_mscng" = "zno" ; then
+if test "z$enable_mscng" != "zyes" ; then
     MSCNG_FOUND="disabled"
+    AC_MSG_RESULT([disabled])
 fi
 
 dnl Priority 1: User sets both CFLAGS and LIBS flags
 if test "z$MSCNG_FOUND" = "zno" -a "z$MSCNG_CFLAGS" != "z" -a "z$MSCNG_LIBS" != "z" ; then
     MSCNG_FOUND=yes
+    AC_MSG_RESULT([yes])
 fi
 
 dnl Priority 2: Just try to compile/link and hope for the best
 if test "z$MSCNG_FOUND" = "zno" ; then
-    AC_MSG_CHECKING(for mscng)
     OLD_CPPFLAGS=$CPPFLAGS
     CPPFLAGS="$CPPFLAGS $MSCNG_CFLAGS"
     OLD_LIBS=$LIBS

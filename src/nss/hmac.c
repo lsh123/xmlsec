@@ -342,6 +342,7 @@ xmlSecNssHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecNssHmacCtxPtr ctx;
     xmlSecKeyDataPtr value;
     xmlSecBufferPtr buffer;
+    xmlSecSize bufferSize;
     SECItem keyItem;
     SECItem ignore;
     PK11SlotInfo* slot;
@@ -363,7 +364,8 @@ xmlSecNssHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     buffer = xmlSecKeyDataBinaryValueGetBuffer(value);
     xmlSecAssert2(buffer != NULL, -1);
 
-    if(xmlSecBufferGetSize(buffer) == 0) {
+    bufferSize = xmlSecBufferGetSize(buffer);
+    if(bufferSize <= 0) {
         xmlSecInvalidZeroKeyDataSizeError(xmlSecTransformGetName(transform));
         return(-1);
     }
@@ -371,7 +373,7 @@ xmlSecNssHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     memset(&ignore, 0, sizeof(ignore));
     memset(&keyItem, 0, sizeof(keyItem));
     keyItem.data = xmlSecBufferGetData(buffer);
-    keyItem.len  = xmlSecBufferGetSize(buffer);
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(bufferSize, keyItem.len, return(-1), xmlSecTransformGetName(transform));
 
     slot = PK11_GetBestSlot(ctx->digestType, NULL);
     if(slot == NULL) {
@@ -488,22 +490,25 @@ xmlSecNssHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxP
 
         inSize = xmlSecBufferGetSize(in);
         if(inSize > 0) {
-            rv = PK11_DigestOp(ctx->digestCtx, xmlSecBufferGetData(in), inSize);
+            unsigned int inLen;
+
+            XMLSEC_SAFE_CAST_SIZE_TO_UINT(inSize, inLen, return(-1), xmlSecTransformGetName(transform));
+            rv = PK11_DigestOp(ctx->digestCtx, xmlSecBufferGetData(in), inLen);
             if (rv != SECSuccess) {
                 xmlSecNssError("PK11_DigestOp", xmlSecTransformGetName(transform));
                 return(-1);
             }
 
-            ret = xmlSecBufferRemoveHead(in, inSize);
+            ret = xmlSecBufferRemoveHead(in, inLen);
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecBufferRemoveHead",
                                      xmlSecTransformGetName(transform),
-                                     "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
+                                     "size=%du", inLen);
                 return(-1);
             }
         }
         if(last) {
-            unsigned int dgstSize;
+            unsigned int dgstSize;            
 
             rv = PK11_DigestFinal(ctx->digestCtx, ctx->dgst, &dgstSize, sizeof(ctx->dgst));
             if(rv != SECSuccess) {
@@ -516,7 +521,8 @@ xmlSecNssHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxP
             if(ctx->dgstSize == 0) {
                 ctx->dgstSize = dgstSize * 8; /* no dgst size specified, use all we have */
             } else if(ctx->dgstSize <= 8 * dgstSize) {
-                dgstSize = ((ctx->dgstSize + 7) / 8); /* we need to truncate result digest */
+                xmlSecSize adjustedDigestSize = ((ctx->dgstSize + 7) / 8); /* we need to truncate result digest */
+                XMLSEC_SAFE_CAST_SIZE_TO_UINT(adjustedDigestSize, dgstSize, return(-1), xmlSecTransformGetName(transform));
             } else {
                 xmlSecInvalidSizeLessThanError("HMAC digest (bits)",
                                         8 * dgstSize, ctx->dgstSize,

@@ -2383,10 +2383,10 @@ static xmlSecTransformIOBufferPtr xmlSecTransformIOBufferCreate (xmlSecTransform
 static void     xmlSecTransformIOBufferDestroy                  (xmlSecTransformIOBufferPtr buffer);
 static int      xmlSecTransformIOBufferRead                     (xmlSecTransformIOBufferPtr buffer,
                                                                  xmlSecByte *buf,
-                                                                 xmlSecSize size);
+                                                                 int len);
 static int      xmlSecTransformIOBufferWrite                    (xmlSecTransformIOBufferPtr buffer,
                                                                  const xmlSecByte *buf,
-                                                                 xmlSecSize size);
+                                                                 int len);
 static int      xmlSecTransformIOBufferClose                    (xmlSecTransformIOBufferPtr buffer);
 
 
@@ -2516,7 +2516,8 @@ xmlSecTransformIOBufferDestroy(xmlSecTransformIOBufferPtr buffer) {
 
 static int
 xmlSecTransformIOBufferRead(xmlSecTransformIOBufferPtr buffer,
-                            xmlSecByte *buf, xmlSecSize size) {
+                            xmlSecByte *buf, int len) {
+    xmlSecSize size;
     int ret;
     int res;
 
@@ -2526,6 +2527,7 @@ xmlSecTransformIOBufferRead(xmlSecTransformIOBufferPtr buffer,
     xmlSecAssert2(buffer->transformCtx != NULL, -1);
     xmlSecAssert2(buf != NULL, -1);
 
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(-1), xmlSecTransformGetName(buffer->transform));
     ret = xmlSecTransformPopBin(buffer->transform, buf, size, &size, buffer->transformCtx);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformPopBin",
@@ -2538,7 +2540,8 @@ xmlSecTransformIOBufferRead(xmlSecTransformIOBufferPtr buffer,
 
 static int
 xmlSecTransformIOBufferWrite(xmlSecTransformIOBufferPtr buffer,
-                            const xmlSecByte *buf, xmlSecSize size) {
+                            const xmlSecByte *buf, int len) {
+    xmlSecSize size;
     int ret;
     int res;
 
@@ -2548,6 +2551,7 @@ xmlSecTransformIOBufferWrite(xmlSecTransformIOBufferPtr buffer,
     xmlSecAssert2(buffer->transformCtx != NULL, -1);
     xmlSecAssert2(buf != NULL, -1);
 
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(-1), xmlSecTransformGetName(buffer->transform));
     ret = xmlSecTransformPushBin(buffer->transform, buf, size, 0, buffer->transformCtx);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformPushBin",

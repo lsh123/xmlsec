@@ -988,9 +988,8 @@ int wmain(int argc, wchar_t *argv[]) {
 #else /* defined(XMLSEC_WINDOWS) && defined(UNICODE) */
 int main(int argc, const char **argv) {
 #endif /* defined(XMLSEC_WINDOWS) && defined(UNICODE) */
-
-#if defined(XMLSEC_WINDOWS)
     const char** utf8_argv = NULL; /* TODO: this should be xmlChar** but it will break things downstream */
+#if defined(XMLSEC_WINDOWS)
     size_t utf8_argv_size;
 #endif /* defined(XMLSEC_WINDOWS) */
 

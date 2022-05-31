@@ -9,13 +9,13 @@ PROGRAMS = \
 	xmldsigverify
 
 CC	= gcc
-CFLAGS	+= -g $(shell xmlsec1-config --cflags) -DUNIX_SOCKETS
+CFLAGS	+= -g $(shell xmlsec1-config --cflags) -DUNIX_SOCKETS -Wall -Wextra
 LDLIBS	+= -g $(shell xmlsec1-config --libs)
 
 all: $(PROGRAMS)
 
 clean:
-	@rm -rf $(PROGRAMS)
+	rm -rf $(PROGRAMS)
 
 check: $(PROGRAMS)
 	./sign1    sign1-tmpl.xml    rsakey.pem

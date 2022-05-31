@@ -36,7 +36,7 @@ int verify_request(xmlSecKeysMngrPtr mngr);
 int url_decode(char *buf, size_t size);
 
 int 
-main(int argc, char **argv) {
+main(int , char **) {
     xmlSecKeysMngrPtr mngr;
 #ifndef XMLSEC_NO_XSLT
     xsltSecurityPrefsPtr xsltSecPrefs = NULL;
@@ -169,7 +169,7 @@ main(int argc, char **argv) {
 int load_trusted_certs(xmlSecKeysMngrPtr mngr, const char* path, int report_loaded_certs) {
     DIR* dir;
     struct dirent* entry;
-    char filename[256];
+    char filename[2048];
     int len;
     
     assert(mngr);
@@ -238,7 +238,7 @@ int load_keys(xmlSecKeysMngrPtr mngr, const char* path, int report_loaded_keys) 
 int 
 verify_request(xmlSecKeysMngrPtr mngr) {
     xmlBufferPtr buffer = NULL;
-    char buf[256];
+    xmlSecByte buf[256];
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
@@ -260,7 +260,7 @@ verify_request(xmlSecKeysMngrPtr mngr) {
             fprintf(stdout,"Error: read failed\n");
             goto done;  
         }
-        xmlBufferAdd(buffer, buf, ret);
+        xmlBufferAdd(buffer, buf, (xmlSecSize)ret);
     }
 
     /* is the document submitted from the form? */
@@ -272,7 +272,7 @@ verify_request(xmlSecKeysMngrPtr mngr) {
     /** 
      * Load doc 
      */
-    doc = xmlReadMemory(xmlBufferContent(buffer), xmlBufferLength(buffer),
+    doc = xmlReadMemory((const char*)xmlBufferContent(buffer), xmlBufferLength(buffer),
                         NULL, NULL,
                         XML_PARSE_NOENT | XML_PARSE_NOCDATA | 
                         XML_PARSE_PEDANTIC | XML_PARSE_NOCDATA);
@@ -359,23 +359,23 @@ done:
  * a negative value if an error occurs.
  */
 int url_decode(char *buf, size_t size) {
-    char *p1, *p2;
+    size_t ii, jj;
+    char ch;
     
     assert(buf);
     
-    p1 = p2 = buf;
-    while(p1 - buf < size) {
-        if(((*p1) == '%') && ((p1 - buf) <= (size - 3))) {
-            *(p2++) = (char)(toHex(p1[1]) * 16 + toHex(p1[2]));
-            p1 += 3;        
-        } else if((*p1) == '+') {
-            *(p2++) = ' ';
-            p1++;           
-        } else {
-            *(p2++) = *(p1++);
+    for(ii = jj = 0; ii < size; ++ii, ++jj) {
+        ch = buf[ii];
+        if((ch == '%') && ((ii + 2) < size)) {
+            buf[jj] = (char)(toHex(buf[ii + 1]) * 16 + toHex(buf[ii + 2]));
+            ii += 2;
+        } else if(ch == '+') {
+            buf[jj] = ' ';
+        } else if(ii != jj){
+            buf[jj] = buf[ii];
         }
     }
-    return(p2 - buf);
+    return((int)jj);
 }
 
 

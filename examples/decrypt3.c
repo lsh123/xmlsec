@@ -346,14 +346,14 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
     
     if((keyInfoCtx->keyReq.keyId == xmlSecKeyDataDsaId) || (keyInfoCtx->keyReq.keyId == xmlSecKeyDataRsaId)) {
         /* load key from a pem file, if key is not found then it's an error (is it?) */
-        key = xmlSecCryptoAppKeyLoad(name, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
+        key = xmlSecCryptoAppKeyLoad((const char*)name, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
         if(key == NULL) {
             fprintf(stderr,"Error: failed to load public pem key from \"%s\"\n", name);
             return(NULL);
         }
     } else {
         /* otherwise it's a binary key, if key is not found then it's an error (is it?) */
-        key = xmlSecKeyReadBinaryFile(keyInfoCtx->keyReq.keyId, name);
+        key = xmlSecKeyReadBinaryFile(keyInfoCtx->keyReq.keyId, (const char*)name);
         if(key == NULL) {
             fprintf(stderr,"Error: failed to load key from binary file \"%s\"\n", name);
             return(NULL);
@@ -362,7 +362,7 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
 
     /* set key name */
     if(xmlSecKeySetName(key, name) < 0) {
-        fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", name);
+        fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", (const char*)name);
         xmlSecKeyDestroy(key);
         return(NULL);   
     }

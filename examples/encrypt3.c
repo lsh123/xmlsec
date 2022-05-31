@@ -287,7 +287,7 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
     }
     
     /* set key name so we can lookup key when needed */
-    if(xmlSecTmplKeyInfoAddKeyName(keyInfoNode2, key_name) == NULL) {
+    if(xmlSecTmplKeyInfoAddKeyName(keyInfoNode2, BAD_CAST key_name) == NULL) {
         fprintf(stderr, "Error: failed to add key name\n");
         goto done;              
     }

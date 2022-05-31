@@ -131,10 +131,9 @@ XMLSEC_EXPORT int               xmlSecPrintXmlString    (FILE * fd,
  * Macro. Returns the hex value of the @c.
  */
 #define xmlSecGetHex(c) \
-    ((xmlSecByte) \
         ( (('0' <= (c)) && ((c) <= '9')) ? (c) - '0' : \
-        ( (('a' <= (c)) && ((c) <= 'f')) ? (c) - 'a' + (xmlSecByte)10 :  \
-        ( (('A' <= (c)) && ((c) <= 'F')) ? (c) - 'A' + (xmlSecByte)10 : (xmlSecByte)0 ))))
+        ( (('a' <= (c)) && ((c) <= 'f')) ? (c) - 'a' + 10 :  \
+        ( (('A' <= (c)) && ((c) <= 'F')) ? (c) - 'A' + 10 : 0 )))
 
 /*************************************************************************
  *

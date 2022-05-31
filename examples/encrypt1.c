@@ -111,7 +111,7 @@ main(int argc, char **argv) {
         return(-1);
     }
 
-    if(encrypt_file(argv[1], argv[2], secret_data, strlen(secret_data)) < 0) {
+    if(encrypt_file(argv[1], argv[2], BAD_CAST secret_data, strlen(secret_data)) < 0) {
         return(-1);
     }    
     
@@ -187,7 +187,7 @@ encrypt_file(const char* tmpl_file, const char* key_file,
     }
 
     /* set key name to the file name, this is just an example! */
-    if(xmlSecKeySetName(encCtx->encKey, key_file) < 0) {
+    if(xmlSecKeySetName(encCtx->encKey, BAD_CAST key_file) < 0) {
         fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
         goto done;
     }

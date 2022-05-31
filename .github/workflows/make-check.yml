@@ -128,13 +128,14 @@ jobs:
           mingw-w64-${{ matrix.arch }}-libxml2
           mingw-w64-${{ matrix.arch }}-libxslt
           mingw-w64-${{ matrix.arch }}-libltdl
+          mingw-w64-${{ matrix.arch }}-openssl
     - run: git config --global core.autocrlf input
       shell: bash
     - uses: actions/checkout@v2      
     - run: mkdir build
     - name: configure
       working-directory: build
-      run: pwd && ../autogen.sh --build="${{ matrix.arch }}-w64-mingw32" --host="${{ matrix.arch }}-w64-mingw32" --enable-pedantic --enable-mscrypto --enable-mscng ${{ matrix.extra_options }}
+      run: pwd && ../autogen.sh --enable-pedantic --enable-pedantic --build="${{ matrix.arch }}-w64-mingw32" --host="${{ matrix.arch }}-w64-mingw32" --enable-mscrypto --enable-mscng ${{ matrix.extra_options }}
     - name: make
       working-directory: build
       run: make

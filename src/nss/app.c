@@ -149,7 +149,7 @@ xmlSecNssAppCreateSECItem(SECItem *contents, const xmlSecByte* data, xmlSecSize 
     xmlSecAssert2(data != NULL, -1);
 
     contents->data = 0;
-    XMLSEC_SAFE_CAST_SIZE_T_TO_UINT(dataSize, dataLen, return(-1), NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, dataLen, return(-1), NULL);
     if (!SECITEM_AllocItem(NULL, contents, dataLen)) {
         xmlSecNssError("SECITEM_AllocItem", NULL);
         return(-1);

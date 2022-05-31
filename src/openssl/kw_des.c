@@ -374,7 +374,7 @@ xmlSecOpenSSLKWDes3Sha1(void * context,
                        const xmlSecByte * in, xmlSecSize inSize, 
                        xmlSecByte * out, xmlSecSize outSize) {
 #ifdef XMLSEC_OPENSSL_API_300
-    size_t outLen = XMLSEC_SIZE_BAD_CAST(outSize);
+    size_t outSizeT;
     int ret;
     int res;
 #endif /* XMLSEC_OPENSSL_API_300 */
@@ -394,13 +394,14 @@ xmlSecOpenSSLKWDes3Sha1(void * context,
     }
     return(SHA_DIGEST_LENGTH);
 #else /* XMLSEC_OPENSSL_API_300 */
+    outSizeT = outSize;
     ret = EVP_Q_digest(xmlSecOpenSSLGetLibCtx(), OSSL_DIGEST_NAME_SHA1, NULL,
-                       in, inSize, out, &outLen);
+                       in, inSize, out, &outSizeT);
     if(ret != 1) {
         xmlSecOpenSSLError("EVP_Q_digest(SHA1)", NULL);
         return(-1);
     }
-    XMLSEC_SAFE_CAST_SIZE_T_TO_INT(outLen, res, return(-1), NULL);
+    XMLSEC_SAFE_CAST_SIZE_T_TO_INT(outSizeT, res, return(-1), NULL);
     return(res);
 #endif /* XMLSEC_OPENSSL_API_300 */
 }
@@ -511,18 +512,33 @@ xmlSecOpenSSLKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
     EVP_CIPHER*         cipher = NULL;
 #endif /* XMLSEC_OPENSSL_API_300 */
     EVP_CIPHER_CTX* cipherCtx = NULL;
+    xmlSecSize size;
     int inLen, updateLen, finalLen;
     int ret;
     int res = -1;
 
     xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(keySize == (xmlSecSize)EVP_CIPHER_key_length(EVP_des_ede3_cbc()), -1);
     xmlSecAssert2(iv != NULL, -1);
-    xmlSecAssert2(ivSize == (xmlSecSize)EVP_CIPHER_iv_length(EVP_des_ede3_cbc()), -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize > 0, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= inSize, -1);
+
+    ret = EVP_CIPHER_key_length(EVP_des_ede3_cbc());
+    if(ret <= 0) {
+        xmlSecOpenSSLError("EVP_CIPHER_key_length(EVP_des_ede3_cbc)", NULL);
+        goto done;
+    }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, goto done, NULL);
+    xmlSecAssert2(keySize == size, -1);
+
+    ret = EVP_CIPHER_iv_length(EVP_des_ede3_cbc());
+    if (ret <= 0) {
+        xmlSecOpenSSLError("EVP_CIPHER_iv_length(EVP_des_ede3_cbc)", NULL);
+        goto done;
+    }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, goto done, NULL);
+    xmlSecAssert2(ivSize == size, -1);
 
 #ifndef XMLSEC_OPENSSL_API_300
     cipher = EVP_des_ede3_cbc();

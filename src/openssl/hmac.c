@@ -619,22 +619,24 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
                 return(-1);
             }
 #else /* XMLSEC_OPENSSL_API_300 */
-            size_t dgstSize = 0;
+            size_t dgstSizeT = 0;
+            xmlSecSize dgstSize;
 
             xmlSecAssert2(ctx->evpHmacCtx != NULL, -1);
-            ret = EVP_MAC_final(ctx->evpHmacCtx, ctx->dgst, &dgstSize, sizeof(ctx->dgst));
+            ret = EVP_MAC_final(ctx->evpHmacCtx, ctx->dgst, &dgstSizeT, sizeof(ctx->dgst));
             if(ret != 1) {
                 xmlSecOpenSSLError("EVP_MAC_final",
                                    xmlSecTransformGetName(transform));
                 return(-1);
             }
+            XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(dgstSizeT, dgstSize, return(-1), xmlSecTransformGetName(transform));
 #endif /* XMLSEC_OPENSSL_API_300 */
             xmlSecAssert2(dgstSize > 0, -1);
 
             /* check/set the result digest size */
             if(ctx->dgstSize == 0) {
-                ctx->dgstSize = XMLSEC_SIZE_BAD_CAST(dgstSize * 8); /* no dgst size specified, use all we have */
-            } else if(ctx->dgstSize <= XMLSEC_SIZE_BAD_CAST(8 * dgstSize)) {
+                ctx->dgstSize = dgstSize * 8; /* no dgst size specified, use all we have */
+            } else if(ctx->dgstSize <= 8 * dgstSize) {
                 dgstSize = ((ctx->dgstSize + 7) / 8); /* we need to truncate result digest */
             } else {
                 xmlSecInvalidSizeLessThanError("HMAC digest (bits)",
@@ -645,7 +647,7 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
 
             /* finally write result to output */
             if(transform->operation == xmlSecTransformOperationSign) {
-                ret = xmlSecBufferAppend(out, ctx->dgst, XMLSEC_SIZE_BAD_CAST(dgstSize));
+                ret = xmlSecBufferAppend(out, ctx->dgst, dgstSize);
                 if(ret < 0) {
                     xmlSecInternalError2("xmlSecBufferAppend",
                                          xmlSecTransformGetName(transform),

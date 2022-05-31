@@ -416,13 +416,15 @@ static int
 xmlSecGCryptKWDes3GenerateRandom(void * context,
                                  xmlSecByte * out, xmlSecSize outSize) {
     xmlSecGCryptKWDes3CtxPtr ctx = (xmlSecGCryptKWDes3CtxPtr)context;
+    int res;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize > 0, -1);
 
     gcry_randomize(out, outSize, GCRY_STRONG_RANDOM);
-    return((int)outSize);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(outSize, res, return(-1), NULL);
+    return(res);
 }
 
 static int
@@ -498,6 +500,7 @@ xmlSecGCryptKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
     size_t block_len = gcry_cipher_get_algo_blklen(GCRY_CIPHER_3DES);
     gcry_cipher_hd_t cipherCtx;
     gcry_error_t err;
+    int res;
 
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(keySize >= key_len, -1);
@@ -546,7 +549,10 @@ xmlSecGCryptKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
 
     /* done */
     gcry_cipher_close(cipherCtx);
-    return((int)inSize); /* out size == in size */
+
+    /* out size == in size */
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, res, return(-1), NULL);
+    return(res);
 }
 
 

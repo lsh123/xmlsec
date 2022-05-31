@@ -288,7 +288,7 @@ xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
                 return(-1);
             }
             xmlSecAssert2(dgstSize > 0, -1);
-            ctx->dgstSize = XMLSEC_SIZE_BAD_CAST(dgstSize);
+            ctx->dgstSize =dgstSize;
 
             if(transform->operation == xmlSecTransformOperationSign) {
                 ret = xmlSecBufferAppend(out, ctx->dgst, ctx->dgstSize);

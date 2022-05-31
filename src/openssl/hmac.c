@@ -619,15 +619,17 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
                 return(-1);
             }
 #else /* XMLSEC_OPENSSL_API_300 */
-            size_t dgstSize = 0;
+            size_t dgstSizeT = 0;
+            xmlSecSize dgstSize;
 
             xmlSecAssert2(ctx->evpHmacCtx != NULL, -1);
-            ret = EVP_MAC_final(ctx->evpHmacCtx, ctx->dgst, &dgstSize, sizeof(ctx->dgst));
+            ret = EVP_MAC_final(ctx->evpHmacCtx, ctx->dgst, &dgstSizeT, sizeof(ctx->dgst));
             if(ret != 1) {
                 xmlSecOpenSSLError("EVP_MAC_final",
                                    xmlSecTransformGetName(transform));
                 return(-1);
             }
+            XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(dgstSizeT, dgstSize, return(-1), xmlSecTransformGetName(transform));
 #endif /* XMLSEC_OPENSSL_API_300 */
             xmlSecAssert2(dgstSize > 0, -1);
 

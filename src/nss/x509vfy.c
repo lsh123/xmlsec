@@ -693,7 +693,7 @@ xmlSecNssX509NameStringRead(xmlSecByte **str, int *strLen,
                     xmlSecInvalidDataError("two hex digits expected", NULL);
                     return(-1);
                 }
-                *(q++) = (xmlSecByte)(xmlSecGetHex(p[0]) * 16 + xmlSecGetHex(p[1]));
+                *(q++) = xmlSecGetHex(p[0]) * 16 + xmlSecGetHex(p[1]);
                 p += 2;
             } else {
                 if(((++p) - (*str)) >= (*strLen)) {

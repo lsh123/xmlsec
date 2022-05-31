@@ -22,6 +22,32 @@
 
 /******************************************************************************
  *
+ *  TO_BYTE
+ *
+ *****************************************************************************/
+
+ /* Safe cast with limits check: int -> xmlSecByte */
+#define XMLSEC_SAFE_CAST_INT_TO_BYTE(srcVal, dstVal, errorAction, errorObject) \
+    if(((srcVal) < 0) || ((srcVal) > 255)) {                                   \
+        xmlSecImpossibleCastError(int, (srcVal), "%d",                         \
+                                 xmlSecByte, 0, 255, "%d", (errorObject));     \
+        errorAction;                                                           \
+    }                                                                          \
+    dstVal = (xmlSecByte)(srcVal);                                             \
+
+
+ /* Safe cast with limits check: xmlSecSize -> xmlSecByte (assume xmlSecSize > 0) */
+#define XMLSEC_SAFE_CAST_SIZE_TO_BYTE(srcVal, dstVal, errorAction, errorObject) \
+    if((srcVal) > 255)  {                                                       \
+        xmlSecImpossibleCastError(xmlSecSize, XMLSEC_UL_BAD_CAST(srcVal), "%lu",\
+                                 xmlSecByte, 0, 255, "%d", (errorObject));     \
+        errorAction;                                                           \
+    }                                                                          \
+    dstVal = (xmlSecByte)(srcVal);                                             \
+
+
+/******************************************************************************
+ *
  *  TO_INT
  * 
  *****************************************************************************/

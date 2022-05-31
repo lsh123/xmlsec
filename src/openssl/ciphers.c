@@ -459,7 +459,7 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 
         /* set the last byte to the pad length */
         outLen = inLen + padLen;
-        ctx->pad[outLen - 1] = (xmlSecByte)padLen;
+        XMLSEC_SAFE_CAST_INT_TO_BYTE(padLen, ctx->pad[outLen - 1], return(-1), cipherName);
 
         /* update the last 1 or 2 blocks with padding */
         XMLSEC_SAFE_CAST_INT_TO_SIZE(outLen, outSize, return(-1), NULL);

@@ -1170,7 +1170,7 @@ xmlSecOpenSSLX509NameStringRead(xmlSecByte **str, int *strLen,
             xmlSecInvalidDataError("two hex digits expected after escape symbol", NULL);
             return(-1);
         }
-        ch = (xmlSecByte)(xmlSecGetHex(p[0]) * 16 + xmlSecGetHex(p[1]));
+        ch = xmlSecGetHex(p[0]) * 16 + xmlSecGetHex(p[1]);
         if(ingoreTrailingSpaces && !isspace(ch)) {
             nonSpaceLen = qlen + 1;
         }

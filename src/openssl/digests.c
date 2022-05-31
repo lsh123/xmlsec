@@ -421,8 +421,16 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
         }
         if(last) {
             unsigned int dgstSize;
+            xmlSecSize size;
 
-            xmlSecAssert2((xmlSecSize)EVP_MD_size(ctx->digest) <= sizeof(ctx->dgst), -1);
+            ret = EVP_MD_size(ctx->digest);
+            if (ret < 0) {
+                xmlSecOpenSSLError("EVP_MD_size", 
+                                    xmlSecTransformGetName(transform));
+                return(-1);
+            }
+            XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(-1), xmlSecTransformGetName(transform));
+            xmlSecAssert2(size <= sizeof(ctx->dgst), -1);
 
             ret = EVP_DigestFinal(ctx->digestCtx, ctx->dgst, &dgstSize);
             if(ret != 1) {
@@ -431,7 +439,7 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
                 return(-1);
             }
             xmlSecAssert2(dgstSize > 0, -1);
-            ctx->dgstSize = XMLSEC_SIZE_BAD_CAST(dgstSize);
+            ctx->dgstSize = dgstSize;
 
             /* copy result to output */
             if(transform->operation == xmlSecTransformOperationSign) {

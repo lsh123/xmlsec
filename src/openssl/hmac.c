@@ -633,8 +633,8 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
 
             /* check/set the result digest size */
             if(ctx->dgstSize == 0) {
-                ctx->dgstSize = XMLSEC_SIZE_BAD_CAST(dgstSize * 8); /* no dgst size specified, use all we have */
-            } else if(ctx->dgstSize <= XMLSEC_SIZE_BAD_CAST(8 * dgstSize)) {
+                ctx->dgstSize = dgstSize * 8; /* no dgst size specified, use all we have */
+            } else if(ctx->dgstSize <= 8 * dgstSize) {
                 dgstSize = ((ctx->dgstSize + 7) / 8); /* we need to truncate result digest */
             } else {
                 xmlSecInvalidSizeLessThanError("HMAC digest (bits)",
@@ -645,7 +645,7 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
 
             /* finally write result to output */
             if(transform->operation == xmlSecTransformOperationSign) {
-                ret = xmlSecBufferAppend(out, ctx->dgst, XMLSEC_SIZE_BAD_CAST(dgstSize));
+                ret = xmlSecBufferAppend(out, ctx->dgst, dgstSize);
                 if(ret < 0) {
                     xmlSecInternalError2("xmlSecBufferAppend",
                                          xmlSecTransformGetName(transform),

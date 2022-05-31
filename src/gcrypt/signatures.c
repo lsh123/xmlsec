@@ -910,6 +910,7 @@ xmlSecGCryptRsaPkcs1PkSign(int digest, xmlSecKeyDataPtr key_data,
     gcry_sexp_t s_sig = NULL;
     gcry_sexp_t s_tmp;
     gpg_error_t err;
+    int dgstLen;
     int ret;
     int res = -1;
 
@@ -920,10 +921,11 @@ xmlSecGCryptRsaPkcs1PkSign(int digest, xmlSecKeyDataPtr key_data,
     xmlSecAssert2(out != NULL, -1);
 
     /* get the current digest */
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(dgstSize, dgstLen, return(-1), xmlSecGCryptKeyDataRsaGetPrivateKey(key_data));
     err = gcry_sexp_build (&s_data, NULL,
                            "(data (flags pkcs1)(hash %s %b))",
                            gcry_md_algo_name(digest),
-                           (int)dgstSize, dgst);
+                           dgstLen, dgst);
     if((err != GPG_ERR_NO_ERROR) || (s_data == NULL)) {
         xmlSecGCryptError("gcry_sexp_build(data)", err, NULL);
         goto done;
@@ -1004,6 +1006,7 @@ xmlSecGCryptRsaPkcs1PkVerify(int digest, xmlSecKeyDataPtr key_data,
     gcry_mpi_t m_sig = NULL;
     gcry_sexp_t s_sig = NULL;
     gpg_error_t err;
+    int dgstLen;
     int res = -1;
 
     xmlSecAssert2(key_data != NULL, -1);
@@ -1014,10 +1017,11 @@ xmlSecGCryptRsaPkcs1PkVerify(int digest, xmlSecKeyDataPtr key_data,
     xmlSecAssert2(dataSize > 0, -1);
 
     /* get the current digest */
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(dgstSize, dgstLen, return(-1), NULL);
     err = gcry_sexp_build (&s_data, NULL,
                            "(data (flags pkcs1)(hash %s %b))",
                            gcry_md_algo_name(digest),
-                           (int)dgstSize, dgst);
+                           dgstLen, dgst);
     if((err != GPG_ERR_NO_ERROR) || (s_data == NULL)) {
         xmlSecGCryptError("gcry_sexp_build(data)", err, NULL);
         goto done;

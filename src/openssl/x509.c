@@ -405,9 +405,9 @@ xmlSecOpenSSLKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
     ctx = xmlSecOpenSSLX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, NULL);
     xmlSecAssert2(ctx->certsList != NULL, NULL);
-    xmlSecAssert2(pos < (xmlSecSize)sk_X509_num(ctx->certsList), NULL);
 
     XMLSEC_SAFE_CAST_SIZE_TO_INT(pos, iPos, return(NULL), NULL);
+    xmlSecAssert2(iPos < sk_X509_num(ctx->certsList), NULL);
     return(sk_X509_value(ctx->certsList, iPos));
 }
 
@@ -504,9 +504,9 @@ xmlSecOpenSSLKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecAssert2(ctx != NULL, NULL);
 
     xmlSecAssert2(ctx->crlsList != NULL, NULL);
-    xmlSecAssert2(pos < (xmlSecSize)sk_X509_CRL_num(ctx->crlsList), NULL);
 
     XMLSEC_SAFE_CAST_SIZE_TO_INT(pos, iPos, return(NULL), NULL);
+    xmlSecAssert2(iPos < sk_X509_CRL_num(ctx->crlsList), NULL);
     return(sk_X509_CRL_value(ctx->crlsList, iPos));
 }
 

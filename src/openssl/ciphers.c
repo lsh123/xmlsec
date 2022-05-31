@@ -108,11 +108,10 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         /* This is the nonce length for GCM mode rather than an IV */
         ivLen = xmlSecOpenSSLAesGcmNonceLengthInBytes;
     }
-
     xmlSecAssert2(ivLen > 0, -1);
-    xmlSecAssert2((xmlSecSize)ivLen <= sizeof(ctx->iv), -1);
     XMLSEC_SAFE_CAST_INT_TO_SIZE(ivLen, ivSize, return(-1), NULL);
 
+    xmlSecAssert2(ivSize <= sizeof(ctx->iv), -1);
     if(encrypt) {
         /* generate random iv */
 #ifndef XMLSEC_OPENSSL_API_300
@@ -136,7 +135,7 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     } else {
         /* if we don't have enough data, exit and hope that
          * we'll have iv next time */
-        if(xmlSecBufferGetSize(in) < (xmlSecSize)ivLen) {
+        if(xmlSecBufferGetSize(in) < ivSize) {
             return(0);
         }
 
@@ -490,7 +489,7 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         }
 
         /* get the pad length from the last byte */
-        padLen = (xmlSecSize)(outBuf[outLen - 1]);
+        padLen = outBuf[outLen - 1];
         if(padLen > blockLen) {
             xmlSecInvalidIntegerDataError2("padLen", padLen, "blockLen", blockLen,
                 "padLen <= blockLen", cipherName);
@@ -794,7 +793,7 @@ xmlSecOpenSSLEvpBlockCipherFinalize(xmlSecTransformPtr transform) {
 static int
 xmlSecOpenSSLEvpBlockCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
     xmlSecOpenSSLEvpBlockCipherCtxPtr ctx;
-    int cipherKeyLen;
+    int cipherKeyLen, keyBitsLen;
 
     xmlSecAssert2(xmlSecOpenSSLEvpBlockCipherCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
@@ -817,7 +816,8 @@ xmlSecOpenSSLEvpBlockCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReq
     cipherKeyLen = EVP_CIPHER_key_length(ctx->cipher);
     xmlSecAssert2(cipherKeyLen > 0, -1);
 
-    keyReq->keyBitsSize = (xmlSecSize)(8 * cipherKeyLen);
+    keyBitsLen = 8 * cipherKeyLen;
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(keyBitsLen, keyReq->keyBitsSize, return(-1), xmlSecTransformGetName(transform));
     return(0);
 }
 
@@ -842,19 +842,18 @@ xmlSecOpenSSLEvpBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key
 
     cipherKeyLen = EVP_CIPHER_key_length(ctx->cipher);
     xmlSecAssert2(cipherKeyLen > 0, -1);
-    xmlSecAssert2((xmlSecSize)cipherKeyLen <= sizeof(ctx->key), -1);
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(cipherKeyLen, cipherKeySize, return(-1), xmlSecTransformGetName(transform));
+    xmlSecAssert2(cipherKeySize <= sizeof(ctx->key), -1);
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(xmlSecKeyGetValue(key));
     xmlSecAssert2(buffer != NULL, -1);
 
-    if(xmlSecBufferGetSize(buffer) < (xmlSecSize)cipherKeyLen) {
+    if(xmlSecBufferGetSize(buffer) < cipherKeySize) {
         xmlSecInvalidKeyDataSizeError(xmlSecBufferGetSize(buffer), cipherKeyLen,
             xmlSecTransformGetName(transform));
         return(-1);
     }
-
     xmlSecAssert2(xmlSecBufferGetData(buffer) != NULL, -1);
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(cipherKeyLen, cipherKeySize, return(-1), xmlSecTransformGetName(transform));
     memcpy(ctx->key, xmlSecBufferGetData(buffer), cipherKeySize);
 
     ctx->keyInitialized = 1;

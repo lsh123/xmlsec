@@ -51,7 +51,8 @@ typedef void*                                   xmlSecPtr;
  * XMLSEC_SIZE_BAD_CAST:
  * @val:        the value to cast
  *
- * Bad cast to xmlSecSize
+ * Bad cast to xmlSecSize. This macro is deprecated and will be removed in the future 
+ * versions of LibXMLSec.
  */
 #define XMLSEC_SIZE_BAD_CAST(val)               ((xmlSecSize)(val))
 

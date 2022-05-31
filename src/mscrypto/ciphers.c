@@ -284,7 +284,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
                 return(-1);
             }
         }
-        inBuf[blockSize - 1] = (xmlSecByte)(blockSize - inSize);
+        XMLSEC_SAFE_CAST_SIZE_TO_BYTE((blockSize - inSize), inBuf[blockSize - 1], return(-1), cipherName);
         inSize = blockSize;
     } else {
         if(inSize != blockSize) {

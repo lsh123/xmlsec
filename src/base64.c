@@ -53,9 +53,9 @@ static const xmlSecByte base64[] =
 #define xmlSecBase64Encode3(b, c)       ((((b) << 2) & 0x3c) + (((c) >> 6) & 0x03))
 #define xmlSecBase64Encode4(c)          ((c) & 0x3F)
 
-#define xmlSecBase64Decode1(a, b)       (((a) << 2) | (((b) & 0x3F) >> 4))
-#define xmlSecBase64Decode2(b, c)       (((b) << 4) | (((c) & 0x3F) >> 2))
-#define xmlSecBase64Decode3(c, d)       (((c) << 6) | ((d) & 0x3F))
+#define xmlSecBase64Decode1(a, b)       ((xmlSecByte)(((a) << 2) | (((b) & 0x3F) >> 4)))
+#define xmlSecBase64Decode2(b, c)       ((xmlSecByte)(((b) << 4) | (((c) & 0x3F) >> 2)))
+#define xmlSecBase64Decode3(c, d)       ((xmlSecByte)(((c) << 6) | ((d) & 0x3F)))
 
 #define xmlSecIsBase64Char(ch)          ((((ch) >= 'A') && ((ch) <= 'Z')) || \
                                          (((ch) >= 'a') && ((ch) <= 'z')) || \
@@ -429,17 +429,17 @@ xmlSecBase64CtxDecodeByte(xmlSecBase64CtxPtr ctx, xmlSecByte inByte, xmlSecByte*
         ++ctx->inPos;
         return(xmlSecBase64StatusNext);
     } else if(ctx->inPos == 1) {
-        (*outByte) = (xmlSecByte)xmlSecBase64Decode1(ctx->inByte, inByte);
+        (*outByte) = xmlSecBase64Decode1(ctx->inByte, inByte);
         ctx->inByte = inByte;
         ++ctx->inPos;
         return(xmlSecBase64StatusConsumeAndNext);
     } else if(ctx->inPos == 2) {
-        (*outByte) = (xmlSecByte)xmlSecBase64Decode2(ctx->inByte, inByte);
+        (*outByte) = xmlSecBase64Decode2(ctx->inByte, inByte);
         ctx->inByte = inByte;
         ++ctx->inPos;
         return(xmlSecBase64StatusConsumeAndNext);
     } else if(ctx->inPos == 3) {
-        (*outByte) = (xmlSecByte)xmlSecBase64Decode3(ctx->inByte, inByte);
+        (*outByte) = xmlSecBase64Decode3(ctx->inByte, inByte);
         ctx->inByte = 0;
         ctx->inPos = 0;
         return(xmlSecBase64StatusConsumeAndNext);

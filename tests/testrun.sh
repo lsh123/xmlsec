@@ -12,6 +12,7 @@ topfolder="$3"
 xmlsec_app="$4"
 file_format="$5"
 timestamp=`date +%Y%m%d_%H%M%S`
+exit_code=0
 
 if [ "z$OS_ARCH" = "zCygwin" ] ; then
     topfolder=`cygpath -wa "$topfolder"`
@@ -147,7 +148,7 @@ printRes() {
     actual_res="$2"
 
     # convert status to string
-    if [ $actual_res = 0 ]; then
+    if [ $actual_res -eq 0 ]; then
         actual_res_str=$res_success
     else
         actual_res_str=$res_fail
@@ -174,7 +175,7 @@ printRes() {
 
 printCheckStatus() {
     check_res="$1"
-    if [ $check_res = 0 ]; then
+    if [ $check_res -eq 0 ]; then
         echo "   OK"
     else
 	count_skip=`expr $count_skip + 1`
@@ -219,7 +220,7 @@ execKeysTest() {
         $xmlsec_app check-key-data $xmlsec_params $req_key_data >> $curlogfile 2>> $curlogfile
         printCheckStatus $?
         res=$?
-        if [ $res != 0 ]; then
+        if [ $res -ne 0 ]; then
 	    cat $curlogfile >> $logfile
 	    cd $old_pwd
             return
@@ -235,13 +236,13 @@ execKeysTest() {
     echo "$extra_vars $VALGRIND $xmlsec_app keys $params $xmlsec_params $keysfile" >>  $curlogfile
     $VALGRIND $xmlsec_app keys $params $xmlsec_params $keysfile >> $curlogfile 2>> $curlogfile
     printRes $expected_res $?
-    if [ $? != 0 ]; then
+    if [ $? -ne 0 ]; then
         failures=`expr $failures + 1`
     fi
 
     # save logs
     cat $curlogfile >> $logfile
-    if [ $failures != 0 ] ; then
+    if [ $failures -ne 0 ] ; then
         cat $curlogfile >> $failedlogfile
     fi
 
@@ -298,7 +299,7 @@ execDSigTest() {
         $xmlsec_app check-transforms $xmlsec_params $req_transforms >> $curlogfile 2>> $curlogfile
         printCheckStatus $?
         res=$?
-        if [ $res != 0 ]; then
+        if [ $res -ne 0 ]; then
             cat $curlogfile >> $logfile
 	    cd $old_pwd
             return
@@ -312,7 +313,7 @@ execDSigTest() {
         $xmlsec_app check-key-data $xmlsec_params $req_key_data >> $curlogfile 2>> $curlogfile
         printCheckStatus $?
         res=$?
-        if [ $res != 0 ]; then
+        if [ $res -ne 0 ]; then
             cat $curlogfile >> $logfile
 	    cd $old_pwd
             return
@@ -325,7 +326,7 @@ execDSigTest() {
         echo "$extra_vars $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params $params1 $full_file.xml" >> $curlogfile
         $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params $params1 $full_file.xml >> $curlogfile 2>> $curlogfile
         printRes $expected_res $?
-        if [ $? != 0 ]; then
+        if [ $? -ne 0 ]; then
             failures=`expr $failures + 1`
         fi
     fi
@@ -335,7 +336,7 @@ execDSigTest() {
         echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params $params2 --output $tmpfile $full_file.tmpl" >> $curlogfile
         $VALGRIND $xmlsec_app sign $xmlsec_params $params2 --output $tmpfile $full_file.tmpl >> $curlogfile 2>> $curlogfile
         printRes $res_success $?
-        if [ $? != 0 ]; then
+        if [ $? -ne 0 ]; then
             failures=`expr $failures + 1`
         fi
     fi
@@ -345,14 +346,14 @@ execDSigTest() {
         echo "$extra_vars $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params $params3 $tmpfile" >> $curlogfile
         $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params $params3 $tmpfile >> $curlogfile 2>> $curlogfile
         printRes $res_success $?
-        if [ $? != 0 ]; then
+        if [ $? -ne  0 ]; then
             failures=`expr $failures + 1`
         fi
     fi
 
     # save logs
     cat $curlogfile >> $logfile
-    if [ $failures != 0 ] ; then
+    if [ $failures -ne 0 ] ; then
         cat $curlogfile >> $failedlogfile
     fi
 
@@ -409,7 +410,7 @@ execEncTest() {
         $xmlsec_app check-transforms $xmlsec_params $req_transforms >> $curlogfile 2>> $curlogfile
         printCheckStatus $?
         res=$?
-        if [ $res != 0 ]; then
+        if [ $res -ne 0 ]; then
 	    cat $curlogfile >> $logfile
 	    cd $old_pwd
             return
@@ -424,7 +425,7 @@ execEncTest() {
         $VALGRIND $xmlsec_app decrypt $xmlsec_params $params1 --output $tmpfile $full_file.xml >> $curlogfile  2>> $curlogfile
         res=$?
         echo "=== TEST RESULT: $res; expected: $expected_res" >> $curlogfile
-        if [ $res = 0 -a "$expected_res" = "$res_success" ]; then
+        if [ $res -eq 0 -a "$expected_res" = "$res_success" ]; then
             if [ "z$outputTransform" != "z" ] ; then
                 cat $tmpfile | $outputTransform > $tmpfile.2
                 mv $tmpfile.2 $tmpfile
@@ -434,7 +435,7 @@ execEncTest() {
         else
             printRes $expected_res $res
         fi
-    	if [ $? != 0 ]; then
+    	if [ $? -ne 0 ]; then
             failures=`expr $failures + 1`
     	fi
     fi
@@ -445,7 +446,7 @@ execEncTest() {
         echo "$extra_vars $VALGRIND $xmlsec_app encrypt $xmlsec_params $params2 --output $tmpfile $full_file.tmpl" >>  $curlogfile
         $VALGRIND $xmlsec_app encrypt $xmlsec_params $params2 --output $tmpfile $full_file.tmpl >> $curlogfile 2>> $curlogfile
         printRes $res_success $?
-        if [ $? != 0 ]; then
+        if [ $? -ne 0 ]; then
             failures=`expr $failures + 1`
         fi
     fi
@@ -456,7 +457,7 @@ execEncTest() {
         echo "$extra_vars $VALGRIND $xmlsec_app decrypt $xmlsec_params $params3 --output $tmpfile.2 $tmpfile" >>  $curlogfile
         $VALGRIND $xmlsec_app decrypt $xmlsec_params $params3 --output $tmpfile.2 $tmpfile >> $curlogfile 2>> $curlogfile
         res=$?
-        if [ $res = 0 ]; then
+        if [ $res -eq 0 ]; then
             if [ "z$outputTransform" != "z" ] ; then
                 cat $tmpfile.2 | $outputTransform > $tmpfile
                 mv $tmpfile $tmpfile.2
@@ -466,14 +467,14 @@ execEncTest() {
         else
             printRes $res_success $res
         fi
-        if [ $? != 0 ]; then
+        if [ $? -ne 0 ]; then
             failures=`expr $failures + 1`
         fi
     fi
 
     # save logs
     cat $curlogfile >> $logfile
-    if [ $failures != 0 ] ; then
+    if [ $failures -ne 0 ] ; then
         cat $curlogfile >> $failedlogfile
     fi
 
@@ -492,13 +493,17 @@ source "$testfile"
 echo "--- TOTAL OK: $count_success; TOTAL FAILED: $count_fail; TOTAL SKIPPED: $count_skip" >> $logfile
 echo "--- TOTAL OK: $count_success; TOTAL FAILED: $count_fail; TOTAL SKIPPED: $count_skip"
 
-# print log file if failed
-if [ $count_fail != 0 ] ; then
+# print log file if failed (we have to have at least some good tests)
+if [ $count_fail -ne 0 ] ; then
     cat $failedlogfile
+    exit_code=$count_fail
+elif [ $count_success -eq 0 ] ; then
+    cat $logfile
+    exit_code=1
 fi
 
 # cleanup
 rm -rf $tmpfile $tmpfile.2 tmpfile.3 $curlogfile
 
-exit $count_fail
+exit $exit_code
 

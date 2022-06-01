@@ -588,7 +588,7 @@ xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf, xmlNodePtr node, int col
  ************************************************************************/
 static int      xmlSecBufferIOWrite                             (xmlSecBufferPtr buf,
                                                                  const xmlSecByte *data,
-                                                                 xmlSecSize size);
+                                                                 int len);
 static int      xmlSecBufferIOClose                             (xmlSecBufferPtr buf);
 
 /**
@@ -610,13 +610,15 @@ xmlSecBufferCreateOutputBuffer(xmlSecBufferPtr buf) {
 }
 
 static int
-xmlSecBufferIOWrite(xmlSecBufferPtr buf, const xmlSecByte *data, xmlSecSize size) {
+xmlSecBufferIOWrite(xmlSecBufferPtr buf, const xmlSecByte *data, int len) {
+    xmlSecSize size;
     int ret;
     int res;
 
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
 
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(-1), NULL);
     ret = xmlSecBufferAppend(buf, data, size);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferAppend", NULL, "size=%lu", XMLSEC_UL_BAD_CAST(size));

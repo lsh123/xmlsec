@@ -143,18 +143,21 @@ xmlSecNssAppShutdown(void) {
 
 static int
 xmlSecNssAppCreateSECItem(SECItem *contents, const xmlSecByte* data, xmlSecSize dataSize) {
+    unsigned int dataLen;
+
     xmlSecAssert2(contents != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
 
     contents->data = 0;
-    if (!SECITEM_AllocItem(NULL, contents, dataSize)) {
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, dataLen, return(-1), NULL);
+    if (!SECITEM_AllocItem(NULL, contents, dataLen)) {
         xmlSecNssError("SECITEM_AllocItem", NULL);
         return(-1);
     }
 
-    if(dataSize > 0) {
+    if(dataLen > 0) {
         xmlSecAssert2(contents->data != NULL, -1);
-        memcpy(contents->data,  data, dataSize);
+        memcpy(contents->data, data, dataLen);
     }
 
     return (0);

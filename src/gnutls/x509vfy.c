@@ -143,7 +143,7 @@ xmlSecGnuTLSX509StoreFindCert(xmlSecKeyDataStorePtr store,
 
 static int
 xmlSecGnuTLSX509CheckTime(const gnutls_x509_crt_t * cert_list,
-                          xmlSecSize cert_list_length,
+                          xmlSecSize cert_list_size,
                           time_t ts)
 {
     time_t notValidBefore, notValidAfter;
@@ -151,7 +151,7 @@ xmlSecGnuTLSX509CheckTime(const gnutls_x509_crt_t * cert_list,
 
     xmlSecAssert2(cert_list != NULL, -1);
 
-    for(ii = 0; ii < cert_list_length; ++ii) {
+    for(ii = 0; ii < cert_list_size; ++ii) {
         const gnutls_x509_crt_t cert = cert_list[ii];
         if(cert == NULL) {
             continue;
@@ -210,11 +210,11 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
     gnutls_x509_crt_t res = NULL;
     xmlSecSize certs_size = 0;
     gnutls_x509_crt_t * cert_list = NULL;
-    xmlSecSize cert_list_length;
+    xmlSecSize cert_list_size;
     gnutls_x509_crl_t * crl_list = NULL;
-    xmlSecSize crl_list_length;
+    xmlSecSize crl_list_size;
     gnutls_x509_crt_t * ca_list = NULL;
-    xmlSecSize ca_list_length;
+    xmlSecSize ca_list_size;
     time_t verification_time;
     unsigned int flags = 0;
     xmlSecSize ii;
@@ -236,24 +236,24 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
     xmlSecAssert2(ctx != NULL, NULL);
 
     /* Prepare */
-    cert_list_length = certs_size + xmlSecPtrListGetSize(&(ctx->certsUntrusted));
-    if(cert_list_length > 0) {
-        cert_list = (gnutls_x509_crt_t *)xmlMalloc(sizeof(gnutls_x509_crt_t) * cert_list_length);
+    cert_list_size = certs_size + xmlSecPtrListGetSize(&(ctx->certsUntrusted));
+    if(cert_list_size > 0) {
+        cert_list = (gnutls_x509_crt_t *)xmlMalloc(sizeof(gnutls_x509_crt_t) * cert_list_size);
         if(cert_list == NULL) {
-            xmlSecMallocError(sizeof(gnutls_x509_crt_t) * cert_list_length,
+            xmlSecMallocError(sizeof(gnutls_x509_crt_t) * cert_list_size,
                               xmlSecKeyDataStoreGetName(store));
             goto done;
         }
     }
-    crl_list_length = xmlSecPtrListGetSize(crls);
-    if(crl_list_length > 0) {
-        crl_list = (gnutls_x509_crl_t *)xmlMalloc(sizeof(gnutls_x509_crl_t) * crl_list_length);
+    crl_list_size = xmlSecPtrListGetSize(crls);
+    if(crl_list_size > 0) {
+        crl_list = (gnutls_x509_crl_t *)xmlMalloc(sizeof(gnutls_x509_crl_t) * crl_list_size);
         if(crl_list == NULL) {
-            xmlSecMallocError(sizeof(gnutls_x509_crl_t) * crl_list_length,
+            xmlSecMallocError(sizeof(gnutls_x509_crl_t) * crl_list_size,
                               xmlSecKeyDataStoreGetName(store));
             goto done;
         }
-        for(ii = 0; ii < crl_list_length; ++ii) {
+        for(ii = 0; ii < crl_list_size; ++ii) {
             crl_list[ii] = xmlSecPtrListGetItem(crls, ii);
             if(crl_list[ii] == NULL) {
                 xmlSecInternalError("xmlSecPtrListGetItem(crls)",
@@ -263,15 +263,15 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
         }
     }
 
-    ca_list_length = xmlSecPtrListGetSize(&(ctx->certsTrusted));
-    if(ca_list_length > 0) {
-        ca_list = (gnutls_x509_crt_t *)xmlMalloc(sizeof(gnutls_x509_crt_t) * ca_list_length);
+    ca_list_size = xmlSecPtrListGetSize(&(ctx->certsTrusted));
+    if(ca_list_size > 0) {
+        ca_list = (gnutls_x509_crt_t *)xmlMalloc(sizeof(gnutls_x509_crt_t) * ca_list_size);
         if(ca_list == NULL) {
-            xmlSecMallocError(sizeof(gnutls_x509_crt_t) * ca_list_length,
+            xmlSecMallocError(sizeof(gnutls_x509_crt_t) * ca_list_size,
                               xmlSecKeyDataStoreGetName(store));
             goto done;
         }
-        for(ii = 0; ii < ca_list_length; ++ii) {
+        for(ii = 0; ii < ca_list_size; ++ii) {
             ca_list[ii] = xmlSecPtrListGetItem(&(ctx->certsTrusted), ii);
             if(ca_list[ii] == NULL) {
                 xmlSecInternalError("xmlSecPtrListGetItem(certsTrusted)",
@@ -299,7 +299,7 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
     /* We are going to build all possible cert chains and try to verify them */
     for(ii = 0; (ii < certs_size) && (res == NULL); ++ii) {
         gnutls_x509_crt_t cert, cert2;
-        xmlSecSize cert_list_cur_length = 0;
+        xmlSecSize cert_list_cur_size = 0;
         unsigned int verify = 0;
 
         cert = xmlSecPtrListGetItem(certs, ii);
@@ -315,14 +315,14 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
         }
 
         /* build the chain */
-        for(cert2 = cert, cert_list_cur_length = 0;
-            (cert2 != NULL) && (cert_list_cur_length < cert_list_length);
-            ++cert_list_cur_length)
+        for(cert2 = cert, cert_list_cur_size = 0;
+            (cert2 != NULL) && (cert_list_cur_size < cert_list_size);
+            ++cert_list_cur_size)
         {
             gnutls_x509_crt_t tmp;
 
             /* store */
-            cert_list[cert_list_cur_length] = cert2;
+            cert_list[cert_list_cur_size] = cert2;
 
             /* find next */
             tmp = xmlSecGnuTLSX509FindSignerCert(certs, cert2);
@@ -333,11 +333,17 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
         }
 
         /* try to verify */
-	if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) == 0) {
+	    if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) == 0) {
+            unsigned int cert_list_cur_len, ca_list_len, crl_list_len;
+
+            XMLSEC_SAFE_CAST_SIZE_TO_UINT(cert_list_cur_size, cert_list_cur_len, goto done, NULL);
+            XMLSEC_SAFE_CAST_SIZE_TO_UINT(ca_list_size, ca_list_len, goto done, NULL);
+            XMLSEC_SAFE_CAST_SIZE_TO_UINT(crl_list_size, crl_list_len, goto done, NULL);
+
             err = gnutls_x509_crt_list_verify(
-                    cert_list, cert_list_cur_length, /* certs chain */
-                    ca_list, ca_list_length, /* trusted cas */
-                    crl_list, crl_list_length, /* crls */
+                    cert_list, cert_list_cur_len, /* certs chain */
+                    ca_list, ca_list_len, /* trusted cas */
+                    crl_list, crl_list_len, /* crls */
                     flags, /* flags */
                     &verify);
         } else {
@@ -357,7 +363,7 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
 
         /* gnutls doesn't allow to specify "verification" timestamp so
            we have to do it ourselves */
-        ret = xmlSecGnuTLSX509CheckTime(cert_list, cert_list_cur_length, verification_time);
+        ret = xmlSecGnuTLSX509CheckTime(cert_list, cert_list_cur_size, verification_time);
         if(ret != 1) {
             xmlSecInternalError("xmlSecGnuTLSX509CheckTime", NULL);
             /* don't stop, continue! */

@@ -366,7 +366,7 @@ xmlSecNssKWDes3Sha1(void * context,
                     xmlSecByte * out, xmlSecSize outSize) {
     xmlSecNssKWDes3CtxPtr ctx = (xmlSecNssKWDes3CtxPtr)context;
     PK11Context *pk11ctx = NULL;
-    unsigned int outLen = 0;
+    unsigned int inLen, outLen;
     SECStatus status;
     int res;
 
@@ -375,6 +375,9 @@ xmlSecNssKWDes3Sha1(void * context,
     xmlSecAssert2(inSize > 0, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= SHA1_LENGTH, -1);
+
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(inSize, inLen, return(-1), NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(outSize, outLen, return(-1), NULL);
 
     /* Create a pk11ctx for hashing (digesting) */
     pk11ctx = PK11_CreateDigestContext(SEC_OID_SHA1);
@@ -390,14 +393,14 @@ xmlSecNssKWDes3Sha1(void * context,
         return(-1);
     }
 
-    status = PK11_DigestOp(pk11ctx, in, inSize);
+    status = PK11_DigestOp(pk11ctx, in, inLen);
     if (status != SECSuccess) {
         xmlSecNssError("PK11_DigestOp", NULL);
         PK11_DestroyContext(pk11ctx, PR_TRUE);
         return(-1);
     }
 
-    status = PK11_DigestFinal(pk11ctx, out, &outLen, outSize);
+    status = PK11_DigestFinal(pk11ctx, out, &outLen, outLen);
     if (status != SECSuccess) {
         xmlSecNssError("PK11_DigestFinal", NULL);
         PK11_DestroyContext(pk11ctx, PR_TRUE);
@@ -527,7 +530,7 @@ xmlSecNssKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
     }
 
     keyItem.data = (unsigned char *)key;
-    keyItem.len = keySize;
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(keySize, keyItem.len, goto done, NULL);
     symKey = PK11_ImportSymKey(slot, cipherMech, PK11_OriginUnwrap,
                                enc ? CKA_ENCRYPT : CKA_DECRYPT, &keyItem, NULL);
     if (symKey == NULL) {
@@ -536,8 +539,7 @@ xmlSecNssKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
     }
 
     ivItem.data = (unsigned char *)iv;
-    ivItem.len = ivSize;
-
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(ivSize, ivItem.len, goto done, NULL);
     param = PK11_ParamFromIV(cipherMech, &ivItem);
     if (param == NULL) {
         xmlSecNssError("PK11_ParamFromIV", NULL);

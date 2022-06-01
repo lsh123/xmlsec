@@ -1599,7 +1599,7 @@ xmlSecNssX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
     xmlSecAssert2(size > 0, NULL);
 
     derCert.data = (unsigned char *)buf;
-    derCert.len = size;
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, derCert.len, return(NULL), NULL);
 
     /* decode cert and import to temporary cert db */
     cert = __CERT_NewTempCertificate(CERT_GetDefaultCertDB(), &derCert,
@@ -1683,7 +1683,7 @@ xmlSecNssX509CrlDerRead(xmlSecByte* buf, xmlSecSize size,
     xmlSecAssert2(size > 0, NULL);
 
     derCrl.data = buf;
-    derCrl.len = size;
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, derCrl.len, return(NULL), NULL);
 
     /* we're importing a CRL, it is ok to use the internal slot.
      * crlutil does it :)

@@ -548,7 +548,8 @@ xmlSecNssMakeAesKey(const xmlSecByte *key, xmlSecSize keySize, int enc) {
     }
 
     keyItem.data = (unsigned char *)key;
-    keyItem.len = keySize;
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(keySize, keyItem.len, goto done, NULL);
+
     aeskey = PK11_ImportSymKey(slot, cipherMech, PK11_OriginUnwrap,
                                enc ? CKA_ENCRYPT : CKA_DECRYPT, &keyItem, NULL);
     if (aeskey == NULL) {

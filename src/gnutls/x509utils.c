@@ -393,6 +393,7 @@ xmlSecGnuTLSX509CertRead(const xmlSecByte* buf, xmlSecSize size, xmlSecKeyDataFo
     gnutls_x509_crt_t cert = NULL;
     gnutls_x509_crt_fmt_t fmt;
     gnutls_datum_t data;
+    unsigned int bufLen;
     int err;
 
     xmlSecAssert2(buf != NULL, NULL);
@@ -413,6 +414,7 @@ xmlSecGnuTLSX509CertRead(const xmlSecByte* buf, xmlSecSize size, xmlSecKeyDataFo
                          "format=%lu", XMLSEC_UL_BAD_CAST(format));
         return(NULL);
     }
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, bufLen, return(NULL), NULL);
 
     /* read cert */
     err = gnutls_x509_crt_init(&cert);
@@ -422,7 +424,8 @@ xmlSecGnuTLSX509CertRead(const xmlSecByte* buf, xmlSecSize size, xmlSecKeyDataFo
     }
 
     data.data = (unsigned char*)buf;
-    data.size = size;
+    data.size = bufLen;
+    
     err = gnutls_x509_crt_import(cert, &data, fmt);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_x509_crt_import", err, NULL);
@@ -648,6 +651,7 @@ xmlSecGnuTLSX509CrlRead(const xmlSecByte* buf, xmlSecSize size, xmlSecKeyDataFor
     gnutls_x509_crl_t crl = NULL;
     gnutls_x509_crt_fmt_t fmt;
     gnutls_datum_t data;
+    unsigned int bufLen;
     int err;
 
     xmlSecAssert2(buf != NULL, NULL);
@@ -668,6 +672,7 @@ xmlSecGnuTLSX509CrlRead(const xmlSecByte* buf, xmlSecSize size, xmlSecKeyDataFor
                          "format=%lu", XMLSEC_UL_BAD_CAST(format));
         return(NULL);
     }
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, bufLen, return(NULL), NULL);
 
     /* read crl */
     err = gnutls_x509_crl_init(&crl);
@@ -677,7 +682,7 @@ xmlSecGnuTLSX509CrlRead(const xmlSecByte* buf, xmlSecSize size, xmlSecKeyDataFor
     }
 
     data.data = (unsigned char*)buf;
-    data.size = size;
+    data.size = bufLen;
     err = gnutls_x509_crl_import(crl, &data, fmt);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_x509_crl_import", err, NULL);
@@ -822,6 +827,7 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     gnutls_x509_crt_t cert = NULL;
     gnutls_datum_t datum;
     xmlSecSize certsSize;
+    unsigned int dataLen;
     int res = -1;
     int idx;
     int err;
@@ -835,6 +841,8 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     xmlSecAssert2((*key_cert) == NULL, -1);
     xmlSecAssert2(certsList != NULL, -1);
 
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, dataLen, return(-1), NULL);
+
     /* read pkcs12 in internal structure */
     err = gnutls_pkcs12_init(&pkcs12);
     if(err != GNUTLS_E_SUCCESS) {
@@ -843,7 +851,7 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     }
 
     datum.data = (unsigned char *)data;
-    datum.size = dataSize;
+    datum.size = dataLen;
     err = gnutls_pkcs12_import(pkcs12, &datum, GNUTLS_X509_FMT_DER, 0);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_pkcs12_import", err, NULL);
@@ -861,7 +869,7 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     for(idx = 0; ; ++idx) {
         int bag_type;
         int elements_in_bag;
-        xmlSecSize num, ii;
+        unsigned int num, ii;
 
         err = gnutls_pkcs12_bag_init(&bag);
         if(err != GNUTLS_E_SUCCESS) {
@@ -898,7 +906,7 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
             xmlSecGnuTLSError("gnutls_pkcs12_bag_get_count", elements_in_bag, NULL);
             goto done;
         }
-        XMLSEC_SAFE_CAST_INT_TO_SIZE(elements_in_bag, num, goto done, NULL);
+        XMLSEC_SAFE_CAST_INT_TO_UINT(elements_in_bag, num, goto done, NULL);
         for(ii = 0; ii < num; ++ii) {
             bag_type = gnutls_pkcs12_bag_get_type(bag, ii);
             if(bag_type < 0) {

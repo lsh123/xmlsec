@@ -140,7 +140,8 @@ xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
 
     memset(&keyItem, 0, sizeof(keyItem));
     keyItem.data = ctx->key;
-    keyItem.len  = ctx->keySize;
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(ctx->keySize, keyItem.len, return(-1), NULL);
+    
     memset(&ivItem, 0, sizeof(ivItem));
     ivItem.data = ctx->iv;
     XMLSEC_SAFE_CAST_INT_TO_UINT(ivLen, ivItem.len, return(-1), NULL);

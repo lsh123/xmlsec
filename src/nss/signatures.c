@@ -435,7 +435,7 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(ctx != NULL, -1);
 
     signature.data = (unsigned char *)data;
-    signature.len = dataSize;
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, signature.len, return(-1), xmlSecTransformGetName(transform));
 
     if(xmlSecNssSignatureAlgorithmEncoded(ctx->alg)) {
         /* This creates a signature which is ASN1 encoded */
@@ -572,17 +572,20 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
     }
 
     if((transform->status == xmlSecTransformStatusWorking) && (inSize > 0)) {
+        unsigned int inLen;
+
         xmlSecAssert2(outSize == 0, -1);
 
+        XMLSEC_SAFE_CAST_SIZE_TO_UINT(inSize, inLen, return(-1), xmlSecTransformGetName(transform));
         if(transform->operation == xmlSecTransformOperationSign) {
-            status = SGN_Update(ctx->u.sig.sigctx, xmlSecBufferGetData(in), inSize);
+            status = SGN_Update(ctx->u.sig.sigctx, xmlSecBufferGetData(in), inLen);
             if(status != SECSuccess) {
                 xmlSecNssError("SGN_Update",
                                xmlSecTransformGetName(transform));
                 return(-1);
             }
         } else {
-            status = VFY_Update(ctx->u.vfy.vfyctx, xmlSecBufferGetData(in), inSize);
+            status = VFY_Update(ctx->u.vfy.vfyctx, xmlSecBufferGetData(in), inLen);
             if(status != SECSuccess) {
                 xmlSecNssError("VFY_Update",
                                xmlSecTransformGetName(transform));
@@ -590,7 +593,7 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
             }
         }
 
-        ret = xmlSecBufferRemoveHead(in, inSize);
+        ret = xmlSecBufferRemoveHead(in, inLen);
         if(ret < 0) {
             xmlSecInternalError("xmlSecBufferRemoveHead",
                                 xmlSecTransformGetName(transform));

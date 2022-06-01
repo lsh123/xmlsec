@@ -13,8 +13,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - static_linking: true
-          - static_linking: false
+          - config_flags: --enable-static-linking=yes --enable-size-t=yes
+          - config_flags: --enable-static-linking=yes --enable-size-t=no
+          - config_flags: --enable-static-linking=no --enable-size-t=no
     steps:
     - name: install dependencies
       run: |
@@ -26,7 +27,7 @@ jobs:
     - run: mkdir build
     - name: configure
       working-directory: build
-      run: ../autogen.sh --enable-werror --enable-pedantic --enable-static-linking=${{ matrix.static_linking }}
+      run: ../autogen.sh --enable-werror --enable-pedantic ${{ matrix.config_flags }}
     - name: make
       working-directory: build
       run: make
@@ -40,8 +41,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - static_linking: true
-          - static_linking: false
+          - config_flags: --enable-static-linking=yes --enable-size-t=yes
+          - config_flags: --enable-static-linking=yes --enable-size-t=no
+          - config_flags: --enable-static-linking=no --enable-size-t=no
     steps:
     - name: install dependencies
       run: |
@@ -62,7 +64,7 @@ jobs:
           sudo make install
     - name: configure
       working-directory: build
-      run: LD_LIBRARY_PATH="/usr/local/openssl3/lib:/usr/local/openssl3/lib64:$LD_LIBRARY_PATH" ../autogen.sh --with-openssl=/usr/local/openssl3 --enable-werror --enable-pedantic --enable-static-linking=${{ matrix.static_linking }}
+      run: LD_LIBRARY_PATH="/usr/local/openssl3/lib:/usr/local/openssl3/lib64:$LD_LIBRARY_PATH" ../autogen.sh --with-openssl=/usr/local/openssl3 --enable-werror --enable-pedantic  ${{ matrix.config_flags }}
     - name: make
       working-directory: build
       run: make
@@ -76,8 +78,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - static_linking: true
-          - static_linking: false
+          - config_flags: --enable-static-linking=yes --enable-size-t=yes
+          - config_flags: --enable-static-linking=yes --enable-size-t=no
+          - config_flags: --enable-static-linking=no --enable-size-t=no
     steps:
     - name: install dependencies
       run: |
@@ -89,7 +92,7 @@ jobs:
     - run: mkdir build
     - name: configure
       working-directory: build
-      run: ../autogen.sh --enable-werror --enable-pedantic --enable-static-linking=${{ matrix.static_linking }}
+      run: ../autogen.sh --enable-werror --enable-pedantic  ${{ matrix.config_flags }}
     - name: make
       working-directory: build
       run: make
@@ -105,10 +108,13 @@ jobs:
         include:
           - msystem: MINGW64
             arch: x86_64
-            extra_options: --enable-unicode=yes
+            config_flags: --enable-unicode=yes --enable-size-t=yes
           - msystem: MINGW64
             arch: x86_64
-            extra_options: --enable-unicode=no
+            config_flags: --enable-unicode=yes --enable-size-t=no
+          - msystem: MINGW64
+            arch: x86_64
+            config_flags: --enable-unicode=no --enable-size-t=no
     defaults:
       run:
         shell: msys2 {0}  
@@ -135,7 +141,7 @@ jobs:
     - run: mkdir build
     - name: configure
       working-directory: build
-      run: pwd && ../autogen.sh --enable-pedantic --enable-pedantic --build="${{ matrix.arch }}-w64-mingw32" --host="${{ matrix.arch }}-w64-mingw32" --enable-mscrypto --enable-mscng ${{ matrix.extra_options }}
+      run: pwd && ../autogen.sh --enable-pedantic --enable-pedantic --build="${{ matrix.arch }}-w64-mingw32" --host="${{ matrix.arch }}-w64-mingw32" --enable-mscrypto --enable-mscng ${{ matrix.config_flags }}
     - name: make
       working-directory: build
       run: make

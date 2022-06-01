@@ -86,7 +86,7 @@ jobs:
           brew update
           brew install automake autoconf libtool
           # brew install libxml2 libxslt libgcrypt
-          brew install openssl nspr nss gnutls        
+          brew install openssl nspr nss        
     - uses: actions/checkout@v2
     - run: mkdir build
     - name: configure

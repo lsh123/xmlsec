@@ -488,7 +488,8 @@ xmlSecGCryptHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
             if(ctx->dgstSize == 0) {
                 ctx->dgstSize = dgstSize * 8; /* no dgst size specified, use all we have */
             } else if(ctx->dgstSize <= 8 * dgstSize) {
-                dgstSize = ((ctx->dgstSize + 7) / 8); /* we need to truncate result digest */
+                xmlSecSize adjustedDigestSize = ((ctx->dgstSize + 7) / 8); /* we need to truncate result digest */
+                XMLSEC_SAFE_CAST_SIZE_TO_UINT(adjustedDigestSize, dgstSize, return(-1), xmlSecTransformGetName(transform));
             } else {
                 xmlSecInvalidSizeLessThanError("HMAC digest (bits)",
                                         8 * dgstSize, ctx->dgstSize,

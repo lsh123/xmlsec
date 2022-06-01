@@ -108,10 +108,13 @@ jobs:
         include:
           - msystem: MINGW64
             arch: x86_64
-            extra_options: --enable-unicode=yes
+            config_flags: --enable-unicode=yes --enable-size-t=yes
           - msystem: MINGW64
             arch: x86_64
-            extra_options: --enable-unicode=no
+            config_flags: --enable-unicode=yes --enable-size-t=no
+          - msystem: MINGW64
+            arch: x86_64
+            config_flags: --enable-unicode=no --enable-size-t=no
     defaults:
       run:
         shell: msys2 {0}  
@@ -138,7 +141,7 @@ jobs:
     - run: mkdir build
     - name: configure
       working-directory: build
-      run: pwd && ../autogen.sh --enable-pedantic --enable-pedantic --build="${{ matrix.arch }}-w64-mingw32" --host="${{ matrix.arch }}-w64-mingw32" --enable-mscrypto --enable-mscng ${{ matrix.extra_options }}
+      run: pwd && ../autogen.sh --enable-pedantic --enable-pedantic --build="${{ matrix.arch }}-w64-mingw32" --host="${{ matrix.arch }}-w64-mingw32" --enable-mscrypto --enable-mscng ${{ matrix.config_flags }}
     - name: make
       working-directory: build
       run: make

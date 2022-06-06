@@ -36,28 +36,34 @@ environment:
 
   matrix:
     - COMPILER: MSVC22
-      CRYPTO: openssl-110,mscrypto,mscng
-      STATIC: no
+      CRYPTO: mscrypto
+      WITH_DL: yes
       UNICODE: yes
-      WERROR: yes
 
     - COMPILER: MSVC22
-      CRYPTO: openssl-110,mscrypto,mscng
-      STATIC: no
-      UNICODE: no
-      WERROR: yes
+      CRYPTO: mscng
+      WITH_DL: yes
+      UNICODE: yes
+
+    - COMPILER: MSVC22
+      CRYPTO: openssl-110
+      WITH_DL: yes
+      UNICODE: yes
 
     - COMPILER: MSVC22
       CRYPTO: openssl-300
-      STATIC: no
+      WITH_DL: yes
       UNICODE: yes
-      WERROR: yes
 
     - COMPILER: MSVC22
       CRYPTO: mscrypto
-      STATIC: yes
-      UNICODE: yes
-      WERROR: yes
+      WITH_DL: no
+      UNICODE: no
+
+    - COMPILER: MSVC22
+      CRYPTO: mscng
+      WITH_DL: no
+      UNICODE: no
 
 init:
   - git config --global core.autocrlf input
@@ -85,7 +91,7 @@ install:
 
 build_script:
   - cd win32
-  - cscript configure.js static=%STATIC% crypto=%CRYPTO% werror=%WERROR% iconv=no unicode=%UNICODE% prefix=%EXTRAS_FOLDER% include=%XMLSEC_INCLUDE% lib=%XMLSEC_LIB%
+  - cscript configure.js pedantic=yes werror=yes iconv=no static=yes with-dl=%WITH_DL% crypto=%CRYPTO% unicode=%UNICODE% prefix=%EXTRAS_FOLDER% include=%XMLSEC_INCLUDE% lib=%XMLSEC_LIB%
   - nmake
  
 test_script:

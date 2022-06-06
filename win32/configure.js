@@ -118,10 +118,10 @@ function usage()
 	txt += "  unicode:    Build Unicode version (" + (buildUnicode? "yes" : "no")  + ")\n";
 	txt += "  debug:      Build unoptimised debug executables (" + (buildDebug? "yes" : "no")  + ")\n";
 	txt += "  werror:     Build with warnings as errors (" + (buildWerror? "yes" : "no")  + ")\n";
-        txt += "  pedantic:   Build with more warnings enabled (" + (buildPedantic? "yes" : "no") + ")\n";
+    txt += "  pedantic:   Build with more warnings enabled (" + (buildPedantic? "yes" : "no") + ")\n";
 	txt += "  cc:         Build with the specified compiler(" + buildCc  + ")\n";
 	txt += "  cflags:     Build with the specified compiler flags('" + buildCflags  + "')\n";
-	txt += "  static:     Link libxmlsec statically to xmlsec (" + (buildStatic? "yes" : "no")  + ")\n";
+	txt += "  static:     Build static xmlsec libraries (" + (buildStatic? "yes" : "no")  + ")\n";
 	txt += "  with-dl:    Enable dynamic loading of xmlsec-crypto libraries (" + (buildWithDLSupport? "yes" : "no")  + ")\n";
 	txt += "  prefix:     Base directory for the installation (" + buildPrefix + ")\n";
 	txt += "  bindir:     Directory where xmlsec and friends should be installed\n";
@@ -185,7 +185,7 @@ function discoverVersion()
 	vf.WriteLine("UNICODE=" + (buildUnicode? "1" : "0"));
 	vf.WriteLine("DEBUG=" + (buildDebug? "1" : "0"));
 	vf.WriteLine("WERROR=" + (buildWerror? "1" : "0"));
-        vf.WriteLine("PEDANTIC=" + (buildPedantic? "1" : "0"));
+	vf.WriteLine("PEDANTIC=" + (buildPedantic? "1" : "0"));
 	vf.WriteLine("CC=" + buildCc);
 	vf.WriteLine("CFLAGS=" + buildCflags);
 	vf.WriteLine("STATIC=" + (buildStatic? "1" : "0"));
@@ -322,8 +322,8 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			buildDebug = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "werror")
 			buildWerror = strToBool(arg.substring(opt.length + 1, arg.length));
-                else if (opt == "pedantic")
-                        buildPedantic = strToBool(arg.substring(opt.length + 1, arg.length));
+		else if (opt == "pedantic")
+			buildPedantic = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "cc")
 			buildCc = arg.substring(opt.length + 1, arg.length);
 		else if (opt == "cflags")
@@ -389,7 +389,7 @@ for (j = 0; j < crlist.length; j++) {
 		curcrypto="openssl";
 		withOpenSSL = 1;
 		withOpenSSLVersion = "110";
-        } else if (crlist[j] == "openssl=300" || crlist[j] == "openssl-300") {
+	} else if (crlist[j] == "openssl=300" || crlist[j] == "openssl-300") {
 		curcrypto="openssl";
 		withOpenSSL = 1;
 		withOpenSSLVersion = "300";
@@ -461,7 +461,7 @@ txtOut += "Warnings as errors: " + boolToStr(buildWerror) + "\n";
 txtOut += "          Pedantic: " + boolToStr(buildPedantic) + "\n";
 txtOut += "        C compiler: " + buildCc + "\n";
 txtOut += "  C compiler flags: " + buildCflags + "\n";
-txtOut += "     Static xmlsec: " + boolToStr(buildStatic) + "\n";
+txtOut += "Static xmlsec libs: " + boolToStr(buildStatic) + "\n";
 txtOut += " Enable DL support: " + boolToStr(buildWithDLSupport) + "\n";
 txtOut += "    Install prefix: " + buildPrefix + "\n";
 txtOut += "      Put tools in: " + buildBinPrefix + "\n";

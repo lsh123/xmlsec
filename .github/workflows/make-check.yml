@@ -13,9 +13,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - config_flags: --enable-static-linking=yes --enable-size-t=yes
-          - config_flags: --enable-static-linking=yes --enable-size-t=no
-          - config_flags: --enable-static-linking=no --enable-size-t=no
+          - config_flags:
+          - config_flags: --enable-size-t=yes
+          - config_flags: --enable-static-linking=yes --without-nss --without-gcrypt --without-gnutls
     steps:
     - name: install dependencies
       run: |
@@ -41,9 +41,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - config_flags: --enable-static-linking=yes --enable-size-t=yes
-          - config_flags: --enable-static-linking=yes --enable-size-t=no
-          - config_flags: --enable-static-linking=no --enable-size-t=no
+          - config_flags:
+          - config_flags: --enable-size-t=yes
+          - config_flags: --enable-static-linking=yes --without-nss --without-gcrypt --without-gnutls
     steps:
     - name: install dependencies
       run: |
@@ -71,28 +71,27 @@ jobs:
     - name: make check
       working-directory: build
       run: LD_LIBRARY_PATH="/usr/local/openssl3/lib:/usr/local/openssl3/lib64:$LD_LIBRARY_PATH" make check
-      
+
   check-osx:
     runs-on: macos-latest
     strategy:
       fail-fast: false
       matrix:
         include:
-          - config_flags: --enable-static-linking=yes --enable-size-t=yes
-          - config_flags: --enable-static-linking=yes --enable-size-t=no
-          - config_flags: --enable-static-linking=no --enable-size-t=no
+          - config_flags:
+          - config_flags: --enable-size-t=yes
     steps:
     - name: install dependencies
       run: |
           brew update
           brew install automake autoconf libtool
           # brew install libxml2 libxslt libgcrypt
-          brew install openssl nspr nss gnutls        
+          brew install openssl nspr nss        
     - uses: actions/checkout@v2
     - run: mkdir build
     - name: configure
       working-directory: build
-      run: ../autogen.sh --enable-werror --enable-pedantic  ${{ matrix.config_flags }}
+      run: ../autogen.sh --enable-werror --enable-pedantic  ${{ matrix.config_flags }} --without-gcrypt --without-gnutls
     - name: make
       working-directory: build
       run: make

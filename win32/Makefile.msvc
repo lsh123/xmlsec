@@ -58,10 +58,10 @@ AUTOCONF = .\configure.txt
 #
 # Names of various input and output components.
 #
-!if "$(STATIC)" == "1"
-APP_NAME 		= xmlseca.exe
-!else
+!if "$(WITH_DL)" == "1"
 APP_NAME 		= xmlsec.exe
+!else
+APP_NAME 		= xmlseca.exe
 !endif
 APP_NAME_MANIFEST	= $(APP_NAME).manifest
 
@@ -435,9 +435,13 @@ LIBS 			=
 
 # Optimisation and debug symbols.
 !if "$(DEBUG)" == "1"
-LDFLAGS 		= $(LDFLAGS)
+LDFLAGS 		= $(LDFLAGS) /DEBUG /OPT:ICF
 !else
-LDFLAGS 		= $(LDFLAGS) /opt:ref,icf
+LDFLAGS 		= $(LDFLAGS) /OPT:REF,ICF
+!endif
+
+!if "$(PEDANTIC)" == "1"
+LDFLAGS = $(LDFLAGS) /WX
 !endif
 
 SOLIBS 			= $(LIBS) libxml2.lib ws2_32.lib
@@ -454,14 +458,10 @@ SOLIBS 			= $(SOLIBS) libxslt.lib
 ALIBS 			= $(ALIBS) libxslt_a.lib
 !endif
 
-!if "$(STATIC)" == "1"
-APP_LIBS  		= $(ALIBS) $(XMLSEC_CRYPTO_ALIBS)
-!else
-APP_LIBS  		= $(SOLIBS) $(XMLSEC_CRYPTO_SOLIBS)
-!endif
-
 !if "$(WITH_DL)" == "1"
+APP_LIBS  		= $(SOLIBS) $(XMLSEC_CRYPTO_SOLIBS)
 !else
+APP_LIBS  		= $(ALIBS) $(XMLSEC_CRYPTO_ALIBS)
 !endif
 
 !if "$(WITH_OPENSSL_VERSION)" == "XMLSEC_OPENSSL_300"
@@ -488,6 +488,10 @@ XMLSEC_MSCNG_ALIBS   = kernel32.lib user32.lib gdi32.lib Crypt32.lib Advapi32.li
 # The archiver and its options.
 AR = link.exe /lib
 ARFLAGS = /nologo
+
+!if "$(PEDANTIC)" == "1"
+ARFLAGS = $(ARFLAGS) /WX
+!endif
 
 #
 # xmlsec-<default-crypto> options
@@ -543,29 +547,42 @@ XMLSEC_OPENSSL_TEST_CONFIG = openssl3.cnf
 XMLSEC_OPENSSL_TEST_CONFIG =
 !endif
 
+!if "$(STATIC)" == "1"
+EXTRA_ALL_TARGETS=xmlseca
+EXTRA_OPENSSL_TARGETS=openssla
+EXTRA_NSS_TARGETS=nssa
+EXTRA_MSCRYPTO_TARGETS=mscryptoa
+EXTRA_MSCNG_TARGETS=mscnga
+!else
+EXTRA_ALL_TARGETS=
+EXTRA_OPENSSL_TARGETS=
+EXTRA_NSS_TARGETS=
+EXTRA_MSCRYPTO_TARGETS=
+EXTRA_MSCNG_TARGETS=
+!endif
+
 #
 # Build rules
 #
 
-all : xmlsec xmlseca $(WITH_CRYPTO) apps
+all: apps $(EXTRA_ALL_TARGETS)
 
-xmlsec : $(XMLSEC_APPS_INTDIR) $(BINDIR)\$(XMLSEC_SO) $(XMLSEC_DEFAULT_CRYPTO)
+apps: $(BINDIR)\$(APP_NAME)
 
-xmlseca :  $(XMLSEC_APPS_INTDIR_A) $(BINDIR)\$(XMLSEC_A) $(XMLSEC_DEFAULT_CRYPTO_A)
+xmlseca:  $(XMLSEC_APPS_INTDIR_A) $(BINDIR)\$(XMLSEC_A) $(XMLSEC_DEFAULT_CRYPTO_A)
+xmlsec: $(XMLSEC_APPS_INTDIR) $(BINDIR)\$(XMLSEC_SO) $(XMLSEC_DEFAULT_CRYPTO)
 
 openssla: $(BINDIR)\$(XMLSEC_OPENSSL_A)
-openssl: $(BINDIR)\$(XMLSEC_OPENSSL_SO) openssla
+openssl: $(BINDIR)\$(XMLSEC_OPENSSL_SO) $(EXTRA_OPENSSL_TARGETS)
 
 nssa: $(BINDIR)\$(XMLSEC_NSS_A)
-nss: $(BINDIR)\$(XMLSEC_NSS_SO) nssa
+nss: $(BINDIR)\$(XMLSEC_NSS_SO) $(EXTRA_NSS_TARGETS)
 
 mscryptoa: $(BINDIR)\$(XMLSEC_MSCRYPTO_A)
-mscrypto: $(BINDIR)\$(XMLSEC_MSCRYPTO_SO) $(BINDIR)\$(XMLSEC_MSCRYPTO_A)
+mscrypto: $(BINDIR)\$(XMLSEC_MSCRYPTO_SO) $(EXTRA_MSCRYPTO_TARGETS)
 
 mscnga: $(BINDIR)\$(XMLSEC_MSCNG_A)
-mscng: $(BINDIR)\$(XMLSEC_MSCNG_SO) $(BINDIR)\$(XMLSEC_MSCNG_A)
-
-apps : $(BINDIR)\$(APP_NAME)
+mscng: $(BINDIR)\$(XMLSEC_MSCNG_SO) $(EXTRA_MSCNG_TARGETS)
 
 check : check-keys check-dsig check-enc
 
@@ -681,19 +698,15 @@ uninstall :
 	if exist $(BINPREFIX)\$(APP_NAME) del /F /S /Q $(BINPREFIX)\$(APP_NAME)
 	if exist $(BINPREFIX)\$(APP_NAME_MANIFEST) del /F /S /Q $(BINPREFIX)\$(APP_NAME_MANIFEST)
 
-# This is a target for me, to make a binary distribution. Not for the public use,
-# keep your hands off :-)
-BDVERSION = $(XMLSEC_VERSION_MAJOR).$(XMLSEC_VERSION_MINOR).$(XMLSEC_VERSION_SUBMINOR)
-BDPREFIX = $(XMLSEC_BASENAME)-$(BDVERSION).win32
-bindist : all
-	$(MAKE) /nologo PREFIX=$(BDPREFIX) SOPREFIX=$(BDPREFIX)\bin install
-	cscript //NoLogo configure.js genreadme $(XMLSEC_BASENAME) $(BDVERSION) $(BDPREFIX)\readme.txt
-
+#
 # Makes the compiler output directory.
+#
 $(BINDIR) :
 	if not exist $(BINDIR) mkdir $(BINDIR)
 
+#
 # Makes intermediate directories.
+#
 $(XMLSEC_APPS_INTDIR) :
 	if not exist $(XMLSEC_APPS_INTDIR) mkdir $(XMLSEC_APPS_INTDIR)
 $(XMLSEC_APPS_INTDIR_A) :
@@ -724,7 +737,9 @@ $(XMLSEC_MSCNG_INTDIR) :
 $(XMLSEC_MSCNG_INTDIR_A) :
 	if not exist $(XMLSEC_MSCNG_INTDIR_A) mkdir $(XMLSEC_MSCNG_INTDIR_A)
 
+#
 # An implicit rule for xmlsec compilation.
+#
 {$(APPS_SRCDIR)}.c{$(XMLSEC_APPS_INTDIR)}.obj::
 	$(CC) $(CFLAGS) $(APP_CFLAGS) /Fo$(XMLSEC_APPS_INTDIR)\ /c $<
 
@@ -751,7 +766,9 @@ $(XMLSEC_MSCNG_INTDIR_A) :
 {$(XMLSEC_MSCNG_SRCDIR)}.c{$(XMLSEC_MSCNG_INTDIR)}.obj::
 	$(CC) $(CFLAGS) $(XMLSEC_MSCNG_CFLAGS) /Fo$(XMLSEC_MSCNG_INTDIR)\ /c $<
 
+#
 # An implicit rule for static xmlsec compilation.
+#
 {$(APPS_SRCDIR)}.c{$(XMLSEC_APPS_INTDIR_A)}.obj::
 	$(CC) /D "LIBXML_STATIC" /D "LIBXSLT_STATIC" /D "XMLSEC_STATIC" \
 		$(CFLAGS) $(APP_CFLAGS) /Fo$(XMLSEC_APPS_INTDIR_A)\ /c $<
@@ -788,7 +805,9 @@ $(XMLSEC_MSCNG_INTDIR_A) :
 	$(CC) /D "LIBXML_STATIC" /D "LIBXSLT_STATIC" /D "XMLSEC_STATIC" \
 		$(CFLAGS) $(XMLSEC_MSCNG_CFLAGS) /Fo$(XMLSEC_MSCNG_INTDIR_A)\ /c $<
 
+#
 # Compiles xmlsec source. Uses the implicit rule for commands.
+#
 $(XMLSEC_OBJS) : $(XMLSEC_INTDIR)
 $(XMLSEC_OBJS_A) : $(XMLSEC_INTDIR_A)
 
@@ -804,7 +823,9 @@ $(XMLSEC_MSCRYPTO_OBJS_A) : $(XMLSEC_MSCRYPTO_INTDIR_A)
 $(XMLSEC_MSCNG_OBJS) : $(XMLSEC_MSCNG_INTDIR)
 $(XMLSEC_MSCNG_OBJS_A) : $(XMLSEC_MSCNG_INTDIR_A)
 
+#
 # Creates the shared objects and archives.
+#
 $(BINDIR)\$(XMLSEC_SO) : $(BINDIR) $(XMLSEC_OBJS)
 	$(LD) $(LDFLAGS) /DLL /VERSION:$(XMLSEC_VERSION_MAJOR).$(XMLSEC_VERSION_MINOR) \
 		/IMPLIB:$(BINDIR)\$(XMLSEC_IMP) /OUT:$(BINDIR)\$(XMLSEC_SO) \
@@ -840,15 +861,19 @@ $(BINDIR)\$(XMLSEC_MSCNG_SO) : $(BINDIR) $(XMLSEC_MSCNG_OBJS)
 $(BINDIR)\$(XMLSEC_MSCNG_A) : $(BINDIR) $(XMLSEC_MSCNG_OBJS_A)
 	$(AR) $(ARFLAGS) /OUT:$(BINDIR)\$(XMLSEC_MSCNG_A) $(XMLSEC_MSCNG_OBJS_A)
 
+#
 # An implicit rule for xmlsec command line tool
-$(BINDIR)\xmlseca.exe: $(BINDIR) $(XMLSEC_APPS_OBJS_A)
+#
+$(BINDIR)\xmlseca.exe: xmlseca $(BINDIR) $(XMLSEC_APPS_OBJS_A)
 	$(LD) $(LDFLAGS) /OUT:$@ $(XMLSEC_A) $(XMLSEC_CRYPTO_A) $(APP_LIBS) $(XMLSEC_APPS_OBJS_A)
-$(BINDIR)\xmlsec.exe: $(BINDIR) $(XMLSEC_APPS_OBJS)
+$(BINDIR)\xmlsec.exe: xmlsec $(BINDIR) $(XMLSEC_APPS_OBJS)
 	$(LD) $(LDFLAGS) /OUT:$@ $(XMLSEC_IMP) $(XMLSEC_CRYPTO_IMP) $(APP_LIBS) $(XMLSEC_APPS_OBJS)
 
-# Builds xmlsec and friends. Uses the implicit rule for commands.
-$(BINDIR)\$(APP_NAME) : $(BINDIR) xmlsec xmlseca
 
-# Source dependences should be autogenerated somehow here, but how to
-# do it? I have no clue.
-
+# This is a target for me, to make a binary distribution. Not for the public use,
+# keep your hands off :-)
+BDVERSION = $(XMLSEC_VERSION_MAJOR).$(XMLSEC_VERSION_MINOR).$(XMLSEC_VERSION_SUBMINOR)
+BDPREFIX = $(XMLSEC_BASENAME)-$(BDVERSION).win32
+bindist : all
+	$(MAKE) /nologo PREFIX=$(BDPREFIX) SOPREFIX=$(BDPREFIX)\bin install
+	cscript //NoLogo configure.js genreadme $(XMLSEC_BASENAME) $(BDVERSION) $(BDPREFIX)\readme.txt

@@ -9,13 +9,17 @@ on:
 jobs:
   check-msvc:
     runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - config_flags: crypto=mscrypto unicode=yes static=yes with-dl=yes
     env:
       VISUAL_STUDIO_ROOT: "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise"
       EXTRAS_FOLDER: C:\extras
       EXTRAS_URL: https://www.aleksey.com/xmlsec/download/extras
       LIBXML2_FILE: libxml2-2.9.8-noiconv-win-x64.7z
       LIBXSLT_FILE: libxslt-1.1.32-noiconv-win-x64.7z
-      OPENSSL_FILE: openssl-1.1.0h-x64.7z
     steps:
     - name: install dependencies
       run: |
@@ -25,8 +29,6 @@ jobs:
         7z x ${{ env.LIBXML2_FILE }}
         Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.LIBXSLT_FILE }} -O ${{ env.LIBXSLT_FILE }}
         7z x ${{ env.LIBXSLT_FILE }}
-        Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.OPENSSL_FILE }} -O ${{ env.OPENSSL_FILE }}
-        7z x ${{ env.OPENSSL_FILE }}
     - run: git config --global core.autocrlf input
       shell: bash
     - uses: actions/checkout@v2
@@ -36,7 +38,7 @@ jobs:
       run: |
         call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
         set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;;%PATH%
-        cscript configure.js static=yes crypto=openssl werror=yes iconv=no unicode=yes prefix=${{ env.EXTRAS_FOLDER }} include=${{ env.EXTRAS_FOLDER }}\include;${{ env.EXTRAS_FOLDER }}\include\libxml2;%MSSDK_INCLUDE% lib=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;%MSSDK_LIB%
+        cscript configure.js pedantic=yes werror=no iconv=no ${{ matrix.config_flags }} prefix=${{ env.EXTRAS_FOLDER }} include=${{ env.EXTRAS_FOLDER }}\include;${{ env.EXTRAS_FOLDER }}\include\libxml2;%MSSDK_INCLUDE% lib=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;%MSSDK_LIB%
     - name: make
       working-directory: win32
       shell: cmd

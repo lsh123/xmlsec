@@ -168,7 +168,6 @@ jobs:
     - name: create-build-dirs
       run: |
           mkdir build
-          git config --global core.autocrlf input
       shell: bash
     - name: configure
       working-directory: build
@@ -212,6 +211,9 @@ jobs:
       OPENSSL300_FILE: openssl-3.0.3-win-x64.7z
       OPENSSL110_FILE: openssl-1.1.1o-win-x64.7z
     steps:
+    - name: create-dirs
+      run: |
+          mkdir ${{ env.EXTRAS_FOLDER }}
     - name: install dependencies
       shell: pwsh
       working-directory: ${{ env.EXTRAS_FOLDER }}

@@ -121,13 +121,17 @@ xmlSecOpenSSLAppInit(const char* config) {
 
 #else /* !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300) */
     int ret;
-    uint64_t opts = OPENSSL_INIT_LOAD_CRYPTO_STRINGS |
-                              OPENSSL_INIT_ADD_ALL_CIPHERS |
-                              OPENSSL_INIT_ADD_ALL_DIGESTS |
-                              OPENSSL_INIT_LOAD_CONFIG;
+    uint64_t opts = 0;
+
+    opts |= OPENSSL_INIT_LOAD_CRYPTO_STRINGS;
+    opts |= OPENSSL_INIT_ADD_ALL_CIPHERS;
+    opts |= OPENSSL_INIT_ADD_ALL_DIGESTS;
+    opts |= OPENSSL_INIT_LOAD_CONFIG;
+
 #if !defined(OPENSSL_IS_BORINGSSL)
     opts |= OPENSSL_INIT_ASYNC;
 #endif /* !defined(OPENSSL_IS_BORINGSSL) */
+
 #if !defined(OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_API_300)
     opts |= OPENSSL_INIT_ENGINE_ALL_BUILTIN;
 #endif /* !defined(OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_API_300) */

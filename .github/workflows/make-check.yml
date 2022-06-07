@@ -196,6 +196,8 @@ jobs:
             config_flags: unicode=yes with-dl=yes
           - crypto: mscng
             config_flags: unicode=yes with-dl=yes
+          - crypto: openssl-300
+            config_flags: unicode=yes with-dl=yes
           - crypto: openssl-110
             config_flags: unicode=yes with-dl=yes
           - crypto: mscrypto
@@ -258,4 +260,5 @@ jobs:
       run: |
           call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
           set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;%PATH%
+          set OPENSSL_MODULES=${{ env.EXTRAS_FOLDER }}\lib\ossl-modules
           nmake check

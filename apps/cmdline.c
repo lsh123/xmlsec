@@ -31,7 +31,18 @@ static int                      xmlSecAppCmdLineParamRead       (xmlSecAppCmdLin
                                                                  int argc, 
                                                                  int pos);
 static int                      xmlSecAppCmdLineTimeParamRead   (const char* str, 
-                                                                 time_t* t);
+                                                                 time_t* t,
+                                                                 int is_gmt_time);
+
+#if defined(_MSC_VER)
+#define XMLSEC_SCANF     sscanf_s
+#define XMLSEC_MKGMTIME  _mkgmtime
+#else /* defined(_MSC_VER) */
+#define XMLSEC_SCANF      sscanf
+#define XMLSEC_MKGMTIME  xmlSecAppGetGmtTime
+
+static time_t                   xmlSecAppGetGmtTime             (struct tm* timeptr);
+#endif /* defined(_MSC_VER) */
 
 int
 xmlSecAppCmdLineParamIsSet(xmlSecAppCmdLineParamPtr param) {
@@ -67,7 +78,7 @@ xmlSecAppCmdLineParamGetInt(xmlSecAppCmdLineParamPtr param, int def) {
 
 time_t
 xmlSecAppCmdLineParamGetTime(xmlSecAppCmdLineParamPtr param, time_t def) {
-    if(param->type != xmlSecAppCmdLineParamTypeTime) {
+    if((param->type != xmlSecAppCmdLineParamTypeTime) && (param->type != xmlSecAppCmdLineParamTypeGmtTime)) {
         fprintf(stderr, "Error: parameter \"%s\" is not time.\n", param->fullName);
         return(def);
     }
@@ -301,11 +312,7 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
                 return(-1);
             }    
             value->strValue = argv[++pos];
-#if defined(_MSC_VER)
-            if(sscanf_s(value->strValue, "%d", &(value->intValue)) != 1) {
-#else /* defined(_MSC_VER) */
-            if(sscanf(value->strValue, "%d", &(value->intValue)) != 1) {
-#endif /* defined(_MSC_VER) */
+            if(XMLSEC_SCANF(value->strValue, "%d", &(value->intValue)) != 1) {
                 fprintf(stderr, "Error: integer argument \"%s\" is invalid.\n", value->strValue);
                 return(-1);
             }    
@@ -316,8 +323,19 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
                 return(-1);
             }
             value->strValue = argv[++pos];
-            if(xmlSecAppCmdLineTimeParamRead(value->strValue, &(value->timeValue)) < 0) {
+            if(xmlSecAppCmdLineTimeParamRead(value->strValue, &(value->timeValue), 0) < 0) {
                 fprintf(stderr, "Error: time argument \"%s\" is invalid, expected format is \"YYYY-MM-DD HH:MM:SS\").\n", value->strValue);
+                return(-1);
+            }    
+            break;
+        case xmlSecAppCmdLineParamTypeGmtTime:
+            if(pos + 1 >= argc) {
+                fprintf(stderr, "Error: gmt time argument expected for parameter \"%s\".\n", argv[pos]);
+                return(-1);
+            }
+            value->strValue = argv[++pos];
+            if(xmlSecAppCmdLineTimeParamRead(value->strValue, &(value->timeValue), 1) < 0) {
+                fprintf(stderr, "Error: gmt time argument \"%s\" is invalid, expected format is \"YYYY-MM-DD HH:MM:SS\").\n", value->strValue);
                 return(-1);
             }    
             break;
@@ -325,8 +343,28 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
     return(pos);
 }
 
+#if !defined(_MSC_VER)
+static time_t
+xmlSecAppGetGmtTime(struct tm* timeptr) {
+    time_t t1, t2;
+
+    if(timeptr == NULL) {
+        return(0);
+    }
+
+    /* t1 is gmt time "mapped" to localtime as-is */
+    t1 = mktime(timeptr);
+
+    /* t2 is "mapped" gmt time converted to gmt */
+    t2 = mktime(gmtime(&t1));
+
+    /* shift t1 back by the (t2 - t1) delta */
+    return(t1 - (t2 - t1));
+}
+#endif /* !defined(_MSC_VER) */
+
 static int  
-xmlSecAppCmdLineTimeParamRead(const char* str, time_t* t) {
+xmlSecAppCmdLineTimeParamRead(const char* str, time_t* t, int is_gmt_time) {
     struct tm tm;
     int n;
     
@@ -335,29 +373,29 @@ xmlSecAppCmdLineTimeParamRead(const char* str, time_t* t) {
     }
     memset(&tm, 0, sizeof(tm));
     tm.tm_isdst = -1;
+    n = XMLSEC_SCANF(str, "%4d-%2d-%2d%*c%2d:%2d:%2d",
+                        &tm.tm_year, &tm.tm_mon, &tm.tm_mday,
+                        &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
+    if(n != 6) {
+        return(-1);
+    }
 
-#if defined(_MSC_VER)
-    n = sscanf_s(str, "%4d-%2d-%2d%*c%2d:%2d:%2d",
-                            &tm.tm_year, &tm.tm_mon, &tm.tm_mday,
-                            &tm.tm_hour, &tm.tm_min, &tm.tm_sec);    
-#else /* defined(_MSC_VER) */
-    n = sscanf(str, "%4d-%2d-%2d%*c%2d:%2d:%2d", 
-                            &tm.tm_year, &tm.tm_mon, &tm.tm_mday,
-                            &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
-#endif /* defined(_MSC_VER) */
-    if((n != 6) || (tm.tm_year < 1900) 
-                || (tm.tm_mon  < 1) || (tm.tm_mon  > 12) 
-                || (tm.tm_mday < 1) || (tm.tm_mday > 31)
-                || (tm.tm_hour < 0) || (tm.tm_hour > 23)
-                || (tm.tm_min  < 0) || (tm.tm_min  > 59)
-                || (tm.tm_sec  < 0) || (tm.tm_sec  > 61)) {
+    if((tm.tm_year < 1900)
+      || (tm.tm_mon  < 1) || (tm.tm_mon  > 12)
+      || (tm.tm_mday < 1) || (tm.tm_mday > 31)
+      || (tm.tm_hour < 0) || (tm.tm_hour > 23)
+      || (tm.tm_min  < 0) || (tm.tm_min  > 59)
+      || (tm.tm_sec  < 0) || (tm.tm_sec  > 61)) {
         return(-1);         
     }
 
     tm.tm_year -= 1900; /* tm relative format year */
     tm.tm_mon  -= 1; /* tm relative format month */
 
-    (*t) = mktime(&tm);
-    return(0);    
+    if(is_gmt_time != 0) {
+        (*t) = XMLSEC_MKGMTIME(&tm);
+    } else {
+        (*t) = mktime(&tm);
+    }
+    return(0);
 }
-

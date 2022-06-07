@@ -760,7 +760,7 @@ static xmlSecAppCmdLineParam untrustedDerParam = {
     NULL
 };
 
-static xmlSecAppCmdLineParam verificationTimeParam = { 
+static xmlSecAppCmdLineParam verificationTimeParam = {
     xmlSecAppCmdLineTopicX509Certs,
     "--verification-time",
     NULL,
@@ -768,6 +768,18 @@ static xmlSecAppCmdLineParam verificationTimeParam = {
     "\n\tthe local time in \"YYYY-MM-DD HH:MM:SS\" format"
     "\n\tused certificates verification",
     xmlSecAppCmdLineParamTypeTime,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};
+
+static xmlSecAppCmdLineParam verificationGmtTimeParam = {
+    xmlSecAppCmdLineTopicX509Certs,
+    "--verification-gmt-time",
+    NULL,
+    "--verification-gmt-time <time>"
+    "\n\tthe GMT time in \"YYYY-MM-DD HH:MM:SS\" format"
+    "\n\tused certificates verification",
+    xmlSecAppCmdLineParamTypeGmtTime,
     xmlSecAppCmdLineParamFlagNone,
     NULL
 };
@@ -865,6 +877,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &trustedDerParam,
     &untrustedDerParam,
     &verificationTimeParam,
+    &verificationGmtTimeParam,
     &depthParam,    
     &X509SkipStrictChecksParam,    
     &X509DontVerifyCerts,
@@ -1950,6 +1963,9 @@ xmlSecAppPrepareKeyInfoReadCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
 #ifndef XMLSEC_NO_X509
     if(xmlSecAppCmdLineParamIsSet(&verificationTimeParam)) {
         keyInfoCtx->certsVerificationTime = xmlSecAppCmdLineParamGetTime(&verificationTimeParam, 0);
+    }
+    if(xmlSecAppCmdLineParamIsSet(&verificationGmtTimeParam)) {
+        keyInfoCtx->certsVerificationTime = xmlSecAppCmdLineParamGetTime(&verificationGmtTimeParam, 0);
     }
     if(xmlSecAppCmdLineParamIsSet(&depthParam)) {
         keyInfoCtx->certsVerificationDepth = xmlSecAppCmdLineParamGetInt(&depthParam, 0);

@@ -165,11 +165,10 @@ README
     > openssl pkcs12 -export -in alllargersa.pem -name TestLargeRsaKey -out largersakey.p12
 
     > cat expiredkey.pem expiredcert.pem ca2cert.pem cacert.pem > allexpired.pem
-    > openssl pkcs12 -export -in allexpired.pem -name TestExpiredRsaKey \
-      -out expiredkey.p12
+    > openssl pkcs12 -export -in allexpired.pem -name TestExpiredRsaKey -out expiredkey.p12
 
     > cat ecdsa-secp256r1-key.pem ecdsa-secp256r1-cert.pem ca2cert.pem cacert.pem > all-ecdsa-secp256r1.pem
-    > openssl pkcs12 -export -in all-ecdsa-secp256r1.pem -name TestEcdsaSecp256k1Key -out ecdsa-secp256r1-key.p12
+    > openssl pkcs12 -export -in all-ecdsa-secp256r1.pem -name TestEcdsaSecp256r1Key -out ecdsa-secp256r1-key.p12
     > rm all-ecdsa-secp256r1.pem
 
    5a.
@@ -248,11 +247,11 @@ Worse, the CSP is different for XP and older versions
     > openssl pkcs12 -export -in alllargersa.pem -name TestLargeRsaKey -out largersakey-winxp.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"
     > openssl pkcs12 -export -in alllargersa.pem -name TestLargeRsaKey -out largersakey-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
 
-   > cat dsa2048key.pem dsa2048cert.pem ca2cert.pem cacert.pem > alldsa2048.pem
-   > openssl pkcs12 -export -in alldsa2048.pem -name TestDsa2048Key -out dsa2048key-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
+    > cat dsa2048key.pem dsa2048cert.pem ca2cert.pem cacert.pem > alldsa2048.pem
+    > openssl pkcs12 -export -in alldsa2048.pem -name TestDsa2048Key -out dsa2048key-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
 
-   > cat dsa3072key.pem dsa3072cert.pem ca2cert.pem cacert.pem > alldsa3072.pem
-   > openssl pkcs12 -export -in alldsa3072.pem -name TestDsa3072Key -out dsa3072key-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
+    > cat dsa3072key.pem dsa3072cert.pem ca2cert.pem cacert.pem > alldsa3072.pem
+    > openssl pkcs12 -export -in alldsa3072.pem -name TestDsa3072Key -out dsa3072key-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
 
 
 

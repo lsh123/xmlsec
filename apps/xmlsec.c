@@ -1011,6 +1011,9 @@ int main(int argc, const char **argv) {
     int pos, ii;
     int res = 1;
 
+    printf("DEBUG: OPENSSL_CONF=%s\n", getenv("OPENSSL_CONF"));
+    exit(1);
+
 #if defined(XMLSEC_WINDOWS) 
     /* convert command line to UTF8 from locale or UNICODE */
     utf8_argv_size = sizeof(char*) * (size_t)argc;

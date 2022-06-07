@@ -24,6 +24,9 @@ jobs:
           sudo apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
           sudo apt install libssl1.1 libssl-dev libnspr4 libnspr4-dev libnss3 libnss3-dev libnss3-tools libgcrypt20 libgcrypt20-dev libgnutls28-dev
     - uses: actions/checkout@v2
+    - name: create-build-dirs
+      run: |
+          mkdir build
     - name: configure
       working-directory: build
       run: |
@@ -56,6 +59,9 @@ jobs:
           sudo apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
           sudo apt install wget
     - uses: actions/checkout@v2
+    - name: create-build-dirs
+      run: |
+          mkdir openssl3-build build
     - name: build-openssl3
       working-directory: openssl3-build
       run: |
@@ -100,6 +106,9 @@ jobs:
           # brew install libxml2 libxslt libgcrypt
           brew install openssl nspr nss        
     - uses: actions/checkout@v2
+    - name: create-build-dirs
+      run: |
+          mkdir build
     - name: configure
       working-directory: build
       run: |
@@ -151,10 +160,16 @@ jobs:
           mingw-w64-${{ matrix.arch }}-libxslt
           mingw-w64-${{ matrix.arch }}-libltdl
           mingw-w64-${{ matrix.arch }}-openssl
-    - run: |
+    - name: configure-git
+      run: |
           git config --global core.autocrlf input
       shell: bash
-    - uses: actions/checkout@v2      
+    - uses: actions/checkout@v2
+    - name: create-build-dirs
+      run: |
+          mkdir build
+          git config --global core.autocrlf input
+      shell: bash
     - name: configure
       working-directory: build
       run: |

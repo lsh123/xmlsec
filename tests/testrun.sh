@@ -14,19 +14,10 @@ file_format="$5"
 timestamp=`date +%Y%m%d_%H%M%S`
 exit_code=0
 
-
-echo "--- before topfolder=$topfolder"
-echo "--- before xmlsec_app=$xmlsec_app"
-if [ "z$OS_ARCH" = "zCygwin" ] ; then
-    topfolder=`cygpath -wa "$topfolder"`
-    xmlsec_app=`cygpath -a "$xmlsec_app"`
-elif [ "z$OS_ARCH" = "zMsys" ] ; then
+if test "z$OS_ARCH" = "zCygwin" || test "z$OS_ARCH" = "zMsys" ; then
     topfolder=`cygpath -wa "$topfolder"`
     xmlsec_app=`cygpath -a "$xmlsec_app"`
 fi
-echo "--- OS_ARCH=$OS_ARCH"
-echo "--- topfolder=$topfolder"
-echo "--- xmlsec_app=$xmlsec_app"
 
 #
 # Prepare folders
@@ -35,7 +26,7 @@ if [ "z$TMPFOLDER" = "z" ] ; then
     TMPFOLDER=/tmp
 fi
 testname=`basename $testfile`
-if [ "z$OS_ARCH" = "zCygwin" ] ; then
+if test "z$OS_ARCH" = "zCygwin" || test "z$OS_ARCH" = "zMsys" ; then
     tmpfile=`cygpath -wa $TMPFOLDER/$testname.$timestamp-$$.tmp`
     logfile=`cygpath -wa $TMPFOLDER/$testname.$timestamp-$$.log`
     curlogfile=`cygpath -wa $TMPFOLDER/$testname.$timestamp-$$.cur.log`
@@ -76,7 +67,7 @@ xmlsec_params="$xmlsec_params --crypto-config $crypto_config"
 #
 extra_vars=
 if [ "z$crypto" = "zopenssl" -a "z$XMLSEC_OPENSSL_TEST_CONFIG" != "z" ] ; then
-    if [ "z$OS_ARCH" = "zCygwin" ] ; then
+    if test "z$OS_ARCH" = "zCygwin" || test "z$OS_ARCH" = "zMsys" ; then
         opensslconf=`cygpath -wa $topfolder/$XMLSEC_OPENSSL_TEST_CONFIG`
     else
         opensslconf=$topfolder/$XMLSEC_OPENSSL_TEST_CONFIG

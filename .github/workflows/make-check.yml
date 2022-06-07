@@ -7,143 +7,47 @@ on:
     branches: [ master ]
 
 jobs:
-  check-ubuntu:
-    runs-on: ubuntu-22.04
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - config_flags:
-          - config_flags: --enable-size-t=yes
-          - config_flags: --enable-static-linking=yes --without-nss --without-gcrypt --without-gnutls
-    steps:
-    - name: install dependencies
-      run: |
-          sudo apt update
-          sudo apt install automake autoconf libtool libtool-bin libltdl-dev libltdl7
-          sudo apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
-          sudo apt install libssl1.1 libssl-dev libnspr4 libnspr4-dev libnss3 libnss3-dev libnss3-tools libgcrypt20 libgcrypt20-dev libgnutls28-dev
-    - uses: actions/checkout@v2
-    - run: mkdir build
-    - name: configure
-      working-directory: build
-      run: ../autogen.sh --enable-werror --enable-pedantic ${{ matrix.config_flags }}
-    - name: make
-      working-directory: build
-      run: make
-    - name: make check
-      working-directory: build
-      run: make check
-  
-  check-ubuntu-openssl3:
-    runs-on: ubuntu-22.04
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - config_flags:
-          - config_flags: --enable-size-t=yes
-          - config_flags: --enable-static-linking=yes --without-nss --without-gcrypt --without-gnutls
-    steps:
-    - name: install dependencies
-      run: |
-          sudo apt update
-          sudo apt install automake autoconf libtool libtool-bin libltdl-dev libltdl7
-          sudo apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
-          sudo apt install wget
-    - uses: actions/checkout@v2
-    - run: mkdir openssl3-build build
-    - name: build-openssl3
-      working-directory: openssl3-build
-      run: |
-          wget  https://www.openssl.org/source/openssl-3.0.3.tar.gz
-          tar xfvz openssl-3.0.3.tar.gz
-          cd openssl-3.0.3
-          ./Configure --prefix=/usr/local/openssl3
-          make
-          sudo make install
-    - name: configure
-      working-directory: build
-      run: LD_LIBRARY_PATH="/usr/local/openssl3/lib:/usr/local/openssl3/lib64:$LD_LIBRARY_PATH" ../autogen.sh --with-openssl=/usr/local/openssl3 --enable-werror --enable-pedantic  ${{ matrix.config_flags }}
-    - name: make
-      working-directory: build
-      run: make
-    - name: make check
-      working-directory: build
-      run: LD_LIBRARY_PATH="/usr/local/openssl3/lib:/usr/local/openssl3/lib64:$LD_LIBRARY_PATH" make check
-
-  check-osx:
-    runs-on: macos-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - config_flags:
-          - config_flags: --enable-size-t=yes
-    steps:
-    - name: install dependencies
-      run: |
-          brew update
-          brew install automake autoconf libtool
-          # brew install libxml2 libxslt libgcrypt
-          brew install openssl nspr nss        
-    - uses: actions/checkout@v2
-    - run: mkdir build
-    - name: configure
-      working-directory: build
-      run: ../autogen.sh --enable-werror --enable-pedantic  ${{ matrix.config_flags }} --without-gcrypt --without-gnutls
-    - name: make
-      working-directory: build
-      run: make
-    - name: make check
-      working-directory: build
-      run: make check
-  
-  check-mingw:
+  check-msvc:
     runs-on: windows-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - msystem: MINGW64
-            arch: x86_64
-            config_flags: --enable-unicode=yes --enable-size-t=yes
-          - msystem: MINGW64
-            arch: x86_64
-            config_flags: --enable-unicode=yes --enable-size-t=no
-          - msystem: MINGW64
-            arch: x86_64
-            config_flags: --enable-unicode=no --enable-size-t=no
-    defaults:
-      run:
-        shell: msys2 {0}  
+    env:
+      VISUAL_STUDIO_ROOT: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise"
+      EXTRAS_FOLDER: C:\extras
+      EXTRAS_URL: https://www.aleksey.com/xmlsec/download/extras
+      LIBXML2_FILE: libxml2-2.9.8-noiconv-win-x64.7z
+      LIBXSLT_FILE: libxslt-1.1.32-noiconv-win-x64.7z
+      OPENSSL_FILE: openssl-1.1.0h-x64.7z
     steps:
-    - uses: msys2/setup-msys2@v2
-      with:
-        msystem: ${{ matrix.msystem }}
-        release: false  
-        update: false
-        install: >-
-          autoconf
-          automake
-          base-devel
-          git
-          libtool
-          mingw-w64-${{ matrix.arch }}-toolchain
-          mingw-w64-${{ matrix.arch }}-libxml2
-          mingw-w64-${{ matrix.arch }}-libxslt
-          mingw-w64-${{ matrix.arch }}-libltdl
-          mingw-w64-${{ matrix.arch }}-openssl
+    - name: install dependencies
+      run: |
+        mkdir ${{ env.EXTRAS_FOLDER }}
+        cd ${{ env.EXTRAS_FOLDER }}
+        Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.LIBXML2_FILE }} -O ${{ env.LIBXML2_FILE }}
+        7z x ${{ env.LIBXML2_FILE }}
+        Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.LIBXSLT_FILE }} -O ${{ env.LIBXSLT_FILE }}
+        7z x ${{ env.LIBXSLT_FILE }}
+        Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.OPENSSL_FILE }} -O ${{ env.OPENSSL_FILE }}
+        7z x ${{ env.OPENSSL_FILE }}
     - run: git config --global core.autocrlf input
       shell: bash
-    - uses: actions/checkout@v2      
-    - run: mkdir build
+    - uses: actions/checkout@v2
     - name: configure
-      working-directory: build
-      run: pwd && ../autogen.sh --enable-pedantic --enable-pedantic --build="${{ matrix.arch }}-w64-mingw32" --host="${{ matrix.arch }}-w64-mingw32" --enable-mscrypto --enable-mscng ${{ matrix.config_flags }}
+      working-directory: win32
+      shell: cmd
+      run: |
+        call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
+        set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;;%PATH%
+        cscript configure.js static=yes crypto=openssl werror=yes iconv=no unicode=yes prefix=${{ env.EXTRAS_FOLDER }} include=${{ env.EXTRAS_FOLDER }}\include;${{ env.EXTRAS_FOLDER }}\include\libxml2;%MSSDK_INCLUDE% lib=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;%MSSDK_LIB%
     - name: make
-      working-directory: build
-      run: make
+      working-directory: win32
+      shell: cmd
+      run: |
+        call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
+        set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;;%PATH%
+        nmake
     - name: make check
-      working-directory: build
-      run: make check
+      working-directory: win32
+      shell: cmd
+      run: |
+        call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
+        set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;%PATH%
+        nmake check

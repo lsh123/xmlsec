@@ -42,9 +42,11 @@ typedef void*                                   xmlSecPtr;
 #ifdef XMLSEC_NO_SIZE_T
 #define xmlSecSize                              unsigned int
 #define XMLSEC_SIZE_MAX                         UINT_MAX
+#define XMLSEC_SIZE_FMT                         "%ud"
 #else  /* XMLSEC_NO_SIZE_T */
 #define xmlSecSize                              size_t
 #define XMLSEC_SIZE_MAX                         SIZE_MAX
+#define XMLSEC_SIZE_FMT                         "%zu"
 #endif /* XMLSEC_NO_SIZE_T */
 
 /**

@@ -196,7 +196,8 @@ decrypt_file(const char* enc_file, const char* key_file) {
         fprintf(stdout, "Decrypted XML data:\n");
         xmlDocDump(stdout, doc);
     } else {
-        fprintf(stdout, "Decrypted binary data (%lu bytes):\n", XMLSEC_UL_BAD_CAST(xmlSecBufferGetSize(encCtx->result)));
+        fprintf(stdout, "Decrypted binary data (" XMLSEC_SIZE_FMT " bytes):\n", 
+            xmlSecBufferGetSize(encCtx->result));
         if(xmlSecBufferGetData(encCtx->result) != NULL) {
             fwrite(xmlSecBufferGetData(encCtx->result), 
                   1, 

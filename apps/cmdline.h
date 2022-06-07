@@ -33,7 +33,8 @@ typedef enum {
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamTypeStringList,
     xmlSecAppCmdLineParamTypeNumber,
-    xmlSecAppCmdLineParamTypeTime
+    xmlSecAppCmdLineParamTypeTime,
+    xmlSecAppCmdLineParamTypeGmtTime
 } xmlSecAppCmdLineParamType;
 
 struct _xmlSecAppCmdLineParam {

@@ -34,14 +34,14 @@ static int                      xmlSecAppCmdLineTimeParamRead   (const char* str
                                                                  time_t* t,
                                                                  int is_gmt_time);
 
-static time_t                   xmlSecAppGetGmtTime             (struct tm* timeptr);
-
 #if defined(_MSC_VER)
 #define XMLSEC_SCANF     sscanf_s
 #define XMLSEC_MKGMTIME  _mkgmtime
 #else /* defined(_MSC_VER) */
 #define XMLSEC_SCANF      sscanf
 #define XMLSEC_MKGMTIME  xmlSecAppGetGmtTime
+
+static time_t                   xmlSecAppGetGmtTime             (struct tm* timeptr);
 #endif /* defined(_MSC_VER) */
 
 int
@@ -343,6 +343,7 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
     return(pos);
 }
 
+#if !defined(_MSC_VER)
 static time_t
 xmlSecAppGetGmtTime(struct tm* timeptr) {
     time_t t1, t2;
@@ -360,6 +361,7 @@ xmlSecAppGetGmtTime(struct tm* timeptr) {
     /* shift t1 back by the (t2 - t1) delta */
     return(t1 - (t2 - t1));
 }
+#endif /* !defined(_MSC_VER) */
 
 static int  
 xmlSecAppCmdLineTimeParamRead(const char* str, time_t* t, int is_gmt_time) {

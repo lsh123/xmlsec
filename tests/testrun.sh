@@ -54,6 +54,10 @@ fi
 # Setup crypto engine
 #
 crypto_config=$TMPFOLDER/xmlsec-crypto-config
+if [ "z$OS_ARCH" = "zMsys" ] ; then
+    crypto_config=`pwd -W "$crypto_config"` 
+fi
+
 keysfile=$crypto_config/keys.xml
 if [ "z$XMLSEC_DEFAULT_CRYPTO" != "z" ] ; then
     xmlsec_params="$xmlsec_params --crypto $XMLSEC_DEFAULT_CRYPTO"
@@ -69,6 +73,8 @@ extra_vars=
 if [ "z$crypto" = "zopenssl" -a "z$XMLSEC_OPENSSL_TEST_CONFIG" != "z" ] ; then
     if [ "z$OS_ARCH" = "zCygwin" ] ; then
         opensslconf=`cygpath -wa $topfolder/$XMLSEC_OPENSSL_TEST_CONFIG`
+    elif [ "z$OS_ARCH" = "zMsys" ] ; then
+        opensslconf=`pwd -W "$topfolder/$XMLSEC_OPENSSL_TEST_CONFIG"`
     else
         opensslconf=$topfolder/$XMLSEC_OPENSSL_TEST_CONFIG
     fi

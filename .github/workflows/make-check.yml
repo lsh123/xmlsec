@@ -45,7 +45,7 @@ jobs:
         if("${{ matrix.crypto }}" -like "*openssl-300*") {
             Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.OPENSSL300_FILE }} -O ${{ env.OPENSSL300_FILE }}
             7z x ${{ env.OPENSSL300_FILE }}
-        } elseif("${{ matrix.crypto }}" -like "*openssl-300*") {
+        } elseif("${{ matrix.crypto }}" -like "*openssl-110*") {
             Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.OPENSSL110_FILE }} -O ${{ env.OPENSSL110_FILE }}
             7z x ${{ env.OPENSSL110_FILE }}
         }

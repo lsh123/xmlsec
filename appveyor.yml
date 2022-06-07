@@ -36,34 +36,9 @@ environment:
 
   matrix:
     - COMPILER: MSVC22
-      CRYPTO: mscrypto
-      WITH_DL: yes
-      UNICODE: yes
-
-    - COMPILER: MSVC22
-      CRYPTO: mscng
-      WITH_DL: yes
-      UNICODE: yes
-
-    - COMPILER: MSVC22
-      CRYPTO: openssl-110
-      WITH_DL: yes
-      UNICODE: yes
-
-    - COMPILER: MSVC22
       CRYPTO: openssl-300
       WITH_DL: yes
       UNICODE: yes
-
-    - COMPILER: MSVC22
-      CRYPTO: mscrypto
-      WITH_DL: no
-      UNICODE: no
-
-    - COMPILER: MSVC22
-      CRYPTO: mscng
-      WITH_DL: no
-      UNICODE: no
 
 init:
   - git config --global core.autocrlf input

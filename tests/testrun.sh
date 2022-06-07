@@ -14,6 +14,9 @@ file_format="$5"
 timestamp=`date +%Y%m%d_%H%M%S`
 exit_code=0
 
+
+echo "--- before topfolder=$topfolder"
+echo "--- before xmlsec_app=$xmlsec_app"
 if [ "z$OS_ARCH" = "zCygwin" ] ; then
     topfolder=`cygpath -wa "$topfolder"`
     xmlsec_app=`cygpath -a "$xmlsec_app"`

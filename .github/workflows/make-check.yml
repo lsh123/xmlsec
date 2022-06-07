@@ -53,7 +53,6 @@ jobs:
       run: |
           call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
           set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;%PATH%
-          echo %PATH%
           cscript configure.js pedantic=yes werror=yes static=yes iconv=no ^
               crypto=${{ matrix.crypto }} ${{ matrix.config_flags }} ^
               prefix=${{ env.EXTRAS_FOLDER }} ^

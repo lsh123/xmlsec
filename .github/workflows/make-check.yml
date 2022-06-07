@@ -24,7 +24,6 @@ jobs:
           sudo apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
           sudo apt install libssl1.1 libssl-dev libnspr4 libnspr4-dev libnss3 libnss3-dev libnss3-tools libgcrypt20 libgcrypt20-dev libgnutls28-dev
     - uses: actions/checkout@v2
-    - run: mkdir build
     - name: configure
       working-directory: build
       run: |
@@ -57,7 +56,6 @@ jobs:
           sudo apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
           sudo apt install wget
     - uses: actions/checkout@v2
-    - run: mkdir openssl3-build build
     - name: build-openssl3
       working-directory: openssl3-build
       run: |
@@ -102,7 +100,6 @@ jobs:
           # brew install libxml2 libxslt libgcrypt
           brew install openssl nspr nss        
     - uses: actions/checkout@v2
-    - run: mkdir build
     - name: configure
       working-directory: build
       run: |
@@ -158,8 +155,6 @@ jobs:
           git config --global core.autocrlf input
       shell: bash
     - uses: actions/checkout@v2      
-    - run: |
-          mkdir build
     - name: configure
       working-directory: build
       run: |
@@ -203,9 +198,9 @@ jobs:
       OPENSSL110_FILE: openssl-1.1.1o-win-x64.7z
     steps:
     - name: install dependencies
+      shell: pwsh
+      working-directory: ${{ env.EXTRAS_FOLDER }}
       run: |
-          mkdir ${{ env.EXTRAS_FOLDER }}
-          cd ${{ env.EXTRAS_FOLDER }}
           Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.LIBXML2_FILE }} -O ${{ env.LIBXML2_FILE }}
           7z x ${{ env.LIBXML2_FILE }}
           Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.LIBXSLT_FILE }} -O ${{ env.LIBXSLT_FILE }}
@@ -217,31 +212,32 @@ jobs:
               Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.OPENSSL110_FILE }} -O ${{ env.OPENSSL110_FILE }}
               7z x ${{ env.OPENSSL110_FILE }}
           }
-    - run: |
-          git config --global core.autocrlf input
+    - name: configure-git
       shell: bash
+      run: |
+          git config --global core.autocrlf input
     - uses: actions/checkout@v2
     - name: configure
       working-directory: win32
-      shell: cmd
+      shell: pwsh
       run: |
           call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
           set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;;%PATH%
-          cscript configure.js pedantic=yes werror=yes static=yes iconv=no \
-              crypto=${{ matrix.crypto }} ${{ matrix.config_flags }} \
-              prefix=${{ env.EXTRAS_FOLDER }} \
-              include=${{ env.EXTRAS_FOLDER }}\include;${{ env.EXTRAS_FOLDER }}\include\libxml2;%MSSDK_INCLUDE% \
+          cscript configure.js pedantic=yes werror=yes static=yes iconv=no `
+              crypto=${{ matrix.crypto }} ${{ matrix.config_flags }} `
+              prefix=${{ env.EXTRAS_FOLDER }} `
+              include=${{ env.EXTRAS_FOLDER }}\include;${{ env.EXTRAS_FOLDER }}\include\libxml2;%MSSDK_INCLUDE% `
               lib=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;%MSSDK_LIB%
     - name: make
       working-directory: win32
-      shell: cmd
+      shell: pwsh
       run: |
           call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
           set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;;%PATH%
           nmake
     - name: make check
       working-directory: win32
-      shell: cmd
+      shell: pwsh
       run: |
           call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
           set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;%PATH%

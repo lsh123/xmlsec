@@ -10,7 +10,7 @@ jobs:
   check-msvc:
     runs-on: windows-latest
     env:
-      VISUAL_STUDIO_ROOT: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\Enterprise"
+      VISUAL_STUDIO_ROOT: "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise"
       EXTRAS_FOLDER: C:\extras
       EXTRAS_URL: https://www.aleksey.com/xmlsec/download/extras
       LIBXML2_FILE: libxml2-2.9.8-noiconv-win-x64.7z

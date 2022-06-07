@@ -78,12 +78,16 @@ AC_CHECK_FUNCS(strchr strrchr printf sprintf fprintf snprintf vfprintf vsprintf 
 XMLSEC_DEFINES=""
 
 dnl ==========================================================================
-dnl Detect windows
+dnl Detect windows/mac
 dnl ==========================================================================
 build_windows=no
+build_mac=no
 case "${host_os}" in
     cygwin*|mingw*)
         build_windows=yes
+        ;;
+     *-*-darwin*)
+        build_mac=yes
         ;;
 esac
 
@@ -2353,10 +2357,14 @@ AC_ARG_ENABLE([pedantic], [AC_HELP_STRING([--enable-pedantic], [enable pedantic 
 if test "z$enable_pedantic" = "zyes" ; then
     CFLAGS="$CFLAGS -O -std=c99 -pedantic -pedantic-errors -W -Wall -Wextra"
     CFLAGS="$CFLAGS -fno-inline -Wnull-dereference -Wdouble-promotion"
-    CFLAGS="$CFLAGS -Wformat=2 -Wformat-overflow=2 -Wformat-security -Wformat-signedness -Wformat-nonliteral"
+    CFLAGS="$CFLAGS -Wformat=2 -Wformat-security -Wformat-nonliteral"
     CFLAGS="$CFLAGS -Wconversion -Wunused -Wshadow -Wpointer-arith -Wcast-align"
     CFLAGS="$CFLAGS -Wwrite-strings -Waggregate-return -Wmissing-prototypes"
     CFLAGS="$CFLAGS -Wnested-externs -Wredundant-decls"
+    
+    if test "z$build_mac" != "zyes" ; then
+        CFLAGS="$CFLAGS -Wformat-overflow=2 -Wformat-signedness"
+    fi
     AC_MSG_RESULT([yes])
 else
     AC_MSG_RESULT([disabled])

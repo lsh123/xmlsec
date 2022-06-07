@@ -24,17 +24,24 @@ jobs:
           sudo apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
           sudo apt install libssl1.1 libssl-dev libnspr4 libnspr4-dev libnss3 libnss3-dev libnss3-tools libgcrypt20 libgcrypt20-dev libgnutls28-dev
     - uses: actions/checkout@v2
-    - run: mkdir build
+    - name: create-build-dirs
+      run: |
+          mkdir build
     - name: configure
       working-directory: build
-      run: ../autogen.sh --enable-werror --enable-pedantic ${{ matrix.config_flags }}
+      run: |
+          ../autogen.sh --enable-werror --enable-pedantic \
+              ${{ matrix.config_flags }}
     - name: make
       working-directory: build
-      run: make
+      run: |
+          make
     - name: make check
       working-directory: build
-      run: make check
-  
+      run: |
+          make check
+
+
   check-ubuntu-openssl3:
     runs-on: ubuntu-22.04
     strategy:
@@ -52,7 +59,9 @@ jobs:
           sudo apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
           sudo apt install wget
     - uses: actions/checkout@v2
-    - run: mkdir openssl3-build build
+    - name: create-build-dirs
+      run: |
+          mkdir openssl3-build build
     - name: build-openssl3
       working-directory: openssl3-build
       run: |
@@ -64,16 +73,25 @@ jobs:
           sudo make install
     - name: configure
       working-directory: build
-      run: LD_LIBRARY_PATH="/usr/local/openssl3/lib:/usr/local/openssl3/lib64:$LD_LIBRARY_PATH" ../autogen.sh --with-openssl=/usr/local/openssl3 --enable-werror --enable-pedantic  ${{ matrix.config_flags }}
+      run: |
+          export LD_LIBRARY_PATH="/usr/local/openssl3/lib:/usr/local/openssl3/lib64:$LD_LIBRARY_PATH"
+          ../autogen.sh --enable-werror --enable-pedantic \
+              --with-openssl=/usr/local/openssl3  \
+              ${{ matrix.config_flags }}
     - name: make
       working-directory: build
-      run: make
+      run: |
+          make
     - name: make check
       working-directory: build
-      run: LD_LIBRARY_PATH="/usr/local/openssl3/lib:/usr/local/openssl3/lib64:$LD_LIBRARY_PATH" make check
+      run: |
+          export LD_LIBRARY_PATH="/usr/local/openssl3/lib:/usr/local/openssl3/lib64:$LD_LIBRARY_PATH"
+          make check
+
+
 
   check-osx:
-    runs-on: macos-latest
+    runs-on: macos-12
     strategy:
       fail-fast: false
       matrix:
@@ -88,19 +106,27 @@ jobs:
           # brew install libxml2 libxslt libgcrypt
           brew install openssl nspr nss        
     - uses: actions/checkout@v2
-    - run: mkdir build
+    - name: create-build-dirs
+      run: |
+          mkdir build
     - name: configure
       working-directory: build
-      run: ../autogen.sh --enable-werror --enable-pedantic  ${{ matrix.config_flags }} --without-gcrypt --without-gnutls
+      run: |
+          ../autogen.sh --enable-werror --enable-pedantic  \
+              --without-gcrypt --without-gnutls \
+              ${{ matrix.config_flags }}
     - name: make
       working-directory: build
-      run: make
+      run: |
+          make
     - name: make check
       working-directory: build
-      run: make check
-  
+      run: |
+          make check
+
+
   check-mingw:
-    runs-on: windows-latest
+    runs-on: windows-2022
     strategy:
       fail-fast: false
       matrix:
@@ -134,16 +160,102 @@ jobs:
           mingw-w64-${{ matrix.arch }}-libxslt
           mingw-w64-${{ matrix.arch }}-libltdl
           mingw-w64-${{ matrix.arch }}-openssl
-    - run: git config --global core.autocrlf input
+    - name: configure-git
+      run: |
+          git config --global core.autocrlf input
       shell: bash
-    - uses: actions/checkout@v2      
-    - run: mkdir build
+    - uses: actions/checkout@v2
+    - name: create-build-dirs
+      run: |
+          mkdir build
+      shell: bash
     - name: configure
       working-directory: build
-      run: pwd && ../autogen.sh --enable-pedantic --enable-pedantic --build="${{ matrix.arch }}-w64-mingw32" --host="${{ matrix.arch }}-w64-mingw32" --enable-mscrypto --enable-mscng ${{ matrix.config_flags }}
+      run: |
+          ../autogen.sh --enable-pedantic \
+              --enable-mscrypto --enable-mscng ${{ matrix.config_flags }} \
+              --build="${{ matrix.arch }}-w64-mingw32" \
+              --host="${{ matrix.arch }}-w64-mingw32"
     - name: make
       working-directory: build
-      run: make
+      run: |
+          make
     - name: make check
       working-directory: build
-      run: make check
+      run: |
+          make check
+
+
+  check-msvc:
+    runs-on: windows-2022
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - crypto: mscrypto
+            config_flags: unicode=yes with-dl=yes
+          - crypto: mscng
+            config_flags: unicode=yes with-dl=yes
+          - crypto: openssl-110
+            config_flags: unicode=yes with-dl=yes
+          - crypto: mscrypto
+            config_flags: unicode=no with-dl=no
+          - crypto: mscng
+            config_flags: unicode=no with-dl=no
+    env:
+      VISUAL_STUDIO_ROOT: "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise"
+      EXTRAS_FOLDER: C:\extras
+      EXTRAS_URL: https://www.aleksey.com/xmlsec/download/extras
+      LIBXML2_FILE: libxml2-2.9.8-noiconv-win-x64.7z
+      LIBXSLT_FILE: libxslt-1.1.32-noiconv-win-x64.7z
+      OPENSSL300_FILE: openssl-3.0.3-win-x64.7z
+      OPENSSL110_FILE: openssl-1.1.1o-win-x64.7z
+    steps:
+    - name: create-dirs
+      run: |
+          mkdir ${{ env.EXTRAS_FOLDER }}
+    - name: install dependencies
+      shell: pwsh
+      working-directory: ${{ env.EXTRAS_FOLDER }}
+      run: |
+          Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.LIBXML2_FILE }} -O ${{ env.LIBXML2_FILE }}
+          7z x ${{ env.LIBXML2_FILE }}
+          Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.LIBXSLT_FILE }} -O ${{ env.LIBXSLT_FILE }}
+          7z x ${{ env.LIBXSLT_FILE }}
+          if("${{ matrix.crypto }}" -like "*openssl-300*") {
+              Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.OPENSSL300_FILE }} -O ${{ env.OPENSSL300_FILE }}
+              7z x ${{ env.OPENSSL300_FILE }}
+          } elseif("${{ matrix.crypto }}" -like "*openssl-110*") {
+              Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.OPENSSL110_FILE }} -O ${{ env.OPENSSL110_FILE }}
+              7z x ${{ env.OPENSSL110_FILE }}
+          }
+    - name: configure-git
+      shell: bash
+      run: |
+          git config --global core.autocrlf input
+    - uses: actions/checkout@v2
+    - name: configure
+      working-directory: win32
+      shell: cmd
+      run: |
+          call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
+          set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;;%PATH%
+          cscript configure.js pedantic=yes werror=yes static=yes iconv=no ^
+              crypto=${{ matrix.crypto }} ${{ matrix.config_flags }} ^
+              prefix=${{ env.EXTRAS_FOLDER }} ^
+              include=${{ env.EXTRAS_FOLDER }}\include;${{ env.EXTRAS_FOLDER }}\include\libxml2;%MSSDK_INCLUDE% ^
+              lib=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;%MSSDK_LIB%
+    - name: make
+      working-directory: win32
+      shell: cmd
+      run: |
+          call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
+          set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;;%PATH%
+          nmake
+    - name: make check
+      working-directory: win32
+      shell: cmd
+      run: |
+          call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
+          set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;%PATH%
+          nmake check

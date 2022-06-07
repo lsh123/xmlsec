@@ -923,8 +923,8 @@ dnl
 dnl   2 overrides 1
 dnl
 dnl ==========================================================================
-NSS_MIN_VERSION="3.11.1"
-NSPR_MIN_VERSION="4.4.1"
+NSS_MIN_VERSION="3.50.1"
+NSPR_MIN_VERSION="4.25.1"
 SEAMONKEY_MIN_VERSION="1.0"
 MOZILLA_MIN_VERSION="1.4"
 NSS_CRYPTO_LIB="$XMLSEC_PACKAGE-nss"

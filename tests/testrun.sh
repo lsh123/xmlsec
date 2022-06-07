@@ -21,8 +21,8 @@ if [ "z$OS_ARCH" = "zCygwin" ] ; then
     topfolder=`cygpath -wa "$topfolder"`
     xmlsec_app=`cygpath -a "$xmlsec_app"`
 elif [ "z$OS_ARCH" = "zMsys" ] ; then
-    topfolder=`pwd -W "$topfolder"`
-    xmlsec_app=`pwd -W "$xmlsec_app"`
+    topfolder=`cygpath -wa "$topfolder"`
+    xmlsec_app=`cygpath -a "$xmlsec_app"`
 fi
 echo "--- OS_ARCH=$OS_ARCH"
 echo "--- topfolder=$topfolder"

@@ -74,8 +74,6 @@ if [ "z$crypto" = "zopenssl" -a "z$XMLSEC_OPENSSL_TEST_CONFIG" != "z" ] ; then
     fi
     extra_vars="$extra_vars OPENSSL_CONF=$opensslconf"
     export OPENSSL_CONF="$opensslconf"
-
-    dir "$opensslconf"
 fi
 
 #

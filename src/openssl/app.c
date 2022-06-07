@@ -120,23 +120,32 @@ xmlSecOpenSSLAppInit(const char* config) {
     OpenSSL_add_all_algorithms();
 
 #else /* !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300) */
+    OPENSSL_INIT_SETTINGS* settings;
+    int64_t opts = 0;
     int ret;
-    uint64_t opts = OPENSSL_INIT_LOAD_CRYPTO_STRINGS |
-                              OPENSSL_INIT_ADD_ALL_CIPHERS |
-                              OPENSSL_INIT_ADD_ALL_DIGESTS |
-                              OPENSSL_INIT_LOAD_CONFIG;
-#if !defined(OPENSSL_IS_BORINGSSL)
-    opts |= OPENSSL_INIT_ASYNC;
-#endif /* !defined(OPENSSL_IS_BORINGSSL) */
+
+    settings = OPENSSL_INIT_new();
+    if (settings == NULL) {
+        xmlSecOpenSSLError("OPENSSL_INIT_new", NULL);
+        goto error;
+    }
+    (void)OPENSSL_INIT_set_config_file_flags(settings, 0);
+ 
+    opts |= OPENSSL_INIT_LOAD_CONFIG;
+    opts |= OPENSSL_INIT_LOAD_CRYPTO_STRINGS;
+    opts |= OPENSSL_INIT_ADD_ALL_CIPHERS;
+    opts |= OPENSSL_INIT_ADD_ALL_DIGESTS;
 #if !defined(OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_API_300)
     opts |= OPENSSL_INIT_ENGINE_ALL_BUILTIN;
 #endif /* !defined(OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_API_300) */
 
-    ret = OPENSSL_init_crypto(opts, NULL);
+    ret = OPENSSL_init_crypto(opts, settings);
     if(ret != 1) {
         xmlSecOpenSSLError("OPENSSL_init_crypto", NULL);
+        OPENSSL_INIT_free(settings);
         goto error;
     }
+    OPENSSL_INIT_free(settings);
 #endif /* !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300) */
 
     if((config != NULL) && (xmlSecOpenSSLSetDefaultTrustedCertsFolder(BAD_CAST config) < 0)) {

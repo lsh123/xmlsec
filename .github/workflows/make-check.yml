@@ -52,23 +52,23 @@ jobs:
       shell: cmd
       run: |
           call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
-          set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;%PATH%
+          set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;${{ env.EXTRAS_FOLDER }}\lib\ossl-modules;%PATH%
           cscript configure.js pedantic=yes static=no iconv=no ^
               crypto=${{ matrix.crypto }} ${{ matrix.config_flags }} ^
               prefix=${{ env.EXTRAS_FOLDER }} ^
               include=${{ env.EXTRAS_FOLDER }}\include;${{ env.EXTRAS_FOLDER }}\include\libxml2;%MSSDK_INCLUDE% ^
-              lib=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;%MSSDK_LIB%
+              lib=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;${{ env.EXTRAS_FOLDER }}\ossl-modules;%MSSDK_LIB%
     - name: make
       working-directory: win32
       shell: cmd
       run: |
           call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
-          set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;%PATH%
+          set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;${{ env.EXTRAS_FOLDER }}\lib\ossl-modules;%PATH%
           nmake
     - name: make check
       working-directory: win32
       shell: cmd
       run: |
           call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
-          set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;%PATH%
+          set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;${{ env.EXTRAS_FOLDER }}\lib\ossl-modules;%PATH%
           nmake check

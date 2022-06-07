@@ -71,4 +71,5 @@ jobs:
       run: |
           call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
           set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;${{ env.EXTRAS_FOLDER }}\lib\ossl-modules;%PATH%
+          set OPENSSL_MODULES=${{ env.EXTRAS_FOLDER }}\lib\ossl-modules
           nmake check

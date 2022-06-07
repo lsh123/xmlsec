@@ -322,7 +322,7 @@ xmlSecXPathDataListExecute(xmlSecPtrListPtr dataList, xmlDocPtr doc,
     for(pos = 0; pos < xmlSecPtrListGetSize(dataList); ++pos) {
         data = (xmlSecXPathDataPtr)xmlSecPtrListGetItem(dataList, pos);
         if(data == NULL) {
-            xmlSecInternalError2("xmlSecPtrListGetItem", NULL, "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
+            xmlSecInternalError2("xmlSecPtrListGetItem", NULL, "pos=" XMLSEC_SIZE_FMT, pos);
             if((res != NULL) && (res != nodes)) {
                 xmlSecNodeSetDestroy(res);
             }

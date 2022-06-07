@@ -33,7 +33,7 @@ extern "C" {
  */
 typedef void*                                   xmlSecPtr;
 
-/**
+/** 
  * xmlSecSize:
  *
  * Size of something. Should be typedef instead of define
@@ -42,12 +42,13 @@ typedef void*                                   xmlSecPtr;
 #ifdef XMLSEC_NO_SIZE_T
 #define xmlSecSize                              unsigned int
 #define XMLSEC_SIZE_MAX                         UINT_MAX
-#define XMLSEC_SIZE_FMT                         "%ud"
+#define XMLSEC_SIZE_FMT                         "%u"
 #else  /* XMLSEC_NO_SIZE_T */
 #define xmlSecSize                              size_t
 #define XMLSEC_SIZE_MAX                         SIZE_MAX
 #define XMLSEC_SIZE_FMT                         "%zu"
 #endif /* XMLSEC_NO_SIZE_T */
+#define XMLSEC_SIZE_MIN                         ((xmlSecSize)0)
 
 /**
  * XMLSEC_SIZE_BAD_CAST:

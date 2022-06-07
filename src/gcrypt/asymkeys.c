@@ -374,7 +374,7 @@ xmlSecGCryptAsymSExpDup(gcry_sexp_t pKey) {
     size = gcry_sexp_sprint(pKey, GCRYSEXP_FMT_ADVANCED, buf, size);
     if(size == 0) {
         xmlSecGCryptError2("gcry_sexp_sprint", GPG_ERR_NO_ERROR, NULL,
-                           "size=%lu", XMLSEC_UL_BAD_CAST(size));
+                           "size=%zu", size);
         goto done;
     }
 

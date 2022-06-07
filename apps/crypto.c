@@ -352,7 +352,7 @@ xmlSecAppCryptoKeyGenerate(const char* keyKlassAndSize, const char* name, xmlSec
 
     key = xmlSecKeyGenerateByName(BAD_CAST buf, (xmlSecSize)size, type);
     if(key == NULL) {
-        fprintf(stderr, "Error: xmlSecKeyGenerateByName() failed: name=%s;size=%d;type=%du\n",
+        fprintf(stderr, "Error: xmlSecKeyGenerateByName() failed: name=%s;size=%d;type=%u\n",
                 xmlSecErrorsSafeString(buf), size, type);
         xmlFree(buf);
         return(NULL);   

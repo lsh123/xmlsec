@@ -436,7 +436,7 @@ xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
     ret = xmlSecBufferSetSize(buffer, size);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-                             "size=%lu", XMLSEC_UL_BAD_CAST(size));
+                             "size=" XMLSEC_SIZE_FMT, size);
         return(-1);
     }
 
@@ -450,7 +450,7 @@ xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
 #endif /* XMLSEC_OPENSSL_API_300 */
     if(ret != 1) {
         xmlSecOpenSSLError2("RAND_bytes", NULL,
-                            "size=%lu", XMLSEC_UL_BAD_CAST(size));
+                            "size=" XMLSEC_SIZE_FMT, size);
         return(-1);
     }
     return(0);

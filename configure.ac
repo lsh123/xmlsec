@@ -2351,7 +2351,12 @@ dnl ==========================================================================
 AC_MSG_CHECKING(for pedantic)
 AC_ARG_ENABLE([pedantic], [AC_HELP_STRING([--enable-pedantic], [enable pedantic compilation flags (no)])])
 if test "z$enable_pedantic" = "zyes" ; then
-    CFLAGS="$CFLAGS -O -std=c99 -pedantic -pedantic-errors -W -Wall -Wextra -fno-inline -Wnull-dereference -Wdouble-promotion -Wformat=2 -Wconversion -Wunused -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wmissing-prototypes -Wnested-externs -Wredundant-decls"
+    CFLAGS="$CFLAGS -O -std=c99 -pedantic -pedantic-errors -W -Wall -Wextra"
+    CFLAGS="$CFLAGS -fno-inline -Wnull-dereference -Wdouble-promotion"
+    CFLAGS="$CFLAGS -Wformat=2 -Wformat-overflow=2 -Wformat-security -Wformat-signedness -Wformat-nonliteral"
+    CFLAGS="$CFLAGS -Wconversion -Wunused -Wshadow -Wpointer-arith -Wcast-align"
+    CFLAGS="$CFLAGS -Wwrite-strings -Waggregate-return -Wmissing-prototypes"
+    CFLAGS="$CFLAGS -Wnested-externs -Wredundant-decls"
     AC_MSG_RESULT([yes])
 else
     AC_MSG_RESULT([disabled])

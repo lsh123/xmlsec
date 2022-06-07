@@ -528,16 +528,14 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
         } else {
             ret = EVP_VerifyUpdate(ctx->digestCtx, xmlSecBufferGetData(in), inSize);
             if(ret != 1) {
-                xmlSecOpenSSLError("EVP_VerifyUpdate",
-                                   xmlSecTransformGetName(transform));
+                xmlSecOpenSSLError("EVP_VerifyUpdate", xmlSecTransformGetName(transform));
                 return(-1);
             }
         }
 
         ret = xmlSecBufferRemoveHead(in, inSize);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecBufferRemoveHead",
-                                xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform));
             return(-1);
         }
     }
@@ -551,17 +549,16 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
             /* for rsa signatures we get size from EVP_PKEY_size() */
             signLen = EVP_PKEY_size(ctx->pKey);
             if(signLen <= 0) {
-                xmlSecOpenSSLError("EVP_PKEY_size",
-                                   xmlSecTransformGetName(transform));
+                xmlSecOpenSSLError("EVP_PKEY_size", xmlSecTransformGetName(transform));
                 return(-1);
             }
+            // XMLSEC_SAFE_CAST_INT_TO_UINT(signLen, signSize, return(-1), xmlSecTransformGetName(transform));
             XMLSEC_SAFE_CAST_INT_TO_UINT(signLen, signSize, return(-1), xmlSecTransformGetName(transform));
 
             ret = xmlSecBufferSetMaxSize(out, signSize);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferSetMaxSize",
-                                     xmlSecTransformGetName(transform),
-                                     "size=%du", signSize);
+                xmlSecInternalError2("xmlSecBufferSetMaxSize", xmlSecTransformGetName(transform),
+                        "size=%u", signSize);
                 return(-1);
             }
 
@@ -576,17 +573,15 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
             ret = EVP_SignFinal_ex(ctx->digestCtx, xmlSecBufferGetData(out), &signSize, ctx->pKey,
                                xmlSecOpenSSLGetLibCtx(), NULL);
             if(ret != 1) {
-                xmlSecOpenSSLError("EVP_SignFinal",
-                                   xmlSecTransformGetName(transform));
+                xmlSecOpenSSLError("EVP_SignFinal", xmlSecTransformGetName(transform));
                 return(-1);
             }
 #endif /* XMLSEC_OPENSSL_API_300 */
 
             ret = xmlSecBufferSetSize(out, signSize);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferSetSize",
-                                     xmlSecTransformGetName(transform),
-                                    "size=%du", signSize);
+                xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform),
+                        "size=%u", signSize);
                 return(-1);
             }
         }

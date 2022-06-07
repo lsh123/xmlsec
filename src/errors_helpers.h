@@ -124,7 +124,7 @@ extern "C" {
                     (const char*)(errorObject),             \
                     "xmlStrdup",                            \
                     XMLSEC_ERRORS_R_STRDUP_FAILED,          \
-                    "size=%lu", XMLSEC_UL_BAD_CAST(xmlStrlen(str)) \
+                    "size=%d", xmlStrlen(str)               \
         )
 
 /**
@@ -143,9 +143,8 @@ extern "C" {
                    (const char*)(errorObject),        \
                    (errorFunction),                   \
                    XMLSEC_ERRORS_R_XML_FAILED,        \
-                   "xml error: %lu: %s",              \
-                   XMLSEC_UL_BAD_CAST(code),          \
-                   xmlSecErrorsSafeString(message)    \
+                   "xml error: %d: %s",               \
+                   code, xmlSecErrorsSafeString(message) \
         );                                            \
     }
 
@@ -167,10 +166,8 @@ extern "C" {
                    (const char*)(errorObject),        \
                    (errorFunction),                   \
                    XMLSEC_ERRORS_R_XML_FAILED,        \
-                   msg "; xml error: %lu: %s",        \
-                   (param),                           \
-                   XMLSEC_UL_BAD_CAST(code),          \
-                   xmlSecErrorsSafeString(message)    \
+                   msg "; xml error: %d: %s",        \
+                   (param), code, xmlSecErrorsSafeString(message) \
         );                                            \
     }
 
@@ -191,9 +188,8 @@ extern "C" {
                    (const char*)(errorObject),        \
                    (errorFunction),                   \
                    XMLSEC_ERRORS_R_XML_FAILED,        \
-                   "xml error: %lu: %s",              \
-                   XMLSEC_UL_BAD_CAST(code),          \
-                   xmlSecErrorsSafeString(message)    \
+                   "xml error: %d: %s",               \
+                   code, xmlSecErrorsSafeString(message) \
         );                                            \
     }
 
@@ -216,10 +212,8 @@ extern "C" {
                    (const char*)(errorObject),        \
                    (errorFunction),                   \
                    XMLSEC_ERRORS_R_XML_FAILED,        \
-                   msg "; xml error: %lu: %s",        \
-                   (param),                           \
-                   XMLSEC_UL_BAD_CAST(code),          \
-                   xmlSecErrorsSafeString(message)    \
+                   msg "; xml error: %d: %s",         \
+                   (param), code, xmlSecErrorsSafeString(message) \
         );                                            \
     }
 
@@ -240,9 +234,8 @@ extern "C" {
                    (const char*)(errorObject),        \
                    (errorFunction),                   \
                    XMLSEC_ERRORS_R_XSLT_FAILED,       \
-                   "xslt error: %lu: %s",             \
-                   XMLSEC_UL_BAD_CAST(code),          \
-                   xmlSecErrorsSafeString(message)    \
+                   "xslt error: %d: %s",              \
+                   code, xmlSecErrorsSafeString(message) \
         );                                            \
     }
 
@@ -792,10 +785,10 @@ extern "C" {
                     (const char*)(errorObject),             \
                     NULL,                                   \
                     XMLSEC_ERROR_R_CAST_IMPOSSIBLE,         \
-                    "src type=" #srcType "; src val=" #srcPrintf      \
-                    ";dst type=" #dstType "; dst min val=" #dstPrintf \
-                    ";dst max val=" #dstPrintf,             \
-                    srcVal, dstMinVal, dstMaxVal            \
+                    "src type=" #srcType "; src val=" srcPrintf      \
+                    ";dst type=" #dstType "; dst min val=" dstPrintf \
+                    ";dst max val=" dstPrintf "",           \
+                    (srcVal), (dstMinVal), (dstMaxVal)      \
         )
 
 /**

@@ -172,7 +172,7 @@ jobs:
     - name: configure
       working-directory: build
       run: |
-          ../autogen.sh --enable-pedantic --enable-werror \
+          ../autogen.sh --enable-pedantic \
               --enable-mscrypto --enable-mscng ${{ matrix.config_flags }} \
               --build="${{ matrix.arch }}-w64-mingw32" \
               --host="${{ matrix.arch }}-w64-mingw32"
@@ -236,25 +236,25 @@ jobs:
     - uses: actions/checkout@v2
     - name: configure
       working-directory: win32
-      shell: pwsh
+      shell: cmd
       run: |
           call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
           set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;;%PATH%
-          cscript configure.js pedantic=yes werror=yes static=yes iconv=no `
-              crypto=${{ matrix.crypto }} ${{ matrix.config_flags }} `
-              prefix=${{ env.EXTRAS_FOLDER }} `
-              include=${{ env.EXTRAS_FOLDER }}\include;${{ env.EXTRAS_FOLDER }}\include\libxml2;%MSSDK_INCLUDE% `
+          cscript configure.js pedantic=yes werror=yes static=yes iconv=no ^
+              crypto=${{ matrix.crypto }} ${{ matrix.config_flags }} ^
+              prefix=${{ env.EXTRAS_FOLDER }} ^
+              include=${{ env.EXTRAS_FOLDER }}\include;${{ env.EXTRAS_FOLDER }}\include\libxml2;%MSSDK_INCLUDE% ^
               lib=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;%MSSDK_LIB%
     - name: make
       working-directory: win32
-      shell: pwsh
+      shell: cmd
       run: |
           call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
           set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;;%PATH%
           nmake
     - name: make check
       working-directory: win32
-      shell: pwsh
+      shell: cmd
       run: |
           call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
           set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;%PATH%

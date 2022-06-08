@@ -269,7 +269,8 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
 
     nodes = xmlSecNodeSetCreate(doc, xpathObj->nodesetval, data->nodeSetType);
     if(nodes == NULL) {
-        xmlSecInternalError2("xmlSecNodeSetCreate", NULL, "type=%lu", XMLSEC_UL_BAD_CAST(data->nodeSetType));
+        xmlSecInternalError2("xmlSecNodeSetCreate", NULL, 
+            "type=%lu", XMLSEC_UL_BAD_CAST(data->nodeSetType));
         xmlXPathFreeObject(xpathObj);
         return(NULL);
     }

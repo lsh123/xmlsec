@@ -573,10 +573,6 @@ xmlSecNodeSetDebugDump(xmlSecNodeSetPtr nset, FILE *output) {
         xmlSecNodeSetDebugDump(nset->children, output);
         fprintf(output, "<<<\n");
         return;
-    default:
-        fprintf(output, "(unknown=%lu)\n", XMLSEC_UL_BAD_CAST(nset->type));
-        xmlSecInvalidIntegerTypeError("node set type", nset->type,
-                "supported nodeset type", NULL);
     }
 
     len = xmlXPathNodeSetGetLength(nset->nodes);

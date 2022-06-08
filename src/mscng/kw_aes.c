@@ -77,7 +77,7 @@ xmlSecMSCngKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
     DWORD cbKeyObject;
     xmlSecBuffer blob;
     BCRYPT_KEY_DATA_BLOB_HEADER* blobHeader;
-    xmlSecSize blobHeaderLen;
+    xmlSecSize blobHeaderSize;
     int res = -1;
     NTSTATUS status;
     int ret;
@@ -124,11 +124,11 @@ xmlSecMSCngKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
     }
 
     /* prefix the key with a BCRYPT_KEY_DATA_BLOB_HEADER */
-    blobHeaderLen = sizeof(BCRYPT_KEY_DATA_BLOB_HEADER) + xmlSecBufferGetSize(&ctx->keyBuffer);
-    ret = xmlSecBufferSetSize(&blob, blobHeaderLen);
+    blobHeaderSize = sizeof(BCRYPT_KEY_DATA_BLOB_HEADER) + xmlSecBufferGetSize(&ctx->keyBuffer);
+    ret = xmlSecBufferSetSize(&blob, blobHeaderSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=%lu",
-            XMLSEC_UL_BAD_CAST(blobHeaderLen));
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
+            "size=" XMLSEC_SIZE_FMT, blobHeaderSize);
         goto done;
     }
 
@@ -206,7 +206,7 @@ xmlSecMSCngKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
     DWORD cbKeyObject;
     xmlSecBuffer blob;
     BCRYPT_KEY_DATA_BLOB_HEADER* blobHeader;
-    xmlSecSize blobHeaderLen;
+    xmlSecSize blobHeaderSize;
     int res = -1;
     NTSTATUS status;
     int ret;
@@ -253,11 +253,11 @@ xmlSecMSCngKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
     }
 
     /* prefix the key with a BCRYPT_KEY_DATA_BLOB_HEADER */
-    blobHeaderLen = sizeof(BCRYPT_KEY_DATA_BLOB_HEADER) + xmlSecBufferGetSize(&ctx->keyBuffer);
-    ret = xmlSecBufferSetSize(&blob, blobHeaderLen);
+    blobHeaderSize = sizeof(BCRYPT_KEY_DATA_BLOB_HEADER) + xmlSecBufferGetSize(&ctx->keyBuffer);
+    ret = xmlSecBufferSetSize(&blob, blobHeaderSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=%lu",
-            XMLSEC_UL_BAD_CAST(blobHeaderLen));
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
+            "size=" XMLSEC_SIZE_FMT, blobHeaderSize);
         goto done;
     }
 
@@ -460,8 +460,8 @@ xmlSecMSCngKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     ret = xmlSecBufferSetData(&ctx->keyBuffer, xmlSecBufferGetData(buffer),
         ctx->keySize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetData",
-            xmlSecTransformGetName(transform), "size=%lu", XMLSEC_UL_BAD_CAST(ctx->keySize));
+        xmlSecInternalError2("xmlSecBufferSetData", xmlSecTransformGetName(transform),
+            "size=" XMLSEC_SIZE_FMT, ctx->keySize);
         return(-1);
     }
 

@@ -109,7 +109,7 @@ extern "C" {
                     (const char*)(errorObject),             \
                     "xmlMalloc",                            \
                     XMLSEC_ERRORS_R_MALLOC_FAILED,          \
-                    "size=%lu", XMLSEC_UL_BAD_CAST(allocSize)  \
+                    "size=%lu", XMLSEC_UL_BAD_CAST(allocSize) \
         )
 
 /**

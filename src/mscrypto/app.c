@@ -505,8 +505,7 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
     pfx.cbData = dataSize;
 
     if(FALSE == PFXIsPFXBlob(&pfx)) {
-        xmlSecMSCryptoError2("PFXIsPFXBlob", NULL,
-                             "size=%lu", XMLSEC_UL_BAD_CAST(pfx.cbData));
+        xmlSecMSCryptoError2("PFXIsPFXBlob", NULL, "size=%lu", pfx.cbData);
         goto done;
     }
 
@@ -582,14 +581,14 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
         tmpcert = CertDuplicateCertificateContext(pCert);
         if(tmpcert == NULL) {
             xmlSecMSCryptoError("CertDuplicateCertificateContext",
-                                xmlSecKeyDataGetName(x509Data));
+                xmlSecKeyDataGetName(x509Data));
             goto done;
         }
 
         ret = xmlSecMSCryptoKeyDataX509AdoptCert(x509Data, tmpcert);
         if(ret < 0) {
             xmlSecInternalError("xmlSecMSCryptoKeyDataX509AdoptCert",
-                                 xmlSecKeyDataGetName(x509Data));
+                xmlSecKeyDataGetName(x509Data));
             goto done;
         }
         tmpcert = NULL;
@@ -597,24 +596,20 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
 
     if (keyData == NULL) {
         /* private key not found in PKCS12 file */
-        xmlSecInternalError2("xmlSecMSCryptoAppPkcs12Load",
-                            xmlSecKeyDataGetName(x509Data),
-                            "private key not found in PKCS12 file, size = %lu",
-                            XMLSEC_UL_BAD_CAST(pfx.cbData));
+        xmlSecInternalError2("xmlSecMSCryptoAppPkcs12Load", xmlSecKeyDataGetName(x509Data),
+            "private key not found in PKCS12 file, size = %lu", pfx.cbData);
         goto done;
     }
 
     key = xmlSecKeyCreate();
     if(key == NULL) {
-        xmlSecInternalError("xmlSecKeyCreate",
-                            xmlSecKeyDataGetName(x509Data));
+        xmlSecInternalError("xmlSecKeyCreate", xmlSecKeyDataGetName(x509Data));
         goto done;
     }
 
     ret = xmlSecKeySetValue(key, keyData);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeySetValue",
-                            xmlSecKeyDataGetName(x509Data));
+        xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyDataGetName(x509Data));
         xmlSecKeyDestroy(key);
         key = NULL;
         goto done;
@@ -623,8 +618,7 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
 
     ret = xmlSecKeyAdoptData(key, x509Data);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyAdoptData",
-                            xmlSecKeyDataGetName(x509Data));
+        xmlSecInternalError("xmlSecKeyAdoptData", xmlSecKeyDataGetName(x509Data));
         xmlSecKeyDestroy(key);
         key = NULL;
         goto done;

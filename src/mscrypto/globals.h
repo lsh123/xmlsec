@@ -43,20 +43,20 @@ void xmlSecMSCryptoGetErrorMessage      (DWORD dwError,
  *
  * Macro. The XMLSec library macro for reporting MSCrypto crypro errors.
  */
-#define xmlSecMSCryptoError(errorFunction, errorObject) \
-    {                                                             \
-        DWORD dwLastError = GetLastError();                       \
-        xmlChar errBuf[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE];    \
+#define xmlSecMSCryptoError(errorFunction, errorObject)            \
+    {                                                              \
+        DWORD dwLastError = GetLastError();                        \
+        xmlChar errBuf[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE];     \
         xmlSecMSCryptoGetErrorMessage(dwLastError, errBuf, sizeof(errBuf)); \
-        xmlSecError(XMLSEC_ERRORS_HERE,                           \
-                    (const char*)(errorObject),                   \
-                    (errorFunction),                              \
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,                \
-                    "MSCrypto error: %lu: 0x%08lx: %s",           \
-                    XMLSEC_UL_BAD_CAST(dwLastError),              \
-                    XMLSEC_UL_BAD_CAST(dwLastError),              \
-                    errBuf                                        \
-        );                                                        \
+        xmlSecError(XMLSEC_ERRORS_HERE,                            \
+                    (const char*)(errorObject),                    \
+                    (errorFunction),                               \
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,                 \
+                    "MSCrypto error: %lu (0x%08lx): %s", \
+                    (dwLastError),                                 \
+                    (dwLastError),                                 \
+                    errBuf                                         \
+        );                                                         \
     }
 
 /**
@@ -77,10 +77,10 @@ void xmlSecMSCryptoGetErrorMessage      (DWORD dwError,
                     (const char*)(errorObject),                   \
                     (errorFunction),                              \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,                \
-                    msg  "MSCrypto error: %lu: 0x%08lx: %s",      \
+                    msg  "MSCrypto error: %lu (0x%08lx): %s",     \
                     (param),                                      \
-                    XMLSEC_UL_BAD_CAST(dwLastError),              \
-                    XMLSEC_UL_BAD_CAST(dwLastError),              \
+                    (dwLastError),                                \
+                    (dwLastError),                                \
                     errBuf                                        \
         );                                                        \
     }

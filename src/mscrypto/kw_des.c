@@ -307,9 +307,7 @@ xmlSecMSCryptoKWDes3SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     ret = xmlSecBufferSetData(&(ctx->keyBuffer), xmlSecBufferGetData(buffer), XMLSEC_KW_DES3_KEY_LENGTH);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetData",
-                             xmlSecTransformGetName(transform),
-                             "size=%lu", XMLSEC_UL_BAD_CAST(XMLSEC_KW_DES3_KEY_LENGTH));
+        xmlSecInternalError("xmlSecBufferSetData(XMLSEC_KW_DES3_KEY_LENGTH)", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -488,8 +486,7 @@ xmlSecMSCryptoKWDes3Sha1(void * context,
 }
 
 static int
-xmlSecMSCryptoKWDes3GenerateRandom(void * context,
-                                   xmlSecByte * out, xmlSecSize outSize) 
+xmlSecMSCryptoKWDes3GenerateRandom(void * context, xmlSecByte * out, xmlSecSize outSize) 
 {
     int res;
 
@@ -502,7 +499,7 @@ xmlSecMSCryptoKWDes3GenerateRandom(void * context,
 
     if(!CryptGenRandom(ctx->desCryptProvider, outSize, out)) {
         xmlSecMSCryptoError2("CryptGenRandom", NULL,
-                             "len=%lu", XMLSEC_UL_BAD_CAST(outSize));
+            "len=" XMLSEC_SIZE_FMT, outSize);
         return(-1);
     }
 
@@ -513,9 +510,9 @@ xmlSecMSCryptoKWDes3GenerateRandom(void * context,
 
 static int
 xmlSecMSCryptoKWDes3BlockEncrypt(void * context,
-                               const xmlSecByte * iv, xmlSecSize ivSize,
-                               const xmlSecByte * in, xmlSecSize inSize,
-                               xmlSecByte * out, xmlSecSize outSize) {
+                                const xmlSecByte * iv, xmlSecSize ivSize,
+                                const xmlSecByte * in, xmlSecSize inSize,
+                                xmlSecByte * out, xmlSecSize outSize) {
     xmlSecMSCryptoKWDes3CtxPtr ctx = (xmlSecMSCryptoKWDes3CtxPtr)context;
     DWORD dwBlockLen, dwBlockLenLen, dwCLen;
     HCRYPTKEY cryptKey = 0;

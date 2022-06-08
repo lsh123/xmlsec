@@ -197,6 +197,22 @@
 
 /******************************************************************************
  *
+ *  TO_ULONG
+ *
+ *****************************************************************************/
+
+/* Safe cast with limits check: xmlSecSize -> unsigned int (assume ulong >= 0) */
+#define XMLSEC_SAFE_CAST_SIZE_TO_ULONG(srcVal, dstVal, errorAction, errorObject) \
+    if(XMLSEC_UL_BAD_CAST(srcVal) > XMLSEC_UL_BAD_CAST(ULONG_MAX)) {           \
+        xmlSecImpossibleCastError(xmlSecSize, (srcVal), XMLSEC_SIZE_FMT,       \
+            unisgned long, 0UL, ULONG_MAX, "%lu", (errorObject));              \
+        errorAction;                                                           \
+    }                                                                          \
+    (dstVal) = (unsigned long)(srcVal);                                        \
+
+
+/******************************************************************************
+ *
  *  TO_SIZE (to xmlSecSize)
  * 
  *****************************************************************************/

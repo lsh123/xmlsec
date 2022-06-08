@@ -228,9 +228,8 @@ xmlSecOpenSSLKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
                             xmlSecBufferGetData(buffer),
                             ctx->keyExpectedSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetData",
-                             xmlSecTransformGetName(transform),
-                             "size=%lu", XMLSEC_UL_BAD_CAST(ctx->keyExpectedSize));
+        xmlSecInternalError2("xmlSecBufferSetData", xmlSecTransformGetName(transform),
+            "size=" XMLSEC_SIZE_FMT, ctx->keyExpectedSize);
     }
 
     return(0);

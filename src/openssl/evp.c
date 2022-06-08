@@ -1178,23 +1178,20 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     XMLSEC_SAFE_CAST_SIZE_TO_INT(sizeBits, bitsLen, goto done, NULL);
     ret = DSA_generate_parameters_ex(dsa, bitsLen, NULL, 0, &counter_ret, &h_ret, NULL);
     if(ret != 1) {
-        xmlSecOpenSSLError2("DSA_generate_parameters_ex",
-                            xmlSecKeyDataGetName(data),
-                            "sizeBits=%lu", XMLSEC_UL_BAD_CAST(sizeBits));
+        xmlSecOpenSSLError2("DSA_generate_parameters_ex",  xmlSecKeyDataGetName(data),
+            "sizeBits=" XMLSEC_SIZE_FMT, sizeBits);
         goto done;
     }
 
     ret = DSA_generate_key(dsa);
     if(ret < 0) {
-        xmlSecOpenSSLError("DSA_generate_key",
-                           xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("DSA_generate_key", xmlSecKeyDataGetName(data));
         goto done;
     }
 
     ret = xmlSecOpenSSLKeyDataDsaAdoptDsa(data, dsa);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataDsaAdoptDsa",
-                            xmlSecKeyDataGetName(data));
+        xmlSecInternalError("xmlSecOpenSSLKeyDataDsaAdoptDsa", xmlSecKeyDataGetName(data));
         goto done;
     }
     dsa = NULL;
@@ -1202,26 +1199,22 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
 #else /* XMLSEC_OPENSSL_API_300 */
     pctx = EVP_PKEY_CTX_new_from_name(xmlSecOpenSSLGetLibCtx(), "DSA", NULL);
     if(pctx == NULL) {
-        xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_name",
-            xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_name", xmlSecKeyDataGetName(data));
         goto done;
     }
     ret = EVP_PKEY_paramgen_init(pctx);
     if(ret <= 0) {
-        xmlSecOpenSSLError("EVP_PKEY_paramgen_init",
-            xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("EVP_PKEY_paramgen_init", xmlSecKeyDataGetName(data));
         goto done;
     }
     param_bld = OSSL_PARAM_BLD_new();
     if(param_bld == NULL) {
-        xmlSecOpenSSLError("OSSL_PARAM_BLD_new",
-            xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("OSSL_PARAM_BLD_new", xmlSecKeyDataGetName(data));
         goto done;
     }
 #ifndef XMLSEC_NO_SIZE_T
     if(OSSL_PARAM_BLD_push_size_t(param_bld, OSSL_PKEY_PARAM_BITS, sizeBits) != 1) {
-        xmlSecOpenSSLError("OSSL_PARAM_BLD_push_size_t(bits)",
-            xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("OSSL_PARAM_BLD_push_size_t(bits)", xmlSecKeyDataGetName(data));
         goto done;
     }
 #else /* XMLSEC_NO_SIZE_T */
@@ -1233,27 +1226,23 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
 #endif /* XMLSEC_NO_SIZE_T */
     params = OSSL_PARAM_BLD_to_param(param_bld);
     if(params == NULL) {
-        xmlSecOpenSSLError("OSSL_PARAM_BLD_to_param",
-            xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("OSSL_PARAM_BLD_to_param", xmlSecKeyDataGetName(data));
         goto done;
     }
     ret = EVP_PKEY_CTX_set_params(pctx, params);
     if(ret <= 0) {
-        xmlSecOpenSSLError("EVP_PKEY_CTX_set_params",
-            xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("EVP_PKEY_CTX_set_params", xmlSecKeyDataGetName(data));
         goto done;
     }
     ret = EVP_PKEY_generate(pctx, &pKey);
     if(ret <= 0) {
-        xmlSecOpenSSLError2("EVP_PKEY_generate",
-            xmlSecKeyDataGetName(data),
-            "sizeBits=%lu", XMLSEC_UL_BAD_CAST(sizeBits));
+        xmlSecOpenSSLError2("EVP_PKEY_generate", xmlSecKeyDataGetName(data),
+            "sizeBits=" XMLSEC_SIZE_FMT, sizeBits);
         goto done;
     }
     ret = xmlSecOpenSSLKeyDataDsaAdoptEvp(data, pKey);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataDsaAdoptEvp",
-            xmlSecKeyDataGetName(data));
+        xmlSecInternalError("xmlSecOpenSSLKeyDataDsaAdoptEvp", xmlSecKeyDataGetName(data));
         goto done;
     }
     pKey = NULL;
@@ -1441,8 +1430,8 @@ xmlSecOpenSSLKeyDataDsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== dsa key: size = %lu\n",
-            XMLSEC_UL_BAD_CAST(xmlSecOpenSSLKeyDataDsaGetSize(data)));
+    fprintf(output, "=== dsa key: size = " XMLSEC_SIZE_FMT "\n",
+        xmlSecOpenSSLKeyDataDsaGetSize(data));
 }
 
 static void
@@ -1450,8 +1439,8 @@ xmlSecOpenSSLKeyDataDsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<DSAKeyValue size=\"%lu\" />\n",
-            XMLSEC_UL_BAD_CAST(xmlSecOpenSSLKeyDataDsaGetSize(data)));
+    fprintf(output, "<DSAKeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
+        xmlSecOpenSSLKeyDataDsaGetSize(data));
 }
 #endif /* XMLSEC_NO_DSA */
 
@@ -1739,8 +1728,8 @@ xmlSecOpenSSLKeyDataEcdsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== ecdsa key: size = %lu\n",
-            XMLSEC_UL_BAD_CAST(xmlSecOpenSSLKeyDataEcdsaGetSize(data)));
+    fprintf(output, "=== ecdsa key: size = " XMLSEC_SIZE_FMT "\n",
+        xmlSecOpenSSLKeyDataEcdsaGetSize(data));
 }
 
 static void
@@ -1748,8 +1737,8 @@ xmlSecOpenSSLKeyDataEcdsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<ECDSAKeyValue size=\"%lu\" />\n",
-            XMLSEC_UL_BAD_CAST(xmlSecOpenSSLKeyDataEcdsaGetSize(data)));
+    fprintf(output, "<ECDSAKeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
+        xmlSecOpenSSLKeyDataEcdsaGetSize(data));
 }
 
 #endif /* XMLSEC_NO_ECDSA */
@@ -2362,16 +2351,14 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     XMLSEC_SAFE_CAST_SIZE_TO_INT(sizeBits, lenBits, goto done, NULL);
     ret = RSA_generate_key_ex(rsa, lenBits, e, NULL);
     if(ret != 1) {
-        xmlSecOpenSSLError2("RSA_generate_key_ex",
-                            xmlSecKeyDataGetName(data),
-                            "sizeBits=%lu", XMLSEC_UL_BAD_CAST(sizeBits));
+        xmlSecOpenSSLError2("RSA_generate_key_ex", xmlSecKeyDataGetName(data),
+            "sizeBits=" XMLSEC_SIZE_FMT, sizeBits);
         goto done;
     }
 
     ret = xmlSecOpenSSLKeyDataRsaAdoptRsa(data, rsa);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataRsaAdoptRsa",
-                            xmlSecKeyDataGetName(data));
+        xmlSecInternalError("xmlSecOpenSSLKeyDataRsaAdoptRsa", xmlSecKeyDataGetName(data));
         goto done;
     }
     rsa = NULL;
@@ -2379,20 +2366,17 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
 #else /* XMLSEC_OPENSSL_API_300 */
     pctx = EVP_PKEY_CTX_new_from_name(xmlSecOpenSSLGetLibCtx(), "RSA", NULL);
     if(pctx == NULL) {
-        xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_name",
-            xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_name", xmlSecKeyDataGetName(data));
         goto done;
     }
     ret = EVP_PKEY_keygen_init(pctx);
     if(ret <= 0) {
-        xmlSecOpenSSLError("EVP_PKEY_paramgen_init",
-            xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("EVP_PKEY_paramgen_init", xmlSecKeyDataGetName(data));
         goto done;
     }
     param_bld = OSSL_PARAM_BLD_new();
     if(param_bld == NULL) {
-        xmlSecOpenSSLError("OSSL_PARAM_BLD_new",
-            xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("OSSL_PARAM_BLD_new", xmlSecKeyDataGetName(data));
         goto done;
     }
 #ifndef XMLSEC_NO_SIZE_T
@@ -2424,15 +2408,13 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     }
     ret = EVP_PKEY_generate(pctx, &pKey);
     if(ret <= 0) {
-        xmlSecOpenSSLError2("EVP_PKEY_generate",
-            xmlSecKeyDataGetName(data),
-            "sizeBits=%lu", XMLSEC_UL_BAD_CAST(sizeBits));
+        xmlSecOpenSSLError2("EVP_PKEY_generate", xmlSecKeyDataGetName(data),
+            "sizeBits=" XMLSEC_SIZE_FMT, sizeBits);
         goto done;
     }
     ret = xmlSecOpenSSLKeyDataRsaAdoptEvp(data, pKey);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataDsaAdoptEvp",
-            xmlSecKeyDataGetName(data));
+        xmlSecInternalError("xmlSecOpenSSLKeyDataDsaAdoptEvp", xmlSecKeyDataGetName(data));
         goto done;
     }
     pKey = NULL;
@@ -2597,8 +2579,8 @@ xmlSecOpenSSLKeyDataRsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== rsa key: size = %lu\n",
-            XMLSEC_UL_BAD_CAST(xmlSecOpenSSLKeyDataRsaGetSize(data)));
+    fprintf(output, "=== rsa key: size = " XMLSEC_SIZE_FMT "\n",
+        xmlSecOpenSSLKeyDataRsaGetSize(data));
 }
 
 static void
@@ -2606,8 +2588,8 @@ xmlSecOpenSSLKeyDataRsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<RSAKeyValue size=\"%lu\" />\n",
-            XMLSEC_UL_BAD_CAST(xmlSecOpenSSLKeyDataRsaGetSize(data)));
+    fprintf(output, "<RSAKeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
+        xmlSecOpenSSLKeyDataRsaGetSize(data));
 }
 #endif /* XMLSEC_NO_RSA */
 
@@ -2721,8 +2703,8 @@ xmlSecOpenSSLKeyDataGost2001DebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataGost2001Id));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== gost key: size = %lu\n",
-            XMLSEC_UL_BAD_CAST(xmlSecOpenSSLKeyDataGost2001GetSize(data)));
+    fprintf(output, "=== gost key: size = " XMLSEC_SIZE_FMT "\n",
+        xmlSecOpenSSLKeyDataGost2001GetSize(data));
 }
 
 static void
@@ -2730,8 +2712,8 @@ xmlSecOpenSSLKeyDataGost2001DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataGost2001Id));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<GOST2001KeyValue size=\"%lu\" />\n",
-            XMLSEC_UL_BAD_CAST(xmlSecOpenSSLKeyDataGost2001GetSize(data)));
+    fprintf(output, "<GOST2001KeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
+        xmlSecOpenSSLKeyDataGost2001GetSize(data));
 }
 #endif /* XMLSEC_NO_GOST */
 
@@ -2847,8 +2829,8 @@ xmlSecOpenSSLKeyDataGostR3410_2012_256DebugDump(xmlSecKeyDataPtr data, FILE* out
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataGostR3410_2012_256Id));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== gost key: size = %lu\n",
-            XMLSEC_UL_BAD_CAST(xmlSecOpenSSLKeyDataGostR3410_2012_256GetSize(data)));
+    fprintf(output, "=== gost key: size = " XMLSEC_SIZE_FMT "\n",
+        xmlSecOpenSSLKeyDataGostR3410_2012_256GetSize(data));
 }
 
 static void
@@ -2856,8 +2838,8 @@ xmlSecOpenSSLKeyDataGostR3410_2012_256DebugXmlDump(xmlSecKeyDataPtr data, FILE* 
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataGostR3410_2012_256Id));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<GOST2012_256KeyValue size=\"%lu\" />\n",
-            XMLSEC_UL_BAD_CAST(xmlSecOpenSSLKeyDataGostR3410_2012_256GetSize)(data));
+    fprintf(output, "<GOST2012_256KeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
+        xmlSecOpenSSLKeyDataGostR3410_2012_256GetSize(data));
 }
 
 
@@ -2973,8 +2955,8 @@ xmlSecOpenSSLKeyDataGostR3410_2012_512DebugDump(xmlSecKeyDataPtr data, FILE* out
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataGostR3410_2012_512Id));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== gost key: size = %lu\n",
-            XMLSEC_UL_BAD_CAST(xmlSecOpenSSLKeyDataGostR3410_2012_512GetSize(data)));
+    fprintf(output, "=== gost key: size = " XMLSEC_SIZE_FMT "\n",
+            xmlSecOpenSSLKeyDataGostR3410_2012_512GetSize(data));
 }
 
 static void
@@ -2982,8 +2964,8 @@ xmlSecOpenSSLKeyDataGostR3410_2012_512DebugXmlDump(xmlSecKeyDataPtr data, FILE* 
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataGostR3410_2012_512Id));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<GOST2012_512KeyValue size=\"%lu\" />\n",
-            XMLSEC_UL_BAD_CAST(xmlSecOpenSSLKeyDataGostR3410_2012_512GetSize(data)));
+    fprintf(output, "<GOST2012_512KeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
+            xmlSecOpenSSLKeyDataGostR3410_2012_512GetSize(data));
 }
 
 #endif /* XMLSEC_NO_GOST2012 */

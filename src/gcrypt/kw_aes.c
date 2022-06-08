@@ -211,13 +211,11 @@ xmlSecGCryptKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         return(-1);
     }
 
-    ret = xmlSecBufferSetData(&(ctx->keyBuffer),
-                            xmlSecBufferGetData(buffer),
-                            ctx->keyExpectedSize);
+    ret = xmlSecBufferSetData(&(ctx->keyBuffer), 
+        xmlSecBufferGetData(buffer), ctx->keyExpectedSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetData",
-                             xmlSecTransformGetName(transform),
-                             "size=%lu", XMLSEC_UL_BAD_CAST(ctx->keyExpectedSize));
+        xmlSecInternalError2("xmlSecBufferSetData", xmlSecTransformGetName(transform),
+            "size=" XMLSEC_SIZE_FMT, ctx->keyExpectedSize);
         return(-1);
     }
 
@@ -273,7 +271,7 @@ xmlSecGCryptKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetMaxSize",
                                  xmlSecTransformGetName(transform),
-                                 "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
+                                 "size=" XMLSEC_SIZE_FMT, outSize);
             return(-1);
         }
 
@@ -301,17 +299,15 @@ xmlSecGCryptKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
 
         ret = xmlSecBufferSetSize(out, outSize);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferSetSize",
-                                 xmlSecTransformGetName(transform),
-                                 "outSize=%lu", XMLSEC_UL_BAD_CAST(outSize));
+            xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform),
+                "outSize=" XMLSEC_SIZE_FMT, outSize);
             return(-1);
         }
 
         ret = xmlSecBufferRemoveHead(in, inSize);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferRemoveHead",
-                                 xmlSecTransformGetName(transform),
-                                 "inSize=%lu", XMLSEC_UL_BAD_CAST(inSize));
+            xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform),
+                "inSize=" XMLSEC_SIZE_FMT, inSize);
             return(-1);
         }
 

@@ -1016,14 +1016,14 @@ int main(int argc, const char **argv) {
     utf8_argv_size = sizeof(char*) * (size_t)argc;
     utf8_argv = (const char**)xmlMalloc(utf8_argv_size);
     if(utf8_argv == NULL) {
-        fprintf(stderr, "Error: can not allocate memory (%lu bytes)\n", XMLSEC_UL_BAD_CAST(utf8_argv_size));
+        fprintf(stderr, "Error: can not allocate memory (%zu bytes)\n", utf8_argv_size);
         goto fail;
     }
     memset((char**)utf8_argv, 0, utf8_argv_size);
     for(ii = 0; ii < argc; ++ii) {
         utf8_argv[ii] = (const char*)xmlSecWin32ConvertTstrToUtf8(argv[ii]);
         if(utf8_argv[ii] == NULL) {
-            fprintf(stderr, "Error: can not convert command line parameter at position %lu to UTF8\n", XMLSEC_UL_BAD_CAST(ii));
+            fprintf(stderr, "Error: can not convert command line parameter at position %d to UTF8\n", ii);
             goto fail;
         }
     }
@@ -1216,7 +1216,7 @@ int main(int argc, const char **argv) {
 #endif /* XMLSEC_NO_XMLENC */
 
         default:
-            fprintf(stderr, "Error: invalid command %lu\n", XMLSEC_UL_BAD_CAST(command));
+            fprintf(stderr, "Error: invalid command %d\n", (int)command);
             xmlSecAppPrintUsage();
             goto fail;
         }
@@ -1225,9 +1225,11 @@ int main(int argc, const char **argv) {
     /* print perf stats results */
     if(xmlSecAppCmdLineParamIsSet(&repeatParam) && 
        (xmlSecAppCmdLineParamGetInt(&repeatParam, 1) > 0)) {
-       
+        long double msecs;
+
         repeats = xmlSecAppCmdLineParamGetInt(&repeatParam, 1);
-        fprintf(stderr, "Executed %lu tests in %lu msec\n", XMLSEC_UL_BAD_CAST(repeats), XMLSEC_UL_BAD_CAST((1000 * total_time) / CLOCKS_PER_SEC));
+        msecs = (1000 * total_time) / (long double)CLOCKS_PER_SEC;
+        fprintf(stderr, "Executed %d tests in %.2Lf msec\n", repeats, msecs);
     }
 
     goto success;
@@ -1400,7 +1402,8 @@ done:
                 ++good;
             }
         }
-        fprintf(stderr, "SignedInfo References (ok/all): %lu/%lu\n", XMLSEC_UL_BAD_CAST(good), XMLSEC_UL_BAD_CAST(size));
+        fprintf(stderr, "SignedInfo References (ok/all): " XMLSEC_SIZE_FMT "/" XMLSEC_SIZE_FMT "\n", 
+            good, size);
 
         size = xmlSecPtrListGetSize(&(dsigCtx.manifestReferences));
         for(i = good = 0; i < size; ++i) {
@@ -1413,7 +1416,8 @@ done:
                 ++good;
             }
         }
-        fprintf(stderr, "Manifests References (ok/all): %lu/%lu\n", XMLSEC_UL_BAD_CAST(good), XMLSEC_UL_BAD_CAST(size));
+        fprintf(stderr, "Manifests References (ok/all): " XMLSEC_SIZE_FMT "/" XMLSEC_SIZE_FMT "\n", 
+            good, size);
 
         xmlSecAppPrintDSigCtx(&dsigCtx);
     }

@@ -335,10 +335,8 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         XMLSEC_SAFE_CAST_SIZE_TO_INT(dataSize, dataLen, return(-1), xmlSecTransformGetName(transform));
         ret = xmlParseChunk(ctx->parserCtx, (const char*)data, dataLen, 0);
         if(ret != 0) {
-            xmlSecXmlParserError2("xmlParseChunk", ctx->parserCtx,
-                                  xmlSecTransformGetName(transform),
-                                  "size=%lu", XMLSEC_UL_BAD_CAST(dataSize));
-
+            xmlSecXmlParserError2("xmlParseChunk", ctx->parserCtx, xmlSecTransformGetName(transform),
+                "size=" XMLSEC_SIZE_FMT, dataSize);
             return(-1);
         }
     }
@@ -352,8 +350,7 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         /* finalize */
         ret = xmlParseChunk(ctx->parserCtx, NULL, 0, 1);
         if((ret != 0) || (ctx->parserCtx->myDoc == NULL)) {
-            xmlSecXmlParserError("xmlParseChunk", ctx->parserCtx,
-                                 xmlSecTransformGetName(transform));
+            xmlSecXmlParserError("xmlParseChunk", ctx->parserCtx, xmlSecTransformGetName(transform));
             return(-1);
         }
 
@@ -363,8 +360,7 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
 
         docOut = xmlSecXsApplyStylesheet(ctx, docIn);
         if(docOut == NULL) {
-            xmlSecInternalError("xmlSecXsApplyStylesheet",
-                                xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecXsApplyStylesheet", xmlSecTransformGetName(transform));
             xmlFreeDoc(docIn);
             return(-1);
         }
@@ -373,16 +369,14 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         if(transform->next != NULL) {
             output = xmlSecTransformCreateOutputBuffer(transform->next, transformCtx);
             if(output == NULL) {
-                xmlSecInternalError("xmlSecTransformCreateOutputBuffer",
-                                    xmlSecTransformGetName(transform));
+                xmlSecInternalError("xmlSecTransformCreateOutputBuffer", xmlSecTransformGetName(transform));
                 xmlFreeDoc(docOut);
                 return(-1);
             }
         } else {
             output = xmlSecBufferCreateOutputBuffer(&(transform->outBuf));
             if(output == NULL) {
-                xmlSecInternalError("xmlSecBufferCreateOutputBuffer",
-                                    xmlSecTransformGetName(transform));
+                xmlSecInternalError("xmlSecBufferCreateOutputBuffer", xmlSecTransformGetName(transform));
                 xmlFreeDoc(docOut);
                 return(-1);
             }
@@ -442,16 +436,14 @@ xmlSecXsltExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr 
 
         ret = xmlSecXslProcess(ctx, in, out);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecXslProcess",
-                                xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecXslProcess", xmlSecTransformGetName(transform));
             return(-1);
         }
 
         ret = xmlSecBufferRemoveHead(in, inSize);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferRemoveHead",
-                                 xmlSecTransformGetName(transform),
-                                 "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
+            xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform),
+                "size=" XMLSEC_SIZE_FMT, inSize);
             return(-1);
         }
 

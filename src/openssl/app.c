@@ -294,7 +294,7 @@ xmlSecOpenSSLAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     bio = xmlSecOpenSSLCreateMemBufBio((void*)data, dataSize);
     if(bio == NULL) {
         xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
-                            "dataSize=%lu", XMLSEC_UL_BAD_CAST(dataSize));
+                            "dataSize=" XMLSEC_SIZE_FMT,  dataSize);
         return(NULL);
     }
 
@@ -442,7 +442,7 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
 
     default:
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-                         "format=%lu", XMLSEC_UL_BAD_CAST(format));
+            "format=%lu", XMLSEC_UL_BAD_CAST(format));
         return(NULL);
     }
 
@@ -652,7 +652,7 @@ xmlSecOpenSSLAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlS
     bio = xmlSecOpenSSLCreateMemBufBio((void*)data, dataSize);
     if(bio == NULL) {
         xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
-                            "dataSize=%lu", XMLSEC_UL_BAD_CAST(dataSize));
+                            "dataSize=" XMLSEC_SIZE_FMT,  dataSize);
         return(-1);
     }
 
@@ -793,7 +793,7 @@ xmlSecOpenSSLAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     bio = xmlSecOpenSSLCreateMemBufBio((void*)data, dataSize);
     if(bio == NULL) {
         xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
-                            "dataSize=%lu", XMLSEC_UL_BAD_CAST(dataSize));
+                            "dataSize=" XMLSEC_SIZE_FMT,  dataSize);
         return(NULL);
     }
 
@@ -1169,7 +1169,7 @@ xmlSecOpenSSLAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte*
     bio = xmlSecOpenSSLCreateMemBufBio((void*)data, dataSize);
     if(bio == NULL) {
         xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
-                            "dataSize=%lu", XMLSEC_UL_BAD_CAST(dataSize));
+                            "dataSize=" XMLSEC_SIZE_FMT,  dataSize);
         return(-1);
     }
 
@@ -1353,7 +1353,7 @@ xmlSecOpenSSLAppCertLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
         break;
     default:
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-                         "format=%lu", XMLSEC_UL_BAD_CAST(format));
+            "format=%lu", XMLSEC_UL_BAD_CAST(format));
         return(NULL);
     }
 

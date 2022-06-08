@@ -30,6 +30,7 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/errors.h>
 
+#include "cast_helpers.h"
 
 /**************************************************************************
  *
@@ -460,7 +461,7 @@ xmlSecKeyReqDebugDump(xmlSecKeyReqPtr keyReq, FILE* output) {
                 BAD_CAST "NULL");
     fprintf(output, "==== keyType: 0x%08x\n", keyReq->keyType);
     fprintf(output, "==== keyUsage: 0x%08x\n", keyReq->keyUsage);
-    fprintf(output, "==== keyBitsSize: %lu\n", XMLSEC_UL_BAD_CAST(keyReq->keyBitsSize));
+    fprintf(output, "==== keyBitsSize: " XMLSEC_SIZE_FMT "\n", keyReq->keyBitsSize);
     xmlSecPtrListDebugDump(&(keyReq->keyUseWithList), output);
 }
 
@@ -484,7 +485,7 @@ xmlSecKeyReqDebugXmlDump(xmlSecKeyReqPtr keyReq, FILE* output) {
 
     fprintf(output, "<KeyType>0x%08x</KeyType>\n", keyReq->keyType);
     fprintf(output, "<KeyUsage>0x%08x</KeyUsage>\n", keyReq->keyUsage);
-    fprintf(output, "<KeyBitsSize>%lu</KeyBitsSize>\n", XMLSEC_UL_BAD_CAST(keyReq->keyBitsSize));
+    fprintf(output, "<KeyBitsSize>" XMLSEC_SIZE_FMT "</KeyBitsSize>\n", keyReq->keyBitsSize);
     xmlSecPtrListDebugXmlDump(&(keyReq->keyUseWithList), output);
     fprintf(output, "</KeyReq>\n");
 }
@@ -913,7 +914,7 @@ xmlSecKeyDebugDump(xmlSecKeyPtr key, FILE *output) {
     if(key->name != NULL) {
         fprintf(output, "=== key name: %s\n", key->name);
     }
-    fprintf(output, "=== key usage: %lu\n", XMLSEC_UL_BAD_CAST(key->usage));
+    fprintf(output, "=== key usage: %u\n", key->usage);
     if(key->notValidBefore < key->notValidAfter) {
         fprintf(output, "=== key not valid before: %lu\n", XMLSEC_UL_BAD_CAST(key->notValidBefore));
         fprintf(output, "=== key not valid after: %lu\n", XMLSEC_UL_BAD_CAST(key->notValidAfter));
@@ -1005,7 +1006,7 @@ xmlSecKeyGenerate(xmlSecKeyDataId dataId, xmlSecSize sizeBits, xmlSecKeyDataType
     if(ret < 0) {
         xmlSecInternalError3("xmlSecKeyDataGenerate",
                              xmlSecKeyDataKlassGetName(dataId),
-                             "size=%lu;type=%lu", XMLSEC_UL_BAD_CAST(sizeBits), XMLSEC_UL_BAD_CAST(type));
+                             "size=" XMLSEC_SIZE_FMT ";type=%u", sizeBits, type);
         xmlSecKeyDataDestroy(data);
         return(NULL);
     }

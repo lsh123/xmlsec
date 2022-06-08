@@ -420,7 +420,7 @@ xmlSecNssGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
     ret = xmlSecBufferSetSize(buffer, size);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-                             "size=%lu", XMLSEC_UL_BAD_CAST(size));
+                             "size=" XMLSEC_SIZE_FMT, size);
         return(-1);
     }
 
@@ -429,7 +429,7 @@ xmlSecNssGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
     rv = PK11_GenerateRandom((xmlSecByte*)xmlSecBufferGetData(buffer), len);
     if(rv != SECSuccess) {
         xmlSecNssError2("PK11_GenerateRandom", NULL,
-                        "size=%lu", XMLSEC_UL_BAD_CAST(size));
+                        "size=" XMLSEC_SIZE_FMT, size);
         return(-1);
     }
     return(0);

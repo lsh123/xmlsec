@@ -602,7 +602,7 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecBufferRemoveHead",
                                      xmlSecTransformGetName(transform),
-                                     "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
+                                     "size=" XMLSEC_SIZE_FMT, inSize);
                 return(-1);
             }
         }
@@ -641,8 +641,8 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
                 XMLSEC_SAFE_CAST_SIZE_TO_UINT(adjustedDigestSize, dgstSize, return(-1), xmlSecTransformGetName(transform));
             } else {
                 xmlSecInvalidSizeLessThanError("HMAC digest (bits)",
-                                        8 * dgstSize, ctx->dgstSize,
-                                        xmlSecTransformGetName(transform));
+                    8 * dgstSize, ctx->dgstSize,
+                    xmlSecTransformGetName(transform));
                 return(-1);
             }
 
@@ -651,8 +651,8 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
                 ret = xmlSecBufferAppend(out, ctx->dgst, dgstSize);
                 if(ret < 0) {
                     xmlSecInternalError2("xmlSecBufferAppend",
-                                         xmlSecTransformGetName(transform),
-                                         "size=%lu", XMLSEC_UL_BAD_CAST(dgstSize));
+                        xmlSecTransformGetName(transform),
+                        "size=" XMLSEC_SIZE_FMT, dgstSize);
                     return(-1);
                 }
             }

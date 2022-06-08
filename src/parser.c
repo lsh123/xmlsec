@@ -179,8 +179,8 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         ret = xmlParseChunk(ctx->parserCtx, (const char*)data, dataLen, 0);
         if(ret != 0) {
             xmlSecXmlParserError2("xmlParseChunk", ctx->parserCtx,
-                                  xmlSecTransformGetName(transform),
-                                  "size=%lu", XMLSEC_UL_BAD_CAST(dataLen));
+                xmlSecTransformGetName(transform),
+                "size=%d", dataLen);
             return(-1);
         }
     }
@@ -190,7 +190,7 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         ret = xmlParseChunk(ctx->parserCtx, NULL, 0, 1);
         if((ret != 0) || (ctx->parserCtx->myDoc == NULL)) {
             xmlSecXmlParserError("xmlParseChunk", ctx->parserCtx,
-                                 xmlSecTransformGetName(transform));
+                xmlSecTransformGetName(transform));
             return(-1);
         }
 
@@ -198,8 +198,7 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         transform->outNodes = xmlSecNodeSetCreate(ctx->parserCtx->myDoc,
                                                   NULL, xmlSecNodeSetTree);
         if(transform->outNodes == NULL) {
-            xmlSecInternalError("xmlSecNodeSetCreate",
-                                xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecNodeSetCreate", xmlSecTransformGetName(transform));
             xmlFreeDoc(ctx->parserCtx->myDoc);
             ctx->parserCtx->myDoc = NULL;
             return(-1);
@@ -211,8 +210,7 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         if(transform->next != NULL) {
             ret = xmlSecTransformPushXml(transform->next, transform->outNodes, transformCtx);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecTransformPushXml",
-                                    xmlSecTransformGetName(transform));
+                xmlSecInternalError("xmlSecTransformPushXml", xmlSecTransformGetName(transform));
                 return(-1);
             }
         }
@@ -461,8 +459,7 @@ xmlSecParseMemoryExt(const xmlSecByte *prefix, xmlSecSize prefixSize,
         ret = xmlParseChunk(ctxt, (const char*)prefix, prefixLen, 0);
         if(ret != 0) {
             xmlSecXmlParserError2("xmlParseChunk", ctxt, NULL,
-                                  "chunkSize=%lu", XMLSEC_UL_BAD_CAST(prefixLen));
-
+                "chunkSize=%d", prefixLen);
             goto done;
         }
     }
@@ -473,8 +470,7 @@ xmlSecParseMemoryExt(const xmlSecByte *prefix, xmlSecSize prefixSize,
         ret = xmlParseChunk(ctxt, (const char*)buffer, bufferLen, 0);
         if(ret != 0) {
             xmlSecXmlParserError2("xmlParseChunk", ctxt, NULL,
-                                  "chunkSize=%lu", XMLSEC_UL_BAD_CAST(bufferLen));
-
+                "chunkSize=%d", bufferLen);
             goto done;
         }
     }
@@ -485,8 +481,7 @@ xmlSecParseMemoryExt(const xmlSecByte *prefix, xmlSecSize prefixSize,
         ret = xmlParseChunk(ctxt, (const char*)postfix, postfixLen, 0);
         if(ret != 0) {
             xmlSecXmlParserError2("xmlParseChunk", ctxt, NULL,
-                                  "chunkSize=%lu", XMLSEC_UL_BAD_CAST(postfixLen));
-
+                "chunkSize=%d", postfixLen);
             goto done;
         }
     }

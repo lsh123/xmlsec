@@ -42,10 +42,13 @@ typedef void*                                   xmlSecPtr;
 #ifdef XMLSEC_NO_SIZE_T
 #define xmlSecSize                              unsigned int
 #define XMLSEC_SIZE_MAX                         UINT_MAX
+#define XMLSEC_SIZE_FMT                         "%u"
 #else  /* XMLSEC_NO_SIZE_T */
 #define xmlSecSize                              size_t
 #define XMLSEC_SIZE_MAX                         SIZE_MAX
+#define XMLSEC_SIZE_FMT                         "%zu"
 #endif /* XMLSEC_NO_SIZE_T */
+#define XMLSEC_SIZE_MIN                         ((xmlSecSize)0)
 
 /**
  * XMLSEC_SIZE_BAD_CAST:
@@ -55,15 +58,6 @@ typedef void*                                   xmlSecPtr;
  * versions of LibXMLSec.
  */
 #define XMLSEC_SIZE_BAD_CAST(val)               ((xmlSecSize)(val))
-
-/**
- * XMLSEC_UL_BAD_CAST:
- * @val:        the value to cast
- *
- * Bad cast to 'unsigned long' (very useful for printing with '%lu').
- */
-#define XMLSEC_UL_BAD_CAST(val)               ((unsigned long)(val))
-
 
 /**
  * xmlSecByte:

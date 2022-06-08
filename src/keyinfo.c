@@ -494,15 +494,13 @@ xmlSecKeyInfoCtxDebugDump(xmlSecKeyInfoCtxPtr keyInfoCtx, FILE* output) {
     } else {
         fprintf(output, "== enabled key data: all\n");
     }
-    fprintf(output, "== RetrievalMethod level (cur/max): %lu/%lu\n",
-            XMLSEC_UL_BAD_CAST(keyInfoCtx->curRetrievalMethodLevel),
-            XMLSEC_UL_BAD_CAST(keyInfoCtx->maxRetrievalMethodLevel));
+    fprintf(output, "== RetrievalMethod level (cur/max): %d/%d\n",
+            keyInfoCtx->curRetrievalMethodLevel, keyInfoCtx->maxRetrievalMethodLevel);
     xmlSecTransformCtxDebugDump(&(keyInfoCtx->retrievalMethodCtx), output);
 
 #ifndef XMLSEC_NO_XMLENC
-    fprintf(output, "== EncryptedKey level (cur/max): %lu/%lu\n",
-            XMLSEC_UL_BAD_CAST(keyInfoCtx->curEncryptedKeyLevel),
-            XMLSEC_UL_BAD_CAST(keyInfoCtx->maxEncryptedKeyLevel));
+    fprintf(output, "== EncryptedKey level (cur/max): %d/%d\n",
+            keyInfoCtx->curEncryptedKeyLevel, keyInfoCtx->maxEncryptedKeyLevel);
     if(keyInfoCtx->encCtx != NULL) {
         xmlSecEncCtxDebugDump(keyInfoCtx->encCtx, output);
     }
@@ -542,15 +540,13 @@ xmlSecKeyInfoCtxDebugXmlDump(xmlSecKeyInfoCtxPtr keyInfoCtx, FILE* output) {
         fprintf(output, "<EnabledKeyData>all</EnabledKeyData>\n");
     }
 
-    fprintf(output, "<RetrievalMethodLevel cur=\"%lu\" max=\"%lu\" />\n",
-            XMLSEC_UL_BAD_CAST(keyInfoCtx->curRetrievalMethodLevel),
-            XMLSEC_UL_BAD_CAST(keyInfoCtx->maxRetrievalMethodLevel));
+    fprintf(output, "<RetrievalMethodLevel cur=\"%d\" max=\"%d\" />\n",
+        keyInfoCtx->curEncryptedKeyLevel, keyInfoCtx->maxEncryptedKeyLevel);
     xmlSecTransformCtxDebugXmlDump(&(keyInfoCtx->retrievalMethodCtx), output);
 
 #ifndef XMLSEC_NO_XMLENC
-    fprintf(output, "<EncryptedKeyLevel cur=\"%lu\" max=\"%lu\" />\n",
-            XMLSEC_UL_BAD_CAST(keyInfoCtx->curEncryptedKeyLevel),
-            XMLSEC_UL_BAD_CAST(keyInfoCtx->maxEncryptedKeyLevel));
+    fprintf(output, "<EncryptedKeyLevel cur=\"%d\" max=\"%d\" />\n",
+        keyInfoCtx->curEncryptedKeyLevel, keyInfoCtx->maxEncryptedKeyLevel);
     if(keyInfoCtx->encCtx != NULL) {
         xmlSecEncCtxDebugXmlDump(keyInfoCtx->encCtx, output);
     }
@@ -1034,11 +1030,8 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
 
     /* check retrieval level */
     if(keyInfoCtx->curRetrievalMethodLevel >= keyInfoCtx->maxRetrievalMethodLevel) {
-        xmlSecOtherError3(XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL,
-                          xmlSecKeyDataKlassGetName(id),
-                          "cur=%lu;max=%lu",
-                          XMLSEC_UL_BAD_CAST(keyInfoCtx->curRetrievalMethodLevel),
-                          XMLSEC_UL_BAD_CAST(keyInfoCtx->maxRetrievalMethodLevel));
+        xmlSecOtherError3(XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL, xmlSecKeyDataKlassGetName(id),
+            "cur=%d;max=%d",keyInfoCtx->curEncryptedKeyLevel, keyInfoCtx->maxEncryptedKeyLevel);
         goto done;
     }
     ++keyInfoCtx->curRetrievalMethodLevel;
@@ -1058,9 +1051,8 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
     /* laxi schema validation but application can disable it */
     if(dataId == xmlSecKeyDataIdUnknown) {
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_UNKNOWN_HREF) != 0) {
-            xmlSecInvalidNodeAttributeError(node, xmlSecAttrType,
-                                            xmlSecKeyDataKlassGetName(id),
-                                            "retrieval type is unknown");
+            xmlSecInvalidNodeAttributeError(node, xmlSecAttrType, xmlSecKeyDataKlassGetName(id), 
+                "retrieval type is unknown");
         } else {
             res = 0;
         }
@@ -1328,11 +1320,8 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
 
     /* check the enc level */
     if(keyInfoCtx->curEncryptedKeyLevel >= keyInfoCtx->maxEncryptedKeyLevel) {
-        xmlSecOtherError3(XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL,
-                          xmlSecKeyDataKlassGetName(id),
-                          "cur=%lu;max=%lu",
-                          XMLSEC_UL_BAD_CAST(keyInfoCtx->curEncryptedKeyLevel),
-                          XMLSEC_UL_BAD_CAST(keyInfoCtx->maxEncryptedKeyLevel));
+        xmlSecOtherError3(XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL, xmlSecKeyDataKlassGetName(id),
+            "cur=%d;max=%d", keyInfoCtx->curEncryptedKeyLevel, keyInfoCtx->maxEncryptedKeyLevel);
         return(-1);
     }
     ++keyInfoCtx->curEncryptedKeyLevel;
@@ -1343,8 +1332,7 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
     } else {
         ret = xmlSecKeyInfoCtxCreateEncCtx(keyInfoCtx);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecKeyInfoCtxCreateEncCtx",
-                                xmlSecKeyDataKlassGetName(id));
+            xmlSecInternalError("xmlSecKeyInfoCtxCreateEncCtx", xmlSecKeyDataKlassGetName(id));
             --keyInfoCtx->curEncryptedKeyLevel;
             return(-1);
         }
@@ -1358,8 +1346,7 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
          * correct enc key.
          */
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION) != 0) {
-            xmlSecInternalError("xmlSecEncCtxDecryptToBuffer",
-                                xmlSecKeyDataKlassGetName(id));
+            xmlSecInternalError("xmlSecEncCtxDecryptToBuffer", xmlSecKeyDataKlassGetName(id));
             --keyInfoCtx->curEncryptedKeyLevel;
             return(-1);
         }

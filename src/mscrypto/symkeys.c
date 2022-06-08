@@ -31,7 +31,9 @@
 #include <xmlsec/errors.h>
 
 #include <xmlsec/mscrypto/crypto.h>
+
 #include "private.h"
+#include "../cast_helpers.h"
 
 /*****************************************************************************
  *

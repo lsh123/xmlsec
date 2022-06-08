@@ -331,9 +331,8 @@ xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
             memcpy(data, xmlSecBufferGetData(&(transform->outBuf)), outSize);
             ret = xmlSecBufferRemoveHead(&(transform->outBuf), outSize);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferRemoveHead",
-                                     xmlSecTransformGetName(transform),
-                                     "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
+                xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform),
+                    "size=" XMLSEC_SIZE_FMT, outSize);
                 return(-1);
             }
         } else if(xmlSecBufferGetSize(out) == 0) {

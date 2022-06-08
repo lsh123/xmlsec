@@ -105,16 +105,14 @@ xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
         /* generate random iv */
         rv = PK11_GenerateRandom(ctx->iv, ivLen);
         if(rv != SECSuccess) {
-            xmlSecNssError2("PK11_GenerateRandom", cipherName,
-                            "size=%lu", XMLSEC_UL_BAD_CAST(ivLen));
+            xmlSecNssError2("PK11_GenerateRandom", cipherName, "size=%d", ivLen);
             return(-1);
         }
 
         /* write iv to the output */
         ret = xmlSecBufferAppend(out, ctx->iv, ivSize);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferAppend", cipherName,
-                                 "size=%lu", XMLSEC_UL_BAD_CAST(ivLen));
+            xmlSecInternalError2("xmlSecBufferAppend", cipherName, "size=%d", ivLen);
             return(-1);
         }
 
@@ -133,7 +131,7 @@ xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
         ret = xmlSecBufferRemoveHead(in, ivSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName,
-                                 "size=%lu", XMLSEC_UL_BAD_CAST(ivSize));
+                "size=" XMLSEC_SIZE_FMT, ivSize);
             return(-1);
         }
     }
@@ -222,7 +220,7 @@ xmlSecNssBlockCipherCtxUpdate(xmlSecNssBlockCipherCtxPtr ctx,
     ret = xmlSecBufferSetMaxSize(out, outSize + inSize + blockSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetMaxSize", cipherName, 
-                             "size=%lu", XMLSEC_UL_BAD_CAST(outSize + inSize + blockSize));
+            "size=" XMLSEC_SIZE_FMT, (outSize + inSize + blockSize));
         return(-1);
     }
 
@@ -242,7 +240,7 @@ xmlSecNssBlockCipherCtxUpdate(xmlSecNssBlockCipherCtxPtr ctx,
     ret = xmlSecBufferSetSize(out, outSize + outSize2);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", cipherName,
-                             "size=%lu", XMLSEC_UL_BAD_CAST(outSize + outSize2));
+            "size=" XMLSEC_SIZE_FMT, (outSize + outSize2));
         return(-1);
     }
 
@@ -250,7 +248,7 @@ xmlSecNssBlockCipherCtxUpdate(xmlSecNssBlockCipherCtxPtr ctx,
     ret = xmlSecBufferRemoveHead(in, inSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName,
-                             "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
+            "size=" XMLSEC_SIZE_FMT, inSize);
         return(-1);
     }
     return(0);
@@ -293,7 +291,7 @@ xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
         ret = xmlSecBufferSetMaxSize(in, blockSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetMaxSize", cipherName,
-                                 "size=%lu", XMLSEC_UL_BAD_CAST(blockSize));
+                "size=" XMLSEC_SIZE_FMT, blockSize);
             return(-1);
         }
         inBuf = xmlSecBufferGetData(in);
@@ -307,7 +305,7 @@ xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
             rv = PK11_GenerateRandom(inBuf + inSize, padLen);
             if(rv != SECSuccess) {
                 xmlSecNssError2("PK11_GenerateRandom", cipherName,
-                                "size=%lu", XMLSEC_UL_BAD_CAST(blockSize - inSize - 1));
+                    "size=" XMLSEC_SIZE_FMT, (blockSize - inSize - 1));
                 return(-1);
             }
         }
@@ -325,7 +323,7 @@ xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
     ret = xmlSecBufferSetMaxSize(out, outSize + 2 * blockSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetMaxSize", cipherName,
-                            "size=%lu", XMLSEC_UL_BAD_CAST(outSize + 2 * blockSize));
+            "size=" XMLSEC_SIZE_FMT, (outSize + 2 * blockSize));
         return(-1);
     }
 
@@ -362,7 +360,7 @@ xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
     ret = xmlSecBufferSetSize(out, outSize + outSize2);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", cipherName,
-                            "size=%lu", XMLSEC_UL_BAD_CAST(outSize + outSize2));
+            "size=" XMLSEC_SIZE_FMT, (outSize + outSize2));
         return(-1);
     }
 
@@ -370,7 +368,7 @@ xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
     ret = xmlSecBufferRemoveHead(in, inSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName,
-                            "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
+            "size=" XMLSEC_SIZE_FMT, inSize);
         return(-1);
     }
 

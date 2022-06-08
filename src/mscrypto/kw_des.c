@@ -368,7 +368,7 @@ xmlSecMSCryptoKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransf
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetMaxSize",
                                  xmlSecTransformGetName(transform),
-                                 "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
+                                 "size=" XMLSEC_SIZE_FMT, outSize);
             return(-1);
         }
 
@@ -378,8 +378,8 @@ xmlSecMSCryptoKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransf
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
                 xmlSecInternalError4("xmlSecKWDes3Encode", xmlSecTransformGetName(transform),
-                                     "keySize=%lu;inSize=%lu;outSize=%lu",
-                                     XMLSEC_UL_BAD_CAST(keySize), XMLSEC_UL_BAD_CAST(inSize), XMLSEC_UL_BAD_CAST(outSize));
+                    "keySize=" XMLSEC_SIZE_FMT "; inSize=" XMLSEC_SIZE_FMT "; outSize=" XMLSEC_SIZE_FMT,
+                    keySize, inSize, outSize);
                 return(-1);
             }
             XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outSize, return(-1), xmlSecTransformGetName(transform));
@@ -389,8 +389,8 @@ xmlSecMSCryptoKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransf
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
                 xmlSecInternalError4("xmlSecKWDes3Decode", xmlSecTransformGetName(transform),
-                                     "keySize=%lu;inSize=%lu;outSize=%lu",
-                                     XMLSEC_UL_BAD_CAST(keySize), XMLSEC_UL_BAD_CAST(inSize), XMLSEC_UL_BAD_CAST(outSize));
+                     "keySize=" XMLSEC_SIZE_FMT "; inSize=" XMLSEC_SIZE_FMT "; outSize=" XMLSEC_SIZE_FMT,
+                     keySize, inSize, outSize);
                 return(-1);
             }
             XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outSize, return(-1), xmlSecTransformGetName(transform));
@@ -398,17 +398,15 @@ xmlSecMSCryptoKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransf
 
         ret = xmlSecBufferSetSize(out, outSize);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferSetSize",
-                                 xmlSecTransformGetName(transform),
-                                 "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
+            xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform),
+                "size=" XMLSEC_SIZE_FMT, outSize);
             return(-1);
         }
 
         ret = xmlSecBufferRemoveHead(in, inSize);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferRemoveHead",
-                                 xmlSecTransformGetName(transform),
-                                 "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
+            xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform),
+                "size=" XMLSEC_SIZE_FMT, inSize);
             return(-1);
         }
 
@@ -464,7 +462,7 @@ xmlSecMSCryptoKWDes3Sha1(void * context,
         0);
     if(ret == 0) {
         xmlSecMSCryptoError2("CryptHashData", NULL,
-                             "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
+                             "size=" XMLSEC_SIZE_FMT, inSize);
         CryptDestroyHash(mscHash);
         return(-1);
     }
@@ -478,7 +476,7 @@ xmlSecMSCryptoKWDes3Sha1(void * context,
         0);
     if (ret == 0) {
         xmlSecMSCryptoError2("CryptGetHashParam(HP_HASHVAL)", NULL,
-                             "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
+                             "size=" XMLSEC_SIZE_FMT, outSize);
         CryptDestroyHash(mscHash);
         return(-1);
     }

@@ -622,7 +622,7 @@ xmlSecGnuTLSKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
         if(cert == NULL) {
             xmlSecInternalError2("xmlSecGnuTLSKeyDataX509GetCert",
                                  xmlSecKeyDataKlassGetName(id),
-                                 "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
+                                 "pos=" XMLSEC_SIZE_FMT, pos);
             return(-1);
         }
 
@@ -631,7 +631,7 @@ xmlSecGnuTLSKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecGnuTLSX509CertificateNodeWrite",
                                      xmlSecKeyDataKlassGetName(id),
-                                     "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
+                                     "pos=" XMLSEC_SIZE_FMT, pos);
                 return(-1);
             }
         }
@@ -641,7 +641,7 @@ xmlSecGnuTLSKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecGnuTLSX509SubjectNameNodeWrite",
                                      xmlSecKeyDataKlassGetName(id),
-                                     "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
+                                     "pos=" XMLSEC_SIZE_FMT, pos);
                 return(-1);
             }
         }
@@ -651,7 +651,7 @@ xmlSecGnuTLSKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecGnuTLSX509IssuerSerialNodeWrite",
                                      xmlSecKeyDataKlassGetName(id),
-                                     "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
+                                     "pos=" XMLSEC_SIZE_FMT, pos);
                 return(-1);
             }
         }
@@ -661,7 +661,7 @@ xmlSecGnuTLSKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecGnuTLSX509SKINodeWrite",
                                      xmlSecKeyDataKlassGetName(id),
-                                     "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
+                                     "pos=" XMLSEC_SIZE_FMT, pos);
                 return(-1);
             }
         }
@@ -675,7 +675,7 @@ xmlSecGnuTLSKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
             if(crl == NULL) {
                 xmlSecInternalError2("xmlSecGnuTLSKeyDataX509GetCrl",
                                      xmlSecKeyDataKlassGetName(id),
-                                     "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
+                                     "pos=" XMLSEC_SIZE_FMT, pos);
                 return(-1);
             }
 
@@ -683,7 +683,7 @@ xmlSecGnuTLSKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecGnuTLSX509CRLNodeWrite",
                                      xmlSecKeyDataKlassGetName(id),
-                                     "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
+                                     "pos=" XMLSEC_SIZE_FMT, pos);
                 return(-1);
             }
         }
@@ -739,7 +739,7 @@ xmlSecGnuTLSKeyDataX509DebugDump(xmlSecKeyDataPtr data, FILE* output) {
         if(cert == NULL) {
             xmlSecInternalError2("xmlSecGnuTLSKeyDataX509GetCert",
                                  xmlSecKeyDataGetName(data),
-                                 "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
+                                 "pos=" XMLSEC_SIZE_FMT, pos);
             return;
         }
         fprintf(output, "==== Certificate:\n");
@@ -755,7 +755,7 @@ xmlSecGnuTLSKeyDataX509DebugDump(xmlSecKeyDataPtr data, FILE* output) {
         if(crl == NULL) {
             xmlSecInternalError2("xmlSecGnuTLSKeyDataX509GetCrl",
                                  xmlSecKeyDataGetName(data),
-                                 "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
+                                 "pos=" XMLSEC_SIZE_FMT, pos);
             return;
         }
         fprintf(output, "==== Crl:\n");
@@ -793,7 +793,7 @@ xmlSecGnuTLSKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
         if(cert == NULL) {
             xmlSecInternalError2("xmlSecGnuTLSKeyDataX509GetCert",
                                  xmlSecKeyDataGetName(data),
-                                 "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
+                                 "pos=" XMLSEC_SIZE_FMT, pos);
             return;
         }
         fprintf(output, "<Certificate>\n");
@@ -810,7 +810,7 @@ xmlSecGnuTLSKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
         if(crl == NULL) {
             xmlSecInternalError2("xmlSecGnuTLSKeyDataX509GetCrl",
                                  xmlSecKeyDataGetName(data),
-                                 "pos=%lu", XMLSEC_UL_BAD_CAST(pos));
+                                 "pos=" XMLSEC_SIZE_FMT, pos);
             return;
         }
         fprintf(output, "<CRL>\n");

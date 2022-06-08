@@ -444,7 +444,7 @@ xmlSecGCryptPkSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecBufferRemoveHead",
                                      xmlSecTransformGetName(transform),
-                                     "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
+                                     "size=" XMLSEC_SIZE_FMT, inSize);
                 return(-1);
             }
         }
@@ -531,7 +531,7 @@ xmlSecGCryptAppendMpi(gcry_mpi_t a, xmlSecBufferPtr out, xmlSecSize min_size) {
     ret = xmlSecBufferSetMaxSize(out, outSize + writtenSize + 1);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetMaxSize", NULL,
-                             "size=%lu", XMLSEC_UL_BAD_CAST(outSize + writtenSize + 1));
+            "size=" XMLSEC_SIZE_FMT, (outSize + writtenSize + 1));
         return(-1);
     }
     xmlSecAssert2(xmlSecBufferGetMaxSize(out) > outSize, -1);
@@ -562,7 +562,7 @@ xmlSecGCryptAppendMpi(gcry_mpi_t a, xmlSecBufferPtr out, xmlSecSize min_size) {
     ret = xmlSecBufferSetSize(out, outSize + writtenSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-                            "size=%lu", XMLSEC_UL_BAD_CAST(outSize + writtenSize));
+            "size=" XMLSEC_SIZE_FMT, (outSize + writtenSize));
         return(-1);
     }
 

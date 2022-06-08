@@ -332,9 +332,8 @@ xmlSecNssKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
                               xmlSecBufferGetData(buffer),
                               ctx->keyExpectedSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetData",
-                             xmlSecTransformGetName(transform),
-                             "expected-size=%lu", XMLSEC_UL_BAD_CAST(ctx->keyExpectedSize));
+        xmlSecInternalError2("xmlSecBufferSetData", xmlSecTransformGetName(transform),
+            "expected-size=" XMLSEC_SIZE_FMT, ctx->keyExpectedSize);
         return(-1);
     }
 
@@ -389,9 +388,8 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
 
         ret = xmlSecBufferSetMaxSize(out, outSize);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferSetMaxSize",
-                                 xmlSecTransformGetName(transform),
-                                 "outSize=%lu", XMLSEC_UL_BAD_CAST(outSize));
+            xmlSecInternalError2("xmlSecBufferSetMaxSize", xmlSecTransformGetName(transform),
+                "outSize=" XMLSEC_SIZE_FMT, outSize);
             return(-1);
         }
 
@@ -401,9 +399,8 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
             /* create key */
             aeskey = xmlSecNssMakeAesKey(xmlSecBufferGetData(&(ctx->keyBuffer)), keySize, 1); /* encrypt */
             if(aeskey == NULL) {
-                xmlSecInternalError2("xmlSecNssMakeAesKey",
-                                     xmlSecTransformGetName(transform),
-                                     "keySize=%lu", XMLSEC_UL_BAD_CAST(keySize));
+                xmlSecInternalError2("xmlSecNssMakeAesKey", xmlSecTransformGetName(transform),
+                    "keySize=" XMLSEC_SIZE_FMT, keySize);
                 return(-1);
             }
 
@@ -413,11 +410,8 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
                                     xmlSecBufferGetData(in), inSize,
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
-                xmlSecInternalError3("xmlSecKWAesEncode",
-                                    xmlSecTransformGetName(transform),
-                                    "inSize=%lu; outSize=%lu",
-                                    XMLSEC_UL_BAD_CAST(inSize),
-                                    XMLSEC_UL_BAD_CAST(outSize));
+                xmlSecInternalError3("xmlSecKWAesEncode", xmlSecTransformGetName(transform),
+                    "inSize=" XMLSEC_SIZE_FMT "; outSize=" XMLSEC_SIZE_FMT, inSize, outSize);
                 PK11_FreeSymKey(aeskey);
                 return(-1);
             }
@@ -430,9 +424,8 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
             /* create key */
             aeskey = xmlSecNssMakeAesKey(xmlSecBufferGetData(&(ctx->keyBuffer)), keySize, 0); /* decrypt */
             if(aeskey == NULL) {
-                xmlSecInternalError2("xmlSecNssMakeAesKey",
-                                     xmlSecTransformGetName(transform),
-                                     "keySize=%lu", XMLSEC_UL_BAD_CAST(keySize));
+                xmlSecInternalError2("xmlSecNssMakeAesKey", xmlSecTransformGetName(transform),
+                    "keySize=" XMLSEC_SIZE_FMT, keySize);
                 return(-1);
             }
 
@@ -441,11 +434,8 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
                                     xmlSecBufferGetData(in), inSize,
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
-                xmlSecInternalError3("xmlSecKWAesDecode",
-                                     xmlSecTransformGetName(transform),
-                                     "inSize=%lu; outSize=%lu",
-                                     XMLSEC_UL_BAD_CAST(inSize),
-                                     XMLSEC_UL_BAD_CAST(outSize));
+                xmlSecInternalError3("xmlSecKWAesDecode", xmlSecTransformGetName(transform),
+                    "inSize=" XMLSEC_SIZE_FMT "; outSize=" XMLSEC_SIZE_FMT, inSize, outSize);
                 PK11_FreeSymKey(aeskey);
                 return(-1);
             }
@@ -456,17 +446,15 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
 
         ret = xmlSecBufferSetSize(out, outSize);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferSetSize",
-                                 xmlSecTransformGetName(transform),
-                                 "outSize=%lu", XMLSEC_UL_BAD_CAST(outSize));
+            xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform),
+                "outSize=" XMLSEC_SIZE_FMT, outSize);
             return(-1);
         }
 
         ret = xmlSecBufferRemoveHead(in, inSize);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferRemoveHead",
-                                 xmlSecTransformGetName(transform),
-                                 "inSize=%lu", XMLSEC_UL_BAD_CAST(inSize));
+            xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform),
+                "inSize=" XMLSEC_SIZE_FMT, inSize);
             return(-1);
         }
 

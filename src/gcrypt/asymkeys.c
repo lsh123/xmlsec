@@ -374,7 +374,7 @@ xmlSecGCryptAsymSExpDup(gcry_sexp_t pKey) {
     size = gcry_sexp_sprint(pKey, GCRYSEXP_FMT_ADVANCED, buf, size);
     if(size == 0) {
         xmlSecGCryptError2("gcry_sexp_sprint", GPG_ERR_NO_ERROR, NULL,
-                           "size=%lu", XMLSEC_UL_BAD_CAST(size));
+                           "size=%zu", size);
         goto done;
     }
 
@@ -482,7 +482,7 @@ xmlSecGCryptNodeSetMpiValue(xmlNodePtr cur, const gcry_mpi_t a, int addLineBreak
     ret = xmlSecBufferInitialize(&buf, writtenSize + 1);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferInitialize", NULL,
-                             "size=%lu", XMLSEC_UL_BAD_CAST(writtenSize + 1));
+            "size=" XMLSEC_SIZE_FMT, (writtenSize + 1));
         goto done;
     }
     buf_initialized = 1;
@@ -502,7 +502,7 @@ xmlSecGCryptNodeSetMpiValue(xmlNodePtr cur, const gcry_mpi_t a, int addLineBreak
     ret = xmlSecBufferSetSize(&buf, writtenSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-                             "size=%lu", XMLSEC_UL_BAD_CAST(writtenSize));
+            "size=" XMLSEC_SIZE_FMT, writtenSize);
         goto done;
     }
 
@@ -847,8 +847,8 @@ xmlSecGCryptKeyDataDsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataDsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== dsa key: size = %lu\n",
-            XMLSEC_UL_BAD_CAST(xmlSecGCryptKeyDataDsaGetSize(data)));
+    fprintf(output, "=== dsa key: size = " XMLSEC_SIZE_FMT "\n",
+            xmlSecGCryptKeyDataDsaGetSize(data));
 }
 
 static void
@@ -856,8 +856,8 @@ xmlSecGCryptKeyDataDsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataDsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<DSAKeyValue size=\"%lu\" />\n",
-            XMLSEC_UL_BAD_CAST(xmlSecGCryptKeyDataDsaGetSize(data)));
+    fprintf(output, "<DSAKeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
+            xmlSecGCryptKeyDataDsaGetSize(data));
 }
 
 static int
@@ -1424,8 +1424,8 @@ xmlSecGCryptKeyDataRsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataRsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== rsa key: size = %lu\n",
-            XMLSEC_UL_BAD_CAST(xmlSecGCryptKeyDataRsaGetSize(data)));
+    fprintf(output, "=== rsa key: size = " XMLSEC_SIZE_FMT "\n",
+            xmlSecGCryptKeyDataRsaGetSize(data));
 }
 
 static void
@@ -1433,8 +1433,8 @@ xmlSecGCryptKeyDataRsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataRsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<RSAKeyValue size=\"%lu\" />\n",
-            XMLSEC_UL_BAD_CAST(xmlSecGCryptKeyDataRsaGetSize(data)));
+    fprintf(output, "<RSAKeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
+            xmlSecGCryptKeyDataRsaGetSize(data));
 }
 
 static int

@@ -1463,10 +1463,11 @@ xmlSecTmplTransformAddHmacOutputLength(xmlNodePtr transformNode, xmlSecSize bits
     }
 
 #if defined(_MSC_VER)
-    sprintf_s(buf, sizeof(buf), "%lu", XMLSEC_UL_BAD_CAST(bitsLen));
+    sprintf_s(buf, sizeof(buf), XMLSEC_SIZE_FMT, bitsLen);
 #else  /* defined(_MSC_VER) */
-    sprintf(buf, "%lu", XMLSEC_UL_BAD_CAST(bitsLen));
+    sprintf(buf, XMLSEC_SIZE_FMT, bitsLen);
 #endif /* defined(_MSC_VER) */
+
     xmlNodeSetContent(cur, BAD_CAST buf);
     return(0);
 }
@@ -1505,7 +1506,7 @@ xmlSecTmplTransformAddRsaOaepParam(xmlNodePtr transformNode,
 
     base64 = xmlSecBase64Encode(buf, size, 0);
     if(base64 == NULL) {
-        xmlSecInternalError2("xmlSecBase64Encode", NULL, "size=%lu", XMLSEC_UL_BAD_CAST(size));
+        xmlSecInternalError2("xmlSecBase64Encode", NULL, "size=" XMLSEC_SIZE_FMT, size);
         return(-1);
     }
 

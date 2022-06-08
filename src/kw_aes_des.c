@@ -184,16 +184,16 @@ xmlSecKWDes3Decode(xmlSecKWDes3Id kwDes3Id, void *context,
     tmp = xmlSecBufferCreate(inSize);
     if(tmp == NULL) {
         xmlSecInternalError2("xmlSecBufferCreate", NULL,
-                             "inSize=%lu", XMLSEC_UL_BAD_CAST(inSize));
+            "inSize=" XMLSEC_SIZE_FMT, inSize);
         goto done;
     }
     tmpBuf = xmlSecBufferGetData(tmp);
     tmpSize = xmlSecBufferGetMaxSize(tmp);
 
     ret = kwDes3Id->decrypt(context,
-                           xmlSecKWDes3Iv, sizeof(xmlSecKWDes3Iv),
-                           in, inSize,
-                           tmpBuf, tmpSize);
+        xmlSecKWDes3Iv, sizeof(xmlSecKWDes3Iv),
+        in, inSize,
+        tmpBuf, tmpSize);
     if((ret < 0) || (ret < XMLSEC_KW_DES3_IV_LENGTH)) {
         xmlSecInternalError("kwDes3Id->decrypt", NULL);
         goto done;
@@ -209,10 +209,10 @@ xmlSecKWDes3Decode(xmlSecKWDes3Id kwDes3Id, void *context,
 
     /* steps 4 and 5: get IV and decrypt second time, result is WKCKS */
     ret = kwDes3Id->decrypt(context,
-                           tmpBuf, XMLSEC_KW_DES3_IV_LENGTH,
-                           tmpBuf + XMLSEC_KW_DES3_IV_LENGTH,
-                           tmpSize - XMLSEC_KW_DES3_IV_LENGTH,
-                           out, outSize);
+        tmpBuf, XMLSEC_KW_DES3_IV_LENGTH,
+        tmpBuf + XMLSEC_KW_DES3_IV_LENGTH,
+        tmpSize - XMLSEC_KW_DES3_IV_LENGTH,
+        out, outSize);
     if((ret < 0) || (ret < XMLSEC_KW_DES3_BLOCK_LENGTH)) {
         xmlSecInternalError("kwDes3Id->decrypt", NULL);
         goto done;
@@ -222,8 +222,8 @@ xmlSecKWDes3Decode(xmlSecKWDes3Id kwDes3Id, void *context,
 
     /* steps 6 and 7: calculate SHA1 and validate it */
     ret = kwDes3Id->sha1(context,
-                        out, outSz,
-                        sha1, sizeof(sha1));
+        out, outSz,
+        sha1, sizeof(sha1));
     if((ret < 0) || (ret != sizeof(sha1))) {
         xmlSecInternalError("kwDes3Id->sha1", NULL);
         goto done;

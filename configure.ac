@@ -80,14 +80,25 @@ XMLSEC_DEFINES=""
 dnl ==========================================================================
 dnl Detect windows/mac
 dnl ==========================================================================
-build_windows=no
-build_mac=no
-case "${host_os}" in
+build_on_windows=no
+build_on_mac=no
+build_on_linux=no
+AC_MSG_CHECKING(for build OS)
+case "${host}" in
     cygwin*|mingw*)
-        build_windows=yes
+        build_on_windows=yes
+        AC_MSG_RESULT("Windows")
         ;;
      *-*-darwin*)
-        build_mac=yes
+        build_on_mac=yes
+        AC_MSG_RESULT("MacOSX")
+        ;;
+     *-*-linux*)
+        build_on_linux=yes
+        AC_MSG_RESULT("Linux")
+        ;;
+    *)
+        AC_MSG_RESULT("Other")
         ;;
 esac
 
@@ -1842,7 +1853,7 @@ AC_MSG_RESULT([yes ("$XMLSEC_DEFAULT_CRYPTO")])
 dnl ==========================================================================
 dnl Do we need to use Unicode (Windows build only)
 dnl ==========================================================================
-if test "z$build_windows" = "zyes" ; then
+if test "z$build_on_windows" = "zyes" ; then
     AC_MSG_CHECKING(for Unicode support)
     AC_ARG_ENABLE([unicode], [AC_HELP_STRING([--enable-unicode], [enable Unicode support on Windows (yes)])])
     if test "z$enable_unicode" = "zyes" -o "z$enable_unicode" = "ztrue" ; then
@@ -2362,7 +2373,7 @@ if test "z$enable_pedantic" = "zyes" ; then
     CFLAGS="$CFLAGS -Wwrite-strings -Waggregate-return -Wmissing-prototypes"
     CFLAGS="$CFLAGS -Wnested-externs -Wredundant-decls"
     
-    if test "z$build_mac" = "zno" ; then
+    if test "z$build_on_mac" = "zno" ; then
         CFLAGS="$CFLAGS -Wformat-overflow=2 -Wformat-signedness"
     fi
     AC_MSG_RESULT([yes])

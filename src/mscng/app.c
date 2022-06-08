@@ -34,6 +34,8 @@
 #include <xmlsec/mscng/certkeys.h>
 #include <xmlsec/mscng/keysstore.h>
 
+#include "../cast_helpers.h"
+
 /* config info for the mscng keysstore */
 static LPTSTR gXmlSecMSCngAppCertStoreName = NULL;
 

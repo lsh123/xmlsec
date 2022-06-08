@@ -24,6 +24,8 @@
 #include <xmlsec/list.h>
 #include <xmlsec/errors.h>
 
+#include "cast_helpers.h"
+
 static int              xmlSecPtrListEnsureSize                 (xmlSecPtrListPtr list,
                                                                  xmlSecSize size);
 

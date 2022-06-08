@@ -28,6 +28,7 @@
 #include <xmlsec/gcrypt/crypto.h>
 
 #include "asn1.h"
+#include "../cast_helpers.h"
 
 /**
  * xmlSecGCryptAppInit:

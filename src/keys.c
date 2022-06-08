@@ -30,6 +30,7 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/errors.h>
 
+#include "cast_helpers.h"
 
 /**************************************************************************
  *

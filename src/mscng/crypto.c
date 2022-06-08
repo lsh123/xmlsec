@@ -35,6 +35,8 @@
 #include <xmlsec/mscng/crypto.h>
 #include <xmlsec/mscng/x509.h>
 
+#include "../cast_helpers.h"
+
 static xmlSecCryptoDLFunctionsPtr gXmlSecMSCngFunctions = NULL;
 
 /**

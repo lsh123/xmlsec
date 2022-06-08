@@ -34,6 +34,8 @@
 #include <xmlsec/mscrypto/certkeys.h>
 #include <xmlsec/mscrypto/keysstore.h>
 #include <xmlsec/mscrypto/x509.h>
+
+#include "../cast_helpers.h"
 #include "private.h"
 
 #ifndef PKCS12_NO_PERSIST_KEY

@@ -27,6 +27,7 @@
 
 /* Include common error helper macros. */
 #include "../errors_helpers.h"
+#include "../cast_helpers.h"
 
 #define XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE       4096
 

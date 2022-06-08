@@ -27,6 +27,7 @@
 #include <xmlsec/gnutls/crypto.h>
 #include <xmlsec/gnutls/x509.h>
 
+#include "../cast_helpers.h"
 #include "x509utils.h"
 
 /**************************************************************************

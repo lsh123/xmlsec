@@ -1216,8 +1216,7 @@ int main(int argc, const char **argv) {
 #endif /* XMLSEC_NO_XMLENC */
 
         default:
-            fprintf(stderr, "Error: invalid command %lu\n", 
-                XMLSEC_UL_BAD_CAST(command));
+            fprintf(stderr, "Error: invalid command %d\n", (int)command);
             xmlSecAppPrintUsage();
             goto fail;
         }
@@ -1226,10 +1225,11 @@ int main(int argc, const char **argv) {
     /* print perf stats results */
     if(xmlSecAppCmdLineParamIsSet(&repeatParam) && 
        (xmlSecAppCmdLineParamGetInt(&repeatParam, 1) > 0)) {
-       
+        long double msecs;
+
         repeats = xmlSecAppCmdLineParamGetInt(&repeatParam, 1);
-        fprintf(stderr, "Executed %d tests in %lu msec\n", 
-            repeats, XMLSEC_UL_BAD_CAST((1000 * total_time) / CLOCKS_PER_SEC));
+        msecs = (1000 * total_time) / (long double)CLOCKS_PER_SEC;
+        fprintf(stderr, "Executed %d tests in %.2Lf msec\n", repeats, msecs);
     }
 
     goto success;

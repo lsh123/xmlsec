@@ -28,6 +28,8 @@
 #include <xmlsec/errors.h>
 #include <xmlsec/private.h>
 
+#include "cast_helpers.h"
+
 #define xmlSecGetParent(node)           \
     (((node)->type != XML_NAMESPACE_DECL) ? \
         (node)->parent : \

@@ -33,7 +33,7 @@ extern "C" {
  */
 typedef void*                                   xmlSecPtr;
 
-/** 
+/**
  * xmlSecSize:
  *
  * Size of something. Should be typedef instead of define
@@ -58,15 +58,6 @@ typedef void*                                   xmlSecPtr;
  * versions of LibXMLSec.
  */
 #define XMLSEC_SIZE_BAD_CAST(val)               ((xmlSecSize)(val))
-
-/**
- * XMLSEC_UL_BAD_CAST:
- * @val:        the value to cast
- *
- * Bad cast to 'unsigned long' (very useful for printing with '%lu').
- */
-#define XMLSEC_UL_BAD_CAST(val)               ((unsigned long)(val))
-
 
 /**
  * xmlSecByte:

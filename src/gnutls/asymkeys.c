@@ -31,6 +31,8 @@
 
 #include <xmlsec/gnutls/crypto.h>
 
+#include "../cast_helpers.h"
+
 /**************************************************************************
  *
  * We use xmlsec-gcrypt for all the basic crypto ops

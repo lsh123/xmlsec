@@ -20,6 +20,16 @@
 #define SIZE_MAX (~(size_t)0)
 #endif /* SIZE_MAX */
 
+
+/**
+ * XMLSEC_UL_BAD_CAST:
+ * @val:        the value to cast
+ *
+ * Bad cast to 'unsigned long' (very useful for printing with '%lu').
+ */
+#define XMLSEC_UL_BAD_CAST(val)               ((unsigned long)(val))
+
+
 /******************************************************************************
  *
  *  TO_BYTE

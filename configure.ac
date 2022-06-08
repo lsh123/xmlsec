@@ -2362,7 +2362,7 @@ if test "z$enable_pedantic" = "zyes" ; then
     CFLAGS="$CFLAGS -Wwrite-strings -Waggregate-return -Wmissing-prototypes"
     CFLAGS="$CFLAGS -Wnested-externs -Wredundant-decls"
     
-    if test "z$build_mac" != "zyes" ; then
+    if test "z$build_mac" = "zno" ; then
         CFLAGS="$CFLAGS -Wformat-overflow=2 -Wformat-signedness"
     fi
     AC_MSG_RESULT([yes])

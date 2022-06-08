@@ -413,7 +413,7 @@ xmlSecMSCngHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
             ret = xmlSecBufferRemoveHead(in, inSize);
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecBufferRemoveHead",
-                    xmlSecTransformGetName(transform), "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
+                    xmlSecTransformGetName(transform), "size=" XMLSEC_SIZE_FMT, inSize);
                 return(-1);
             }
         }

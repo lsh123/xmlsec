@@ -697,7 +697,7 @@ xmlSecTransformRelationshipPopBin(xmlSecTransformPtr transform, xmlSecByte* data
            if(ret < 0) {
                xmlSecInternalError2("xmlSecBufferRemoveHead",
                                     xmlSecTransformGetName(transform),
-                                    "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
+                                    "size=" XMLSEC_SIZE_FMT, outSize);
                return(-1);
            }
        } else if(xmlSecBufferGetSize(out) == 0) {

@@ -216,7 +216,7 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxP
     ret = xmlSecBufferSetMaxSize(out, outSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetMaxSize",
-            xmlSecTransformGetName(transform), "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
+            xmlSecTransformGetName(transform), "size=" XMLSEC_SIZE_FMT, outSize);
         return(-1);
     }
 
@@ -283,7 +283,7 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxP
         ret = xmlSecBufferSetSize(out, inSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetSize",
-                xmlSecTransformGetName(transform), "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
+                xmlSecTransformGetName(transform), "size=" XMLSEC_SIZE_FMT, inSize);
             return(-1);
         }
 
@@ -342,14 +342,14 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxP
     ret = xmlSecBufferSetSize(out, outSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize",
-            xmlSecTransformGetName(transform), "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
+            xmlSecTransformGetName(transform), "size=" XMLSEC_SIZE_FMT, outSize);
         return(-1);
     }
 
     ret = xmlSecBufferRemoveHead(in, inSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferRemoveHead",
-            xmlSecTransformGetName(transform), "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
+            xmlSecTransformGetName(transform), "size=" XMLSEC_SIZE_FMT, inSize);
         return(-1);
     }
 

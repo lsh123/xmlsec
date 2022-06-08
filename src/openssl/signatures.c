@@ -773,7 +773,7 @@ xmlSecOpenSSLSignatureDsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr 
     ret = xmlSecBufferSetSize(out, outSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-                             "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
+                             "size=" XMLSEC_SIZE_FMT, outSize);
         goto done;
     }
     outData = xmlSecBufferGetData(out);
@@ -1276,7 +1276,7 @@ xmlSecOpenSSLSignatureEcdsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPt
     ret = xmlSecBufferSetSize(out, outSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-                             "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
+                             "size=" XMLSEC_SIZE_FMT, outSize);
         goto done;
     }
     outData = xmlSecBufferGetData(out);

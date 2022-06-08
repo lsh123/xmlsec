@@ -695,7 +695,7 @@ xmlSecMSCngKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransform
         ret = xmlSecBufferSetMaxSize(out, outSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetMaxSize",
-                xmlSecTransformGetName(transform), "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
+                xmlSecTransformGetName(transform), "size=" XMLSEC_SIZE_FMT, outSize);
             return(-1);
         }
 
@@ -726,14 +726,14 @@ xmlSecMSCngKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransform
         ret = xmlSecBufferSetSize(out, outSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform),
-                    "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
+                    "size=" XMLSEC_SIZE_FMT, outSize);
             return(-1);
         }
 
         ret = xmlSecBufferRemoveHead(in, inSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform),
-                    "size=%lu", XMLSEC_UL_BAD_CAST(inSize));
+                    "size=" XMLSEC_SIZE_FMT, inSize);
             return(-1);
         }
 

@@ -579,7 +579,7 @@ xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
                 ret = xmlSecBufferSetSize(&transform->outBuf, outSize);
                 if(ret < 0) {
                     xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform),
-                            "size=%lu", XMLSEC_UL_BAD_CAST(outSize));
+                            "size=" XMLSEC_SIZE_FMT, outSize);
                     return(-1);
                 }
 

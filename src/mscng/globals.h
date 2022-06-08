@@ -39,7 +39,7 @@
                     (errorFunction),                     \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,       \
                     "MSCng last error: 0x%08lx",         \
-                    (long int)dwError                    \
+                    (dwError)                            \
         );                                               \
     }
 
@@ -58,7 +58,7 @@
                     (errorFunction),                           \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,             \
                     "MSCng NTSTATUS: 0x%08lx",                 \
-                    (long int)(status)                         \
+                    (unsigned long)(status)                    \
         );                                                     \
     }
 

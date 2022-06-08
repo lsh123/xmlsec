@@ -1241,7 +1241,7 @@ xmlSecMSCngKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     ret = xmlSecBufferSetSize(&blob, blobBufferSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", xmlSecKeyDataKlassGetName(id), 
-            "size=%lu", XMLSEC_UL_BAD_CAST(blobBufferSize));
+            "size=" XMLSEC_SIZE_FMT, blobBufferSize);
         goto done;
     }
 

@@ -77,28 +77,62 @@ XMLSEC_EXTRA_LDFLAGS=
 XMLSEC_CRYPTO_EXTRA_LDFLAGS=
 
 dnl ==========================================================================
-dnl Detect windows/mac
+dnl Perform host specific configuration
 dnl ==========================================================================
+
+build_on_aix=no
 build_on_windows=no
 build_on_mac=no
 build_on_linux=no
 AC_MSG_CHECKING(for build OS)
+
+dnl should separate extra LDFLAGS for xmlsec and crypto libs ?
+dnl should --enable-runtime-pseudo-reloc for mingw and cygwin ?
+if test -n "$shrext"; then
+  XMLSEC_SHLIBSFX="$shrext"
+else
+  dnl changed in libtool (between 1.5.2 and 1.5.14)
+  XMLSEC_SHLIBSFX="$shrext_cmds"
+fi
+
 case "${host}" in
-    cygwin*|mingw*)
-        build_on_windows=yes
-        AC_MSG_RESULT("Windows")
-        ;;
-     *-*-darwin*)
-        build_on_mac=yes
-        AC_MSG_RESULT("MacOSX")
-        ;;
-     *-*-linux*)
-        build_on_linux=yes
-        AC_MSG_RESULT("Linux")
-        ;;
-    *)
-        AC_MSG_RESULT("Other")
-        ;;
+  *aix* )
+    CFLAGS="${CFLAGS} -D_ALL_SOURCE"
+
+    build_on_aix=yes
+    AC_MSG_RESULT("AIX")
+    ;;
+  *-*-mingw*)
+    dnl use libtool flags "-avoid-version" to create shared
+    dnl libraries without version suffix, i.e. libxmlsec1.dll
+    dnl instead libxmlsec1-NN.dll, where NN is a number.
+    XMLSEC_EXTRA_LDFLAGS="$XMLSEC_EXTRA_LDFLAGS -no-undefined -avoid-version"
+    XMLSEC_CRYPTO_EXTRA_LDFLAGS="$XMLSEC_CRYPTO_EXTRA_LDFLAGS -no-undefined -avoid-version"
+    XMLSEC_SHLIBSFX=".dll.a"
+
+    build_on_windows=yes
+    AC_MSG_RESULT("Windows (MinGW)")
+    ;;
+  *-*-cygwin*)
+    XMLSEC_EXTRA_LDFLAGS="$XMLSEC_EXTRA_LDFLAGS -no-undefined"
+    XMLSEC_CRYPTO_EXTRA_LDFLAGS="$XMLSEC_CRYPTO_EXTRA_LDFLAGS -no-undefined"
+
+    build_on_windows=yes
+    AC_MSG_RESULT("Windows (Cygwin)")
+    ;;
+  *-*-darwin*)
+    XMLSEC_SHLIBSFX=".dylib"
+
+    build_on_mac=yes
+    AC_MSG_RESULT("MacOSX")
+    ;;
+  *-*-linux*)
+    build_on_linux=yes
+    AC_MSG_RESULT("Linux")
+    ;;
+  *)
+    AC_MSG_RESULT("Other")
+    ;;
 esac
 
 dnl ==========================================================================
@@ -150,38 +184,6 @@ else
     AM_CONDITIONAL(BUILD_API_DOCS, [test "x" = "y"])
     AC_MSG_RESULT([disabled])
 fi
-
-dnl ==========================================================================
-dnl Perform host specific configuration
-dnl ==========================================================================
-dnl should separate extra LDFLAGS for xmlsec and crypto libs ?
-dnl should --enable-runtime-pseudo-reloc for mingw and cygwin ?
-if test -n "$shrext"; then
-  XMLSEC_SHLIBSFX="$shrext"
-else
-  dnl changed in libtool (between 1.5.2 and 1.5.14)
-  XMLSEC_SHLIBSFX="$shrext_cmds"
-fi
-case "${host}" in
- *aix* )
-	CFLAGS="${CFLAGS} -D_ALL_SOURCE"
-	;;
- *-*-mingw*)
-	dnl use libtool flags "-avoid-version" to create shared
-	dnl libraries without version suffix, i.e. libxmlsec1.dll
-	dnl instead libxmlsec1-NN.dll, where NN is a number.
-	XMLSEC_EXTRA_LDFLAGS="$XMLSEC_EXTRA_LDFLAGS -no-undefined -avoid-version"
-	XMLSEC_CRYPTO_EXTRA_LDFLAGS="$XMLSEC_CRYPTO_EXTRA_LDFLAGS -no-undefined -avoid-version"
-	XMLSEC_SHLIBSFX=".dll.a"
-	;;
- *-*-cygwin*)
-	XMLSEC_EXTRA_LDFLAGS="$XMLSEC_EXTRA_LDFLAGS -no-undefined"
-	XMLSEC_CRYPTO_EXTRA_LDFLAGS="$XMLSEC_CRYPTO_EXTRA_LDFLAGS -no-undefined"
-	;;
- *-*-darwin*)
-    XMLSEC_SHLIBSFX=".dylib"
-    ;;
-esac
 
 dnl ==========================================================================
 dnl Hack for autoconf version mismatch

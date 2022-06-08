@@ -33,6 +33,21 @@ extern "C" {
  */
 typedef void*                                   xmlSecPtr;
 
+
+/**
+ * XMLSEC_SIZE_T_FMT:
+ * 
+ * The only reason we need this is that MinGW doesn't recognize "%zu"
+ * despite the fact that MSVC runtime supports it for 10+ years.
+ */
+#if defined(__MINGW64__)
+#define XMLSEC_SIZE_T_FMT                      "%llu"
+#elif defined(__MINGW32__)
+#define XMLSEC_SIZE_T_FMT                      "%lu"
+#else /*defined(__MINGW32__) */
+#define XMLSEC_SIZE_T_FMT                      "%zu"
+#endif /* defined(__MINGW32__) */
+
 /**
  * xmlSecSize:
  *
@@ -46,7 +61,7 @@ typedef void*                                   xmlSecPtr;
 #else  /* XMLSEC_NO_SIZE_T */
 #define xmlSecSize                              size_t
 #define XMLSEC_SIZE_MAX                         SIZE_MAX
-#define XMLSEC_SIZE_FMT                         "%zu"
+#define XMLSEC_SIZE_FMT                         XMLSEC_SIZE_T_FMT
 #endif /* XMLSEC_NO_SIZE_T */
 #define XMLSEC_SIZE_MIN                         ((xmlSecSize)0)
 

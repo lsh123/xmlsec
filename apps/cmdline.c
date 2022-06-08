@@ -162,7 +162,8 @@ xmlSecAppCmdLineValueCreate(xmlSecAppCmdLineParamPtr param, int pos) {
     assert(param != NULL);
     value = (xmlSecAppCmdLineValuePtr) malloc(sizeof(xmlSecAppCmdLineValue));
     if(value == NULL) {
-        fprintf(stderr, "Error: malloc failed (%zu bytes).\n", sizeof(xmlSecAppCmdLineValue));
+        fprintf(stderr, "Error: malloc failed (" XMLSEC_SIZE_T_FMT " bytes).\n",
+            sizeof(xmlSecAppCmdLineValue));
         return(NULL);
     }
     memset(value, 0, sizeof(xmlSecAppCmdLineValue));
@@ -287,13 +288,15 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
             break;
         case xmlSecAppCmdLineParamTypeStringList:
             if(pos + 1 >= argc) {
-                fprintf(stderr, "Error: string list argument expected for parameter \"%s\".\n", argv[pos]);
+                fprintf(stderr, "Error: string list argument expected for parameter \"%s\".\n",
+                    argv[pos]);
                 return(-1);
             }
             value->strValue = argv[++pos];
             buf = (char*)malloc(strlen(value->strValue) + 2);
             if(buf == NULL) {
-                fprintf(stderr, "Error: failed to allocate memory (%zu bytes).\n", strlen(value->strValue) + 2);
+                fprintf(stderr, "Error: failed to allocate memory (" XMLSEC_SIZE_T_FMT " bytes).\n",
+                    strlen(value->strValue) + 2);
                 return(-1);
             }
             memset(buf, 0, strlen(value->strValue) + 2);

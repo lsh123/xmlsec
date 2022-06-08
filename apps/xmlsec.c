@@ -1016,7 +1016,8 @@ int main(int argc, const char **argv) {
     utf8_argv_size = sizeof(char*) * (size_t)argc;
     utf8_argv = (const char**)xmlMalloc(utf8_argv_size);
     if(utf8_argv == NULL) {
-        fprintf(stderr, "Error: can not allocate memory (%zu bytes)\n", utf8_argv_size);
+        fprintf(stderr, "Error: can not allocate memory (" XMLSEC_SIZE_T_FMT " bytes)\n",
+            utf8_argv_size);
         goto fail;
     }
     memset((char**)utf8_argv, 0, utf8_argv_size);

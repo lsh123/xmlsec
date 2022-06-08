@@ -585,7 +585,7 @@ xmlSecNssKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     pubkey = (SECKEYPublicKey *)PORT_ArenaZAlloc(arena, sizeof(SECKEYPublicKey));
     if(pubkey == NULL) {
         xmlSecNssError2("PORT_ArenaZAlloc", xmlSecKeyDataKlassGetName(id),
-            "size=%zu", sizeof(SECKEYPublicKey));
+            "size=" XMLSEC_SIZE_T_FMT, sizeof(SECKEYPublicKey));
         PORT_FreeArena(arena, PR_FALSE);
         ret = -1;
         goto done;

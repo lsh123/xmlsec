@@ -183,9 +183,8 @@ xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
     /* allocate memory */
     ret = xmlSecPtrListEnsureSize(dst, dst->use + src->use);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecPtrListEnsureSize",
-                             xmlSecPtrListGetName(src),
-                             "size=%lu", XMLSEC_UL_BAD_CAST(src->use));
+        xmlSecInternalError2("xmlSecPtrListEnsureSize", xmlSecPtrListGetName(src),
+            "size=" XMLSEC_SIZE_FMT, src->use);
         return(-1);
     }
 
@@ -197,8 +196,7 @@ xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
         if((dst->id->duplicateItem != NULL) && (src->data[i] != NULL)) {
             dst->data[dst->use] = dst->id->duplicateItem(src->data[i]);
             if(dst->data[dst->use] == NULL) {
-                xmlSecInternalError("duplicateItem",
-                                    xmlSecPtrListGetName(src));
+                xmlSecInternalError("duplicateItem", xmlSecPtrListGetName(src));
                 return(-1);
             }
         } else {
@@ -292,9 +290,8 @@ xmlSecPtrListAdd(xmlSecPtrListPtr list, xmlSecPtr item) {
 
     ret = xmlSecPtrListEnsureSize(list, list->use + 1);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecPtrListEnsureSize",
-                             xmlSecPtrListGetName(list),
-                             "size=%lu", XMLSEC_UL_BAD_CAST(list->use + 1));
+        xmlSecInternalError2("xmlSecPtrListEnsureSize", xmlSecPtrListGetName(list),
+            "size=" XMLSEC_SIZE_FMT, list->use + 1);
         return(-1);
     }
 
@@ -389,7 +386,7 @@ xmlSecPtrListDebugDump(xmlSecPtrListPtr list, FILE* output) {
     xmlSecAssert(xmlSecPtrListIsValid(list));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== list size: %lu\n", XMLSEC_UL_BAD_CAST(list->use));
+    fprintf(output, "=== list size: " XMLSEC_SIZE_FMT "\n", list->use);
     if(list->id->debugDumpItem != NULL) {
         xmlSecSize pos;
 
@@ -414,7 +411,7 @@ xmlSecPtrListDebugXmlDump(xmlSecPtrListPtr list, FILE* output) {
     xmlSecAssert(xmlSecPtrListIsValid(list));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<List size=\"%lu\">\n", XMLSEC_UL_BAD_CAST(list->use));
+    fprintf(output, "<List size=\"" XMLSEC_SIZE_FMT "\">\n", list->use);
     if(list->id->debugXmlDumpItem != NULL) {
         xmlSecSize pos;
 

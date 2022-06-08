@@ -124,7 +124,7 @@ xmlSecNssNodeSetBigNumValue(xmlNodePtr cur, const SECItem *a, int addLineBreaks)
     ret = xmlSecBufferInitialize(&buf, a->len + 1);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferInitialize", NULL,
-            "size=%lu", XMLSEC_UL_BAD_CAST(a->len + 1));
+            "size=%u", (a->len + 1));
         return(-1);
     }
 
@@ -133,7 +133,7 @@ xmlSecNssNodeSetBigNumValue(xmlNodePtr cur, const SECItem *a, int addLineBreaks)
     ret = xmlSecBufferSetSize(&buf, a->len);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-                "size=%lu", XMLSEC_UL_BAD_CAST(a->len));
+            "size=%u", a->len);
         xmlSecBufferFinalize(&buf);
         return(-1);
     }

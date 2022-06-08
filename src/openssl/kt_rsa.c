@@ -769,8 +769,8 @@ xmlSecOpenSSLRsaOaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     } else {
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_OPERATION,
             xmlSecTransformGetName(transform),
-            "Unexpected transform operation: %lu",
-            XMLSEC_UL_BAD_CAST(transform->operation));
+            "Unexpected transform operation: " XMLSEC_ENUM_FMT,
+            XMLSEC_ENUM_CAST(transform->operation));
         return(-1);
     }
     ret = EVP_PKEY_CTX_set_rsa_padding(ctx->pKeyCtx, RSA_PKCS1_OAEP_PADDING);
@@ -1128,8 +1128,8 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
     else {
         xmlSecOtherError3(XMLSEC_ERRORS_R_INVALID_OPERATION,
             xmlSecTransformGetName(transform),
-            "Unexpected transform operation: %lu; paramsSize: " XMLSEC_SIZE_FMT,
-            XMLSEC_UL_BAD_CAST(transform->operation),
+            "Unexpected transform operation: " XMLSEC_ENUM_FMT "; paramsSize: " XMLSEC_SIZE_FMT,
+            XMLSEC_ENUM_CAST(transform->operation),
             paramsSize);
         return(-1);
     }

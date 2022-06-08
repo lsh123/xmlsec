@@ -38,8 +38,8 @@
                     (const char*)(errorObject),             \
                     (errorFunction),                        \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
-                    "NSS error: %lu",                       \
-                    XMLSEC_UL_BAD_CAST(error_code)          \
+                    "NSS error: %ld",                       \
+                    (long)(error_code)                      \
         );                                                  \
     }
 
@@ -59,9 +59,9 @@
                     (const char*)(errorObject),             \
                     (errorFunction),                        \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
-                    msg "; NSS error: %lu",                 \
+                    msg "; NSS error: %ld",                 \
                     (param),                                \
-                    XMLSEC_UL_BAD_CAST(error_code)          \
+                    (long)(error_code)                      \
         );                                                  \
     }
 

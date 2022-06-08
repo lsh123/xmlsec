@@ -248,7 +248,7 @@ xmlSecNodeSetContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent)
             break;
         default:
             xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_OPERATION, NULL,
-                              "node set operation=%lu", XMLSEC_UL_BAD_CAST(cur->op));
+                "node set operation=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(cur->op));
             return(-1);
         }
         cur = cur->next;
@@ -583,11 +583,13 @@ xmlSecNodeSetDebugDump(xmlSecNodeSetPtr nset, FILE *output) {
         xmlSecAssert(cur != NULL);
         
         if(cur->type != XML_NAMESPACE_DECL) {
-            fprintf(output, "%lu: %s\n", XMLSEC_UL_BAD_CAST(cur->type),
+            fprintf(output, XMLSEC_ENUM_FMT ": %s\n",
+                XMLSEC_ENUM_CAST(cur->type),
                 (cur->name) ? cur->name : BAD_CAST "null");
         } else {
             xmlNsPtr ns = (xmlNsPtr)cur;
-            fprintf(output, "%lu: %s=%s (%s:%s)\n", XMLSEC_UL_BAD_CAST(cur->type),
+            fprintf(output, XMLSEC_ENUM_FMT ": %s=%s (%s:%s)\n",
+                XMLSEC_ENUM_CAST(cur->type),
                 (ns->prefix) ? ns->prefix : BAD_CAST "null",
                 (ns->href) ? ns->href : BAD_CAST "null",
                 (((xmlNodePtr)ns->next)->ns &&

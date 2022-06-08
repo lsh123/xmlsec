@@ -378,7 +378,7 @@ xmlSecNssAppKeyLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format,
         break;
     default:
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-                         "format=%lu", XMLSEC_UL_BAD_CAST(format));
+            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
         return(NULL);
     }
 
@@ -592,22 +592,21 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
         cert = __CERT_NewTempCertificate(CERT_GetDefaultCertDB(),
                                          secItem, NULL, PR_FALSE, PR_TRUE);
         if(cert == NULL) {
-            xmlSecNssError2("__CERT_NewTempCertificate", NULL,
-                            "format=%lu", XMLSEC_UL_BAD_CAST(format));
+            xmlSecNssError2("__CERT_NewTempCertificate", xmlSecKeyDataGetName(data),
+                "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
             return(-1);
         }
         break;
     default:
-        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-                         "format=%lu", XMLSEC_UL_BAD_CAST(format));
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, xmlSecKeyDataGetName(data),
+            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
         return(-1);
     }
 
     xmlSecAssert2(cert != NULL, -1);
     ret = xmlSecNssKeyDataX509AdoptCert(data, cert);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecNssKeyDataX509AdoptCert",
-                            xmlSecKeyDataGetName(data));
+        xmlSecInternalError("xmlSecNssKeyDataX509AdoptCert", xmlSecKeyDataGetName(data));
         CERT_DestroyCertificate(cert);
         return(-1);
     }
@@ -958,13 +957,13 @@ xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format)
                                          secItem, NULL, PR_FALSE, PR_TRUE);
         if(cert == NULL) {
             xmlSecNssError2("__CERT_NewTempCertificate", NULL,
-                            "format=%lu", XMLSEC_UL_BAD_CAST(format));
+                "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
             return(NULL);
         }
         break;
     default:
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-                          "format=%lu", XMLSEC_UL_BAD_CAST(format));
+            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
         return(NULL);
     }
 
@@ -1137,13 +1136,13 @@ xmlSecNssAppKeysMngrCertLoadSECItem(xmlSecKeysMngrPtr mngr, SECItem* secItem,
                                          secItem, NULL, PR_FALSE, PR_TRUE);
         if(cert == NULL) {
             xmlSecNssError2("__CERT_NewTempCertificate", NULL,
-                            "format=%lu", XMLSEC_UL_BAD_CAST(format));
+                "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
             return(-1);
         }
         break;
     default:
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-                          "format=%lu", XMLSEC_UL_BAD_CAST(format));
+            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
         return(-1);
     }
 

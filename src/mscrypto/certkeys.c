@@ -1350,13 +1350,13 @@ xmlSecMSCryptoKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     pubKeyStruc = (PUBLICKEYSTRUC*)blob;
     if(pubKeyStruc->bVersion != 0x02) {
         xmlSecMSCryptoError2("CryptExportKey", xmlSecKeyDataKlassGetName(id),
-            "pubKeyStruc->bVersion=%lu", XMLSEC_UL_BAD_CAST(pubKeyStruc->bVersion));
+            "pubKeyStruc->bVersion=%d", (int)(pubKeyStruc->bVersion));
         xmlSecBufferFinalize(&buf);
         return(-1);
     }
     if(pubKeyStruc->bType != PUBLICKEYBLOB) {
         xmlSecMSCryptoError2("CryptExportKey", xmlSecKeyDataKlassGetName(id),
-            "pubKeyStruc->bType=%lu", XMLSEC_UL_BAD_CAST(pubKeyStruc->bType));
+            "pubKeyStruc->bType=%d", (int)(pubKeyStruc->bType));
         xmlSecBufferFinalize(&buf);
         return(-1);
     }
@@ -2063,13 +2063,13 @@ xmlSecMSCryptoKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     pubKeyStruc     = (PUBLICKEYSTRUC*)blob;
     if(pubKeyStruc->bVersion != 0x02) {
         xmlSecMSCryptoError2("CryptExportKey", xmlSecKeyDataKlassGetName(id),
-            "pubKeyStruc->bVersion=%lu", XMLSEC_UL_BAD_CAST(pubKeyStruc->bVersion));
+            "pubKeyStruc->bVersion=%d", (int)(pubKeyStruc->bVersion));
         xmlSecBufferFinalize(&buf);
         return(-1);
     }
     if(pubKeyStruc->bType != PUBLICKEYBLOB) {
         xmlSecMSCryptoError2("CryptExportKey", xmlSecKeyDataKlassGetName(id),
-            "pubKeyStruc->bType=%lu", XMLSEC_UL_BAD_CAST(pubKeyStruc->bType));
+            "pubKeyStruc->bType=%d", (int)(pubKeyStruc->bType));
         xmlSecBufferFinalize(&buf);
         return(-1);
     }

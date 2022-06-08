@@ -512,7 +512,7 @@ xmlSecNssSignatureDecode(xmlSecNssSignatureCtxPtr ctx, SECItem* signature) {
         break;
     default:
         xmlSecInternalError2("xmlSecNssSignatureDecode", NULL,
-            "unknown algorithm=%lu", XMLSEC_UL_BAD_CAST(ctx->alg));
+            "unknown algorithm=%u", ctx->alg);
         return(NULL);
     }
     return(res);

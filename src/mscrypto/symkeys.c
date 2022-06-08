@@ -275,12 +275,12 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
     pubKeyStruc = (PUBLICKEYSTRUC*)keyBlob;
     if(pubKeyStruc->bVersion != 0x02) {
         xmlSecMSCryptoError2("CryptExportKey", NULL,
-            "pubKeyStruc->bVersion=%lu", XMLSEC_UL_BAD_CAST(pubKeyStruc->bVersion));
+            "pubKeyStruc->bVersion=%d", (int)(pubKeyStruc->bVersion));
         goto done;
     }
     if(pubKeyStruc->bType != PRIVATEKEYBLOB) {
         xmlSecMSCryptoError2("CryptExportKey", NULL,
-            "pubKeyStruc->bType=%lu", XMLSEC_UL_BAD_CAST(pubKeyStruc->bType));
+            "pubKeyStruc->bType=%d", (int)(pubKeyStruc->bType));
         goto done;
     }
 
@@ -312,8 +312,7 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
      * BYTE privateExponent[rsapubkey.bitlen/8];        1/8
      */
     if(keyBlobLen < sizeof(PUBLICKEYSTRUC) + sizeof(RSAPUBKEY) + bitLen / 2 + bitLen / 16) {
-        xmlSecMSCryptoError2("CryptExportKey", NULL,
-                             "keBlobLen=%lu", XMLSEC_UL_BAD_CAST(keyBlobLen));
+        xmlSecMSCryptoError2("CryptExportKey", NULL, "keBlobLen=%lu", keyBlobLen);
         goto done;
     }
     ptr = (BYTE*)(keyBlob + sizeof(PUBLICKEYSTRUC) + sizeof(RSAPUBKEY));

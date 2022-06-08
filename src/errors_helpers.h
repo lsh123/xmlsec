@@ -702,15 +702,15 @@ extern "C" {
  *
  * Macro. The XMLSec library macro for reporting an invalid transform status errors.
  */
-#define xmlSecInvalidTransfromStatusError(transform) \
-    {                                                 \
-        xmlSecError(XMLSEC_ERRORS_HERE,               \
+#define xmlSecInvalidTransfromStatusError(transform)   \
+    {                                                  \
+        xmlSecError(XMLSEC_ERRORS_HERE,                \
                    (const char*)xmlSecTransformGetName(transform), \
-                   NULL,                              \
-                   XMLSEC_ERRORS_R_INVALID_STATUS,    \
-                   "transformStatus=%lu",             \
-                   XMLSEC_UL_BAD_CAST((transform)->status) \
-        );                                            \
+                   NULL,                               \
+                   XMLSEC_ERRORS_R_INVALID_STATUS,     \
+                   "transformStatus=" XMLSEC_ENUM_FMT, \
+                   XMLSEC_ENUM_CAST((transform)->status) \
+        );                                             \
     }
 
 /**
@@ -726,8 +726,8 @@ extern "C" {
                    (const char*)xmlSecTransformGetName(transform), \
                    NULL,                              \
                    XMLSEC_ERRORS_R_INVALID_STATUS,    \
-                   "transformStatus=%lu, msg=%s",     \
-                   XMLSEC_UL_BAD_CAST((transform)->status), \
+                   "transformStatus=" XMLSEC_ENUM_FMT "; msg=%s", \
+                   XMLSEC_ENUM_CAST((transform)->status),         \
                    msg                                \
         );                                            \
     }

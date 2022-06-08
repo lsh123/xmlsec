@@ -396,7 +396,7 @@ xmlSecGCryptKWDes3Sha1(void * context,
 
     outBuf = gcry_md_read(digestCtx, GCRY_MD_SHA1);
     if(outBuf == NULL) {
-        xmlSecGCryptError("gcry_md_read", GPG_ERR_NO_ERROR, NULL);
+        xmlSecGCryptError("gcry_md_read", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         gcry_md_close(digestCtx);
         return(-1);
     }

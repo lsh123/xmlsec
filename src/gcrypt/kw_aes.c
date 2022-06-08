@@ -130,7 +130,7 @@ xmlSecGCryptKWAesInitialize(xmlSecTransformPtr transform) {
 
     blockSize = gcry_cipher_get_algo_blklen(ctx->cipher);
     if(blockSize <= 0) {
-        xmlSecGCryptError("gcry_cipher_get_algo_blklen", 0, NULL);
+        xmlSecGCryptError("gcry_cipher_get_algo_blklen", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         return(-1);
     }
 

@@ -178,7 +178,7 @@ xmlSecMSCryptoAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
     default:
         /* Any other format like PEM keys is currently not supported */
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-                         "format=%lu", XMLSEC_UL_BAD_CAST(format));
+            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
         return(NULL);
     }
 
@@ -386,22 +386,21 @@ xmlSecMSCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xml
     case xmlSecKeyDataFormatCertDer:
         pCert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, data, dataSize);
         if (NULL == pCert) {
-            xmlSecInternalError2("CertCreateCertificateContext", NULL,
-                                 "format=%lu", XMLSEC_UL_BAD_CAST(format));
+            xmlSecInternalError2("CertCreateCertificateContext", xmlSecKeyDataGetName(kdata),
+                "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
             return(-1);
         }
 
         ret = xmlSecMSCryptoKeyDataX509AdoptCert(kdata, pCert);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecMSCryptoKeyDataX509AdoptCert",
-                                xmlSecKeyDataGetName(kdata));
+            xmlSecInternalError("xmlSecMSCryptoKeyDataX509AdoptCert", xmlSecKeyDataGetName(kdata));
             CertFreeCertificateContext(pCert);
             return(-1);
         }
         break;
     default:
-        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-                         "format=%lu", XMLSEC_UL_BAD_CAST(format));
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, xmlSecKeyDataGetName(kdata),
+            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
         return(-1);
     }
 
@@ -740,7 +739,7 @@ xmlSecMSCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte
             break;
         default:
             xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-                             "format=%lu", XMLSEC_UL_BAD_CAST(format));
+                "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
             return(-1);
     }
 

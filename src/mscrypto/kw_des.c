@@ -379,7 +379,7 @@ xmlSecMSCryptoKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransf
             if(ret < 0) {
                 xmlSecInternalError4("xmlSecKWDes3Encode", xmlSecTransformGetName(transform),
                     "keySize=" XMLSEC_SIZE_FMT "; inSize=" XMLSEC_SIZE_FMT "; outSize=" XMLSEC_SIZE_FMT,
-                    "keySize, inSize, outSize);
+                    keySize, inSize, outSize);
                 return(-1);
             }
             XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outSize, return(-1), xmlSecTransformGetName(transform));

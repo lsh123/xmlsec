@@ -534,7 +534,7 @@ xmlSecNssHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxP
                 ret = xmlSecBufferAppend(out, ctx->dgst, dgstSize);
                 if(ret < 0) {
                     xmlSecInternalError2("xmlSecBufferAppend", xmlSecTransformGetName(transform),
-                        "size=" XMLSEC_SIZE_FMT, dgstSize);
+                        "size=%u", dgstSize);
                     return(-1);
                 }
             }

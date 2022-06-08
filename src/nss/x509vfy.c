@@ -581,8 +581,7 @@ xmlSecNssX509NameRead(xmlSecByte *str, int len) {
     XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(NULL), NULL);
     retval = (xmlSecByte *)PORT_Alloc(size + 1);
     if(retval == NULL) {
-        xmlSecNssError2("PORT_Alloc", NULL,
-                        "size=%lu", XMLSEC_UL_BAD_CAST(size + 1));
+        xmlSecNssError2("PORT_Alloc", NULL, "size=" XMLSEC_SIZE_FMT, (size + 1));
         return(NULL);
     }
     p = retval;

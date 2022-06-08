@@ -268,27 +268,27 @@ xmlSecNssKeyTransportCtxInit(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr in
         XMLSEC_SAFE_CAST_INT_TO_SIZE(blockLen, blockSize, return(-1), NULL);
     } else {
         xmlSecOtherError(XMLSEC_ERRORS_R_KEY_NOT_FOUND, NULL,
-                         "neither public or private keys are set");
+            "neither public or private keys are set");
         return(-1);
     }
 
     ctx->material = xmlSecBufferCreate(blockSize);
     if(ctx->material == NULL) {
         xmlSecInternalError2("xmlSecBufferSetData", NULL,
-                             "size=%lu", XMLSEC_UL_BAD_CAST(blockSize));
+            "size=" XMLSEC_SIZE_FMT, blockSize);
         return(-1);
     }
 
     /* read raw key material into context */
     if(xmlSecBufferSetData(ctx->material, xmlSecBufferGetData(in), xmlSecBufferGetSize(in)) < 0) {
         xmlSecInternalError2("xmlSecBufferSetData", NULL,
-                             "size=%lu", XMLSEC_UL_BAD_CAST(xmlSecBufferGetSize(in)));
+            "size=" XMLSEC_SIZE_FMT, xmlSecBufferGetSize(in));
         return(-1);
     }
 
     if(xmlSecBufferRemoveHead(in, xmlSecBufferGetSize(in)) < 0) {
         xmlSecInternalError2("xmlSecBufferRemoveHead", NULL,
-                             "size=%lu", XMLSEC_UL_BAD_CAST(xmlSecBufferGetSize(in)));
+            "size=" XMLSEC_SIZE_FMT, xmlSecBufferGetSize(in));
         return(-1);
     }
 
@@ -310,13 +310,13 @@ xmlSecNssKeyTransportCtxUpdate(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr 
     /* read raw key material and append into context */
     if(xmlSecBufferAppend(ctx->material, xmlSecBufferGetData(in), xmlSecBufferGetSize(in)) < 0) {
         xmlSecInternalError2("xmlSecBufferAppend", NULL,
-                             "size=%lu", XMLSEC_UL_BAD_CAST(xmlSecBufferGetSize(in)));
+            "size=" XMLSEC_SIZE_FMT, xmlSecBufferGetSize(in));
         return(-1);
     }
 
     if(xmlSecBufferRemoveHead(in, xmlSecBufferGetSize(in)) < 0) {
         xmlSecInternalError2("xmlSecBufferRemoveHead", NULL,
-                             "size=%lu", XMLSEC_UL_BAD_CAST(xmlSecBufferGetSize(in)));
+            "size=" XMLSEC_SIZE_FMT, xmlSecBufferGetSize(in));
         return(-1);
     }
     return(0);
@@ -344,14 +344,14 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
     /* read raw key material and append into context */
     if(xmlSecBufferAppend(ctx->material, xmlSecBufferGetData(in), xmlSecBufferGetSize(in)) < 0) {
         xmlSecInternalError2("xmlSecBufferAppend", NULL,
-                             "size=%lu", XMLSEC_UL_BAD_CAST(xmlSecBufferGetSize(in)));
+            "size=" XMLSEC_SIZE_FMT, xmlSecBufferGetSize(in));
         return(-1);
     }
     materialSize = xmlSecBufferGetSize(ctx->material);
 
     if(xmlSecBufferRemoveHead(in, xmlSecBufferGetSize(in)) < 0) {
         xmlSecInternalError2("xmlSecBufferRemoveHead", NULL,
-                             "size=%lu", XMLSEC_UL_BAD_CAST(xmlSecBufferGetSize(in)));
+            "size=" XMLSEC_SIZE_FMT, xmlSecBufferGetSize(in));
         return(-1);
     }
 
@@ -436,7 +436,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
 
         if(xmlSecBufferSetSize(result, wrpskv.len) < 0) {
             xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-                                 "size=%lu", XMLSEC_UL_BAD_CAST(wrpskv.len));
+                "size=%u", wrpskv.len);
             PK11_FreeSymKey(symKey);
             xmlSecBufferDestroy(result);
             PK11_FreeSlot(slot);
@@ -473,7 +473,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
 
         if(xmlSecBufferSetData(result, keyItem->data, keyItem->len) < 0) {
             xmlSecInternalError2("xmlSecBufferSetData", NULL,
-                                 "size=%lu", XMLSEC_UL_BAD_CAST(keyItem->len));
+                "size=%u", keyItem->len);
             PK11_FreeSymKey(symKey);
             xmlSecBufferDestroy(result);
             return(-1);
@@ -484,7 +484,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
     /* Write output */
     if(xmlSecBufferAppend(out, xmlSecBufferGetData(result), xmlSecBufferGetSize(result)) < 0) {
         xmlSecInternalError2("xmlSecBufferAppend", NULL,
-                             "size=%lu", XMLSEC_UL_BAD_CAST(xmlSecBufferGetSize(result)));
+            "size=" XMLSEC_SIZE_FMT, xmlSecBufferGetSize(result));
         xmlSecBufferDestroy(result);
         return(-1);
     }

@@ -27,6 +27,8 @@
 #include <xmlsec/soap.h>
 #include <xmlsec/errors.h>
 
+#include "cast_helpers.h"
+
 /***********************************************************************
  *
  * SOAP 1.1

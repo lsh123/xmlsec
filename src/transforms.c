@@ -703,7 +703,6 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
     xmlSecNodeSetType nodeSetType = xmlSecNodeSetTree;
     const xmlChar* xptr;
     xmlChar* buf = NULL;
-    long uriDiff;
     int uriLen;
     int useVisa3DHack = 0;
     int ret;
@@ -746,9 +745,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
         return(0);
     }
 
-    uriDiff = XMLSEC_BAD_CAST_PTRDIFF_TO_LONG(xptr - uri);
-    XMLSEC_SAFE_CAST_LONG_TO_INT(uriDiff, uriLen, return(-1), NULL);
-
+    XMLSEC_SAFE_CAST_PTRDIFF_TO_INT((xptr - uri), uriLen, return(-1), NULL);
     ctx->uri = xmlStrndup(uri, uriLen);
     if(ctx->uri == NULL) {
         xmlSecStrdupError(uri, NULL);

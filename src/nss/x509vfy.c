@@ -694,7 +694,7 @@ xmlSecNssX509NameStringRead(xmlSecByte **str, int *strLen,
             }
             inCh = (*str)[ii];
 
-            /* if next char is hex then we expect \\XX, otherwise we just remove \\ */
+            /* if next char after \\ is a hex then we expect \\XX, otherwise we just remove \\ */
             if (xmlSecIsHex(inCh)) {
                 /* try to move to next char after \\X */
                 ++ii;

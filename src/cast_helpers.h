@@ -26,13 +26,6 @@
 #define XMLSEC_ENUM_CAST(val)                ((int)(val))
 #define XMLSEC_ENUM_FMT                      "%d"
 
-
-/** ptrdiff_t is hard to hadle in "safe_cast" macros since there is no
- * standard way to print it.
- */
-#define XMLSEC_BAD_CAST_PTRDIFF_TO_LONG(val) ((long)(val))
-
-
  /******************************************************************************
   *
   * Main macros to help with casting, we assume that LL and ULL are the largest
@@ -324,6 +317,22 @@
     (dstVal) = (srcVal);
 
 #endif /* (SIZE_MAX > XMLSEC_SIZE_MAX) */
+
+/******************************************************************************
+ *
+ *  Special case: ptrdiff_t to int (need to cast to long long to print).
+ *
+ *****************************************************************************/
+
+ /* Safe cast with limits check: ptrdiff_t -> int */
+#define XMLSEC_SAFE_CAST_PTRDIFF_TO_INT(srcVal, dstVal, errorAction, errorObject) \
+    if(((srcVal) < INT_MIN) || ((srcVal) > INT_MAX)) {                         \
+        xmlSecImpossibleCastError(ptrdiff_t, (long long)(srcVal), "%lld",      \
+            int, INT_MIN, INT_MAX, "%d", (errorObject));                       \
+        errorAction;                                                           \
+    }                                                                          \
+    (dstVal) = (int)(srcVal);                                                  \
+
 
 /******************************************************************************
  *

@@ -75,6 +75,31 @@
                     xmlSecErrorsSafeString(_openssl_error_buf) \
         );                                                  \
 
+ /**
+  * xmlSecOpenSSLError3:
+  * @errorFunction:      the failed function name.
+  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+  * @msg:                the extra message.
+  * @param1:             the extra message param1.
+  * @param2:             the extra message param2.
+  *
+  * Macro. The XMLSec library macro for reporting OpenSSL crypro errors.
+  */
+#define xmlSecOpenSSLError3(errorFunction, errorObject, msg, param1, param2) \
+        char _openssl_error_buf[XMLSEC_OPENSSL_ERROR_BUFFER_SIZE];  \
+        unsigned long _openssl_error_code = ERR_peek_error();       \
+        ERR_error_string_n(_openssl_error_code, _openssl_error_buf, sizeof(_openssl_error_buf)); \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    (errorFunction),                        \
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
+                    msg "; openssl error: %s",              \
+                    (param1),                               \
+                    (param2),                               \
+                    xmlSecErrorsSafeString(_openssl_error_buf) \
+        );                                                  \
+
+
 
 
 #endif /* ! __XMLSEC_GLOBALS_H__ */

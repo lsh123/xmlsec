@@ -273,22 +273,11 @@
     (dstVal) = (xmlSecSize)(srcVal);                                            \
 
 
-/* Safe cast with limits check: uint -> xmlSecSize (assume xmlSecSize >= 0) */
-#if defined(XMLSEC_NO_SIZE_T)
+/* Safe cast with limits check: uint -> xmlSecSize (assume xmlSecSize >= 0).
+ * This is always a safe cast for 32 and 64 bit systems.
+ */
 #define XMLSEC_SAFE_CAST_UINT_TO_SIZE(srcVal, dstVal, errorAction, errorObject)  \
     (dstVal) = (srcVal);                                            \
-
-#else /* defined(XMLSEC_NO_SIZE_T) */
-#define XMLSEC_SAFE_CAST_UINT_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
-    if(XMLSEC_UL_BAD_CAST(XMLSEC_SIZE_MAX) < XMLSEC_UL_BAD_CAST(srcVal)) {      \
-        xmlSecImpossibleCastError(unsigned int, (srcVal), "%u",                 \
-            xmlSecSize, XMLSEC_SIZE_MIN, XMLSEC_SIZE_MAX, XMLSEC_SIZE_FMT,      \
-            (errorObject));                                                     \
-        errorAction;                                                            \
-    }                                                                           \
-    (dstVal) = (xmlSecSize)(srcVal);                                            \
-
-#endif /* defined(XMLSEC_NO_SIZE_T) */
 
 /******************************************************************************
  *

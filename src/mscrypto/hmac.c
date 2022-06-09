@@ -532,6 +532,8 @@ xmlSecMSCryptoHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 
         if(last) {
             DWORD retLen = XMLSEC_MSCRYPTO_MAX_HMAC_SIZE;
+            xmlSecSize hashSize;
+
             ret = CryptGetHashParam(ctx->mscHash,
                 HP_HASHVAL,
                 ctx->dgst,
@@ -545,26 +547,26 @@ xmlSecMSCryptoHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                 return(-1);
             }
             xmlSecAssert2(retLen > 0, -1);
+            XMLSEC_SAFE_CAST_ULONG_TO_SIZE(retLen, hashSize, return(-1), xmlSecTransformGetName(transform));
 
             /* check/set the result digest size */
             if(ctx->dgstSize == 0) {
-                ctx->dgstSize = retLen * 8; /* no dgst size specified, use all we have */
-            } else if(ctx->dgstSize <= 8 * retLen) {
-                retLen = ((ctx->dgstSize + 7) / 8); /* we need to truncate result digest */
+                ctx->dgstSize = hashSize * 8; /* no dgst size specified, use all we have */
+            } else if(ctx->dgstSize <= 8 * hashSize) {
+                hashSize = ((ctx->dgstSize + 7) / 8); /* we need to truncate result digest */
             } else {
                 xmlSecInvalidSizeLessThanError("HMAC digest (bits)",
-                                        8 * retLen, ctx->dgstSize,
+                                        8 * hashSize, ctx->dgstSize,
                                         xmlSecTransformGetName(transform));
                 return(-1);
             }
 
             /* copy result to output */
             if(transform->operation == xmlSecTransformOperationSign) {
-                ret = xmlSecBufferAppend(out, ctx->dgst, retLen);
+                ret = xmlSecBufferAppend(out, ctx->dgst, hashSize);
                 if(ret < 0) {
-                    xmlSecInternalError2("xmlSecBufferAppend",
-                                         xmlSecTransformGetName(transform),
-                                         "size=%lu", XMLSEC_UL_BAD_CAST(ctx->dgstSize));
+                    xmlSecInternalError2("xmlSecBufferAppend", xmlSecTransformGetName(transform),
+                        "size=" XMLSEC_SIZE_FMT, hashSize);
                     return(-1);
                 }
             }

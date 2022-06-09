@@ -681,7 +681,7 @@ xmlSecOpenSSLSignatureDsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr 
         goto done;
     }
 
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(ctx->dgstSize, dgstLen, goto done, NULL);
+    XMLSEC_SAFE_CAST_UINT_TO_INT(ctx->dgstSize, dgstLen, goto done, NULL);
     sig = DSA_do_sign(ctx->dgst, dgstLen, dsaKey);
     if(sig == NULL) {
         xmlSecOpenSSLError("DSA_do_sign", NULL);
@@ -740,12 +740,14 @@ xmlSecOpenSSLSignatureDsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr 
 
     /* signature size = r + s + 8 bytes, we just need r+s */
     if(dsaKeyLen < 8) {
-        xmlSecInvalidSizeLessThanError("DSA signature", dsaKeyLen, 8, NULL);
+        xmlSecOpenSSLError2("DSA key len", NULL,
+            "dsaKeyLen=%d", dsaKeyLen);
         goto done;
     }
     signHalfLen = (dsaKeyLen - 8) /  2;
     if(signHalfLen < 4) {
-        xmlSecInvalidSizeLessThanError("DSA signature (half)", signHalfLen, 4, NULL);
+        xmlSecOpenSSLError2("DSA signature half len", NULL,
+            "signHalfLen=%d", signHalfLen);
         goto done;
     }
 
@@ -756,20 +758,20 @@ xmlSecOpenSSLSignatureDsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr 
         goto done;
     }
     rLen = BN_num_bytes(rr);
-    if(rLen > signHalfLen) {
-        xmlSecInvalidSizeMoreThanError("DSA signature r",
-                                       rLen, signHalfLen, NULL);
+    if((rLen <= 0) || (rLen > signHalfLen)) {
+        xmlSecOpenSSLError3("BN_num_bytes(rr)", NULL,
+            "signHalfLen=%d; rLen=%d", signHalfLen, rLen);
         goto done;
     }
     sLen = BN_num_bytes(ss);
-    if(sLen > signHalfLen) {
-        xmlSecInvalidSizeMoreThanError("DSA signature s",
-                                       sLen, signHalfLen, NULL);
+    if((sLen <= 0) || (sLen > signHalfLen)) {
+        xmlSecOpenSSLError3("BN_num_bytes(ss)", NULL,
+            "signHalfLen=%d; sLen=%d", signHalfLen, sLen);
         goto done;
     }
 
     /* allocate buffer */
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(2 * signHalfLen, outSize, goto done, NULL);
+    XMLSEC_SAFE_CAST_INT_TO_SIZE((2 * signHalfLen), outSize, goto done, NULL);
     ret = xmlSecBufferSetSize(out, outSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL,
@@ -854,22 +856,22 @@ xmlSecOpenSSLSignatureDsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSecBy
 
     /* signature size = r + s + 8 bytes, we just need r+s */
     if(dsaKeyLen < 8) {
-        xmlSecInvalidSizeLessThanError("DSA signatue",
-                                       dsaKeyLen, 8, NULL);
+        xmlSecOpenSSLError2("DSA key len", NULL,
+            "dsaKeyLen=%d", dsaKeyLen);
         goto done;
     }
     signHalfLen = (dsaKeyLen - 8) /  2;
     if(signHalfLen < 4) {
-        xmlSecInvalidSizeLessThanError("DSA signatue (half size)",
-                                       signHalfLen, 4, NULL);
+        xmlSecOpenSSLError2("DSA signature half len", NULL,
+            "signHalfLen=%d", signHalfLen);
         goto done;
     }
 
     /* check size */
     XMLSEC_SAFE_CAST_SIZE_TO_INT(signSize, signLen, goto done, NULL);
     if(signLen != 2 * signHalfLen) {
-        xmlSecInvalidSizeError("DSA signature", signLen, 2 * signHalfLen,
-                               NULL);
+        xmlSecOpenSSLError3("DSA signatue len", NULL,
+            "signHalfLen=%d; signLen=%d", signHalfLen, signLen);
         goto done;
     }
 
@@ -901,7 +903,7 @@ xmlSecOpenSSLSignatureDsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSecBy
 
     /* verify signature */
 #ifndef XMLSEC_OPENSSL_API_300
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(ctx->dgstSize, dgstLen, goto done, NULL);
+    XMLSEC_SAFE_CAST_UINT_TO_INT(ctx->dgstSize, dgstLen, goto done, NULL);
     ret = DSA_do_verify(ctx->dgst, dgstLen, sig, dsaKey);
     if(ret < 0) {
         xmlSecOpenSSLError("DSA_do_verify", NULL);
@@ -1191,7 +1193,7 @@ xmlSecOpenSSLSignatureEcdsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPt
         goto done;
     }
 
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(ctx->dgstSize, dgstLen, goto done, NULL);
+    XMLSEC_SAFE_CAST_UINT_TO_INT(ctx->dgstSize, dgstLen, goto done, NULL);
     sig = ECDSA_do_sign(ctx->dgst, dgstLen, ecKey);
     if(sig == NULL) {
         xmlSecOpenSSLError("ECDSA_do_sign", NULL);
@@ -1258,16 +1260,16 @@ xmlSecOpenSSLSignatureEcdsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPt
 
     /* check sizes */
     rLen = BN_num_bytes(rr);
-    if(rLen > signHalfLen) {
-        xmlSecInvalidSizeMoreThanError("ECDSA signatue r",
-                                       rLen, signHalfLen, NULL);
+    if ((rLen <= 0) || (rLen > signHalfLen)) {
+        xmlSecOpenSSLError3("BN_num_bytes(rr)", NULL,
+            "signHalfLen=%d; rLen=%d", signHalfLen, rLen);
         goto done;
     }
 
     sLen = BN_num_bytes(ss);
-    if(sLen > signHalfLen) {
-        xmlSecInvalidSizeMoreThanError("ECDSA signatue s",
-                                       sLen, signHalfLen, NULL);
+    if ((sLen <= 0) || (sLen > signHalfLen)) {
+        xmlSecOpenSSLError3("BN_num_bytes(ss)", NULL,
+            "signHalfLen=%d; sLen=%d", signHalfLen, sLen);
         goto done;
     }
 
@@ -1366,8 +1368,8 @@ xmlSecOpenSSLSignatureEcdsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSec
     if((signLen < 2 * signHalfLen) && (signLen % 2 == 0)) {
         signHalfLen = signLen / 2;
     } else if(signLen != 2 * signHalfLen) {
-        xmlSecInvalidSizeError("ECDSA signature", signLen, 2 * signHalfLen,
-                               NULL);
+        xmlSecInternalError3("xmlSecOpenSSLSignatureEcdsaSignatureHalfLen", NULL,
+            "signLen=%d; signHalfLen=%d", signLen, signHalfLen);
         goto done;
     }
 
@@ -1399,7 +1401,7 @@ xmlSecOpenSSLSignatureEcdsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSec
 
     /* verify signature */
 #ifndef XMLSEC_OPENSSL_API_300
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(ctx->dgstSize, dgstLen, goto done, NULL);
+    XMLSEC_SAFE_CAST_UINT_TO_INT(ctx->dgstSize, dgstLen, goto done, NULL);
     ret = ECDSA_do_verify(ctx->dgst, dgstLen, sig, ecKey);
     if(ret < 0) {
         xmlSecOpenSSLError("ECDSA_do_verify", NULL);

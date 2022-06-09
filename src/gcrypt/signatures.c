@@ -457,7 +457,7 @@ xmlSecGCryptPkSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             gcry_md_final(ctx->digestCtx);
             buf = gcry_md_read(ctx->digestCtx, ctx->digest);
             if(buf == NULL) {
-                xmlSecGCryptError("gcry_md_read", GPG_ERR_NO_ERROR,
+                xmlSecGCryptError("gcry_md_read", (gcry_error_t)GPG_ERR_NO_ERROR,
                                   xmlSecTransformGetName(transform));
                 return(-1);
             }
@@ -643,8 +643,7 @@ xmlSecGCryptDsaPkSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
     /* find signature value */
     s_tmp = gcry_sexp_find_token(s_sig, "sig-val", 0);
     if(s_tmp == NULL) {
-        xmlSecGCryptError("gcry_sexp_find_token(sig-val)",
-                          GPG_ERR_NO_ERROR, NULL);
+        xmlSecGCryptError("gcry_sexp_find_token(sig-val)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
     gcry_sexp_release(s_sig);
@@ -652,8 +651,7 @@ xmlSecGCryptDsaPkSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
 
     s_tmp = gcry_sexp_find_token(s_sig, "dsa", 0);
     if(s_tmp == NULL) {
-        xmlSecGCryptError("gcry_sexp_find_token(dsa)",
-                          GPG_ERR_NO_ERROR, NULL);
+        xmlSecGCryptError("gcry_sexp_find_token(dsa)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
     gcry_sexp_release(s_sig);
@@ -662,30 +660,26 @@ xmlSecGCryptDsaPkSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
     /* r */
     s_r = gcry_sexp_find_token(s_sig, "r", 0);
     if(s_r == NULL) {
-        xmlSecGCryptError("gcry_sexp_find_token(r)",
-                          GPG_ERR_NO_ERROR, NULL);
+        xmlSecGCryptError("gcry_sexp_find_token(r)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
 
     m_r = gcry_sexp_nth_mpi(s_r, 1, GCRYMPI_FMT_USG);
     if(m_r == NULL) {
-        xmlSecGCryptError("gcry_sexp_nth_mpi(r)",
-                          GPG_ERR_NO_ERROR, NULL);
+        xmlSecGCryptError("gcry_sexp_nth_mpi(r)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
 
     /* s */
     s_s = gcry_sexp_find_token(s_sig, "s", 0);
     if(s_s == NULL) {
-        xmlSecGCryptError("gcry_sexp_find_token(s)",
-                          GPG_ERR_NO_ERROR, NULL);
+        xmlSecGCryptError("gcry_sexp_find_token(s)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
 
     m_s = gcry_sexp_nth_mpi(s_s, 1, GCRYMPI_FMT_USG);
     if(m_s == NULL) {
-        xmlSecGCryptError("gcry_sexp_nth_mpi(s)",
-                          GPG_ERR_NO_ERROR, NULL);
+        xmlSecGCryptError("gcry_sexp_nth_mpi(s)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
 
@@ -941,8 +935,7 @@ xmlSecGCryptRsaPkcs1PkSign(int digest, xmlSecKeyDataPtr key_data,
     /* find signature value */
     s_tmp = gcry_sexp_find_token(s_sig, "sig-val", 0);
     if(s_tmp == NULL) {
-        xmlSecGCryptError("gcry_sexp_find_token(sig-val)",
-                          GPG_ERR_NO_ERROR, NULL);
+        xmlSecGCryptError("gcry_sexp_find_token(sig-val)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
     gcry_sexp_release(s_sig);
@@ -950,8 +943,7 @@ xmlSecGCryptRsaPkcs1PkSign(int digest, xmlSecKeyDataPtr key_data,
 
     s_tmp = gcry_sexp_find_token(s_sig, "rsa", 0);
     if(s_tmp == NULL) {
-        xmlSecGCryptError("gcry_sexp_find_token(rsa)",
-                          GPG_ERR_NO_ERROR, NULL);
+        xmlSecGCryptError("gcry_sexp_find_token(rsa)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
     gcry_sexp_release(s_sig);
@@ -959,8 +951,7 @@ xmlSecGCryptRsaPkcs1PkSign(int digest, xmlSecKeyDataPtr key_data,
 
     s_tmp = gcry_sexp_find_token(s_sig, "s", 0);
     if(s_tmp == NULL) {
-        xmlSecGCryptError("gcry_sexp_find_token(s)",
-                          GPG_ERR_NO_ERROR, NULL);
+        xmlSecGCryptError("gcry_sexp_find_token(s)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
     gcry_sexp_release(s_sig);
@@ -968,8 +959,7 @@ xmlSecGCryptRsaPkcs1PkSign(int digest, xmlSecKeyDataPtr key_data,
 
     m_sig = gcry_sexp_nth_mpi(s_sig, 1, GCRYMPI_FMT_USG);
     if(m_sig == NULL) {
-        xmlSecGCryptError("gcry_sexp_nth_mpi(1)",
-                          GPG_ERR_NO_ERROR, NULL);
+        xmlSecGCryptError("gcry_sexp_nth_mpi(1)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
 

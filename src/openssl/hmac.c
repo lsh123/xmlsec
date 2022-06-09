@@ -608,25 +608,25 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
         }
 
         if(last) {
+            xmlSecSize dgstSize;
+
 #ifndef XMLSEC_OPENSSL_API_300
-            unsigned int dgstSize = 0;
+            unsigned int dgstLen = 0;
 
             xmlSecAssert2(ctx->hmacCtx != NULL, -1);
-            ret = HMAC_Final(ctx->hmacCtx, ctx->dgst, &dgstSize);
+            ret = HMAC_Final(ctx->hmacCtx, ctx->dgst, &dgstLen);
             if(ret != 1) {
-                xmlSecOpenSSLError("HMAC_Final",
-                                   xmlSecTransformGetName(transform));
+                xmlSecOpenSSLError("HMAC_Final", xmlSecTransformGetName(transform));
                 return(-1);
             }
+            XMLSEC_SAFE_CAST_UINT_TO_SIZE(dgstLen, dgstSize, return(-1), xmlSecTransformGetName(transform));
 #else /* XMLSEC_OPENSSL_API_300 */
             size_t dgstSizeT = 0;
-            xmlSecSize dgstSize;
 
             xmlSecAssert2(ctx->evpHmacCtx != NULL, -1);
             ret = EVP_MAC_final(ctx->evpHmacCtx, ctx->dgst, &dgstSizeT, sizeof(ctx->dgst));
             if(ret != 1) {
-                xmlSecOpenSSLError("EVP_MAC_final",
-                                   xmlSecTransformGetName(transform));
+                xmlSecOpenSSLError("EVP_MAC_final", xmlSecTransformGetName(transform));
                 return(-1);
             }
             XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(dgstSizeT, dgstSize, return(-1), xmlSecTransformGetName(transform));

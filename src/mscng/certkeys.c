@@ -491,8 +491,8 @@ xmlSecMSCngKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlNodePtr cur;
     xmlSecSize length;
     xmlSecSize offset;
-    xmlSecSize blobLen;
-    unsigned char* blobData;
+    xmlSecSize blobSize;
+    xmlSecByte* blobData;
     BCRYPT_DSA_KEY_BLOB* dsakey;
     LPCWSTR lpszBlobType;
     BCRYPT_KEY_HANDLE hKey = NULL;
@@ -564,8 +564,7 @@ xmlSecMSCngKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     /* P node */
     if((cur == NULL) || (!xmlSecCheckNodeName(cur,  xmlSecNodeDSAP, xmlSecDSigNs))) {
-        xmlSecInvalidNodeError(cur, xmlSecNodeDSAP,
-            xmlSecKeyDataKlassGetName(id));
+        xmlSecInvalidNodeError(cur, xmlSecNodeDSAP, xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
@@ -657,11 +656,12 @@ xmlSecMSCngKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
      * part of the struct, need to write P, G, Y after it */
     length = xmlSecBnGetSize(&p);
     offset = sizeof(BCRYPT_DSA_KEY_BLOB);
-    blobLen = offset + length * 3;
+    blobSize = offset + length * 3;
 
-    ret = xmlSecBufferSetSize(&blob, blobLen);
+    ret = xmlSecBufferSetSize(&blob, blobSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=%lu", XMLSEC_UL_BAD_CAST(blobLen));
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
+            "size=" XMLSEC_SIZE_FMT, blobSize);
         goto done;
     }
 
@@ -712,7 +712,7 @@ xmlSecMSCngKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     }
 
     status = BCryptImportKeyPair(hAlg, NULL, lpszBlobType, &hKey, blobData,
-        blobLen, 0);
+        blobSize, 0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptImportKeyPair",
             xmlSecKeyDataKlassGetName(id), status);
@@ -802,7 +802,7 @@ xmlSecMSCngKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     ret = xmlSecBufferInitialize(&buf, bufLen);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferInitialize", xmlSecKeyDataKlassGetName(id),
-            "size=%lu", XMLSEC_UL_BAD_CAST(bufLen));
+            "size=%lu", bufLen);
         return(-1);
     }
 
@@ -909,16 +909,16 @@ xmlSecMSCngKeyDataDsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataDsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== rsa key: size = %lu\n",
-            XMLSEC_UL_BAD_CAST(xmlSecMSCngKeyDataDsaGetSize(data)));
+    fprintf(output, "=== rsa key: size = " XMLSEC_SIZE_FMT "\n",
+        xmlSecMSCngKeyDataDsaGetSize(data));
 }
 
 static void xmlSecMSCngKeyDataDsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataDsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<DSAKeyValue size=\"%lu\" />\n",
-            XMLSEC_UL_BAD_CAST(xmlSecMSCngKeyDataDsaGetSize(data)));
+    fprintf(output, "<DSAKeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
+        xmlSecMSCngKeyDataDsaGetSize(data));
 }
 
 static int
@@ -1121,16 +1121,16 @@ xmlSecMSCngKeyDataRsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataRsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== rsa key: size = %lu\n",
-            XMLSEC_UL_BAD_CAST(xmlSecMSCngKeyDataRsaGetSize(data)));
+    fprintf(output, "=== rsa key: size = " XMLSEC_SIZE_FMT "\n",
+        xmlSecMSCngKeyDataRsaGetSize(data));
 }
 
 static void xmlSecMSCngKeyDataRsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataRsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<RSAKeyValue size=\"%lu\" />\n",
-            XMLSEC_UL_BAD_CAST(xmlSecMSCngKeyDataRsaGetSize(data)));
+    fprintf(output, "<RSAKeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
+        xmlSecMSCngKeyDataRsaGetSize(data));
 }
 
 static int
@@ -1157,32 +1157,28 @@ xmlSecMSCngKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     if(xmlSecKeyGetValue(key) != NULL) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_KEY_DATA,
-                         xmlSecKeyDataKlassGetName(id),
-                         "key already has a value");
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_KEY_DATA, xmlSecKeyDataKlassGetName(id),
+            "key already has a value");
         return(-1);
     }
 
     /* initialize buffers */
     ret = xmlSecBnInitialize(&modulus, 0);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBnInitialize",
-            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecBnInitialize", xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
 
     ret = xmlSecBnInitialize(&exponent, 0);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBnInitialize",
-            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecBnInitialize", xmlSecKeyDataKlassGetName(id));
         xmlSecBnFinalize(&modulus);
         return(-1);
     }
 
     ret = xmlSecBufferInitialize(&blob, 0);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferInitialize",
-            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecBufferInitialize", xmlSecKeyDataKlassGetName(id));
         xmlSecBnFinalize(&modulus);
         xmlSecBnFinalize(&exponent);
         return(-1);
@@ -1241,7 +1237,7 @@ xmlSecMSCngKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     ret = xmlSecBufferSetSize(&blob, blobBufferSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", xmlSecKeyDataKlassGetName(id), 
-            "size=%lu", XMLSEC_UL_BAD_CAST(blobBufferSize));
+            "size=" XMLSEC_SIZE_FMT, blobBufferSize);
         goto done;
     }
 
@@ -1361,7 +1357,7 @@ xmlSecMSCngKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     ret = xmlSecBufferInitialize(&buf, bufLen);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferInitialize", xmlSecKeyDataKlassGetName(id),
-            "size=%lu", XMLSEC_UL_BAD_CAST(bufLen));
+            "size=%lu", bufLen);
         return(-1);
     }
 
@@ -1588,16 +1584,16 @@ xmlSecMSCngKeyDataEcdsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataEcdsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== rsa key: size = %lu\n",
-            XMLSEC_UL_BAD_CAST(xmlSecMSCngKeyDataEcdsaGetSize(data)));
+    fprintf(output, "=== rsa key: size = " XMLSEC_SIZE_FMT "\n",
+        xmlSecMSCngKeyDataEcdsaGetSize(data));
 }
 
 static void xmlSecMSCngKeyDataEcdsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataEcdsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<ECDSAKeyValue size=\"%lu\" />\n",
-            XMLSEC_UL_BAD_CAST(xmlSecMSCngKeyDataEcdsaGetSize(data)));
+    fprintf(output, "<ECDSAKeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
+        xmlSecMSCngKeyDataEcdsaGetSize(data));
 }
 
 static xmlSecKeyDataKlass xmlSecMSCngKeyDataEcdsaKlass = {

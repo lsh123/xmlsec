@@ -161,17 +161,17 @@ xmlSecGnuTLSX509CheckTime(const gnutls_x509_crt_t * cert_list,
         notValidBefore = gnutls_x509_crt_get_activation_time(cert);
         if(notValidBefore == (time_t)-1) {
             xmlSecGnuTLSError2("gnutls_x509_crt_get_activation_time", GNUTLS_E_SUCCESS,
-                               NULL,
-                               "cert activation time is invalid: %lu",
-                               XMLSEC_UL_BAD_CAST(notValidBefore));
+                NULL,
+                "cert activation time is invalid: %.lf",
+                difftime(notValidBefore, (time_t)0));
             return(-1);
         }
         notValidAfter = gnutls_x509_crt_get_expiration_time(cert);
         if(notValidAfter == (time_t)-1) {
             xmlSecGnuTLSError2("gnutls_x509_crt_get_expiration_time", GNUTLS_E_SUCCESS,
-                               NULL,
-                               "cert expiration time is invalid: %lu",
-                               XMLSEC_UL_BAD_CAST(notValidAfter));
+                NULL,
+                "cert expiration time is invalid: %.lf",
+                difftime(notValidAfter, (time_t)0));
             return(-1);
        }
 

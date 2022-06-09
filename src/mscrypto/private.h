@@ -89,7 +89,7 @@ BOOL               xmlSecMSCryptoCreatePrivateExponentOneKey    (HCRYPTPROV hPro
 
 BOOL               xmlSecMSCryptoImportPlainSessionBlob         (HCRYPTPROV hProv,
                                                                  HCRYPTKEY hPrivateKey,
-                                                                 ALG_ID dwAlgId,
+                                                                 ALG_ID algId,
                                                                  LPBYTE pbKeyMaterial,
                                                                  DWORD dwKeyMaterial,
                                                                  BOOL bCheckKeyLength,

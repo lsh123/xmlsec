@@ -217,7 +217,7 @@ xmlSecMSCngKWDes3BlockEncrypt(void * context, const xmlSecByte * iv,
     DWORD cbKeyObject;
     xmlSecBuffer blob;
     BCRYPT_KEY_DATA_BLOB_HEADER* blobHeader;
-    xmlSecSize blobHeaderLen;
+    xmlSecSize blobHeaderSize, blobSizeInBits;
     int res = -1;
     NTSTATUS status;
     DWORD dwBlockLen, dwBlockLenLen;
@@ -269,11 +269,11 @@ xmlSecMSCngKWDes3BlockEncrypt(void * context, const xmlSecByte * iv,
     }
 
     /* prefix the key with a BCRYPT_KEY_DATA_BLOB_HEADER */
-    blobHeaderLen = sizeof(BCRYPT_KEY_DATA_BLOB_HEADER) + xmlSecBufferGetSize(&ctx->keyBuffer);
-    ret = xmlSecBufferSetSize(&blob, blobHeaderLen);
+    blobHeaderSize = sizeof(BCRYPT_KEY_DATA_BLOB_HEADER) + xmlSecBufferGetSize(&ctx->keyBuffer);
+    ret = xmlSecBufferSetSize(&blob, blobHeaderSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=%lu",
-            XMLSEC_UL_BAD_CAST(blobHeaderLen));
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
+            "size=" XMLSEC_SIZE_FMT, blobHeaderSize);
         goto done;
     }
 
@@ -312,9 +312,10 @@ xmlSecMSCngKWDes3BlockEncrypt(void * context, const xmlSecByte * iv,
         xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
         goto done;
     }
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwBlockLen, blobSizeInBits, goto done, NULL);
 
-    if(ivSize < dwBlockLen / 8) {
-        xmlSecInvalidSizeLessThanError("ivSize", ivSize, dwBlockLen / 8, NULL);
+    if(ivSize < blobSizeInBits / 8) {
+        xmlSecInvalidSizeLessThanError("ivSize", ivSize, blobSizeInBits / 8, NULL);
         goto done;
     }
 
@@ -326,8 +327,8 @@ xmlSecMSCngKWDes3BlockEncrypt(void * context, const xmlSecByte * iv,
     /* caller handles iv manually, so let CNG work on a copy */
     ret = xmlSecBufferInitialize(&ivCopy, ivSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferInitialize", NULL, "size=%lu",
-            XMLSEC_UL_BAD_CAST(ivSize));
+        xmlSecInternalError2("xmlSecBufferInitialize", NULL,
+            "size=" XMLSEC_SIZE_FMT, ivSize);
         goto done;
     }
 
@@ -382,7 +383,7 @@ xmlSecMSCngKWDes3BlockDecrypt(void * context, const xmlSecByte * iv,
     DWORD cbKeyObject;
     xmlSecBuffer blob;
     BCRYPT_KEY_DATA_BLOB_HEADER* blobHeader;
-    xmlSecSize blobHeaderLen;
+    xmlSecSize blobHeaderSize, blobSizeInBits;
     int res = -1;
     NTSTATUS status;
     DWORD dwBlockLen, dwBlockLenLen;
@@ -433,11 +434,11 @@ xmlSecMSCngKWDes3BlockDecrypt(void * context, const xmlSecByte * iv,
     }
 
     /* prefix the key with a BCRYPT_KEY_DATA_BLOB_HEADER */
-    blobHeaderLen = sizeof(BCRYPT_KEY_DATA_BLOB_HEADER) + xmlSecBufferGetSize(&ctx->keyBuffer);
-    ret = xmlSecBufferSetSize(&blob, blobHeaderLen);
+    blobHeaderSize = sizeof(BCRYPT_KEY_DATA_BLOB_HEADER) + xmlSecBufferGetSize(&ctx->keyBuffer);
+    ret = xmlSecBufferSetSize(&blob, blobHeaderSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=%lu",
-            XMLSEC_UL_BAD_CAST(blobHeaderLen));
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
+            "size=" XMLSEC_SIZE_FMT, blobHeaderSize);
         goto done;
     }
 
@@ -476,9 +477,10 @@ xmlSecMSCngKWDes3BlockDecrypt(void * context, const xmlSecByte * iv,
         xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
         goto done;
     }
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwBlockLen, blobSizeInBits, goto done, NULL);
 
-    if(ivSize < dwBlockLen / 8) {
-        xmlSecInvalidSizeLessThanError("ivSize", ivSize, dwBlockLen / 8, NULL);
+    if(ivSize < blobSizeInBits / 8) {
+        xmlSecInvalidSizeLessThanError("ivSize", ivSize, blobSizeInBits / 8, NULL);
         goto done;
     }
 
@@ -636,8 +638,8 @@ xmlSecMSCngKWDes3SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     ret = xmlSecBufferSetData(&ctx->keyBuffer, xmlSecBufferGetData(buffer),
         ctx->keySize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetData",
-            xmlSecTransformGetName(transform), "size=%lu", XMLSEC_UL_BAD_CAST(ctx->keySize));
+        xmlSecInternalError2("xmlSecBufferSetData", xmlSecTransformGetName(transform),
+            "size=" XMLSEC_SIZE_FMT, ctx->keySize);
         return(-1);
     }
 

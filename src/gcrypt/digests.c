@@ -273,7 +273,7 @@ xmlSecGCryptDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
             gcry_md_final(ctx->digestCtx);
             buf = gcry_md_read(ctx->digestCtx, ctx->digest);
             if(buf == NULL) {
-                xmlSecGCryptError("gcry_md_read", GPG_ERR_NO_ERROR,
+                xmlSecGCryptError("gcry_md_read", (gcry_error_t)GPG_ERR_NO_ERROR,
                                   xmlSecTransformGetName(transform));
                 return(-1);
             }

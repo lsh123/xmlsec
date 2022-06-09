@@ -32,8 +32,9 @@
 
 #include "../cast_helpers.h"
 
-#define xmlSecOpenSSLAesGcmNonceLengthInBytes 12
-#define xmlSecOpenSSLAesGcmTagLengthInBytes 16
+#define XMLSEC_OPENSSL_EVP_CIPHER_PAD_SIZE    (2 * EVP_MAX_BLOCK_LENGTH)
+#define XMLSEC_OPENSSL_AES_GCM_NONCE_SIZE     12
+#define XMLSEC_OPENSSL_AES_GCM_TAG_SIZE       16
 
 /**************************************************************************
  *
@@ -56,7 +57,7 @@ struct _xmlSecOpenSSLEvpBlockCipherCtx {
     int                 cbcMode;
     xmlSecByte          key[EVP_MAX_KEY_LENGTH];
     xmlSecByte          iv[EVP_MAX_IV_LENGTH];
-    xmlSecByte          pad[2*EVP_MAX_BLOCK_LENGTH];
+    xmlSecByte          pad[XMLSEC_OPENSSL_EVP_CIPHER_PAD_SIZE];
 };
 
 static int      xmlSecOpenSSLEvpBlockCipherCtxInit      (xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
@@ -106,7 +107,7 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         ivLen = EVP_CIPHER_iv_length(ctx->cipher);
     } else {
         /* This is the nonce length for GCM mode rather than an IV */
-        ivLen = xmlSecOpenSSLAesGcmNonceLengthInBytes;
+        ivLen = XMLSEC_OPENSSL_AES_GCM_NONCE_SIZE;
     }
     xmlSecAssert2(ivLen > 0, -1);
     XMLSEC_SAFE_CAST_INT_TO_SIZE(ivLen, ivSize, return(-1), NULL);
@@ -253,7 +254,7 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         if(ctx->cbcMode == 0) {
             if(!EVP_CIPHER_CTX_encrypting(ctx->cipherCtx)) {
                 ret = EVP_CIPHER_CTX_ctrl(ctx->cipherCtx, EVP_CTRL_GCM_SET_TAG,
-                    xmlSecOpenSSLAesGcmTagLengthInBytes, tagData);
+                    XMLSEC_OPENSSL_AES_GCM_TAG_SIZE, tagData);
                 if(ret != 1) {
                     xmlSecOpenSSLError("EVP_CIPHER_CTX_ctrl", cipherName);
                     return(-1);
@@ -270,7 +271,7 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         if(ctx->cbcMode == 0) {
             if(EVP_CIPHER_CTX_encrypting(ctx->cipherCtx)) {
                 ret = EVP_CIPHER_CTX_ctrl(ctx->cipherCtx, EVP_CTRL_GCM_GET_TAG,
-                    xmlSecOpenSSLAesGcmTagLengthInBytes, tagData);
+                    XMLSEC_OPENSSL_AES_GCM_TAG_SIZE, tagData);
                 if(ret != 1) {
                     xmlSecOpenSSLError("EVP_CIPHER_CTX_ctrl", cipherName);
                     return(-1);
@@ -325,7 +326,7 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdate(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
             return(0);
         }
     } else {
-        if(inSize <= xmlSecOpenSSLAesGcmTagLengthInBytes) {
+        if(inSize <= XMLSEC_OPENSSL_AES_GCM_TAG_SIZE) {
             /* In GCM mode during decryption the last 16 bytes of the buffer are the tag.
              * Make sure there are always at least 16 bytes left over until we know we're
              * processing the last buffer */
@@ -342,7 +343,7 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdate(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         inBlocksSize = blockSize * (inSize / blockSize);
     } else {
         /* ensure we keep the last 16 bytes around until the Final() call */
-        inBlocksSize = blockSize * ((inSize - xmlSecOpenSSLAesGcmTagLengthInBytes) / blockSize);
+        inBlocksSize = blockSize * ((inSize - XMLSEC_OPENSSL_AES_GCM_TAG_SIZE) / blockSize);
         if(inBlocksSize == 0) {
             return(0);
         }
@@ -433,7 +434,7 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
             padLen = blockLen;
         }
         xmlSecAssert2(padLen > 0, -1);
-        xmlSecAssert2(XMLSEC_UL_BAD_CAST(inLen + padLen) <= XMLSEC_UL_BAD_CAST(sizeof(ctx->pad)), -1);
+        xmlSecAssert2((inLen + padLen) <= XMLSEC_OPENSSL_EVP_CIPHER_PAD_SIZE, -1);
 
         /* we can have inLen == 0 if there were no data at all, otherwise -- copy the data */
         if(inLen > 0) {
@@ -528,7 +529,7 @@ xmlSecOpenSSLEvpBlockCipherGCMCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     xmlSecSize inSize, outSize;
     xmlSecByte* inBuf;
     xmlSecByte* outBuf;
-    xmlSecByte tag[xmlSecOpenSSLAesGcmTagLengthInBytes];
+    xmlSecByte tag[XMLSEC_OPENSSL_AES_GCM_TAG_SIZE];
     int ret;
 
     /* unreferenced parameter */
@@ -556,26 +557,26 @@ xmlSecOpenSSLEvpBlockCipherGCMCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 
         /* get the tag and add to the output */
         outSize = xmlSecBufferGetSize(out);
-        ret = xmlSecBufferSetMaxSize(out, outSize + xmlSecOpenSSLAesGcmTagLengthInBytes);
+        ret = xmlSecBufferSetMaxSize(out, outSize + XMLSEC_OPENSSL_AES_GCM_TAG_SIZE);
         if(ret < 0) {
             xmlSecInternalError("xmlSecBufferSetMaxSize", cipherName);
             return(-1);
         }
         outBuf = xmlSecBufferGetData(out) + outSize;
-        memcpy(outBuf, tag, xmlSecOpenSSLAesGcmTagLengthInBytes);
-        ret = xmlSecBufferSetSize(out, outSize + xmlSecOpenSSLAesGcmTagLengthInBytes);
+        memcpy(outBuf, tag, XMLSEC_OPENSSL_AES_GCM_TAG_SIZE);
+        ret = xmlSecBufferSetSize(out, outSize + XMLSEC_OPENSSL_AES_GCM_TAG_SIZE);
         if(ret < 0) {
             xmlSecInternalError("xmlSecBufferSetSize", cipherName);
             return(-1);
         }
     } else {
         /* There must be at least 16 bytes in the buffer - the tag and anything left over */
-        xmlSecAssert2(inSize >= xmlSecOpenSSLAesGcmTagLengthInBytes, -1);
+        xmlSecAssert2(inSize >= XMLSEC_OPENSSL_AES_GCM_TAG_SIZE, -1);
 
         /* extract the tag */
-        memcpy(tag, inBuf + inSize - xmlSecOpenSSLAesGcmTagLengthInBytes,
-            xmlSecOpenSSLAesGcmTagLengthInBytes);
-        xmlSecBufferRemoveTail(in, xmlSecOpenSSLAesGcmTagLengthInBytes);
+        memcpy(tag, inBuf + inSize - XMLSEC_OPENSSL_AES_GCM_TAG_SIZE,
+            XMLSEC_OPENSSL_AES_GCM_TAG_SIZE);
+        xmlSecBufferRemoveTail(in, XMLSEC_OPENSSL_AES_GCM_TAG_SIZE);
 
         inBuf = xmlSecBufferGetData(in);
         inSize = xmlSecBufferGetSize(in);
@@ -848,7 +849,7 @@ xmlSecOpenSSLEvpBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key
     xmlSecAssert2(buffer != NULL, -1);
 
     if(xmlSecBufferGetSize(buffer) < cipherKeySize) {
-        xmlSecInvalidKeyDataSizeError(xmlSecBufferGetSize(buffer), cipherKeyLen,
+        xmlSecInvalidKeyDataSizeError(xmlSecBufferGetSize(buffer), cipherKeySize,
             xmlSecTransformGetName(transform));
         return(-1);
     }

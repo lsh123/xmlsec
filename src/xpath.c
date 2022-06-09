@@ -270,7 +270,7 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
     nodes = xmlSecNodeSetCreate(doc, xpathObj->nodesetval, data->nodeSetType);
     if(nodes == NULL) {
         xmlSecInternalError2("xmlSecNodeSetCreate", NULL, 
-            "type=%lu", XMLSEC_UL_BAD_CAST(data->nodeSetType));
+            "type=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(data->nodeSetType));
         xmlXPathFreeObject(xpathObj);
         return(NULL);
     }
@@ -342,7 +342,7 @@ xmlSecXPathDataListExecute(xmlSecPtrListPtr dataList, xmlDocPtr doc,
         tmp2 = xmlSecNodeSetAdd(res, tmp, data->nodeSetOp);
         if(tmp2 == NULL) {
             xmlSecInternalError2("xmlSecNodeSetAdd", NULL,
-                                 "nodeSetOp=%lu", XMLSEC_UL_BAD_CAST(data->nodeSetOp));
+                "nodeSetOp=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(data->nodeSetOp));
             if((res != NULL) && (res != nodes)) {
                 xmlSecNodeSetDestroy(res);
             }

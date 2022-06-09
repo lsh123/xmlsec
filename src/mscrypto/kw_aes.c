@@ -265,9 +265,8 @@ xmlSecMSCryptoKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
                             xmlSecBufferGetData(buffer),
                             ctx->keySize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetData",
-                             xmlSecTransformGetName(transform),
-                             "size=%lu", XMLSEC_UL_BAD_CAST(ctx->keySize));
+        xmlSecInternalError2("xmlSecBufferSetData", xmlSecTransformGetName(transform),
+            "size=" XMLSEC_SIZE_FMT, ctx->keySize);
         return(-1);
     }
 
@@ -302,9 +301,10 @@ xmlSecMSCryptoKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfo
     if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
         /* just do nothing */
     } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
-        if((inSize % 8) != 0) {
-            xmlSecInvalidSizeNotMultipleOfError("Input data", inSize, 8,
-                                                xmlSecTransformGetName(transform));
+        if((inSize % XMLSEC_KW_AES_IN_SIZE_MULTIPLY) != 0) {
+            xmlSecInvalidSizeNotMultipleOfError("Input data",
+                inSize, XMLSEC_KW_AES_IN_SIZE_MULTIPLY,
+                xmlSecTransformGetName(transform));
             return(-1);
         }
 

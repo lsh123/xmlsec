@@ -109,7 +109,7 @@ extern "C" {
                     (const char*)(errorObject),             \
                     "xmlMalloc",                            \
                     XMLSEC_ERRORS_R_MALLOC_FAILED,          \
-                    "size=%lu", XMLSEC_UL_BAD_CAST(allocSize)  \
+                    "size=%lu", XMLSEC_UL_BAD_CAST(allocSize) \
         )
 
 /**
@@ -288,10 +288,10 @@ extern "C" {
                     (const char*)(errorObject),             \
                     NULL,                                   \
                     XMLSEC_ERRORS_R_INVALID_SIZE,           \
-                    "invalid size for '%s': actual=%lu is not equal to expected=%lu", \
+                    "invalid size for '%s': actual=" XMLSEC_SIZE_FMT " is not equal to expected=" XMLSEC_SIZE_FMT, \
                     xmlSecErrorsSafeString(name),           \
-                    XMLSEC_UL_BAD_CAST(actual),             \
-                    XMLSEC_UL_BAD_CAST(expected)            \
+                    (actual),                               \
+                    (expected)                              \
         )
 
 /**
@@ -309,10 +309,10 @@ extern "C" {
                     (const char*)(errorObject),             \
                     NULL,                                   \
                     XMLSEC_ERRORS_R_INVALID_SIZE,           \
-                    "invalid size for '%s': actual=%lu is less than expected=%lu", \
+                    "invalid size for '%s': actual=" XMLSEC_SIZE_FMT " is less than expected=" XMLSEC_SIZE_FMT, \
                     xmlSecErrorsSafeString(name),           \
-                    XMLSEC_UL_BAD_CAST(actual),             \
-                    XMLSEC_UL_BAD_CAST(expected)            \
+                    (actual),                               \
+                    (expected)                              \
         )
 
 /**
@@ -330,10 +330,10 @@ extern "C" {
                     (const char*)(errorObject),             \
                     NULL,                                   \
                     XMLSEC_ERRORS_R_NOT_IMPLEMENTED,        \
-                    "invalid size for '%s': actual=%lu is more than expected=%lu", \
+                    "invalid size for '%s': actual=" XMLSEC_SIZE_FMT " is more than expected=" XMLSEC_SIZE_FMT, \
                     xmlSecErrorsSafeString(name),           \
-                    XMLSEC_UL_BAD_CAST(actual),             \
-                    XMLSEC_UL_BAD_CAST(expected)            \
+                    (actual),                               \
+                    (expected)                              \
         )
 
 /**
@@ -351,10 +351,10 @@ extern "C" {
                     (const char*)(errorObject),             \
                     NULL,                                   \
                     XMLSEC_ERRORS_R_NOT_IMPLEMENTED,        \
-                    "invalid size for '%s': actual=%lu is not a multiple of %lu", \
+                    "invalid size for '%s': actual=" XMLSEC_SIZE_FMT " is not a multiple of " XMLSEC_SIZE_FMT, \
                     xmlSecErrorsSafeString(name),           \
-                    XMLSEC_UL_BAD_CAST(actual),             \
-                    XMLSEC_UL_BAD_CAST(divider)             \
+                    (actual),                               \
+                    (divider)                               \
         )
 
 /**
@@ -702,15 +702,15 @@ extern "C" {
  *
  * Macro. The XMLSec library macro for reporting an invalid transform status errors.
  */
-#define xmlSecInvalidTransfromStatusError(transform) \
-    {                                                 \
-        xmlSecError(XMLSEC_ERRORS_HERE,               \
+#define xmlSecInvalidTransfromStatusError(transform)   \
+    {                                                  \
+        xmlSecError(XMLSEC_ERRORS_HERE,                \
                    (const char*)xmlSecTransformGetName(transform), \
-                   NULL,                              \
-                   XMLSEC_ERRORS_R_INVALID_STATUS,    \
-                   "transformStatus=%lu",             \
-                   XMLSEC_UL_BAD_CAST((transform)->status) \
-        );                                            \
+                   NULL,                               \
+                   XMLSEC_ERRORS_R_INVALID_STATUS,     \
+                   "transformStatus=" XMLSEC_ENUM_FMT, \
+                   XMLSEC_ENUM_CAST((transform)->status) \
+        );                                             \
     }
 
 /**
@@ -726,9 +726,9 @@ extern "C" {
                    (const char*)xmlSecTransformGetName(transform), \
                    NULL,                              \
                    XMLSEC_ERRORS_R_INVALID_STATUS,    \
-                   "transformStatus=%lu, msg=%s",     \
-                   XMLSEC_UL_BAD_CAST((transform)->status), \
-                   msg                                \
+                   "transformStatus=" XMLSEC_ENUM_FMT "; msg=%s", \
+                   XMLSEC_ENUM_CAST((transform)->status),         \
+                   (msg)                              \
         );                                            \
     }
 
@@ -746,9 +746,9 @@ extern "C" {
                     (const char*)(errorObject),             \
                     NULL,                                   \
                     XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE,  \
-                    "invalid key data size: actual=%lu and expected=%lu", \
-                    XMLSEC_UL_BAD_CAST(actual),             \
-                    XMLSEC_UL_BAD_CAST(expected)            \
+                    "invalid key data size: actual=" XMLSEC_SIZE_FMT " and expected=" XMLSEC_SIZE_FMT, \
+                    (actual),                               \
+                    (expected)                              \
         )
 
 /**

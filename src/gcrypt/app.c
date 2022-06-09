@@ -74,7 +74,7 @@ Noteworthy changes in version 1.4.3 (2008-09-18)
 
     /* NOTE configure.in defines GCRYPT_MIN_VERSION */
     if (!gcry_check_version (GCRYPT_MIN_VERSION)) {
-        xmlSecGCryptError2("gcry_check_version", GPG_ERR_NO_ERROR, NULL,
+        xmlSecGCryptError2("gcry_check_version", (gcry_error_t)GPG_ERR_NO_ERROR, NULL,
                            "min_version=%s", GCRYPT_MIN_VERSION);
         return(-1);
     }
@@ -243,7 +243,7 @@ xmlSecGCryptAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
 #endif /* XMLSEC_NO_X509 */
     default:
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-                         "format=%lu", XMLSEC_UL_BAD_CAST(format));
+            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
         return(NULL);
     }
 

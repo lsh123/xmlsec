@@ -479,7 +479,7 @@ xmlSecBase64CtxEncode(xmlSecBase64CtxPtr ctx,
             case xmlSecBase64StatusDone:
             case xmlSecBase64StatusFailed:
                 xmlSecInternalError2("xmlSecBase64CtxEncodeByte", NULL,
-                    "status=%lu", XMLSEC_UL_BAD_CAST(status));
+                    "status=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(status));
                 return(-1);
         }
     }
@@ -513,7 +513,7 @@ xmlSecBase64CtxEncodeFinal(xmlSecBase64CtxPtr ctx,
             case xmlSecBase64StatusNext:
             case xmlSecBase64StatusFailed:
                 xmlSecInternalError2("xmlSecBase64CtxEncodeByteFinal", NULL,
-                    "status=%lu", XMLSEC_UL_BAD_CAST(status));
+                    "status=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(status));
                 return(-1);
         }
     }
@@ -562,7 +562,7 @@ xmlSecBase64CtxDecode(xmlSecBase64CtxPtr ctx,
                 break;
             case xmlSecBase64StatusFailed:
                 xmlSecInternalError2("xmlSecBase64CtxDecodeByte", NULL,
-                    "status=%lu", XMLSEC_UL_BAD_CAST(status));
+                    "status=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(status));
                 return(-1);
         }
     }

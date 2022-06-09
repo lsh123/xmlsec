@@ -1135,7 +1135,8 @@ xmlSecTransformCtxDebugDump(xmlSecTransformCtxPtr ctx, FILE* output) {
     xmlSecAssert(ctx != NULL);
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "== TRANSFORMS CTX (status=%lu)\n", XMLSEC_UL_BAD_CAST(ctx->status));
+    fprintf(output, "== TRANSFORMS CTX (status=" XMLSEC_ENUM_FMT ")\n",
+        XMLSEC_ENUM_CAST(ctx->status));
 
     fprintf(output, "== flags: 0x%08x\n", ctx->flags);
     fprintf(output, "== flags2: 0x%08x\n", ctx->flags2);
@@ -1169,7 +1170,8 @@ xmlSecTransformCtxDebugXmlDump(xmlSecTransformCtxPtr ctx, FILE* output) {
     xmlSecAssert(ctx != NULL);
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<TransformCtx status=\"%lu\">\n", XMLSEC_UL_BAD_CAST(ctx->status));
+    fprintf(output, "<TransformCtx status=\"" XMLSEC_ENUM_FMT "\">\n",
+        XMLSEC_ENUM_CAST(ctx->status));
 
     fprintf(output, "<Flags>%08x</Flags>\n", ctx->flags);
     fprintf(output, "<Flags2>%08x</Flags2>\n", ctx->flags2);
@@ -2405,8 +2407,8 @@ xmlSecTransformCreateOutputBuffer(xmlSecTransformPtr transform, xmlSecTransformC
     type = xmlSecTransformDefaultGetDataType(transform, xmlSecTransformModePush, transformCtx);
     if((type & xmlSecTransformDataTypeBin) == 0) {
         xmlSecInvalidTransfromError2(transform,
-                            "push binary data not supported, type=\"%lu\"",
-                            XMLSEC_UL_BAD_CAST(type));
+            "push binary data not supported, type=\"" XMLSEC_ENUM_FMT "\"",
+            XMLSEC_ENUM_CAST(type));
         return(NULL);
     }
 
@@ -2452,8 +2454,8 @@ xmlSecTransformCreateInputBuffer(xmlSecTransformPtr transform, xmlSecTransformCt
     type = xmlSecTransformDefaultGetDataType(transform, xmlSecTransformModePop, transformCtx);
     if((type & xmlSecTransformDataTypeBin) == 0) {
         xmlSecInvalidTransfromError2(transform,
-            "pop binary data not supported, type=\"%lu\"",
-            XMLSEC_UL_BAD_CAST(type));
+            "pop binary data not supported, type=\"" XMLSEC_ENUM_FMT "\"",
+            XMLSEC_ENUM_CAST(type));
         return(NULL);
     }
 

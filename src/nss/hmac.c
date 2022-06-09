@@ -508,14 +508,16 @@ xmlSecNssHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxP
             }
         }
         if(last) {
-            unsigned int dgstSize;            
+            unsigned int dgstLen;
+            xmlSecSize dgstSize;
 
-            rv = PK11_DigestFinal(ctx->digestCtx, ctx->dgst, &dgstSize, sizeof(ctx->dgst));
+            rv = PK11_DigestFinal(ctx->digestCtx, ctx->dgst, &dgstLen, sizeof(ctx->dgst));
             if(rv != SECSuccess) {
                 xmlSecNssError("PK11_DigestFinal", xmlSecTransformGetName(transform));
                 return(-1);
             }
-            xmlSecAssert2(dgstSize > 0, -1);
+            xmlSecAssert2(dgstLen > 0, -1);
+            XMLSEC_SAFE_CAST_UINT_TO_SIZE(dgstLen, dgstSize, return(-1), xmlSecTransformGetName(transform));
 
             /* check/set the result digest size */
             if(ctx->dgstSize == 0) {
@@ -534,7 +536,7 @@ xmlSecNssHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxP
                 ret = xmlSecBufferAppend(out, ctx->dgst, dgstSize);
                 if(ret < 0) {
                     xmlSecInternalError2("xmlSecBufferAppend", xmlSecTransformGetName(transform),
-                        "size=%u", dgstSize);
+                        "size=" XMLSEC_SIZE_FMT, dgstSize);
                     return(-1);
                 }
             }

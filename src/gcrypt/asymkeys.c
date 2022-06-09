@@ -169,8 +169,7 @@ xmlSecGCryptAsymKeyDataAdoptKey(xmlSecKeyDataPtr data, gcry_sexp_t key_pair) {
        not be present */
     pub_key = gcry_sexp_find_token(key_pair, "public-key", 0);
     if(pub_key == NULL) {
-        xmlSecGCryptError("gcry_sexp_find_token(public-key)",
-                          GPG_ERR_NO_ERROR, NULL);
+        xmlSecGCryptError("gcry_sexp_find_token(public-key)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
     priv_key = gcry_sexp_find_token(key_pair, "private-key", 0);
@@ -361,7 +360,7 @@ xmlSecGCryptAsymSExpDup(gcry_sexp_t pKey) {
 
     size = gcry_sexp_sprint(pKey, GCRYSEXP_FMT_ADVANCED, NULL, 0);
     if(size == 0) {
-        xmlSecGCryptError("gcry_sexp_sprint", GPG_ERR_NO_ERROR, NULL);
+        xmlSecGCryptError("gcry_sexp_sprint", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
 
@@ -373,8 +372,8 @@ xmlSecGCryptAsymSExpDup(gcry_sexp_t pKey) {
 
     size = gcry_sexp_sprint(pKey, GCRYSEXP_FMT_ADVANCED, buf, size);
     if(size == 0) {
-        xmlSecGCryptError2("gcry_sexp_sprint", GPG_ERR_NO_ERROR, NULL,
-                           "size=%zu", size);
+        xmlSecGCryptError2("gcry_sexp_sprint", (gcry_error_t)GPG_ERR_NO_ERROR, NULL,
+                           "size" XMLSEC_SIZE_T_FMT, size);
         goto done;
     }
 
@@ -562,14 +561,14 @@ xmlSecGCryptNodeSetSExpTokValue(xmlNodePtr cur, const gcry_sexp_t sexp,
 
     val = gcry_sexp_find_token(sexp, tok, 0);
     if(val == NULL) {
-        xmlSecGCryptError2("gcry_sexp_find_token", GPG_ERR_NO_ERROR, NULL,
+        xmlSecGCryptError2("gcry_sexp_find_token", (gcry_error_t)GPG_ERR_NO_ERROR, NULL,
                            "tok=%s", xmlSecErrorsSafeString(tok));
         goto done;
     }
 
     mpi = gcry_sexp_nth_mpi(val, 1, GCRYMPI_FMT_USG);
     if(mpi == NULL) {
-        xmlSecGCryptError("gcry_sexp_nth_mpi", GPG_ERR_NO_ERROR, NULL);
+        xmlSecGCryptError("gcry_sexp_nth_mpi", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
 
@@ -1104,7 +1103,7 @@ xmlSecGCryptKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     dsa = gcry_sexp_find_token(pub_priv_key, "dsa", 0);
     if(dsa == NULL) {
-        xmlSecGCryptError("gcry_sexp_find_token(dsa)", GPG_ERR_NO_ERROR,
+        xmlSecGCryptError("gcry_sexp_find_token(dsa)", (gcry_error_t)GPG_ERR_NO_ERROR,
                           xmlSecKeyDataKlassGetName(id));
         goto done;
     }
@@ -1623,38 +1622,35 @@ xmlSecGCryptKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     rsa = gcry_sexp_find_token(pub_priv_key, "rsa", 0);
     if(rsa == NULL) {
-        xmlSecGCryptError("gcry_sexp_find_token(rsa)",
-                          GPG_ERR_NO_ERROR,
-                          xmlSecKeyDataKlassGetName(id));
+        xmlSecGCryptError("gcry_sexp_find_token(rsa)", (gcry_error_t)GPG_ERR_NO_ERROR,
+            xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
     /* first is Modulus node */
     cur = xmlSecAddChild(node, xmlSecNodeRSAModulus, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecInternalError("xmlSecAddChild(NodeRSAModulus)",
-                            xmlSecKeyDataKlassGetName(id));
-       goto done;
+        xmlSecInternalError("xmlSecAddChild(NodeRSAModulus)", xmlSecKeyDataKlassGetName(id));
+        goto done;
     }
     ret = xmlSecGCryptNodeSetSExpTokValue(cur, rsa, "n", 1);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptNodeSetSExpTokValue(NodeRSAModulus)",
-                            xmlSecKeyDataKlassGetName(id));
+            xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
     /* next is Exponent node. */
     cur = xmlSecAddChild(node, xmlSecNodeRSAExponent, xmlSecDSigNs);
     if(cur == NULL) {
-        xmlSecInternalError("xmlSecAddChild(NodeRSAExponent)",
-                            xmlSecKeyDataKlassGetName(id));
-       goto done;
+        xmlSecInternalError("xmlSecAddChild(NodeRSAExponent)", xmlSecKeyDataKlassGetName(id));
+        goto done;
     }
     ret = xmlSecGCryptNodeSetSExpTokValue(cur, rsa, "e", 1);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptNodeSetSExpTokValue(NodeRSAExponent)",
-                            xmlSecKeyDataKlassGetName(id));
-       goto done;
+            xmlSecKeyDataKlassGetName(id));
+        goto done;
     }
 
     /* next is PrivateExponent node: write it ONLY for private keys and ONLY if it is requested */
@@ -1662,14 +1658,14 @@ xmlSecGCryptKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
         cur = xmlSecAddChild(node, xmlSecNodeRSAPrivateExponent, xmlSecNs);
         if(cur == NULL) {
             xmlSecInternalError("xmlSecAddChild(NodeRSAPrivateExponent)",
-                                xmlSecKeyDataKlassGetName(id));
-           goto done;
+            xmlSecKeyDataKlassGetName(id));
+            goto done;
         }
         ret = xmlSecGCryptNodeSetSExpTokValue(cur, rsa, "d", 1);
         if(ret < 0) {
             xmlSecInternalError("xmlSecGCryptNodeSetSExpTokValue(NodeRSAPrivateExponent)",
-                                xmlSecKeyDataKlassGetName(id));
-           goto done;
+                xmlSecKeyDataKlassGetName(id));
+            goto done;
         }
     }
 

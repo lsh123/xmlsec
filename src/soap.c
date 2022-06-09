@@ -747,7 +747,7 @@ xmlSecSoap12AddFaultEntry(xmlNodePtr envNode, xmlSecSoap12FaultCode faultCode,
                                        faultCode);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecQName2IntegerNodeWrite", NULL,
-                             "faultCode=%lu", XMLSEC_UL_BAD_CAST(faultCode));
+            "faultCode=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(faultCode));
         xmlUnlinkNode(faultNode);
         xmlFreeNode(faultNode);
         return(NULL);

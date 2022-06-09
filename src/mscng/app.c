@@ -148,7 +148,7 @@ xmlSecMSCngAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
         ret = xmlSecBufferReadFile(&buffer, filename);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferReadFile", NULL,
-                                 "filename=%s", xmlSecErrorsSafeString(filename));
+                "filename=%s", xmlSecErrorsSafeString(filename));
             xmlSecBufferFinalize(&buffer);
             return (NULL);
         }
@@ -164,7 +164,8 @@ xmlSecMSCngAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
         xmlSecBufferFinalize(&buffer);
         break;
     default:
-        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL, "format=%lu", XMLSEC_UL_BAD_CAST(format));
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
+            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
         return(NULL);
         break;
     }
@@ -647,7 +648,7 @@ xmlSecMSCngAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* d
             break;
         default:
             xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-                              "format=%lu", XMLSEC_UL_BAD_CAST(format));
+                "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
             return(-1);
             break;
     }

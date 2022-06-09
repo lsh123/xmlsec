@@ -477,7 +477,7 @@ xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlS
         }
         ctx->dwKeySpec = 0;
     } else {
-        xmlSecInvalidIntegerTypeError("keytype", type, "supported keytype", NULL);
+        xmlSecUnsupportedEnumValueError("key data type", type, NULL);
         return(-1);
     }
 

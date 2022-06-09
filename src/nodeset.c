@@ -197,11 +197,9 @@ xmlSecNodeSetOneContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr pare
         }
         return(1);
     default:
-        xmlSecInvalidIntegerTypeError("node set type", nset->type,
-                "supported nodeset type", NULL);
+        xmlSecUnsupportedEnumValueError("node set type", nset->type, NULL);
+        return(0);
     }
-
-    return(0);
 }
 
 /**

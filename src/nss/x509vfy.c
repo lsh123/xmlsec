@@ -665,58 +665,71 @@ static int
 xmlSecNssX509NameStringRead(xmlSecByte **str, int *strLen,
                             xmlSecByte *res, int resLen,
                             xmlSecByte delim, int ingoreTrailingSpaces) {
-    xmlSecByte *p, *q, *nonSpace;
-#if defined(__APPLE__)
-    long diff;
-#else /* defined(__APPLE__) */
-    ptrdiff_t diff;
-#endif /* defined(__APPLE__) */
-    int delta;
+    int ii, jj, nonSpace;
 
     xmlSecAssert2(str != NULL, -1);
+    xmlSecAssert2((*str) != NULL, -1);
     xmlSecAssert2(strLen != NULL, -1);
     xmlSecAssert2(res != NULL, -1);
 
-    p = (*str);
-    nonSpace = q = res;
-    while(((p - (*str)) < (*strLen)) && ((*p) != delim) && ((q - res) < resLen)) {
-        if((*p) != '\\') {
-            if(ingoreTrailingSpaces && !isspace(*p)) {
-                nonSpace = q;
+    ii = jj = 0;
+    nonSpace = -1;
+    while (ii < (*strLen)) {
+        xmlSecByte inCh, inCh2, outCh;
+
+        inCh = (*str)[ii];
+        if (inCh == delim) {
+            break;
+        }
+        if (jj >= resLen) {
+            xmlSecInvalidSizeOtherError("output buffer is too small", NULL);
+            return(-1);
+        }
+
+        if (inCh == '\\') {
+            /* try to move to next char after \\ */
+            ++ii;
+            if (ii >= (*strLen)) {
+                break;
             }
-            *(q++) = *(p++);
-        } else {
-            ++p;
-            nonSpace = q;
-            if(xmlSecIsHex((*p))) {
-                if((p - (*str) + 1) >= (*strLen)) {
+            inCh = (*str)[ii];
+
+            /* if next char after \\ is a hex then we expect \\XX, otherwise we just remove \\ */
+            if (xmlSecIsHex(inCh)) {
+                /* try to move to next char after \\X */
+                ++ii;
+                if (ii >= (*strLen)) {
                     xmlSecInvalidDataError("two hex digits expected", NULL);
                     return(-1);
                 }
-                *(q++) = (xmlSecByte)(xmlSecGetHex(p[0]) * 16 + xmlSecGetHex(p[1]));
-                p += 2;
-            } else {
-                if(((++p) - (*str)) >= (*strLen)) {
-                    xmlSecInvalidDataError("escaped symbol missed", NULL);
+                inCh2 = (*str)[ii];
+                if (!xmlSecIsHex(inCh2)) {
+                    xmlSecInvalidDataError("two hex digits expected", NULL);
                     return(-1);
                 }
-                *(q++) = *(p++);
+                outCh = (xmlSecByte)(xmlSecGetHex(inCh) * 16 + xmlSecGetHex(inCh2));
+            } else {
+                outCh = inCh;
             }
+        } else {
+            outCh = inCh;
         }
+        if (ingoreTrailingSpaces && !isspace(outCh)) {
+            nonSpace = jj;
+        }
+        res[jj] = outCh;
+        ++ii;
+        ++jj;
     }
     
-    diff = (p - (*str));
-    XMLSEC_SAFE_CAST_PTRDIFF_T_TO_INT(diff, delta, return(-1), NULL);
-    if((delta < (*strLen)) && ((*p) != delim)) {
-        xmlSecInvalidSizeOtherError("buffer is too small", NULL);
-        return(-1);
-    }
-    (*strLen) -= delta;
-    (*str) = p;
+    (*strLen) -= ii;
+    (*str) += ii;
 
-    diff = ((ingoreTrailingSpaces) ? nonSpace - res + 1 : q - res);
-    XMLSEC_SAFE_CAST_PTRDIFF_T_TO_INT(diff, delta, return(-1), NULL);
-    return(delta);
+    if (ingoreTrailingSpaces) {
+        return(nonSpace >= 0 ? nonSpace + 1 : 0);
+    } else {
+        return(jj);
+    }
 }
 
 /* code lifted from NSS */

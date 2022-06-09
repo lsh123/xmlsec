@@ -1074,15 +1074,9 @@ xmlSecQName2IntegerGetIntegerFromString(xmlSecQName2IntegerInfoConstPtr info,
 
     qnameLocalPart = xmlStrchr(qname, ':');
     if(qnameLocalPart != NULL) {
-#if defined(__APPLE__)
-        long qnameDiff;
-#else /* defined(__APPLE__) */
-        ptrdiff_t qnameDiff;
-#endif /* defined(__APPLE__) */
         int qnameLen;
         
-        qnameDiff = (qnameLocalPart - qname);
-        XMLSEC_SAFE_CAST_PTRDIFF_T_TO_INT(qnameDiff, qnameLen, return(-1), NULL);
+        XMLSEC_SAFE_CAST_PTRDIFF_TO_INT((qnameLocalPart - qname), qnameLen, return(-1), NULL);
         qnamePrefix = xmlStrndup(qname, qnameLen);
         if(qnamePrefix == NULL) {
             xmlSecStrdupError(qname, NULL);
@@ -1487,15 +1481,9 @@ xmlSecQName2BitMaskGetBitMaskFromString(xmlSecQName2BitMaskInfoConstPtr info,
 
     qnameLocalPart = xmlStrchr(qname, ':');
     if(qnameLocalPart != NULL) {
-#if defined(__APPLE__)
-        long qnameDiff;
-#else /* defined(__APPLE__) */
-        ptrdiff_t qnameDiff;
-#endif /* defined(__APPLE__) */
         int qnameLen;
         
-        qnameDiff = (qnameLocalPart - qname);
-        XMLSEC_SAFE_CAST_PTRDIFF_T_TO_INT(qnameDiff, qnameLen, return(-1), NULL);
+        XMLSEC_SAFE_CAST_PTRDIFF_TO_INT((qnameLocalPart - qname), qnameLen, return(-1), NULL);
         qnamePrefix = xmlStrndup(qname, qnameLen);
         if(qnamePrefix == NULL) {
             xmlSecStrdupError(qname, NULL);

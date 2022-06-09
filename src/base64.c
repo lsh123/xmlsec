@@ -408,7 +408,7 @@ xmlSecBase64CtxDecodeByte(xmlSecBase64CtxPtr ctx, xmlSecByte inByte, xmlSecByte*
     } else if(xmlSecIsBase64Space(inByte)) {
         return(xmlSecBase64StatusNext);
     } else if(!xmlSecIsBase64Char(inByte) || (ctx->finished != 0)) {
-        xmlSecInvalidSizeDataError("inByte", inByte, "base64 character", NULL);
+        xmlSecInvalidIntegerDataError("inByte", inByte, "base64 character", NULL);
         return(xmlSecBase64StatusFailed);
     }
 

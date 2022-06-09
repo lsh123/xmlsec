@@ -491,7 +491,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
 #endif /* XMLSEC_NO_RSA */
 
     default:
-        xmlSecInvalidIntegerTypeError("key_type", type, "supported key type", NULL);
+        xmlSecUnsupportedEnumValueError("key_type", type, NULL);
         goto done;
         break;
     }

@@ -160,8 +160,8 @@ xmlSecNssPKIKeyDataAdoptKey(xmlSecKeyDataPtr data,
 
     if(priType != nullKey && pubType != nullKey) {
         if(pubType != priType) {
-            xmlSecInvalidIntegerTypeError2("pubType", pubType, "priType", priType,
-                    "pubType == priType", NULL);
+            xmlSecNssError3("SECKEY_GetPrivateKeyType/SECKEY_GetPublicKeyType", NULL,
+                "pubType=%u; priType=%u", pubType, priType);
             return -1;
         }
     }
@@ -211,8 +211,8 @@ xmlSecNssPKIAdoptKey(SECKEYPrivateKey *privkey,
 
     if(priType != nullKey && pubType != nullKey) {
         if(pubType != priType) {
-            xmlSecInvalidIntegerTypeError2("pubType", pubType, "priType", priType,
-                    "pubType == priType", NULL);
+            xmlSecNssError3("SECKEY_GetPrivateKeyType/SECKEY_GetPublicKeyType", NULL,
+                "pubType=%u; priType=%u", pubType, priType);
             return(NULL);
         }
     }
@@ -247,8 +247,7 @@ xmlSecNssPKIAdoptKey(SECKEYPrivateKey *privkey,
         break;
 #endif /* XMLSEC_NO_ECDSA */
     default:
-        xmlSecInvalidIntegerTypeError("pubType", pubType,
-                "supported PKI key type", NULL);
+        xmlSecUnsupportedEnumValueError("pubType", pubType, NULL);
         return(NULL);
     }
 

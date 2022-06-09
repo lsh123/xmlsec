@@ -504,9 +504,9 @@ extern "C" {
                     (const char*)(errorObject),             \
                     NULL,                                   \
                     XMLSEC_ERRORS_R_INVALID_TYPE,           \
-                    "invalid type for '%s': actual=%lu and expected %s", \
+                    "invalid type for '%s': actual=%d and expected %s", \
                     xmlSecErrorsSafeString(name),           \
-                    XMLSEC_UL_BAD_CAST(actual),             \
+                    (actual),                               \
                     (expected)                              \
         )
 
@@ -526,13 +526,33 @@ extern "C" {
                     (const char*)(errorObject),             \
                     NULL,                                   \
                     XMLSEC_ERRORS_R_INVALID_TYPE,           \
-                    "invalid type: actual value '%s'=%lu, actual value '%s'=%lu and expected %s", \
+                    "invalid type: actual value '%s'=%d, actual value '%s'=%d and expected %s", \
                     xmlSecErrorsSafeString(name1),          \
-                    XMLSEC_UL_BAD_CAST(actual1),            \
+                    (actual1),                              \
                     xmlSecErrorsSafeString(name2),          \
-                    XMLSEC_UL_BAD_CAST(actual2),            \
+                    (actual2),                              \
                     (expected)                              \
         )
+
+
+ /**
+  * xmlSecUnsupportedEnumValueError:
+  * @name:               the name of the variable, parameter, etc.
+  * @actual:             the actual value as an integer.
+  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+  *
+  * Macro. The XMLSec library macro for reporting "unsupported enum type" errors.
+  */
+#define xmlSecUnsupportedEnumValueError(name, actual, errorObject) \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    NULL,                                   \
+                    XMLSEC_ERRORS_R_INVALID_TYPE,           \
+                    "unsupported value for '%s': " XMLSEC_ENUM_FMT, \
+                    xmlSecErrorsSafeString(name),           \
+                    XMLSEC_ENUM_CAST(actual)                \
+        )
+
 
 /**
  * xmlSecInvalidNodeError:
@@ -771,23 +791,23 @@ extern "C" {
  *
  * @srcType:            the source value type.
  * @srcVal:             the source value.
- * @srcPrintf:          the source type printf code (e.g. "%lu").
+ * @srcFmt:             the source type printf format (e.g. "%d").
  * @dstType:            the destination cast type.
  * @dstMinVal:          the destination type min value.
  * @dstMaxVal:          the destination type max value.
- * @dstPrintf:          the destination type printf code (e.g. "%lu").
+ * @dstFmt:             the destination type printf format (e.g. "%lu").
  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
  *
  * Macro. The XMLSec library macro for reporting impossible cast errors.
  */
-#define xmlSecImpossibleCastError(srcType, srcVal, srcPrintf, dstType, dstMinVal, dstMaxVal, dstPrintf, errorObject) \
+#define xmlSecImpossibleCastError(srcType, srcVal, srcFmt, dstType, dstMinVal, dstMaxVal, dstFmt, errorObject) \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
                     (const char*)(errorObject),             \
                     NULL,                                   \
                     XMLSEC_ERROR_R_CAST_IMPOSSIBLE,         \
-                    "src type=" #srcType "; src val=" srcPrintf      \
-                    ";dst type=" #dstType "; dst min val=" dstPrintf \
-                    ";dst max val=" dstPrintf "",           \
+                    "src-type=" #srcType "; src-val=" srcFmt  \
+                    ";dst-type=" #dstType "; dst-min=" dstFmt \
+                    ";dst-max=" dstFmt "",                  \
                     (srcVal), (dstMinVal), (dstMaxVal)      \
         )
 

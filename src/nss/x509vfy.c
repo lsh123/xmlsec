@@ -666,11 +666,7 @@ xmlSecNssX509NameStringRead(xmlSecByte **str, int *strLen,
                             xmlSecByte *res, int resLen,
                             xmlSecByte delim, int ingoreTrailingSpaces) {
     xmlSecByte *p, *q, *nonSpace;
-#if defined(__APPLE__)
     long diff;
-#else /* defined(__APPLE__) */
-    ptrdiff_t diff;
-#endif /* defined(__APPLE__) */
     int delta;
 
     xmlSecAssert2(str != NULL, -1);
@@ -705,8 +701,8 @@ xmlSecNssX509NameStringRead(xmlSecByte **str, int *strLen,
         }
     }
     
-    diff = (p - (*str));
-    XMLSEC_SAFE_CAST_PTRDIFF_T_TO_INT(diff, delta, return(-1), NULL);
+    diff = XMLSEC_BAD_CAST_PTRDIFF_TO_LONG(p - (*str));
+    XMLSEC_SAFE_CAST_LONG_TO_INT(diff, delta, return(-1), NULL);
     if((delta < (*strLen)) && ((*p) != delim)) {
         xmlSecInvalidSizeOtherError("buffer is too small", NULL);
         return(-1);
@@ -714,8 +710,8 @@ xmlSecNssX509NameStringRead(xmlSecByte **str, int *strLen,
     (*strLen) -= delta;
     (*str) = p;
 
-    diff = ((ingoreTrailingSpaces) ? nonSpace - res + 1 : q - res);
-    XMLSEC_SAFE_CAST_PTRDIFF_T_TO_INT(diff, delta, return(-1), NULL);
+    diff = XMLSEC_BAD_CAST_PTRDIFF_TO_LONG((ingoreTrailingSpaces) ? nonSpace - res + 1 : q - res);
+    XMLSEC_SAFE_CAST_LONG_TO_INT(diff, delta, return(-1), NULL);
     return(delta);
 }
 

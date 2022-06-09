@@ -36,35 +36,39 @@
 #define XMLSEC_ENUM_FMT                      "%d"
 
 
+/** ptrdiff_t is hard to hadle in "safe_cast" macros since there is no
+ * standard way to print it.
+ */
+#define XMLSEC_BAD_CAST_PTRDIFF_TO_LONG(val) ((long)(val))
+
+
  /******************************************************************************
   *
   * Main macros to help with casting, we assume that LL and ULL are the largest
   * possible types.
   *
   *****************************************************************************/
-#define XMLSEC_LL_BAD_CAST(val)    ((long long)(val))
-#define XMLSEC_ULL_BAD_CAST(val)   ((unsigned long long)(val))
-
 #define XMLSEC_SAFE_CAST_MIN_MAX_CHECK(srcType, srcVal, srcFmt, dstType, dstVal, dstFmt, dstMin, dstMax, errorAction, errorObject) \
-    if((XMLSEC_LL_BAD_CAST(srcVal) < XMLSEC_LL_BAD_CAST(dstMin)) || (XMLSEC_ULL_BAD_CAST(srcVal) > XMLSEC_ULL_BAD_CAST(dstMax))) { \
+    if(((srcVal) < (srcType)(dstMin)) || ((srcVal) > (srcType)(dstMax))) {     \
         xmlSecImpossibleCastError(srcType, (srcVal), srcFmt,                   \
             dstType, dstMin, dstMax, dstFmt, (errorObject));                   \
         errorAction;                                                           \
     }                                                                          \
     (dstVal) = (dstType)(srcVal);                                              \
-
-#define XMLSEC_SAFE_CAST_MIN_CHECK(srcType, srcVal, srcFmt, dstType, dstVal, dstFmt, dstMin, dstMax, errorAction, errorObject) \
-    if(XMLSEC_LL_BAD_CAST(srcVal) < XMLSEC_LL_BAD_CAST(dstMin)) {              \
-        xmlSecImpossibleCastError(srcType, (srcVal), srcFmt,                   \
-            dstType, dstMin, dstMax, dstFmt, (errorObject));                   \
-        errorAction;                                                           \
-    }                                                                          \
-    (dstVal) = (dstType)(srcVal);                                              \
-
 
 /* we assume that dstType_min <= srcType_min and srcType_max >= dstType_max */
 #define XMLSEC_SAFE_CAST_MAX_CHECK(srcType, srcVal, srcFmt, dstType, dstVal, dstFmt, dstMin, dstMax, errorAction, errorObject) \
-    if(XMLSEC_ULL_BAD_CAST(srcVal) > XMLSEC_ULL_BAD_CAST(dstMax)) {            \
+    if((srcVal) > (srcType)(dstMax)) {                                         \
+        xmlSecImpossibleCastError(srcType, (srcVal), srcFmt,                   \
+            dstType, dstMin, dstMax, dstFmt, (errorObject));                   \
+        errorAction;                                                           \
+    }                                                                          \
+    (dstVal) = (dstType)(srcVal);                                              \
+
+
+/* we assume that srcType_min <= dstType_min and dstType_max <= srcType_max */
+#define XMLSEC_SAFE_CAST_MIN_CHECK(srcType, srcVal, srcFmt, dstType, dstVal, dstFmt, dstMin, dstMax, errorAction, errorObject) \
+    if((srcVal) < (srcType)(dstMin)) {                                         \
         xmlSecImpossibleCastError(srcType, (srcVal), srcFmt,                   \
             dstType, dstMin, dstMax, dstFmt, (errorObject));                   \
         errorAction;                                                           \
@@ -78,7 +82,7 @@
  *
  *****************************************************************************/
 
-/* Safe cast with limits check: int -> xmlSecByte */
+/* Safe cast with limits check: int -> xmlSecByte (assume int >= byte) */
 #define XMLSEC_SAFE_CAST_INT_TO_BYTE(srcVal, dstVal, errorAction, errorObject) \
     XMLSEC_SAFE_CAST_MIN_MAX_CHECK(int, (srcVal), "%d",                        \
         xmlSecByte, (dstVal), "%d", 0, 255,                                    \
@@ -113,21 +117,6 @@
     XMLSEC_SAFE_CAST_MIN_MAX_CHECK(long, (srcVal), "%ld",                      \
         int, (dstVal), "%d", INT_MIN, INT_MAX,                                 \
         errorAction, (errorObject))
-
-/* Safe cast with limits check: ptrdiff_t -> int (assume ptrdiff_t >= int) */
-#if defined(__APPLE__)
-
-#define XMLSEC_SAFE_CAST_PTRDIFF_T_TO_INT(srcVal, dstVal, errorAction, errorObject) \
-    XMLSEC_SAFE_CAST_LONG_TO_INT(srcVal, dstVal, errorAction, errorObject)
-
-#else /* defined(__APPLE__) */
-
-#define XMLSEC_SAFE_CAST_PTRDIFF_T_TO_INT(srcVal, dstVal, errorAction, errorObject) \
-    XMLSEC_SAFE_CAST_MIN_MAX_CHECK(ptrdiff_t, (srcVal), "%td",                  \
-        int, (dstVal), "%d", INT_MIN, INT_MAX,                                  \
-        errorAction, (errorObject))
-
-#endif /* defined(__APPLE__) */
 
 /* Safe cast with limits check: size_t -> int (assume size_t >= 0) */
 #if (SIZE_MAX > INT_MAX)
@@ -167,7 +156,7 @@
 
 /* Safe cast with limits check: int -> unsigned int (assume uint >= 0 and uint_max >= int_max) */
 #define XMLSEC_SAFE_CAST_INT_TO_UINT(srcVal, dstVal, errorAction, errorObject) \
-    XMLSEC_SAFE_CAST_MIN_MAX_CHECK(int, (srcVal), "%d",                        \
+    XMLSEC_SAFE_CAST_MIN_CHECK(int, (srcVal), "%d",                            \
         unsigned int, (dstVal), "%u", 0U, UINT_MAX,                            \
         errorAction, (errorObject))
 

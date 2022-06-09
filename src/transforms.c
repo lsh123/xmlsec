@@ -703,11 +703,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
     xmlSecNodeSetType nodeSetType = xmlSecNodeSetTree;
     const xmlChar* xptr;
     xmlChar* buf = NULL;
-#if defined(__APPLE__)
     long uriDiff;
-#else /* defined(__APPLE__) */
-    ptrdiff_t uriDiff;
-#endif /* defined(__APPLE__) */
     int uriLen;
     int useVisa3DHack = 0;
     int ret;
@@ -750,8 +746,8 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
         return(0);
     }
 
-    uriDiff = (xptr - uri);
-    XMLSEC_SAFE_CAST_PTRDIFF_T_TO_INT(uriDiff, uriLen, return(-1), NULL);
+    uriDiff = XMLSEC_BAD_CAST_PTRDIFF_TO_LONG(xptr - uri);
+    XMLSEC_SAFE_CAST_LONG_TO_INT(uriDiff, uriLen, return(-1), NULL);
 
     ctx->uri = xmlStrndup(uri, uriLen);
     if(ctx->uri == NULL) {

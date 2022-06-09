@@ -229,7 +229,7 @@
  *
  *****************************************************************************/
 
-/* Safe cast with limits check: xmlSecSize -> unsigned int (assume ulong >= 0) */
+/* Safe cast with limits check: xmlSecSize -> unsigned long (assume ulong >= 0) */
 #if (XMLSEC_SIZE_MAX > ULONG_MAX)
 
 #define XMLSEC_SAFE_CAST_SIZE_TO_ULONG(srcVal, dstVal, errorAction, errorObject) \
@@ -243,6 +243,23 @@
     (dstVal) = (srcVal);
 
 #endif /* (XMLSEC_SIZE_MAX > ULONG_MAX) */
+
+/* Safe cast with limits check: int -> unsigned long (assume ulong >= 0) */
+#if (INT_MAX > ULONG_MAX)
+
+#define XMLSEC_SAFE_CAST_INT_TO_ULONG(srcVal, dstVal, errorAction, errorObject) \
+    XMLSEC_SAFE_CAST_MIN_MAX_CHECK(int, (srcVal), "%d",                         \
+        unsigned long, (dstVal), "%lu", 0UL, ULONG_MAX,                         \
+        errorAction, (errorObject))
+
+#else /* (INT_MAX > ULONG_MAX) */
+
+#define XMLSEC_SAFE_CAST_INT_TO_ULONG(srcVal, dstVal, errorAction, errorObject) \
+    XMLSEC_SAFE_CAST_MIN_CHECK(int, (srcVal), "%d",                             \
+        unsigned long, (dstVal), "%lu", 0UL, ULONG_MAX,                         \
+        errorAction, (errorObject))
+
+#endif /* (INT_MAX > ULONG_MAX) */
 
 /******************************************************************************
  *

@@ -1556,11 +1556,13 @@ xmlSecMSCryptoX509CertBase64DerRead(xmlChar* buf) {
 static PCCERT_CONTEXT
 xmlSecMSCryptoX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
     PCCERT_CONTEXT cert;
+    DWORD dwSize;
 
     xmlSecAssert2(buf != NULL, NULL);
     xmlSecAssert2(size > 0, NULL);
 
-    cert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, buf, size);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(size, dwSize, return(NULL), NULL);
+    cert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, buf, dwSize);
     if(cert == NULL) {
         xmlSecMSCryptoError("CertCreateCertificateContext", NULL);
         return(NULL);
@@ -1619,13 +1621,14 @@ static PCCRL_CONTEXT
 xmlSecMSCryptoX509CrlDerRead(xmlSecByte* buf, xmlSecSize size,
                              xmlSecKeyInfoCtxPtr keyInfoCtx) {
     PCCRL_CONTEXT crl = NULL;
+    DWORD dwSize;
 
     xmlSecAssert2(buf != NULL, NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
     xmlSecAssert2(size > 0, NULL);
 
-    crl = CertCreateCRLContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, buf, size);
-
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(size, dwSize, return(NULL), NULL);
+    crl = CertCreateCRLContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, buf, dwSize);
     if(crl == NULL) {
         xmlSecMSCryptoError("CertCreateCRLContext", NULL);
         return(NULL);

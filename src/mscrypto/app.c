@@ -207,6 +207,7 @@ xmlSecMSCryptoAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlS
     xmlSecKeyDataPtr keyData = NULL;
     xmlSecKeyPtr key = NULL;
     xmlSecKeyPtr res = NULL;
+    DWORD dwDataSize;
     int ret;
 
     xmlSecAssert2(data != NULL, NULL);
@@ -216,7 +217,8 @@ xmlSecMSCryptoAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlS
     UNREFERENCED_PARAMETER(pwdCallback);
     UNREFERENCED_PARAMETER(pwdCallbackCtx);
 
-    pCert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, data, dataSize);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(dataSize, dwDataSize, goto done, NULL);
+    pCert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, data, dwDataSize);
     if (NULL == pCert) {
         xmlSecMSCryptoError("CertCreateCertificateContext", NULL);
         goto done;
@@ -367,6 +369,7 @@ xmlSecMSCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xml
                                    xmlSecKeyDataFormat format) {
     PCCERT_CONTEXT pCert;
     xmlSecKeyDataPtr kdata;
+    DWORD dwDataSize;
     int ret;
 
     xmlSecAssert2(key != NULL, -1);
@@ -384,7 +387,8 @@ xmlSecMSCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xml
     switch(format) {
     case xmlSecKeyDataFormatDer:
     case xmlSecKeyDataFormatCertDer:
-        pCert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, data, dataSize);
+        XMLSEC_SAFE_CAST_SIZE_TO_ULONG(dataSize, dwDataSize, return(-1), NULL);
+        pCert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, data, dwDataSize);
         if (NULL == pCert) {
             xmlSecInternalError2("CertCreateCertificateContext", xmlSecKeyDataGetName(kdata),
                 "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
@@ -501,7 +505,7 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
 
     memset(&pfx, 0, sizeof(pfx));
     pfx.pbData = (BYTE *)data;
-    pfx.cbData = dataSize;
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(dataSize, pfx.cbData, return(NULL), NULL);
 
     if(FALSE == PFXIsPFXBlob(&pfx)) {
         xmlSecMSCryptoError2("PFXIsPFXBlob", NULL, "size=%lu", pfx.cbData);
@@ -714,6 +718,7 @@ xmlSecMSCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte
                                         xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
     xmlSecKeyDataStorePtr x509Store;
     PCCERT_CONTEXT pCert = NULL;
+    DWORD dwDataSize;
     int ret;
 
     xmlSecAssert2(mngr != NULL, -1);
@@ -730,8 +735,8 @@ xmlSecMSCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte
     switch (format) {
         case xmlSecKeyDataFormatDer:
         case xmlSecKeyDataFormatCertDer:
-            pCert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-                                                 data, dataSize);
+            XMLSEC_SAFE_CAST_SIZE_TO_ULONG(dataSize, dwDataSize, return(-1), NULL);
+            pCert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, data, dwDataSize);
             if (NULL == pCert) {
                 xmlSecMSCryptoError("CertCreateCertificateContext", NULL);
                 return (-1);

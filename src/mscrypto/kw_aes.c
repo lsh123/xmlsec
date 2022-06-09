@@ -385,8 +385,9 @@ xmlSecMSCryptoKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
                                 void * context) {
     xmlSecMSCryptoKWAesCtxPtr ctx = (xmlSecMSCryptoKWAesCtxPtr)context;
     HCRYPTKEY cryptKey = 0;
-    DWORD dwCLen;
-    int res;
+    xmlSecSize keySize;
+    DWORD dwKeySize, dwCLen, dwOutSize;
+    int res = -1;
 
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize >= XMLSEC_KW_AES_BLOCK_SIZE, -1);
@@ -394,7 +395,10 @@ xmlSecMSCryptoKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
     xmlSecAssert2(outSize >= inSize, -1);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->pubPrivKey != 0, -1);
-    xmlSecAssert2(xmlSecBufferGetSize(&ctx->keyBuffer) == ctx->keySize, -1);
+
+    keySize = xmlSecBufferGetSize(&ctx->keyBuffer);
+    xmlSecAssert2(keySize == ctx->keySize, -1);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(keySize, dwKeySize, goto done, NULL);
 
     /* Import this key and get an HCRYPTKEY handle, we do it again and again 
        to ensure we don't go into CBC mode */
@@ -402,12 +406,12 @@ xmlSecMSCryptoKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
         ctx->pubPrivKey,
         ctx->algorithmIdentifier,
         xmlSecBufferGetData(&ctx->keyBuffer),
-        xmlSecBufferGetSize(&ctx->keyBuffer),
+        dwKeySize,
         TRUE,
         &cryptKey))  {
 
         xmlSecInternalError("xmlSecMSCryptoImportPlainSessionBlob", NULL);
-        return(-1);
+        goto done;
     }
     xmlSecAssert2(cryptKey != 0, -1);
 
@@ -416,16 +420,22 @@ xmlSecMSCryptoKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
     if(out != in) {
         memcpy(out, in, inSize);
     }
-    dwCLen = inSize;
-    if(!CryptEncrypt(cryptKey, 0, FALSE, 0, out, &dwCLen, outSize)) {
+
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwCLen, goto done, NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(outSize, dwOutSize, goto done, NULL);
+    if(!CryptEncrypt(cryptKey, 0, FALSE, 0, out, &dwCLen, dwOutSize)) {
         xmlSecMSCryptoError("CryptEncrypt", NULL);
-        CryptDestroyKey(cryptKey);    
-        return(-1);
+        goto done;
     }
 
+    /* success */
+    XMLSEC_SAFE_CAST_ULONG_TO_INT(dwCLen, res, goto done, NULL);
+
+done:
     /* cleanup */
-    CryptDestroyKey(cryptKey);
-    XMLSEC_SAFE_CAST_ULONG_TO_INT(dwCLen, res, return(-1), NULL);
+    if (cryptKey != 0) {
+        CryptDestroyKey(cryptKey);
+    }
     return(res);
 }
 
@@ -435,8 +445,10 @@ xmlSecMSCryptoKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
                                 void * context) {
     xmlSecMSCryptoKWAesCtxPtr ctx = (xmlSecMSCryptoKWAesCtxPtr)context;
     HCRYPTKEY cryptKey = 0;
+    xmlSecSize keySize;
+    DWORD dwKeySize;
     DWORD dwCLen;
-    int res;
+    int res = -1;
 
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize >= XMLSEC_KW_AES_BLOCK_SIZE, -1);
@@ -444,7 +456,10 @@ xmlSecMSCryptoKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
     xmlSecAssert2(outSize >= inSize, -1);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->pubPrivKey != 0, -1);
-    xmlSecAssert2(xmlSecBufferGetSize(&ctx->keyBuffer) == ctx->keySize, -1);
+
+    keySize = xmlSecBufferGetSize(&ctx->keyBuffer);
+    xmlSecAssert2(keySize == ctx->keySize, -1);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(keySize, dwKeySize, goto done, NULL);
 
     /* Import this key and get an HCRYPTKEY handle, we do it again and again 
        to ensure we don't go into CBC mode */
@@ -452,12 +467,12 @@ xmlSecMSCryptoKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
         ctx->pubPrivKey,
         ctx->algorithmIdentifier,
         xmlSecBufferGetData(&ctx->keyBuffer),
-        xmlSecBufferGetSize(&ctx->keyBuffer),
+        dwKeySize,
         TRUE,
         &cryptKey))  {
 
         xmlSecInternalError("xmlSecMSCryptoImportPlainSessionBlob", NULL);
-        return(-1);
+        goto done;
     }
     xmlSecAssert2(cryptKey != 0, -1);
 
@@ -466,16 +481,21 @@ xmlSecMSCryptoKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
     if(out != in) {
         memcpy(out, in, inSize);
     }
-    dwCLen = inSize;
+
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwCLen, goto done, NULL);
     if(!CryptDecrypt(cryptKey, 0, FALSE, 0, out, &dwCLen)) {
         xmlSecMSCryptoError("CryptDecrypt", NULL);
-        CryptDestroyKey(cryptKey);
-        return(-1);
+        goto done;
     }
 
+    /* success */
+    XMLSEC_SAFE_CAST_ULONG_TO_INT(dwCLen, res, goto done, NULL);
+
+done:
     /* cleanup */
-    CryptDestroyKey(cryptKey);
-    XMLSEC_SAFE_CAST_ULONG_TO_INT(dwCLen, res, return(-1), NULL);
+    if (cryptKey != 0) {
+        CryptDestroyKey(cryptKey);
+    }
     return(res);
 }
 

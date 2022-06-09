@@ -214,7 +214,7 @@ xmlSecNssDigestVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(ctx->dgstSize > 0, -1);
 
     if(dataSize != ctx->dgstSize) {
-        xmlSecInvalidIntegerDataError2("dataSize", dataSize,
+        xmlSecInvalidSizeDataError2("dataSize", dataSize,
                 "dgstSize", ctx->dgstSize, "dataSize == dgstSize",
                 xmlSecTransformGetName(transform));
         transform->status = xmlSecTransformStatusFail;

@@ -109,7 +109,7 @@ extern "C" {
                     (const char*)(errorObject),             \
                     "xmlMalloc",                            \
                     XMLSEC_ERRORS_R_MALLOC_FAILED,          \
-                    "size=%lu", XMLSEC_UL_BAD_CAST(allocSize) \
+                    "size=" XMLSEC_SIZE_T_FMT, (size_t)(allocSize) \
         )
 
 /**
@@ -393,7 +393,7 @@ extern "C" {
 /**
  * xmlSecInvalidStringDataError:
  * @name:               the name of the variable, parameter, etc.
- * @actual:             the actual value as a string.
+ * @actual:             the actual string value.
  * @expected:           the expected value(s) as a string.
  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
  *
@@ -413,7 +413,7 @@ extern "C" {
 /**
  * xmlSecInvalidIntegerDataError:
  * @name:               the name of the variable, parameter, etc.
- * @actual:             the actual value as an integer.
+ * @actual:             the actual integer value.
  * @expected:           the expected value(s) as a string.
  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
  *
@@ -424,18 +424,18 @@ extern "C" {
                     (const char*)(errorObject),             \
                     NULL,                                   \
                     XMLSEC_ERRORS_R_INVALID_DATA,           \
-                    "invalid data for '%s': actual=%lu and expected %s", \
+                    "invalid data for '%s': actual=%d and expected %s", \
                     xmlSecErrorsSafeString(name),           \
-                    XMLSEC_UL_BAD_CAST(actual),             \
+                    (actual),                               \
                     (expected)                              \
         )
 
 /**
  * xmlSecInvalidIntegerDataError2:
  * @name1:              the name of the first variable, parameter, etc.
- * @actual1:            the actual first value as an integer.
+ * @actual1:            the actual first integer value.
  * @name2:              the name of the second variable, parameter, etc.
- * @actual2:            the actual second value as an integer.
+ * @actual2:            the actual second integer value.
  * @expected:           the expected value(s) as a string.
  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
  *
@@ -446,11 +446,55 @@ extern "C" {
                     (const char*)(errorObject),             \
                     NULL,                                   \
                     XMLSEC_ERRORS_R_INVALID_DATA,           \
-                    "invalid data: actual value '%s'=%lu, actual value '%s'=%lu and expected %s", \
+                    "invalid data: actual value '%s'=%d, actual value '%s'=%d and expected %s", \
                     xmlSecErrorsSafeString(name1),          \
-                    XMLSEC_UL_BAD_CAST(actual1),            \
+                    (actual1),                              \
                     xmlSecErrorsSafeString(name2),          \
-                    XMLSEC_UL_BAD_CAST(actual2),            \
+                    (actual2),                              \
+                    (expected)                              \
+        )
+
+ /**
+  * xmlSecInvalidSizeDataError:
+  * @name:               the name of the variable, parameter, etc.
+  * @actual:             the actual xmlSecSize value.
+  * @expected:           the expected value(s) as a string.
+  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+  *
+  * Macro. The XMLSec library macro for reporting "invalid data" errors for xmlSecSize.
+  */
+#define xmlSecInvalidSizeDataError(name, actual, expected, errorObject) \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    NULL,                                   \
+                    XMLSEC_ERRORS_R_INVALID_DATA,           \
+                    "invalid data for '%s': actual=" XMLSEC_SIZE_FMT " and expected %s", \
+                    xmlSecErrorsSafeString(name),           \
+                    (actual),                               \
+                    (expected)                              \
+        )
+
+/**
+ * xmlSecInvalidSizeDataError2:
+ * @name1:              the name of the first variable, parameter, etc.
+ * @actual1:            the actual first xmlSecSize value.
+ * @name2:              the name of the second variable, parameter, etc.
+ * @actual2:            the actual second xmlSecSize value.
+ * @expected:           the expected value(s) as a string.
+ * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+ *
+ * Macro. The XMLSec library macro for reporting "invalid data" errors for xmlSecSize.
+ */
+#define xmlSecInvalidSizeDataError2(name1, actual1, name2, actual2, expected, errorObject) \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    NULL,                                   \
+                    XMLSEC_ERRORS_R_INVALID_DATA,           \
+                    "invalid data: actual value '%s'=" XMLSEC_SIZE_FMT ", actual value '%s'=" XMLSEC_SIZE_FMT " and expected %s", \
+                    xmlSecErrorsSafeString(name1),          \
+                    (actual1),                              \
+                    xmlSecErrorsSafeString(name2),          \
+                    (actual2),                              \
                     (expected)                              \
         )
 
@@ -493,7 +537,7 @@ extern "C" {
 /**
  * xmlSecInvalidIntegerTypeError:
  * @name:               the name of the variable, parameter, etc.
- * @actual:             the actual value as an integer.
+ * @actual:             the actual integer value.
  * @expected:           the expected value(s) as a string.
  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
  *
@@ -513,9 +557,9 @@ extern "C" {
 /**
  * xmlSecInvalidIntegerTypeError2:
  * @name1:              the name of the first variable, parameter, etc.
- * @actual1:            the actual first value as an integer.
+ * @actual1:            the actual first integer value.
  * @name2:              the name of the second variable, parameter, etc.
- * @actual2:            the actual second value as an integer.
+ * @actual2:            the actual second integer value.
  * @expected:           the expected value(s) as a string.
  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
  *
@@ -538,7 +582,7 @@ extern "C" {
  /**
   * xmlSecUnsupportedEnumValueError:
   * @name:               the name of the variable, parameter, etc.
-  * @actual:             the actual value as an integer.
+  * @actual:             the actual value.
   * @errorObject:        the error specific error object (e.g. transform, key data, etc).
   *
   * Macro. The XMLSec library macro for reporting "unsupported enum type" errors.

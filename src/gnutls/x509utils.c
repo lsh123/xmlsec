@@ -1445,7 +1445,7 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
 
     /* check end state */
     if(state != xmlSecGnuTLSDnParseState_BeforeNameComponent) {
-        xmlSecInvalidIntegerDataError("state", state, "xmlSecGnuTLSDnParseState_BeforeNameComponent", NULL);
+        xmlSecUnsupportedEnumValueError("state", state, NULL);
         goto done;
     }
 

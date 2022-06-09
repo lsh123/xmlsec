@@ -1875,9 +1875,7 @@ xmlSecTransformDefaultGetDataType(xmlSecTransformPtr transform, xmlSecTransformM
             }
             break;
         default:
-            xmlSecInvalidIntegerDataError("mode", mode,
-                    "xmlSecTransformModePush,xmlSecTransformModePop",
-                    xmlSecTransformGetName(transform));
+            xmlSecUnsupportedEnumValueError("mode", mode, xmlSecTransformGetName(transform));
             return(xmlSecTransformDataTypeUnknown);
     }
 

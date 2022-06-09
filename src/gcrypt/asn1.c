@@ -304,7 +304,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
             break;
         default:
             /* unknown */
-            xmlSecInvalidIntegerDataError("keyparms_num", keyparms_num,
+            xmlSecInvalidSizeDataError("keyparms_num", keyparms_num,
                 "the number of parameters matching key type", NULL);
             goto done;
         }

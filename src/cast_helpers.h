@@ -123,7 +123,7 @@
 #else /* defined(__APPLE__) */
 
 #define XMLSEC_SAFE_CAST_PTRDIFF_T_TO_INT(srcVal, dstVal, errorAction, errorObject) \
-    XMLSEC_SAFE_CAST_MIN_MAX_CHECK(ptrdiff_t, (srcVal), "%lld",                 \
+    XMLSEC_SAFE_CAST_MIN_MAX_CHECK(ptrdiff_t, (srcVal), "%td",                  \
         int, (dstVal), "%d", INT_MIN, INT_MAX,                                  \
         errorAction, (errorObject))
 

@@ -238,7 +238,7 @@
 
 #define XMLSEC_SAFE_CAST_SIZE_TO_ULONG(srcVal, dstVal, errorAction, errorObject) \
     XMLSEC_SAFE_CAST_MAX_CHECK(xmlSecSize, (srcVal), XMLSEC_SIZE_FMT,           \
-        unisgned long, (dstVal), "%lu", 0UL, ULONG_MAX,                         \
+        unsigned long, (dstVal), "%lu", 0UL, ULONG_MAX,                         \
         errorAction, (errorObject))
 
 #else /* (XMLSEC_SIZE_MAX > ULONG_MAX) */

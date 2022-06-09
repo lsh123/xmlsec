@@ -217,7 +217,7 @@ xmlSecMSCngKWDes3BlockEncrypt(void * context, const xmlSecByte * iv,
     DWORD cbKeyObject;
     xmlSecBuffer blob;
     BCRYPT_KEY_DATA_BLOB_HEADER* blobHeader;
-    xmlSecSize blobHeaderSize;
+    xmlSecSize blobHeaderSize, blobSizeInBits;
     int res = -1;
     NTSTATUS status;
     DWORD dwBlockLen, dwBlockLenLen;
@@ -312,9 +312,10 @@ xmlSecMSCngKWDes3BlockEncrypt(void * context, const xmlSecByte * iv,
         xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
         goto done;
     }
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwBlockLen, blobSizeInBits, goto done, NULL);
 
-    if(ivSize < dwBlockLen / 8) {
-        xmlSecInvalidSizeLessThanError("ivSize", ivSize, dwBlockLen / 8, NULL);
+    if(ivSize < blobSizeInBits / 8) {
+        xmlSecInvalidSizeLessThanError("ivSize", ivSize, blobSizeInBits / 8, NULL);
         goto done;
     }
 
@@ -382,7 +383,7 @@ xmlSecMSCngKWDes3BlockDecrypt(void * context, const xmlSecByte * iv,
     DWORD cbKeyObject;
     xmlSecBuffer blob;
     BCRYPT_KEY_DATA_BLOB_HEADER* blobHeader;
-    xmlSecSize blobHeaderSize;
+    xmlSecSize blobHeaderSize, blobSizeInBits;
     int res = -1;
     NTSTATUS status;
     DWORD dwBlockLen, dwBlockLenLen;
@@ -476,9 +477,10 @@ xmlSecMSCngKWDes3BlockDecrypt(void * context, const xmlSecByte * iv,
         xmlSecMSCngNtError("BCryptGetProperty", NULL, status);
         goto done;
     }
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwBlockLen, blobSizeInBits, goto done, NULL);
 
-    if(ivSize < dwBlockLen / 8) {
-        xmlSecInvalidSizeLessThanError("ivSize", ivSize, dwBlockLen / 8, NULL);
+    if(ivSize < blobSizeInBits / 8) {
+        xmlSecInvalidSizeLessThanError("ivSize", ivSize, blobSizeInBits / 8, NULL);
         goto done;
     }
 

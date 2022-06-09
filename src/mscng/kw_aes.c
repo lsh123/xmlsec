@@ -497,8 +497,9 @@ xmlSecMSCngKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
     if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
         /* just do nothing */
     } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
-        if((inSize % 8) != 0) {
-            xmlSecInvalidSizeNotMultipleOfError("transform->inBuf", inSize, 8,
+        if((inSize % XMLSEC_KW_AES_IN_SIZE_MULTIPLY) != 0) {
+            xmlSecInvalidSizeNotMultipleOfError("transform->inBuf",
+                inSize, XMLSEC_KW_AES_IN_SIZE_MULTIPLY,
                 xmlSecTransformGetName(transform));
             return(-1);
         }

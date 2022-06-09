@@ -515,8 +515,9 @@ xmlSecMSCryptoKWDes3BlockEncrypt(void * context,
                                 xmlSecByte * out, xmlSecSize outSize) {
     xmlSecMSCryptoKWDes3CtxPtr ctx = (xmlSecMSCryptoKWDes3CtxPtr)context;
     DWORD dwBlockLen, dwBlockLenLen, dwCLen;
+    xmlSecSize blockSizeInBits;
     HCRYPTKEY cryptKey = 0;
-    int res;
+    int res = -1;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(xmlSecBufferGetData(&(ctx->keyBuffer)) != NULL, -1);
@@ -539,7 +540,7 @@ xmlSecMSCryptoKWDes3BlockEncrypt(void * context,
         &cryptKey))  {
 
         xmlSecInternalError("xmlSecMSCryptoImportPlainSessionBlob", NULL);
-        return(-1);
+        goto done;
     }
     xmlSecAssert2(cryptKey != 0, -1);
 
@@ -547,21 +548,19 @@ xmlSecMSCryptoKWDes3BlockEncrypt(void * context,
     dwBlockLenLen = sizeof(dwBlockLen);
     if (!CryptGetKeyParam(cryptKey, KP_BLOCKLEN, (BYTE *)&dwBlockLen, &dwBlockLenLen, 0)) {
         xmlSecMSCryptoError("CryptGetKeyParam", NULL);
-        CryptDestroyKey(cryptKey);
-        return(-1);
+        goto done;
     }
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwBlockLen, blockSizeInBits, goto done, NULL);
 
     /* set IV */
-    if(ivSize < dwBlockLen / 8) {
-        xmlSecInvalidSizeLessThanError("ivSize", ivSize, dwBlockLen / 8, NULL);
-        CryptDestroyKey(cryptKey);
-        return(-1);
+    if(ivSize < blockSizeInBits / 8) {
+        xmlSecInvalidSizeLessThanError("ivSize", ivSize, blockSizeInBits / 8, NULL);
+        goto done;
     }
 
     if(!CryptSetKeyParam(cryptKey, KP_IV, iv, 0)) {
         xmlSecMSCryptoError("CryptSetKeyParam", NULL);
-        CryptDestroyKey(cryptKey);
-        return(-1);
+        goto done;
     }
 
     /* Set process last block to false, since we handle padding ourselves, and MSCrypto padding
@@ -569,16 +568,21 @@ xmlSecMSCryptoKWDes3BlockEncrypt(void * context,
     if(out != in) {
         memcpy(out, in, inSize);
     }
-    dwCLen = inSize;
+
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwCLen, goto done, NULL);
     if(!CryptEncrypt(cryptKey, 0, FALSE, 0, out, &dwCLen, outSize)) {
         xmlSecMSCryptoError("CryptEncrypt", NULL);
-        CryptDestroyKey(cryptKey);
-        return(-1);
+        goto done;
     }
 
+    /* success */
+    XMLSEC_SAFE_CAST_ULONG_TO_INT(dwCLen, res, goto done, NULL);
+
     /* cleanup */
-    CryptDestroyKey(cryptKey);
-    XMLSEC_SAFE_CAST_ULONG_TO_INT(dwCLen, res, return(-1), NULL);
+done:
+    if (cryptKey != 0) {
+        CryptDestroyKey(cryptKey);
+    }
     return(res);
 }
 
@@ -589,8 +593,9 @@ xmlSecMSCryptoKWDes3BlockDecrypt(void * context,
                                xmlSecByte * out, xmlSecSize outSize) {
     xmlSecMSCryptoKWDes3CtxPtr ctx = (xmlSecMSCryptoKWDes3CtxPtr)context;
     DWORD dwBlockLen, dwBlockLenLen, dwCLen;
+    xmlSecSize blockSizeInBits;
     HCRYPTKEY cryptKey = 0;
-    int res;
+    int res = -1;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(xmlSecBufferGetData(&(ctx->keyBuffer)) != NULL, -1);
@@ -612,8 +617,7 @@ xmlSecMSCryptoKWDes3BlockDecrypt(void * context,
         TRUE,
         &cryptKey))  {
 
-        xmlSecInternalError("xmlSecMSCryptoImportPlainSessionBlob", NULL);
-        return(-1);
+        goto done;
     }
     xmlSecAssert2(cryptKey != 0, -1);
 
@@ -621,20 +625,18 @@ xmlSecMSCryptoKWDes3BlockDecrypt(void * context,
     dwBlockLenLen = sizeof(dwBlockLen);
     if (!CryptGetKeyParam(cryptKey, KP_BLOCKLEN, (BYTE *)&dwBlockLen, &dwBlockLenLen, 0)) {
         xmlSecMSCryptoError("CryptGetKeyParam", NULL);
-        CryptDestroyKey(cryptKey);
-        return(-1);
+        goto done;
     }
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwBlockLen, blockSizeInBits, goto done, NULL);
 
     /* set IV */
-    if(ivSize < dwBlockLen / 8) {
-        xmlSecInvalidSizeLessThanError("ivSize", ivSize, dwBlockLen / 8, NULL);
-        CryptDestroyKey(cryptKey);
-        return(-1);
+    if(ivSize < blockSizeInBits / 8) {
+        xmlSecInvalidSizeLessThanError("ivSize", ivSize, blockSizeInBits / 8, NULL);
+        goto done;
     }
     if(!CryptSetKeyParam(cryptKey, KP_IV, iv, 0)) {
         xmlSecMSCryptoError("CryptSetKeyParam", NULL);
-        CryptDestroyKey(cryptKey);
-        return(-1);
+        goto done;
     }
 
     /* Set process last block to false, since we handle padding ourselves, and MSCrypto padding
@@ -642,16 +644,21 @@ xmlSecMSCryptoKWDes3BlockDecrypt(void * context,
     if(out != in) {
         memcpy(out, in, inSize);
     }
-    dwCLen = inSize;
+
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwCLen, goto done, NULL);
     if(!CryptDecrypt(cryptKey, 0, FALSE, 0, out, &dwCLen)) {
         xmlSecMSCryptoError("CryptEncrypt", NULL);
-        CryptDestroyKey(cryptKey);
-        return(-1);
+        goto done;
     }
 
+    /* success */
+    XMLSEC_SAFE_CAST_ULONG_TO_INT(dwCLen, res, goto done, NULL);
+
+done:
     /* cleanup */
-    CryptDestroyKey(cryptKey);
-    XMLSEC_SAFE_CAST_ULONG_TO_INT(dwCLen, res, return(-1), NULL);
+    if (cryptKey != 0) {
+        CryptDestroyKey(cryptKey);
+    }
     return(res);
 }
 

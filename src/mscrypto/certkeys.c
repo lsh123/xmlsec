@@ -1115,7 +1115,7 @@ xmlSecMSCryptoKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                                 xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecBn modulus, exponent;
     xmlSecBuffer blob;
-    xmlSecSize blobBufferSize;
+    xmlSecSize blobBufferSize, pubExpSize;
     PUBLICKEYSTRUC* pubKeyStruc = NULL;
     RSAPUBKEY* pubKey = NULL;
     xmlSecByte* modulusBlob = NULL;
@@ -1226,10 +1226,12 @@ xmlSecMSCryptoKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     pubKey->magic           = 0x31415352;       /* == RSA1 public */
     pubKey->bitlen          = xmlSecBnGetSize(&modulus) * 8;    /* Number of bits in prime modulus */
     pubKey->pubexp          = 0;
-    if(sizeof(pubKey->pubexp) < xmlSecBnGetSize(&exponent)) {
+
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(sizeof(pubKey->pubexp), pubExpSize, goto done, NULL);
+    if(pubExpSize < xmlSecBnGetSize(&exponent)) {
         xmlSecInvalidSizeLessThanError("exponent size",
-                sizeof(pubKey->pubexp), xmlSecBnGetSize(&exponent),
-                NULL);
+            pubExpSize, xmlSecBnGetSize(&exponent),
+            NULL);
         goto done;
     }
     xmlSecAssert2(xmlSecBnGetData(&exponent) != NULL, -1);
@@ -1303,13 +1305,16 @@ xmlSecMSCryptoKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                                 xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecMSCryptoKeyDataCtxPtr ctx;
     xmlSecBuffer buf;
+    int buf_initialized = 0;
     DWORD dwBlobLen;
+    xmlSecSize blobSize;
     xmlSecByte* blob;
     PUBLICKEYSTRUC* pubKeyStruc;
     RSAPUBKEY *pubKey;
     xmlSecSize modulusLen, exponentLen;
     xmlNodePtr cur;
     int ret;
+    int res = -1;
 
     xmlSecAssert2(id == xmlSecMSCryptoKeyDataRsaId, -1);
     xmlSecAssert2(key != NULL, -1);
@@ -1323,27 +1328,27 @@ xmlSecMSCryptoKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     if (!CryptExportKey(xmlSecMSCryptoKeyDataCtxGetKey(ctx), 0, PUBLICKEYBLOB, 0, NULL, &dwBlobLen)) {
         xmlSecMSCryptoError("CryptExportKey", xmlSecKeyDataKlassGetName(id));
-        return(-1);
+        goto done;
     }
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwBlobLen, blobSize, goto done, NULL);
 
-    ret = xmlSecBufferInitialize(&buf, dwBlobLen);
+    ret = xmlSecBufferInitialize(&buf, blobSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferInitialize", xmlSecKeyDataKlassGetName(id),
-            "size=%lu", dwBlobLen);
-        return(-1);
+            "size=" XMLSEC_SIZE_FMT, blobSize);
+        goto done;
     }
+    buf_initialized = 1;
 
     blob = xmlSecBufferGetData(&buf);
     if (!CryptExportKey(xmlSecMSCryptoKeyDataCtxGetKey(ctx), 0, PUBLICKEYBLOB, 0, blob, &dwBlobLen)) {
         xmlSecMSCryptoError("CryptExportKey", xmlSecKeyDataKlassGetName(id));
-        xmlSecBufferFinalize(&buf);
-        return(-1);
+        goto done;
     }
     if (dwBlobLen < sizeof(PUBLICKEYSTRUC)) {
-        xmlSecInvalidSizeLessThanError("Key blob", dwBlobLen, sizeof(PUBLICKEYSTRUC),
-                xmlSecKeyDataKlassGetName(id));
-        xmlSecBufferFinalize(&buf);
-        return(-1);
+        xmlSecMSCryptoError2("CryptExportKey", xmlSecKeyDataKlassGetName(id),
+            "dwBlobLen: %lu", dwBlobLen);
+        goto done;
     }
 
     /* check PUBLICKEYSTRUC */
@@ -1351,14 +1356,12 @@ xmlSecMSCryptoKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     if(pubKeyStruc->bVersion != 0x02) {
         xmlSecMSCryptoError2("CryptExportKey", xmlSecKeyDataKlassGetName(id),
             "pubKeyStruc->bVersion=%d", (int)(pubKeyStruc->bVersion));
-        xmlSecBufferFinalize(&buf);
-        return(-1);
+        goto done;
     }
     if(pubKeyStruc->bType != PUBLICKEYBLOB) {
         xmlSecMSCryptoError2("CryptExportKey", xmlSecKeyDataKlassGetName(id),
             "pubKeyStruc->bType=%d", (int)(pubKeyStruc->bType));
-        xmlSecBufferFinalize(&buf);
-        return(-1);
+        goto done;
     }
 
     /* check RSAPUBKEY */
@@ -1366,17 +1369,14 @@ xmlSecMSCryptoKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     if(pubKey->magic != 0x31415352) { /* RSA public key magic */
         xmlSecMSCryptoError2("CryptExportKey", xmlSecKeyDataKlassGetName(id),
             "pubKey->magic=0x%08lx", pubKey->magic);
-        xmlSecBufferFinalize(&buf);
-        return(-1);
+        goto done;
     }
     modulusLen      = pubKey->bitlen / 8;
 
     if (dwBlobLen < sizeof(PUBLICKEYSTRUC) + sizeof(RSAPUBKEY) + modulusLen) {
-        xmlSecInvalidSizeLessThanError("Key blob",
-                dwBlobLen, sizeof(PUBLICKEYSTRUC) + sizeof(RSAPUBKEY) + modulusLen,
-                xmlSecKeyDataKlassGetName(id));
-        xmlSecBufferFinalize(&buf);
-        return(-1);
+        xmlSecMSCryptoError3("CryptExportKey", xmlSecKeyDataKlassGetName(id),
+            "dwBlobLen: %lu; modulusLen: " XMLSEC_SIZE_FMT,  dwBlobLen, modulusLen);
+        goto done;
     }
     blob            += sizeof(PUBLICKEYSTRUC) + sizeof(RSAPUBKEY);
 
@@ -1384,23 +1384,20 @@ xmlSecMSCryptoKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     cur = xmlSecAddChild(node, xmlSecNodeRSAModulus, xmlSecDSigNs);
     if(cur == NULL) {
         xmlSecInternalError("xmlSecAddChild(NodeRSAModulus)", xmlSecKeyDataKlassGetName(id));
-        xmlSecBufferFinalize(&buf);
-        return(-1);
+        goto done;
     }
 
     ret = xmlSecBnBlobSetNodeValue(blob, modulusLen, cur, xmlSecBnBase64, 1, 1);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBnBlobSetNodeValue(NodeRSAModulus)", xmlSecKeyDataKlassGetName(id));
-        xmlSecBufferFinalize(&buf);
-        return(-1);
+        goto done;
     }
 
     /* next is Exponent node. */
     cur = xmlSecAddChild(node, xmlSecNodeRSAExponent, xmlSecDSigNs);
     if(cur == NULL) {
         xmlSecInternalError("xmlSecAddChild(NodeRSAExponent)", xmlSecKeyDataKlassGetName(id));
-        xmlSecBufferFinalize(&buf);
-        return(-1);
+        goto done;
     }
 
     /* Remove leading zero's (from least significant end) */
@@ -1414,15 +1411,19 @@ xmlSecMSCryptoKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     if(ret < 0) {
         xmlSecInternalError("xmlSecBnBlobSetNodeValue(NodeRSAExponent)",
                             xmlSecKeyDataKlassGetName(id));
-        xmlSecBufferFinalize(&buf);
-        return(-1);
+        goto done;
     }
 
     /* next is PrivateExponent node: not supported in MSCrypto */
 
     /* done */
-    xmlSecBufferFinalize(&buf);
-    return(0);
+    res = 0;
+
+done:
+    if (buf_initialized != 0) {
+        xmlSecBufferFinalize(&buf);
+    }
+    return(res);
 }
 
 static int
@@ -1899,9 +1900,9 @@ xmlSecMSCryptoKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     buf += xmlSecBnGetSize(&p);
 
     /* set q */
-    if(xmlSecBnGetSize(&q) > 0x14) {
+    if(xmlSecBnGetSize(&q) > 0x14U) {
         xmlSecInvalidSizeLessThanError("DSA key q",
-                                       xmlSecBnGetSize(&q), 0x14, NULL);
+            xmlSecBnGetSize(&q), 0x14U, NULL);
         goto done;
     }
     xmlSecAssert2(xmlSecBnGetData(&q) != NULL, -1);
@@ -2053,8 +2054,8 @@ xmlSecMSCryptoKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
         return(-1);
     }
     if (dwBlobLen < sizeof(PUBLICKEYSTRUC)) {
-        xmlSecInvalidSizeLessThanError("Key blob", dwBlobLen, sizeof(PUBLICKEYSTRUC),
-                xmlSecKeyDataKlassGetName(id));
+        xmlSecMSCryptoError2("CryptExportKey", xmlSecKeyDataKlassGetName(id),
+            "dwBlobLen=%lu", dwBlobLen);
         xmlSecBufferFinalize(&buf);
         return(-1);
     }
@@ -2086,9 +2087,8 @@ xmlSecMSCryptoKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     /* we assume that sizeof(q) < 0x14, sizeof(g) <= sizeof(p) and sizeof(y) <= sizeof(p) */
     if (dwBlobLen < sizeof(PUBLICKEYSTRUC) + sizeof(DSSPUBKEY) + 3 * keyLen + 0x14 + sizeof(DSSSEED)) {
-        xmlSecInvalidSizeLessThanError("Key blob",
-                dwBlobLen, sizeof(PUBLICKEYSTRUC) + sizeof(DSSPUBKEY) + 3 * keyLen + 0x14 + sizeof(DSSSEED),
-                xmlSecKeyDataKlassGetName(id));
+        xmlSecMSCryptoError3("CryptExportKey", xmlSecKeyDataKlassGetName(id),
+            "dwBlobLen: %lu; keyLen: " XMLSEC_SIZE_FMT, dwBlobLen, keyLen);
         xmlSecBufferFinalize(&buf);
         return(-1);
     }

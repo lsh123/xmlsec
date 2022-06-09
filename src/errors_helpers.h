@@ -288,10 +288,10 @@ extern "C" {
                     (const char*)(errorObject),             \
                     NULL,                                   \
                     XMLSEC_ERRORS_R_INVALID_SIZE,           \
-                    "invalid size for '%s': actual=%lu is not equal to expected=%lu", \
+                    "invalid size for '%s': actual=" XMLSEC_SIZE_FMT " is not equal to expected=" XMLSEC_SIZE_FMT, \
                     xmlSecErrorsSafeString(name),           \
-                    XMLSEC_UL_BAD_CAST(actual),             \
-                    XMLSEC_UL_BAD_CAST(expected)            \
+                    (actual),                               \
+                    (expected)                              \
         )
 
 /**
@@ -309,10 +309,10 @@ extern "C" {
                     (const char*)(errorObject),             \
                     NULL,                                   \
                     XMLSEC_ERRORS_R_INVALID_SIZE,           \
-                    "invalid size for '%s': actual=%lu is less than expected=%lu", \
+                    "invalid size for '%s': actual=" XMLSEC_SIZE_FMT " is less than expected=" XMLSEC_SIZE_FMT, \
                     xmlSecErrorsSafeString(name),           \
-                    XMLSEC_UL_BAD_CAST(actual),             \
-                    XMLSEC_UL_BAD_CAST(expected)            \
+                    (actual),                               \
+                    (expected)                              \
         )
 
 /**
@@ -330,10 +330,10 @@ extern "C" {
                     (const char*)(errorObject),             \
                     NULL,                                   \
                     XMLSEC_ERRORS_R_NOT_IMPLEMENTED,        \
-                    "invalid size for '%s': actual=%lu is more than expected=%lu", \
+                    "invalid size for '%s': actual=" XMLSEC_SIZE_FMT " is more than expected=" XMLSEC_SIZE_FMT, \
                     xmlSecErrorsSafeString(name),           \
-                    XMLSEC_UL_BAD_CAST(actual),             \
-                    XMLSEC_UL_BAD_CAST(expected)            \
+                    (actual),                               \
+                    (expected)                              \
         )
 
 /**
@@ -351,10 +351,10 @@ extern "C" {
                     (const char*)(errorObject),             \
                     NULL,                                   \
                     XMLSEC_ERRORS_R_NOT_IMPLEMENTED,        \
-                    "invalid size for '%s': actual=%lu is not a multiple of %lu", \
+                    "invalid size for '%s': actual=" XMLSEC_SIZE_FMT " is not a multiple of " XMLSEC_SIZE_FMT, \
                     xmlSecErrorsSafeString(name),           \
-                    XMLSEC_UL_BAD_CAST(actual),             \
-                    XMLSEC_UL_BAD_CAST(divider)             \
+                    (actual),                               \
+                    (divider)                               \
         )
 
 /**

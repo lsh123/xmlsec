@@ -85,4 +85,32 @@ void xmlSecMSCryptoGetErrorMessage      (DWORD dwError,
         );                                                        \
     }
 
+ /**
+  * xmlSecMSCryptoError3:
+  * @errorFunction:      the failed function name.
+  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+  * @msg:                the extra message.
+  * @param1:             the extra message param1.
+  * @param2:             the extra message param2.
+  *
+  * Macro. The XMLSec library macro for reporting MSCrypto crypro errors.
+  */
+#define xmlSecMSCryptoError3(errorFunction, errorObject, msg, param1, param2) \
+    {                                                             \
+        DWORD dwLastError = GetLastError();                       \
+        xmlChar errBuf[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE];    \
+        xmlSecMSCryptoGetErrorMessage(dwLastError, errBuf, sizeof(errBuf)); \
+        xmlSecError(XMLSEC_ERRORS_HERE,                           \
+                    (const char*)(errorObject),                   \
+                    (errorFunction),                              \
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,                \
+                    msg  "MSCrypto error: %lu (0x%08lx): %s",     \
+                    (param1),                                     \
+                    (param2),                                     \
+                    (dwLastError),                                \
+                    (dwLastError),                                \
+                    errBuf                                        \
+        );                                                        \
+    }
+
 #endif /* ! __XMLSEC_GLOBALS_H__ */

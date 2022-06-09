@@ -257,7 +257,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
     gcry_sexp_t s_priv_key = NULL;
     gcry_error_t err;
     gcry_mpi_t keyparms[20];
-    int keyparms_num;
+    xmlSecSize keyparms_num;
     unsigned int idx;
     int ret;
 
@@ -274,31 +274,31 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         xmlSecInternalError("xmlSecGCryptAsn1ParseIntegerSequence", NULL);
         goto done;
     }
-    keyparms_num = ret;
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, keyparms_num, goto done, NULL);
 
     /* The value of the first integer should be 0. */
     if ((keyparms_num < 1) || (gcry_mpi_cmp_ui(keyparms[0], 0) != 0)) {
         xmlSecInternalError2("xmlSecGCryptAsn1ParseTag", NULL, 
-            "num=%d", keyparms_num);
+            "num=" XMLSEC_SIZE_FMT, keyparms_num);
         goto done;
     }
 
     /* do we need to guess the key type? not robust but the best we can do */
     if(type == xmlSecGCryptDerKeyTypeAuto) {
         switch(keyparms_num) {
-        case 3:
+        case 3U:
             /* Public RSA */
             type = xmlSecGCryptDerKeyTypePublicRsa;
             break;
-        case 5:
+        case 5U:
             /* Public DSA */
             type = xmlSecGCryptDerKeyTypePublicDsa;
             break;
-        case 6:
+        case 6U:
             /* Private DSA */
             type = xmlSecGCryptDerKeyTypePrivateDsa;
             break;
-        case 9:
+        case 9U:
             /* Private RSA */
             type = xmlSecGCryptDerKeyTypePrivateRsa;
             break;
@@ -310,14 +310,12 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         }
     }
 
-
     switch(type) {
 #ifndef XMLSEC_NO_DSA
     case xmlSecGCryptDerKeyTypePrivateDsa:
         /* check we have enough params */
-        if(keyparms_num != 6) {
-            xmlSecInvalidSizeError("Private DSA key params",
-                                   keyparms_num, 6, NULL);
+        if(keyparms_num != 6U) {
+            xmlSecInvalidSizeError("Private DSA key params", keyparms_num, 6U, NULL);
             goto done;
         }
 
@@ -366,9 +364,8 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
 
     case xmlSecGCryptDerKeyTypePublicDsa:
         /* check we have enough params */
-        if(keyparms_num != 5) {
-            xmlSecInvalidSizeError("Public DSA key params",
-                                   keyparms_num, 5, NULL);
+        if(keyparms_num != 5U) {
+            xmlSecInvalidSizeError("Public DSA key params", keyparms_num, 5U, NULL);
             goto done;
         }
 
@@ -403,9 +400,8 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
 #ifndef XMLSEC_NO_RSA
     case xmlSecGCryptDerKeyTypePrivateRsa:
         /* check we have enough params */
-        if(keyparms_num != 9) {
-            xmlSecInvalidSizeError("Private RSA key params",
-                                   keyparms_num, 9, NULL);
+        if(keyparms_num != 9U) {
+            xmlSecInvalidSizeError("Private RSA key params", keyparms_num, 9U, NULL);
             goto done;
         }
 
@@ -457,9 +453,8 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
 
     case xmlSecGCryptDerKeyTypePublicRsa:
         /* check we have enough params */
-        if(keyparms_num != 3) {
-            xmlSecInvalidSizeError("Public RSA key params",
-                                   keyparms_num, 3, NULL);
+        if(keyparms_num != 3U) {
+            xmlSecInvalidSizeError("Public RSA key params", keyparms_num, 3U, NULL);
             goto done;
         }
 

@@ -266,9 +266,10 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
     if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
         /* just do nothing */
     } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
-        if((inSize % 8) != 0) {
+        if((inSize % XMLSEC_KW_AES_IN_SIZE_MULTIPLY) != 0) {
             xmlSecInvalidSizeNotMultipleOfError("Input data",
-                                inSize, 8, xmlSecTransformGetName(transform));
+                inSize, XMLSEC_KW_AES_IN_SIZE_MULTIPLY,
+                xmlSecTransformGetName(transform));
             return(-1);
         }
 

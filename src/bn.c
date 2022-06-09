@@ -52,12 +52,12 @@ static const int xmlSecBnLookupTable[] =
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1
 };
 
-static const xmlChar xmlSecBnRevLookupTable[] =
+#define XMLSEC_BN_REV_MAX  16
+static const xmlChar xmlSecBnRevLookupTable[XMLSEC_BN_REV_MAX] =
 {
     '0', '1', '2', '3', '4', '5', '6', '7',
     '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
 };
-#define XMLSEC_BN_REV_MAX (sizeof(xmlSecBnRevLookupTable) / sizeof(xmlSecBnRevLookupTable[0]))
 
 /*****************************************************************************
  *
@@ -383,7 +383,7 @@ xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
             return (NULL);
         }
         xmlSecAssert2(0 <= nn, NULL);
-        xmlSecAssert2(XMLSEC_UL_BAD_CAST(nn) < XMLSEC_UL_BAD_CAST(XMLSEC_BN_REV_MAX), NULL);
+        xmlSecAssert2(nn < XMLSEC_BN_REV_MAX, NULL);
         res[ii] = xmlSecBnRevLookupTable[nn];
     }
     xmlSecAssert2(ii < len, NULL);

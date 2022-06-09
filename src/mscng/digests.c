@@ -181,6 +181,7 @@ xmlSecMSCngDigestVerify(xmlSecTransformPtr transform,
                         xmlSecSize dataSize,
                         xmlSecTransformCtxPtr transformCtx) {
     xmlSecMSCngDigestCtxPtr ctx;
+    xmlSecSize hashSize;
 
     xmlSecAssert2(xmlSecMSCngDigestCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngDigestSize), -1);
@@ -193,14 +194,15 @@ xmlSecMSCngDigestVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->cbHash > 0, -1);
 
-    if(dataSize != ctx->cbHash) {
-        xmlSecInvalidSizeError("Digest", dataSize, ctx->cbHash,
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(ctx->cbHash, hashSize, return(-1), xmlSecTransformGetName(transform));
+    if(dataSize != hashSize) {
+        xmlSecInvalidSizeError("Digest", dataSize, hashSize,
            xmlSecTransformGetName(transform));
         transform->status = xmlSecTransformStatusFail;
         return(0);
     }
 
-    if(memcmp(ctx->pbHash, data, ctx->cbHash) != 0) {
+    if(memcmp(ctx->pbHash, data, hashSize) != 0) {
         xmlSecInvalidDataError("data and digest do not match",
             xmlSecTransformGetName(transform));
         transform->status = xmlSecTransformStatusFail;

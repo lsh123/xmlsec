@@ -29,7 +29,7 @@
  /******************************************************************************
   *
   * Main macros to help with casting, we assume that LL and ULL are the largest
-  * possible types.
+  * possible types. All these macros assume that srcType is "bigger" than dstType.
   *
   *****************************************************************************/
 #define XMLSEC_SAFE_CAST_MIN_MAX_CHECK(srcType, srcVal, srcFmt, dstType, dstVal, dstFmt, dstMin, dstMax, errorAction, errorObject) \
@@ -131,6 +131,18 @@
     (dstVal) = (srcVal);
 
 #endif /* (XMLSEC_SIZE_MAX > INT_MAX) */
+
+ /* Safe cast with limits check: ptrdiff_t -> int. Special case since ptrdiff_t
+  * is platform dependent and there is no good way to print it. Cast to long long
+  * should be good enough and will only affect output in the logs. */
+#define XMLSEC_SAFE_CAST_PTRDIFF_TO_INT(srcVal, dstVal, errorAction, errorObject) \
+    if(((srcVal) < INT_MIN) || ((srcVal) > INT_MAX)) {                         \
+        xmlSecImpossibleCastError(ptrdiff_t, (long long)(srcVal), "%lld",      \
+            int, INT_MIN, INT_MAX, "%d", (errorObject));                       \
+        errorAction;                                                           \
+    }                                                                          \
+    (dstVal) = (int)(srcVal);                                                  \
+
 
 /******************************************************************************
  *
@@ -317,22 +329,6 @@
     (dstVal) = (srcVal);
 
 #endif /* (SIZE_MAX > XMLSEC_SIZE_MAX) */
-
-/******************************************************************************
- *
- *  Special case: ptrdiff_t to int (need to cast to long long to print).
- *
- *****************************************************************************/
-
- /* Safe cast with limits check: ptrdiff_t -> int */
-#define XMLSEC_SAFE_CAST_PTRDIFF_TO_INT(srcVal, dstVal, errorAction, errorObject) \
-    if(((srcVal) < INT_MIN) || ((srcVal) > INT_MAX)) {                         \
-        xmlSecImpossibleCastError(ptrdiff_t, (long long)(srcVal), "%lld",      \
-            int, INT_MIN, INT_MAX, "%d", (errorObject));                       \
-        errorAction;                                                           \
-    }                                                                          \
-    (dstVal) = (int)(srcVal);                                                  \
-
 
 /******************************************************************************
  *

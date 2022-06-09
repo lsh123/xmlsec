@@ -205,7 +205,7 @@ xmlSecGCryptAsn1ParseIntegerSequence(xmlSecByte const **buffer, xmlSecSize* bufl
 
     /* initialize */
     buf = *buffer;
-    length = *buflen;
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG((*buflen), length, return(-1), NULL);
 
     /* read SEQUENCE */
     memset(&ti, 0, sizeof(ti));
@@ -315,7 +315,8 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
     case xmlSecGCryptDerKeyTypePrivateDsa:
         /* check we have enough params */
         if(keyparms_num != 6U) {
-            xmlSecInvalidSizeError("Private DSA key params", keyparms_num, 6U, NULL);
+            xmlSecInvalidSizeError("Private DSA key params",
+                keyparms_num, (xmlSecSize)6U, NULL);
             goto done;
         }
 
@@ -365,7 +366,8 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
     case xmlSecGCryptDerKeyTypePublicDsa:
         /* check we have enough params */
         if(keyparms_num != 5U) {
-            xmlSecInvalidSizeError("Public DSA key params", keyparms_num, 5U, NULL);
+            xmlSecInvalidSizeError("Public DSA key params",
+                keyparms_num, (xmlSecSize)5U, NULL);
             goto done;
         }
 
@@ -401,7 +403,8 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
     case xmlSecGCryptDerKeyTypePrivateRsa:
         /* check we have enough params */
         if(keyparms_num != 9U) {
-            xmlSecInvalidSizeError("Private RSA key params", keyparms_num, 9U, NULL);
+            xmlSecInvalidSizeError("Private RSA key params",
+                (xmlSecSize)keyparms_num, (xmlSecSize)9U, NULL);
             goto done;
         }
 
@@ -454,7 +457,8 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
     case xmlSecGCryptDerKeyTypePublicRsa:
         /* check we have enough params */
         if(keyparms_num != 3U) {
-            xmlSecInvalidSizeError("Public RSA key params", keyparms_num, 3U, NULL);
+            xmlSecInvalidSizeError("Public RSA key params",
+                keyparms_num, (xmlSecSize)3U, NULL);
             goto done;
         }
 

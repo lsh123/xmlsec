@@ -849,7 +849,7 @@ xmlSecOpenSSLEvpBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key
     xmlSecAssert2(buffer != NULL, -1);
 
     if(xmlSecBufferGetSize(buffer) < cipherKeySize) {
-        xmlSecInvalidKeyDataSizeError(xmlSecBufferGetSize(buffer), cipherKeyLen,
+        xmlSecInvalidKeyDataSizeError(xmlSecBufferGetSize(buffer), cipherKeySize,
             xmlSecTransformGetName(transform));
         return(-1);
     }

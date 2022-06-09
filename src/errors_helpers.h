@@ -728,7 +728,7 @@ extern "C" {
                    XMLSEC_ERRORS_R_INVALID_STATUS,    \
                    "transformStatus=" XMLSEC_ENUM_FMT "; msg=%s", \
                    XMLSEC_ENUM_CAST((transform)->status),         \
-                   msg                                \
+                   (msg)                              \
         );                                            \
     }
 
@@ -746,9 +746,9 @@ extern "C" {
                     (const char*)(errorObject),             \
                     NULL,                                   \
                     XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE,  \
-                    "invalid key data size: actual=%lu and expected=%lu", \
-                    XMLSEC_UL_BAD_CAST(actual),             \
-                    XMLSEC_UL_BAD_CAST(expected)            \
+                    "invalid key data size: actual=" XMLSEC_SIZE_FMT " and expected=" XMLSEC_SIZE_FMT, \
+                    (actual),                               \
+                    (expected)                              \
         )
 
 /**

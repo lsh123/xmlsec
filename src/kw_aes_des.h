@@ -30,10 +30,10 @@ extern "C" {
  * KT DES
  *
  ********************************************************************/
-#define XMLSEC_KW_DES3_KEY_LENGTH                   24U
-#define XMLSEC_KW_DES3_IV_LENGTH                    8U
-#define XMLSEC_KW_DES3_BLOCK_LENGTH                 8U
-#define XMLSEC_KW_DES3_SHA_DIGEST_LENGTH            20U
+#define XMLSEC_KW_DES3_KEY_LENGTH                   ((xmlSecSize)24)
+#define XMLSEC_KW_DES3_IV_LENGTH                    ((xmlSecSize)8)
+#define XMLSEC_KW_DES3_BLOCK_LENGTH                 ((xmlSecSize)8)
+#define XMLSEC_KW_DES3_SHA_DIGEST_LENGTH            ((xmlSecSize)20)
 
 
 typedef int  (*xmlSecKWDes3Sha1Method)              (void * context,
@@ -100,12 +100,12 @@ xmlSecKWDes3Decode(xmlSecKWDes3Id kwDes3Id, void *context,
  * KT AES
  *
  ********************************************************************/
-#define XMLSEC_KW_AES_IN_SIZE_MULTIPLY              8U
-#define XMLSEC_KW_AES_MAGIC_BLOCK_SIZE              8U
-#define XMLSEC_KW_AES_BLOCK_SIZE                    16U
-#define XMLSEC_KW_AES128_KEY_SIZE                   16U
-#define XMLSEC_KW_AES192_KEY_SIZE                   24U
-#define XMLSEC_KW_AES256_KEY_SIZE                   32U
+#define XMLSEC_KW_AES_IN_SIZE_MULTIPLY              ((xmlSecSize)8)
+#define XMLSEC_KW_AES_MAGIC_BLOCK_SIZE              ((xmlSecSize)8)
+#define XMLSEC_KW_AES_BLOCK_SIZE                    ((xmlSecSize)16)
+#define XMLSEC_KW_AES128_KEY_SIZE                   ((xmlSecSize)16)
+#define XMLSEC_KW_AES192_KEY_SIZE                   ((xmlSecSize)24)
+#define XMLSEC_KW_AES256_KEY_SIZE                   ((xmlSecSize)32)
 
 typedef int  (*xmlSecKWAesBlockEncryptMethod)       (const xmlSecByte * in,
                                                      xmlSecSize inSize,

@@ -29,11 +29,28 @@
 
 #ifndef XMLSEC_NO_DES
 
+
+/*********************************************************************
+*
+* Triple DES helper functions
+*
+********************************************************************/
+static int      xmlSecKWDes3Encode                             (xmlSecKWDes3Id kwDes3Id,
+                                                                void* context,
+                                                                const xmlSecByte* in,
+                                                                xmlSecSize inSize,
+                                                                xmlSecByte* out,
+                                                                xmlSecSize outSize,
+                                                                xmlSecSize* outWritten);
+static int      xmlSecKWDes3Decode                              (xmlSecKWDes3Id kwDes3Id,
+                                                                 void* context,
+                                                                 const xmlSecByte* in,
+                                                                 xmlSecSize inSize,
+                                                                 xmlSecByte* out,
+                                                                 xmlSecSize outSize,
+                                                                xmlSecSize* outWritten);
 static int      xmlSecKWDes3BufferReverse                       (xmlSecByte *buf,
                                                                  xmlSecSize size);
-
-
-
 
 /*********************************************************************
  *

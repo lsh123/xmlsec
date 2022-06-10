@@ -9,7 +9,7 @@ REM Aleksey Sanin <aleksey@aleksey.com>
 REM 
 
 SET PREFIX=C:\local
-SET XMLSEC_CRYPTO=openssl-300,mscrypto,mscng
+SET XMLSEC_CRYPTO=mscrypto,mscng
 SET OPENSSL_PREFIX=%PREFIX%\openssl-3.0.3
 SET XMLSEC_INCLUDE=%PREFIX%\include;%PREFIX%\include\libxml2;%OPENSSL_PREFIX%\include;%MSSDK_INCLUDE%
 SET XMLSEC_LIB=%PREFIX%\lib;%OPENSSL_PREFIX%\lib;%MSSDK_LIB%

@@ -163,6 +163,7 @@ xmlSecGCryptKWDes3Initialize(xmlSecTransformPtr transform) {
 
     ctx = xmlSecGCryptKWDes3GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
+    memset(ctx, 0, sizeof(xmlSecGCryptKWDes3Ctx));
 
     ret = xmlSecTransformKWDes3Initialize(transform, ctx,
         &xmlSecGCryptKWDes3ImplKlass, xmlSecGCryptKeyDataDesId);
@@ -184,6 +185,7 @@ xmlSecGCryptKWDes3Finalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     xmlSecTransformKWDes3Finalize(transform, ctx);
+    memset(ctx, 0, sizeof(xmlSecGCryptKWDes3Ctx));
 }
 
 static int

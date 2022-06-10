@@ -162,6 +162,7 @@ xmlSecNssKWDes3Initialize(xmlSecTransformPtr transform) {
 
     ctx = xmlSecNssKWDes3GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
+    memset(ctx, 0, sizeof(xmlSecNssKWDes3Ctx));
 
     ret = xmlSecTransformKWDes3Initialize(transform, ctx,
         &xmlSecNssKWDes3ImplKlass, xmlSecNssKeyDataDesId);
@@ -183,6 +184,7 @@ xmlSecNssKWDes3Finalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     xmlSecTransformKWDes3Finalize(transform, ctx);
+    memset(ctx, 0, sizeof(xmlSecNssKWDes3Ctx));
 }
 
 static int

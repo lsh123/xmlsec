@@ -114,20 +114,6 @@ XMLSEC_EXPORT int      xmlSecTransformKWDes3Execute             (xmlSecTransform
                                                                  xmlSecTransformKWDes3CtxPtr ctx,
                                                                  int last,
                                                                  xmlSecTransformCtxPtr transformCtx);
-
-
-XMLSEC_EXPORT int
-xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, void* context,
-                  const xmlSecByte* in, xmlSecSize inSize,
-                  xmlSecByte* out, xmlSecSize outSize,
-                  xmlSecSize* outWritten);
-
-XMLSEC_EXPORT int
-xmlSecKWDes3Decode(xmlSecKWDes3Id kwDes3Id, void* context,
-                  const xmlSecByte* in, xmlSecSize inSize,
-                  xmlSecByte* out, xmlSecSize outSize,
-                  xmlSecSize* outWritten);
-
 #endif /* XMLSEC_NO_DES */
 
 #ifndef XMLSEC_NO_AES

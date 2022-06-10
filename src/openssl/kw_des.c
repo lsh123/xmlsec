@@ -167,6 +167,7 @@ xmlSecOpenSSLKWDes3Initialize(xmlSecTransformPtr transform) {
 
     ctx = xmlSecOpenSSLKWDes3GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
+    memset(ctx, 0, sizeof(xmlSecOpenSSLKWDes3Ctx));
 
     ret = xmlSecTransformKWDes3Initialize(transform, ctx, &xmlSecOpenSSLKWDes3ImplKlass,
         xmlSecOpenSSLKeyDataDesId);
@@ -188,6 +189,7 @@ xmlSecOpenSSLKWDes3Finalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     xmlSecTransformKWDes3Finalize(transform, ctx);
+    memset(ctx, 0, sizeof(xmlSecOpenSSLKWDes3Ctx));
 }
 
 static int

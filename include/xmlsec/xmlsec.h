@@ -33,7 +33,6 @@ extern "C" {
  */
 typedef void*                                   xmlSecPtr;
 
-
 /**
  * XMLSEC_SIZE_T_FMT:
  * 
@@ -81,6 +80,18 @@ typedef void*                                   xmlSecPtr;
  * but it will break ABI (todo).
  */
 #define xmlSecByte                              unsigned char
+
+ /**
+  * xmlSecStatus:
+  * @xmlSecStatusFailure:                       the function/operation failed.
+  * @xmlSecStatusSuccess:                       the function/operation succeeded. 
+  * 
+  * Success/failure status. 
+  */
+typedef enum {
+    xmlSecStatusFailure = 0,
+    xmlSecStatusSuccess = 1
+} xmlSecStatus;
 
 /***********************************************************************
  *

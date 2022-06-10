@@ -506,7 +506,6 @@ xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
     xmlChar* content = NULL;
     xmlSecSize size, outWritten;
     int len;
-    xmlSecStatus retStatus;
     int ret;
     int res = -1;
 
@@ -533,9 +532,9 @@ xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
         goto done;
     }
 
-    retStatus = xmlSecBase64Decode_ex(content, xmlSecBufferGetData(buf),
+    ret = xmlSecBase64Decode_ex(content, xmlSecBufferGetData(buf),
         xmlSecBufferGetMaxSize(buf), &outWritten);
-    if(retStatus != xmlSecStatusSuccess) {
+    if(ret < 0) {
         xmlSecInternalError("xmlSecBase64Decode_ex", NULL);
         goto done;
     }

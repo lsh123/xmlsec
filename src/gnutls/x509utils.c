@@ -359,7 +359,6 @@ done:
 gnutls_x509_crt_t
 xmlSecGnuTLSX509CertBase64DerRead(xmlChar* buf) {
     xmlSecSize size;
-    xmlSecStatus retStatus;
     gnutls_x509_crt_t res;
     int ret;
 
@@ -373,8 +372,8 @@ xmlSecGnuTLSX509CertBase64DerRead(xmlChar* buf) {
     XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
 
     /* usual trick with base64 decoding "in-place" */
-    retStatus = xmlSecBase64Decode_ex(buf, (xmlSecByte*)buf, size, &size);
-    if(retStatus != xmlSecStatusSuccess) {
+    ret = xmlSecBase64Decode_ex(buf, (xmlSecByte*)buf, size, &size);
+    if(ret < 0) {
         xmlSecInternalError("xmlSecBase64Decode_ex", NULL);
         return(NULL);
     }
@@ -618,7 +617,6 @@ gnutls_x509_crl_t
 xmlSecGnuTLSX509CrlBase64DerRead(xmlChar* buf) {
     gnutls_x509_crl_t res;
     xmlSecSize size;
-    xmlSecStatus retStatus;
     int ret;
 
     xmlSecAssert2(buf != NULL, NULL);
@@ -631,8 +629,8 @@ xmlSecGnuTLSX509CrlBase64DerRead(xmlChar* buf) {
     XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
 
     /* usual trick with base64 decoding "in-place" */
-    retStatus = xmlSecBase64Decode_ex(buf, (xmlSecByte*)buf, size, &size);
-    if(retStatus != xmlSecStatusSuccess) {
+    ret = xmlSecBase64Decode_ex(buf, (xmlSecByte*)buf, size, &size);
+    if(ret < 0) {
         xmlSecInternalError("xmlSecBase64Decode_ex", NULL);
         return(NULL);
     }

@@ -560,7 +560,6 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlChar* str = NULL;
     xmlSecKeyDataPtr data = NULL;
     xmlSecSize strSize;
-    xmlSecStatus retStatus;
     int strLen;
     int ret;
     int res = -1;
@@ -584,8 +583,8 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     XMLSEC_SAFE_CAST_INT_TO_SIZE(strLen, strSize, goto done, xmlSecKeyDataKlassGetName(id));
 
     /* usual trick: decode into the same buffer */
-    retStatus = xmlSecBase64Decode_ex(str, (xmlSecByte*)str, strSize, &strSize);
-    if(retStatus != xmlSecStatusSuccess) {
+    ret = xmlSecBase64Decode_ex(str, (xmlSecByte*)str, strSize, &strSize);
+    if(ret < 0) {
         xmlSecInternalError("xmlSecBase64Decode_ex", xmlSecKeyDataKlassGetName(id));
         goto done;
     }

@@ -1561,7 +1561,6 @@ static CERTCertificate*
 xmlSecNssX509CertBase64DerRead(xmlChar* buf) {
     CERTCertificate* res;
     xmlSecSize size;
-    xmlSecStatus retStatus;
     int ret;
 
     xmlSecAssert2(buf != NULL, NULL);
@@ -1574,8 +1573,8 @@ xmlSecNssX509CertBase64DerRead(xmlChar* buf) {
     XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
 
     /* usual trick with base64 decoding "in-place" */
-    retStatus = xmlSecBase64Decode_ex(buf, (xmlSecByte*)buf, size, &size);
-    if(retStatus != xmlSecStatusSuccess) {
+    ret = xmlSecBase64Decode_ex(buf, (xmlSecByte*)buf, size, &size);
+    if(ret < 0) {
         xmlSecInternalError("xmlSecBase64Decode_ex", NULL);
         return(NULL);
     }
@@ -1641,7 +1640,6 @@ xmlSecNssX509CrlBase64DerRead(xmlChar* buf,
                               xmlSecKeyInfoCtxPtr keyInfoCtx) {
     CERTSignedCrl* res;
     xmlSecSize size;
-    xmlSecStatus retStatus;
     int ret;
 
     xmlSecAssert2(buf != NULL, NULL);
@@ -1654,8 +1652,8 @@ xmlSecNssX509CrlBase64DerRead(xmlChar* buf,
     XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
 
     /* usual trick with base64 decoding "in-place" */
-    retStatus = xmlSecBase64Decode_ex(buf, (xmlSecByte*)buf, size, &size);
-    if(retStatus != xmlSecStatusSuccess) {
+    ret = xmlSecBase64Decode_ex(buf, (xmlSecByte*)buf, size, &size);
+    if(ret < 0) {
         xmlSecInternalError("xmlSecBase64Decode_ex", NULL);
         return(NULL);
     }

@@ -818,7 +818,7 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
         int index;
         X509_EXTENSION *ext;
         ASN1_OCTET_STRING *keyId;
-        xmlSecStatus retStatus;
+        int ret;
 
         len = xmlStrlen(ski);
         if(len <= 0) {
@@ -828,8 +828,8 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
         XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(NULL), NULL);
 
         /* our usual trick with base64 decode */
-        retStatus = xmlSecBase64Decode_ex(ski, (xmlSecByte*)ski, size, &size);
-        if(retStatus != xmlSecStatusSuccess) {
+        ret = xmlSecBase64Decode_ex(ski, (xmlSecByte*)ski, size, &size);
+        if(ret < 0) {
             xmlSecInternalError2("xmlSecBase64Decode_ex", NULL,
                 "ski=%s", xmlSecErrorsSafeString(ski));
             return(NULL);

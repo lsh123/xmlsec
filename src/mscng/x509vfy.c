@@ -1018,7 +1018,6 @@ xmlSecMSCngX509FindCertBySki(HCERTSTORE store, const xmlChar* ski) {
     xmlChar* binSki = NULL;
     CRYPT_HASH_BLOB blob;
     xmlSecSize size;
-    xmlSecStatus retStatus;
     int ret;
 
     xmlSecAssert2(store != 0, NULL);
@@ -1038,8 +1037,8 @@ xmlSecMSCngX509FindCertBySki(HCERTSTORE store, const xmlChar* ski) {
     XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, goto done, NULL);
 
     /* base64 decode "in place" */
-    retStatus = xmlSecBase64Decode_ex(binSki, (xmlSecByte*)binSki, size, &size);
-    if(retStatus != xmlSecStatusSuccess) {
+    ret = xmlSecBase64Decode_ex(binSki, (xmlSecByte*)binSki, size, &size);
+    if(ret < 0) {
         xmlSecInternalError("xmlSecBase64Decode_ex", NULL);
         goto done;
     }

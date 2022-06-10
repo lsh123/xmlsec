@@ -38,21 +38,19 @@ typedef struct _xmlSecBase64Ctx                                 xmlSecBase64Ctx,
 
 XMLSEC_EXPORT xmlSecBase64CtxPtr xmlSecBase64CtxCreate          (int encode,
                                                                  int columns);
-XMLSEC_EXPORT void               xmlSecBase64CtxDestroy          (xmlSecBase64CtxPtr ctx);
-
-
-XMLSEC_EXPORT xmlSecStatus      xmlSecBase64CtxInitialize_ex    (xmlSecBase64CtxPtr ctx,
+XMLSEC_EXPORT void              xmlSecBase64CtxDestroy          (xmlSecBase64CtxPtr ctx);
+XMLSEC_EXPORT int               xmlSecBase64CtxInitialize       (xmlSecBase64CtxPtr ctx,
                                                                  int encode,
-                                                                 xmlSecSize columns);
+                                                                 int columns);
 XMLSEC_EXPORT void              xmlSecBase64CtxFinalize         (xmlSecBase64CtxPtr ctx);
-XMLSEC_EXPORT xmlSecStatus      xmlSecBase64CtxUpdate_ex        (xmlSecBase64CtxPtr ctx,
+XMLSEC_EXPORT int               xmlSecBase64CtxUpdate_ex        (xmlSecBase64CtxPtr ctx,
                                                                  const xmlSecByte* in,
                                                                  xmlSecSize inSize,
                                                                  xmlSecByte* out,
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize* outWritten);
 
-XMLSEC_EXPORT xmlSecStatus       xmlSecBase64CtxFinal_ex        (xmlSecBase64CtxPtr ctx,
+XMLSEC_EXPORT int                xmlSecBase64CtxFinal_ex        (xmlSecBase64CtxPtr ctx,
                                                                  xmlSecByte* out,
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize* outWritten);
@@ -61,7 +59,7 @@ XMLSEC_EXPORT xmlSecStatus       xmlSecBase64CtxFinal_ex        (xmlSecBase64Ctx
 XMLSEC_EXPORT xmlChar*           xmlSecBase64Encode             (const xmlSecByte* in,
                                                                  xmlSecSize inSize,
                                                                  int columns);
-XMLSEC_EXPORT xmlSecStatus       xmlSecBase64Decode_ex          (const xmlChar* str,
+XMLSEC_EXPORT int                xmlSecBase64Decode_ex          (const xmlChar* str,
                                                                  xmlSecByte* out,
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize* outWritten);
@@ -70,9 +68,7 @@ XMLSEC_EXPORT xmlSecStatus       xmlSecBase64Decode_ex          (const xmlChar* 
 /**
  *  These functions are deprecated, don't use them in your code!
  */
-XMLSEC_DEPRECATED XMLSEC_EXPORT int xmlSecBase64CtxInitialize  (xmlSecBase64CtxPtr ctx,
-                                                                int encode,
-                                                                int columns);
+
 XMLSEC_DEPRECATED XMLSEC_EXPORT int xmlSecBase64CtxUpdate      (xmlSecBase64CtxPtr ctx,
                                                                 const xmlSecByte* in,
                                                                 xmlSecSize inSize,

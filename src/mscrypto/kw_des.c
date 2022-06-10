@@ -44,26 +44,30 @@
  *********************************************************************/
 static int       xmlSecMSCryptoKWDes3GenerateRandom              (void * context,
                                                                  xmlSecByte * out, 
-                                                                 xmlSecSize outSize);
+                                                                 xmlSecSize outSize,
+                                                                 xmlSecSize * outWritten);
 static int       xmlSecMSCryptoKWDes3Sha1                        (void * context,
                                                                  const xmlSecByte * in, 
                                                                  xmlSecSize inSize, 
                                                                  xmlSecByte * out, 
-                                                                 xmlSecSize outSize);
+                                                                 xmlSecSize outSize,
+                                                                 xmlSecSize * outWritten);
 static int      xmlSecMSCryptoKWDes3BlockEncrypt                 (void * context,
                                                                  const xmlSecByte * iv, 
                                                                  xmlSecSize ivSize,
                                                                  const xmlSecByte * in, 
                                                                  xmlSecSize inSize,
                                                                  xmlSecByte * out, 
-                                                                 xmlSecSize outSize);
+                                                                 xmlSecSize outSize,
+                                                                 xmlSecSize * outWritten);
 static int      xmlSecMSCryptoKWDes3BlockDecrypt                 (void * context,
                                                                  const xmlSecByte * iv, 
                                                                  xmlSecSize ivSize,
                                                                  const xmlSecByte * in, 
                                                                  xmlSecSize inSize,
                                                                  xmlSecByte * out, 
-                                                                 xmlSecSize outSize);
+                                                                 xmlSecSize outSize,
+                                                                 xmlSecSize * outWritten);
 
 static xmlSecKWDes3Klass xmlSecMSCryptoKWDes3ImplKlass = {
     /* callbacks */

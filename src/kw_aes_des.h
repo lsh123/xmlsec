@@ -41,24 +41,28 @@ typedef int  (*xmlSecKWDes3Sha1Method)              (void * context,
                                                      const xmlSecByte * in,
                                                      xmlSecSize inSize,
                                                      xmlSecByte * out,
-                                                     xmlSecSize outSize);
+                                                     xmlSecSize outSize,
+                                                     xmlSecSize * outWritten);
 typedef int  (*xmlSecKWDes3GenerateRandomMethod)    (void * context,
                                                      xmlSecByte * out,
-                                                     xmlSecSize outSize);
+                                                     xmlSecSize outSize,
+                                                     xmlSecSize * outWritten);
 typedef int  (*xmlSecKWDes3BlockEncryptMethod)      (void * context,
                                                      const xmlSecByte * iv,
                                                      xmlSecSize ivSize,
                                                      const xmlSecByte * in,
                                                      xmlSecSize inSize,
                                                      xmlSecByte * out,
-                                                     xmlSecSize outSize);
+                                                     xmlSecSize outSize,
+                                                     xmlSecSize * outWritten);
 typedef int  (*xmlSecKWDes3BlockDecryptMethod)      (void * context,
                                                      const xmlSecByte * iv,
                                                      xmlSecSize ivSize,
                                                      const xmlSecByte * in,
                                                      xmlSecSize inSize,
                                                      xmlSecByte * out,
-                                                     xmlSecSize outSize);
+                                                     xmlSecSize outSize,
+                                                     xmlSecSize * outWritten);
 
 
 struct _xmlSecKWDes3Klass {

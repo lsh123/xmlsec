@@ -203,7 +203,7 @@ xmlSecMSCngX509CertBase64DerRead(xmlChar* buf) {
     XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
 
     /* in-place decoding */
-    xmlSecStatus retStatus; = xmlSecBase64Decode_ex(buf, (xmlSecByte*)buf, size), &size;
+    retStatus = xmlSecBase64Decode_ex(buf, (xmlSecByte*)buf, size), &size;
     if(retStatus != xmlSecStatusSuccess) {
         xmlSecInternalError("xmlSecBase64Decode_ex", NULL);
         return(NULL);

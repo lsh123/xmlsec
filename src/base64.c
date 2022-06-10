@@ -302,6 +302,7 @@ xmlSecBase64CtxFinal_ex(xmlSecBase64CtxPtr ctx, xmlSecByte *out, xmlSecSize outS
             xmlSecInternalError("xmlSecBase64CtxDecodeIsFinished", NULL);
             return(xmlSecStatusFailure);
         }
+        (*outWritten) = 0;
     }
 
     /* add \0 just in case (if we can) */

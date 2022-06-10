@@ -85,7 +85,8 @@ static xmlSecPtrListKlass xmlSecCryptoDLLibrariesListKlass = {
 };
 static xmlSecPtrListId          xmlSecCryptoDLLibrariesListGetKlass     (void);
 static int                      xmlSecCryptoDLLibrariesListFindByName   (xmlSecPtrListPtr list,
-                                                                         const xmlChar* name);
+                                                                         const xmlChar* name,
+                                                                         xmlSecSize* pos);
 
 typedef xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctionsCallback(void);
 
@@ -314,20 +315,20 @@ xmlSecCryptoDLLibrariesListGetKlass(void) {
 }
 
 static int
-xmlSecCryptoDLLibrariesListFindByName(xmlSecPtrListPtr list, const xmlChar* name) {
+xmlSecCryptoDLLibrariesListFindByName(xmlSecPtrListPtr list, const xmlChar* name, xmlSecSize* pos) {
     xmlSecSize ii, size;
     xmlSecCryptoDLLibraryPtr lib;
 
     xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecCryptoDLLibrariesListGetKlass()), -1);
     xmlSecAssert2(name != NULL, -1);
+    xmlSecAssert2(pos != NULL, -1);
 
     size = xmlSecPtrListGetSize(list);
     for(ii = 0; ii < size; ++ii) {
         lib = (xmlSecCryptoDLLibraryPtr)xmlSecPtrListGetItem(list, ii);
         if((lib != NULL) && (lib->name != NULL) && (xmlStrcmp(lib->name, name) == 0)) {
-            int res;
-            XMLSEC_SAFE_CAST_SIZE_TO_INT(ii, res, return(-1), NULL);
-            return(res);
+            (*pos) = ii;
+            return(0);
         }
     }
     return(-1);
@@ -449,28 +450,25 @@ xmlSecCryptoDLGetLibraryFunctions(const xmlChar* crypto) {
 
     xmlSecAssert2(crypto != NULL, NULL);
 
-    ret = xmlSecCryptoDLLibrariesListFindByName(&gXmlSecCryptoDLLibraries, crypto);
+    ret = xmlSecCryptoDLLibrariesListFindByName(&gXmlSecCryptoDLLibraries, crypto, &pos);
     if(ret >= 0) {
-        XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, pos, return(NULL), -1);
-
         lib = (xmlSecCryptoDLLibraryPtr)xmlSecPtrListGetItem(&gXmlSecCryptoDLLibraries, pos);
         xmlSecAssert2(lib != NULL, NULL);
         xmlSecAssert2(lib->functions != NULL, NULL);
-
         return(lib->functions);
     }
 
     lib = xmlSecCryptoDLLibraryCreate(crypto);
     if(lib == NULL) {
         xmlSecInternalError2("xmlSecCryptoDLLibraryCreate", NULL,
-                             "crypto=%s", xmlSecErrorsSafeString(crypto));
+            "crypto=%s", xmlSecErrorsSafeString(crypto));
         return(NULL);
     }
 
     ret = xmlSecPtrListAdd(&gXmlSecCryptoDLLibraries, lib);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecPtrListAdd", NULL,
-                             "crypto=%s", xmlSecErrorsSafeString(crypto));
+            "crypto=%s", xmlSecErrorsSafeString(crypto));
         xmlSecCryptoDLLibraryDestroy(lib);
         return(NULL);
     }
@@ -497,12 +495,11 @@ xmlSecCryptoDLUnloadLibrary(const xmlChar* crypto) {
 
     xmlSecAssert2(crypto != NULL, -1);
 
-    ret = xmlSecCryptoDLLibrariesListFindByName(&gXmlSecCryptoDLLibraries, crypto);
+    ret = xmlSecCryptoDLLibrariesListFindByName(&gXmlSecCryptoDLLibraries, crypto, &pos);
     if(ret < 0) {
         /* todo: is it an error? */
         return(0);
     }
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, pos, return(-1), NULL);
 
     lib = (xmlSecCryptoDLLibraryPtr)xmlSecPtrListGetItem(&gXmlSecCryptoDLLibraries, pos);
     if((lib != NULL) && (lib->functions == gXmlSecCryptoDLFunctions)) {

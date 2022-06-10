@@ -726,27 +726,25 @@ xmlSecMSCngKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransform
         }
 
         if(transform->operation == xmlSecTransformOperationEncrypt) {
-            ret = xmlSecKWDes3Encode(&xmlSecMSCngKWDesKlass, ctx,
-                xmlSecBufferGetData(in), inSize, xmlSecBufferGetData(out),
-                outSize);
+            ret = xmlSecKWDes3Encode_ex(&xmlSecMSCngKWDesKlass, ctx,
+                xmlSecBufferGetData(in), inSize, xmlSecBufferGetData(out), outSize,
+                &outSize);
             if(ret < 0) {
                 xmlSecInternalError4("xmlSecKWDes3Encode", xmlSecTransformGetName(transform), 
                     "keySize=" XMLSEC_SIZE_FMT "; inSize=" XMLSEC_SIZE_FMT "; outSize=" XMLSEC_SIZE_FMT,
                     keySize, inSize, outSize);
                 return(-1);
             }
-            XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outSize, return(-1), xmlSecTransformGetName(transform));
         } else {
-            ret = xmlSecKWDes3Decode(&xmlSecMSCngKWDesKlass, ctx,
-                                    xmlSecBufferGetData(in), inSize,
-                                    xmlSecBufferGetData(out), outSize);
+            ret = xmlSecKWDes3Decode_ex(&xmlSecMSCngKWDesKlass, ctx,
+                xmlSecBufferGetData(in), inSize, xmlSecBufferGetData(out), outSize,
+                &outSize);
             if(ret < 0) {
                 xmlSecInternalError4("xmlSecKWDes3Decode", xmlSecTransformGetName(transform),
                     "keySize=" XMLSEC_SIZE_FMT "; inSize=" XMLSEC_SIZE_FMT "; outSize=" XMLSEC_SIZE_FMT,
                     keySize, inSize, outSize);
                 return(-1);
             }
-            XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outSize, return(-1), xmlSecTransformGetName(transform));
         }
 
         ret = xmlSecBufferSetSize(out, outSize);

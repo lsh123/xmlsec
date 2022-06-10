@@ -371,7 +371,7 @@ xmlSecMSCryptoKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransf
         }
 
         if(transform->operation == xmlSecTransformOperationEncrypt) {
-            ret = xmlSecKWDes3Encode_ex(&xmlSecMSCryptoKWDes3ImplKlass, ctx,
+            ret = xmlSecKWDes3Encode(&xmlSecMSCryptoKWDes3ImplKlass, ctx,
                 xmlSecBufferGetData(in), inSize, xmlSecBufferGetData(out), outSize,
                 &outSize);
             if(ret < 0) {

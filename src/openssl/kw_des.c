@@ -98,8 +98,8 @@ static int      xmlSecOpenSSLKWDes3Encrypt                      (const xmlSecByt
  * Triple DES Key Wrap transform context
  *
  ********************************************************************/
-typedef xmlSecTransformKWDes3Ctx                  xmlSecOpenSSLKWDes3Ctx,
-                                                  *xmlSecOpenSSLKWDes3CtxPtr;
+typedef xmlSecTransformKWDes3Ctx  xmlSecOpenSSLKWDes3Ctx,
+                                 *xmlSecOpenSSLKWDes3CtxPtr;
 
 /*********************************************************************
  *
@@ -168,7 +168,8 @@ xmlSecOpenSSLKWDes3Initialize(xmlSecTransformPtr transform) {
     ctx = xmlSecOpenSSLKWDes3GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecTransformKWDes3Initialize(transform, ctx, &xmlSecOpenSSLKWDes3ImplKlass);
+    ret = xmlSecTransformKWDes3Initialize(transform, ctx, &xmlSecOpenSSLKWDes3ImplKlass,
+        xmlSecOpenSSLKeyDataDesId);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformKWDes3Initialize", xmlSecTransformGetName(transform));
         return(-1);
@@ -195,13 +196,12 @@ xmlSecOpenSSLKWDes3SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyR
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWDes3Id), -1);
-    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWDes3Size), -1);
 
     ctx = xmlSecOpenSSLKWDes3GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecTransformKWDes3SetKeyReq(transform, ctx, xmlSecOpenSSLKeyDataDesId, keyReq);
+    ret = xmlSecTransformKWDes3SetKeyReq(transform, ctx, keyReq);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformKWDes3SetKeyReq", xmlSecTransformGetName(transform));
         return(-1);
@@ -215,10 +215,7 @@ xmlSecOpenSSLKWDes3SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWDes3Id), -1);
-    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWDes3Size), -1);
-    xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key), xmlSecOpenSSLKeyDataDesId), -1);
 
     ctx = xmlSecOpenSSLKWDes3GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
@@ -237,7 +234,6 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfo
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWDes3Id), -1);
-    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWDes3Size), -1);
 
     ctx = xmlSecOpenSSLKWDes3GetCtx(transform);

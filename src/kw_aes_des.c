@@ -42,12 +42,13 @@ static int      xmlSecKWDes3BufferReverse                       (xmlSecByte *buf
  ********************************************************************/
 int
 xmlSecTransformKWDes3Initialize(xmlSecTransformPtr transform, xmlSecTransformKWDes3CtxPtr ctx,
-                    xmlSecKWDes3Id kwDes3Id) {
+                    xmlSecKWDes3Id kwDes3Id, xmlSecKeyDataId keyId) {
     int ret;
 
     xmlSecAssert2(transform != NULL, -1);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(kwDes3Id != NULL, -1);
+    xmlSecAssert2(keyId != NULL, -1);
 
     ret = xmlSecBufferInitialize(&(ctx->keyBuffer), 0);
     if(ret < 0) {
@@ -55,6 +56,8 @@ xmlSecTransformKWDes3Initialize(xmlSecTransformPtr transform, xmlSecTransformKWD
         return(-1);
     }
     ctx->kwDes3Id = kwDes3Id;
+    ctx->keyId = keyId;
+
     return(0);
 }
 
@@ -68,13 +71,13 @@ xmlSecTransformKWDes3Finalize(xmlSecTransformPtr transform, xmlSecTransformKWDes
 
 int
 xmlSecTransformKWDes3SetKeyReq(xmlSecTransformPtr transform, xmlSecTransformKWDes3CtxPtr ctx,
-                        xmlSecKeyDataId keyId, xmlSecKeyReqPtr keyReq) {
+                        xmlSecKeyReqPtr keyReq) {
     xmlSecAssert2(transform != NULL, -1);
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(keyId != NULL, -1);
+    xmlSecAssert2(ctx->keyId != NULL, -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
-    keyReq->keyId       = keyId;
+    keyReq->keyId       = ctx->keyId;
     keyReq->keyType     = xmlSecKeyDataTypeSymmetric;
     if(transform->operation == xmlSecTransformOperationEncrypt) {
         keyReq->keyUsage= xmlSecKeyUsageEncrypt;
@@ -95,7 +98,9 @@ xmlSecTransformKWDes3SetKey(xmlSecTransformPtr transform, xmlSecTransformKWDes3C
     xmlSecAssert2(transform != NULL, -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->keyId != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key), ctx->keyId), -1);
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(xmlSecKeyGetValue(key));
     xmlSecAssert2(buffer != NULL, -1);
@@ -127,6 +132,7 @@ xmlSecTransformKWDes3Execute(xmlSecTransformPtr transform, xmlSecTransformKWDes3
     xmlSecAssert2(transform != NULL, -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->kwDes3Id != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
     keySize = xmlSecBufferGetSize(&(ctx->keyBuffer));
@@ -171,7 +177,7 @@ xmlSecTransformKWDes3Execute(xmlSecTransformPtr transform, xmlSecTransformKWDes3
         }
 
         if(transform->operation == xmlSecTransformOperationEncrypt) {
-            ret = xmlSecKWDes3Encode_ex(ctx->kwDes3Id, ctx, xmlSecBufferGetData(in), inSize,
+            ret = xmlSecKWDes3Encode(ctx->kwDes3Id, ctx, xmlSecBufferGetData(in), inSize,
                 xmlSecBufferGetData(out), outSize, &outSize);
             if(ret < 0) {
                 xmlSecInternalError4("xmlSecKWDes3Encode", xmlSecTransformGetName(transform),
@@ -181,7 +187,7 @@ xmlSecTransformKWDes3Execute(xmlSecTransformPtr transform, xmlSecTransformKWDes3
                 return(-1);
             }
         } else {
-            ret = xmlSecKWDes3Decode_ex(ctx->kwDes3Id, ctx, xmlSecBufferGetData(in), inSize,
+            ret = xmlSecKWDes3Decode(ctx->kwDes3Id, ctx, xmlSecBufferGetData(in), inSize,
                 xmlSecBufferGetData(out), outSize, &outSize);
             if(ret < 0) {
                 xmlSecInternalError4("xmlSecKWDes3Decode", xmlSecTransformGetName(transform),
@@ -272,7 +278,7 @@ static xmlSecByte xmlSecKWDes3Iv[XMLSEC_KW_DES3_IV_LENGTH] = {
 };
 
 int
-xmlSecKWDes3Encode_ex(xmlSecKWDes3Id kwDes3Id, void *context,
+xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, void *context,
                   const xmlSecByte *in, xmlSecSize inSize,
                   xmlSecByte *out, xmlSecSize outSize,
                   xmlSecSize* outWritten) {
@@ -355,7 +361,7 @@ xmlSecKWDes3Encode_ex(xmlSecKWDes3Id kwDes3Id, void *context,
 }
 
 int
-xmlSecKWDes3Decode_ex(xmlSecKWDes3Id kwDes3Id, void *context,
+xmlSecKWDes3Decode(xmlSecKWDes3Id kwDes3Id, void *context,
                   const xmlSecByte *in, xmlSecSize inSize,
                   xmlSecByte *out, xmlSecSize outSize,
                   xmlSecSize* outWritten)
@@ -468,43 +474,7 @@ xmlSecKWDes3BufferReverse(xmlSecByte *buf, xmlSecSize size)
     }
     return (0);
 }
-
-/**
- *  These functions are deprecated and will be removed in the future.
- */
-int
-xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, void *context,
-                  const xmlSecByte *in, xmlSecSize inSize,
-                  xmlSecByte *out, xmlSecSize outSize) {
-    xmlSecSize outWritten;
-    int ret;
-
-    ret = xmlSecKWDes3Encode_ex(kwDes3Id, context, in, inSize,
-        out, outSize, &outWritten);
-    if(ret < 0) {
-        return(-1);
-    }
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(outWritten, ret, return(-1), NULL);
-    return(ret);
-}
-
-int
-xmlSecKWDes3Decode(xmlSecKWDes3Id kwDes3Id, void *context,
-                  const xmlSecByte *in, xmlSecSize inSize,
-                  xmlSecByte *out, xmlSecSize outSize) {
-    xmlSecSize outWritten;
-    int ret;
-
-    ret = xmlSecKWDes3Decode_ex(kwDes3Id, context, in, inSize,
-        out, outSize, &outWritten);
-    if(ret < 0) {
-        return(-1);
-    }
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(outWritten, ret, return(-1), NULL);
-    return(ret);
-}
 #endif /* XMLSEC_NO_DES */
-
 
 
 #ifndef XMLSEC_NO_AES

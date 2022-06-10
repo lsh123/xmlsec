@@ -93,10 +93,8 @@ static int      xmlSecNssKWDes3Encrypt                          (const xmlSecByt
  * Triple DES Key Wrap transform context
  *
  ********************************************************************/
-typedef struct _xmlSecNssKWDes3Ctx  xmlSecNssKWDes3Ctx, *xmlSecNssKWDes3CtxPtr;
-struct _xmlSecNssKWDes3Ctx {
-    xmlSecBuffer        keyBuffer;
-};
+typedef xmlSecTransformKWDes3Ctx  xmlSecNssKWDes3Ctx,
+                                 *xmlSecNssKWDes3CtxPtr;
 
 /*********************************************************************
  *
@@ -165,13 +163,12 @@ xmlSecNssKWDes3Initialize(xmlSecTransformPtr transform) {
     ctx = xmlSecNssKWDes3GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecBufferInitialize(&(ctx->keyBuffer), 0);
+    ret = xmlSecTransformKWDes3Initialize(transform, ctx,
+        &xmlSecNssKWDes3ImplKlass, xmlSecNssKeyDataDesId);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferInitialize",
-                            xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecTransformKWDes3Initialize", xmlSecTransformGetName(transform));
         return(-1);
     }
-
     return(0);
 }
 
@@ -185,166 +182,61 @@ xmlSecNssKWDes3Finalize(xmlSecTransformPtr transform) {
     ctx = xmlSecNssKWDes3GetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
-    xmlSecBufferFinalize(&(ctx->keyBuffer));
+    xmlSecTransformKWDes3Finalize(transform, ctx);
 }
 
 static int
 xmlSecNssKWDes3SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
     xmlSecNssKWDes3CtxPtr ctx;
+    int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecNssTransformKWDes3Id), -1);
-    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKWDes3Size), -1);
-    xmlSecAssert2(keyReq != NULL, -1);
 
     ctx = xmlSecNssKWDes3GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    keyReq->keyId       = xmlSecNssKeyDataDesId;
-    keyReq->keyType     = xmlSecKeyDataTypeSymmetric;
-    if(transform->operation == xmlSecTransformOperationEncrypt) {
-        keyReq->keyUsage= xmlSecKeyUsageEncrypt;
-    } else {
-        keyReq->keyUsage= xmlSecKeyUsageDecrypt;
+    ret = xmlSecTransformKWDes3SetKeyReq(transform, ctx, keyReq);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformKWDes3SetKeyReq",
+            xmlSecTransformGetName(transform));
+        return(-1);
     }
-    keyReq->keyBitsSize = 8 * XMLSEC_KW_DES3_KEY_LENGTH;
     return(0);
 }
 
 static int
 xmlSecNssKWDes3SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecNssKWDes3CtxPtr ctx;
-    xmlSecBufferPtr buffer;
-    xmlSecSize keySize;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecNssTransformKWDes3Id), -1);
-    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKWDes3Size), -1);
-    xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key), xmlSecNssKeyDataDesId), -1);
 
     ctx = xmlSecNssKWDes3GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    buffer = xmlSecKeyDataBinaryValueGetBuffer(xmlSecKeyGetValue(key));
-    xmlSecAssert2(buffer != NULL, -1);
-
-    keySize = xmlSecBufferGetSize(buffer);
-    if(keySize < XMLSEC_KW_DES3_KEY_LENGTH) {
-        xmlSecInvalidKeyDataSizeError(keySize, XMLSEC_KW_DES3_KEY_LENGTH,
-                xmlSecTransformGetName(transform));
-        return(-1);
-    }
-
-    ret = xmlSecBufferSetData(&(ctx->keyBuffer), xmlSecBufferGetData(buffer), XMLSEC_KW_DES3_KEY_LENGTH);
+    ret = xmlSecTransformKWDes3SetKey(transform, ctx, key);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferSetData(XMLSEC_KW_DES3_KEY_LENGTH)", 
-            xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecTransformKWDes3SetKey", xmlSecTransformGetName(transform));
         return(-1);
     }
-
     return(0);
 }
 
 static int
 xmlSecNssKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecNssKWDes3CtxPtr ctx;
-    xmlSecBufferPtr in, out;
-    xmlSecSize inSize, outSize, keySize;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecNssTransformKWDes3Id), -1);
-    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKWDes3Size), -1);
-    xmlSecAssert2(transformCtx != NULL, -1);
 
     ctx = xmlSecNssKWDes3GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-
-    keySize = xmlSecBufferGetSize(&(ctx->keyBuffer));
-    xmlSecAssert2(keySize == XMLSEC_KW_DES3_KEY_LENGTH, -1);
-
-    in = &(transform->inBuf);
-    out = &(transform->outBuf);
-    inSize = xmlSecBufferGetSize(in);
-    outSize = xmlSecBufferGetSize(out);
-    xmlSecAssert2(outSize == 0, -1);
-
-    if(transform->status == xmlSecTransformStatusNone) {
-        transform->status = xmlSecTransformStatusWorking;
-    }
-
-    if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
-        /* just do nothing */
-    } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
-        if((inSize % XMLSEC_KW_DES3_BLOCK_LENGTH) != 0) {
-            xmlSecInvalidSizeNotMultipleOfError("Input data",
-                                inSize, XMLSEC_KW_DES3_BLOCK_LENGTH,
-                                xmlSecTransformGetName(transform));
-            return(-1);
-        }
-
-        if(transform->operation == xmlSecTransformOperationEncrypt) {
-            /* the encoded key might be 16 bytes longer plus one block just in case */
-            outSize = inSize + XMLSEC_KW_DES3_IV_LENGTH +
-                               XMLSEC_KW_DES3_BLOCK_LENGTH +
-                               XMLSEC_KW_DES3_BLOCK_LENGTH;
-        } else {
-            /* just in case, add a block */
-            outSize = inSize + XMLSEC_KW_DES3_BLOCK_LENGTH;
-        }
-
-        ret = xmlSecBufferSetMaxSize(out, outSize);
-        if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferSetMaxSize",
-                                 xmlSecTransformGetName(transform),
-                                 "size=" XMLSEC_SIZE_FMT, outSize);
-            return(-1);
-        }
-
-        if(transform->operation == xmlSecTransformOperationEncrypt) {
-            ret = xmlSecKWDes3Encode_ex(&xmlSecNssKWDes3ImplKlass, ctx,
-                xmlSecBufferGetData(in), inSize, xmlSecBufferGetData(out), outSize,
-                &outSize);
-            if(ret < 0) {
-                xmlSecInternalError4("xmlSecKWDes3Encode", xmlSecTransformGetName(transform),
-                    "keySize=" XMLSEC_SIZE_FMT "; inSize=" XMLSEC_SIZE_FMT "; outSize=" XMLSEC_SIZE_FMT,
-                    keySize, inSize, outSize);
-                return(-1);
-            }
-        } else {
-            ret = xmlSecKWDes3Decode_ex(&xmlSecNssKWDes3ImplKlass, ctx, 
-                xmlSecBufferGetData(in), inSize, xmlSecBufferGetData(out), outSize,
-                &outSize);
-            if(ret < 0) {
-                xmlSecInternalError4("xmlSecKWDes3Decode", xmlSecTransformGetName(transform),
-                    "keySize=" XMLSEC_SIZE_FMT "; inSize=" XMLSEC_SIZE_FMT "; outSize=" XMLSEC_SIZE_FMT,
-                    keySize, inSize, outSize);
-                return(-1);
-            }
-        }
-
-        ret = xmlSecBufferSetSize(out, outSize);
-        if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform),
-                "size=" XMLSEC_SIZE_FMT, outSize);
-            return(-1);
-        }
-
-        ret = xmlSecBufferRemoveHead(in, inSize);
-        if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform),
-                "size=" XMLSEC_SIZE_FMT, inSize);
-            return(-1);
-        }
-
-        transform->status = xmlSecTransformStatusFinished;
-    } else if(transform->status == xmlSecTransformStatusFinished) {
-        /* the only way we can get here is if there is no input */
-        xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
-    } else {
-        xmlSecInvalidTransfromStatusError(transform);
+    ret = xmlSecTransformKWDes3Execute(transform, ctx, last, transformCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformKWDes3Execute", xmlSecTransformGetName(transform));
         return(-1);
     }
     return(0);

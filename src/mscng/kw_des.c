@@ -726,7 +726,7 @@ xmlSecMSCngKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransform
         }
 
         if(transform->operation == xmlSecTransformOperationEncrypt) {
-            ret = xmlSecKWDes3Encode_ex(&xmlSecMSCngKWDesKlass, ctx,
+            ret = xmlSecKWDes3Encode(&xmlSecMSCngKWDesKlass, ctx,
                 xmlSecBufferGetData(in), inSize, xmlSecBufferGetData(out), outSize,
                 &outSize);
             if(ret < 0) {
@@ -736,7 +736,7 @@ xmlSecMSCngKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransform
                 return(-1);
             }
         } else {
-            ret = xmlSecKWDes3Decode_ex(&xmlSecMSCngKWDesKlass, ctx,
+            ret = xmlSecKWDes3Decode(&xmlSecMSCngKWDesKlass, ctx,
                 xmlSecBufferGetData(in), inSize, xmlSecBufferGetData(out), outSize,
                 &outSize);
             if(ret < 0) {

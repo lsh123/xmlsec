@@ -94,17 +94,18 @@ typedef struct _xmlSecTransformKWDes3Ctx     xmlSecTransformKWDes3Ctx,
                                             *xmlSecTransformKWDes3CtxPtr;
 struct _xmlSecTransformKWDes3Ctx {
     xmlSecKWDes3Id      kwDes3Id;
+    xmlSecKeyDataId     keyId;
     xmlSecBuffer        keyBuffer;
 };
 
 XMLSEC_EXPORT int      xmlSecTransformKWDes3Initialize          (xmlSecTransformPtr transform,
                                                                  xmlSecTransformKWDes3CtxPtr ctx,
-                                                                 xmlSecKWDes3Id kwDes3Id);
+                                                                 xmlSecKWDes3Id kwDes3Id,
+                                                                 xmlSecKeyDataId keyId);
 XMLSEC_EXPORT void     xmlSecTransformKWDes3Finalize            (xmlSecTransformPtr transform,
                                                                  xmlSecTransformKWDes3CtxPtr ctx);
 XMLSEC_EXPORT int      xmlSecTransformKWDes3SetKeyReq           (xmlSecTransformPtr transform,
                                                                  xmlSecTransformKWDes3CtxPtr ctx,
-                                                                 xmlSecKeyDataId keyId,
                                                                  xmlSecKeyReqPtr keyReq);
 XMLSEC_EXPORT int      xmlSecTransformKWDes3SetKey              (xmlSecTransformPtr transform,
                                                                  xmlSecTransformKWDes3CtxPtr ctx,
@@ -116,13 +117,13 @@ XMLSEC_EXPORT int      xmlSecTransformKWDes3Execute             (xmlSecTransform
 
 
 XMLSEC_EXPORT int
-xmlSecKWDes3Encode_ex(xmlSecKWDes3Id kwDes3Id, void* context,
+xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, void* context,
                   const xmlSecByte* in, xmlSecSize inSize,
                   xmlSecByte* out, xmlSecSize outSize,
                   xmlSecSize* outWritten);
 
 XMLSEC_EXPORT int
-xmlSecKWDes3Decode_ex(xmlSecKWDes3Id kwDes3Id, void* context,
+xmlSecKWDes3Decode(xmlSecKWDes3Id kwDes3Id, void* context,
                   const xmlSecByte* in, xmlSecSize inSize,
                   xmlSecByte* out, xmlSecSize outSize,
                   xmlSecSize* outWritten);

@@ -269,43 +269,40 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformC
      * process more than that */
     if((transform->operation == xmlSecTransformOperationEncrypt) && (inSize >= keySize)) {
         xmlSecInvalidSizeLessThanError("Input data", inSize, keySize,
-                                       xmlSecTransformGetName(transform));
+            xmlSecTransformGetName(transform));
         return(-1);
     } else if((transform->operation == xmlSecTransformOperationDecrypt) && (inSize != keySize)) {
         xmlSecInvalidSizeError("Input data", inSize, keySize,
-                               xmlSecTransformGetName(transform));
+            xmlSecTransformGetName(transform));
         return(-1);
     }
 
     outSize = keySize;
     ret = xmlSecBufferSetMaxSize(out, outSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetMaxSize",
-                             xmlSecTransformGetName(transform),
-                             "size=" XMLSEC_SIZE_FMT, outSize);
+        xmlSecInternalError2("xmlSecBufferSetMaxSize", xmlSecTransformGetName(transform),
+            "size=" XMLSEC_SIZE_FMT, outSize);
         return(-1);
     }
 
     if(transform->operation == xmlSecTransformOperationEncrypt) {
         if(inSize > outSize) {
             xmlSecInvalidSizeLessThanError("Output data", outSize, inSize,
-                                          xmlSecTransformGetName(transform));
+                xmlSecTransformGetName(transform));
             return(-1);
         }
 
         ret = xmlSecBufferSetData(out, xmlSecBufferGetData(in), inSize);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferSetData",
-                                 xmlSecTransformGetName(transform),
-                                 "size=" XMLSEC_SIZE_FMT, inSize);
+            xmlSecInternalError2("xmlSecBufferSetData", xmlSecTransformGetName(transform),
+                "size=" XMLSEC_SIZE_FMT, inSize);
             return(-1);
         }
 
-        dwInLen = inSize;
-        dwBufLen = outSize;
+        XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInLen, return(-1), xmlSecTransformGetName(transform));
+        XMLSEC_SAFE_CAST_SIZE_TO_ULONG(outSize, dwBufLen, return(-1), xmlSecTransformGetName(transform));
         if (0 == (hKey = xmlSecMSCryptoKeyDataGetKey(ctx->data, xmlSecKeyDataTypePublic))) {
-            xmlSecInternalError("xmlSecMSCryptoKeyDataGetKey",
-                                xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecMSCryptoKeyDataGetKey", xmlSecTransformGetName(transform));
             return (-1);
         }
 
@@ -318,23 +315,23 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformC
          * environment or when key can be re-used multiple times
          */
         if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaOaepId) && xmlSecBufferGetSize(&(ctx->oaepParams)) > 0) {
+            xmlSecSize oaepParamsSize;
             CRYPT_DATA_BLOB oaepParams;
 
             memset(&oaepParams, 0, sizeof(oaepParams));
             oaepParams.pbData = xmlSecBufferGetData(&(ctx->oaepParams));
-            oaepParams.cbData = xmlSecBufferGetSize(&(ctx->oaepParams));
 
+            oaepParamsSize = xmlSecBufferGetSize(&(ctx->oaepParams));
+            XMLSEC_SAFE_CAST_SIZE_TO_ULONG(oaepParamsSize, oaepParams.cbData, return(-1), xmlSecTransformGetName(transform));
             if (!CryptSetKeyParam(hKey, KP_OAEP_PARAMS, (const BYTE*)&oaepParams, 0)) {
-                xmlSecMSCryptoError("CryptSetKeyParam",
-                                    xmlSecTransformGetName(transform));
+                xmlSecMSCryptoError("CryptSetKeyParam", xmlSecTransformGetName(transform));
                 return (-1);
             }
         }
 
         /* encrypt */
         if (!CryptEncrypt(hKey, 0, TRUE, ctx->dwFlags, outBuf, &dwInLen, dwBufLen)) {
-            xmlSecMSCryptoError("CryptEncrypt",
-                                xmlSecTransformGetName(transform));
+            xmlSecMSCryptoError("CryptEncrypt", xmlSecTransformGetName(transform));
             return (-1);
         }
 
@@ -343,7 +340,7 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformC
          */
         ConvertEndianInPlace(outBuf, outSize);
     } else {
-        dwOutLen = inSize;
+        XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwOutLen, return(-1), xmlSecTransformGetName(transform));
 
         /* The input of CryptDecrypt is expected to be little-endian,
          * so we have to convert from big-endian to little endian.
@@ -354,8 +351,7 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformC
 
         hKey = xmlSecMSCryptoKeyDataGetDecryptKey(ctx->data);
         if (0 == hKey) {
-            xmlSecInternalError("xmlSecMSCryptoKeyDataGetKey",
-                                xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecMSCryptoKeyDataGetKey", xmlSecTransformGetName(transform));
             return (-1);
         }
 
@@ -365,23 +361,23 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformC
          * environment or when key can be re-used multiple times
          */
         if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaOaepId) && xmlSecBufferGetSize(&(ctx->oaepParams)) > 0) {
+            xmlSecSize oaepParamsSize;
             CRYPT_DATA_BLOB oaepParams;
 
             memset(&oaepParams, 0, sizeof(oaepParams));
             oaepParams.pbData = xmlSecBufferGetData(&(ctx->oaepParams));
-            oaepParams.cbData = xmlSecBufferGetSize(&(ctx->oaepParams));
 
+            oaepParamsSize = xmlSecBufferGetSize(&(ctx->oaepParams));
+            XMLSEC_SAFE_CAST_SIZE_TO_ULONG(oaepParamsSize, oaepParams.cbData, return(-1), xmlSecTransformGetName(transform));
             if (!CryptSetKeyParam(hKey, KP_OAEP_PARAMS, (const BYTE*)&oaepParams, 0)) {
-                xmlSecMSCryptoError("CryptSetKeyParam",
-                                    xmlSecTransformGetName(transform));
+                xmlSecMSCryptoError("CryptSetKeyParam", xmlSecTransformGetName(transform));
                 return (-1);
             }
         }
 
         /* decrypt */
         if (!CryptDecrypt(hKey, 0, TRUE, ctx->dwFlags, outBuf, &dwOutLen)) {
-            xmlSecMSCryptoError("CryptDecrypt",
-                                xmlSecTransformGetName(transform));
+            xmlSecMSCryptoError("CryptDecrypt", xmlSecTransformGetName(transform));
             return(-1);
         }
 
@@ -390,17 +386,15 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformC
 
     ret = xmlSecBufferSetSize(out, outSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize",
-                             xmlSecTransformGetName(transform),
-                             "size=" XMLSEC_SIZE_FMT, outSize);
+        xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform),
+            "size=" XMLSEC_SIZE_FMT, outSize);
         return(-1);
     }
 
     ret = xmlSecBufferRemoveHead(in, inSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferRemoveHead",
-                             xmlSecTransformGetName(transform),
-                             "size=" XMLSEC_SIZE_FMT, inSize);
+        xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform),
+            "size=" XMLSEC_SIZE_FMT, inSize);
         return(-1);
     }
 

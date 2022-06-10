@@ -352,6 +352,9 @@ xmlSecMSCryptoHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecKeyDataPtr value;
     xmlSecBufferPtr buffer;
     HMAC_INFO hmacInfo;
+    xmlSecByte* bufPtr;
+    xmlSecSize bufSize;
+    DWORD dwBufSize;
     int ret;
 
     xmlSecAssert2(xmlSecMSCryptoHmacCheckId(transform), -1);
@@ -373,12 +376,13 @@ xmlSecMSCryptoHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     buffer = xmlSecKeyDataBinaryValueGetBuffer(value);
     xmlSecAssert2(buffer != NULL, -1);
 
-    if(xmlSecBufferGetSize(buffer) == 0) {
+    bufPtr = xmlSecBufferGetData(buffer);
+    bufSize = xmlSecBufferGetSize(buffer);
+    if((bufPtr == NULL) || (bufSize == 0)) {
         xmlSecInvalidZeroKeyDataSizeError(xmlSecTransformGetName(transform));
         return(-1);
     }
-
-    xmlSecAssert2(xmlSecBufferGetData(buffer) != NULL, -1);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(bufSize, dwBufSize, return(-1), xmlSecTransformGetName(transform));
 
     /* Import this key and get an HCRYPTKEY handle. 
      * 
@@ -389,8 +393,8 @@ xmlSecMSCryptoHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     if (!xmlSecMSCryptoImportPlainSessionBlob(ctx->provider,
         ctx->pubPrivKey,
         CALG_RC2,
-        xmlSecBufferGetData(buffer),
-        xmlSecBufferGetSize(buffer),
+        bufPtr,
+        dwBufSize,
         FALSE,
         &(ctx->cryptKey)
         ) || (ctx->cryptKey == 0))  {
@@ -509,23 +513,24 @@ xmlSecMSCryptoHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 
         inSize = xmlSecBufferGetSize(in);
         if(inSize > 0) {
+            DWORD dwInSize;
+
+            XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInSize, return(-1), xmlSecTransformGetName(transform));
             ret = CryptHashData(ctx->mscHash,
                 xmlSecBufferGetData(in),
-                inSize,
+                dwInSize,
                 0);
 
             if(ret == 0) {
-                xmlSecMSCryptoError2("CryptHashData",
-                                    xmlSecTransformGetName(transform),
-                                    "size=" XMLSEC_SIZE_FMT, inSize);
+                xmlSecMSCryptoError2("CryptHashData", xmlSecTransformGetName(transform),
+                    "size=" XMLSEC_SIZE_FMT, inSize);
                 return(-1);
             }
 
             ret = xmlSecBufferRemoveHead(in, inSize);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferRemoveHead",
-                                     xmlSecTransformGetName(transform),
-                                     "size=" XMLSEC_SIZE_FMT, inSize);
+                xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform),
+                    "size=" XMLSEC_SIZE_FMT, inSize);
                 return(-1);
             }
         }
@@ -541,9 +546,8 @@ xmlSecMSCryptoHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                 0);
 
             if (ret == 0) {
-                xmlSecInternalError2("CryptGetHashParam",
-                                     xmlSecTransformGetName(transform),
-                                     "size=" XMLSEC_SIZE_FMT, inSize);
+                xmlSecInternalError2("CryptGetHashParam", xmlSecTransformGetName(transform),
+                    "size=" XMLSEC_SIZE_FMT, inSize);
                 return(-1);
             }
             xmlSecAssert2(retLen > 0, -1);
@@ -555,9 +559,9 @@ xmlSecMSCryptoHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
             } else if(ctx->dgstSize <= 8 * hashSize) {
                 hashSize = ((ctx->dgstSize + 7) / 8); /* we need to truncate result digest */
             } else {
-                xmlSecInvalidSizeLessThanError("HMAC digest (bits)",
-                                        8 * hashSize, ctx->dgstSize,
-                                        xmlSecTransformGetName(transform));
+                xmlSecInvalidSizeLessThanError("HMAC digest (bits)", 
+                    8 * hashSize, ctx->dgstSize,
+                    xmlSecTransformGetName(transform));
                 return(-1);
             }
 

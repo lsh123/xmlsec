@@ -236,7 +236,8 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecMSCngHmacCtxPtr ctx;
     xmlSecKeyDataPtr value;
     xmlSecBufferPtr buffer;
-    DWORD resultLength = 0;
+    xmlSecSize bufSize;
+    DWORD dwBufSize, resultLength = 0;
     NTSTATUS status;
 
     xmlSecAssert2(xmlSecMSCngHmacCheckId(transform), -1);
@@ -269,8 +270,7 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         NULL,
         BCRYPT_ALG_HANDLE_HMAC_FLAG);
     if(status != STATUS_SUCCESS) {
-        xmlSecMSCngNtError("BCryptOpenAlgorithmProvider",
-            xmlSecTransformGetName(transform), status);
+        xmlSecMSCngNtError("BCryptOpenAlgorithmProvider", xmlSecTransformGetName(transform), status);
         return(-1);
     }
 
@@ -281,8 +281,7 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         &resultLength,
         0);
     if(status != STATUS_SUCCESS) {
-        xmlSecMSCngNtError("BCryptGetProperty",
-            xmlSecTransformGetName(transform), status);
+        xmlSecMSCngNtError("BCryptGetProperty", xmlSecTransformGetName(transform), status);
         return(-1);
     }
 
@@ -292,16 +291,17 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         return(-1);
     }
 
+    bufSize = xmlSecBufferGetSize(buffer);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(bufSize, dwBufSize, return(-1), xmlSecTransformGetName(transform));
     status = BCryptCreateHash(ctx->hAlg,
         &ctx->hHash,
         NULL,
         0,
         (PBYTE)xmlSecBufferGetData(buffer),
-        xmlSecBufferGetSize(buffer),
+        dwBufSize,
         0);
     if(status != STATUS_SUCCESS) {
-        xmlSecMSCngNtError("BCryptCreateHash",
-            xmlSecTransformGetName(transform), status);
+        xmlSecMSCngNtError("BCryptCreateHash", xmlSecTransformGetName(transform), status);
         return(-1);
     }
 
@@ -400,20 +400,22 @@ xmlSecMSCngHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
 
         inSize = xmlSecBufferGetSize(in);
         if(inSize > 0) {
+            DWORD dwInSize;
+
+            XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInSize, return(-1), xmlSecTransformGetName(transform));
             status = BCryptHashData(ctx->hHash,
                 xmlSecBufferGetData(in),
-                inSize,
+                dwInSize,
                 0);
             if(status != STATUS_SUCCESS) {
-                xmlSecMSCngNtError("BCryptHashData",
-                    xmlSecTransformGetName(transform), status);
+                xmlSecMSCngNtError("BCryptHashData", xmlSecTransformGetName(transform), status);
                 return(-1);
             }
 
             ret = xmlSecBufferRemoveHead(in, inSize);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferRemoveHead",
-                    xmlSecTransformGetName(transform), "size=" XMLSEC_SIZE_FMT, inSize);
+                xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform),
+                    "size=" XMLSEC_SIZE_FMT, inSize);
                 return(-1);
             }
         }
@@ -424,8 +426,7 @@ xmlSecMSCngHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
                 ctx->hashLength,
                 0);
             if(status != STATUS_SUCCESS) {
-                xmlSecMSCngNtError("BCryptFinishHash",
-                    xmlSecTransformGetName(transform), status);
+                xmlSecMSCngNtError("BCryptFinishHash", xmlSecTransformGetName(transform), status);
                 return(-1);
             }
 

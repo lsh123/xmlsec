@@ -167,11 +167,13 @@ xmlSecMSCngKeyDataX509GetIdentifier(xmlSecKeyDataPtr data) {
 static PCCERT_CONTEXT
 xmlSecMSCngX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
     PCCERT_CONTEXT cert;
+    DWORD dwSize;
 
     xmlSecAssert2(buf != NULL, NULL);
     xmlSecAssert2(size > 0, NULL);
 
-    cert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, buf, size);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(size, dwSize, return(NULL), NULL);
+    cert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, buf, dwSize);
     if(cert == NULL) {
         xmlSecMSCngLastError("CertCreateCertificateContext", NULL);
         return(NULL);
@@ -582,16 +584,16 @@ xmlSecMSCngX509SKINodeRead(xmlSecKeyDataPtr data, xmlNodePtr node,
 }
 
 static PCCRL_CONTEXT
-xmlSecMSCngX509CrlDerRead(xmlSecByte* buf, xmlSecSize size,
-        xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecMSCngX509CrlDerRead(xmlSecByte* buf, xmlSecSize size, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     PCCRL_CONTEXT crl = NULL;
+    DWORD dwSize;
 
     xmlSecAssert2(buf != NULL, NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
     xmlSecAssert2(size > 0, NULL);
 
-    crl = CertCreateCRLContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, buf, size);
-
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(size, dwSize, return(NULL), NULL);
+    crl = CertCreateCRLContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, buf, dwSize);
     if(crl == NULL) {
         xmlSecMSCngLastError("CertCreateCRLContext", NULL);
         return(NULL);

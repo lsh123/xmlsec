@@ -342,23 +342,20 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
 
         inSize = xmlSecBufferGetSize(in);
         if(inSize > 0) {
-            ret = CryptHashData(ctx->mscHash,
-                xmlSecBufferGetData(in),
-                inSize,
-                0);
+            DWORD dwInSize;
 
+            XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInSize, return(-1), xmlSecTransformGetName(transform));
+            ret = CryptHashData(ctx->mscHash, xmlSecBufferGetData(in), dwInSize, 0);
             if(ret == 0) {
-                xmlSecMSCryptoError2("CryptHashData",
-                                     xmlSecTransformGetName(transform),
-                                     "size=" XMLSEC_SIZE_FMT, inSize);
+                xmlSecMSCryptoError2("CryptHashData", xmlSecTransformGetName(transform),
+                    "size=" XMLSEC_SIZE_FMT, inSize);
                 return(-1);
             }
 
             ret = xmlSecBufferRemoveHead(in, inSize);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferRemoveHead",
-                                     xmlSecTransformGetName(transform),
-                                     "size=" XMLSEC_SIZE_FMT, inSize);
+                xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform),
+                    "size=" XMLSEC_SIZE_FMT, inSize);
                 return(-1);
             }
         }

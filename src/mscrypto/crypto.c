@@ -357,30 +357,39 @@ static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Random[] = {
 int
 xmlSecMSCryptoGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
     HCRYPTPROV hProv = 0;
+    DWORD dwSize;
     int ret;
+    int res = -1;
 
     xmlSecAssert2(buffer != NULL, -1);
     xmlSecAssert2(size > 0, -1);
 
     ret = xmlSecBufferSetSize(buffer, size);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-                             "size=" XMLSEC_SIZE_FMT, size);
-        return(-1);
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, size);
+        goto done;
     }
     hProv = xmlSecMSCryptoFindProvider(xmlSecMSCryptoProviderInfo_Random, NULL, CRYPT_VERIFYCONTEXT, FALSE);
     if (0 == hProv) {
         xmlSecInternalError("xmlSecMSCryptoFindProvider", NULL);
-        return(-1);
-    }
-    if (FALSE == CryptGenRandom(hProv, size, xmlSecBufferGetData(buffer))) {
-        xmlSecMSCryptoError("CryptGenRandom", NULL);
-        CryptReleaseContext(hProv,0);
-        return(-1);
+        goto done;
     }
 
-    CryptReleaseContext(hProv, 0);
-    return(0);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(size, dwSize, goto done, NULL);
+    if (FALSE == CryptGenRandom(hProv, dwSize, xmlSecBufferGetData(buffer))) {
+        xmlSecMSCryptoError("CryptGenRandom", NULL);
+        goto done;
+    }
+
+    /* success */
+    res = 0;
+
+done:
+    /* cleanup */
+    if (hProv != 0) {
+        CryptReleaseContext(hProv, 0);
+    }
+    return(res);
 }
 
 /**

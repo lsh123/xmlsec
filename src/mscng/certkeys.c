@@ -489,16 +489,16 @@ xmlSecMSCngKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecBn y;
     xmlSecBuffer blob;
     xmlNodePtr cur;
-    xmlSecSize length;
-    xmlSecSize offset;
-    xmlSecSize blobSize;
     xmlSecByte* blobData;
+    xmlSecSize length, offset, blobSize;
+    DWORD dwBlobSize;
     BCRYPT_DSA_KEY_BLOB* dsakey;
     LPCWSTR lpszBlobType;
     BCRYPT_KEY_HANDLE hKey = NULL;
     NTSTATUS status;
     BCRYPT_ALG_HANDLE hAlg = NULL;
     xmlSecKeyDataPtr keyData = NULL;
+
     int res = -1;
     int ret;
 
@@ -660,14 +660,14 @@ xmlSecMSCngKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     ret = xmlSecBufferSetSize(&blob, blobSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
+        xmlSecInternalError2("xmlSecBufferSetSize", xmlSecKeyDataKlassGetName(id),
             "size=" XMLSEC_SIZE_FMT, blobSize);
         goto done;
     }
 
     blobData = xmlSecBufferGetData(&blob);
     dsakey = (BCRYPT_DSA_KEY_BLOB *)blobData;
-    dsakey->cbKey = length;
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(length,dsakey->cbKey, goto done, xmlSecKeyDataKlassGetName(id));
 
     memset(dsakey->Count, -1, sizeof(dsakey->Count));
     memset(dsakey->Seed, -1, sizeof(dsakey->Seed));
@@ -706,38 +706,33 @@ xmlSecMSCngKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         NULL,
         0);
     if(status != STATUS_SUCCESS) {
-        xmlSecMSCngNtError("BCryptOpenAlgorithmProvider",
-            xmlSecKeyDataKlassGetName(id), status);
+        xmlSecMSCngNtError("BCryptOpenAlgorithmProvider", xmlSecKeyDataKlassGetName(id), status);
         goto done;
     }
 
-    status = BCryptImportKeyPair(hAlg, NULL, lpszBlobType, &hKey, blobData,
-        blobSize, 0);
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(blobSize, dwBlobSize, goto done, xmlSecKeyDataKlassGetName(id));
+    status = BCryptImportKeyPair(hAlg, NULL, lpszBlobType, &hKey, blobData, dwBlobSize, 0);
     if(status != STATUS_SUCCESS) {
-        xmlSecMSCngNtError("BCryptImportKeyPair",
-            xmlSecKeyDataKlassGetName(id), status);
+        xmlSecMSCngNtError("BCryptImportKeyPair", xmlSecKeyDataKlassGetName(id), status);
         goto done;
     }
 
     keyData = xmlSecKeyDataCreate(id);
     if(keyData == NULL) {
-        xmlSecInternalError("xmlSecKeyDataCreate",
-            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecKeyDataCreate", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
     ret = xmlSecMSCngKeyDataAdoptKey(keyData, hKey);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataAdoptKey",
-            xmlSecKeyDataGetName(keyData));
+        xmlSecInternalError("xmlSecMSCngKeyDataAdoptKey", xmlSecKeyDataGetName(keyData));
         goto done;
     }
 
     hKey = 0;
     ret = xmlSecKeySetValue(key, keyData);
     if(ret < 0) {
-	xmlSecInternalError("xmlSecKeySetValue",
-            xmlSecKeyDataGetName(keyData));
+	xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyDataGetName(keyData));
         goto done;
     }
 
@@ -928,9 +923,10 @@ xmlSecMSCngKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
     xmlSecMSCngKeyDataCtxPtr ctx;
     BCRYPT_ALG_HANDLE hAlg = 0;
     BCRYPT_KEY_HANDLE hKey = 0;
-    int res = -1;
     NTSTATUS status;
+    DWORD dwSizeBits;
     int ret;
+    int res = -1;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), xmlSecKeyDataTypeUnknown);
     xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCngKeyDataSize), xmlSecKeyDataTypeUnknown);
@@ -940,22 +936,14 @@ xmlSecMSCngKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
     ctx = xmlSecMSCngKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
-    status = BCryptOpenAlgorithmProvider(
-        &hAlg,
-        BCRYPT_DSA_ALGORITHM,
-        NULL,
-        0);
+    status = BCryptOpenAlgorithmProvider(&hAlg, BCRYPT_DSA_ALGORITHM, NULL, 0);
     if(status != STATUS_SUCCESS) {
-        xmlSecMSCngNtError("BCryptOpenAlgorithmProvider",
-            xmlSecKeyDataGetName(data), status);
+        xmlSecMSCngNtError("BCryptOpenAlgorithmProvider", xmlSecKeyDataGetName(data), status);
         goto done;
     }
 
-    status = BCryptGenerateKeyPair(
-        hAlg,
-        &hKey,
-        sizeBits,
-        0);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(sizeBits, dwSizeBits, goto done, xmlSecKeyDataGetName(data));
+    status = BCryptGenerateKeyPair(hAlg, &hKey, dwSizeBits, 0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptGenerateKeyPair", xmlSecKeyDataGetName(data),
             status);
@@ -1138,8 +1126,8 @@ xmlSecMSCngKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecBn modulus, exponent;
     xmlSecBuffer blob;
-    xmlSecSize blobBufferSize;
-    xmlSecSize offset;
+    xmlSecSize blobBufferSize, offset, sz;
+    DWORD dwSize;
     BCRYPT_RSAKEY_BLOB* rsakey;
     LPCWSTR lpszBlobType;
     BCRYPT_ALG_HANDLE hAlg = NULL;
@@ -1243,9 +1231,12 @@ xmlSecMSCngKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     rsakey = (BCRYPT_RSAKEY_BLOB *)xmlSecBufferGetData(&blob);
     rsakey->Magic = BCRYPT_RSAPUBLIC_MAGIC;
-    rsakey->BitLength = xmlSecBnGetSize(&modulus) * 8;
-    rsakey->cbPublicExp = xmlSecBnGetSize(&exponent);
-    rsakey->cbModulus = xmlSecBnGetSize(&modulus);
+    sz = xmlSecBnGetSize(&modulus) * 8;
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(sz, rsakey->BitLength, goto done, xmlSecKeyDataKlassGetName(id));
+    sz = xmlSecBnGetSize(&exponent);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(sz, rsakey->cbPublicExp, goto done, xmlSecKeyDataKlassGetName(id));
+    sz = xmlSecBnGetSize(&modulus);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(sz, rsakey->cbModulus, goto done, xmlSecKeyDataKlassGetName(id));
     offset = sizeof(BCRYPT_RSAKEY_BLOB);
 
     memcpy(xmlSecBufferGetData(&blob) + offset, xmlSecBnGetData(&exponent),
@@ -1263,38 +1254,35 @@ xmlSecMSCngKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         NULL,
         0);
     if(status != STATUS_SUCCESS) {
-        xmlSecMSCngNtError("BCryptOpenAlgorithmProvider",
-            xmlSecKeyDataKlassGetName(id), status);
+        xmlSecMSCngNtError("BCryptOpenAlgorithmProvider", xmlSecKeyDataKlassGetName(id), status);
         goto done;
     }
 
+    sz = xmlSecBufferGetSize(&blob);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(sz, dwSize, goto done, xmlSecKeyDataKlassGetName(id));
     status = BCryptImportKeyPair(hAlg, NULL, lpszBlobType, &hKey,
-        xmlSecBufferGetData(&blob), xmlSecBufferGetSize(&blob), 0);
+        xmlSecBufferGetData(&blob), dwSize, 0);
     if(status != STATUS_SUCCESS) {
-        xmlSecMSCngNtError("BCryptImportKeyPair",
-            xmlSecKeyDataKlassGetName(id), status);
+        xmlSecMSCngNtError("BCryptImportKeyPair", xmlSecKeyDataKlassGetName(id), status);
         goto done;
     }
 
     keyData = xmlSecKeyDataCreate(id);
     if(keyData == NULL) {
-        xmlSecInternalError("xmlSecKeyDataCreate",
-            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecKeyDataCreate", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
     ret = xmlSecMSCngKeyDataAdoptKey(keyData, hKey);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataAdoptKey",
-            xmlSecKeyDataGetName(keyData));
+        xmlSecInternalError("xmlSecMSCngKeyDataAdoptKey", xmlSecKeyDataGetName(keyData));
         goto done;
     }
 
     hKey = 0;
     ret = xmlSecKeySetValue(key, keyData);
     if(ret < 0) {
-	xmlSecInternalError("xmlSecKeySetValue",
-            xmlSecKeyDataGetName(keyData));
+	    xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyDataGetName(keyData));
         goto done;
     }
 
@@ -1430,9 +1418,10 @@ xmlSecMSCngKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
     xmlSecMSCngKeyDataCtxPtr ctx;
     BCRYPT_ALG_HANDLE hAlg = 0;
     BCRYPT_KEY_HANDLE hKey = 0;
-    int res = -1;
+    DWORD dwSizeBits;
     NTSTATUS status;
     int ret;
+    int res = -1;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), xmlSecKeyDataTypeUnknown);
     xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCngKeyDataSize), xmlSecKeyDataTypeUnknown);
@@ -1448,36 +1437,30 @@ xmlSecMSCngKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
         NULL,
         0);
     if(status != STATUS_SUCCESS) {
-        xmlSecMSCngNtError("BCryptOpenAlgorithmProvider",
-            xmlSecKeyDataGetName(data), status);
+        xmlSecMSCngNtError("BCryptOpenAlgorithmProvider", xmlSecKeyDataGetName(data), status);
         goto done;
     }
 
-    status = BCryptGenerateKeyPair(
-        hAlg,
-        &hKey,
-        sizeBits,
-        0);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(sizeBits, dwSizeBits, goto done, xmlSecKeyDataGetName(data));
+    status = BCryptGenerateKeyPair(hAlg, &hKey, dwSizeBits, 0);
     if(status != STATUS_SUCCESS) {
-        xmlSecMSCngNtError("BCryptGenerateKeyPair", xmlSecKeyDataGetName(data),
-            status);
+        xmlSecMSCngNtError("BCryptGenerateKeyPair", xmlSecKeyDataGetName(data), status);
         goto done;
     }
 
     /* need to finalize the key before it can be used */
     status = BCryptFinalizeKeyPair(hKey, 0);
     if(status != STATUS_SUCCESS) {
-        xmlSecMSCngNtError("BCryptFinalizeKeyPair", xmlSecKeyDataGetName(data),
-            status);
+        xmlSecMSCngNtError("BCryptFinalizeKeyPair", xmlSecKeyDataGetName(data), status);
         goto done;
     }
 
     ret = xmlSecMSCngKeyDataAdoptKey(data, hKey);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataAdoptKey",
-            xmlSecKeyDataGetName(data));
+        xmlSecInternalError("xmlSecMSCngKeyDataAdoptKey", xmlSecKeyDataGetName(data));
         goto done;
     }
+    /* hKey is owned by data now */
     hKey = 0;
 
     /* success */
@@ -1487,11 +1470,9 @@ done:
     if (hKey != 0) {
         BCryptDestroyKey(hKey);
     }
-
     if (hAlg != 0) {
         BCryptCloseAlgorithmProvider(hAlg, 0);
     }
-
     return(res);
 }
 

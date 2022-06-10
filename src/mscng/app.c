@@ -195,6 +195,7 @@ xmlSecMSCngAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecK
     xmlSecKeyDataPtr keyData = NULL;
     xmlSecKeyPtr key = NULL;
     xmlSecKeyPtr res = NULL;
+    DWORD dwDataSize;
     int ret;
 
     xmlSecAssert2(data != NULL, NULL);
@@ -204,7 +205,8 @@ xmlSecMSCngAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecK
     UNREFERENCED_PARAMETER(pwdCallback);
     UNREFERENCED_PARAMETER(pwdCallbackCtx);
 
-    pCert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, data, dataSize);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(dataSize, dwDataSize, goto done, NULL);
+    pCert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, data, dwDataSize);
     if(pCert == NULL) {
         xmlSecMSCngLastError("CertCreateCertificateContext", NULL);
         goto done;
@@ -430,7 +432,8 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
 
     memset(&pfx, 0, sizeof(pfx));
     pfx.pbData = (BYTE *)data;
-    pfx.cbData = dataSize;
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(dataSize, pfx.cbData, return(NULL), NULL);
+
     ret = PFXIsPFXBlob(&pfx);
     if(ret == FALSE) {
         xmlSecMSCngLastError("PFXIsPFXBlob", NULL);
@@ -623,6 +626,7 @@ xmlSecMSCngAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* d
                                      xmlSecKeyDataType type) {
     xmlSecKeyDataStorePtr x509Store;
     PCCERT_CONTEXT pCert = NULL;
+    DWORD dwDataSize;
     int ret;
 
     xmlSecAssert2(mngr != NULL, -1);
@@ -635,12 +639,14 @@ xmlSecMSCngAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* d
         return(-1);
     }
 
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(dataSize,dwDataSize, return(-1), NULL);
+
     switch (format) {
         case xmlSecKeyDataFormatDer:
             pCert = CertCreateCertificateContext(
                 X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
                 data,
-                dataSize);
+                dwDataSize);
             if(pCert == NULL) {
                 xmlSecMSCngLastError("CertCreateCertificateContext", NULL)
                 return(-1);
@@ -650,7 +656,6 @@ xmlSecMSCngAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* d
             xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
                 "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
             return(-1);
-            break;
     }
 
     xmlSecAssert2(pCert != NULL, -1);

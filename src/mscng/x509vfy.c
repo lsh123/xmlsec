@@ -877,6 +877,7 @@ xmlSecMSCngX509FindCertByIssuerNameAndSerial(HCERTSTORE store, const xmlChar* is
     DWORD dwCertEncodingType = X509_ASN_ENCODING | PKCS_7_ASN_ENCODING;
     CERT_INFO certInfo;
     BYTE* bdata = NULL;
+    xmlSecSize issuerSerialSize;
     DWORD len;
     int ret;
 
@@ -903,8 +904,10 @@ xmlSecMSCngX509FindCertByIssuerNameAndSerial(HCERTSTORE store, const xmlChar* is
         xmlSecInternalError("xmlSecBnReverse", NULL);
         goto done;
     }
-    certInfo.SerialNumber.cbData = xmlSecBnGetSize(&issuerSerialBn);
+
     certInfo.SerialNumber.pbData = xmlSecBnGetData(&issuerSerialBn);
+    issuerSerialSize  = xmlSecBnGetSize(&issuerSerialBn);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(issuerSerialSize, certInfo.SerialNumber.cbData, goto done, NULL);
 
     wcIssuerName = xmlSecMSCngX509GetCertName(issuerName);
     if (wcIssuerName == NULL) {
@@ -1042,7 +1045,8 @@ xmlSecMSCngX509FindCertBySki(HCERTSTORE store, const xmlChar* ski) {
     XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, goto done, NULL);
 
     blob.pbData = binSki;
-    blob.cbData = size;
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(size, blob.cbData, goto done, NULL);
+
     res = CertFindCertificateInStore(store,
         PKCS_7_ASN_ENCODING | X509_ASN_ENCODING,
         0,

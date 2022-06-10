@@ -77,7 +77,8 @@ xmlSecMSCngKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
     DWORD cbKeyObject;
     xmlSecBuffer blob;
     BCRYPT_KEY_DATA_BLOB_HEADER* blobHeader;
-    xmlSecSize blobHeaderSize;
+    xmlSecSize blobHeaderSize, keySize, blobSize;
+    DWORD dwBlobSize, dwInSize;
     int res = -1;
     NTSTATUS status;
     int ret;
@@ -135,10 +136,15 @@ xmlSecMSCngKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
     blobHeader = (BCRYPT_KEY_DATA_BLOB_HEADER*)xmlSecBufferGetData(&blob);
     blobHeader->dwMagic = BCRYPT_KEY_DATA_BLOB_MAGIC;
     blobHeader->dwVersion = BCRYPT_KEY_DATA_BLOB_VERSION1;
-    blobHeader->cbKeyData = xmlSecBufferGetSize(&ctx->keyBuffer);
+
+    keySize = xmlSecBufferGetSize(&ctx->keyBuffer);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(keySize, blobHeader->cbKeyData, goto done, NULL);
+
     memcpy(xmlSecBufferGetData(&blob) + sizeof(BCRYPT_KEY_DATA_BLOB_HEADER),
-        xmlSecBufferGetData(&ctx->keyBuffer),
-        xmlSecBufferGetSize(&ctx->keyBuffer));
+        xmlSecBufferGetData(&ctx->keyBuffer), keySize);
+
+    blobSize = xmlSecBufferGetSize(&blob);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(blobSize, dwBlobSize, goto done, NULL);
 
     /* perform the actual import */
     status = BCryptImportKey(hAlg,
@@ -148,7 +154,7 @@ xmlSecMSCngKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
         pbKeyObject,
         cbKeyObject,
         xmlSecBufferGetData(&blob),
-        xmlSecBufferGetSize(&blob),
+        dwBlobSize,
         0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptImportKey", NULL, status);
@@ -160,15 +166,16 @@ xmlSecMSCngKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
         memcpy(out, in, inSize);
     }
 
-    cbData = inSize;
+    cbData = 0;
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInSize, goto done, NULL);
     status = BCryptEncrypt(hKey,
         (PUCHAR)in,
-        inSize,
+        dwInSize,
         NULL,
         NULL,
         0,
         out,
-        inSize,
+        dwInSize,
         &cbData,
         0);
     if(status != STATUS_SUCCESS) {
@@ -206,7 +213,8 @@ xmlSecMSCngKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
     DWORD cbKeyObject;
     xmlSecBuffer blob;
     BCRYPT_KEY_DATA_BLOB_HEADER* blobHeader;
-    xmlSecSize blobHeaderSize;
+    xmlSecSize blobHeaderSize, keySize, blobSize;
+    DWORD dwBlobSize, dwInSize;
     int res = -1;
     NTSTATUS status;
     int ret;
@@ -264,10 +272,15 @@ xmlSecMSCngKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
     blobHeader = (BCRYPT_KEY_DATA_BLOB_HEADER*)xmlSecBufferGetData(&blob);
     blobHeader->dwMagic = BCRYPT_KEY_DATA_BLOB_MAGIC;
     blobHeader->dwVersion = BCRYPT_KEY_DATA_BLOB_VERSION1;
-    blobHeader->cbKeyData = xmlSecBufferGetSize(&ctx->keyBuffer);
+
+    keySize = xmlSecBufferGetSize(&ctx->keyBuffer);
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(keySize, blobHeader->cbKeyData, goto done, NULL);
+
     memcpy(xmlSecBufferGetData(&blob) + sizeof(BCRYPT_KEY_DATA_BLOB_HEADER),
-        xmlSecBufferGetData(&ctx->keyBuffer),
-        xmlSecBufferGetSize(&ctx->keyBuffer));
+        xmlSecBufferGetData(&ctx->keyBuffer), keySize);
+
+    blobSize = xmlSecBufferGetSize(&blob);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(blobSize, dwBlobSize, goto done, NULL);
 
     /* perform the actual import */
     status = BCryptImportKey(hAlg,
@@ -277,7 +290,7 @@ xmlSecMSCngKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
         pbKeyObject,
         cbKeyObject,
         xmlSecBufferGetData(&blob),
-        xmlSecBufferGetSize(&blob),
+        dwBlobSize,
         0);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptImportKey", NULL, status);
@@ -289,15 +302,16 @@ xmlSecMSCngKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
         memcpy(out, in, inSize);
     }
 
-    cbData = inSize;
+    cbData = 0;
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInSize, goto done, NULL);
     status = BCryptDecrypt(hKey,
         (PUCHAR)in,
-        inSize,
+        dwInSize,
         NULL,
         NULL,
         0,
         out,
-        inSize,
+        dwInSize,
         &cbData,
         0);
     if(status != STATUS_SUCCESS) {

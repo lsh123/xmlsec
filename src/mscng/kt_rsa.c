@@ -174,7 +174,7 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxP
     xmlSecSize keySize;
     BCRYPT_KEY_HANDLE hPubKey;
     NCRYPT_KEY_HANDLE hPrivKey;
-    DWORD dwOutLen;
+    DWORD dwInSize, dwOutSize, dwOutLen;
     xmlSecByte * outBuf;
     xmlSecByte * inBuf;
     SECURITY_STATUS securityStatus;
@@ -215,20 +215,27 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxP
     outSize = keySize;
     ret = xmlSecBufferSetMaxSize(out, outSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetMaxSize",
-            xmlSecTransformGetName(transform), "size=" XMLSEC_SIZE_FMT, outSize);
+        xmlSecInternalError2("xmlSecBufferSetMaxSize", xmlSecTransformGetName(transform),
+            "size=" XMLSEC_SIZE_FMT, outSize);
         return(-1);
     }
 
+    /* get everything ready */
+    inBuf = xmlSecBufferGetData(in);
+    outBuf = xmlSecBufferGetData(out);
+    dwOutLen = 0;
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInSize, return(-1), xmlSecTransformGetName(transform));
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(outSize, dwOutSize, return(-1), xmlSecTransformGetName(transform));
+
     if(transform->operation == xmlSecTransformOperationEncrypt) {
-        if(inSize > outSize) {
+        /* this should be true since we checked above, but let's double check */
+        if(inSize >= outSize) {
             xmlSecInvalidSizeLessThanError("Output data", outSize, inSize,
                 xmlSecTransformGetName(transform));
             return(-1);
         }
-        inBuf   = xmlSecBufferGetData(in);
-        outBuf  = xmlSecBufferGetData(out);
 
+        /* get key */
         hPubKey = xmlSecMSCngKeyDataGetPubKey(ctx->data);
         if (hPubKey == 0) {
             xmlSecInternalError("xmlSecMSCngKeyDataGetPubKey",
@@ -240,12 +247,12 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxP
         if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaPkcs1Id)) {
             status = BCryptEncrypt(hPubKey,
                 inBuf,
-                inSize,
+                dwInSize,
                 NULL,
                 NULL,
                 0,
                 outBuf,
-                outSize,
+                dwOutSize,
                 &dwOutLen,
                 BCRYPT_PAD_PKCS1);
             if(status != STATUS_SUCCESS) {
@@ -255,22 +262,27 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxP
             }
         } else if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepId)) {
             BCRYPT_OAEP_PADDING_INFO paddingInfo;
+            xmlSecSize oaepParamsSize;
+
+
             paddingInfo.pszAlgId = BCRYPT_SHA1_ALGORITHM;
             paddingInfo.pbLabel = xmlSecBufferGetData(&(ctx->oaepParams));
-            paddingInfo.cbLabel = xmlSecBufferGetSize(&(ctx->oaepParams));
+
+            oaepParamsSize = xmlSecBufferGetSize(&(ctx->oaepParams));
+            XMLSEC_SAFE_CAST_SIZE_TO_ULONG(oaepParamsSize, paddingInfo.cbLabel, return(-1), xmlSecTransformGetName(transform));
+
             status = BCryptEncrypt(hPubKey,
                 inBuf,
-                inSize,
+                dwInSize,
                 &paddingInfo,
                 NULL,
                 0,
                 outBuf,
-                outSize,
+                dwOutSize,
                 &dwOutLen,
                 BCRYPT_PAD_OAEP);
             if(status != STATUS_SUCCESS) {
-                xmlSecMSCngNtError("BCryptEncrypt",
-                    xmlSecTransformGetName(transform), status);
+                xmlSecMSCngNtError("BCryptEncrypt", xmlSecTransformGetName(transform), status);
                 return(-1);
             }
         } else {
@@ -278,18 +290,14 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxP
             return(-1);
         }
     } else {
-        dwOutLen = inSize;
-
-        ret = xmlSecBufferSetSize(out, inSize);
-        if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferSetSize",
-                xmlSecTransformGetName(transform), "size=" XMLSEC_SIZE_FMT, inSize);
+        /* this should be true since we checked above, but let's double check */
+        if (inSize != outSize) {
+            xmlSecInvalidSizeError("Output data", outSize, inSize,
+                xmlSecTransformGetName(transform));
             return(-1);
         }
 
-        inBuf   = xmlSecBufferGetData(in);
-        outBuf  = xmlSecBufferGetData(out);
-
+        /* get key */
         hPrivKey = xmlSecMSCngKeyDataGetPrivKey(ctx->data);
         if (hPrivKey == 0) {
             xmlSecInternalError("xmlSecMSCngKeyDataGetPrivKey",
@@ -301,10 +309,10 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxP
         if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaPkcs1Id)) {
             securityStatus = NCryptDecrypt(hPrivKey,
                 inBuf,
-                inSize,
+                dwInSize,
                 NULL,
                 outBuf,
-                inSize,
+                dwOutSize,
                 &dwOutLen,
                 NCRYPT_PAD_PKCS1_FLAG);
             if(securityStatus != ERROR_SUCCESS) {
@@ -314,16 +322,20 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxP
             }
         } else if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepId)) {
             BCRYPT_OAEP_PADDING_INFO paddingInfo;
+            xmlSecSize oaepParamsSize;
+
             paddingInfo.pszAlgId = BCRYPT_SHA1_ALGORITHM;
             paddingInfo.pbLabel = xmlSecBufferGetData(&(ctx->oaepParams));
-            paddingInfo.cbLabel = xmlSecBufferGetSize(&(ctx->oaepParams));
+ 
+            oaepParamsSize = xmlSecBufferGetSize(&(ctx->oaepParams));
+            XMLSEC_SAFE_CAST_SIZE_TO_ULONG(oaepParamsSize, paddingInfo.cbLabel, return(-1), xmlSecTransformGetName(transform));
 
             securityStatus = NCryptDecrypt(hPrivKey,
                 inBuf,
-                inSize,
+                dwInSize,
                 &paddingInfo,
                 outBuf,
-                inSize,
+                dwOutSize,
                 &dwOutLen,
                 NCRYPT_PAD_OAEP_FLAG);
             if(securityStatus != ERROR_SUCCESS) {

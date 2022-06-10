@@ -312,11 +312,14 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
 
         inSize = xmlSecBufferGetSize(in);
         if(inSize > 0) {
+            DWORD dwInSize;
+
             /* hash some data */
+            XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInSize, return(-1), xmlSecTransformGetName(transform));
             status = BCryptHashData(
                 ctx->hHash,
                 (PBYTE)xmlSecBufferGetData(in),
-                inSize,
+                dwInSize,
                 0);
             if(status != STATUS_SUCCESS) {
                 xmlSecMSCngNtError("BCryptHashData", xmlSecTransformGetName(transform), status);
@@ -325,8 +328,7 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
 
             ret = xmlSecBufferRemoveHead(in, inSize);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecBufferRemoveHead",
-                                     xmlSecTransformGetName(transform));
+                xmlSecInternalError("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform));
                 return(-1);
             }
         }

@@ -356,7 +356,7 @@ static int xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
     NTSTATUS status;
     BCRYPT_PKCS1_PADDING_INFO info;
     BCRYPT_PKCS1_PADDING_INFO* pInfo = NULL;
-    DWORD infoFlags = 0;
+    DWORD dwDataSize, infoFlags = 0;
 
     xmlSecAssert2(xmlSecMSCngSignatureCheckId(transform), -1);
     xmlSecAssert2(transform->operation == xmlSecTransformOperationVerify, -1);
@@ -371,8 +371,7 @@ static int xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
 
     pubkey = xmlSecMSCngKeyDataGetPubKey(ctx->data);
     if(pubkey == 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataGetPubKey",
-            xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecMSCngKeyDataGetPubKey", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -384,13 +383,14 @@ static int xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
         infoFlags = BCRYPT_PAD_PKCS1;
     }
 
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(dataSize, dwDataSize, return(-1), xmlSecTransformGetName(transform));
     status = BCryptVerifySignature(
         pubkey,
         pInfo,
         ctx->pbHash,
         ctx->cbHash,
         (PBYTE)data,
-        dataSize,
+        dwDataSize,
         infoFlags);
     if(status != STATUS_SUCCESS) {
         if(status == STATUS_INVALID_SIGNATURE) {
@@ -512,24 +512,25 @@ xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
 
     if(transform->status == xmlSecTransformStatusWorking) {
         if(inSize > 0) {
+            DWORD dwInSize;
+
             xmlSecAssert2(outSize == 0, -1);
 
             /* hash some data */
+            XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInSize, return(-1), xmlSecTransformGetName(transform));
             status = BCryptHashData(
                 ctx->hHash,
                 (PBYTE)xmlSecBufferGetData(&transform->inBuf),
-                inSize,
+                dwInSize,
                 0);
             if(status != STATUS_SUCCESS) {
-                xmlSecMSCngNtError("BCryptHashData",
-                    xmlSecTransformGetName(transform), status);
+                xmlSecMSCngNtError("BCryptHashData", xmlSecTransformGetName(transform), status);
                 return(-1);
             }
 
             ret = xmlSecBufferRemoveHead(&transform->inBuf, inSize);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecBufferRemoveHead",
-                                     xmlSecTransformGetName(transform));
+                xmlSecInternalError("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform));
                 return(-1);
             }
         }
@@ -554,8 +555,7 @@ xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
 
                 privkey = xmlSecMSCngKeyDataGetPrivKey(ctx->data);
                 if(privkey == 0) {
-                    xmlSecInternalError("xmlSecMSCngKeyDataGetPrivKey",
-                        xmlSecTransformGetName(transform));
+                    xmlSecInternalError("xmlSecMSCngKeyDataGetPrivKey", xmlSecTransformGetName(transform));
                     return(-1);
                 }
 

@@ -172,7 +172,7 @@ jobs:
     - name: configure
       working-directory: build
       run: |
-          ../autogen.sh --enable-pedantic \
+          ../autogen.sh --enable-werror  --enable-pedantic \
               --enable-mscrypto --enable-mscng ${{ matrix.config_flags }} \
               --build="${{ matrix.arch }}-w64-mingw32" \
               --host="${{ matrix.arch }}-w64-mingw32"
@@ -184,7 +184,6 @@ jobs:
       working-directory: build
       run: |
           make check
-
 
   check-msvc:
     runs-on: windows-2022

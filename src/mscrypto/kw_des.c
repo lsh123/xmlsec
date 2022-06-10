@@ -318,7 +318,8 @@ xmlSecMSCryptoKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransf
 static int
 xmlSecMSCryptoKWDes3Sha1(void * context,
                        const xmlSecByte * in, xmlSecSize inSize, 
-                       xmlSecByte * out, xmlSecSize outSize) {
+                       xmlSecByte * out, xmlSecSize outSize,
+                       xmlSecSize* outWritten) {
     xmlSecMSCryptoKWDes3CtxPtr ctx = (xmlSecMSCryptoKWDes3CtxPtr)context;
     HCRYPTHASH mscHash = 0;
     DWORD dwInSize, dwOutSize;
@@ -332,6 +333,7 @@ xmlSecMSCryptoKWDes3Sha1(void * context,
     xmlSecAssert2(inSize > 0, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize > 0, -1);
+    xmlSecAssert2(outWritten != NULL, -1);
 
     /* create */
     ret = CryptCreateHash(ctx->sha1CryptProvider,
@@ -361,7 +363,8 @@ xmlSecMSCryptoKWDes3Sha1(void * context,
     }
 
     /* success */
-    XMLSEC_SAFE_CAST_ULONG_TO_INT(dwOutSize, res, goto done, NULL);
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwOutSize, (*outWritten), goto done, NULL);
+    res = 0;
 
 done:
     /* cleanup */
@@ -372,10 +375,10 @@ done:
 }
 
 static int
-xmlSecMSCryptoKWDes3GenerateRandom(void * context, xmlSecByte * out, xmlSecSize outSize) 
+xmlSecMSCryptoKWDes3GenerateRandom(void * context, xmlSecByte * out, xmlSecSize outSize,
+    xmlSecSize* outWritten)
 {
     DWORD dwOutSize;
-    int res;
 
     xmlSecMSCryptoKWDes3CtxPtr ctx = (xmlSecMSCryptoKWDes3CtxPtr)context;
 
@@ -383,15 +386,15 @@ xmlSecMSCryptoKWDes3GenerateRandom(void * context, xmlSecByte * out, xmlSecSize 
     xmlSecAssert2(ctx->desCryptProvider != 0, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize > 0, -1);
+    xmlSecAssert2(outWritten != NULL, -1);
 
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(outSize, dwOutSize, return(-1), NULL);
     if(!CryptGenRandom(ctx->desCryptProvider, dwOutSize, out)) {
         xmlSecMSCryptoError2("CryptGenRandom", NULL, "len=" XMLSEC_SIZE_FMT, outSize);
         return(-1);
     }
-
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(outSize, res, return(-1), NULL);
-    return(res);
+    (*outWritten) = outSize;
+    return(0);
 
 }
 
@@ -399,7 +402,8 @@ static int
 xmlSecMSCryptoKWDes3BlockEncrypt(void * context,
                                 const xmlSecByte * iv, xmlSecSize ivSize,
                                 const xmlSecByte * in, xmlSecSize inSize,
-                                xmlSecByte * out, xmlSecSize outSize) {
+                                xmlSecByte * out, xmlSecSize outSize,
+                                xmlSecSize* outWritten) {
     xmlSecMSCryptoKWDes3CtxPtr ctx = (xmlSecMSCryptoKWDes3CtxPtr)context;
     xmlSecByte* keyBuf;
     xmlSecSize keyBufSize, blockSizeInBits;
@@ -414,6 +418,7 @@ xmlSecMSCryptoKWDes3BlockEncrypt(void * context,
     xmlSecAssert2(inSize > 0, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= inSize, -1);
+    xmlSecAssert2(outWritten != NULL, -1);
 
     keyBuf = xmlSecBufferGetData(&(ctx->parentCtx.keyBuffer));
     keyBufSize = xmlSecBufferGetSize(&(ctx->parentCtx.keyBuffer));
@@ -469,7 +474,8 @@ xmlSecMSCryptoKWDes3BlockEncrypt(void * context,
     }
 
     /* success */
-    XMLSEC_SAFE_CAST_ULONG_TO_INT(dwCLen, res, goto done, NULL);
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwCLen, (*outWritten), goto done, NULL);
+    res = 0;
 
     /* cleanup */
 done:
@@ -483,7 +489,8 @@ static int
 xmlSecMSCryptoKWDes3BlockDecrypt(void * context,
                                const xmlSecByte * iv, xmlSecSize ivSize,
                                const xmlSecByte * in, xmlSecSize inSize,
-                               xmlSecByte * out, xmlSecSize outSize) {
+                               xmlSecByte * out, xmlSecSize outSize,
+                               xmlSecSize* outWritten) {
     xmlSecMSCryptoKWDes3CtxPtr ctx = (xmlSecMSCryptoKWDes3CtxPtr)context;
     xmlSecByte* keyBuf;
     xmlSecSize keyBufSize, blockSizeInBits;
@@ -498,6 +505,7 @@ xmlSecMSCryptoKWDes3BlockDecrypt(void * context,
     xmlSecAssert2(inSize > 0, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= inSize, -1);
+    xmlSecAssert2(outWritten != NULL, -1);
 
     keyBuf = xmlSecBufferGetData(&(ctx->parentCtx.keyBuffer));
     keyBufSize = xmlSecBufferGetSize(&(ctx->parentCtx.keyBuffer));
@@ -550,7 +558,8 @@ xmlSecMSCryptoKWDes3BlockDecrypt(void * context,
     }
 
     /* success */
-    XMLSEC_SAFE_CAST_ULONG_TO_INT(dwCLen, res, goto done, NULL);
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwCLen, (*outWritten), goto done, NULL);
+    res = 0;
 
 done:
     /* cleanup */

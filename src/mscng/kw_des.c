@@ -58,15 +58,15 @@ XMLSEC_TRANSFORM_DECLARE(MSCngKWDes3, xmlSecMSCngKWDes3Ctx)
 
 static int
 xmlSecMSCngKWDes3GenerateRandom(void * context, xmlSecByte * out,
-        xmlSecSize outSize)
+        xmlSecSize outSize, xmlSecSize* outWritten)
 {
     NTSTATUS status;
     DWORD dwOutSize;
-    int res;
 
     UNREFERENCED_PARAMETER(context);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize > 0, -1);
+    xmlSecAssert2(outWritten != NULL, -1);
 
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(outSize, dwOutSize, return(-1), NULL);
     status = BCryptGenRandom(
@@ -78,13 +78,13 @@ xmlSecMSCngKWDes3GenerateRandom(void * context, xmlSecByte * out,
         xmlSecMSCngNtError("BCryptGenRandom", NULL, status);
         return(-1);
     }
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(outSize, res, return(-1), NULL);
-    return(res);
+    (*outWritten) = outSize;
+    return(0);
 }
 
 static int
 xmlSecMSCngKWDes3Sha1(void * context, const xmlSecByte * in, xmlSecSize inSize,
-        xmlSecByte * out, xmlSecSize outSize) {
+        xmlSecByte * out, xmlSecSize outSize, xmlSecSize* outWritten) {
     xmlSecMSCngKWDes3CtxPtr ctx = (xmlSecMSCngKWDes3CtxPtr)context;
     BCRYPT_ALG_HANDLE hAlg = NULL;
     BCRYPT_HASH_HANDLE hHash = NULL;
@@ -102,6 +102,7 @@ xmlSecMSCngKWDes3Sha1(void * context, const xmlSecByte * in, xmlSecSize inSize,
     xmlSecAssert2(inSize > 0, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize > 0, -1);
+    xmlSecAssert2(outWritten != NULL, -1);
 
     /* create */
     status = BCryptOpenAlgorithmProvider(&hAlg,
@@ -180,7 +181,8 @@ xmlSecMSCngKWDes3Sha1(void * context, const xmlSecByte * in, xmlSecSize inSize,
         goto done;
     }
     memcpy(out, pbHash, outSize);
-    XMLSEC_SAFE_CAST_ULONG_TO_INT(cbHash, res, goto done, NULL);
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(cbHash, (*outWritten), goto done, NULL);
+    res = 0;
 
 done:
     if(hHash != NULL) {
@@ -205,7 +207,7 @@ done:
 static int
 xmlSecMSCngKWDes3BlockEncrypt(void * context, const xmlSecByte * iv,
         xmlSecSize ivSize, const xmlSecByte * in, xmlSecSize inSize,
-        xmlSecByte * out, xmlSecSize outSize) {
+        xmlSecByte * out, xmlSecSize outSize, xmlSecSize* outWritten) {
     xmlSecMSCngKWDes3CtxPtr ctx = (xmlSecMSCngKWDes3CtxPtr)context;
     BCRYPT_ALG_HANDLE hAlg = NULL;
     BCRYPT_KEY_HANDLE hKey = NULL;
@@ -232,6 +234,7 @@ xmlSecMSCngKWDes3BlockEncrypt(void * context, const xmlSecByte * iv,
     xmlSecAssert2(inSize > 0, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= inSize, -1);
+    xmlSecAssert2(outWritten != NULL, -1);
 
     ret = xmlSecBufferInitialize(&blob, 0);
     if(ret < 0) {
@@ -356,7 +359,8 @@ xmlSecMSCngKWDes3BlockEncrypt(void * context, const xmlSecByte * iv,
         xmlSecMSCngNtError("BCryptEncrypt", NULL, status);
         goto done;
     }
-    XMLSEC_SAFE_CAST_ULONG_TO_INT(cbData, res, goto done, NULL);
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(cbData, (*outWritten), goto done, NULL);
+    res = 0;
 
 done:
     xmlSecBufferFinalize(&ivCopy);
@@ -381,7 +385,7 @@ done:
 static int
 xmlSecMSCngKWDes3BlockDecrypt(void * context, const xmlSecByte * iv,
         xmlSecSize ivSize, const xmlSecByte * in, xmlSecSize inSize,
-        xmlSecByte * out, xmlSecSize outSize) {
+        xmlSecByte * out, xmlSecSize outSize, xmlSecSize* outWritten) {
     xmlSecMSCngKWDes3CtxPtr ctx = (xmlSecMSCngKWDes3CtxPtr)context;
     BCRYPT_ALG_HANDLE hAlg = NULL;
     BCRYPT_KEY_HANDLE hKey = NULL;
@@ -407,6 +411,7 @@ xmlSecMSCngKWDes3BlockDecrypt(void * context, const xmlSecByte * iv,
     xmlSecAssert2(inSize > 0, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= inSize, -1);
+    xmlSecAssert2(outWritten != NULL, -1);
 
     ret = xmlSecBufferInitialize(&blob, 0);
     if(ret < 0) {
@@ -522,7 +527,8 @@ xmlSecMSCngKWDes3BlockDecrypt(void * context, const xmlSecByte * iv,
         xmlSecMSCngNtError("BCryptDecrypt", NULL, status);
         goto done;
     }
-    XMLSEC_SAFE_CAST_ULONG_TO_INT(cbData, res, goto done, NULL);
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(cbData, (*outWritten), goto done, NULL);
+    res = 0;
 
 done:
     if (hKey != NULL) {

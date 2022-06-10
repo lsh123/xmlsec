@@ -190,6 +190,7 @@ xmlSecMSCngX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
 static PCCERT_CONTEXT
 xmlSecMSCngX509CertBase64DerRead(xmlChar* buf) {
     xmlSecSize size;
+    xmlSecStatus retStatus;
     int ret;
 
     xmlSecAssert2(buf != NULL, NULL);
@@ -202,12 +203,11 @@ xmlSecMSCngX509CertBase64DerRead(xmlChar* buf) {
     XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
 
     /* in-place decoding */
-    ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, size);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecBase64Decode", NULL);
+    xmlSecStatus retStatus; = xmlSecBase64Decode_ex(buf, (xmlSecByte*)buf, size), &size;
+    if(retStatus != xmlSecStatusSuccess) {
+        xmlSecInternalError("xmlSecBase64Decode_ex", NULL);
         return(NULL);
     }
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
 
     return(xmlSecMSCngX509CertDerRead((xmlSecByte*)buf, size));
 }
@@ -605,6 +605,7 @@ xmlSecMSCngX509CrlDerRead(xmlSecByte* buf, xmlSecSize size, xmlSecKeyInfoCtxPtr 
 static PCCRL_CONTEXT
 xmlSecMSCngX509CrlBase64DerRead(xmlChar* buf, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecSize size;
+    xmlSecStatus retStatus;
     int ret;
 
     xmlSecAssert2(buf != NULL, NULL);
@@ -617,12 +618,11 @@ xmlSecMSCngX509CrlBase64DerRead(xmlChar* buf, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
 
     /* usual trick with base64 decoding in-place */
-    ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, size);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecBase64Decode", NULL);
+    retStatus = xmlSecBase64Decode_ex(buf, (xmlSecByte*)buf, size, &size);
+    if(retStatus != xmlSecStatusSuccess) {
+        xmlSecInternalError("xmlSecBase64Decode_ex", NULL);
         return(NULL);
     }
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
 
     return(xmlSecMSCngX509CrlDerRead((xmlSecByte*)buf, size, keyInfoCtx));
 }

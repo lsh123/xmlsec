@@ -497,6 +497,7 @@ xmlSecNssX509FindCert(CERTCertList* certsList, const xmlChar *subjectName,
         SECItem subjKeyID;
         xmlSecSize size;
         int len;
+        xmlSecStatus retStatus;
 
         len = xmlStrlen(ski);
         if(len < 0) {
@@ -505,12 +506,11 @@ xmlSecNssX509FindCert(CERTCertList* certsList, const xmlChar *subjectName,
         }
         XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, goto done, NULL);
 
-        len = xmlSecBase64Decode(ski, (xmlSecByte*)ski, size);
-        if(len < 0) {
-            xmlSecInternalError("xmlSecBase64Decode", NULL);
+        retStatus = xmlSecBase64Decode_ex(ski, (xmlSecByte*)ski, size, &size);
+        if(retStatus != xmlSecStatusSuccess) {
+            xmlSecInternalError("xmlSecBase64Decode_ex", NULL);
             goto done;
         }
-        XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, goto done, NULL);
 
         memset(&subjKeyID, 0, sizeof(subjKeyID));
         subjKeyID.data = ski;

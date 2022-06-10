@@ -1542,12 +1542,11 @@ xmlSecMSCryptoX509CertBase64DerRead(xmlChar* buf) {
     XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
 
     /* usual trick with base64 decoding "in-place" */
-    ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, size);
+    ret = xmlSecBase64Decode_ex(buf, (xmlSecByte*)buf, size, &size);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBase64Decode", NULL);
+        xmlSecInternalError("xmlSecBase64Decode_ex", NULL);
         return(NULL);
     }
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
 
     return(xmlSecMSCryptoX509CertDerRead((xmlSecByte*)buf, size));
 }
@@ -1606,12 +1605,11 @@ xmlSecMSCryptoX509CrlBase64DerRead(xmlChar* buf,
     XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
 
     /* usual trick with base64 decoding "in-place" */
-    ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, size);
+    ret = xmlSecBase64Decode_ex(buf, (xmlSecByte*)buf, size, &size);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBase64Decode", NULL);
+        xmlSecInternalError("xmlSecBase64Decode_ex", NULL);
         return(NULL);
     }
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
 
     return(xmlSecMSCryptoX509CrlDerRead((xmlSecByte*)buf, size, keyInfoCtx));
 }

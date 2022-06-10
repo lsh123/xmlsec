@@ -818,6 +818,7 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
         int index;
         X509_EXTENSION *ext;
         ASN1_OCTET_STRING *keyId;
+        int ret;
 
         len = xmlStrlen(ski);
         if(len <= 0) {
@@ -827,13 +828,15 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
         XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(NULL), NULL);
 
         /* our usual trick with base64 decode */
-        len = xmlSecBase64Decode(ski, (xmlSecByte*)ski, size);
-        if(len < 0) {
-            xmlSecInternalError2("xmlSecBase64Decode", NULL,
-                                 "ski=%s", xmlSecErrorsSafeString(ski));
+        ret = xmlSecBase64Decode_ex(ski, (xmlSecByte*)ski, size, &size);
+        if(ret < 0) {
+            xmlSecInternalError2("xmlSecBase64Decode_ex", NULL,
+                "ski=%s", xmlSecErrorsSafeString(ski));
             return(NULL);
         }
-        XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(NULL), NULL);
+
+        /* we need len as int since OpenSSL keyId->length is int */
+        XMLSEC_SAFE_CAST_SIZE_TO_INT(size, len, return(NULL), NULL);
 
         for(ii = 0; ii < sk_X509_num(certs); ++ii) {
             cert = sk_X509_value(certs, ii);

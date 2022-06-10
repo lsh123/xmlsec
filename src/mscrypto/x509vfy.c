@@ -1137,13 +1137,14 @@ xmlSecMSCryptoX509FindCertBySki(HCERTSTORE store, const xmlChar* ski) {
     XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, goto done, NULL);
 
     /* trick: base64 decode "in place" */
-    ret = xmlSecBase64Decode(binSki, (xmlSecByte*)binSki, size);
-    if (ret < 0) {
-        xmlSecInternalError("xmlSecBase64Decode", NULL);
+    ret = xmlSecBase64Decode_ex(binSki, (xmlSecByte*)binSki, size, &size);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBase64Decode_ex", NULL);
         goto done;
     }
-    XMLSEC_SAFE_CAST_INT_TO_ULONG(ret, blob.cbData, goto done, NULL);
+
     blob.pbData = binSki;
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(size, blob.cbData, goto done, NULL);
 
     res = CertFindCertificateInStore(store,
         PKCS_7_ASN_ENCODING | X509_ASN_ENCODING,

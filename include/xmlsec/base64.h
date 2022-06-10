@@ -43,23 +43,43 @@ XMLSEC_EXPORT int               xmlSecBase64CtxInitialize       (xmlSecBase64Ctx
                                                                  int encode,
                                                                  int columns);
 XMLSEC_EXPORT void              xmlSecBase64CtxFinalize         (xmlSecBase64CtxPtr ctx);
-XMLSEC_EXPORT int               xmlSecBase64CtxUpdate           (xmlSecBase64CtxPtr ctx,
-                                                                 const xmlSecByte *in,
+XMLSEC_EXPORT int               xmlSecBase64CtxUpdate_ex        (xmlSecBase64CtxPtr ctx,
+                                                                 const xmlSecByte* in,
                                                                  xmlSecSize inSize,
-                                                                 xmlSecByte *out,
-                                                                 xmlSecSize outSize);
-XMLSEC_EXPORT int               xmlSecBase64CtxFinal            (xmlSecBase64CtxPtr ctx,
-                                                                 xmlSecByte *out,
-                                                                 xmlSecSize outSize);
+                                                                 xmlSecByte* out,
+                                                                 xmlSecSize outSize,
+                                                                 xmlSecSize* outWritten);
+
+XMLSEC_EXPORT int                xmlSecBase64CtxFinal_ex        (xmlSecBase64CtxPtr ctx,
+                                                                 xmlSecByte* out,
+                                                                 xmlSecSize outSize,
+                                                                 xmlSecSize* outWritten);
 
 /* Standalone routines to do base64 encode/decode "at once" */
-XMLSEC_EXPORT xmlChar*          xmlSecBase64Encode              (const xmlSecByte *buf,
-                                                                 xmlSecSize len,
+XMLSEC_EXPORT xmlChar*           xmlSecBase64Encode             (const xmlSecByte* in,
+                                                                 xmlSecSize inSize,
                                                                  int columns);
-XMLSEC_EXPORT int               xmlSecBase64Decode              (const xmlChar* str,
-                                                                 xmlSecByte *buf,
-                                                                 xmlSecSize len);
+XMLSEC_EXPORT int                xmlSecBase64Decode_ex          (const xmlChar* str,
+                                                                 xmlSecByte* out,
+                                                                 xmlSecSize outSize,
+                                                                 xmlSecSize* outWritten);
 
+
+/**
+ *  These functions are deprecated, don't use them in your code!
+ */
+
+XMLSEC_DEPRECATED XMLSEC_EXPORT int xmlSecBase64CtxUpdate      (xmlSecBase64CtxPtr ctx,
+                                                                const xmlSecByte* in,
+                                                                xmlSecSize inSize,
+                                                                xmlSecByte* out,
+                                                                xmlSecSize outSize);
+XMLSEC_DEPRECATED XMLSEC_EXPORT int xmlSecBase64CtxFinal       (xmlSecBase64CtxPtr ctx,
+                                                                xmlSecByte* out,
+                                                                xmlSecSize outSize);
+XMLSEC_DEPRECATED XMLSEC_EXPORT int xmlSecBase64Decode         (const xmlChar* str,
+                                                                xmlSecByte* out,
+                                                                xmlSecSize outSize);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

@@ -583,12 +583,11 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     XMLSEC_SAFE_CAST_INT_TO_SIZE(strLen, strSize, goto done, xmlSecKeyDataKlassGetName(id));
 
     /* usual trick: decode into the same buffer */
-    ret = xmlSecBase64Decode(str, (xmlSecByte*)str, strSize);
+    ret = xmlSecBase64Decode_ex(str, (xmlSecByte*)str, strSize, &strSize);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBase64Decode", xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecBase64Decode_ex", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, strSize, goto done, xmlSecKeyDataKlassGetName(id));
 
     /* check do we have a key already */
     data = xmlSecKeyGetValue(key);
@@ -596,10 +595,8 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         xmlSecBufferPtr buffer;
 
         if(!xmlSecKeyDataCheckId(data, id)) {
-            xmlSecOtherError2(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
-                              xmlSecKeyDataGetName(data),
-                              "id=%s",
-                              xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)));
+            xmlSecOtherError2(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST, xmlSecKeyDataGetName(data),
+                "id=%s", xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)));
             goto done;
         }
 

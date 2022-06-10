@@ -504,7 +504,7 @@ done:
 int
 xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
     xmlChar* content = NULL;
-    xmlSecSize size;
+    xmlSecSize size, outWritten;
     int len;
     int ret;
     int res = -1;
@@ -532,16 +532,17 @@ xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
         goto done;
     }
 
-    ret = xmlSecBase64Decode(content, xmlSecBufferGetData(buf), xmlSecBufferGetMaxSize(buf));
+    ret = xmlSecBase64Decode_ex(content, xmlSecBufferGetData(buf),
+        xmlSecBufferGetMaxSize(buf), &outWritten);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBase64Decode", NULL);
+        xmlSecInternalError("xmlSecBase64Decode_ex", NULL);
         goto done;
     }
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, goto done, NULL);
 
-    ret = xmlSecBufferSetSize(buf, size);
+    ret = xmlSecBufferSetSize(buf, outWritten);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, size);
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL, 
+            "size=" XMLSEC_SIZE_FMT, outWritten);
         goto done;
     }
 
@@ -615,10 +616,10 @@ static int
 xmlSecBufferIOWrite(xmlSecBufferPtr buf, const xmlSecByte *data, int len) {
     xmlSecSize size;
     int ret;
-    int res;
 
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(len >= 0, -1);
 
     XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(-1), NULL);
     ret = xmlSecBufferAppend(buf, data, size);
@@ -626,9 +627,8 @@ xmlSecBufferIOWrite(xmlSecBufferPtr buf, const xmlSecByte *data, int len) {
         xmlSecInternalError2("xmlSecBufferAppend", NULL, "size=" XMLSEC_SIZE_FMT, size);
         return(-1);
     }
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(size, res, return(-1), NULL);
-
-    return(res);
+    /* we appended the whole input buffer */
+    return(len);
 }
 
 static int

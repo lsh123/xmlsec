@@ -26,6 +26,7 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/mscrypto/crypto.h>
 
@@ -42,16 +43,18 @@
  * AES KW implementation
  *
  *********************************************************************/
-static int      xmlSecMSCryptoKWAesBlockEncrypt         (const xmlSecByte * in, 
+static int      xmlSecMSCryptoKWAesBlockEncrypt         (void* context, 
+                                                         const xmlSecByte * in,
                                                          xmlSecSize inSize,
                                                          xmlSecByte * out, 
                                                          xmlSecSize outSize,
-                                                         void * cb_ctx);
-static int      xmlSecMSCryptoKWAesBlockDecrypt         (const xmlSecByte * in, 
+                                                         xmlSecSize* outWritten);
+static int      xmlSecMSCryptoKWAesBlockDecrypt         (void* context,
+                                                         const xmlSecByte * in,
                                                          xmlSecSize inSize,
                                                          xmlSecByte * out, 
                                                          xmlSecSize outSize,
-                                                         void * cb_ctx);
+                                                         xmlSecSize* outWritten);
 
 /* klass for KW AES operation */
 static xmlSecKWAesKlass xmlSecMSCryptoKWAesKlass = {
@@ -72,14 +75,12 @@ static xmlSecKWAesKlass xmlSecMSCryptoKWAesKlass = {
 typedef struct _xmlSecMSCryptoKWAesCtx                  xmlSecMSCryptoKWAesCtx,
                                                         *xmlSecMSCryptoKWAesCtxPtr;
 struct _xmlSecMSCryptoKWAesCtx {
+    xmlSecTransformKWAesCtx             parentCtx;
+
     ALG_ID                              algorithmIdentifier;
     const xmlSecMSCryptoProviderInfo  * providers;
-    xmlSecKeyDataId                     keyId;
-    xmlSecSize                          keySize;
-
     HCRYPTPROV                          cryptProvider;
     HCRYPTKEY                           pubPrivKey;
-    xmlSecBuffer                        keyBuffer;
 };
 
 /******************************************************************************
@@ -131,6 +132,7 @@ xmlSecMSCryptoKWAesCheckId(xmlSecTransformPtr transform) {
 static int
 xmlSecMSCryptoKWAesInitialize(xmlSecTransformPtr transform) {
     xmlSecMSCryptoKWAesCtxPtr ctx;
+    xmlSecSize keyExpectedSize;
     int ret;
 
     xmlSecAssert2(xmlSecMSCryptoKWAesCheckId(transform), -1);
@@ -138,33 +140,31 @@ xmlSecMSCryptoKWAesInitialize(xmlSecTransformPtr transform) {
 
     ctx = xmlSecMSCryptoKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-
     memset(ctx, 0, sizeof(xmlSecMSCryptoKWAesCtx));
 
     if(transform->id == xmlSecMSCryptoTransformKWAes128Id) {
         ctx->algorithmIdentifier    = CALG_AES_128;
-        ctx->keyId                  = xmlSecMSCryptoKeyDataAesId;
         ctx->providers              = xmlSecMSCryptoProviderInfo_Aes;
-        ctx->keySize                = XMLSEC_KW_AES128_KEY_SIZE;
+        keyExpectedSize             = XMLSEC_KW_AES128_KEY_SIZE;
     } else if(transform->id == xmlSecMSCryptoTransformKWAes192Id) {
         ctx->algorithmIdentifier    = CALG_AES_192;
-        ctx->keyId                  = xmlSecMSCryptoKeyDataAesId;
         ctx->providers              = xmlSecMSCryptoProviderInfo_Aes;
-        ctx->keySize                = XMLSEC_KW_AES192_KEY_SIZE;
+        keyExpectedSize             = XMLSEC_KW_AES192_KEY_SIZE;
     } else if(transform->id == xmlSecMSCryptoTransformKWAes256Id) {
         ctx->algorithmIdentifier    = CALG_AES_256;
-        ctx->keyId                  = xmlSecMSCryptoKeyDataAesId;
         ctx->providers              = xmlSecMSCryptoProviderInfo_Aes;
-        ctx->keySize                = XMLSEC_KW_AES256_KEY_SIZE;
+        keyExpectedSize             = XMLSEC_KW_AES256_KEY_SIZE;
     } else {
         xmlSecInvalidTransfromError(transform)
         return(-1);
     }
 
-    ret = xmlSecBufferInitialize(&ctx->keyBuffer, 0);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferInitialize",
-                xmlSecTransformGetName(transform));
+    ret = xmlSecTransformKWAesInitialize(transform, &(ctx->parentCtx),
+        &xmlSecMSCryptoKWAesKlass, xmlSecMSCryptoKeyDataAesId,
+        keyExpectedSize);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecTransformKWAesInitialize", xmlSecTransformGetName(transform));
+        xmlSecMSCryptoKWAesFinalize(transform);
         return(-1);
     }
 
@@ -173,6 +173,7 @@ xmlSecMSCryptoKWAesInitialize(xmlSecTransformPtr transform) {
     if(ctx->cryptProvider == 0) {
         xmlSecInternalError("xmlSecMSCryptoFindProvider",
                              xmlSecTransformGetName(transform));
+        xmlSecMSCryptoKWAesFinalize(transform);
         return(-1);
     }
 
@@ -180,6 +181,7 @@ xmlSecMSCryptoKWAesInitialize(xmlSecTransformPtr transform) {
     if (!xmlSecMSCryptoCreatePrivateExponentOneKey(ctx->cryptProvider, &(ctx->pubPrivKey))) {
         xmlSecInternalError("xmlSecMSCryptoCreatePrivateExponentOneKey",
                              xmlSecTransformGetName(transform));
+        xmlSecMSCryptoKWAesFinalize(transform);
         return(-1);
     }
 
@@ -202,172 +204,66 @@ xmlSecMSCryptoKWAesFinalize(xmlSecTransformPtr transform) {
     if (ctx->cryptProvider) {
         CryptReleaseContext(ctx->cryptProvider, 0);
     }
-    
-    xmlSecBufferFinalize(&ctx->keyBuffer);
 
+    xmlSecTransformKWAesFinalize(transform, &(ctx->parentCtx));
     memset(ctx, 0, sizeof(xmlSecMSCryptoKWAesCtx));
 }
 
 static int
 xmlSecMSCryptoKWAesSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
     xmlSecMSCryptoKWAesCtxPtr ctx;
+    int ret;
 
     xmlSecAssert2(xmlSecMSCryptoKWAesCheckId(transform), -1);
-    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoKWAesSize), -1);
-    xmlSecAssert2(keyReq != NULL, -1);
 
     ctx = xmlSecMSCryptoKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->cryptProvider != 0, -1);
 
-    keyReq->keyId       = ctx->keyId;
-    keyReq->keyType     = xmlSecKeyDataTypeSymmetric;
-    if(transform->operation == xmlSecTransformOperationEncrypt) {
-        keyReq->keyUsage = xmlSecKeyUsageEncrypt;
-    } else {
-        keyReq->keyUsage = xmlSecKeyUsageDecrypt;
+    ret = xmlSecTransformKWAesSetKeyReq(transform, &(ctx->parentCtx), keyReq);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecTransformKWAesSetKeyReq", xmlSecTransformGetName(transform));
+        return(-1);
     }
-
-    keyReq->keyBitsSize = 8 * ctx->keySize;
     return(0);
 }
-
-
 
 static int
 xmlSecMSCryptoKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecMSCryptoKWAesCtxPtr ctx;
-    xmlSecBufferPtr buffer;
-    xmlSecSize keySize;
     int ret;
 
     xmlSecAssert2(xmlSecMSCryptoKWAesCheckId(transform), -1);
-    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoKWAesSize), -1);
-    xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key), xmlSecMSCryptoKeyDataAesId), -1);
 
     ctx = xmlSecMSCryptoKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    buffer = xmlSecKeyDataBinaryValueGetBuffer(xmlSecKeyGetValue(key));
-    xmlSecAssert2(buffer != NULL, -1);
-
-    keySize = xmlSecBufferGetSize(buffer);
-    if(keySize < ctx->keySize) {
-        xmlSecInvalidKeyDataSizeError(keySize, ctx->keySize,
-                xmlSecTransformGetName(transform));
+    ret = xmlSecTransformKWAesSetKey(transform, &(ctx->parentCtx), key);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecTransformKWAesSetKey", xmlSecTransformGetName(transform));
         return(-1);
     }
-
-    ret = xmlSecBufferSetData(&(ctx->keyBuffer),
-                            xmlSecBufferGetData(buffer),
-                            ctx->keySize);
-    if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetData", xmlSecTransformGetName(transform),
-            "size=" XMLSEC_SIZE_FMT, ctx->keySize);
-        return(-1);
-    }
-
     return(0);
 }
 
 static int
-xmlSecMSCryptoKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
+xmlSecMSCryptoKWAesExecute(xmlSecTransformPtr transform, int last,
+                           xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
     xmlSecMSCryptoKWAesCtxPtr ctx;
-    xmlSecBufferPtr in, out;
-    xmlSecSize inSize, outSize;
     int ret;
 
     xmlSecAssert2(xmlSecMSCryptoKWAesCheckId(transform), -1);
-    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoKWAesSize), -1);
-    xmlSecAssert2(transformCtx != NULL, -1);
+    UNREFERENCED_PARAMETER(transformCtx);
 
     ctx = xmlSecMSCryptoKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    in = &(transform->inBuf);
-    out = &(transform->outBuf);
-    inSize = xmlSecBufferGetSize(in);
-    outSize = xmlSecBufferGetSize(out);
-    xmlSecAssert2(outSize == 0, -1);
-
-    if(transform->status == xmlSecTransformStatusNone) {
-        transform->status = xmlSecTransformStatusWorking;
-    }
-
-    if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
-        /* just do nothing */
-    } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
-        if((inSize % XMLSEC_KW_AES_IN_SIZE_MULTIPLY) != 0) {
-            xmlSecInvalidSizeNotMultipleOfError("Input data",
-                inSize, XMLSEC_KW_AES_IN_SIZE_MULTIPLY,
-                xmlSecTransformGetName(transform));
-            return(-1);
-        }
-
-        if(transform->operation == xmlSecTransformOperationEncrypt) {
-            /* the encoded key might be 8 bytes longer plus 8 bytes just in case */
-            outSize = inSize + XMLSEC_KW_AES_MAGIC_BLOCK_SIZE +
-                               XMLSEC_KW_AES_BLOCK_SIZE;
-        } else {
-            outSize = inSize + XMLSEC_KW_AES_BLOCK_SIZE;
-        }
-
-        ret = xmlSecBufferSetMaxSize(out, outSize);
-        if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferSetMaxSize",
-                                 xmlSecTransformGetName(transform),
-                                 "size=" XMLSEC_SIZE_FMT, outSize);
-            return(-1);
-        }
-
-        if(transform->operation == xmlSecTransformOperationEncrypt) {
-            ret = xmlSecKWAesEncode(&xmlSecMSCryptoKWAesKlass, ctx,
-                                    xmlSecBufferGetData(in), inSize,
-                                    xmlSecBufferGetData(out), outSize);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecKWAesEncode",
-                                    xmlSecTransformGetName(transform));
-                return(-1);
-            }
-            XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outSize, return(-1), xmlSecTransformGetName(transform));
-        } else {
-            ret = xmlSecKWAesDecode(&xmlSecMSCryptoKWAesKlass, ctx,
-                                    xmlSecBufferGetData(in), inSize,
-                                    xmlSecBufferGetData(out), outSize);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecKWAesEncode",
-                                    xmlSecTransformGetName(transform));
-                return(-1);
-            }
-            XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, outSize, return(-1), xmlSecTransformGetName(transform));
-        }
-
-        ret = xmlSecBufferSetSize(out, outSize);
-        if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferSetSize",
-                                 xmlSecTransformGetName(transform),
-                                 "size=" XMLSEC_SIZE_FMT, outSize);
-            return(-1);
-        }
-
-        ret = xmlSecBufferRemoveHead(in, inSize);
-        if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferRemoveHead",
-                                 xmlSecTransformGetName(transform),
-                                 "size=" XMLSEC_SIZE_FMT, inSize);
-            return(-1);
-        }
-
-        transform->status = xmlSecTransformStatusFinished;
-    } else if(transform->status == xmlSecTransformStatusFinished) {
-        /* the only way we can get here is if there is no input */
-        xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
-    } else {
-        xmlSecInvalidTransfromStatusError(transform);
+    ret = xmlSecTransformKWAesExecute(transform, &(ctx->parentCtx), last, ctx);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecTransformKWAesExecute", xmlSecTransformGetName(transform));
         return(-1);
     }
     return(0);
@@ -380,24 +276,29 @@ xmlSecMSCryptoKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfo
  *
  ********************************************************************/
 static int
-xmlSecMSCryptoKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
+xmlSecMSCryptoKWAesBlockEncrypt(void* context, const xmlSecByte * in, xmlSecSize inSize,
                                 xmlSecByte * out, xmlSecSize outSize,
-                                void * context) {
+                                xmlSecSize* outWritten) {
     xmlSecMSCryptoKWAesCtxPtr ctx = (xmlSecMSCryptoKWAesCtxPtr)context;
     HCRYPTKEY cryptKey = 0;
+    xmlSecByte* keyData;
     xmlSecSize keySize;
     DWORD dwKeySize, dwCLen, dwOutSize;
     int res = -1;
 
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->pubPrivKey != 0, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize >= XMLSEC_KW_AES_BLOCK_SIZE, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= inSize, -1);
-    xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->pubPrivKey != 0, -1);
+    xmlSecAssert2(outWritten != NULL, -1);
 
-    keySize = xmlSecBufferGetSize(&ctx->keyBuffer);
-    xmlSecAssert2(keySize == ctx->keySize, -1);
+    keyData = xmlSecBufferGetData(&(ctx->parentCtx.keyBuffer));
+    keySize = xmlSecBufferGetSize(&(ctx->parentCtx.keyBuffer));
+    xmlSecAssert2(keyData != NULL, -1);
+    xmlSecAssert2(keySize > 0, -1);
+    xmlSecAssert2(keySize == ctx->parentCtx.keyExpectedSize, -1);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(keySize, dwKeySize, goto done, NULL);
 
     /* Import this key and get an HCRYPTKEY handle, we do it again and again 
@@ -405,7 +306,7 @@ xmlSecMSCryptoKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
     if (!xmlSecMSCryptoImportPlainSessionBlob(ctx->cryptProvider,
         ctx->pubPrivKey,
         ctx->algorithmIdentifier,
-        xmlSecBufferGetData(&ctx->keyBuffer),
+        keyData,
         dwKeySize,
         TRUE,
         &cryptKey))  {
@@ -429,7 +330,8 @@ xmlSecMSCryptoKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
     }
 
     /* success */
-    XMLSEC_SAFE_CAST_ULONG_TO_INT(dwCLen, res, goto done, NULL);
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwCLen, (*outWritten), goto done, NULL);
+    res = 0;
 
 done:
     /* cleanup */
@@ -440,25 +342,30 @@ done:
 }
 
 static int
-xmlSecMSCryptoKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
+xmlSecMSCryptoKWAesBlockDecrypt(void* context, const xmlSecByte * in, xmlSecSize inSize,
                                 xmlSecByte * out, xmlSecSize outSize,
-                                void * context) {
+                                xmlSecSize* outWritten) {
     xmlSecMSCryptoKWAesCtxPtr ctx = (xmlSecMSCryptoKWAesCtxPtr)context;
     HCRYPTKEY cryptKey = 0;
+    xmlSecByte* keyData;
     xmlSecSize keySize;
     DWORD dwKeySize;
     DWORD dwCLen;
     int res = -1;
 
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->pubPrivKey != 0, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize >= XMLSEC_KW_AES_BLOCK_SIZE, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= inSize, -1);
-    xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->pubPrivKey != 0, -1);
+    xmlSecAssert2(outWritten != NULL, -1);
 
-    keySize = xmlSecBufferGetSize(&ctx->keyBuffer);
-    xmlSecAssert2(keySize == ctx->keySize, -1);
+    keyData = xmlSecBufferGetData(&(ctx->parentCtx.keyBuffer));
+    keySize = xmlSecBufferGetSize(&(ctx->parentCtx.keyBuffer));
+    xmlSecAssert2(keyData != NULL, -1);
+    xmlSecAssert2(keySize > 0, -1);
+    xmlSecAssert2(keySize == ctx->parentCtx.keyExpectedSize, -1);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(keySize, dwKeySize, goto done, NULL);
 
     /* Import this key and get an HCRYPTKEY handle, we do it again and again 
@@ -466,7 +373,7 @@ xmlSecMSCryptoKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
     if (!xmlSecMSCryptoImportPlainSessionBlob(ctx->cryptProvider,
         ctx->pubPrivKey,
         ctx->algorithmIdentifier,
-        xmlSecBufferGetData(&ctx->keyBuffer),
+        keyData,
         dwKeySize,
         TRUE,
         &cryptKey))  {
@@ -489,7 +396,8 @@ xmlSecMSCryptoKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
     }
 
     /* success */
-    XMLSEC_SAFE_CAST_ULONG_TO_INT(dwCLen, res, goto done, NULL);
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwCLen, (*outWritten), goto done, NULL);
+    res = 0;
 
 done:
     /* cleanup */

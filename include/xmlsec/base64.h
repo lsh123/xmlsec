@@ -64,11 +64,9 @@ XMLSEC_EXPORT int                xmlSecBase64Decode_ex          (const xmlChar* 
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize* outWritten);
 
-
 /**
- *  These functions are deprecated, don't use them in your code!
+ *  These functions are deprecated and will be removed in the future.
  */
-
 XMLSEC_DEPRECATED XMLSEC_EXPORT int xmlSecBase64CtxUpdate      (xmlSecBase64CtxPtr ctx,
                                                                 const xmlSecByte* in,
                                                                 xmlSecSize inSize,

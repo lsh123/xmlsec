@@ -63,6 +63,8 @@ XMLSEC_EXPORT int                xmlSecBase64Decode_ex          (const xmlChar* 
                                                                  xmlSecByte* out,
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize* outWritten);
+XMLSEC_EXPORT int                xmlSecBase64DecodeInPlace      (xmlChar* str,
+                                                                 xmlSecSize* outWritten);
 
 /**
  *  These functions are deprecated and will be removed in the future.

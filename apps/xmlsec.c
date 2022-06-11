@@ -1784,9 +1784,7 @@ xmlSecAppEncryptTmpl(void) {
     xmlSecEncCtx encCtx;
     xmlDocPtr doc = NULL;
     xmlNodePtr cur;
-    xmlSecSize size;
     clock_t start_time;
-    int ret;
     int res = -1;
 
     if(xmlSecEncCtxInitialize(&encCtx, gKeysMngr) < 0) {
@@ -1829,17 +1827,10 @@ xmlSecAppEncryptTmpl(void) {
         goto done;      
     }
 
-    ret = xmlStrlen(data);
-    if(ret < 0) {
-        fprintf(stderr, "Error: failed to calculate length of data\n");
-        goto done;
-    }
-    size = (xmlSecSize)ret;
-
     /* encrypt */
     start_time = clock();            
     if(xmlSecEncCtxBinaryEncrypt(&encCtx, xmlDocGetRootElement(doc), 
-                                (const xmlSecByte*)data, size) < 0) {
+                                (const xmlSecByte*)data, xmlSecStrlen(data)) < 0) {
         fprintf(stderr, "Error: failed to encrypt data\n");
         goto done;      
     }

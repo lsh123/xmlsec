@@ -261,7 +261,7 @@ int
 xmlSecTransformUriTypeCheck(xmlSecTransformUriType type, const xmlChar* uri) {
     xmlSecTransformUriType uriType = 0;
 
-    if((uri == NULL) || (xmlStrlen(uri) == 0)) {
+    if((uri == NULL) || (xmlSecStrlen(uri) == 0)) {
         uriType = xmlSecTransformUriTypeEmpty;
     } else if(uri[0] == '#') {
         uriType = xmlSecTransformUriTypeSameDocument;
@@ -721,7 +721,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
     }
 
     /* is it an empty uri? */
-    if((uri == NULL) || (xmlStrlen(uri) == 0)) {
+    if((uri == NULL) || (xmlSecStrlen(uri) == 0)) {
         return(0);
     }
 
@@ -1076,10 +1076,10 @@ xmlSecTransformCtxExecute(xmlSecTransformCtxPtr ctx, xmlDocPtr doc) {
     xmlSecAssert2(ctx->status == xmlSecTransformStatusNone, -1);
     xmlSecAssert2(doc != NULL, -1);
 
-    if((ctx->uri == NULL) || (xmlStrlen(ctx->uri) == 0)) {
+    if((ctx->uri == NULL) || (xmlSecStrlen(ctx->uri) == 0)) {
         xmlSecNodeSetPtr nodes;
 
-        if((ctx->xptrExpr != NULL) && (xmlStrlen(ctx->xptrExpr) > 0)){
+        if((ctx->xptrExpr != NULL) && (xmlSecStrlen(ctx->xptrExpr) > 0)){
             /* our xpointer transform takes care of providing correct nodes set */
             nodes = xmlSecNodeSetCreate(doc, NULL, xmlSecNodeSetNormal);
             if(nodes == NULL) {

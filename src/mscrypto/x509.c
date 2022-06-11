@@ -1529,26 +1529,20 @@ xmlSecMSCryptoX509CertGetTime(FILETIME t, time_t* res) {
 
 static PCCERT_CONTEXT
 xmlSecMSCryptoX509CertBase64DerRead(xmlChar* buf) {
-    xmlSecSize size;
+    xmlSecSize decodedSize;
     int ret;
 
     xmlSecAssert2(buf != NULL, NULL);
 
-    ret = xmlStrlen(buf);
-    if(ret < 0) {
-        xmlSecInternalError("xmlStrlen", NULL);
-        return(NULL);
-    }
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
-
     /* usual trick with base64 decoding "in-place" */
-    ret = xmlSecBase64Decode_ex(buf, (xmlSecByte*)buf, size, &size);
+    decodedSize = 0;
+    ret = xmlSecBase64DecodeInPlace(buf, &decodedSize);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBase64Decode_ex", NULL);
+        xmlSecInternalError("xmlSecBase64DecodeInPlace", NULL);
         return(NULL);
     }
 
-    return(xmlSecMSCryptoX509CertDerRead((xmlSecByte*)buf, size));
+    return(xmlSecMSCryptoX509CertDerRead((xmlSecByte*)buf, decodedSize));
 }
 
 
@@ -1592,26 +1586,19 @@ xmlSecMSCryptoX509CertBase64DerWrite(PCCERT_CONTEXT cert, int base64LineWrap) {
 static PCCRL_CONTEXT
 xmlSecMSCryptoX509CrlBase64DerRead(xmlChar* buf,
                                    xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecSize size;
+    xmlSecSize decodedSize;
     int ret;
 
     xmlSecAssert2(buf != NULL, NULL);
 
-    ret = xmlStrlen(buf);
-    if (ret < 0) {
-        xmlSecInternalError("xmlStrlen", NULL);
-        return(NULL);
-    }
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
-
     /* usual trick with base64 decoding "in-place" */
-    ret = xmlSecBase64Decode_ex(buf, (xmlSecByte*)buf, size, &size);
+    ret = xmlSecBase64DecodeInPlace(buf, &decodedSize);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBase64Decode_ex", NULL);
+        xmlSecInternalError("xmlSecBase64DecodeInPlace", NULL);
         return(NULL);
     }
 
-    return(xmlSecMSCryptoX509CrlDerRead((xmlSecByte*)buf, size, keyInfoCtx));
+    return(xmlSecMSCryptoX509CrlDerRead((xmlSecByte*)buf, decodedSize, keyInfoCtx));
 }
 
 

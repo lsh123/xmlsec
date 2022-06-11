@@ -1017,7 +1017,7 @@ xmlSecMSCngX509FindCertBySki(HCERTSTORE store, const xmlChar* ski) {
     PCCERT_CONTEXT res = NULL;
     xmlChar* binSki = NULL;
     CRYPT_HASH_BLOB blob;
-    xmlSecSize size;
+    xmlSecSize decodedSize;
     int ret;
 
     xmlSecAssert2(store != 0, NULL);
@@ -1029,22 +1029,16 @@ xmlSecMSCngX509FindCertBySki(HCERTSTORE store, const xmlChar* ski) {
         goto done;
     }
 
-    ret = xmlStrlen(binSki);
-    if (ret < 0) {
-        xmlSecInternalError("xmlStrlen", NULL);
-        goto done;
-    }
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, goto done, NULL);
-
     /* base64 decode "in place" */
-    ret = xmlSecBase64Decode_ex(binSki, (xmlSecByte*)binSki, size, &size);
+    decodedSize = 0;
+    ret = xmlSecBase64DecodeInPlace(binSki, &decodedSize);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBase64Decode_ex", NULL);
+        xmlSecInternalError("xmlSecBase64DecodeInPlace", NULL);
         goto done;
     }
 
     blob.pbData = binSki;
-    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(size, blob.cbData, goto done, NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(decodedSize, blob.cbData, goto done, NULL);
 
     res = CertFindCertificateInStore(store,
         PKCS_7_ASN_ENCODING | X509_ASN_ENCODING,

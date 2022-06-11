@@ -1560,26 +1560,20 @@ xmlSecNssX509CertGetKey(CERTCertificate* cert) {
 static CERTCertificate*
 xmlSecNssX509CertBase64DerRead(xmlChar* buf) {
     CERTCertificate* res;
-    xmlSecSize size;
+    xmlSecSize decodedSize;
     int ret;
 
     xmlSecAssert2(buf != NULL, NULL);
 
-    ret = xmlStrlen(buf);
-    if(ret < 0) {
-        xmlSecInternalError("xmlStrlen", NULL);
-        return(NULL);
-    }
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
-
     /* usual trick with base64 decoding "in-place" */
-    ret = xmlSecBase64Decode_ex(buf, (xmlSecByte*)buf, size, &size);
+    decodedSize = 0;
+    ret = xmlSecBase64DecodeInPlace(buf, &decodedSize);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBase64Decode_ex", NULL);
+        xmlSecInternalError("xmlSecBase64DecodeInPlace", NULL);
         return(NULL);
     }
 
-    res = xmlSecNssX509CertDerRead((xmlSecByte*)buf, size);
+    res = xmlSecNssX509CertDerRead((xmlSecByte*)buf, decodedSize);
     if(res == NULL) {
         xmlSecInternalError("xmlSecNssX509CertDerRead", NULL);
         return(NULL);
@@ -1639,26 +1633,20 @@ static CERTSignedCrl*
 xmlSecNssX509CrlBase64DerRead(xmlChar* buf,
                               xmlSecKeyInfoCtxPtr keyInfoCtx) {
     CERTSignedCrl* res;
-    xmlSecSize size;
+    xmlSecSize decodedSize;
     int ret;
 
     xmlSecAssert2(buf != NULL, NULL);
 
-    ret = xmlStrlen(buf);
-    if(ret < 0) {
-        xmlSecInternalError("xmlStrlen", NULL);
-        return(NULL);
-    }
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
-
     /* usual trick with base64 decoding "in-place" */
-    ret = xmlSecBase64Decode_ex(buf, (xmlSecByte*)buf, size, &size);
+    decodedSize = 0;
+    ret = xmlSecBase64DecodeInPlace(buf, &decodedSize);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBase64Decode_ex", NULL);
+        xmlSecInternalError("xmlSecBase64DecodeInPlace", NULL);
         return(NULL);
     }
 
-    res = xmlSecNssX509CrlDerRead((xmlSecByte*)buf, size, keyInfoCtx);
+    res = xmlSecNssX509CrlDerRead((xmlSecByte*)buf, decodedSize, keyInfoCtx);
     if(res == NULL) {
         xmlSecInternalError("xmlSecNssX509CrlDerRead", NULL);
         return(NULL);

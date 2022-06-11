@@ -254,14 +254,17 @@ xmlSecCryptoDLLibraryDuplicate(xmlSecCryptoDLLibraryPtr lib) {
 static xmlChar*
 xmlSecCryptoDLLibraryConstructFilename(const xmlChar* name) {
     xmlChar* res;
-    int len;
     xmlSecSize size;
+    int len;
     int ret;
 
     xmlSecAssert2(name != NULL, NULL);
 
-    len = xmlStrlen(BAD_CAST PACKAGE) + xmlStrlen(name) + xmlStrlen(BAD_CAST XMLSEC_CRYPTO_DL_LIB_TMPL) + 1;
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(NULL), -1);
+    size = xmlSecStrlen(BAD_CAST PACKAGE) + 
+           xmlSecStrlen(name) + 
+           xmlSecStrlen(BAD_CAST XMLSEC_CRYPTO_DL_LIB_TMPL) + 
+           1;
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(size, len, return(NULL), NULL);
 
     res = (xmlChar*)xmlMalloc(size + 1);
     if(res == NULL) {

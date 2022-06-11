@@ -97,7 +97,9 @@ xmlSecGetNodeContentAsSize(const xmlNodePtr cur, xmlSecSize* res, xmlSecSize def
     }
 
     /* skip spaces at the end */
-    while(isspace((int)(*endptr))) { ++endptr; }
+    while(isspace((int)(*endptr))) { 
+        ++endptr;
+    }
     if((content + xmlStrlen(content)) != BAD_CAST endptr) {
         xmlSecInvalidNodeContentError(cur, NULL, "can't parse node content as size (extra characters at the end)");
         xmlFree(content);

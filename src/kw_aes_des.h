@@ -37,17 +37,17 @@ extern "C" {
 #define XMLSEC_KW_DES3_SHA_DIGEST_LENGTH            ((xmlSecSize)20)
 
 
-typedef int  (*xmlSecKWDes3Sha1Method)              (void * context,
+typedef int  (*xmlSecKWDes3Sha1Method)              (xmlSecTransformPtr transform,
                                                      const xmlSecByte * in,
                                                      xmlSecSize inSize,
                                                      xmlSecByte * out,
                                                      xmlSecSize outSize,
                                                      xmlSecSize * outWritten);
-typedef int  (*xmlSecKWDes3GenerateRandomMethod)    (void * context,
+typedef int  (*xmlSecKWDes3GenerateRandomMethod)    (xmlSecTransformPtr transform,
                                                      xmlSecByte * out,
                                                      xmlSecSize outSize,
                                                      xmlSecSize * outWritten);
-typedef int  (*xmlSecKWDes3BlockEncryptMethod)      (void * context,
+typedef int  (*xmlSecKWDes3BlockEncryptMethod)      (xmlSecTransformPtr transform,
                                                      const xmlSecByte * iv,
                                                      xmlSecSize ivSize,
                                                      const xmlSecByte * in,
@@ -55,7 +55,7 @@ typedef int  (*xmlSecKWDes3BlockEncryptMethod)      (void * context,
                                                      xmlSecByte * out,
                                                      xmlSecSize outSize,
                                                      xmlSecSize * outWritten);
-typedef int  (*xmlSecKWDes3BlockDecryptMethod)      (void * context,
+typedef int  (*xmlSecKWDes3BlockDecryptMethod)      (xmlSecTransformPtr transform,
                                                      const xmlSecByte * iv,
                                                      xmlSecSize ivSize,
                                                      const xmlSecByte * in,
@@ -116,8 +116,7 @@ XMLSEC_EXPORT int      xmlSecTransformKWDes3SetKey              (xmlSecTransform
                                                                  xmlSecKeyPtr key);
 XMLSEC_EXPORT int      xmlSecTransformKWDes3Execute             (xmlSecTransformPtr transform,
                                                                  xmlSecTransformKWDes3CtxPtr ctx,
-                                                                 int last,
-                                                                 void * context);
+                                                                 int last);
 #endif /* XMLSEC_NO_DES */
 
 #ifndef XMLSEC_NO_AES
@@ -133,13 +132,13 @@ XMLSEC_EXPORT int      xmlSecTransformKWDes3Execute             (xmlSecTransform
 #define XMLSEC_KW_AES192_KEY_SIZE                   ((xmlSecSize)24)
 #define XMLSEC_KW_AES256_KEY_SIZE                   ((xmlSecSize)32)
 
-typedef int  (*xmlSecKWAesBlockEncryptMethod)       (void * context,
+typedef int  (*xmlSecKWAesBlockEncryptMethod)       (xmlSecTransformPtr transform,
                                                      const xmlSecByte * in,
                                                      xmlSecSize inSize,
                                                      xmlSecByte * out,
                                                      xmlSecSize outSize,
                                                      xmlSecSize * outWritten);
-typedef int  (*xmlSecKWAesBlockDecryptMethod)       (void * context,
+typedef int  (*xmlSecKWAesBlockDecryptMethod)       (xmlSecTransformPtr transform,
                                                      const xmlSecByte * in,
                                                      xmlSecSize inSize,
                                                      xmlSecByte * out,
@@ -189,8 +188,7 @@ XMLSEC_EXPORT int       xmlSecTransformKWAesSetKey      (xmlSecTransformPtr tran
                                                         xmlSecKeyPtr key);
 XMLSEC_EXPORT int       xmlSecTransformKWAesExecute     (xmlSecTransformPtr transform,
                                                         xmlSecTransformKWAesCtxPtr ctx,
-                                                        int last,
-                                                        void * context);
+                                                        int last);
 
 #endif /* XMLSEC_NO_AES */
 

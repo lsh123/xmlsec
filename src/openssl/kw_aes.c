@@ -42,13 +42,13 @@
  * AES KW implementation
  *
  *********************************************************************/
-static int        xmlSecOpenSSLKWAesBlockEncrypt                (void * context,
+static int        xmlSecOpenSSLKWAesBlockEncrypt                (xmlSecTransformPtr transform,
                                                                  const xmlSecByte * in,
                                                                  xmlSecSize inSize,
                                                                  xmlSecByte * out,
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize * outWritten);
-static int        xmlSecOpenSSLKWAesBlockDecrypt                (void * context,
+static int        xmlSecOpenSSLKWAesBlockDecrypt                (xmlSecTransformPtr transform,
                                                                  const xmlSecByte * in,
                                                                  xmlSecSize inSize,
                                                                  xmlSecByte * out,
@@ -231,7 +231,7 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last,
     ctx = xmlSecOpenSSLKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecTransformKWAesExecute(transform, &(ctx->parentCtx), last, ctx);
+    ret = xmlSecTransformKWAesExecute(transform, &(ctx->parentCtx), last);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformKWAesExecute", xmlSecTransformGetName(transform));
         return(-1);
@@ -363,7 +363,7 @@ xmlSecOpenSSLTransformKWAes256GetKlass(void) {
  *
  *********************************************************************/
 static int
-xmlSecOpenSSLKWAesBlockEncrypt(void * context, const xmlSecByte * in, xmlSecSize inSize,
+xmlSecOpenSSLKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSecSize inSize,
                                xmlSecByte * out, xmlSecSize outSize,
                                xmlSecSize * outWritten) {
     xmlSecOpenSSLKWAesCtxPtr ctx;
@@ -379,14 +379,15 @@ xmlSecOpenSSLKWAesBlockEncrypt(void * context, const xmlSecByte * in, xmlSecSize
 #endif /* XMLSEC_OPENSSL_API_300 */
     int ret;
 
-    xmlSecAssert2(context != NULL, -1);
+    xmlSecAssert2(xmlSecOpenSSLKWAesCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWAesSize), -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize >= AES_BLOCK_SIZE, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= AES_BLOCK_SIZE, -1);
     xmlSecAssert2(outWritten != NULL, -1);
 
-    ctx = (xmlSecOpenSSLKWAesCtxPtr)context;
+    ctx = xmlSecOpenSSLKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
     keyData = xmlSecBufferGetData(&(ctx->parentCtx.keyBuffer));
@@ -456,7 +457,7 @@ done:
 }
 
 static int
-xmlSecOpenSSLKWAesBlockDecrypt(void * context, const xmlSecByte * in, xmlSecSize inSize,
+xmlSecOpenSSLKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSecSize inSize,
                                xmlSecByte * out, xmlSecSize outSize,
                                xmlSecSize * outWritten) {
     xmlSecOpenSSLKWAesCtxPtr ctx;
@@ -472,14 +473,15 @@ xmlSecOpenSSLKWAesBlockDecrypt(void * context, const xmlSecByte * in, xmlSecSize
 #endif /* XMLSEC_OPENSSL_API_300 */
     int ret;
 
-    xmlSecAssert2(context != NULL, -1);
+    xmlSecAssert2(xmlSecOpenSSLKWAesCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWAesSize), -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize >= AES_BLOCK_SIZE, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= AES_BLOCK_SIZE, -1);
     xmlSecAssert2(outWritten != NULL, -1);
 
-    ctx = (xmlSecOpenSSLKWAesCtxPtr)context;
+    ctx = xmlSecOpenSSLKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
     keyData = xmlSecBufferGetData(&(ctx->parentCtx.keyBuffer));
@@ -501,7 +503,6 @@ xmlSecOpenSSLKWAesBlockDecrypt(void * context, const xmlSecByte * in, xmlSecSize
     (*outWritten) = AES_BLOCK_SIZE;
     return(0);
 #else /* XMLSEC_OPENSSL_API_300 */
-    ctx = (xmlSecOpenSSLKWAesCtxPtr)context;
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->cipher != NULL, -1);
 

@@ -48,17 +48,17 @@
  * DES KW implementation
  *
  *********************************************************************/
-static int       xmlSecOpenSSLKWDes3GenerateRandom               (void * context,
+static int       xmlSecOpenSSLKWDes3GenerateRandom               (xmlSecTransformPtr transform,
                                                                  xmlSecByte * out, 
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize * outWritten);
-static int       xmlSecOpenSSLKWDes3Sha1                         (void * context,
+static int       xmlSecOpenSSLKWDes3Sha1                         (xmlSecTransformPtr transform,
                                                                  const xmlSecByte * in, 
                                                                  xmlSecSize inSize, 
                                                                  xmlSecByte * out, 
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize * outWritten);
-static int      xmlSecOpenSSLKWDes3BlockEncrypt                  (void * context,
+static int      xmlSecOpenSSLKWDes3BlockEncrypt                  (xmlSecTransformPtr transform,
                                                                  const xmlSecByte * iv, 
                                                                  xmlSecSize ivSize,
                                                                  const xmlSecByte * in, 
@@ -66,7 +66,7 @@ static int      xmlSecOpenSSLKWDes3BlockEncrypt                  (void * context
                                                                  xmlSecByte * out, 
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize * outWritten);
-static int      xmlSecOpenSSLKWDes3BlockDecrypt                  (void * context,
+static int      xmlSecOpenSSLKWDes3BlockDecrypt                  (xmlSecTransformPtr transform,
                                                                  const xmlSecByte * iv, 
                                                                  xmlSecSize ivSize,
                                                                  const xmlSecByte * in, 
@@ -249,7 +249,7 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last,
     ctx = xmlSecOpenSSLKWDes3GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecTransformKWDes3Execute(transform, ctx, last, ctx);
+    ret = xmlSecTransformKWDes3Execute(transform, ctx, last);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformKWDes3Execute", xmlSecTransformGetName(transform));
         return(-1);
@@ -263,17 +263,16 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last,
  *
  *********************************************************************/
 static int
-xmlSecOpenSSLKWDes3Sha1(void * context,
+xmlSecOpenSSLKWDes3Sha1(xmlSecTransformPtr transform ATTRIBUTE_UNUSED,
                        const xmlSecByte * in, xmlSecSize inSize, 
                        xmlSecByte * out, xmlSecSize outSize,
                        xmlSecSize * outWritten) {
-    xmlSecOpenSSLKWDes3CtxPtr ctx = (xmlSecOpenSSLKWDes3CtxPtr)context;
 #ifdef XMLSEC_OPENSSL_API_300
     size_t outSizeT;
     int ret;
 #endif /* XMLSEC_OPENSSL_API_300 */
 
-    xmlSecAssert2(ctx != NULL, -1);
+    UNREFERENCED_PARAMETER(transform);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize > 0, -1);
     xmlSecAssert2(out != NULL, -1);
@@ -301,16 +300,15 @@ xmlSecOpenSSLKWDes3Sha1(void * context,
 }
 
 static int
-xmlSecOpenSSLKWDes3GenerateRandom(void * context,
+xmlSecOpenSSLKWDes3GenerateRandom(xmlSecTransformPtr transform ATTRIBUTE_UNUSED,
                                  xmlSecByte * out, xmlSecSize outSize,
                                  xmlSecSize * outWritten) {
 #ifndef XMLSEC_OPENSSL_API_300
     int outLen;
 #endif /* XMLSEC_OPENSSL_API_300 */
-    xmlSecOpenSSLKWDes3CtxPtr ctx = (xmlSecOpenSSLKWDes3CtxPtr)context;
     int ret;
 
-    xmlSecAssert2(ctx != NULL, -1);
+    UNREFERENCED_PARAMETER(transform);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize > 0, -1);
 
@@ -321,8 +319,7 @@ xmlSecOpenSSLKWDes3GenerateRandom(void * context,
     ret = RAND_bytes_ex(xmlSecOpenSSLGetLibCtx(), out, outSize, XMLSEEC_OPENSSL_RAND_BYTES_STRENGTH);
 #endif /* XMLSEC_OPENSSL_API_300 */
     if(ret != 1) {
-        xmlSecOpenSSLError2("RAND_bytes", NULL,
-                            "size=" XMLSEC_SIZE_FMT, outSize);
+        xmlSecOpenSSLError2("RAND_bytes", NULL, "size=" XMLSEC_SIZE_FMT, outSize);
         return(-1);
     }
     (*outWritten) = outSize;
@@ -331,17 +328,16 @@ xmlSecOpenSSLKWDes3GenerateRandom(void * context,
 }
 
 static int
-xmlSecOpenSSLKWDes3BlockEncrypt(void * context,
+xmlSecOpenSSLKWDes3BlockEncrypt(xmlSecTransformPtr transform,
                                const xmlSecByte * iv, xmlSecSize ivSize,
                                const xmlSecByte * in, xmlSecSize inSize,
                                xmlSecByte * out, xmlSecSize outSize,
                                xmlSecSize * outWritten) {
-    xmlSecOpenSSLKWDes3CtxPtr ctx = (xmlSecOpenSSLKWDes3CtxPtr)context;
+    xmlSecOpenSSLKWDes3CtxPtr ctx;
     int ret;
 
-    xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(xmlSecBufferGetData(&(ctx->keyBuffer)) != NULL, -1);
-    xmlSecAssert2(xmlSecBufferGetSize(&(ctx->keyBuffer)) >= XMLSEC_KW_DES3_KEY_LENGTH, -1);
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWDes3Id), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWDes3Size), -1);
     xmlSecAssert2(iv != NULL, -1);
     xmlSecAssert2(ivSize >= XMLSEC_KW_DES3_IV_LENGTH, -1);
     xmlSecAssert2(in != NULL, -1);
@@ -350,11 +346,17 @@ xmlSecOpenSSLKWDes3BlockEncrypt(void * context,
     xmlSecAssert2(outSize >= inSize, -1);
     xmlSecAssert2(outWritten != NULL, -1);
 
-    ret = xmlSecOpenSSLKWDes3Encrypt(xmlSecBufferGetData(&(ctx->keyBuffer)), XMLSEC_KW_DES3_KEY_LENGTH,
-                                    iv, XMLSEC_KW_DES3_IV_LENGTH,
-                                    in, inSize,
-                                    out, outSize, outWritten,
-                                    1); /* encrypt */
+    ctx = xmlSecOpenSSLKWDes3GetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(xmlSecBufferGetData(&(ctx->keyBuffer)) != NULL, -1);
+    xmlSecAssert2(xmlSecBufferGetSize(&(ctx->keyBuffer)) >= XMLSEC_KW_DES3_KEY_LENGTH, -1);
+
+    ret = xmlSecOpenSSLKWDes3Encrypt(
+            xmlSecBufferGetData(&(ctx->keyBuffer)),XMLSEC_KW_DES3_KEY_LENGTH,
+            iv, XMLSEC_KW_DES3_IV_LENGTH,
+            in, inSize,
+            out, outSize, outWritten,
+            1); /* encrypt */
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLKWDes3Encrypt", NULL);
         return(-1);
@@ -364,17 +366,16 @@ xmlSecOpenSSLKWDes3BlockEncrypt(void * context,
 }
 
 static int
-xmlSecOpenSSLKWDes3BlockDecrypt(void * context,
+xmlSecOpenSSLKWDes3BlockDecrypt(xmlSecTransformPtr transform,
                                const xmlSecByte * iv, xmlSecSize ivSize,
                                const xmlSecByte * in, xmlSecSize inSize,
                                xmlSecByte * out, xmlSecSize outSize,
                                xmlSecSize * outWritten) {
-    xmlSecOpenSSLKWDes3CtxPtr ctx = (xmlSecOpenSSLKWDes3CtxPtr)context;
+    xmlSecOpenSSLKWDes3CtxPtr ctx;
     int ret;
 
-    xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(xmlSecBufferGetData(&(ctx->keyBuffer)) != NULL, -1);
-    xmlSecAssert2(xmlSecBufferGetSize(&(ctx->keyBuffer)) >= XMLSEC_KW_DES3_KEY_LENGTH, -1);
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWDes3Id), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWDes3Size), -1);
     xmlSecAssert2(iv != NULL, -1);
     xmlSecAssert2(ivSize >= XMLSEC_KW_DES3_IV_LENGTH, -1);
     xmlSecAssert2(in != NULL, -1);
@@ -383,11 +384,17 @@ xmlSecOpenSSLKWDes3BlockDecrypt(void * context,
     xmlSecAssert2(outSize >= inSize, -1);
     xmlSecAssert2(outWritten != NULL, -1);
 
-    ret = xmlSecOpenSSLKWDes3Encrypt(xmlSecBufferGetData(&(ctx->keyBuffer)), XMLSEC_KW_DES3_KEY_LENGTH,
-                                    iv, XMLSEC_KW_DES3_IV_LENGTH,
-                                    in, inSize,
-                                    out, outSize, outWritten,
-                                    0); /* decrypt */
+    ctx = xmlSecOpenSSLKWDes3GetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(xmlSecBufferGetData(&(ctx->keyBuffer)) != NULL, -1);
+    xmlSecAssert2(xmlSecBufferGetSize(&(ctx->keyBuffer)) >= XMLSEC_KW_DES3_KEY_LENGTH, -1);
+
+    ret = xmlSecOpenSSLKWDes3Encrypt(
+        xmlSecBufferGetData(&(ctx->keyBuffer)), XMLSEC_KW_DES3_KEY_LENGTH,
+        iv, XMLSEC_KW_DES3_IV_LENGTH,
+        in, inSize,
+        out, outSize, outWritten,
+        0); /* decrypt */
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLKWDes3Encrypt", NULL);
         return(-1);

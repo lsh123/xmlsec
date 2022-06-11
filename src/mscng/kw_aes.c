@@ -46,13 +46,13 @@
   * AES KW implementation
   *
   *********************************************************************/
-static int        xmlSecMSCngKWAesBlockEncrypt              (void* context,
+static int        xmlSecMSCngKWAesBlockEncrypt              (xmlSecTransformPtr transform,
                                                             const xmlSecByte* in,
                                                             xmlSecSize inSize,
                                                             xmlSecByte* out,
                                                             xmlSecSize outSize,
                                                             xmlSecSize* outWritten);
-static int        xmlSecMSCngKWAesBlockDecrypt              (void* context,
+static int        xmlSecMSCngKWAesBlockDecrypt              (xmlSecTransformPtr transform,
                                                             const xmlSecByte* in,
                                                             xmlSecSize inSize,
                                                             xmlSecByte* out,
@@ -222,7 +222,7 @@ xmlSecMSCngKWAesExecute(xmlSecTransformPtr transform, int last,
     ctx = xmlSecMSCngKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecTransformKWAesExecute(transform, &(ctx->parentCtx), last, ctx);
+    ret = xmlSecTransformKWAesExecute(transform, &(ctx->parentCtx), last);
     if (ret < 0) {
         xmlSecInternalError("xmlSecTransformKWAesExecute", xmlSecTransformGetName(transform));
         return(-1);
@@ -364,10 +364,10 @@ xmlSecMSCngTransformKWAes256GetKlass(void) {
  *
  ********************************************************************/
 static int
-xmlSecMSCngKWAesBlockEncrypt(void* context, const xmlSecByte* in, xmlSecSize inSize,
+xmlSecMSCngKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte* in, xmlSecSize inSize,
                              xmlSecByte* out, xmlSecSize outSize,
                              xmlSecSize* outWritten) {
-    xmlSecMSCngKWAesCtxPtr ctx = (xmlSecMSCngKWAesCtxPtr)context;
+    xmlSecMSCngKWAesCtxPtr ctx;
     BCRYPT_ALG_HANDLE hAlg = NULL;
     BCRYPT_KEY_HANDLE hKey = NULL;
     DWORD cbData;
@@ -384,12 +384,16 @@ xmlSecMSCngKWAesBlockEncrypt(void* context, const xmlSecByte* in, xmlSecSize inS
     NTSTATUS status;
     int ret;
 
-    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(xmlSecMSCngKWAesCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngKWAesSize), -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize >= XMLSEC_KW_AES_BLOCK_SIZE, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= inSize, -1);
     xmlSecAssert2(outWritten != NULL, -1);
+
+    ctx = xmlSecMSCngKWAesGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
 
     keyData = xmlSecBufferGetData(&(ctx->parentCtx.keyBuffer));
     keySize = xmlSecBufferGetSize(&(ctx->parentCtx.keyBuffer));
@@ -510,10 +514,10 @@ done:
 }
 
 static int
-xmlSecMSCngKWAesBlockDecrypt(void* context, const xmlSecByte* in, xmlSecSize inSize,
+xmlSecMSCngKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte* in, xmlSecSize inSize,
                              xmlSecByte* out, xmlSecSize outSize,
                              xmlSecSize* outWritten) {
-    xmlSecMSCngKWAesCtxPtr ctx = (xmlSecMSCngKWAesCtxPtr)context;
+    xmlSecMSCngKWAesCtxPtr ctx;
     BCRYPT_ALG_HANDLE hAlg = NULL;
     BCRYPT_KEY_HANDLE hKey = NULL;
     DWORD cbData;
@@ -530,12 +534,16 @@ xmlSecMSCngKWAesBlockDecrypt(void* context, const xmlSecByte* in, xmlSecSize inS
     NTSTATUS status;
     int ret;
 
-    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(xmlSecMSCngKWAesCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngKWAesSize), -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize >= XMLSEC_KW_AES_BLOCK_SIZE, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= inSize, -1);
     xmlSecAssert2(outWritten != NULL, -1);
+
+    ctx = xmlSecMSCngKWAesGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
 
     keyData = xmlSecBufferGetData(&(ctx->parentCtx.keyBuffer));
     keySize = xmlSecBufferGetSize(&(ctx->parentCtx.keyBuffer));

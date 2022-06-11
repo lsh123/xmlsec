@@ -58,13 +58,13 @@ XMLSEC_TRANSFORM_DECLARE(MSCngKWDes3, xmlSecMSCngKWDes3Ctx)
 #define xmlSecMSCngKWDes3Size XMLSEC_TRANSFORM_SIZE(MSCngKWDes3)
 
 static int
-xmlSecMSCngKWDes3GenerateRandom(void * context, xmlSecByte * out,
+xmlSecMSCngKWDes3GenerateRandom(xmlSecTransformPtr transform ATTRIBUTE_UNUSED, xmlSecByte * out,
         xmlSecSize outSize, xmlSecSize* outWritten)
 {
     NTSTATUS status;
     DWORD dwOutSize;
 
-    UNREFERENCED_PARAMETER(context);
+    UNREFERENCED_PARAMETER(transform);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize > 0, -1);
     xmlSecAssert2(outWritten != NULL, -1);
@@ -84,9 +84,9 @@ xmlSecMSCngKWDes3GenerateRandom(void * context, xmlSecByte * out,
 }
 
 static int
-xmlSecMSCngKWDes3Sha1(void * context, const xmlSecByte * in, xmlSecSize inSize,
+xmlSecMSCngKWDes3Sha1(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSecSize inSize,
         xmlSecByte * out, xmlSecSize outSize, xmlSecSize* outWritten) {
-    xmlSecMSCngKWDes3CtxPtr ctx = (xmlSecMSCngKWDes3CtxPtr)context;
+    xmlSecMSCngKWDes3CtxPtr ctx;
     BCRYPT_ALG_HANDLE hAlg = NULL;
     BCRYPT_HASH_HANDLE hHash = NULL;
     PBYTE pbHashObject = NULL;
@@ -98,12 +98,16 @@ xmlSecMSCngKWDes3Sha1(void * context, const xmlSecByte * in, xmlSecSize inSize,
     int res = -1;
     NTSTATUS status;
 
-    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMSCngTransformKWDes3Id), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngKWDes3Size), -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize > 0, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize > 0, -1);
     xmlSecAssert2(outWritten != NULL, -1);
+
+    ctx = xmlSecMSCngKWDes3GetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
 
     /* create */
     status = BCryptOpenAlgorithmProvider(&hAlg,
@@ -206,10 +210,10 @@ done:
 }
 
 static int
-xmlSecMSCngKWDes3BlockEncrypt(void * context, const xmlSecByte * iv,
+xmlSecMSCngKWDes3BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * iv,
         xmlSecSize ivSize, const xmlSecByte * in, xmlSecSize inSize,
         xmlSecByte * out, xmlSecSize outSize, xmlSecSize* outWritten) {
-    xmlSecMSCngKWDes3CtxPtr ctx = (xmlSecMSCngKWDes3CtxPtr)context;
+    xmlSecMSCngKWDes3CtxPtr ctx;
     BCRYPT_ALG_HANDLE hAlg = NULL;
     BCRYPT_KEY_HANDLE hKey = NULL;
     DWORD cbData;
@@ -226,9 +230,8 @@ xmlSecMSCngKWDes3BlockEncrypt(void * context, const xmlSecByte * iv,
     int ret;
     int res = -1;
 
-    xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(xmlSecBufferGetData(&(ctx->keyBuffer)) != NULL, -1);
-    xmlSecAssert2(xmlSecBufferGetSize(&(ctx->keyBuffer)) >= XMLSEC_KW_DES3_KEY_LENGTH, -1);
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMSCngTransformKWDes3Id), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngKWDes3Size), -1);
     xmlSecAssert2(iv != NULL, -1);
     xmlSecAssert2(ivSize >= XMLSEC_KW_DES3_IV_LENGTH, -1);
     xmlSecAssert2(in != NULL, -1);
@@ -236,6 +239,11 @@ xmlSecMSCngKWDes3BlockEncrypt(void * context, const xmlSecByte * iv,
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= inSize, -1);
     xmlSecAssert2(outWritten != NULL, -1);
+
+    ctx = xmlSecMSCngKWDes3GetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(xmlSecBufferGetData(&(ctx->keyBuffer)) != NULL, -1);
+    xmlSecAssert2(xmlSecBufferGetSize(&(ctx->keyBuffer)) >= XMLSEC_KW_DES3_KEY_LENGTH, -1);
 
     ret = xmlSecBufferInitialize(&blob, 0);
     if(ret < 0) {
@@ -384,10 +392,10 @@ done:
 }
 
 static int
-xmlSecMSCngKWDes3BlockDecrypt(void * context, const xmlSecByte * iv,
+xmlSecMSCngKWDes3BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * iv,
         xmlSecSize ivSize, const xmlSecByte * in, xmlSecSize inSize,
         xmlSecByte * out, xmlSecSize outSize, xmlSecSize* outWritten) {
-    xmlSecMSCngKWDes3CtxPtr ctx = (xmlSecMSCngKWDes3CtxPtr)context;
+    xmlSecMSCngKWDes3CtxPtr ctx;
     BCRYPT_ALG_HANDLE hAlg = NULL;
     BCRYPT_KEY_HANDLE hKey = NULL;
     DWORD cbData;
@@ -403,9 +411,8 @@ xmlSecMSCngKWDes3BlockDecrypt(void * context, const xmlSecByte * iv,
     int ret;
     int res = -1;
 
-    xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(xmlSecBufferGetData(&(ctx->keyBuffer)) != NULL, -1);
-    xmlSecAssert2(xmlSecBufferGetSize(&(ctx->keyBuffer)) >= XMLSEC_KW_DES3_KEY_LENGTH, -1);
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMSCngTransformKWDes3Id), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngKWDes3Size), -1);
     xmlSecAssert2(iv != NULL, -1);
     xmlSecAssert2(ivSize >= XMLSEC_KW_DES3_IV_LENGTH, -1);
     xmlSecAssert2(in != NULL, -1);
@@ -413,6 +420,11 @@ xmlSecMSCngKWDes3BlockDecrypt(void * context, const xmlSecByte * iv,
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= inSize, -1);
     xmlSecAssert2(outWritten != NULL, -1);
+
+    ctx = xmlSecMSCngKWDes3GetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(xmlSecBufferGetData(&(ctx->keyBuffer)) != NULL, -1);
+    xmlSecAssert2(xmlSecBufferGetSize(&(ctx->keyBuffer)) >= XMLSEC_KW_DES3_KEY_LENGTH, -1);
 
     ret = xmlSecBufferInitialize(&blob, 0);
     if(ret < 0) {
@@ -646,7 +658,7 @@ xmlSecMSCngKWDes3Execute(xmlSecTransformPtr transform, int last,
 
     ctx = xmlSecMSCngKWDes3GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-    ret = xmlSecTransformKWDes3Execute(transform, ctx, last, ctx);
+    ret = xmlSecTransformKWDes3Execute(transform, ctx, last);
     if (ret < 0) {
         xmlSecInternalError("xmlSecTransformKWDes3Execute", xmlSecTransformGetName(transform));
         return(-1);

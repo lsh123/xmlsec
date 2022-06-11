@@ -50,13 +50,13 @@
  * AES KW implementation
  *
  *********************************************************************/
-static int        xmlSecNSSKWAesBlockEncrypt                (void * context,
+static int        xmlSecNSSKWAesBlockEncrypt                (xmlSecTransformPtr transform,
                                                              const xmlSecByte * in, 
                                                              xmlSecSize inSize,
                                                              xmlSecByte * out, 
                                                              xmlSecSize outSize,
                                                              xmlSecSize * outWritten);
-static int        xmlSecNSSKWAesBlockDecrypt                (void * context,
+static int        xmlSecNSSKWAesBlockDecrypt                (xmlSecTransformPtr transform,
                                                              const xmlSecByte * in, 
                                                              xmlSecSize inSize,
                                                              xmlSecByte * out, 
@@ -342,7 +342,7 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last,
     ctx = xmlSecNssKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecTransformKWAesExecute(transform, &(ctx->parentCtx), last, ctx);
+    ret = xmlSecTransformKWAesExecute(transform, &(ctx->parentCtx), last);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformKWAesExecute", xmlSecTransformGetName(transform));
         return(-1);
@@ -356,18 +356,22 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last,
  *
  *********************************************************************/
 static int
-xmlSecNSSKWAesBlockEncrypt(void * context, const xmlSecByte * in, xmlSecSize inSize,
+xmlSecNSSKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSecSize inSize,
                            xmlSecByte * out, xmlSecSize outSize,
                            xmlSecSize * outWritten) {
-    xmlSecNssKWAesCtxPtr ctx = (xmlSecNssKWAesCtxPtr)context;
+    xmlSecNssKWAesCtxPtr ctx;
     int ret;
 
-    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(xmlSecNssKWAesCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKWAesSize), -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize >= XMLSEC_KW_AES_BLOCK_SIZE, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= XMLSEC_KW_AES_BLOCK_SIZE, -1);
     xmlSecAssert2(outWritten != NULL, -1);
+
+    ctx = xmlSecNssKWAesGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
 
     /* create key if needed */
     ret = xmlSecNSSKWAesEnsureKey(ctx, 1); /* encrypt */
@@ -388,18 +392,22 @@ xmlSecNSSKWAesBlockEncrypt(void * context, const xmlSecByte * in, xmlSecSize inS
 }
 
 static int
-xmlSecNSSKWAesBlockDecrypt(void * context, const xmlSecByte * in, xmlSecSize inSize,
+xmlSecNSSKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSecSize inSize,
                            xmlSecByte * out, xmlSecSize outSize,
                            xmlSecSize * outWritten) {
-    xmlSecNssKWAesCtxPtr ctx = (xmlSecNssKWAesCtxPtr)context;
+    xmlSecNssKWAesCtxPtr ctx;
     int ret;
 
-    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(xmlSecNssKWAesCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKWAesSize), -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize >= XMLSEC_KW_AES_BLOCK_SIZE, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= XMLSEC_KW_AES_BLOCK_SIZE, -1);
     xmlSecAssert2(outWritten != NULL, -1);
+
+    ctx = xmlSecNssKWAesGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
 
     /* create key if needed */
     ret = xmlSecNSSKWAesEnsureKey(ctx, 1); /* encrypt */

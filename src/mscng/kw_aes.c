@@ -207,7 +207,6 @@ xmlSecMSCngKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         return(-1);
     }
     return(0);
-    return(0);
 }
 
 static int

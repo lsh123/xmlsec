@@ -221,6 +221,7 @@ xmlSecMSCngKWAesExecute(xmlSecTransformPtr transform, int last,
 
     ctx = xmlSecMSCngKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
+
     ret = xmlSecTransformKWAesExecute(transform, &(ctx->parentCtx), last, ctx);
     if (ret < 0) {
         xmlSecInternalError("xmlSecTransformKWAesExecute", xmlSecTransformGetName(transform));

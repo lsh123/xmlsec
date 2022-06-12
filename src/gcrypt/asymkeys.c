@@ -21,7 +21,6 @@
 #include <gcrypt.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/keyinfo.h>
@@ -393,215 +392,16 @@ done:
 }
 
 /**
- * xmlSecGCryptNodeGetMpiValue:
- * @cur: the pointer to an XML node.
- *
- * Converts the node content from CryptoBinary format
- * (http://www.w3.org/TR/xmldsig-core/#sec-CryptoBinary)
- * to a BIGNUM. If no BIGNUM buffer provided then a new
- * BIGNUM is created (caller is responsible for freeing it).
- *
- * Returns: a pointer to MPI produced from CryptoBinary string
- * or NULL if an error occurs.
- */
-static gcry_mpi_t
-xmlSecGCryptNodeGetMpiValue(const xmlNodePtr cur) {
-    xmlSecBuffer buf;
-    gcry_mpi_t res = NULL;
-    gcry_error_t err;
-    int ret;
-
-    xmlSecAssert2(cur != NULL, NULL);
-
-    ret = xmlSecBufferInitialize(&buf, 128);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferInitialize", NULL);
-        return(NULL);
-    }
-
-    ret = xmlSecBufferBase64NodeContentRead(&buf, cur);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferBase64NodeContentRead", NULL);
-        xmlSecBufferFinalize(&buf);
-        return(NULL);
-    }
-
-    err = gcry_mpi_scan(&res, GCRYMPI_FMT_USG,
-                         xmlSecBufferGetData(&buf),
-                         xmlSecBufferGetSize(&buf),
-                         NULL);
-    if((err != GPG_ERR_NO_ERROR) || (res == NULL)) {
-        xmlSecGCryptError("gcry_mpi_scan", err, NULL);
-        xmlSecBufferFinalize(&buf);
-        return(NULL);
-    }
-
-    /* done */
-    xmlSecBufferFinalize(&buf);
-    return(res);
-}
-
-/**
- * xmlSecGCryptNodeSetMpiValue:
- * @cur: the pointer to an XML node.
- * @a: the mpi value
- * @addLineBreaks: if the flag is equal to 1 then
- *              linebreaks will be added before and after
- *              new buffer content.
- *
- * Converts MPI to CryptoBinary string
- * (http://www.w3.org/TR/xmldsig-core/#sec-CryptoBinary)
- * and sets it as the content of the given node. If the
- * addLineBreaks is set then line breaks are added
- * before and after the CryptoBinary string.
- *
- * Returns: 0 on success or -1 otherwise.
- */
-static int
- xmlSecGCryptNodeSetMpiValue(xmlNodePtr cur, const gcry_mpi_t a, int addLineBreaks) {
-    xmlSecBuffer buf;
-    int buf_initialized = 0;
-    gcry_error_t err;
-    size_t written = 0;
-    xmlSecSize writtenSize;
-    int ret;
-    int res = -1;
-
-    xmlSecAssert2(a != NULL, -1);
-    xmlSecAssert2(cur != NULL, -1);
-
-    /* get the estimated size for output buffer */
-    written = 0;
-    err = gcry_mpi_print(GCRYMPI_FMT_USG, NULL, 0, &written, a);
-    if((err != GPG_ERR_NO_ERROR) || (written == 0)) {
-        xmlSecGCryptError("gcry_mpi_print", err, NULL);
-        goto done;
-    }
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(written, writtenSize, goto done, NULL);
-
-    /* allocate the output buffer */
-    ret = xmlSecBufferInitialize(&buf, writtenSize + 1);
-    if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferInitialize", NULL,
-            "size=" XMLSEC_SIZE_FMT, (writtenSize + 1));
-        goto done;
-    }
-    buf_initialized = 1;
-
-    /* write to the buffer */
-    written = 0;
-    err = gcry_mpi_print(GCRYMPI_FMT_USG,
-            xmlSecBufferGetData(&buf),
-            xmlSecBufferGetMaxSize(&buf),
-            &written, a);
-    if((err != GPG_ERR_NO_ERROR) || (written == 0)) {
-        xmlSecGCryptError("gcry_mpi_print", err, NULL);
-        goto done;
-    }
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(written, writtenSize, goto done, NULL);
-
-    ret = xmlSecBufferSetSize(&buf, writtenSize);
-    if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-            "size=" XMLSEC_SIZE_FMT, writtenSize);
-        goto done;
-    }
-
-    /* write out to XML */
-    if(addLineBreaks) {
-        xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
-    } else {
-        xmlNodeSetContent(cur, xmlSecStringEmpty);
-    }
-    ret = xmlSecBufferBase64NodeContentWrite(&buf, cur, xmlSecBase64GetDefaultLineSize());
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferBase64NodeContentWrite", NULL);
-        goto done;
-    }
-    if(addLineBreaks) {
-        xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
-    }
-
-    /* success */
-    res = 0;
-
-done:
-    if(buf_initialized != 0) {
-        xmlSecBufferFinalize(&buf);
-    }
-    return(res);
-}
-
-/**
- * xmlSecGCryptNodeSetSExpTokValue:
- * @cur: the pointer to an XML node.
- * @sexp: the sexp
- * @tok: the token
- * @addLineBreaks: if the flag is equal to 1 then
- *              linebreaks will be added before and after
- *              new buffer content.
- *
- * Converts MPI to CryptoBinary string
- * (http://www.w3.org/TR/xmldsig-core/#sec-CryptoBinary)
- * and sets it as the content of the given node. If the
- * addLineBreaks is set then line breaks are added
- * before and after the CryptoBinary string.
- *
- * Returns: 0 on success or -1 otherwise.
- */
-static int
-xmlSecGCryptNodeSetSExpTokValue(xmlNodePtr cur, const gcry_sexp_t sexp,
-                                const char * tok, int addLineBreaks)
-{
-    gcry_sexp_t val = NULL;
-    gcry_mpi_t mpi = NULL;
-    int res = -1;
-
-    xmlSecAssert2(cur != NULL, -1);
-    xmlSecAssert2(sexp != NULL, -1);
-    xmlSecAssert2(tok != NULL, -1);
-
-    val = gcry_sexp_find_token(sexp, tok, 0);
-    if(val == NULL) {
-        xmlSecGCryptError2("gcry_sexp_find_token", (gcry_error_t)GPG_ERR_NO_ERROR, NULL,
-                           "tok=%s", xmlSecErrorsSafeString(tok));
-        goto done;
-    }
-
-    mpi = gcry_sexp_nth_mpi(val, 1, GCRYMPI_FMT_USG);
-    if(mpi == NULL) {
-        xmlSecGCryptError("gcry_sexp_nth_mpi", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
-        goto done;
-    }
-
-    /* almost done */
-    res = xmlSecGCryptNodeSetMpiValue(cur, mpi, addLineBreaks);
-
-done:
-    if(mpi != NULL) {
-        gcry_mpi_release(mpi);
-    }
-    if(val != NULL) {
-        gcry_sexp_release(val);
-    }
-
-    return(res);
-}
-
-/**
  * xmlSecGCryptSetSExpTokValue:
- * @cur: the pointer to an XML node.
  * @sexp: the sexp
- * @tok: the token
+ * @tok:  the token
+ * @buf:  the output buffer.
  * @addLineBreaks: if the flag is equal to 1 then
  *              linebreaks will be added before and after
  *              new buffer content.
  *
  * Converts MPI to CryptoBinary string
- * (http://www.w3.org/TR/xmldsig-core/#sec-CryptoBinary)
- * and sets it as the content of the given node. If the
- * addLineBreaks is set then line breaks are added
- * before and after the CryptoBinary string.
+ * (http://www.w3.org/TR/xmldsig-core/#sec-CryptoBinary).
  *
  * Returns: 0 on success or -1 otherwise.
  */
@@ -974,7 +774,8 @@ xmlSecGCryptKeyDataDsaXmlRead(xmlSecKeyDataId id,
                               xmlSecKeyInfoCtxPtr keyInfoCtx)
 {
     xmlSecAssert2(id == xmlSecGCryptKeyDataDsaId, -1);
-    return(xmlSecKeyDataDsaXmlRead(id, key, node, keyInfoCtx, xmlSecGCryptKeyDataDsaRead));
+    return(xmlSecKeyDataDsaXmlRead(id, key, node, keyInfoCtx,
+        xmlSecGCryptKeyDataDsaRead));
 }
 
 static int
@@ -1198,7 +999,7 @@ xmlSecGCryptKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /*** x (only if available) ***/
+    /*** x (only if available and requested) ***/
     if((writePrivateKey != 0) && (private != 0)) {
         ret = xmlSecGCryptSetSExpTokValue(dsa, "x", &(dsaData->x));
         if(ret < 0) {
@@ -1291,11 +1092,19 @@ static int              xmlSecGCryptKeyDataRsaGenerate         (xmlSecKeyDataPtr
                                                                  xmlSecKeyDataType type);
 
 static xmlSecKeyDataType xmlSecGCryptKeyDataRsaGetType         (xmlSecKeyDataPtr data);
-static xmlSecSize               xmlSecGCryptKeyDataRsaGetSize          (xmlSecKeyDataPtr data);
+static xmlSecSize       xmlSecGCryptKeyDataRsaGetSize          (xmlSecKeyDataPtr data);
 static void             xmlSecGCryptKeyDataRsaDebugDump        (xmlSecKeyDataPtr data,
                                                                  FILE* output);
 static void             xmlSecGCryptKeyDataRsaDebugXmlDump     (xmlSecKeyDataPtr data,
                                                                  FILE* output);
+
+static xmlSecKeyDataPtr xmlSecGCryptKeyDataRsaRead              (xmlSecKeyDataId id,
+                                                                 xmlSecKeyDataRsaPtr rsaData);
+static int              xmlSecGCryptKeyDataRsaWrite             (xmlSecKeyDataId id,
+                                                                 xmlSecKeyDataPtr data,
+                                                                 xmlSecKeyDataRsaPtr rsaData,
+                                                                 int writePrivateKey);
+
 static xmlSecKeyDataKlass xmlSecGCryptKeyDataRsaKlass = {
     sizeof(xmlSecKeyDataKlass),
     xmlSecGCryptAsymKeyDataSize,
@@ -1474,94 +1283,89 @@ xmlSecGCryptKeyDataRsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 
 static int
 xmlSecGCryptKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
-                                    xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlNodePtr cur;
+                              xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecAssert2(id == xmlSecGCryptKeyDataRsaId, -1);
+    return(xmlSecKeyDataRsaXmlRead(id, key, node, keyInfoCtx, xmlSecGCryptKeyDataRsaRead));
+}
+
+static int
+xmlSecGCryptKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
+                            xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecAssert2(id == xmlSecGCryptKeyDataRsaId, -1);
+    return(xmlSecKeyDataRsaXmlWrite(id, key, node, keyInfoCtx,
+        xmlSecBase64GetDefaultLineSize(), 1, /* add line breaks */
+        xmlSecGCryptKeyDataRsaWrite));
+}
+
+static xmlSecKeyDataPtr
+xmlSecGCryptKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyDataRsaPtr rsaData) {
     xmlSecKeyDataPtr data = NULL;
-    gcry_mpi_t n = NULL;
-    gcry_mpi_t e = NULL;
-    gcry_mpi_t d = NULL;
+    xmlSecKeyDataPtr res = NULL;
+    gcry_mpi_t modulus = NULL;
+    gcry_mpi_t publicExponent = NULL;
+    gcry_mpi_t privateExponent = NULL;
     gcry_sexp_t pub_key = NULL;
     gcry_sexp_t priv_key = NULL;
     gcry_error_t err;
-    int res = -1;
     int ret;
 
-    xmlSecAssert2(id == xmlSecGCryptKeyDataRsaId, -1);
-    xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(id == xmlSecGCryptKeyDataRsaId, NULL);
+    xmlSecAssert2(rsaData != NULL, NULL);
 
-    if(xmlSecKeyGetValue(key) != NULL) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_KEY_DATA,
-                         xmlSecKeyDataKlassGetName(id),
-                         "key already has a value");
+    /*** Modulus ***/ 
+    err = gcry_mpi_scan(&modulus, GCRYMPI_FMT_USG,
+        xmlSecBufferGetData(&(rsaData->modulus)),
+        xmlSecBufferGetSize(&(rsaData->modulus)),
+        NULL);
+    if((err != GPG_ERR_NO_ERROR) || (modulus == NULL)) {
+        xmlSecGCryptError("gcry_mpi_scan(Modulus)", err,
+            xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
-    cur = xmlSecGetNextElementNode(node->children);
+    /*** Exponent ***/ 
+    err = gcry_mpi_scan(&publicExponent, GCRYMPI_FMT_USG,
+        xmlSecBufferGetData(&(rsaData->publicExponent)),
+        xmlSecBufferGetSize(&(rsaData->publicExponent)),
+        NULL);
+    if((err != GPG_ERR_NO_ERROR) || (publicExponent == NULL)) {
+        xmlSecGCryptError("gcry_mpi_scan(Exponent)", err,
+            xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
 
-    /* first is Modulus node. It is REQUIRED */
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur,  xmlSecNodeRSAModulus, xmlSecDSigNs))) {
-        xmlSecInvalidNodeError(cur, xmlSecNodeRSAModulus, xmlSecKeyDataKlassGetName(id));
-        goto done;
-    }
-    n = xmlSecGCryptNodeGetMpiValue(cur);
-    if(n == NULL) {
-        xmlSecInternalError("xmlSecGCryptNodeGetMpiValue(NodeRSAModulus)",
-                            xmlSecKeyDataKlassGetName(id));
-        goto done;
-    }
-    cur = xmlSecGetNextElementNode(cur->next);
-
-    /* next is Exponent node. It is REQUIRED */
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeRSAExponent, xmlSecDSigNs))) {
-        xmlSecInvalidNodeError(cur, xmlSecNodeRSAExponent, xmlSecKeyDataKlassGetName(id));
-        goto done;
-    }
-    e = xmlSecGCryptNodeGetMpiValue(cur);
-    if(e == NULL) {
-        xmlSecInternalError("xmlSecGCryptNodeGetMpiValue(NodeRSAExponent)",
-                            xmlSecKeyDataKlassGetName(id));
-        goto done;
-    }
-    cur = xmlSecGetNextElementNode(cur->next);
-
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeRSAPrivateExponent, xmlSecNs))) {
-        /* next is PrivateExponent node. It is REQUIRED for private key */
-        d = xmlSecGCryptNodeGetMpiValue(cur);
-        if(d == NULL) {
-            xmlSecInternalError("xmlSecGCryptNodeGetMpiValue(NodeRSAPrivateExponent)",
-                                xmlSecKeyDataKlassGetName(id));
+    /*** PrivateExponent (only for private key) ***/ 
+    if(xmlSecBufferGetSize(&(rsaData->privateExponent)) > 0) {
+        err = gcry_mpi_scan(&privateExponent, GCRYMPI_FMT_USG,
+            xmlSecBufferGetData(&(rsaData->privateExponent)),
+            xmlSecBufferGetSize(&(rsaData->privateExponent)),
+            NULL);
+        if((err != GPG_ERR_NO_ERROR) || (privateExponent == NULL)) {
+            xmlSecGCryptError("gcry_mpi_scan(PrivateExponent)", err,
+                xmlSecKeyDataKlassGetName(id));
             goto done;
         }
-        cur = xmlSecGetNextElementNode(cur->next);
-    }
-
-    if(cur != NULL) {
-        xmlSecUnexpectedNodeError(cur, xmlSecKeyDataKlassGetName(id));
-        goto done;
     }
 
     /* construct pub/priv key pairs */
     err = gcry_sexp_build(&pub_key, NULL,
              "(public-key(rsa(n%m)(e%m)))",
-             n, e);
+             modulus, publicExponent);
     if((err != GPG_ERR_NO_ERROR) || (pub_key == NULL)) {
         xmlSecGCryptError("gcry_sexp_build(public)", err,
                           xmlSecKeyDataGetName(data));
         goto done;
     }
-    if(d != NULL) {
+    if(privateExponent != NULL) {
         err = gcry_sexp_build(&priv_key, NULL,
                  "(private-key(rsa(n%m)(e%m)(d%m)))",
-                 n, e, d);
+                 modulus, publicExponent, privateExponent);
         if((err != GPG_ERR_NO_ERROR) || (priv_key == NULL)) {
             xmlSecGCryptError("gcry_sexp_build(private)", err,
                               xmlSecKeyDataGetName(data));
             goto done;
         }
     }
-
 
     /* create key data */
     data = xmlSecKeyDataCreate(id);
@@ -1580,31 +1384,22 @@ xmlSecGCryptKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     pub_key = NULL; /* pub_key is owned by data now */
     priv_key = NULL; /* priv_key is owned by data now */
 
-    /* set key */
-    ret = xmlSecKeySetValue(key, data);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecKeySetValue",
-                            xmlSecKeyDataGetName(data));
-        goto done;
-    }
-    data = NULL; /* data is owned by key now */
-
-
     /* success */
-    res = 0;
+    res = data;
+    data = NULL;
 
 done:
     /* cleanup */
-    if(n != NULL) {
-        gcry_mpi_release(n);
+    if(modulus != NULL) {
+        gcry_mpi_release(modulus);
     }
 
-    if(e != NULL) {
-        gcry_mpi_release(e);
+    if(publicExponent != NULL) {
+        gcry_mpi_release(publicExponent);
     }
 
-    if(d != NULL) {
-        gcry_mpi_release(d);
+    if(privateExponent != NULL) {
+        gcry_mpi_release(privateExponent);
     }
 
     if(pub_key != NULL) {
@@ -1619,13 +1414,11 @@ done:
         xmlSecKeyDataDestroy(data);
     }
     return(res);
-
 }
 
 static int
-xmlSecGCryptKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
-                            xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlNodePtr cur;
+xmlSecGCryptKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
+                            xmlSecKeyDataRsaPtr rsaData, int writePrivateKey) {
     gcry_sexp_t pub_priv_key;
     gcry_sexp_t rsa = NULL;
     int private = 0;
@@ -1633,20 +1426,14 @@ xmlSecGCryptKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     int ret;
 
     xmlSecAssert2(id == xmlSecGCryptKeyDataRsaId, -1);
-    xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key), xmlSecGCryptKeyDataRsaId), -1);
-    xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
-
-    if(((xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate) & keyInfoCtx->keyReq.keyType) == 0) {
-        /* we can have only private key or public key */
-        return(0);
-    }
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataRsaId), -1);
+    xmlSecAssert2(rsaData != NULL, -1);
 
     /* find the private or public key */
-    pub_priv_key = xmlSecGCryptKeyDataRsaGetPrivateKey(xmlSecKeyGetValue(key));
+    pub_priv_key = xmlSecGCryptKeyDataRsaGetPrivateKey(data);
     if(pub_priv_key == NULL) {
-        pub_priv_key = xmlSecGCryptKeyDataRsaGetPublicKey(xmlSecKeyGetValue(key));
+        pub_priv_key = xmlSecGCryptKeyDataRsaGetPublicKey(data);
         if(pub_priv_key == NULL) {
             xmlSecInternalError("xmlSecGCryptKeyDataRsaGetPublicKey()",
                                 xmlSecKeyDataKlassGetName(id));
@@ -1663,44 +1450,28 @@ xmlSecGCryptKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
         goto done;
     }
 
-    /* first is Modulus node */
-    cur = xmlSecAddChild(node, xmlSecNodeRSAModulus, xmlSecDSigNs);
-    if(cur == NULL) {
-        xmlSecInternalError("xmlSecAddChild(NodeRSAModulus)", xmlSecKeyDataKlassGetName(id));
-        goto done;
-    }
-    ret = xmlSecGCryptNodeSetSExpTokValue(cur, rsa, "n", 1);
+    /*** Modulus ***/
+    ret = xmlSecGCryptSetSExpTokValue(rsa, "n", &(rsaData->modulus));
     if(ret < 0) {
-        xmlSecInternalError("xmlSecGCryptNodeSetSExpTokValue(NodeRSAModulus)",
-            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecGCryptSetSExpTokValue(Modulus)",
+                            xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
-    /* next is Exponent node. */
-    cur = xmlSecAddChild(node, xmlSecNodeRSAExponent, xmlSecDSigNs);
-    if(cur == NULL) {
-        xmlSecInternalError("xmlSecAddChild(NodeRSAExponent)", xmlSecKeyDataKlassGetName(id));
-        goto done;
-    }
-    ret = xmlSecGCryptNodeSetSExpTokValue(cur, rsa, "e", 1);
+    /*** Exponent ***/
+    ret = xmlSecGCryptSetSExpTokValue(rsa, "e", &(rsaData->publicExponent));
     if(ret < 0) {
-        xmlSecInternalError("xmlSecGCryptNodeSetSExpTokValue(NodeRSAExponent)",
-            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecGCryptSetSExpTokValue(Exponent)",
+                            xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
-    /* next is PrivateExponent node: write it ONLY for private keys and ONLY if it is requested */
-    if(((keyInfoCtx->keyReq.keyType & xmlSecKeyDataTypePrivate) != 0) && (private != 0)) {
-        cur = xmlSecAddChild(node, xmlSecNodeRSAPrivateExponent, xmlSecNs);
-        if(cur == NULL) {
-            xmlSecInternalError("xmlSecAddChild(NodeRSAPrivateExponent)",
-            xmlSecKeyDataKlassGetName(id));
-            goto done;
-        }
-        ret = xmlSecGCryptNodeSetSExpTokValue(cur, rsa, "d", 1);
+    /*** PrivateExponent (only if available and requested) ***/
+    if((writePrivateKey != 0) && (private != 0)) {
+        ret = xmlSecGCryptSetSExpTokValue(rsa, "d", &(rsaData->privateExponent));
         if(ret < 0) {
-            xmlSecInternalError("xmlSecGCryptNodeSetSExpTokValue(NodeRSAPrivateExponent)",
-                xmlSecKeyDataKlassGetName(id));
+            xmlSecInternalError("xmlSecGCryptSetSExpTokValue(PrivateExponent)",
+                                xmlSecKeyDataKlassGetName(id));
             goto done;
         }
     }
@@ -1715,5 +1486,4 @@ done:
 
     return(res);
 }
-
 #endif /* XMLSEC_NO_RSA */

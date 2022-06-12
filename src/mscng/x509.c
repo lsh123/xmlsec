@@ -190,6 +190,7 @@ xmlSecMSCngX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
 static PCCERT_CONTEXT
 xmlSecMSCngX509CertBase64DerRead(xmlChar* buf) {
     xmlSecSize decodedSize;
+    int ret;
 
     xmlSecAssert2(buf != NULL, NULL);
 

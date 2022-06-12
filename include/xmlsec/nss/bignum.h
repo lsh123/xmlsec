@@ -23,10 +23,10 @@
 extern "C" {
 #endif /* __cplusplus */
 
-XMLSEC_CRYPTO_EXPORT SECItem*   xmlSecNssNodeGetBigNumValue     (PRArenaPool *arena,
+XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT SECItem*   xmlSecNssNodeGetBigNumValue     (PRArenaPool *arena,
                                                                  const xmlNodePtr cur,
                                                                  SECItem *a);
-XMLSEC_CRYPTO_EXPORT int        xmlSecNssNodeSetBigNumValue     (xmlNodePtr cur,
+XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT int        xmlSecNssNodeSetBigNumValue     (xmlNodePtr cur,
                                                                  const SECItem *a,
                                                                  int addLineBreaks);
 

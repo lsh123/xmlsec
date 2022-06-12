@@ -27,7 +27,6 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/private.h>
-#include <xmlsec/xmltree.h>
 
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/bn.h>

@@ -36,6 +36,7 @@
 #include <xmlsec/mscng/crypto.h>
 
 #include "../cast_helpers.h"
+#include "../keysdata_helpers.h"
 
 #define xmlSecMSCngSymKeyDataCheckId(data) \
     (xmlSecKeyDataIsValid((data)) && \

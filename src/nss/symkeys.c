@@ -29,6 +29,8 @@
 
 #include <xmlsec/nss/crypto.h>
 
+#include "../keysdata_helpers.h"
+
 /*****************************************************************************
  *
  * Symmetic (binary) keys - just a wrapper for xmlSecKeyDataBinary

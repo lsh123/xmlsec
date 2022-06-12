@@ -37,6 +37,7 @@
 #include <xmlsec/mscng/crypto.h>
 
 #include "../cast_helpers.h"
+#include "../keysdata_helpers.h"
 
 typedef struct _xmlSecMSCngHmacCtx xmlSecMSCngHmacCtx, *xmlSecMSCngHmacCtxPtr;
 

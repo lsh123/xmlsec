@@ -28,6 +28,7 @@
 #include <xmlsec/gcrypt/crypto.h>
 
 #include "../cast_helpers.h"
+#include "../keysdata_helpers.h"
 
 /**************************************************************************
  *

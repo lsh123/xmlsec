@@ -26,6 +26,7 @@
 
 #include "kw_aes_des.h"
 #include "cast_helpers.h"
+#include "keysdata_helpers.h"
 
 #ifndef XMLSEC_NO_DES
 

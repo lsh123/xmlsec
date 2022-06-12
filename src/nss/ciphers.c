@@ -32,6 +32,7 @@
 #include <xmlsec/nss/crypto.h>
 
 #include "../cast_helpers.h"
+#include "../keysdata_helpers.h"
 
 #define XMLSEC_NSS_MAX_KEY_SIZE         32
 #define XMLSEC_NSS_MAX_IV_SIZE          32

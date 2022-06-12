@@ -31,6 +31,7 @@
 #include <xmlsec/gcrypt/crypto.h>
 
 #include "../cast_helpers.h"
+#include "../keysdata_helpers.h"
 
 /* sizes in bits */
 #define XMLSEC_GCRYPT_MIN_HMAC_SIZE             80

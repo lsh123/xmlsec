@@ -36,6 +36,8 @@
 #include <xmlsec/nss/pkikeys.h>
 
 #include "../cast_helpers.h"
+#include "../keysdata_helpers.h"
+
 
 /**************************************************************************
  *

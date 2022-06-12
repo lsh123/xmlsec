@@ -41,6 +41,8 @@
 #endif /* XMLSEC_OPENSSL_API_300 */
 
 #include "../cast_helpers.h"
+#include "../keysdata_helpers.h"
+
 
 /******************************************************************************
  *

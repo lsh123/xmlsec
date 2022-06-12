@@ -50,6 +50,7 @@
 #endif /* XMLSEC_OPENSSL_API_300 */
 
 #include "../cast_helpers.h"
+#include "../keysdata_helpers.h"
 
 /* sizes in bits */
 #define XMLSEC_OPENSSL_MIN_HMAC_SIZE            80

@@ -31,6 +31,7 @@
 #include "openssl_compat.h"
 
 #include "../cast_helpers.h"
+#include "../keysdata_helpers.h"
 
 #define XMLSEC_OPENSSL_EVP_CIPHER_PAD_SIZE    (2 * EVP_MAX_BLOCK_LENGTH)
 #define XMLSEC_OPENSSL_AES_GCM_NONCE_SIZE     12

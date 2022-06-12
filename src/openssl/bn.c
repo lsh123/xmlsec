@@ -38,7 +38,7 @@
  * @cur: the pointer to an XML node.
  * @a: the BIGNUM buffer.
  *
- * Converts the node content from CryptoBinary format
+ * DEPRECATED. Converts the node content from CryptoBinary format
  * (http://www.w3.org/TR/xmldsig-core/#sec-CryptoBinary)
  * to a BIGNUM. If no BIGNUM buffer provided then a new
  * BIGNUM is created (caller is responsible for freeing it).
@@ -97,7 +97,7 @@ done:
  *              linebreaks will be added before and after
  *              new buffer content.
  *
- * Converts BIGNUM to CryptoBinary string
+ * DEPRECATED. Converts BIGNUM to CryptoBinary string
  * (http://www.w3.org/TR/xmldsig-core/#sec-CryptoBinary)
  * and sets it as the content of the given node. If the
  * addLineBreaks is set then line breaks are added
@@ -127,7 +127,7 @@ xmlSecOpenSSLNodeSetBNValue(xmlNodePtr cur, const BIGNUM *a, int addLineBreaks) 
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferInitialize", NULL,
             "size=" XMLSEC_SIZE_FMT, (size + 1));
-        return(-1);
+        goto done;
     }
     bufInitialized = 1;
 

@@ -2025,7 +2025,7 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     OSSL_PARAM* params = NULL;
     EVP_PKEY* pKey = NULL;
 #endif /* XMLSEC_OPENSSL_API_300 */
-    BIGNUM* e = NULL;
+    BIGNUM* publicExponent = NULL;
     int res = -1;
     int ret;
 
@@ -2033,14 +2033,14 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     xmlSecAssert2(sizeBits > 0, -1);
     UNREFERENCED_PARAMETER(type);
 
-    /* create exponent */
-    e = BN_new();
-    if(e == NULL) {
+    /* create publicExponent */
+    publicExponent = BN_new();
+    if(publicExponent == NULL) {
         xmlSecOpenSSLError("BN_new", xmlSecKeyDataGetName(data));
         goto done;
     }
 
-    ret = BN_set_word(e, RSA_F4);
+    ret = BN_set_word(publicExponent, RSA_F4);
     if(ret != 1){
         xmlSecOpenSSLError("BN_set_word", xmlSecKeyDataGetName(data));
         goto done;
@@ -2054,7 +2054,7 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     }
 
     XMLSEC_SAFE_CAST_SIZE_TO_INT(sizeBits, lenBits, goto done, NULL);
-    ret = RSA_generate_key_ex(rsa, lenBits, e, NULL);
+    ret = RSA_generate_key_ex(rsa, lenBits, publicExponent, NULL);
     if(ret != 1) {
         xmlSecOpenSSLError2("RSA_generate_key_ex", xmlSecKeyDataGetName(data),
             "sizeBits=" XMLSEC_SIZE_FMT, sizeBits);
@@ -2096,8 +2096,8 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     }
 #endif /* XMLSEC_NO_SIZE_T */
 
-    if(OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_RSA_E, e) != 1) {
-        xmlSecOpenSSLError("OSSL_PARAM_BLD_push_BN(e)", xmlSecKeyDataGetName(data));
+    if(OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_RSA_E, publicExponent) != 1) {
+        xmlSecOpenSSLError("OSSL_PARAM_BLD_push_BN(publicExponent)", xmlSecKeyDataGetName(data));
         goto done;
     }
 
@@ -2147,8 +2147,8 @@ done:
         EVP_PKEY_CTX_free(pctx);
     }
 #endif /* XMLSEC_OPENSSL_API_300 */ 
-    if(e != NULL) {
-        BN_clear_free(e);
+    if(publicExponent != NULL) {
+        BN_clear_free(publicExponent);
     } 
     return(res);
 }
@@ -2310,7 +2310,7 @@ xmlSecOpenSSLKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyDataRsaPtr rsaData) {
     OSSL_PARAM* params = NULL;
 #endif /* XMLSEC_OPENSSL_API_300 */
     BIGNUM* modulus = NULL;
-    BIGNUM* exponent = NULL;
+    BIGNUM* publicExponent = NULL;
     BIGNUM* privateExponent = NULL;
     int ret;
 
@@ -2326,7 +2326,7 @@ xmlSecOpenSSLKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyDataRsaPtr rsaData) {
     }
 
     /*** Exponent ***/ 
-    ret = xmlSecOpenSSLGetBNValue(&(rsaData->publicExponent), &exponent);
+    ret = xmlSecOpenSSLGetBNValue(&(rsaData->publicExponent), &publicExponent);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(Exponent)",
             xmlSecKeyDataKlassGetName(id));
@@ -2355,12 +2355,12 @@ xmlSecOpenSSLKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyDataRsaPtr rsaData) {
         xmlSecOpenSSLError("RSA_new", xmlSecKeyDataGetName(data));
         goto done;
     }
-    ret = RSA_set0_key(rsa, modulus, exponent, privateExponent);
+    ret = RSA_set0_key(rsa, modulus, publicExponent, privateExponent);
     if(ret == 0) {
         xmlSecOpenSSLError("RSA_set0_key", xmlSecKeyDataGetName(data));
         goto done;
     }
-    modulus = exponent = privateExponent = NULL; /* owned by rsa now */
+    modulus = publicExponent = privateExponent = NULL; /* owned by rsa now */
 
     ret = xmlSecOpenSSLKeyDataRsaAdoptRsa(data, rsa);
     if(ret < 0) {
@@ -2381,7 +2381,7 @@ xmlSecOpenSSLKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyDataRsaPtr rsaData) {
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
-    if(OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_RSA_E, exponent) != 1) {
+    if(OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_RSA_E, publicExponent) != 1) {
         xmlSecOpenSSLError("OSSL_PARAM_BLD_push_BN(e)",
             xmlSecKeyDataKlassGetName(id));
         goto done;
@@ -2447,8 +2447,8 @@ done:
     if(modulus != NULL) {
         BN_clear_free(modulus);
     }
-    if(exponent != NULL) {
-        BN_clear_free(exponent);
+    if(publicExponent != NULL) {
+        BN_clear_free(publicExponent);
     }
     if(privateExponent != NULL) {
         BN_clear_free(privateExponent);
@@ -2465,13 +2465,13 @@ xmlSecOpenSSLKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
 
 #ifndef XMLSEC_OPENSSL_API_300
     RSA* rsa = NULL;
-    const BIGNUM* n = NULL;
-    const BIGNUM* e = NULL;
-    const BIGNUM* d = NULL;
+    const BIGNUM* modulus = NULL;
+    const BIGNUM* publicExponent = NULL;
+    const BIGNUM* privateExponent = NULL;
 #else /* XMLSEC_OPENSSL_API_300 */
     EVP_PKEY* pKey = NULL;
     BIGNUM* modulus = NULL;
-    BIGNUM* exponent = NULL;
+    BIGNUM* publicExponent = NULL;
     BIGNUM* privateExponent = NULL;
 #endif
     int ret;
@@ -2486,8 +2486,8 @@ xmlSecOpenSSLKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     rsa = xmlSecOpenSSLKeyDataRsaGetRsa(data);
     xmlSecAssert2(rsa != NULL, -1);
 
-    RSA_get0_key(rsa, &modulus, &exponent, &privateExponent);
-    if((modulus == NULL) || (exponent == NULL)) {
+    RSA_get0_key(rsa, &modulus, &publicExponent, &privateExponent);
+    if((modulus == NULL) || (publicExponent == NULL)) {
         xmlSecOpenSSLError("RSA_get0_key()",
             xmlSecKeyDataKlassGetName(id));
         goto done;        
@@ -2501,7 +2501,7 @@ xmlSecOpenSSLKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
-    if(EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_RSA_E, &exponent) != 1) {
+    if(EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_RSA_E, &publicExponent) != 1) {
         xmlSecOpenSSLError("EVP_PKEY_get_bn_param(e)",
             xmlSecKeyDataKlassGetName(id));
         goto done;
@@ -2523,8 +2523,8 @@ xmlSecOpenSSLKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     }
 
     /*** Exponent ***/
-    xmlSecAssert2(exponent != NULL, -1);
-    ret = xmlSecOpenSSLSetBNValue(exponent, &(rsaData->publicExponent));
+    xmlSecAssert2(publicExponent != NULL, -1);
+    ret = xmlSecOpenSSLSetBNValue(publicExponent, &(rsaData->publicExponent));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLSetBNValue(Exponent)",
             xmlSecKeyDataKlassGetName(id));
@@ -2549,8 +2549,8 @@ done:
     if(modulus != NULL) {
         BN_clear_free(modulus);
     }
-    if(exponent != NULL) {
-        BN_clear_free(exponent);
+    if(publicExponent != NULL) {
+        BN_clear_free(publicExponent);
     }
     if(privateExponent != NULL) {
         BN_clear_free(privateExponent);

@@ -696,6 +696,26 @@ XMLSEC_EXPORT int               xmlSecKeyDataBinaryValueSetBuffer       (xmlSecK
                                                                          const xmlSecByte* buf,
                                                                          xmlSecSize bufSize);
 
+
+/**************************************************************************
+ *
+ * Helper functions to read/write RSA/DSA keys
+ *
+ *************************************************************************/
+typedef struct _xmlSecKeyDataDsa {
+    xmlSecBuffer   p, q, g, x, y;
+} xmlSecKeyDataDsa, *xmlSecKeyDataDsaPtr;
+XMLSEC_EXPORT int               xmlSecKeyDataDsaInitialize              (xmlSecKeyDataDsaPtr data);
+XMLSEC_EXPORT void              xmlSecKeyDataDsaFinalize                (xmlSecKeyDataDsaPtr data);
+XMLSEC_EXPORT int               xmlSecKeyDataDsaXmlRead                 (xmlSecKeyDataDsaPtr data,
+                                                                         xmlNodePtr node,
+                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
+XMLSEC_EXPORT int               xmlSecKeyDataDsaXmlWrite                (xmlSecKeyDataDsaPtr data,
+                                                                         xmlNodePtr node,
+                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx,
+                                                                         int base64LineSize,
+                                                                         int addLineBreaks);
+
 /**************************************************************************
  *
  * xmlSecKeyDataStore

@@ -72,14 +72,14 @@ XMLSEC_KEY_DATA_STORE_DECLARE(NssX509Store, xmlSecNssX509StoreCtx)
 
 static int              xmlSecNssX509StoreInitialize    (xmlSecKeyDataStorePtr store);
 static void             xmlSecNssX509StoreFinalize      (xmlSecKeyDataStorePtr store);
-static int              xmlSecNssX509NameStringRead     (xmlSecByte **str,
-                                                         int *strLen,
-                                                         xmlSecByte *res,
-                                                         int resLen,
+static int              xmlSecNssX509NameStringRead     (const xmlSecByte **in,
+                                                         xmlSecSize *inSize,
+                                                         xmlSecByte *out,
+                                                         xmlSecSize outSize,
+                                                         xmlSecSize *outWritten,
                                                          xmlSecByte delim,
                                                          int ingoreTrailingSpaces);
-static xmlSecByte *     xmlSecNssX509NameRead           (xmlSecByte *str,
-                                                         int len);
+static xmlSecByte *     xmlSecNssX509NameRead           (const xmlChar *str);
 
 static int              xmlSecNssNumToItem              (SECItem *it, 
                                                          PRUint64 num);
@@ -381,7 +381,7 @@ xmlSecNssGetCertName(const xmlChar * name) {
         memcpy(p, "           E=", 13);
     }
 
-    tmp = xmlSecNssX509NameRead(name2, xmlStrlen(name2));
+    tmp = xmlSecNssX509NameRead(name2);
     if(tmp == NULL) {
         xmlSecInternalError2("xmlSecNssX509NameRead", NULL,
                              "name2=\"%s\"", xmlSecErrorsSafeString(name2));
@@ -391,8 +391,10 @@ xmlSecNssGetCertName(const xmlChar * name) {
 
     res = CERT_AsciiToName((char*)tmp);
     if (res == NULL) {
-        xmlSecNssError2("CERT_AsciiToName", NULL,
-                        "ascii=\"%s\"", xmlSecErrorsSafeString((char*)tmp));
+        xmlSecNssError3("CERT_AsciiToName", NULL,
+                        "name2=\"%s\";tmp=\"%s\"", 
+                        xmlSecErrorsSafeString((char*)name2),
+                        xmlSecErrorsSafeString((char*)tmp));
         PORT_Free(tmp);
         xmlFree(name2);
         return(NULL);
@@ -495,26 +497,19 @@ xmlSecNssX509FindCert(CERTCertList* certsList, const xmlChar *subjectName,
 
     if((cert == NULL) && (ski != NULL)) {
         SECItem subjKeyID;
-        xmlSecSize size;
-        int len;
+        xmlSecSize decodedSize;
         int ret;
 
-        len = xmlStrlen(ski);
-        if(len < 0) {
-            xmlSecInternalError("xmlStrlen(ski)", NULL);
-            goto done;
-        }
-        XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, goto done, NULL);
-
-        ret = xmlSecBase64Decode_ex(ski, (xmlSecByte*)ski, size, &size);
+        decodedSize = 0;
+        ret = xmlSecBase64DecodeInPlace(ski, &decodedSize);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecBase64Decode_ex", NULL);
+            xmlSecInternalError("xmlSecBase64DecodeInPlace", NULL);
             goto done;
         }
 
         memset(&subjKeyID, 0, sizeof(subjKeyID));
         subjKeyID.data = ski;
-        XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, subjKeyID.len, goto done, NULL);
+        XMLSEC_SAFE_CAST_SIZE_TO_UINT(decodedSize, subjKeyID.len, goto done, NULL);
 
         cert = CERT_FindCertBySubjectKeyID(CERT_GetDefaultCertDB(),
                                            &subjKeyID);
@@ -565,91 +560,90 @@ done:
 }
 
 static xmlSecByte *
-xmlSecNssX509NameRead(xmlSecByte *str, int len) {
+xmlSecNssX509NameRead(const xmlChar *str) {
     xmlSecByte name[256];
     xmlSecByte value[256];
     xmlSecByte *retval = NULL;
     xmlSecByte *p = NULL;
-    int nameLen, valueLen;
-    xmlSecSize size;
+    xmlSecSize strSize, nameSize, valueSize;
+    int ret;
 
     xmlSecAssert2(str != NULL, NULL);
-    xmlSecAssert2(len >= 0, NULL);
-
 
     /* return string should be no longer than input string */
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(NULL), NULL);
-    retval = (xmlSecByte *)PORT_Alloc(size + 1);
+    strSize = xmlSecStrlen(str);
+    retval = (xmlSecByte *)PORT_Alloc(strSize + 1);
     if(retval == NULL) {
-        xmlSecNssError2("PORT_Alloc", NULL, "size=" XMLSEC_SIZE_FMT, (size + 1));
+        xmlSecNssError2("PORT_Alloc", NULL, "size=" XMLSEC_SIZE_FMT, (strSize + 1));
         return(NULL);
     }
     p = retval;
 
-    while(len > 0) {
+    while(strSize > 0) {
         /* skip spaces after comma or semicolon */
-        while((len > 0) && isspace(*str)) {
-            ++str; --len;
+        while((strSize > 0) && isspace(*str)) {
+            ++str; --strSize;
         }
 
-        nameLen = xmlSecNssX509NameStringRead(&str, &len, name, sizeof(name), '=', 0);
-        if(nameLen < 0) {
+        nameSize = 0;
+        ret = xmlSecNssX509NameStringRead(&str, &strSize,
+            name, sizeof(name), &nameSize, '=', 0);
+        if(ret < 0) {
             xmlSecInternalError("xmlSecNssX509NameStringRead", NULL);
             goto done;
         }
-        XMLSEC_SAFE_CAST_INT_TO_SIZE(nameLen, size, goto done, NULL);
 
-        memcpy(p, name, size);
-        p+=nameLen;
-        *p++='=';
-        if(len > 0) {
-            ++str; --len;
+        memcpy(p, name, nameSize);
+        p += nameSize;
+        *(p++) = '=';
+
+        if(strSize > 0) {
+            ++str; --strSize;
             if((*str) == '\"') {
-                valueLen = xmlSecNssX509NameStringRead(&str, &len,
-                                        value, sizeof(value), '"', 1);
-                if(valueLen < 0) {
+                valueSize = 0;
+                ret = xmlSecNssX509NameStringRead(&str, &strSize,
+                    value, sizeof(value), &valueSize, '"', 1);
+                if(ret < 0) {
                     xmlSecInternalError("xmlSecNssX509NameStringRead", NULL);
                     goto done;
                 }
+                *(p++) = '\"';
+                memcpy(p, value, valueSize);
+                p += valueSize;
+                *(p++) = '\"';
+                
                 /* skip spaces before comma or semicolon */
-                while((len > 0) && isspace(*str)) {
-                    ++str; --len;
+                while((strSize > 0) && isspace(*str)) {
+                    ++str; --strSize;
                 }
-                if((len > 0) && ((*str) != ',')) {
+                if((strSize > 0) && ((*str) != ',')) {
                     xmlSecInvalidIntegerDataError("char", (*str), "comma ','", NULL);
                     goto done;
                 }
-                if(len > 0) {
-                    ++str; --len;
+                if(strSize > 0) {
+                    ++str; --strSize;
                 }
-                *p++='\"';
-
-                XMLSEC_SAFE_CAST_INT_TO_SIZE(valueLen, size, goto done, NULL);
-                memcpy(p, value, size);
-                p+=valueLen;
-                *p++='\"';
             } else if((*str) == '#') {
                 /* TODO: read octect values */
                 xmlSecNotImplementedError("reading octect values is not implemented yet");
                 goto done;
             } else {
-                valueLen = xmlSecNssX509NameStringRead(&str, &len,
-                                        value, sizeof(value), ',', 1);
-                if(valueLen < 0) {
+                ret = xmlSecNssX509NameStringRead(&str, &strSize,
+                    value, sizeof(value), &valueSize, ',', 1);
+                if(ret < 0) {
                     xmlSecInternalError("xmlSecNssX509NameStringRead", NULL);
                     goto done;
                 }
 
-                XMLSEC_SAFE_CAST_INT_TO_SIZE(valueLen, size, goto done, NULL);
-                memcpy(p, value, size);
-                p+=valueLen;
-                if (len > 0) {
-                    *p++=',';
+                memcpy(p, value, valueSize);
+                p += valueSize;
+                if (strSize > 0) {
+                    *(p++) = ',';
                 }
             }
         }
-        if(len > 0) {
-            ++str; --len;
+        if(strSize > 0) {
+            ++str; --strSize;
         }
     }
 
@@ -662,26 +656,26 @@ done:
 }
 
 static int
-xmlSecNssX509NameStringRead(xmlSecByte **str, int *strLen,
-                            xmlSecByte *res, int resLen,
+xmlSecNssX509NameStringRead(const xmlSecByte **in, xmlSecSize *inSize,
+                            xmlSecByte *out, xmlSecSize outSize,
+                            xmlSecSize *outWritten,
                             xmlSecByte delim, int ingoreTrailingSpaces) {
-    int ii, jj, nonSpace;
+    xmlSecSize ii, jj, nonSpace;
 
-    xmlSecAssert2(str != NULL, -1);
-    xmlSecAssert2((*str) != NULL, -1);
-    xmlSecAssert2(strLen != NULL, -1);
-    xmlSecAssert2(res != NULL, -1);
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2((*in) != NULL, -1);
+    xmlSecAssert2(inSize != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
 
-    ii = jj = 0;
-    nonSpace = -1;
-    while (ii < (*strLen)) {
+    ii = jj = nonSpace = 0;
+    while (ii < (*inSize)) {
         xmlSecByte inCh, inCh2, outCh;
 
-        inCh = (*str)[ii];
+        inCh = (*in)[ii];
         if (inCh == delim) {
             break;
         }
-        if (jj >= resLen) {
+        if (jj >= outSize) {
             xmlSecInvalidSizeOtherError("output buffer is too small", NULL);
             return(-1);
         }
@@ -689,20 +683,20 @@ xmlSecNssX509NameStringRead(xmlSecByte **str, int *strLen,
         if (inCh == '\\') {
             /* try to move to next char after \\ */
             ++ii;
-            if (ii >= (*strLen)) {
+            if (ii >= (*inSize)) {
                 break;
             }
-            inCh = (*str)[ii];
+            inCh = (*in)[ii];
 
             /* if next char after \\ is a hex then we expect \\XX, otherwise we just remove \\ */
             if (xmlSecIsHex(inCh)) {
                 /* try to move to next char after \\X */
                 ++ii;
-                if (ii >= (*strLen)) {
+                if (ii >= (*inSize)) {
                     xmlSecInvalidDataError("two hex digits expected", NULL);
                     return(-1);
                 }
-                inCh2 = (*str)[ii];
+                inCh2 = (*in)[ii];
                 if (!xmlSecIsHex(inCh2)) {
                     xmlSecInvalidDataError("two hex digits expected", NULL);
                     return(-1);
@@ -714,22 +708,25 @@ xmlSecNssX509NameStringRead(xmlSecByte **str, int *strLen,
         } else {
             outCh = inCh;
         }
+
+        out[jj] = outCh;
+        ++ii;
+        ++jj;
+
         if (ingoreTrailingSpaces && !isspace(outCh)) {
             nonSpace = jj;
         }
-        res[jj] = outCh;
-        ++ii;
-        ++jj;
     }
     
-    (*strLen) -= ii;
-    (*str) += ii;
+    (*inSize) -= ii;
+    (*in) += ii;
 
     if (ingoreTrailingSpaces) {
-        return(nonSpace >= 0 ? nonSpace + 1 : 0);
+        (*outWritten) = nonSpace;
     } else {
-        return(jj);
+        (*outWritten) = (jj);
     }
+    return(0);
 }
 
 /* code lifted from NSS */

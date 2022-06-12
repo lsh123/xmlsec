@@ -108,6 +108,7 @@ XMLSEC_EXPORT int                               xmlSecInit              (void);
 XMLSEC_EXPORT int                               xmlSecShutdown          (void);
 XMLSEC_EXPORT const xmlChar *                   xmlSecGetDefaultCrypto  (void);
 XMLSEC_EXPORT void                              xmlSecSetExternalEntityLoader (xmlExternalEntityLoader);
+XMLSEC_EXPORT xmlSecSize                        xmlSecStrlen            (const xmlChar * str);
 
 /**
  * XMLSEC_CRYPTO:

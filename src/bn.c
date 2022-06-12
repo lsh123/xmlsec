@@ -179,7 +179,7 @@ xmlSecBnZero(xmlSecBnPtr bn) {
  */
 int
 xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
-    int strLen, baseInt, nn;
+    int baseInt, nn;
     xmlSecSize ii, strSize, size;
     xmlSecByte ch;
     xmlSecByte* data;
@@ -192,11 +192,10 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
     xmlSecAssert2(base <= XMLSEC_BN_REV_MAX, -1);
 
     /* trivial case */
-    strLen = xmlStrlen(str);
-    if(strLen <= 0) {
+    strSize = xmlSecStrlen(str);
+    if(strSize <= 0) {
         return(0);
     }
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(strLen, strSize, return(0), NULL);
 
     /* The result size could not exceed the input string length
      * because each char fits inside a byte in all cases :)

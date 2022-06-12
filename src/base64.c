@@ -681,21 +681,13 @@ int
 xmlSecBase64Decode_ex(const xmlChar* str, xmlSecByte* out, xmlSecSize outSize, xmlSecSize* outWritten) {
     xmlSecBase64Ctx ctx;
     int ctx_initialized = 0;
-    int strLen;
-    xmlSecSize strSize, outUpdateSize, outFinalSize;
+    xmlSecSize outUpdateSize, outFinalSize;
     int ret;
     int res = -1;
 
     xmlSecAssert2(str != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outWritten != NULL, -1);
-
-    strLen = xmlStrlen(str);
-    if(strLen < 0) {
-        xmlSecInternalError("xmlStrlen", NULL);
-        goto done;
-    }
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(strLen, strSize, goto done, NULL);
 
     ret = xmlSecBase64CtxInitialize(&ctx, 0, 0);
     if(ret < 0) {
@@ -704,7 +696,7 @@ xmlSecBase64Decode_ex(const xmlChar* str, xmlSecByte* out, xmlSecSize outSize, x
     }
     ctx_initialized = 1;
 
-    ret = xmlSecBase64CtxUpdate_ex(&ctx, (const xmlSecByte*)str, strSize,
+    ret = xmlSecBase64CtxUpdate_ex(&ctx, (const xmlSecByte*)str, xmlSecStrlen(str),
         out, outSize, &outUpdateSize);
     if (ret < 0) {
         xmlSecInternalError("xmlSecBase64CtxUpdate_ex", NULL);
@@ -727,6 +719,21 @@ done:
         xmlSecBase64CtxFinalize(&ctx);
     }
     return(res);
+}
+
+/**
+ * xmlSecBase64DecodeInPlace:
+ * @str:                the input/output buffer
+ * @outWritten:         the pointer to store the number of bytes written into the output.
+ *
+ * Decodes input base64 encoded string from @str "in-place" (i.e. puts results into @str buffer).
+ *
+ * Returns: 0 on success and a negative value otherwise.
+ */
+int
+xmlSecBase64DecodeInPlace(xmlChar* str, xmlSecSize* outWritten) {
+    xmlSecAssert2(str != NULL, -1);
+    return(xmlSecBase64Decode_ex(str, (xmlSecByte*)str, xmlSecStrlen(str) + 1,outWritten));
 }
 
 /**************************************************************

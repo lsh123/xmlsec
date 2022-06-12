@@ -358,27 +358,21 @@ done:
 
 gnutls_x509_crt_t
 xmlSecGnuTLSX509CertBase64DerRead(xmlChar* buf) {
-    xmlSecSize size;
+    xmlSecSize decodedSize;
     gnutls_x509_crt_t res;
     int ret;
 
     xmlSecAssert2(buf != NULL, NULL);
 
-    ret = xmlStrlen(buf);
-    if(ret < 0) {
-        xmlSecInternalError("xmlStrlen", NULL);
-        return(NULL);
-    }
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
-
     /* usual trick with base64 decoding "in-place" */
-    ret = xmlSecBase64Decode_ex(buf, (xmlSecByte*)buf, size, &size);
+    decodedSize = 0;
+    ret = xmlSecBase64DecodeInPlace(buf, &decodedSize);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBase64Decode_ex", NULL);
+        xmlSecInternalError("xmlSecBase64DecodeInPlace", NULL);
         return(NULL);
     }
 
-    res = xmlSecGnuTLSX509CertRead((const xmlSecByte*)buf, size, xmlSecKeyDataFormatCertDer);
+    res = xmlSecGnuTLSX509CertRead((const xmlSecByte*)buf, decodedSize, xmlSecKeyDataFormatCertDer);
     if(res == NULL) {
         xmlSecInternalError("xmlSecGnuTLSX509CertRead", NULL);
         return(NULL);
@@ -616,26 +610,20 @@ xmlSecGnuTLSX509CrlGetIssuerDN(gnutls_x509_crl_t crl) {
 gnutls_x509_crl_t
 xmlSecGnuTLSX509CrlBase64DerRead(xmlChar* buf) {
     gnutls_x509_crl_t res;
-    xmlSecSize size;
+    xmlSecSize decodedSize;
     int ret;
 
     xmlSecAssert2(buf != NULL, NULL);
 
-    ret = xmlStrlen(buf);
-    if(ret < 0) {
-        xmlSecInternalError("xmlStrlen", NULL);
-        return(NULL);
-    }
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(NULL), NULL);
-
     /* usual trick with base64 decoding "in-place" */
-    ret = xmlSecBase64Decode_ex(buf, (xmlSecByte*)buf, size, &size);
+    decodedSize = 0;
+    ret = xmlSecBase64DecodeInPlace(buf, &decodedSize);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBase64Decode_ex", NULL);
+        xmlSecInternalError("xmlSecBase64DecodeInPlace", NULL);
         return(NULL);
     }
 
-    res = xmlSecGnuTLSX509CrlRead((const xmlSecByte*)buf, size, xmlSecKeyDataFormatCertDer);
+    res = xmlSecGnuTLSX509CrlRead((const xmlSecByte*)buf, decodedSize, xmlSecKeyDataFormatCertDer);
     if(res == NULL) {
         xmlSecInternalError("xmlSecGnuTLSX509CrlRead", NULL);
         return(NULL);
@@ -1293,21 +1281,14 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
     enum xmlSecGnuTLSDnParseState state;
     int slash;
     xmlSecSize size, pos;
-    int ret;
     int res = -1;
 
     xmlSecAssert2(dn != NULL, -1);
     xmlSecAssert2(attrs != NULL, -1);
     xmlSecAssert2(attrsSize > 0, -1);
 
-    ret = xmlStrlen(dn);
-    if(ret < 0) {
-        xmlSecInternalError("xmlStrlen", NULL);
-        goto done;
-    }
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, goto done, NULL);
-
     /* allocate buffer, we don't need more than string */
+    size = xmlSecStrlen(dn);
     tmp = (xmlChar *)xmlMalloc(size + 1);
     if(tmp == NULL) {
         xmlSecMallocError(size + 1, NULL);
@@ -1446,17 +1427,6 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
         xmlSecUnsupportedEnumValueError("state", state, NULL);
         goto done;
     }
-
-    /* debug
-    {
-        xmlSecSize ii;
-        for(ii = 0; ii < attrsSize; ++ii) {
-            if(attrs[ii].key != NULL) {
-                printf("DEBUG: attrs - %s=>%s\n", attrs[ii].key, attrs[ii].value);
-            }
-        }
-    }
-    */
 
     /* done */
     res = 0;

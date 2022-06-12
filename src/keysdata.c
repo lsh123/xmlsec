@@ -559,8 +559,7 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                                 xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlChar* str = NULL;
     xmlSecKeyDataPtr data = NULL;
-    xmlSecSize strSize;
-    int strLen;
+    xmlSecSize decodedSize;
     int ret;
     int res = -1;
 
@@ -575,15 +574,9 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         goto done;
     }
 
-    strLen = xmlStrlen(str);
-    if(strLen < 0) {
-        xmlSecInternalError("xmlStrlen", xmlSecKeyDataKlassGetName(id));
-        goto done;
-    }
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(strLen, strSize, goto done, xmlSecKeyDataKlassGetName(id));
-
     /* usual trick: decode into the same buffer */
-    ret = xmlSecBase64Decode_ex(str, (xmlSecByte*)str, strSize, &strSize);
+    decodedSize = 0;
+    ret = xmlSecBase64DecodeInPlace(str, &decodedSize);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBase64Decode_ex", xmlSecKeyDataKlassGetName(id));
         goto done;
@@ -602,14 +595,14 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
         buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
         if(buffer != NULL) {
-            if(xmlSecBufferGetSize(buffer) != strSize) {
+            if(xmlSecBufferGetSize(buffer) != decodedSize) {
                 xmlSecOtherError3(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
                     xmlSecKeyDataGetName(data),
                     "cur-data-size=" XMLSEC_SIZE_FMT "; new-data-size=" XMLSEC_SIZE_FMT,
-                    xmlSecBufferGetSize(buffer), strSize);
+                    xmlSecBufferGetSize(buffer), decodedSize);
                 goto done;
             }
-            if((strSize > 0) && (memcmp(xmlSecBufferGetData(buffer), str, strSize) != 0)) {
+            if((decodedSize > 0) && (memcmp(xmlSecBufferGetData(buffer), str, decodedSize) != 0)) {
                 xmlSecOtherError(XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
                     xmlSecKeyDataGetName(data),
                     "key already has a different value");
@@ -631,11 +624,11 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         goto done;
     }
 
-    ret = xmlSecKeyDataBinaryValueSetBuffer(data, (xmlSecByte*)str, strSize);
+    ret = xmlSecKeyDataBinaryValueSetBuffer(data, (xmlSecByte*)str, decodedSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecKeyDataBinaryValueSetBuffer",
             xmlSecKeyDataKlassGetName(id),
-            "size=" XMLSEC_SIZE_FMT, strSize);
+            "size=" XMLSEC_SIZE_FMT, decodedSize);
         goto done;
     }
 

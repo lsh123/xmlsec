@@ -504,8 +504,7 @@ done:
 int
 xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
     xmlChar* content = NULL;
-    xmlSecSize size, outWritten;
-    int len;
+    xmlSecSize outWritten;
     int ret;
     int res = -1;
 
@@ -518,15 +517,8 @@ xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
         goto done;
     }
 
-    len = xmlStrlen(content);
-    if(len < 0) {
-        xmlSecInternalError("xmlStrlen", NULL);
-        goto done;
-    }
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, goto done, NULL);
-
     /* base64 decode size is less than input size */
-    ret = xmlSecBufferSetMaxSize(buf, size);
+    ret = xmlSecBufferSetMaxSize(buf, xmlSecStrlen(content));
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferSetMaxSize", NULL);
         goto done;

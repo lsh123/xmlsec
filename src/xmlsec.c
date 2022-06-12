@@ -18,6 +18,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include <libxml/tree.h>
 
@@ -28,6 +29,8 @@
 #include <xmlsec/app.h>
 #include <xmlsec/io.h>
 #include <xmlsec/errors.h>
+
+#include "cast_helpers.h"
 
 /*
  * Custom external entity handler, denies all files except the initial
@@ -200,4 +203,23 @@ xmlSecCheckVersionExt(int major, int minor, int subminor, xmlSecCheckVersionMode
     return(1);
 }
 
+/**
+ * xmlSecStrlen:
+ * @str:                the string.
+ *
+ * Calcaulates the lenght of the string.
+ *
+ * Returns: the length of the string.
+ */
+xmlSecSize
+xmlSecStrlen(const xmlChar* str) {
+    size_t len;
+    xmlSecSize res;
 
+    if (str == NULL) {
+        return(0);
+    }
+    len = strlen((const char*)str);
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(len, res, return(0), NULL);
+    return(res);
+}

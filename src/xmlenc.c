@@ -583,9 +583,9 @@ xmlSecEncCtxDecrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
  */
 xmlSecBufferPtr
 xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
+    xmlSecBufferPtr res = NULL;
     xmlChar* data = NULL;
     int ret;
-    xmlSecBufferPtr res = NULL;
 
     xmlSecAssert2(encCtx != NULL, NULL);
     xmlSecAssert2(encCtx->result == NULL, NULL);
@@ -603,22 +603,13 @@ xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 
     /* decrypt the data */
     if(encCtx->cipherValueNode != NULL) {
-        xmlSecSize dataSize = 0;
-        int dataLen;
-
         data = xmlNodeGetContent(encCtx->cipherValueNode);
         if(data == NULL) {
             xmlSecInvalidNodeContentError(encCtx->cipherValueNode, NULL, "empty");
             goto done;
         }
-        dataLen = xmlStrlen(data);
-        if(dataLen < 0) {
-            xmlSecInternalError("xmlStrlen", NULL);
-            goto done;
-        }
-        XMLSEC_SAFE_CAST_INT_TO_SIZE(dataLen, dataSize, goto done, NULL);
 
-        ret = xmlSecTransformCtxBinaryExecute(&(encCtx->transformCtx), data, dataSize);
+        ret = xmlSecTransformCtxBinaryExecute(&(encCtx->transformCtx), data, xmlSecStrlen(data));
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformCtxBinaryExecute", NULL);
             goto done;

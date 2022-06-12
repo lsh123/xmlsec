@@ -134,7 +134,7 @@ XMLSEC_EXPORT int               xmlSecKeyDataDsaXmlWrite                (xmlSecK
 #if !defined(XMLSEC_NO_RSA)
 typedef struct _xmlSecKeyDataRsa {
     xmlSecBuffer   modulus;
-    xmlSecBuffer   exponent;
+    xmlSecBuffer   publicExponent;
     xmlSecBuffer   privateExponent;
 } xmlSecKeyDataRsa, *xmlSecKeyDataRsaPtr;
 

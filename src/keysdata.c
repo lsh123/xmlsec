@@ -1603,7 +1603,7 @@ xmlSecKeyDataRsaInitialize(xmlSecKeyDataRsaPtr data) {
         xmlSecKeyDataRsaFinalize(data);
         return(-1);
     }
-    ret = xmlSecBufferInitialize(&(data->exponent), XMLSEC_KEY_DATA_RSA_INIT_BUF_SIZE);
+    ret = xmlSecBufferInitialize(&(data->publicExponent), XMLSEC_KEY_DATA_RSA_INIT_BUF_SIZE);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize(q)", NULL);
         xmlSecKeyDataRsaFinalize(data);
@@ -1623,7 +1623,7 @@ xmlSecKeyDataRsaFinalize(xmlSecKeyDataRsaPtr data) {
     xmlSecAssert(data != NULL);
 
     xmlSecBufferFinalize(&(data->modulus));
-    xmlSecBufferFinalize(&(data->exponent));
+    xmlSecBufferFinalize(&(data->publicExponent));
     xmlSecBufferFinalize(&(data->privateExponent));
     memset(data, 0, sizeof(xmlSecKeyDataRsa));
 }
@@ -1655,7 +1655,7 @@ xmlSecKeyDataRsaFromXml(xmlSecKeyDataRsaPtr data, xmlNodePtr node) {
         xmlSecInvalidNodeError(cur, xmlSecNodeDSAQ, NULL);
         return(-1);
     }
-    ret = xmlSecBufferBase64NodeContentRead(&(data->exponent), cur);
+    ret = xmlSecBufferBase64NodeContentRead(&(data->publicExponent), cur);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferBase64NodeContentRead(q)", NULL);
         return(-1);
@@ -1729,7 +1729,7 @@ xmlSecKeyDataRsaToXml(xmlSecKeyDataRsaPtr data, xmlNodePtr node,
     } else {
         xmlNodeSetContent(cur, xmlSecStringEmpty);
     }
-    ret = xmlSecBufferBase64NodeContentWrite(&(data->exponent), cur, base64LineSize);
+    ret = xmlSecBufferBase64NodeContentWrite(&(data->publicExponent), cur, base64LineSize);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(exponent)", NULL);
         return(-1);

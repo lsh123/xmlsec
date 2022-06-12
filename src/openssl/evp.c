@@ -27,7 +27,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/private.h>
-
+ 
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/bn.h>
 #include <xmlsec/openssl/evp.h>
@@ -2326,7 +2326,7 @@ xmlSecOpenSSLKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyDataRsaPtr rsaData) {
     }
 
     /*** Exponent ***/ 
-    ret = xmlSecOpenSSLGetBNValue(&(rsaData->exponent), &exponent);
+    ret = xmlSecOpenSSLGetBNValue(&(rsaData->publicExponent), &exponent);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(Exponent)",
             xmlSecKeyDataKlassGetName(id));
@@ -2524,7 +2524,7 @@ xmlSecOpenSSLKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
 
     /*** Exponent ***/
     xmlSecAssert2(exponent != NULL, -1);
-    ret = xmlSecOpenSSLSetBNValue(exponent, &(rsaData->exponent));
+    ret = xmlSecOpenSSLSetBNValue(exponent, &(rsaData->publicExponent));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLSetBNValue(Exponent)",
             xmlSecKeyDataKlassGetName(id));

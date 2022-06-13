@@ -967,11 +967,11 @@ xmlSecKeyDataBinaryValueSetBuffer(xmlSecKeyDataPtr data,
  *************************************************************************/
 #define XMLSEC_KEY_DATA_DSA_INIT_BUF_SIZE                               512
 
-static int                      xmlSecKeyDataDsaInitialize              (xmlSecKeyDataDsaPtr data);
-static void                     xmlSecKeyDataDsaFinalize                (xmlSecKeyDataDsaPtr data);
-static int                      xmlSecKeyDataDsaFromXml                 (xmlSecKeyDataDsaPtr data,
+static int                      xmlSecKeyDataDsaInitialize              (xmlSecKeyValueDsaPtr data);
+static void                     xmlSecKeyDataDsaFinalize                (xmlSecKeyValueDsaPtr data);
+static int                      xmlSecKeyDataDsaFromXml                 (xmlSecKeyValueDsaPtr data,
                                                                          xmlNodePtr node);
-static int                      xmlSecKeyDataDsaToXml                   (xmlSecKeyDataDsaPtr data,
+static int                      xmlSecKeyDataDsaToXml                   (xmlSecKeyValueDsaPtr data,
                                                                          xmlNodePtr node,
                                                                          int writePrivateKey,
                                                                          int base64LineSize,
@@ -984,7 +984,7 @@ static int                      xmlSecKeyDataDsaToXml                   (xmlSecK
  * @node:               the pointer to data's value XML node.
  * @keyInfoCtx:         the <dsig:KeyInfo/> node processing context.
  * @readFunc:           the pointer to the function that converts 
- *                      @xmlSecKeyDataDsa to @xmlSecKeyData.
+ *                      @xmlSecKeyValueDsa to @xmlSecKeyData.
  *
  * DSA Key data method for reading XML node.
  *
@@ -995,7 +995,7 @@ xmlSecKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                         xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx,
                         xmlSecKeyDataDsaRead readFunc) {
     xmlSecKeyDataPtr data = NULL;
-    xmlSecKeyDataDsa dsaData;
+    xmlSecKeyValueDsa dsaValue;
     int dsaDataInitialized = 0;
     int res = -1;
     int ret;
@@ -1012,7 +1012,7 @@ xmlSecKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         goto done;
     }
 
-    ret = xmlSecKeyDataDsaInitialize(&dsaData);
+    ret = xmlSecKeyDataDsaInitialize(&dsaValue);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyDataDsaInitialize",
             xmlSecKeyDataKlassGetName(id));
@@ -1020,14 +1020,14 @@ xmlSecKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     }
     dsaDataInitialized = 1;
 
-    ret = xmlSecKeyDataDsaFromXml(&dsaData, node);
+    ret = xmlSecKeyDataDsaFromXml(&dsaValue, node);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyDataDsaFromXml",
             xmlSecKeyDataKlassGetName(id));
         goto done;        
     }
 
-    data = readFunc(id, &dsaData);
+    data = readFunc(id, &dsaValue);
     if(data == NULL) {
         xmlSecInternalError("xmlSecKeyDataDsaRead",
             xmlSecKeyDataKlassGetName(id));
@@ -1049,7 +1049,7 @@ xmlSecKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 done:
     /* cleanup */
     if(dsaDataInitialized != 0) {
-        xmlSecKeyDataDsaFinalize(&dsaData);
+        xmlSecKeyDataDsaFinalize(&dsaValue);
     }
     if(data != NULL) {
         xmlSecKeyDataDestroy(data);
@@ -1066,7 +1066,7 @@ done:
  * @base64LineSize:     the base64 max line size.
  * @addLineBreaks:      the flag indicating if we need to add line breaks around base64 output.
  * @writeFunc:          the pointer to the function that converts
- *                      @xmlSecKeyData to  @xmlSecKeyDataDsa.
+ *                      @xmlSecKeyData to  @xmlSecKeyValueDsa.
  *
  * DSA Key data  method for writing XML node.
  *
@@ -1078,7 +1078,7 @@ xmlSecKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                         int base64LineSize, int addLineBreaks,
                         xmlSecKeyDataDsaWrite writeFunc) {
     xmlSecKeyDataPtr data;
-    xmlSecKeyDataDsa dsaData;
+    xmlSecKeyValueDsa dsaValue;
     int dsaDataInitialized = 0;
     int writePrivateKey = 0;
     int res = -1;
@@ -1106,7 +1106,7 @@ xmlSecKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
         goto done;
     }
 
-    ret = xmlSecKeyDataDsaInitialize(&dsaData);
+    ret = xmlSecKeyDataDsaInitialize(&dsaValue);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyDataDsaInitialize",
             xmlSecKeyDataKlassGetName(id));
@@ -1114,14 +1114,14 @@ xmlSecKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     }
     dsaDataInitialized = 1;
 
-    ret = writeFunc(id, data, &dsaData, writePrivateKey);
+    ret = writeFunc(id, data, &dsaValue, writePrivateKey);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyDataDsaWrite",
             xmlSecKeyDataKlassGetName(id));
         goto done;        
     }    
 
-    ret = xmlSecKeyDataDsaToXml(&dsaData, node, writePrivateKey,
+    ret = xmlSecKeyDataDsaToXml(&dsaValue, node, writePrivateKey,
         base64LineSize, addLineBreaks);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyDataDsaToXml",
@@ -1135,17 +1135,17 @@ xmlSecKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 done:
     /* cleanup */
     if(dsaDataInitialized != 0) {
-        xmlSecKeyDataDsaFinalize(&dsaData);
+        xmlSecKeyDataDsaFinalize(&dsaValue);
     }
     return(res);  
 }
 
 static int
-xmlSecKeyDataDsaInitialize(xmlSecKeyDataDsaPtr data) {
+xmlSecKeyDataDsaInitialize(xmlSecKeyValueDsaPtr data) {
     int ret;
 
     xmlSecAssert2(data != NULL, -1);
-    memset(data, 0, sizeof(xmlSecKeyDataDsa));
+    memset(data, 0, sizeof(xmlSecKeyValueDsa));
 
     ret = xmlSecBufferInitialize(&(data->p), XMLSEC_KEY_DATA_DSA_INIT_BUF_SIZE);
     if(ret < 0) {
@@ -1182,7 +1182,7 @@ xmlSecKeyDataDsaInitialize(xmlSecKeyDataDsaPtr data) {
 }
 
 static void
-xmlSecKeyDataDsaFinalize(xmlSecKeyDataDsaPtr data) {
+xmlSecKeyDataDsaFinalize(xmlSecKeyValueDsaPtr data) {
     xmlSecAssert(data != NULL);
 
     xmlSecBufferFinalize(&(data->p));
@@ -1190,11 +1190,11 @@ xmlSecKeyDataDsaFinalize(xmlSecKeyDataDsaPtr data) {
     xmlSecBufferFinalize(&(data->g));
     xmlSecBufferFinalize(&(data->x));
     xmlSecBufferFinalize(&(data->y));
-    memset(data, 0, sizeof(xmlSecKeyDataDsa));
+    memset(data, 0, sizeof(xmlSecKeyValueDsa));
 }
 
 static int
-xmlSecKeyDataDsaFromXml(xmlSecKeyDataDsaPtr data, xmlNodePtr node) {
+xmlSecKeyDataDsaFromXml(xmlSecKeyValueDsaPtr data, xmlNodePtr node) {
     xmlNodePtr cur;
     int ret;
 
@@ -1294,7 +1294,7 @@ xmlSecKeyDataDsaFromXml(xmlSecKeyDataDsaPtr data, xmlNodePtr node) {
 }
 
 static int
-xmlSecKeyDataDsaToXml(xmlSecKeyDataDsaPtr data, xmlNodePtr node,
+xmlSecKeyDataDsaToXml(xmlSecKeyValueDsaPtr data, xmlNodePtr node,
                       int writePrivateKey, int base64LineSize, int addLineBreaks) {
     xmlNodePtr cur;
     int ret;
@@ -1417,11 +1417,11 @@ xmlSecKeyDataDsaToXml(xmlSecKeyDataDsaPtr data, xmlNodePtr node,
  *************************************************************************/
 #define XMLSEC_KEY_DATA_RSA_INIT_BUF_SIZE     512
 
-static int                      xmlSecKeyDataRsaInitialize              (xmlSecKeyDataRsaPtr data);
-static void                     xmlSecKeyDataRsaFinalize                (xmlSecKeyDataRsaPtr data);
-static int                      xmlSecKeyDataRsaFromXml                 (xmlSecKeyDataRsaPtr data,
+static int                      xmlSecKeyDataRsaInitialize              (xmlSecKeyValueRsaPtr data);
+static void                     xmlSecKeyDataRsaFinalize                (xmlSecKeyValueRsaPtr data);
+static int                      xmlSecKeyDataRsaFromXml                 (xmlSecKeyValueRsaPtr data,
                                                                          xmlNodePtr node);
-static int                      xmlSecKeyDataRsaToXml                   (xmlSecKeyDataRsaPtr data,
+static int                      xmlSecKeyDataRsaToXml                   (xmlSecKeyValueRsaPtr data,
                                                                          xmlNodePtr node,
                                                                          int writePrivateKey,
                                                                          int base64LineSize,
@@ -1434,7 +1434,7 @@ static int                      xmlSecKeyDataRsaToXml                   (xmlSecK
  * @node:               the pointer to data's value XML node.
  * @keyInfoCtx:         the <dsig:KeyInfo/> node processing context.
  * @readFunc:           the pointer to the function that converts 
- *                      @xmlSecKeyDataRsa to @xmlSecKeyData.
+ *                      @xmlSecKeyValueRsa to @xmlSecKeyData.
  *
  * DSA Key data method for reading XML node.
  *
@@ -1445,7 +1445,7 @@ xmlSecKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                         xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx,
                         xmlSecKeyDataRsaRead readFunc) {
     xmlSecKeyDataPtr data = NULL;
-    xmlSecKeyDataRsa rsaData;
+    xmlSecKeyValueRsa rsaValue;
     int rsaDataInitialized = 0;
     int res = -1;
     int ret;
@@ -1462,7 +1462,7 @@ xmlSecKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         goto done;
     }
 
-    ret = xmlSecKeyDataRsaInitialize(&rsaData);
+    ret = xmlSecKeyDataRsaInitialize(&rsaValue);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyDataRsaInitialize",
             xmlSecKeyDataKlassGetName(id));
@@ -1470,14 +1470,14 @@ xmlSecKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     }
     rsaDataInitialized = 1;
 
-    ret = xmlSecKeyDataRsaFromXml(&rsaData, node);
+    ret = xmlSecKeyDataRsaFromXml(&rsaValue, node);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyDataRsaFromXml",
             xmlSecKeyDataKlassGetName(id));
         goto done;        
     }
 
-    data = readFunc(id, &rsaData);
+    data = readFunc(id, &rsaValue);
     if(data == NULL) {
         xmlSecInternalError("xmlSecKeyDataRsaRead",
             xmlSecKeyDataKlassGetName(id));
@@ -1499,7 +1499,7 @@ xmlSecKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 done:
     /* cleanup */
     if(rsaDataInitialized != 0) {
-        xmlSecKeyDataRsaFinalize(&rsaData);
+        xmlSecKeyDataRsaFinalize(&rsaValue);
     }
     if(data != NULL) {
         xmlSecKeyDataDestroy(data);
@@ -1516,7 +1516,7 @@ done:
  * @base64LineSize:     the base64 max line size.
  * @addLineBreaks:      the flag indicating if we need to add line breaks around base64 output.
  * @writeFunc:          the pointer to the function that converts
- *                      @xmlSecKeyData to  @xmlSecKeyDataRsa.
+ *                      @xmlSecKeyData to  @xmlSecKeyValueRsa.
  *
  * DSA Key data  method for writing XML node.
  *
@@ -1528,7 +1528,7 @@ xmlSecKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                         int base64LineSize, int addLineBreaks,
                         xmlSecKeyDataRsaWrite writeFunc) {
     xmlSecKeyDataPtr data;
-    xmlSecKeyDataRsa rsaData;
+    xmlSecKeyValueRsa rsaValue;
     int rsaDataInitialized = 0;
     int writePrivateKey = 0;
     int res = -1;
@@ -1556,7 +1556,7 @@ xmlSecKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
         goto done;
     }
 
-    ret = xmlSecKeyDataRsaInitialize(&rsaData);
+    ret = xmlSecKeyDataRsaInitialize(&rsaValue);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyDataRsaInitialize",
             xmlSecKeyDataKlassGetName(id));
@@ -1564,14 +1564,14 @@ xmlSecKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     }
     rsaDataInitialized = 1;
 
-    ret = writeFunc(id, data, &rsaData, writePrivateKey);
+    ret = writeFunc(id, data, &rsaValue, writePrivateKey);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyDataRsaWrite",
             xmlSecKeyDataKlassGetName(id));
         goto done;        
     }    
 
-    ret = xmlSecKeyDataRsaToXml(&rsaData, node, writePrivateKey,
+    ret = xmlSecKeyDataRsaToXml(&rsaValue, node, writePrivateKey,
         base64LineSize, addLineBreaks);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyDataRsaToXml",
@@ -1585,17 +1585,17 @@ xmlSecKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 done:
     /* cleanup */
     if(rsaDataInitialized != 0) {
-        xmlSecKeyDataRsaFinalize(&rsaData);
+        xmlSecKeyDataRsaFinalize(&rsaValue);
     }
     return(res);  
 }
 
 static int
-xmlSecKeyDataRsaInitialize(xmlSecKeyDataRsaPtr data) {
+xmlSecKeyDataRsaInitialize(xmlSecKeyValueRsaPtr data) {
     int ret;
 
     xmlSecAssert2(data != NULL, -1);
-    memset(data, 0, sizeof(xmlSecKeyDataRsa));
+    memset(data, 0, sizeof(xmlSecKeyValueRsa));
 
     ret = xmlSecBufferInitialize(&(data->modulus), XMLSEC_KEY_DATA_RSA_INIT_BUF_SIZE);
     if(ret < 0) {
@@ -1619,17 +1619,17 @@ xmlSecKeyDataRsaInitialize(xmlSecKeyDataRsaPtr data) {
 }
 
 static void
-xmlSecKeyDataRsaFinalize(xmlSecKeyDataRsaPtr data) {
+xmlSecKeyDataRsaFinalize(xmlSecKeyValueRsaPtr data) {
     xmlSecAssert(data != NULL);
 
     xmlSecBufferFinalize(&(data->modulus));
     xmlSecBufferFinalize(&(data->publicExponent));
     xmlSecBufferFinalize(&(data->privateExponent));
-    memset(data, 0, sizeof(xmlSecKeyDataRsa));
+    memset(data, 0, sizeof(xmlSecKeyValueRsa));
 }
 
 static int
-xmlSecKeyDataRsaFromXml(xmlSecKeyDataRsaPtr data, xmlNodePtr node) {
+xmlSecKeyDataRsaFromXml(xmlSecKeyValueRsaPtr data, xmlNodePtr node) {
     xmlNodePtr cur;
     int ret;
 
@@ -1690,7 +1690,7 @@ xmlSecKeyDataRsaFromXml(xmlSecKeyDataRsaPtr data, xmlNodePtr node) {
 }
 
 static int
-xmlSecKeyDataRsaToXml(xmlSecKeyDataRsaPtr data, xmlNodePtr node,
+xmlSecKeyDataRsaToXml(xmlSecKeyValueRsaPtr data, xmlNodePtr node,
                       int writePrivateKey, int base64LineSize, int addLineBreaks) {
     xmlNodePtr cur;
     int ret;

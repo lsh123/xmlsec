@@ -524,10 +524,10 @@ static void              xmlSecNssKeyDataDsaDebugXmlDump(xmlSecKeyDataPtr data,
 
 
 static xmlSecKeyDataPtr xmlSecNssKeyDataDsaRead         (xmlSecKeyDataId id,
-                                                         xmlSecKeyDataDsaPtr dsaData);
+                                                         xmlSecKeyValueDsaPtr dsaValue);
 static int              xmlSecNssKeyDataDsaWrite        (xmlSecKeyDataId id,
                                                          xmlSecKeyDataPtr data,
-                                                         xmlSecKeyDataDsaPtr dsaData,
+                                                         xmlSecKeyValueDsaPtr dsaValue,
                                                          int writePrivateKey);
 
 static xmlSecKeyDataKlass xmlSecNssKeyDataDsaKlass = {
@@ -762,7 +762,7 @@ xmlSecNssKeyDataDsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 }
 
 static xmlSecKeyDataPtr
-xmlSecNssKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyDataDsaPtr dsaData) {
+xmlSecNssKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     xmlSecKeyDataPtr data = NULL;
     xmlSecKeyDataPtr res = NULL;
     PK11SlotInfo *slot = NULL;
@@ -772,7 +772,7 @@ xmlSecNssKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyDataDsaPtr dsaData) {
     int ret;
 
     xmlSecAssert2(id == xmlSecNssKeyDataDsaId, NULL);
-    xmlSecAssert2(dsaData != NULL, NULL);
+    xmlSecAssert2(dsaValue != NULL, NULL);
 
     slot = PK11_GetBestSlot(CKM_DSA, NULL);
     if(slot == NULL) {
@@ -798,7 +798,7 @@ xmlSecNssKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyDataDsaPtr dsaData) {
     arena = NULL; /* owned by pubkey */
 
     /*** p ***/
-    ret = xmlSecNssGetBigNumValue(&(dsaData->p), pubkey->arena, &(pubkey->u.dsa.params.prime));
+    ret = xmlSecNssGetBigNumValue(&(dsaValue->p), pubkey->arena, &(pubkey->u.dsa.params.prime));
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssGetBigNumValue(p)",
                             xmlSecKeyDataKlassGetName(id));
@@ -806,7 +806,7 @@ xmlSecNssKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyDataDsaPtr dsaData) {
     }
 
     /*** q ***/
-    ret = xmlSecNssGetBigNumValue(&(dsaData->q), pubkey->arena, &(pubkey->u.dsa.params.subPrime));
+    ret = xmlSecNssGetBigNumValue(&(dsaValue->q), pubkey->arena, &(pubkey->u.dsa.params.subPrime));
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssGetBigNumValue(q)",
                             xmlSecKeyDataKlassGetName(id));
@@ -814,7 +814,7 @@ xmlSecNssKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyDataDsaPtr dsaData) {
     }
 
     /*** g ***/
-    ret = xmlSecNssGetBigNumValue(&(dsaData->g), pubkey->arena, &(pubkey->u.dsa.params.base));
+    ret = xmlSecNssGetBigNumValue(&(dsaValue->g), pubkey->arena, &(pubkey->u.dsa.params.base));
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssGetBigNumValue(g)",
                             xmlSecKeyDataKlassGetName(id));
@@ -824,7 +824,7 @@ xmlSecNssKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyDataDsaPtr dsaData) {
     /* next is X (priv key). NSS does not support it, we just ignore it */
 
     /*** y ***/
-    ret = xmlSecNssGetBigNumValue(&(dsaData->y), pubkey->arena, &(pubkey->u.dsa.publicValue));
+    ret = xmlSecNssGetBigNumValue(&(dsaValue->y), pubkey->arena, &(pubkey->u.dsa.publicValue));
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssGetBigNumValue(y)",
                             xmlSecKeyDataKlassGetName(id));
@@ -878,7 +878,7 @@ done:
 
 static int
 xmlSecNssKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
-                         xmlSecKeyDataDsaPtr dsaData,
+                         xmlSecKeyValueDsaPtr dsaValue,
                          int writePrivateKey ATTRIBUTE_UNUSED) {
     xmlSecNssPKIKeyDataCtxPtr ctx;
     int ret;
@@ -886,7 +886,7 @@ xmlSecNssKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     xmlSecAssert2(id == xmlSecNssKeyDataDsaId, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataDsaId), -1);
-    xmlSecAssert2(dsaData != NULL, -1);
+    xmlSecAssert2(dsaValue != NULL, -1);
     UNREFERENCED_PARAMETER(writePrivateKey);
 
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
@@ -894,7 +894,7 @@ xmlSecNssKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     xmlSecAssert2(SECKEY_GetPublicKeyType(ctx->pubkey) == dsaKey, -1);
 
     /*** p ***/
-    ret = xmlSecNssSetBigNumValue(&(ctx->pubkey->u.dsa.params.prime), &(dsaData->p));
+    ret = xmlSecNssSetBigNumValue(&(ctx->pubkey->u.dsa.params.prime), &(dsaValue->p));
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssNodeSetBigNumValue(p)",
                             xmlSecKeyDataKlassGetName(id));
@@ -902,7 +902,7 @@ xmlSecNssKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     }
 
     /*** q ***/
-    ret = xmlSecNssSetBigNumValue(&(ctx->pubkey->u.dsa.params.subPrime), &(dsaData->q));
+    ret = xmlSecNssSetBigNumValue(&(ctx->pubkey->u.dsa.params.subPrime), &(dsaValue->q));
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssNodeSetBigNumValue(q)",
                             xmlSecKeyDataKlassGetName(id));
@@ -910,7 +910,7 @@ xmlSecNssKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     }
 
     /*** g ***/
-    ret = xmlSecNssSetBigNumValue(&(ctx->pubkey->u.dsa.params.base), &(dsaData->g));
+    ret = xmlSecNssSetBigNumValue(&(ctx->pubkey->u.dsa.params.base), &(dsaValue->g));
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssNodeSetBigNumValue(g)",
                             xmlSecKeyDataKlassGetName(id));
@@ -920,7 +920,7 @@ xmlSecNssKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     /*** x: not supported in NSS ***/
 
     /*** y ***/
-    ret = xmlSecNssSetBigNumValue(&(ctx->pubkey->u.dsa.publicValue), &(dsaData->y));
+    ret = xmlSecNssSetBigNumValue(&(ctx->pubkey->u.dsa.publicValue), &(dsaValue->y));
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssNodeSetBigNumValue(y)",
                             xmlSecKeyDataKlassGetName(id));
@@ -1001,10 +1001,10 @@ static void             xmlSecNssKeyDataRsaDebugXmlDump (xmlSecKeyDataPtr data,
                                                          FILE* output);
 
 static xmlSecKeyDataPtr xmlSecNssKeyDataRsaRead         (xmlSecKeyDataId id,
-                                                         xmlSecKeyDataRsaPtr rsaData);
+                                                         xmlSecKeyValueRsaPtr rsaValue);
 static int              xmlSecNssKeyDataRsaWrite        (xmlSecKeyDataId id,
                                                          xmlSecKeyDataPtr data,
-                                                         xmlSecKeyDataRsaPtr rsaData,
+                                                         xmlSecKeyValueRsaPtr rsaValue,
                                                          int writePrivateKey);
 
 static xmlSecKeyDataKlass xmlSecNssKeyDataRsaKlass = {
@@ -1148,7 +1148,7 @@ xmlSecNssKeyDataRsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 }
 
 static xmlSecKeyDataPtr
-xmlSecNssKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyDataRsaPtr rsaData) {
+xmlSecNssKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     xmlSecKeyDataPtr data = NULL;
     xmlSecKeyDataPtr res = NULL;
     PK11SlotInfo *slot = NULL;
@@ -1157,7 +1157,7 @@ xmlSecNssKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyDataRsaPtr rsaData) {
     int ret;
 
     xmlSecAssert2(id == xmlSecNssKeyDataRsaId, NULL);
-    xmlSecAssert2(rsaData != NULL, NULL);
+    xmlSecAssert2(rsaValue != NULL, NULL);
 
     slot = PK11_GetBestSlot(CKM_RSA_PKCS, NULL);
     if(slot == NULL) {
@@ -1182,7 +1182,7 @@ xmlSecNssKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyDataRsaPtr rsaData) {
     arena = NULL; /* owned by pubkey */
 
     /*** Modulus ***/
-    ret = xmlSecNssGetBigNumValue(&(rsaData->modulus), pubkey->arena, &(pubkey->u.rsa.modulus));
+    ret = xmlSecNssGetBigNumValue(&(rsaValue->modulus), pubkey->arena, &(pubkey->u.rsa.modulus));
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssGetBigNumValue(Modulus)",
                             xmlSecKeyDataKlassGetName(id));
@@ -1190,7 +1190,7 @@ xmlSecNssKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyDataRsaPtr rsaData) {
     }
 
     /*** Exponent ***/
-    ret = xmlSecNssGetBigNumValue(&(rsaData->publicExponent), pubkey->arena, &(pubkey->u.rsa.publicExponent));
+    ret = xmlSecNssGetBigNumValue(&(rsaValue->publicExponent), pubkey->arena, &(pubkey->u.rsa.publicExponent));
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssGetBigNumValue(Exponent)",
                             xmlSecKeyDataKlassGetName(id));
@@ -1239,7 +1239,7 @@ done:
 
 static int
 xmlSecNssKeyDataRsaWrite(xmlSecKeyDataId id,xmlSecKeyDataPtr data,
-                         xmlSecKeyDataRsaPtr rsaData,
+                         xmlSecKeyValueRsaPtr rsaValue,
                          int writePrivateKey ATTRIBUTE_UNUSED) {
     xmlSecNssPKIKeyDataCtxPtr ctx;
     int ret;
@@ -1247,7 +1247,7 @@ xmlSecNssKeyDataRsaWrite(xmlSecKeyDataId id,xmlSecKeyDataPtr data,
     xmlSecAssert2(id == xmlSecNssKeyDataRsaId, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataRsaId), -1);
-    xmlSecAssert2(rsaData != NULL, -1);
+    xmlSecAssert2(rsaValue != NULL, -1);
     UNREFERENCED_PARAMETER(writePrivateKey);
 
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
@@ -1255,7 +1255,7 @@ xmlSecNssKeyDataRsaWrite(xmlSecKeyDataId id,xmlSecKeyDataPtr data,
     xmlSecAssert2(SECKEY_GetPublicKeyType(ctx->pubkey) == rsaKey, -1);
 
     /*** Modulus ***/
-    ret = xmlSecNssSetBigNumValue(&(ctx->pubkey->u.rsa.modulus), &(rsaData->modulus));
+    ret = xmlSecNssSetBigNumValue(&(ctx->pubkey->u.rsa.modulus), &(rsaValue->modulus));
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssNodeSetBigNumValue(Modulus)",
                             xmlSecKeyDataKlassGetName(id));
@@ -1263,7 +1263,7 @@ xmlSecNssKeyDataRsaWrite(xmlSecKeyDataId id,xmlSecKeyDataPtr data,
     }
 
     /*** Exponent ***/
-    ret = xmlSecNssSetBigNumValue(&(ctx->pubkey->u.rsa.publicExponent), &(rsaData->publicExponent));
+    ret = xmlSecNssSetBigNumValue(&(ctx->pubkey->u.rsa.publicExponent), &(rsaValue->publicExponent));
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssNodeSetBigNumValue(Exponent)",
                             xmlSecKeyDataKlassGetName(id));

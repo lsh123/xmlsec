@@ -588,10 +588,10 @@ static void             xmlSecOpenSSLKeyDataDsaDebugXmlDump     (xmlSecKeyDataPt
                                                                  FILE* output);
 
 static xmlSecKeyDataPtr xmlSecOpenSSLKeyDataDsaRead             (xmlSecKeyDataId id,
-                                                                 xmlSecKeyDataDsaPtr dsaData);
+                                                                 xmlSecKeyValueDsaPtr dsaValue);
 static int              xmlSecOpenSSLKeyDataDsaWrite            (xmlSecKeyDataId id,
                                                                  xmlSecKeyDataPtr data,
-                                                                 xmlSecKeyDataDsaPtr dsaData,
+                                                                 xmlSecKeyValueDsaPtr dsaValue,
                                                                  int writePrivateKey);
 
 static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataDsaKlass = {
@@ -1091,7 +1091,7 @@ xmlSecOpenSSLKeyDataDsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 }
 
 xmlSecKeyDataPtr
-xmlSecOpenSSLKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyDataDsaPtr dsaData) {
+xmlSecOpenSSLKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     xmlSecKeyDataPtr data = NULL;
     xmlSecKeyDataPtr res = NULL;
 #ifndef XMLSEC_OPENSSL_API_300
@@ -1110,33 +1110,33 @@ xmlSecOpenSSLKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyDataDsaPtr dsaData) {
     int ret;
 
     xmlSecAssert2(id == xmlSecOpenSSLKeyDataDsaId, NULL);
-    xmlSecAssert2(dsaData != NULL, NULL);
+    xmlSecAssert2(dsaValue != NULL, NULL);
 
     /*** p ***/ 
-    ret = xmlSecOpenSSLGetBNValue(&(dsaData->p), &p);
+    ret = xmlSecOpenSSLGetBNValue(&(dsaValue->p), &p);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(p)",
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
     /*** q ***/ 
-    ret = xmlSecOpenSSLGetBNValue(&(dsaData->q), &q);
+    ret = xmlSecOpenSSLGetBNValue(&(dsaValue->q), &q);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(q)",
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
     /*** q ***/ 
-    ret = xmlSecOpenSSLGetBNValue(&(dsaData->g), &g);
+    ret = xmlSecOpenSSLGetBNValue(&(dsaValue->g), &g);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(g)",
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
     /*** x (only for private key) ***/ 
-    if(xmlSecBufferGetSize(&(dsaData->x)) > 0) {
+    if(xmlSecBufferGetSize(&(dsaValue->x)) > 0) {
         /*** p ***/ 
-        ret = xmlSecOpenSSLGetBNValue(&(dsaData->x), &priv_key);
+        ret = xmlSecOpenSSLGetBNValue(&(dsaValue->x), &priv_key);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLGetBNValue(x)",
                 xmlSecKeyDataKlassGetName(id));
@@ -1144,7 +1144,7 @@ xmlSecOpenSSLKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyDataDsaPtr dsaData) {
         }
     }
     /*** y ***/ 
-    ret = xmlSecOpenSSLGetBNValue(&(dsaData->y), &pub_key);
+    ret = xmlSecOpenSSLGetBNValue(&(dsaValue->y), &pub_key);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(y)",
             xmlSecKeyDataKlassGetName(id));
@@ -1308,7 +1308,7 @@ done:
 
 static int
 xmlSecOpenSSLKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
-                             xmlSecKeyDataDsaPtr dsaData, int writePrivateKey) {                                    
+                             xmlSecKeyValueDsaPtr dsaValue, int writePrivateKey) {                                    
 #ifndef XMLSEC_OPENSSL_API_300
     DSA* dsa = NULL;
     const BIGNUM* p = NULL;
@@ -1330,7 +1330,7 @@ xmlSecOpenSSLKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     xmlSecAssert2(id == xmlSecOpenSSLKeyDataDsaId, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId), -1);
-    xmlSecAssert2(dsaData != NULL, -1);
+    xmlSecAssert2(dsaValue != NULL, -1);
 
     /* first, get all values */
 #ifndef XMLSEC_OPENSSL_API_300
@@ -1368,7 +1368,7 @@ xmlSecOpenSSLKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
 
     /*** p ***/
     xmlSecAssert2(p != NULL, -1);
-    ret = xmlSecOpenSSLSetBNValue(p, &(dsaData->p));
+    ret = xmlSecOpenSSLSetBNValue(p, &(dsaValue->p));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLSetBNValue(p)",
             xmlSecKeyDataKlassGetName(id));
@@ -1377,7 +1377,7 @@ xmlSecOpenSSLKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
 
     /*** q ***/
     xmlSecAssert2(q != NULL, -1);
-    ret = xmlSecOpenSSLSetBNValue(q, &(dsaData->q));
+    ret = xmlSecOpenSSLSetBNValue(q, &(dsaValue->q));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLSetBNValue(q)",
             xmlSecKeyDataKlassGetName(id));
@@ -1386,7 +1386,7 @@ xmlSecOpenSSLKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
 
     /*** g ***/
     xmlSecAssert2(g != NULL, -1);
-    ret = xmlSecOpenSSLSetBNValue(g, &(dsaData->g));
+    ret = xmlSecOpenSSLSetBNValue(g, &(dsaValue->g));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLSetBNValue(g)",
             xmlSecKeyDataKlassGetName(id));
@@ -1395,7 +1395,7 @@ xmlSecOpenSSLKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
 
     /*** x (only if availabel and requested) ***/
     if((writePrivateKey != 0) && (priv_key != NULL)) {
-        ret = xmlSecOpenSSLSetBNValue(priv_key, &(dsaData->x));
+        ret = xmlSecOpenSSLSetBNValue(priv_key, &(dsaValue->x));
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLSetBNValue(x)",
                 xmlSecKeyDataKlassGetName(id));
@@ -1405,7 +1405,7 @@ xmlSecOpenSSLKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
 
     /*** y ***/
     xmlSecAssert2(pub_key != NULL, -1);
-    ret = xmlSecOpenSSLSetBNValue(pub_key, &(dsaData->y));
+    ret = xmlSecOpenSSLSetBNValue(pub_key, &(dsaValue->y));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLSetBNValue(y)",
             xmlSecKeyDataKlassGetName(id));
@@ -1806,10 +1806,10 @@ static void             xmlSecOpenSSLKeyDataRsaDebugXmlDump     (xmlSecKeyDataPt
                                                                  FILE* output);
 
 static xmlSecKeyDataPtr xmlSecOpenSSLKeyDataRsaRead             (xmlSecKeyDataId id,
-                                                                 xmlSecKeyDataRsaPtr rsaData);
+                                                                 xmlSecKeyValueRsaPtr rsaValue);
 static int              xmlSecOpenSSLKeyDataRsaWrite            (xmlSecKeyDataId id,
                                                                  xmlSecKeyDataPtr data,
-                                                                 xmlSecKeyDataRsaPtr rsaData,
+                                                                 xmlSecKeyValueRsaPtr rsaValue,
                                                                  int writePrivateKey);
 
 static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataRsaKlass = {
@@ -2298,7 +2298,7 @@ xmlSecOpenSSLKeyDataRsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 }
 
 static xmlSecKeyDataPtr
-xmlSecOpenSSLKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyDataRsaPtr rsaData) {
+xmlSecOpenSSLKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     xmlSecKeyDataPtr data = NULL;
     xmlSecKeyDataPtr res = NULL;
 #ifndef XMLSEC_OPENSSL_API_300
@@ -2315,10 +2315,10 @@ xmlSecOpenSSLKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyDataRsaPtr rsaData) {
     int ret;
 
     xmlSecAssert2(id == xmlSecOpenSSLKeyDataRsaId, NULL);
-    xmlSecAssert2(rsaData != NULL, NULL);
+    xmlSecAssert2(rsaValue != NULL, NULL);
 
     /*** Modulus ***/ 
-    ret = xmlSecOpenSSLGetBNValue(&(rsaData->modulus), &modulus);
+    ret = xmlSecOpenSSLGetBNValue(&(rsaValue->modulus), &modulus);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(Modulus)",
             xmlSecKeyDataKlassGetName(id));
@@ -2326,16 +2326,16 @@ xmlSecOpenSSLKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyDataRsaPtr rsaData) {
     }
 
     /*** Exponent ***/ 
-    ret = xmlSecOpenSSLGetBNValue(&(rsaData->publicExponent), &publicExponent);
+    ret = xmlSecOpenSSLGetBNValue(&(rsaValue->publicExponent), &publicExponent);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(Exponent)",
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
     /*** PrivateExponent (only for private key) ***/ 
-    if(xmlSecBufferGetSize(&(rsaData->privateExponent)) > 0) {
+    if(xmlSecBufferGetSize(&(rsaValue->privateExponent)) > 0) {
         /*** p ***/ 
-        ret = xmlSecOpenSSLGetBNValue(&(rsaData->privateExponent), &privateExponent);
+        ret = xmlSecOpenSSLGetBNValue(&(rsaValue->privateExponent), &privateExponent);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLGetBNValue(x)",
                 xmlSecKeyDataKlassGetName(id));
@@ -2461,7 +2461,7 @@ done:
 
 static int
 xmlSecOpenSSLKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
-                             xmlSecKeyDataRsaPtr rsaData, int writePrivateKey) {
+                             xmlSecKeyValueRsaPtr rsaValue, int writePrivateKey) {
 
 #ifndef XMLSEC_OPENSSL_API_300
     RSA* rsa = NULL;
@@ -2480,7 +2480,7 @@ xmlSecOpenSSLKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     xmlSecAssert2(id == xmlSecOpenSSLKeyDataRsaId, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId), -1);
-    xmlSecAssert2(rsaData != NULL, -1);
+    xmlSecAssert2(rsaValue != NULL, -1);
 
 #ifndef XMLSEC_OPENSSL_API_300
     rsa = xmlSecOpenSSLKeyDataRsaGetRsa(data);
@@ -2515,7 +2515,7 @@ xmlSecOpenSSLKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
 
     /*** Modulus ***/
     xmlSecAssert2(modulus != NULL, -1);
-    ret = xmlSecOpenSSLSetBNValue(modulus, &(rsaData->modulus));
+    ret = xmlSecOpenSSLSetBNValue(modulus, &(rsaValue->modulus));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLSetBNValue(Modulus)",
             xmlSecKeyDataKlassGetName(id));
@@ -2524,7 +2524,7 @@ xmlSecOpenSSLKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
 
     /*** Exponent ***/
     xmlSecAssert2(publicExponent != NULL, -1);
-    ret = xmlSecOpenSSLSetBNValue(publicExponent, &(rsaData->publicExponent));
+    ret = xmlSecOpenSSLSetBNValue(publicExponent, &(rsaValue->publicExponent));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLSetBNValue(Exponent)",
             xmlSecKeyDataKlassGetName(id));
@@ -2533,7 +2533,7 @@ xmlSecOpenSSLKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
 
     /*** PrivateExponent (only if availabel and requested) ***/
     if((writePrivateKey != 0) && (privateExponent != NULL)) {
-        ret = xmlSecOpenSSLSetBNValue(privateExponent, &(rsaData->privateExponent));
+        ret = xmlSecOpenSSLSetBNValue(privateExponent, &(rsaValue->privateExponent));
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLSetBNValue(PrivateExponent)",
                 xmlSecKeyDataKlassGetName(id));

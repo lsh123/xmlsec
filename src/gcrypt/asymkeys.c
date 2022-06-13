@@ -585,10 +585,10 @@ static void             xmlSecGCryptKeyDataDsaDebugXmlDump      (xmlSecKeyDataPt
                                                                  FILE* output);
 
 static xmlSecKeyDataPtr xmlSecGCryptKeyDataDsaRead              (xmlSecKeyDataId id,
-                                                                 xmlSecKeyDataDsaPtr dsaData);
+                                                                 xmlSecKeyValueDsaPtr dsaValue);
 static int              xmlSecGCryptKeyDataDsaWrite             (xmlSecKeyDataId id,
                                                                  xmlSecKeyDataPtr data,
-                                                                 xmlSecKeyDataDsaPtr dsaData,
+                                                                 xmlSecKeyValueDsaPtr dsaValue,
                                                                  int writePrivateKey);
 
 static xmlSecKeyDataKlass xmlSecGCryptKeyDataDsaKlass = {
@@ -788,7 +788,7 @@ xmlSecGCryptKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 }
 
 static xmlSecKeyDataPtr
-xmlSecGCryptKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyDataDsaPtr dsaData) {
+xmlSecGCryptKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     xmlSecKeyDataPtr data = NULL;
     xmlSecKeyDataPtr res = NULL;
     gcry_mpi_t p = NULL;
@@ -802,11 +802,11 @@ xmlSecGCryptKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyDataDsaPtr dsaData) {
     int ret;
 
     xmlSecAssert2(id == xmlSecGCryptKeyDataDsaId, NULL);
-    xmlSecAssert2(dsaData != NULL, NULL);
+    xmlSecAssert2(dsaValue != NULL, NULL);
 
     /*** p ***/ 
     err = gcry_mpi_scan(&p, GCRYMPI_FMT_USG,
-        xmlSecBufferGetData(&(dsaData->p)), xmlSecBufferGetSize(&(dsaData->p)),
+        xmlSecBufferGetData(&(dsaValue->p)), xmlSecBufferGetSize(&(dsaValue->p)),
         NULL);
     if((err != GPG_ERR_NO_ERROR) || (p == NULL)) {
         xmlSecGCryptError("gcry_mpi_scan(p)", err,
@@ -816,7 +816,7 @@ xmlSecGCryptKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyDataDsaPtr dsaData) {
 
     /*** q ***/ 
     err = gcry_mpi_scan(&q, GCRYMPI_FMT_USG,
-        xmlSecBufferGetData(&(dsaData->q)), xmlSecBufferGetSize(&(dsaData->q)),
+        xmlSecBufferGetData(&(dsaValue->q)), xmlSecBufferGetSize(&(dsaValue->q)),
         NULL);
     if((err != GPG_ERR_NO_ERROR) || (q == NULL)) {
         xmlSecGCryptError("gcry_mpi_scan(q)", err,
@@ -826,7 +826,7 @@ xmlSecGCryptKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyDataDsaPtr dsaData) {
 
     /*** g ***/ 
     err = gcry_mpi_scan(&g, GCRYMPI_FMT_USG,
-        xmlSecBufferGetData(&(dsaData->g)), xmlSecBufferGetSize(&(dsaData->g)),
+        xmlSecBufferGetData(&(dsaValue->g)), xmlSecBufferGetSize(&(dsaValue->g)),
         NULL);
     if((err != GPG_ERR_NO_ERROR) || (g == NULL)) {
         xmlSecGCryptError("gcry_mpi_scan(g)", err,
@@ -835,9 +835,9 @@ xmlSecGCryptKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyDataDsaPtr dsaData) {
     }
 
     /*** x (only for private key) ***/ 
-    if(xmlSecBufferGetSize(&(dsaData->x)) > 0) {
+    if(xmlSecBufferGetSize(&(dsaValue->x)) > 0) {
         err = gcry_mpi_scan(&x, GCRYMPI_FMT_USG,
-            xmlSecBufferGetData(&(dsaData->x)), xmlSecBufferGetSize(&(dsaData->x)),
+            xmlSecBufferGetData(&(dsaValue->x)), xmlSecBufferGetSize(&(dsaValue->x)),
             NULL);
         if((err != GPG_ERR_NO_ERROR) || (x == NULL)) {
             xmlSecGCryptError("gcry_mpi_scan(x)", err,
@@ -848,7 +848,7 @@ xmlSecGCryptKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyDataDsaPtr dsaData) {
 
     /*** y ***/ 
     err = gcry_mpi_scan(&y, GCRYMPI_FMT_USG,
-        xmlSecBufferGetData(&(dsaData->y)), xmlSecBufferGetSize(&(dsaData->y)),
+        xmlSecBufferGetData(&(dsaValue->y)), xmlSecBufferGetSize(&(dsaValue->y)),
         NULL);
     if((err != GPG_ERR_NO_ERROR) || (y == NULL)) {
         xmlSecGCryptError("gcry_mpi_scan(y)", err,
@@ -943,7 +943,7 @@ done:
 
 static int
 xmlSecGCryptKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
-                            xmlSecKeyDataDsaPtr dsaData, int writePrivateKey) {
+                            xmlSecKeyValueDsaPtr dsaValue, int writePrivateKey) {
     gcry_sexp_t pub_priv_key;
     gcry_sexp_t dsa = NULL;
     int private = 0;
@@ -953,7 +953,7 @@ xmlSecGCryptKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     xmlSecAssert2(id == xmlSecGCryptKeyDataDsaId, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataDsaId), -1);
-    xmlSecAssert2(dsaData != NULL, -1);
+    xmlSecAssert2(dsaValue != NULL, -1);
 
     /* find the private or public key */
     pub_priv_key = xmlSecGCryptKeyDataDsaGetPrivateKey(data);
@@ -976,7 +976,7 @@ xmlSecGCryptKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     }
 
     /*** p ***/
-    ret = xmlSecGCryptSetSExpTokValue(dsa, "p", &(dsaData->p));
+    ret = xmlSecGCryptSetSExpTokValue(dsa, "p", &(dsaValue->p));
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptSetSExpTokValue(p)",
                             xmlSecKeyDataKlassGetName(id));
@@ -984,7 +984,7 @@ xmlSecGCryptKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     }
 
     /*** q ***/
-    ret = xmlSecGCryptSetSExpTokValue(dsa, "q", &(dsaData->q));
+    ret = xmlSecGCryptSetSExpTokValue(dsa, "q", &(dsaValue->q));
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptSetSExpTokValue(q)",
                             xmlSecKeyDataKlassGetName(id));
@@ -992,7 +992,7 @@ xmlSecGCryptKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     }
 
     /*** g ***/
-    ret = xmlSecGCryptSetSExpTokValue(dsa, "g", &(dsaData->g));
+    ret = xmlSecGCryptSetSExpTokValue(dsa, "g", &(dsaValue->g));
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptSetSExpTokValue(g)",
                             xmlSecKeyDataKlassGetName(id));
@@ -1001,7 +1001,7 @@ xmlSecGCryptKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
 
     /*** x (only if available and requested) ***/
     if((writePrivateKey != 0) && (private != 0)) {
-        ret = xmlSecGCryptSetSExpTokValue(dsa, "x", &(dsaData->x));
+        ret = xmlSecGCryptSetSExpTokValue(dsa, "x", &(dsaValue->x));
         if(ret < 0) {
             xmlSecInternalError("xmlSecGCryptSetSExpTokValue(x)",
                                 xmlSecKeyDataKlassGetName(id));
@@ -1010,7 +1010,7 @@ xmlSecGCryptKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     }
 
     /*** y ***/
-    ret = xmlSecGCryptSetSExpTokValue(dsa, "y", &(dsaData->y));
+    ret = xmlSecGCryptSetSExpTokValue(dsa, "y", &(dsaValue->y));
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptSetSExpTokValue(y)",
                             xmlSecKeyDataKlassGetName(id));
@@ -1099,10 +1099,10 @@ static void             xmlSecGCryptKeyDataRsaDebugXmlDump     (xmlSecKeyDataPtr
                                                                  FILE* output);
 
 static xmlSecKeyDataPtr xmlSecGCryptKeyDataRsaRead              (xmlSecKeyDataId id,
-                                                                 xmlSecKeyDataRsaPtr rsaData);
+                                                                 xmlSecKeyValueRsaPtr rsaValue);
 static int              xmlSecGCryptKeyDataRsaWrite             (xmlSecKeyDataId id,
                                                                  xmlSecKeyDataPtr data,
-                                                                 xmlSecKeyDataRsaPtr rsaData,
+                                                                 xmlSecKeyValueRsaPtr rsaValue,
                                                                  int writePrivateKey);
 
 static xmlSecKeyDataKlass xmlSecGCryptKeyDataRsaKlass = {
@@ -1298,7 +1298,7 @@ xmlSecGCryptKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 }
 
 static xmlSecKeyDataPtr
-xmlSecGCryptKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyDataRsaPtr rsaData) {
+xmlSecGCryptKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     xmlSecKeyDataPtr data = NULL;
     xmlSecKeyDataPtr res = NULL;
     gcry_mpi_t modulus = NULL;
@@ -1310,12 +1310,12 @@ xmlSecGCryptKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyDataRsaPtr rsaData) {
     int ret;
 
     xmlSecAssert2(id == xmlSecGCryptKeyDataRsaId, NULL);
-    xmlSecAssert2(rsaData != NULL, NULL);
+    xmlSecAssert2(rsaValue != NULL, NULL);
 
     /*** Modulus ***/ 
     err = gcry_mpi_scan(&modulus, GCRYMPI_FMT_USG,
-        xmlSecBufferGetData(&(rsaData->modulus)),
-        xmlSecBufferGetSize(&(rsaData->modulus)),
+        xmlSecBufferGetData(&(rsaValue->modulus)),
+        xmlSecBufferGetSize(&(rsaValue->modulus)),
         NULL);
     if((err != GPG_ERR_NO_ERROR) || (modulus == NULL)) {
         xmlSecGCryptError("gcry_mpi_scan(Modulus)", err,
@@ -1325,8 +1325,8 @@ xmlSecGCryptKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyDataRsaPtr rsaData) {
 
     /*** Exponent ***/ 
     err = gcry_mpi_scan(&publicExponent, GCRYMPI_FMT_USG,
-        xmlSecBufferGetData(&(rsaData->publicExponent)),
-        xmlSecBufferGetSize(&(rsaData->publicExponent)),
+        xmlSecBufferGetData(&(rsaValue->publicExponent)),
+        xmlSecBufferGetSize(&(rsaValue->publicExponent)),
         NULL);
     if((err != GPG_ERR_NO_ERROR) || (publicExponent == NULL)) {
         xmlSecGCryptError("gcry_mpi_scan(Exponent)", err,
@@ -1335,10 +1335,10 @@ xmlSecGCryptKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyDataRsaPtr rsaData) {
     }
 
     /*** PrivateExponent (only for private key) ***/ 
-    if(xmlSecBufferGetSize(&(rsaData->privateExponent)) > 0) {
+    if(xmlSecBufferGetSize(&(rsaValue->privateExponent)) > 0) {
         err = gcry_mpi_scan(&privateExponent, GCRYMPI_FMT_USG,
-            xmlSecBufferGetData(&(rsaData->privateExponent)),
-            xmlSecBufferGetSize(&(rsaData->privateExponent)),
+            xmlSecBufferGetData(&(rsaValue->privateExponent)),
+            xmlSecBufferGetSize(&(rsaValue->privateExponent)),
             NULL);
         if((err != GPG_ERR_NO_ERROR) || (privateExponent == NULL)) {
             xmlSecGCryptError("gcry_mpi_scan(PrivateExponent)", err,
@@ -1418,7 +1418,7 @@ done:
 
 static int
 xmlSecGCryptKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
-                            xmlSecKeyDataRsaPtr rsaData, int writePrivateKey) {
+                            xmlSecKeyValueRsaPtr rsaValue, int writePrivateKey) {
     gcry_sexp_t pub_priv_key;
     gcry_sexp_t rsa = NULL;
     int private = 0;
@@ -1428,7 +1428,7 @@ xmlSecGCryptKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     xmlSecAssert2(id == xmlSecGCryptKeyDataRsaId, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataRsaId), -1);
-    xmlSecAssert2(rsaData != NULL, -1);
+    xmlSecAssert2(rsaValue != NULL, -1);
 
     /* find the private or public key */
     pub_priv_key = xmlSecGCryptKeyDataRsaGetPrivateKey(data);
@@ -1451,7 +1451,7 @@ xmlSecGCryptKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     }
 
     /*** Modulus ***/
-    ret = xmlSecGCryptSetSExpTokValue(rsa, "n", &(rsaData->modulus));
+    ret = xmlSecGCryptSetSExpTokValue(rsa, "n", &(rsaValue->modulus));
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptSetSExpTokValue(Modulus)",
                             xmlSecKeyDataKlassGetName(id));
@@ -1459,7 +1459,7 @@ xmlSecGCryptKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     }
 
     /*** Exponent ***/
-    ret = xmlSecGCryptSetSExpTokValue(rsa, "e", &(rsaData->publicExponent));
+    ret = xmlSecGCryptSetSExpTokValue(rsa, "e", &(rsaValue->publicExponent));
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptSetSExpTokValue(Exponent)",
                             xmlSecKeyDataKlassGetName(id));
@@ -1468,7 +1468,7 @@ xmlSecGCryptKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
 
     /*** PrivateExponent (only if available and requested) ***/
     if((writePrivateKey != 0) && (private != 0)) {
-        ret = xmlSecGCryptSetSExpTokValue(rsa, "d", &(rsaData->privateExponent));
+        ret = xmlSecGCryptSetSExpTokValue(rsa, "d", &(rsaValue->privateExponent));
         if(ret < 0) {
             xmlSecInternalError("xmlSecGCryptSetSExpTokValue(PrivateExponent)",
                                 xmlSecKeyDataKlassGetName(id));

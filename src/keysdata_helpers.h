@@ -15,7 +15,7 @@
 
 /**************************************************************************
  *
- * xmlSecKeyDataBinary
+ * xmlSecKeyDataBinary (for HMAC, AES, DES, ...)
  *
  * xmlSecKeyData + xmlSecBuffer (key)
  *
@@ -66,13 +66,6 @@ XMLSEC_EXPORT void              xmlSecKeyDataBinaryValueDebugDump       (xmlSecK
                                                                         FILE* output);
 XMLSEC_EXPORT void              xmlSecKeyDataBinaryValueDebugXmlDump    (xmlSecKeyDataPtr data,
                                                                          FILE* output);
-
-XMLSEC_EXPORT xmlSecSize        xmlSecKeyDataBinaryValueGetSize         (xmlSecKeyDataPtr data);
-XMLSEC_EXPORT xmlSecBufferPtr   xmlSecKeyDataBinaryValueGetBuffer       (xmlSecKeyDataPtr data);
-XMLSEC_EXPORT int               xmlSecKeyDataBinaryValueSetBuffer       (xmlSecKeyDataPtr data,
-                                                                         const xmlSecByte* buf,
-                                                                         xmlSecSize bufSize);
-
 
 
 /**************************************************************************

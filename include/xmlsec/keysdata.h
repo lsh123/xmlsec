@@ -592,6 +592,19 @@ struct _xmlSecKeyDataKlass {
 #define xmlSecKeyDataKlassGetName(klass) \
         (((klass)) ? ((klass)->name) : NULL)
 
+
+
+/***********************************************************************
+ *
+ * Helper functions for binary key data (HMAC, AES, DES, ...).
+ *
+ **********************************************************************/
+XMLSEC_EXPORT xmlSecSize        xmlSecKeyDataBinaryValueGetSize         (xmlSecKeyDataPtr data);
+XMLSEC_EXPORT xmlSecBufferPtr   xmlSecKeyDataBinaryValueGetBuffer       (xmlSecKeyDataPtr data);
+XMLSEC_EXPORT int               xmlSecKeyDataBinaryValueSetBuffer       (xmlSecKeyDataPtr data,
+                                                                         const xmlSecByte* buf,
+                                                                         xmlSecSize bufSize);
+
 /***********************************************************************
  *
  * Key Data list

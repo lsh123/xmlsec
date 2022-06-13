@@ -41,7 +41,7 @@
  * @cur: the pointer to an XML node.
  * @a: a SECItem object to hold the BigNum value
  *
- * Converts the node content from CryptoBinary format
+ * DEPRECATED. Converts the node content from CryptoBinary format
  * (http://www.w3.org/TR/xmldsig-core/#sec-CryptoBinary)
  * to a SECItem. If no SECItem object provided then a new
  * one is created (caller is responsible for freeing it).
@@ -105,7 +105,7 @@ done:
  *              linebreaks will be added before and after
  *              new buffer content.
  *
- * Converts SECItem to CryptoBinary string
+ * DEPRECATED. Converts SECItem to CryptoBinary string
  * (http://www.w3.org/TR/xmldsig-core/#sec-CryptoBinary)
  * and sets it as the content of the given node. If the
  * addLineBreaks is set then line breaks are added

@@ -31,6 +31,7 @@
 #include <xmlsec/errors.h>
 
 #include "cast_helpers.h"
+#include "keysdata_helpers.h"
 
 /**************************************************************************
  *
@@ -462,7 +463,7 @@ xmlSecKeyDataDebugXmlDump(xmlSecKeyDataPtr data, FILE *output) {
  * xmlSecKeyDataBinaryValueInitialize:
  * @data:               the pointer to binary key data.
  *
- * Initializes key data.
+ * Initializes binary key data.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
@@ -957,6 +958,811 @@ xmlSecKeyDataBinaryValueSetBuffer(xmlSecKeyDataPtr data,
 
     return(xmlSecBufferSetData(buffer, buf, bufSize));
 }
+
+#if !defined(XMLSEC_NO_DSA)
+/**************************************************************************
+ *
+ * Helper functions to read/write DSA keys
+ *
+ *************************************************************************/
+#define XMLSEC_KEY_DATA_DSA_INIT_BUF_SIZE                               512
+
+static int                      xmlSecKeyValueDsaInitialize             (xmlSecKeyValueDsaPtr data);
+static void                     xmlSecKeyValueDsaFinalize               (xmlSecKeyValueDsaPtr data);
+static int                      xmlSecKeyValueDsaXmlRead                (xmlSecKeyValueDsaPtr data,
+                                                                         xmlNodePtr node);
+static int                      xmlSecKeyValueDsaXmlWrite               (xmlSecKeyValueDsaPtr data,
+                                                                         xmlNodePtr node,
+                                                                         int writePrivateKey,
+                                                                         int base64LineSize,
+                                                                         int addLineBreaks);
+
+/**
+ * xmlSecKeyDataDsaXmlRead:
+ * @id:                 the data id.
+ * @key:                the key.
+ * @node:               the pointer to data's value XML node.
+ * @keyInfoCtx:         the <dsig:KeyInfo/> node processing context.
+ * @readFunc:           the pointer to the function that converts 
+ *                      @xmlSecKeyValueDsa to @xmlSecKeyData.
+ *
+ * DSA Key data method for reading XML node.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, 
+                        xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx,
+                        xmlSecKeyDataDsaRead readFunc) {
+    xmlSecKeyDataPtr data = NULL;
+    xmlSecKeyValueDsa dsaValue;
+    int dsaDataInitialized = 0;
+    int res = -1;
+    int ret;
+
+    xmlSecAssert2(id != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(readFunc != NULL, -1);
+
+    if(xmlSecKeyGetValue(key) != NULL) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_KEY_DATA,
+            xmlSecKeyDataKlassGetName(id), "key already has a value");
+        goto done;
+    }
+
+    ret = xmlSecKeyValueDsaInitialize(&dsaValue);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyValueDsaInitialize",
+            xmlSecKeyDataKlassGetName(id));
+        goto done;        
+    }
+    dsaDataInitialized = 1;
+
+    ret = xmlSecKeyValueDsaXmlRead(&dsaValue, node);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyValueDsaXmlRead",
+            xmlSecKeyDataKlassGetName(id));
+        goto done;        
+    }
+
+    data = readFunc(id, &dsaValue);
+    if(data == NULL) {
+        xmlSecInternalError("xmlSecKeyDataDsaRead",
+            xmlSecKeyDataKlassGetName(id));
+        goto done;        
+    }    
+
+    /* set key value */
+    ret = xmlSecKeySetValue(key, data);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeySetValue",
+                            xmlSecKeyDataGetName(data));
+        goto done;
+    }
+    data = NULL; /* data is owned by key now */
+
+    /* success */
+    res = 0;
+
+done:
+    /* cleanup */
+    if(dsaDataInitialized != 0) {
+        xmlSecKeyValueDsaFinalize(&dsaValue);
+    }
+    if(data != NULL) {
+        xmlSecKeyDataDestroy(data);
+    }
+    return(res);                     
+}
+
+/**
+ * xmlSecKeyDataDsaXmlWrite:
+ * @id:                 the data id.
+ * @key:                the key.
+ * @node:               the pointer to data's value XML node.
+ * @keyInfoCtx:         the <dsig:KeyInfo> node processing context.
+ * @base64LineSize:     the base64 max line size.
+ * @addLineBreaks:      the flag indicating if we need to add line breaks around base64 output.
+ * @writeFunc:          the pointer to the function that converts
+ *                      @xmlSecKeyData to  @xmlSecKeyValueDsa.
+ *
+ * DSA Key data  method for writing XML node.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
+                        xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx,
+                        int base64LineSize, int addLineBreaks,
+                        xmlSecKeyDataDsaWrite writeFunc) {
+    xmlSecKeyDataPtr data;
+    xmlSecKeyValueDsa dsaValue;
+    int dsaDataInitialized = 0;
+    int writePrivateKey = 0;
+    int res = -1;
+    int ret;
+
+    xmlSecAssert2(id != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(writeFunc != NULL, -1);
+    xmlSecAssert2(base64LineSize > 0, -1);
+
+    if(((xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate) & keyInfoCtx->keyReq.keyType) == 0) {
+        /* we can have only private key or public key */
+        return(0);
+    }
+    if((keyInfoCtx->keyReq.keyType & xmlSecKeyDataTypePrivate) != 0) {
+        writePrivateKey = 1;
+    }
+
+    data = xmlSecKeyGetValue(key); 
+    if(data == NULL) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_KEY_DATA,
+            xmlSecKeyDataKlassGetName(id), "key has no value");
+        goto done;
+    }
+
+    ret = xmlSecKeyValueDsaInitialize(&dsaValue);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyValueDsaInitialize",
+            xmlSecKeyDataKlassGetName(id));
+        goto done;        
+    }
+    dsaDataInitialized = 1;
+
+    ret = writeFunc(id, data, &dsaValue, writePrivateKey);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyDataDsaWrite",
+            xmlSecKeyDataKlassGetName(id));
+        goto done;        
+    }    
+
+    ret = xmlSecKeyValueDsaXmlWrite(&dsaValue, node, writePrivateKey,
+        base64LineSize, addLineBreaks);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyValueDsaXmlWrite",
+            xmlSecKeyDataKlassGetName(id));
+        goto done;        
+    }
+
+    /* success */
+    res = 0;
+
+done:
+    /* cleanup */
+    if(dsaDataInitialized != 0) {
+        xmlSecKeyValueDsaFinalize(&dsaValue);
+    }
+    return(res);  
+}
+
+static int
+xmlSecKeyValueDsaInitialize(xmlSecKeyValueDsaPtr data) {
+    int ret;
+
+    xmlSecAssert2(data != NULL, -1);
+    memset(data, 0, sizeof(xmlSecKeyValueDsa));
+
+    ret = xmlSecBufferInitialize(&(data->p), XMLSEC_KEY_DATA_DSA_INIT_BUF_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(p)", NULL);
+        xmlSecKeyValueDsaFinalize(data);
+        return(-1);
+    }
+    ret = xmlSecBufferInitialize(&(data->q), XMLSEC_KEY_DATA_DSA_INIT_BUF_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(q)", NULL);
+        xmlSecKeyValueDsaFinalize(data);
+        return(-1);
+    }
+    ret = xmlSecBufferInitialize(&(data->g), XMLSEC_KEY_DATA_DSA_INIT_BUF_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(g)", NULL);
+        xmlSecKeyValueDsaFinalize(data);
+        return(-1);
+    }
+    ret = xmlSecBufferInitialize(&(data->x), XMLSEC_KEY_DATA_DSA_INIT_BUF_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(x)", NULL);
+        xmlSecKeyValueDsaFinalize(data);
+        return(-1);
+    }
+    ret = xmlSecBufferInitialize(&(data->y), XMLSEC_KEY_DATA_DSA_INIT_BUF_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(y)", NULL);
+        xmlSecKeyValueDsaFinalize(data);
+        return(-1);
+    }
+
+    return(0);
+}
+
+static void
+xmlSecKeyValueDsaFinalize(xmlSecKeyValueDsaPtr data) {
+    xmlSecAssert(data != NULL);
+
+    xmlSecBufferFinalize(&(data->p));
+    xmlSecBufferFinalize(&(data->q));
+    xmlSecBufferFinalize(&(data->g));
+    xmlSecBufferFinalize(&(data->x));
+    xmlSecBufferFinalize(&(data->y));
+    memset(data, 0, sizeof(xmlSecKeyValueDsa));
+}
+
+static int
+xmlSecKeyValueDsaXmlRead(xmlSecKeyValueDsaPtr data, xmlNodePtr node) {
+    xmlNodePtr cur;
+    int ret;
+
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    cur = xmlSecGetNextElementNode(node->children);
+
+    /* first is P node. It is REQUIRED because we do not support Seed and PgenCounter*/
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur,  xmlSecNodeDSAP, xmlSecDSigNs))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeDSAP, NULL);
+        return(-1);
+    }
+    ret = xmlSecBufferBase64NodeContentRead(&(data->p), cur);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferBase64NodeContentRead(p)", NULL);
+        return(-1);
+    }
+    cur = xmlSecGetNextElementNode(cur->next);
+
+    /* next is Q node. It is REQUIRED because we do not support Seed and PgenCounter*/
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeDSAQ, xmlSecDSigNs))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeDSAQ, NULL);
+        return(-1);
+    }
+    ret = xmlSecBufferBase64NodeContentRead(&(data->q), cur);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferBase64NodeContentRead(q)", NULL);
+        return(-1);
+    }
+    cur = xmlSecGetNextElementNode(cur->next);
+
+    /* next is G node. It is REQUIRED because we do not support Seed and PgenCounter*/
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeDSAG, xmlSecDSigNs))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeDSAG, NULL);
+        return(-1);
+    }
+    ret = xmlSecBufferBase64NodeContentRead(&(data->g), cur);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferBase64NodeContentRead(g)", NULL);
+        return(-1);
+    }
+    cur = xmlSecGetNextElementNode(cur->next);
+
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSAX, xmlSecNs))) {
+        /* next is X node. It is REQUIRED for private key but
+         * we are not sure exactly what do we read */
+        ret = xmlSecBufferBase64NodeContentRead(&(data->x), cur);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecBufferBase64NodeContentRead(x)", NULL);
+            return(-1);
+        }
+        cur = xmlSecGetNextElementNode(cur->next);
+    } else {
+        /* make sure it's empty */
+        ret = xmlSecBufferSetSize(&(data->x), 0);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecBufferSetSize(0)", NULL);
+            return(-1);
+        }
+    }
+
+    /* next is Y node. */
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeDSAY, xmlSecDSigNs))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeDSAY, NULL);
+        return(-1);
+    }
+    ret = xmlSecBufferBase64NodeContentRead(&(data->y), cur);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferBase64NodeContentRead(y)", NULL);
+        return(-1);
+    }
+    cur = xmlSecGetNextElementNode(cur->next);
+
+    /* todo: add support for J */
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSAJ, xmlSecDSigNs))) {
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* todo: add support for seed */
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSASeed, xmlSecDSigNs))) {
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* todo: add support for pgencounter */
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSAPgenCounter, xmlSecDSigNs))) {
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    if(cur != NULL) {
+        xmlSecUnexpectedNodeError(cur, NULL);
+        return(-1);
+    }
+
+    /* success */
+    return(0);
+}
+
+static int
+xmlSecKeyValueDsaXmlWrite(xmlSecKeyValueDsaPtr data, xmlNodePtr node,
+                      int writePrivateKey, int base64LineSize, int addLineBreaks) {
+    xmlNodePtr cur;
+    int ret;
+
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    /* first is P node */
+    cur = xmlSecAddChild(node, xmlSecNodeDSAP, xmlSecDSigNs);
+    if(cur == NULL) {
+        xmlSecInternalError("xmlSecAddChild(NodeDSAP)", NULL);
+        return(-1);
+    }
+    if(addLineBreaks) {
+        xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
+    } else {
+        xmlNodeSetContent(cur, xmlSecStringEmpty);
+    }
+    ret = xmlSecBufferBase64NodeContentWrite(&(data->p), cur, base64LineSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(p)", NULL);
+        return(-1);
+    }
+    if(addLineBreaks) {
+        xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
+    }
+
+    /* next is Q node. */
+    cur = xmlSecAddChild(node, xmlSecNodeDSAQ, xmlSecDSigNs);
+    if(cur == NULL) {
+        xmlSecInternalError("xmlSecAddChild(NodeDSAQ)", NULL);
+        return(-1);
+    }
+    if(addLineBreaks) {
+        xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
+    } else {
+        xmlNodeSetContent(cur, xmlSecStringEmpty);
+    }
+    ret = xmlSecBufferBase64NodeContentWrite(&(data->q), cur, base64LineSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(q)", NULL);
+        return(-1);
+    }
+    if(addLineBreaks) {
+        xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
+    }
+
+    /* next is G node. */
+    cur = xmlSecAddChild(node, xmlSecNodeDSAG, xmlSecDSigNs);
+    if(cur == NULL) {
+        xmlSecInternalError("xmlSecAddChild(NodeDSAG)", NULL);
+        return(-1);
+    }
+    if(addLineBreaks) {
+        xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
+    } else {
+        xmlNodeSetContent(cur, xmlSecStringEmpty);
+    }
+    ret = xmlSecBufferBase64NodeContentWrite(&(data->g), cur, base64LineSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(g)", NULL);
+        return(-1);
+    }
+    if(addLineBreaks) {
+        xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
+    }
+
+    /* next is X node: write it ONLY for private keys and ONLY if it is requested */
+    if((writePrivateKey != 0) && (xmlSecBufferGetSize(&(data->x)) > 0)) {
+        cur = xmlSecAddChild(node, xmlSecNodeDSAX, xmlSecNs);
+        if(cur == NULL) {
+            xmlSecInternalError("xmlSecAddChild(NodeDSAX)", NULL);
+            return(-1);
+        }
+        if(addLineBreaks) {
+            xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
+        } else {
+            xmlNodeSetContent(cur, xmlSecStringEmpty);
+        }
+        ret = xmlSecBufferBase64NodeContentWrite(&(data->x), cur, base64LineSize);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(x)", NULL);
+            return(-1);
+        }
+        if(addLineBreaks) {
+            xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
+        }
+    }
+
+    /* next is Y node. */
+    cur = xmlSecAddChild(node, xmlSecNodeDSAY, xmlSecDSigNs);
+    if(cur == NULL) {
+        xmlSecInternalError("xmlSecAddChild(NodeDSAY)", NULL);
+        return(-1);
+    }
+    if(addLineBreaks) {
+        xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
+    } else {
+        xmlNodeSetContent(cur, xmlSecStringEmpty);
+    }
+    ret = xmlSecBufferBase64NodeContentWrite(&(data->y), cur, base64LineSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(y)", NULL);
+        return(-1);
+    }
+    if(addLineBreaks) {
+        xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
+    }
+
+    return(0);
+}
+#endif /* !defined(XMLSEC_NO_DSA) */
+
+
+#if !defined(XMLSEC_NO_RSA)
+/**************************************************************************
+ *
+ * Helper functions to read/write RSA keys
+ *
+ *************************************************************************/
+#define XMLSEC_KEY_DATA_RSA_INIT_BUF_SIZE     512
+
+static int                      xmlSecKeyValueRsaInitialize             (xmlSecKeyValueRsaPtr data);
+static void                     xmlSecKeyValueRsaFinalize               (xmlSecKeyValueRsaPtr data);
+static int                      xmlSecKeyValueRsaXmlRead                (xmlSecKeyValueRsaPtr data,
+                                                                         xmlNodePtr node);
+static int                      xmlSecKeyValueRsaXmlWrite               (xmlSecKeyValueRsaPtr data,
+                                                                         xmlNodePtr node,
+                                                                         int writePrivateKey,
+                                                                         int base64LineSize,
+                                                                         int addLineBreaks);
+
+/**
+ * xmlSecKeyDataRsaXmlRead:
+ * @id:                 the data id.
+ * @key:                the key.
+ * @node:               the pointer to data's value XML node.
+ * @keyInfoCtx:         the <dsig:KeyInfo/> node processing context.
+ * @readFunc:           the pointer to the function that converts 
+ *                      @xmlSecKeyValueRsa to @xmlSecKeyData.
+ *
+ * DSA Key data method for reading XML node.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, 
+                        xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx,
+                        xmlSecKeyDataRsaRead readFunc) {
+    xmlSecKeyDataPtr data = NULL;
+    xmlSecKeyValueRsa rsaValue;
+    int rsaDataInitialized = 0;
+    int res = -1;
+    int ret;
+
+    xmlSecAssert2(id != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(readFunc != NULL, -1);
+
+    if(xmlSecKeyGetValue(key) != NULL) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_KEY_DATA,
+            xmlSecKeyDataKlassGetName(id), "key already has a value");
+        goto done;
+    }
+
+    ret = xmlSecKeyValueRsaInitialize(&rsaValue);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyValueRsaInitialize",
+            xmlSecKeyDataKlassGetName(id));
+        goto done;        
+    }
+    rsaDataInitialized = 1;
+
+    ret = xmlSecKeyValueRsaXmlRead(&rsaValue, node);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyValueRsaXmlRead",
+            xmlSecKeyDataKlassGetName(id));
+        goto done;        
+    }
+
+    data = readFunc(id, &rsaValue);
+    if(data == NULL) {
+        xmlSecInternalError("xmlSecKeyDataRsaRead",
+            xmlSecKeyDataKlassGetName(id));
+        goto done;        
+    }    
+
+    /* set key value */
+    ret = xmlSecKeySetValue(key, data);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeySetValue",
+                            xmlSecKeyDataGetName(data));
+        goto done;
+    }
+    data = NULL; /* data is owned by key now */
+
+    /* success */
+    res = 0;
+
+done:
+    /* cleanup */
+    if(rsaDataInitialized != 0) {
+        xmlSecKeyValueRsaFinalize(&rsaValue);
+    }
+    if(data != NULL) {
+        xmlSecKeyDataDestroy(data);
+    }
+    return(res);                     
+}
+
+/**
+ * xmlSecKeyDataRsaXmlWrite:
+ * @id:                 the data id.
+ * @key:                the key.
+ * @node:               the pointer to data's value XML node.
+ * @keyInfoCtx:         the <dsig:KeyInfo> node processing context.
+ * @base64LineSize:     the base64 max line size.
+ * @addLineBreaks:      the flag indicating if we need to add line breaks around base64 output.
+ * @writeFunc:          the pointer to the function that converts
+ *                      @xmlSecKeyData to  @xmlSecKeyValueRsa.
+ *
+ * DSA Key data  method for writing XML node.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
+                        xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx,
+                        int base64LineSize, int addLineBreaks,
+                        xmlSecKeyDataRsaWrite writeFunc) {
+    xmlSecKeyDataPtr data;
+    xmlSecKeyValueRsa rsaValue;
+    int rsaDataInitialized = 0;
+    int writePrivateKey = 0;
+    int res = -1;
+    int ret;
+
+    xmlSecAssert2(id != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(writeFunc != NULL, -1);
+    xmlSecAssert2(base64LineSize > 0, -1);
+
+    if(((xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate) & keyInfoCtx->keyReq.keyType) == 0) {
+        /* we can have only private key or public key */
+        return(0);
+    }
+    if((keyInfoCtx->keyReq.keyType & xmlSecKeyDataTypePrivate) != 0) {
+        writePrivateKey = 1;
+    }
+
+    data = xmlSecKeyGetValue(key); 
+    if(data == NULL) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_KEY_DATA,
+            xmlSecKeyDataKlassGetName(id), "key has no value");
+        goto done;
+    }
+
+    ret = xmlSecKeyValueRsaInitialize(&rsaValue);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyValueRsaInitialize",
+            xmlSecKeyDataKlassGetName(id));
+        goto done;        
+    }
+    rsaDataInitialized = 1;
+
+    ret = writeFunc(id, data, &rsaValue, writePrivateKey);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyDataRsaWrite",
+            xmlSecKeyDataKlassGetName(id));
+        goto done;        
+    }    
+
+    ret = xmlSecKeyValueRsaXmlWrite(&rsaValue, node, writePrivateKey,
+        base64LineSize, addLineBreaks);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyValueRsaXmlWrite",
+            xmlSecKeyDataKlassGetName(id));
+        goto done;        
+    }
+
+    /* success */
+    res = 0;
+
+done:
+    /* cleanup */
+    if(rsaDataInitialized != 0) {
+        xmlSecKeyValueRsaFinalize(&rsaValue);
+    }
+    return(res);  
+}
+
+static int
+xmlSecKeyValueRsaInitialize(xmlSecKeyValueRsaPtr data) {
+    int ret;
+
+    xmlSecAssert2(data != NULL, -1);
+    memset(data, 0, sizeof(xmlSecKeyValueRsa));
+
+    ret = xmlSecBufferInitialize(&(data->modulus), XMLSEC_KEY_DATA_RSA_INIT_BUF_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(modulus)", NULL);
+        xmlSecKeyValueRsaFinalize(data);
+        return(-1);
+    }
+    ret = xmlSecBufferInitialize(&(data->publicExponent), XMLSEC_KEY_DATA_RSA_INIT_BUF_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(q)", NULL);
+        xmlSecKeyValueRsaFinalize(data);
+        return(-1);
+    }
+    ret = xmlSecBufferInitialize(&(data->privateExponent), XMLSEC_KEY_DATA_RSA_INIT_BUF_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(g)", NULL);
+        xmlSecKeyValueRsaFinalize(data);
+        return(-1);
+    }
+    return(0);
+}
+
+static void
+xmlSecKeyValueRsaFinalize(xmlSecKeyValueRsaPtr data) {
+    xmlSecAssert(data != NULL);
+
+    xmlSecBufferFinalize(&(data->modulus));
+    xmlSecBufferFinalize(&(data->publicExponent));
+    xmlSecBufferFinalize(&(data->privateExponent));
+    memset(data, 0, sizeof(xmlSecKeyValueRsa));
+}
+
+static int
+xmlSecKeyValueRsaXmlRead(xmlSecKeyValueRsaPtr data, xmlNodePtr node) {
+    xmlNodePtr cur;
+    int ret;
+
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    cur = xmlSecGetNextElementNode(node->children);
+
+    /* first is REQUIRED  Modulus node. */
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur,  xmlSecNodeRSAModulus, xmlSecDSigNs))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeDSAP, NULL);
+        return(-1);
+    }
+    ret = xmlSecBufferBase64NodeContentRead(&(data->modulus), cur);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferBase64NodeContentRead(p)", NULL);
+        return(-1);
+    }
+    cur = xmlSecGetNextElementNode(cur->next);
+
+    /* next is REQUIRED Exponent node. */
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeRSAExponent, xmlSecDSigNs))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeDSAQ, NULL);
+        return(-1);
+    }
+    ret = xmlSecBufferBase64NodeContentRead(&(data->publicExponent), cur);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferBase64NodeContentRead(q)", NULL);
+        return(-1);
+    }
+    cur = xmlSecGetNextElementNode(cur->next);
+
+    /* next is PrivateExponent node. It is REQUIRED for private key but
+    * we are not sure exactly what are we reading */
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeRSAPrivateExponent, xmlSecNs))) {
+        ret = xmlSecBufferBase64NodeContentRead(&(data->privateExponent), cur);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecBufferBase64NodeContentRead(x)", NULL);
+            return(-1);
+        }
+        cur = xmlSecGetNextElementNode(cur->next);
+    } else {
+        /* make sure it's empty */
+        ret = xmlSecBufferSetSize(&(data->privateExponent), 0);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecBufferSetSize(0)", NULL);
+            return(-1);
+        }
+    }
+
+    if(cur != NULL) {
+        xmlSecUnexpectedNodeError(cur, NULL);
+        return(-1);
+    }
+
+    /* success */
+    return(0);
+}
+
+static int
+xmlSecKeyValueRsaXmlWrite(xmlSecKeyValueRsaPtr data, xmlNodePtr node,
+                      int writePrivateKey, int base64LineSize, int addLineBreaks) {
+    xmlNodePtr cur;
+    int ret;
+
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    /* first is Modulus node */
+    cur = xmlSecAddChild(node, xmlSecNodeRSAModulus, xmlSecDSigNs);
+    if(cur == NULL) {
+        xmlSecInternalError("xmlSecAddChild(Modulus)", NULL);
+        return(-1);
+    }
+    if(addLineBreaks) {
+        xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
+    } else {
+        xmlNodeSetContent(cur, xmlSecStringEmpty);
+    }
+    ret = xmlSecBufferBase64NodeContentWrite(&(data->modulus), cur, base64LineSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(modulus)", NULL);
+        return(-1);
+    }
+    if(addLineBreaks) {
+        xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
+    }
+
+    /* next is Exponent node. */
+    cur = xmlSecAddChild(node, xmlSecNodeRSAExponent, xmlSecDSigNs);
+    if(cur == NULL) {
+        xmlSecInternalError("xmlSecAddChild(Exponent)", NULL);
+        return(-1);
+    }
+    if(addLineBreaks) {
+        xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
+    } else {
+        xmlNodeSetContent(cur, xmlSecStringEmpty);
+    }
+    ret = xmlSecBufferBase64NodeContentWrite(&(data->publicExponent), cur, base64LineSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(exponent)", NULL);
+        return(-1);
+    }
+    if(addLineBreaks) {
+        xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
+    }
+
+    /* next is PrivateExponent node: write it ONLY for private keys and ONLY if it is requested */
+    if((writePrivateKey != 0) && (xmlSecBufferGetSize(&(data->privateExponent)) > 0)) {
+        cur = xmlSecAddChild(node, xmlSecNodeRSAPrivateExponent, xmlSecNs);
+        if(cur == NULL) {
+            xmlSecInternalError("xmlSecAddChild(PrivateExponent)", NULL);
+            return(-1);
+        }
+        if(addLineBreaks) {
+            xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
+        } else {
+            xmlNodeSetContent(cur, xmlSecStringEmpty);
+        }
+        ret = xmlSecBufferBase64NodeContentWrite(&(data->privateExponent), cur, base64LineSize);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(privateExponent)", NULL);
+            return(-1);
+        }
+        if(addLineBreaks) {
+            xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
+        }
+    }
+
+    return(0);
+}
+#endif /* !defined(XMLSEC_NO_RSA) */
 
 /***********************************************************************
  *

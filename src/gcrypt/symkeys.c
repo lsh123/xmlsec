@@ -28,6 +28,7 @@
 #include <xmlsec/errors.h>
 
 #include <xmlsec/gcrypt/crypto.h>
+#include "../keysdata_helpers.h"
 
 
 /*****************************************************************************

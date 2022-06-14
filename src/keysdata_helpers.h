@@ -68,12 +68,12 @@ XMLSEC_EXPORT void              xmlSecKeyDataBinaryValueDebugXmlDump    (xmlSecK
                                                                          FILE* output);
 
 
+#if !defined(XMLSEC_NO_DSA)
 /**************************************************************************
  *
- * Helper functions to read/write RSA/DSA keys
+ * Helper functions to read/write DSA keys
  *
  *************************************************************************/
-#if !defined(XMLSEC_NO_DSA)
 typedef struct _xmlSecKeyValueDsa {
     xmlSecBuffer p;
     xmlSecBuffer q;
@@ -125,6 +125,11 @@ XMLSEC_EXPORT int               xmlSecKeyDataDsaXmlWrite                (xmlSecK
 #endif /* !defined(XMLSEC_NO_DSA) */
 
 #if !defined(XMLSEC_NO_RSA)
+/**************************************************************************
+ *
+ * Helper functions to read/write RSA keys
+ *
+ *************************************************************************/
 typedef struct _xmlSecKeyValueRsa {
     xmlSecBuffer   modulus;
     xmlSecBuffer   publicExponent;
@@ -159,6 +164,7 @@ typedef int                    (*xmlSecKeyDataRsaWrite)                 (xmlSecK
                                                                          xmlSecKeyValueRsaPtr rsaValue,
                                                                          int writePrivateKey);
 
+
 XMLSEC_EXPORT int               xmlSecKeyDataRsaXmlRead                 (xmlSecKeyDataId id,
                                                                          xmlSecKeyPtr key,
                                                                          xmlNodePtr node,
@@ -172,5 +178,62 @@ XMLSEC_EXPORT int               xmlSecKeyDataRsaXmlWrite                (xmlSecK
                                                                          int addLineBreaks,
                                                                          xmlSecKeyDataRsaWrite writeFunc);
 #endif /* !defined(XMLSEC_NO_RSA) */
+
+#if !defined(XMLSEC_NO_X509)
+/**************************************************************************
+ *
+ * Helper functions to read/write X509 Keys
+ *
+ *************************************************************************/
+typedef struct _xmlSecKeyValueX509 {
+    xmlSecBuffer cert;
+    xmlSecBuffer crl;
+    xmlChar* subject;
+    xmlChar* issuerName;
+    xmlChar* issuerSerial;
+    xmlChar* ski;
+} xmlSecKeyValueX509, *xmlSecKeyValueX509Ptr;
+
+/**
+ * xmlSecKeyDataX509Read:
+ * @id:                 the key data data.
+ * @data:               the pointer to input @xmlSecKeyData.
+ * @dsaValue:           the pointer to input @xmlSecKeyValueX509.
+ *
+ * Creates xmlSecKeyData from @dsaValue
+ *
+ * Returns: the poitner to xmlSecKeyData or NULL if an error occurs.
+ */
+typedef int                    (*xmlSecKeyDataX509Read)                 (xmlSecKeyDataId id,
+                                                                         xmlSecKeyDataPtr data,
+                                                                         xmlSecKeyValueX509Ptr x509Value);
+
+/**
+ * xmlSecKeyDataX509Write:
+ * @id:                 the key data data.
+ * @data:               the pointer to input @xmlSecKeyData.
+ * @dsaValue:            the pointer to input @xmlSecKeyValueX509.
+ * 
+ * Writes @xmlSecKeyData to @xmlSecKeyValueX509.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+typedef int                    (*xmlSecKeyDataX509Write)                (xmlSecKeyDataId id,
+                                                                         xmlSecKeyDataPtr data,
+                                                                         xmlSecKeyValueX509Ptr x509Value);
+
+XMLSEC_EXPORT int               xmlSecKeyDataX509XmlRead                (xmlSecKeyDataId id,
+                                                                         xmlSecKeyPtr key,
+                                                                         xmlNodePtr node,
+                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx,
+                                                                         xmlSecKeyDataX509Read readFunc);
+XMLSEC_EXPORT int               xmlSecKeyDataX509XmlWrite               (xmlSecKeyDataId id,
+                                                                         xmlSecKeyPtr key,
+                                                                         xmlNodePtr node,
+                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx,
+                                                                         int base64LineSize,
+                                                                         int addLineBreaks,
+                                                                         xmlSecKeyDataX509Write writeFunc);
+#endif /* !defined(XMLSEC_NO_X509) */
 
 #endif /* __XMLSEC_KEYSDATA_HELPERS_H__ */

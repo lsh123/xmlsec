@@ -49,7 +49,7 @@
 BIGNUM*
 xmlSecOpenSSLNodeGetBNValue(const xmlNodePtr cur, BIGNUM **a) {
     xmlSecBuffer buf;
-    int buf_initialized = 0;
+    int bufInitialized = 0;
     xmlSecByte* bufPtr;
     xmlSecSize bufSize;
     int bufLen;
@@ -63,7 +63,7 @@ xmlSecOpenSSLNodeGetBNValue(const xmlNodePtr cur, BIGNUM **a) {
         xmlSecInternalError("xmlSecBufferInitialize", NULL);
         goto done;
     }
-    buf_initialized = 1;
+    bufInitialized = 1;
 
     ret = xmlSecBufferBase64NodeContentRead(&buf, cur);
     if(ret < 0) {
@@ -83,7 +83,7 @@ xmlSecOpenSSLNodeGetBNValue(const xmlNodePtr cur, BIGNUM **a) {
     res = (*a);
 
 done:
-    if(buf_initialized != 0) {
+    if(bufInitialized != 0) {
         xmlSecBufferFinalize(&buf);
     }
     return(res);

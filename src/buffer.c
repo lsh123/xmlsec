@@ -436,6 +436,42 @@ xmlSecBufferRemoveTail(xmlSecBufferPtr buf, xmlSecSize size) {
 }
 
 /**
+ * xmlSecBufferReverse:
+ * @buf:                the pointer to buffer object.
+ * 
+ * Reverses order of bytes in the buffer @buf.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecBufferReverse(xmlSecBufferPtr buf) {
+    xmlSecByte* pp;
+    xmlSecByte* qq;
+    xmlSecSize  size;
+    xmlSecByte ch;
+
+    xmlSecAssert2(buf != NULL, -1);
+
+    /* trivial case */
+    size = xmlSecBufferGetSize(buf);
+    if (size <= 1) {
+        return(0);
+    }
+
+    pp = xmlSecBufferGetData(buf);
+    xmlSecAssert2(pp != NULL, -1);
+
+    for (qq = pp + size - 1; pp < qq; ++pp, --qq) {
+        ch = *(pp);
+        *(pp) = *(qq);
+        *(qq) = ch;
+    }
+
+    return(0);
+}
+
+
+/**
  * xmlSecBufferReadFile:
  * @buf:                the pointer to buffer object.
  * @filename:           the filename.
@@ -570,6 +606,7 @@ xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf, xmlNodePtr node, int col
         xmlSecInternalError("xmlSecBase64Encode", NULL);
         return(-1);
     }
+
     xmlNodeAddContent(node, content);
     xmlFree(content);
 

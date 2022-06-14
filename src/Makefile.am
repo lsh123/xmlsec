@@ -15,9 +15,9 @@ AM_CFLAGS = \
 
 EXTRA_DIST = \
 	cast_helpers.h \
-    errors_helpers.h \
+	errors_helpers.h \
 	keysdata_helpers.h \
-    globals.h \
+	globals.h \
 	kw_aes_des.h \
 	xslt.h \
 	skeleton \

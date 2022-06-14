@@ -28,7 +28,6 @@
 #endif
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/xmltree.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
@@ -79,7 +78,7 @@ struct _mscrypt_key {
  */
 struct _mscrypt_prov {
         HCRYPTPROV hProv ;
-    BOOL fCallerFreeProv ;
+        BOOL fCallerFreeProv ;
         volatile LONG refcnt ;
 } ;
 #endif /* XMLSEC_MSCRYPTO_NT4 */
@@ -1943,14 +1942,14 @@ xmlSecMSCryptoKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) 
 
     /* set generator and pad with zeros */
     memcpy(buf, xmlSecBufferGetData(&(dsaValue->g)), gSize);
-    buf += pSize;
+    buf += pSize; /* gSize <= pSize */
 
     /* X is REQUIRED for private key but MSCrypto does not support it,
      * so we just ignore it */
 
     /* set public key and pad with zeros */
     memcpy(buf, xmlSecBufferGetData(&(dsaValue->y)), ySize);
-    buf += pSize;
+    buf += pSize; /* ySize <= pSize */
 
     /* todo: add support for J, seed, pgencounter */
 
@@ -2014,11 +2013,12 @@ xmlSecMSCryptoKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     xmlSecMSCryptoKeyDataCtxPtr ctx;
     xmlSecBuffer buf;
     int bufInitialized = 0;
-    DWORD dwBlobLen;
+    DWORD dwBlobLen = 0;
     xmlSecByte* blob;
     PUBLICKEYSTRUC* pubKeyStruc;
     DSSPUBKEY* pubKey;
     xmlSecSize keyLen, len;
+    BOOL status;
     int ret;
     int res = -1;
 
@@ -2033,8 +2033,16 @@ xmlSecMSCryptoKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     xmlSecAssert2(xmlSecMSCryptoKeyDataCtxGetKey(ctx) != 0, -1);
 
     /* get size */
-    if (!CryptExportKey(xmlSecMSCryptoKeyDataCtxGetKey(ctx), 0, PUBLICKEYBLOB, 0, NULL, &dwBlobLen)) {
-        xmlSecInternalError("CryptExportKey", xmlSecKeyDataKlassGetName(id));
+    status = CryptExportKey(
+        xmlSecMSCryptoKeyDataCtxGetKey(ctx),
+        0,
+        PUBLICKEYBLOB,
+        0,
+        NULL,
+        &dwBlobLen);
+    if((status != TRUE) || (dwBlobLen <= 0)) {
+        xmlSecInternalError2("CryptExportKey", xmlSecKeyDataKlassGetName(id),
+            "dwBlobLen=%lu", dwBlobLen);
         goto done;
     }
 
@@ -2048,8 +2056,18 @@ xmlSecMSCryptoKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
 
     /* get data */
     blob = xmlSecBufferGetData(&buf);
-    if (!CryptExportKey(xmlSecMSCryptoKeyDataCtxGetKey(ctx), 0, PUBLICKEYBLOB, 0, blob, &dwBlobLen)) {
-        xmlSecMSCryptoError("CryptExportKey", xmlSecKeyDataKlassGetName(id));
+    xmlSecAssert2(blob != NULL, -1);
+
+    status = CryptExportKey(
+        xmlSecMSCryptoKeyDataCtxGetKey(ctx),
+        0,
+        PUBLICKEYBLOB,
+        0,
+        blob,
+        &dwBlobLen);
+    if ((status != TRUE) || (dwBlobLen <= 0)) {
+        xmlSecInternalError2("CryptExportKey", xmlSecKeyDataKlassGetName(id),
+            "dwBlobLen=%lu", dwBlobLen);
         goto done;
     }
 
@@ -2087,7 +2105,7 @@ xmlSecMSCryptoKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     keyLen = pubKey->bitlen / 8;
 
     /* we assume that sizeof(q) < XMLSEC_MSCRYPTO_DSA_MAX_Q_SIZE, sizeof(g) <= sizeof(p) and sizeof(y) <= sizeof(p) */
-    if (dwBlobLen < sizeof(PUBLICKEYSTRUC) + sizeof(DSSPUBKEY) + 3 * keyLen + XMLSEC_MSCRYPTO_DSA_MAX_Q_SIZE + sizeof(DSSSEED)) {
+    if (dwBlobLen < (sizeof(PUBLICKEYSTRUC) + sizeof(DSSPUBKEY) + 3 * keyLen + XMLSEC_MSCRYPTO_DSA_MAX_Q_SIZE + sizeof(DSSSEED))) {
         xmlSecMSCryptoError3("CryptExportKey", xmlSecKeyDataKlassGetName(id),
             "dwBlobLen: %lu; keyLen: " XMLSEC_SIZE_FMT, dwBlobLen, keyLen);
         goto done;

@@ -606,6 +606,7 @@ xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf, xmlNodePtr node, int col
         xmlSecInternalError("xmlSecBase64Encode", NULL);
         return(-1);
     }
+
     xmlNodeAddContent(node, content);
     xmlFree(content);
 

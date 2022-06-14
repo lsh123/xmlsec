@@ -206,7 +206,9 @@ typedef struct _xmlSecKeyValueX509 {
  */
 typedef int                    (*xmlSecKeyDataX509Read)                 (xmlSecKeyDataId id,
                                                                          xmlSecKeyDataPtr data,
-                                                                         xmlSecKeyValueX509Ptr x509Value);
+                                                                         xmlSecKeyValueX509Ptr x509Value,
+                                                                         xmlSecKeysMngrPtr keysMngr,
+                                                                         int stopOnUnknownCert);
 
 /**
  * xmlSecKeyDataX509Write:

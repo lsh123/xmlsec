@@ -1805,6 +1805,7 @@ xmlSecKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node,
     xmlSecKeyValueX509 x509Value;
     int x509ValueInitialized = 0;
     xmlNodePtr cur;
+    int stopOnUnknownCert = 0;
     int res = -1;
     int ret;
 
@@ -1812,6 +1813,7 @@ xmlSecKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node,
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->keysMngr != NULL, -1);
     xmlSecAssert2(readFunc != NULL, -1);
 
     data = xmlSecKeyEnsureData(key, id);
@@ -1829,6 +1831,11 @@ xmlSecKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node,
     }
     x509ValueInitialized = 1;
 
+    /* determine what to do */
+    if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT) != 0) {
+        stopOnUnknownCert = 1;
+    }
+    
     for(cur = xmlSecGetNextElementNode(node->children); cur != NULL; cur = xmlSecGetNextElementNode(cur->next)) {
         ret = xmlSecKeyValueX509XmlRead(&x509Value, cur, keyInfoCtx);
         if(ret < 0) {
@@ -1837,7 +1844,7 @@ xmlSecKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node,
             goto done;        
         }
 
-        ret = readFunc(id, data, &x509Value);
+        ret = readFunc(id, data, &x509Value, keyInfoCtx->keysMngr, stopOnUnknownCert);
         if(ret < 0) {
             xmlSecInternalError("xmlSecKeyDataX509Read",
                 xmlSecKeyDataKlassGetName(id));
@@ -1910,7 +1917,7 @@ xmlSecKeyValueX509Finalize(xmlSecKeyValueX509Ptr data) {
     xmlSecAssert(data != NULL);
 
     xmlSecBufferFinalize(&(data->cert));
-    xmlSecBufferFinalize(&(data->cert));
+    xmlSecBufferFinalize(&(data->crl));
     if(data->subject != NULL) {
         xmlFree(data->subject);
     }
@@ -1931,7 +1938,7 @@ xmlSecKeyValueX509Reset(xmlSecKeyValueX509Ptr data) {
     xmlSecAssert(data != NULL);
 
     xmlSecBufferEmpty(&(data->cert));
-    xmlSecBufferEmpty(&(data->cert));
+    xmlSecBufferEmpty(&(data->crl));
     if(data->subject != NULL) {
         xmlFree(data->subject);
         data->subject = NULL;

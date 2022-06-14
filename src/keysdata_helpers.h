@@ -188,49 +188,51 @@ XMLSEC_EXPORT int               xmlSecKeyDataRsaXmlWrite                (xmlSecK
 typedef struct _xmlSecKeyValueX509 {
     xmlSecBuffer cert;
     xmlSecBuffer crl;
+    xmlSecBuffer ski;
     xmlChar* subject;
     xmlChar* issuerName;
     xmlChar* issuerSerial;
-    xmlChar* ski;
 } xmlSecKeyValueX509, *xmlSecKeyValueX509Ptr;
 
 /**
  * xmlSecKeyDataX509Read:
- * @id:                 the key data data.
- * @data:               the pointer to input @xmlSecKeyData.
- * @dsaValue:           the pointer to input @xmlSecKeyValueX509.
+ * @data:               the pointer to result @xmlSecKeyData.
+ * @x509Value:          the pointer to input @xmlSecKeyValueX509.
+ * @keysMngr:           the pointer to @xmlSecKeysMngr.
+ * @stopOnUnknownCert:  the flag indicating if processing should stop and return
+ *                      an error when cert is not found.
  *
  * Creates xmlSecKeyData from @dsaValue
  *
  * Returns: the poitner to xmlSecKeyData or NULL if an error occurs.
  */
-typedef int                    (*xmlSecKeyDataX509Read)                 (xmlSecKeyDataId id,
-                                                                         xmlSecKeyDataPtr data,
+typedef int                    (*xmlSecKeyDataX509Read)                 (xmlSecKeyDataPtr data,
                                                                          xmlSecKeyValueX509Ptr x509Value,
                                                                          xmlSecKeysMngrPtr keysMngr,
                                                                          int stopOnUnknownCert);
 
 /**
  * xmlSecKeyDataX509Write:
- * @id:                 the key data data.
- * @data:               the pointer to input @xmlSecKeyData.
- * @dsaValue:            the pointer to input @xmlSecKeyValueX509.
+ * @data:               the pointer to result @xmlSecKeyData.
+ * @x509ObjPos:         the position of X509 obj (cert or crl) to be written to @X509Value.
+ * @x509Value:          the pointer to result @xmlSecKeyValueX509.
+ * @content:            the bitmask of what should be output to @x509Value.
  * 
  * Writes @xmlSecKeyData to @xmlSecKeyValueX509.
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
-typedef int                    (*xmlSecKeyDataX509Write)                (xmlSecKeyDataId id,
-                                                                         xmlSecKeyDataPtr data,
-                                                                         xmlSecKeyValueX509Ptr x509Value);
+typedef int                    (*xmlSecKeyDataX509Write)                (xmlSecKeyDataPtr data,
+                                                                         xmlSecSize x509ObjPos,
+                                                                         xmlSecKeyValueX509Ptr x509Value,
+                                                                         int content);
 
-XMLSEC_EXPORT int               xmlSecKeyDataX509XmlRead                (xmlSecKeyDataId id,
-                                                                         xmlSecKeyPtr key,
+XMLSEC_EXPORT int               xmlSecKeyDataX509XmlRead                (xmlSecKeyDataPtr data,
                                                                          xmlNodePtr node,
                                                                          xmlSecKeyInfoCtxPtr keyInfoCtx,
                                                                          xmlSecKeyDataX509Read readFunc);
-XMLSEC_EXPORT int               xmlSecKeyDataX509XmlWrite               (xmlSecKeyDataId id,
-                                                                         xmlSecKeyPtr key,
+XMLSEC_EXPORT int               xmlSecKeyDataX509XmlWrite               (xmlSecKeyDataPtr data,
+                                                                         xmlSecSize x509ObjNum,
                                                                          xmlNodePtr node,
                                                                          xmlSecKeyInfoCtxPtr keyInfoCtx,
                                                                          int base64LineSize,

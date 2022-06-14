@@ -53,7 +53,7 @@ SECItem *
 xmlSecNssNodeGetBigNumValue(PRArenaPool *arena, const xmlNodePtr cur,
                             SECItem *a) {
     xmlSecBuffer buf;
-    int buf_initialized = 0;
+    int bufInitialized = 0;
     int ret;
     SECItem *rv = NULL;
     xmlSecSize size;
@@ -68,7 +68,7 @@ xmlSecNssNodeGetBigNumValue(PRArenaPool *arena, const xmlNodePtr cur,
         xmlSecInternalError("xmlSecBufferInitialize", NULL);
         goto done;
     }
-    buf_initialized = 1;
+    bufInitialized = 1;
 
     ret = xmlSecBufferBase64NodeContentRead(&buf, cur);
     if(ret < 0) {
@@ -91,7 +91,7 @@ xmlSecNssNodeGetBigNumValue(PRArenaPool *arena, const xmlNodePtr cur,
     PORT_Memcpy(rv->data, xmlSecBufferGetData(&buf), ulen);
 
 done:
-    if(buf_initialized) {
+    if(bufInitialized) {
         xmlSecBufferFinalize(&buf);
     }
     return(rv);

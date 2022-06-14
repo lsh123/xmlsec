@@ -638,23 +638,7 @@ xmlSecBnAdd(xmlSecBnPtr bn, int delta) {
  */
 int
 xmlSecBnReverse(xmlSecBnPtr bn) {
-    xmlSecByte* data;
-    xmlSecSize ii, jj, size;
-    xmlSecByte ch;
-
-    xmlSecAssert2(bn != NULL, -1);
-
-    data = xmlSecBufferGetData(bn);
-    size = xmlSecBufferGetSize(bn);
-    for(ii = 0, jj = size - 1; ii < size / 2; ++ii, --jj) {
-        xmlSecAssert2(data != NULL, -1);
-
-        ch       = data[ii];
-        data[ii]  = data[jj];
-        data[jj]  = ch;
-    }
-
-    return(0);
+    return(xmlSecBufferReverse(bn));
 }
 
 /**

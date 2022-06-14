@@ -255,7 +255,7 @@ static int
 xmlSecMSCngBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecMSCngBlockCipherCtxPtr ctx;
     xmlSecBufferPtr buffer;
-    int buf_initialized = 0;
+    int bufInitialized = 0;
     xmlSecBuffer blob;
     BCRYPT_KEY_DATA_BLOB_HEADER* blobHeader;
     xmlSecByte* bufData;
@@ -319,7 +319,7 @@ xmlSecMSCngBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
             "size=" XMLSEC_SIZE_FMT, blobSize);
         goto done;
     }
-    buf_initialized = 1;
+    bufInitialized = 1;
      
     xmlSecBufferSetSize(&blob, blobSize);
     blobData = xmlSecBufferGetData(&blob);
@@ -351,7 +351,7 @@ xmlSecMSCngBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
 done:
     /* cleanup */
-    if (buf_initialized != 0) {
+    if (bufInitialized != 0) {
         xmlSecBufferFinalize(&blob);
     }
     return(res);

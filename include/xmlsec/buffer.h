@@ -89,10 +89,9 @@ XMLSEC_EXPORT int               xmlSecBufferRemoveHead          (xmlSecBufferPtr
                                                                  xmlSecSize size);
 XMLSEC_EXPORT int               xmlSecBufferRemoveTail          (xmlSecBufferPtr buf,
                                                                  xmlSecSize size);
-
+XMLSEC_EXPORT int               xmlSecBufferReverse             (xmlSecBufferPtr buf);
 XMLSEC_EXPORT int               xmlSecBufferReadFile            (xmlSecBufferPtr buf,
                                                                  const char* filename);
-
 XMLSEC_EXPORT int               xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf,
                                                                  xmlNodePtr node);
 XMLSEC_EXPORT int               xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf,

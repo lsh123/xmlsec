@@ -386,6 +386,8 @@ xmlSecSimpleKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
 int
 xmlSecSimpleKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
                             xmlSecKeysMngrPtr keysMngr) {
+    xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecSimpleKeysStoreId), -1);
+
     return(xmlSecSimpleKeysStoreLoad_ex(store, uri, keysMngr,
         xmlSecSimpleKeysStoreAdoptKey));
 }
@@ -412,7 +414,9 @@ xmlSecSimpleKeysStoreLoad_ex(xmlSecKeyStorePtr store, const char *uri,
     xmlSecKeyInfoCtx keyInfoCtx;
     int ret;
 
-    xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecSimpleKeysStoreId), -1);
+    /* don't check store ID here because it might not be simple store ID;
+     * we will check for the correct store ID in the adoptKeyFunc instead */
+    xmlSecAssert2(store != NULL, -1);
     xmlSecAssert2(uri != NULL, -1);
     xmlSecAssert2(adoptKeyFunc != NULL, -1);
     UNREFERENCED_PARAMETER(keysMngr);

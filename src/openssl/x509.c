@@ -703,7 +703,7 @@ static int
 xmlSecOpenSSLKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Value,
                              xmlSecKeysMngrPtr keysMngr, unsigned int flags) {
     xmlSecKeyDataStorePtr x509Store;
-    int stopOnUnknownCert = 0;    
+    int stopOnUnknownCert = 0;
     X509* storeCert = NULL;
     X509* cert = NULL;
     X509_CRL* crl = NULL;

@@ -646,7 +646,7 @@ static int
 xmlSecGnuTLSKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Value,
                              xmlSecKeysMngrPtr keysMngr, unsigned int flags) {
     xmlSecKeyDataStorePtr x509Store;
-    int stopOnUnknownCert = 0;    
+    int stopOnUnknownCert = 0;
     gnutls_x509_crt_t storeCert = NULL;
     gnutls_x509_crt_t cert = NULL;
     gnutls_x509_crl_t crl = NULL;

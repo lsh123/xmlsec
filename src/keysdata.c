@@ -18,6 +18,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>    
 
 #include <libxml/tree.h>
 
@@ -2138,6 +2139,43 @@ done:
     return(res);
 }
 
+static void
+xmlSecKeyValueX509Trim(xmlChar * str) {
+    xmlChar * p, * q;
+    int len;
+
+    xmlSecAssert(str != NULL);
+
+    len = xmlStrlen(str);
+    if(len <= 0) {
+        return;
+    }
+
+    /* skip spaces from the beggining */
+    p = str;
+    q = str + len - 1;
+    while(isspace(*p) && (p != q)) {
+        ++p;
+    }
+    while(isspace(*q) && (p != q)) {
+        --q;
+    }
+
+    /* all the cases */
+    if((p == q) && isspace(*p)) {
+        (*str) = '\0';
+        return;
+    } else if(p == str) {
+        *(q + 1) = '\0';
+    } else {
+        xmlSecAssert(q >= p);
+
+        len = (int)(q - p + 1);
+        memmove(str, p, (size_t)len);
+        str[len] = '\0';
+    }
+}
+
 static int
 xmlSecKeyValueX509XmlReadString(xmlChar **str, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlChar *content;
@@ -2149,7 +2187,10 @@ xmlSecKeyValueX509XmlReadString(xmlChar **str, xmlNodePtr node, xmlSecKeyInfoCtx
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     content = xmlNodeGetContent(node);
-    if((content == NULL) || (xmlSecIsEmptyString(content) == 1)) {
+    if(content != NULL) {
+        xmlSecKeyValueX509Trim(content);
+    }
+    if((content == NULL) || (xmlStrlen(content) <= 0)) {
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
             xmlSecInvalidNodeContentError(node, NULL, "empty");
             goto done;

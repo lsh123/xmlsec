@@ -125,7 +125,7 @@ xmlSecGnuTLSX509StoreFindCert(const xmlSecKeyDataStorePtr store, const xmlChar *
     if(ski != NULL) {
         gnutls_x509_crt_t res;
         xmlChar* skiDup;
-        xmlSecSize skiDecodedSize = 0;        
+        xmlSecSize skiDecodedSize = 0;
         int ret;
 
         skiDup = xmlStrdup(ski);

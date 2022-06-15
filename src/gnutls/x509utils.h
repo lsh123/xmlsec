@@ -50,9 +50,16 @@ xmlChar *               xmlSecGnuTLSX509CertGetSubjectDN        (gnutls_x509_crt
 xmlChar *               xmlSecGnuTLSX509CertGetIssuerDN         (gnutls_x509_crt_t cert);
 xmlChar *               xmlSecGnuTLSX509CertGetIssuerSerial     (gnutls_x509_crt_t cert);
 xmlChar *               xmlSecGnuTLSX509CertGetSKI              (gnutls_x509_crt_t cert);
+int                     xmlSecGnuTLSX509CertSKIWrite            (gnutls_x509_crt_t cert,
+                                                                 xmlSecBufferPtr buf);
+int                     xmlSecGnuTLSX509CertCompareSKI          (gnutls_x509_crt_t cert,
+                                                                 const xmlSecByte * ski,
+                                                                 xmlSecSize skiSize);
 gnutls_x509_crt_t       xmlSecGnuTLSX509CertRead                (const xmlSecByte* buf,
                                                                  xmlSecSize size,
                                                                  xmlSecKeyDataFormat format);
+int                     xmlSecGnuTLSX509CertDerWrite            (gnutls_x509_crt_t cert,
+                                                                 xmlSecBufferPtr buf);
 gnutls_x509_crt_t       xmlSecGnuTLSX509CertBase64DerRead       (xmlChar* buf);
 xmlChar*                xmlSecGnuTLSX509CertBase64DerWrite      (gnutls_x509_crt_t cert,
                                                                  int base64LineWrap);
@@ -71,6 +78,8 @@ xmlChar *               xmlSecGnuTLSX509CrlGetIssuerDN          (gnutls_x509_crl
 gnutls_x509_crl_t       xmlSecGnuTLSX509CrlRead                 (const xmlSecByte* buf,
                                                                  xmlSecSize size,
                                                                  xmlSecKeyDataFormat format);
+int                     xmlSecGnuTLSX509CrlDerWrite             (gnutls_x509_crl_t crl,
+                                                                 xmlSecBufferPtr buf);
 gnutls_x509_crl_t       xmlSecGnuTLSX509CrlBase64DerRead        (xmlChar* buf);
 xmlChar*                xmlSecGnuTLSX509CrlBase64DerWrite       (gnutls_x509_crl_t crl,
                                                                  int base64LineWrap);

@@ -90,6 +90,13 @@ XMLSEC_CRYPTO_EXPORT gnutls_x509_crt_t  xmlSecGnuTLSX509StoreFindCert   (const x
                                                                          const xmlChar *issuerSerial,
                                                                          const xmlChar *ski,
                                                                          const xmlSecKeyInfoCtx* keyInfoCtx);
+XMLSEC_CRYPTO_EXPORT gnutls_x509_crt_t xmlSecGnuTLSX509StoreFindCert_ex(const xmlSecKeyDataStorePtr store,
+                                                                         const xmlChar *subjectName,
+                                                                         const xmlChar *issuerName,
+                                                                         const xmlChar *issuerSerial,
+                                                                         const xmlSecByte * ski,
+                                                                         xmlSecSize skiSize,
+                                                                         const xmlSecKeyInfoCtx* keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT gnutls_x509_crt_t  xmlSecGnuTLSX509StoreVerify     (xmlSecKeyDataStorePtr store,
                                                                          xmlSecPtrListPtr certs,
                                                                          xmlSecPtrListPtr crls,

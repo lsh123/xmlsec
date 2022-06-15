@@ -92,6 +92,9 @@ static gnutls_x509_crt_t xmlSecGnuTLSX509FindSignerCert                 (xmlSecP
                                                                          gnutls_x509_crt_t cert);
 
 
+static int               xmlSecGnuTLSX509CertCompareSKI                 (gnutls_x509_crt_t cert,
+                                                                         const xmlSecByte * ski,
+                                                                         xmlSecSize skiSize);
 /**
  * xmlSecGnuTLSX509StoreGetKlass:
  *
@@ -582,6 +585,71 @@ xmlSecGnuTLSX509DnsEqual(const xmlChar * ll, const xmlChar * rr) {
 done:
     xmlSecGnuTLSDnAttrsDeinitialize(ll_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
     xmlSecGnuTLSDnAttrsDeinitialize(rr_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
+    return(res);
+}
+
+
+/** 
+ * xmlSecGnuTLSX509CertCompareSKI:
+ * 
+ * Returns 0 if SKI matches, 1 if SKI doesn't match and a negative value if an error occurs.
+ */
+static int
+xmlSecGnuTLSX509CertCompareSKI(gnutls_x509_crt_t cert, const xmlSecByte * ski, xmlSecSize skiSize) {
+    xmlSecByte* buf = NULL;
+    size_t bufSizeT = 0;
+    xmlSecSize bufSize;
+    unsigned int critical = 0;
+    int err;
+    int res = -1;
+    
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(ski != NULL, -1);
+    xmlSecAssert2(skiSize > 0, -1);
+
+    /* get ski size */
+    err = gnutls_x509_crt_get_subject_key_id(cert, NULL, &bufSizeT, &critical);
+    if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSizeT <= 0)) {
+        xmlSecGnuTLSError("gnutls_x509_crt_get_subject_key_id", err, NULL);
+        goto done;
+    }
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(bufSizeT, bufSize, goto done, NULL);
+
+    if(skiSize != bufSize) {
+        /* doesn't match */
+        res = 1;
+        goto done;
+    }
+
+    /* allocate buffer */
+    buf = (xmlSecByte *)xmlMalloc(bufSizeT + 1);
+    if(buf == NULL) {
+        xmlSecMallocError(bufSizeT + 1, NULL);
+        goto done;
+    }
+
+    /* write ski out */
+    err = gnutls_x509_crt_get_subject_key_id(cert, buf, &bufSizeT, &critical);
+    if(err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_x509_crt_get_subject_key_id", err, NULL);
+        goto done;
+    }
+
+    /* compare */
+    if(memcmp(ski, buf, bufSize) != 0) {
+        /* doesn't match */
+        res = 1;
+        goto done;
+    }
+
+    /* match! */
+    res = 0;
+
+done:
+    /* cleanup */
+    if(buf != NULL) {
+        xmlFree(buf);
+    }
     return(res);
 }
 

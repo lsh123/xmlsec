@@ -108,6 +108,9 @@ static int              xmlSecGnuTLSKeyDataX509Write            (xmlSecKeyDataPt
                                                                   xmlSecKeyValueX509Ptr x509Value,
                                                                   int content);
 
+static int              xmlSecGnuTLSX509CertSKIWrite            (gnutls_x509_crt_t cert,
+                                                                 xmlSecBufferPtr buf);
+
 static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataX509Klass = {
     sizeof(xmlSecKeyDataKlass),
     xmlSecGnuTLSX509DataSize,
@@ -847,6 +850,47 @@ xmlSecGnuTLSKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecSize x509ObjPos,
             xmlSecKeyDataGetName(data),
             "size=" XMLSEC_SIZE_FMT "; pos=" XMLSEC_SIZE_FMT, 
             x509ObjPos, (certsSize + crlsSize));  
+    }
+
+    /* success */
+    return(0);
+}
+
+static int
+xmlSecGnuTLSX509CertSKIWrite(gnutls_x509_crt_t cert, xmlSecBufferPtr buf) {
+    size_t bufSizeT = 0;
+    xmlSecSize bufSize;
+    xmlSecByte * bufData;
+    unsigned int critical = 0;
+    int ret;
+    int err;
+
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
+
+    /* get size */
+    err = gnutls_x509_crt_get_subject_key_id(cert, NULL, &bufSizeT, &critical);
+    if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSizeT <= 0)) {
+        xmlSecGnuTLSError("gnutls_x509_crt_get_subject_key_id", err, NULL);
+        return(-1);
+    }
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(bufSizeT, bufSize, return(-1), NULL);
+
+    /* allocate buffer */
+    ret = xmlSecBufferSetSize(buf, bufSize);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL, 
+            "bufSize=" XMLSEC_SIZE_FMT, bufSize);
+        return(-1);
+    }
+    bufData = xmlSecBufferGetData(buf);
+    xmlSecAssert2(bufData != NULL, -1);
+
+    /* write it out */
+    err = gnutls_x509_crt_get_subject_key_id(cert, bufData, &bufSizeT, &critical);
+    if(err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_x509_crt_get_subject_key_id", err, NULL);
+        return(-1);
     }
 
     /* success */

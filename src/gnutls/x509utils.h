@@ -50,11 +50,8 @@ xmlChar *               xmlSecGnuTLSX509CertGetSubjectDN        (gnutls_x509_crt
 xmlChar *               xmlSecGnuTLSX509CertGetIssuerDN         (gnutls_x509_crt_t cert);
 xmlChar *               xmlSecGnuTLSX509CertGetIssuerSerial     (gnutls_x509_crt_t cert);
 xmlChar *               xmlSecGnuTLSX509CertGetSKI              (gnutls_x509_crt_t cert);
-int                     xmlSecGnuTLSX509CertSKIWrite            (gnutls_x509_crt_t cert,
-                                                                 xmlSecBufferPtr buf);
-int                     xmlSecGnuTLSX509CertCompareSKI          (gnutls_x509_crt_t cert,
-                                                                 const xmlSecByte * ski,
-                                                                 xmlSecSize skiSize);
+
+
 gnutls_x509_crt_t       xmlSecGnuTLSX509CertRead                (const xmlSecByte* buf,
                                                                  xmlSecSize size,
                                                                  xmlSecKeyDataFormat format);

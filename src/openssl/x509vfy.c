@@ -195,6 +195,7 @@ xmlSecOpenSSLX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar *subjectN
                                  xmlSecByte * ski, xmlSecSize skiSize,
                                  xmlSecKeyInfoCtx* keyInfoCtx ATTRIBUTE_UNUSED) {
     xmlSecOpenSSLX509StoreCtxPtr ctx;
+    X509* res = NULL;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId), NULL);
     UNREFERENCED_PARAMETER(keyInfoCtx);
@@ -202,12 +203,12 @@ xmlSecOpenSSLX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar *subjectN
     ctx = xmlSecOpenSSLX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, NULL);
 
-    if(ctx->untrusted == NULL) {
-        return(NULL);
-    }
-    return(xmlSecOpenSSLX509FindCert(ctx->untrusted, subjectName,
+    if((res == NULL) && (ctx->untrusted != NULL)) {
+        res = xmlSecOpenSSLX509FindCert(ctx->untrusted, subjectName,
             issuerName, issuerSerial,
-            ski, skiSize));
+            ski, skiSize);
+    }
+    return(res);
 }
 
 /**
@@ -796,7 +797,6 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
                 "subject=%s", xmlSecErrorsSafeString(subjectName));
             return(NULL);
         }
-
         for(ii = 0; ii < sk_X509_num(certs); ++ii) {
             cert = sk_X509_value(certs, ii);
             subj = X509_get_subject_name(cert);
@@ -1099,6 +1099,12 @@ xmlSecOpenSSLX509NameRead(const xmlChar *str) {
             goto done;
         }
         name[nameSize] = '\0';
+
+        /* handle synonymous */
+        if(xmlStrcmp(name, BAD_CAST "E") == 0) {
+            xmlStrPrintf(name, sizeof(name), "emailAddress");
+        }
+
         if(strSize > 0) {
             ++str; --strSize;
             if((*str) == '\"') {
@@ -1152,7 +1158,8 @@ xmlSecOpenSSLX509NameRead(const xmlChar *str) {
         XMLSEC_SAFE_CAST_SIZE_TO_INT(valueSize, valueLen, goto done, NULL);
         ret = X509_NAME_add_entry_by_txt(nm, (char*)name, type, value, valueLen, -1, 0);
         if(ret != 1) {
-            xmlSecOpenSSLError("X509_NAME_add_entry_by_txt", NULL);
+            xmlSecOpenSSLError2("X509_NAME_add_entry_by_txt", NULL,
+                "name=%s", xmlSecErrorsSafeString(name));
             goto done;
         }
     }

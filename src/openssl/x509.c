@@ -977,7 +977,6 @@ done:
     return(res);
 }
 
-
 static xmlChar*
 xmlSecOpenSSLX509NameWrite(X509_NAME* nm) {
     xmlChar* res = NULL;

@@ -357,54 +357,6 @@ xmlSecGnuTLSX509CertSKIWrite(gnutls_x509_crt_t cert, xmlSecBufferPtr buf) {
     return(0);
 }
 
-xmlChar *
-xmlSecGnuTLSX509CertGetSKI(gnutls_x509_crt_t cert) {
-    xmlChar * res = NULL;
-    xmlSecByte* buf = NULL;
-    size_t bufSizeT = 0;
-    xmlSecSize bufSize;
-    unsigned int critical = 0;
-    int err;
-
-    xmlSecAssert2(cert != NULL, NULL);
-
-    /* get ski size */
-    err = gnutls_x509_crt_get_subject_key_id(cert, NULL, &bufSizeT, &critical);
-    if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSizeT <= 0)) {
-        xmlSecGnuTLSError("gnutls_x509_crt_get_subject_key_id", err, NULL);
-        goto done;
-    }
-
-    /* allocate buffer */
-    buf = (xmlSecByte *)xmlMalloc(bufSizeT + 1);
-    if(buf == NULL) {
-        xmlSecMallocError(bufSizeT + 1, NULL);
-        goto done;
-    }
-
-    /* write it out */
-    err = gnutls_x509_crt_get_subject_key_id(cert, buf, &bufSizeT, &critical);
-    if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_x509_crt_get_subject_key_id", err, NULL);
-        goto done;
-    }
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(bufSizeT, bufSize, goto done, NULL);
-
-    /* convert to string */
-    res = xmlSecBase64Encode(buf, bufSize, 0);
-    if(res == NULL) {
-        xmlSecInternalError("xmlSecBase64Encode", NULL);
-        goto done;
-    }
-
-    /* done */
-done:
-    if(buf != NULL) {
-        xmlFree(buf);
-    }
-    return(res);
-}
-
 /** 
  * xmlSecGnuTLSX509CertCompareSKI:
  * 

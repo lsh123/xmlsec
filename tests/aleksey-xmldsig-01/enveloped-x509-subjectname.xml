@@ -36,9 +36,9 @@ ZmudHZxyIKRkwdo3341b8p8rQEE9tcnUOzgbqs0qmZQ=</SignatureValue>
     <KeyInfo>
       <X509Data>
         <X509SubjectName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509SubjectName>
-      
 <X509SubjectName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,OU=Root CA,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509SubjectName>
-<X509SubjectName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,OU=Test Large RSA Key,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509SubjectName></X509Data>
+<X509SubjectName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,OU=Test Large RSA Key,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509SubjectName>
+      </X509Data>
     </KeyInfo>
   </Signature>
 </Envelope>

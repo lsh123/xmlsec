@@ -60,9 +60,6 @@ gnutls_x509_crt_t       xmlSecGnuTLSX509CertRead                (const xmlSecByt
                                                                  xmlSecKeyDataFormat format);
 int                     xmlSecGnuTLSX509CertDerWrite            (gnutls_x509_crt_t cert,
                                                                  xmlSecBufferPtr buf);
-gnutls_x509_crt_t       xmlSecGnuTLSX509CertBase64DerRead       (xmlChar* buf);
-xmlChar*                xmlSecGnuTLSX509CertBase64DerWrite      (gnutls_x509_crt_t cert,
-                                                                 int base64LineWrap);
 void                    xmlSecGnuTLSX509CertDebugDump           (gnutls_x509_crt_t cert,
                                                                  FILE* output);
 void                    xmlSecGnuTLSX509CertDebugXmlDump        (gnutls_x509_crt_t cert,
@@ -80,9 +77,6 @@ gnutls_x509_crl_t       xmlSecGnuTLSX509CrlRead                 (const xmlSecByt
                                                                  xmlSecKeyDataFormat format);
 int                     xmlSecGnuTLSX509CrlDerWrite             (gnutls_x509_crl_t crl,
                                                                  xmlSecBufferPtr buf);
-gnutls_x509_crl_t       xmlSecGnuTLSX509CrlBase64DerRead        (xmlChar* buf);
-xmlChar*                xmlSecGnuTLSX509CrlBase64DerWrite       (gnutls_x509_crl_t crl,
-                                                                 int base64LineWrap);
 void                    xmlSecGnuTLSX509CrlDebugDump            (gnutls_x509_crl_t crl,
                                                                  FILE* output);
 void                    xmlSecGnuTLSX509CrlDebugXmlDump         (gnutls_x509_crl_t crl,

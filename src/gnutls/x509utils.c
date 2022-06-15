@@ -172,26 +172,35 @@ xmlSecGnuTLSX509CrlListDebugXmlDumpItem(xmlSecPtr ptr, FILE* output) {
  write cert out and then read it back */
 gnutls_x509_crt_t
 xmlSecGnuTLSX509CertDup(gnutls_x509_crt_t src) {
-    xmlChar * buf = NULL;
+    xmlSecBuffer buf;
     gnutls_x509_crt_t res = NULL;
+    int ret;
 
     xmlSecAssert2(src != NULL, NULL);
 
-    buf = xmlSecGnuTLSX509CertBase64DerWrite(src, 0);
-    if(buf == NULL) {
-        xmlSecInternalError("xmlSecGnuTLSX509CertBase64DerWrite", NULL);
+    ret = xmlSecBufferInitialize(&buf, 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
+        return (NULL);        
+    }
+
+    ret = xmlSecGnuTLSX509CertDerWrite(src, &buf);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSX509CertDerWrite", NULL);
+        xmlSecBufferFinalize(&buf);
         return (NULL);
     }
 
-    res = xmlSecGnuTLSX509CertBase64DerRead(buf);
+    res = xmlSecGnuTLSX509CertRead(xmlSecBufferGetData(&buf), xmlSecBufferGetSize(&buf),
+        xmlSecKeyDataFormatCertDer);
     if(res == NULL) {
-        xmlSecInternalError("xmlSecGnuTLSX509CertBase64DerRead", NULL);
-        xmlFree(buf);
+        xmlSecInternalError("xmlSecGnuTLSX509CertRead", NULL);
+        xmlSecBufferFinalize(&buf);
         return (NULL);
     }
 
     /* done */
-    xmlFree(buf);
+    xmlSecBufferFinalize(&buf);
     return (res);
 }
 
@@ -460,30 +469,6 @@ done:
     return(res);
 }
 
-gnutls_x509_crt_t
-xmlSecGnuTLSX509CertBase64DerRead(xmlChar* buf) {
-    xmlSecSize decodedSize;
-    gnutls_x509_crt_t res;
-    int ret;
-
-    xmlSecAssert2(buf != NULL, NULL);
-
-    /* usual trick with base64 decoding "in-place" */
-    decodedSize = 0;
-    ret = xmlSecBase64DecodeInPlace(buf, &decodedSize);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecBase64DecodeInPlace", NULL);
-        return(NULL);
-    }
-
-    res = xmlSecGnuTLSX509CertRead((const xmlSecByte*)buf, decodedSize, xmlSecKeyDataFormatCertDer);
-    if(res == NULL) {
-        xmlSecInternalError("xmlSecGnuTLSX509CertRead", NULL);
-        return(NULL);
-    }
-
-    return(res);
-}
 
 gnutls_x509_crt_t
 xmlSecGnuTLSX509CertRead(const xmlSecByte* buf, xmlSecSize size, xmlSecKeyDataFormat format) {
@@ -573,53 +558,6 @@ xmlSecGnuTLSX509CertDerWrite(gnutls_x509_crt_t cert, xmlSecBufferPtr buf) {
     return(0);
 }
 
-xmlChar*
-xmlSecGnuTLSX509CertBase64DerWrite(gnutls_x509_crt_t cert, int base64LineWrap) {
-    xmlChar * res = NULL;
-    xmlSecByte* buf = NULL;
-    size_t bufSizeT = 0;
-    xmlSecSize bufSize;
-    int err;
-
-    xmlSecAssert2(cert != NULL, NULL);
-
-    /* get size */
-    err = gnutls_x509_crt_export(cert, GNUTLS_X509_FMT_DER, NULL, &bufSizeT);
-    if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSizeT <= 0)) {
-        xmlSecGnuTLSError("gnutls_x509_crt_export(GNUTLS_X509_FMT_DER)", err, NULL);
-        goto done;
-    }
-
-    /* allocate buffer */
-    buf = (xmlSecByte *)xmlMalloc(bufSizeT + 1);
-    if(buf == NULL) {
-        xmlSecMallocError(bufSizeT + 1, NULL);
-        goto done;
-    }
-
-    /* write it out */
-    err = gnutls_x509_crt_export(cert, GNUTLS_X509_FMT_DER, buf, &bufSizeT);
-    if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_x509_crt_export(GNUTLS_X509_FMT_DER)", err, NULL);
-        goto done;
-    }
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(bufSizeT, bufSize, goto done, NULL);
-
-    /* convert to string */
-    res = xmlSecBase64Encode(buf, bufSize, base64LineWrap);
-    if(res == NULL) {
-        xmlSecInternalError("xmlSecBase64Encode", NULL);
-        goto done;
-    }
-
-    /* done */
-done:
-    if(buf != NULL) {
-        xmlFree(buf);
-    }
-    return(res);
-}
-
 void
 xmlSecGnuTLSX509CertDebugDump(gnutls_x509_crt_t cert, FILE* output) {
     xmlChar * buf;
@@ -694,26 +632,35 @@ xmlSecGnuTLSX509CertDebugXmlDump(gnutls_x509_crt_t cert, FILE* output) {
  write crl out and then read it back */
 gnutls_x509_crl_t
 xmlSecGnuTLSX509CrlDup(gnutls_x509_crl_t src) {
-    xmlChar * buf = NULL;
+    xmlSecBuffer buf;
     gnutls_x509_crl_t res = NULL;
+    int ret;
 
     xmlSecAssert2(src != NULL, NULL);
 
-    buf = xmlSecGnuTLSX509CrlBase64DerWrite(src, 0);
-    if(buf == NULL) {
-        xmlSecInternalError("xmlSecGnuTLSX509CrlBase64DerWrite", NULL);
+    ret = xmlSecBufferInitialize(&buf, 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
+        return (NULL);        
+    }
+
+    ret = xmlSecGnuTLSX509CrlDerWrite(src, &buf);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSX509CrlDerWrite", NULL);
+        xmlSecBufferFinalize(&buf);
         return (NULL);
     }
 
-    res = xmlSecGnuTLSX509CrlBase64DerRead(buf);
+    res = xmlSecGnuTLSX509CrlRead(xmlSecBufferGetData(&buf), xmlSecBufferGetSize(&buf),
+        xmlSecKeyDataFormatCertDer);
     if(res == NULL) {
-        xmlSecInternalError("xmlSecGnuTLSX509CrlBase64DerRead", NULL);
-        xmlFree(buf);
+        xmlSecInternalError("xmlSecGnuTLSX509CrlRead", NULL);
+        xmlSecBufferFinalize(&buf);
         return (NULL);
     }
 
     /* done */
-    xmlFree(buf);
+    xmlSecBufferFinalize(&buf);
     return (res);
 }
 
@@ -749,31 +696,6 @@ xmlSecGnuTLSX509CrlGetIssuerDN(gnutls_x509_crl_t crl) {
 
     /* done */
     return(BAD_CAST buf);
-}
-
-gnutls_x509_crl_t
-xmlSecGnuTLSX509CrlBase64DerRead(xmlChar* buf) {
-    gnutls_x509_crl_t res;
-    xmlSecSize decodedSize;
-    int ret;
-
-    xmlSecAssert2(buf != NULL, NULL);
-
-    /* usual trick with base64 decoding "in-place" */
-    decodedSize = 0;
-    ret = xmlSecBase64DecodeInPlace(buf, &decodedSize);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecBase64DecodeInPlace", NULL);
-        return(NULL);
-    }
-
-    res = xmlSecGnuTLSX509CrlRead((const xmlSecByte*)buf, decodedSize, xmlSecKeyDataFormatCertDer);
-    if(res == NULL) {
-        xmlSecInternalError("xmlSecGnuTLSX509CrlRead", NULL);
-        return(NULL);
-    }
-
-    return(res);
 }
 
 gnutls_x509_crl_t
@@ -861,53 +783,6 @@ xmlSecGnuTLSX509CrlDerWrite(gnutls_x509_crl_t crl, xmlSecBufferPtr buf) {
 
     /* success */
     return(0);
-}
-
-xmlChar*
-xmlSecGnuTLSX509CrlBase64DerWrite(gnutls_x509_crl_t crl, int base64LineWrap) {
-    xmlChar * res = NULL;
-    xmlSecByte* buf = NULL;
-    size_t bufSizeT = 0;
-    xmlSecSize bufSize;
-    int err;
-
-    xmlSecAssert2(crl != NULL, NULL);
-
-    /* get size */
-    err = gnutls_x509_crl_export(crl, GNUTLS_X509_FMT_DER, NULL, &bufSizeT);
-    if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSizeT <= 0)) {
-        xmlSecGnuTLSError("gnutls_x509_crl_export(GNUTLS_X509_FMT_DER)", err, NULL);
-        goto done;
-    }
-
-    /* allocate buffer */
-    buf = (xmlSecByte *)xmlMalloc(bufSizeT + 1);
-    if(buf == NULL) {
-        xmlSecMallocError(bufSizeT + 1, NULL);
-        goto done;
-    }
-
-    /* write it out */
-    err = gnutls_x509_crl_export(crl, GNUTLS_X509_FMT_DER, buf, &bufSizeT);
-    if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_x509_crl_export(GNUTLS_X509_FMT_DER)", err, NULL);
-        goto done;
-    }
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(bufSizeT, bufSize, goto done, NULL);
-
-    /* convert to string */
-    res = xmlSecBase64Encode(buf, bufSize, base64LineWrap);
-    if(res == NULL) {
-        xmlSecInternalError("xmlSecBase64Encode", NULL);
-        goto done;
-    }
-
-    /* done */
-done:
-    if(buf != NULL) {
-        xmlFree(buf);
-    }
-    return(res);
 }
 
 void

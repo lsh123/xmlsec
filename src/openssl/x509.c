@@ -211,7 +211,7 @@ static void             xmlSecOpenSSLKeyDataX509DebugXmlDump    (xmlSecKeyDataPt
 static int              xmlSecOpenSSLKeyDataX509Read            (xmlSecKeyDataPtr data,
                                                                  xmlSecKeyValueX509Ptr x509Value,
                                                                  xmlSecKeysMngrPtr keysMngr,
-                                                                 int stopOnUnknownCert);
+                                                                 unsigned int flags);
 static int              xmlSecOpenSSLKeyDataX509Write           (xmlSecKeyDataPtr data,
                                                                   xmlSecSize x509ObjPos,
                                                                   xmlSecKeyValueX509Ptr x509Value,
@@ -781,8 +781,9 @@ xmlSecOpenSSLKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 
 static int
 xmlSecOpenSSLKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Value,
-                             xmlSecKeysMngrPtr keysMngr, int stopOnUnknownCert) {
+                             xmlSecKeysMngrPtr keysMngr, unsigned int flags) {
     xmlSecKeyDataStorePtr x509Store;
+    int stopOnUnknownCert = 0;    
     X509* storeCert = NULL;
     X509* cert = NULL;
     X509_CRL* crl = NULL;
@@ -798,6 +799,11 @@ xmlSecOpenSSLKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Va
     if(x509Store == NULL) {
         xmlSecInternalError("xmlSecKeysMngrGetDataStore", xmlSecKeyDataGetName(data));
         goto done;
+    }
+
+    /* determine what to do */
+    if((flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT) != 0) {
+        stopOnUnknownCert = 1;
     }
 
     if(xmlSecBufferGetSize(&(x509Value->cert)) > 0) {
@@ -1156,7 +1162,7 @@ xmlSecOpenSSLASN1IntegerWrite(ASN1_INTEGER *asni) {
 static int
 xmlSecOpenSSLKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecSize x509ObjPos,
                               xmlSecKeyValueX509Ptr x509Value, int content) {
-    xmlSecSize certsSize, clrsSize;
+    xmlSecSize certsSize, crlsSize;
     int ret;
 
     xmlSecAssert2(data != NULL, -1);
@@ -1164,7 +1170,7 @@ xmlSecOpenSSLKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecSize x509ObjPos,
     xmlSecAssert2(x509Value != NULL, -1);
 
     certsSize = xmlSecOpenSSLKeyDataX509GetCertsSize(data);
-    clrsSize = xmlSecOpenSSLKeyDataX509GetCrlsSize(data);
+    crlsSize = xmlSecOpenSSLKeyDataX509GetCrlsSize(data);
     if(x509ObjPos < certsSize) {
         /* write cert */
         X509* cert = xmlSecOpenSSLKeyDataX509GetCert(data, x509ObjPos);
@@ -1222,7 +1228,7 @@ xmlSecOpenSSLKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecSize x509ObjPos,
                 return(-1);
             }
         }
-    } else if(x509ObjPos < (certsSize + clrsSize)) {
+    } else if(x509ObjPos < (certsSize + crlsSize)) {
         /* write crl */
         X509_CRL* crl = xmlSecOpenSSLKeyDataX509GetCrl(data, (x509ObjPos - certsSize));
         if(crl == NULL) {
@@ -1241,11 +1247,16 @@ xmlSecOpenSSLKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecSize x509ObjPos,
                 return(-1);
             }
         }
+    } else {
+        xmlSecInternalError3("xmlSecOpenSSLKeyDataX509Write",
+            xmlSecKeyDataGetName(data),
+            "size=" XMLSEC_SIZE_FMT "; pos=" XMLSEC_SIZE_FMT, 
+            x509ObjPos, (certsSize + crlsSize));  
     }
 
     /* success */
     return(0);
-                              }
+}
 
 static int
 xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr key,

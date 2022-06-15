@@ -1804,7 +1804,6 @@ xmlSecKeyDataX509XmlRead(xmlSecKeyDataPtr data, xmlNodePtr node,
     xmlSecKeyValueX509 x509Value;
     int x509ValueInitialized = 0;
     xmlNodePtr cur;
-    int stopOnUnknownCert = 0;
     int res = -1;
     int ret;
 
@@ -1821,11 +1820,6 @@ xmlSecKeyDataX509XmlRead(xmlSecKeyDataPtr data, xmlNodePtr node,
         goto done;        
     }
     x509ValueInitialized = 1;
-
-    /* determine what to do */
-    if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT) != 0) {
-        stopOnUnknownCert = 1;
-    }
     
     for(cur = xmlSecGetNextElementNode(node->children); cur != NULL; cur = xmlSecGetNextElementNode(cur->next)) {
         ret = xmlSecKeyValueX509XmlRead(&x509Value, cur, keyInfoCtx);
@@ -1835,7 +1829,7 @@ xmlSecKeyDataX509XmlRead(xmlSecKeyDataPtr data, xmlNodePtr node,
             goto done;        
         }
 
-        ret = readFunc(data, &x509Value, keyInfoCtx->keysMngr, stopOnUnknownCert);
+        ret = readFunc(data, &x509Value, keyInfoCtx->keysMngr, keyInfoCtx->flags);
         if(ret < 0) {
             xmlSecInternalError("xmlSecKeyDataX509Read",
                 xmlSecKeyDataGetName(data));

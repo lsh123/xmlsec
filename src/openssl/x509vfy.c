@@ -175,7 +175,7 @@ xmlSecOpenSSLX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName
 }
 
 /**
- * xmlSecOpenSSLX509StoreFindCert:
+ * xmlSecOpenSSLX509StoreFindCert_ex:
  * @store:              the pointer to X509 key data store klass.
  * @subjectName:        the desired certificate name.
  * @issuerName:         the desired certificate issuer name.
@@ -195,7 +195,6 @@ xmlSecOpenSSLX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar *subjectN
                                  xmlSecByte * ski, xmlSecSize skiSize,
                                  xmlSecKeyInfoCtx* keyInfoCtx ATTRIBUTE_UNUSED) {
     xmlSecOpenSSLX509StoreCtxPtr ctx;
-    X509* res = NULL;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId), NULL);
     UNREFERENCED_PARAMETER(keyInfoCtx);
@@ -203,12 +202,12 @@ xmlSecOpenSSLX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar *subjectN
     ctx = xmlSecOpenSSLX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, NULL);
 
-    if((res == NULL) && (ctx->untrusted != NULL)) {
-        res = xmlSecOpenSSLX509FindCert(ctx->untrusted, subjectName,
-            issuerName, issuerSerial,
-            ski, skiSize);
+    if(ctx->untrusted == NULL) {
+        return(NULL);
     }
-    return(res);
+    return(xmlSecOpenSSLX509FindCert(ctx->untrusted, subjectName,
+            issuerName, issuerSerial,
+            ski, skiSize));
 }
 
 /**
@@ -785,6 +784,8 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
     xmlSecAssert2(certs != NULL, NULL);
 
     /* todo: may be this is not the fastest way to search certs */
+
+    /* search by subject name if available */
     if(subjectName != NULL) {
         X509_NAME *nm;
         X509_NAME *subj;
@@ -805,7 +806,10 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
             }
         }
         X509_NAME_free(nm);
-    } else if((issuerName != NULL) && (issuerSerial != NULL)) {
+    } 
+    
+    /* search by issuer name+serial if available */
+    if((issuerName != NULL) && (issuerSerial != NULL)) {
         X509_NAME *nm;
         X509_NAME *issuer;
         BIGNUM *bn;
@@ -853,10 +857,12 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
                 return(cert);
             }
         }
-
         X509_NAME_free(nm);
         ASN1_INTEGER_free(serial);
-    } else if((ski != NULL) && (skiSize > 0)){
+    }
+
+    /* search by SKI if available */    
+    if((ski != NULL) && (skiSize > 0)){
         int index, skiLen;
         X509_EXTENSION *ext;
         ASN1_OCTET_STRING *keyId;

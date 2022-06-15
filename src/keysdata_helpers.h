@@ -199,8 +199,7 @@ typedef struct _xmlSecKeyValueX509 {
  * @data:               the pointer to result @xmlSecKeyData.
  * @x509Value:          the pointer to input @xmlSecKeyValueX509.
  * @keysMngr:           the pointer to @xmlSecKeysMngr.
- * @stopOnUnknownCert:  the flag indicating if processing should stop and return
- *                      an error when cert is not found.
+ * @flags:              the flags for certs processing.
  *
  * Creates xmlSecKeyData from @dsaValue
  *
@@ -209,7 +208,7 @@ typedef struct _xmlSecKeyValueX509 {
 typedef int                    (*xmlSecKeyDataX509Read)                 (xmlSecKeyDataPtr data,
                                                                          xmlSecKeyValueX509Ptr x509Value,
                                                                          xmlSecKeysMngrPtr keysMngr,
-                                                                         int stopOnUnknownCert);
+                                                                         unsigned int flags);
 
 /**
  * xmlSecKeyDataX509Write:

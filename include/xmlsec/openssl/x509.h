@@ -87,6 +87,13 @@ XMLSEC_CRYPTO_EXPORT X509*              xmlSecOpenSSLX509StoreFindCert  (xmlSecK
                                                                          xmlChar *issuerSerial,
                                                                          xmlChar *ski,
                                                                          xmlSecKeyInfoCtx* keyInfoCtx);
+XMLSEC_CRYPTO_EXPORT X509*              xmlSecOpenSSLX509StoreFindCert_ex(xmlSecKeyDataStorePtr store,
+                                                                         xmlChar *subjectName,
+                                                                         xmlChar *issuerName,
+                                                                         xmlChar *issuerSerial,
+                                                                         xmlSecByte * ski,
+                                                                         xmlSecSize skiSize,
+                                                                         xmlSecKeyInfoCtx* keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT X509*              xmlSecOpenSSLX509StoreVerify    (xmlSecKeyDataStorePtr store,
                                                                          XMLSEC_STACK_OF_X509* certs,
                                                                          XMLSEC_STACK_OF_X509_CRL* crls,

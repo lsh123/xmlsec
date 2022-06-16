@@ -33,6 +33,7 @@
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
@@ -99,7 +100,8 @@ static X509*            xmlSecOpenSSLX509FindCert                       (STACK_O
                                                                          xmlChar *subjectName,
                                                                          xmlChar *issuerName,
                                                                          xmlChar *issuerSerial,
-                                                                         xmlChar *ski);
+                                                                         xmlSecByte * ski,
+                                                                         xmlSecSize skiSize);
 static X509*            xmlSecOpenSSLX509FindNextChainCert              (STACK_OF(X509) *chain,
                                                                          X509 *cert);
 static int              xmlSecOpenSSLX509VerifyCertAgainstCrls          (STACK_OF(X509_CRL) *crls,
@@ -150,18 +152,61 @@ xmlSecOpenSSLX509StoreGetKlass(void) {
 X509*
 xmlSecOpenSSLX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
                                 xmlChar *issuerName, xmlChar *issuerSerial,
-                                xmlChar *ski, xmlSecKeyInfoCtx* keyInfoCtx) {
+                                xmlChar *ski, xmlSecKeyInfoCtx* keyInfoCtx ) {
+    if(ski != NULL) {
+        xmlSecSize skiDecodedSize = 0;
+        int ret;
+
+        /* our usual trick with base64 decode */
+        ret = xmlSecBase64DecodeInPlace(ski, &skiDecodedSize);
+        if(ret < 0) {
+            xmlSecInternalError2("xmlSecBase64DecodeInPlace", NULL,
+                "ski=%s", xmlSecErrorsSafeString(ski));
+            return(NULL);
+        }
+
+        return(xmlSecOpenSSLX509StoreFindCert_ex(store, subjectName, issuerName, issuerSerial,
+            (xmlSecByte*)ski, skiDecodedSize, keyInfoCtx));
+    } else {
+        return(xmlSecOpenSSLX509StoreFindCert_ex(store, subjectName, issuerName, issuerSerial,
+            NULL, 0, keyInfoCtx));
+
+    }
+}
+
+/**
+ * xmlSecOpenSSLX509StoreFindCert_ex:
+ * @store:              the pointer to X509 key data store klass.
+ * @subjectName:        the desired certificate name.
+ * @issuerName:         the desired certificate issuer name.
+ * @issuerSerial:       the desired certificate issuer serial number.
+ * @ski:                the desired certificate SKI.
+ * @skiSize:            the desired certificate SKI size.
+ * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> element processing context.
+ *
+ * Searches @store for a certificate that matches given criteria.
+ *
+ * Returns: pointer to found certificate or NULL if certificate is not found
+ * or an error occurs.
+ */
+X509*
+xmlSecOpenSSLX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
+                                 xmlChar *issuerName,  xmlChar *issuerSerial,
+                                 xmlSecByte * ski, xmlSecSize skiSize,
+                                 xmlSecKeyInfoCtx* keyInfoCtx ATTRIBUTE_UNUSED) {
     xmlSecOpenSSLX509StoreCtxPtr ctx;
     X509* res = NULL;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId), NULL);
-    xmlSecAssert2(keyInfoCtx != NULL, NULL);
+    UNREFERENCED_PARAMETER(keyInfoCtx);
 
     ctx = xmlSecOpenSSLX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, NULL);
 
     if((res == NULL) && (ctx->untrusted != NULL)) {
-        res = xmlSecOpenSSLX509FindCert(ctx->untrusted, subjectName, issuerName, issuerSerial, ski);
+        res = xmlSecOpenSSLX509FindCert(ctx->untrusted, subjectName,
+            issuerName, issuerSerial,
+            ski, skiSize);
     }
     return(res);
 }
@@ -730,17 +775,18 @@ err:
     return(-1);
 }
 
-
 static X509*
 xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
                         xmlChar *issuerName, xmlChar *issuerSerial,
-                        xmlChar *ski) {
+                        xmlSecByte * ski, xmlSecSize skiSize) {
     X509 *cert = NULL;
     x509_size_t ii;
 
     xmlSecAssert2(certs != NULL, NULL);
 
     /* todo: may be this is not the fastest way to search certs */
+
+    /* search by subject name if available */
     if(subjectName != NULL) {
         X509_NAME *nm;
         X509_NAME *subj;
@@ -751,7 +797,6 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
                 "subject=%s", xmlSecErrorsSafeString(subjectName));
             return(NULL);
         }
-
         for(ii = 0; ii < sk_X509_num(certs); ++ii) {
             cert = sk_X509_value(certs, ii);
             subj = X509_get_subject_name(cert);
@@ -761,7 +806,10 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
             }
         }
         X509_NAME_free(nm);
-    } else if((issuerName != NULL) && (issuerSerial != NULL)) {
+    } 
+    
+    /* search by issuer name+serial if available */
+    if((issuerName != NULL) && (issuerSerial != NULL)) {
         X509_NAME *nm;
         X509_NAME *issuer;
         BIGNUM *bn;
@@ -809,28 +857,18 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
                 return(cert);
             }
         }
-
         X509_NAME_free(nm);
         ASN1_INTEGER_free(serial);
-    } else if(ski != NULL) {
-        xmlSecSize decodedSize;
-        int index, len;
+    }
+
+    /* search by SKI if available */    
+    if((ski != NULL) && (skiSize > 0)){
+        int index, skiLen;
         X509_EXTENSION *ext;
         ASN1_OCTET_STRING *keyId;
-        int ret;
-
-
-        /* our usual trick with base64 decode */
-        decodedSize = 0;
-        ret = xmlSecBase64DecodeInPlace(ski, &decodedSize);
-        if(ret < 0) {
-            xmlSecInternalError2("xmlSecBase64DecodeInPlace", NULL,
-                "ski=%s", xmlSecErrorsSafeString(ski));
-            return(NULL);
-        }
 
         /* we need len as int since OpenSSL keyId->length is int */
-        XMLSEC_SAFE_CAST_SIZE_TO_INT(decodedSize, len, return(NULL), NULL);
+        XMLSEC_SAFE_CAST_SIZE_TO_INT(skiSize, skiLen, return(NULL), NULL);
 
         for(ii = 0; ii < sk_X509_num(certs); ++ii) {
             cert = sk_X509_value(certs, ii);
@@ -847,7 +885,7 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
                 continue;
             }
             
-            if((keyId->length == len) && (memcmp(keyId->data, ski, decodedSize) == 0)) {
+            if((keyId->length == skiLen) && (memcmp(keyId->data, ski, skiSize) == 0)) {
                 ASN1_OCTET_STRING_free(keyId);
                 return(cert);
             }
@@ -1061,6 +1099,12 @@ xmlSecOpenSSLX509NameRead(const xmlChar *str) {
             goto done;
         }
         name[nameSize] = '\0';
+
+        /* handle synonymous */
+        if(xmlStrcmp(name, BAD_CAST "E") == 0) {
+            xmlStrPrintf(name, sizeof(name), "emailAddress");
+        }
+
         if(strSize > 0) {
             ++str; --strSize;
             if((*str) == '\"') {
@@ -1114,7 +1158,8 @@ xmlSecOpenSSLX509NameRead(const xmlChar *str) {
         XMLSEC_SAFE_CAST_SIZE_TO_INT(valueSize, valueLen, goto done, NULL);
         ret = X509_NAME_add_entry_by_txt(nm, (char*)name, type, value, valueLen, -1, 0);
         if(ret != 1) {
-            xmlSecOpenSSLError("X509_NAME_add_entry_by_txt", NULL);
+            xmlSecOpenSSLError2("X509_NAME_add_entry_by_txt", NULL,
+                "name=%s", xmlSecErrorsSafeString(name));
             goto done;
         }
     }

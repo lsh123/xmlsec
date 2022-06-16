@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+XML Security Library example: Simple signature template file for sign1 example. 
+-->
+<Envelope xmlns="urn:envelope">
+  <Data>
+	Hello, World!
+  </Data>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+      <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/>
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+	<Transform Algorithm="http://www.w3.org/TR/1999/REC-xpath-19991116">
+	<XPath xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">not(ancestor-or-self::dsig:Signature)</XPath>
+	</Transform>
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>
+        <DigestValue>j12SN+LRqX4RricEwl5iEpjyand0nCMO8T5dNYR5P661F2ZrUS5wSbyMdu826KrG
+IQbvvjmkI+9+QmCrcJyXXA==</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>oSQazmnGpiLXxuDQXrhB5w4qz2QMUPT9LPbQ4+UqhxFYdGxhRRe4/ITwjZ6XG32h
+/5wcrScI0dUGfklofgPuDSuxa3A9ueXRahOtN3hUL1gDTRGxhPW+EAOzqBGb/9Yc
+zSG4Y7jo4LDA9ebWYQhRMpYsXRPQqh2/JSqHtAo/GQvTi3hcIZ3NbjPjCaScW6Gq
+rDSvFLRnWUAl8CimYRs3D4QdzvqrMDxVnsamDsUAn8oroMBtbC3m8ELvElgZ0xq9
+qv17kqc5P5d0Xl18tNvlx/wKPpAcAcPrAmUkb+oWpCycFSc68aLws6VJj3rCZV6U
+4QMQHcW6zFQfbG5/wPchJIBlxx2FdJu7RMeGbx7pwLIsEkU6RcKRniVcxVNKhIbD
+7owZxRPJ7LP/PnQ6v9zSZmvz1+f5sNG7GIqGDde2iWlg67AtmtMaW0KIAMGoOA1t
+O+RHySxxB/5uss4ANlJZF1Ehm0Zgo7S11D00Vq24aCjMEz9FRSkhq0X4kW1a2BjX
+o1rJBk7cQOFfSqmUblPEh41SrYtrSkqUNNiSQwI2XfhTAKwUn4c7HBDpagWOorFr
+k8QSLUdcYlYLcDM6YRIeDIqXv2ieV5t/m+Na0B37Ef5GH27bBshAETsON05wYlaq
+ZmudHZxyIKRkwdo3341b8p8rQEE9tcnUOzgbqs0qmZQ=</SignatureValue>
+    <KeyInfo>
+      <X509Data>
+        <X509SubjectName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509SubjectName>
+<X509SubjectName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,OU=Root CA,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509SubjectName>
+<X509SubjectName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,OU=Test Large RSA Key,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509SubjectName>
+      </X509Data>
+    </KeyInfo>
+  </Signature>
+</Envelope>

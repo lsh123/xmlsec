@@ -398,8 +398,6 @@ xmlSecEnsureEmptyChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns
     /* if not found then either add next or add at the end */
     if(cur == NULL) {
         cur = xmlSecAddChild(parent, name, ns);
-    } else if((cur->next != NULL) && (cur->next->type == XML_TEXT_NODE)) {
-        cur = xmlSecAddNextSibling(cur->next, name, ns);
     } else {
         cur = xmlSecAddNextSibling(cur, name, ns);
     }

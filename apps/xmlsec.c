@@ -1698,7 +1698,7 @@ xmlSecAppEncryptFile(const char* filename) {
             }
         }       
     }
-    res = 0;    
+    res = 0;
 
 done:
     /* print debug info if requested */
@@ -1762,7 +1762,7 @@ xmlSecAppDecryptFile(const char* filename) {
             }
         }       
     }
-    res = 0;    
+    res = 0;
 
 done:
     /* print debug info if requested */
@@ -1848,7 +1848,7 @@ xmlSecAppEncryptTmpl(void) {
             }
         }       
     }
-    res = 0;    
+    res = 0;
 
 done:
     /* print debug info if requested */

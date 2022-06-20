@@ -610,7 +610,7 @@ xmlSecOpenSSLKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     }
 
     /* setup context */
-    context.crtPos = context.crlPos;
+    context.crtPos = context.crlPos = 0;
     context.crtSize = xmlSecOpenSSLKeyDataX509GetCertsSize(data);
     context.crlSize = xmlSecOpenSSLKeyDataX509GetCrlsSize(data);
 

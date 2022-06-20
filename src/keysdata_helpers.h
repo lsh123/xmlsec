@@ -213,30 +213,31 @@ typedef int                    (*xmlSecKeyDataX509Read)                 (xmlSecK
 /**
  * xmlSecKeyDataX509Write:
  * @data:               the pointer to result @xmlSecKeyData.
- * @x509ObjPos:         the position of X509 obj (cert or crl) to be written to @X509Value.
  * @x509Value:          the pointer to result @xmlSecKeyValueX509.
  * @content:            the bitmask of what should be output to @x509Value.
+ * @context:            the writer function context.
  * 
- * Writes @xmlSecKeyData to @xmlSecKeyValueX509.
+ * If available, writes the next X509 object (cert or crl) into @x509Value.
  *
- * Returns: 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success, 1 if no more certs/crls are available, or a negative'
+ * value if an error occurs.
  */
 typedef int                    (*xmlSecKeyDataX509Write)                (xmlSecKeyDataPtr data,
-                                                                         xmlSecSize x509ObjPos,
                                                                          xmlSecKeyValueX509Ptr x509Value,
-                                                                         int content);
+                                                                         int content,
+                                                                         void* context);
 
 XMLSEC_EXPORT int               xmlSecKeyDataX509XmlRead                (xmlSecKeyDataPtr data,
                                                                          xmlNodePtr node,
                                                                          xmlSecKeyInfoCtxPtr keyInfoCtx,
                                                                          xmlSecKeyDataX509Read readFunc);
 XMLSEC_EXPORT int               xmlSecKeyDataX509XmlWrite               (xmlSecKeyDataPtr data,
-                                                                         xmlSecSize x509ObjNum,
                                                                          xmlNodePtr node,
                                                                          xmlSecKeyInfoCtxPtr keyInfoCtx,
                                                                          int base64LineSize,
                                                                          int addLineBreaks,
-                                                                         xmlSecKeyDataX509Write writeFunc);
+                                                                         xmlSecKeyDataX509Write writeFunc,
+                                                                         void* writeFuncContext);
 #endif /* !defined(XMLSEC_NO_X509) */
 
 #endif /* __XMLSEC_KEYSDATA_HELPERS_H__ */

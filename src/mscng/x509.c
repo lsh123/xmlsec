@@ -29,7 +29,6 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/x509.h>
-#include <xmlsec/base64.h>
 #include <xmlsec/bn.h>
 #include <xmlsec/errors.h>
 
@@ -738,7 +737,7 @@ xmlSecMSCngKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Val
                 }
                 x509Value->issuerSerial = xmlSecMSCngASN1IntegerWrite(&(ctx->crt->pCertInfo->SerialNumber));
                 if (x509Value->issuerSerial == NULL) {
-                    xmlSecInternalError("xmlSecMSCngASN1IntegerWrite(X509_get_serialNumber))", xmlSecKeyDataGetName(data));
+                    xmlSecInternalError("xmlSecMSCngASN1IntegerWrite(issuer serial))", xmlSecKeyDataGetName(data));
                    return(-1);
                 }
             }

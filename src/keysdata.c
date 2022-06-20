@@ -1949,12 +1949,11 @@ done:
  * Returns: 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecKeyDataX509XmlWrite(xmlSecKeyDataPtr data, xmlSecSize x509ObjNum, xmlNodePtr node,
-                          xmlSecKeyInfoCtxPtr keyInfoCtx, int base64LineSize,
-                          int addLineBreaks, xmlSecKeyDataX509Write writeFunc) {
+xmlSecKeyDataX509XmlWrite(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx,
+                          int base64LineSize, int addLineBreaks,
+                          xmlSecKeyDataX509Write writeFunc, void* writeFuncContext) {
     xmlSecKeyValueX509 x509Value;
     int x509ValueInitialized = 0;
-    xmlSecSize pos;
     int content;
     int ret;
     int res = -1;
@@ -1962,8 +1961,8 @@ xmlSecKeyDataX509XmlWrite(xmlSecKeyDataPtr data, xmlSecSize x509ObjNum, xmlNodeP
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
-    xmlSecAssert2(writeFunc != NULL, -1);
     xmlSecAssert2(base64LineSize > 0, -1);
+    xmlSecAssert2(writeFunc != NULL, -1);
 
     if(((xmlSecKeyDataTypePublic) & keyInfoCtx->keyReq.keyType) == 0) {
         /* we can only write public key */
@@ -1988,12 +1987,14 @@ xmlSecKeyDataX509XmlWrite(xmlSecKeyDataPtr data, xmlSecSize x509ObjNum, xmlNodeP
     }
     x509ValueInitialized = 1;
 
-    for(pos = 0; pos < x509ObjNum; ++pos) {
-        ret = writeFunc(data, pos, &x509Value, content);
+    while(1) {
+        ret = writeFunc(data, &x509Value, content, writeFuncContext);
         if(ret < 0) {
             xmlSecInternalError("writeFunc",
                 xmlSecKeyDataGetName(data));
             goto done;        
+        } else if (ret == 1) {
+            break;
         }
 
         ret = xmlSecKeyValueX509XmlWrite(&x509Value, node, base64LineSize, addLineBreaks);

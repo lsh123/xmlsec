@@ -51,8 +51,6 @@ XMLSEC_KEY_DATA_STORE_DECLARE(MSCngX509Store, xmlSecMSCngX509StoreCtx)
 static PCCERT_CONTEXT xmlSecMSCngX509FindCertByIssuerNameAndSerial        (HCERTSTORE store,
                                                                            const xmlChar* issuerName,
                                                                            const xmlChar* issuerSerial);
-static PCCERT_CONTEXT xmlSecMSCngX509FindCertBySki                        (HCERTSTORE store,
-                                                                           const xmlChar* ski);
 
 static void
 xmlSecMSCngX509StoreFinalize(xmlSecKeyDataStorePtr store) {
@@ -1013,51 +1011,28 @@ done:
 }
 
 static PCCERT_CONTEXT
-xmlSecMSCngX509FindCertBySki(HCERTSTORE store, const xmlChar* ski) {
-    PCCERT_CONTEXT res = NULL;
-    xmlChar* binSki = NULL;
+xmlSecMSCngX509FindCertBySki(HCERTSTORE store, xmlSecByte* ski, xmlSecSize skiSize) {
     CRYPT_HASH_BLOB blob;
-    xmlSecSize decodedSize;
-    int ret;
 
     xmlSecAssert2(store != 0, NULL);
     xmlSecAssert2(ski != NULL, NULL);
+    xmlSecAssert2(skiSize > 0, NULL);
 
-    binSki = xmlStrdup(ski);
-    if (binSki == NULL) {
-        xmlSecStrdupError(ski, NULL);
-        goto done;
-    }
+    blob.pbData = ski;
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(skiSize, blob.cbData, return(NULL), NULL);
 
-    /* base64 decode "in place" */
-    decodedSize = 0;
-    ret = xmlSecBase64DecodeInPlace(binSki, &decodedSize);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecBase64DecodeInPlace", NULL);
-        goto done;
-    }
-
-    blob.pbData = binSki;
-    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(decodedSize, blob.cbData, goto done, NULL);
-
-    res = CertFindCertificateInStore(store,
+    return(CertFindCertificateInStore(store,
         PKCS_7_ASN_ENCODING | X509_ASN_ENCODING,
         0,
         CERT_FIND_KEY_IDENTIFIER,
         &blob,
-        NULL);
-
-done:
-    if (binSki != NULL) {
-        xmlFree(binSki);
-    }
-
-    return(res);
+        NULL));
 }
 
 static PCCERT_CONTEXT
 xmlSecMSCngX509FindCert(HCERTSTORE store, xmlChar* subjectName,
-        xmlChar* issuerName, xmlChar* issuerSerial, xmlChar* ski) {
+                        xmlChar* issuerName, xmlChar* issuerSerial,
+                        xmlSecByte* ski, xmlSecSize skiSize) {
     PCCERT_CONTEXT cert = NULL;
 
     xmlSecAssert2(store != 0, NULL);
@@ -1080,8 +1055,8 @@ xmlSecMSCngX509FindCert(HCERTSTORE store, xmlChar* subjectName,
         cert = xmlSecMSCngX509FindCertByIssuerNameAndSerial(store, issuerName, issuerSerial);
     }
 
-    if(ski != NULL) {
-        cert = xmlSecMSCngX509FindCertBySki(store, ski);
+    if((ski != NULL) && (skiSize > 0)) {
+        cert = xmlSecMSCngX509FindCertBySki(store, ski, skiSize);
     }
 
     return(cert);
@@ -1103,27 +1078,68 @@ xmlSecMSCngX509FindCert(HCERTSTORE store, xmlChar* subjectName,
  */
 PCCERT_CONTEXT
 xmlSecMSCngX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
-    xmlChar *issuerName, xmlChar *issuerSerial, xmlChar *ski,
-    xmlSecKeyInfoCtx* keyInfoCtx) {
+                            xmlChar* issuerName, xmlChar* issuerSerial, xmlChar* ski,
+                            xmlSecKeyInfoCtx* keyInfoCtx) {
+    if (ski != NULL) {
+        xmlSecSize skiDecodedSize = 0;
+        int ret;
+
+        /* our usual trick with base64 decode */
+        ret = xmlSecBase64DecodeInPlace(ski, &skiDecodedSize);
+        if (ret < 0) {
+            xmlSecInternalError2("xmlSecBase64DecodeInPlace", NULL,
+                "ski=%s", xmlSecErrorsSafeString(ski));
+            return(NULL);
+        }
+
+        return(xmlSecMSCngX509StoreFindCert_ex(store, subjectName, issuerName, issuerSerial,
+            (xmlSecByte*)ski, skiDecodedSize, keyInfoCtx));
+    } else {
+        return(xmlSecMSCngX509StoreFindCert_ex(store, subjectName, issuerName, issuerSerial,
+            NULL, 0, keyInfoCtx));
+
+    }
+}
+
+/**
+ * xmlSecMSCngX509StoreFindCert_ex:
+ * @store:          the pointer to X509 key data store klass.
+ * @subjectName:    the desired certificate name.
+ * @issuerName:     the desired certificate issuer name.
+ * @issuerSerial:   the desired certificate issuer serial number.
+ * @ski:            the desired certificate SKI.
+ * @skiSize:        the desired certificate SKI size.
+ * @keyInfoCtx:     the pointer to <dsig:KeyInfo/> element processing context.
+ *
+ * Searches @store for a certificate that matches given criteria.
+ *
+ * Returns: pointer to found certificate or NULL if certificate is not found
+ * or an error occurs.
+ */
+PCCERT_CONTEXT
+xmlSecMSCngX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar* subjectName,
+                                xmlChar* issuerName, xmlChar* issuerSerial,
+                                xmlSecByte* ski, xmlSecSize skiSize,
+                                xmlSecKeyInfoCtx* keyInfoCtx ATTRIBUTE_UNUSED) {
     xmlSecMSCngX509StoreCtxPtr ctx;
     PCCERT_CONTEXT cert = NULL;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCngX509StoreId), NULL);
-    xmlSecAssert2(keyInfoCtx != NULL, NULL);
+    UNREFERENCED_PARAMETER(keyInfoCtx);
 
     ctx = xmlSecMSCngX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, NULL);
 
     /* search untrusted certs store */
-    if(ctx->untrusted != NULL) {
+    if (ctx->untrusted != NULL) {
         cert = xmlSecMSCngX509FindCert(ctx->untrusted, subjectName,
-            issuerName, issuerSerial, ski);
+            issuerName, issuerSerial, ski, skiSize);
     }
 
     /* search trusted certs store */
-    if(cert == NULL && ctx->trusted != NULL) {
+    if (cert == NULL && ctx->trusted != NULL) {
         cert = xmlSecMSCngX509FindCert(ctx->trusted, subjectName,
-            issuerName, issuerSerial, ski);
+            issuerName, issuerSerial, ski, skiSize);
     }
 
     return(cert);

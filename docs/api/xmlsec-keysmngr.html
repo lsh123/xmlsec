@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>keysmngr: XML Security Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
 <link rel="up" href="xmlsec-ref.html" title="XML Security Core Library API Reference.">
 <link rel="prev" href="xmlsec-keys.html" title="keys">
 <link rel="next" href="xmlsec-list.html" title="list">
-<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -195,6 +195,14 @@
 </tr>
 <tr>
 <td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysmngr.html#xmlSecSimpleKeysStoreAdoptKeyFunc" title="xmlSecSimpleKeysStoreAdoptKeyFunc ()">*xmlSecSimpleKeysStoreAdoptKeyFunc</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
 <font><span class="returnvalue">xmlSecKeyStoreId</span></font>
 </td>
 <td class="function_name">
@@ -215,6 +223,14 @@
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-keysmngr.html#xmlSecSimpleKeysStoreLoad" title="xmlSecSimpleKeysStoreLoad ()">xmlSecSimpleKeysStoreLoad</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-keysmngr.html#xmlSecSimpleKeysStoreLoad-ex" title="xmlSecSimpleKeysStoreLoad_ex ()">xmlSecSimpleKeysStoreLoad_ex</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -863,6 +879,13 @@ the returned key using <a class="link" href="xmlsec-keys.html#xmlSecKeyDestroy" 
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecSimpleKeysStoreAdoptKeyFunc"></a><h3>xmlSecSimpleKeysStoreAdoptKeyFunc ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+<span class="c_punctuation">(</span>*xmlSecSimpleKeysStoreAdoptKeyFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeyStore" title="struct xmlSecKeyStore"><span class="type">xmlSecKeyStorePtr</span></a> store</code></em>,
+                                      <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecSimpleKeysStoreGetKlass"></a><h3>xmlSecSimpleKeysStoreGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyStoreId</span></font>
 xmlSecSimpleKeysStoreGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
@@ -945,6 +968,52 @@ xmlSecSimpleKeysStoreLoad (<em class="parameter"><code><a class="link" href="xml
 </div>
 <div class="refsect3">
 <a name="xmlSecSimpleKeysStoreLoad.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecSimpleKeysStoreLoad-ex"></a><h3>xmlSecSimpleKeysStoreLoad_ex ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecSimpleKeysStoreLoad_ex (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeyStore" title="struct xmlSecKeyStore"><span class="type">xmlSecKeyStorePtr</span></a> store</code></em>,
+                              <em class="parameter"><code>const <font><span class="type">char</span></font> *uri</code></em>,
+                              <em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> keysMngr</code></em>,
+                              <em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecSimpleKeysStoreAdoptKeyFunc" title="xmlSecSimpleKeysStoreAdoptKeyFunc ()"><span class="type">xmlSecSimpleKeysStoreAdoptKeyFunc</span></a> adoptKeyFunc</code></em>);</pre>
+<p>Reads keys from an XML file.</p>
+<div class="refsect3">
+<a name="xmlSecSimpleKeysStoreLoad-ex.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>store</p></td>
+<td class="parameter_description"><p>the pointer to simple keys store.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>uri</p></td>
+<td class="parameter_description"><p>the filename.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>keysMngr</p></td>
+<td class="parameter_description"><p>the pointer to associated keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>adoptKeyFunc</p></td>
+<td class="parameter_description"><p>the callback to add the key to keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecSimpleKeysStoreLoad-ex.returns"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -1187,6 +1256,6 @@ if an error occurs.</p>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.27</div>
+<hr>Generated by GTK-Doc V1.33.1</div>
 </body>
 </html>

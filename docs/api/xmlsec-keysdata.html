@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>keysdata: XML Security Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
 <link rel="up" href="xmlsec-ref.html" title="XML Security Core Library API Reference.">
 <link rel="prev" href="xmlsec-keyinfo.html" title="keyinfo">
 <link rel="next" href="xmlsec-keys.html" title="keys">
-<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -319,6 +319,30 @@
 </tr>
 <tr>
 <td class="function_type">
+<a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueGetSize" title="xmlSecKeyDataBinaryValueGetSize ()">xmlSecKeyDataBinaryValueGetSize</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="xmlsec-buffer.html#xmlSecBuffer" title="struct xmlSecBuffer"><span class="returnvalue">xmlSecBufferPtr</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueGetBuffer" title="xmlSecKeyDataBinaryValueGetBuffer ()">xmlSecKeyDataBinaryValueGetBuffer</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueSetBuffer" title="xmlSecKeyDataBinaryValueSetBuffer ()">xmlSecKeyDataBinaryValueSetBuffer</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
 <font><span class="returnvalue">xmlSecPtrListId</span></font>
 </td>
 <td class="function_name">
@@ -379,102 +403,6 @@
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdListDebugXmlDump" title="xmlSecKeyDataIdListDebugXmlDump ()">xmlSecKeyDataIdListDebugXmlDump</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">int</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueInitialize" title="xmlSecKeyDataBinaryValueInitialize ()">xmlSecKeyDataBinaryValueInitialize</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">int</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueDuplicate" title="xmlSecKeyDataBinaryValueDuplicate ()">xmlSecKeyDataBinaryValueDuplicate</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">void</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueFinalize" title="xmlSecKeyDataBinaryValueFinalize ()">xmlSecKeyDataBinaryValueFinalize</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">int</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueXmlRead" title="xmlSecKeyDataBinaryValueXmlRead ()">xmlSecKeyDataBinaryValueXmlRead</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">int</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueXmlWrite" title="xmlSecKeyDataBinaryValueXmlWrite ()">xmlSecKeyDataBinaryValueXmlWrite</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">int</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueBinRead" title="xmlSecKeyDataBinaryValueBinRead ()">xmlSecKeyDataBinaryValueBinRead</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">int</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueBinWrite" title="xmlSecKeyDataBinaryValueBinWrite ()">xmlSecKeyDataBinaryValueBinWrite</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">void</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueDebugDump" title="xmlSecKeyDataBinaryValueDebugDump ()">xmlSecKeyDataBinaryValueDebugDump</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">void</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueDebugXmlDump" title="xmlSecKeyDataBinaryValueDebugXmlDump ()">xmlSecKeyDataBinaryValueDebugXmlDump</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueGetSize" title="xmlSecKeyDataBinaryValueGetSize ()">xmlSecKeyDataBinaryValueGetSize</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<a class="link" href="xmlsec-buffer.html#xmlSecBuffer" title="struct xmlSecBuffer"><span class="returnvalue">xmlSecBufferPtr</span></a>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueGetBuffer" title="xmlSecKeyDataBinaryValueGetBuffer ()">xmlSecKeyDataBinaryValueGetBuffer</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">int</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueSetBuffer" title="xmlSecKeyDataBinaryValueSetBuffer ()">xmlSecKeyDataBinaryValueSetBuffer</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -685,10 +613,6 @@
 <tr>
 <td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdListId" title="xmlSecKeyDataIdListId">xmlSecKeyDataIdListId</a></td>
-</tr>
-<tr>
-<td class="define_keyword">#define</td>
-<td class="function_name"><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinarySize" title="xmlSecKeyDataBinarySize">xmlSecKeyDataBinarySize</a></td>
 </tr>
 <tr>
 <td class="datatype_keyword">struct</td>
@@ -1840,6 +1764,100 @@ X509 data identifier is the subject of the verified cert).</p>
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecKeyDataBinaryValueGetSize"></a><h3>xmlSecKeyDataBinaryValueGetSize ()</h3>
+<pre class="programlisting"><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
+xmlSecKeyDataBinaryValueGetSize (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+<p>Gets the binary key data size.</p>
+<div class="refsect3">
+<a name="xmlSecKeyDataBinaryValueGetSize.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>the pointer to binary key data.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecKeyDataBinaryValueGetSize.returns"></a><h4>Returns</h4>
+<p> binary key data size in bits.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecKeyDataBinaryValueGetBuffer"></a><h3>xmlSecKeyDataBinaryValueGetBuffer ()</h3>
+<pre class="programlisting"><a class="link" href="xmlsec-buffer.html#xmlSecBuffer" title="struct xmlSecBuffer"><span class="returnvalue">xmlSecBufferPtr</span></a>
+xmlSecKeyDataBinaryValueGetBuffer (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+<p>Gets the binary key data buffer.</p>
+<div class="refsect3">
+<a name="xmlSecKeyDataBinaryValueGetBuffer.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>the pointer to binary key data.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecKeyDataBinaryValueGetBuffer.returns"></a><h4>Returns</h4>
+<p> pointer to binary key data buffer.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecKeyDataBinaryValueSetBuffer"></a><h3>xmlSecKeyDataBinaryValueSetBuffer ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecKeyDataBinaryValueSetBuffer (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
+                                   <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *buf</code></em>,
+                                   <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> bufSize</code></em>);</pre>
+<p>Sets the value of <em class="parameter"><code>data</code></em>
+ to <em class="parameter"><code>buf</code></em>
+.</p>
+<div class="refsect3">
+<a name="xmlSecKeyDataBinaryValueSetBuffer.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>the pointer to binary key data.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>buf</p></td>
+<td class="parameter_description"><p>the pointer to binary buffer.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>bufSize</p></td>
+<td class="parameter_description"><p>the binary buffer size.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecKeyDataBinaryValueSetBuffer.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecKeyDataListGetKlass"></a><h3>xmlSecKeyDataListGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecPtrListId</span></font>
 xmlSecKeyDataListGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
@@ -2100,454 +2118,6 @@ xmlSecKeyDataIdListDebugXmlDump (<em class="parameter"><code><a class="link" hre
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataBinaryValueInitialize"></a><h3>xmlSecKeyDataBinaryValueInitialize ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecKeyDataBinaryValueInitialize (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
-<p>Initializes key data.</p>
-<div class="refsect3">
-<a name="xmlSecKeyDataBinaryValueInitialize.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>data</p></td>
-<td class="parameter_description"><p>the pointer to binary key data.</p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="xmlSecKeyDataBinaryValueInitialize.returns"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="xmlSecKeyDataBinaryValueDuplicate"></a><h3>xmlSecKeyDataBinaryValueDuplicate ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecKeyDataBinaryValueDuplicate (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> dst</code></em>,
-                                   <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> src</code></em>);</pre>
-<p>Copies binary key data from <em class="parameter"><code>src</code></em>
- to <em class="parameter"><code>dst</code></em>
-.</p>
-<div class="refsect3">
-<a name="xmlSecKeyDataBinaryValueDuplicate.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>dst</p></td>
-<td class="parameter_description"><p>the pointer to destination binary key data.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>src</p></td>
-<td class="parameter_description"><p>the pointer to source binary key data.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="xmlSecKeyDataBinaryValueDuplicate.returns"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="xmlSecKeyDataBinaryValueFinalize"></a><h3>xmlSecKeyDataBinaryValueFinalize ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">void</span></font>
-xmlSecKeyDataBinaryValueFinalize (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
-<p>Cleans up binary key data.</p>
-<div class="refsect3">
-<a name="xmlSecKeyDataBinaryValueFinalize.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>data</p></td>
-<td class="parameter_description"><p>the pointer to binary key data.</p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="xmlSecKeyDataBinaryValueXmlRead"></a><h3>xmlSecKeyDataBinaryValueXmlRead ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecKeyDataBinaryValueXmlRead (<em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> id</code></em>,
-                                 <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
-                                 <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
-                                 <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
-<p>Reads binary key data from <em class="parameter"><code>node</code></em>
- to the key by base64 decoding the <em class="parameter"><code>node</code></em>
- content.</p>
-<div class="refsect3">
-<a name="xmlSecKeyDataBinaryValueXmlRead.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>id</p></td>
-<td class="parameter_description"><p>the data klass.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>key</p></td>
-<td class="parameter_description"><p>the pointer to destination key.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>node</p></td>
-<td class="parameter_description"><p>the pointer to an XML node.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>keyInfoCtx</p></td>
-<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> element processing context.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="xmlSecKeyDataBinaryValueXmlRead.returns"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="xmlSecKeyDataBinaryValueXmlWrite"></a><h3>xmlSecKeyDataBinaryValueXmlWrite ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecKeyDataBinaryValueXmlWrite (<em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> id</code></em>,
-                                  <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
-                                  <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
-                                  <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
-<p>Base64 encodes binary key data of klass <em class="parameter"><code>id</code></em>
- from the <em class="parameter"><code>key</code></em>
- and
-sets to the <em class="parameter"><code>node</code></em>
- content.</p>
-<div class="refsect3">
-<a name="xmlSecKeyDataBinaryValueXmlWrite.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>id</p></td>
-<td class="parameter_description"><p>the data klass.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>key</p></td>
-<td class="parameter_description"><p>the pointer to source key.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>node</p></td>
-<td class="parameter_description"><p>the pointer to an XML node.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>keyInfoCtx</p></td>
-<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> element processing context.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="xmlSecKeyDataBinaryValueXmlWrite.returns"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="xmlSecKeyDataBinaryValueBinRead"></a><h3>xmlSecKeyDataBinaryValueBinRead ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecKeyDataBinaryValueBinRead (<em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> id</code></em>,
-                                 <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
-                                 <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *buf</code></em>,
-                                 <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> bufSize</code></em>,
-                                 <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
-<p>Reads binary key data of the klass <em class="parameter"><code>id</code></em>
- from <em class="parameter"><code>buf</code></em>
- to the <em class="parameter"><code>key</code></em>
-.</p>
-<div class="refsect3">
-<a name="xmlSecKeyDataBinaryValueBinRead.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>id</p></td>
-<td class="parameter_description"><p>the data klass.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>key</p></td>
-<td class="parameter_description"><p>the pointer to destination key.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>buf</p></td>
-<td class="parameter_description"><p>the source binary buffer.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>bufSize</p></td>
-<td class="parameter_description"><p>the source binary buffer size.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>keyInfoCtx</p></td>
-<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> element processing context.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="xmlSecKeyDataBinaryValueBinRead.returns"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="xmlSecKeyDataBinaryValueBinWrite"></a><h3>xmlSecKeyDataBinaryValueBinWrite ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecKeyDataBinaryValueBinWrite (<em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> id</code></em>,
-                                  <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
-                                  <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> **buf</code></em>,
-                                  <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> *bufSize</code></em>,
-                                  <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
-<p>Writes binary key data of klass <em class="parameter"><code>id</code></em>
- from the <em class="parameter"><code>key</code></em>
- to <em class="parameter"><code>buf</code></em>
-.</p>
-<div class="refsect3">
-<a name="xmlSecKeyDataBinaryValueBinWrite.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>id</p></td>
-<td class="parameter_description"><p>the data klass.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>key</p></td>
-<td class="parameter_description"><p>the pointer to source key.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>buf</p></td>
-<td class="parameter_description"><p>the destination binary buffer.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>bufSize</p></td>
-<td class="parameter_description"><p>the destination binary buffer size.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>keyInfoCtx</p></td>
-<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> element processing context.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="xmlSecKeyDataBinaryValueBinWrite.returns"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="xmlSecKeyDataBinaryValueDebugDump"></a><h3>xmlSecKeyDataBinaryValueDebugDump ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">void</span></font>
-xmlSecKeyDataBinaryValueDebugDump (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
-                                   <em class="parameter"><code><font><span class="type">FILE</span></font> *output</code></em>);</pre>
-<p>Prints binary key data debug information to <em class="parameter"><code>output</code></em>
-.</p>
-<div class="refsect3">
-<a name="xmlSecKeyDataBinaryValueDebugDump.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>data</p></td>
-<td class="parameter_description"><p>the pointer to binary key data.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>output</p></td>
-<td class="parameter_description"><p>the pointer to output FILE.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="xmlSecKeyDataBinaryValueDebugXmlDump"></a><h3>xmlSecKeyDataBinaryValueDebugXmlDump ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">void</span></font>
-xmlSecKeyDataBinaryValueDebugXmlDump (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
-                                      <em class="parameter"><code><font><span class="type">FILE</span></font> *output</code></em>);</pre>
-<p>Prints binary key data debug information to <em class="parameter"><code>output</code></em>
- in XML format.</p>
-<div class="refsect3">
-<a name="xmlSecKeyDataBinaryValueDebugXmlDump.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>data</p></td>
-<td class="parameter_description"><p>the pointer to binary key data.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>output</p></td>
-<td class="parameter_description"><p>the pointer to output FILE.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="xmlSecKeyDataBinaryValueGetSize"></a><h3>xmlSecKeyDataBinaryValueGetSize ()</h3>
-<pre class="programlisting"><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
-xmlSecKeyDataBinaryValueGetSize (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
-<p>Gets the binary key data size.</p>
-<div class="refsect3">
-<a name="xmlSecKeyDataBinaryValueGetSize.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>data</p></td>
-<td class="parameter_description"><p>the pointer to binary key data.</p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="xmlSecKeyDataBinaryValueGetSize.returns"></a><h4>Returns</h4>
-<p> binary key data size in bits.</p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="xmlSecKeyDataBinaryValueGetBuffer"></a><h3>xmlSecKeyDataBinaryValueGetBuffer ()</h3>
-<pre class="programlisting"><a class="link" href="xmlsec-buffer.html#xmlSecBuffer" title="struct xmlSecBuffer"><span class="returnvalue">xmlSecBufferPtr</span></a>
-xmlSecKeyDataBinaryValueGetBuffer (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
-<p>Gets the binary key data buffer.</p>
-<div class="refsect3">
-<a name="xmlSecKeyDataBinaryValueGetBuffer.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>data</p></td>
-<td class="parameter_description"><p>the pointer to binary key data.</p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="xmlSecKeyDataBinaryValueGetBuffer.returns"></a><h4>Returns</h4>
-<p> pointer to binary key data buffer.</p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="xmlSecKeyDataBinaryValueSetBuffer"></a><h3>xmlSecKeyDataBinaryValueSetBuffer ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecKeyDataBinaryValueSetBuffer (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
-                                   <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *buf</code></em>,
-                                   <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> bufSize</code></em>);</pre>
-<p>Sets the value of <em class="parameter"><code>data</code></em>
- to <em class="parameter"><code>buf</code></em>
-.</p>
-<div class="refsect3">
-<a name="xmlSecKeyDataBinaryValueSetBuffer.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>data</p></td>
-<td class="parameter_description"><p>the pointer to binary key data.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>buf</p></td>
-<td class="parameter_description"><p>the pointer to binary buffer.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>bufSize</p></td>
-<td class="parameter_description"><p>the binary buffer size.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="xmlSecKeyDataBinaryValueSetBuffer.returns"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
 <a name="xmlSecKeyDataStoreCreate"></a><h3>xmlSecKeyDataStoreCreate ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStore" title="struct xmlSecKeyDataStore"><span class="returnvalue">xmlSecKeyDataStorePtr</span></a>
 xmlSecKeyDataStoreCreate (<em class="parameter"><code><font><span class="type">xmlSecKeyDataStoreId</span></font> id</code></em>);</pre>
@@ -2790,12 +2360,20 @@ xmlSecKeyDataStorePtrListGetKlass (<em class="parameter"><code><span class="type
 <a name="xmlSecImportSetPersistKey"></a><h3>xmlSecImportSetPersistKey ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
 xmlSecImportSetPersistKey (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Sets global flag to import keys to persistent storage (MSCrypto and MSCNG).
+Also see PKCS12_NO_PERSIST_KEY.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecImportGetPersistKey"></a><h3>xmlSecImportGetPersistKey ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecImportGetPersistKey (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets global flag to import keys to persistent storage (MSCrypto and MSCNG).
+Also see PKCS12_NO_PERSIST_KEY.</p>
+<div class="refsect3">
+<a name="xmlSecImportGetPersistKey.returns"></a><h4>Returns</h4>
+<p> 1 if keys should be imported into persistent storage and 0 otherwise.</p>
+</div>
 </div>
 </div>
 <div class="refsect1">
@@ -3245,12 +2823,6 @@ in any format.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataBinarySize"></a><h3>xmlSecKeyDataBinarySize</h3>
-<pre class="programlisting">#define             xmlSecKeyDataBinarySize</pre>
-<p>The binary key data object size.</p>
-</div>
-<hr>
-<div class="refsect2">
 <a name="xmlSecKeyDataStore"></a><h3>struct xmlSecKeyDataStore</h3>
 <pre class="programlisting">struct xmlSecKeyDataStore {
     xmlSecKeyDataStoreId                id;
@@ -3376,6 +2948,6 @@ information about trusted (root) certificates.</p>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.27</div>
+<hr>Generated by GTK-Doc V1.33.1</div>
 </body>
 </html>

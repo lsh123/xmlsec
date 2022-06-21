@@ -521,11 +521,12 @@ struct _xmlSecCryptoDLFunctions {
 
 /**
  * UNREFERENCED_PARAMETER:
+ * @param:    the parameter without references.
  *
  * Macro used to signal unused function parameters
  */
 #ifndef UNREFERENCED_PARAMETER
-#define UNREFERENCED_PARAMETER(x)   ((void)(x))
+#define UNREFERENCED_PARAMETER(param)   ((void)(param))
 #endif /* UNREFERENCED_PARAMETER */
 
 /***********************************************************************

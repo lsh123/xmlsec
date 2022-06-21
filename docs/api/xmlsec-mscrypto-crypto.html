@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>crypto: XML Security Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
 <link rel="up" href="xmlsec-mscrypto-ref.html" title="XML Security Library for Microsoft Crypto API Reference.">
 <link rel="prev" href="xmlsec-mscrypto-certkeys.html" title="certkeys">
 <link rel="next" href="xmlsec-mscrypto-keysstore.html" title="keysstore">
-<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -373,22 +373,6 @@
 </tr>
 <tr>
 <td class="function_type">
-<font><span class="returnvalue">int</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoHmacGetMinOutputLength" title="xmlSecMSCryptoHmacGetMinOutputLength ()">xmlSecMSCryptoHmacGetMinOutputLength</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">void</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoHmacSetMinOutputLength" title="xmlSecMSCryptoHmacSetMinOutputLength ()">xmlSecMSCryptoHmacSetMinOutputLength</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
 <font><span class="returnvalue">xmlSecKeyDataId</span></font>
 </td>
 <td class="function_name">
@@ -416,7 +400,23 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
+<a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformHmacRipemd160GetKlass" title="xmlSecMSCryptoTransformHmacRipemd160GetKlass ()">xmlSecMSCryptoTransformHmacRipemd160GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
 <a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformHmacSha1GetKlass" title="xmlSecMSCryptoTransformHmacSha1GetKlass ()">xmlSecMSCryptoTransformHmacSha1GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformHmacSha224GetKlass" title="xmlSecMSCryptoTransformHmacSha224GetKlass ()">xmlSecMSCryptoTransformHmacSha224GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -600,7 +600,15 @@
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformHmacRipemd160Id" title="xmlSecMSCryptoTransformHmacRipemd160Id">xmlSecMSCryptoTransformHmacRipemd160Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformHmacSha1Id" title="xmlSecMSCryptoTransformHmacSha1Id">xmlSecMSCryptoTransformHmacSha1Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformHmacSha224Id" title="xmlSecMSCryptoTransformHmacSha224Id">xmlSecMSCryptoTransformHmacSha224Id</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -1196,39 +1204,6 @@ xmlSecMSCryptoTransformKWDes3GetKlass (<em class="parameter"><code><span class="
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCryptoHmacGetMinOutputLength"></a><h3>xmlSecMSCryptoHmacGetMinOutputLength ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecMSCryptoHmacGetMinOutputLength (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>Gets the value of min HMAC length.</p>
-<div class="refsect3">
-<a name="xmlSecMSCryptoHmacGetMinOutputLength.returns"></a><h4>Returns</h4>
-<p> the min HMAC output length</p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="xmlSecMSCryptoHmacSetMinOutputLength"></a><h3>xmlSecMSCryptoHmacSetMinOutputLength ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">void</span></font>
-xmlSecMSCryptoHmacSetMinOutputLength (<em class="parameter"><code><font><span class="type">int</span></font> min_length</code></em>);</pre>
-<p>Sets the min HMAC output length</p>
-<div class="refsect3">
-<a name="xmlSecMSCryptoHmacSetMinOutputLength.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>min_length</p></td>
-<td class="parameter_description"><p>the new min length</p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-</div>
-<hr>
-<div class="refsect2">
 <a name="xmlSecMSCryptoKeyDataHmacGetKlass"></a><h3>xmlSecMSCryptoKeyDataHmacGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
 xmlSecMSCryptoKeyDataHmacGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
@@ -1292,6 +1267,18 @@ xmlSecMSCryptoTransformHmacMd5GetKlass
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecMSCryptoTransformHmacRipemd160GetKlass"></a><h3>xmlSecMSCryptoTransformHmacRipemd160GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCryptoTransformHmacRipemd160GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The HMAC-RIPEMD160 transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCryptoTransformHmacRipemd160GetKlass.returns"></a><h4>Returns</h4>
+<p> the HMAC-RIPEMD160 transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecMSCryptoTransformHmacSha1GetKlass"></a><h3>xmlSecMSCryptoTransformHmacSha1GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecMSCryptoTransformHmacSha1GetKlass
@@ -1300,6 +1287,18 @@ xmlSecMSCryptoTransformHmacSha1GetKlass
 <div class="refsect3">
 <a name="xmlSecMSCryptoTransformHmacSha1GetKlass.returns"></a><h4>Returns</h4>
 <p> the HMAC-SHA1 transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCryptoTransformHmacSha224GetKlass"></a><h3>xmlSecMSCryptoTransformHmacSha224GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCryptoTransformHmacSha224GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The HMAC-SHA224 transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCryptoTransformHmacSha224GetKlass.returns"></a><h4>Returns</h4>
+<p> the HMAC-SHA224 transform klass.</p>
 </div>
 </div>
 <hr>
@@ -1549,6 +1548,7 @@ xmlSecMSCryptoTransformHmacSha512GetKlass
 <div class="refsect2">
 <a name="xmlSecMSCryptoKeyDataHmacId"></a><h3>xmlSecMSCryptoKeyDataHmacId</h3>
 <pre class="programlisting">#define             xmlSecMSCryptoKeyDataHmacId</pre>
+<div class="warning"><p><code class="literal">xmlSecMSCryptoKeyDataHmacId</code> is deprecated and should not be used in newly-written code.</p></div>
 <p>The DHMAC key klass.</p>
 </div>
 <hr>
@@ -1559,9 +1559,21 @@ xmlSecMSCryptoTransformHmacSha512GetKlass
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecMSCryptoTransformHmacRipemd160Id"></a><h3>xmlSecMSCryptoTransformHmacRipemd160Id</h3>
+<pre class="programlisting">#define             xmlSecMSCryptoTransformHmacRipemd160Id</pre>
+<p>The HMAC with RipeMD160 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecMSCryptoTransformHmacSha1Id"></a><h3>xmlSecMSCryptoTransformHmacSha1Id</h3>
 <pre class="programlisting">#define             xmlSecMSCryptoTransformHmacSha1Id</pre>
 <p>The HMAC with SHA1 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCryptoTransformHmacSha224Id"></a><h3>xmlSecMSCryptoTransformHmacSha224Id</h3>
+<pre class="programlisting">#define             xmlSecMSCryptoTransformHmacSha224Id</pre>
+<p>The HMAC with SHA224 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1584,6 +1596,6 @@ xmlSecMSCryptoTransformHmacSha512GetKlass
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.27</div>
+<hr>Generated by GTK-Doc V1.33.1</div>
 </body>
 </html>

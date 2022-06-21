@@ -32,17 +32,14 @@
 #include <certdb.h>
 #include <pk11func.h>
 
-#include <libxml/tree.h>
-
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/xmltree.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/x509.h>
-#include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/xmltree.h>
 
 #include <xmlsec/nss/crypto.h>
 #include <xmlsec/nss/x509.h>

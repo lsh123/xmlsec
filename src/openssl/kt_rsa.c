@@ -26,15 +26,13 @@
 #include <openssl/sha.h>
 #include <openssl/objects.h>
 
-#include <libxml/tree.h>
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
-#include <xmlsec/xmltree.h>
-#include <xmlsec/keys.h>
-#include <xmlsec/transforms.h>
-#include <xmlsec/strings.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/keys.h>
+#include <xmlsec/private.h>
+#include <xmlsec/strings.h>
+#include <xmlsec/transforms.h>
 
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
@@ -47,6 +45,7 @@
 #endif /* XMLSEC_OPENSSL_API_300 */
 
 #include "../cast_helpers.h"
+#include "../transform_helpers.h"
 
 #ifdef OPENSSL_IS_BORINGSSL
 
@@ -117,8 +116,7 @@ static int      xmlSecOpenSSLRsaPkcs1SetKey                     (xmlSecTransform
 static int      xmlSecOpenSSLRsaPkcs1Execute                    (xmlSecTransformPtr transform,
                                                                  int last,
                                                                  xmlSecTransformCtxPtr transformCtx);
-static int      xmlSecOpenSSLRsaPkcs1Process                    (xmlSecTransformPtr transform,
-                                                                 xmlSecTransformCtxPtr transformCtx);
+static int      xmlSecOpenSSLRsaPkcs1Process                    (xmlSecTransformPtr transform);
 
 static xmlSecTransformKlass xmlSecOpenSSLRsaPkcs1Klass = {
     /* klass/object sizes */
@@ -316,14 +314,15 @@ xmlSecOpenSSLRsaPkcs1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 }
 
 static int
-xmlSecOpenSSLRsaPkcs1Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
+xmlSecOpenSSLRsaPkcs1Execute(xmlSecTransformPtr transform, int last,
+                             xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
     xmlSecOpenSSLRsaPkcs1CtxPtr ctx;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaPkcs1Id), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLRsaPkcs1Size), -1);
-    xmlSecAssert2(transformCtx != NULL, -1);
+    UNREFERENCED_PARAMETER(transformCtx);
 
     ctx = xmlSecOpenSSLRsaPkcs1GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
@@ -336,7 +335,7 @@ xmlSecOpenSSLRsaPkcs1Execute(xmlSecTransformPtr transform, int last, xmlSecTrans
     if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
         /* just do nothing */
     } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
-        ret = xmlSecOpenSSLRsaPkcs1Process(transform, transformCtx);
+        ret = xmlSecOpenSSLRsaPkcs1Process(transform);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLRsaPkcs1Process",
                                 xmlSecTransformGetName(transform));
@@ -354,7 +353,7 @@ xmlSecOpenSSLRsaPkcs1Execute(xmlSecTransformPtr transform, int last, xmlSecTrans
 }
 
 static int
-xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr transformCtx) {
+xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform) {
     xmlSecOpenSSLRsaPkcs1CtxPtr ctx;
     xmlSecBufferPtr in, out;
     xmlSecSize inSize, outSize;
@@ -369,7 +368,6 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaPkcs1Id), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLRsaPkcs1Size), -1);
-    xmlSecAssert2(transformCtx != NULL, -1);
 
     ctx = xmlSecOpenSSLRsaPkcs1GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
@@ -514,8 +512,7 @@ static int      xmlSecOpenSSLRsaOaepSetKey                      (xmlSecTransform
 static int      xmlSecOpenSSLRsaOaepExecute                     (xmlSecTransformPtr transform,
                                                                  int last,
                                                                  xmlSecTransformCtxPtr transformCtx);
-static int      xmlSecOpenSSLRsaOaepProcess                     (xmlSecTransformPtr transform,
-                                                                 xmlSecTransformCtxPtr transformCtx);
+static int      xmlSecOpenSSLRsaOaepProcess                     (xmlSecTransformPtr transform);
 
 static xmlSecTransformKlass xmlSecOpenSSLRsaOaepKlass = {
     /* klass/object sizes */
@@ -603,60 +600,39 @@ xmlSecOpenSSLRsaOaepFinalize(xmlSecTransformPtr transform) {
 }
 
 static int
-xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
+xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
+                             xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
     xmlSecOpenSSLRsaOaepCtxPtr ctx;
-    xmlNodePtr cur;
+    xmlChar* algorithm = NULL;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaOaepId), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLRsaOaepSize), -1);
     xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(transformCtx != NULL, -1);
+    UNREFERENCED_PARAMETER(transformCtx);
 
     ctx = xmlSecOpenSSLRsaOaepGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(xmlSecBufferGetSize(&(ctx->oaepParams)) == 0, -1);
 
-    cur = xmlSecGetNextElementNode(node->children);
-    while(cur != NULL) {
-        if(xmlSecCheckNodeName(cur,  xmlSecNodeRsaOAEPparams, xmlSecEncNs)) {
-            ret = xmlSecBufferBase64NodeContentRead(&(ctx->oaepParams), cur);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecBufferBase64NodeContentRead",
-                                    xmlSecTransformGetName(transform));
-                return(-1);
-            }
-        } else if(xmlSecCheckNodeName(cur,  xmlSecNodeDigestMethod, xmlSecDSigNs)) {
-            xmlChar* algorithm;
-
-            /* Algorithm attribute is required */
-            algorithm = xmlGetProp(cur, xmlSecAttrAlgorithm);
-            if(algorithm == NULL) {
-                xmlSecInvalidNodeAttributeError(cur, xmlSecAttrAlgorithm,
-                                                xmlSecTransformGetName(transform),
-                                                "empty");
-                return(-1);
-            }
-
-            /* for now we support only sha1 */
-            if(xmlStrcmp(algorithm, xmlSecHrefSha1) != 0) {
-                xmlSecInvalidTransfromError2(transform,
-                                "digest algorithm=\"%s\" is not supported for rsa/oaep",
-                                xmlSecErrorsSafeString(algorithm));
-                xmlFree(algorithm);
-                return(-1);
-            }
-            xmlFree(algorithm);
-        } else {
-            /* not found */
-            xmlSecUnexpectedNodeError(cur, xmlSecTransformGetName(transform));
-            return(-1);
-        }
-
-        /* next node */
-        cur = xmlSecGetNextElementNode(cur->next);
+    ret = xmlSecTransformRsaOaepReadParams(node, &(ctx->oaepParams), &algorithm);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecTransformRsaOaepReadParams",
+            xmlSecTransformGetName(transform));
+        return(-1);
     }
 
+    /* for now we support only sha1 */
+    if ((algorithm != NULL) && (xmlStrcmp(algorithm, xmlSecHrefSha1) != 0)) {
+        xmlSecInvalidTransfromError2(transform,
+            "digest algorithm=\"%s\" is not supported for rsa/oaep",
+            xmlSecErrorsSafeString(algorithm));
+        xmlFree(algorithm);
+        return(-1);
+    }
+    xmlFree(algorithm);
+
+    /* done */
     return(0);
 }
 
@@ -785,14 +761,15 @@ xmlSecOpenSSLRsaOaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 }
 
 static int
-xmlSecOpenSSLRsaOaepExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
+xmlSecOpenSSLRsaOaepExecute(xmlSecTransformPtr transform, int last,
+                            xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
     xmlSecOpenSSLRsaOaepCtxPtr ctx;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaOaepId), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLRsaOaepSize), -1);
-    xmlSecAssert2(transformCtx != NULL, -1);
+    UNREFERENCED_PARAMETER(transformCtx);
 
     ctx = xmlSecOpenSSLRsaOaepGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
@@ -805,7 +782,7 @@ xmlSecOpenSSLRsaOaepExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
     if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
         /* just do nothing */
     } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
-        ret = xmlSecOpenSSLRsaOaepProcess(transform, transformCtx);
+        ret = xmlSecOpenSSLRsaOaepProcess(transform);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLRsaOaepProcess",
                                 xmlSecTransformGetName(transform));
@@ -888,7 +865,7 @@ done:
 
 
 static int
-xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr transformCtx) {
+xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform) {
     xmlSecOpenSSLRsaOaepCtxPtr ctx;
     xmlSecSize paramsSize;
     xmlSecBufferPtr in, out;
@@ -904,7 +881,6 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaOaepId), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLRsaOaepSize), -1);
-    xmlSecAssert2(transformCtx != NULL, -1);
 
     ctx = xmlSecOpenSSLRsaOaepGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);

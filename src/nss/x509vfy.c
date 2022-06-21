@@ -27,16 +27,14 @@
 #include <cert.h>
 #include <secerr.h>
 
-#include <libxml/tree.h>
-
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/private.h>
+#include <xmlsec/xmltree.h>
 
 #include <xmlsec/nss/crypto.h>
 #include <xmlsec/nss/x509.h>

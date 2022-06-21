@@ -2627,7 +2627,8 @@ void xmlSecTransformHmacSetMinOutputBitsSize(xmlSecSize val) {
  *
  * <!ELEMENT HMACOutputLength (#PCDATA)>
  */
-int xmlSecTransformHmacReadOutputBitsSize(xmlNodePtr node, xmlSecSize defaultSize, xmlSecSize* res) {
+int
+xmlSecTransformHmacReadOutputBitsSize(xmlNodePtr node, xmlSecSize defaultSize, xmlSecSize* res) {
     xmlNodePtr cur;
 
     xmlSecAssert2(node != NULL, -1);
@@ -2669,3 +2670,55 @@ int xmlSecTransformHmacReadOutputBitsSize(xmlNodePtr node, xmlSecSize defaultSiz
 
 #endif /* XMLSEC_NO_HMAC */
 
+#ifndef XMLSEC_NO_RSA
+
+int
+xmlSecTransformRsaOaepReadParams(xmlNodePtr node, xmlSecBufferPtr params, xmlChar** algorithm) {
+    xmlChar* alg = NULL;
+    xmlNodePtr cur;
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(params != NULL, -1);
+    xmlSecAssert2(algorithm != NULL, -1);
+
+    cur = xmlSecGetNextElementNode(node->children);
+    while (cur != NULL) {
+        if (xmlSecCheckNodeName(cur, xmlSecNodeRsaOAEPparams, xmlSecEncNs)) {
+            ret = xmlSecBufferBase64NodeContentRead(params, cur);
+            if (ret < 0) {
+                xmlSecInternalError("xmlSecBufferBase64NodeContentRead", NULL);
+                goto done;
+            }
+        } else if (xmlSecCheckNodeName(cur, xmlSecNodeDigestMethod, xmlSecDSigNs)) {
+            /* Algorithm attribute is required */
+            alg = xmlGetProp(cur, xmlSecAttrAlgorithm);
+            if (alg == NULL) {
+                xmlSecInvalidNodeAttributeError(cur, xmlSecAttrAlgorithm, NULL, "empty");
+                goto done;
+            }
+        } else {
+            /* node not recognized */
+            xmlSecUnexpectedNodeError(cur, NULL);
+            goto done;
+        }
+
+        /* next node */
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* success */
+    (*algorithm) = alg;
+    alg = NULL;
+    res = 0;
+
+done:
+    /* cleanup */
+    if (alg != NULL) {
+        xmlFree(alg);
+    }
+    return(res);
+}
+
+#endif /* XMLSEC_NO_RSA */

@@ -19,8 +19,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <libxml/tree.h>
-
 #include <openssl/evp.h>
 #include <openssl/rand.h>
 #include <openssl/pem.h>

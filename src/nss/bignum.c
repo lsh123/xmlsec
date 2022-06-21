@@ -22,8 +22,6 @@
 #include <nss.h>
 #include <secitem.h>
 
-#include <libxml/tree.h>
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/buffer.h>

@@ -20,7 +20,6 @@
 #include <string.h>
 
 #include <openssl/bn.h>
-#include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>

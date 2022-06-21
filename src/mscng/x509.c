@@ -24,17 +24,17 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/base64.h>
-#include <xmlsec/xmltree.h>
+#include <xmlsec/bn.h>
+#include <xmlsec/errors.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/keysmngr.h>
+#include <xmlsec/xmltree.h>
 #include <xmlsec/x509.h>
-#include <xmlsec/bn.h>
-#include <xmlsec/errors.h>
 
+#include <xmlsec/mscng/certkeys.h>
 #include <xmlsec/mscng/crypto.h>
 #include <xmlsec/mscng/x509.h>
-#include <xmlsec/mscng/certkeys.h>
 
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"

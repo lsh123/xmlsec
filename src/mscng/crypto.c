@@ -28,8 +28,8 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/dl.h>
-#include <xmlsec/xmltree.h>
 #include <xmlsec/private.h>
+#include <xmlsec/xmltree.h>
 
 #include <xmlsec/mscng/app.h>
 #include <xmlsec/mscng/crypto.h>

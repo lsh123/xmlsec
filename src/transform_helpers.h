@@ -29,4 +29,11 @@ XMLSEC_EXPORT int xmlSecTransformHmacReadOutputBitsSize	(xmlNodePtr node,
 
 #endif /* XMLSEC_NO_HMAC */
 
+#ifndef XMLSEC_NO_RSA
+
+XMLSEC_EXPORT int xmlSecTransformRsaOaepReadParams		(xmlNodePtr node,
+														 xmlSecBufferPtr params,
+														 xmlChar** algorithm);
+#endif /* XMLSEC_NO_RSA */
+
 #endif /* __XMLSEC_TRASNFORMS_HELPERS_H__ */

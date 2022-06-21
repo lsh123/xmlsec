@@ -475,7 +475,7 @@ xmlSecOpenSSLAppEngineKeyLoad(const char *engineName, const char *engineKeyId,
                         xmlSecKeyDataFormat format, const char *pwd ATTRIBUTE_UNUSED,
                         void* pwdCallback ATTRIBUTE_UNUSED, void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
 
-#if !defined(OPENSSL_NO_ENGINE) && !defined(XMLSEC_OPENSSL_API_300)
+#if !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES))
     ENGINE* engine = NULL;
     xmlSecKeyPtr key = NULL;
     xmlSecKeyDataPtr data = NULL;
@@ -570,7 +570,7 @@ done:
 
     return(key);
 
-#else /* !defined(OPENSSL_NO_ENGINE) && !defined(XMLSEC_OPENSSL_API_300) */
+#else /* !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES)) */
     UNREFERENCED_PARAMETER(engineName);
     UNREFERENCED_PARAMETER(engineKeyId);
     UNREFERENCED_PARAMETER(format);
@@ -579,7 +579,7 @@ done:
     UNREFERENCED_PARAMETER(pwdCallbackCtx);
     xmlSecNotImplementedError("OpenSSL Engine interface is not enabled");
     return (NULL);
-#endif /* !defined(OPENSSL_NO_ENGINE) && !defined(XMLSEC_OPENSSL_API_300) */
+#endif /* !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES)) */
 }
 
 

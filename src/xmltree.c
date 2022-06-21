@@ -66,8 +66,8 @@ xmlSecSetDefaultLineFeed(const xmlChar *linefeed)
 /**
  * xmlSecGetNodeContentAsSize:
  * @cur:                the pointer to XML node.
- * @res:                the pointer to the result value.
  * @defaultValue:       the default value that will be returned in @res if there is no node content.
+ * @res:                the pointer to the result value.
  *
  * Reads @cur node content and converts it to xmlSecSize value.
  *
@@ -75,7 +75,7 @@ xmlSecSetDefaultLineFeed(const xmlChar *linefeed)
  */
 
 int
-xmlSecGetNodeContentAsSize(const xmlNodePtr cur, xmlSecSize* res, xmlSecSize defaultValue) {
+xmlSecGetNodeContentAsSize(const xmlNodePtr cur, xmlSecSize defaultValue, xmlSecSize* res) {
     xmlChar *content;
     long int val;
     char* endptr = NULL;

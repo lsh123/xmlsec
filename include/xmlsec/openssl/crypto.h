@@ -541,8 +541,8 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGostR3411_2012_512G
  *******************************************************************/
 #ifndef XMLSEC_NO_HMAC
 
-XMLSEC_CRYPTO_EXPORT int               xmlSecOpenSSLHmacGetMinOutputLength(void);
-XMLSEC_CRYPTO_EXPORT void              xmlSecOpenSSLHmacSetMinOutputLength(int min_length);
+XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT int  xmlSecOpenSSLHmacGetMinOutputLength(void);
+XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT void xmlSecOpenSSLHmacSetMinOutputLength(int min_length);
 
 /**
  * xmlSecOpenSSLKeyDataHmacId:

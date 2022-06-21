@@ -11,9 +11,13 @@
 #ifndef __XMLSEC_CAST_HELPERS_H__
 #define __XMLSEC_CAST_HELPERS_H__
 
+
+#ifndef XMLSEC_PRIVATE
+#error "private.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
+#endif /* XMLSEC_PRIVATE */
+
 #include <limits.h>
 #include "errors_helpers.h"
-
 
 /* if it is missing */
 #ifndef SIZE_MAX

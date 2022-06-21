@@ -512,8 +512,8 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformKWDes3GetKlass(voi
  *******************************************************************/
 #ifndef XMLSEC_NO_HMAC
 
-XMLSEC_CRYPTO_EXPORT int               xmlSecMSCryptoHmacGetMinOutputLength(void);
-XMLSEC_CRYPTO_EXPORT void              xmlSecMSCryptoHmacSetMinOutputLength(int min_length);
+XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT int  xmlSecMSCryptoHmacGetMinOutputLength(void);
+XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT void xmlSecMSCryptoHmacSetMinOutputLength(int min_length);
 
 /**
  * xmlSecMSCryptoKeyDataHmacId:

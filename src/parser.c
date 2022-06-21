@@ -358,9 +358,8 @@ typedef struct _xmlSecExtMemoryParserCtx {
 xmlDocPtr
 xmlSecParseFile(const char *filename) {
     xmlParserCtxtPtr ctxt;
-    xmlDocPtr res = NULL;
-    char *directory = NULL;
     int ret;
+    xmlDocPtr res = NULL;
 
     xmlSecAssert2(filename != NULL, NULL);
 
@@ -369,56 +368,46 @@ xmlSecParseFile(const char *filename) {
     if (ctxt == NULL) {
         xmlSecXmlError2("xmlCreateFileParserCtxt", NULL,
                         "filename=%s", xmlSecErrorsSafeString(filename));
-        return(NULL);
+        goto done;
     }
     xmlSecParsePrepareCtxt(ctxt);
 
     /* todo: set directories from current doc? */
-    if ((ctxt->directory == NULL) && (directory == NULL)) {
-        directory = xmlParserGetDirectory(filename);
-        if(directory == NULL) {
-            xmlSecXmlError2("xmlParserGetDirectory", NULL,
-                            "filename=%s", xmlSecErrorsSafeString(filename));
-            xmlFreeParserCtxt(ctxt);
-            return(NULL);
-        }
-    }
-    if ((ctxt->directory == NULL) && (directory != NULL)) {
-        ctxt->directory = (char *) xmlStrdup(BAD_CAST directory);
+    if (ctxt->directory == NULL) {
+        ctxt->directory = xmlParserGetDirectory(filename);
         if(ctxt->directory == NULL) {
-            xmlSecStrdupError(BAD_CAST directory, NULL);
-            xmlFreeParserCtxt(ctxt);
-            return(NULL);
+            xmlSecXmlError2("xmlParserGetDirectory", NULL,
+                "filename=%s", xmlSecErrorsSafeString(filename));
+            goto done;
         }
     }
 
     ret = xmlParseDocument(ctxt);
     if(ret < 0) {
         xmlSecXmlParserError2("xmlParseDocument", ctxt, NULL,
-                              "filename=%s",
-                              xmlSecErrorsSafeString(filename));
+            "filename=%s",
+            xmlSecErrorsSafeString(filename));
+        goto done;
+    }
+
+    if(!ctxt->wellFormed) {
+       xmlSecInternalError("document is not well formed", NULL);
+       goto done;
+    }
+
+    /* success */
+    res = ctxt->myDoc;
+    ctxt->myDoc = NULL;
+
+done:
+    /* cleanup */
+    if(ctxt != NULL) {
         if(ctxt->myDoc != NULL) {
             xmlFreeDoc(ctxt->myDoc);
             ctxt->myDoc = NULL;
         }
         xmlFreeParserCtxt(ctxt);
-        return(NULL);
     }
-
-    if(!ctxt->wellFormed) {
-       xmlSecInternalError("document is not well formed", NULL);
-       if(ctxt->myDoc != NULL) {
-           xmlFreeDoc(ctxt->myDoc);
-           ctxt->myDoc = NULL;
-       }
-       xmlFreeParserCtxt(ctxt);
-       return(NULL);
-    }
-
-    /* done */
-    res = ctxt->myDoc;
-    ctxt->myDoc = NULL;
-    xmlFreeParserCtxt(ctxt);
     return(res);
 
 }
@@ -577,12 +566,34 @@ xmlSecParsePrepareCtxt(xmlParserCtxtPtr ctxt) {
     ctxt->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
     ctxt->replaceEntities = 1;
 
-    /*
-     * Also see xmlSecReplaceNodeBufferAndReturn:
-     *
-     * XML_PARSE_NONET  to support c14n
-     * XML_PARSE_NODICT to avoid problems with moving nodes around
-     * XML_PARSE_HUGE   to enable parsing of XML documents with large text nodes
-     */
-    xmlCtxtUseOptions(ctxt, XML_PARSE_NONET | XML_PARSE_NODICT | XML_PARSE_HUGE);
+    xmlCtxtUseOptions(ctxt, xmlSecParserGetDefaultOptions());
+}
+
+/*
+ * XML_PARSE_NONET  to support c14n
+ * XML_PARSE_NODICT to avoid problems with moving nodes around
+ * XML_PARSE_HUGE   to enable parsing of XML documents with large text nodes
+ */
+static int g_xmlsec_parser_default_options = XML_PARSE_NONET | XML_PARSE_NODICT | XML_PARSE_HUGE;
+
+/**
+ * xmlSecParserGetDefaultOptions:
+ *
+ * Gets default LibXML2 parser options.
+ * 
+ * Returns: the current default LibXML2 parser options.
+ */
+int
+xmlSecParserGetDefaultOptions(void) {
+    return (g_xmlsec_parser_default_options);
+}
+
+/**
+ * xmlSecParserSetDefaultOptions:
+ * @options:            the new parser options.
+ *
+ * Sets default LibXML2 parser options.
+ */
+void xmlSecParserSetDefaultOptions(int options) {
+    g_xmlsec_parser_default_options = options;
 }

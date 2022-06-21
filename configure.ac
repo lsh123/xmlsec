@@ -718,7 +718,7 @@ if test "z$OPENSSL_FOUND" = "zno" -a "z$with_openssl" != "z" -a "z$with_openssl"
         OPENSSL_FOUND="yes"
         AC_MSG_RESULT([yes])
     else
-        AC_MSG_ERROR([not found: "$with_openssl/include/$OPENSSL_INCLUDE_MARKER" or "$with_openssl/libi[64]/$OPENSSL_LIB_SHARED_MARKER" or "$with_openssl/lib[64]/$OPENSSL_LIB_STATIC_MARKER" files don't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_openssl/include/$OPENSSL_INCLUDE_MARKER" or "$with_openssl/lib(64)/$OPENSSL_LIB_SHARED_MARKER" or "$with_openssl/lib(64)/$OPENSSL_LIB_STATIC_MARKER" files don't exist), typo?])
     fi
 fi
 

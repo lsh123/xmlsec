@@ -239,7 +239,7 @@ xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformC14NExecute",
                             xmlSecTransformGetName(transform));
-        xmlOutputBufferClose(buf);
+        (void)xmlOutputBufferClose(buf);
         return(-1);
     }
 
@@ -303,7 +303,7 @@ xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformC14NExecute",
                                 xmlSecTransformGetName(transform));
-            xmlOutputBufferClose(buf);
+            (void)xmlOutputBufferClose(buf);
             return(-1);
         }
         ret = xmlOutputBufferClose(buf);

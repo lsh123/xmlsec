@@ -32,14 +32,10 @@
 #include <pk11func.h>
 #include <keyhi.h>
 
-#include <libxml/tree.h>
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
-#include <xmlsec/xmltree.h>
-
 #include <xmlsec/keysmngr.h>
 
 #include <xmlsec/nss/crypto.h>

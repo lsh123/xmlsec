@@ -26,18 +26,18 @@
 #include <ncrypt.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/xmltree.h>
+#include <xmlsec/bn.h>
+#include <xmlsec/errors.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
-#include <xmlsec/errors.h>
-#include <xmlsec/bn.h>
+#include <xmlsec/xmltree.h>
 
 #include <xmlsec/mscng/app.h>
 #include <xmlsec/mscng/crypto.h>
 #include <xmlsec/mscng/keysstore.h>
-#include <xmlsec/mscng/x509.h>
 #include <xmlsec/mscng/certkeys.h>
+#include <xmlsec/mscng/x509.h>
 
 #include "../cast_helpers.h"
 

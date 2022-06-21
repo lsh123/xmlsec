@@ -21,8 +21,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <libxml/tree.h>
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
 #include <xmlsec/errors.h>

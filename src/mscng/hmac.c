@@ -27,11 +27,11 @@
 #include <ncrypt.h>
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/errors.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
+#include <xmlsec/private.h>
 #include <xmlsec/transforms.h>
-#include <xmlsec/errors.h>
-#include <xmlsec/bn.h>
 
 #include <xmlsec/mscng/crypto.h>
 

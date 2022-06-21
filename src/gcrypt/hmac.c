@@ -22,8 +22,9 @@
 #include <gcrypt.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/keys.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/keys.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/gcrypt/app.h>
 #include <xmlsec/gcrypt/crypto.h>

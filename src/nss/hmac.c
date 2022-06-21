@@ -27,8 +27,9 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
-#include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/private.h>
+#include <xmlsec/transforms.h>
 
 #include <xmlsec/nss/app.h>
 #include <xmlsec/nss/crypto.h>

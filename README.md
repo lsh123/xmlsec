@@ -1,40 +1,33 @@
-*** XMLSec Library
+# XMLSec Library
 
 XMLSec library provides C based implementation for major XML Security
 standards:
+- [XML Signature Syntax and Processing](https://www.w3.org/TR/xmldsig-core)
+- [XML Encryption Syntax and Processing](https://www.w3.org/TR/xmlenc-core/)
 
-* XML Signature Syntax and Processing
-  https://www.w3.org/TR/xmldsig-core
+## Documentation
+Complete XMLSec library documentation is published on [XMLSec website](https://www.aleksey.com/xmlsec/). 
 
-* XML Encryption Syntax and Processing
-  https://www.w3.org/TR/xmlenc-core/
+## License
+XMLSec library is released under the MIT Licence (see the [Copyright file](Copyright).
 
-XMLSec library documentation is available here:
+## Building and installing XMLSec
 
-https://www.aleksey.com/xmlsec/
-
-This code is released under the MIT Licence see the Copyright file.
-
-*** Build and install XMLSec
-
-1. Prerequisites
-
+### Prerequisites
 XMLSec requires the following libraries:
-
-* LibXML2 (http://xmlsoft.org)
-* LibXSLT (http://xmlsoft.org/XSLT/)
+- [LibXML2](http://xmlsoft.org)
+- [LibXSLT](http://xmlsoft.org/XSLT/)
 
 And at least one of the following cryptographic libraries:
+- [OpenSSL](http://www.openssl.org)
+- [NSS](https://firefox-source-docs.mozilla.org/security/nss/index.html)
+- [GCrypt/GnuTLS](https://www.gnutls.org/)
+- MS Crypto API (Windows only)
+- MS Crypto API NG (Windows only)
 
-* OpenSSL (http://www.openssl.org)
-* NSS (https://firefox-source-docs.mozilla.org/security/nss/index.html)
-* GCrypt/GnuTLS (https://www.gnutls.org/)
-* MS Crypto API (Windows only)
-* MS Crypto API NG (Windows only)
-
-The following packages need to be installed on Ubuntu to build 
+For example, the following packages need to be installed on Ubuntu to build 
 XMLSec library:
-
+```
   # common build tools
   apt install automake autoconf libtool libtool-bin gcc
 
@@ -55,17 +48,28 @@ XMLSec library:
 
   # required for building man pages and docs
   apt install help2man man2html gtk-doc-tools
+```
 
-2. Building and installing XMLSec
+### Building XMLSec on Linux, Unix, MacOSX, MinGW, Cygwin, etc
 
+To build and install XMLSec library on Unix-like systems run the following commands:
+
+```
   gunzip -c xmlsec1-xxx.tar.gz | tar xvf -
   cd xmlsec1-xxxx
   ./configure [possible options]
   make
   make check
   make install
+```
 
 To see the configuration options, run:
 
+```
   ./configure --help
+```
 
+
+### Building XMLSec on Windows
+
+See [win32/README.txt](win32/README.txt) for details.

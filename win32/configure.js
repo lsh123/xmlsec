@@ -70,6 +70,9 @@ var buildInclude = ".";
 var buildLib = ".";
 var cruntime = "/MD";
 
+/* Crypto options */
+var withOpenSSL3Engines = 0;
+
 /* Local stuff */
 var error = 0;
 
@@ -122,7 +125,7 @@ function usage()
 	txt += "  cc:         Build with the specified compiler(" + buildCc  + ")\n";
 	txt += "  cflags:     Build with the specified compiler flags('" + buildCflags  + "')\n";
 	txt += "  static:     Build static xmlsec libraries (" + (buildStatic? "yes" : "no")  + ")\n";
-	txt += "  with-dl:    Enable dynamic loading of xmlsec-crypto libraries (" + (buildWithDLSupport? "yes" : "no")  + ")\n";
+	txt += "  with-dl:    Enable dynamic loading of xmlsec-crypto libraries (" + (buildWithDLSupport ? "yes" : "no") + ")\n";
 	txt += "  prefix:     Base directory for the installation (" + buildPrefix + ")\n";
 	txt += "  bindir:     Directory where xmlsec and friends should be installed\n";
 	txt += "              (" + buildBinPrefix + ")\n";
@@ -136,6 +139,8 @@ function usage()
 	txt += "              where libxml headers can be found (" + buildInclude + ")\n";
 	txt += "  lib:        Additional search path for the linker, particularily\n";
 	txt += "              where libxml library can be found (" + buildLib + ")\n";
+	txt += "\nCrypto options, default value given in parentheses:\n\n";
+	txt += "  with-openssl3-engines:    Enable dynamic loading of xmlsec-crypto libraries (" + (withOpenSSL3Engines ? "yes" : "no") + ")\n";	
 	WScript.Echo(txt);
 }
 
@@ -176,6 +181,7 @@ function discoverVersion()
 	vf.WriteLine("WITH_DEFAULT_CRYPTO=" + withDefaultCrypto);
 	vf.WriteLine("WITH_OPENSSL=" + withOpenSSL);
 	vf.WriteLine("WITH_OPENSSL_VERSION=XMLSEC_OPENSSL_" + withOpenSSLVersion);
+	vf.WriteLine("WITH_OPENSSL3_ENGINES=" + (withOpenSSL3Engines ? "1" : "0") );
 	vf.WriteLine("WITH_NSS=" + withNss);
 	vf.WriteLine("WITH_MSCRYPTO=" + withMSCrypto);
 	vf.WriteLine("WITH_MSCNG=" + withMSCng);
@@ -350,6 +356,8 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			buildLib = arg.substring(opt.length + 1, arg.length);
 		else if (opt == "cruntime")
 			cruntime = arg.substring(opt.length + 1, arg.length);
+		else if (opt == "with-openssl3-engines")
+			withOpenSSL3Engines = strToBool(arg.substring(opt.length + 1, arg.length));		
 		else
 			error = 1;
 	} else if (i == 0) {
@@ -470,6 +478,10 @@ txtOut += "Put static libs in: " + buildLibPrefix + "\n";
 txtOut += "Put shared libs in: " + buildSoPrefix + "\n";
 txtOut += "      Include path: " + buildInclude + "\n";
 txtOut += "          Lib path: " + buildLib + "\n";
+txtOut += "\n";
+txtOut += "Crypto configuration\n";
+txtOut += "-------------------------\n";
+txtOut += "Use OpenSSL3 Engine: " + boolToStr(withOpenSSL3Engines) + "\n";
 WScript.Echo(txtOut);
 
 // Done.

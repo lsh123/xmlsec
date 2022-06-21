@@ -3,11 +3,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>XML Security Library Reference Index: XML Security Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
 <link rel="up" href="xmlsec-reference.html" title="Part II. XML Security Library API Reference.">
 <link rel="prev" href="xmlsec-mscng-x509.html" title="x509">
-<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -37,11 +37,12 @@
 <li class="listitem"><p><a class="link" href="xmlsec-errors.html#xmlSecAssert" title="xmlSecAssert()">xmlSecAssert</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-base64.html#xmlSecBase64CtxCreate" title="xmlSecBase64CtxCreate ()">xmlSecBase64CtxCreate</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-base64.html#xmlSecBase64CtxDestroy" title="xmlSecBase64CtxDestroy ()">xmlSecBase64CtxDestroy</a></p></li>
+<li class="listitem"><p><font>xmlSecBase64CtxFinal-ex</font></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-base64.html#xmlSecBase64CtxFinalize" title="xmlSecBase64CtxFinalize ()">xmlSecBase64CtxFinalize</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-base64.html#xmlSecBase64CtxFinal" title="xmlSecBase64CtxFinal ()">xmlSecBase64CtxFinal</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-base64.html#xmlSecBase64CtxInitialize" title="xmlSecBase64CtxInitialize ()">xmlSecBase64CtxInitialize</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-base64.html#xmlSecBase64CtxUpdate" title="xmlSecBase64CtxUpdate ()">xmlSecBase64CtxUpdate</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-base64.html#xmlSecBase64Decode" title="xmlSecBase64Decode ()">xmlSecBase64Decode</a></p></li>
+<li class="listitem"><p><font>xmlSecBase64CtxUpdate-ex</font></p></li>
+<li class="listitem"><p><font>xmlSecBase64Decode-ex</font></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-base64.html#xmlSecBase64DecodeInPlace" title="xmlSecBase64DecodeInPlace ()">xmlSecBase64DecodeInPlace</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-base64.html#xmlSecBase64Encode" title="xmlSecBase64Encode ()">xmlSecBase64Encode</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-base64.html#xmlSecBase64GetDefaultLineSize" title="xmlSecBase64GetDefaultLineSize ()">xmlSecBase64GetDefaultLineSize</a></p></li>
 <li class="listitem"><p><font>XMLSEC-BASE64-LINESIZE</font></p></li>
@@ -88,6 +89,7 @@
 <li class="listitem"><p><a class="link" href="xmlsec-buffer.html#xmlSecBufferReadFile" title="xmlSecBufferReadFile ()">xmlSecBufferReadFile</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-buffer.html#xmlSecBufferRemoveHead" title="xmlSecBufferRemoveHead ()">xmlSecBufferRemoveHead</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-buffer.html#xmlSecBufferRemoveTail" title="xmlSecBufferRemoveTail ()">xmlSecBufferRemoveTail</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-buffer.html#xmlSecBufferReverse" title="xmlSecBufferReverse ()">xmlSecBufferReverse</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-buffer.html#xmlSecBufferSetData" title="xmlSecBufferSetData ()">xmlSecBufferSetData</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-buffer.html#xmlSecBufferSetDefaultAllocMode" title="xmlSecBufferSetDefaultAllocMode ()">xmlSecBufferSetDefaultAllocMode</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-buffer.html#xmlSecBufferSetMaxSize" title="xmlSecBufferSetMaxSize ()">xmlSecBufferSetMaxSize</a></p></li>
@@ -197,6 +199,7 @@
 <li class="listitem"><p><font>XMLSEC-ENC-RETURN-REPLACED-NODE</font></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-xmltree.html#xmlSecEnsureEmptyChild" title="xmlSecEnsureEmptyChild ()">xmlSecEnsureEmptyChild</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-errors.html#xmlSecError" title="xmlSecError ()">xmlSecError</a></p></li>
+<li class="listitem"><p><font>XMLSEC-ERROR-R-CAST-IMPOSSIBLE</font></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-errors.html#xmlSecErrorsCallback" title="xmlSecErrorsCallback ()">xmlSecErrorsCallback</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-errors.html#xmlSecErrorsDefaultCallbackEnableOutput" title="xmlSecErrorsDefaultCallbackEnableOutput ()">xmlSecErrorsDefaultCallbackEnableOutput</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-errors.html#xmlSecErrorsDefaultCallback" title="xmlSecErrorsDefaultCallback ()">xmlSecErrorsDefaultCallback</a></p></li>
@@ -280,8 +283,6 @@
 <li class="listitem"><p><a class="link" href="xmlsec-gcrypt-app.html#xmlSecGCryptAppPkcs12Load" title="xmlSecGCryptAppPkcs12Load ()">xmlSecGCryptAppPkcs12Load</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-gcrypt-app.html#xmlSecGCryptAppShutdown" title="xmlSecGCryptAppShutdown ()">xmlSecGCryptAppShutdown</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-gcrypt-crypto.html#xmlSecGCryptGenerateRandom" title="xmlSecGCryptGenerateRandom ()">xmlSecGCryptGenerateRandom</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-gcrypt-crypto.html#xmlSecGCryptHmacGetMinOutputLength" title="xmlSecGCryptHmacGetMinOutputLength ()">xmlSecGCryptHmacGetMinOutputLength</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-gcrypt-crypto.html#xmlSecGCryptHmacSetMinOutputLength" title="xmlSecGCryptHmacSetMinOutputLength ()">xmlSecGCryptHmacSetMinOutputLength</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-gcrypt-crypto.html#xmlSecGCryptInit" title="xmlSecGCryptInit ()">xmlSecGCryptInit</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-gcrypt-crypto.html#xmlSecGCryptKeyDataAesGetKlass" title="xmlSecGCryptKeyDataAesGetKlass ()">xmlSecGCryptKeyDataAesGetKlass</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-gcrypt-crypto.html#xmlSecGCryptKeyDataAesId" title="xmlSecGCryptKeyDataAesId">xmlSecGCryptKeyDataAesId</a></p></li>
@@ -365,6 +366,7 @@
 <li class="listitem"><p><a class="link" href="xmlsec-xmltree.html#xmlSecGetHex" title="xmlSecGetHex()">xmlSecGetHex</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-keysmngr.html#xmlSecGetKeyCallback" title="xmlSecGetKeyCallback ()">xmlSecGetKeyCallback</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-xmltree.html#xmlSecGetNextElementNode" title="xmlSecGetNextElementNode ()">xmlSecGetNextElementNode</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-xmltree.html#xmlSecGetNodeContentAsSize" title="xmlSecGetNodeContentAsSize ()">xmlSecGetNodeContentAsSize</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-xmltree.html#xmlSecGetNodeNsHref" title="xmlSecGetNodeNsHref ()">xmlSecGetNodeNsHref</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-xmltree.html#xmlSecGetQName" title="xmlSecGetQName ()">xmlSecGetQName</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-gnutls-app.html#xmlSecGnuTLSAppDefaultKeysMngrAdoptKey" title="xmlSecGnuTLSAppDefaultKeysMngrAdoptKey ()">xmlSecGnuTLSAppDefaultKeysMngrAdoptKey</a></p></li>
@@ -383,8 +385,6 @@
 <li class="listitem"><p><a class="link" href="xmlsec-gnutls-app.html#xmlSecGnuTLSAppPkcs12Load" title="xmlSecGnuTLSAppPkcs12Load ()">xmlSecGnuTLSAppPkcs12Load</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-gnutls-app.html#xmlSecGnuTLSAppShutdown" title="xmlSecGnuTLSAppShutdown ()">xmlSecGnuTLSAppShutdown</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSGenerateRandom" title="xmlSecGnuTLSGenerateRandom ()">xmlSecGnuTLSGenerateRandom</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSHmacGetMinOutputLength" title="xmlSecGnuTLSHmacGetMinOutputLength ()">xmlSecGnuTLSHmacGetMinOutputLength</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSHmacSetMinOutputLength" title="xmlSecGnuTLSHmacSetMinOutputLength ()">xmlSecGnuTLSHmacSetMinOutputLength</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSInit" title="xmlSecGnuTLSInit ()">xmlSecGnuTLSInit</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataAesGetKlass" title="xmlSecGnuTLSKeyDataAesGetKlass ()">xmlSecGnuTLSKeyDataAesGetKlass</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataAesId" title="xmlSecGnuTLSKeyDataAesId">xmlSecGnuTLSKeyDataAesId</a></p></li>
@@ -473,6 +473,7 @@
 <li class="listitem"><p><a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformSha512Id" title="xmlSecGnuTLSTransformSha512Id">xmlSecGnuTLSTransformSha512Id</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-gnutls-x509.html#xmlSecGnuTLSX509CertGetKey" title="xmlSecGnuTLSX509CertGetKey ()">xmlSecGnuTLSX509CertGetKey</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-gnutls-x509.html#xmlSecGnuTLSX509StoreAdoptCert" title="xmlSecGnuTLSX509StoreAdoptCert ()">xmlSecGnuTLSX509StoreAdoptCert</a></p></li>
+<li class="listitem"><p><font>xmlSecGnuTLSX509StoreFindCert-ex</font></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-gnutls-x509.html#xmlSecGnuTLSX509StoreFindCert" title="xmlSecGnuTLSX509StoreFindCert ()">xmlSecGnuTLSX509StoreFindCert</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-gnutls-x509.html#xmlSecGnuTLSX509StoreGetKlass" title="xmlSecGnuTLSX509StoreGetKlass ()">xmlSecGnuTLSX509StoreGetKlass</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-gnutls-x509.html#xmlSecGnuTLSX509StoreId" title="xmlSecGnuTLSX509StoreId">xmlSecGnuTLSX509StoreId</a></p></li>
@@ -494,19 +495,9 @@
 <li class="listitem"><p><a class="link" href="xmlsec-keys.html#xmlSecKeyCreate" title="xmlSecKeyCreate ()">xmlSecKeyCreate</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-app.html#xmlSecKeyDataAesGetKlass" title="xmlSecKeyDataAesGetKlass ()">xmlSecKeyDataAesGetKlass</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-app.html#xmlSecKeyDataAesId" title="xmlSecKeyDataAesId">xmlSecKeyDataAesId</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinarySize" title="xmlSecKeyDataBinarySize">xmlSecKeyDataBinarySize</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueBinRead" title="xmlSecKeyDataBinaryValueBinRead ()">xmlSecKeyDataBinaryValueBinRead</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueBinWrite" title="xmlSecKeyDataBinaryValueBinWrite ()">xmlSecKeyDataBinaryValueBinWrite</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueDebugDump" title="xmlSecKeyDataBinaryValueDebugDump ()">xmlSecKeyDataBinaryValueDebugDump</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueDebugXmlDump" title="xmlSecKeyDataBinaryValueDebugXmlDump ()">xmlSecKeyDataBinaryValueDebugXmlDump</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueDuplicate" title="xmlSecKeyDataBinaryValueDuplicate ()">xmlSecKeyDataBinaryValueDuplicate</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueFinalize" title="xmlSecKeyDataBinaryValueFinalize ()">xmlSecKeyDataBinaryValueFinalize</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueGetBuffer" title="xmlSecKeyDataBinaryValueGetBuffer ()">xmlSecKeyDataBinaryValueGetBuffer</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueGetSize" title="xmlSecKeyDataBinaryValueGetSize ()">xmlSecKeyDataBinaryValueGetSize</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueInitialize" title="xmlSecKeyDataBinaryValueInitialize ()">xmlSecKeyDataBinaryValueInitialize</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueSetBuffer" title="xmlSecKeyDataBinaryValueSetBuffer ()">xmlSecKeyDataBinaryValueSetBuffer</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueXmlRead" title="xmlSecKeyDataBinaryValueXmlRead ()">xmlSecKeyDataBinaryValueXmlRead</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueXmlWrite" title="xmlSecKeyDataBinaryValueXmlWrite ()">xmlSecKeyDataBinaryValueXmlWrite</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinReadMethod" title="xmlSecKeyDataBinReadMethod ()">xmlSecKeyDataBinReadMethod</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinRead" title="xmlSecKeyDataBinRead ()">xmlSecKeyDataBinRead</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinWriteMethod" title="xmlSecKeyDataBinWriteMethod ()">xmlSecKeyDataBinWriteMethod</a></p></li>
@@ -757,6 +748,7 @@
 <li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataRsaGetKlass" title="xmlSecMSCngKeyDataRsaGetKlass ()">xmlSecMSCngKeyDataRsaGetKlass</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataRsaId" title="xmlSecMSCngKeyDataRsaId">xmlSecMSCngKeyDataRsaId</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscng-x509.html#xmlSecMSCngKeyDataX509AdoptCert" title="xmlSecMSCngKeyDataX509AdoptCert ()">xmlSecMSCngKeyDataX509AdoptCert</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscng-x509.html#xmlSecMSCngKeyDataX509AdoptCrl" title="xmlSecMSCngKeyDataX509AdoptCrl ()">xmlSecMSCngKeyDataX509AdoptCrl</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscng-x509.html#xmlSecMSCngKeyDataX509AdoptKeyCert" title="xmlSecMSCngKeyDataX509AdoptKeyCert ()">xmlSecMSCngKeyDataX509AdoptKeyCert</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscng-x509.html#xmlSecMSCngKeyDataX509GetKlass" title="xmlSecMSCngKeyDataX509GetKlass ()">xmlSecMSCngKeyDataX509GetKlass</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscng-x509.html#xmlSecMSCngKeyDataX509Id" title="xmlSecMSCngKeyDataX509Id">xmlSecMSCngKeyDataX509Id</a></p></li>
@@ -838,6 +830,7 @@
 <li class="listitem"><p><a class="link" href="xmlsec-mscng-x509.html#xmlSecMSCngX509StoreAdoptKeyStore" title="xmlSecMSCngX509StoreAdoptKeyStore ()">xmlSecMSCngX509StoreAdoptKeyStore</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscng-x509.html#xmlSecMSCngX509StoreAdoptTrustedStore" title="xmlSecMSCngX509StoreAdoptTrustedStore ()">xmlSecMSCngX509StoreAdoptTrustedStore</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscng-x509.html#xmlSecMSCngX509StoreAdoptUntrustedStore" title="xmlSecMSCngX509StoreAdoptUntrustedStore ()">xmlSecMSCngX509StoreAdoptUntrustedStore</a></p></li>
+<li class="listitem"><p><font>xmlSecMSCngX509StoreFindCert-ex</font></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscng-x509.html#xmlSecMSCngX509StoreFindCert" title="xmlSecMSCngX509StoreFindCert ()">xmlSecMSCngX509StoreFindCert</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscng-x509.html#xmlSecMSCngX509StoreGetKlass" title="xmlSecMSCngX509StoreGetKlass ()">xmlSecMSCngX509StoreGetKlass</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscng-x509.html#xmlSecMSCngX509StoreId" title="xmlSecMSCngX509StoreId">xmlSecMSCngX509StoreId</a></p></li>
@@ -868,8 +861,6 @@
 <li class="listitem"><p><a class="link" href="xmlsec-mscrypto-certkeys.html#xmlSecMSCryptoCertDup" title="xmlSecMSCryptoCertDup ()">xmlSecMSCryptoCertDup</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoErrorsDefaultCallback" title="xmlSecMSCryptoErrorsDefaultCallback ()">xmlSecMSCryptoErrorsDefaultCallback</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoGenerateRandom" title="xmlSecMSCryptoGenerateRandom ()">xmlSecMSCryptoGenerateRandom</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoHmacGetMinOutputLength" title="xmlSecMSCryptoHmacGetMinOutputLength ()">xmlSecMSCryptoHmacGetMinOutputLength</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoHmacSetMinOutputLength" title="xmlSecMSCryptoHmacSetMinOutputLength ()">xmlSecMSCryptoHmacSetMinOutputLength</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoInit" title="xmlSecMSCryptoInit ()">xmlSecMSCryptoInit</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoKeyDataAesGetKlass" title="xmlSecMSCryptoKeyDataAesGetKlass ()">xmlSecMSCryptoKeyDataAesGetKlass</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoKeyDataAesId" title="xmlSecMSCryptoKeyDataAesId">xmlSecMSCryptoKeyDataAesId</a></p></li>
@@ -938,8 +929,12 @@
 <li class="listitem"><p><font>xmlSecMSCryptoTransformGostR3411-94Id</font></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformHmacMd5GetKlass" title="xmlSecMSCryptoTransformHmacMd5GetKlass ()">xmlSecMSCryptoTransformHmacMd5GetKlass</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformHmacMd5Id" title="xmlSecMSCryptoTransformHmacMd5Id">xmlSecMSCryptoTransformHmacMd5Id</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformHmacRipemd160GetKlass" title="xmlSecMSCryptoTransformHmacRipemd160GetKlass ()">xmlSecMSCryptoTransformHmacRipemd160GetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformHmacRipemd160Id" title="xmlSecMSCryptoTransformHmacRipemd160Id">xmlSecMSCryptoTransformHmacRipemd160Id</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformHmacSha1GetKlass" title="xmlSecMSCryptoTransformHmacSha1GetKlass ()">xmlSecMSCryptoTransformHmacSha1GetKlass</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformHmacSha1Id" title="xmlSecMSCryptoTransformHmacSha1Id">xmlSecMSCryptoTransformHmacSha1Id</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformHmacSha224GetKlass" title="xmlSecMSCryptoTransformHmacSha224GetKlass ()">xmlSecMSCryptoTransformHmacSha224GetKlass</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformHmacSha224Id" title="xmlSecMSCryptoTransformHmacSha224Id">xmlSecMSCryptoTransformHmacSha224Id</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformHmacSha256GetKlass" title="xmlSecMSCryptoTransformHmacSha256GetKlass ()">xmlSecMSCryptoTransformHmacSha256GetKlass</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformHmacSha256Id" title="xmlSecMSCryptoTransformHmacSha256Id">xmlSecMSCryptoTransformHmacSha256Id</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformHmacSha384GetKlass" title="xmlSecMSCryptoTransformHmacSha384GetKlass ()">xmlSecMSCryptoTransformHmacSha384GetKlass</a></p></li>
@@ -1040,8 +1035,6 @@
 <li class="listitem"><p><a class="link" href="xmlsec-nss-crypto.html#xmlSecNssErrorsDefaultCallback" title="xmlSecNssErrorsDefaultCallback ()">xmlSecNssErrorsDefaultCallback</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-nss-crypto.html#xmlSecNssGenerateRandom" title="xmlSecNssGenerateRandom ()">xmlSecNssGenerateRandom</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-nss-crypto.html#xmlSecNssGetInternalKeySlot" title="xmlSecNssGetInternalKeySlot ()">xmlSecNssGetInternalKeySlot</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-nss-crypto.html#xmlSecNssHmacGetMinOutputLength" title="xmlSecNssHmacGetMinOutputLength ()">xmlSecNssHmacGetMinOutputLength</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-nss-crypto.html#xmlSecNssHmacSetMinOutputLength" title="xmlSecNssHmacSetMinOutputLength ()">xmlSecNssHmacSetMinOutputLength</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-nss-crypto.html#xmlSecNssInit" title="xmlSecNssInit ()">xmlSecNssInit</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-nss-crypto.html#xmlSecNssKeyDataAesGetKlass" title="xmlSecNssKeyDataAesGetKlass ()">xmlSecNssKeyDataAesGetKlass</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-nss-crypto.html#xmlSecNssKeyDataAesId" title="xmlSecNssKeyDataAesId">xmlSecNssKeyDataAesId</a></p></li>
@@ -1076,8 +1069,6 @@
 <li class="listitem"><p><a class="link" href="xmlsec-nss-keysstore.html#xmlSecNssKeysStoreId" title="xmlSecNssKeysStoreId">xmlSecNssKeysStoreId</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-nss-keysstore.html#xmlSecNssKeysStoreLoad" title="xmlSecNssKeysStoreLoad ()">xmlSecNssKeysStoreLoad</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-nss-keysstore.html#xmlSecNssKeysStoreSave" title="xmlSecNssKeysStoreSave ()">xmlSecNssKeysStoreSave</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-nss-bignum.html#xmlSecNssNodeGetBigNumValue" title="xmlSecNssNodeGetBigNumValue ()">xmlSecNssNodeGetBigNumValue</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-nss-bignum.html#xmlSecNssNodeSetBigNumValue" title="xmlSecNssNodeSetBigNumValue ()">xmlSecNssNodeSetBigNumValue</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-nss-pkikeys.html#xmlSecNssPKIAdoptKey" title="xmlSecNssPKIAdoptKey ()">xmlSecNssPKIAdoptKey</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-nss-pkikeys.html#xmlSecNssPKIKeyDataDuplicate" title="xmlSecNssPKIKeyDataDuplicate ()">xmlSecNssPKIKeyDataDuplicate</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-nss-pkikeys.html#xmlSecNssPKIKeyDataGetKeyType" title="xmlSecNssPKIKeyDataGetKeyType ()">xmlSecNssPKIKeyDataGetKeyType</a></p></li>
@@ -1158,12 +1149,14 @@
 <li class="listitem"><p><a class="link" href="xmlsec-nss-crypto.html#xmlSecNssTransformSha512Id" title="xmlSecNssTransformSha512Id">xmlSecNssTransformSha512Id</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-nss-x509.html#xmlSecNssX509CertGetKey" title="xmlSecNssX509CertGetKey ()">xmlSecNssX509CertGetKey</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-nss-x509.html#xmlSecNssX509StoreAdoptCert" title="xmlSecNssX509StoreAdoptCert ()">xmlSecNssX509StoreAdoptCert</a></p></li>
+<li class="listitem"><p><font>xmlSecNssX509StoreFindCert-ex</font></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-nss-x509.html#xmlSecNssX509StoreFindCert" title="xmlSecNssX509StoreFindCert ()">xmlSecNssX509StoreFindCert</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-nss-x509.html#xmlSecNssX509StoreGetKlass" title="xmlSecNssX509StoreGetKlass ()">xmlSecNssX509StoreGetKlass</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-nss-x509.html#xmlSecNssX509StoreId" title="xmlSecNssX509StoreId">xmlSecNssX509StoreId</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-nss-x509.html#xmlSecNssX509StoreVerify" title="xmlSecNssX509StoreVerify ()">xmlSecNssX509StoreVerify</a></p></li>
 <li class="listitem"><p><font>XMLSEC-OPENSSL-API-100</font></p></li>
 <li class="listitem"><p><font>XMLSEC-OPENSSL-API-110</font></p></li>
+<li class="listitem"><p><font>XMLSEC-OPENSSL-API-300</font></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppDefaultKeysMngrAdoptKey" title="xmlSecOpenSSLAppDefaultKeysMngrAdoptKey ()">xmlSecOpenSSLAppDefaultKeysMngrAdoptKey</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppDefaultKeysMngrInit" title="xmlSecOpenSSLAppDefaultKeysMngrInit ()">xmlSecOpenSSLAppDefaultKeysMngrInit</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppDefaultKeysMngrLoad" title="xmlSecOpenSSLAppDefaultKeysMngrLoad ()">xmlSecOpenSSLAppDefaultKeysMngrLoad</a></p></li>
@@ -1186,6 +1179,9 @@
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppPkcs12LoadMemory" title="xmlSecOpenSSLAppPkcs12LoadMemory ()">xmlSecOpenSSLAppPkcs12LoadMemory</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppPkcs12Load" title="xmlSecOpenSSLAppPkcs12Load ()">xmlSecOpenSSLAppPkcs12Load</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppShutdown" title="xmlSecOpenSSLAppShutdown ()">xmlSecOpenSSLAppShutdown</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLCreateMemBio" title="xmlSecOpenSSLCreateMemBio ()">xmlSecOpenSSLCreateMemBio</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLCreateMemBufBio" title="xmlSecOpenSSLCreateMemBufBio ()">xmlSecOpenSSLCreateMemBufBio</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLCreateReadFileBio" title="xmlSecOpenSSLCreateReadFileBio ()">xmlSecOpenSSLCreateReadFileBio</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLErrorsDefaultCallback" title="xmlSecOpenSSLErrorsDefaultCallback ()">xmlSecOpenSSLErrorsDefaultCallback</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-evp.html#xmlSecOpenSSLEvpKeyAdopt" title="xmlSecOpenSSLEvpKeyAdopt ()">xmlSecOpenSSLEvpKeyAdopt</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-evp.html#xmlSecOpenSSLEvpKeyDataAdoptEvp" title="xmlSecOpenSSLEvpKeyDataAdoptEvp ()">xmlSecOpenSSLEvpKeyDataAdoptEvp</a></p></li>
@@ -1193,8 +1189,7 @@
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-evp.html#xmlSecOpenSSLEvpKeyDup" title="xmlSecOpenSSLEvpKeyDup ()">xmlSecOpenSSLEvpKeyDup</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLGenerateRandom" title="xmlSecOpenSSLGenerateRandom ()">xmlSecOpenSSLGenerateRandom</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLGetDefaultTrustedCertsFolder" title="xmlSecOpenSSLGetDefaultTrustedCertsFolder ()">xmlSecOpenSSLGetDefaultTrustedCertsFolder</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLHmacGetMinOutputLength" title="xmlSecOpenSSLHmacGetMinOutputLength ()">xmlSecOpenSSLHmacGetMinOutputLength</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLHmacSetMinOutputLength" title="xmlSecOpenSSLHmacSetMinOutputLength ()">xmlSecOpenSSLHmacSetMinOutputLength</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLGetLibCtx" title="xmlSecOpenSSLGetLibCtx ()">xmlSecOpenSSLGetLibCtx</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLInit" title="xmlSecOpenSSLInit ()">xmlSecOpenSSLInit</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataAesGetKlass" title="xmlSecOpenSSLKeyDataAesGetKlass ()">xmlSecOpenSSLKeyDataAesGetKlass</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataAesId" title="xmlSecOpenSSLKeyDataAesId">xmlSecOpenSSLKeyDataAesId</a></p></li>
@@ -1202,15 +1197,11 @@
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataDesGetKlass" title="xmlSecOpenSSLKeyDataDesGetKlass ()">xmlSecOpenSSLKeyDataDesGetKlass</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataDesId" title="xmlSecOpenSSLKeyDataDesId">xmlSecOpenSSLKeyDataDesId</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataDesSet" title="xmlSecOpenSSLKeyDataDesSet ()">xmlSecOpenSSLKeyDataDesSet</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataDsaAdoptDsa" title="xmlSecOpenSSLKeyDataDsaAdoptDsa ()">xmlSecOpenSSLKeyDataDsaAdoptDsa</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataDsaAdoptEvp" title="xmlSecOpenSSLKeyDataDsaAdoptEvp ()">xmlSecOpenSSLKeyDataDsaAdoptEvp</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataDsaGetDsa" title="xmlSecOpenSSLKeyDataDsaGetDsa ()">xmlSecOpenSSLKeyDataDsaGetDsa</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataDsaGetEvp" title="xmlSecOpenSSLKeyDataDsaGetEvp ()">xmlSecOpenSSLKeyDataDsaGetEvp</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataDsaGetKlass" title="xmlSecOpenSSLKeyDataDsaGetKlass ()">xmlSecOpenSSLKeyDataDsaGetKlass</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataDsaId" title="xmlSecOpenSSLKeyDataDsaId">xmlSecOpenSSLKeyDataDsaId</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa" title="xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa ()">xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataEcdsaAdoptEvp" title="xmlSecOpenSSLKeyDataEcdsaAdoptEvp ()">xmlSecOpenSSLKeyDataEcdsaAdoptEvp</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataEcdsaGetEcdsa" title="xmlSecOpenSSLKeyDataEcdsaGetEcdsa ()">xmlSecOpenSSLKeyDataEcdsaGetEcdsa</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataEcdsaGetEvp" title="xmlSecOpenSSLKeyDataEcdsaGetEvp ()">xmlSecOpenSSLKeyDataEcdsaGetEvp</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataEcdsaGetKlass" title="xmlSecOpenSSLKeyDataEcdsaGetKlass ()">xmlSecOpenSSLKeyDataEcdsaGetKlass</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataEcdsaId" title="xmlSecOpenSSLKeyDataEcdsaId">xmlSecOpenSSLKeyDataEcdsaId</a></p></li>
@@ -1226,10 +1217,8 @@
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-x509.html#xmlSecOpenSSLKeyDataRawX509CertGetKlass" title="xmlSecOpenSSLKeyDataRawX509CertGetKlass ()">xmlSecOpenSSLKeyDataRawX509CertGetKlass</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-x509.html#xmlSecOpenSSLKeyDataRawX509CertId" title="xmlSecOpenSSLKeyDataRawX509CertId">xmlSecOpenSSLKeyDataRawX509CertId</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataRsaAdoptEvp" title="xmlSecOpenSSLKeyDataRsaAdoptEvp ()">xmlSecOpenSSLKeyDataRsaAdoptEvp</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataRsaAdoptRsa" title="xmlSecOpenSSLKeyDataRsaAdoptRsa ()">xmlSecOpenSSLKeyDataRsaAdoptRsa</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataRsaGetEvp" title="xmlSecOpenSSLKeyDataRsaGetEvp ()">xmlSecOpenSSLKeyDataRsaGetEvp</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataRsaGetKlass" title="xmlSecOpenSSLKeyDataRsaGetKlass ()">xmlSecOpenSSLKeyDataRsaGetKlass</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataRsaGetRsa" title="xmlSecOpenSSLKeyDataRsaGetRsa ()">xmlSecOpenSSLKeyDataRsaGetRsa</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataRsaId" title="xmlSecOpenSSLKeyDataRsaId">xmlSecOpenSSLKeyDataRsaId</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-x509.html#xmlSecOpenSSLKeyDataX509AdoptCert" title="xmlSecOpenSSLKeyDataX509AdoptCert ()">xmlSecOpenSSLKeyDataX509AdoptCert</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-x509.html#xmlSecOpenSSLKeyDataX509AdoptCrl" title="xmlSecOpenSSLKeyDataX509AdoptCrl ()">xmlSecOpenSSLKeyDataX509AdoptCrl</a></p></li>
@@ -1242,9 +1231,8 @@
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-x509.html#xmlSecOpenSSLKeyDataX509GetKlass" title="xmlSecOpenSSLKeyDataX509GetKlass ()">xmlSecOpenSSLKeyDataX509GetKlass</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-x509.html#xmlSecOpenSSLKeyDataX509Id" title="xmlSecOpenSSLKeyDataX509Id">xmlSecOpenSSLKeyDataX509Id</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeysMngrInit" title="xmlSecOpenSSLKeysMngrInit ()">xmlSecOpenSSLKeysMngrInit</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-openssl-bn.html#xmlSecOpenSSLNodeGetBNValue" title="xmlSecOpenSSLNodeGetBNValue ()">xmlSecOpenSSLNodeGetBNValue</a></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-openssl-bn.html#xmlSecOpenSSLNodeSetBNValue" title="xmlSecOpenSSLNodeSetBNValue ()">xmlSecOpenSSLNodeSetBNValue</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLSetDefaultTrustedCertsFolder" title="xmlSecOpenSSLSetDefaultTrustedCertsFolder ()">xmlSecOpenSSLSetDefaultTrustedCertsFolder</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLSetLibCtx" title="xmlSecOpenSSLSetLibCtx ()">xmlSecOpenSSLSetLibCtx</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLShutdown" title="xmlSecOpenSSLShutdown ()">xmlSecOpenSSLShutdown</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformAes128CbcGetKlass" title="xmlSecOpenSSLTransformAes128CbcGetKlass ()">xmlSecOpenSSLTransformAes128CbcGetKlass</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformAes128CbcId" title="xmlSecOpenSSLTransformAes128CbcId">xmlSecOpenSSLTransformAes128CbcId</a></p></li>
@@ -1345,6 +1333,7 @@
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-x509.html#xmlSecOpenSSLX509StoreAddCertsPath" title="xmlSecOpenSSLX509StoreAddCertsPath ()">xmlSecOpenSSLX509StoreAddCertsPath</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-x509.html#xmlSecOpenSSLX509StoreAdoptCert" title="xmlSecOpenSSLX509StoreAdoptCert ()">xmlSecOpenSSLX509StoreAdoptCert</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-x509.html#xmlSecOpenSSLX509StoreAdoptCrl" title="xmlSecOpenSSLX509StoreAdoptCrl ()">xmlSecOpenSSLX509StoreAdoptCrl</a></p></li>
+<li class="listitem"><p><font>xmlSecOpenSSLX509StoreFindCert-ex</font></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-x509.html#xmlSecOpenSSLX509StoreFindCert" title="xmlSecOpenSSLX509StoreFindCert ()">xmlSecOpenSSLX509StoreFindCert</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-x509.html#xmlSecOpenSSLX509StoreGetKlass" title="xmlSecOpenSSLX509StoreGetKlass ()">xmlSecOpenSSLX509StoreGetKlass</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-openssl-x509.html#xmlSecOpenSSLX509StoreId" title="xmlSecOpenSSLX509StoreId">xmlSecOpenSSLX509StoreId</a></p></li>
@@ -1414,19 +1403,26 @@
 <li class="listitem"><p><a class="link" href="xmlsec-xmltree.html#xmlSecSetDefaultLineFeed" title="xmlSecSetDefaultLineFeed ()">xmlSecSetDefaultLineFeed</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-xmlsec.html#xmlSecSetExternalEntityLoader" title="xmlSecSetExternalEntityLoader ()">xmlSecSetExternalEntityLoader</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-xmlsec.html#xmlSecShutdown" title="xmlSecShutdown ()">xmlSecShutdown</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-keysmngr.html#xmlSecSimpleKeysStoreAdoptKeyFunc" title="xmlSecSimpleKeysStoreAdoptKeyFunc ()">xmlSecSimpleKeysStoreAdoptKeyFunc</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-keysmngr.html#xmlSecSimpleKeysStoreAdoptKey" title="xmlSecSimpleKeysStoreAdoptKey ()">xmlSecSimpleKeysStoreAdoptKey</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-keysmngr.html#xmlSecSimpleKeysStoreGetKeys" title="xmlSecSimpleKeysStoreGetKeys ()">xmlSecSimpleKeysStoreGetKeys</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-keysmngr.html#xmlSecSimpleKeysStoreGetKlass" title="xmlSecSimpleKeysStoreGetKlass ()">xmlSecSimpleKeysStoreGetKlass</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-keysmngr.html#xmlSecSimpleKeysStoreId" title="xmlSecSimpleKeysStoreId">xmlSecSimpleKeysStoreId</a></p></li>
+<li class="listitem"><p><font>xmlSecSimpleKeysStoreLoad-ex</font></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-keysmngr.html#xmlSecSimpleKeysStoreLoad" title="xmlSecSimpleKeysStoreLoad ()">xmlSecSimpleKeysStoreLoad</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-keysmngr.html#xmlSecSimpleKeysStoreSave" title="xmlSecSimpleKeysStoreSave ()">xmlSecSimpleKeysStoreSave</a></p></li>
 <li class="listitem"><p><font>XMLSEC-SIZE-BAD-CAST</font></p></li>
+<li class="listitem"><p><font>XMLSEC-SIZE-FMT</font></p></li>
+<li class="listitem"><p><font>XMLSEC-SIZE-MAX</font></p></li>
+<li class="listitem"><p><font>XMLSEC-SIZE-MIN</font></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize">xmlSecSize</a></p></li>
+<li class="listitem"><p><font>XMLSEC-SIZE-T-FMT</font></p></li>
 <li class="listitem"><p><font>xmlSecSoap12FaultCode</font></p></li>
 <li class="listitem"><p><font>XMLSEC-STACK-OF-X509-CRL</font></p></li>
 <li class="listitem"><p><font>XMLSEC-STACK-OF-X509</font></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-list.html#xmlSecStringListGetKlass" title="xmlSecStringListGetKlass ()">xmlSecStringListGetKlass</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-list.html#xmlSecStringListId" title="xmlSecStringListId">xmlSecStringListId</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-xmlsec.html#xmlSecStrlen" title="xmlSecStrlen ()">xmlSecStrlen</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-templates.html#xmlSecTmplCipherReferenceAddTransform" title="xmlSecTmplCipherReferenceAddTransform ()">xmlSecTmplCipherReferenceAddTransform</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-templates.html#xmlSecTmplEncDataAddEncProperty" title="xmlSecTmplEncDataAddEncProperty ()">xmlSecTmplEncDataAddEncProperty</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-templates.html#xmlSecTmplEncDataCreate" title="xmlSecTmplEncDataCreate ()">xmlSecTmplEncDataCreate</a></p></li>
@@ -1565,10 +1561,12 @@
 <li class="listitem"><p><font>xmlSecTransformGostR3411-2012-512Id</font></p></li>
 <li class="listitem"><p><font>xmlSecTransformGostR3411-94GetKlass</font></p></li>
 <li class="listitem"><p><font>xmlSecTransformGostR3411-94Id</font></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-transforms.html#xmlSecTransformHmacGetMinOutputBitsSize" title="xmlSecTransformHmacGetMinOutputBitsSize ()">xmlSecTransformHmacGetMinOutputBitsSize</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-app.html#xmlSecTransformHmacMd5GetKlass" title="xmlSecTransformHmacMd5GetKlass ()">xmlSecTransformHmacMd5GetKlass</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-app.html#xmlSecTransformHmacMd5Id" title="xmlSecTransformHmacMd5Id">xmlSecTransformHmacMd5Id</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-app.html#xmlSecTransformHmacRipemd160GetKlass" title="xmlSecTransformHmacRipemd160GetKlass ()">xmlSecTransformHmacRipemd160GetKlass</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-app.html#xmlSecTransformHmacRipemd160Id" title="xmlSecTransformHmacRipemd160Id">xmlSecTransformHmacRipemd160Id</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-transforms.html#xmlSecTransformHmacSetMinOutputBitsSize" title="xmlSecTransformHmacSetMinOutputBitsSize ()">xmlSecTransformHmacSetMinOutputBitsSize</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-app.html#xmlSecTransformHmacSha1GetKlass" title="xmlSecTransformHmacSha1GetKlass ()">xmlSecTransformHmacSha1GetKlass</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-app.html#xmlSecTransformHmacSha1Id" title="xmlSecTransformHmacSha1Id">xmlSecTransformHmacSha1Id</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-app.html#xmlSecTransformHmacSha224GetKlass" title="xmlSecTransformHmacSha224GetKlass ()">xmlSecTransformHmacSha224GetKlass</a></p></li>
@@ -1722,10 +1720,10 @@
 <li class="listitem"><p><a class="link" href="xmlsec-xmltree.html#xmlSecWin32ConvertUtf8ToLocale" title="xmlSecWin32ConvertUtf8ToLocale ()">xmlSecWin32ConvertUtf8ToLocale</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-xmltree.html#xmlSecWin32ConvertUtf8ToTstr" title="xmlSecWin32ConvertUtf8ToTstr ()">xmlSecWin32ConvertUtf8ToTstr</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-xmltree.html#xmlSecWin32ConvertUtf8ToUnicode" title="xmlSecWin32ConvertUtf8ToUnicode ()">xmlSecWin32ConvertUtf8ToUnicode</a></p></li>
+<li class="listitem"><p><font>XMLSEC-WINDOWS</font></p></li>
 <li class="listitem"><p><font>XMLSEC-X509DATA-CERTIFICATE-NODE</font></p></li>
 <li class="listitem"><p><font>XMLSEC-X509DATA-CRL-NODE</font></p></li>
 <li class="listitem"><p><font>XMLSEC-X509DATA-DEFAULT</font></p></li>
-<li class="listitem"><p><a class="link" href="xmlsec-x509.html#xmlSecX509DataGetNodeContent" title="xmlSecX509DataGetNodeContent ()">xmlSecX509DataGetNodeContent</a></p></li>
 <li class="listitem"><p><font>XMLSEC-X509DATA-ISSUERSERIAL-NODE</font></p></li>
 <li class="listitem"><p><font>XMLSEC-X509DATA-SKI-NODE</font></p></li>
 <li class="listitem"><p><font>XMLSEC-X509DATA-SUBJECTNAME-NODE</font></p></li>
@@ -1736,6 +1734,6 @@
     </p>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.27</div>
+<hr>Generated by GTK-Doc V1.33.1</div>
 </body>
 </html>

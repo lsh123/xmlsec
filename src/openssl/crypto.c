@@ -614,8 +614,6 @@ xmlSecOpenSSLGetLibCtx(void) {
 
 /**
  * xmlSecOpenSSLCreateMemBio:
- * @buf:      the data
- * @len:      the data len
  *
  * Creates a memory BIO using xmlSecOpenSSLGetLibCtx() for OpenSSL 3.0.
  *

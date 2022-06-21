@@ -97,9 +97,9 @@ XMLSEC_FUNC_TO_PTR_IMPL(pem_password_cb)
 int
 xmlSecOpenSSLAppInit(const char* config) {
 #ifdef XMLSEC_OPENSSL_API_300
-    /** This code can be used to check that custom xmlsec LibCtx is propagated
+    /* This code can be used to check that custom xmlsec LibCtx is propagated
      everywhere as expected (see https://github.com/lsh123/xmlsec/issues/346) */
-    /**
+    /*
     OSSL_LIB_CTX * libCtx = OSSL_LIB_CTX_new();
     OSSL_PROVIDER * legacyProvider = OSSL_PROVIDER_load(libCtx, "legacy");
     OSSL_PROVIDER * defaultProvider = OSSL_PROVIDER_load(libCtx, "default");

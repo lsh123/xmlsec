@@ -919,6 +919,18 @@ AC_SUBST(OPENSSL_CRYPTO_LIB)
 AC_SUBST(OPENSSL_TEST_CONFIG)
 AC_SUBST(OPENSSL_MIN_VERSION)
 
+dnl See if we should build OpenSSL 3+ with engines support
+AC_ARG_ENABLE([openssl3_engines],[AS_HELP_STRING([--enable-openssl3-engines],[enable engines support for OpenSSL 3+ (no)])])
+if test "z$OPENSSL_VERSION" = "z3.0.0" ; then
+    AC_MSG_CHECKING(for OpenSSL 3+ engines support)
+    if test "z$enable_openssl3_engines" = "zyes" ; then
+        XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_OPENSSL3_ENGINES=1"
+        AC_MSG_RESULT([enabled])
+    else
+        AC_MSG_RESULT([disabled])
+    fi
+fi
+
 dnl ==========================================================================
 dnl See if we can find NSS and NSPR
 dnl Allow the use of:

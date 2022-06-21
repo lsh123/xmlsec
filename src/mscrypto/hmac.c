@@ -35,50 +35,55 @@
 #include <wincrypt.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/xmltree.h>
 #include <xmlsec/base64.h>
-#include <xmlsec/keys.h>
-#include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/keys.h>
+#include <xmlsec/private.h>
+#include <xmlsec/transforms.h>
 
 #include <xmlsec/mscrypto/crypto.h>
 
 #include "private.h"
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
+#include "../transform_helpers.h"
 
-/* sizes in bits */
-#define XMLSEC_MSCRYPTO_MIN_HMAC_SIZE            80
-#define XMLSEC_MSCRYPTO_MAX_HMAC_SIZE            256
 
 /**************************************************************************
  *
  * Configuration
  *
  *****************************************************************************/
-static int g_xmlsec_mscrypto_hmac_min_length = XMLSEC_MSCRYPTO_MIN_HMAC_SIZE;
 
 /**
  * xmlSecMSCryptoHmacGetMinOutputLength:
  *
+ * DEPRECATED (use @xmlSecTransformHmacGetMinOutputBitsSize instead). 
  * Gets the value of min HMAC length.
  *
  * Returns: the min HMAC output length
  */
 int xmlSecMSCryptoHmacGetMinOutputLength(void)
 {
-    return g_xmlsec_mscrypto_hmac_min_length;
+    xmlSecSize val = xmlSecTransformHmacGetMinOutputBitsSize();
+    int res;
+
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(val, res, return(-1), NULL);
+    return res;
 }
 
 /**
  * xmlSecMSCryptoHmacSetMinOutputLength:
  * @min_length: the new min length
  *
+ * DEPRECATED (use @xmlSecTransformHmacSetMinOutputBitsSize instead).
  * Sets the min HMAC output length
  */
 void xmlSecMSCryptoHmacSetMinOutputLength(int min_length)
 {
-    g_xmlsec_mscrypto_hmac_min_length = min_length;
+    xmlSecSize val;
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(min_length, val, return, NULL);
+    xmlSecTransformHmacSetMinOutputBitsSize(val);
 }
 
 /******************************************************************************
@@ -94,7 +99,7 @@ struct _xmlSecMSCryptoHmacCtx {
     ALG_ID          alg_id;
     const xmlSecMSCryptoProviderInfo  * providers;
     HCRYPTHASH      mscHash;
-    unsigned char   dgst[XMLSEC_MSCRYPTO_MAX_HMAC_SIZE];
+    unsigned char   dgst[XMLSEC_TRASNFORM_HMAC_MAX_OUTPUT_SIZE];
     xmlSecSize      dgstSize;   /* dgst size in bytes */
     int             ctxInitialized;
 };
@@ -277,55 +282,26 @@ xmlSecMSCryptoHmacFinalize(xmlSecTransformPtr transform) {
 }
 
 static int
-xmlSecMSCryptoHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
+xmlSecMSCryptoHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
+                           xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
     xmlSecMSCryptoHmacCtxPtr ctx;
-    xmlNodePtr cur;
+    int ret;
 
     xmlSecAssert2(xmlSecMSCryptoHmacCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoHmacSize), -1);
     xmlSecAssert2(node!= NULL, -1);
-    xmlSecAssert2(transformCtx != NULL, -1);
+    UNREFERENCED_PARAMETER(transformCtx);
 
     ctx = xmlSecMSCryptoHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    cur = xmlSecGetNextElementNode(node->children);
-    if((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeHMACOutputLength, xmlSecDSigNs)) {
-        xmlSecSize minDgstSize;
-        int ret;
-
-        ret = xmlSecGetNodeContentAsSize(cur, &ctx->dgstSize, ctx->dgstSize);
-        if (ret != 0) {
-            xmlSecInternalError("xmlSecGetNodeContentAsSize(HMACOutputLength)",
-                xmlSecTransformGetName(transform));
-            return(-1);
-        }
-
-        /* Ensure that HMAC length is greater than min specified.
-           Otherwise, an attacker can set this length to 0 or very
-           small value
-        */
-        ret = xmlSecMSCryptoHmacGetMinOutputLength();
-        if (ret < 0) {
-            xmlSecInternalError("xmlSecOpenSSLHmacGetMinOutputLength",
-                xmlSecTransformGetName(transform));
-            return(-1);
-        }
-        XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, minDgstSize, return(-1), xmlSecTransformGetName(transform));
-
-        if (ctx->dgstSize < minDgstSize) {
-            xmlSecInvalidNodeContentError(cur, xmlSecTransformGetName(transform),
-                "HMAC output length is too small");
-            return(-1);
-        }
-
-        cur = xmlSecGetNextElementNode(cur->next);
-    }
-
-    if(cur != NULL) {
-        xmlSecUnexpectedNodeError(cur, xmlSecTransformGetName(transform));
+    ret = xmlSecTransformHmacReadOutputBitsSize(node, ctx->dgstSize, &ctx->dgstSize);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecTransformHmacReadOutputBitsSize()",
+            xmlSecTransformGetName(transform));
         return(-1);
     }
+
     return(0);
 }
 
@@ -435,7 +411,7 @@ xmlSecMSCryptoHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 static int
 xmlSecMSCryptoHmacVerify(xmlSecTransformPtr transform,
                         const xmlSecByte* data, xmlSecSize dataSize,
-                        xmlSecTransformCtxPtr transformCtx) {
+                        xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
     static xmlSecByte last_byte_masks[] =
                 { 0xFF, 0x80, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC, 0xFE };
 
@@ -447,7 +423,7 @@ xmlSecMSCryptoHmacVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(transform->operation == xmlSecTransformOperationVerify, -1);
     xmlSecAssert2(transform->status == xmlSecTransformStatusFinished, -1);
     xmlSecAssert2(data != NULL, -1);
-    xmlSecAssert2(transformCtx != NULL, -1);
+    UNREFERENCED_PARAMETER(transformCtx);
 
     ctx = xmlSecMSCryptoHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
@@ -537,7 +513,7 @@ xmlSecMSCryptoHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
         }
 
         if(last) {
-            DWORD retLen = XMLSEC_MSCRYPTO_MAX_HMAC_SIZE;
+            DWORD retLen = XMLSEC_TRASNFORM_HMAC_MAX_OUTPUT_SIZE;
             xmlSecSize hashSize;
 
             ret = CryptGetHashParam(ctx->mscHash,

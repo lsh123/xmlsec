@@ -17,6 +17,7 @@ EXTRA_DIST = \
 	cast_helpers.h \
 	errors_helpers.h \
 	keysdata_helpers.h \
+	transform_helpers.h \
 	globals.h \
 	kw_aes_des.h \
 	xslt.h \

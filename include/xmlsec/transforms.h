@@ -999,6 +999,19 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecTransformVisa3DHackGetKlass       (void);
 XMLSEC_EXPORT int               xmlSecTransformVisa3DHackSetID          (xmlSecTransformPtr transform,
                                                                          const xmlChar* id);
 
+
+
+/*********************************************************************
+ *
+ * Helper transform functions
+ *
+ ********************************************************************/
+
+#ifndef XMLSEC_NO_HMAC
+XMLSEC_EXPORT xmlSecSize        xmlSecTransformHmacGetMinOutputBitsSize(void);
+XMLSEC_EXPORT void              xmlSecTransformHmacSetMinOutputBitsSize(xmlSecSize val);
+#endif /* XMLSEC_NO_HMAC */
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

@@ -72,7 +72,7 @@
 
 #include "xslt.h"
 #include "cast_helpers.h"
-
+#include "transform_helpers.h"
 
 #define XMLSEC_TRANSFORM_XPOINTER_TMPL "xpointer(id(\'%s\'))"
 
@@ -2569,3 +2569,103 @@ xmlSecTransformIOBufferClose(xmlSecTransformIOBufferPtr buffer) {
     xmlSecTransformIOBufferDestroy(buffer);
     return(0);
 }
+
+
+/*********************************************************************
+ *
+ * Helper transform functions
+ *
+ ********************************************************************/
+
+#ifndef XMLSEC_NO_HMAC
+
+/* min output for hmac transform in bits */
+static xmlSecSize g_xmlsec_transform_hmac_min_output_bits_size = 80;
+
+/**
+ * xmlSecTransformHmacGetMinOutputBitsSize:
+ *
+ * Gets the minimum size in bits for HMAC output.
+ *
+ * Returns: the min HMAC output size in bits.
+ */
+xmlSecSize
+xmlSecTransformHmacGetMinOutputBitsSize(void) {
+    return(g_xmlsec_transform_hmac_min_output_bits_size);
+}
+
+/**
+ * xmlSecTransformHmacSetMinOutputBitsSize:
+ * @val: the new min hmac output size in bits.
+ *
+ * Sets the min HMAC output size in bits. Low value for min output size
+ * might create a security vulnerability and is not recommended.
+ */
+void xmlSecTransformHmacSetMinOutputBitsSize(xmlSecSize val) {
+    g_xmlsec_transform_hmac_min_output_bits_size = val;
+}
+
+/**
+ * xmlSecTransformHmacReadOutputDigestSize:
+ *
+ * HMAC (http://www.w3.org/TR/xmldsig-core/#sec-HMAC):
+ *
+ * The HMAC algorithm (RFC2104 [HMAC]) takes the truncation length in bits
+ * as a parameter; if the parameter is not specified then all the bits of the
+ * hash are output. An example of an HMAC SignatureMethod element:
+ * <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#hmac-sha1">
+ *   <HMACOutputLength>128</HMACOutputLength>
+ * </SignatureMethod>
+ *
+ * Schema Definition:
+ *
+ * <simpleType name="HMACOutputLengthType">
+ *   <restriction base="integer"/>
+ * </simpleType>
+ *
+ * DTD:
+ *
+ * <!ELEMENT HMACOutputLength (#PCDATA)>
+ */
+int xmlSecTransformHmacReadOutputBitsSize(xmlNodePtr node, xmlSecSize defaultSize, xmlSecSize* res) {
+    xmlNodePtr cur;
+
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(res != NULL, -1);
+
+    cur = xmlSecGetNextElementNode(node->children);
+    if ((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeHMACOutputLength, xmlSecDSigNs)) {
+        xmlSecSize minSize;
+        int ret;
+
+        ret = xmlSecGetNodeContentAsSize(cur, defaultSize, res);
+        if (ret != 0) {
+            xmlSecInternalError("xmlSecGetNodeContentAsSize(HMACOutputLength)", NULL);
+            return(-1);
+        }
+
+        /* Ensure that HMAC length is greater than min specified.
+           Otherwise, an attacker can set this length to 0 or very
+           small value
+        */
+        minSize = xmlSecTransformHmacGetMinOutputBitsSize();
+        if ((*res) < minSize) {
+            xmlSecInvalidNodeContentError3(cur, NULL,
+                "HMAC output length=" XMLSEC_SIZE_FMT "; HMAC min output length=" XMLSEC_SIZE_FMT,
+                (*res), minSize);
+            return(-1);
+        }
+
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* no other nodes expected */
+    if (cur != NULL) {
+        xmlSecUnexpectedNodeError(cur, NULL);
+        return(-1);
+    }
+    return(0);
+}
+
+#endif /* XMLSEC_NO_HMAC */
+

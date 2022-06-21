@@ -640,6 +640,53 @@ extern "C" {
         );                                            \
     }
 
+ /**
+  * xmlSecInvalidNodeContentError2:
+  * @node:               the node.
+  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+  * @msg:                the extra message.
+  * @param:              the extra message param.
+  *
+  * Macro. The XMLSec library macro for reporting an invalid node content errors.
+  */
+#define xmlSecInvalidNodeContentError2(node, errorObject, msg, param) \
+    {                                                 \
+        const char* nName = xmlSecNodeGetName(node);  \
+        xmlSecError(XMLSEC_ERRORS_HERE,               \
+                   (const char*)(errorObject),        \
+                   NULL,                              \
+                   XMLSEC_ERRORS_R_INVALID_NODE_CONTENT, \
+                   msg "; node=%s",                   \
+                   (param),                           \
+                   xmlSecErrorsSafeString(nName)      \
+        );                                            \
+    }
+
+  /**
+   * xmlSecInvalidNodeContentError3:
+   * @node:               the node.
+   * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+   * @msg:                the extra message.
+   * @param1:             the extra message param1.
+   * @param2:             the extra message param2.
+   *
+   * Macro. The XMLSec library macro for reporting an invalid node content errors.
+   */
+#define xmlSecInvalidNodeContentError3(node, errorObject, msg, param1, param2) \
+    {                                                 \
+        const char* nName = xmlSecNodeGetName(node);  \
+        xmlSecError(XMLSEC_ERRORS_HERE,               \
+                   (const char*)(errorObject),        \
+                   NULL,                              \
+                   XMLSEC_ERRORS_R_INVALID_NODE_CONTENT, \
+                   msg "; node=%s",                   \
+                   (param1),                          \
+                   (param2),                          \
+                   xmlSecErrorsSafeString(nName)      \
+        );                                            \
+    }
+
+
 /**
  * xmlSecInvalidNodeAttributeError:
  * @node:               the node.

@@ -26,49 +26,53 @@
 #include <pk11func.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
-#include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/private.h>
+#include <xmlsec/transforms.h>
 
 #include <xmlsec/nss/app.h>
 #include <xmlsec/nss/crypto.h>
 
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
-
-/* sizes in bits */
-#define XMLSEC_NSS_MIN_HMAC_SIZE                80
-#define XMLSEC_NSS_MAX_HMAC_SIZE                (128 * 8)
+#include "../transform_helpers.h"
 
 /**************************************************************************
  *
  * Configuration
  *
  *****************************************************************************/
-static int g_xmlsec_nss_hmac_min_length = XMLSEC_NSS_MIN_HMAC_SIZE;
 
 /**
  * xmlSecNssHmacGetMinOutputLength:
  *
+ * DEPRECATED (use @xmlSecTransformHmacGetMinOutputBitsSize instead).
  * Gets the value of min HMAC length.
  *
  * Returns: the min HMAC output length
  */
 int xmlSecNssHmacGetMinOutputLength(void)
 {
-    return g_xmlsec_nss_hmac_min_length;
+    xmlSecSize val = xmlSecTransformHmacGetMinOutputBitsSize();
+    int res;
+
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(val, res, return(-1), NULL);
+    return res;
 }
 
 /**
  * xmlSecNssHmacSetMinOutputLength:
  * @min_length: the new min length
  *
+ * DEPRECATED (use @xmlSecTransformHmacSetMinOutputBitsSize instead). 
  * Sets the min HMAC output length
  */
 void xmlSecNssHmacSetMinOutputLength(int min_length)
 {
-    g_xmlsec_nss_hmac_min_length = min_length;
+    xmlSecSize val;
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(min_length, val, return, NULL);
+    xmlSecTransformHmacSetMinOutputBitsSize(val);
 }
 
 /**************************************************************************
@@ -80,7 +84,7 @@ typedef struct _xmlSecNssHmacCtx                xmlSecNssHmacCtx, *xmlSecNssHmac
 struct _xmlSecNssHmacCtx {
     CK_MECHANISM_TYPE   digestType;
     PK11Context*        digestCtx;
-    xmlSecByte          dgst[XMLSEC_NSS_MAX_HMAC_SIZE / 8];
+    xmlSecByte          dgst[XMLSEC_TRASNFORM_HMAC_MAX_OUTPUT_SIZE];
     xmlSecSize          dgstSize;       /* dgst size in bits */
 };
 
@@ -241,76 +245,28 @@ xmlSecNssHmacFinalize(xmlSecTransformPtr transform) {
 
 /**
  * xmlSecNssHmacNodeRead:
- *
- * HMAC (http://www.w3.org/TR/xmldsig-core/#sec-HMAC):
- *
- * The HMAC algorithm (RFC2104 [HMAC]) takes the truncation length in bits
- * as a parameter; if the parameter is not specified then all the bits of the
- * hash are output. An example of an HMAC SignatureMethod element:
- * <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#hmac-sha1">
- *   <HMACOutputLength>128</HMACOutputLength>
- * </SignatureMethod>
- *
- * Schema Definition:
- *
- * <simpleType name="HMACOutputLengthType">
- *   <restriction base="integer"/>
- * </simpleType>
- *
- * DTD:
- *
- * <!ELEMENT HMACOutputLength (#PCDATA)>
  */
 static int
-xmlSecNssHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
+xmlSecNssHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
+                      xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
     xmlSecNssHmacCtxPtr ctx;
-    xmlNodePtr cur;
+    int ret;
 
     xmlSecAssert2(xmlSecNssHmacCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssHmacSize), -1);
     xmlSecAssert2(node!= NULL, -1);
-    xmlSecAssert2(transformCtx!= NULL, -1);
+    UNREFERENCED_PARAMETER(transformCtx);
 
     ctx = xmlSecNssHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    cur = xmlSecGetNextElementNode(node->children);
-    if((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeHMACOutputLength, xmlSecDSigNs)) {
-        xmlSecSize minDgstSize;
-        int ret;
-
-        ret = xmlSecGetNodeContentAsSize(cur, &ctx->dgstSize, ctx->dgstSize);
-        if(ret != 0) {
-            xmlSecInternalError("xmlSecGetNodeContentAsSize(HMACOutputLength)",
-                xmlSecTransformGetName(transform));
-            return(-1);
-        }
-
-        /* Ensure that HMAC length is greater than min specified.
-           Otherwise, an attacker can set this length to 0 or very
-           small value
-        */
-        ret = xmlSecNssHmacGetMinOutputLength();
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecNssHmacGetMinOutputLength",
-                xmlSecTransformGetName(transform));
-            return(-1);
-        }
-        XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, minDgstSize, return(-1), xmlSecTransformGetName(transform));
-
-        if(ctx->dgstSize < minDgstSize) {
-            xmlSecInvalidNodeContentError(cur, xmlSecTransformGetName(transform),
-                                          "HMAC output length is too small");
-           return(-1);
-        }
-
-        cur = xmlSecGetNextElementNode(cur->next);
-    }
-
-    if(cur != NULL) {
-        xmlSecUnexpectedNodeError(cur, xmlSecTransformGetName(transform));
+    ret = xmlSecTransformHmacReadOutputBitsSize(node, ctx->dgstSize, &ctx->dgstSize);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecTransformHmacReadOutputBitsSize()",
+            xmlSecTransformGetName(transform));
         return(-1);
     }
+
     return(0);
 }
 
@@ -406,7 +362,7 @@ xmlSecNssHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 static int
 xmlSecNssHmacVerify(xmlSecTransformPtr transform,
                         const xmlSecByte* data, xmlSecSize dataSize,
-                        xmlSecTransformCtxPtr transformCtx) {
+                        xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
     static xmlSecByte last_byte_masks[] =
                 { 0xFF, 0x80, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC, 0xFE };
 
@@ -418,7 +374,7 @@ xmlSecNssHmacVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssHmacSize), -1);
     xmlSecAssert2(transform->status == xmlSecTransformStatusFinished, -1);
     xmlSecAssert2(data != NULL, -1);
-    xmlSecAssert2(transformCtx != NULL, -1);
+    UNREFERENCED_PARAMETER(transformCtx);
 
     ctx = xmlSecNssHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);

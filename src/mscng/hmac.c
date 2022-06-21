@@ -27,17 +27,17 @@
 #include <ncrypt.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/xmltree.h>
+#include <xmlsec/errors.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
+#include <xmlsec/private.h>
 #include <xmlsec/transforms.h>
-#include <xmlsec/errors.h>
-#include <xmlsec/bn.h>
 
 #include <xmlsec/mscng/crypto.h>
 
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
+#include "../transform_helpers.h"
 
 typedef struct _xmlSecMSCngHmacCtx xmlSecMSCngHmacCtx, *xmlSecMSCngHmacCtxPtr;
 
@@ -174,40 +174,23 @@ xmlSecMSCngHmacFinalize(xmlSecTransformPtr transform) {
 }
 
 static int
-xmlSecMSCngHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
+xmlSecMSCngHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
+                        xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
     xmlSecMSCngHmacCtxPtr ctx;
-    xmlNodePtr cur;
+    int ret;
 
     xmlSecAssert2(xmlSecMSCngHmacCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngHmacSize), -1);
     xmlSecAssert2(node!= NULL, -1);
-    xmlSecAssert2(transformCtx != NULL, -1);
+    UNREFERENCED_PARAMETER(transformCtx);
 
     ctx = xmlSecMSCngHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    cur = xmlSecGetNextElementNode(node->children);
-    if((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeHMACOutputLength, xmlSecDSigNs)) {
-        int ret;
-
-        ret = xmlSecGetNodeContentAsSize(cur, &ctx->dgstSize, ctx->dgstSize);
-        if (ret != 0) {
-            xmlSecInternalError("xmlSecGetNodeContentAsSize(HMACOutputLength)",
-                xmlSecTransformGetName(transform));
-            return(-1);
-        }
-
-        if (ctx->dgstSize < XMLSEC_MSCNG_HMAC_MIN_LENGTH) {
-            xmlSecInvalidNodeContentError(cur, xmlSecTransformGetName(transform),
-                "HMAC output length is too small");
-            return(-1);
-        }
-
-        cur = xmlSecGetNextElementNode(cur->next);
-    }
-
-    if(cur != NULL) {
-        xmlSecUnexpectedNodeError(cur, xmlSecTransformGetName(transform));
+    ret = xmlSecTransformHmacReadOutputBitsSize(node, ctx->dgstSize, &ctx->dgstSize);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecTransformHmacReadOutputBitsSize()",
+            xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -317,7 +300,7 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
 static int
 xmlSecMSCngHmacVerify(xmlSecTransformPtr transform, const xmlSecByte* data,
-        xmlSecSize dataSize, xmlSecTransformCtxPtr transformCtx) {
+        xmlSecSize dataSize, xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
     xmlSecMSCngHmacCtxPtr ctx;
     xmlSecSize truncationBytes;
     static xmlSecByte lastByteMasks[] = { 0xFF, 0x80, 0xC0, 0xE0, 0xF0, 0xF8,
@@ -330,7 +313,7 @@ xmlSecMSCngHmacVerify(xmlSecTransformPtr transform, const xmlSecByte* data,
     xmlSecAssert2(transform->status == xmlSecTransformStatusFinished, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(dataSize > 0, -1);
-    xmlSecAssert2(transformCtx != NULL, -1);
+    UNREFERENCED_PARAMETER(transformCtx);
 
     ctx = xmlSecMSCngHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);

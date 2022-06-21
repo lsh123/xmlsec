@@ -38,6 +38,7 @@
 #include <xmlsec/base64.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/openssl/crypto.h>
 #include "openssl_compat.h"

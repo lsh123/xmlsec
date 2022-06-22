@@ -191,6 +191,8 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
     xmlSecAssert2(base > 1, -1);
     xmlSecAssert2(base <= XMLSEC_BN_REV_MAX, -1);
 
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(base, baseInt, return(-1), NULL);
+
     /* trivial case */
     strSize = xmlSecStrlen(str);
     if(strSize <= 0) {
@@ -240,7 +242,6 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
     }
 
     /* now parse the number itself */
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(base, baseInt, return(-1), NULL);
     while(ii < strSize) {
         ch = str[ii++];
         if(isspace(ch)) {

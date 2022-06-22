@@ -1287,7 +1287,7 @@ xmlSecOpenSSLAppCertLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
 
     /* create certificate object to hold the cert we are going to read */
 #ifndef XMLSEC_OPENSSL_API_300
-    tmpCert = X509_new(NULL);
+    tmpCert = X509_new();
     if(tmpCert == NULL) {
         xmlSecOpenSSLError("X509_new", NULL);
         goto done;

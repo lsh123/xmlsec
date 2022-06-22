@@ -2653,7 +2653,9 @@ xmlSecOpenSSLKeyDataGost2001Finalize(xmlSecKeyDataPtr data) {
 }
 
 static xmlSecKeyDataType
-xmlSecOpenSSLKeyDataGost2001GetType(xmlSecKeyDataPtr data) {
+xmlSecOpenSSLKeyDataGost2001GetType(xmlSecKeyDataPtr data ATTRIBUTE_UNUSED) {
+    UNREFERENCED_PARAMETER(data);
+
     /* Now I don't know how to find whether we have both private and public key
     or the public only*/
     return(xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate);

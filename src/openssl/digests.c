@@ -141,10 +141,10 @@ xmlSecOpenSSLEvpDigestCheckId(xmlSecTransformPtr transform) {
 
 /* small helper macro to reduce clutter in the code */
 #ifndef XMLSEC_OPENSSL_API_300
-#define XMLSEC_OPENSSL_SET_DIGEST(ctx, digestVal, digestNameVal) \
+#define XMLSEC_OPENSSL_EVP_DIGEST_SETUP(ctx, digestVal, digestNameVal) \
     (ctx)->digest = (digestVal)
 #else /* XMLSEC_OPENSSL_API_300 */
-#define XMLSEC_OPENSSL_SET_DIGEST(ctx, digestVal, digestNameVal) \
+#define XMLSEC_OPENSSL_EVP_DIGEST_SETUP(ctx, digestVal, digestNameVal) \
     (ctx)->digestName = (digestNameVal)
 #endif /* XMLSEC_OPENSSL_API_300 */
 
@@ -152,7 +152,8 @@ xmlSecOpenSSLEvpDigestCheckId(xmlSecTransformPtr transform) {
 
 /* Not all algorithms have been converted to the new providers design (e.g. GOST) */    
 static int
-xmlSecOpenSSLEvpDigestSetLegacyDigest(xmlSecOpenSSLEvpDigestCtxPtr ctx, const char * digestName) {
+xmlSecOpenSSLEvpDigestSetLegacyDigest(xmlSecOpenSSLEvpDigestCtxPtr ctx,
+                                      const char * digestName) {
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->digest == NULL, -1);
     xmlSecAssert2(digestName != NULL, -1);
@@ -196,59 +197,56 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_MD5
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformMd5Id)) {
-        XMLSEC_OPENSSL_SET_DIGEST(ctx, EVP_md5(), OSSL_DIGEST_NAME_MD5);
+        XMLSEC_OPENSSL_EVP_DIGEST_SETUP(ctx, EVP_md5(), OSSL_DIGEST_NAME_MD5);
     } else
 #endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_RIPEMD160
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRipemd160Id)) {
-        XMLSEC_OPENSSL_SET_DIGEST(ctx, EVP_ripemd160(), OSSL_DIGEST_NAME_RIPEMD160);
+        XMLSEC_OPENSSL_EVP_DIGEST_SETUP(ctx, EVP_ripemd160(), OSSL_DIGEST_NAME_RIPEMD160);
     } else
 #endif /* XMLSEC_NO_RIPEMD160 */
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha1Id)) {
-        XMLSEC_OPENSSL_SET_DIGEST(ctx, EVP_sha1(), OSSL_DIGEST_NAME_SHA1);
+        XMLSEC_OPENSSL_EVP_DIGEST_SETUP(ctx, EVP_sha1(), OSSL_DIGEST_NAME_SHA1);
     } else
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA224
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha224Id)) {
-        XMLSEC_OPENSSL_SET_DIGEST(ctx, EVP_sha224(), OSSL_DIGEST_NAME_SHA2_224);
+        XMLSEC_OPENSSL_EVP_DIGEST_SETUP(ctx, EVP_sha224(), OSSL_DIGEST_NAME_SHA2_224);
     } else
 #endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha256Id)) {
-        XMLSEC_OPENSSL_SET_DIGEST(ctx, EVP_sha256(), OSSL_DIGEST_NAME_SHA2_256);
+        XMLSEC_OPENSSL_EVP_DIGEST_SETUP(ctx, EVP_sha256(), OSSL_DIGEST_NAME_SHA2_256);
     } else
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha384Id)) {
-        XMLSEC_OPENSSL_SET_DIGEST(ctx, EVP_sha384(), OSSL_DIGEST_NAME_SHA2_384);
+        XMLSEC_OPENSSL_EVP_DIGEST_SETUP(ctx, EVP_sha384(), OSSL_DIGEST_NAME_SHA2_384);
     } else
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha512Id)) {
-        XMLSEC_OPENSSL_SET_DIGEST(ctx, EVP_sha512(), OSSL_DIGEST_NAME_SHA2_512);
+        XMLSEC_OPENSSL_EVP_DIGEST_SETUP(ctx, EVP_sha512(), OSSL_DIGEST_NAME_SHA2_512);
     } else
 #endif /* XMLSEC_NO_SHA512 */
 
 #ifndef XMLSEC_NO_GOST
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGostR3411_94Id)) {
-#ifndef XMLSEC_OPENSSL_API_300
-        ctx->digest = EVP_get_digestbyname(XMLSEC_OPENSSL_DIGEST_NAME_GOST94);
-        if (ctx->digest == NULL) {
-            xmlSecOpenSSLError("EVP_get_digestbyname(md_gost94)", xmlSecTransformGetName(transform));
+        int ret;
+        ret = xmlSecOpenSSLEvpDigestSetLegacyDigest(ctx, XMLSEC_OPENSSL_DIGEST_NAME_GOST94);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecOpenSSLEvpDigestSetLegacyDigest(md_gost94)",
+                xmlSecTransformGetName(transform));
             xmlSecOpenSSLEvpDigestFinalize(transform);
             return(-1);
         }
-#else /* XMLSEC_OPENSSL_API_300 */
-        ctx->digestName = XMLSEC_OPENSSL_DIGEST_NAME_GOST94;
-        ctx->legacyDigest = 1;
-#endif /* XMLSEC_OPENSSL_API_300 */
     } else
 #endif /* XMLSEC_NO_GOST */
 
@@ -257,7 +255,7 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
         int ret;
         ret = xmlSecOpenSSLEvpDigestSetLegacyDigest(ctx, XMLSEC_OPENSSL_DIGEST_NAME_GOST12_256);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecOpenSSLEvpDigestSetLegacyDigest(md_gost12_256)",
+            xmlSecInternalError("xmlSecOpenSSLEvpDigestSetLegacyDigest(md_gost2012_256)",
                 xmlSecTransformGetName(transform));
             xmlSecOpenSSLEvpDigestFinalize(transform);
             return(-1);
@@ -268,7 +266,7 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
         int ret;
         ret = xmlSecOpenSSLEvpDigestSetLegacyDigest(ctx, XMLSEC_OPENSSL_DIGEST_NAME_GOST12_512);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecOpenSSLEvpDigestSetLegacyDigest(md_gost12_512)",
+            xmlSecInternalError("xmlSecOpenSSLEvpDigestSetLegacyDigest(md_gost2012_512)",
                 xmlSecTransformGetName(transform));
             xmlSecOpenSSLEvpDigestFinalize(transform);
             return(-1);
@@ -277,14 +275,6 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_GOST2012 */
     {
         xmlSecInvalidTransfromError(transform);
-        xmlSecOpenSSLEvpDigestFinalize(transform);
-        return(-1);
-    }
-
-    /* create digest CTX */
-    ctx->digestCtx = EVP_MD_CTX_new();
-    if(ctx->digestCtx == NULL) {
-        xmlSecOpenSSLError("EVP_MD_CTX_new", xmlSecTransformGetName(transform));
         xmlSecOpenSSLEvpDigestFinalize(transform);
         return(-1);
     }
@@ -299,12 +289,17 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
             xmlSecOpenSSLEvpDigestFinalize(transform);
             return(-1);
         }
-    } else {
-        xmlSecAssert2(ctx->digestName != NULL, -1);
-        xmlSecAssert2(ctx->digest != NULL, -1);
     }
 #endif /* XMLSEC_OPENSSL_API_300 */
+    xmlSecAssert2(ctx->digest != NULL, -1);
 
+    /* create digest CTX */
+    ctx->digestCtx = EVP_MD_CTX_new();
+    if(ctx->digestCtx == NULL) {
+        xmlSecOpenSSLError("EVP_MD_CTX_new", xmlSecTransformGetName(transform));
+        xmlSecOpenSSLEvpDigestFinalize(transform);
+        return(-1);
+    }
 
     /* done */
     return(0);

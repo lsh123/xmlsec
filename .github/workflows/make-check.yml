@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  check-ubuntu-openssl3:
+  check-ubuntu-openssl300:
     runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
@@ -40,7 +40,6 @@ jobs:
       working-directory: build
       run: |
           make check
-
 
   check-ubuntu-openssl110:
     runs-on: ubuntu-20.04

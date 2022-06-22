@@ -665,6 +665,15 @@ xmlSecOpenSSLEvpBlockCipherCheckId(xmlSecTransformPtr transform) {
     return(0);
 }
 
+/* small helper macro to reduce clutter in the code */
+#ifndef XMLSEC_OPENSSL_API_300
+#define XMLSEC_OPENSSL_SET_CIPHER(ctx, cipherVal, cipherNameVal) \
+    (ctx)->cipher = (cipherVal)
+#else /* XMLSEC_OPENSSL_API_300 */
+#define XMLSEC_OPENSSL_SET_CIPHER(ctx, cipherVal, cipherNameVal) \
+    (ctx)->cipherName = (cipherNameVal)
+#endif /* XMLSEC_OPENSSL_API_300 */
+
 static int
 xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
     xmlSecOpenSSLEvpBlockCipherCtxPtr ctx;
@@ -679,11 +688,7 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_DES
     if(transform->id == xmlSecOpenSSLTransformDes3CbcId) {
-#ifndef XMLSEC_OPENSSL_API_300
-        ctx->cipher     = EVP_des_ede3_cbc();
-#else /* XMLSEC_OPENSSL_API_300 */
-        ctx->cipherName = XMLSEEC_OPENSSL_CIPHER_NAME_DES3_EDE;
-#endif /* XMLSEC_OPENSSL_API_300 */
+        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_des_ede3_cbc(), XMLSEEC_OPENSSL_CIPHER_NAME_DES3_EDE);
         ctx->keyId      = xmlSecOpenSSLKeyDataDesId;
         ctx->cbcMode    = 1;
     } else
@@ -691,51 +696,27 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_AES
     if(transform->id == xmlSecOpenSSLTransformAes128CbcId) {
-#ifndef XMLSEC_OPENSSL_API_300
-        ctx->cipher     = EVP_aes_128_cbc();
-#else /* XMLSEC_OPENSSL_API_300 */
-        ctx->cipherName = XMLSEEC_OPENSSL_CIPHER_NAME_AES128_CBC;
-#endif /* XMLSEC_OPENSSL_API_300 */
+        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_aes_128_cbc(), XMLSEEC_OPENSSL_CIPHER_NAME_AES128_CBC);
         ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
         ctx->cbcMode    = 1;
     } else if(transform->id == xmlSecOpenSSLTransformAes192CbcId) {
-#ifndef XMLSEC_OPENSSL_API_300
-        ctx->cipher     = EVP_aes_192_cbc();
-#else /* XMLSEC_OPENSSL_API_300 */
-        ctx->cipherName = XMLSEEC_OPENSSL_CIPHER_NAME_AES192_CBC;
-#endif /* XMLSEC_OPENSSL_API_300 */
+        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_aes_192_cbc(), XMLSEEC_OPENSSL_CIPHER_NAME_AES192_CBC);
         ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
         ctx->cbcMode    = 1;
     } else if(transform->id == xmlSecOpenSSLTransformAes256CbcId) {
-#ifndef XMLSEC_OPENSSL_API_300
-        ctx->cipher     = EVP_aes_256_cbc();
-#else /* XMLSEC_OPENSSL_API_300 */
-        ctx->cipherName = XMLSEEC_OPENSSL_CIPHER_NAME_AES256_CBC;
-#endif /* XMLSEC_OPENSSL_API_300 */
+        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_aes_256_cbc(), XMLSEEC_OPENSSL_CIPHER_NAME_AES256_CBC);
         ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
         ctx->cbcMode    = 1;
     } else if(transform->id == xmlSecOpenSSLTransformAes128GcmId) {
-#ifndef XMLSEC_OPENSSL_API_300
-        ctx->cipher     = EVP_aes_128_gcm();
-#else /* XMLSEC_OPENSSL_API_300 */
-        ctx->cipherName = XMLSEEC_OPENSSL_CIPHER_NAME_AES128_GCM;
-#endif /* XMLSEC_OPENSSL_API_300 */
+        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_aes_128_gcm(), XMLSEEC_OPENSSL_CIPHER_NAME_AES128_GCM);
         ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
         ctx->cbcMode    = 0;
     } else if(transform->id == xmlSecOpenSSLTransformAes192GcmId) {
-#ifndef XMLSEC_OPENSSL_API_300
-        ctx->cipher     = EVP_aes_192_gcm();
-#else /* XMLSEC_OPENSSL_API_300 */
-        ctx->cipherName = XMLSEEC_OPENSSL_CIPHER_NAME_AES192_GCM;
-#endif /* XMLSEC_OPENSSL_API_300 */
+        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_aes_192_gcm(), XMLSEEC_OPENSSL_CIPHER_NAME_AES192_GCM);
         ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
         ctx->cbcMode    = 0;
     } else if(transform->id == xmlSecOpenSSLTransformAes256GcmId) {
-#ifndef XMLSEC_OPENSSL_API_300
-        ctx->cipher     = EVP_aes_256_gcm();
-#else /* XMLSEC_OPENSSL_API_300 */
-        ctx->cipherName = XMLSEEC_OPENSSL_CIPHER_NAME_AES256_GCM;
-#endif /* XMLSEC_OPENSSL_API_300 */
+        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_aes_256_gcm(), XMLSEEC_OPENSSL_CIPHER_NAME_AES256_GCM);
         ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
         ctx->cbcMode    = 0;
     } else

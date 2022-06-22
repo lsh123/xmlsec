@@ -98,3 +98,16 @@
    ...
    fun:main
 }
+
+{
+   xmlSecGCryptBlockCipherCtxInit -> _gcry_rngcsprng_randomize -> malloc
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   fun:_gcry_rngcsprng_randomize
+   ...
+   fun:xmlSecGCryptBlockCipherCtxInit
+   ...
+   fun:main
+}

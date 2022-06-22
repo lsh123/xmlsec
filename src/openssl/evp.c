@@ -2779,7 +2779,9 @@ xmlSecOpenSSLKeyDataGostR3410_2012_256Finalize(xmlSecKeyDataPtr data) {
 }
 
 static xmlSecKeyDataType
-xmlSecOpenSSLKeyDataGostR3410_2012_256GetType(xmlSecKeyDataPtr data) {
+xmlSecOpenSSLKeyDataGostR3410_2012_256GetType(xmlSecKeyDataPtr data ATTRIBUTE_UNUSED) {
+    UNREFERENCED_PARAMETER(data);
+
     /* I don't know how to find whether we have both private and public key
     or the public only*/
     return(xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate);
@@ -2905,7 +2907,9 @@ xmlSecOpenSSLKeyDataGostR3410_2012_512Finalize(xmlSecKeyDataPtr data) {
 }
 
 static xmlSecKeyDataType
-xmlSecOpenSSLKeyDataGostR3410_2012_512GetType(xmlSecKeyDataPtr data) {
+xmlSecOpenSSLKeyDataGostR3410_2012_512GetType(xmlSecKeyDataPtr data ATTRIBUTE_UNUSED) {
+    UNREFERENCED_PARAMETER(data);
+
     /* I don't know how to find whether we have both private and public key
     or the public only*/
     return(xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate);

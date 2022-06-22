@@ -75,7 +75,7 @@ static int              xmlSecTransformC14NPopBin       (xmlSecTransformPtr tran
                                                          xmlSecTransformCtxPtr transformCtx);
 static int              xmlSecTransformC14NExecute      (xmlSecTransformId id,
                                                          xmlSecNodeSetPtr nodes,
-                                                         xmlChar** nsList,
+                                                         xmlSecPtrListPtr nsList,
                                                          xmlOutputBufferPtr buf);
 static int
 xmlSecTransformC14NInitialize(xmlSecTransformPtr transform) {
@@ -191,7 +191,6 @@ static int
 xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
                             xmlSecTransformCtxPtr transformCtx) {
     xmlOutputBufferPtr buf;
-    xmlSecPtrListPtr nsList;
     int ret;
 
     xmlSecAssert2(xmlSecTransformC14NCheckId(transform), -1);
@@ -230,12 +229,8 @@ xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
         }
     }
 
-    /* we are using a semi-hack here: we know that xmlSecPtrList keeps
-     * all pointers in the big array */
-    nsList = xmlSecC14NGetCtx(transform);
-    xmlSecAssert2(xmlSecPtrListCheckId(nsList, xmlSecStringListId), -1);
-
-    ret = xmlSecTransformC14NExecute(transform->id, nodes, (xmlChar**)(nsList->data), buf);
+    ret = xmlSecTransformC14NExecute(transform->id, nodes,
+            xmlSecC14NGetCtx(transform), buf);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformC14NExecute",
                             xmlSecTransformGetName(transform));
@@ -256,7 +251,6 @@ static int
 xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
                             xmlSecSize maxDataSize, xmlSecSize* dataSize,
                             xmlSecTransformCtxPtr transformCtx) {
-    xmlSecPtrListPtr nsList;
     xmlSecBufferPtr out;
     int ret;
 
@@ -296,10 +290,8 @@ xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
 
         /* we are using a semi-hack here: we know that xmlSecPtrList keeps
          * all pointers in the big array */
-        nsList = xmlSecC14NGetCtx(transform);
-        xmlSecAssert2(xmlSecPtrListCheckId(nsList, xmlSecStringListId), -1);
-
-        ret = xmlSecTransformC14NExecute(transform->id, transform->inNodes, (xmlChar**)(nsList->data), buf);
+        ret = xmlSecTransformC14NExecute(transform->id, transform->inNodes,
+                xmlSecC14NGetCtx(transform), buf);
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformC14NExecute",
                                 xmlSecTransformGetName(transform));
@@ -352,13 +344,15 @@ xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
 }
 
 static int
-xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlChar** nsList,
+xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlSecPtrListPtr nsList,
                            xmlOutputBufferPtr buf) {
     int ret;
 
     xmlSecAssert2(id != xmlSecTransformIdUnknown, -1);
     xmlSecAssert2(nodes != NULL, -1);
     xmlSecAssert2(nodes->doc != NULL, -1);
+    xmlSecAssert2(nsList != NULL, -1);
+    xmlSecAssert2(xmlSecPtrListCheckId(nsList, xmlSecStringListId), -1);
     xmlSecAssert2(buf != NULL, -1);
 
     /* execute c14n transform */
@@ -379,13 +373,17 @@ xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlChar
                         (xmlC14NIsVisibleCallback)xmlSecNodeSetContains,
                         nodes, XML_C14N_1_1, NULL, 1, buf);
     } else if(id == xmlSecTransformExclC14NId) {
+        /* we are using a semi-hack here: we know that xmlSecPtrList keeps
+         * all pointers in the big array */
         ret = xmlC14NExecute(nodes->doc,
                         (xmlC14NIsVisibleCallback)xmlSecNodeSetContains,
-                        nodes, XML_C14N_EXCLUSIVE_1_0, nsList, 0, buf);
+                        nodes, XML_C14N_EXCLUSIVE_1_0, (xmlChar**)(nsList->data), 0, buf);
     } else if(id == xmlSecTransformExclC14NWithCommentsId) {
+        /* we are using a semi-hack here: we know that xmlSecPtrList keeps
+         * all pointers in the big array */
         ret = xmlC14NExecute(nodes->doc,
                         (xmlC14NIsVisibleCallback)xmlSecNodeSetContains,
-                        nodes, XML_C14N_EXCLUSIVE_1_0, nsList, 1, buf);
+                        nodes, XML_C14N_EXCLUSIVE_1_0, (xmlChar**)(nsList->data), 1, buf);
     } else if(id == xmlSecTransformRemoveXmlTagsC14NId) {
         ret = xmlSecNodeSetDumpTextNodes(nodes, buf);
     } else {

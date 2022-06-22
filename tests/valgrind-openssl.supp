@@ -91,9 +91,7 @@
    fun:malloc
    ...
    fun:OSSL_PROVIDER_try_load
-   fun:xmlSecOpenSSLAppInit
-   fun:xmlSecAppCryptoInit
-   fun:xmlSecAppInit
+   ...
    fun:main
 }
 {
@@ -103,9 +101,7 @@
    fun:realloc
    ...
    fun:OSSL_PROVIDER_try_load
-   fun:xmlSecOpenSSLAppInit
-   fun:xmlSecAppCryptoInit
-   fun:xmlSecAppInit
+   ...
    fun:main
 }
 {
@@ -115,9 +111,7 @@
    fun:calloc
    ...
    fun:OSSL_PROVIDER_try_load
-   fun:xmlSecOpenSSLAppInit
-   fun:xmlSecAppCryptoInit
-   fun:xmlSecAppInit
+   ...
    fun:main
 }
 {
@@ -127,9 +121,7 @@
    fun:malloc
    ...
    fun:OPENSSL_init_crypto
-   fun:xmlSecOpenSSLAppInit
-   fun:xmlSecAppCryptoInit
-   fun:xmlSecAppInit
+   ...
    fun:main
 }
 {
@@ -139,9 +131,7 @@
    fun:realloc
    ...
    fun:OPENSSL_init_crypto
-   fun:xmlSecOpenSSLAppInit
-   fun:xmlSecAppCryptoInit
-   fun:xmlSecAppInit
+   ...
    fun:main
 }
 {
@@ -151,9 +141,7 @@
    fun:calloc
    ...
    fun:OPENSSL_init_crypto
-   fun:xmlSecOpenSSLAppInit
-   fun:xmlSecAppCryptoInit
-   fun:xmlSecAppInit
+   ...
    fun:main
 }
 

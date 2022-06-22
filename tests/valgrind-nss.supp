@@ -225,9 +225,7 @@
    fun:malloc
    ...
    fun:NSS_InitReadWrite
-   fun:xmlSecNssAppInit
-   fun:xmlSecAppCryptoInit
-   fun:xmlSecAppInit
+   ...
    fun:main
 }
 
@@ -238,9 +236,7 @@
    fun:malloc
    ...
    fun:NSS_InitReadWrite
-   fun:xmlSecNssAppInit
-   fun:xmlSecAppCryptoInit
-   fun:xmlSecAppInit
+   ...
    fun:main
 }
 
@@ -252,23 +248,7 @@
    fun:calloc
    ...
    fun:NSS_InitReadWrite
-   fun:xmlSecNssAppInit
-   fun:xmlSecAppCryptoInit
-   fun:xmlSecAppInit
-   fun:main
-}
-
-{
-   NSS_InitReadWrite -> strdup
-   Memcheck:Leak
-   match-leak-kinds: reachable
-   fun:malloc
-   fun:strdup
    ...
-   fun:NSS_InitReadWrite
-   fun:xmlSecNssAppInit
-   fun:xmlSecAppCryptoInit
-   fun:xmlSecAppInit
    fun:main
 }
 
@@ -279,9 +259,7 @@
    fun:malloc
    ...
    fun:PK11_ConfigurePKCS11
-   fun:xmlSecNssAppInit
-   fun:xmlSecAppCryptoInit
-   fun:xmlSecAppInit
+   ...
    fun:main
 }
 
@@ -292,9 +270,7 @@
    fun:realloc
    ...
    fun:PK11_ConfigurePKCS11
-   fun:xmlSecNssAppInit
-   fun:xmlSecAppCryptoInit
-   fun:xmlSecAppInit
+   ...
    fun:main
 }
 

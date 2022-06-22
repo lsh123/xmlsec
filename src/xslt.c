@@ -385,7 +385,7 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         ret = xsltSaveResultTo(output, docOut, ctx->xslt);
         if(ret < 0) {
             xmlSecXsltError("xsltParseStylesheetDoc", ctx->xslt, xmlSecTransformGetName(transform));
-            xmlOutputBufferClose(output);
+            (void)xmlOutputBufferClose(output);
             xmlFreeDoc(docOut);
             return(-1);
         }
@@ -506,7 +506,7 @@ xmlSecXslProcess(xmlSecXsltCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) 
 
 done:
     if(output != NULL) {
-        xmlOutputBufferClose(output);
+        (void)xmlOutputBufferClose(output);
     }
     if(docIn != NULL) {
         xmlFreeDoc(docIn);

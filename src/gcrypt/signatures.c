@@ -685,17 +685,18 @@ xmlSecGCryptDsaPkSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
 
     /* write out: r + s */
     ret = xmlSecGCryptAppendMpi(m_r, out, 20);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecGCryptAppendMpi", NULL);
+    if((ret < 0) || (xmlSecBufferGetSize(out) != 20)) {
+        xmlSecInternalError2("xmlSecGCryptAppendMpi", NULL,
+            "outSize=" XMLSEC_SIZE_FMT, xmlSecBufferGetSize(out));
         goto done;
     }
-    xmlSecAssert2(xmlSecBufferGetSize(out) == 20, -1);
+
     ret = xmlSecGCryptAppendMpi(m_s, out, 20);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecGCryptAppendMpi", NULL);
+    if((ret < 0) || (xmlSecBufferGetSize(out) != (20 + 20))) {
+        xmlSecInternalError2("xmlSecGCryptAppendMpi", NULL,
+            "outSize=" XMLSEC_SIZE_FMT, xmlSecBufferGetSize(out));
         goto done;
     }
-    xmlSecAssert2(xmlSecBufferGetSize(out) == (20 + 20), -1);
 
     /* done */
     res = 0;

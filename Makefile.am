@@ -178,6 +178,9 @@ memcheck-res:
 memcheck: $(TEST_APP)
 	@(export DEBUG_MEMORY=1 && $(MAKE) check && $(MAKE) memcheck-res)
 
+memcheck-crypto-%: $(TEST_APP)
+	@(export DEBUG_MEMORY=1 && $(MAKE) check-crypto-$* && $(MAKE) memcheck-res)
+
 perfcheck: $(TEST_APP)
 	@(export PERF_TEST=10 && $(MAKE) check)
 

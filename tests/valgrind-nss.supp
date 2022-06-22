@@ -218,3 +218,59 @@
    fun:rijndael*
 }
 
+{
+   NSS_InitReadWrite -> malloc (definite)
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   ...
+   fun:NSS_InitReadWrite
+   ...
+   fun:main
+}
+
+{
+   NSS_InitReadWrite -> malloc
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   fun:NSS_InitReadWrite
+   ...
+   fun:main
+}
+
+
+{
+   NSS_InitReadWrite -> calloc
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   ...
+   fun:NSS_InitReadWrite
+   ...
+   fun:main
+}
+
+{
+   PK11_ConfigurePKCS11 -> malloc
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   fun:PK11_ConfigurePKCS11
+   ...
+   fun:main
+}
+
+{
+   PK11_ConfigurePKCS11 -> realloc
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:realloc
+   ...
+   fun:PK11_ConfigurePKCS11
+   ...
+   fun:main
+}
+

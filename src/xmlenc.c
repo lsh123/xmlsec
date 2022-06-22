@@ -379,7 +379,7 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
     } else {
         xmlSecInvalidStringTypeError("encryption type", encCtx->type,
                 "supported encryption type", NULL);
-        xmlOutputBufferClose(output);
+        (void)xmlOutputBufferClose(output);
         return(-1);
     }
 

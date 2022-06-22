@@ -31,7 +31,11 @@ XMLSEC_EXPORT xmlDocPtr         xmlSecParseMemoryExt    (const xmlSecByte *prefi
                                                          xmlSecSize bufferSize,
                                                          const xmlSecByte *postfix,
                                                          xmlSecSize postfixSize);
-XMLSEC_EXPORT void				xmlSecParsePrepareCtxt	(xmlParserCtxtPtr ctxt);
+XMLSEC_EXPORT void              xmlSecParsePrepareCtxt  (xmlParserCtxtPtr ctxt);
+
+XMLSEC_EXPORT int               xmlSecParserGetDefaultOptions(void);
+XMLSEC_EXPORT void              xmlSecParserSetDefaultOptions(int options);
+
 
 /**
  * xmlSecTransformXmlParserId:

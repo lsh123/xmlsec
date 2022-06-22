@@ -42,7 +42,18 @@ nssdbfolder=$topfolder/nssdb
 #
 # Valgrind
 #
-valgrind_suppression="--suppressions=$topfolder/openssl.supp --suppressions=$topfolder/nss.supp"
+if [ "z$crypto" = "zopenssl" ] ; then
+    valgrind_suppression="--suppressions=$topfolder/valgrind-openssl.supp"
+elif [ "z$crypto" = "znss" ] ; then
+    valgrind_suppression="--suppressions=$topfolder/valgrind-nss.supp"
+elif [ "z$crypto" = "zgcrypt" ] ; then
+    valgrind_suppression="--suppressions=$topfolder/valgrind-gcrypt.supp"
+elif [ "z$crypto" = "zgnutls" ] ; then
+    valgrind_suppression="--suppressions=$topfolder/valgrind-gcrypt.supp"
+else
+    valgrind_suppression=""
+fi
+
 valgrind_options="--leak-check=full --show-reachable=yes --num-callers=32 --track-origins=yes -s"
 if [ -n "$DEBUG_MEMORY" ] ; then 
     export VALGRIND="valgrind $valgrind_options $valgrind_suppression"

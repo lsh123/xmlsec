@@ -612,7 +612,7 @@ xmlSecTransformRelationshipPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPt
     if(ret < 0) {
        xmlSecInternalError("xmlSecTransformRelationshipExecute",
                            xmlSecTransformGetName(transform));
-       xmlOutputBufferClose(buf);
+       (void)xmlOutputBufferClose(buf);
        return(-1);
     }
 
@@ -666,7 +666,7 @@ xmlSecTransformRelationshipPopBin(xmlSecTransformPtr transform, xmlSecByte* data
        if(ret < 0) {
             xmlSecInternalError("xmlC14NExecute",
                                 xmlSecTransformGetName(transform));
-           xmlOutputBufferClose(buf);
+           (void)xmlOutputBufferClose(buf);
            return(-1);
        }
 

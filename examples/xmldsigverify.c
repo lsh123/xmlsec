@@ -272,10 +272,10 @@ verify_request(xmlSecKeysMngrPtr mngr) {
     /** 
      * Load doc 
      */
-    doc = xmlReadMemory((const char*)xmlBufferContent(buffer), xmlBufferLength(buffer),
-                        NULL, NULL,
-                        XML_PARSE_NOENT | XML_PARSE_NOCDATA | 
+    xmlSecParserSetDefaultOptions(XML_PARSE_NOENT | XML_PARSE_NOCDATA | 
                         XML_PARSE_PEDANTIC | XML_PARSE_NOCDATA);
+    doc = xmlReadMemory((const char*)xmlBufferContent(buffer), xmlBufferLength(buffer),
+        NULL, NULL, xmlSecParserGetDefaultOptions());
     if (doc == NULL) {
         fprintf(stdout, "Error: unable to parse xml document (syntax error)\n");
         goto done;

@@ -1100,7 +1100,11 @@ xmlSecOpenSSLX509NameRead(const xmlChar *str) {
 
         /* handle synonymous */
         if(xmlStrcmp(name, BAD_CAST "E") == 0) {
-            xmlStrPrintf(name, sizeof(name), "emailAddress");
+            ret = xmlStrPrintf(name, sizeof(name), "emailAddress");
+            if(ret < 0) {
+                xmlSecInternalError("xmlStrPrintf(emailAddress)", NULL);
+                goto done;
+            }
         }
 
         if(strSize > 0) {

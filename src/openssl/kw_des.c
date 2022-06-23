@@ -302,23 +302,15 @@ static int
 xmlSecOpenSSLKWDes3GenerateRandom(xmlSecTransformPtr transform ATTRIBUTE_UNUSED,
                                  xmlSecByte * out, xmlSecSize outSize,
                                  xmlSecSize * outWritten) {
-#ifndef XMLSEC_OPENSSL_API_300
-    int outLen;
-#endif /* XMLSEC_OPENSSL_API_300 */
     int ret;
 
     UNREFERENCED_PARAMETER(transform);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize > 0, -1);
 
-#ifndef XMLSEC_OPENSSL_API_300
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(outSize, outLen, return(-1), NULL);
-    ret = RAND_bytes(out, outLen);
-#else /* XMLSEC_OPENSSL_API_300 */
-    ret = RAND_bytes_ex(xmlSecOpenSSLGetLibCtx(), out, outSize, XMLSEEC_OPENSSL_RAND_BYTES_STRENGTH);
-#endif /* XMLSEC_OPENSSL_API_300 */
+    ret = RAND_priv_bytes_ex(xmlSecOpenSSLGetLibCtx(), out, outSize, XMLSEEC_OPENSSL_RAND_BYTES_STRENGTH);
     if(ret != 1) {
-        xmlSecOpenSSLError2("RAND_bytes", NULL, "size=" XMLSEC_SIZE_FMT, outSize);
+        xmlSecOpenSSLError2("RAND_priv_bytes_ex", NULL, "size=" XMLSEC_SIZE_FMT, outSize);
         return(-1);
     }
     (*outWritten) = outSize;

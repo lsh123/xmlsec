@@ -22,9 +22,10 @@
 #include <openssl/rand.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/keys.h>
-#include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/keys.h>
+#include <xmlsec/private.h>
+#include <xmlsec/transforms.h>
 
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
@@ -116,13 +117,9 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     xmlSecAssert2(ivSize <= sizeof(ctx->iv), -1);
     if(encrypt) {
         /* generate random iv */
-#ifndef XMLSEC_OPENSSL_API_300
-        ret = RAND_bytes(ctx->iv, ivLen);
-#else /* XMLSEC_OPENSSL_API_300 */
-        ret = RAND_bytes_ex(xmlSecOpenSSLGetLibCtx(), ctx->iv, ivSize, XMLSEEC_OPENSSL_RAND_BYTES_STRENGTH);
-#endif /* XMLSEC_OPENSSL_API_300 */
+        ret = RAND_priv_bytes_ex(xmlSecOpenSSLGetLibCtx(), ctx->iv, ivSize, XMLSEEC_OPENSSL_RAND_BYTES_STRENGTH);
         if(ret != 1) {
-            xmlSecOpenSSLError2("RAND_bytes", cipherName, "size=%d", ivLen);
+            xmlSecOpenSSLError2("RAND_priv_bytes_ex", cipherName, "size=%d", ivLen);
             return(-1);
         }
 
@@ -391,16 +388,13 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         xmlSecBufferPtr in,
         xmlSecBufferPtr out,
         const xmlChar* cipherName,
-        xmlSecTransformCtxPtr transformCtx)
+        xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED)
 {
     xmlSecSize size, inSize, outSize;
     int inLen, outLen, padLen, blockLen;
     xmlSecByte* inBuf;
     xmlSecByte* outBuf;
     int ret;
-
-    /* unreferenced parameter */
-    (void)transformCtx;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->cipher != NULL, -1);
@@ -409,7 +403,7 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     xmlSecAssert2(ctx->ctxInitialized != 0, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
-    xmlSecAssert2(transformCtx != NULL, -1);
+    UNREFERENCED_PARAMETER(transformCtx);
 
     blockLen = EVP_CIPHER_block_size(ctx->cipher);
     xmlSecAssert2(blockLen > 0, -1);
@@ -445,15 +439,11 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 
         /* generate random padding */
         if(padLen > 1) {
-#ifndef XMLSEC_OPENSSL_API_300
-            ret = RAND_bytes(ctx->pad + inLen, padLen - 1);
-#else /* XMLSEC_OPENSSL_API_300 */
             XMLSEC_SAFE_CAST_INT_TO_SIZE(padLen, size, return(-1), NULL);
-            ret = RAND_bytes_ex(xmlSecOpenSSLGetLibCtx(), ctx->pad + inLen, size - 1, 
+            ret = RAND_priv_bytes_ex(xmlSecOpenSSLGetLibCtx(), ctx->pad + inLen, size - 1, 
                                 XMLSEEC_OPENSSL_RAND_BYTES_STRENGTH);
-#endif /* XMLSEC_OPENSSL_API_300 */
             if (ret != 1) {
-                xmlSecOpenSSLError("RAND_bytes", cipherName);
+                xmlSecOpenSSLError("RAND_priv_bytes_ex", cipherName);
                 return(-1);
             }
         }

@@ -425,9 +425,6 @@ xmlSecOpenSSLKeysMngrInit(xmlSecKeysMngrPtr mngr) {
  */
 int
 xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
-#ifndef XMLSEC_OPENSSL_API_300
-    int len;
-#endif /* XMLSEC_OPENSSL_API_300 */
     int ret;
 
     xmlSecAssert2(buffer != NULL, -1);
@@ -441,15 +438,10 @@ xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
     }
 
     /* get random data */
-#ifndef XMLSEC_OPENSSL_API_300
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(size, len, return(-1), NULL);
-    ret = RAND_bytes((xmlSecByte*)xmlSecBufferGetData(buffer), len);
-#else /* XMLSEC_OPENSSL_API_300 */
-    ret = RAND_bytes_ex(xmlSecOpenSSLGetLibCtx(), (xmlSecByte*)xmlSecBufferGetData(buffer), size, 
+    ret = RAND_priv_bytes_ex(xmlSecOpenSSLGetLibCtx(), (xmlSecByte*)xmlSecBufferGetData(buffer), size, 
                         XMLSEEC_OPENSSL_RAND_BYTES_STRENGTH);
-#endif /* XMLSEC_OPENSSL_API_300 */
     if(ret != 1) {
-        xmlSecOpenSSLError2("RAND_bytes", NULL,
+        xmlSecOpenSSLError2("RAND_priv_bytes_ex", NULL,
                             "size=" XMLSEC_SIZE_FMT, size);
         return(-1);
     }

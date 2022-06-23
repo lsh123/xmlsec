@@ -12,6 +12,10 @@
 #ifndef __XMLSEC_OPENSSL_OPENSSL_COMPAT_H__
 #define __XMLSEC_OPENSSL_OPENSSL_COMPAT_H__
 
+#include <openssl/rand.h>
+
+#include "../cast_helpers.h"
+
 /******************************************************************************
  *
  * OpenSSL 1.1.0 and 3.0.0 compatibility
@@ -50,6 +54,19 @@
 
 #endif /* !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300) */
 
+
+/******************************************************************************
+ *
+ * OpenSSL 1.1.1
+ *
+ ******************************************************************************/
+#if !defined(XMLSEC_OPENSSL_API_111)
+
+#define RAND_priv_bytes(buf,num)            RAND_bytes((buf),(num))
+
+#endif /* !defined(XMLSEC_OPENSSL_API_110) */
+
+
 /******************************************************************************
  *
  * OpenSSL 3.0.0 compatibility
@@ -61,7 +78,16 @@
 #define PEM_read_bio_PUBKEY_ex(bp,x,cb,u,libctx,propq)      PEM_read_bio_PUBKEY((bp),(x),(cb),(u))
 #define d2i_PrivateKey_ex_bio(bp,a,libctx,propq)            d2i_PrivateKey_bio((bp),(a))
 
+#define RAND_priv_bytes_ex(ctx,buf,num,strength)            xmlSecOpenSSLCompatRand((buf),(num))
+inline int xmlSecOpenSSLCompatRand(unsigned char *buf, xmlSecSize size) {
+    int num;
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(size, num, return(0), NULL);
+    return(RAND_priv_bytes(buf, num));
+}
+
 #define X509_new_ex(libctx,propq)                           X509_new()
+
+
 #endif /* !defined(XMLSEC_OPENSSL_API_300) */
 
 /******************************************************************************

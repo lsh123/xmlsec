@@ -1453,9 +1453,7 @@ static X509*
 xmlSecOpenSSLX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
     X509 *cert = NULL;
     BIO *mem = NULL;
-#ifdef XMLSEC_OPENSSL_API_300
     X509 *tmpCert = NULL;
-#endif /* XMLSEC_OPENSSL_API_300 */
 
     xmlSecAssert2(buf != NULL, NULL);
     xmlSecAssert2(size > 0, NULL);
@@ -1464,36 +1462,32 @@ xmlSecOpenSSLX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
     if(mem == NULL) {
         xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
                              "size=" XMLSEC_SIZE_FMT, size);
-        BIO_free_all(mem);
-        return(NULL);
+        goto done;
     }
 
-#ifndef XMLSEC_OPENSSL_API_300
-    cert = d2i_X509_bio(mem, NULL);
-    if(cert == NULL) {
-        xmlSecOpenSSLError2("d2i_X509_bio", NULL,
-                            "size=" XMLSEC_SIZE_FMT, size);
-        BIO_free_all(mem);
-        return(NULL);
-    }
-#else /* XMLSEC_OPENSSL_API_300 */
     tmpCert = X509_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);
     if(tmpCert == NULL) {
         xmlSecOpenSSLError("X509_new_ex", NULL);
-        BIO_free_all(mem);
-        return(NULL);
+        goto done;
     }
     cert = d2i_X509_bio(mem, &tmpCert);
     if(cert == NULL) {
         xmlSecOpenSSLError2("d2i_X509_bio", NULL,
                             "size=" XMLSEC_SIZE_FMT, size);
-        X509_free(tmpCert);
-        BIO_free_all(mem);
-        return(NULL);
+        goto done;
     }
-#endif /* XMLSEC_OPENSSL_API_300 */
 
-    BIO_free_all(mem);
+    /* sucess: tmpCert is now cert */
+    tmpCert = NULL;
+
+done:
+    /*  cleanup */
+    if(tmpCert != NULL) {
+        X509_free(tmpCert);
+    }
+    if(mem != NULL) {
+        BIO_free_all(mem);
+    }
     return(cert);
 }
 

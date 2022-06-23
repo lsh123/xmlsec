@@ -1,6 +1,4 @@
-#ifndef __XMLSEC_OPENSSL_OPENSSL_COMPAT_H__
-#define __XMLSEC_OPENSSL_OPENSSL_COMPAT_H__
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * This file provides a compatibility layer for pre-OpenSSL 1.1.0 versions.
@@ -10,6 +8,9 @@
  * using the same syntax. This file won't be required once OpenSSL 1.1.0 is
  * the minimum supported version. Note that LibreSSL "forked" at OpenSSL 1.0.0.
  */
+
+#ifndef __XMLSEC_OPENSSL_OPENSSL_COMPAT_H__
+#define __XMLSEC_OPENSSL_OPENSSL_COMPAT_H__
 
 /******************************************************************************
  *
@@ -49,6 +50,19 @@
 
 #endif /* !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300) */
 
+/******************************************************************************
+ *
+ * OpenSSL 3.0.0 compatibility
+ *
+ *****************************************************************************/
+#if !defined(XMLSEC_OPENSSL_API_300)
+
+#define PEM_read_bio_PrivateKey_ex(bp,x,cb,u,libctx,propq)  PEM_read_bio_PrivateKey((bp),(x),(cb),(u))
+#define PEM_read_bio_PUBKEY_ex(bp,x,cb,u,libctx,propq)      PEM_read_bio_PUBKEY((bp),(x),(cb),(u))
+#define d2i_PrivateKey_ex_bio(bp,a,libctx,propq)            d2i_PrivateKey_bio((bp),(a))
+
+#define X509_new_ex(libctx,propq)                           X509_new()
+#endif /* !defined(XMLSEC_OPENSSL_API_300) */
 
 /******************************************************************************
  *

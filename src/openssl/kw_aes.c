@@ -514,6 +514,7 @@ xmlSecOpenSSLKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * 
         xmlSecOpenSSLError("EVP_CIPHER_CTX_new", NULL);
         goto done;
     }
+
     ret = EVP_CipherInit_ex2(cctx, ctx->cipher, keyData,
         NULL, 0 /* decrypt */, NULL);
     if (ret != 1) {
@@ -521,7 +522,11 @@ xmlSecOpenSSLKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * 
         goto done;
     }
 
-    EVP_CIPHER_CTX_set_padding(cctx, 0);
+    ret = EVP_CIPHER_CTX_set_padding(cctx, 0);
+    if (ret != 1) {
+        xmlSecOpenSSLError("EVP_CIPHER_CTX_set_padding(0)", NULL);
+        goto done;
+    }
 
     XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, goto done, NULL);
     ret = EVP_CipherUpdate(cctx, out, &nOut, in, inLen);
@@ -530,6 +535,7 @@ xmlSecOpenSSLKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * 
         goto done;
     }
     outLen = nOut;
+
     ret = EVP_CipherFinal_ex(cctx, out + outLen, &nOut);
     if (ret != 1) {
         xmlSecOpenSSLError("EVP_CipherFinal_ex", NULL);

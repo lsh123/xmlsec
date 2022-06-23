@@ -74,19 +74,26 @@
  *****************************************************************************/
 #if !defined(XMLSEC_OPENSSL_API_300)
 
-#define PEM_read_bio_PrivateKey_ex(bp,x,cb,u,libctx,propq)  PEM_read_bio_PrivateKey((bp),(x),(cb),(u))
-#define PEM_read_bio_PUBKEY_ex(bp,x,cb,u,libctx,propq)      PEM_read_bio_PUBKEY((bp),(x),(cb),(u))
-#define d2i_PrivateKey_ex_bio(bp,a,libctx,propq)            d2i_PrivateKey_bio((bp),(a))
+#define BIO_new_ex(libctx,type)                                     BIO_new((type))
+#define PEM_read_bio_PrivateKey_ex(bp,x,cb,u,libctx,propq)          PEM_read_bio_PrivateKey((bp),(x),(cb),(u))
+#define PEM_read_bio_PUBKEY_ex(bp,x,cb,u,libctx,propq)              PEM_read_bio_PUBKEY((bp),(x),(cb),(u))
+#define d2i_PrivateKey_ex_bio(bp,a,libctx,propq)                    d2i_PrivateKey_bio((bp),(a))
 
-#define RAND_priv_bytes_ex(ctx,buf,num,strength)            xmlSecOpenSSLCompatRand((buf),(num))
-inline int xmlSecOpenSSLCompatRand(unsigned char *buf, xmlSecSize size) {
+#define EVP_SignFinal_ex(ctx,md,s,pkey,libctx,propq)                EVP_SignFinal((ctx),(md),(s),(pkey))
+#define EVP_VerifyFinal_ex(ctx,sigbuf,siglen,pkey,libctx,propq)     EVP_VerifyFinal((ctx),(sigbuf),(siglen),(pkey))
+
+#define X509_new_ex(libctx,propq)                                   X509_new()
+#define X509_CRL_new_ex(libctx,propq)                               X509_CRL_new()
+#define X509_STORE_CTX_new_ex(libctx,propq)                         X509_STORE_CTX_new()
+#define X509_STORE_set_default_paths_ex(ctx,libctx,propq)           X509_STORE_set_default_paths((ctx))
+#define X509_NAME_hash_ex(x,libctx,propq,ok)                        X509_NAME_hash((x))
+
+#define RAND_priv_bytes_ex(ctx,buf,num,strength)                    xmlSecOpenSSLCompatRand((buf),(num))
+static inline int xmlSecOpenSSLCompatRand(unsigned char *buf, xmlSecSize size) {
     int num;
     XMLSEC_SAFE_CAST_SIZE_TO_INT(size, num, return(0), NULL);
     return(RAND_priv_bytes(buf, num));
 }
-
-#define X509_new_ex(libctx,propq)                           X509_new()
-
 
 #endif /* !defined(XMLSEC_OPENSSL_API_300) */
 

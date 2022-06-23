@@ -102,6 +102,16 @@ static int      xmlSecOpenSSLKWAesExecute                       (xmlSecTransform
                                                                  int last,
                                                                  xmlSecTransformCtxPtr transformCtx);
 
+
+/* small helper macro to reduce clutter in the code */
+#ifndef XMLSEC_OPENSSL_API_300
+#define XMLSEC_OPENSSL_KW_AES_SET_CIPHER(ctx, cipherNameVal)
+
+#else /* XMLSEC_OPENSSL_API_300 */
+#define XMLSEC_OPENSSL_KW_AES_SET_CIPHER(ctx, cipherNameVal) \
+    (ctx)->cipherName = (cipherNameVal)
+#endif /* XMLSEC_OPENSSL_API_300 */
+
 static int
 xmlSecOpenSSLKWAesInitialize(xmlSecTransformPtr transform) {
     xmlSecOpenSSLKWAesCtxPtr ctx;
@@ -116,20 +126,14 @@ xmlSecOpenSSLKWAesInitialize(xmlSecTransformPtr transform) {
     memset(ctx, 0, sizeof(xmlSecOpenSSLKWAesCtx));
 
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWAes128Id)) {
+        XMLSEC_OPENSSL_KW_AES_SET_CIPHER(ctx, XMLSEEC_OPENSSL_CIPHER_NAME_AES128_CBC);
         keyExpectedSize = XMLSEC_KW_AES128_KEY_SIZE;
-#ifdef XMLSEC_OPENSSL_API_300
-        ctx->cipherName = XMLSEEC_OPENSSL_CIPHER_NAME_AES128_CBC;
-#endif /* XMLSEC_OPENSSL_API_300 */
     } else if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWAes192Id)) {
+        XMLSEC_OPENSSL_KW_AES_SET_CIPHER(ctx, XMLSEEC_OPENSSL_CIPHER_NAME_AES192_CBC);
         keyExpectedSize = XMLSEC_KW_AES192_KEY_SIZE;
-#ifdef XMLSEC_OPENSSL_API_300
-        ctx->cipherName = XMLSEEC_OPENSSL_CIPHER_NAME_AES192_CBC;
-#endif /* XMLSEC_OPENSSL_API_300 */
     } else if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWAes256Id)) {
+        XMLSEC_OPENSSL_KW_AES_SET_CIPHER(ctx, XMLSEEC_OPENSSL_CIPHER_NAME_AES256_CBC);
         keyExpectedSize = XMLSEC_KW_AES256_KEY_SIZE;
-#ifdef XMLSEC_OPENSSL_API_300
-        ctx->cipherName = XMLSEEC_OPENSSL_CIPHER_NAME_AES256_CBC;
-#endif /* XMLSEC_OPENSSL_API_300 */
     } else {
         xmlSecInvalidTransfromError(transform)
         return(-1);

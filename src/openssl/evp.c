@@ -649,7 +649,7 @@ xmlSecOpenSSLKeyDataDsaGetKlass(void) {
  * @data:               the pointer to DSA key data.
  * @dsa:                the pointer to OpenSSL DSA key.
  *
- * Sets the value of DSA key data.
+ * DEPRECATED. Sets the value of DSA key data.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
@@ -700,7 +700,7 @@ xmlSecOpenSSLKeyDataDsaAdoptDsa(xmlSecKeyDataPtr data, DSA* dsa) {
  * xmlSecOpenSSLKeyDataDsaGetDsa:
  * @data:               the pointer to DSA key data.
  *
- * Gets the OpenSSL DSA key from DSA key data.
+ * DEPRECATED. Gets the OpenSSL DSA key from DSA key data.
  *
  * Returns: pointer to OpenSSL DSA key or NULL if an error occurs.
  */
@@ -1520,7 +1520,7 @@ xmlSecOpenSSLKeyDataEcdsaGetKlass(void) {
  * @data:               the pointer to ECDSA key data.
  * @ecdsa:              the pointer to OpenSSL ECDSA key.
  *
- * Sets the value of ECDSA key data.
+ * DEPRECATED. Sets the value of ECDSA key data.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
@@ -1572,7 +1572,7 @@ xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa(xmlSecKeyDataPtr data, EC_KEY* ecdsa) {
  * xmlSecOpenSSLKeyDataEcdsaGetEcdsa:
  * @data:               the pointer to ECDSA key data.
  *
- * Gets the OpenSSL ECDSA key from ECDSA key data.
+ * DEPRECATED. Gets the OpenSSL ECDSA key from ECDSA key data.
  *
  * Returns: pointer to OpenSSL ECDSA key or NULL if an error occurs.
  */
@@ -1867,7 +1867,7 @@ xmlSecOpenSSLKeyDataRsaGetKlass(void) {
  * @data:               the pointer to RSA key data.
  * @rsa:                the pointer to OpenSSL RSA key.
  *
- * Sets the value of RSA key data.
+ * DEPRECATED. Sets the value of RSA key data.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
@@ -1919,7 +1919,7 @@ xmlSecOpenSSLKeyDataRsaAdoptRsa(xmlSecKeyDataPtr data, RSA* rsa) {
  * xmlSecOpenSSLKeyDataRsaGetRsa:
  * @data:               the pointer to RSA key data.
  *
- * Gets the OpenSSL RSA key from RSA key data.
+ * DEPRECATED. Gets the OpenSSL RSA key from RSA key data.
  *
  * Returns: pointer to OpenSSL RSA key or NULL if an error occurs.
  */

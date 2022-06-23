@@ -101,7 +101,7 @@ struct _xmlSecOpenSSLHmacCtx {
     const EVP_MD*       hmacDgst;
     HMAC_CTX*           hmacCtx;
 #else /* XMLSEC_OPENSSL_API_300 */
-    const char*         evpHmacDgst;
+    const char*         evpHmacDgstName;
     EVP_MAC*            evpHmac;
     EVP_MAC_CTX*        evpHmacCtx;
 #endif /* XMLSEC_OPENSSL_API_300 */
@@ -188,7 +188,14 @@ xmlSecOpenSSLHmacCheckId(xmlSecTransformPtr transform) {
     }
 }
 
-
+/* small helper macro to reduce clutter in the code */
+#ifndef XMLSEC_OPENSSL_API_300
+#define XMLSEC_OPENSSL_HMAC_SET_DIGEST(ctx, digestVal, digestNameVal) \
+    (ctx)->hmacDgst = (digestVal)
+#else /* XMLSEC_OPENSSL_API_300 */
+#define XMLSEC_OPENSSL_HMAC_SET_DIGEST(ctx, digestVal, digestNameVal) \
+    (ctx)->evpHmacDgstName = (digestNameVal)
+#endif /* XMLSEC_OPENSSL_API_300 */
 
 static int
 xmlSecOpenSSLHmacInitialize(xmlSecTransformPtr transform) {
@@ -205,71 +212,43 @@ xmlSecOpenSSLHmacInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacSha1Id)) {
-#ifndef XMLSEC_OPENSSL_API_300
-        ctx->hmacDgst = EVP_sha1();
-#else /* XMLSEC_OPENSSL_API_300 */
-        ctx->evpHmacDgst = OSSL_DIGEST_NAME_SHA1;
-#endif /* XMLSEC_OPENSSL_API_300 */
+        XMLSEC_OPENSSL_HMAC_SET_DIGEST(ctx, EVP_sha1(), OSSL_DIGEST_NAME_SHA1);
     } else
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA224
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacSha224Id)) {
-#ifndef XMLSEC_OPENSSL_API_300
-        ctx->hmacDgst = EVP_sha224();
-#else /* XMLSEC_OPENSSL_API_300 */
-        ctx->evpHmacDgst = OSSL_DIGEST_NAME_SHA2_224;
-#endif /* XMLSEC_OPENSSL_API_300 */
+        XMLSEC_OPENSSL_HMAC_SET_DIGEST(ctx, EVP_sha224(), OSSL_DIGEST_NAME_SHA2_224);
     } else
 #endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacSha256Id)) {
-#ifndef XMLSEC_OPENSSL_API_300
-        ctx->hmacDgst = EVP_sha256();
-#else /* XMLSEC_OPENSSL_API_300 */
-        ctx->evpHmacDgst = OSSL_DIGEST_NAME_SHA2_256;
-#endif /* XMLSEC_OPENSSL_API_300 */
+        XMLSEC_OPENSSL_HMAC_SET_DIGEST(ctx, EVP_sha256(), OSSL_DIGEST_NAME_SHA2_256);
     } else
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacSha384Id)) {
-#ifndef XMLSEC_OPENSSL_API_300
-        ctx->hmacDgst = EVP_sha384();
-#else /* XMLSEC_OPENSSL_API_300 */
-        ctx->evpHmacDgst = OSSL_DIGEST_NAME_SHA2_384;
-#endif /* XMLSEC_OPENSSL_API_300 */
+        XMLSEC_OPENSSL_HMAC_SET_DIGEST(ctx, EVP_sha384(), OSSL_DIGEST_NAME_SHA2_384);
     } else
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacSha512Id)) {
-#ifndef XMLSEC_OPENSSL_API_300
-        ctx->hmacDgst = EVP_sha512();
-#else /* XMLSEC_OPENSSL_API_300 */
-        ctx->evpHmacDgst = OSSL_DIGEST_NAME_SHA2_512;
-#endif /* XMLSEC_OPENSSL_API_300 */
+        XMLSEC_OPENSSL_HMAC_SET_DIGEST(ctx, EVP_sha512(), OSSL_DIGEST_NAME_SHA2_512);
     } else
 #endif /* XMLSEC_NO_SHA512 */
 
 #ifndef XMLSEC_NO_RIPEMD160
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacRipemd160Id)) {
-#ifndef XMLSEC_OPENSSL_API_300
-        ctx->hmacDgst = EVP_ripemd160();
-#else /* XMLSEC_OPENSSL_API_300 */
-        ctx->evpHmacDgst = OSSL_DIGEST_NAME_RIPEMD160;
-#endif /* XMLSEC_OPENSSL_API_300 */
+        XMLSEC_OPENSSL_HMAC_SET_DIGEST(ctx, EVP_ripemd160(), OSSL_DIGEST_NAME_RIPEMD160);
     } else
 #endif /* XMLSEC_NO_RIPEMD160 */
 
 #ifndef XMLSEC_NO_MD5
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacMd5Id)) {
-#ifndef XMLSEC_OPENSSL_API_300
-        ctx->hmacDgst = EVP_md5();
-#else /* XMLSEC_OPENSSL_API_300 */
-        ctx->evpHmacDgst = OSSL_DIGEST_NAME_MD5;
-#endif /* XMLSEC_OPENSSL_API_300 */
+        XMLSEC_OPENSSL_HMAC_SET_DIGEST(ctx, EVP_md5(), OSSL_DIGEST_NAME_MD5);
     } else
 #endif /* XMLSEC_NO_MD5 */
 
@@ -429,7 +408,7 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     }
 #else /* XMLSEC_OPENSSL_API_300 */
     xmlSecAssert2(ctx->evpHmacCtx != NULL, -1);
-    xmlSecAssert2(ctx->evpHmacDgst != NULL, -1);
+    xmlSecAssert2(ctx->evpHmacDgstName != NULL, -1);
 
     param_bld = OSSL_PARAM_BLD_new();
     if (param_bld == NULL) {
@@ -437,7 +416,7 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         goto done;
     }
     if(OSSL_PARAM_BLD_push_utf8_string(param_bld, OSSL_MAC_PARAM_DIGEST,
-                                       ctx->evpHmacDgst, strlen(ctx->evpHmacDgst)) != 1) {
+                                       ctx->evpHmacDgstName, strlen(ctx->evpHmacDgstName)) != 1) {
         xmlSecOpenSSLError("OSSL_PARAM_BLD_push_utf8_string", xmlSecTransformGetName(transform));
         goto done;
     }

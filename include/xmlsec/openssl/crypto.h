@@ -59,6 +59,7 @@ extern "C" {
 #define XMLSEC_OPENSSL_API_300      1
 #elif OPENSSL_VERSION_NUMBER >= 0x10101000L
 #define XMLSEC_OPENSSL_API_111      1
+#define XMLSEC_OPENSSL_API_110      1
 #elif OPENSSL_VERSION_NUMBER >= 0x10100000L
 #define XMLSEC_OPENSSL_API_110      1
 #if defined(_MSC_VER) || defined(__GNUC__) || defined(__clang__)

@@ -867,7 +867,6 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
 
         /* we need len as int since OpenSSL keyId->length is int */
         XMLSEC_SAFE_CAST_SIZE_TO_INT(skiSize, skiLen, return(NULL), NULL);
-
         for(ii = 0; ii < sk_X509_num(certs); ++ii) {
             cert = sk_X509_value(certs, ii);
             index = X509_get_ext_by_NID(cert, NID_subject_key_identifier, -1);

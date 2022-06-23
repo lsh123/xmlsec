@@ -56,16 +56,6 @@
 
 #include "openssl_compat.h"
 
-
-/* The ASN1_TIME_check() function was changed from ASN1_TIME * to
- * const ASN1_TIME * in 1.1.0. To avoid compiler warnings, we use this hack.
- */
-#if (!defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300)) || defined(OPENSSL_IS_BORINGSSL)
-typedef ASN1_TIME XMLSEC_CONST_ASN1_TIME;
-#else  /* !defined(XMLSEC_OPENSSL_API_110) || defined(OPENSSL_IS_BORINGSSL) */
-typedef const ASN1_TIME XMLSEC_CONST_ASN1_TIME;
-#endif /* !defined(XMLSEC_OPENSSL_API_110) || defined(OPENSSL_IS_BORINGSSL) */
-
 /*************************************************************************
  *
  * X509 utility functions
@@ -82,8 +72,6 @@ static void             xmlSecOpenSSLX509CertDebugDump          (X509* cert,
                                                                  FILE* output);
 static void             xmlSecOpenSSLX509CertDebugXmlDump       (X509* cert,
                                                                  FILE* output);
-static int              xmlSecOpenSSLX509CertGetTime            (XMLSEC_CONST_ASN1_TIME * t,
-                                                                 time_t* res);
 
 /*************************************************************************
  *
@@ -1187,6 +1175,166 @@ xmlSecOpenSSLKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecKeyValueX509Ptr x509
     return(0);
 }
 
+
+#ifdef HAVE_TIMEGM
+
+/* easy case */
+extern time_t timegm (struct tm *tm);
+
+#elif !defined(XMLSEC_WINDOWS)
+
+/* Absolutely not the best way but it's the only ANSI compatible way I know.
+ * If you system has a native struct tm --> GMT time_t conversion function
+ * (like timegm) use it instead.
+ */
+static time_t
+my_timegm(struct tm *t) {
+    time_t tl, tb;
+    struct tm *tg;
+
+    tl = mktime (t);
+    if(tl == -1) {
+        t->tm_hour--;
+        tl = mktime (t);
+        if (tl == -1) {
+            return (-1);
+        }
+        tl += 3600;
+    }
+    tg = gmtime (&tl);
+    tg->tm_isdst = 0;
+    tb = mktime (tg);
+    if (tb == -1) {
+        tg->tm_hour--;
+        tb = mktime (tg);
+        if (tb == -1) {
+            return (-1);
+        }
+        tb += 3600;
+    }
+    return (tl - (tb - tl));
+}
+
+#define timegm(tm) my_timegm(tm)
+
+#elif defined(_MSC_VER)
+
+/* Windows build with MSVC */
+static time_t
+my_timegm(struct tm *t) {
+    long seconds = 0;
+    if(_get_timezone(&seconds) != 0) {
+        return(-1);
+    }
+    return (mktime(t) - seconds);
+}
+#define timegm(tm) my_timegm(tm)
+
+#else  /* defined(_MSC_VER) */
+
+/* Windows build with MinGW, Cygwin, etc */
+#define timegm(tm)      (mktime(tm) - _timezone)
+
+#endif /* HAVE_TIMEGM */
+
+#if (defined(XMLSEC_OPENSSL_API_110) || defined(XMLSEC_OPENSSL_API_300)) && !defined(OPENSSL_IS_BORINGSSL)
+
+static int
+xmlSecOpenSSLX509CertGetTime(const ASN1_TIME * t, time_t* res) {
+    struct tm tm;
+    int ret;
+
+    xmlSecAssert2(t != NULL, -1);
+    xmlSecAssert2(res != NULL, -1);
+
+    (*res) = 0;
+    if(!ASN1_TIME_check(t)) {
+        xmlSecOpenSSLError("ASN1_TIME_check", NULL);
+        return(-1);
+    }
+
+    memset(&tm, 0, sizeof(tm));
+    ret = ASN1_TIME_to_tm(t, &tm);
+    if(ret != 1) {
+        xmlSecOpenSSLError("ASN1_TIME_to_tm", NULL);
+        return(-1);
+    }
+
+    (*res) = timegm(&tm);
+    return(0);
+}
+
+#else  /* (defined(XMLSEC_OPENSSL_API_110) || defined(XMLSEC_OPENSSL_API_300)) && !defined(OPENSSL_IS_BORINGSSL) */
+
+static int
+xmlSecOpenSSLX509CertGetTime(ASN1_TIME * t, time_t* res) {
+    struct tm tm;
+    int offset;
+
+    xmlSecAssert2(t != NULL, -1);
+    xmlSecAssert2(res != NULL, -1);
+
+    (*res) = 0;
+    if(!ASN1_TIME_check(t)) {
+        xmlSecOpenSSLError("ASN1_TIME_check", NULL);
+        return(-1);
+    }
+
+    memset(&tm, 0, sizeof(tm));
+
+#define g2(p) (((p)[0]-'0')*10+(p)[1]-'0')
+    if(t->type == V_ASN1_UTCTIME) {
+        xmlSecAssert2(t->length > 12, -1);
+
+        /* this code is copied from OpenSSL asn1/a_utctm.c file */
+        tm.tm_year = g2(t->data);
+        if(tm.tm_year < 50) {
+            tm.tm_year += 100;
+        }
+        tm.tm_mon  = g2(t->data + 2) - 1;
+        tm.tm_mday = g2(t->data + 4);
+        tm.tm_hour = g2(t->data + 6);
+        tm.tm_min  = g2(t->data + 8);
+        tm.tm_sec  = g2(t->data + 10);
+        if(t->data[12] == 'Z') {
+            offset = 0;
+        } else {
+            xmlSecAssert2(t->length > 16, -1);
+
+            offset = g2(t->data + 13) * 60 + g2(t->data + 15);
+            if(t->data[12] == '-') {
+                offset = -offset;
+            }
+        }
+        tm.tm_isdst = -1;
+    } else {
+        xmlSecAssert2(t->length > 14, -1);
+
+        tm.tm_year = g2(t->data) * 100 + g2(t->data + 2);
+        tm.tm_mon  = g2(t->data + 4) - 1;
+        tm.tm_mday = g2(t->data + 6);
+        tm.tm_hour = g2(t->data + 8);
+        tm.tm_min  = g2(t->data + 10);
+        tm.tm_sec  = g2(t->data + 12);
+        if(t->data[14] == 'Z') {
+            offset = 0;
+        } else {
+            xmlSecAssert2(t->length > 18, -1);
+
+            offset = g2(t->data + 15) * 60 + g2(t->data + 17);
+            if(t->data[14] == '-') {
+                offset = -offset;
+            }
+        }
+        tm.tm_isdst = -1;
+    }
+#undef g2
+    (*res) = timegm(&tm) - offset * 60;
+    return(0);
+}
+
+#endif /* (defined(XMLSEC_OPENSSL_API_110) || defined(XMLSEC_OPENSSL_API_300)) && !defined(OPENSSL_IS_BORINGSSL) */
+
 static int
 xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr key,
                                     xmlSecKeyInfoCtxPtr keyInfoCtx) {
@@ -1267,135 +1415,6 @@ xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr 
             return(-1);
         }
     }
-    return(0);
-}
-
-#ifdef HAVE_TIMEGM
-extern time_t timegm (struct tm *tm);
-#else  /* HAVE_TIMEGM */
-
-#if defined(XMLSEC_WINDOWS)
-
-#ifdef _MSC_VER
-static time_t
-my_timegm(struct tm *t) {
-    long seconds = 0;
-    if(_get_timezone(&seconds) != 0) {
-        return(-1);
-    }
-    return (mktime(t) - seconds);
-}
-#define timegm(tm) my_timegm(tm)
-
-#else  /* _MSC_VER */
-
-#define timegm(tm)      (mktime(tm) - _timezone)
-
-#endif /* _MSC_VER */
-
-#else /* defined(XMLSEC_WINDOWS) */
-
-/* Absolutely not the best way but it's the only ANSI compatible way I know.
- * If you system has a native struct tm --> GMT time_t conversion function
- * (like timegm) use it instead.
- */
-static time_t
-my_timegm(struct tm *t) {
-    time_t tl, tb;
-    struct tm *tg;
-
-    tl = mktime (t);
-    if(tl == -1) {
-        t->tm_hour--;
-        tl = mktime (t);
-        if (tl == -1) {
-            return (-1);
-        }
-        tl += 3600;
-    }
-    tg = gmtime (&tl);
-    tg->tm_isdst = 0;
-    tb = mktime (tg);
-    if (tb == -1) {
-        tg->tm_hour--;
-        tb = mktime (tg);
-        if (tb == -1) {
-            return (-1);
-        }
-        tb += 3600;
-    }
-    return (tl - (tb - tl));
-}
-
-#define timegm(tm) my_timegm(tm)
-
-#endif /* defined(XMLSEC_WINDOWS) */
-#endif /* HAVE_TIMEGM */
-
-static int
-xmlSecOpenSSLX509CertGetTime(XMLSEC_CONST_ASN1_TIME * t, time_t* res) {
-    struct tm tm;
-    int offset;
-
-    xmlSecAssert2(t != NULL, -1);
-    xmlSecAssert2(res != NULL, -1);
-
-    (*res) = 0;
-    if(!ASN1_TIME_check(t)) {
-        xmlSecOpenSSLError("ASN1_TIME_check", NULL);
-        return(-1);
-    }
-
-    memset(&tm, 0, sizeof(tm));
-
-#define g2(p) (((p)[0]-'0')*10+(p)[1]-'0')
-    if(t->type == V_ASN1_UTCTIME) {
-        xmlSecAssert2(t->length > 12, -1);
-
-        /* this code is copied from OpenSSL asn1/a_utctm.c file */
-        tm.tm_year = g2(t->data);
-        if(tm.tm_year < 50) {
-            tm.tm_year += 100;
-        }
-        tm.tm_mon  = g2(t->data + 2) - 1;
-        tm.tm_mday = g2(t->data + 4);
-        tm.tm_hour = g2(t->data + 6);
-        tm.tm_min  = g2(t->data + 8);
-        tm.tm_sec  = g2(t->data + 10);
-        if(t->data[12] == 'Z') {
-            offset = 0;
-        } else {
-            xmlSecAssert2(t->length > 16, -1);
-
-            offset = g2(t->data + 13) * 60 + g2(t->data + 15);
-            if(t->data[12] == '-') {
-                offset = -offset;
-            }
-        }
-        tm.tm_isdst = -1;
-    } else {
-        xmlSecAssert2(t->length > 14, -1);
-
-        tm.tm_year = g2(t->data) * 100 + g2(t->data + 2);
-        tm.tm_mon  = g2(t->data + 4) - 1;
-        tm.tm_mday = g2(t->data + 6);
-        tm.tm_hour = g2(t->data + 8);
-        tm.tm_min  = g2(t->data + 10);
-        tm.tm_sec  = g2(t->data + 12);
-        if(t->data[14] == 'Z') {
-            offset = 0;
-        } else {
-            xmlSecAssert2(t->length > 18, -1);
-
-            offset = g2(t->data + 15) * 60 + g2(t->data + 17);
-            if(t->data[14] == '-') {
-                offset = -offset;
-            }
-        }
-        tm.tm_isdst = -1;
-    }
-#undef g2
-    (*res) = timegm(&tm) - offset * 60;
     return(0);
 }
 

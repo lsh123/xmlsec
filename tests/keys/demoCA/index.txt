@@ -8,3 +8,6 @@ V	21150209225409Z		AFA28BB933ADDAB2	unknown	/C=US/ST=California/O=XML Security L
 V	21150209225453Z		AFA28BB933ADDAB3	unknown	/C=US/ST=California/O=XML Security Library (http://www.aleksey.com/xmlsec)/OU=Test Third Level DSA 3072 Certificate/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
 V	21160105172612Z		AFA28BB933ADDAB4	unknown	/C=US/ST=California/O=XML Security Library (http://www.aleksey.com/xmlsec)/CN=ECDSA secp256k1 Key/emailAddress=xmlsec@aleksey.com
 V	21170122220821Z		AFA28BB933ADDAB5	unknown	/C=US/ST=California/O=XML Security Library (http://www.aleksey.com/xmlsec)/CN=ECDSA secp256r1 Key/emailAddress=xmlsec@aleksey.com
+V	21220529223446Z		AFA28BB933ADDAB6	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/OU=Test Third Level GOST2012 256 bits Certificate/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+V	21220529224030Z		AFA28BB933ADDAB7	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/OU=Test Third Level GOST2012 512 bits Certificate/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+V	21220529235043Z		AFA28BB933ADDAB8	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/OU=Test Third Level GOST2001 Certificate/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com

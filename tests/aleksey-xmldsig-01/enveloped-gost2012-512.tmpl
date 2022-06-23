@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
-XML Security Library example: Simple signature template file for sign1 example. 
--->
 <Envelope xmlns="urn:envelope">
   <Data>
 	Hello, World!
@@ -9,7 +6,7 @@ XML Security Library example: Simple signature template file for sign1 example.
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
-      <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411"/>
+      <SignatureMethod Algorithm="urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34102012-gostr34112012-512"/>
       <Reference URI="">
         <Transforms>
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
@@ -17,15 +14,14 @@ XML Security Library example: Simple signature template file for sign1 example.
 	<XPath xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">not(ancestor-or-self::dsig:Signature)</XPath>
 	</Transform>
         </Transforms>
-        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#gostr3411"/>
+        <DigestMethod Algorithm="urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34112012-512"/>
         <DigestValue></DigestValue>
       </Reference>
     </SignedInfo>
     <SignatureValue/>
     <KeyInfo>
-<X509Data>
-<X509Certificate></X509Certificate>
-</X509Data>
-</KeyInfo>
-</Signature>
+      <X509Data>
+      </X509Data>
+    </KeyInfo>
+  </Signature>
 </Envelope>

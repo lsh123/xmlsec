@@ -88,7 +88,28 @@ README
         -out ecdsa-secp256r1-cert.pem -infiles ecdsa-secp256r1-req.pem
      > openssl verify -CAfile cacert.pem -untrusted ca2cert.pem ecdsa-secp256r1-cert.pem
      > rm ecdsa-secp256r1-req.pem
- 
+
+  H. Generate and sign GOST2012 key with second level CA
+    Modify openssl.conf file:
+    - uncomment "# gost = gost_section" line
+    - specify correct path to "gost.so" in the "dynamic_path" variable in "gost_section" gost_section
+
+    > openssl req -config ./openssl.cnf -newkey gost2001 -pkeyopt paramset:A -nodes -keyout gost2001key.pem -out gost2001req.pem
+    > openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem -out gost2001cert.pem -infiles gost2001req.pem  
+    > OPENSSL_CONF=./openssl.cnf openssl verify -CAfile cacert.pem -untrusted ca2cert.pem gost2001cert.pem
+    > rm gost2001req.pem
+
+    > openssl req -config ./openssl.cnf -newkey gost2012_256 -pkeyopt paramset:A -nodes -keyout gost2012_256key.pem -out gost2012_256req.pem
+    > openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem -out gost2012_256cert.pem -infiles gost2012_256req.pem  
+    > OPENSSL_CONF=./openssl.cnf openssl verify -CAfile cacert.pem -untrusted ca2cert.pem gost2012_256cert.pem
+    > rm gost2012_256req.pem
+
+    > openssl req -config ./openssl.cnf -newkey gost2012_512 -pkeyopt paramset:A -nodes -keyout gost2012_512key.pem -out gost2012_512req.pem
+    > openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem -out gost2012_512cert.pem -infiles gost2012_512req.pem  
+    > OPENSSL_CONF=./openssl.cnf openssl verify -CAfile cacert.pem -untrusted ca2cert.pem gost2012_512cert.pem
+    > rm gost2012_512req.pem
+
+
 3. Converting key and certs between PEM and DER formats
 
   - Convert PEM private key file to DER file
@@ -104,6 +125,7 @@ README
   ECDSA keys:
     > openssl ec -inform PEM -outform DER -in ecdsa-secp256r1-key.pem -out ecdsa-secp256r1-key.der
 
+
   - Convert PEM cert file to DER file
     > openssl x509 -outform DER -in cacert.pem -out cacert.der 
     > openssl x509 -outform DER -in ca2cert.pem -out ca2cert.der 
@@ -113,7 +135,12 @@ README
     > openssl x509 -outform DER -in rsacert.pem -out rsacert.der 
     > openssl x509 -outform DER -in largersacert.pem -out largersacert.der 
     > openssl x509 -outform DER -in expiredcert.pem -out expiredcert.der 
-    > openssl x509 -outform DER -in ecdsa-secp256r1-cert.pem -out ecdsa-secp256r1-cert.der 
+    > openssl x509 -outform DER -in ecdsa-secp256r1-cert.pem -out ecdsa-secp256r1-cert.der
+
+    See config for GOST above:
+    > openssl x509 -outform DER -in gost2001cert.pem -out gost2001cert.der 
+    > openssl x509 -outform DER -in gost2012_256cert.pem -out gost2012_256cert.der 
+    > openssl x509 -outform DER -in gost2012_512cert.pem -out gost2012_512cert.der 
   
   - (optional) Convert PEM public key file to DER file
   RSA key:
@@ -145,6 +172,11 @@ README
      > openssl pkcs8 -in ecdsa-secp256r1-key.der -inform der -out ecdsa-secp256r1-key.p8-der \
         -outform der -topk8
      
+     See config for GOST above:
+     > OPENSSL_CONF=./openssl.cnf openssl pkcs8 -in gost2001key.pem -inform pem -out gost2001key.p8-pem -outform pem -topk8
+     > OPENSSL_CONF=./openssl.cnf openssl pkcs8 -in gost2012_256key.pem -inform pem -out gost2012_256key.p8-pem -outform pem -topk8
+     > OPENSSL_CONF=./openssl.cnf openssl pkcs8 -in gost2012_512key.pem -inform pem -out gost2012_512key.p8-pem -outform pem -topk8
+  
 5. NSS is unfriendly towards standalone private keys.
    This procedure helps convert raw private keys into PKCS12 form that is 
    suitable for not only NSS but all crypto engines (the tests password is secret123):
@@ -170,6 +202,19 @@ README
     > cat ecdsa-secp256r1-key.pem ecdsa-secp256r1-cert.pem ca2cert.pem cacert.pem > all-ecdsa-secp256r1.pem
     > openssl pkcs12 -export -in all-ecdsa-secp256r1.pem -name TestEcdsaSecp256r1Key -out ecdsa-secp256r1-key.p12
     > rm all-ecdsa-secp256r1.pem
+
+   See config for GOST above:
+    > cat gost2001key.pem gost2001cert.pem ca2cert.pem cacert.pem > all-gost2001.pem
+    > OPENSSL_CONF=./openssl.cnf openssl pkcs12 -export -in all-gost2001.pem -name TestGost2012_256Key -out gost2001key.p12
+    > rm all-gost2001.pem
+
+    > cat gost2012_256key.pem gost2012_256cert.pem ca2cert.pem cacert.pem > all-gost2012_256.pem
+    > OPENSSL_CONF=./openssl.cnf openssl pkcs12 -export -in all-gost2012_256.pem -name TestGost2012_256Key -out gost2012_256key.p12
+    > rm all-gost2012_256.pem
+    
+    > cat gost2012_512key.pem gost2012_512cert.pem ca2cert.pem cacert.pem > all-gost2012_512.pem
+    > OPENSSL_CONF=./openssl.cnf openssl pkcs12 -export -in all-gost2012_512.pem -name TestGost2012_512Key -out gost2012_512key.p12
+    > rm all-gost2012_512.pem
 
    5a.
        Input: DSA/RSA private key in PEM or DER format

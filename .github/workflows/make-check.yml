@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  check-ubuntu:
+  check-ubuntu-openssl300:
     runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
@@ -41,9 +41,8 @@ jobs:
       run: |
           make check
 
-
-  check-ubuntu-openssl3:
-    runs-on: ubuntu-22.04
+  check-ubuntu-openssl110:
+    runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
@@ -61,22 +60,12 @@ jobs:
     - uses: actions/checkout@v2
     - name: create-build-dirs
       run: |
-          mkdir openssl3-build build
-    - name: build-openssl3
-      working-directory: openssl3-build
-      run: |
-          wget  https://www.openssl.org/source/openssl-3.0.3.tar.gz
-          tar xfvz openssl-3.0.3.tar.gz
-          cd openssl-3.0.3
-          ./Configure --prefix=/usr/local/openssl3
-          make
-          sudo make install
+          mkdir build
     - name: configure
       working-directory: build
       run: |
           export LD_LIBRARY_PATH="/usr/local/openssl3/lib:/usr/local/openssl3/lib64:$LD_LIBRARY_PATH"
           ../autogen.sh --enable-werror --enable-pedantic \
-              --with-openssl=/usr/local/openssl3  \
               ${{ matrix.config_flags }}
     - name: make
       working-directory: build
@@ -87,8 +76,6 @@ jobs:
       run: |
           export LD_LIBRARY_PATH="/usr/local/openssl3/lib:/usr/local/openssl3/lib64:$LD_LIBRARY_PATH"
           make check
-
-
 
   check-osx:
     runs-on: macos-12

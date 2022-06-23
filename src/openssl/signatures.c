@@ -248,6 +248,15 @@ xmlSecOpenSSLSignatureCheckId(xmlSecTransformPtr transform) {
     }
 }
 
+/* small helper macro to reduce clutter in the code */
+#ifndef XMLSEC_OPENSSL_API_300
+#define XMLSEC_OPENSSL_SIGNATURE_SET_DIGEST(ctx, digestVal, digestNameVal) \
+    (ctx)->digest = (digestVal)
+#else /* XMLSEC_OPENSSL_API_300 */
+#define XMLSEC_OPENSSL_SIGNATURE_SET_DIGEST(ctx, digestVal, digestNameVal) \
+    (ctx)->digestName = (digestNameVal)
+#endif /* XMLSEC_OPENSSL_API_300 */
+
 static int
 xmlSecOpenSSLSignatureInitialize(xmlSecTransformPtr transform) {
     xmlSecOpenSSLSignatureCtxPtr ctx;
@@ -265,11 +274,7 @@ xmlSecOpenSSLSignatureInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformDsaSha1Id)) {
-#ifndef XMLSEC_OPENSSL_API_300
-        ctx->digest         = EVP_sha1();
-#else /* XMLSEC_OPENSSL_API_300 */
-        ctx->digestName     = OSSL_DIGEST_NAME_SHA1;
-#endif /* XMLSEC_OPENSSL_API_300 */
+        XMLSEC_OPENSSL_SIGNATURE_SET_DIGEST(ctx, EVP_sha1(), OSSL_DIGEST_NAME_SHA1);
         ctx->keyId          = xmlSecOpenSSLKeyDataDsaId;
         ctx->signCallback   = xmlSecOpenSSLSignatureDsaSign;
         ctx->verifyCallback = xmlSecOpenSSLSignatureDsaVerify;
@@ -278,11 +283,7 @@ xmlSecOpenSSLSignatureInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformDsaSha256Id)) {
-#ifndef XMLSEC_OPENSSL_API_300
-        ctx->digest         = EVP_sha256();
-#else /* XMLSEC_OPENSSL_API_300 */
-        ctx->digestName     = OSSL_DIGEST_NAME_SHA2_256;
-#endif /* XMLSEC_OPENSSL_API_300 */
+        XMLSEC_OPENSSL_SIGNATURE_SET_DIGEST(ctx, EVP_sha256(), OSSL_DIGEST_NAME_SHA2_256);
         ctx->keyId          = xmlSecOpenSSLKeyDataDsaId;
         ctx->signCallback   = xmlSecOpenSSLSignatureDsaSign;
         ctx->verifyCallback = xmlSecOpenSSLSignatureDsaVerify;
@@ -295,11 +296,7 @@ xmlSecOpenSSLSignatureInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEcdsaSha1Id)) {
-#ifndef XMLSEC_OPENSSL_API_300
-        ctx->digest         = EVP_sha1();
-#else /* XMLSEC_OPENSSL_API_300 */
-        ctx->digestName     = OSSL_DIGEST_NAME_SHA1;
-#endif /* XMLSEC_OPENSSL_API_300 */
+        XMLSEC_OPENSSL_SIGNATURE_SET_DIGEST(ctx, EVP_sha1(), OSSL_DIGEST_NAME_SHA1);
         ctx->keyId          = xmlSecOpenSSLKeyDataEcdsaId;
         ctx->signCallback   = xmlSecOpenSSLSignatureEcdsaSign;
         ctx->verifyCallback = xmlSecOpenSSLSignatureEcdsaVerify;
@@ -308,11 +305,7 @@ xmlSecOpenSSLSignatureInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_SHA224
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEcdsaSha224Id)) {
-#ifndef XMLSEC_OPENSSL_API_300
-        ctx->digest         = EVP_sha224();
-#else /* XMLSEC_OPENSSL_API_300 */
-        ctx->digestName     = OSSL_DIGEST_NAME_SHA2_224;
-#endif /* XMLSEC_OPENSSL_API_300 */
+        XMLSEC_OPENSSL_SIGNATURE_SET_DIGEST(ctx, EVP_sha224(), OSSL_DIGEST_NAME_SHA2_224);
         ctx->keyId          = xmlSecOpenSSLKeyDataEcdsaId;
         ctx->signCallback   = xmlSecOpenSSLSignatureEcdsaSign;
         ctx->verifyCallback = xmlSecOpenSSLSignatureEcdsaVerify;
@@ -321,11 +314,7 @@ xmlSecOpenSSLSignatureInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEcdsaSha256Id)) {
-#ifndef XMLSEC_OPENSSL_API_300
-        ctx->digest         = EVP_sha256();
-#else /* XMLSEC_OPENSSL_API_300 */
-        ctx->digestName     = OSSL_DIGEST_NAME_SHA2_256;
-#endif /* XMLSEC_OPENSSL_API_300 */
+        XMLSEC_OPENSSL_SIGNATURE_SET_DIGEST(ctx, EVP_sha256(), OSSL_DIGEST_NAME_SHA2_256);
         ctx->keyId          = xmlSecOpenSSLKeyDataEcdsaId;
         ctx->signCallback   = xmlSecOpenSSLSignatureEcdsaSign;
         ctx->verifyCallback = xmlSecOpenSSLSignatureEcdsaVerify;
@@ -334,11 +323,7 @@ xmlSecOpenSSLSignatureInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_SHA384
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEcdsaSha384Id)) {
-#ifndef XMLSEC_OPENSSL_API_300
-        ctx->digest         = EVP_sha384();
-#else /* XMLSEC_OPENSSL_API_300 */
-        ctx->digestName     = OSSL_DIGEST_NAME_SHA2_384;
-#endif /* XMLSEC_OPENSSL_API_300 */
+        XMLSEC_OPENSSL_SIGNATURE_SET_DIGEST(ctx, EVP_sha384(), OSSL_DIGEST_NAME_SHA2_384);
         ctx->keyId          = xmlSecOpenSSLKeyDataEcdsaId;
         ctx->signCallback   = xmlSecOpenSSLSignatureEcdsaSign;
         ctx->verifyCallback = xmlSecOpenSSLSignatureEcdsaVerify;
@@ -347,11 +332,7 @@ xmlSecOpenSSLSignatureInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_SHA512
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEcdsaSha512Id)) {
-#ifndef XMLSEC_OPENSSL_API_300
-        ctx->digest         = EVP_sha512();
-#else /* XMLSEC_OPENSSL_API_300 */
-        ctx->digestName     = OSSL_DIGEST_NAME_SHA2_512;
-#endif /* XMLSEC_OPENSSL_API_300 */
+        XMLSEC_OPENSSL_SIGNATURE_SET_DIGEST(ctx, EVP_sha512(), OSSL_DIGEST_NAME_SHA2_512);
         ctx->keyId          = xmlSecOpenSSLKeyDataEcdsaId;
         ctx->signCallback   = xmlSecOpenSSLSignatureEcdsaSign;
         ctx->verifyCallback = xmlSecOpenSSLSignatureEcdsaVerify;

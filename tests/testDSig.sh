@@ -950,12 +950,31 @@ fi
 echo "--------- These tests CAN FAIL (extra OS config required) ----------"
 execDSigTest $res_success \
     "" \
-    "aleksey-xmldsig-01/enveloped-gost" \
-    "enveloped-signature gostr3411" \
-    "gost2001" \
+    "aleksey-xmldsig-01/enveloped-gost2001" \
+    "enveloped-signature gostr34102001-gostr3411" \
+    "gost2001 x509" \
     "--trusted-$cert_format $topfolder/keys/gost2001ca.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --enabled-key-data x509 --verification-gmt-time 2007-01-01+10:00:00" \
+    "$priv_key_option $topfolder/keys/gost2001key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+execDSigTest $res_success \
     "" \
-    ""
+    "aleksey-xmldsig-01/enveloped-gost2012-256" \
+    "enveloped-signature gostr34112012-256 gostr34102012-gostr34112012-256" \
+    "gostr34102012-256 x509" \
+    "--insecure --enabled-key-data x509" \
+    "$priv_key_option $topfolder/keys/gost2012_256key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-gost2012-512" \
+    "enveloped-signature gostr34112012-512 gostr34102012-gostr34112012-512" \
+    "gostr34102012-512 x509" \
+    "--insecure --enabled-key-data x509" \
+    "$priv_key_option $topfolder/keys/gost2012_512key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
 
 
 ##########################################################################

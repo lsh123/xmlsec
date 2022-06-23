@@ -66,7 +66,7 @@ static xmlSecKeyPtr xmlSecOpenSSLAppEngineKeyLoad       (const char *engineName,
 XMLSEC_PTR_TO_FUNC_IMPL(pem_password_cb)
 XMLSEC_FUNC_TO_PTR_IMPL(pem_password_cb)
 
-/* helpers to overwrite global context temporarily */
+/* helpers to overwrite global context temporarily for OpenSSL 3.0 */
 #ifdef XMLSEC_OPENSSL_API_300
 #define XMLSEC_OPENSSL_PUSH_LIB_CTX(on_error)      \
     {                                              \
@@ -82,6 +82,12 @@ XMLSEC_FUNC_TO_PTR_IMPL(pem_password_cb)
             OSSL_LIB_CTX_set0_default(savedDefaultLibCtx); \
         }                                          \
     }
+#else  /* XMLSEC_OPENSSL_API_300 */
+
+/* noop */
+#define XMLSEC_OPENSSL_PUSH_LIB_CTX(on_error)
+#define XMLSEC_OPENSSL_POP_LIB_CTX()
+
 #endif /* XMLSEC_OPENSSL_API_300 */
 
 /**
@@ -345,51 +351,45 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
 
     switch(format) {
     case xmlSecKeyDataFormatPem:
-        /* try to read private key first */
+        /* try to read private key first; if can't read private key then
+         reset bio to the start of the file and try to read public key. */
 #ifndef XMLSEC_OPENSSL_API_300
         pKey = PEM_read_bio_PrivateKey(bio, NULL, pwdCb, pwdCbCtx);
+        if(pKey == NULL) {
+            (void)BIO_reset(bio);
+            pKey = PEM_read_bio_PUBKEY(bio, NULL, pwdCb, pwdCbCtx);
+        }
 #else /* XMLSEC_OPENSSL_API_300 */
         pKey = PEM_read_bio_PrivateKey_ex(bio, NULL, pwdCb, pwdCbCtx, xmlSecOpenSSLGetLibCtx(), NULL);
+        if(pKey == NULL) {
+            (void)BIO_reset(bio);
+            pKey = PEM_read_bio_PUBKEY_ex(bio, NULL, pwdCb, pwdCbCtx, xmlSecOpenSSLGetLibCtx(), NULL);
+        }
 #endif /* XMLSEC_OPENSSL_API_300 */
 
         if(pKey == NULL) {
-            /* go to start of the file and try to read public key;
-               intentionally ignore any errors and hope for the best. */
-            (void)BIO_reset(bio);
-#ifndef XMLSEC_OPENSSL_API_300
-            pKey = PEM_read_bio_PUBKEY(bio, NULL, pwdCb, pwdCbCtx);
-#else /* XMLSEC_OPENSSL_API_300 */
-            pKey = PEM_read_bio_PUBKEY_ex(bio, NULL, pwdCb, pwdCbCtx, xmlSecOpenSSLGetLibCtx(), NULL);
-#endif /* XMLSEC_OPENSSL_API_300 */
-            if(pKey == NULL) {
-                xmlSecOpenSSLError("PEM_read_bio_PrivateKey and PEM_read_bio_PUBKEY", NULL);
-                return(NULL);
-            }
+            xmlSecOpenSSLError("PEM_read_bio_PrivateKey and PEM_read_bio_PUBKEY", NULL);
+            return(NULL);
         }
         break;
     case xmlSecKeyDataFormatDer:
-        /* try to read private key first */
+        /* try to read private key first; if can't read private key then
+         reset bio to the start of the file and try to read public key. */
 #ifndef XMLSEC_OPENSSL_API_300
         pKey = d2i_PrivateKey_bio(bio, NULL);
 #else /* XMLSEC_OPENSSL_API_300 */
         pKey = d2i_PrivateKey_ex_bio(bio, NULL, xmlSecOpenSSLGetLibCtx(), NULL);
 #endif /* XMLSEC_OPENSSL_API_300 */
-
         if(pKey == NULL) {
-            /* go to start of the file and try to read public key;
-               intentionally ignore any errors and hope for the best. */
             (void)BIO_reset(bio);
-#ifndef XMLSEC_OPENSSL_API_300
-            pKey = d2i_PUBKEY_bio(bio, NULL);
-#else /* XMLSEC_OPENSSL_API_300 */
+
             XMLSEC_OPENSSL_PUSH_LIB_CTX(return(NULL));
             pKey = d2i_PUBKEY_bio(bio, NULL);
             XMLSEC_OPENSSL_POP_LIB_CTX();
-#endif /* XMLSEC_OPENSSL_API_300 */
-            if(pKey == NULL) {
-                xmlSecOpenSSLError("d2i_PrivateKey_bio and d2i_PUBKEY_bio", NULL);
-                return(NULL);
-            }
+        }
+        if(pKey == NULL) {
+            xmlSecOpenSSLError("d2i_PrivateKey_bio and d2i_PUBKEY_bio", NULL);
+            return(NULL);
         }
         break;
     case xmlSecKeyDataFormatPkcs8Pem:
@@ -406,13 +406,9 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
         break;
     case xmlSecKeyDataFormatPkcs8Der:
         /* read private key */
-#ifndef XMLSEC_OPENSSL_API_300
-        pKey = d2i_PKCS8PrivateKey_bio(bio, NULL, pwdCb, pwdCbCtx);
-#else /* XMLSEC_OPENSSL_API_300 */
         XMLSEC_OPENSSL_PUSH_LIB_CTX(return(NULL));
         pKey = d2i_PKCS8PrivateKey_bio(bio, NULL, pwdCb, pwdCbCtx);
         XMLSEC_OPENSSL_POP_LIB_CTX();
-#endif /* XMLSEC_OPENSSL_API_300 */
         if(pKey == NULL) {
             xmlSecOpenSSLError("d2i_PKCS8PrivateKey_bio", NULL);
             return(NULL);
@@ -845,37 +841,25 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
     pwdSize = (pwd != NULL) ? strlen(pwd) : 0;
     XMLSEC_SAFE_CAST_SIZE_T_TO_INT(pwdSize, pwdLen, return(NULL), NULL);
 
-#ifndef XMLSEC_OPENSSL_API_300
-    p12 = d2i_PKCS12_bio(bio, NULL);
-#else /* XMLSEC_OPENSSL_API_300 */
     XMLSEC_OPENSSL_PUSH_LIB_CTX(goto done);
     p12 = d2i_PKCS12_bio(bio, NULL);
     XMLSEC_OPENSSL_POP_LIB_CTX();
-#endif /* XMLSEC_OPENSSL_API_300 */
     if(p12 == NULL) {
         xmlSecOpenSSLError("d2i_PKCS12_bio", NULL);
         goto done;
     }
 
-#ifndef XMLSEC_OPENSSL_API_300
-    ret = PKCS12_verify_mac(p12, pwd, pwdLen);
-#else /* XMLSEC_OPENSSL_API_300 */
     XMLSEC_OPENSSL_PUSH_LIB_CTX(goto done);
     ret = PKCS12_verify_mac(p12, pwd, pwdLen);
     XMLSEC_OPENSSL_POP_LIB_CTX();
-#endif /* XMLSEC_OPENSSL_API_300 */
     if(ret != 1) {
         xmlSecOpenSSLError("PKCS12_verify_mac", NULL);
         goto done;
     }
 
-#ifndef XMLSEC_OPENSSL_API_300
-    ret = PKCS12_parse(p12, pwd, &pKey, &cert, &chain);
-#else /* XMLSEC_OPENSSL_API_300 */
     XMLSEC_OPENSSL_PUSH_LIB_CTX(goto done);
     ret = PKCS12_parse(p12, pwd, &pKey, &cert, &chain);
     XMLSEC_OPENSSL_POP_LIB_CTX();
-#endif /* XMLSEC_OPENSSL_API_300 */
     if(ret != 1) {
         xmlSecOpenSSLError("PKCS12_parse", NULL);
         goto done;
@@ -1295,66 +1279,58 @@ xmlSecOpenSSLAppKeysMngrAddCertsFile(xmlSecKeysMngrPtr mngr, const char *filenam
 
 static X509*
 xmlSecOpenSSLAppCertLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
-    X509 *cert;
-#ifdef XMLSEC_OPENSSL_API_300
-    X509 *tmpCert = NULL;
-#endif /* XMLSEC_OPENSSL_API_300 */
+    X509* tmpCert = NULL;
+    X509* res = NULL;
 
     xmlSecAssert2(bio != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
+    /* create certificate object to hold the cert we are going to read */
+#ifndef XMLSEC_OPENSSL_API_300
+    tmpCert = X509_new();
+    if(tmpCert == NULL) {
+        xmlSecOpenSSLError("X509_new", NULL);
+        goto done;
+    }
+#else /* XMLSEC_OPENSSL_API_300 */
+    tmpCert = X509_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);
+    if(tmpCert == NULL) {
+        xmlSecOpenSSLError("X509_new_ex", NULL);
+        goto done;
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
+
+    /* read the cert */
     switch(format) {
     case xmlSecKeyDataFormatPem:
     case xmlSecKeyDataFormatCertPem:
-#ifndef XMLSEC_OPENSSL_API_300
-        cert = PEM_read_bio_X509_AUX(bio, NULL, NULL, NULL);
-        if(cert == NULL) {
+        res = PEM_read_bio_X509_AUX(bio, &tmpCert, NULL, NULL);
+        if(res == NULL) {
             xmlSecOpenSSLError("PEM_read_bio_X509_AUX", NULL);
-            return(NULL);
+            goto done;
         }
-#else /* XMLSEC_OPENSSL_API_300 */
-        tmpCert = X509_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);
-        if(tmpCert == NULL) {
-            xmlSecOpenSSLError("X509_new_ex", NULL);
-            return(NULL);
-        }
-        cert = PEM_read_bio_X509_AUX(bio, &tmpCert, NULL, NULL);
-        if(cert == NULL) {
-            xmlSecOpenSSLError("PEM_read_bio_X509_AUX", NULL);
-            X509_free(tmpCert);
-            return(NULL);
-        }
-#endif /* XMLSEC_OPENSSL_API_300 */
+        tmpCert = NULL; /* now it's res */
         break;
     case xmlSecKeyDataFormatDer:
     case xmlSecKeyDataFormatCertDer:
-#ifndef XMLSEC_OPENSSL_API_300
-        cert = d2i_X509_bio(bio, NULL);
-        if(cert == NULL) {
-            xmlSecOpenSSLError("PEM_read_bio_X509_AUX", NULL);
-            return(NULL);
-        }
-#else /* XMLSEC_OPENSSL_API_300 */
-        tmpCert = X509_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);
-        if(tmpCert == NULL) {
-            xmlSecOpenSSLError("X509_new_ex", NULL);
-            return(NULL);
-        }
-        cert = d2i_X509_bio(bio, &tmpCert);
-        if(cert == NULL) {
+        res = d2i_X509_bio(bio, &tmpCert);
+        if(res == NULL) {
             xmlSecOpenSSLError("d2i_X509_bio", NULL);
-            X509_free(tmpCert);
-            return(NULL);
+            goto done;
         }
-#endif /* XMLSEC_OPENSSL_API_300 */
+        tmpCert = NULL; /* now it's res */
         break;
     default:
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
             "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
-        return(NULL);
+        goto done;
     }
 
-    return(cert);
+done:
+    if(tmpCert != NULL) {
+        X509_free(tmpCert);
+    }
+    return(res);
 }
 
 #endif /* XMLSEC_NO_X509 */

@@ -671,7 +671,7 @@ xmlSecOpenSSLSignatureDsaSignImpl(EVP_PKEY* pKey, const xmlSecByte* buf, xmlSecS
         goto done;
     }
 
-    XMLSEC_SAFE_CAST_UINT_TO_INT(bufSize, bufLen, goto done, NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(bufSize, bufLen, goto done, NULL);
     res = DSA_do_sign(buf, bufLen, dsaKey);
     if(res == NULL) {
         xmlSecOpenSSLError("DSA_do_sign", NULL);
@@ -703,7 +703,7 @@ xmlSecOpenSSLSignatureDsaVerifyImpl(EVP_PKEY* pKey,  DSA_SIG* sig, const xmlSecB
         goto done;
     }
 
-    XMLSEC_SAFE_CAST_UINT_TO_INT(bufSize, bufLen, goto done, NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(bufSize, bufLen, goto done, NULL);
     ret = DSA_do_verify(buf, bufLen, sig, dsaKey);
     if(ret < 0) {
         xmlSecOpenSSLError("EVP_PKEY_get1_DSA", NULL);

@@ -1227,7 +1227,7 @@ xmlSecOpenSSLSignatureEcdsaSignImpl(EVP_PKEY* pKey, const xmlSecByte* buf, xmlSe
     }
 
     /* sign */
-    XMLSEC_SAFE_CAST_UINT_TO_INT(bufSize, dgstLen, goto done, NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(bufSize, dgstLen, goto done, NULL);
     sig = ECDSA_do_sign(buf, dgstLen, ecKey);
     if(sig == NULL) {
         xmlSecOpenSSLError("ECDSA_do_sign", NULL);
@@ -1269,7 +1269,7 @@ xmlSecOpenSSLSignatureEcdsaVerifyImpl(EVP_PKEY* pKey, ECDSA_SIG* sig,
     }
 
     /* verify */
-    XMLSEC_SAFE_CAST_UINT_TO_INT(bufSize, bufLen, goto done, NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(bufSize, bufLen, goto done, NULL);
     ret = ECDSA_do_verify(buf, bufLen, sig, ecKey);
     if(ret < 0) {
         xmlSecOpenSSLError("ECDSA_do_verify", NULL);

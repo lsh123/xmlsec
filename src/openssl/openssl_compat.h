@@ -1,6 +1,4 @@
-#ifndef __XMLSEC_OPENSSL_OPENSSL_COMPAT_H__
-#define __XMLSEC_OPENSSL_OPENSSL_COMPAT_H__
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * This file provides a compatibility layer for pre-OpenSSL 1.1.0 versions.
@@ -10,6 +8,13 @@
  * using the same syntax. This file won't be required once OpenSSL 1.1.0 is
  * the minimum supported version. Note that LibreSSL "forked" at OpenSSL 1.0.0.
  */
+
+#ifndef __XMLSEC_OPENSSL_OPENSSL_COMPAT_H__
+#define __XMLSEC_OPENSSL_OPENSSL_COMPAT_H__
+
+#include <openssl/rand.h>
+
+#include "../cast_helpers.h"
 
 /******************************************************************************
  *
@@ -49,6 +54,48 @@
 
 #endif /* !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300) */
 
+
+/******************************************************************************
+ *
+ * OpenSSL 1.1.1
+ *
+ ******************************************************************************/
+#if !defined(XMLSEC_OPENSSL_API_111)
+
+#define RAND_priv_bytes(buf,num)            RAND_bytes((buf),(num))
+
+#endif /* !defined(XMLSEC_OPENSSL_API_110) */
+
+
+/******************************************************************************
+ *
+ * OpenSSL 3.0.0 compatibility
+ *
+ *****************************************************************************/
+#if !defined(XMLSEC_OPENSSL_API_300)
+
+#define BIO_new_ex(libctx,type)                                     BIO_new((type))
+#define PEM_read_bio_PrivateKey_ex(bp,x,cb,u,libctx,propq)          PEM_read_bio_PrivateKey((bp),(x),(cb),(u))
+#define PEM_read_bio_PUBKEY_ex(bp,x,cb,u,libctx,propq)              PEM_read_bio_PUBKEY((bp),(x),(cb),(u))
+#define d2i_PrivateKey_ex_bio(bp,a,libctx,propq)                    d2i_PrivateKey_bio((bp),(a))
+
+#define EVP_SignFinal_ex(ctx,md,s,pkey,libctx,propq)                EVP_SignFinal((ctx),(md),(s),(pkey))
+#define EVP_VerifyFinal_ex(ctx,sigbuf,siglen,pkey,libctx,propq)     EVP_VerifyFinal((ctx),(sigbuf),(siglen),(pkey))
+
+#define X509_new_ex(libctx,propq)                                   X509_new()
+#define X509_CRL_new_ex(libctx,propq)                               X509_CRL_new()
+#define X509_STORE_CTX_new_ex(libctx,propq)                         X509_STORE_CTX_new()
+#define X509_STORE_set_default_paths_ex(ctx,libctx,propq)           X509_STORE_set_default_paths((ctx))
+#define X509_NAME_hash_ex(x,libctx,propq,ok)                        X509_NAME_hash((x))
+
+#define RAND_priv_bytes_ex(ctx,buf,num,strength)                    xmlSecOpenSSLCompatRand((buf),(num))
+static inline int xmlSecOpenSSLCompatRand(unsigned char *buf, xmlSecSize size) {
+    int num;
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(size, num, return(0), NULL);
+    return(RAND_priv_bytes(buf, num));
+}
+
+#endif /* !defined(XMLSEC_OPENSSL_API_300) */
 
 /******************************************************************************
  *

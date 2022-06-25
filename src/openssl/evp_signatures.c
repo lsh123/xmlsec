@@ -37,6 +37,7 @@
 #endif /* XMLSEC_OPENSSL_API_300 */
 
 #include "../cast_helpers.h"
+#include "openssl_compat.h"
 
 /**************************************************************************
  *
@@ -443,13 +444,9 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
 
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, dataLen, return(-1), xmlSecTransformGetName(transform));
 
-#ifndef XMLSEC_OPENSSL_API_300
-    ret = EVP_VerifyFinal(ctx->digestCtx, (xmlSecByte*)data, dataLen, ctx->pKey);
-#else /* XMLSEC_OPENSSL_API_300 */
     ret = EVP_VerifyFinal_ex(ctx->digestCtx, (xmlSecByte*)data, dataLen, ctx->pKey, xmlSecOpenSSLGetLibCtx(), NULL);
-#endif /* XMLSEC_OPENSSL_API_300 */
     if(ret < 0) {
-        xmlSecOpenSSLError("EVP_VerifyFinal",
+        xmlSecOpenSSLError("EVP_VerifyFinal_ex",
                            xmlSecTransformGetName(transform));
         return(-1);
     } else if(ret != 1) {
@@ -559,21 +556,12 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
                 return(-1);
             }
 
-#ifndef XMLSEC_OPENSSL_API_300
-            ret = EVP_SignFinal(ctx->digestCtx, xmlSecBufferGetData(out), &signSize, ctx->pKey);
-            if(ret != 1) {
-                xmlSecOpenSSLError("EVP_SignFinal",
-                                   xmlSecTransformGetName(transform));
-                return(-1);
-            }
-#else /* XMLSEC_OPENSSL_API_300 */
             ret = EVP_SignFinal_ex(ctx->digestCtx, xmlSecBufferGetData(out), &signSize, ctx->pKey,
                                xmlSecOpenSSLGetLibCtx(), NULL);
             if(ret != 1) {
                 xmlSecOpenSSLError("EVP_SignFinal", xmlSecTransformGetName(transform));
                 return(-1);
             }
-#endif /* XMLSEC_OPENSSL_API_300 */
 
             ret = xmlSecBufferSetSize(out, signSize);
             if(ret < 0) {

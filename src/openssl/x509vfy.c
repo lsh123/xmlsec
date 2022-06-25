@@ -44,6 +44,7 @@
 #include <openssl/x509v3.h>
 
 #include "../cast_helpers.h"
+#include "openssl_compat.h"
 
 #ifdef OPENSSL_IS_BORINGSSL
 typedef size_t x509_size_t;
@@ -238,11 +239,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
     xmlSecAssert2(certs != NULL, NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
-#ifndef XMLSEC_OPENSSL_API_300
-    xsc = X509_STORE_CTX_new();
-#else /* XMLSEC_OPENSSL_API_300 */
     xsc = X509_STORE_CTX_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);
-#endif /* XMLSEC_OPENSSL_API_300 */
     if(xsc == NULL) {
         xmlSecOpenSSLError("X509_STORE_CTX_new",
                            xmlSecKeyDataStoreGetName(store));
@@ -623,11 +620,7 @@ xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
         return(-1);
     }
 
-#ifndef XMLSEC_OPENSSL_API_300
-    ret = X509_STORE_set_default_paths(ctx->xst);
-#else /* XMLSEC_OPENSSL_API_300 */
     ret = X509_STORE_set_default_paths_ex(ctx->xst, xmlSecOpenSSLGetLibCtx(), NULL);
-#endif /* XMLSEC_OPENSSL_API_300 */
     if(ret != 1) {
         xmlSecOpenSSLError("X509_STORE_set_default_paths",
                            xmlSecKeyDataStoreGetName(store));
@@ -727,11 +720,7 @@ xmlSecOpenSSLX509VerifyCRL(X509_STORE* xst, X509_CRL *crl ) {
     xmlSecAssert2(xst != NULL, -1);
     xmlSecAssert2(crl != NULL, -1);
 
-#ifndef XMLSEC_OPENSSL_API_300
-    xsc = X509_STORE_CTX_new();
-#else /* XMLSEC_OPENSSL_API_300 */
     xsc = X509_STORE_CTX_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);
-#endif /* XMLSEC_OPENSSL_API_300 */
     if(xsc == NULL) {
         xmlSecOpenSSLError("X509_STORE_CTX_new", NULL);
         goto err;
@@ -895,20 +884,11 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
 
 static unsigned long
 xmlSecOpenSSLX509GetSubjectHash(X509* x) {
-#ifdef XMLSEC_OPENSSL_API_300
     X509_NAME* name;
-#endif /* XMLSEC_OPENSSL_API_300 */
     unsigned long res;
 
     xmlSecAssert2(x != NULL, 0);
 
-#ifndef XMLSEC_OPENSSL_API_300
-    res = X509_subject_name_hash(x);
-    if(res == 0) {
-        xmlSecOpenSSLError("X509_subject_name_hash", NULL);
-        return(0);
-    }
-#else /* XMLSEC_OPENSSL_API_300 */
     name = X509_get_subject_name(x);
     if(name == NULL) {
         xmlSecOpenSSLError("X509_get_subject_name", NULL);
@@ -920,27 +900,17 @@ xmlSecOpenSSLX509GetSubjectHash(X509* x) {
         xmlSecOpenSSLError("X509_NAME_hash_ex", NULL);
         return(0);
     }
-#endif /* XMLSEC_OPENSSL_API_300 */
 
     return(res);
 }
 
 static unsigned long
 xmlSecOpenSSLX509GetIssuerHash(X509* x) {
-#ifdef XMLSEC_OPENSSL_API_300
     X509_NAME* name;
-#endif /* XMLSEC_OPENSSL_API_300 */
     unsigned long res;
 
     xmlSecAssert2(x != NULL, 0);
 
-#ifndef XMLSEC_OPENSSL_API_300
-    res = X509_issuer_name_hash(x);
-    if(res == 0) {
-        xmlSecOpenSSLError("X509_issuer_name_hash", NULL);
-        return(0);
-    }
-#else /* XMLSEC_OPENSSL_API_300 */
     name = X509_get_issuer_name(x);
     if(name == NULL) {
         xmlSecOpenSSLError("X509_get_issuer_name", NULL);
@@ -952,7 +922,6 @@ xmlSecOpenSSLX509GetIssuerHash(X509* x) {
         xmlSecOpenSSLError("X509_NAME_hash_ex", NULL);
         return(0);
     }
-#endif /* XMLSEC_OPENSSL_API_300 */
 
     return(res);
 }

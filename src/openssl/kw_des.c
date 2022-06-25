@@ -261,15 +261,39 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last,
  * DES KW implementation
  *
  *********************************************************************/
+#ifndef XMLSEC_OPENSSL_API_300
+
 static int
 xmlSecOpenSSLKWDes3Sha1(xmlSecTransformPtr transform ATTRIBUTE_UNUSED,
                        const xmlSecByte * in, xmlSecSize inSize, 
                        xmlSecByte * out, xmlSecSize outSize,
                        xmlSecSize * outWritten) {
-#ifdef XMLSEC_OPENSSL_API_300
+    UNREFERENCED_PARAMETER(transform);
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2(inSize > 0, -1);
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(outSize >= SHA_DIGEST_LENGTH, -1);
+    xmlSecAssert2(outWritten != NULL, -1);
+
+    if(SHA1(in, inSize, out) == NULL) {
+        xmlSecOpenSSLError("SHA1", NULL);
+        return(-1);
+    }
+
+    /* success */
+    (*outWritten) = SHA_DIGEST_LENGTH;
+    return(0);
+}
+
+#else /* XMLSEC_OPENSSL_API_300 */
+
+static int
+xmlSecOpenSSLKWDes3Sha1(xmlSecTransformPtr transform ATTRIBUTE_UNUSED,
+                       const xmlSecByte * in, xmlSecSize inSize, 
+                       xmlSecByte * out, xmlSecSize outSize,
+                       xmlSecSize * outWritten) {
     size_t outSizeT;
     int ret;
-#endif /* XMLSEC_OPENSSL_API_300 */
 
     UNREFERENCED_PARAMETER(transform);
     xmlSecAssert2(in != NULL, -1);
@@ -278,13 +302,6 @@ xmlSecOpenSSLKWDes3Sha1(xmlSecTransformPtr transform ATTRIBUTE_UNUSED,
     xmlSecAssert2(outSize >= SHA_DIGEST_LENGTH, -1);
     xmlSecAssert2(outWritten != NULL, -1);
 
-#ifndef XMLSEC_OPENSSL_API_300
-    if(SHA1(in, inSize, out) == NULL) {
-        xmlSecOpenSSLError("SHA1", NULL);
-        return(-1);
-    }
-    (*outWritten) = SHA_DIGEST_LENGTH;
-#else /* XMLSEC_OPENSSL_API_300 */
     outSizeT = outSize;
     ret = EVP_Q_digest(xmlSecOpenSSLGetLibCtx(), OSSL_DIGEST_NAME_SHA1, NULL,
                        in, inSize, out, &outSizeT);
@@ -292,11 +309,14 @@ xmlSecOpenSSLKWDes3Sha1(xmlSecTransformPtr transform ATTRIBUTE_UNUSED,
         xmlSecOpenSSLError("EVP_Q_digest(SHA1)", NULL);
         return(-1);
     }
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(outSizeT, (*outWritten), return(-1), NULL);
-#endif /* XMLSEC_OPENSSL_API_300 */
 
+    /* success */
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(outSizeT, (*outWritten), return(-1), NULL);
     return(0);
 }
+
+#endif /* XMLSEC_OPENSSL_API_300 */
+
 
 static int
 xmlSecOpenSSLKWDes3GenerateRandom(xmlSecTransformPtr transform ATTRIBUTE_UNUSED,

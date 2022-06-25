@@ -353,19 +353,90 @@ xmlSecOpenSSLHmacSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq
     return(0);
 }
 
+#ifndef XMLSEC_OPENSSL_API_300
+static int
+xmlSecOpenSSLHmacSetKeyImpl(xmlSecOpenSSLHmacCtxPtr ctx, const xmlSecByte* key, xmlSecSize keySize) {
+    int keyLen;
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->hmacCtx != NULL, -1);
+    xmlSecAssert2(ctx->hmacDgst != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(keySize > 0, -1);
+    
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(keySize, keyLen, return(-1), NULL);
+    ret = HMAC_Init_ex(ctx->hmacCtx, key, keyLen, ctx->hmacDgst, NULL);
+    if(ret != 1) {
+        xmlSecOpenSSLError("HMAC_Init_ex", NULL);
+        return(-1);
+    }
+
+    /* success */
+    return(0);
+}
+
+#else /* XMLSEC_OPENSSL_API_300 */
+
+static int
+xmlSecOpenSSLHmacSetKeyImpl(xmlSecOpenSSLHmacCtxPtr ctx, const xmlSecByte* key, xmlSecSize keySize) {
+    OSSL_PARAM_BLD* param_bld = NULL;
+    OSSL_PARAM* params = NULL;
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->evpHmacCtx != NULL, -1);
+    xmlSecAssert2(ctx->evpHmacDgstName != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(keySize > 0, -1);
+
+    param_bld = OSSL_PARAM_BLD_new();
+    if (param_bld == NULL) {
+        xmlSecOpenSSLError("OSSL_PARAM_BLD_new", NULL);
+        goto done;
+    }
+
+    ret = OSSL_PARAM_BLD_push_utf8_string(param_bld, OSSL_MAC_PARAM_DIGEST,
+        ctx->evpHmacDgstName, strlen(ctx->evpHmacDgstName));
+    if(ret != 1) {
+        xmlSecOpenSSLError("OSSL_PARAM_BLD_push_utf8_string", NULL);
+        goto done;
+    }
+
+    params = OSSL_PARAM_BLD_to_param(param_bld);
+    if (params == NULL) {
+        xmlSecOpenSSLError("OSSL_PARAM_BLD_to_param", NULL);
+        goto done;
+    }
+
+    ret = EVP_MAC_init(ctx->evpHmacCtx, key, keySize, params);
+    if (ret != 1) {
+        xmlSecOpenSSLError("EVP_MAC_init", NULL);
+        goto done;
+    }
+
+    /* success */
+    res = 0;
+    
+done:
+    if(params != NULL) {
+        OSSL_PARAM_free(params);
+    }
+    if(param_bld != NULL) {
+        OSSL_PARAM_BLD_free(param_bld);
+    }
+    return(res);
+
+}
+
+#endif /* XMLSEC_OPENSSL_API_300 */
+
 static int
 xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecOpenSSLHmacCtxPtr ctx;
     xmlSecKeyDataPtr value;
     xmlSecBufferPtr buffer;
-#ifndef XMLSEC_OPENSSL_API_300
-    xmlSecSize bufSize;
-    int bufLen;
-#else /* XMLSEC_OPENSSL_API_300 */
-    OSSL_PARAM_BLD* param_bld = NULL;
-    OSSL_PARAM* params = NULL;
-#endif /* XMLSEC_OPENSSL_API_300 */
-    int res = -1;
     int ret;
 
     xmlSecAssert2(xmlSecOpenSSLHmacCheckId(transform), -1);
@@ -385,70 +456,19 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     if(xmlSecBufferGetSize(buffer) == 0) {
         xmlSecInvalidZeroKeyDataSizeError(xmlSecTransformGetName(transform));
-        goto done;
+       return(-1);
     }
-
     xmlSecAssert2(xmlSecBufferGetData(buffer) != NULL, -1);
 
-#ifndef XMLSEC_OPENSSL_API_300
-    xmlSecAssert2(ctx->hmacCtx != NULL, -1);
-    xmlSecAssert2(ctx->hmacDgst != NULL, -1);
+    ret = xmlSecOpenSSLHmacSetKeyImpl(ctx, xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLHmacSetKeyImpl", xmlSecTransformGetName(transform));
+       return(-1);
+    }
 
-    bufSize = xmlSecBufferGetSize(buffer);
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(bufSize, bufLen, goto done, xmlSecTransformGetName(transform));
-
-    ret = HMAC_Init_ex(ctx->hmacCtx,
-                xmlSecBufferGetData(buffer),
-                bufLen,
-                ctx->hmacDgst,
-                NULL);
-    if(ret != 1) {
-        xmlSecOpenSSLError("HMAC_Init_ex", xmlSecTransformGetName(transform));
-        goto done;
-    }
-#else /* XMLSEC_OPENSSL_API_300 */
-    xmlSecAssert2(ctx->evpHmacCtx != NULL, -1);
-    xmlSecAssert2(ctx->evpHmacDgstName != NULL, -1);
-
-    param_bld = OSSL_PARAM_BLD_new();
-    if (param_bld == NULL) {
-        xmlSecOpenSSLError("OSSL_PARAM_BLD_new", xmlSecTransformGetName(transform));
-        goto done;
-    }
-    if(OSSL_PARAM_BLD_push_utf8_string(param_bld, OSSL_MAC_PARAM_DIGEST,
-                                       ctx->evpHmacDgstName, strlen(ctx->evpHmacDgstName)) != 1) {
-        xmlSecOpenSSLError("OSSL_PARAM_BLD_push_utf8_string", xmlSecTransformGetName(transform));
-        goto done;
-    }
-    params = OSSL_PARAM_BLD_to_param(param_bld);
-    if (params == NULL) {
-        xmlSecOpenSSLError("OSSL_PARAM_BLD_to_param",
-                           xmlSecTransformGetName(transform));
-        goto done;
-    }
-    ret = EVP_MAC_init(ctx->evpHmacCtx, xmlSecBufferGetData(buffer),
-                       xmlSecBufferGetSize(buffer), params);
-    if (ret != 1) {
-        xmlSecOpenSSLError("EVP_MAC_init", xmlSecTransformGetName(transform));
-        goto done;
-    }
-#endif /* XMLSEC_OPENSSL_API_300 */
-
-    /* done */
+    /* success */
     ctx->ctxInitialized = 1;
-    res = 0;
-
-done:
-#ifdef XMLSEC_OPENSSL_API_300
-    if(params != NULL) {
-        OSSL_PARAM_free(params);
-    }
-    if(param_bld != NULL) {
-        OSSL_PARAM_BLD_free(param_bld);
-    }
-#endif /* XMLSEC_OPENSSL_API_300 */
-
-    return(res);
+    return(0);
 }
 
 static int

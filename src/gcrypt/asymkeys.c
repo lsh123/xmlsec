@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2010-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:asymkeys
@@ -166,7 +166,7 @@ xmlSecGCryptAsymKeyDataAdoptKey(xmlSecKeyDataPtr data, gcry_sexp_t key_pair) {
     ctx = xmlSecGCryptAsymKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
-    /* split the key pair, public part should be always present, private might 
+    /* split the key pair, public part should be always present, private might
        not be present */
     pub_key = gcry_sexp_find_token(key_pair, "public-key", 0);
     if(pub_key == NULL) {
@@ -804,7 +804,7 @@ xmlSecGCryptKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     xmlSecAssert2(id == xmlSecGCryptKeyDataDsaId, NULL);
     xmlSecAssert2(dsaValue != NULL, NULL);
 
-    /*** p ***/ 
+    /*** p ***/
     err = gcry_mpi_scan(&p, GCRYMPI_FMT_USG,
         xmlSecBufferGetData(&(dsaValue->p)), xmlSecBufferGetSize(&(dsaValue->p)),
         NULL);
@@ -814,7 +814,7 @@ xmlSecGCryptKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         goto done;
     }
 
-    /*** q ***/ 
+    /*** q ***/
     err = gcry_mpi_scan(&q, GCRYMPI_FMT_USG,
         xmlSecBufferGetData(&(dsaValue->q)), xmlSecBufferGetSize(&(dsaValue->q)),
         NULL);
@@ -824,7 +824,7 @@ xmlSecGCryptKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         goto done;
     }
 
-    /*** g ***/ 
+    /*** g ***/
     err = gcry_mpi_scan(&g, GCRYMPI_FMT_USG,
         xmlSecBufferGetData(&(dsaValue->g)), xmlSecBufferGetSize(&(dsaValue->g)),
         NULL);
@@ -834,7 +834,7 @@ xmlSecGCryptKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         goto done;
     }
 
-    /*** x (only for private key) ***/ 
+    /*** x (only for private key) ***/
     if(xmlSecBufferGetSize(&(dsaValue->x)) > 0) {
         err = gcry_mpi_scan(&x, GCRYMPI_FMT_USG,
             xmlSecBufferGetData(&(dsaValue->x)), xmlSecBufferGetSize(&(dsaValue->x)),
@@ -846,7 +846,7 @@ xmlSecGCryptKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         }
     }
 
-    /*** y ***/ 
+    /*** y ***/
     err = gcry_mpi_scan(&y, GCRYMPI_FMT_USG,
         xmlSecBufferGetData(&(dsaValue->y)), xmlSecBufferGetSize(&(dsaValue->y)),
         NULL);
@@ -938,7 +938,7 @@ done:
     if(data != NULL) {
         xmlSecKeyDataDestroy(data);
     }
-    return(res);    
+    return(res);
 }
 
 static int
@@ -1312,7 +1312,7 @@ xmlSecGCryptKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     xmlSecAssert2(id == xmlSecGCryptKeyDataRsaId, NULL);
     xmlSecAssert2(rsaValue != NULL, NULL);
 
-    /*** Modulus ***/ 
+    /*** Modulus ***/
     err = gcry_mpi_scan(&modulus, GCRYMPI_FMT_USG,
         xmlSecBufferGetData(&(rsaValue->modulus)),
         xmlSecBufferGetSize(&(rsaValue->modulus)),
@@ -1323,7 +1323,7 @@ xmlSecGCryptKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
         goto done;
     }
 
-    /*** Exponent ***/ 
+    /*** Exponent ***/
     err = gcry_mpi_scan(&publicExponent, GCRYMPI_FMT_USG,
         xmlSecBufferGetData(&(rsaValue->publicExponent)),
         xmlSecBufferGetSize(&(rsaValue->publicExponent)),
@@ -1334,7 +1334,7 @@ xmlSecGCryptKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
         goto done;
     }
 
-    /*** PrivateExponent (only for private key) ***/ 
+    /*** PrivateExponent (only for private key) ***/
     if(xmlSecBufferGetSize(&(rsaValue->privateExponent)) > 0) {
         err = gcry_mpi_scan(&privateExponent, GCRYMPI_FMT_USG,
             xmlSecBufferGetData(&(rsaValue->privateExponent)),

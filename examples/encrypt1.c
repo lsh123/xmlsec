@@ -1,10 +1,10 @@
-/** 
+/**
  * XML Security Library example: Encrypting data using a template file.
- * 
+ *
  * Encrypts binary data using a template file and a DES key from a binary file
- * 
- * Usage: 
- *      ./encrypt1 <xml-tmpl> <des-key-file> 
+ *
+ * Usage:
+ *      ./encrypt1 <xml-tmpl> <des-key-file>
  *
  * Example:
  *      ./encrypt1 encrypt1-tmpl.xml deskey.bin > encrypt1-res.xml
@@ -14,8 +14,8 @@
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ *
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #include <stdlib.h>
 #include <string.h>
@@ -35,9 +35,9 @@
 #include <xmlsec/xmlenc.h>
 #include <xmlsec/crypto.h>
 
-int encrypt_file(const char* tmpl_file, const char* key_file, 
+int encrypt_file(const char* tmpl_file, const char* key_file,
                  const unsigned char* data, size_t dataSize);
-int 
+int
 main(int argc, char **argv) {
     static const char secret_data[] = "Big secret";
 #ifndef XMLSEC_NO_XSLT
@@ -58,21 +58,21 @@ main(int argc, char **argv) {
     xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
     xmlSubstituteEntitiesDefault(1);
 #ifndef XMLSEC_NO_XSLT
-    xmlIndentTreeOutput = 1; 
+    xmlIndentTreeOutput = 1;
 #endif /* XMLSEC_NO_XSLT */
 
     /* Init libxslt */
 #ifndef XMLSEC_NO_XSLT
     /* disable everything */
-    xsltSecPrefs = xsltNewSecurityPrefs(); 
+    xsltSecPrefs = xsltNewSecurityPrefs();
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_NETWORK,     xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid);
-    xsltSetDefaultSecurityPrefs(xsltSecPrefs); 
+    xsltSetDefaultSecurityPrefs(xsltSecPrefs);
 #endif /* XMLSEC_NO_XSLT */
-                
+
     /* Init xmlsec library */
     if(xmlSecInit() < 0) {
         fprintf(stderr, "Error: xmlsec initialization failed.\n");
@@ -87,7 +87,7 @@ main(int argc, char **argv) {
 
     /* Load default crypto engine if we are supporting dynamic
      * loading for xmlsec-crypto libraries. Use the crypto library
-     * name ("openssl", "nss", etc.) to load corresponding 
+     * name ("openssl", "nss", etc.) to load corresponding
      * xmlsec-crypto library.
      */
 #ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING
@@ -95,7 +95,7 @@ main(int argc, char **argv) {
         fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
                         "that you have it installed and check shared libraries path\n"
                         "(LD_LIBRARY_PATH and/or LTDL_LIBRARY_PATH) environment variables.\n");
-        return(-1);     
+        return(-1);
     }
 #endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
 
@@ -113,24 +113,24 @@ main(int argc, char **argv) {
 
     if(encrypt_file(argv[1], argv[2], BAD_CAST secret_data, strlen(secret_data)) < 0) {
         return(-1);
-    }    
-    
+    }
+
     /* Shutdown xmlsec-crypto library */
     xmlSecCryptoShutdown();
-    
+
     /* Shutdown crypto library */
     xmlSecCryptoAppShutdown();
-    
+
     /* Shutdown xmlsec library */
     xmlSecShutdown();
 
     /* Shutdown libxslt/libxml */
 #ifndef XMLSEC_NO_XSLT
     xsltFreeSecurityPrefs(xsltSecPrefs);
-    xsltCleanupGlobals();            
+    xsltCleanupGlobals();
 #endif /* XMLSEC_NO_XSLT */
     xmlCleanupParser();
-    
+
     return(0);
 }
 
@@ -146,14 +146,14 @@ main(int argc, char **argv) {
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
-int 
-encrypt_file(const char* tmpl_file, const char* key_file, 
+int
+encrypt_file(const char* tmpl_file, const char* key_file,
              const unsigned char* data, size_t dataSize) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
     xmlSecEncCtxPtr encCtx = NULL;
     int res = -1;
-    
+
     assert(tmpl_file);
     assert(key_file);
     assert(data);
@@ -162,14 +162,14 @@ encrypt_file(const char* tmpl_file, const char* key_file,
     doc = xmlParseFile(tmpl_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
         fprintf(stderr, "Error: unable to parse file \"%s\"\n", tmpl_file);
-        goto done;      
+        goto done;
     }
-    
+
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
     if(node == NULL) {
         fprintf(stderr, "Error: start node not found in \"%s\"\n", tmpl_file);
-        goto done;      
+        goto done;
     }
 
     /* create encryption context, we don't need keys manager in this example */
@@ -197,22 +197,22 @@ encrypt_file(const char* tmpl_file, const char* key_file,
         fprintf(stderr,"Error: encryption failed\n");
         goto done;
     }
-        
+
     /* print encrypted data with document to stdout */
     xmlDocDump(stdout, doc);
-    
+
     /* success */
     res = 0;
 
-done:    
+done:
 
     /* cleanup */
     if(encCtx != NULL) {
         xmlSecEncCtxDestroy(encCtx);
     }
-    
+
     if(doc != NULL) {
-        xmlFreeDoc(doc); 
+        xmlFreeDoc(doc);
     }
     return(res);
 }

@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2010-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:kw_des
@@ -42,29 +42,29 @@
  *
  *********************************************************************/
 static int       xmlSecGCryptKWDes3GenerateRandom               (xmlSecTransformPtr transform,
-                                                                 xmlSecByte * out, 
+                                                                 xmlSecByte * out,
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize * outWritten);
 static int       xmlSecGCryptKWDes3Sha1                         (xmlSecTransformPtr transform,
-                                                                 const xmlSecByte * in, 
-                                                                 xmlSecSize inSize, 
-                                                                 xmlSecByte * out, 
+                                                                 const xmlSecByte * in,
+                                                                 xmlSecSize inSize,
+                                                                 xmlSecByte * out,
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize * outWritten);
 static int      xmlSecGCryptKWDes3BlockEncrypt                  (xmlSecTransformPtr transform,
-                                                                 const xmlSecByte * iv, 
+                                                                 const xmlSecByte * iv,
                                                                  xmlSecSize ivSize,
-                                                                 const xmlSecByte * in, 
+                                                                 const xmlSecByte * in,
                                                                  xmlSecSize inSize,
-                                                                 xmlSecByte * out, 
+                                                                 xmlSecByte * out,
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize * outWritten);
 static int      xmlSecGCryptKWDes3BlockDecrypt                  (xmlSecTransformPtr transform,
-                                                                 const xmlSecByte * iv, 
+                                                                 const xmlSecByte * iv,
                                                                  xmlSecSize ivSize,
-                                                                 const xmlSecByte * in, 
+                                                                 const xmlSecByte * in,
                                                                  xmlSecSize inSize,
-                                                                 xmlSecByte * out, 
+                                                                 xmlSecByte * out,
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize * outWritten);
 
@@ -80,14 +80,14 @@ static xmlSecKWDes3Klass xmlSecGCryptKWDes3ImplKlass = {
     NULL,                                   /* void*                               reserved1; */
 };
 
-static int      xmlSecGCryptKWDes3Encrypt                       (const xmlSecByte *key, 
+static int      xmlSecGCryptKWDes3Encrypt                       (const xmlSecByte *key,
                                                                  xmlSecSize keySize,
-                                                                 const xmlSecByte *iv, 
+                                                                 const xmlSecByte *iv,
                                                                  xmlSecSize ivSize,
-                                                                 const xmlSecByte *in, 
+                                                                 const xmlSecByte *in,
                                                                  xmlSecSize inSize,
-                                                                 xmlSecByte *out, 
-                                                                 xmlSecSize outSize, 
+                                                                 xmlSecByte *out,
+                                                                 xmlSecSize outSize,
                                                                  xmlSecSize * outWritten,
                                                                  int enc);
 

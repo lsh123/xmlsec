@@ -6,7 +6,7 @@
  * distribution for preciese wording.
  *
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
- * Copyright (C) 2003-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (c) 2005-2006 Cryptocom LTD (http://www.cryptocom.ru).
  */
 /**
@@ -518,7 +518,7 @@ xmlSecMSCryptoConvertLocaleToUnicode(const char* str) {
  *
  * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
  */
-xmlChar* 
+xmlChar*
 xmlSecMSCryptoConvertLocaleToUtf8(const char * str) {
     return(xmlSecWin32ConvertLocaleToUtf8(str));
 }
@@ -531,7 +531,7 @@ xmlSecMSCryptoConvertLocaleToUtf8(const char * str) {
  *
  * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
  */
-char * 
+char *
 xmlSecMSCryptoConvertUtf8ToLocale(const xmlChar* str) {
     return(xmlSecWin32ConvertUtf8ToLocale(str));
 }
@@ -544,7 +544,7 @@ xmlSecMSCryptoConvertUtf8ToLocale(const xmlChar* str) {
  *
  * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
  */
-xmlChar* 
+xmlChar*
 xmlSecMSCryptoConvertTstrToUtf8(LPCTSTR str) {
     return(xmlSecWin32ConvertTstrToUtf8(str));
 }

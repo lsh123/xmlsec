@@ -6,7 +6,7 @@
  * distribution for preciese wording.
  *
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
- * Copyright (C) 2003-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:ciphers
@@ -459,7 +459,7 @@ xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
         ctx->keyId                  = xmlSecMSCryptoKeyDataAesId;
         ctx->providers              = xmlSecMSCryptoProviderInfo_Aes;
         ctx->keySize                = 32;
-    } else     
+    } else
 #endif /* XMLSEC_NO_AES */
 
     {
@@ -504,7 +504,7 @@ xmlSecMSCryptoBlockCipherFinalize(xmlSecTransformPtr transform) {
     if (ctx->cryptProvider) {
         CryptReleaseContext(ctx->cryptProvider, 0);
     }
-    
+
     memset(ctx, 0, sizeof(xmlSecMSCryptoBlockCipherCtx));
 }
 

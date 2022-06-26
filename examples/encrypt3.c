@@ -1,11 +1,11 @@
-/** 
+/**
  * XML Security Library example: Encrypting XML file with a session key and dynamicaly created template.
- * 
- * Encrypts XML file using a dynamicaly created template file and a session 
+ *
+ * Encrypts XML file using a dynamicaly created template file and a session
  * DES key (encrypted with an RSA key).
- * 
- * Usage: 
- *      ./encrypt3 <xml-doc> <rsa-pem-key-file> 
+ *
+ * Usage:
+ *      ./encrypt3 <xml-doc> <rsa-pem-key-file>
  *
  * Example:
  *      ./encrypt3 encrypt3-doc.xml rsakey.pem > encrypt3-res.xml
@@ -15,8 +15,8 @@
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ *
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #include <stdlib.h>
 #include <string.h>
@@ -40,13 +40,13 @@
 xmlSecKeysMngrPtr load_rsa_keys(char* key_file);
 int encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name);
 
-int 
+int
 main(int argc, char **argv) {
     xmlSecKeysMngrPtr mngr;
 #ifndef XMLSEC_NO_XSLT
     xsltSecurityPrefsPtr xsltSecPrefs = NULL;
 #endif /* XMLSEC_NO_XSLT */
-    
+
     assert(argv);
 
     if(argc != 3) {
@@ -61,20 +61,20 @@ main(int argc, char **argv) {
     xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
     xmlSubstituteEntitiesDefault(1);
 #ifndef XMLSEC_NO_XSLT
-    xmlIndentTreeOutput = 1; 
+    xmlIndentTreeOutput = 1;
 #endif /* XMLSEC_NO_XSLT */
 
     /* Init libxslt */
 #ifndef XMLSEC_NO_XSLT
     /* disable everything */
-    xsltSecPrefs = xsltNewSecurityPrefs(); 
+    xsltSecPrefs = xsltNewSecurityPrefs();
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_NETWORK,     xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid);
-    xsltSetDefaultSecurityPrefs(xsltSecPrefs); 
-#endif /* XMLSEC_NO_XSLT */                
+    xsltSetDefaultSecurityPrefs(xsltSecPrefs);
+#endif /* XMLSEC_NO_XSLT */
 
     /* Init xmlsec library */
     if(xmlSecInit() < 0) {
@@ -90,7 +90,7 @@ main(int argc, char **argv) {
 
     /* Load default crypto engine if we are supporting dynamic
      * loading for xmlsec-crypto libraries. Use the crypto library
-     * name ("openssl", "nss", etc.) to load corresponding 
+     * name ("openssl", "nss", etc.) to load corresponding
      * xmlsec-crypto library.
      */
 #ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING
@@ -98,7 +98,7 @@ main(int argc, char **argv) {
         fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
                         "that you have it installed and check shared libraries path\n"
                         "(LD_LIBRARY_PATH and/or LTDL_LIBRARY_PATH) environment variables.\n");
-        return(-1);     
+        return(-1);
     }
 #endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
 
@@ -124,27 +124,27 @@ main(int argc, char **argv) {
     if(encrypt_file(mngr, argv[1], argv[2]) < 0) {
         xmlSecKeysMngrDestroy(mngr);
         return(-1);
-    }    
+    }
 
     /* destroy keys manager */
     xmlSecKeysMngrDestroy(mngr);
-    
+
     /* Shutdown xmlsec-crypto library */
     xmlSecCryptoShutdown();
-    
+
     /* Shutdown crypto library */
     xmlSecCryptoAppShutdown();
-    
+
     /* Shutdown xmlsec library */
     xmlSecShutdown();
 
     /* Shutdown libxslt/libxml */
 #ifndef XMLSEC_NO_XSLT
     xsltFreeSecurityPrefs(xsltSecPrefs);
-    xsltCleanupGlobals();            
+    xsltCleanupGlobals();
 #endif /* XMLSEC_NO_XSLT */
     xmlCleanupParser();
-    
+
     return(0);
 }
 
@@ -159,16 +159,16 @@ main(int argc, char **argv) {
  * Returns the pointer to newly created keys manager or NULL if an error
  * occurs.
  */
-xmlSecKeysMngrPtr 
+xmlSecKeysMngrPtr
 load_rsa_keys(char* key_file) {
     xmlSecKeysMngrPtr mngr;
     xmlSecKeyPtr key;
-    
+
     assert(key_file);
-    
+
     /* create and initialize keys manager, we use a simple list based
      * keys manager, implement your own xmlSecKeysStore klass if you need
-     * something more sophisticated 
+     * something more sophisticated
      */
     mngr = xmlSecKeysMngrCreate();
     if(mngr == NULL) {
@@ -179,8 +179,8 @@ load_rsa_keys(char* key_file) {
         fprintf(stderr, "Error: failed to initialize keys manager.\n");
         xmlSecKeysMngrDestroy(mngr);
         return(NULL);
-    }    
-    
+    }
+
     /* load private RSA key */
     key = xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
     if(key == NULL) {
@@ -192,13 +192,13 @@ load_rsa_keys(char* key_file) {
     /* set key name to the file name, this is just an example! */
     if(xmlSecKeySetName(key, BAD_CAST key_file) < 0) {
         fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
-        xmlSecKeyDestroy(key);  
+        xmlSecKeyDestroy(key);
         xmlSecKeysMngrDestroy(mngr);
         return(NULL);
     }
-        
-    /* add key to keys manager, from now on keys manager is responsible 
-     * for destroying key 
+
+    /* add key to keys manager, from now on keys manager is responsible
+     * for destroying key
      */
     if(xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key) < 0) {
         fprintf(stderr,"Error: failed to add key from \"%s\" to keys manager\n", key_file);
@@ -216,12 +216,12 @@ load_rsa_keys(char* key_file) {
  * @xml_file:           the encryption template file name.
  * @key_name:           the RSA key name.
  *
- * Encrypts #xml_file using a dynamicaly created template, a session DES key 
+ * Encrypts #xml_file using a dynamicaly created template, a session DES key
  * and an RSA key from keys manager.
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
-int 
+int
 encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name) {
     xmlDocPtr doc = NULL;
     xmlNodePtr encDataNode = NULL;
@@ -230,7 +230,7 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
     xmlNodePtr keyInfoNode2 = NULL;
     xmlSecEncCtxPtr encCtx = NULL;
     int res = -1;
-    
+
     assert(mngr);
     assert(xml_file);
     assert(key_name);
@@ -239,57 +239,57 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
     doc = xmlParseFile(xml_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
         fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
-        goto done;      
+        goto done;
     }
-    
-    /* create encryption template to encrypt XML file and replace 
+
+    /* create encryption template to encrypt XML file and replace
      * its content with encryption result */
     encDataNode = xmlSecTmplEncDataCreate(doc, xmlSecTransformDes3CbcId,
                                 NULL, xmlSecTypeEncElement, NULL, NULL);
     if(encDataNode == NULL) {
         fprintf(stderr, "Error: failed to create encryption template\n");
-        goto done;   
+        goto done;
     }
 
     /* we want to put encrypted data in the <enc:CipherValue/> node */
     if(xmlSecTmplEncDataEnsureCipherValue(encDataNode) == NULL) {
         fprintf(stderr, "Error: failed to add CipherValue node\n");
-        goto done;   
+        goto done;
     }
 
     /* add <dsig:KeyInfo/> */
     keyInfoNode = xmlSecTmplEncDataEnsureKeyInfo(encDataNode, NULL);
     if(keyInfoNode == NULL) {
         fprintf(stderr, "Error: failed to add key info\n");
-        goto done;              
+        goto done;
     }
 
     /* add <enc:EncryptedKey/> to store the encrypted session key */
-    encKeyNode = xmlSecTmplKeyInfoAddEncryptedKey(keyInfoNode, 
-                                    xmlSecTransformRsaPkcs1Id, 
+    encKeyNode = xmlSecTmplKeyInfoAddEncryptedKey(keyInfoNode,
+                                    xmlSecTransformRsaPkcs1Id,
                                     NULL, NULL, NULL);
     if(encKeyNode == NULL) {
         fprintf(stderr, "Error: failed to add key info\n");
-        goto done;              
+        goto done;
     }
 
     /* we want to put encrypted key in the <enc:CipherValue/> node */
     if(xmlSecTmplEncDataEnsureCipherValue(encKeyNode) == NULL) {
         fprintf(stderr, "Error: failed to add CipherValue node\n");
-        goto done;   
+        goto done;
     }
 
     /* add <dsig:KeyInfo/> and <dsig:KeyName/> nodes to <enc:EncryptedKey/> */
     keyInfoNode2 = xmlSecTmplEncDataEnsureKeyInfo(encKeyNode, NULL);
     if(keyInfoNode2 == NULL) {
         fprintf(stderr, "Error: failed to add key info\n");
-        goto done;              
+        goto done;
     }
-    
+
     /* set key name so we can lookup key when needed */
     if(xmlSecTmplKeyInfoAddKeyName(keyInfoNode2, BAD_CAST key_name) == NULL) {
         fprintf(stderr, "Error: failed to add key name\n");
-        goto done;              
+        goto done;
     }
 
     /* create encryption context */
@@ -311,17 +311,17 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
         fprintf(stderr,"Error: encryption failed\n");
         goto done;
     }
-    
+
     /* we template is inserted in the doc */
     encDataNode = NULL;
-        
+
     /* print encrypted data with document to stdout */
     xmlDocDump(stdout, doc);
-    
+
     /* success */
     res = 0;
 
-done:    
+done:
 
     /* cleanup */
     if(encCtx != NULL) {
@@ -331,9 +331,9 @@ done:
     if(encDataNode != NULL) {
         xmlFreeNode(encDataNode);
     }
-        
+
     if(doc != NULL) {
-        xmlFreeDoc(doc); 
+        xmlFreeDoc(doc);
     }
     return(res);
 }

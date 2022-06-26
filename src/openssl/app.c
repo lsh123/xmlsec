@@ -4,7 +4,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:app
@@ -802,7 +802,7 @@ xmlSecKeyPtr
 xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
                            void* pwdCallback ATTRIBUTE_UNUSED,
                            void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
-    
+
     PKCS12 *p12 = NULL;
     EVP_PKEY *pKey = NULL;
     STACK_OF(X509) *chain = NULL;
@@ -1567,7 +1567,7 @@ xmlSecOpenSSLDummyPasswordCallback(char *buf, int bufLen,
     if(password == NULL) {
         return(-1);
     }
-  
+
     passwordSize = strlen(password);
     XMLSEC_SAFE_CAST_SIZE_T_TO_INT(passwordSize, passwordLen, return(-1), NULL);
     if(passwordLen + 1 > bufLen) {

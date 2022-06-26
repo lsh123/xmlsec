@@ -6,7 +6,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_TREE_H__
 #define __XMLSEC_TREE_H__
@@ -37,8 +37,8 @@ extern "C" {
 #define xmlSecNodeGetName(node) \
     (((node)) ? ((const char*)((node)->name)) : NULL)
 
-XMLSEC_EXPORT const xmlChar*	xmlSecGetDefaultLineFeed(void);
-XMLSEC_EXPORT void		xmlSecSetDefaultLineFeed(const xmlChar *linefeed);
+XMLSEC_EXPORT const xmlChar*    xmlSecGetDefaultLineFeed(void);
+XMLSEC_EXPORT void        xmlSecSetDefaultLineFeed(const xmlChar *linefeed);
 
 XMLSEC_EXPORT const xmlChar*    xmlSecGetNodeNsHref     (const xmlNodePtr cur);
 XMLSEC_EXPORT int               xmlSecGetNodeContentAsSize(const xmlNodePtr cur,

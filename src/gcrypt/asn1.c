@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:asn1
@@ -120,7 +120,7 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, stru
     if (length <= 0) {
         return(-1); /* Premature EOF.  */
     }
-    c = *buf++; 
+    c = *buf++;
     length--;
     ti->nhdr++;
 
@@ -135,7 +135,7 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, stru
             if (length <= 0) {
                 return(-1); /* Premature EOF.  */
             }
-            c = *buf++; 
+            c = *buf++;
             length--;
             ti->nhdr++;
             tag |= (c & 0x7f);
@@ -147,7 +147,7 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, stru
     if(length <= 0) {
         return -1; /* Premature EOF. */
     }
-    c = *buf++; 
+    c = *buf++;
     length--;
     ti->nhdr++;
 
@@ -278,7 +278,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
 
     /* The value of the first integer should be 0. */
     if ((keyparms_num < 1) || (gcry_mpi_cmp_ui(keyparms[0], 0) != 0)) {
-        xmlSecInternalError2("xmlSecGCryptAsn1ParseTag", NULL, 
+        xmlSecInternalError2("xmlSecGCryptAsn1ParseTag", NULL,
             "num=" XMLSEC_SIZE_FMT, keyparms_num);
         goto done;
     }
@@ -410,7 +410,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
 
         /* Convert from OpenSSL parameter ordering to the OpenPGP order. */
         /* (http://gnupg.10057.n7.nabble.com/RSA-PKCS-1-signing-differs-from-OpenSSL-s-td27920.html) */
-        /* First check that p < q; if not swap p and q and recompute u.  */ 
+        /* First check that p < q; if not swap p and q and recompute u.  */
         if (gcry_mpi_cmp (keyparms[4], keyparms[5]) > 0) {
             gcry_mpi_swap (keyparms[4], keyparms[5]);
             gcry_mpi_invm (keyparms[8], keyparms[4], keyparms[5]);

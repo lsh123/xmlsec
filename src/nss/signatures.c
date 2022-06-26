@@ -623,7 +623,7 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                     SECITEM_FreeItem(&signature, PR_FALSE);
                     return(-1);
                 }
-                
+
                 ret = xmlSecBufferSetData(out, signatureClr->data, signatureClr->len);
                 if(ret < 0) {
                     xmlSecInternalError2("xmlSecBufferSetData",

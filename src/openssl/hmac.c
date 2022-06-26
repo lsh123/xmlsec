@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:hmac
@@ -51,7 +51,7 @@
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
 #include "../transform_helpers.h"
-          
+
 
 /**************************************************************************
  *
@@ -80,7 +80,7 @@ int xmlSecOpenSSLHmacGetMinOutputLength(void)
  * xmlSecOpenSSLHmacSetMinOutputLength:
  * @min_length: the new min length
  *
- * DEPRECATED (use @xmlSecTransformHmacSetMinOutputBitsSize instead). 
+ * DEPRECATED (use @xmlSecTransformHmacSetMinOutputBitsSize instead).
  * Sets the min HMAC output length
  */
 void xmlSecOpenSSLHmacSetMinOutputLength(int min_length)
@@ -299,7 +299,7 @@ xmlSecOpenSSLHmacFinalize(xmlSecTransformPtr transform) {
         HMAC_CTX_free(ctx->hmacCtx);
     }
 #else /* XMLSEC_OPENSSL_API_300 */
-    if(ctx->evpHmacCtx != NULL) { 
+    if(ctx->evpHmacCtx != NULL) {
         EVP_MAC_CTX_free(ctx->evpHmacCtx);
     }
     if (ctx->evpHmac != NULL) {
@@ -364,7 +364,7 @@ xmlSecOpenSSLHmacSetKeyImpl(xmlSecOpenSSLHmacCtxPtr ctx, const xmlSecByte* key, 
     xmlSecAssert2(ctx->hmacDgst != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(keySize > 0, -1);
-    
+
     XMLSEC_SAFE_CAST_SIZE_TO_INT(keySize, keyLen, return(-1), NULL);
     ret = HMAC_Init_ex(ctx->hmacCtx, key, keyLen, ctx->hmacDgst, NULL);
     if(ret != 1) {
@@ -418,7 +418,7 @@ xmlSecOpenSSLHmacSetKeyImpl(xmlSecOpenSSLHmacCtxPtr ctx, const xmlSecByte* key, 
 
     /* success */
     res = 0;
-    
+
 done:
     if(params != NULL) {
         OSSL_PARAM_free(params);
@@ -572,7 +572,7 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
                 return(-1);
             }
 #endif /* XMLSEC_OPENSSL_API_300 */
-            
+
             ret = xmlSecBufferRemoveHead(in, inSize);
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecBufferRemoveHead",

@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:digests
@@ -150,7 +150,7 @@ xmlSecOpenSSLEvpDigestCheckId(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_GOST2012
 
-/* Not all algorithms have been converted to the new providers design (e.g. GOST) */    
+/* Not all algorithms have been converted to the new providers design (e.g. GOST) */
 static int
 xmlSecOpenSSLEvpDigestSetLegacyDigest(xmlSecOpenSSLEvpDigestCtxPtr ctx,
                                       const char * digestName) {
@@ -173,7 +173,7 @@ xmlSecOpenSSLEvpDigestSetLegacyDigest(xmlSecOpenSSLEvpDigestCtxPtr ctx,
         xmlSecOpenSSLError2("EVP_get_digestbyname", NULL,
             "digestName=%s", xmlSecErrorsSafeString(digestName));
         return(-1);
-    }    
+    }
 #endif /* XMLSEC_OPENSSL_API_300 */
 
     return(0);
@@ -421,7 +421,7 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 
             ret = EVP_MD_size(ctx->digest);
             if (ret < 0) {
-                xmlSecOpenSSLError("EVP_MD_size", 
+                xmlSecOpenSSLError("EVP_MD_size",
                                     xmlSecTransformGetName(transform));
                 return(-1);
             }

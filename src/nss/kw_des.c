@@ -6,7 +6,7 @@
  * distribution for preciese wording.
  *
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:kw_des
@@ -43,29 +43,29 @@
  *
  *********************************************************************/
 static int       xmlSecNssKWDes3GenerateRandom                  (xmlSecTransformPtr transform,
-                                                                 xmlSecByte * out, 
+                                                                 xmlSecByte * out,
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize * outWritten);
 static int       xmlSecNssKWDes3Sha1                            (xmlSecTransformPtr transform,
-                                                                 const xmlSecByte * in, 
-                                                                 xmlSecSize inSize, 
-                                                                 xmlSecByte * out, 
+                                                                 const xmlSecByte * in,
+                                                                 xmlSecSize inSize,
+                                                                 xmlSecByte * out,
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize * outWritten);
 static int      xmlSecNssKWDes3BlockEncrypt                     (xmlSecTransformPtr transform,
-                                                                 const xmlSecByte * iv, 
+                                                                 const xmlSecByte * iv,
                                                                  xmlSecSize ivSize,
-                                                                 const xmlSecByte * in, 
+                                                                 const xmlSecByte * in,
                                                                  xmlSecSize inSize,
-                                                                 xmlSecByte * out, 
+                                                                 xmlSecByte * out,
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize * outWritten);
 static int      xmlSecNssKWDes3BlockDecrypt                     (xmlSecTransformPtr transform,
-                                                                 const xmlSecByte * iv, 
+                                                                 const xmlSecByte * iv,
                                                                  xmlSecSize ivSize,
-                                                                 const xmlSecByte * in, 
+                                                                 const xmlSecByte * in,
                                                                  xmlSecSize inSize,
-                                                                 xmlSecByte * out, 
+                                                                 xmlSecByte * out,
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize * outWritten);
 
@@ -79,16 +79,16 @@ static xmlSecKWDes3Klass xmlSecNssKWDes3ImplKlass = {
     /* for the future */
     NULL,                                   /* void*                               reserved0; */
     NULL,                                   /* void*                               reserved1; */
-}; 
+};
 
-static int      xmlSecNssKWDes3Encrypt                          (const xmlSecByte *key, 
+static int      xmlSecNssKWDes3Encrypt                          (const xmlSecByte *key,
                                                                  xmlSecSize keySize,
-                                                                 const xmlSecByte *iv, 
+                                                                 const xmlSecByte *iv,
                                                                  xmlSecSize ivSize,
-                                                                 const xmlSecByte *in, 
+                                                                 const xmlSecByte *in,
                                                                  xmlSecSize inSize,
-                                                                 xmlSecByte *out, 
-                                                                 xmlSecSize outSize, 
+                                                                 xmlSecByte *out,
+                                                                 xmlSecSize outSize,
                                                                  xmlSecSize * outWritten,
                                                                  int enc);
 
@@ -258,7 +258,7 @@ xmlSecNssKWDes3Execute(xmlSecTransformPtr transform, int last,
  *********************************************************************/
 static int
 xmlSecNssKWDes3Sha1(xmlSecTransformPtr transform ATTRIBUTE_UNUSED,
-                    const xmlSecByte * in, xmlSecSize inSize, 
+                    const xmlSecByte * in, xmlSecSize inSize,
                     xmlSecByte * out, xmlSecSize outSize,
                     xmlSecSize * outWritten) {
     PK11Context *pk11ctx = NULL;
@@ -357,7 +357,7 @@ xmlSecNssKWDes3BlockEncrypt(xmlSecTransformPtr transform,
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(xmlSecBufferGetData(&(ctx->keyBuffer)) != NULL, -1);
     xmlSecAssert2(xmlSecBufferGetSize(&(ctx->keyBuffer)) >= XMLSEC_KW_DES3_KEY_LENGTH, -1);
-    
+
     ret = xmlSecNssKWDes3Encrypt(xmlSecBufferGetData(&(ctx->keyBuffer)), XMLSEC_KW_DES3_KEY_LENGTH,
                                  iv, XMLSEC_KW_DES3_IV_LENGTH,
                                  in, inSize,

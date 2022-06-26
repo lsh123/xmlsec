@@ -307,7 +307,7 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         outBuf = xmlSecBufferGetData(out);
         xmlSecAssert2(outBuf != NULL, -1);
 
-        /* set OAEP parameter for the key 
+        /* set OAEP parameter for the key
          *
          * aleksey: I don't understand how this would work in multi-threaded
          * environment or when key can be re-used multiple times
@@ -353,7 +353,7 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
             return (-1);
         }
 
-        /* set OAEP parameter for the key 
+        /* set OAEP parameter for the key
          *
          * aleksey: I don't understand how this would work in multi-threaded
          * environment or when key can be re-used multiple times
@@ -452,8 +452,8 @@ xmlSecMSCryptoTransformRsaPkcs1GetKlass(void) {
  * RSA/OAEP transform
  *
  **********************************************************************/
-static int          xmlSecMSCryptoRsaOaepNodeRead               (xmlSecTransformPtr transform, 
-                                                                 xmlNodePtr node, 
+static int          xmlSecMSCryptoRsaOaepNodeRead               (xmlSecTransformPtr transform,
+                                                                 xmlNodePtr node,
                                                                  xmlSecTransformCtxPtr transformCtx);
 
 static xmlSecTransformKlass xmlSecMSCryptoRsaOaepKlass = {

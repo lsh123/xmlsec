@@ -1,11 +1,11 @@
-/** 
+/**
  *
  * XMLSec library
- * 
- * 
+ *
+ *
  * See Copyright for the status of this software.
- * 
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ *
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #if defined(_MSC_VER) && _MSC_VER < 1900
 #define snprintf _snprintf
@@ -27,10 +27,10 @@ static xmlSecAppCmdLineParamPtr xmlSecAppCmdLineParamsListFind  (xmlSecAppCmdLin
                                                                  xmlSecAppCmdLineParamTopic topics,
                                                                  const char* name);
 static int                      xmlSecAppCmdLineParamRead       (xmlSecAppCmdLineParamPtr param,
-                                                                 const char** argv, 
-                                                                 int argc, 
+                                                                 const char** argv,
+                                                                 int argc,
                                                                  int pos);
-static int                      xmlSecAppCmdLineTimeParamRead   (const char* str, 
+static int                      xmlSecAppCmdLineTimeParamRead   (const char* str,
                                                                  time_t* t,
                                                                  int is_gmt_time);
 
@@ -49,7 +49,7 @@ xmlSecAppCmdLineParamIsSet(xmlSecAppCmdLineParamPtr param) {
     return(((param != NULL) && (param->value != NULL)) ? 1 : 0);
 }
 
-const char* 
+const char*
 xmlSecAppCmdLineParamGetString(xmlSecAppCmdLineParamPtr param) {
     if(param->type != xmlSecAppCmdLineParamTypeString) {
         fprintf(stderr, "Error: parameter \"%s\" is not string.\n", param->fullName);
@@ -58,7 +58,7 @@ xmlSecAppCmdLineParamGetString(xmlSecAppCmdLineParamPtr param) {
     return((param->value != NULL) ? param->value->strValue : NULL);
 }
 
-const char* 
+const char*
 xmlSecAppCmdLineParamGetStringList(xmlSecAppCmdLineParamPtr param) {
     if(param->type != xmlSecAppCmdLineParamTypeStringList) {
         fprintf(stderr, "Error: parameter \"%s\" is not string list.\n", param->fullName);
@@ -67,7 +67,7 @@ xmlSecAppCmdLineParamGetStringList(xmlSecAppCmdLineParamPtr param) {
     return((param->value != NULL) ? param->value->strListValue : NULL);
 }
 
-int 
+int
 xmlSecAppCmdLineParamGetInt(xmlSecAppCmdLineParamPtr param, int def) {
     if(param->type != xmlSecAppCmdLineParamTypeNumber) {
         fprintf(stderr, "Error: parameter \"%s\" is not integer.\n", param->fullName);
@@ -85,24 +85,24 @@ xmlSecAppCmdLineParamGetTime(xmlSecAppCmdLineParamPtr param, time_t def) {
     return((param->value != NULL) ? param->value->timeValue : def);
 }
 
-int 
+int
 xmlSecAppCmdLineParamsListParse(xmlSecAppCmdLineParamPtr* params,
                                 xmlSecAppCmdLineParamTopic topics,
                                 const char** argv, int argc, int pos) {
     xmlSecAppCmdLineParamPtr param;
     int ii;
     int ret;
-    
+
     assert(params != NULL);
     assert(argv != NULL);
-    
+
     while((pos < argc) && (argv[pos][0] == '-') && (strcmp(argv[pos], XMLSEC_STDOUT_FILENAME) != 0)) {
         param = xmlSecAppCmdLineParamsListFind(params, topics, argv[pos]);
         if(param == NULL) {
             fprintf(stderr, "Error: parameter \"%s\" is not supported or the requested\nfeature might have been disabled during compilation.\n", argv[pos]);
             return(-1);
         }
-        
+
         ret = xmlSecAppCmdLineParamRead(param, argv, argc, pos);
         if(ret < pos) {
             fprintf(stderr, "Error: failed to parse parameter \"%s\".\n", argv[pos]);
@@ -110,7 +110,7 @@ xmlSecAppCmdLineParamsListParse(xmlSecAppCmdLineParamPtr* params,
         }
         pos = ret + 1;
     }
-    
+
     /* check that all parameters at the end are filenames */
     for(ii = pos; (ii < argc); ++ii) {
         if((argv[ii][0] == '-') && (strcmp(argv[pos], XMLSEC_STDOUT_FILENAME) != 0)) {
@@ -123,13 +123,13 @@ xmlSecAppCmdLineParamsListParse(xmlSecAppCmdLineParamPtr* params,
     return(pos);
 }
 
-void 
+void
 xmlSecAppCmdLineParamsListClean(xmlSecAppCmdLineParamPtr* params) {
     xmlSecAppCmdLineValuePtr tmp;
     size_t i;
-    
+
     assert(params != NULL);
-    
+
     for(i = 0; params[i] != NULL; ++i) {
         while(params[i]->value != NULL) {
             tmp = params[i]->value;
@@ -139,7 +139,7 @@ xmlSecAppCmdLineParamsListClean(xmlSecAppCmdLineParamPtr* params) {
     }
 }
 
-void 
+void
 xmlSecAppCmdLineParamsListPrint(xmlSecAppCmdLineParamPtr* params,
                                 xmlSecAppCmdLineParamTopic topics,
                                 FILE* output) {
@@ -147,18 +147,18 @@ xmlSecAppCmdLineParamsListPrint(xmlSecAppCmdLineParamPtr* params,
 
     assert(params != NULL);
     assert(output != NULL);
-    
+
     for(i = 0; params[i] != NULL; ++i) {
         if(((params[i]->topics & topics) != 0) && (params[i]->help != NULL)) {
             fprintf(output, "  %s\n", params[i]->help);
         }
-    }    
+    }
 }
 
-xmlSecAppCmdLineValuePtr 
+xmlSecAppCmdLineValuePtr
 xmlSecAppCmdLineValueCreate(xmlSecAppCmdLineParamPtr param, int pos) {
     xmlSecAppCmdLineValuePtr value;
-    
+
     assert(param != NULL);
     value = (xmlSecAppCmdLineValuePtr) malloc(sizeof(xmlSecAppCmdLineValue));
     if(value == NULL) {
@@ -167,33 +167,33 @@ xmlSecAppCmdLineValueCreate(xmlSecAppCmdLineParamPtr param, int pos) {
         return(NULL);
     }
     memset(value, 0, sizeof(xmlSecAppCmdLineValue));
-    
+
     value->param = param;
     value->pos = pos;
     return(value);
 }
 
-void 
+void
 xmlSecAppCmdLineValueDestroy(xmlSecAppCmdLineValuePtr value) {
     assert(value != NULL);
-    
+
     if(value->strListValue != NULL) {
         free((void*)value->strListValue);
     }
     free(value);
 }
 
-static int 
+static int
 xmlSecAppCmdLineMatchParam(const char* argvParam, const char* paramName,
                            int canHaveNameString) {
     assert(argvParam != NULL);
     assert(paramName != NULL);
-    
+
     if(canHaveNameString != 0) {
         size_t len = strlen(paramName);
         if((strncmp(argvParam, paramName, len) == 0) &&
            ((argvParam[len] == '\0') || (argvParam[len] == ':'))) {
-           
+
            return(1);
         }
     } else if(strcmp(argvParam, paramName) == 0) {
@@ -202,7 +202,7 @@ xmlSecAppCmdLineMatchParam(const char* argvParam, const char* paramName,
     return(0);
 }
 
-static xmlSecAppCmdLineParamPtr 
+static xmlSecAppCmdLineParamPtr
 xmlSecAppCmdLineParamsListFind(xmlSecAppCmdLineParamPtr* params, xmlSecAppCmdLineParamTopic topics,
                                 const char* name) {
     size_t i;
@@ -217,43 +217,43 @@ xmlSecAppCmdLineParamsListFind(xmlSecAppCmdLineParamPtr* params, xmlSecAppCmdLin
         }
 
         canHaveNameString = ((params[i]->flags & xmlSecAppCmdLineParamFlagParamNameValue) != 0) ? 1 : 0;
-        if((params[i]->fullName != NULL) && 
+        if((params[i]->fullName != NULL) &&
            (xmlSecAppCmdLineMatchParam(name, params[i]->fullName, canHaveNameString) == 1)) {
-        
+
             return(params[i]);
         }
 
-        if((params[i]->shortName != NULL) && 
+        if((params[i]->shortName != NULL) &&
            (xmlSecAppCmdLineMatchParam(name, params[i]->shortName, canHaveNameString) == 1)) {
-        
+
             return(params[i]);
         }
     }
-    
+
     return(NULL);
 }
 
-static int 
+static int
 xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int argc, int pos) {
     xmlSecAppCmdLineValuePtr value;
     xmlSecAppCmdLineValuePtr prev = NULL;
     char* buf;
-        
+
     assert(param != NULL);
     assert(argv != NULL);
     assert(pos < argc);
-    
+
     /* first find the previous value in the list */
     if((param->flags & xmlSecAppCmdLineParamFlagMultipleValues) != 0) {
-        prev = param->value; 
+        prev = param->value;
         while((prev != NULL) && (prev->next != NULL)) {
-            prev = prev->next; 
+            prev = prev->next;
         }
     } else if(param->value != NULL) {
         fprintf(stderr, "Error: only one parameter \"%s\" is allowed.\n", argv[pos]);
         return(-1);
     }
-    
+
     /* create new value and add to the list */
     value = xmlSecAppCmdLineValueCreate(param, pos);
     if(value == NULL) {
@@ -266,7 +266,7 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
     } else {
         param->value = value;
     }
-        
+
     /* if we can have a string value after the name, parse it */
     if((param->flags & xmlSecAppCmdLineParamFlagParamNameValue) != 0) {
         value->paramNameValue = strchr(argv[pos], ':');
@@ -274,7 +274,7 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
             ++value->paramNameValue;
         }
     }
-    
+
     switch(param->type) {
         case xmlSecAppCmdLineParamTypeFlag:
             /* do nothing */
@@ -313,12 +313,12 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
             if(pos + 1 >= argc) {
                 fprintf(stderr, "Error: integer argument expected for parameter \"%s\".\n", argv[pos]);
                 return(-1);
-            }    
+            }
             value->strValue = argv[++pos];
             if(XMLSEC_SCANF(value->strValue, "%d", &(value->intValue)) != 1) {
                 fprintf(stderr, "Error: integer argument \"%s\" is invalid.\n", value->strValue);
                 return(-1);
-            }    
+            }
             break;
         case xmlSecAppCmdLineParamTypeTime:
             if(pos + 1 >= argc) {
@@ -329,7 +329,7 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
             if(xmlSecAppCmdLineTimeParamRead(value->strValue, &(value->timeValue), 0) < 0) {
                 fprintf(stderr, "Error: time argument \"%s\" is invalid, expected format is \"YYYY-MM-DD HH:MM:SS\").\n", value->strValue);
                 return(-1);
-            }    
+            }
             break;
         case xmlSecAppCmdLineParamTypeGmtTime:
             if(pos + 1 >= argc) {
@@ -340,7 +340,7 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
             if(xmlSecAppCmdLineTimeParamRead(value->strValue, &(value->timeValue), 1) < 0) {
                 fprintf(stderr, "Error: gmt time argument \"%s\" is invalid, expected format is \"YYYY-MM-DD HH:MM:SS\").\n", value->strValue);
                 return(-1);
-            }    
+            }
             break;
     }
     return(pos);
@@ -366,11 +366,11 @@ xmlSecAppGetGmtTime(struct tm* timeptr) {
 }
 #endif /* !defined(_MSC_VER) */
 
-static int  
+static int
 xmlSecAppCmdLineTimeParamRead(const char* str, time_t* t, int is_gmt_time) {
     struct tm tm;
     int n;
-    
+
     if((str == NULL) || (t == NULL)) {
         return(-1);
     }
@@ -389,7 +389,7 @@ xmlSecAppCmdLineTimeParamRead(const char* str, time_t* t, int is_gmt_time) {
       || (tm.tm_hour < 0) || (tm.tm_hour > 23)
       || (tm.tm_min  < 0) || (tm.tm_min  > 59)
       || (tm.tm_sec  < 0) || (tm.tm_sec  > 61)) {
-        return(-1);         
+        return(-1);
     }
 
     tm.tm_year -= 1900; /* tm relative format year */

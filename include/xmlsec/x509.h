@@ -4,7 +4,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_X509_H__
 #define __XMLSEC_X509_H__
@@ -31,7 +31,7 @@ extern "C" {
 
 /**
  * XMLSEC_X509DATA_CERTIFICATE_NODE:
- * 
+ *
  * DEPRECATED. <dsig:X509Certificate/> node found or would be written back.
  */
 #define XMLSEC_X509DATA_CERTIFICATE_NODE                        0x00000001

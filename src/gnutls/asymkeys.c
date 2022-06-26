@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2010-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:asymkeys
@@ -309,7 +309,7 @@ xmlSecGnuTLSKeyDataRsaAdoptPrivateKey(xmlSecKeyDataPtr data, gnutls_x509_privkey
 
     /* Convert from OpenSSL parameter ordering to the OpenPGP order. */
     /* (http://gnupg.10057.n7.nabble.com/RSA-PKCS-1-signing-differs-from-OpenSSL-s-td27920.html) */
-    /* First check that p < q; if not swap p and q and recompute u.  */ 
+    /* First check that p < q; if not swap p and q and recompute u.  */
     if (gcry_mpi_cmp(mpis[3], mpis[4]) > 0) {
         gcry_mpi_swap(mpis[3], mpis[4]);
         gcry_mpi_invm(mpis[5], mpis[3], mpis[4]);

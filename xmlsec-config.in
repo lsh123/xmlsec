@@ -98,12 +98,12 @@ do
         echo @VERSION@
         exit 0
     ;;
-    
+
     --crypto)
         echo @XMLSEC_DEFAULT_CRYPTO@
         exit 0
     ;;
-    
+
     --help)
         usage 0
     ;;
@@ -115,7 +115,7 @@ do
     --libs)
            libs=true
     ;;
-    
+
     *)
         usage 1
     ;;
@@ -136,10 +136,10 @@ the_xml_libs="`@LIBXML_CONFIG@ --libs`"
 the_xslt_flags=""
 the_xslt_libs=""
 if test "@XMLSEC_NO_LIBXSLT@" = "0" ;
-then 
+then
     the_xslt_flags="`@LIBXSLT_CONFIG@ --cflags`"
     the_xslt_libs="`@LIBXSLT_CONFIG@ --libs`"
-fi    
+fi
 
 #
 # Get crypto library settings
@@ -157,12 +157,12 @@ none)
     fi
     ;;
 
-default) 
+default)
     the_crypto_flags="@XMLSEC_CRYPTO_CFLAGS@"
     the_crypto_libs="@XMLSEC_CRYPTO_LIBS@"
     the_xmlsec_crypto_lib="-l@XMLSEC_CRYPTO_LIB@"
     ;;
-    
+
 openssl)
     if test "@XMLSEC_NO_OPENSSL@" = "0" ;
     then
@@ -210,12 +210,12 @@ nss)
         usage 1
     fi
     ;;
-    
+
 *)
     echo "Error: the \"$crypto\" cryptographic library is not supported"
     usage 1
     ;;
-    
+
 esac
 
 #
@@ -252,13 +252,13 @@ for i in $all_flags; do
     *)
         case " $other_flags " in
         *\ $i\ *)
-            # already there 
+            # already there
         ;;
         *)
             # add it to output
             other_flags="$other_flags $i"
         ;;
-        esac 
+        esac
     ;;
     esac
 done
@@ -271,7 +271,7 @@ for i in $rev_libs; do
     ;;
     *)
         # add it to output in reverse order
-        ord_libs="$i $ord_libs" 
+        ord_libs="$i $ord_libs"
     ;;
     esac
 done

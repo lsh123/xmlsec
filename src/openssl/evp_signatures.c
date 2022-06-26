@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:evp_signatures
@@ -162,7 +162,7 @@ xmlSecOpenSSLEvpSignatureCheckId(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_GOST2012
 
-/* Not all algorithms have been converted to the new providers design (e.g. GOST) */    
+/* Not all algorithms have been converted to the new providers design (e.g. GOST) */
 static int
 xmlSecOpenSSLEvpSignatureSetLegacyDigest(xmlSecOpenSSLEvpSignatureCtxPtr ctx,
                                          const char * digestName) {
@@ -185,7 +185,7 @@ xmlSecOpenSSLEvpSignatureSetLegacyDigest(xmlSecOpenSSLEvpSignatureCtxPtr ctx,
         xmlSecOpenSSLError2("EVP_get_digestbyname", NULL,
             "digestName=%s", xmlSecErrorsSafeString(digestName));
         return(-1);
-    }    
+    }
 #endif /* XMLSEC_OPENSSL_API_300 */
 
     return(0);

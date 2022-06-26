@@ -1,11 +1,11 @@
-/** 
+/**
  * XML Security Library example: Decrypting an encrypted file using keys manager.
- * 
- * Decrypts encrypted XML file using keys manager and a list of 
+ *
+ * Decrypts encrypted XML file using keys manager and a list of
  * DES key from a binary file
- * 
- * Usage: 
- *      ./decrypt2 <xml-enc> <des-key-file1> [<des-key-file2> [...]] 
+ *
+ * Usage:
+ *      ./decrypt2 <xml-enc> <des-key-file1> [<des-key-file2> [...]]
  *
  * Example:
  *      ./decrypt2 encrypt1-res.xml deskey.bin
@@ -13,8 +13,8 @@
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ *
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #include <stdlib.h>
 #include <string.h>
@@ -37,7 +37,7 @@
 xmlSecKeysMngrPtr load_des_keys(char** files, int files_size);
 int decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file);
 
-int 
+int
 main(int argc, char **argv) {
     xmlSecKeysMngrPtr mngr;
 #ifndef XMLSEC_NO_XSLT
@@ -58,22 +58,22 @@ main(int argc, char **argv) {
     xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
     xmlSubstituteEntitiesDefault(1);
 #ifndef XMLSEC_NO_XSLT
-    xmlIndentTreeOutput = 1; 
+    xmlIndentTreeOutput = 1;
 #endif /* XMLSEC_NO_XSLT */
 
     /* Init libxslt */
 #ifndef XMLSEC_NO_XSLT
     /* disable everything */
-    xsltSecPrefs = xsltNewSecurityPrefs(); 
+    xsltSecPrefs = xsltNewSecurityPrefs();
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_NETWORK,     xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid);
-    xsltSetDefaultSecurityPrefs(xsltSecPrefs); 
-#endif /* XMLSEC_NO_XSLT */                
+    xsltSetDefaultSecurityPrefs(xsltSecPrefs);
+#endif /* XMLSEC_NO_XSLT */
 
-                
+
     /* Init xmlsec library */
     if(xmlSecInit() < 0) {
         fprintf(stderr, "Error: xmlsec initialization failed.\n");
@@ -88,7 +88,7 @@ main(int argc, char **argv) {
 
     /* Load default crypto engine if we are supporting dynamic
      * loading for xmlsec-crypto libraries. Use the crypto library
-     * name ("openssl", "nss", etc.) to load corresponding 
+     * name ("openssl", "nss", etc.) to load corresponding
      * xmlsec-crypto library.
      */
 #ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING
@@ -96,7 +96,7 @@ main(int argc, char **argv) {
         fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
                         "that you have it installed and check shared libraries path\n"
                         "(LD_LIBRARY_PATH and/or LTDL_LIBRARY_PATH) environment variables.\n");
-        return(-1);     
+        return(-1);
     }
 #endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
 
@@ -119,29 +119,29 @@ main(int argc, char **argv) {
     }
 
     if(decrypt_file(mngr, argv[1]) < 0) {
-        xmlSecKeysMngrDestroy(mngr);    
+        xmlSecKeysMngrDestroy(mngr);
         return(-1);
-    }    
+    }
 
     /* destroy keys manager */
     xmlSecKeysMngrDestroy(mngr);
-    
+
     /* Shutdown xmlsec-crypto library */
     xmlSecCryptoShutdown();
-    
+
     /* Shutdown crypto library */
     xmlSecCryptoAppShutdown();
-    
+
     /* Shutdown xmlsec library */
     xmlSecShutdown();
 
     /* Shutdown libxslt/libxml */
 #ifndef XMLSEC_NO_XSLT
     xsltFreeSecurityPrefs(xsltSecPrefs);
-    xsltCleanupGlobals();            
+    xsltCleanupGlobals();
 #endif /* XMLSEC_NO_XSLT */
     xmlCleanupParser();
-    
+
     return(0);
 }
 
@@ -157,18 +157,18 @@ main(int argc, char **argv) {
  * Returns the pointer to newly created keys manager or NULL if an error
  * occurs.
  */
-xmlSecKeysMngrPtr 
+xmlSecKeysMngrPtr
 load_des_keys(char** files, int files_size) {
     xmlSecKeysMngrPtr mngr;
     xmlSecKeyPtr key;
     int i;
-    
+
     assert(files);
     assert(files_size > 0);
-    
+
     /* create and initialize keys manager, we use a simple list based
      * keys manager, implement your own xmlSecKeysStore klass if you need
-     * something more sophisticated 
+     * something more sophisticated
      */
     mngr = xmlSecKeysMngrCreate();
     if(mngr == NULL) {
@@ -179,8 +179,8 @@ load_des_keys(char** files, int files_size) {
         fprintf(stderr, "Error: failed to initialize keys manager.\n");
         xmlSecKeysMngrDestroy(mngr);
         return(NULL);
-    }    
-    
+    }
+
     for(i = 0; i < files_size; ++i) {
         assert(files[i]);
 
@@ -199,9 +199,9 @@ load_des_keys(char** files, int files_size) {
             xmlSecKeysMngrDestroy(mngr);
             return(NULL);
         }
-        
-        /* add key to keys manager, from now on keys manager is responsible 
-         * for destroying key 
+
+        /* add key to keys manager, from now on keys manager is responsible
+         * for destroying key
          */
         if(xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key) < 0) {
             fprintf(stderr,"Error: failed to add key from \"%s\" to keys manager\n", files[i]);
@@ -219,18 +219,18 @@ load_des_keys(char** files, int files_size) {
  * @mngr:               the pointer to keys manager.
  * @enc_file:           the encrypted XML  file name.
  *
- * Decrypts the XML file #enc_file using DES key from #key_file and 
+ * Decrypts the XML file #enc_file using DES key from #key_file and
  * prints results to stdout.
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
-int 
+int
 decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
     xmlSecEncCtxPtr encCtx = NULL;
     int res = -1;
-    
+
     assert(mngr);
     assert(enc_file);
 
@@ -238,14 +238,14 @@ decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file) {
     doc = xmlParseFile(enc_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
         fprintf(stderr, "Error: unable to parse file \"%s\"\n", enc_file);
-        goto done;      
+        goto done;
     }
-    
+
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
     if(node == NULL) {
         fprintf(stderr, "Error: start node not found in \"%s\"\n", enc_file);
-        goto done;      
+        goto done;
     }
 
     /* create encryption context */
@@ -260,7 +260,7 @@ decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file) {
         fprintf(stderr,"Error: decryption failed\n");
         goto done;
     }
-        
+
     /* print decrypted data to stdout */
     if(encCtx->resultReplaced != 0) {
         fprintf(stdout, "Decrypted XML data:\n");
@@ -269,25 +269,25 @@ decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file) {
         fprintf(stdout, "Decrypted binary data (" XMLSEC_SIZE_FMT " bytes):\n",
             xmlSecBufferGetSize(encCtx->result));
         if(xmlSecBufferGetData(encCtx->result) != NULL) {
-            fwrite(xmlSecBufferGetData(encCtx->result), 
-                  1, 
+            fwrite(xmlSecBufferGetData(encCtx->result),
+                  1,
                   xmlSecBufferGetSize(encCtx->result),
                   stdout);
         }
     }
     fprintf(stdout, "\n");
-        
+
     /* success */
     res = 0;
 
-done:    
+done:
     /* cleanup */
     if(encCtx != NULL) {
         xmlSecEncCtxDestroy(encCtx);
     }
-    
+
     if(doc != NULL) {
-        xmlFreeDoc(doc); 
+        xmlFreeDoc(doc);
     }
     return(res);
 }

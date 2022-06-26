@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:app
@@ -387,7 +387,7 @@ xmlSecGCryptAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecGCryptAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, 
+xmlSecGCryptAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr,
                                 const char *filename,
                                 xmlSecKeyDataFormat format,
                                 xmlSecKeyDataType type ATTRIBUTE_UNUSED) {

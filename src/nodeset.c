@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:nodeset
@@ -579,7 +579,7 @@ xmlSecNodeSetDebugDump(xmlSecNodeSetPtr nset, FILE *output) {
     for(ii = 0; ii < len; ++ii) {
         cur = xmlXPathNodeSetItem(nset->nodes, ii);
         xmlSecAssert(cur != NULL);
-        
+
         if(cur->type != XML_NAMESPACE_DECL) {
             fprintf(output, XMLSEC_ENUM_FMT ": %s\n",
                 XMLSEC_ENUM_CAST(cur->type),

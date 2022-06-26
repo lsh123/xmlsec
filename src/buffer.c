@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:buffer
@@ -438,7 +438,7 @@ xmlSecBufferRemoveTail(xmlSecBufferPtr buf, xmlSecSize size) {
 /**
  * xmlSecBufferReverse:
  * @buf:                the pointer to buffer object.
- * 
+ *
  * Reverses order of bytes in the buffer @buf.
  *
  * Returns: 0 on success or a negative value if an error occurs.
@@ -508,7 +508,7 @@ xmlSecBufferReadFile(xmlSecBufferPtr buf, const char* filename) {
             xmlSecIOError("fread", filename, NULL);
             goto done;
         }
-        
+
         XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(len, size, goto done, NULL);
         ret = xmlSecBufferAppend(buf, buffer, size);
         if(ret < 0) {
@@ -569,7 +569,7 @@ xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
 
     ret = xmlSecBufferSetSize(buf, outWritten);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL, 
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
             "size=" XMLSEC_SIZE_FMT, outWritten);
         goto done;
     }

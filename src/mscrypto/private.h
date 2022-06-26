@@ -7,7 +7,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2010-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_MSCRYPTO_PRIVATE_H__
 #define __XMLSEC_MSCRYPTO_PRIVATE_H__
@@ -29,10 +29,10 @@ extern "C" {
  * Utils
  *
  ********************************************************************/
-int                ConvertEndian                    (const xmlSecByte * src, 
-                                                     xmlSecByte * dst, 
+int                ConvertEndian                    (const xmlSecByte * src,
+                                                     xmlSecByte * dst,
                                                      xmlSecSize size);
-int                ConvertEndianInPlace             (xmlSecByte * buf, 
+int                ConvertEndianInPlace             (xmlSecByte * buf,
                                                      xmlSecSize size);
 
 /********************************************************************

@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:keyinfo
@@ -13,7 +13,7 @@
  * @Stability: Stable
  *
  *
- * [KeyInfo](https://www.w3.org/TR/xmldsig-core/#sec-KeyInfo) is an 
+ * [KeyInfo](https://www.w3.org/TR/xmldsig-core/#sec-KeyInfo) is an
  * optional element that enables the recipient(s) to obtain
  * the key needed to validate the signature.  KeyInfo may contain keys,
  * names, certificates and other public key management information, such as
@@ -683,9 +683,9 @@ xmlSecKeyDataNameXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, 
             if(ret < 0) {
                 xmlSecInternalError("xmlSecKeySetName",
                                     xmlSecKeyDataKlassGetName(id));
-                xmlFree(newName);   
+                xmlFree(newName);
                 return(-1);
-            } 
+            }
         }
         /* TODO: record the key names we tried */
     } else {
@@ -1051,7 +1051,7 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
     /* laxi schema validation but application can disable it */
     if(dataId == xmlSecKeyDataIdUnknown) {
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_UNKNOWN_HREF) != 0) {
-            xmlSecInvalidNodeAttributeError(node, xmlSecAttrType, xmlSecKeyDataKlassGetName(id), 
+            xmlSecInvalidNodeAttributeError(node, xmlSecAttrType, xmlSecKeyDataKlassGetName(id),
                 "retrieval type is unknown");
         } else {
             res = 0;

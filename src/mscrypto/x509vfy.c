@@ -6,7 +6,7 @@
  * distribution for preciese wording.
  *
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
- * Copyright (C) 2003-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:x509vfy
@@ -568,7 +568,7 @@ xmlSecMSCryptoX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs,
         }
 
         if(selected == 1) {
-	    if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) != 0
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) != 0
                || xmlSecMSCryptoX509StoreConstructCertsChain(store, cert, certs, keyInfoCtx)) {
                 return(cert);
             }
@@ -1125,9 +1125,9 @@ xmlSecMSCryptoX509GetCertName(const xmlChar * name) {
 
     xmlSecAssert2(name != 0, NULL);
 
-    /* MSCrypto doesn't support "emailAddress" attribute (see NSS as well). 
+    /* MSCrypto doesn't support "emailAddress" attribute (see NSS as well).
      * This code is not bullet proof and may produce incorrect results if someone has
-     * "emailAddress=" string in one of the fields, but it is best I can suggest to fix 
+     * "emailAddress=" string in one of the fields, but it is best I can suggest to fix
      * this problem.
      */
     name2 = xmlStrdup(name);

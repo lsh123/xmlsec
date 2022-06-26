@@ -325,7 +325,7 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
 
             paddingInfo.pszAlgId = BCRYPT_SHA1_ALGORITHM;
             paddingInfo.pbLabel = xmlSecBufferGetData(&(ctx->oaepParams));
- 
+
             oaepParamsSize = xmlSecBufferGetSize(&(ctx->oaepParams));
             XMLSEC_SAFE_CAST_SIZE_TO_ULONG(oaepParamsSize, paddingInfo.cbLabel, return(-1), xmlSecTransformGetName(transform));
 

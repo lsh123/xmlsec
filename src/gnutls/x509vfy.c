@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2010-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:x509vfy
@@ -184,7 +184,7 @@ xmlSecGnuTLSX509StoreFindCert_ex(const xmlSecKeyDataStorePtr store, const xmlCha
     xmlSecAssert2(ctx != NULL, NULL);
 
     if(res == NULL) {
-        res = xmlSecGnuTLSX509FindCert(&(ctx->certsTrusted), subjectName, 
+        res = xmlSecGnuTLSX509FindCert(&(ctx->certsTrusted), subjectName,
             issuerName, issuerSerial,
             ski, skiSize);
     }
@@ -388,7 +388,7 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
         }
 
         /* try to verify */
-	    if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) == 0) {
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) == 0) {
             unsigned int cert_list_cur_len, ca_list_len, crl_list_len;
 
             XMLSEC_SAFE_CAST_SIZE_TO_UINT(cert_list_cur_size, cert_list_cur_len, goto done, NULL);
@@ -586,9 +586,9 @@ done:
 }
 
 
-/** 
+/**
  * xmlSecGnuTLSX509CertCompareSKI:
- * 
+ *
  * Returns 0 if SKI matches, 1 if SKI doesn't match and a negative value if an error occurs.
  */
 static int
@@ -599,7 +599,7 @@ xmlSecGnuTLSX509CertCompareSKI(gnutls_x509_crt_t cert, const xmlSecByte * ski, x
     unsigned int critical = 0;
     int err;
     int res = -1;
-    
+
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(ski != NULL, -1);
     xmlSecAssert2(skiSize > 0, -1);
@@ -714,7 +714,7 @@ xmlSecGnuTLSX509FindCert(xmlSecPtrListPtr certs, const xmlChar *subjectName,
             xmlFree(tmp1);
             xmlFree(tmp2);
         }
-        
+
         /* check subject ski */
         if((ski != NULL) && (skiSize > 0)) {
             int ret;

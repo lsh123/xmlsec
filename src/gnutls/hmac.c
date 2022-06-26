@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:hmac
@@ -42,7 +42,7 @@
 /**
  * xmlSecGnuTLSHmacGetMinOutputLength:
  *
- * DEPRECATED (use @xmlSecTransformHmacGetMinOutputBitsSize instead). 
+ * DEPRECATED (use @xmlSecTransformHmacGetMinOutputBitsSize instead).
  * Gets the value of min HMAC length.
  *
  * Returns: the min HMAC output length
@@ -60,7 +60,7 @@ int xmlSecGnuTLSHmacGetMinOutputLength(void)
  * xmlSecGnuTLSHmacSetMinOutputLength:
  * @min_length: the new min length
  *
- * DEPRECATED (use @xmlSecTransformHmacSetMinOutputBitsSize instead). 
+ * DEPRECATED (use @xmlSecTransformHmacSetMinOutputBitsSize instead).
  * Sets the min HMAC output length
  */
 void xmlSecGnuTLSHmacSetMinOutputLength(int min_length)

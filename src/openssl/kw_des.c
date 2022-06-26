@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:kw_des
@@ -48,29 +48,29 @@
  *
  *********************************************************************/
 static int       xmlSecOpenSSLKWDes3GenerateRandom               (xmlSecTransformPtr transform,
-                                                                 xmlSecByte * out, 
+                                                                 xmlSecByte * out,
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize * outWritten);
 static int       xmlSecOpenSSLKWDes3Sha1                         (xmlSecTransformPtr transform,
-                                                                 const xmlSecByte * in, 
-                                                                 xmlSecSize inSize, 
-                                                                 xmlSecByte * out, 
+                                                                 const xmlSecByte * in,
+                                                                 xmlSecSize inSize,
+                                                                 xmlSecByte * out,
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize * outWritten);
 static int      xmlSecOpenSSLKWDes3BlockEncrypt                  (xmlSecTransformPtr transform,
-                                                                 const xmlSecByte * iv, 
+                                                                 const xmlSecByte * iv,
                                                                  xmlSecSize ivSize,
-                                                                 const xmlSecByte * in, 
+                                                                 const xmlSecByte * in,
                                                                  xmlSecSize inSize,
-                                                                 xmlSecByte * out, 
+                                                                 xmlSecByte * out,
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize * outWritten);
 static int      xmlSecOpenSSLKWDes3BlockDecrypt                  (xmlSecTransformPtr transform,
-                                                                 const xmlSecByte * iv, 
+                                                                 const xmlSecByte * iv,
                                                                  xmlSecSize ivSize,
-                                                                 const xmlSecByte * in, 
+                                                                 const xmlSecByte * in,
                                                                  xmlSecSize inSize,
-                                                                 xmlSecByte * out, 
+                                                                 xmlSecByte * out,
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize * outWritten);
 
@@ -84,15 +84,15 @@ static xmlSecKWDes3Klass xmlSecOpenSSLKWDes3ImplKlass = {
     /* for the future */
     NULL,                                   /* void*                               reserved0; */
     NULL,                                   /* void*                               reserved1; */
-}; 
+};
 
-static int      xmlSecOpenSSLKWDes3Encrypt                      (const xmlSecByte *key, 
+static int      xmlSecOpenSSLKWDes3Encrypt                      (const xmlSecByte *key,
                                                                  xmlSecSize keySize,
-                                                                 const xmlSecByte *iv, 
+                                                                 const xmlSecByte *iv,
                                                                  xmlSecSize ivSize,
-                                                                 const xmlSecByte *in, 
+                                                                 const xmlSecByte *in,
                                                                  xmlSecSize inSize,
-                                                                 xmlSecByte *out, 
+                                                                 xmlSecByte *out,
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize * outWritten,
                                                                  int enc);
@@ -265,7 +265,7 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last,
 
 static int
 xmlSecOpenSSLKWDes3Sha1(xmlSecTransformPtr transform ATTRIBUTE_UNUSED,
-                       const xmlSecByte * in, xmlSecSize inSize, 
+                       const xmlSecByte * in, xmlSecSize inSize,
                        xmlSecByte * out, xmlSecSize outSize,
                        xmlSecSize * outWritten) {
     UNREFERENCED_PARAMETER(transform);
@@ -289,7 +289,7 @@ xmlSecOpenSSLKWDes3Sha1(xmlSecTransformPtr transform ATTRIBUTE_UNUSED,
 
 static int
 xmlSecOpenSSLKWDes3Sha1(xmlSecTransformPtr transform ATTRIBUTE_UNUSED,
-                       const xmlSecByte * in, xmlSecSize inSize, 
+                       const xmlSecByte * in, xmlSecSize inSize,
                        xmlSecByte * out, xmlSecSize outSize,
                        xmlSecSize * outWritten) {
     size_t outSizeT;
@@ -420,7 +420,7 @@ static int
 xmlSecOpenSSLKWDes3Encrypt(const xmlSecByte* key, xmlSecSize keySize,
                            const xmlSecByte* iv, xmlSecSize ivSize,
                            const xmlSecByte* in, xmlSecSize inSize,
-                           xmlSecByte* out, xmlSecSize outSize, 
+                           xmlSecByte* out, xmlSecSize outSize,
                            xmlSecSize* outWritten,
                            int enc) {
 #ifndef XMLSEC_OPENSSL_API_300
@@ -503,7 +503,7 @@ xmlSecOpenSSLKWDes3Encrypt(const xmlSecByte* key, xmlSecSize keySize,
 
 done:
     /* cleanup */
-    if(cipherCtx != NULL) {    
+    if(cipherCtx != NULL) {
         EVP_CIPHER_CTX_free(cipherCtx);
     }
 #ifdef XMLSEC_OPENSSL_API_300

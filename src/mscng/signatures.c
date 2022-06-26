@@ -584,11 +584,11 @@ xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
                 }
 
                 /* sign the hash */
-		if(ctx->keyId == xmlSecMSCngKeyDataRsaId) {
+        if(ctx->keyId == xmlSecMSCngKeyDataRsaId) {
                     info.pszAlgId = ctx->pszHashAlgId;
                     pInfo = &info;
                     infoFlags = BCRYPT_PAD_PKCS1;
-		}
+        }
                 status = NCryptSignHash(
                     privkey,
                     pInfo,

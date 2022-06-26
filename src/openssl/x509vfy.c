@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:x509vfy
@@ -793,8 +793,8 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
             }
         }
         X509_NAME_free(nm);
-    } 
-    
+    }
+
     /* search by issuer name+serial if available */
     if((issuerName != NULL) && (issuerSerial != NULL)) {
         X509_NAME *nm;
@@ -848,7 +848,7 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
         ASN1_INTEGER_free(serial);
     }
 
-    /* search by SKI if available */    
+    /* search by SKI if available */
     if((ski != NULL) && (skiSize > 0)){
         int index, skiLen;
         X509_EXTENSION *ext;
@@ -870,7 +870,7 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
             if(keyId == NULL) {
                 continue;
             }
-            
+
             if((keyId->length == skiLen) && (memcmp(keyId->data, ski, skiSize) == 0)) {
                 ASN1_OCTET_STRING_free(keyId);
                 return(cert);
@@ -1207,7 +1207,7 @@ xmlSecOpenSSLX509NameStringRead(const xmlChar **in, xmlSecSize *inSize,
             nonSpace = jj;
         }
     }
-    
+
     (*inSize) -= ii;
     (*in) += ii;
 

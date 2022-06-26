@@ -9,7 +9,7 @@
  */
 /**
  * SECTION:x509
- * @Short_description: X509 certificates implementation for Microsoft Cryptography API: Next Generation (CNG). 
+ * @Short_description: X509 certificates implementation for Microsoft Cryptography API: Next Generation (CNG).
  * @Stability: Stable
  *
  */
@@ -595,7 +595,7 @@ xmlSecMSCngASN1IntegerWrite(PCRYPT_INTEGER_BLOB num) {
 
     ret = xmlSecBnInitialize(&bn, num->cbData + 1);
     if(ret < 0) {
-    	xmlSecInternalError2("xmlSecBnInitialize", NULL, "size=%lu", num->cbData + 1);
+        xmlSecInternalError2("xmlSecBnInitialize", NULL, "size=%lu", num->cbData + 1);
         return(NULL);
     }
 

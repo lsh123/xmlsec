@@ -53,7 +53,7 @@ struct _xmlSecNssX509StoreCtx {
      *
      * 1) Just keeping a reference to destroy later.
      *
-     * 2) NSS doesn't update it's cache correctly when new certs are added 
+     * 2) NSS doesn't update it's cache correctly when new certs are added
      *          https://bugzilla.mozilla.org/show_bug.cgi?id=211051
      *    we use this list to perform search ourselves.
      */
@@ -80,7 +80,7 @@ static int              xmlSecNssX509NameStringRead     (const xmlSecByte **in,
                                                          int ingoreTrailingSpaces);
 static xmlSecByte *     xmlSecNssX509NameRead           (const xmlChar *str);
 
-static int              xmlSecNssNumToItem              (SECItem *it, 
+static int              xmlSecNssNumToItem              (SECItem *it,
                                                          PRUint64 num);
 
 
@@ -225,7 +225,7 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs,
     xmlSecAssert2(ctx != NULL, NULL);
 
     if(keyInfoCtx->certsVerificationTime > 0) {
-	    /* convert the time since epoch in seconds to microseconds */
+        /* convert the time since epoch in seconds to microseconds */
         LL_UI2L(timeboundary, keyInfoCtx->certsVerificationTime);
         tmp1 = (int64)PR_USEC_PER_SEC;
         tmp2 = timeboundary;
@@ -414,7 +414,7 @@ xmlSecNssGetCertName(const xmlChar * name) {
 
     /* nss doesn't support emailAddress (see https://bugzilla.mozilla.org/show_bug.cgi?id=561689)
      * This code is not bullet proof and may produce incorrect results if someone has
-     * "emailAddress=" string in one of the fields, but it is best I can suggest to fix 
+     * "emailAddress=" string in one of the fields, but it is best I can suggest to fix
      * this problem.
      */
     name2 = xmlStrdup(name);
@@ -437,7 +437,7 @@ xmlSecNssGetCertName(const xmlChar * name) {
     res = CERT_AsciiToName((char*)tmp);
     if (res == NULL) {
         xmlSecNssError3("CERT_AsciiToName", NULL,
-                        "name2=\"%s\";tmp=\"%s\"", 
+                        "name2=\"%s\";tmp=\"%s\"",
                         xmlSecErrorsSafeString((char*)name2),
                         xmlSecErrorsSafeString((char*)tmp));
         PORT_Free(tmp);
@@ -544,7 +544,7 @@ xmlSecNssX509FindCert(CERTCertList* certsList, const xmlChar *subjectName,
         SECITEM_FreeItem(&issuerAndSN.serialNumber, PR_FALSE);
     }
 
-    /* search by SKI if available */    
+    /* search by SKI if available */
     if((cert == NULL) && (ski != NULL) && (skiSize > 0)) {
         SECItem subjKeyID;
 
@@ -651,7 +651,7 @@ xmlSecNssX509NameRead(const xmlChar *str) {
                 memcpy(p, value, valueSize);
                 p += valueSize;
                 *(p++) = '\"';
-                
+
                 /* skip spaces before comma or semicolon */
                 while((strSize > 0) && isspace(*str)) {
                     ++str; --strSize;
@@ -757,7 +757,7 @@ xmlSecNssX509NameStringRead(const xmlSecByte **in, xmlSecSize *inSize,
             nonSpace = jj;
         }
     }
-    
+
     (*inSize) -= ii;
     (*in) += ii;
 
@@ -791,7 +791,7 @@ xmlSecNssNumToItem(SECItem *it, PRUint64 ui)
 
     /*
     ** Small integers are encoded in a single byte. Larger integers
-    ** require progressively more space. Start from 1 because byte at 
+    ** require progressively more space. Start from 1 because byte at
     ** position 0 is zero
     */
     bb_len = sizeof(bb) / sizeof(bb[0]);

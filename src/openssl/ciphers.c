@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:ciphers
@@ -440,7 +440,7 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         /* generate random padding */
         if(padLen > 1) {
             XMLSEC_SAFE_CAST_INT_TO_SIZE(padLen, size, return(-1), NULL);
-            ret = RAND_priv_bytes_ex(xmlSecOpenSSLGetLibCtx(), ctx->pad + inLen, size - 1, 
+            ret = RAND_priv_bytes_ex(xmlSecOpenSSLGetLibCtx(), ctx->pad + inLen, size - 1,
                                 XMLSEEC_OPENSSL_RAND_BYTES_STRENGTH);
             if (ret != 1) {
                 xmlSecOpenSSLError("RAND_priv_bytes_ex", cipherName);
@@ -722,7 +722,7 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
     xmlSecAssert2(ctx->cipherName != NULL, -1);
     ctx->cipher = EVP_CIPHER_fetch(xmlSecOpenSSLGetLibCtx(), ctx->cipherName, NULL);
     if(ctx->cipher == NULL) {
-        xmlSecOpenSSLError2("EVP_CIPHER_fetch", xmlSecTransformGetName(transform), 
+        xmlSecOpenSSLError2("EVP_CIPHER_fetch", xmlSecTransformGetName(transform),
             "cipherName=%s", xmlSecErrorsSafeString(ctx->cipherName));
         xmlSecOpenSSLEvpBlockCipherFinalize(transform);
         return(-1);

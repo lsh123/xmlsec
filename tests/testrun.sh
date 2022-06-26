@@ -55,7 +55,7 @@ else
 fi
 
 valgrind_options="--leak-check=full --show-reachable=yes --num-callers=32 --track-origins=yes -s"
-if [ -n "$DEBUG_MEMORY" ] ; then 
+if [ -n "$DEBUG_MEMORY" ] ; then
     export VALGRIND="valgrind $valgrind_options $valgrind_suppression"
     export REPEAT=3
     xmlsec_params="$xmlsec_params --repeat $REPEAT"
@@ -114,7 +114,7 @@ fi
 
 # On Windows, one needs to specify Crypto Service Provider (CSP)
 # in the pkcs12 file to ensure it is loaded correctly to be used
-# with SHA2 algorithms. Worse, the CSP is different for XP and older 
+# with SHA2 algorithms. Worse, the CSP is different for XP and older
 # versions
 if test "z$OS_ARCH" = "zCygwin" || test "z$OS_ARCH" = "zMsys" ; then
     # Samples:
@@ -133,7 +133,7 @@ fi
 #
 # Misc
 #
-if [ -n "$PERF_TEST" ] ; then 
+if [ -n "$PERF_TEST" ] ; then
     xmlsec_params="$xmlsec_params --repeat $PERF_TEST"
 fi
 
@@ -219,7 +219,7 @@ execKeysTest() {
         cd $old_pwd
         return
     fi
-    
+
     # starting test
     echo "Test: $alg_name ($expected_res)"
     echo "Test: $alg_name ($expected_res)" > $curlogfile
@@ -462,7 +462,7 @@ execEncTest() {
         fi
     fi
 
-    if [ -n "$params3" -a -z "$PERF_TEST" ] ; then 
+    if [ -n "$params3" -a -z "$PERF_TEST" ] ; then
         rm -f $tmpfile.2
         printf "    Decrypt new document                                 "
         echo "$extra_vars $VALGRIND $xmlsec_app decrypt $xmlsec_params $params3 --output $tmpfile.2 $tmpfile" >>  $curlogfile
@@ -491,7 +491,7 @@ execEncTest() {
 
     # cleanup
     cd $old_pwd
-    rm -f $tmpfile $tmpfile.2 
+    rm -f $tmpfile $tmpfile.2
 }
 
 # prepare

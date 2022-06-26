@@ -290,7 +290,7 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         ret = xmlSecKeySetValue(key, data);
         if (ret < 0) {
             xmlSecInternalError("xmlSecKeySetValue",
-				xmlSecKeyDataGetName(data));
+                xmlSecKeyDataGetName(data));
             goto done;
         }
         data = NULL;

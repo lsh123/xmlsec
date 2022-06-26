@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/sh
 
 # input
 cov_token=$1
@@ -16,7 +16,7 @@ today=`date +%F-%H-%M-%S`
 tar_file="xmlsec1-$version-$today.tar.gz"
 
 echo "============= Building xmlsec"
-make clean 
+make clean
 rm -rf cov-int/
 cov-build --dir cov-int make -j4
 tar czvf "$tar_file" cov-int

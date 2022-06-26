@@ -68,7 +68,7 @@
   * @errorObject:        the error specific error object (e.g. transform, key data, etc).
   * @msg:                the extra message.
   * @param:              the extra message param.
-  * 
+  *
   * Macro. The XMLSec library macro for reporting crypro errors from NTSTATUS.
   * See e.g. <http://errorco.de/win32/ntstatus-h/> to look up the matching define.
   */

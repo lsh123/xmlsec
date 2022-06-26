@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 /**
@@ -140,7 +140,7 @@ xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
     memset(&keyItem, 0, sizeof(keyItem));
     keyItem.data = ctx->key;
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(ctx->keySize, keyItem.len, return(-1), NULL);
-    
+
     memset(&ivItem, 0, sizeof(ivItem));
     ivItem.data = ctx->iv;
     XMLSEC_SAFE_CAST_INT_TO_UINT(ivLen, ivItem.len, return(-1), NULL);
@@ -220,7 +220,7 @@ xmlSecNssBlockCipherCtxUpdate(xmlSecNssBlockCipherCtxPtr ctx,
     /* we write out the input size plus may be one block */
     ret = xmlSecBufferSetMaxSize(out, outSize + inSize + blockSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetMaxSize", cipherName, 
+        xmlSecInternalError2("xmlSecBufferSetMaxSize", cipherName,
             "size=" XMLSEC_SIZE_FMT, (outSize + inSize + blockSize));
         return(-1);
     }

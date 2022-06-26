@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:crypto
@@ -438,7 +438,7 @@ xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
     }
 
     /* get random data */
-    ret = RAND_priv_bytes_ex(xmlSecOpenSSLGetLibCtx(), (xmlSecByte*)xmlSecBufferGetData(buffer), size, 
+    ret = RAND_priv_bytes_ex(xmlSecOpenSSLGetLibCtx(), (xmlSecByte*)xmlSecBufferGetData(buffer), size,
                         XMLSEEC_OPENSSL_RAND_BYTES_STRENGTH);
     if(ret != 1) {
         xmlSecOpenSSLError2("RAND_priv_bytes_ex", NULL,
@@ -570,14 +570,14 @@ static OSSL_LIB_CTX* gXmlSecOpenSSLLibCtx = NULL;
 
 /**
  * xmlSecOpenSSLSetLibCtx:
- * @libctx:           the OSSL_LIB_CTX object to be used by xmlsec-openssl 
+ * @libctx:           the OSSL_LIB_CTX object to be used by xmlsec-openssl
  *                    or NULL to use default.
  *
- * Sets the OSSL_LIB_CTX object to be used by xmlsec-openssl. The caller is 
+ * Sets the OSSL_LIB_CTX object to be used by xmlsec-openssl. The caller is
  * responsible for lifetime of this object.
  *
  * Returns: 0 on success or a negative value if an error occurs.
- */ 
+ */
 int
 xmlSecOpenSSLSetLibCtx(OSSL_LIB_CTX* libctx) {
     gXmlSecOpenSSLLibCtx = libctx;

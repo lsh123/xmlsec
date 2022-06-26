@@ -6,11 +6,11 @@
  * distribution for preciese wording.
  *
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
- * Copyright (C) 2003-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:x509
- * @Short_description: X509 certificates implementation for Microsoft Crypto API. 
+ * @Short_description: X509 certificates implementation for Microsoft Crypto API.
  * @Stability: Stable
  *
  */
@@ -993,7 +993,7 @@ xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr
             }
         } else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT) != 0) {
             xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_FOUND,
-            				 xmlSecKeyDataGetName(data), NULL);
+                             xmlSecKeyDataGetName(data), NULL);
             return(-1);
         }
     }
@@ -1189,7 +1189,7 @@ xmlSecMSCryptoX509CertDebugDump(PCCERT_CONTEXT cert, FILE* output) {
     unsigned int i;
     xmlChar * subject = NULL;
     xmlChar * issuer = NULL;
-    
+
     xmlSecAssert(cert != NULL);
     xmlSecAssert(output != NULL);
 

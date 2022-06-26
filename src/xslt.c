@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:xslt
@@ -78,7 +78,7 @@ static int              xmlSecXslProcess                        (xmlSecXsltCtxPt
                                                                  xmlSecBufferPtr out);
 static xmlDocPtr        xmlSecXsApplyStylesheet                 (xmlSecXsltCtxPtr ctx,
                                                                  xmlDocPtr doc);
-                                                                 
+
 static xmlSecTransformKlass xmlSecXsltKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -135,14 +135,14 @@ void xmlSecTransformXsltShutdown(void) {
  * xmlSecTransformXsltSetDefaultSecurityPrefs:
  * @sec: the new security preferences
  *
- * Sets the new default security preferences. The xmlsec default security policy is 
+ * Sets the new default security preferences. The xmlsec default security policy is
  * to disable everything.
  */
 void
 xmlSecTransformXsltSetDefaultSecurityPrefs(xsltSecurityPrefsPtr sec) {
     xmlSecAssert(sec != NULL);
     xmlSecAssert(g_xslt_default_security_prefs != NULL);
-    
+
     /* copy prefs */
     XMLSEC_XSLT_COPY_SEC_PREF(sec, g_xslt_default_security_prefs, XSLT_SECPREF_READ_FILE);
     XMLSEC_XSLT_COPY_SEC_PREF(sec, g_xslt_default_security_prefs, XSLT_SECPREF_WRITE_FILE);
@@ -200,7 +200,7 @@ xmlSecXsltInitialize(xmlSecTransformPtr transform) {
 
     /* initialize context */
     memset(ctx, 0, sizeof(xmlSecXsltCtx));
-    
+
     /* done */
     return(0);
 }
@@ -221,7 +221,7 @@ xmlSecXsltFinalize(xmlSecTransformPtr transform) {
     if(ctx->parserCtx != NULL) {
         if(ctx->parserCtx->myDoc != NULL) {
             xmlFreeDoc(ctx->parserCtx->myDoc);
-	    ctx->parserCtx->myDoc = NULL;
+        ctx->parserCtx->myDoc = NULL;
         }
         xmlFreeParserCtxt(ctx->parserCtx);
     }
@@ -263,7 +263,7 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransfor
     /* parse the buffer */
     buf = xmlBufferContent(buffer);
     bufLen = xmlBufferLength(buffer);
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(bufLen, bufSize, goto done, xmlSecTransformGetName(transform)); 
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(bufLen, bufSize, goto done, xmlSecTransformGetName(transform));
     doc = xmlSecParseMemory(buf, bufSize, 1);
     if(doc == NULL) {
         xmlSecInternalError("xmlSecParseMemory",
@@ -523,7 +523,7 @@ xmlSecXsApplyStylesheet(xmlSecXsltCtxPtr ctx, xmlDocPtr doc) {
     xsltTransformContextPtr xsltCtx = NULL;
     xmlDocPtr res = NULL;
     int ret;
-    
+
     xmlSecAssert2(ctx != NULL, NULL);
     xmlSecAssert2(ctx->xslt != NULL, NULL);
     xmlSecAssert2(doc != NULL, NULL);
@@ -546,12 +546,12 @@ xmlSecXsApplyStylesheet(xmlSecXsltCtxPtr ctx, xmlDocPtr doc) {
         xmlSecXsltError("xsltApplyStylesheetUser", ctx->xslt, NULL);
         goto done;
     }
-    
+
 done:
     if(xsltCtx != NULL) {
         xsltFreeTransformContext(xsltCtx);
     }
-    return res;    
+    return res;
 }
 
 

@@ -1,10 +1,10 @@
-/** 
+/**
  * XML Security Library example: Signing a template file.
- * 
+ *
  * Signs a template file using a key from PEM file
- * 
- * Usage: 
- *      ./sign1 <xml-tmpl> <pem-key> 
+ *
+ * Usage:
+ *      ./sign1 <xml-tmpl> <pem-key>
  *
  * Example:
  *      ./sign1 sign1-tmpl.xml rsakey.pem > sign1-res.xml
@@ -14,8 +14,8 @@
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ *
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #include <stdlib.h>
 #include <string.h>
@@ -37,7 +37,7 @@
 
 int sign_file(const char* tmpl_file, const char* key_file);
 
-int 
+int
 main(int argc, char **argv) {
 #ifndef XMLSEC_NO_XSLT
     xsltSecurityPrefsPtr xsltSecPrefs = NULL;
@@ -57,20 +57,20 @@ main(int argc, char **argv) {
     xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
     xmlSubstituteEntitiesDefault(1);
 #ifndef XMLSEC_NO_XSLT
-    xmlIndentTreeOutput = 1; 
+    xmlIndentTreeOutput = 1;
 #endif /* XMLSEC_NO_XSLT */
 
     /* Init libxslt */
 #ifndef XMLSEC_NO_XSLT
     /* disable everything */
-    xsltSecPrefs = xsltNewSecurityPrefs(); 
+    xsltSecPrefs = xsltNewSecurityPrefs();
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_NETWORK,     xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid);
-    xsltSetDefaultSecurityPrefs(xsltSecPrefs); 
-#endif /* XMLSEC_NO_XSLT */                
+    xsltSetDefaultSecurityPrefs(xsltSecPrefs);
+#endif /* XMLSEC_NO_XSLT */
 
     /* Init xmlsec library */
     if(xmlSecInit() < 0) {
@@ -86,7 +86,7 @@ main(int argc, char **argv) {
 
     /* Load default crypto engine if we are supporting dynamic
      * loading for xmlsec-crypto libraries. Use the crypto library
-     * name ("openssl", "nss", etc.) to load corresponding 
+     * name ("openssl", "nss", etc.) to load corresponding
      * xmlsec-crypto library.
      */
 #ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING
@@ -94,7 +94,7 @@ main(int argc, char **argv) {
         fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
                         "that you have it installed and check shared libraries path\n"
                         "(LD_LIBRARY_PATH and/or LTDL_LIBRARY_PATH) environment variables.\n");
-        return(-1);     
+        return(-1);
     }
 #endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
 
@@ -112,14 +112,14 @@ main(int argc, char **argv) {
 
     if(sign_file(argv[1], argv[2]) < 0) {
         return(-1);
-    }    
-    
+    }
+
     /* Shutdown xmlsec-crypto library */
     xmlSecCryptoShutdown();
-    
+
     /* Shutdown crypto library */
     xmlSecCryptoAppShutdown();
-    
+
     /* Shutdown xmlsec library */
     xmlSecShutdown();
 
@@ -129,11 +129,11 @@ main(int argc, char **argv) {
     xsltCleanupGlobals();
 #endif /* XMLSEC_NO_XSLT */
     xmlCleanupParser();
-    
+
     return(0);
 }
 
-/** 
+/**
  * sign_file:
  * @tmpl_file:          the signature template file name.
  * @key_file:           the PEM private key file name.
@@ -142,13 +142,13 @@ main(int argc, char **argv) {
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
-int 
+int
 sign_file(const char* tmpl_file, const char* key_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
     int res = -1;
-    
+
     assert(tmpl_file);
     assert(key_file);
 
@@ -156,14 +156,14 @@ sign_file(const char* tmpl_file, const char* key_file) {
     doc = xmlParseFile(tmpl_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
         fprintf(stderr, "Error: unable to parse file \"%s\"\n", tmpl_file);
-        goto done;      
+        goto done;
     }
-    
+
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
     if(node == NULL) {
         fprintf(stderr, "Error: start node not found in \"%s\"\n", tmpl_file);
-        goto done;      
+        goto done;
     }
 
     /* create signature context, we don't need keys manager in this example */
@@ -191,21 +191,21 @@ sign_file(const char* tmpl_file, const char* key_file) {
         fprintf(stderr,"Error: signature failed\n");
         goto done;
     }
-        
+
     /* print signed document to stdout */
     xmlDocDump(stdout, doc);
-    
+
     /* success */
     res = 0;
 
-done:    
+done:
     /* cleanup */
     if(dsigCtx != NULL) {
         xmlSecDSigCtxDestroy(dsigCtx);
     }
-    
+
     if(doc != NULL) {
-        xmlFreeDoc(doc); 
+        xmlFreeDoc(doc);
     }
     return(res);
 }

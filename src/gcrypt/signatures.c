@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2010-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:signatures
@@ -102,7 +102,7 @@ struct _xmlSecGCryptPkSignatureCtx {
  *
  * Pk Signature transforms
  *
- * xmlSecTransform + xmlSecGCryptPkSignatureCtx 
+ * xmlSecTransform + xmlSecGCryptPkSignatureCtx
  *
  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GCryptPkSignature, xmlSecGCryptPkSignatureCtx)
@@ -892,7 +892,7 @@ xmlSecGCryptTransformDsaSha1GetKlass(void) {
  *
  * This prefix is included to make it easier to use standard cryptographic
  * libraries. The FF octet MUST be repeated the maximum number of times such
- * that the value of the quantity being CRYPTed is one octet shorter than 
+ * that the value of the quantity being CRYPTed is one octet shorter than
  * the RSA modulus.
  *
  ***************************************************************************/

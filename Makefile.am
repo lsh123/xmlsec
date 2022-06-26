@@ -83,7 +83,7 @@ PRECHECK_COMMANDS= \
 		export LTDL_LIBRARY_PATH="$(ABS_BUILDDIR)/src/$$i/.libs:$$LTDL_LIBRARY_PATH" ; \
 	done && \
 	cd $(ABS_SRCDIR) \
-	$(NULL)	
+	$(NULL)
 endif
 CHECK_CRYPTO_LIST = \
 	$(XMLSEC_CRYPTO_LIST) \
@@ -92,20 +92,20 @@ CHECK_CRYPTO_LIST = \
 docs: docs-man
 	@(cd docs && $(MAKE) docs)
 
-docs-clean: 
+docs-clean:
 	@(cd docs && $(MAKE) clean)
 
-docs-man: 
+docs-man:
 	@(cd man && $(MAKE) docs)
 
 check: check-all check-info
 
-check-all: $(TEST_APP) 
+check-all: $(TEST_APP)
 	for crypto in $(CHECK_CRYPTO_LIST) ; do \
 		make check-crypto-$$crypto || exit 1 ; \
 	done
 
-check-crypto-%: $(TEST_APP) 
+check-crypto-%: $(TEST_APP)
 	@($(PRECHECK_COMMANDS) && \
 	echo "=================== Checking xmlsec-$* =================================" && \
 	$(SHELL) ./tests/testrun.sh \
@@ -129,7 +129,7 @@ check-crypto-%: $(TEST_APP)
 		der \
 	; \
 	)
-	
+
 check-info:
 	@echo "---------------------------- ATTENTION -----------------------------------"
 	@echo "--- Some of the tests use resources located on external HTTP servers.  ---"
@@ -147,7 +147,7 @@ check-keys: $(TEST_APP)
 	    der \
 	)
 
-check-dsig: $(TEST_APP) 	
+check-dsig: $(TEST_APP)
 	@($(PRECHECK_COMMANDS) && \
 	$(SHELL) ./tests/testrun.sh \
 	    $(ABS_SRCDIR)/tests/testDSig.sh \
@@ -157,7 +157,7 @@ check-dsig: $(TEST_APP)
 	    der \
 	)
 
-check-enc: $(TEST_APP) 
+check-enc: $(TEST_APP)
 	@($(PRECHECK_COMMANDS) && \
 	$(SHELL) ./tests/testrun.sh \
 	    $(ABS_SRCDIR)/tests/testEnc.sh  \
@@ -196,4 +196,4 @@ rpm: cleantar tar-release
 	@(unset CDPATH && rpmbuild -ta $(distdir).tar.gz)
 
 rpm-release: clean cleantar rpm
-	
+

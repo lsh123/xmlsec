@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:kw_aes
@@ -139,7 +139,7 @@ xmlSecOpenSSLKWAesInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    ret = xmlSecTransformKWAesInitialize(transform, &(ctx->parentCtx), 
+    ret = xmlSecTransformKWAesInitialize(transform, &(ctx->parentCtx),
         &xmlSecOpenSSLKWAesKlass, xmlSecOpenSSLKeyDataAesId,
         keyExpectedSize);
     if(ret < 0) {
@@ -368,7 +368,7 @@ xmlSecOpenSSLTransformKWAes256GetKlass(void) {
 #ifndef XMLSEC_OPENSSL_API_300
 static int
 xmlSecOpenSSLKWAesEncryptDecrypt(xmlSecOpenSSLKWAesCtxPtr ctx, const xmlSecByte * in, xmlSecSize inSize,
-                                xmlSecByte * out, xmlSecSize outSize, xmlSecSize * outWritten, 
+                                xmlSecByte * out, xmlSecSize outSize, xmlSecSize * outWritten,
                                 int encrypt) {
     xmlSecByte* keyData;
     xmlSecSize keySize;
@@ -409,14 +409,14 @@ xmlSecOpenSSLKWAesEncryptDecrypt(xmlSecOpenSSLKWAesCtxPtr ctx, const xmlSecByte 
 
     /* success */
     (*outWritten) = AES_BLOCK_SIZE;
-    return(0);    
+    return(0);
 }
 
 #else /* XMLSEC_OPENSSL_API_300 */
 
 static int
 xmlSecOpenSSLKWAesEncryptDecrypt(xmlSecOpenSSLKWAesCtxPtr ctx, const xmlSecByte * in, xmlSecSize inSize,
-                                xmlSecByte * out, xmlSecSize outSize, xmlSecSize * outWritten, 
+                                xmlSecByte * out, xmlSecSize outSize, xmlSecSize * outWritten,
                                 int encrypt) {
     xmlSecByte* keyData;
     xmlSecSize keySize;

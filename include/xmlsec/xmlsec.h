@@ -6,7 +6,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_H__
 #define __XMLSEC_H__
@@ -36,7 +36,7 @@ typedef void*                                   xmlSecPtr;
 
 /**
  * XMLSEC_SIZE_T_FMT:
- * 
+ *
  * The only reason we need this is that MinGW doesn't recognize "%zu"
  * despite the fact that MSVC runtime supports it for 10+ years.
  */
@@ -69,7 +69,7 @@ typedef void*                                   xmlSecPtr;
  * XMLSEC_SIZE_BAD_CAST:
  * @val:        the value to cast
  *
- * Bad cast to xmlSecSize. This macro is deprecated and will be removed in the future 
+ * Bad cast to xmlSecSize. This macro is deprecated and will be removed in the future
  * versions of LibXMLSec.
  */
 #define XMLSEC_SIZE_BAD_CAST(val)               ((xmlSecSize)(val))

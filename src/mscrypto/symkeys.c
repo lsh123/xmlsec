@@ -192,7 +192,7 @@ xmlSecMSCryptoSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
 #ifndef XMLSEC_NO_DES
     if(klass == xmlSecMSCryptoKeyDataDesId) {
         return(1);
-    } else 
+    } else
 #endif /* XMLSEC_NO_DES */
 
 #ifndef XMLSEC_NO_AES
@@ -426,7 +426,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
 
         /* yell if key is too big */
         if ((8 * dwKeyMaterial) > dwProvSessionKeySize) {
-            xmlSecMSCryptoError3("CryptGetKeyParam(KP_KEYLEN)", NULL, 
+            xmlSecMSCryptoError3("CryptGetKeyParam(KP_KEYLEN)", NULL,
                 "8*dwKeyMaterial=%lu; dwProvSessionKeySize=%lu", (8 * dwKeyMaterial), dwProvSessionKeySize);
             goto done;
         }

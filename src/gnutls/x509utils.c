@@ -6,11 +6,11 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2010-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:x509utils
- * @Short_description: X509 certificates support functions for GnuTLS. 
+ * @Short_description: X509 certificates support functions for GnuTLS.
  * @Stability: Private
  *
  */
@@ -163,7 +163,7 @@ xmlSecGnuTLSX509CrlListDebugXmlDumpItem(xmlSecPtr ptr, FILE* output) {
  *
  ************************************************************************/
 
-/* HACK: gnutls doesn't have cert duplicate function, so we simply 
+/* HACK: gnutls doesn't have cert duplicate function, so we simply
  write cert out and then read it back */
 gnutls_x509_crt_t
 xmlSecGnuTLSX509CertDup(gnutls_x509_crt_t src) {
@@ -176,7 +176,7 @@ xmlSecGnuTLSX509CertDup(gnutls_x509_crt_t src) {
     ret = xmlSecBufferInitialize(&buf, 0);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize", NULL);
-        return (NULL);        
+        return (NULL);
     }
 
     ret = xmlSecGnuTLSX509CertDerWrite(src, &buf);
@@ -348,7 +348,7 @@ xmlSecGnuTLSX509CertRead(const xmlSecByte* buf, xmlSecSize size, xmlSecKeyDataFo
 
     data.data = (unsigned char*)buf;
     data.size = bufLen;
-    
+
     err = gnutls_x509_crt_import(cert, &data, fmt);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_x509_crt_import", err, NULL);
@@ -381,7 +381,7 @@ xmlSecGnuTLSX509CertDerWrite(gnutls_x509_crt_t cert, xmlSecBufferPtr buf) {
     /* allocate buffer */
     ret = xmlSecBufferSetSize(buf, bufSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL, 
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
             "bufSize=" XMLSEC_SIZE_FMT, bufSize);
         return(-1);
     }
@@ -469,7 +469,7 @@ xmlSecGnuTLSX509CertDebugXmlDump(gnutls_x509_crt_t cert, FILE* output) {
  *
  ************************************************************************/
 
-/* HACK: gnutls doesn't have crl duplicate function, so we simply 
+/* HACK: gnutls doesn't have crl duplicate function, so we simply
  write crl out and then read it back */
 gnutls_x509_crl_t
 xmlSecGnuTLSX509CrlDup(gnutls_x509_crl_t src) {
@@ -482,7 +482,7 @@ xmlSecGnuTLSX509CrlDup(gnutls_x509_crl_t src) {
     ret = xmlSecBufferInitialize(&buf, 0);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize", NULL);
-        return (NULL);        
+        return (NULL);
     }
 
     ret = xmlSecGnuTLSX509CrlDerWrite(src, &buf);
@@ -608,7 +608,7 @@ xmlSecGnuTLSX509CrlDerWrite(gnutls_x509_crl_t crl, xmlSecBufferPtr buf) {
     /* allocate buffer */
     ret = xmlSecBufferSetSize(buf, bufSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL, 
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
             "bufSize=" XMLSEC_SIZE_FMT, bufSize);
         return(-1);
     }
@@ -1056,7 +1056,7 @@ xmlSecGnuTLSDnAttrrsFind(const xmlSecGnuTLSDnAttr * attrs,
 
 int
 xmlSecGnuTLSDnAttrsEqual(const xmlSecGnuTLSDnAttr * ll, xmlSecSize llSize,
-                         const xmlSecGnuTLSDnAttr * rr, xmlSecSize rrSize) 
+                         const xmlSecGnuTLSDnAttr * rr, xmlSecSize rrSize)
 {
     xmlSecSize llNum = 0;
     xmlSecSize rrNum = 0;
@@ -1106,7 +1106,7 @@ xmlSecGnuTLSDnAttrsEqual(const xmlSecGnuTLSDnAttr * ll, xmlSecSize llSize,
 /*
 Distinguished name syntax
 
-The formal syntax for a Distinguished Name (DN) is based on RFC 2253. 
+The formal syntax for a Distinguished Name (DN) is based on RFC 2253.
 The Backus Naur Form (BNF) syntax is defined as follows:
 
     <name> ::= <name-component> ( <spaced-separator> )
@@ -1156,7 +1156,7 @@ White-space characters (spaces) might be present on either side of the comma or
 semicolon. The white-space characters are ignored, and the semicolon is replaced
 with a comma.
 
-In addition, space (' ' ASCII 32) characters may be present either before or 
+In addition, space (' ' ASCII 32) characters may be present either before or
 after a '+' or '='. These space characters are ignored when parsing.
 */
 enum xmlSecGnuTLSDnParseState {
@@ -1245,7 +1245,7 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
                 if(ch != '\"') {
                     state = xmlSecGnuTLSDnParseState_String;
                     slash = 0;
-                    --dn; /* small hack, so we can look at the same char 
+                    --dn; /* small hack, so we can look at the same char
                            again with the correct state */
                 } else {
                     state = xmlSecGnuTLSDnParseState_QuotedString;
@@ -1287,7 +1287,7 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
             } else if(ch == '\\') {
                 slash = 1;
             } else if(ch == '\"') {
-                *(p) = '\0'; 
+                *(p) = '\0';
                 /* don't remove spaces for quoted string */
 
                 attrs[pos].value = xmlStrdup(tmp);

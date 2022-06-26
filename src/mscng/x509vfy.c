@@ -9,7 +9,7 @@
  */
 /**
  * SECTION:x509vfy
- * @Short_description: X509 certificates verification support functions for Microsoft Cryptography API: Next Generation (CNG). 
+ * @Short_description: X509 certificates verification support functions for Microsoft Cryptography API: Next Generation (CNG).
  * @Stability: Private
  *
  */
@@ -115,7 +115,7 @@ xmlSecMSCngX509StoreAdoptKeyStore(xmlSecKeyDataStorePtr store, HCERTSTORE keySto
 
     ret = CertAddStoreToCollection(ctx->trusted, keyStore, CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG, 2);
     if(ret != TRUE) {
-	xmlSecMSCngLastError("CertAddStoreToCollection",
+    xmlSecMSCngLastError("CertAddStoreToCollection",
             xmlSecKeyDataStoreGetName(store));
         return(-1);
     }

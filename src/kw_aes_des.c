@@ -4,7 +4,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:kw_aes_des
@@ -89,7 +89,7 @@ xmlSecTransformKWDes3Finalize(xmlSecTransformPtr transform, xmlSecTransformKWDes
 
 int
 xmlSecTransformKWDes3SetKeyReq(xmlSecTransformPtr transform, xmlSecTransformKWDes3CtxPtr ctx,
-                        xmlSecKeyReqPtr keyReq) {     
+                        xmlSecKeyReqPtr keyReq) {
     keyReq->keyId   = ctx->keyId;
     keyReq->keyType = xmlSecKeyDataTypeSymmetric;
     if(transform->operation == xmlSecTransformOperationEncrypt) {
@@ -322,7 +322,7 @@ xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, xmlSecTransformPtr transform,
     outWritten2 = 0;
     ret = kwDes3Id->generateRandom(transform, iv, sizeof(iv), &outWritten2);
     if((ret < 0) || (outWritten2 != sizeof(iv))) {
-        xmlSecInternalError2("kwDes3Id->generateRandom", NULL, 
+        xmlSecInternalError2("kwDes3Id->generateRandom", NULL,
             "outWritten2=" XMLSEC_SIZE_FMT, outWritten2);
         return(-1);
     }
@@ -341,7 +341,7 @@ xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, xmlSecTransformPtr transform,
             outWritten2, (inSize + XMLSEC_KW_DES3_BLOCK_LENGTH), NULL);
         return(-1);
     }
-    
+
     /* step 6: construct TEMP2=IV || TEMP1 */
     memmove(out + XMLSEC_KW_DES3_IV_LENGTH, out, outWritten2);
     memcpy(out, iv, XMLSEC_KW_DES3_IV_LENGTH);

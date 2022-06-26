@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:evp
@@ -27,7 +27,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/private.h>
- 
+
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/bn.h>
 #include <xmlsec/openssl/evp.h>
@@ -493,7 +493,7 @@ xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
 #ifndef XMLSEC_NO_DSA
 
 /**
- * @xmlSecOpenSSLKeyValueDsa: holds the parts of OpenSSL DSA key 
+ * @xmlSecOpenSSLKeyValueDsa: holds the parts of OpenSSL DSA key
  */
 typedef struct _xmlSecOpenSSLKeyValueDsa {
     BIGNUM* p;
@@ -527,7 +527,7 @@ xmlSecOpenSSLKeyValueDsaFinalize(xmlSecOpenSSLKeyValueDsaPtr dsaKeyValue) {
     }
     if((dsaKeyValue->notOwner == 0) && (dsaKeyValue->pub_key != NULL)) {
         BN_clear_free(dsaKeyValue->pub_key);
-    }    
+    }
     if((dsaKeyValue->notOwner == 0) && (dsaKeyValue->priv_key != NULL)) {
         BN_clear_free(dsaKeyValue->priv_key);
     }
@@ -825,7 +825,7 @@ xmlSecOpenSSLKeyDataDsaFinalize(xmlSecKeyDataPtr data) {
 static int
 xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                                xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    
+
     xmlSecAssert2(id == xmlSecOpenSSLKeyDataDsaId, -1);
     return(xmlSecKeyDataDsaXmlRead(id, key, node, keyInfoCtx,
         xmlSecOpenSSLKeyDataDsaRead));
@@ -858,8 +858,8 @@ xmlSecOpenSSLKeyDataDsaGetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDsaP
         xmlSecInternalError("xmlSecOpenSSLKeyDataDsaGetDsa", xmlSecKeyDataGetName(data));
         return(-1);
     }
-    DSA_get0_pqg(dsa, 
-        (const BIGNUM**)&(dsaKeyValue->p), 
+    DSA_get0_pqg(dsa,
+        (const BIGNUM**)&(dsaKeyValue->p),
         (const BIGNUM**)&(dsaKeyValue->q),
         (const BIGNUM**)&(dsaKeyValue->g));
     if((dsaKeyValue->p == NULL) || (dsaKeyValue->q == NULL) || (dsaKeyValue->g == NULL)) {
@@ -880,7 +880,7 @@ xmlSecOpenSSLKeyDataDsaGetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDsaP
         * We assume here that engine *always* has private key.
         * This might be incorrect but it seems that there is no
         * way to ask engine if given key is private or not.
-        */        
+        */
         const ENGINE* dsa_eng = NULL;
         dsa_eng = DSA_get0_engine(dsa);
         if(dsa_eng != NULL) {
@@ -1364,37 +1364,37 @@ xmlSecOpenSSLKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         goto done;
     }
 
-    /*** p ***/ 
+    /*** p ***/
     ret = xmlSecOpenSSLGetBNValue(&(dsaValue->p), &(dsaKeyValue.p));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(p)",
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
-    /*** q ***/ 
+    /*** q ***/
     ret = xmlSecOpenSSLGetBNValue(&(dsaValue->q), &(dsaKeyValue.q));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(q)",
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
-    /*** q ***/ 
+    /*** q ***/
     ret = xmlSecOpenSSLGetBNValue(&(dsaValue->g), &(dsaKeyValue.g));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(g)",
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
-    /*** y ***/ 
+    /*** y ***/
     ret = xmlSecOpenSSLGetBNValue(&(dsaValue->y), &(dsaKeyValue.pub_key));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(y)",
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
-    /*** x (only for private key) ***/ 
+    /*** x (only for private key) ***/
     if(xmlSecBufferGetSize(&(dsaValue->x)) > 0) {
-        /*** p ***/ 
+        /*** p ***/
         ret = xmlSecOpenSSLGetBNValue(&(dsaValue->x), &(dsaKeyValue.priv_key));
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLGetBNValue(x)",
@@ -1431,7 +1431,7 @@ done:
 
 static int
 xmlSecOpenSSLKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
-                             xmlSecKeyValueDsaPtr dsaValue, int writePrivateKey) {                                    
+                             xmlSecKeyValueDsaPtr dsaValue, int writePrivateKey) {
     xmlSecOpenSSLKeyValueDsa dsaKeyValue;
     int ret;
     int res = -1;
@@ -1812,7 +1812,7 @@ xmlSecOpenSSLKeyDataEcdsaGetSize(xmlSecKeyDataPtr data) {
 
     /* success */
     XMLSEC_SAFE_CAST_INT_TO_SIZE(numBits, res,  goto done, xmlSecKeyDataGetName(data));
- 
+
  done:
     if(order != NULL) {
         BN_clear_free(order);
@@ -1846,7 +1846,7 @@ xmlSecOpenSSLKeyDataEcdsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 #ifndef XMLSEC_NO_RSA
 
 /**
- * @xmlSecOpenSSLKeyValueRsa: holds the parts of OpenSSL RSA key 
+ * @xmlSecOpenSSLKeyValueRsa: holds the parts of OpenSSL RSA key
  */
 typedef struct _xmlSecOpenSSLKeyValueRsa {
     BIGNUM* n;
@@ -2212,7 +2212,7 @@ done:
     }
     if(publicExponent != NULL) {
         BN_clear_free(publicExponent);
-    } 
+    }
     return(res);
 }
 
@@ -2280,7 +2280,7 @@ xmlSecOpenSSLKeyDataRsaGetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueRsaP
         * We assume here that engine *always* has private key.
         * This might be incorrect but it seems that there is no
         * way to ask engine if given key is private or not.
-        */        
+        */
         if(RSA_test_flags(rsa, (RSA_FLAG_EXT_PKEY)) != 0) {
             rsaKeyValue->externalPrivKey = 1;
         } else {
@@ -2441,7 +2441,7 @@ done:
     }
     if(publicExponent != NULL) {
         BN_clear_free(publicExponent);
-    } 
+    }
     return(res);
 }
 
@@ -2672,7 +2672,7 @@ xmlSecOpenSSLKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
         goto done;
     }
 
-    /*** Modulus ***/ 
+    /*** Modulus ***/
     ret = xmlSecOpenSSLGetBNValue(&(rsaValue->modulus), &(rsaKeyValue.n));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(Modulus)",
@@ -2680,16 +2680,16 @@ xmlSecOpenSSLKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
         goto done;
     }
 
-    /*** Exponent ***/ 
+    /*** Exponent ***/
     ret = xmlSecOpenSSLGetBNValue(&(rsaValue->publicExponent), &(rsaKeyValue.e));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(Exponent)",
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
-    /*** PrivateExponent (only for private key) ***/ 
+    /*** PrivateExponent (only for private key) ***/
     if(xmlSecBufferGetSize(&(rsaValue->privateExponent)) > 0) {
-        /*** p ***/ 
+        /*** p ***/
         ret = xmlSecOpenSSLGetBNValue(&(rsaValue->privateExponent), &(rsaKeyValue.d));
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLGetBNValue(x)",
@@ -2710,7 +2710,7 @@ xmlSecOpenSSLKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
- 
+
     /* success */
     res = data;
     data = NULL;

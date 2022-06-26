@@ -1,10 +1,10 @@
-/** 
+/**
  * XML Security Library example: CGI verification script.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ *
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #include <stdlib.h>
 #include <string.h>
@@ -35,41 +35,41 @@ int load_trusted_certs(xmlSecKeysMngrPtr mngr, const char* path, int report_load
 int verify_request(xmlSecKeysMngrPtr mngr);
 int url_decode(char *buf, size_t size);
 
-int 
+int
 main(int , char **) {
     xmlSecKeysMngrPtr mngr;
 #ifndef XMLSEC_NO_XSLT
     xsltSecurityPrefsPtr xsltSecPrefs = NULL;
 #endif /* XMLSEC_NO_XSLT */
-        
+
     /* start response */
     fprintf(stdout, "Content-type: text/plain\n");
     fprintf(stdout, "\n");
-    
+
     /* Init libxml and libxslt libraries */
     xmlInitParser();
     LIBXML_TEST_VERSION
     xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
     xmlSubstituteEntitiesDefault(1);
 #ifndef XMLSEC_NO_XSLT
-    xmlIndentTreeOutput = 1; 
+    xmlIndentTreeOutput = 1;
 #endif /* XMLSEC_NO_XSLT */
-    
+
     /* make sure that we print out everything to stdout */
     xmlGenericErrorContext = stdout;
 
     /* Init libxslt */
 #ifndef XMLSEC_NO_XSLT
     /* disable everything */
-    xsltSecPrefs = xsltNewSecurityPrefs(); 
+    xsltSecPrefs = xsltNewSecurityPrefs();
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_NETWORK,     xsltSecurityForbid);
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid);
-    xsltSetDefaultSecurityPrefs(xsltSecPrefs); 
+    xsltSetDefaultSecurityPrefs(xsltSecPrefs);
 #endif /* XMLSEC_NO_XSLT */
-                
+
     /* Init xmlsec library */
     if(xmlSecInit() < 0) {
         fprintf(stdout, "Error: xmlsec initialization failed.\n");
@@ -84,7 +84,7 @@ main(int , char **) {
 
     /* Load default crypto engine if we are supporting dynamic
      * loading for xmlsec-crypto libraries. Use the crypto library
-     * name ("openssl", "nss", etc.) to load corresponding 
+     * name ("openssl", "nss", etc.) to load corresponding
      * xmlsec-crypto library.
      */
 #ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING
@@ -92,7 +92,7 @@ main(int , char **) {
         fprintf(stdout, "Error: unable to load default xmlsec-crypto library. Make sure\n"
                         "that you have it installed and check shared libraries path\n"
                         "(LD_LIBRARY_PATH and/or LTDL_LIBRARY_PATH) environment variables.\n");
-        return(-1);     
+        return(-1);
     }
 #endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
 
@@ -117,13 +117,13 @@ main(int , char **) {
     if(xmlSecCryptoAppDefaultKeysMngrInit(mngr) < 0) {
         fprintf(stdout, "Error: failed to initialize keys manager.\n");
         return(-1);
-    }    
+    }
 
     if(load_keys(mngr, XMLDSIGVERIFY_KEY_AND_CERTS_FOLDER, 0) < 0) {
         xmlSecKeysMngrDestroy(mngr);
         return(-1);
     }
-    
+
     if(load_trusted_certs(mngr, XMLDSIGVERIFY_KEY_AND_CERTS_FOLDER, 0) < 0) {
         xmlSecKeysMngrDestroy(mngr);
         return(-1);
@@ -132,28 +132,28 @@ main(int , char **) {
     if(verify_request(mngr) < 0) {
         xmlSecKeysMngrDestroy(mngr);
         return(-1);
-    }    
+    }
 
     /* Destroy keys manager */
     xmlSecKeysMngrDestroy(mngr);
-        
+
     /* Shutdown xmlsec-crypto library */
     xmlSecCryptoShutdown();
-    
+
     /* Shutdown crypto library */
     xmlSecCryptoAppShutdown();
-    
+
     /* Shutdown xmlsec library */
     xmlSecShutdown();
 
     /* Shutdown libxslt/libxml */
 #ifndef XMLSEC_NO_XSLT
     xsltFreeSecurityPrefs(xsltSecPrefs);
-    xsltCleanupGlobals();            
+    xsltCleanupGlobals();
 #endif /* XMLSEC_NO_XSLT */
 
     xmlCleanupParser();
-    
+
     return(0);
 }
 
@@ -161,25 +161,25 @@ main(int , char **) {
  * load_trusted_certs:
  * @mngr:       the keys manager.
  * @path:       the path to a folder that contains trusted certificates.
- * 
+ *
  * Loads trusted certificates from @path.
  *
  * Returns 0 on success or a negative value if an error occurs.
- */ 
+ */
 int load_trusted_certs(xmlSecKeysMngrPtr mngr, const char* path, int report_loaded_certs) {
     DIR* dir;
     struct dirent* entry;
     char filename[2048];
     int len;
-    
+
     assert(mngr);
     assert(path);
-    
+
     dir = opendir(path);
     if(dir == NULL) {
         fprintf(stdout, "Error: failed to open folder \"%s\".\n", path);
         return(-1);
-    }    
+    }
     while((entry = readdir(dir)) != NULL) {
         assert(entry->d_name);
         len = strlen(entry->d_name);
@@ -190,7 +190,7 @@ int load_trusted_certs(xmlSecKeysMngrPtr mngr, const char* path, int report_load
                 closedir(dir);
                 return(-1);
             }
-            if(report_loaded_certs) {                       
+            if(report_loaded_certs) {
                 fprintf(stdout, "Loaded trusted certificate from \"%s\"...\n", filename);
             }
         } else if((len > 4) && (strcmp(entry->d_name + len - 4, ".der") == 0)) {
@@ -200,7 +200,7 @@ int load_trusted_certs(xmlSecKeysMngrPtr mngr, const char* path, int report_load
                 closedir(dir);
                 return(-1);
             }
-            if(report_loaded_certs) {                       
+            if(report_loaded_certs) {
                 fprintf(stdout, "Loaded trusted certificate from \"%s\"...\n", filename);
             }
         }
@@ -219,7 +219,7 @@ int load_keys(xmlSecKeysMngrPtr mngr, const char* path, int report_loaded_keys) 
         fprintf(stdout,"Error: failed to load keys from \"%s\"\n", filename);
         return(-1);
     }
-    
+
     if(report_loaded_keys) {
         fprintf(stdout, "Loaded keys from \"%s\"...\n", filename);
     }
@@ -227,7 +227,7 @@ int load_keys(xmlSecKeysMngrPtr mngr, const char* path, int report_loaded_keys) 
 }
 
 
-/** 
+/**
  * verify_request:
  * @mng:                the keys manager
  *
@@ -235,7 +235,7 @@ int load_keys(xmlSecKeysMngrPtr mngr, const char* path, int report_loaded_keys) 
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
-int 
+int
 verify_request(xmlSecKeysMngrPtr mngr) {
     xmlBufferPtr buffer = NULL;
     xmlSecByte buf[256];
@@ -244,21 +244,21 @@ verify_request(xmlSecKeysMngrPtr mngr) {
     xmlSecDSigCtxPtr dsigCtx = NULL;
     int ret;
     int res = -1;
-    
+
     assert(mngr);
 
-    /* load request in the buffer */    
+    /* load request in the buffer */
     buffer = xmlBufferCreate();
     if(buffer == NULL) {
         fprintf(stdout,"Error: failed to create buffer\n");
-        goto done;      
+        goto done;
     }
-    
+
     while(!feof(stdin)) {
         ret = fread(buf, 1, sizeof(buf), stdin);
         if(ret < 0) {
             fprintf(stdout,"Error: read failed\n");
-            goto done;  
+            goto done;
         }
         xmlBufferAdd(buffer, buf, (xmlSecSize)ret);
     }
@@ -266,13 +266,13 @@ verify_request(xmlSecKeysMngrPtr mngr) {
     /* is the document submitted from the form? */
     if(strncmp((char*)xmlBufferContent(buffer), "_xmldoc=", 8) == 0) {
         xmlBufferShrink(buffer, 8);
-        buffer->use = url_decode((char*)xmlBufferContent(buffer), xmlBufferLength(buffer)); 
+        buffer->use = url_decode((char*)xmlBufferContent(buffer), xmlBufferLength(buffer));
     }
-        
-    /** 
-     * Load doc 
+
+    /**
+     * Load doc
      */
-    xmlSecParserSetDefaultOptions(XML_PARSE_NOENT | XML_PARSE_NOCDATA | 
+    xmlSecParserSetDefaultOptions(XML_PARSE_NOENT | XML_PARSE_NOCDATA |
                         XML_PARSE_PEDANTIC | XML_PARSE_NOCDATA);
     doc = xmlReadMemory((const char*)xmlBufferContent(buffer), xmlBufferLength(buffer),
         NULL, NULL, xmlSecParserGetDefaultOptions());
@@ -280,20 +280,20 @@ verify_request(xmlSecKeysMngrPtr mngr) {
         fprintf(stdout, "Error: unable to parse xml document (syntax error)\n");
         goto done;
     }
-    
+
     /*
      * Check the document is of the right kind
-     */    
+     */
     if(xmlDocGetRootElement(doc) == NULL) {
         fprintf(stdout,"Error: empty document\n");
         goto done;
     }
-    
+
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
     if(node == NULL) {
         fprintf(stdout, "Error: start <dsig:Signature/> node not found\n");
-        goto done;      
+        goto done;
     }
 
     /* create signature context */
@@ -302,7 +302,7 @@ verify_request(xmlSecKeysMngrPtr mngr) {
         fprintf(stdout,"Error: failed to create signature context\n");
         goto done;
     }
-    
+
     /* we would like to store and print out everything */
     /* actually we would not because it opens a security hole
     dsigCtx->flags = XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES |
@@ -315,29 +315,29 @@ verify_request(xmlSecKeysMngrPtr mngr) {
         fprintf(stdout,"Error: signature verification failed\n");
         goto done;
     }
-        
+
     /* print verification result to stdout */
     if(dsigCtx->status == xmlSecDSigStatusSucceeded) {
         fprintf(stdout, "RESULT: Signature is OK\n");
     } else {
         fprintf(stdout, "RESULT: Signature is INVALID\n");
-    }    
+    }
     fprintf(stdout, "---------------------------------------------------\n");
     xmlSecDSigCtxDebugDump(dsigCtx, stdout);
 
     /* success */
     res = 0;
 
-done:    
+done:
     /* cleanup */
     if(dsigCtx != NULL) {
         xmlSecDSigCtxDestroy(dsigCtx);
     }
-    
+
     if(doc != NULL) {
-        xmlFreeDoc(doc); 
+        xmlFreeDoc(doc);
     }
-    
+
     if(buffer != NULL) {
         xmlBufferFree(buffer);
     }
@@ -346,7 +346,7 @@ done:
 
 /* not the best way to do it */
 #define toHex(c) ( ( ('0' <= (c)) && ((c) <= '9') ) ? (c) - '0' : \
-                 ( ( ('A' <= (c)) && ((c) <= 'F') ) ? (c) - 'A' + 10 : 0 ) )        
+                 ( ( ('A' <= (c)) && ((c) <= 'F') ) ? (c) - 'A' + 10 : 0 ) )
 
 /**
  * url_decode:
@@ -354,16 +354,16 @@ done:
  * @size:       the input buffer size.
  *
  * Does url decoding in-place.
- *               
- * Returns length of the decoded result on success or 
+ *
+ * Returns length of the decoded result on success or
  * a negative value if an error occurs.
  */
 int url_decode(char *buf, size_t size) {
     size_t ii, jj;
     char ch;
-    
+
     assert(buf);
-    
+
     for(ii = jj = 0; ii < size; ++ii, ++jj) {
         ch = buf[ii];
         if((ch == '%') && ((ii + 2) < size)) {

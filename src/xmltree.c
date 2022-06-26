@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:xmltree
@@ -34,7 +34,7 @@
 
 #include "cast_helpers.h"
 
-static const xmlChar*	g_xmlsec_xmltree_default_linefeed = xmlSecStringCR;
+static const xmlChar*    g_xmlsec_xmltree_default_linefeed = xmlSecStringCR;
 
 /**
  * xmlSecGetDefaultLineFeed:
@@ -97,7 +97,7 @@ xmlSecGetNodeContentAsSize(const xmlNodePtr cur, xmlSecSize defValue, xmlSecSize
     }
 
     /* skip spaces at the end */
-    while(isspace((int)(*endptr))) { 
+    while(isspace((int)(*endptr))) {
         ++endptr;
     }
     if((content + xmlStrlen(content)) != BAD_CAST endptr) {
@@ -680,7 +680,7 @@ xmlSecReplaceNodeBufferAndReturn(xmlNodePtr node, const xmlSecByte *buffer, xmlS
     /* parse buffer in the context of node's parent */
     XMLSEC_SAFE_CAST_SIZE_TO_INT(size, len, return(-1), NULL);
     ret = xmlParseInNodeContext(node->parent, (const char*)buffer, len,
-    		xmlSecParserGetDefaultOptions(), &results);
+            xmlSecParserGetDefaultOptions(), &results);
     if(ret != XML_ERR_OK) {
         xmlSecXmlError("xmlParseInNodeContext", NULL);
         return(-1);
@@ -1071,7 +1071,7 @@ xmlSecQName2IntegerGetIntegerFromString(xmlSecQName2IntegerInfoConstPtr info,
     qnameLocalPart = xmlStrchr(qname, ':');
     if(qnameLocalPart != NULL) {
         int qnameLen;
-        
+
         XMLSEC_SAFE_CAST_PTRDIFF_TO_INT((qnameLocalPart - qname), qnameLen, return(-1), NULL);
         qnamePrefix = xmlStrndup(qname, qnameLen);
         if(qnamePrefix == NULL) {
@@ -1478,7 +1478,7 @@ xmlSecQName2BitMaskGetBitMaskFromString(xmlSecQName2BitMaskInfoConstPtr info,
     qnameLocalPart = xmlStrchr(qname, ':');
     if(qnameLocalPart != NULL) {
         int qnameLen;
-        
+
         XMLSEC_SAFE_CAST_PTRDIFF_TO_INT((qnameLocalPart - qname), qnameLen, return(-1), NULL);
         qnamePrefix = xmlStrndup(qname, qnameLen);
         if(qnamePrefix == NULL) {

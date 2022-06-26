@@ -6,7 +6,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:io
@@ -430,9 +430,9 @@ xmlSecTransformInputURIClose(xmlSecTransformPtr transform) {
 
     /* close if still open and mark as closed */
     if((ctx->clbksCtx != NULL) && (ctx->clbks != NULL) && (ctx->clbks->closecallback != NULL)) {
-    	(ctx->clbks->closecallback)(ctx->clbksCtx);
-    	ctx->clbksCtx = NULL;
-    	ctx->clbks = NULL;
+        (ctx->clbks->closecallback)(ctx->clbksCtx);
+        ctx->clbksCtx = NULL;
+        ctx->clbks = NULL;
     }
 
     /* done */
@@ -454,8 +454,8 @@ xmlSecTransformInputURIInitialize(xmlSecTransformPtr transform) {
 
 static void
 xmlSecTransformInputURIFinalize(xmlSecTransformPtr transform) {
-	xmlSecInputURICtxPtr ctx;
-	int ret;
+    xmlSecInputURICtxPtr ctx;
+    int ret;
 
     xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecTransformInputURIId));
 
@@ -467,9 +467,9 @@ xmlSecTransformInputURIFinalize(xmlSecTransformPtr transform) {
         xmlSecInternalError2("xmlSecTransformInputURIClose",
                              xmlSecTransformGetName(transform),
                              "ret=%d", ret);
-		/* ignore the error */
-		/* return; */
-	}
+        /* ignore the error */
+        /* return; */
+    }
 
     memset(ctx, 0, sizeof(xmlSecInputURICtx));
     return;

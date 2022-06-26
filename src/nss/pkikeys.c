@@ -734,7 +734,7 @@ xmlSecNssKeyDataDsaGetSize(xmlSecKeyDataPtr data) {
     xmlSecNssPKIKeyDataCtxPtr ctx;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataDsaId), 0);
-    
+
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, 0);
     xmlSecAssert2(ctx->pubkey != NULL, 0);
@@ -1174,7 +1174,7 @@ xmlSecNssKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     pubkey = (SECKEYPublicKey *)PORT_ArenaZAlloc(arena,
                                                  sizeof(SECKEYPublicKey));
     if(pubkey == NULL) {
-        xmlSecNssError("PORT_ArenaZAlloc", xmlSecKeyDataKlassGetName(id));        
+        xmlSecNssError("PORT_ArenaZAlloc", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
     pubkey->arena = arena;
@@ -1428,7 +1428,7 @@ xmlSecNssKeyDataEcdsaGetType(xmlSecKeyDataPtr data) {
     xmlSecNssPKIKeyDataCtxPtr ctx;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataEcdsaId), xmlSecKeyDataTypeUnknown);
-    
+
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, xmlSecKeyDataTypeUnknown);
     xmlSecAssert2(ctx->pubkey == NULL || SECKEY_GetPublicKeyType(ctx->pubkey) == ecKey, xmlSecKeyDataTypeUnknown);

@@ -23,17 +23,17 @@
 /* max HMAC output size in bytes */
 #define XMLSEC_TRASNFORM_HMAC_MAX_OUTPUT_SIZE       128U
 
-XMLSEC_EXPORT int xmlSecTransformHmacReadOutputBitsSize	(xmlNodePtr node,
-													     xmlSecSize defaultSize,
-														 xmlSecSize* res);
+XMLSEC_EXPORT int xmlSecTransformHmacReadOutputBitsSize    (xmlNodePtr node,
+                                                         xmlSecSize defaultSize,
+                                                         xmlSecSize* res);
 
 #endif /* XMLSEC_NO_HMAC */
 
 #ifndef XMLSEC_NO_RSA
 
-XMLSEC_EXPORT int xmlSecTransformRsaOaepReadParams		(xmlNodePtr node,
-														 xmlSecBufferPtr params,
-														 xmlChar** algorithm);
+XMLSEC_EXPORT int xmlSecTransformRsaOaepReadParams        (xmlNodePtr node,
+                                                         xmlSecBufferPtr params,
+                                                         xmlChar** algorithm);
 #endif /* XMLSEC_NO_RSA */
 
 #endif /* __XMLSEC_TRASNFORMS_HELPERS_H__ */

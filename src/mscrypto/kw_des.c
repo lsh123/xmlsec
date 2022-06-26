@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:kw_des
@@ -43,29 +43,29 @@
  *
  *********************************************************************/
 static int       xmlSecMSCryptoKWDes3GenerateRandom              (xmlSecTransformPtr transform,
-                                                                 xmlSecByte * out, 
+                                                                 xmlSecByte * out,
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize * outWritten);
 static int       xmlSecMSCryptoKWDes3Sha1                        (xmlSecTransformPtr transform,
-                                                                 const xmlSecByte * in, 
-                                                                 xmlSecSize inSize, 
-                                                                 xmlSecByte * out, 
+                                                                 const xmlSecByte * in,
+                                                                 xmlSecSize inSize,
+                                                                 xmlSecByte * out,
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize * outWritten);
 static int      xmlSecMSCryptoKWDes3BlockEncrypt                 (xmlSecTransformPtr transform,
-                                                                 const xmlSecByte * iv, 
+                                                                 const xmlSecByte * iv,
                                                                  xmlSecSize ivSize,
-                                                                 const xmlSecByte * in, 
+                                                                 const xmlSecByte * in,
                                                                  xmlSecSize inSize,
-                                                                 xmlSecByte * out, 
+                                                                 xmlSecByte * out,
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize * outWritten);
 static int      xmlSecMSCryptoKWDes3BlockDecrypt                 (xmlSecTransformPtr transform,
-                                                                 const xmlSecByte * iv, 
+                                                                 const xmlSecByte * iv,
                                                                  xmlSecSize ivSize,
-                                                                 const xmlSecByte * in, 
+                                                                 const xmlSecByte * in,
                                                                  xmlSecSize inSize,
-                                                                 xmlSecByte * out, 
+                                                                 xmlSecByte * out,
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize * outWritten);
 
@@ -79,7 +79,7 @@ static xmlSecKWDes3Klass xmlSecMSCryptoKWDes3ImplKlass = {
     /* for the future */
     NULL,                                   /* void*                               reserved0; */
     NULL,                                   /* void*                               reserved1; */
-}; 
+};
 
 /*********************************************************************
  *
@@ -319,7 +319,7 @@ xmlSecMSCryptoKWDes3Execute(xmlSecTransformPtr transform, int last,
  *********************************************************************/
 static int
 xmlSecMSCryptoKWDes3Sha1(xmlSecTransformPtr transform,
-                       const xmlSecByte * in, xmlSecSize inSize, 
+                       const xmlSecByte * in, xmlSecSize inSize,
                        xmlSecByte * out, xmlSecSize outSize,
                        xmlSecSize* outWritten) {
     xmlSecMSCryptoKWDes3CtxPtr ctx;
@@ -439,7 +439,7 @@ xmlSecMSCryptoKWDes3BlockEncrypt(xmlSecTransformPtr transform,
     xmlSecAssert2(keyBufSize >= XMLSEC_KW_DES3_KEY_LENGTH, -1);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(keyBufSize, dwKeyBufSize, goto done, NULL);
 
-    /* Import this key and get an HCRYPTKEY handle, we do it again and again 
+    /* Import this key and get an HCRYPTKEY handle, we do it again and again
        to ensure we don't go into CBC mode */
     if (!xmlSecMSCryptoImportPlainSessionBlob(ctx->desCryptProvider,
         ctx->pubPrivKey,
@@ -530,7 +530,7 @@ xmlSecMSCryptoKWDes3BlockDecrypt(xmlSecTransformPtr transform,
     xmlSecAssert2(keyBufSize >= XMLSEC_KW_DES3_KEY_LENGTH, -1);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(keyBufSize, dwKeyBufSize, goto done, NULL);
 
-    /* Import this key and get an HCRYPTKEY handle, we do it again and again 
+    /* Import this key and get an HCRYPTKEY handle, we do it again and again
        to ensure we don't go into CBC mode */
     if (!xmlSecMSCryptoImportPlainSessionBlob(ctx->desCryptProvider,
         ctx->pubPrivKey,

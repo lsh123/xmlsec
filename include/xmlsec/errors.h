@@ -6,7 +6,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_ERRORS_H__
 #define __XMLSEC_ERRORS_H__
@@ -439,9 +439,9 @@ XMLSEC_EXPORT const char*       xmlSecErrorsGetMsg              (xmlSecSize pos)
 #define __XMLSEC_FUNCTION__ __func__
 
 /* fallback for __FUNCTION__ */
-#else 
+#else
 #define __XMLSEC_FUNCTION__  ""
-#endif 
+#endif
 
 #endif /*!defined(__XMLSEC_FUNCTION__) */
 

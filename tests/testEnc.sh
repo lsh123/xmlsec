@@ -220,7 +220,7 @@ execEncTest $res_success \
     "" \
     "merlin-xmlenc-five/encrypt-element-aes256-cbc-retrieved-kw-aes256" \
     "aes256-cbc kw-aes256" \
-    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" 
+    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml"
 
 
 #merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p-sha256.xml
@@ -310,7 +310,7 @@ execEncTest $res_success \
     "tripledes-cbc kw-tripledes" \
     "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml" \
     "--session-key des-192 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name --xml-data $topfolder/01-phaos-xmlenc-3/enc-element-3des-kw-3des.data --node-name http://example.org/paymentv2:CreditCard" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml" 
+    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml"
 
 execEncTest $res_success \
     "" \
@@ -318,7 +318,7 @@ execEncTest $res_success \
     "aes128-cbc kw-tripledes" \
     "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml" \
     "--session-key aes-128 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name --xml-data $topfolder/01-phaos-xmlenc-3/enc-content-aes128-kw-3des.data --node-name http://example.org/paymentv2:CreditCard" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml" 
+    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml"
 
 execEncTest $res_success \
     "" \
@@ -326,7 +326,7 @@ execEncTest $res_success \
     "aes128-cbc kw-aes128" \
     "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml" \
     "--session-key aes-128 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name --xml-data $topfolder/01-phaos-xmlenc-3/enc-element-aes128-kw-aes128.data --node-name http://example.org/paymentv2:CreditCard" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml" 
+    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml"
 
 execEncTest $res_success \
     "" \
@@ -334,7 +334,7 @@ execEncTest $res_success \
     "aes128-cbc kw-aes256" \
     "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml" \
     "--session-key aes-128 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name --xml-data $topfolder/01-phaos-xmlenc-3/enc-element-aes128-kw-aes256.data --node-name http://example.org/paymentv2:CreditCard" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml" 
+    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml"
 
 execEncTest $res_success \
     "" \
@@ -342,7 +342,7 @@ execEncTest $res_success \
     "tripledes-cbc kw-aes192" \
     "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml" \
     "--session-key des-192 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name --xml-data $topfolder/01-phaos-xmlenc-3/enc-content-3des-kw-aes192.data --node-name http://example.org/paymentv2:CreditCard" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml" 
+    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml"
 
 execEncTest $res_success \
     "" \
@@ -350,7 +350,7 @@ execEncTest $res_success \
     "aes192-cbc kw-aes256" \
     "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml" \
     "--session-key aes-192 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name --xml-data $topfolder/01-phaos-xmlenc-3/enc-content-aes192-kw-aes256.data --node-name http://example.org/paymentv2:CreditCard" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml" 
+    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml"
 
 execEncTest $res_success \
     "" \
@@ -358,7 +358,7 @@ execEncTest $res_success \
     "aes192-cbc kw-aes192" \
     "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml" \
     "--session-key aes-192 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name --xml-data $topfolder/01-phaos-xmlenc-3/enc-element-aes192-kw-aes192.data --node-name http://example.org/paymentv2:CreditCard" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml" 
+    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml"
 
 execEncTest $res_success \
     "" \
@@ -366,7 +366,7 @@ execEncTest $res_success \
     "aes256-cbc kw-aes256" \
     "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml" \
     "--session-key aes-256 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name --xml-data $topfolder/01-phaos-xmlenc-3/enc-element-aes256-kw-aes256.data --node-name http://example.org/paymentv2:CreditCard" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml" 
+    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml"
 
 execEncTest $res_success \
     "" \
@@ -406,11 +406,11 @@ fi
 aesgcm_key_lengths="128 192 256"
 aesgcm_plaintext_lengths="104 128 256 408"
 aesgcm_vectors="01 02 03 04 05 06 07 08 09 10 11 12 13 14 15"
-for aesgcm_k_l in $aesgcm_key_lengths ; do 
-    for aesgcm_pt_l in $aesgcm_plaintext_lengths ; do 
-        for aesgcm_v in $aesgcm_vectors ; do 
+for aesgcm_k_l in $aesgcm_key_lengths ; do
+    for aesgcm_pt_l in $aesgcm_plaintext_lengths ; do
+        for aesgcm_v in $aesgcm_vectors ; do
             base_test_name="nist-aesgcm/aes${aesgcm_k_l}/aes${aesgcm_k_l}-gcm-96-${aesgcm_pt_l}-0-128-${aesgcm_v}"
-            # If the corresponding *.data file is missing then we expect the test to fail 
+            # If the corresponding *.data file is missing then we expect the test to fail
             if [ -f "$topfolder/$base_test_name.xml" -a ! -f "$topfolder/$base_test_name.data" ] ; then
                 execEncTest "$res_fail" \
                     "" \
@@ -475,7 +475,7 @@ execEncTest $res_fail \
     "" \
     "aleksey-xmlenc-01/enc-aes192cbc-keyname-ref" \
     "" \
-    "--keys-file $topfolder/keys/keys.xml --enabled-cipher-reference-uris empty" 
+    "--keys-file $topfolder/keys/keys.xml --enabled-cipher-reference-uris empty"
 
 execEncTest $res_fail \
     "" \

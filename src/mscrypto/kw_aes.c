@@ -6,7 +6,7 @@
  * distribution for preciese wording.
  *
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
- * Copyright (C) 2003-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:kw_aes
@@ -43,16 +43,16 @@
  * AES KW implementation
  *
  *********************************************************************/
-static int      xmlSecMSCryptoKWAesBlockEncrypt         (xmlSecTransformPtr transform, 
+static int      xmlSecMSCryptoKWAesBlockEncrypt         (xmlSecTransformPtr transform,
                                                          const xmlSecByte * in,
                                                          xmlSecSize inSize,
-                                                         xmlSecByte * out, 
+                                                         xmlSecByte * out,
                                                          xmlSecSize outSize,
                                                          xmlSecSize* outWritten);
 static int      xmlSecMSCryptoKWAesBlockDecrypt         (xmlSecTransformPtr transform,
                                                          const xmlSecByte * in,
                                                          xmlSecSize inSize,
-                                                         xmlSecByte * out, 
+                                                         xmlSecByte * out,
                                                          xmlSecSize outSize,
                                                          xmlSecSize* outWritten);
 
@@ -305,7 +305,7 @@ xmlSecMSCryptoKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte *
     xmlSecAssert2(keySize == ctx->parentCtx.keyExpectedSize, -1);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(keySize, dwKeySize, goto done, NULL);
 
-    /* Import this key and get an HCRYPTKEY handle, we do it again and again 
+    /* Import this key and get an HCRYPTKEY handle, we do it again and again
        to ensure we don't go into CBC mode */
     if (!xmlSecMSCryptoImportPlainSessionBlob(ctx->cryptProvider,
         ctx->pubPrivKey,
@@ -368,7 +368,7 @@ xmlSecMSCryptoKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte *
     ctx = xmlSecMSCryptoKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->pubPrivKey != 0, -1);
-    
+
     keyData = xmlSecBufferGetData(&(ctx->parentCtx.keyBuffer));
     keySize = xmlSecBufferGetSize(&(ctx->parentCtx.keyBuffer));
     xmlSecAssert2(keyData != NULL, -1);
@@ -376,7 +376,7 @@ xmlSecMSCryptoKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte *
     xmlSecAssert2(keySize == ctx->parentCtx.keyExpectedSize, -1);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(keySize, dwKeySize, goto done, NULL);
 
-    /* Import this key and get an HCRYPTKEY handle, we do it again and again 
+    /* Import this key and get an HCRYPTKEY handle, we do it again and again
        to ensure we don't go into CBC mode */
     if (!xmlSecMSCryptoImportPlainSessionBlob(ctx->cryptProvider,
         ctx->pubPrivKey,

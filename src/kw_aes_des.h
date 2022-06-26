@@ -9,7 +9,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2010-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_KT_AES_DES_H__
 #define __XMLSEC_KT_AES_DES_H__
@@ -75,7 +75,7 @@ struct _xmlSecKWDes3Klass {
     /* for the future */
     void*                               reserved0;
     void*                               reserved1;
-}; 
+};
 typedef const struct _xmlSecKWDes3Klass              xmlSecKWDes3Klass,
                                                     *xmlSecKWDes3Id;
 
@@ -154,7 +154,7 @@ struct _xmlSecKWAesKlass {
     /* for the future */
     void*                               reserved0;
     void*                               reserved1;
-}; 
+};
 typedef const struct _xmlSecKWAesKlass              xmlSecKWAesKlass,
                                                     *xmlSecKWAesId;
 

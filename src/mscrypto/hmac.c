@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:hmac
@@ -58,7 +58,7 @@
 /**
  * xmlSecMSCryptoHmacGetMinOutputLength:
  *
- * DEPRECATED (use @xmlSecTransformHmacGetMinOutputBitsSize instead). 
+ * DEPRECATED (use @xmlSecTransformHmacGetMinOutputBitsSize instead).
  * Gets the value of min HMAC length.
  *
  * Returns: the min HMAC output length
@@ -361,10 +361,10 @@ xmlSecMSCryptoHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     }
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(bufSize, dwBufSize, return(-1), xmlSecTransformGetName(transform));
 
-    /* Import this key and get an HCRYPTKEY handle. 
-     * 
-     * HACK!!! HACK!!! HACK!!! 
-     * 
+    /* Import this key and get an HCRYPTKEY handle.
+     *
+     * HACK!!! HACK!!! HACK!!!
+     *
      * Using CALG_RC2 instead of CALG_HMAC for the key algorithm so we don't want to check key length
      */
     if (!xmlSecMSCryptoImportPlainSessionBlob(ctx->provider,
@@ -379,7 +379,7 @@ xmlSecMSCryptoHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         xmlSecInternalError("xmlSecMSCryptoImportPlainSessionBlob",
                             xmlSecTransformGetName(transform));
         return(-1);
-    }   
+    }
 
     /* create hash */
     ret = CryptCreateHash(ctx->provider,
@@ -536,7 +536,7 @@ xmlSecMSCryptoHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
             } else if(ctx->dgstSize <= 8 * hashSize) {
                 hashSize = ((ctx->dgstSize + 7) / 8); /* we need to truncate result digest */
             } else {
-                xmlSecInvalidSizeLessThanError("HMAC digest (bits)", 
+                xmlSecInvalidSizeLessThanError("HMAC digest (bits)",
                     8 * hashSize, ctx->dgstSize,
                     xmlSecTransformGetName(transform));
                 return(-1);

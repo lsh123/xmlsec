@@ -6,7 +6,7 @@
  * distribution for preciese wording.
  *
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
- * Copyright (C) 2003-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:certkeys
@@ -403,7 +403,7 @@ xmlSecMSCryptoKeyDataCtxDuplicateCert(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xmlSec
 
 /******************************************************************************
  *
- * xmlSecMSCryptoKeyData 
+ * xmlSecMSCryptoKeyData
  *
  *****************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(MSCryptoKeyData, xmlSecMSCryptoKeyDataCtx)
@@ -805,7 +805,7 @@ xmlSecMSCryptoKeyDataGetSize(xmlSecKeyDataPtr data) {
         PCCERT_CONTEXT pCertCtx = xmlSecMSCryptoKeyDataCtxGetCert(ctx);
 
         xmlSecAssert2(pCertCtx->pCertInfo != NULL, 0);
-        length = CertGetPublicKeyLength(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, 
+        length = CertGetPublicKeyLength(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
             &(pCertCtx->pCertInfo->SubjectPublicKeyInfo));
     } else if (xmlSecMSCryptoKeyDataCtxGetKey(ctx) != 0) {
         HCRYPTKEY cryptKey = xmlSecMSCryptoKeyDataCtxGetKey(ctx);
@@ -1847,7 +1847,7 @@ xmlSecMSCryptoKeyValueDsaReverse(xmlSecKeyValueDsaPtr dsaValue) {
     return(0);
 }
 
-static xmlSecKeyDataPtr 
+static xmlSecKeyDataPtr
 xmlSecMSCryptoKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     xmlSecKeyDataPtr data = NULL;
     xmlSecKeyDataPtr res = NULL;
@@ -1879,7 +1879,7 @@ xmlSecMSCryptoKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) 
     }
 
     /** we assume that:
-     *    sizeof(q) <= XMLSEC_MSCRYPTO_DSA_MAX_Q_SIZE, 
+     *    sizeof(q) <= XMLSEC_MSCRYPTO_DSA_MAX_Q_SIZE,
      *    sizeof(g) <= sizeof(p)
      *    sizeof(y) <= sizeof(p)
      */
@@ -1896,9 +1896,9 @@ xmlSecMSCryptoKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) 
     xmlSecAssert2(ySize <= pSize, NULL);
 
     /* Now try to prepare buffer for key */
-    blobBufferSize = sizeof(PUBLICKEYSTRUC) + sizeof(DSSPUBKEY) + 
+    blobBufferSize = sizeof(PUBLICKEYSTRUC) + sizeof(DSSPUBKEY) +
                      3 * pSize +
-                     XMLSEC_MSCRYPTO_DSA_MAX_Q_SIZE + 
+                     XMLSEC_MSCRYPTO_DSA_MAX_Q_SIZE +
                      sizeof(DSSSEED);
     ret = xmlSecBufferInitialize(&blob, blobBufferSize);
     if (ret < 0) {

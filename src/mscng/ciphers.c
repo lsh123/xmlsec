@@ -319,7 +319,7 @@ xmlSecMSCngBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         goto done;
     }
     bufInitialized = 1;
-     
+
     xmlSecBufferSetSize(&blob, blobSize);
     blobData = xmlSecBufferGetData(&blob);
 
@@ -1058,7 +1058,7 @@ xmlSecMSCngGCMBlockCipherCtxFinal(xmlSecMSCngBlockCipherCtxPtr ctx,
 
         /* new out buf size: old out buf size + same as in buf size + space for the tag */
         outMaxSize = outBufSize + inBufSize + xmlSecMSCngAesGcmTagLengthInBytes;
-        ret = xmlSecBufferSetMaxSize(out, outMaxSize);            
+        ret = xmlSecBufferSetMaxSize(out, outMaxSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetMaxSize", cipherName,
                 "size=" XMLSEC_SIZE_FMT, outMaxSize);
@@ -1166,7 +1166,7 @@ xmlSecMSCngGCMBlockCipherCtxFinal(xmlSecMSCngBlockCipherCtxPtr ctx,
     /* remove the processed block from input */
     ret = xmlSecBufferRemoveHead(in, inBufSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName, 
+        xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName,
             "size=" XMLSEC_SIZE_FMT, inBufSize);
         return(-1);
     }

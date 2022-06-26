@@ -6,7 +6,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2017 Aleksey Sanin <aleksey@aleksey.com>
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef __XMLSEC_SOAP_H__
 #define __XMLSEC_SOAP_H__

@@ -535,7 +535,7 @@ xmlSecParseMemory(const xmlSecByte *buffer, xmlSecSize size, int recovery) {
         if(ctxt->myDoc != NULL) {
             xmlFreeDoc(ctxt->myDoc);
             ctxt->myDoc = NULL;
-        }    
+        }
         xmlFreeParserCtxt(ctxt);
         return(NULL);
     }

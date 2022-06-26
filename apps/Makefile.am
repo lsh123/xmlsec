@@ -10,7 +10,7 @@ if XMLSEC_NO_APPS_CRYPTO_DYNAMIC_LOADING
 
 CRYPTO_DEPS = \
 	$(top_builddir)/src/@XMLSEC_DEFAULT_CRYPTO@/lib$(XMLSEC_CRYPTO_LIB).la \
-	$(NULL)    
+	$(NULL)
 
 CRYPTO_INCLUDES = \
 	$(XMLSEC_CRYPTO_CFLAGS) \
@@ -35,12 +35,12 @@ CRYPTO_INCLUDES = \
 
 CRYPTO_LD_FLAGS = \
 	$(NULL)
-    
+
 CRYPTO_LD_ADD = \
 	$(CRYPTO_DEPS) \
 	$(NULL)
 
-endif 
+endif
 
 AM_CFLAGS = \
 	-DPACKAGE=\"@PACKAGE@\" \

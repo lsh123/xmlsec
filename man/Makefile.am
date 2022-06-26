@@ -57,12 +57,12 @@ $(XMLSEC1_CONFIG_MAN):
 	)
 endif
 
-$(XMLSEC_PROGRAM): 
+$(XMLSEC_PROGRAM):
 	@cd ../apps;make
 
 $(XMLSEC_CONFIG_PROGRAM):
 
-	
+
 clean-local:
 	( if [ z"$(XMLSEC1_MAN_SRC)" != z"$(XMLSEC1_MAN)" ]; then \
 		rm -rf $(XMLSEC1_MAN) ; \

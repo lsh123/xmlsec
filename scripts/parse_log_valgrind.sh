@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/sh
 #
 # Usage: parse_log_valgrind.sh <log-file>
 #

@@ -260,9 +260,9 @@ xmlSecCryptoDLLibraryConstructFilename(const xmlChar* name) {
 
     xmlSecAssert2(name != NULL, NULL);
 
-    size = xmlSecStrlen(BAD_CAST PACKAGE) + 
-           xmlSecStrlen(name) + 
-           xmlSecStrlen(BAD_CAST XMLSEC_CRYPTO_DL_LIB_TMPL) + 
+    size = xmlSecStrlen(BAD_CAST PACKAGE) +
+           xmlSecStrlen(name) +
+           xmlSecStrlen(BAD_CAST XMLSEC_CRYPTO_DL_LIB_TMPL) +
            1;
     XMLSEC_SAFE_CAST_SIZE_TO_INT(size, len, return(NULL), NULL);
 

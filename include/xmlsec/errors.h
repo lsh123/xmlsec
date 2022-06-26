@@ -439,9 +439,9 @@ XMLSEC_EXPORT const char*       xmlSecErrorsGetMsg              (xmlSecSize pos)
 #define __XMLSEC_FUNCTION__ __func__
 
 /* fallback for __FUNCTION__ */
-#else 
+#else
 #define __XMLSEC_FUNCTION__  ""
-#endif 
+#endif
 
 #endif /*!defined(__XMLSEC_FUNCTION__) */
 

@@ -40,7 +40,7 @@
 
 #ifndef PKCS12_NO_PERSIST_KEY
 /* Windows Server 2003 and Windows XP:  This value is not supported. */
-#  define PKCS12_NO_PERSIST_KEY	0x00008000
+#  define PKCS12_NO_PERSIST_KEY    0x00008000
 #endif
 
 /* I don't see any other way then to use a global var to get the
@@ -544,7 +544,7 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
         if(pCert == NULL) {
             break;
         }
-        
+
         dwDataLen = sizeof(dwData);
         dwData = 0;
         /* Find the certificate that has the private key */

@@ -42,7 +42,7 @@
 /**
  * xmlSecGnuTLSHmacGetMinOutputLength:
  *
- * DEPRECATED (use @xmlSecTransformHmacGetMinOutputBitsSize instead). 
+ * DEPRECATED (use @xmlSecTransformHmacGetMinOutputBitsSize instead).
  * Gets the value of min HMAC length.
  *
  * Returns: the min HMAC output length
@@ -60,7 +60,7 @@ int xmlSecGnuTLSHmacGetMinOutputLength(void)
  * xmlSecGnuTLSHmacSetMinOutputLength:
  * @min_length: the new min length
  *
- * DEPRECATED (use @xmlSecTransformHmacSetMinOutputBitsSize instead). 
+ * DEPRECATED (use @xmlSecTransformHmacSetMinOutputBitsSize instead).
  * Sets the min HMAC output length
  */
 void xmlSecGnuTLSHmacSetMinOutputLength(int min_length)

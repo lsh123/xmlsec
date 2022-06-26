@@ -42,13 +42,13 @@
 static int        xmlSecGCryptKWAesBlockEncrypt                 (xmlSecTransformPtr transform,
                                                                  const xmlSecByte * in,
                                                                  xmlSecSize inSize,
-                                                                 xmlSecByte * out, 
+                                                                 xmlSecByte * out,
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize * outWritten);
 static int        xmlSecGCryptKWAesBlockDecrypt                 (xmlSecTransformPtr transform,
-                                                                 const xmlSecByte * in, 
+                                                                 const xmlSecByte * in,
                                                                  xmlSecSize inSize,
-                                                                 xmlSecByte * out, 
+                                                                 xmlSecByte * out,
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize * outWritten);
 static xmlSecKWAesKlass xmlSecGCryptKWAesKlass = {
@@ -131,7 +131,7 @@ xmlSecGCryptKWAesInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    ret = xmlSecTransformKWAesInitialize(transform, &(ctx->parentCtx), 
+    ret = xmlSecTransformKWAesInitialize(transform, &(ctx->parentCtx),
         &xmlSecGCryptKWAesKlass, xmlSecGCryptKeyDataAesId,
         keyExpectedSize);
     if(ret < 0) {
@@ -379,8 +379,8 @@ xmlSecGCryptKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     xmlSecAssert2(keyData != NULL, -1);
     xmlSecAssert2(keySize > 0, -1);
     xmlSecAssert2(ctx->parentCtx.keyExpectedSize == keySize, -1);
-    
-    err = gcry_cipher_open(&cipherCtx, ctx->cipher, ctx->mode, ctx->flags); 
+
+    err = gcry_cipher_open(&cipherCtx, ctx->cipher, ctx->mode, ctx->flags);
     if(err != GPG_ERR_NO_ERROR) {
         xmlSecGCryptError("gcry_cipher_open", err, NULL);
         return(-1);

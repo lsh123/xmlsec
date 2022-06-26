@@ -50,15 +50,15 @@
  *
  *********************************************************************/
 static int        xmlSecNSSKWAesBlockEncrypt                (xmlSecTransformPtr transform,
-                                                             const xmlSecByte * in, 
+                                                             const xmlSecByte * in,
                                                              xmlSecSize inSize,
-                                                             xmlSecByte * out, 
+                                                             xmlSecByte * out,
                                                              xmlSecSize outSize,
                                                              xmlSecSize * outWritten);
 static int        xmlSecNSSKWAesBlockDecrypt                (xmlSecTransformPtr transform,
-                                                             const xmlSecByte * in, 
+                                                             const xmlSecByte * in,
                                                              xmlSecSize inSize,
-                                                             xmlSecByte * out, 
+                                                             xmlSecByte * out,
                                                              xmlSecSize outSize,
                                                              xmlSecSize * outWritten);
 static xmlSecKWAesKlass xmlSecNssKWAesKlass = {
@@ -88,7 +88,7 @@ typedef struct _xmlSecNssKWAesCtx   xmlSecNssKWAesCtx,
 
 struct _xmlSecNssKWAesCtx {
     xmlSecTransformKWAesCtx parentCtx;
-    PK11SymKey* aesKey;     
+    PK11SymKey* aesKey;
 };
 
 static int              xmlSecNSSKWAesEnsureKey         (xmlSecNssKWAesCtxPtr ctx,
@@ -260,7 +260,7 @@ xmlSecNssKWAesInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    ret = xmlSecTransformKWAesInitialize(transform, &(ctx->parentCtx), 
+    ret = xmlSecTransformKWAesInitialize(transform, &(ctx->parentCtx),
         &xmlSecNssKWAesKlass, xmlSecNssKeyDataAesId,
         keyExpectedSize);
     if(ret < 0) {

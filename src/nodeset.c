@@ -579,7 +579,7 @@ xmlSecNodeSetDebugDump(xmlSecNodeSetPtr nset, FILE *output) {
     for(ii = 0; ii < len; ++ii) {
         cur = xmlXPathNodeSetItem(nset->nodes, ii);
         xmlSecAssert(cur != NULL);
-        
+
         if(cur->type != XML_NAMESPACE_DECL) {
             fprintf(output, XMLSEC_ENUM_FMT ": %s\n",
                 XMLSEC_ENUM_CAST(cur->type),

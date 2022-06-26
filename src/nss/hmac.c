@@ -65,7 +65,7 @@ int xmlSecNssHmacGetMinOutputLength(void)
  * xmlSecNssHmacSetMinOutputLength:
  * @min_length: the new min length
  *
- * DEPRECATED (use @xmlSecTransformHmacSetMinOutputBitsSize instead). 
+ * DEPRECATED (use @xmlSecTransformHmacSetMinOutputBitsSize instead).
  * Sets the min HMAC output length
  */
 void xmlSecNssHmacSetMinOutputLength(int min_length)

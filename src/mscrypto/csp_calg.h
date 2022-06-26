@@ -20,8 +20,8 @@
 #define ALG_SID_GR3411                                  30
 #define ALG_SID_G28147                                  30
 
-#define ALG_SID_GR3411_2012_256 			33
-#define ALG_SID_GR3411_2012_512 			34
+#define ALG_SID_GR3411_2012_256             33
+#define ALG_SID_GR3411_2012_512             34
 
 #define ALG_SID_GR3410                                  30
 #define ALG_SID_DH_EX_SF                                30
@@ -55,8 +55,8 @@
 
 #define CALG_MAGPRO_HASH_28147_89       (ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_MAGPRO_28147_89)
 
-#define CALG_GR3411_2012_256		(ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_GR3411_2012_256)
-#define CALG_GR3411_2012_512		(ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_GR3411_2012_512)
+#define CALG_GR3411_2012_256        (ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_GR3411_2012_256)
+#define CALG_GR3411_2012_512        (ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_GR3411_2012_512)
 
 #define CALG_MAGPRO_ENCR_28147_89       (ALG_CLASS_DATA_ENCRYPT | ALG_TYPE_BLOCK | ALG_SID_G28147)
 

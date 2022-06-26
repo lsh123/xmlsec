@@ -802,7 +802,7 @@ xmlSecKeyPtr
 xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
                            void* pwdCallback ATTRIBUTE_UNUSED,
                            void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
-    
+
     PKCS12 *p12 = NULL;
     EVP_PKEY *pKey = NULL;
     STACK_OF(X509) *chain = NULL;
@@ -1567,7 +1567,7 @@ xmlSecOpenSSLDummyPasswordCallback(char *buf, int bufLen,
     if(password == NULL) {
         return(-1);
     }
-  
+
     passwordSize = strlen(password);
     XMLSEC_SAFE_CAST_SIZE_T_TO_INT(passwordSize, passwordLen, return(-1), NULL);
     if(passwordLen + 1 > bufLen) {

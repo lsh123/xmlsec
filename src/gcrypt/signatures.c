@@ -102,7 +102,7 @@ struct _xmlSecGCryptPkSignatureCtx {
  *
  * Pk Signature transforms
  *
- * xmlSecTransform + xmlSecGCryptPkSignatureCtx 
+ * xmlSecTransform + xmlSecGCryptPkSignatureCtx
  *
  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GCryptPkSignature, xmlSecGCryptPkSignatureCtx)
@@ -892,7 +892,7 @@ xmlSecGCryptTransformDsaSha1GetKlass(void) {
  *
  * This prefix is included to make it easier to use standard cryptographic
  * libraries. The FF octet MUST be repeated the maximum number of times such
- * that the value of the quantity being CRYPTed is one octet shorter than 
+ * that the value of the quantity being CRYPTed is one octet shorter than
  * the RSA modulus.
  *
  ***************************************************************************/

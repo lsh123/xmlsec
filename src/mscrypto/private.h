@@ -29,10 +29,10 @@ extern "C" {
  * Utils
  *
  ********************************************************************/
-int                ConvertEndian                    (const xmlSecByte * src, 
-                                                     xmlSecByte * dst, 
+int                ConvertEndian                    (const xmlSecByte * src,
+                                                     xmlSecByte * dst,
                                                      xmlSecSize size);
-int                ConvertEndianInPlace             (xmlSecByte * buf, 
+int                ConvertEndianInPlace             (xmlSecByte * buf,
                                                      xmlSecSize size);
 
 /********************************************************************

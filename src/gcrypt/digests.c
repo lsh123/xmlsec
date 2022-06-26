@@ -47,7 +47,7 @@ struct _xmlSecGCryptDigestCtx {
  *
  * Digest transforms
  *
- * xmlSecTransform + xmlSecGCryptDigestCtx 
+ * xmlSecTransform + xmlSecGCryptDigestCtx
  *
  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GCryptDigest, xmlSecGCryptDigestCtx)

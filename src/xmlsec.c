@@ -65,7 +65,7 @@ xmlSecNoXxeExternalEntityLoader(const char *URL, const char *ID,
 
 /*
  * xmlSecSetExternalEntityLoader:
- * @entityLoader:       the new entity resolver function, or NULL to restore 
+ * @entityLoader:       the new entity resolver function, or NULL to restore
  *                      libxml2's default handler
  *
  * Wrapper for xmlSetExternalEntityLoader.

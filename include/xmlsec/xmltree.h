@@ -37,8 +37,8 @@ extern "C" {
 #define xmlSecNodeGetName(node) \
     (((node)) ? ((const char*)((node)->name)) : NULL)
 
-XMLSEC_EXPORT const xmlChar*	xmlSecGetDefaultLineFeed(void);
-XMLSEC_EXPORT void		xmlSecSetDefaultLineFeed(const xmlChar *linefeed);
+XMLSEC_EXPORT const xmlChar*    xmlSecGetDefaultLineFeed(void);
+XMLSEC_EXPORT void        xmlSecSetDefaultLineFeed(const xmlChar *linefeed);
 
 XMLSEC_EXPORT const xmlChar*    xmlSecGetNodeNsHref     (const xmlNodePtr cur);
 XMLSEC_EXPORT int               xmlSecGetNodeContentAsSize(const xmlNodePtr cur,

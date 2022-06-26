@@ -31,7 +31,7 @@ extern "C" {
 
 /**
  * XMLSEC_X509DATA_CERTIFICATE_NODE:
- * 
+ *
  * DEPRECATED. <dsig:X509Certificate/> node found or would be written back.
  */
 #define XMLSEC_X509DATA_CERTIFICATE_NODE                        0x00000001

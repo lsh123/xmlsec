@@ -494,7 +494,7 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
 
     /* turn the read data into a public key blob, as documented at
      * <https://msdn.microsoft.com/library/windows/desktop/aa833126.aspx>: Q is
-     * part of the struct, need to write P, G, Y after it 
+     * part of the struct, need to write P, G, Y after it
      * we assume that:
      *    sizeof(q) <= XMLSEC_MSCNG_DSA_MAX_Q_SIZE,
      *    sizeof(g) <= sizeof(p)
@@ -1152,7 +1152,7 @@ xmlSecMSCngKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     bufData += rsakey->cbModulus;
 
     /* next is PrivateExponent node: not supported in MSCrypto */
-    
+
     /* dont reverse blobs as both the XML and CNG works with big-endian */
     /* success */
     res = 0;

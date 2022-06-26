@@ -132,7 +132,7 @@ xmlSecParserFinalize(xmlSecTransformPtr transform) {
     if(ctx->parserCtx != NULL) {
         if(ctx->parserCtx->myDoc != NULL) {
             xmlFreeDoc(ctx->parserCtx->myDoc);
-	    ctx->parserCtx->myDoc = NULL;
+        ctx->parserCtx->myDoc = NULL;
         }
         xmlFreeParserCtxt(ctx->parserCtx);
     }
@@ -535,7 +535,7 @@ xmlSecParseMemory(const xmlSecByte *buffer, xmlSecSize size, int recovery) {
         if(ctxt->myDoc != NULL) {
             xmlFreeDoc(ctxt->myDoc);
             ctxt->myDoc = NULL;
-        }	
+        }    
         xmlFreeParserCtxt(ctxt);
         return(NULL);
     }
@@ -565,7 +565,7 @@ xmlSecParseMemory(const xmlSecByte *buffer, xmlSecSize size, int recovery) {
  */
 void
 xmlSecParsePrepareCtxt(xmlParserCtxtPtr ctxt) {
-	xmlSecAssert(ctxt != NULL);
+    xmlSecAssert(ctxt != NULL);
 
     /* required for c14n! */
     ctxt->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
@@ -585,7 +585,7 @@ static int g_xmlsec_parser_default_options = XML_PARSE_NONET | XML_PARSE_NODICT 
  * xmlSecParserGetDefaultOptions:
  *
  * Gets default LibXML2 parser options.
- * 
+ *
  * Returns: the current default LibXML2 parser options.
  */
 int

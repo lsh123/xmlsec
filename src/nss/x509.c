@@ -738,14 +738,14 @@ xmlSecNssKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Value,
     }
 
     if(xmlSecBufferGetSize(&(x509Value->cert)) > 0) {
-        cert = xmlSecNssX509CertDerRead(xmlSecBufferGetData(&(x509Value->cert)), 
+        cert = xmlSecNssX509CertDerRead(xmlSecBufferGetData(&(x509Value->cert)),
             xmlSecBufferGetSize(&(x509Value->cert)));
         if(cert == NULL) {
             xmlSecInternalError("xmlSecNssX509CertDerRead", xmlSecKeyDataGetName(data));
             goto done;
         }
     } else if(xmlSecBufferGetSize(&(x509Value->crl)) > 0) {
-        crl = xmlSecNssX509CrlDerRead(xmlSecBufferGetData(&(x509Value->crl)), 
+        crl = xmlSecNssX509CrlDerRead(xmlSecBufferGetData(&(x509Value->crl)),
             xmlSecBufferGetSize(&(x509Value->crl)), flags);
         if(crl == NULL) {
             xmlSecInternalError("xmlSecNssX509CertDerRead", xmlSecKeyDataGetName(data));
@@ -753,30 +753,30 @@ xmlSecNssKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Value,
         }
     } else if(xmlSecBufferGetSize(&(x509Value->ski)) > 0) {
         cert = xmlSecNssX509StoreFindCert_ex(x509Store, NULL,  NULL, NULL,
-            xmlSecBufferGetData(&(x509Value->ski)), xmlSecBufferGetSize(&(x509Value->ski)), 
+            xmlSecBufferGetData(&(x509Value->ski)), xmlSecBufferGetSize(&(x509Value->ski)),
             NULL /* unused */);
         if((cert == NULL) && (stopOnUnknownCert != 0)) {
             xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data),
-                "skiSize=" XMLSEC_SIZE_FMT, xmlSecBufferGetSize(&(x509Value->ski)));            
+                "skiSize=" XMLSEC_SIZE_FMT, xmlSecBufferGetSize(&(x509Value->ski)));
             goto done;
-        }        
+        }
     } else if(x509Value->subject != NULL) {
-        cert = xmlSecNssX509StoreFindCert_ex(x509Store, x509Value->subject, 
+        cert = xmlSecNssX509StoreFindCert_ex(x509Store, x509Value->subject,
             NULL, NULL, NULL, 0, NULL /* unused */);
         if((cert == NULL) && (stopOnUnknownCert != 0)) {
             xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data),
-                "subject=%s", xmlSecErrorsSafeString(x509Value->subject));            
+                "subject=%s", xmlSecErrorsSafeString(x509Value->subject));
             goto done;
         }
-    } else if((x509Value->issuerName != NULL) && (x509Value->issuerSerial != NULL)) {        
-        cert = xmlSecNssX509StoreFindCert_ex(x509Store, NULL, 
+    } else if((x509Value->issuerName != NULL) && (x509Value->issuerSerial != NULL)) {
+        cert = xmlSecNssX509StoreFindCert_ex(x509Store, NULL,
             x509Value->issuerName, x509Value->issuerSerial,
             NULL, 0, NULL /* unused */);
         if((cert == NULL) && (stopOnUnknownCert != 0)) {
             xmlSecOtherError3(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data),
                 "issuerName=%s;issuerSerial=%s",
                 xmlSecErrorsSafeString(x509Value->issuerName),
-                xmlSecErrorsSafeString(x509Value->issuerSerial));         
+                xmlSecErrorsSafeString(x509Value->issuerSerial));
             goto done;
         }
     }
@@ -802,7 +802,7 @@ xmlSecNssKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Value,
     /* success */
     res = 0;
 
-done: 
+done:
     /* cleanup */
     if(cert != NULL) {
         CERT_DestroyCertificate(cert);

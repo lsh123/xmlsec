@@ -67,7 +67,7 @@ typedef struct _xmlSecMSCngKWAesCtx xmlSecMSCngKWAesCtx, *xmlSecMSCngKWAesCtxPtr
 struct _xmlSecMSCngKWAesCtx {
     xmlSecTransformKWAesCtx parentCtx;
 
-    LPCWSTR pszAlgId;    
+    LPCWSTR pszAlgId;
 };
 
 /******************************************************************************
@@ -196,7 +196,7 @@ xmlSecMSCngKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     xmlSecAssert2(xmlSecMSCngKWAesCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngKWAesSize), -1);
-    
+
     ctx = xmlSecMSCngKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 

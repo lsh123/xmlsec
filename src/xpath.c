@@ -12,7 +12,7 @@
  * @Short_description: XPath transform implementation.
  * @Stability: Private
  *
- * 
+ *
  */
 
 #include "globals.h"
@@ -258,18 +258,18 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
     to reserve NULL for our own purposes so we simply create an empty
     node set here */
     if(xpathObj->nodesetval == NULL) {
-    	xpathObj->nodesetval = xmlXPathNodeSetCreate(NULL);
-    	if(xpathObj->nodesetval == NULL) {
-    		xmlXPathFreeObject(xpathObj);
+        xpathObj->nodesetval = xmlXPathNodeSetCreate(NULL);
+        if(xpathObj->nodesetval == NULL) {
+            xmlXPathFreeObject(xpathObj);
             xmlSecXmlError2("xmlXPathNodeSetCreate", NULL,
                             "expr=%s", xmlSecErrorsSafeString(data->expr));
-    		return(NULL);
-    	}
+            return(NULL);
+        }
     }
 
     nodes = xmlSecNodeSetCreate(doc, xpathObj->nodesetval, data->nodeSetType);
     if(nodes == NULL) {
-        xmlSecInternalError2("xmlSecNodeSetCreate", NULL, 
+        xmlSecInternalError2("xmlSecNodeSetCreate", NULL,
             "type=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(data->nodeSetType));
         xmlXPathFreeObject(xpathObj);
         return(NULL);
@@ -881,7 +881,7 @@ xmlSecTransformXPointerNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, x
  * Visa3DHack transform
  *
  * xmlSecTransform + xmlChar* (pointer to ID)
- * 
+ *
  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(Visa3DHack, xmlChar*)
 #define xmlSecVisa3DHackSize XMLSEC_TRANSFORM_SIZE(Visa3DHack)

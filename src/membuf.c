@@ -36,7 +36,7 @@
  *
  * Memory Buffer Transform
  *
- * xmlSecTransform + xmlSecBuffer 
+ * xmlSecTransform + xmlSecBuffer
  *
  ****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MemBuf, xmlSecBuffer)

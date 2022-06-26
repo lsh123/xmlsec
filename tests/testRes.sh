@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/sh
 
 if [ "z$TMPFOLDER" = "z" ] ; then
     TMPFOLDER=/tmp
@@ -17,4 +17,3 @@ grep 'ERROR SUMMARY' $logfiles | \
     sed 's/(suppressed: .*//' | \
     sort -u
 
- 

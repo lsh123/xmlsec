@@ -221,7 +221,7 @@ typedef int                    (*xmlSecKeyDataX509Read)                 (xmlSecK
  * @x509Value:          the pointer to result @xmlSecKeyValueX509.
  * @content:            the bitmask of what should be output to @x509Value.
  * @context:            the writer function context.
- * 
+ *
  * If available, writes the next X509 object (cert or crl) into @x509Value.
  *
  * Returns: 0 on success, 1 if no more certs/crls are available, or a negative'

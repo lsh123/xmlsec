@@ -2,7 +2,7 @@
 # Run this to generate all the initial makefiles, etc.
 
 srcdir=`dirname $0`
-test -z "$srcdir" && srcdir=. 
+test -z "$srcdir" && srcdir=.
 
 THEDIR=`pwd`
 cd $srcdir
@@ -95,5 +95,5 @@ conf_flags="--enable-maintainer-mode" #--enable-iso-c
 echo Running configure $conf_flags "$@" ...
 $srcdir/configure $conf_flags "$@"
 
-echo 
+echo
 echo "Now type 'make' to compile xmlsec."

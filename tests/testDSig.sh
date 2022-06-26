@@ -74,7 +74,7 @@ execDSigTest $res_success \
 #    "hmac" \
 #    "--hmackey $topfolder/keys/hmackey.bin" \
 #    "--hmackey $topfolder/keys/hmackey.bin" \
-#    "--hmackey $topfolder/keys/hmackey.bin" 
+#    "--hmackey $topfolder/keys/hmackey.bin"
 #
 
 execDSigTest $res_success \
@@ -472,7 +472,7 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloping-expired-cert" \
     "sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --verification-gmt-time 2014-05-24+00:00:00" 
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --verification-gmt-time 2014-05-24+00:00:00"
 
 
 execDSigTest $res_success \
@@ -541,7 +541,7 @@ execDSigTest $res_success \
     "hmac" \
     "--hmackey $topfolder/keys/hmackey.bin" \
     "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" 
+    "--hmackey $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
@@ -550,7 +550,7 @@ execDSigTest $res_success \
     "hmac" \
     "--hmackey $topfolder/keys/hmackey.bin" \
     "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" 
+    "--hmackey $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
@@ -647,7 +647,7 @@ execDSigTest $res_success \
 #
 # merlin-xmlenc-five
 #
-# While the main operation is signature (and this is why we have these 
+# While the main operation is signature (and this is why we have these
 # tests here instead of testEnc.sh), these tests check the encryption
 # key transport/wrapper algorightms
 #
@@ -659,14 +659,14 @@ execDSigTest $res_success \
     "hmac des" \
     "--keys-file $topfolder/merlin-xmlenc-five/keys.xml $url_map_xml_stylesheet_2005" \
     "--session-key hmac-192 --keys-file $topfolder/merlin-xmlenc-five/keys.xml $url_map_xml_stylesheet_2005" \
-    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml $url_map_xml_stylesheet_2005" 
+    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml $url_map_xml_stylesheet_2005"
 
 execDSigTest $res_success \
     "" \
     "merlin-xmlenc-five/encsig-sha256-hmac-sha256-kw-aes128" \
     "sha256 hmac-sha256 kw-aes128" \
     "hmac aes" \
-    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml $url_map_xml_stylesheet_2005" 
+    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml $url_map_xml_stylesheet_2005"
 
 execDSigTest $res_success \
     "" \
@@ -762,7 +762,7 @@ execDSigTest $res_success \
     "signature-big" \
     "base64 xslt xpath sha1 rsa-sha1" \
     "rsa x509" \
-    "--pubkey-cert-$cert_format certs/rsa-cert.$cert_format $url_map_rfc3161" 
+    "--pubkey-cert-$cert_format certs/rsa-cert.$cert_format $url_map_rfc3161"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
@@ -993,14 +993,14 @@ execDSigTest $res_fail \
     "aleksey-xmldsig-01/enveloping-expired-cert" \
     "sha1 dsa-sha1" \
     "dsa x509" \
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --verification-gmt-time 2014-05-25+00:00:00" 
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --verification-gmt-time 2014-05-25+00:00:00"
 
 execDSigTest $res_fail \
     "" \
     "aleksey-xmldsig-01/dtd-hmac-91" \
     "sha1 hmac-sha1" \
     "hmac" \
-    "--enabled-reference-uris empty --hmackey $topfolder/keys/hmackey.bin --dtd-file $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd" 
+    "--enabled-reference-uris empty --hmackey $topfolder/keys/hmackey.bin --dtd-file $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd"
 
 execDSigTest $res_fail \
     "phaos-xmldsig-three" \

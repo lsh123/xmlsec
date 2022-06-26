@@ -84,7 +84,7 @@ void                    xmlSecGnuTLSX509CrlDebugXmlDump         (gnutls_x509_crl
  * Misc. utils/helpers
  *
  ************************************************************************/
-xmlChar*                xmlSecGnuTLSASN1IntegerWrite            (const unsigned char * data, 
+xmlChar*                xmlSecGnuTLSASN1IntegerWrite            (const unsigned char * data,
                                                                  size_t len);
 
 

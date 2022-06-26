@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/sh
 #
 # Usage: build_release.sh <version> [<release-candidate-tag>]
 #

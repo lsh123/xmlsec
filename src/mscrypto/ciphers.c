@@ -459,7 +459,7 @@ xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
         ctx->keyId                  = xmlSecMSCryptoKeyDataAesId;
         ctx->providers              = xmlSecMSCryptoProviderInfo_Aes;
         ctx->keySize                = 32;
-    } else     
+    } else
 #endif /* XMLSEC_NO_AES */
 
     {
@@ -504,7 +504,7 @@ xmlSecMSCryptoBlockCipherFinalize(xmlSecTransformPtr transform) {
     if (ctx->cryptProvider) {
         CryptReleaseContext(ctx->cryptProvider, 0);
     }
-    
+
     memset(ctx, 0, sizeof(xmlSecMSCryptoBlockCipherCtx));
 }
 

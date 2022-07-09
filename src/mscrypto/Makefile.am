@@ -2,7 +2,7 @@ NULL =
 
 EXTRA_DIST = \
 	mingw-crypt32.def \
-	README \
+	README.md \
 	$(NULL)
 
 lib_LTLIBRARIES = \

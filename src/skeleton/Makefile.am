@@ -1,7 +1,7 @@
 NULL =
 
 EXTRA_DIST = \
-	README \
+	README.md \
 	$(NULL)
 
 lib_LTLIBRARIES = \

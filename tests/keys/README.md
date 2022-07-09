@@ -1,7 +1,7 @@
 # XMLSec Library: Unit test keys
 
 ## Passwords
-For all files the password is `secret`.
+The same password `secret` should be used unless specified otherwise.
 
 ## Creating keys and certificates
 

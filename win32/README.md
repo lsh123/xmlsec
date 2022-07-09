@@ -132,6 +132,5 @@ Do not forget that if you need a different runtime for some reason, then
 you MUST recompile not only XMLSec, but LibXML, LibXSLT and OpenSSL as well.
 
 ## Authors
-
-March 2002, Igor Zlatkovic <igor@stud.fh-frankfurt.de>
-July, 2022, Aleksey Sanin <aleksey@aleksey.com>
+- March 2002, Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+- July, 2022, Aleksey Sanin <aleksey@aleksey.com>

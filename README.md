@@ -6,7 +6,7 @@ standards:
 - [XML Encryption Syntax and Processing](https://www.w3.org/TR/xmlenc-core/)
 
 ## Documentation
-Complete XMLSec library documentation is published on [XMLSec website](https://www.aleksey.com/xmlsec/). 
+Complete XMLSec library documentation is published on [XMLSec website](https://www.aleksey.com/xmlsec/).
 
 ## License
 XMLSec library is released under the MIT Licence (see the [Copyright file](Copyright).
@@ -25,7 +25,7 @@ And at least one of the following cryptographic libraries:
 - MS Crypto API (Windows only)
 - MS Crypto API NG (Windows only)
 
-For example, the following packages need to be installed on Ubuntu to build 
+For example, the following packages need to be installed on Ubuntu to build
 XMLSec library:
 ```
   # common build tools
@@ -72,4 +72,4 @@ To see the configuration options, run:
 
 ### Building XMLSec on Windows
 
-See [win32/README.txt](win32/README.txt) for details.
+See [win32/README.md](win32/README.md) for details.

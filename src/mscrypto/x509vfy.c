@@ -499,26 +499,26 @@ xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_C
     xmlSecAssert2(ctx->untrusted != NULL, FALSE);
 
     if(keyInfoCtx->certsVerificationTime > 0) {
-            /* convert the time to FILETIME */
+        /* convert the time to FILETIME */
         xmlSecMSCryptoUnixTimeToFileTime(keyInfoCtx->certsVerificationTime, &fTime);
     } else {
-            /* Defaults to current time */
-            GetSystemTimeAsFileTime(&fTime);
+        /* Defaults to current time */
+        GetSystemTimeAsFileTime(&fTime);
     }
 
     /* try the certificates in the keys manager */
     if(!res) {
         tempCert = CertEnumCertificatesInStore(ctx->trusted, NULL);
-            if(tempCert) {
-                    CertFreeCertificateContext(tempCert);
+        if(tempCert) {
+            CertFreeCertificateContext(tempCert);
             res = xmlSecMSCryptoBuildCertChainManually(cert, &fTime, ctx->trusted, ctx->untrusted, certs, store);
         }
     }
 
     /* try the certificates in the system */
     if(!res && !ctx->dont_use_system_trusted_certs) {
-                res = xmlSecBuildChainUsingWinapi(cert, &fTime, ctx->untrusted, certs);
-        }
+        res = xmlSecBuildChainUsingWinapi(cert, &fTime, ctx->untrusted, certs);
+    }
 
     /* done */
     return res;

@@ -72,4 +72,4 @@ To see the configuration options, run:
 
 ### Building XMLSec on Windows
 
-See [win32/README.txt](win32/README.txt) for details.
+See [win32/README.md](win32/README.md) for details.

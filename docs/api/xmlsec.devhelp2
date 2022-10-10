@@ -675,6 +675,8 @@
     <keyword type="function" name="xmlSecParseMemory ()" link="xmlsec-parser.html#xmlSecParseMemory"/>
     <keyword type="function" name="xmlSecParseMemoryExt ()" link="xmlsec-parser.html#xmlSecParseMemoryExt"/>
     <keyword type="function" name="xmlSecParsePrepareCtxt ()" link="xmlsec-parser.html#xmlSecParsePrepareCtxt"/>
+    <keyword type="function" name="xmlSecParserGetDefaultOptions ()" link="xmlsec-parser.html#xmlSecParserGetDefaultOptions"/>
+    <keyword type="function" name="xmlSecParserSetDefaultOptions ()" link="xmlsec-parser.html#xmlSecParserSetDefaultOptions"/>
     <keyword type="function" name="xmlSecTransformXmlParserGetKlass ()" link="xmlsec-parser.html#xmlSecTransformXmlParserGetKlass"/>
     <keyword type="macro" name="xmlSecTransformXmlParserId" link="xmlsec-parser.html#xmlSecTransformXmlParserId"/>
     <keyword type="function" name="xmlSecTmplSignatureCreate ()" link="xmlsec-templates.html#xmlSecTmplSignatureCreate"/>
@@ -1099,6 +1101,7 @@
     <keyword type="macro" name="XMLSEC_OPENSSL_API_100" link="xmlsec-openssl-crypto.html#XMLSEC-OPENSSL-API-100:CAPS"/>
     <keyword type="macro" name="XMLSEC_OPENSSL_API_110" link="xmlsec-openssl-crypto.html#XMLSEC-OPENSSL-API-110:CAPS"/>
     <keyword type="macro" name="XMLSEC_OPENSSL_API_300" link="xmlsec-openssl-crypto.html#XMLSEC-OPENSSL-API-300:CAPS"/>
+    <keyword type="macro" name="XMLSEC_OPENSSL_API_111" link="xmlsec-openssl-crypto.html#XMLSEC-OPENSSL-API-111:CAPS"/>
     <keyword type="macro" name="XMLSEC_NO_AES" link="xmlsec-openssl-crypto.html#XMLSEC-NO-AES:CAPS"/>
     <keyword type="macro" name="XMLSEC_NO_DES" link="xmlsec-openssl-crypto.html#XMLSEC-NO-DES:CAPS"/>
     <keyword type="macro" name="XMLSEC_NO_DSA" link="xmlsec-openssl-crypto.html#XMLSEC-NO-DSA:CAPS"/>

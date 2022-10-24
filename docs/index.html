@@ -68,6 +68,28 @@ XML Security Library is released under the
 see the Copyright file in the distribution  for details.<br><br></p>
 <p><b>News</b></p>
 <ul>
+<li>October 25 2022<br>
+        The <a href="download.html">XML Security Library 1.2.35</a> release includes the following changes:
+        <ul>
+        <li>Migration to OpenSSL 3.0 API (based on PR by @snargit). Note that OpenSSL engines
+            are disabled by default when XMLSec library is compiled against OpenSSL 3.0.
+            To re-enable OpenSSL engines, use "--enable-openssl3-engines" configure flag
+            (there will be a lot of deprecation warnings).
+        </li>
+        <li>The OpenSSL before 1.1.0 and LibreSSL before 2.7.0 are now deprecated and
+            will be removed in the future versions of XMLSec Library.
+        </li>
+        <li>Refactored all the integer casts to ensure cast-safety. Fixed all warnings
+            and enabled "-Werror" and "-pedantic" flags on CI builds.
+        </li>
+        <li>Added configure flag to use size_t for xmlSecSize (currently disabled by default
+            for backward compatibility).
+        </li>
+        <li>Moved all CI builds to GitHub actions.</li>
+        <li>Several other small fixes (<a href="https://github.com/lsh123/xmlsec/commits/master">more details</a>).</li>
+        </ul>
+</li>
+<br>
 <li>May 3 2022<br>
         The <a href="download.html">XML Security Library 1.2.34</a> release includes the following changes:
         <ul>
@@ -100,15 +122,8 @@ see the Copyright file in the distribution  for details.<br><br></p>
         <li>Several other small fixes (<a href="https://github.com/lsh123/xmlsec/commits/master">more details</a>).</li>
         </ul>
 </li>
-<br><li>April 21 2020<br>
-        The <a href="download.html">XML Security Library 1.2.30</a> release includes the following changes:
-        <ul>
-        <li>Enabled XML_PARSE_HUGE for all xml parsers.</li>
-        <li>Added s390x support for travis (nayana-ibm).</li>
-        <li>Several other small fixes (<a href="https://github.com/lsh123/xmlsec/commits/master">more details</a>).</li>
-        </ul>
-</li>
-<br><li>See <a href="news.html">News page</a> for older announcements.</li>
+<br>
+<li>See <a href="news.html">News page</a> for older announcements.</li>
 </ul>
 </td></tr></table></td>
 </tr></table></body>

@@ -126,7 +126,7 @@
 		    <xsl:with-param name="text">Reporting Bugs</xsl:with-param> 
 		</xsl:call-template>
 	    </li>
-            <li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+            <li><a href="mailing-list.html">Mailing list</a></li>
 	    <li>
 		<xsl:call-template name="linkto"> 
 		    <xsl:with-param name="href">related.html</xsl:with-param> 

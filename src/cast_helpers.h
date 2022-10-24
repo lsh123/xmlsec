@@ -17,12 +17,8 @@
 #endif /* XMLSEC_PRIVATE */
 
 #include <limits.h>
+#include <stdint.h>
 #include "errors_helpers.h"
-
-/* if it is missing */
-#ifndef SIZE_MAX
-#define SIZE_MAX (~(size_t)0)
-#endif /* SIZE_MAX */
 
 /**
  * Helpers for printing out enum values (mostly debugging).

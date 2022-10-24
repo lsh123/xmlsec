@@ -66,5 +66,22 @@ if [ x"$rc" = x ]; then
      echo "RUN MANUALLY: git push --follow-tags"
 fi
 
+echo "======== Publish release to website:"
+if [ x"$rc" = x ]; then
+    echo "RUN MANUALLY: scp $tar_file $sig_file smtp.aleksey.com:"
+    echo "ssh to smtp.aleksey.com, run the ./bin/push-xmlsec-docs.sh $version"
+    echo "then switch symlink for /home/apps/www/aleksey.com/xmlsec/current"
+else
+    echo "RUN MANUALLY: scp $rc_tar_file $rc_sig_file smtp.aleksey.com:"
+    echo "ssh to smtp.aleksey.com, run the ./bin/push-xmlsec-docs.sh $version-$rc"
+    echo "then switch symlink for /home/apps/www/aleksey.com/xmlsec/rc/"
+fi
+
+echo "========= Publish release to github:"
+echo "Download release from website, go to github releases, use newly created tag and "
+echo "tarball to publish release; after that create announcement about the release in the "
+echo "github dicussions"
+
+
 echo "============== Cleanup"
 #rm -rf "$build_root"

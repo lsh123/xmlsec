@@ -65,7 +65,6 @@ AM_CONDITIONAL(HAS_XSLTPROC, [test x"$XSLTPROC" != x])
 
 dnl Checks for header files.
 AC_HEADER_DIRENT
-AC_CHECK_INCLUDES_DEFAULT
 
 
 dnl ==========================================================================

@@ -636,18 +636,31 @@ clean :
 rebuild : clean all
 
 install : all
+    :: directoreies
 	if not exist $(INCPREFIX)\$(XMLSEC_NAME) mkdir $(INCPREFIX)\$(XMLSEC_NAME)
 	if not exist $(BINPREFIX) mkdir $(BINPREFIX)
 	if not exist $(LIBPREFIX) mkdir $(LIBPREFIX)
+
+	:: include files
+	if exist $(BASEDIR)\include\$(XMLSEC_NAME) copy $(BASEDIR)\include\$(XMLSEC_NAME)\*.h $(INCPREFIX)\$(XMLSEC_NAME)	
 	if exist $(BINDIR)\$(XMLSEC_OPENSSL_SO) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\openssl mkdir $(INCPREFIX)\$(XMLSEC_NAME)\openssl
-	if exist $(BINDIR)\$(XMLSEC_NSS_SO) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\nss mkdir $(INCPREFIX)\$(XMLSEC_NAME)\nss
-	if exist $(BINDIR)\$(XMLSEC_MSCRYPTO_SO) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\mscrypto mkdir $(INCPREFIX)\$(XMLSEC_NAME)\mscrypto
-	if exist $(BINDIR)\$(XMLSEC_MSCNG_SO) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\mscng mkdir $(INCPREFIX)\$(XMLSEC_NAME)\mscng
-	if exist $(BASEDIR)\include\$(XMLSEC_NAME) copy $(BASEDIR)\include\$(XMLSEC_NAME)\*.h $(INCPREFIX)\$(XMLSEC_NAME)
+	if exist $(BINDIR)\$(XMLSEC_OPENSSL_A) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\openssl mkdir $(INCPREFIX)\$(XMLSEC_NAME)\opensslmsvc if exists
 	if exist $(BINDIR)\$(XMLSEC_OPENSSL_SO) copy $(BASEDIR)\include\$(XMLSEC_NAME)\openssl\*.h $(INCPREFIX)\$(XMLSEC_NAME)\openssl
+    if exist $(BINDIR)\$(XMLSEC_OPENSSL_A) copy $(BASEDIR)\include\$(XMLSEC_NAME)\openssl\*.h $(INCPREFIX)\$(XMLSEC_NAME)\openssl
+	if exist $(BINDIR)\$(XMLSEC_NSS_SO) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\nss mkdir $(INCPREFIX)\$(XMLSEC_NAME)\nss
+	if exist $(BINDIR)\$(XMLSEC_NSS_A) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\nss mkdir $(INCPREFIX)\$(XMLSEC_NAME)\nss
 	if exist $(BINDIR)\$(XMLSEC_NSS_SO) copy $(BASEDIR)\include\$(XMLSEC_NAME)\nss\*.h $(INCPREFIX)\$(XMLSEC_NAME)\nss
+	if exist $(BINDIR)\$(XMLSEC_NSS_A) copy $(BASEDIR)\include\$(XMLSEC_NAME)\nss\*.h $(INCPREFIX)\$(XMLSEC_NAME)\nss
+	if exist $(BINDIR)\$(XMLSEC_MSCRYPTO_SO) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\mscrypto mkdir $(INCPREFIX)\$(XMLSEC_NAME)\mscrypto
+	if exist $(BINDIR)\$(XMLSEC_MSCRYPTO_A) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\mscrypto mkdir $(INCPREFIX)\$(XMLSEC_NAME)\mscrypto
 	if exist $(BINDIR)\$(XMLSEC_MSCRYPTO_SO) copy $(BASEDIR)\include\$(XMLSEC_NAME)\mscrypto\*.h $(INCPREFIX)\$(XMLSEC_NAME)\mscrypto
+	if exist $(BINDIR)\$(XMLSEC_MSCRYPTO_A) copy $(BASEDIR)\include\$(XMLSEC_NAME)\mscrypto\*.h $(INCPREFIX)\$(XMLSEC_NAME)\mscrypto
+	if exist $(BINDIR)\$(XMLSEC_MSCNG_SO) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\mscng mkdir $(INCPREFIX)\$(XMLSEC_NAME)\mscng
+	if exist $(BINDIR)\$(XMLSEC_MSCNG_A) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\mscng mkdir $(INCPREFIX)\$(XMLSEC_NAME)\mscng
 	if exist $(BINDIR)\$(XMLSEC_MSCNG_SO) copy $(BASEDIR)\include\$(XMLSEC_NAME)\mscng\*.h $(INCPREFIX)\$(XMLSEC_NAME)\mscng
+	if exist $(BINDIR)\$(XMLSEC_MSCNG_A) copy $(BASEDIR)\include\$(XMLSEC_NAME)\mscng\*.h $(INCPREFIX)\$(XMLSEC_NAME)\mscng
+
+	:: shared and static libs
 	if exist $(BINDIR)\$(XMLSEC_SO) copy $(BINDIR)\$(XMLSEC_SO) $(SOPREFIX)
 	if exist $(BINDIR)\$(XMLSEC_SO_MANIFEST) copy $(BINDIR)\$(XMLSEC_SO_MANIFEST) $(SOPREFIX)
 	if exist $(BINDIR)\$(XMLSEC_PDB) copy $(BINDIR)\$(XMLSEC_PDB) $(SOPREFIX)
@@ -673,6 +686,8 @@ install : all
 	if exist $(BINDIR)\$(XMLSEC_MSCNG_PDB) copy $(BINDIR)\$(XMLSEC_MSCNG_PDB) $(SOPREFIX)
 	if exist $(BINDIR)\$(XMLSEC_MSCNG_A) copy $(BINDIR)\$(XMLSEC_MSCNG_A) $(LIBPREFIX)
 	if exist $(BINDIR)\$(XMLSEC_MSCNG_IMP) copy $(BINDIR)\$(XMLSEC_MSCNG_IMP) $(LIBPREFIX)
+
+	:: apps
 	if exist $(BINDIR)\$(APP_NAME) copy $(BINDIR)\$(APP_NAME) $(BINPREFIX)
 	if exist $(BINDIR)\$(APP_NAME_MANIFEST) copy $(BINDIR)\$(APP_NAME_MANIFEST) $(BINPREFIX)
 

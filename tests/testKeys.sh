@@ -22,11 +22,8 @@ echo "--- LTDL_LIBRARY_PATH=$LTDL_LIBRARY_PATH" >> $logfile
 mkdir -p $crypto_config
 rm -rf $crypto_config/*
 
-# remove old keys file and copy NSS DB files if needed
+# remove old keys file
 rm -rf $keysfile
-if [ "z$crypto" = "znss" ] ; then
-    cp -f $nssdbfolder/*.db $crypto_config
-fi
 
 ##########################################################################
 ##########################################################################

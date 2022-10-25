@@ -37,7 +37,6 @@ else
     curlogfile=$TMPFOLDER/$testname.$timestamp-$$.cur.log
     failedlogfile=$TMPFOLDER/$testname.$timestamp-$$.failed.log
 fi
-nssdbfolder=$topfolder/nssdb
 
 #
 # Valgrind

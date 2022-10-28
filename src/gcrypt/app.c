@@ -97,7 +97,8 @@ Noteworthy changes in version 1.4.3 (2008-09-18)
     err = gcry_control(GCRYCTL_INIT_SECMEM, 32768, 0);
     if(err != GPG_ERR_NO_ERROR) {
         xmlSecGCryptError("gcry_control(GCRYCTL_INIT_SECMEM)", err, NULL);
-        return(-1);
+        /* ignore this error because of libgrcypt bug in allocating memory, 
+        see https://github.com/lsh123/xmlsec/issues/415 for more details */
     }
 
     /* It is now okay to let Libgcrypt complain when there was/is

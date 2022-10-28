@@ -102,12 +102,7 @@
 		    <xsl:with-param name="href">xmldsig.html</xsl:with-param> 
 		    <xsl:with-param name="text">XML Digital Signature</xsl:with-param> 
 		</xsl:call-template>
-	    </li>	    
-	    <ul>
-	    <li>
-		<a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a> 
 	    </li>
-	    </ul>
 	    <li>
 		<xsl:call-template name="linkto"> 
 		    <xsl:with-param name="href">xmlenc.html</xsl:with-param> 

@@ -117,12 +117,6 @@ xmlSecOpenSSLAppInit(const char* config) {
     */
 #endif /* XMLSEC_OPENSSL_API_300 */
 
-#if !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300)
-    ERR_load_crypto_strings();
-    OPENSSL_config(NULL);
-    OpenSSL_add_all_algorithms();
-
-#else /* !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300) */
     int ret;
     uint64_t opts = 0;
 
@@ -144,7 +138,6 @@ xmlSecOpenSSLAppInit(const char* config) {
         xmlSecOpenSSLError("OPENSSL_init_crypto", NULL);
         goto error;
     }
-#endif /* !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300) */
 
     if((config != NULL) && (xmlSecOpenSSLSetDefaultTrustedCertsFolder(BAD_CAST config) < 0)) {
         xmlSecInternalError("xmlSecOpenSSLSetDefaultTrustedCertsFolder", NULL);
@@ -171,24 +164,6 @@ error:
 int
 xmlSecOpenSSLAppShutdown(void) {
     /* OpenSSL 1.1.0+ does not require explicit cleanup */
-#if !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300)
-
-#ifndef XMLSEC_NO_X509
-    X509_TRUST_cleanup();
-#endif /* XMLSEC_NO_X509 */
-
-    RAND_cleanup();
-    EVP_cleanup();
-
-    ENGINE_cleanup();
-    CONF_modules_unload(1);
-
-    CRYPTO_cleanup_all_ex_data();
-    ERR_remove_thread_state(NULL);
-    ERR_free_strings();
-#endif /* !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300) */
-
-    /* done */
     return(0);
 }
 

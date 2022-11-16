@@ -280,14 +280,14 @@ dnl ==========================================================================
 AC_CHECK_SIZEOF(size_t)
 
 XMLSEC_USE_SIZE_T="no"
-AC_ARG_ENABLE([size-t], [AS_HELP_STRING([--enable-size-t],[enable xmsSecSize typedef to size_t (no)])])
+AC_ARG_ENABLE([size-t], [AS_HELP_STRING([--enable-size-t],[enable xmsSecSize typedef to size_t (yes)])])
 AC_MSG_CHECKING(for using size_t)
-if test "z$enable_size_t" = "zyes" ; then
+if test "z$enable_size_t" = "zno" ; then
+    XMLSEC_USE_SIZE_T="no"
+    AC_MSG_RESULT([no (deprecated)])
+else
     XMLSEC_USE_SIZE_T="yes"
     AC_MSG_RESULT([yes])
-else
-    XMLSEC_USE_SIZE_T="no"
-    AC_MSG_RESULT([no])
 fi
 
 if test "z$XMLSEC_USE_SIZE_T" != "zyes" -a "$ac_cv_sizeof_size_t" -ne "4" ; then

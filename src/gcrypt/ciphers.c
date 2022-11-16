@@ -302,13 +302,16 @@ xmlSecGCryptBlockCipherCtxFinal(xmlSecGCryptBlockCipherCtxPtr ctx,
     }
 
     if(encrypt == 0) {
+        xmlSecSize padding;
+
         /* check padding */
-        if(inSize < outBuf[blockSize - 1]) {
+        padding = (xmlSecSize)outBuf[blockLen - 1];
+        if(inSize < padding) {
             xmlSecInvalidSizeLessThanError("Input data padding",
-                    inSize, outBuf[blockSize - 1], cipherName);
+                    inSize, padding, cipherName);
             return(-1);
         }
-        outSize2 = inSize - outBuf[blockSize - 1];
+        outSize2 = inSize - padding;
     } else {
         outSize2 = inSize;
     }

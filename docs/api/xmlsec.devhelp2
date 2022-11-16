@@ -1098,7 +1098,6 @@
     <keyword type="function" name="xmlSecOpenSSLTransformSha384GetKlass ()" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformSha384GetKlass"/>
     <keyword type="function" name="xmlSecOpenSSLTransformSha512GetKlass ()" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformSha512GetKlass"/>
     <keyword type="function" name="xmlSecOpenSSLErrorsDefaultCallback ()" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLErrorsDefaultCallback"/>
-    <keyword type="macro" name="XMLSEC_OPENSSL_API_100" link="xmlsec-openssl-crypto.html#XMLSEC-OPENSSL-API-100:CAPS"/>
     <keyword type="macro" name="XMLSEC_OPENSSL_API_110" link="xmlsec-openssl-crypto.html#XMLSEC-OPENSSL-API-110:CAPS"/>
     <keyword type="macro" name="XMLSEC_OPENSSL_API_300" link="xmlsec-openssl-crypto.html#XMLSEC-OPENSSL-API-300:CAPS"/>
     <keyword type="macro" name="XMLSEC_OPENSSL_API_111" link="xmlsec-openssl-crypto.html#XMLSEC-OPENSSL-API-111:CAPS"/>

@@ -1,12 +1,7 @@
 /**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * This file provides a compatibility layer for pre-OpenSSL 1.1.0 versions.
- *
- * The functions here provide accessors for structs which were made opaque in
- * 1.0.0 and 1.1.0 so they an be accessed in earlier versions of the library
- * using the same syntax. This file won't be required once OpenSSL 1.1.0 is
- * the minimum supported version. Note that LibreSSL "forked" at OpenSSL 1.0.0.
+ * This file provides a compatibility layer for various OpenSSL versions.
  */
 
 #ifndef __XMLSEC_OPENSSL_OPENSSL_COMPAT_H__

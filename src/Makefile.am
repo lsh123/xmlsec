@@ -63,10 +63,6 @@ libxmlsec1_la_SOURCES = \
 	xslt.c \
 	$(NULL)
 
-if XMLSEC_ENABLE_SOAP
-libxmlsec1_la_SOURCES += soap.c
-endif
-
 libxmlsec1_la_LIBADD = \
 	$(LIBXSLT_LIBS) \
 	$(LIBXML_LIBS) \

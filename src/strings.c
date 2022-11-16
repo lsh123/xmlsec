@@ -30,8 +30,6 @@ const xmlChar xmlSecEncNs[]                     = "http://www.w3.org/2001/04/xml
 const xmlChar xmlSecXPathNs[]                   = "http://www.w3.org/TR/1999/REC-xpath-19991116";
 const xmlChar xmlSecXPath2Ns[]                  = "http://www.w3.org/2002/06/xmldsig-filter2";
 const xmlChar xmlSecXPointerNs[]                = "http://www.w3.org/2001/04/xmldsig-more/xptr";
-const xmlChar xmlSecSoap11Ns[]                  = "http://schemas.xmlsoap.org/soap/envelope/";
-const xmlChar xmlSecSoap12Ns[]                  = "http://www.w3.org/2002/06/soap-envelope";
 
 /*************************************************************************
  *
@@ -528,41 +526,6 @@ const xmlChar xmlSecRelationshipAttrTargetMode[]= "TargetMode";
  ************************************************************************/
 const xmlChar xmlSecNameXslt[]                  = "xslt";
 const xmlChar xmlSecHrefXslt[]                  = "http://www.w3.org/TR/1999/REC-xslt-19991116";
-
-#ifndef XMLSEC_NO_SOAP
-/*************************************************************************
- *
- * SOAP 1.1/1.2 strings
- *
- ************************************************************************/
-const xmlChar xmlSecNodeEnvelope[]              = "Envelope";
-const xmlChar xmlSecNodeHeader[]                = "Header";
-const xmlChar xmlSecNodeBody[]                  = "Body";
-const xmlChar xmlSecNodeFault[]                 = "Fault";
-const xmlChar xmlSecNodeFaultCode[]             = "faultcode";
-const xmlChar xmlSecNodeFaultString[]           = "faultstring";
-const xmlChar xmlSecNodeFaultActor[]            = "faultactor";
-const xmlChar xmlSecNodeFaultDetail[]           = "detail";
-const xmlChar xmlSecNodeCode[]                  = "Code";
-const xmlChar xmlSecNodeReason[]                = "Reason";
-const xmlChar xmlSecNodeNode[]                  = "Node";
-const xmlChar xmlSecNodeRole[]                  = "Role";
-const xmlChar xmlSecNodeDetail[]                = "Detail";
-const xmlChar xmlSecNodeValue[]                 = "Value";
-const xmlChar xmlSecNodeSubcode[]               = "Subcode";
-const xmlChar xmlSecNodeText[]                  = "Text";
-
-
-const xmlChar xmlSecSoapFaultCodeVersionMismatch[]      = "VersionMismatch";
-const xmlChar xmlSecSoapFaultCodeMustUnderstand[]       = "MustUnderstand";
-const xmlChar xmlSecSoapFaultCodeClient[]               = "Client";
-const xmlChar xmlSecSoapFaultCodeServer[]               = "Server";
-const xmlChar xmlSecSoapFaultCodeReceiver[]             = "Receiver";
-const xmlChar xmlSecSoapFaultCodeSender[]               = "Sender";
-const xmlChar xmlSecSoapFaultDataEncodningUnknown[]     = "DataEncodingUnknown";
-
-
-#endif /* XMLSEC_NO_SOAP */
 
 /*************************************************************************
  *

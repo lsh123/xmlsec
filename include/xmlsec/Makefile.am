@@ -35,10 +35,6 @@ xmlsecinc_HEADERS = \
 	xmltree.h \
 	$(NULL)
 
-if XMLSEC_ENABLE_SOAP
-xmlsecinc_HEADERS += soap.h
-endif
-
 remove-old-headers:
 	@if test "x$(DESTDIR)" = "x" && test -d "$(includedir)/xmlsec"; then \
 	    echo "----------------------------------------------------------------------"; \

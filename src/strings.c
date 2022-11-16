@@ -30,8 +30,6 @@ const xmlChar xmlSecEncNs[]                     = "http://www.w3.org/2001/04/xml
 const xmlChar xmlSecXPathNs[]                   = "http://www.w3.org/TR/1999/REC-xpath-19991116";
 const xmlChar xmlSecXPath2Ns[]                  = "http://www.w3.org/2002/06/xmldsig-filter2";
 const xmlChar xmlSecXPointerNs[]                = "http://www.w3.org/2001/04/xmldsig-more/xptr";
-const xmlChar xmlSecSoap11Ns[]                  = "http://schemas.xmlsoap.org/soap/envelope/";
-const xmlChar xmlSecSoap12Ns[]                  = "http://www.w3.org/2002/06/soap-envelope";
 
 /*************************************************************************
  *

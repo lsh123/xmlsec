@@ -18,60 +18,21 @@
 
 /******************************************************************************
  *
- * OpenSSL 1.1.0 and 3.0.0 compatibility
- *
- *****************************************************************************/
-#if !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300)
-
-/* EVP_PKEY stuff */
-#define EVP_PKEY_up_ref(pKey)              CRYPTO_add(&((pKey)->references), 1, CRYPTO_LOCK_EVP_PKEY)
-#define EVP_PKEY_get0_DSA(pKey)            (((pKey) != NULL) ? ((pKey)->pkey.dsa) : (DSA*)NULL)
-#define EVP_PKEY_get0_RSA(pKey)            (((pKey) != NULL) ? ((pKey)->pkey.rsa) : (RSA*)NULL)
-#define EVP_PKEY_get0_EC_KEY(pKey)         (((pKey) != NULL) ? ((pKey)->pkey.ec)  : (EC_KEY*)NULL)
-
-/* EVP_MD stuff */
-#define EVP_MD_CTX_new()                   EVP_MD_CTX_create()
-#define EVP_MD_CTX_free(x)                 EVP_MD_CTX_destroy((x))
-#define EVP_MD_CTX_md_data(x)              ((x)->md_data)
-
-/* EVP_CIPHER_CTX stuff */
-#define EVP_CIPHER_CTX_encrypting(x)       ((x)->encrypt)
-
-/* HMAC_CTX stuff */
-#define HMAC_CTX_new()                     ((HMAC_CTX*)calloc(1, sizeof(HMAC_CTX)))
-#define HMAC_CTX_free(x)                   { HMAC_CTX_cleanup((x)); free((x)); }
-
-/* X509 stuff */
-#define ASN1_STRING_get0_data(data)        ASN1_STRING_data((data))
-#define X509_CRL_get0_nextUpdate(crl)      X509_CRL_get_nextUpdate((crl))
-#define X509_get0_notBefore(x509)          X509_get_notBefore((x509))
-#define X509_get0_notAfter(x509)           X509_get_notAfter((x509))
-#define X509_STORE_CTX_get_by_subject      X509_STORE_get_by_subject
-#define X509_REVOKED_get0_serialNumber(r)  (((r) != NULL) ? ((r)->serialNumber) : (ASN1_INTEGER *)NULL)
-#define X509_OBJECT_new()                  (calloc(1, sizeof(X509_OBJECT)))
-#define X509_OBJECT_free(x)                { X509_OBJECT_free_contents(x); free(x); }
-#define X509_OBJECT_get0_X509(x)           (((x) != NULL) ? ((x)->data.x509) : (X509 *)NULL)
-
-#endif /* !defined(XMLSEC_OPENSSL_API_110) && !defined(XMLSEC_OPENSSL_API_300) */
-
-
-/******************************************************************************
- *
  * OpenSSL 1.1.1
  *
  ******************************************************************************/
-#if !defined(XMLSEC_OPENSSL_API_111)
+#if !defined(XMLSEC_OPENSSL_API_111) && !defined(XMLSEC_OPENSSL_API_300)
 
 #define RAND_priv_bytes(buf,num)            RAND_bytes((buf),(num))
 
-#endif /* !defined(XMLSEC_OPENSSL_API_110) */
+#endif /* !defined(XMLSEC_OPENSSL_API_111) && !defined(XMLSEC_OPENSSL_API_300) */
 
 
 /******************************************************************************
  *
  * OpenSSL 3.0.0 compatibility
  *
- *****************************************************************************/
+ *****************************************************************************/ 
 #if !defined(XMLSEC_OPENSSL_API_300)
 
 #define BIO_new_ex(libctx,type)                                     BIO_new((type))
@@ -123,7 +84,7 @@ static inline int xmlSecOpenSSLCompatRand(unsigned char *buf, xmlSecSize size) {
  * LibreSSL 2.7 compatibility (implements most of OpenSSL 1.1 API)
  *
  *****************************************************************************/
-#if defined(LIBRESSL_VERSION_NUMBER) && (LIBRESSL_VERSION_NUMBER < 0x30500000L) && defined(XMLSEC_OPENSSL_API_110)
+#if defined(LIBRESSL_VERSION_NUMBER) && (LIBRESSL_VERSION_NUMBER < 0x30500000L)
 /* EVP_CIPHER_CTX stuff */
 #define EVP_CIPHER_CTX_encrypting(x)       ((x)->encrypt)
 
@@ -131,7 +92,7 @@ static inline int xmlSecOpenSSLCompatRand(unsigned char *buf, xmlSecSize size) {
 #define X509_STORE_CTX_get_by_subject      X509_STORE_get_by_subject
 #define X509_OBJECT_new()                  (calloc(1, sizeof(X509_OBJECT)))
 #define X509_OBJECT_free(x)                { X509_OBJECT_free_contents(x); free(x); }
-#endif /* defined(LIBRESSL_VERSION_NUMBER) && (LIBRESSL_VERSION_NUMBER < 0x30500000L) && defined(XMLSEC_OPENSSL_API_110) */
+#endif /* defined(LIBRESSL_VERSION_NUMBER) && (LIBRESSL_VERSION_NUMBER < 0x30500000L) */
 
 
 /******************************************************************************

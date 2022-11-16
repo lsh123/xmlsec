@@ -1237,7 +1237,7 @@ my_timegm(struct tm *t) {
 
 #endif /* HAVE_TIMEGM */
 
-#if (defined(XMLSEC_OPENSSL_API_110) || defined(XMLSEC_OPENSSL_API_300)) && !defined(OPENSSL_IS_BORINGSSL)
+#if !defined(OPENSSL_IS_BORINGSSL)
 
 static int
 xmlSecOpenSSLX509CertGetTime(const ASN1_TIME * t, time_t* res) {
@@ -1264,7 +1264,7 @@ xmlSecOpenSSLX509CertGetTime(const ASN1_TIME * t, time_t* res) {
     return(0);
 }
 
-#else  /* (defined(XMLSEC_OPENSSL_API_110) || defined(XMLSEC_OPENSSL_API_300)) && !defined(OPENSSL_IS_BORINGSSL) */
+#else  /* !defined(OPENSSL_IS_BORINGSSL) */
 
 static int
 xmlSecOpenSSLX509CertGetTime(ASN1_TIME * t, time_t* res) {
@@ -1333,7 +1333,7 @@ xmlSecOpenSSLX509CertGetTime(ASN1_TIME * t, time_t* res) {
     return(0);
 }
 
-#endif /* (defined(XMLSEC_OPENSSL_API_110) || defined(XMLSEC_OPENSSL_API_300)) && !defined(OPENSSL_IS_BORINGSSL) */
+#endif /* !defined(OPENSSL_IS_BORINGSSL) */
 
 static int
 xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr key,

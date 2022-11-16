@@ -661,7 +661,7 @@ XMLSEC_CRYPTO_DISABLED_LIST=""
 dnl ==========================================================================
 dnl OpenSSL
 dnl ==========================================================================
-OPENSSL_MIN_VERSION="1.0.0"
+OPENSSL_MIN_VERSION="1.1.0"
 OPENSSL_INCLUDE_DIR="$COMMON_INCLUDE_DIR /usr/local/ssl/include"
 OPENSSL_LIB_DIR="$COMMON_LIB_DIR /usr/local/ssl/lib /usr/local/ssl/lib64"
 OPENSSL_CRYPTO_LIB="$XMLSEC_PACKAGE-openssl"
@@ -765,11 +765,7 @@ if test "z$OPENSSL_FOUND" = "zno" ; then
             #include <openssl/ssl.h>
         ]],[[
             int main () {
-                #if OPENSSL_VERSION_NUMBER < 0x10100000L
-                SSL_library_init();
-                #else
                 OPENSSL_init_ssl(0, NULL);
-                #endif
                 return(0);
             }
         ]])
@@ -804,19 +800,6 @@ AC_MSG_CHECKING(for openssl library >= $OPENSSL_MIN_VERSION)
 if test "z$OPENSSL_FOUND" = "zyes" ; then
     OLD_CPPFLAGS=$CPPFLAGS
     CPPFLAGS="$CPPFLAGS $OPENSSL_CFLAGS"
-    if test "z$OPENSSL_VERSION" = "z" ; then
-        AC_EGREP_CPP(greater-than-minvers, [
-            #include <openssl/opensslv.h>
-            #if defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER < 0x20700000L
-            greater-than-minvers
-            #endif
-        ],[
-            OPENSSL_VERSION="1.0.0 (LibreSSL < 2.7)"
-        ],[
-            OPENSSL_VERSION=""
-        ])
-    fi
-
     if test "z$OPENSSL_VERSION" = "z" ; then
         AC_EGREP_CPP(greater-than-minvers, [
             #include <openssl/opensslv.h>
@@ -875,18 +858,6 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
         ])
     fi
 
-    if test "z$OPENSSL_VERSION" = "z" ; then
-        AC_EGREP_CPP(greater-than-minvers, [
-            #include <openssl/opensslv.h>
-            #if OPENSSL_VERSION_NUMBER >= 0x10000000L
-            greater-than-minvers
-            #endif
-        ],[
-            OPENSSL_VERSION="1.0.0"
-        ],[
-            OPENSSL_VERSION=""
-        ])
-    fi
     CPPFLAGS=$OLD_CPPFLAGS
 
     if test "z$OPENSSL_VERSION" != "z" ; then

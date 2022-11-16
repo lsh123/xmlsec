@@ -45,14 +45,7 @@ extern "C" {
  * What version of the openssl API do we have? (also see configure.ac)
  *
  *******************************************************************/
-#if defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER < 0x20700000L
-/* LibreSSL decided to take over OpenSSL version 2.0.0, likely will create
- * issues down the road... */
-#define XMLSEC_OPENSSL_API_100      1
-#if defined(_MSC_VER) || defined(__GNUC__) || defined(__clang__)
-#pragma message("Support for LibreSSL before version 2.7.0 is deprecated and will be removed in the future versions of XMLSec library")
-#endif /* defined(_MSC_VER) || defined(__GNUC__) || defined(__clang__) */
-#elif defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER >= 0x20700000L
+#if defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER >= 0x20700000L
 /* LibreSSL 2.7 implements (most of) OpenSSL 1.1 API */
 #define XMLSEC_OPENSSL_API_110      1
 #elif OPENSSL_VERSION_NUMBER >= 0x30000000L
@@ -62,11 +55,6 @@ extern "C" {
 #define XMLSEC_OPENSSL_API_110      1
 #elif OPENSSL_VERSION_NUMBER >= 0x10100000L
 #define XMLSEC_OPENSSL_API_110      1
-#if defined(_MSC_VER) || defined(__GNUC__) || defined(__clang__)
-#pragma message("Support for OpenSSL before version 1.1.1 is deprecated and will be removed in the future versions of XMLSec library")
-#endif /* defined(_MSC_VER) || defined(__GNUC__) || defined(__clang__) */
-#elif OPENSSL_VERSION_NUMBER >= 0x10000000L
-#define XMLSEC_OPENSSL_API_100      1
 #if defined(_MSC_VER) || defined(__GNUC__) || defined(__clang__)
 #pragma message("Support for OpenSSL before version 1.1.1 is deprecated and will be removed in the future versions of XMLSec library")
 #endif /* defined(_MSC_VER) || defined(__GNUC__) || defined(__clang__) */

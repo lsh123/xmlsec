@@ -389,10 +389,6 @@ for (j = 0; j < crlist.length; j++) {
 		curcrypto="openssl";
 		withOpenSSL = 1;
 		withOpenSSLVersion = "110"; /* default */
-	} else if (crlist[j] == "openssl=100" || crlist[j] == "openssl-100") {
-		curcrypto="openssl";
-		withOpenSSL = 1;
-		withOpenSSLVersion = "100";
 	} else if (crlist[j] == "openssl=110" || crlist[j] == "openssl-110") {
 		curcrypto="openssl";
 		withOpenSSL = 1;

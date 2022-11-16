@@ -66,18 +66,6 @@ XMLSEC_EXPORT int                xmlSecBase64Decode_ex          (const xmlChar* 
 XMLSEC_EXPORT int                xmlSecBase64DecodeInPlace      (xmlChar* str,
                                                                  xmlSecSize* outWritten);
 
-/* These functions are deprecated and will be removed in the future. */
-XMLSEC_DEPRECATED XMLSEC_EXPORT int xmlSecBase64CtxUpdate      (xmlSecBase64CtxPtr ctx,
-                                                                const xmlSecByte* in,
-                                                                xmlSecSize inSize,
-                                                                xmlSecByte* out,
-                                                                xmlSecSize outSize);
-XMLSEC_DEPRECATED XMLSEC_EXPORT int xmlSecBase64CtxFinal       (xmlSecBase64CtxPtr ctx,
-                                                                xmlSecByte* out,
-                                                                xmlSecSize outSize);
-XMLSEC_DEPRECATED XMLSEC_EXPORT int xmlSecBase64Decode         (const xmlChar* str,
-                                                                xmlSecByte* out,
-                                                                xmlSecSize outSize);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

@@ -29,7 +29,6 @@
 #include <xmlsec/private.h>
 
 #include <xmlsec/openssl/crypto.h>
-#include <xmlsec/openssl/bn.h>
 #include <xmlsec/openssl/evp.h>
 #include "openssl_compat.h"
 

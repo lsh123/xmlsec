@@ -31,7 +31,6 @@
 #include <xmlsec/transforms.h>
 
 #include <xmlsec/nss/crypto.h>
-#include <xmlsec/nss/bignum.h>
 #include <xmlsec/nss/pkikeys.h>
 
 #include "../cast_helpers.h"

@@ -36,7 +36,6 @@
 
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
-#include <xmlsec/openssl/bn.h>
 #include "openssl_compat.h"
 
 #ifdef XMLSEC_OPENSSL_API_300

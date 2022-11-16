@@ -210,7 +210,6 @@ XMLSEC_OBJS_A = \
 
 XMLSEC_OPENSSL_OBJS = \
 	$(XMLSEC_OPENSSL_INTDIR)\app.obj\
-	$(XMLSEC_OPENSSL_INTDIR)\bn.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\ciphers.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\crypto.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\digests.obj \
@@ -227,7 +226,6 @@ XMLSEC_OPENSSL_OBJS = \
 	$(XMLSEC_OPENSSL_INTDIR)\x509vfy.obj
 XMLSEC_OPENSSL_OBJS_A = \
 	$(XMLSEC_OPENSSL_INTDIR_A)\app.obj\
-	$(XMLSEC_OPENSSL_INTDIR_A)\bn.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\ciphers.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\crypto.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\digests.obj \
@@ -245,7 +243,6 @@ XMLSEC_OPENSSL_OBJS_A = \
 
 XMLSEC_NSS_OBJS = \
 	$(XMLSEC_NSS_INTDIR)\app.obj\
-	$(XMLSEC_NSS_INTDIR)\bignum.obj\
 	$(XMLSEC_NSS_INTDIR)\ciphers.obj \
 	$(XMLSEC_NSS_INTDIR)\crypto.obj \
 	$(XMLSEC_NSS_INTDIR)\digests.obj \
@@ -262,7 +259,6 @@ XMLSEC_NSS_OBJS = \
 	$(XMLSEC_NSS_INTDIR)\strings.obj
 XMLSEC_NSS_OBJS_A = \
 	$(XMLSEC_NSS_INTDIR_A)\app.obj\
-	$(XMLSEC_NSS_INTDIR_A)\bignum.obj\
 	$(XMLSEC_NSS_INTDIR_A)\ciphers.obj \
 	$(XMLSEC_NSS_INTDIR_A)\crypto.obj \
 	$(XMLSEC_NSS_INTDIR_A)\digests.obj \

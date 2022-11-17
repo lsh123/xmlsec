@@ -47,6 +47,7 @@ typedef int     (*xmlSecGCryptPkVerifyMethod)   (int digest,
                                                  xmlSecSize dataSize);
 
 #ifndef XMLSEC_NO_DSA
+#ifndef XMLSEC_NO_SHA1
 static int      xmlSecGCryptDsaPkSign           (int digest,
                                                  xmlSecKeyDataPtr key_data,
                                                  const xmlSecByte* dgst,
@@ -58,6 +59,7 @@ static int      xmlSecGCryptDsaPkVerify         (int digest,
                                                  xmlSecSize dgstSize,
                                                  const xmlSecByte* data,
                                                  xmlSecSize dataSize);
+#endif  /* XMLSEC_NO_SHA1 */
 #endif  /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_RSA
